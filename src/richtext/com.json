@@ -1,0 +1,17 @@
+{
+  "title": "富文本",
+  "enable": true,
+  "visibility": true,
+  "namespace": "mybricks.normal-pc.richtext",
+  "author": "ZhuPengqiang",
+  "author_name": "朱鹏强",
+  "version": "1.0.0",
+  "description": "展示多姿多彩的富文本",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [],
+  "outputs": [],
+  "slots": []
+}

@@ -1,0 +1,32 @@
+{
+  "width": "100%",
+  "title": {
+    "display": false,
+    "content": "点击修改标题"
+  },
+  "labelWidth": 120,
+  "buttons": {
+    "display": false,
+    "submit": {
+      "title": "提交"
+    }
+  },
+  "formItemsCfg": {
+    "layout": "column",
+    "columns": 1,
+    "paddingTB": 12
+  },
+  "formItems": [
+    {
+      "label": "用户名",
+      "name": "username",
+      "type": "text",
+      "rules": [
+        {
+          "required": true,
+          "message": "请输入用户名"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "按钮",
+  "namespace": "mybricks.normal-pc.button",
+  "author": "CheMingjun",
+  "author_name": "车明君",
+  "version": "1.0.0",
+  "icon": "./icon.svg",
+  "description": "按钮",
+  "runtime": "./NormalButton.tsx",
+  "data": "./data.json",
+  "editors": "./editors.tsx",
+  "toReact": "./toReact.tsx",
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击"
+    },
+    {
+      "id": "dblclick",
+      "title": "双击"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "title": "栅格布局",
+  "enable": true,
+  "namespace": "mybricks.normal-pc.layout-grid",
+  "author": "ZhuPengqiang",
+  "author_name": "朱鹏强",
+  "version": "1.0.0",
+  "description": "24 栅格系统",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "slots": [
+      {
+        "id": "slot_0",
+        "title": "col-8 (33.33%)"
+      },
+      {
+        "id": "slot_1",
+        "title": "col-8 (33.33%)"
+      },
+      {
+        "id": "slot_2",
+        "title": "col-8 (33.33%)"
+      }
+  ]
+}

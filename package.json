@@ -1,0 +1,19 @@
+{
+  "name": "@mybricks/comlib-pc-normal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:mybricks/comlib-pc-normal.git"
+  },
+  "author": "CheMingjun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/visualbricks/comlib-pc-normal/issues"
+  },
+  "homepage": "https://github.com/visualbricks/comlib-pc-normal#readme"
+}
