@@ -1,0 +1,24 @@
+{
+  "title": "消息提示",
+  "namespace": "mybricks.normal-pc.message",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "version": "1.0.0",
+  "description": "消息提示",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/message.264077f1550a93b8.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "rtType": "js",
+  "editors": "./editors.tsx",
+  "slots": [],
+  "inputs": [
+    {
+      "id": "showMsg",
+      "title": "弹出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": []
+}

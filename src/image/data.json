@@ -1,0 +1,12 @@
+{
+  "image": "",
+  "dataSource": 1,
+  "configMode": 1,
+  "config": {
+    "width": 200,
+    "height": 200,
+    "preview": false,
+    "margin": [0, 0, 0, 0],
+    "customBorderStyle": {}
+  }
+}

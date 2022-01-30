@@ -1,32 +1,39 @@
 {
-  "width": "100%",
-  "title": {
-    "display": false,
-    "content": "点击修改标题"
+  "formItems": [],
+  "layout": "horizontal",
+  "size": "default",
+  "labelAlign": "right",
+  "labelWidthType": "default",
+  "wrapperCol": 24,
+  "intervalMargin": 24,
+  "columnCount": 1,
+  "primaryBtnText": "提交",
+  "showSecondBtn": true,
+  "secondBtnText": "取消",
+  "actionAlign": "start",
+  "isFollow": false,
+  "matchMap": {},
+  "actionPosition": "right-bottom",
+  "params": {},
+  "immediate": false,
+  "fieldsValue": "{}",
+  "showActions": true,
+  "initialValues": {},
+  "submitActions": [],
+  "layoutModel": "row",
+  "showLabel": true,
+  "colon": false,
+  "resetBtn": {
+    "text": "重置",
+    "isVisible": false
   },
-  "labelWidth": 120,
-  "buttons": {
-    "display": false,
-    "submit": {
-      "title": "提交"
-    }
+  "defaultInitialFormItemDesc": true,
+  "useSubmitBtnLoading": false,
+  "submitDebounce": {
+    "enable": false,
+    "wait": 300
   },
-  "formItemsCfg": {
-    "layout": "column",
-    "columns": 1,
-    "paddingTB": 12
-  },
-  "formItems": [
-    {
-      "label": "用户名",
-      "name": "username",
-      "type": "text",
-      "rules": [
-        {
-          "required": true,
-          "message": "请输入用户名"
-        }
-      ]
-    }
-  ]
+  "actionsConfig": {
+    "useLabelWidth": true
+  }
 }

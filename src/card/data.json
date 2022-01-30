@@ -1,0 +1,9 @@
+{
+  "title": "卡片",
+  "useExtra": false,
+  "bordered": true,
+  "hoverable": false,
+  "size": "default",
+  "style": {},
+  "bodyStyle": {}
+}

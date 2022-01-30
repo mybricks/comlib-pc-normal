@@ -1,0 +1,34 @@
+{
+  "fileId": 2391,
+  "content": "",
+  "commitInfo": "init",
+  "debugger": "pc-spa",
+  "comAry": {
+    "test": [
+      "./src/toolbar/com.json",
+      "./src/card/com.json",
+      "./src/dialog/com.json",
+      "./src/form/com.json",
+      "./src/image/com.json",
+      "./src/steps/com.json",
+      "./src/table/com.json",
+      "./src/tabs/com.json",
+      "./src/text/com.json",
+      "./src/code-segment/com.json",
+      "./src/message/com.json"
+    ],
+    "publish": [
+      "./src/toolbar/com.json",
+      "./src/card/com.json",
+      "./src/dialog/com.json",
+      "./src/form/com.json",
+      "./src/image/com.json",
+      "./src/steps/com.json",
+      "./src/table/com.json",
+      "./src/tabs/com.json",
+      "./src/text/com.json",
+      "./src/code-segment/com.json",
+      "./src/message/com.json"
+    ]
+  }
+}

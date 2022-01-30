@@ -1,0 +1,43 @@
+{
+  "title": "表格",
+  "enable": true,
+  "namespace": "mybricks.normal-pc.table",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "version": "1.0.0",
+  "description": "表格",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/table.07650d06e7b2b09d.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors/index.tsx",
+  "inputs": [
+    {
+      "id": "tableData",
+      "title": "输出表格数据",
+      "rels": [
+        "tableData"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "props",
+      "title": "分页参数输出",
+      "schema": {
+        "title": "",
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "tableData",
+      "title": "表格数据输出",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ]
+}

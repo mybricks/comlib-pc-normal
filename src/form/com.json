@@ -1,36 +1,118 @@
 {
   "title": "表单",
+  "enable": true,
   "namespace": "mybricks.normal-pc.form",
-  "author": "CheMingjun",
-  "author_name": "车明君",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
   "version": "1.0.0",
   "description": "表单",
-  "icon": "./icon.svg",
-  "runtime": "./Form.tsx",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/form.085afdee65645d49.svg",
   "data": "./data.json",
+  "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
   "inputs": [
     {
-      "id": "init",
-      "title": "初始化数据"
+      "id": "submit",
+      "title": "提交表单",
+      "rels": [
+        "submit",
+        "out0"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "表单名称"
+          }
+        }
+      }
     },
     {
-      "id": "submit",
-      "title": "校验并提交数据",
+      "id": "initial",
+      "title": "初始化表单",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "表单名称"
+          }
+        }
+      }
+    },
+    {
+      "id": "initialDesc",
+      "title": "初始化表单描述",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "reset",
+      "title": "重置表单",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "stopLoading",
+      "title": "停止加载",
+      "schema": {
+        "type": "any",
+        "properties": {}
+      }
+    },
+    {
+      "id": "getFormValue",
+      "title": "获取表单值",
       "rels": [
-        "submitTo",
-        "validateError"
-      ]
+        "getFormValue",
+        "out0"
+      ],
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [
     {
-      "id": "submitTo",
-      "title": "提交数据"
+      "id": "submit",
+      "title": "数据提交",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "表单名称"
+          }
+        }
+      }
     },
     {
-      "id": "validateError",
-      "title": "校验失败"
+      "id": "afterReset",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "getFormValue",
+      "title": "输出表单值",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "表单名称"
+          }
+        }
+      }
     }
-  ]
+  ],
+  "dependencies": ["moment"],
+  "externals": {
+    "moment": "moment"
+  }
 }

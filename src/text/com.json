@@ -1,0 +1,31 @@
+{
+  "title": "文本",
+  "enable": true,
+  "namespace": "mybricks.normal-pc.text",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "version": "1.0.0",
+  "description": "文本",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "content",
+      "title": "内容",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

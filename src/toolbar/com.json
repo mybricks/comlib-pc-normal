@@ -1,19 +1,22 @@
 {
   "title": "工具条",
   "visibility": true,
-  "namespace": "mybricks.pc-normal.toolbar",
-  "author": "CheMingjun",
-  "author_name": "车明君",
+  "namespace": "mybricks.normal-pc.toolbar",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
   "version": "1.0.0",
   "description": "工具条",
-  "icon": "./icon.png",
+  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/ks-merchant/fangzhou/toolbar.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "input",
-      "title": "接收数据"
+      "id": "slotProps",
+      "title": "插槽参数",
+      "schema": {
+        "type": "follow"
+      }
     }
   ]
 }

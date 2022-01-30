@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: row;
   flex-flow: row wrap;
+  // align-items: center;
   // min-height: 46px;
   //width:500px;
 
@@ -111,13 +112,18 @@
     color: #AAA;
   }
   .button {
-    padding: 2px;
+    // padding: 2px;
+    :global {
+      .ant-btn {
+        box-sizing: border-box;
+      }
+    }
   }
   .btngroup {
     display: flex;
     flex-direction: row;
     flex-flow: row wrap;
-    padding: 0px 2px;
+    // padding: 0px 2px;
     // :hover {
     //   // z-index: 2 !important;
     //   // transition: z-index .3s cubic-bezier(.645,.045,.355,1);
@@ -140,8 +146,8 @@
     }
     .button {
       padding: 0px;
-      margin-top: 2px;
-      margin-bottom: 2px;
+      // margin-top: 2px;
+      // margin-bottom: 2px;
       button[ant-click-animating-without-extra-node]:after {
         border: 0 none;
         opacity: 0;
@@ -150,5 +156,14 @@
     }
 
     
+  }
+  .dropdownBtn {
+    height: unset;
+  }
+  .disabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
   }
 }

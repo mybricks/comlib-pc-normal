@@ -1,0 +1,36 @@
+{
+  "title": "表单",
+  "namespace": "mybricks.normal-pc.form",
+  "author": "CheMingjun",
+  "author_name": "车明君",
+  "version": "1.0.0",
+  "description": "表单",
+  "icon": "./icon.svg",
+  "runtime": "./Form.tsx",
+  "data": "./data.json",
+  "editors": "./editors/index.tsx",
+  "inputs": [
+    {
+      "id": "init",
+      "title": "初始化数据"
+    },
+    {
+      "id": "submit",
+      "title": "校验并提交数据",
+      "rels": [
+        "submitTo",
+        "validateError"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "submitTo",
+      "title": "提交数据"
+    },
+    {
+      "id": "validateError",
+      "title": "校验失败"
+    }
+  ]
+}

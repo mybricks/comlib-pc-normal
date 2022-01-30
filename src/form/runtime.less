@@ -1,0 +1,143 @@
+.formWrapper {
+  // padding: 6px;
+}
+
+.formTooltip {
+  :global {
+    .ant-tooltip-inner {
+      min-width: initial;
+    }
+  }
+}
+
+.formItemWrapper {
+  padding: 4px;
+  width: 100%;
+}
+
+.formItemsWarpper {
+  width: 100%;
+}
+
+.formItemDesc {
+  margin-top: 6px;
+  color: rgba(0,0,0,.45);
+  font-size: 12px;
+}
+
+.dynamicFormItem {
+  :global(.ant-select) {
+    min-width: 180px;
+  }
+}
+
+.form-inline-content {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  // &__left {
+  //   display: flex;
+  //   flex-wrap: wrap;
+  //   flex: 1;
+  // }
+  // &__right {
+  //   display: flex;
+  //   align-items: center;
+  // }
+}
+
+.form-composition-item {
+  display: inline-flex;
+  margin-right: 8px;
+}
+
+.form-item-tooltip {
+  margin-left: 4px;
+  color: rgba(0,0,0,.45);
+}
+
+.composition-item {
+  // min-width: 148px;
+}
+
+.composition-item-inline {
+  display: inline-flex; 
+  align-items: baseline;
+}
+
+.composition-item-inline__column {
+  flex-direction: column-reverse;
+}
+
+.form-item-radio-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+.inputWrap {
+  display: flex;
+  align-items: center;
+}
+.preCopy {
+  white-space: nowrap;
+  margin-right: 16px;
+}
+
+.postCopy {
+  white-space: nowrap;
+  margin-left: 16px;
+}
+.extraStyle {
+  margin-left: -16px;
+}
+
+.radioWrap {
+  display: flex;
+  align-items: center;
+}
+
+.inputNumberHideHandler {
+  :global {
+    .ant-input-number-handler-wrap {
+      display: none;
+    }
+  }
+}
+
+
+.inputStyle {
+  position: relative;
+  &::after {
+    position: absolute;
+    right: 8px;
+    top: 20%;
+    white-space: nowrap;
+    color: #bfbfbf;
+    font-size: 12px;
+    content: attr(data-count);
+    pointer-events: none;
+  }
+}
+
+.aceCodeEditor {
+  width: 100%;
+}
+
+.uploadWrap {
+  :global {
+    .ant-upload-list-item-actions .anticon svg {
+      fill: #ffffff ;
+    }
+  }
+}
+.fullWidth {
+  width: 100%;
+}
+.emptyDragger {
+  :global {
+    .ant-upload-drag {
+      display: none;
+    }
+  }
+}
