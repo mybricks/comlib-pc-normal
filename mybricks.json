@@ -2,20 +2,43 @@
   "fileId": 2391,
   "content": "",
   "commitInfo": "init",
-  "debugger": "pc-spa",
+  "debugger": "_open",
   "comAry": {
     "test": [
-      "./src/toolbar/com.json",
-      "./src/card/com.json",
-      "./src/dialog/com.json",
-      "./src/form/com.json",
-      "./src/image/com.json",
-      "./src/steps/com.json",
-      "./src/table/com.json",
-      "./src/tabs/com.json",
-      "./src/text/com.json",
-      "./src/code-segment/com.json",
-      "./src/message/com.json"
+      {
+        "title": "常规",
+        "comAry": [
+          "./src/toolbar/com.json",
+          "./src/image/com.json",
+          "./src/text/com.json"
+        ]
+      },
+      {
+        "title": "表单",
+        "comAry": [
+          "./src/form/com.json",
+          "./src/text/com.json"
+        ]
+      },
+      {
+        "title": "数据",
+        "comAry": [
+          "./src/table/com.json"
+        ]
+      },
+      {
+        "title": "容器",
+        "comAry": [
+          "./src/grid/com.json",
+          "./src/card/com.json",
+          "./src/dialog/com.json",
+          "./src/tabs/com.json",
+          "./src/steps/com.json"
+        ]
+      },
+      "./src/_service/com.json",
+      "./src/_message/com.json",
+      "./src/_link_to/com.json"
     ],
     "publish": [
       "./src/toolbar/com.json",
@@ -27,8 +50,8 @@
       "./src/table/com.json",
       "./src/tabs/com.json",
       "./src/text/com.json",
-      "./src/code-segment/com.json",
-      "./src/message/com.json"
+      "./src/_service/com.json",
+      "./src/_message/com.json"
     ]
   }
 }

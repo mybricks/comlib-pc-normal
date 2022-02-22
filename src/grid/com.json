@@ -1,0 +1,30 @@
+{
+  "title": "栅格布局",
+  "enable": true,
+  "namespace": "mybricks.normal-pc.grid",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "24 栅格系统",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/grid.d67061014b0b6360.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "target": {
+    "vue": "./toVue.tsx"
+  },
+  "slots": [
+      {
+        "id": "slot_0",
+        "title": "col-8 (33.33%)"
+      },
+      {
+        "id": "slot_1",
+        "title": "col-8 (33.33%)"
+      },
+      {
+        "id": "slot_2",
+        "title": "col-8 (33.33%)"
+      }
+  ]
+}

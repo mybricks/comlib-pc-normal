@@ -1,8 +1,8 @@
 {
   "title": "对话框",
   "namespace": "mybricks.normal-pc.dialog",
-  "author": "Mybricks",
-  "author_name": "Mybricks",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "对话框",
   "runtime": "./runtime.tsx",
