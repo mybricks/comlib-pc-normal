@@ -11,7 +11,7 @@
   "runtime": "./runtime.ts",
   "upgrade": "./upgrade.ts",
   "rtType": "js-autorun",
-  "docs": "https://docs.corp.kuaishou.com/k/home/VYA7eYQyTI9o/fcAD30unkqiVHbszm-osq9jAr#section=h.3bvg8wlpuaug",
+  "docs": "",
   "inputs": [
     {
       "id": "input0",
