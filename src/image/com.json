@@ -1,29 +1,40 @@
 {
   "title": "图片",
-  "enable": true,
   "namespace": "mybricks.normal-pc.image",
   "author": "MyBricks",
   "author_name": "MyBricks",
+  "icon": "./icon.svg",
   "version": "1.0.0",
-  "description": "可预览的单图",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/image.0139bd109f4ecffa.svg",
-  "data": "./data.json",
+  "description": "图片",
   "runtime": "./runtime.tsx",
+  "data": "./data.json",
   "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "imgSrc",
-      "title": "图片地址",
+      "id": "image",
+      "title": "图片链接",
       "schema": {
         "type": "string"
       }
-    },
+    }
+  ],
+  "outputs": [
     {
-      "id": "slotProps",
-      "title": "插槽参数",
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "boolean"
+      }
+    }
+  ],
+  "configs": [
+    {
+      "id": "imagesrc",
+      "title": "图片链接",
       "schema": {
         "type": "string"
-      }
+      },
+      "binding": "data.src"
     }
   ]
 }

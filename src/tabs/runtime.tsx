@@ -16,9 +16,7 @@ export default function ({
 }: RuntimeParams<Data>) {
   useEffect(() => {
     if (data.tabList.length > 0 && !data.active) {
-      const index = data.tabList.findIndex((tab) =>
-        env.hasPermission({ key: tab.permissionKey })
-      );
+      const index = 0
       if (data.tabList[index]) {
         data.defaultActiveKey = data.tabList[index].key;
       } else {

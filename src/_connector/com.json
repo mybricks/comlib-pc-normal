@@ -1,0 +1,34 @@
+{
+  "title": "服务连接器",
+  "namespace": "mybricks.normal-pc.connector",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "服务连接器",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.tsx",
+  "rtType": "js-autorun",
+  "inputs": [
+    {
+      "id": "call",
+      "rels": [
+        "then",
+        "catch"
+      ],
+      "title": "调用"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "then",
+      "title": "结果"
+    },
+    {
+      "id": "catch",
+      "title": "发生错误",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

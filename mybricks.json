@@ -2,22 +2,21 @@
   "fileId": 2391,
   "content": "",
   "commitInfo": "init",
-  "debugger": "_open",
+  "debugger": "pc-spa",
   "comAry": {
     "test": [
       {
         "title": "常规",
         "comAry": [
-          "./src/toolbar/com.json",
+          "./src/text/com.json",
           "./src/image/com.json",
-          "./src/text/com.json"
+          "./src/toolbar/com.json"
         ]
       },
       {
         "title": "表单",
         "comAry": [
-          "./src/form/com.json",
-          "./src/text/com.json"
+          "./src/form/com.json"
         ]
       },
       {
@@ -36,7 +35,8 @@
           "./src/steps/com.json"
         ]
       },
-      "./src/_service/com.json",
+      "./src/_jscode/com.json",
+      "./src/_connector/com.json",
       "./src/_message/com.json",
       "./src/_link_to/com.json"
     ],
@@ -50,7 +50,8 @@
       "./src/table/com.json",
       "./src/tabs/com.json",
       "./src/text/com.json",
-      "./src/_service/com.json",
+      "./src/_jscode/com.json",
+      "./src/_connector/com.json",
       "./src/_message/com.json"
     ]
   }
