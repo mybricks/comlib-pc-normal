@@ -4,3 +4,4 @@ package-lock.json
 .temp
 .temp-pub
 .vscode
+.DS_Store

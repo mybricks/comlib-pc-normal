@@ -1,0 +1,23 @@
+{
+  "title": "文本排版",
+  "namespace": "mybricks.normal-pc.typography",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "展示文本基本格式",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/text.073091e8b501787b.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "slotProps",
+      "title": "插槽参数",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ]
+}

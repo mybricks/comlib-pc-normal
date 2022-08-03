@@ -1,0 +1,91 @@
+{
+  "title": "排序标题栏",
+  "namespace": "mybricks.normal-pc.sort-bar",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "version": "1.0.0",
+  "description": "排序标题栏",
+  "runtime": "./runtime.tsx",
+  "data": "./data.json",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "inputSettings",
+      "title": "初始化",
+      "schema": {
+        "title": "排序数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "title": "标题",
+              "type": "string"
+            },
+            "fieldName": {
+              "title": "字段名",
+              "type": "string"
+            },
+            "order": {
+              "title": "排序顺序",
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "settingsSubmit",
+      "title": "整体参数输出",
+      "schema": {
+        "title": "排序数据",
+        "type": "object",
+        "properties": {
+          "current": {
+            "title": "当前点击项数据",
+            "type":"object",
+            "properties": {
+              "content": {
+                "title": "标题",
+                "type": "string"
+              },
+              "fieldName": {
+                "title": "字段名",
+                "type": "string"
+              },
+              "order": {
+                "title": "排序顺序",
+                "type": "string"
+              }
+            }
+          },
+          "sorter": {
+            "title": "全量排序数据",
+            "type": "array",
+            "items": {
+              "type":"object",
+              "properties": {
+                "content": {
+                  "title": "标题",
+                  "type": "string"
+                },
+                "fieldName": {
+                  "title": "字段名",
+                  "type": "string"
+                },
+                "order": {
+                  "title": "排序顺序",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 {
   "title": "步骤条",
-  "enable": true,
   "namespace": "mybricks.normal-pc.steps",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "docs": "",
   "slots": [
     {
       "id": "step0",

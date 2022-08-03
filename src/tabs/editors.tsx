@@ -1,5 +1,5 @@
 import { uuid } from '../utils';
-import { Data, OutputIds, SlotIds } from './constants';
+import { Data, InputIds, OutputIds, SlotIds } from './constants';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -19,6 +19,19 @@ export default {
               key: key,
               id: `tab${len}`
             });
+          }
+        }
+      },
+      {
+        title: 'tab隐藏时渲染',
+        description: '需要在未切换到对应tab时，对tab插槽内组件设置数据时开启',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.forceRender;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.forceRender = value;
           }
         }
       },
@@ -147,6 +160,31 @@ export default {
         }
       },
       {
+        title: '动态设置显示tab',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useDynamicTab;
+          },
+          set({ data, input }: EditorResult<Data>, value: boolean) {
+            const hasEvent = input.get(InputIds.SetShowTab);
+            if (value) {
+              !hasEvent &&
+                input.add(InputIds.SetShowTab, '设置显示tab', {
+                  type: 'array',
+                  items: {
+                    title: '显示tab的Id',
+                    type: 'string'
+                  }
+                });
+            } else {
+              hasEvent && input.remove(InputIds.SetShowTab);
+            }
+            data.useDynamicTab = value;
+          }
+        }
+      },
+      {
         title: '隐藏插槽占位',
         type: 'Switch',
         value: {
@@ -268,6 +306,66 @@ export default {
             if (!focusArea) return;
             const { index } = focusArea;
             data.tabList[index].showIcon = value;
+            data.tabList[index].icon = "BellOutlined"
+          }
+        }
+      },
+      {
+        title: "图标自定义",
+        type: "Switch",
+        description: "可选择是否需要自定义图标",
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return data.tabList[index].showIcon;
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>){
+            const { index } = focusArea;
+            return data.tabList[index].isChoose
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: boolean){
+            const { index } = focusArea;
+            data.tabList[index].isChoose = value;
+            if(!data.tabList[index].isChoose){
+              data.tabList[index].icon = "BellOutlined"
+            }
+          }
+        }
+      },
+      {
+        title: "选择图标",
+        type: "icon",
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return data.tabList[index].isChoose; 
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>){
+            const { index } = focusArea;
+            return data.tabList[index].icon;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: string){
+            const { index } = focusArea;
+            data.tabList[index].icon = value;
+          }
+        }
+      },
+      {
+        title: '文字提示',
+        type: 'TextArea',
+        options: {
+          placeholder: 'tab标题的文字提示，不填写则不显示'
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            const { index } = focusArea;
+            return data.tabList[index]?.tooltipText;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: string) {
+            if (!focusArea) return;
+            const { index } = focusArea;
+            data.tabList[index].tooltipText = value;
           }
         }
       },
@@ -334,30 +432,30 @@ export default {
           }
         }
       },
-      // {
-      //   title: '权限控制',
-      //   items: [
-      //     {
-      //       title: '权限Key',
-      //       description: '唯一标识的权限key',
-      //       type: 'text',
-      //       value: {
-      //         get({ data, focusArea }) {
-      //           if (!focusArea) return;
-      //           const { index } = focusArea;
-      //           const item = data.tabList[index];
-      //           return item.permissionKey;
-      //         },
-      //         set({ data, focusArea }, value: string) {
-      //           if (!focusArea) return;
-      //           const { index } = focusArea;
-      //           const item = data.tabList[index];
-      //           item.permissionKey = value;
-      //         }
-      //       }
-      //     }
-      //   ]
-      // }
+      {
+        title: '权限控制',
+        items: [
+          {
+            title: '权限Key',
+            description: '唯一标识的权限key',
+            type: 'text',
+            value: {
+              get({ data, focusArea }) {
+                if (!focusArea) return;
+                const { index } = focusArea;
+                const item = data.tabList[index];
+                return item.permissionKey;
+              },
+              set({ data, focusArea }, value: string) {
+                if (!focusArea) return;
+                const { index } = focusArea;
+                const item = data.tabList[index];
+                item.permissionKey = value;
+              }
+            }
+          }
+        ]
+      }
     ];
 
     return { title: '标签页' };

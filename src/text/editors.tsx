@@ -13,6 +13,9 @@ export default {
       color: "#000000",
     };
   },
+  '@resize': {
+    options: ['width'],
+  },
   ":root": [
     {
       title: "文本样式",
@@ -85,11 +88,25 @@ export default {
         },
         set({ data }: EditorResult<Data>, value: boolean) {
           data.isEllipsis = value;
-          if (value === true) {
+          if (value === true && !data.ellipsis) {
             data.ellipsis = { rows: 3 };
-          } else {
-            data.ellipsis = {};
           }
+        },
+      },
+    },
+    {
+      title: "显示行数",
+      type: "InputNumber",
+      options: [{ min: 1, width: '100%' }],
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.isEllipsis;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return [data.ellipsis.rows];
+        },
+        set({ data }: EditorResult<Data>, value: number[]) {
+          data.ellipsis = { rows: value[0] };
         },
       },
     },

@@ -6,48 +6,48 @@ const originWindow = window
 
 const constructableMap = new WeakMap<any | FunctionConstructor, boolean>()
 function isConstructable(fn: () => any | FunctionConstructor) {
-   if (constructableMap.has(fn)) {
-     return constructableMap.get(fn)
-   }
- 
-   const constructableFunctionRegex = /^function\b\s[A-Z].*/;
-   const classRegex = /^class\b/;
- 
-   const constructable =
-     (fn.prototype && fn.prototype.constructor === fn && Object.getOwnPropertyNames(fn.prototype).length > 1) ||
-     constructableFunctionRegex.test(fn.toString()) ||
-     classRegex.test(fn.toString());
-   constructableMap.set(fn, constructable)
-   return constructable
- }
+    if (constructableMap.has(fn)) {
+        return constructableMap.get(fn)
+    }
 
-const naughtySafari = typeof document.all === 'function' && typeof document.all === 'undefined';
+    const constructableFunctionRegex = /^function\b\s[A-Z].*/;
+    const classRegex = /^class\b/;
+
+    const constructable =
+        (fn.prototype && fn.prototype.constructor === fn && Object.getOwnPropertyNames(fn.prototype).length > 1) ||
+        constructableFunctionRegex.test(fn.toString()) ||
+        classRegex.test(fn.toString());
+    constructableMap.set(fn, constructable)
+    return constructable
+}
+
+const naughtySafari = !!document && typeof document.all === 'function' && typeof document.all === 'undefined';
 const isCallable = naughtySafari ? (fn: any) => typeof fn === 'function' && typeof fn !== 'undefined' : (fn: any) => typeof fn === 'function';
 
 const boundedMap = new WeakMap<CallableFunction, boolean>();
 function isBoundedFunction(fn: CallableFunction) {
-  if (boundedMap.has(fn)) {
-    return boundedMap.get(fn);
-  }
-  const bounded = fn.name.indexOf('bound ') === 0 && !fn.hasOwnProperty('prototype')
-  boundedMap.set(fn, bounded);
-  return bounded;
+    if (boundedMap.has(fn)) {
+        return boundedMap.get(fn);
+    }
+    const bounded = fn.name.indexOf('bound ') === 0 && !fn.hasOwnProperty('prototype')
+    boundedMap.set(fn, bounded);
+    return bounded;
 }
 
 const functionBoundedValueMap = new WeakMap<CallableFunction, CallableFunction>()
 function getTargetValue(target: any, value: any): any {
     const cachedBoundFunction = functionBoundedValueMap.get(value);
     if (cachedBoundFunction) {
-      return cachedBoundFunction;
+        return cachedBoundFunction;
     }
-    
+
     const boundValue = Function.prototype.bind.call(value, target);
     for (const key in value) {
         boundValue[key] = value[key];
     }
     if (value.hasOwnProperty('prototype') && !boundValue.hasOwnProperty('prototype'))
         boundValue.prototype = value.prototype;
-  
+
     functionBoundedValueMap.set(value, boundValue);
     return boundValue;
 }
@@ -67,7 +67,7 @@ const unscopables = {
     Float32Array: true,
 }
 
-function getModuleScript(scriptText: string){
+function getModuleScript(scriptText: string) {
     return `(
                 function(window, params, cb) {
                     with(window) {
@@ -93,19 +93,19 @@ function getScript(scriptText: string) {
  * 创建fakeWindow
  * @returns fakeWindow
  */
-function createFakeWindow () {
+function createFakeWindow() {
     const fakeWindow = {};
     Object.getOwnPropertyNames(originWindow).forEach((key) => {
         const descriptor = Object.getOwnPropertyDescriptor(originWindow, key)
         if (descriptor && !descriptor.configurable) {
-           const hasGetter = Object.prototype.hasOwnProperty.call(descriptor, 'get')
-           if (key === 'top' || key === 'parent' || key === 'self' || key === 'window') {
-               descriptor.configurable = true;
-               if (!hasGetter) {
-                   descriptor.writable = true;
-               }
-           }
-           Object.defineProperty(fakeWindow, key, Object.freeze(descriptor));
+            const hasGetter = Object.prototype.hasOwnProperty.call(descriptor, 'get')
+            if (key === 'top' || key === 'parent' || key === 'self' || key === 'window') {
+                descriptor.configurable = true;
+                if (!hasGetter) {
+                    descriptor.writable = true;
+                }
+            }
+            Object.defineProperty(fakeWindow, key, Object.freeze(descriptor));
         }
     })
     return fakeWindow;
@@ -120,11 +120,11 @@ function copyFromWindow(p: string, fakeWindow: FakeWindow) {
     const descriptor = Object.getOwnPropertyDescriptor(window, p);
     if (descriptor && descriptor.writable) {
         Object.defineProperty(fakeWindow, p, {
-        configurable: descriptor.configurable,
-        enumerable: descriptor.enumerable,
-        writable: descriptor.writable,
-        value: descriptor.value
-      });
+            configurable: descriptor.configurable,
+            enumerable: descriptor.enumerable,
+            writable: descriptor.writable,
+            value: descriptor.value
+        });
     }
 }
 
@@ -135,7 +135,7 @@ class Sandbox {
     timeoutList = [];
     intervalList = [];
     options = {};
-      // @ts-ignore
+    // @ts-ignore
     constructor(options = {}) {
         this.options = options || {};
         this.proxy = new Proxy(window, {
@@ -144,11 +144,11 @@ class Sandbox {
                     try {
                         if (!this.fakeWindow.hasOwnProperty(key) && target.hasOwnProperty(key)) {
                             // @ts-ignore
-                            copyFromWindow(key, this.fakeWindow); 
+                            copyFromWindow(key, this.fakeWindow);
                         }
-                            // @ts-ignore
+                        // @ts-ignore
                         this.fakeWindow[key] = value; // 赋值
-                    } catch(error) {
+                    } catch (error) {
                         console.error('set-key-error', key, error)
                         throw error
                     }
@@ -172,14 +172,14 @@ class Sandbox {
                     return target.eval;
                 }
 
-                if(key === 'location') {
+                if (key === 'location') {
                     return target.location;
                 }
-            
+
                 try {
                     // @ts-ignore
-                    var value = key in this.fakeWindow ? this.fakeWindow[key]: target[key] ;
-                    
+                    var value = key in this.fakeWindow ? this.fakeWindow[key] : target[key];
+
                     // 仅绑定 isCallable && !isBoundedFunction && !isConstructable 的函数对象，如 window.console、window.atob 这类，
                     // 不然微应用中调用时会抛出 Illegal invocation 异常
                     if (isCallable(value) && !isBoundedFunction(value) && !isConstructable(value)) {
@@ -189,14 +189,14 @@ class Sandbox {
 
                     return value;
                 } catch (error) {
-                    console.error('get-key-error',key, error)
+                    console.error('get-key-error', key, error)
                     throw error
-                } 
+                }
             },
             has: (target, key) => {
-                 // @ts-ignore
-                if(this.options.module) {   //参数允许逃逸到函数局部变量
-                    if(key === 'params' || key === 'cb') {
+                // @ts-ignore
+                if (this.options.module) {   //参数允许逃逸到函数局部变量
+                    if (key === 'params' || key === 'cb') {
                         return false;
                     }
                 }
@@ -207,7 +207,7 @@ class Sandbox {
         this.proxy.setTimeout = (handler, timeout, ...args) => {
             if (!this.hasDisposed) {
                 const timeoutId = rawWindowTimeout(handler, timeout, ...args)
-                 // @ts-ignore
+                // @ts-ignore
                 this.timeoutList.push(timeoutId)
                 return timeoutId;
             } else {
@@ -216,7 +216,7 @@ class Sandbox {
         }
 
         this.proxy.clearTimeout = (timeoutId) => {
-             // @ts-ignore
+            // @ts-ignore
             const timeoutIndex = this.timeoutList.indexOf(timeoutId)
             if (timeoutIndex !== -1) {
                 this.timeoutList.splice(timeoutIndex, 1)
@@ -227,16 +227,16 @@ class Sandbox {
         this.proxy.setInterval = (handler, timeout, ...args) => {
             if (!this.hasDisposed) {
                 const intervalId = rawWindowInterval(handler, timeout, ...args);
-                  // @ts-ignore
+                // @ts-ignore
                 this.intervalList.push(intervalId)
                 return intervalId;
             } else {
                 return 0
             }
         }
-        
+
         this.proxy.clearInterval = (intervalId) => {
-              // @ts-ignore
+            // @ts-ignore
             const intervalIndex = this.intervalList.indexOf(intervalId)
             if (intervalIndex !== -1) {
                 this.intervalList.splice(intervalIndex, 1)
@@ -248,16 +248,16 @@ class Sandbox {
         originWindow.proxy = this.proxy;
     }
 
-      // @ts-ignore
+    // @ts-ignore
     compile(scriptText) {
         if (this.hasDisposed) {
             throw new Error('sandbox has been destroyed')
         }
 
-         // @ts-ignore
+        // @ts-ignore
         var isModule = this.options.module;
         var scriptTextWithSandbox;
-        if(isModule) {
+        if (isModule) {
             scriptTextWithSandbox = getModuleScript(scriptText);
         } else {
             scriptTextWithSandbox = getScript(scriptText);
@@ -266,17 +266,17 @@ class Sandbox {
         const fn = originWindow.eval(scriptTextWithSandbox);
 
         return {
-             // @ts-ignore
-            run: function(model, cb) {
+            // @ts-ignore
+            run: function (model, cb) {
                 try {
-                    if(isModule) {
+                    if (isModule) {
                         // @ts-ignore
-                       return fn(window.proxy, model, cb);
-                   } else {
+                        return fn(window.proxy, model, cb);
+                    } else {
                         // @ts-ignore
-                       return fn(window.proxy);
-                   } 
-                } catch(err) {
+                        return fn(window.proxy);
+                    }
+                } catch (err) {
                     console.error("js sandbox error occur:", err);
                     throw err;
                 }
@@ -285,9 +285,9 @@ class Sandbox {
     }
 
     //沙箱销毁功能
-    dispose () {
+    dispose() {
         this.timeoutList.forEach((timeoutId) => {
-		    window.clearTimeout(timeoutId);
+            window.clearTimeout(timeoutId);
         });
         this.timeoutList = [];
 

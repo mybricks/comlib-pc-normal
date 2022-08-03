@@ -1,6 +1,5 @@
 {
   "title": "工具条",
-  "visibility": true,
   "namespace": "mybricks.normal-pc.toolbar",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,6 +9,8 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "docs": "",
   "inputs": [
     {
       "id": "slotProps",

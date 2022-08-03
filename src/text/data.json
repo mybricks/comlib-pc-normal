@@ -1,4 +1,9 @@
 {
   "content": "文字",
-  "align": "left"
+  "outputContent": "",
+  "align": "left",
+  "ellipsis": {
+    "rows": 3
+  },
+  "click": false
 }

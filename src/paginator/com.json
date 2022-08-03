@@ -1,0 +1,71 @@
+{
+  "title": "分页器",
+  "namespace": "mybricks.normal-pc.paginator",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "分页器",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "total",
+      "title": "设置数据总数",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "pageNum",
+      "title": "设置当前页码",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "currentPage",
+      "title": "获取分页数据",
+      "rels": [
+        "output"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "pageChange",
+      "title": "点击分页",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "output",
+      "title": "数据输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  ]
+}

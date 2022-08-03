@@ -1,0 +1,190 @@
+{
+  "title": "树组件",
+  "namespace": "mybricks.normal-pc.tree",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "树状图",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "treeData",
+      "title": "输入数据",
+      "schema": {
+        "type": "array",
+        "$id": "treeArray",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "children": {
+              "$ref": "treeArray"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "checkedValues",
+      "title": "设置选中项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "nodeData",
+      "title": "更新节点数据",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "children": {
+            "$ref": "treeArray"
+          }
+        }
+      }
+    },
+    {
+      "id": "searchValue",
+      "title": "搜索",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "disableCheckbox",
+      "title": "禁用勾选",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enableCheckbox",
+      "title": "启用勾选",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "submit",
+      "title": "获取勾选项数据",
+      "rels": [
+        "submit"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "outSelectedValues",
+      "title": "获取选中项数据",
+      "rels": [
+        "outSelectedValues"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "addTips",
+      "title": "设置添加提示文案",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "submit",
+      "title": "勾选项数据输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "outSelectedValues",
+      "title": "选中项数据输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "click",
+      "title": "点击事件",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "addNodeDone",
+      "title": "添加完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "node": {
+            "type": "object",
+            "title": "新增节点数据",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              }
+            }
+          },
+          "parent": {
+            "type": "object",
+            "title": "新增节点的父节点数据",
+            "properties": {}
+          }
+        }
+      }
+    },
+    {
+      "id": "modify",
+      "title": "修改",
+      "schema": {
+        "title": "节点数据",
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "delete",
+      "title": "删除",
+      "schema": {
+        "title": "节点数据",
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ]
+}

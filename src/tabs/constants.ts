@@ -13,6 +13,12 @@ export interface TabList {
   outputContent?: string;
   permissionKey?: string;
   id?: string;
+
+  tooltipText?: string;
+  //设置tabs中是否需要icon
+  isChoose?: boolean;
+  // 设置tabs中icon
+  icon?: string;
 }
 /**
  * 数据源
@@ -36,6 +42,10 @@ export interface Data {
 
   useLeftExtra?: boolean;
   useRigthExtra?: boolean;
+  // 是否动态设置显示tab
+  useDynamicTab?: boolean;
+  // 隐藏时渲染
+  forceRender?: boolean;
 }
 
 export enum SlotIds {
@@ -47,7 +57,8 @@ export enum InputIds {
   SetActiveTab = 'active',
   PreviousTab = 'previous',
   NextTab = 'next',
-  OutActiveTab = 'outActiveTab'
+  OutActiveTab = 'outActiveTab',
+  SetShowTab = 'setShowTab'
 }
 
 export enum OutputIds {

@@ -1,6 +1,5 @@
 {
   "title": "Tabs",
-  "enable": true,
   "namespace": "mybricks.normal-pc.tabs",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,7 +8,9 @@
   "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/tab.2b7188c7f5378c24.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
+  "upgrade": "./upgrade.ts",
   "editors": "./editors.tsx",
+  "docs": "",
   "slots": [
     {
       "id": "tab0",
@@ -41,7 +42,9 @@
     {
       "id": "outActiveTab",
       "title": "获取激活tab项",
-      "rels": ["outActiveTab"],
+      "rels": [
+        "outActiveTab"
+      ],
       "schema": {
         "type": "any"
       }

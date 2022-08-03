@@ -1,0 +1,21 @@
+{
+  "title": "文字提示",
+  "namespace": "mybricks.normal-pc.tooltip",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "文本提示组件",
+  "docs": "这里是组件使用说明",
+  "icon": "./icon.png",
+  "runtime": "./index.tsx",
+  "data": "./data.json",
+  "editors": "./editors.tsx",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
+    }
+  ]
+}

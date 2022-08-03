@@ -1,6 +1,19 @@
 import Sandbox from './sandbox';
+import utils from './utils';
 
-export function runJs(scriptText: string, model?: [], callback?: () => {}) {
+interface Props {
+    env?: any;
+    callback?: () => any;
+}
+export function runJs(scriptText: string | any, model?: [], props?: Props) { 
+    const { env, callback = () => {} } = props || {};
+    const isRuntime = env?.runtime && !env?.runtime?.debug;
+    if (typeof scriptText === 'object') {
+        scriptText = isRuntime
+          ? scriptText?.transformCode || scriptText?.code
+          : scriptText?.code;
+    }
+
     let fn = null;
     if(model && model.length) {
         const sandBox = new Sandbox({module: true});
@@ -17,3 +30,5 @@ export function runJs(scriptText: string, model?: [], callback?: () => {}) {
 
     return fn.run(model, callback);
 }
+
+export { utils }

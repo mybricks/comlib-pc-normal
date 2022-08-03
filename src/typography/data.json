@@ -1,0 +1,14 @@
+{
+  "align": "horizontal-start",
+  "margin": 0,
+  "items": [],
+  "flexStyle": {
+    "justifyContent": "normal",
+    "alignItems": "normal"
+  },
+  "style": {
+    "textAlign": "left"
+  },
+  "flexStyleHorizontalKey": "horizontallyauto",
+  "flexStyleVerticalKey": "verticallyauto"
+}

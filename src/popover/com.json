@@ -1,0 +1,19 @@
+{
+  "title": "气泡",
+  "namespace": "mybricks.normal-pc.popover",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "气泡",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
+    }
+  ],
+  "outputs": []
+}

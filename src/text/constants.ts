@@ -1,6 +1,6 @@
-type TextType = 'secondary' | 'danger' | 'warning' | undefined;
-
 export type AlignType = "left" | "center" | "right";
+
+type TextType = 'secondary' | 'danger' | 'warning' | undefined;
 
 export interface Data {
   content: string;

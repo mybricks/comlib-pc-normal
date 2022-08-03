@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import classnames from "classnames";
-import { Tabs } from "antd";
-import { BellOutlined } from "@ant-design/icons";
-import { Data, InputIds, OutputIds, SlotIds } from "./constants";
-import css from "./tabs.less";
+import React, { useCallback, useEffect, useState, ReactNode } from 'react';
+import classnames from 'classnames';
+import { Tabs, Tooltip } from 'antd';
+import { Data, InputIds, OutputIds, SlotIds } from './constants';
+import css from './tabs.less';
+import * as Icons from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -12,11 +12,48 @@ export default function ({
   data,
   slots,
   inputs,
-  outputs,
+  outputs
 }: RuntimeParams<Data>) {
+  const [showTabs, setShowTabs] = useState<string[]>(
+    (data.tabList || []).map((item) => item.id)
+  );
+
+  //选择图标样式
+  const chooseIcon = ({ icon }: { icon: ReactNode }) => {
+    const Icon = Icons && Icons[icon as string]?.render();
+    return <>{Icon}</>;
+  };
+
+  const setDefaultActiveKey = () => {
+    if (data.tabList?.length) {
+      const tempTabs = data.tabList.filter(
+        (item) =>
+          (!item.permissionKey ||
+            env.hasPermission({ key: item.permissionKey })) &&
+          showTabs.includes(item.id)
+      );
+      if (
+        tempTabs.length &&
+        !tempTabs.find((item) => item.key === data.defaultActiveKey)
+      ) {
+        data.defaultActiveKey = tempTabs[0].key;
+      }
+      if (!data.defaultActiveKey) {
+        data.defaultActiveKey = data.tabList[0].key;
+      }
+    }
+  };
+  useEffect(() => {
+    setDefaultActiveKey();
+  }, [showTabs]);
   useEffect(() => {
     if (data.tabList.length > 0 && !data.active) {
-      const index = 0
+      const index = data.tabList.findIndex(
+        (item) =>
+          (!item.permissionKey ||
+            env.hasPermission({ key: item.permissionKey })) &&
+          showTabs.includes(item.id)
+      );
       if (data.tabList[index]) {
         data.defaultActiveKey = data.tabList[index].key;
       } else {
@@ -30,7 +67,10 @@ export default function ({
           const activeTab = data.tabList.find((item) => {
             return item.id === id;
           });
-          if (activeTab) {
+          if (
+            activeTab &&
+            env.hasPermission({ key: activeTab.permissionKey })
+          ) {
             data.defaultActiveKey = activeTab.key;
             data.active = true;
           } else {
@@ -59,11 +99,11 @@ export default function ({
           }
         });
       inputs[InputIds.OutActiveTab] &&
-        inputs[InputIds.OutActiveTab](() => {
+        inputs[InputIds.OutActiveTab]((val, relOutputs) => {
           const current = data.tabList.filter(
             (item) => item.key === data.defaultActiveKey
           )[0];
-          outputs[OutputIds.OutActiveTab](
+          relOutputs[OutputIds.OutActiveTab](
             current.outputContent || current.name
           );
         });
@@ -71,14 +111,24 @@ export default function ({
         item.dynamic &&
           inputs[item.key] &&
           inputs[item.key]((ds) => {
-            if (typeof ds === "string" || typeof ds === "number") {
+            if (typeof ds === 'string' || typeof ds === 'number') {
               item.num = ds;
             } else {
               item.num = undefined;
-              console.error("只支持类型为string或者number的作为tab的name");
+              console.error('只支持类型为string或者number的作为tab的name');
             }
           });
       });
+
+      // 动态设置显示tab
+      if (data.useDynamicTab && inputs[InputIds.SetShowTab]) {
+        inputs[InputIds.SetShowTab]((ds) => {
+          if (Array.isArray(ds)) {
+            const tempDs = ds.filter((str) => typeof str === 'string');
+            setShowTabs(tempDs);
+          }
+        });
+      }
     }
   }, []);
 
@@ -113,7 +163,7 @@ export default function ({
         }
         data.tabList = newPanes;
         data.defaultActiveKey = newActiveKey;
-      },
+      }
     };
     actionMap[action](targetKey);
   };
@@ -122,18 +172,28 @@ export default function ({
     return (
       <>
         {data.tabList.map((item) => {
+          const tabName = env.i18n(item.name);
+          if (
+            env.runtime &&
+            ((item.permissionKey &&
+              !env.hasPermission({ key: item.permissionKey })) ||
+              !showTabs.includes(item.id))
+          ) {
+            return null;
+          }
           return (
             <TabPane
               tab={
-                <span>
-                  {item.showIcon ? <BellOutlined /> : null}{" "}
-                  {item.num === void 0
-                    ? item.name
-                    : `${item.name} (${item.num})`}
-                </span>
+                <Tooltip title={env.i18n(item.tooltipText)}>
+                  <span>
+                    {item.showIcon ? chooseIcon({ icon: item.icon }) : null}
+                    {item.num === void 0 ? tabName : `${tabName} (${item.num})`}
+                  </span>
+                </Tooltip>
               }
               key={item.key}
               closable={!!item.closable}
+              forceRender={data.forceRender}
             >
               {data.hideSlots ? null : (
                 <div
@@ -165,7 +225,7 @@ export default function ({
             : undefined,
           right: data.useRigthExtra
             ? slots[SlotIds.RigthExtra].render()
-            : undefined,
+            : undefined
         }}
       >
         {renderItems()}

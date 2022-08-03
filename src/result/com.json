@@ -1,0 +1,41 @@
+{
+  "title": "结果页",
+  "namespace": "mybricks.normal-pc.result",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "结果页",
+  "icon": "./result.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "slots": [
+    {
+      "id": "extra",
+      "title": "操作区"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "subTitle",
+      "title": "修改副标题",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "status",
+      "title": "修改状态",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

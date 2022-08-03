@@ -1,0 +1,20 @@
+{
+  "image": {
+    "src": "https://js-ec.static.yximgs.com/udata/pkg/ks-merchant/cps-hybrid/empty_position.9b16b85c5a152402.png",
+    "cursorStyle": false
+  },
+  "dataSource": 1,
+  "configMode": 1,
+  "config": {
+    "width": 200,
+    "height": 200,
+    "preview": false,
+    "margin": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "customBorderStyle": {}
+  }
+}
