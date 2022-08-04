@@ -21,8 +21,8 @@ export default function ({data, _inputs, _outputs}) {
     )
   } else if (data.type === 'formItem') {
     jsx = (
-      <Form.Item label={data.title} name={data.name} valuePropName="checked">
-        <Input type={"text"}/>
+      <Form.Item label={data.title} name={data.name}>
+        <Input type={"text"} />
       </Form.Item>
     )
   }
