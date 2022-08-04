@@ -16,7 +16,9 @@
       {
         "title": "表单",
         "comAry": [
-          "./src/form/com.json"
+          "./src/form/com.json",
+          "./src/form_container/com.json",
+          "./src/form_text/com.json"
         ]
       },
       {

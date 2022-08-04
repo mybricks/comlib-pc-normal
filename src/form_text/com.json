@@ -1,0 +1,32 @@
+{
+  "title": "文本框",
+  "namespace": "mybricks.normal-pc.form-text",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "文本框",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/form.085afdee65645d49.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "_inputs": [
+    {
+      "id": "getValue",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    }
+  ],
+  "_outputs": [
+    {
+      "id": "returnValue",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "schema": "mybricks.normal-pc.form-container/form-item"
+}
