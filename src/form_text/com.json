@@ -28,5 +28,14 @@
       }
     }
   ],
+  "outputs": [
+    {
+      "id": "valueChanged",
+      "title": "值发生改变",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
   "schema": "mybricks.normal-pc.form-container/form-item"
 }

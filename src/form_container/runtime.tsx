@@ -18,7 +18,7 @@ export default function ({data, inputs, outputs, slots}) {
         })
       })
     })).then(values => {
-      outputs['submit'](values)////TODO Test
+      outputs['submit'](values)
     })
 
   }, [])

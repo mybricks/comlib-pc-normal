@@ -1,13 +1,17 @@
 import {Form, Input} from 'antd'
-import {useEffect, useLayoutEffect, useMemo} from "react";
+import {useCallback, useEffect, useLayoutEffect, useMemo} from "react";
 
 import css from './runtime.less'
 
-export default function ({data, _inputs, _outputs}) {
+export default function ({data, _inputs, _outputs, outputs}) {
   useLayoutEffect(() => {
     _inputs['getValue'](val => {
       _outputs['returnValue'](Math.random())
     })
+  }, [])
+
+  const changeValue = useCallback((e) => {
+    outputs['valueChanged'](e.target.value)
   }, [])
 
   let jsx
@@ -17,12 +21,12 @@ export default function ({data, _inputs, _outputs}) {
       props.addonBefore = data.title
     }
     jsx = (
-      <Input {...props} type={"text"}/>
+      <Input {...props} type={"text"} onChange={changeValue}/>
     )
   } else if (data.type === 'formItem') {
     jsx = (
       <Form.Item label={data.title} name={data.name}>
-        <Input type={"text"} />
+        <Input type={"text"} onChange={changeValue}/>
       </Form.Item>
     )
   }

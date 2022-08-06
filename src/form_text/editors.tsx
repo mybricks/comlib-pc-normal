@@ -1,9 +1,9 @@
 export default {
-  '@parentUpdated'({id,data,parent}, {schema}) {
+  '@parentUpdated'({id, data, parent}, {schema}) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
       data.type = 'formItem'
 
-      parent['@_setFormItem']({id,name:data.name,schema:{type:'string'}})//use parents API
+      parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
     } else {
       data.type = 'normal'
     }
@@ -65,14 +65,26 @@ export default {
             get({data}) {
               return data.name
             },
-            set({id,data,parent}, value: boolean) {
+            set({id, data, parent}, value: boolean) {
               data.name = value
-              if(data.type==='formItem'){
-                parent['@_setFormItem']({id,name:value,schema:{type:'string'}})
+              if (data.type === 'formItem') {
+                parent['@_setFormItem']({id, name: value, schema: {type: 'string'}})
               }
             },
           },
-        }
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '值发生改变',
+              type: '_event',
+              options: {
+                outputId: 'valueChanged'
+              }
+            }
+          ]
+        },
       ]
     }
   }

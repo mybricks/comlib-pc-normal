@@ -15,7 +15,7 @@
       "id": "content",
       "title": "表单项",
       "schema": "mybricks.normal-pc.form-container/form-item",
-      "scoped": true
+      "type": "scope"
     }
   ],
   "inputs": [
@@ -65,11 +65,5 @@
         "type": "any"
       }
     }
-  ],
-  "dependencies": [
-    "moment"
-  ],
-  "externals": {
-    "moment": "moment"
-  }
+  ]
 }
