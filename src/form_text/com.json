@@ -9,18 +9,16 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "_inputs": [
+  "inputs": [
     {
-      "id": "getSchema",
+      "id": "validate",
       "schema": {
         "type": "any"
       },
       "rels": [
-        "returnSchema"
+        "returnValidate"
       ]
-    }
-  ],
-  "inputs": [
+    },
     {
       "id": "getValue",
       "schema": {
@@ -31,20 +29,18 @@
       ]
     }
   ],
-  "_outputs": [
-    {
-      "id": "returnSchema",
-      "schema": {
-        "type": "any"
-      }
-    }
-  ],
   "outputs": [
     {
       "id": "valueChanged",
       "title": "值发生改变",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

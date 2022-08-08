@@ -1,12 +1,16 @@
 import {Form, Input} from 'antd'
-import {useCallback, useEffect, useLayoutEffect, useMemo} from "react";
+import {useCallback, useEffect, useLayoutEffect, useMemo, useRef} from "react";
 
 import css from './runtime.less'
 
 export default function ({data, _inputs, inputs, _outputs, outputs}) {
   useLayoutEffect(() => {
-    inputs['getValue'](val => {
-      outputs['returnValue'](Math.random())
+    inputs['validate']((val, outputRels) => {
+      outputRels['returnValidate'](false)///TODO
+    })
+
+    inputs['getValue']((val, outputRels) => {
+      outputRels['returnValue'](Math.random())///TODO
     })
   }, [])
 

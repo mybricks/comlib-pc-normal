@@ -3,30 +3,76 @@ import css from './runtime.less'
 import {Button, Form} from 'antd'
 import {useCallback, useMemo} from "react";
 
-export default function ({data, inputs, outputs, slots}) {
+export default function ({env, data, inputs, outputs, slots}) {
   const [form] = Form.useForm()
-  const getValues = []
-  const submit = useCallback(() => {
-    form.validateFields().then(values => { // 触发表单校验
-      form.submit()
-    })
 
-    Promise.all(getValues.map(fn => {
-      return new Promise((resolve, reject) => {
-        fn().returnValue(val => {
-          resolve(val)
+  const childrenInputs = useMemo<{ [id: string]: {} }>(() => {
+    return {}
+  }, [env.edit])
+
+
+  const validate = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      Promise.all(data.items.map(item => {
+        const id = item.id
+        const input = childrenInputs[id]
+
+        return new Promise((resolve, reject) => {
+          input['validate']().returnValidate(isOk => {//调用所有表单项的校验
+            resolve(isOk)
+          })
         })
-      })
-    })).then(values => {
-      outputs['submit'](values)
-    })
+      })).then(values => {
+        let rtn = false
+        values.reduce((pre, cur, idx, array) => {
+          rtn &= cur
+        })
 
+        resolve(rtn)
+      }).catch(e => reject(e))
+    })
+  }, [])
+
+  const getValue = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      Promise.all(data.items.map(item => {
+        const id = item.id
+        const input = childrenInputs[id]
+
+        return new Promise((resolve, reject) => {
+          input['getValue']().returnValue(val => {//调用所有表单项的 getValue/returnValue
+            resolve({name: item.name, value: val})
+          })
+        })
+      })).then(values => {
+        const rtn = {}
+
+        values.forEach(item => {
+          rtn[item.name] = item.value
+        })
+
+        resolve(rtn)
+      }).catch(e => reject(e))
+    })
+  }, [])
+
+  const submit = useCallback(() => {
+    // form.validateFields().then(values => { // 触发表单校验 TODO 重构
+    //   form.submit()
+    // })
+    validate().then(isOk => {
+      getValue().then(values => {
+        debugger
+        outputs['submit'](values)
+      })
+    })
   }, [])
 
   const content = useMemo(() => {
     return slots['content'].render({
-      wrap(comAray: { id, jsx, def }[]) {
+      wrap(comAray: { id, jsx, def, inputs }[]) {
         const items = data.items
+
         if (comAray) {
           const jsx = comAray.map((com, idx) => {
             let item = items.find(item => item.id === com.id)
@@ -41,6 +87,9 @@ export default function ({data, inputs, outputs, slots}) {
 
               data.items.push(item)
             }
+
+            childrenInputs[com.id] = com.inputs
+
             return (
               <Form.Item key={com.id}
                          label={item.label}
@@ -52,16 +101,6 @@ export default function ({data, inputs, outputs, slots}) {
           })
 
           return jsx
-        }
-      },
-      _inputs: {
-        getValue(fn) {
-          getValues.push(fn)
-        }
-      },
-      _outputs: {
-        getValue(ref) {
-          debugger
         }
       }
     })
