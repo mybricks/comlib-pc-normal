@@ -10,7 +10,6 @@ export default function ({env, data, inputs, outputs, slots}) {
     return {}
   }, [env.edit])
 
-
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
       Promise.all(data.items.map(item => {

@@ -1,6 +1,4 @@
 {
-  "type": "normal",
-  "title": "文本框",
-  "name": "text0",
-  "addonBefore": false
+  "addonBefore": false,
+  "value": ""
 }

@@ -11,7 +11,15 @@
   "editors": "./editors.tsx",
   "inputs": [
     {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "validate",
+      "title": "校验",
       "schema": {
         "type": "any"
       },
@@ -21,6 +29,7 @@
     },
     {
       "id": "getValue",
+      "title": "获取值",
       "schema": {
         "type": "any"
       },
