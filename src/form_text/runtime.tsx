@@ -3,10 +3,10 @@ import {useCallback, useEffect, useLayoutEffect, useMemo} from "react";
 
 import css from './runtime.less'
 
-export default function ({data, _inputs, _outputs, outputs}) {
+export default function ({data, _inputs, inputs, _outputs, outputs}) {
   useLayoutEffect(() => {
-    _inputs['getValue'](val => {
-      _outputs['returnValue'](Math.random())
+    inputs['getValue'](val => {
+      outputs['returnValue'](Math.random())
     })
   }, [])
 
@@ -14,22 +14,13 @@ export default function ({data, _inputs, _outputs, outputs}) {
     outputs['valueChanged'](e.target.value)
   }, [])
 
-  let jsx
-  if (data.type === 'normal') {
-    const props = {} as any
-    if (data.addonBefore) {
-      props.addonBefore = data.title
-    }
-    jsx = (
-      <Input {...props} type={"text"} onChange={changeValue}/>
-    )
-  } else if (data.type === 'formItem') {
-    jsx = (
-      <Form.Item label={data.title} name={data.name}>
-        <Input type={"text"} onChange={changeValue}/>
-      </Form.Item>
-    )
+  const props = {} as any
+  if (data.addonBefore) {
+    props.addonBefore = data.title
   }
+  let jsx = (
+    <Input {...props} type={"text"} onChange={changeValue}/>
+  )
 
   return (
     <div className={css.fiText}>

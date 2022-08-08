@@ -4,8 +4,8 @@ import {FormLayout} from "antd/es/form/Form";
 function refreshSchema({data, inputs, outputs}) {
   const properties = {}
   data.items.forEach(item => {
-    const {id, name, schema} = item
-    properties[name] = schema
+    const {id, label, schema} = item
+    properties[label] = schema
   })
 
   const schema = {
@@ -22,17 +22,16 @@ export default {
 
     refreshSchema({data, inputs, outputs})
   },
-  '@_setFormItem'({data, inputs, outputs, children, logs}, {id, name, schema}) {//As schema
-    const item = data.items.find(item => item.id === id)
-    if (item) {
-      item.name = name
-      item.schema = schema
-    } else {
-      data.items.push({id, name, schema})
-    }
-
-    refreshSchema({data, inputs, outputs})
-  },
+  // '@_setFormItem'({data, inputs, outputs, children, logs}, {id, schema}) {//As schema
+  //   const item = data.items.find(item => item.id === id)
+  //   if (item) {
+  //     item.schema = schema
+  //   } else {
+  //     data.items.push({id, schema})
+  //   }
+  //
+  //   refreshSchema({data, inputs, outputs})
+  // },
   ':root': ({data}: EditorResult<Data>, ...editList) => {
     editList[0].title = '常规';
     editList[0].items = [
@@ -151,5 +150,37 @@ export default {
         }
       }
     ]
-  }
+  },
+  '[data-formitem]': [
+    {
+      title: '标题',
+      type: 'text',
+      value: {
+        get({data, focusArea}) {
+          const comId = focusArea.dataset['formitem']
+          return data.items.find(item => item.id === comId).label
+        },
+        set({data, focusArea}, val) {
+          const comId = focusArea.dataset['formitem']
+          const item = data.items.find(item => item.id === comId)
+          item.label = val
+        }
+      }
+    },
+    {
+      title: '字段名',
+      type: 'text',
+      value: {
+        get({data, focusArea}) {
+          const comId = focusArea.dataset['formitem']
+          return data.items.find(item => item.id === comId).name
+        },
+        set({data, focusArea}, val) {
+          const comId = focusArea.dataset['formitem']
+          const item = data.items.find(item => item.id === comId)
+          item.name = val
+        }
+      }
+    }
+  ]
 }

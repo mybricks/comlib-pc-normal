@@ -1,6 +1,6 @@
 import css from './runtime.less'
 
-import {Form, Button, Input} from 'antd'
+import {Button, Form} from 'antd'
 import {useCallback, useMemo} from "react";
 
 export default function ({data, inputs, outputs, slots}) {
@@ -25,6 +25,35 @@ export default function ({data, inputs, outputs, slots}) {
 
   const content = useMemo(() => {
     return slots['content'].render({
+      wrap(comAray: { id, jsx, def }[]) {
+        const items = data.items
+        if (comAray) {
+          const jsx = comAray.map((com, idx) => {
+            let item = items.find(item => item.id === com.id)
+            if (!item) {
+              const nowC = data.nameCount++
+              item = {
+                id: com.id,
+                name: `item${nowC}`,
+                label: `表单项${nowC}`,
+                schema: com.def._valueSchema
+              }
+
+              data.items.push(item)
+            }
+            return (
+              <Form.Item key={com.id}
+                         label={item.label}
+                         name={item.name}
+                         data-formitem={com.id}>
+                {com.jsx}
+              </Form.Item>
+            )
+          })
+
+          return jsx
+        }
+      },
       _inputs: {
         getValue(fn) {
           getValues.push(fn)
@@ -47,13 +76,15 @@ export default function ({data, inputs, outputs, slots}) {
       <Form
         form={form}
         name="basic"
-        labelCol={{flex: '110px'}}
+        labelCol={{span: 8}}
+        wrapperCol={{span: 16}}
         labelAlign="right"
         autoComplete="off"
         colon={false}
         onFinish={onFinish}
       >
         {content}
+
         <Form.Item label=" ">
           <Button type="primary" onClick={submit}>
             提交

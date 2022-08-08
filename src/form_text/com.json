@@ -11,6 +11,17 @@
   "editors": "./editors.tsx",
   "_inputs": [
     {
+      "id": "getSchema",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnSchema"
+      ]
+    }
+  ],
+  "inputs": [
+    {
       "id": "getValue",
       "schema": {
         "type": "any"
@@ -22,9 +33,9 @@
   ],
   "_outputs": [
     {
-      "id": "returnValue",
+      "id": "returnSchema",
       "schema": {
-        "type": "string"
+        "type": "any"
       }
     }
   ],
@@ -35,7 +46,16 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "returnValue",
+      "schema": {
+        "type": "string"
+      }
     }
   ],
+  "_valueSchema": {
+    "type": "string"
+  },
   "schema": "mybricks.normal-pc.form-container/form-item"
 }

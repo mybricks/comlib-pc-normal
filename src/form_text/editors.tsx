@@ -1,12 +1,12 @@
 export default {
   '@parentUpdated'({id, data, parent}, {schema}) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-      data.type = 'formItem'
-
-      parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
-    } else {
-      data.type = 'normal'
-    }
+    // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
+    //   data.type = 'formItem'
+    //
+    //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
+    // } else {
+    //   data.type = 'normal'
+    // }
   },
   ':root'({data}: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
@@ -65,11 +65,11 @@ export default {
             get({data}) {
               return data.name
             },
-            set({id, data, parent}, value: boolean) {
+            set({id, data}, value: boolean) {
               data.name = value
-              if (data.type === 'formItem') {
-                parent['@_setFormItem']({id, name: value, schema: {type: 'string'}})
-              }
+              // if (data.type === 'formItem') {
+              //   parent['@_setFormItem']({id, name: value, schema: {type: 'string'}})
+              // }
             },
           },
         },
