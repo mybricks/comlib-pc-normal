@@ -67,9 +67,7 @@ export const BaseEditor = [
         if (value === TypeEnum.AllSlot || value === TypeEnum.PartSlot) {
           const slotId = uuid();
           item.slotId = slotId;
-          slot.add(slotId, '自定义内容', {
-            schema: 'fangzhou.normal-pc.form-block:1.0'
-          });
+          slot.add(slotId, '自定义内容');
         } else {
           if (slot.get(item.slotId)) {
             slot.remove(item.slotId);
