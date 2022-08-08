@@ -1,0 +1,15 @@
+{
+  "content": "文字链接",
+  "url":"",
+  "isChoose": false,
+  "icon": "NormalHomeLine",
+  "location": "front",
+  "style": {
+    "fontWeight": 400,
+    "fontSize": "14px",
+    "fontStyle": "normal",
+    "lineHeight": "14px",
+    "letterSpacing": "0px",
+    "color": "#1890ff"
+  }
+}

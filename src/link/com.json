@@ -1,0 +1,29 @@
+{
+  "title": "文字链接",
+  "namespace": "mybricks.normal-pc.link",
+  "version": "1.0.0",
+  "description": "文字链接",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "content",
+      "title": "文本内容",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "url",
+      "title": "链接地址",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": []
+}

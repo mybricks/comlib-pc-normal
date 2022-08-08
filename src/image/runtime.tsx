@@ -1,73 +1,124 @@
-import {useComputed, useObservable} from '@mybricks/rxui';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import css from './runtime.less';
-import {isNumber} from '../utils/types'
+import React, { useEffect, useState } from 'react';
+import { Image } from 'antd';
+import { uuid } from '../utils';
+import { Data, ImageItem, InputIds } from './constants';
 
-export default function ({env, data, inputs, outputs, title, style}) {
-  const model = useObservable({
-    loaded: false,
-    imageUrl: data.src,
-  });
-  const ref = useRef<HTMLImageElement>(null);
-
-  useMemo(() => {
-    if (env.getAssetsPath) {
-      env.getAssetsPath(data.src).then(src => {
-        model.imageUrl = src
-      })
-    }
-  }, [data.src])
-
-  useEffect(() => {
-    inputs['image']?.((url: string) => {
-      if (typeof url === 'string') {
-        model.imageUrl = url;
+export default function ({ env, data, inputs }: RuntimeParams<Data>) {
+  const [imageInfo, setImageInfo] = useState(data.images);
+  const setImages = (ds) => {
+    if (data.configMode === 1) {
+      if (Array.isArray(data.images) && Array.isArray(ds)) {
+        const mapped: any[] = [];
+        data.images.forEach((item, index) => {
+          if (typeof ds[index] === 'string') {
+            mapped.push({ ...item, src: ds[index] });
+          } else {
+            mapped.push({ ...item });
+          }
+        });
+        data.images = mapped;
+      } else if (
+        !Array.isArray(ds) &&
+        typeof ds === 'string' &&
+        (!Array.isArray(data.images) || data.images.length === 1)
+      ) {
+        if (!Array.isArray(data.images)) {
+          data.images = {
+            ...data.images,
+            src: ds
+          };
+        } else {
+          data.images = {
+            ...data.images[0],
+            src: ds
+          };
+        }
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    model.imageUrl = data.src;
-  }, [data.src]);
-
-  const onLoad = useCallback(() => {
-    const naturalWidth = ref.current?.naturalWidth;
-    const naturalHeight = ref.current?.naturalHeight;
-    model.loaded = true;
-    if (naturalWidth && naturalHeight) {
-      data.naturalWidth = naturalWidth;
-      data.naturalHeight = naturalHeight;
+    } else if (data.configMode === 2) {
+      if (Array.isArray(ds)) {
+        const mapped: any[] = [];
+        ds.forEach((item, index) => {
+          if (typeof item === 'string') {
+            mapped.push({
+              id: uuid(),
+              src: item,
+              width: data.config.width,
+              height: data.config.height,
+              margin: data.config.margin,
+              customBorderStyle: data.config.customBorderStyle,
+              fallback: data.config.fallback,
+              supportFallback: data.config.supportFallback,
+              preview: data.config.preview
+            });
+          }
+        });
+        data.images = mapped;
+      }
     }
-  }, []);
-
-  const onClick: () => void = useCallback(() => {
+    setImageInfo(data.images);
+  };
+  useEffect(() => {
     if (env.runtime) {
-      outputs['click'](true);
+      inputs[InputIds.Image] && inputs[InputIds.Image](setImages);
+      inputs[InputIds.SlotProps] && inputs[InputIds.SlotProps](setImages);
     }
-  }, [env.runtime, title]);
+  }, []);
 
-  const [width, height] = useComputed(() => {
-    if (isNumber(style.width) && isNumber(style.height)) {
-      if (data.naturalWidth / data.naturalHeight > style.width / style.height) {
-        return [style.width + 'px', (style.width / data.naturalWidth) * data.naturalHeight + 'px'];
-      } else {
-        return [(style.height / data.naturalHeight) * data.naturalWidth + 'px', style.height + 'px'];
-      }
-    } else if (isNumber(style.width)) {
-      return [style.width + 'px', (style.width / data.naturalWidth) * data.naturalHeight + 'px'];
-    } else if (isNumber(style.height)) {
-      return [(style.height / data.naturalHeight) * data.naturalWidth + 'px', style.height + 'px'];
-    } else if (style.width === 'auto' && data.naturalWidth < 414) {
-      return [data.naturalWidth + 'px', data.nauralHeight + 'px'];
-    } else {
-      return ['100%', 'auto'];
-    }
-  });
-
-
+  if (!Array.isArray(imageInfo)) {
+    return (
+      <div>
+        <ImgRender item={imageInfo} />
+      </div>
+    );
+  }
   return (
-    <div className={css.imgWrapper} style={{...data.imgStyle}} onClick={onClick}>
-      <img className={css.img} style={{width, height}} ref={ref} src={model.imageUrl} onLoad={onLoad} alt="加载中..."/>
+    <div>
+      <Image.PreviewGroup>
+        {imageInfo.map((image) => {
+          return <ImgRender item={image} />;
+        })}
+      </Image.PreviewGroup>
+    </div>
+  );
+}
+// 单图片渲染
+function ImgRender({ item }: { item: ImageItem }) {
+  const {
+    width,
+    height,
+    alt,
+    src,
+    fallback,
+    placeholder,
+    preview,
+    id,
+    customBorderStyle,
+    margin,
+    supportFallback
+  } = item;
+
+  const [top, bottom, left, right] = margin || [];
+
+  const styles = {
+    display: 'inline-flex',
+    verticalAlign: 'bottom',
+    marginTop: top,
+    marginBottom: bottom,
+    marginLeft: left,
+    marginRight: right
+  };
+  return (
+    <div key={id} data-img-id={id} style={styles}>
+      <Image
+        width={`${width}px`}
+        height={`${height}px`}
+        alt={alt}
+        src={src}
+        style={{ ...customBorderStyle }}
+        fallback={supportFallback ? fallback : ''}
+        placeholder={placeholder}
+        preview={preview}
+      />
     </div>
   );
 }

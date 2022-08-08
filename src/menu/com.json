@@ -1,0 +1,120 @@
+{
+  "title": "菜单",
+  "namespace": "mybricks.normal-pc.menu",
+  "version": "1.0.0",
+  "description": "菜单",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "标题",
+            "type": "string"
+          },
+          "key": {
+            "title": "唯一标识",
+            "type": "string"
+          },
+          "value": {
+            "title": "其他数据",
+            "type": "any"
+          }
+        }
+      }
+    },
+    {
+      "id": "getActiveItem",
+      "title": "获取选中项",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "标题",
+            "type": "string"
+          },
+          "key": {
+            "title": "唯一标识",
+            "type": "string"
+          },
+          "value": {
+            "title": "其他数据",
+            "type": "any"
+          }
+        }
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "setMenuData",
+      "title": "设置数据",
+      "schema": {
+        "title": "菜单数据",
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "title": "菜单数据",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "title": "标题",
+                  "type": "string"
+                },
+                "key": {
+                  "title": "唯一标识",
+                  "type": "string"
+                },
+                "menuType": {
+                  "title": "类型",
+                  "type": "string"
+                },
+                "children": {
+                  "title": "子菜单数据",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "value": {
+                  "title": "其他数据",
+                  "type": "any"
+                }
+              }
+            }
+          },
+          "defaultActive": {
+            "title": "默认选中项",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setActiveItem",
+      "title": "设置选中项",
+      "schema": {
+        "title": "菜单名称/唯一标识",
+        "type": "string"
+      }
+    },
+    {
+      "id": "getActiveItem",
+      "title": "获取选中项",
+      "rels": ["getActiveItem"],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

@@ -1,171 +1,12 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds } from './constants';
 
 export default {
-  ':root': [
-    {
-      title: '隐藏标题',
-      type: 'Switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.hideTitle;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.hideTitle = value;
-        }
-      }
-    },
-    {
-      title: '关闭按钮',
-      type: 'Switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.closable;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.closable = value;
-        }
-      }
-    },
-    {
-      title: '垂直居中',
-      type: 'Switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.centered;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.centered = value;
-        }
-      }
-    },
-    {
-      title: '底部内容',
-      items: [
-        {
-          title: '显示',
-          type: 'switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useFooter;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.useFooter = value;
-            }
-          }
-        },
-        {
-          title: '类型',
-          type: 'Select',
-          ifVisible({ data }) {
-            return data.useFooter;
-          },
-          options: [
-            {
-              label: '按钮组',
-              value: FOOTER_CONTENT_TYPE.BUTTONS
-            },
-            {
-              label: '插槽',
-              value: FOOTER_CONTENT_TYPE.SLOT
-            }
-          ],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.footerType || FOOTER_CONTENT_TYPE.BUTTONS;
-            },
-            set({ data }: EditorResult<Data>, value: number) {
-              data.footerType = value;
-            }
-          }
-        }
-      ]
-    },
-    {
-      title: '弹窗宽度',
-      description: '设置0将使用默认宽度：520',
-      type: 'Slider',
-      options: {
-        max: 5000,
-        min: 0,
-        step: 100,
-        formatter: 'px'
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.width;
-        },
-        set({ data }: EditorResult<Data>, value: number) {
-          data.width = value || undefined;
-        }
-      }
-    },
-    {
-      title: '内容高度限制',
-      description: '设置0为不限制，超出高度限制出现滚动条',
-      type: 'Slider',
-      options: {
-        max: 5000,
-        min: 0,
-        step: 100,
-        formatter: 'px'
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.bodyStyle?.maxHeight;
-        },
-        set({ data }: EditorResult<Data>, value: string) {
-          if (!data.bodyStyle) {
-            data.bodyStyle = {};
-          }
-          data.bodyStyle = {
-            ...data.bodyStyle,
-            maxHeight: value || undefined
-          };
-        }
-      }
-    },
-    {
-      title: '内容背景色',
-      type: 'colorpicker',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.bodyStyle?.backgroundColor;
-        },
-        set({ data }: EditorResult<Data>, value: string) {
-          if (!data.bodyStyle) {
-            data.bodyStyle = {};
-          }
-          data.bodyStyle = {
-            ...data.bodyStyle,
-            backgroundColor: value
-          };
-        }
-      }
-    },
-    {
-      title: '事件',
-      items: [
-        {
-          title: '关闭',
-          type: '_Event',
-          ifVisible({ data }: EditorResult<Data>) {
-            return !!data.closable;
-          },
-          options: () => {
-            return {
-              outputId: 'cancel'
-            };
-          }
-        }
-      ]
-    }
-  ],
-  '.ant-modal-title': {
-    title: '标题',
-    items: [
+  ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
+    cate1.title = '常规';
+    cate1.items = [
       {
-        title: '内容',
+        title: '标题',
         type: 'Text',
         value: {
           get({ data }: EditorResult<Data>) {
@@ -177,14 +18,21 @@ export default {
             }
           }
         }
-      }
-    ]
-  },
-  '.ant-modal-close': {
-    title: '关闭按钮',
-    items: [
+      },
       {
-        title: '显示',
+        title: '隐藏标题',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.hideTitle;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.hideTitle = value;
+          }
+        }
+      },
+      {
+        title: '关闭按钮',
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
@@ -194,41 +42,177 @@ export default {
             data.closable = value;
           }
         }
-      }
-    ]
-  },
-  '.ant-modal-footer': {
-    title: '底部内容',
-    items: [
+      },
       {
-        title: '显示',
+        title: '垂直居中',
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.useFooter;
+            return data.centered;
           },
           set({ data }: EditorResult<Data>, value: boolean) {
-            data.useFooter = value;
+            data.centered = value;
           }
         }
       },
       {
-        title: '新增操作',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !!data.footerBtns;
+        title: '底部内容',
+        items: [
+          {
+            title: '显示',
+            type: 'switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.useFooter;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.useFooter = value;
+              }
+            }
+          },
+          {
+            title: '类型',
+            type: 'Select',
+            ifVisible({ data }) {
+              return data.useFooter;
+            },
+            options: [
+              {
+                label: '按钮组',
+                value: FOOTER_CONTENT_TYPE.BUTTONS
+              },
+              {
+                label: '插槽',
+                value: FOOTER_CONTENT_TYPE.SLOT
+              }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.footerType || FOOTER_CONTENT_TYPE.BUTTONS;
+              },
+              set({ data, slot }: EditorResult<Data>, value: number) {
+                data.footerType = value;
+                const hasSlot = slot.get(SlotIds.Footer);
+                if (value === FOOTER_CONTENT_TYPE.SLOT) {
+                  !hasSlot && slot.add(SlotIds.Footer, '底部内容');
+                } else {
+                  hasSlot && slot.remove(SlotIds.Footer);
+                }
+              }
+            }
+          },
+          {
+            title: '新增操作',
+            ifVisible({ data }: EditorResult<Data>) {
+              return (
+                !!data.footerBtns &&
+                data.useFooter &&
+                data.footerType === FOOTER_CONTENT_TYPE.BUTTONS
+              );
+            },
+            type: 'Button',
+            value: {
+              set({ data, output }: EditorResult<Data>) {
+                addBtn({ data, output });
+              }
+            }
+          }
+        ]
+      }
+    ];
+
+    cate2.title = '样式';
+    cate2.items = [
+      {
+        title: '弹窗宽度',
+        description: '设置0将使用默认宽度：520',
+        type: 'Slider',
+        options: {
+          max: 5000,
+          min: 0,
+          step: 100,
+          formatter: 'px'
         },
-        type: 'Button',
         value: {
-          set({ data, output }: EditorResult<Data>) {
-            addBtn({ data, output });
+          get({ data }: EditorResult<Data>) {
+            return data.width;
+          },
+          set({ data }: EditorResult<Data>, value: number) {
+            data.width = value || undefined;
+          }
+        }
+      },
+      {
+        title: '内容高度限制',
+        description: '设置0为不限制，超出高度限制出现滚动条',
+        type: 'Slider',
+        options: {
+          max: 5000,
+          min: 0,
+          step: 100,
+          formatter: 'px'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.bodyStyle?.maxHeight;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (!data.bodyStyle) {
+              data.bodyStyle = {};
+            }
+            data.bodyStyle = {
+              ...data.bodyStyle,
+              maxHeight: value || undefined
+            };
+          }
+        }
+      },
+      {
+        title: '内容背景色',
+        type: 'colorpicker',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.bodyStyle?.backgroundColor;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (!data.bodyStyle) {
+              data.bodyStyle = {};
+            }
+            data.bodyStyle = {
+              ...data.bodyStyle,
+              backgroundColor: value
+            };
           }
         }
       }
-    ]
+    ];
+
+    cate3.title = '事件';
+    cate3.items = [
+      {
+        title: '事件',
+        items: [
+          {
+            title: '关闭回调',
+            type: '_Event',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !!data.closable;
+            },
+            options: () => {
+              return {
+                outputId: 'cancel'
+              };
+            }
+          }
+        ]
+      }
+    ];
+
+    return { title: '对话框' };
   },
-  '[data-btn-id]': {
-    title: '按钮',
-    items: [
+  '[data-btn-id]': ({}: EditorResult<Data>, cate1, cate2) => {
+    cate1.title = '常规';
+    cate1.items = [
       {
         title: '名称',
         type: 'Text',
@@ -286,10 +270,28 @@ export default {
         ]
       },
       icon('btnId'),
+      moveDelete('btnId')
+    ];
+
+    cate2.title = '事件';
+    cate2.items = [
       useDynamic('btnId'),
       {
         title: '事件',
         items: [
+          {
+            title: '输出传入数据',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return get(data, focusArea, 'btnId', 'outputDs');
+              },
+              set({ data, focusArea }: EditorResult<Data>, val: boolean) {
+                const res = get(data, focusArea, 'btnId', 'obj');
+                res.outputDs = val;
+              }
+            }
+          },
           {
             title: '单击',
             type: '_Event',
@@ -301,9 +303,9 @@ export default {
             }
           }
         ]
-      },
-      moveDelete('btnId')
-    ]
+      }
+    ];
+    return { title: '按钮' };
   }
 };
 
@@ -321,7 +323,8 @@ function addBtn({ data, output }: { data: Data; output: any }) {
     icon: '',
     useIcon: false,
     showText: true,
-    type: 'default'
+    type: 'default',
+    outputDs: false
   };
   output.add(id, title, schema);
   data.footerBtns.unshift(defaultBtn);

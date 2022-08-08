@@ -1,0 +1,21 @@
+{
+  "title": "图标",
+  "namespace": "mybricks.normal-pc.icon",
+  "version": "1.0.0",
+  "description": "图标",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

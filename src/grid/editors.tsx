@@ -1,90 +1,90 @@
-import { uuid, unitConversion, deepCopy } from '../utils'
+import { SlotLayoutEditor } from '../components/editors/SlotLayoutEditor';
+import { uuid, unitConversion, deepCopy } from '../utils';
 import {
-  ColumnInnerJustifyType,
   Data,
   IRow,
   JustifyType,
   AlignType,
   ColumnParams
-} from './runtime'
+} from './runtime';
 
 interface Result {
-  data: Data
-  focusArea: any
-  output: any
-  slot: any
+  data: Data;
+  focusArea: any;
+  output: any;
+  slot: any;
 }
 
 function getRowItem(data: Data, focusArea: any) {
-  const index = ~~focusArea.dataset.rowIndex
-  return data.rows[index]
+  const index = ~~focusArea.dataset.rowIndex;
+  return data.rows[index];
 }
 
 function getColItem(data: Data, focusArea: any) {
-  const [rowIndex, colIndex]: number[] = getColIndex(focusArea)
-  return data.rows[rowIndex] && data.rows[rowIndex].columns[colIndex]
+  const [rowIndex, colIndex]: number[] = getColIndex(focusArea);
+  return data.rows[rowIndex] && data.rows[rowIndex].columns[colIndex];
 }
 
 function getColIndex(focusArea: any) {
-  const [rowIndex, colIndex]: number[] = JSON.parse(focusArea.dataset.index)
+  const [rowIndex, colIndex]: number[] = JSON.parse(focusArea.dataset.index);
 
-  return [rowIndex, colIndex]
+  return [rowIndex, colIndex];
 }
 
 function setRowColumnsForEvenlySpan(columns: ColumnParams[]) {
-  const [span, lastSpan] = evenlySplitSpan(columns.length)
+  const [span, lastSpan] = evenlySplitSpan(columns.length);
   columns.map((item, index) => {
     if (index + 1 === columns.length && lastSpan !== 0) {
-      item.widthOption = 'span'
-      item.span = lastSpan
-      return { ...item }
+      item.widthOption = 'span';
+      item.span = lastSpan;
+      return { ...item };
     }
-    item.widthOption = 'span'
-    item.span = span
-    return { ...item }
-  })
+    item.widthOption = 'span';
+    item.span = span;
+    return { ...item };
+  });
 }
 
 function evenlySplitSpan(columnCount: number, nextCount?: number) {
   if (!nextCount) {
-    nextCount = columnCount
+    nextCount = columnCount;
   }
 
   if (Math.floor(24 / nextCount) * columnCount > 24) {
-    return evenlySplitSpan(columnCount, nextCount - 1)
+    return evenlySplitSpan(columnCount, nextCount - 1);
   }
 
-  const span = Math.floor(24 / nextCount)
-  const lastSpan = (24 - span * columnCount) + span
+  const span = Math.floor(24 / nextCount);
+  const lastSpan = 24 - span * columnCount + span;
 
-  return [span, lastSpan]
+  return [span, lastSpan];
 }
 
 function copyColumns(columns: ColumnParams[]) {
   const copy = {
     columns: [] as ColumnParams[],
     columnIds: [] as string[]
-  }
+  };
 
-  columns.map(item => {
-    const columnId = uuid()
-    item.key = columnId
-    item.slot = columnId
-    copy.columns.push({ ...item })
-    copy.columnIds.push(columnId)
-  })
+  columns.map((item) => {
+    const columnId = uuid();
+    item.key = columnId;
+    item.slot = columnId;
+    copy.columns.push({ ...item });
+    copy.columnIds.push(columnId);
+  });
 
-  return copy
+  return copy;
 }
 
 function generateColumns(columnCount: number) {
   const results = {
     columns: [] as ColumnParams[],
     columnIds: [] as string[]
-  }
+  };
 
   for (let i = 0; i < columnCount; i++) {
-    const columnId = uuid()
+    const columnId = uuid();
     results.columns.push({
       flex: 'row',
       justify: 'flex-start',
@@ -95,23 +95,23 @@ function generateColumns(columnCount: number) {
       widthOption: 'span',
       width: 300,
       colStyle: {}
-    })
+    });
 
-    results.columnIds.push(columnId)
+    results.columnIds.push(columnId);
   }
 
-  return results
+  return results;
 }
 
 function generateColumnsTitle(columnCount: number) {
-  return `col-${24 / columnCount} (${(100 / columnCount).toFixed(2)}%)`
+  return `col-${24 / columnCount} (${(100 / columnCount).toFixed(2)}%)`;
 }
 
 // 重新计算列标题
 function updateColumnsTitle(col: ColumnParams, slot: any) {
   switch (col.widthOption) {
     case 'span':
-      slot.setTitle(col.slot, `col-${col.span} (${(col.span / 24 * 100).toFixed(2)}%)`);
+      slot.setTitle(col.slot, `col-${col.span} (${((col.span / 24) * 100).toFixed(2)}%)`);
       break;
     case 'px':
       slot.setTitle(col.slot, `col-${col.width}px`);
@@ -119,21 +119,24 @@ function updateColumnsTitle(col: ColumnParams, slot: any) {
     case 'auto':
       slot.setTitle(col.slot, `col-自适应`);
       break;
+    case '@media':
+      slot.setTitle(col.slot, `col-响应式`);
+      break;
     default:
       slot.setTitle(col.slot, `col-默认`);
   }
 }
 
 function calculateSpans(data: Data, focusArea: any) {
-  const [rowIndex, colIndex]: number[] = getColIndex(focusArea)
-  let existSpans = 0
+  const [rowIndex, colIndex]: number[] = getColIndex(focusArea);
+  let existSpans = 0;
   data.rows[rowIndex].columns.forEach((column, index) => {
     if (index !== colIndex) {
-      existSpans += column.span as number
+      existSpans += column.span as number;
     }
-  })
+  });
 
-  return 24 - existSpans
+  return 24 - existSpans;
 }
 
 export default {
@@ -163,21 +166,21 @@ export default {
       value: {
         set({ data, slot }: Result) {
           const columnCount = 1;
-          const rowId = uuid()
-          const columnsInfo = generateColumns(columnCount)
+          const rowId = uuid();
+          const columnsInfo = generateColumns(columnCount);
           const row: IRow = {
             key: rowId,
             justify: 'start',
             gutter: [4, 4],
             align: 'middle',
-            columns: columnsInfo.columns,
-          }
+            columns: columnsInfo.columns
+          };
 
-          const title = generateColumnsTitle(columnCount)
-          columnsInfo.columnIds.forEach(columnId => slot.add(columnId, title))
-          data.rows.push(row)
-        },
-      },
+          const title = generateColumnsTitle(columnCount);
+          columnsInfo.columnIds.forEach((columnId) => slot.add(columnId, title));
+          data.rows.push(row);
+        }
+      }
     },
     {
       title: '添加行(2列)',
@@ -185,21 +188,21 @@ export default {
       value: {
         set({ data, slot }: Result) {
           const columnCount = 2;
-          const rowId = uuid()
-          const columnsInfo = generateColumns(columnCount)
+          const rowId = uuid();
+          const columnsInfo = generateColumns(columnCount);
           const row: IRow = {
             key: rowId,
             justify: 'start',
             gutter: [4, 4],
             align: 'middle',
-            columns: columnsInfo.columns,
-          }
+            columns: columnsInfo.columns
+          };
 
-          const title = generateColumnsTitle(columnCount)
-          columnsInfo.columnIds.forEach(columnId => slot.add(columnId, title))
-          data.rows.push(row)
-        },
-      },
+          const title = generateColumnsTitle(columnCount);
+          columnsInfo.columnIds.forEach((columnId) => slot.add(columnId, title));
+          data.rows.push(row);
+        }
+      }
     },
     {
       title: '添加行(3列)',
@@ -207,21 +210,21 @@ export default {
       value: {
         set({ data, slot }: Result) {
           const columnCount = 3;
-          const rowId = uuid()
-          const columnsInfo = generateColumns(columnCount)
+          const rowId = uuid();
+          const columnsInfo = generateColumns(columnCount);
           const row: IRow = {
             key: rowId,
             justify: 'start',
             gutter: [4, 4],
             align: 'middle',
-            columns: columnsInfo.columns,
-          }
+            columns: columnsInfo.columns
+          };
 
-          const title = generateColumnsTitle(columnCount)
-          columnsInfo.columnIds.forEach(columnId => slot.add(columnId, title))
-          data.rows.push(row)
-        },
-      },
+          const title = generateColumnsTitle(columnCount);
+          columnsInfo.columnIds.forEach((columnId) => slot.add(columnId, title));
+          data.rows.push(row);
+        }
+      }
     },
     {
       title: '宽度设置',
@@ -329,20 +332,20 @@ export default {
           { value: 'end', label: '居右排列' },
           { value: 'center', label: '居中排列' },
           { value: 'space-around', label: '均匀排列' },
-          { value: 'space-between', label: '两端对齐' },
+          { value: 'space-between', label: '两端对齐' }
         ],
         value: {
           get({ data, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            return item.justify
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            return item.justify;
           },
           set({ data, focusArea }: Result, value: JustifyType) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            item.justify = value
-          },
-        },
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            item.justify = value;
+          }
+        }
       },
       {
         title: '垂直对齐方式',
@@ -350,40 +353,58 @@ export default {
         options: [
           { value: 'top', label: '置顶排列' },
           { value: 'middle', label: '居中排列' },
-          { value: 'bottom', label: '置底排列' },
+          { value: 'bottom', label: '置底排列' }
         ],
         value: {
           get({ data, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            return item.align
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            return item.align;
           },
           set({ data, focusArea }: Result, value: AlignType) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            item.align = value
-          },
-        },
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            item.align = value;
+          }
+        }
       },
       {
         title: '高度',
         type: 'Text',
         value: {
           get({ data, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            return item.height
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            return item.height;
           },
           set({ data, focusArea }: Result, value: string) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            item.height = unitConversion(value)
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            item.height = unitConversion(value);
             // if (/^\d+(?:%)$/.test(value)) {
             //   item.height = value
             // } else {
             //   item.height = /^\d+(?:px)?$/.test(value) ? parseInt(value, 10) + 'px' : void 0
             // }
+          }
+        }
+      },
+      {
+        title: '自动换行',
+        type: 'Switch',
+        value: {
+          get({ data, focusArea }: Result) {
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            if (typeof item.wrap !== 'boolean')
+              item.wrap = true;
+            return item.wrap;
           },
+          set({ data, focusArea }: Result, value: boolean) {
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            item.wrap = value;
+          }
         }
       },
       // {
@@ -423,23 +444,97 @@ export default {
       // },
       {
         title: '背景颜色',
-        type: 'Color',
+        type: 'ColorPicker',
         value: {
           get({ data, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            return item?.backgroundColor
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            return item?.backgroundColor;
           },
           set({ data, focusArea }: Result, value: string) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
 
             if (typeof item.backgroundColor == 'undefined') {
-              item.backgroundColor = ''
+              item.backgroundColor = '';
             }
-            item['backgroundColor'] = value
+            item['backgroundColor'] = value;
           }
         }
+      },
+      {
+        title: '间隔配置',
+        items: [
+          {
+            title: '开启',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
+                const item = getRowItem(data, focusArea);
+                return item.useGutter;
+              },
+              set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const item = getRowItem(data, focusArea);
+                item.useGutter = value;
+              }
+            }
+          },
+          {
+            title: '水平间隔',
+            type: 'Slider',
+            options: [
+              {
+                max: 1000,
+                min: 0,
+                step: 1,
+                formatter: 'px'
+              }
+            ],
+            ifVisible({ focusArea, data }: EditorResult<Data>) {
+              if (!focusArea) return;
+              const item = getRowItem(data, focusArea);
+              return !!item.useGutter;
+            },
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
+                const item = getRowItem(data, focusArea);
+                return item.gutter[0];
+              },
+              set({ data, focusArea }: EditorResult<Data>, value: string) {
+                if (!focusArea) return;
+                const item = getRowItem(data, focusArea);
+                item.gutter[0] = value;
+              }
+            }
+          }
+          // {
+          //   title: '垂直间隔',
+          //   type: 'Slider',
+          //   options: [
+          //     {
+          //       max: 1000,
+          //       min: 0,
+          //       step: 1,
+          //       formatter: 'px'
+          //     }
+          //   ],
+          //   value: {
+          //     get({data, focusArea}: EditorResult<Data>) {
+          //       if (!focusArea) return;
+          //       const item = getRowItem(data, focusArea);
+          //       return item.gutter[1];
+          //     },
+          //     set({data, focusArea}: EditorResult<Data>, value: string) {
+          //       if (!focusArea) return;
+          //       const item = getRowItem(data, focusArea);
+          //       item.gutter[1] = value;
+          //     }
+          //   }
+          // }
+        ]
       },
       {
         title: '列等分',
@@ -453,34 +548,34 @@ export default {
           //   return item.isEvenly
           // },
           set({ data, slot, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
             // item.isEvenly = value
             // if (value) {
-            setRowColumnsForEvenlySpan(item.columns)
+            setRowColumnsForEvenlySpan(item.columns);
             // }
-            const title = generateColumnsTitle(item.columns.length)
-            item.columns.forEach(column => {
-              slot.setTitle(column.slot, title)
-            })
-          },
+            const title = generateColumnsTitle(item.columns.length);
+            item.columns.forEach((column) => {
+              slot.setTitle(column.slot, title);
+            });
+          }
         }
       },
       {
         title: '上移',
         type: 'Button',
         ifVisible({ focusArea }: Result) {
-          if (!focusArea) return
-          const index = ~~focusArea.dataset.rowIndex
-          return index !== 0
+          if (!focusArea) return;
+          const index = ~~focusArea.dataset.rowIndex;
+          return index !== 0;
         },
         value: {
           set({ data, focusArea }: Result) {
-            if (!focusArea) return
-            const index = ~~focusArea.dataset.rowIndex
-            const oldRow = data.rows[index]
-            data.rows[index] = data.rows[index - 1]
-            data.rows[index - 1] = oldRow
+            if (!focusArea) return;
+            const index = ~~focusArea.dataset.rowIndex;
+            const oldRow = data.rows[index];
+            data.rows[index] = data.rows[index - 1];
+            data.rows[index - 1] = oldRow;
           }
         }
       },
@@ -488,143 +583,98 @@ export default {
         title: '下移',
         type: 'Button',
         ifVisible({ data, focusArea }: Result) {
-          if (!focusArea) return
-          const index = ~~focusArea.dataset.rowIndex
-          return index + 1 < data.rows.length
+          if (!focusArea) return;
+          const index = ~~focusArea.dataset.rowIndex;
+          return index + 1 < data.rows.length;
         },
         value: {
           set({ data, focusArea }: Result) {
-            if (!focusArea) return
-            const index = ~~focusArea.dataset.rowIndex
-            const oldRow = data.rows[index]
-            data.rows[index] = data.rows[index + 1]
-            data.rows[index + 1] = oldRow
+            if (!focusArea) return;
+            const index = ~~focusArea.dataset.rowIndex;
+            const oldRow = data.rows[index];
+            data.rows[index] = data.rows[index + 1];
+            data.rows[index + 1] = oldRow;
           }
         }
       },
-      // {
-      //   title: '栅格水平间隔',
-      //   type: 'Slider',
-      //   options: [
-      //     {
-      //       max: 48,
-      //       min: 0,
-      //       step: 1,
-      //       formatter: 'px',
-      //     },
-      //   ],
-      //   value: {
-      //     get({data, focusArea}: Result) {
-      //       if (!focusArea) return
-      //       const item = getRowItem(data, focusArea)
-      //       return item.gutter[0]
-      //     },
-      //     set({data, focusArea}: Result, value: string) {
-      //       if (!focusArea) return
-      //       const item = getRowItem(data, focusArea)
-      //       item.gutter[0] = value
-      //     },
-      //   },
-      // },
-      // {
-      //   title: '栅格垂直间隔',
-      //   type: 'Slider',
-      //   options: [
-      //     {
-      //       max: 48,
-      //       min: 0,
-      //       step: 1,
-      //       formatter: 'px',
-      //     },
-      //   ],
-      //   value: {
-      //     get({data, focusArea}: Result) {
-      //       if (!focusArea) return
-      //       const item = getRowItem(data, focusArea)
-      //       return item.gutter[1]
-      //     },
-      //     set({data, focusArea}: Result, value: string) {
-      //       if (!focusArea) return
-      //       const item = getRowItem(data, focusArea)
-      //       item.gutter[1] = value
-      //     },
-      //   },
-      // },
       {
         title: '添加列',
         type: 'Button',
         value: {
           set({ data, slot, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            const lastColumn =
-              item.columns[
-              item.columns.length > 0 ? item.columns.length - 1 : 0
-              ]
-            const id = uuid()
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            const lastColumn = item.columns[item.columns.length > 0 ? item.columns.length - 1 : 0];
+            const id = uuid();
             const column = {
               key: id,
               slot: id,
               flex: lastColumn ? lastColumn.flex : 'row',
               align: lastColumn ? lastColumn.align : 'center',
               justify: lastColumn ? lastColumn.justify : 'flex-start',
-              span: lastColumn ? lastColumn.span as number : 4,
+              span: lastColumn ? (lastColumn.span as number) : 4,
               widthOption: 'span',
               width: 300
-            }
+            };
 
-            item.columns.push(column)
-            const title = generateColumnsTitle(24 / column?.span)
-            slot.add(id, title)
-          },
-        },
+            item.columns.push(column);
+            const title = generateColumnsTitle(24 / column?.span);
+            slot.add(id, title);
+          }
+        }
       },
       {
         title: '复制',
         type: 'Button',
         value: {
           set({ data, slot, focusArea }: Result) {
-            if (!focusArea) return
-            const item = deepCopy(getRowItem(data, focusArea))
-            const rowId = uuid()
-            const columnsInfo = copyColumns(item.columns)
+            if (!focusArea) return;
+            const item = deepCopy(getRowItem(data, focusArea));
+            const rowId = uuid();
+            const columnsInfo = copyColumns(item.columns);
             const row: IRow = {
               key: rowId,
               justify: item.justify,
               gutter: deepCopy(item.gutter),
               align: item.align,
-              columns: columnsInfo.columns,
-            }
+              columns: columnsInfo.columns
+            };
             columnsInfo.columns.forEach((column, index) => {
               if (column.span) {
-                slot.add(columnsInfo.columnIds[index], generateColumnsTitle(24 / Number(column.span)))
+                slot.add(
+                  columnsInfo.columnIds[index],
+                  generateColumnsTitle(24 / Number(column.span))
+                );
               }
-            })
-            data.rows.push(row)
-          },
-        },
+            });
+            data.rows.push(row);
+          }
+        }
       },
       {
         title: '删除',
         type: 'Button',
         value: {
           set({ data, slot, focusArea }: Result) {
-            if (!focusArea) return
-            const item = getRowItem(data, focusArea)
-            const index = ~~focusArea.dataset.rowIndex
+            if (!focusArea) return;
+            const item = getRowItem(data, focusArea);
+            const index = ~~focusArea.dataset.rowIndex;
             if (!item) {
-              return
+              return;
             }
-            item.columns.forEach(columnItem => {
-              slot.remove(columnItem.slot)
-            })
-            data.rows.splice(index, 1)
-          },
-        },
-      },
-    ],
+            item.columns.forEach((columnItem) => {
+              slot.remove(columnItem.slot);
+            });
+            data.rows.splice(index, 1);
+          }
+        }
+      }
+    ]
   },
-  '.ant-row > .ant-col': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+  '.ant-row > .ant-col': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2, cate3) => {
+    if (!focusArea) return;
+    const item = getColItem(data, focusArea);
+    const mySlot = slot.get(item.slot);
     cate1.title = '常规';
     cate1.items = [
       // {
@@ -651,10 +701,12 @@ export default {
         options: [
           { value: 'span', label: '24栅格' },
           { value: 'auto', label: '自动填充' },
-          { value: 'px', label: '固定宽度' }
+          { value: 'px', label: '固定宽度' },
+          { value: '@media', label: '响应式宽度' }
         ],
         value: {
           get({ data, focusArea }: Result) {
+            if (!focusArea) return;
             return getColItem(data, focusArea).widthOption
               ? getColItem(data, focusArea).widthOption
               : 'span';
@@ -679,6 +731,7 @@ export default {
           }
         ],
         ifVisible({ data, focusArea }: Result) {
+          if (!focusArea) return;
           return (
             !getColItem(data, focusArea).widthOption ||
             getColItem(data, focusArea).widthOption === 'span'
@@ -700,9 +753,10 @@ export default {
         }
       },
       {
-        title: '指定宽度',
+        title: '指定宽度(px)',
         type: 'Text',
         ifVisible({ data, focusArea }: Result) {
+          if (!focusArea) return;
           return getColItem(data, focusArea).widthOption === 'px';
         },
         value: {
@@ -721,24 +775,86 @@ export default {
         }
       },
       {
-        title: '内容布局',
+        title: '断点配置(24栅格)',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColItem(data, focusArea);
+          return item?.widthOption === '@media';
+        },
+        items: [
+          {
+            type: 'Map',
+            options: {
+              notaddel: true,
+              noteditkey: true
+            },
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
+                const item = getColItem(data, focusArea);
+                if (!item.breakPoints) {
+                  item.breakPoints = {
+                    'xs <576px': item.span.toString(),
+                    'sm ≥576px': item.span.toString(),
+                    'md ≥768px': item.span.toString(),
+                    'lg ≥992px': item.span.toString(),
+                    'xl ≥1200px': item.span.toString(),
+                    'xxl ≥1600px': item.span.toString()
+                  };
+                }
+                return item.breakPoints;
+              },
+              set({ data, focusArea }: EditorResult<Data>, values: any) {
+                if (!focusArea) return;
+                const item = getColItem(data, focusArea);
+                item.breakPoints = Object.assign(item.breakPoints || {}, values);
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '最小/最大宽度单位',
         type: 'Select',
         options: [
-          { value: 'flex-row', label: '水平排列' },
-          { value: 'flex-column', label: '垂直排列' }
+          { value: '%', label: '百分比' },
+          { value: 'px', label: '像素' },
+          { value: 'auto', label: '默认' }
         ],
         value: {
-          get({ data, focusArea, slot }: Result) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-
-            return mySlot.getLayout();
+          get({ data, focusArea }: Result) {
+            if (!focusArea) return;
+            if (!getColItem(data, focusArea).minMaxWidthOption)
+              getColItem(data, focusArea).minMaxWidthOption = 'auto';
+            return getColItem(data, focusArea).minMaxWidthOption;
           },
-          set({ data, focusArea, slot }: Result, value) {
+          set({ data, focusArea }: Result, value: string) {
+            if (!focusArea) return;
             const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-
-            return mySlot.setLayout(value);
+            item.minMaxWidthOption = value;
+          }
+        }
+      },
+      {
+        type: 'InputNumber',
+        ifVisible({ data, focusArea }: Result) {
+          if (!focusArea) return;
+          return getColItem(data, focusArea).minMaxWidthOption !== 'auto';
+        },
+        options: [
+          { title: '最小宽度', min: 0, width: '100px' },
+          { title: '最大宽度', min: 0, width: '100px' }
+        ],
+        value: {
+          get({ data, focusArea }: Result) {
+            if (!focusArea) return;
+            const item = getColItem(data, focusArea);
+            return [item.minWidth, item.maxWidth || 100];
+          },
+          set({ data, focusArea }: Result, value: number[]) {
+            if (!focusArea) return;
+            const item = getColItem(data, focusArea);
+            [item.minWidth, item.maxWidth] = value;
           }
         }
       },
@@ -752,144 +868,18 @@ export default {
         ],
         value: {
           get({ data, focusArea }: Result) {
+            if (!focusArea) return;
             const item = getColItem(data, focusArea);
             return item.contentWidth;
           },
           set({ data, focusArea }: Result, value) {
+            if (!focusArea) return;
             const item = getColItem(data, focusArea);
             item.contentWidth = value;
           }
         }
       },
-      {
-        title: '水平对齐',
-        type: 'Select',
-        options: [
-          { value: 'flex-start', label: '居左' },
-          { value: 'center', label: '居中' },
-          { value: 'flex-end', label: '居右' },
-          { value: 'space-around', label: '均匀排列' },
-          { value: 'space-between', label: '两端对齐' }
-        ],
-        ifVisible({ data, focusArea, slot }: Result): undefined | boolean {
-          const item = getColItem(data, focusArea);
-          if (item) {
-            const mySlot = slot.get(item.slot);
-            return mySlot.getLayout() === 'flex-row';
-          }
-        },
-        value: {
-          get({ data, focusArea, slot }: Result) {
-            const item = getColItem(data, focusArea);
-
-            const mySlot = slot.get(item.slot);
-            return mySlot.getJustifyContent();
-          },
-          set(
-            { data, focusArea, slot }: Result,
-            value: ColumnInnerJustifyType
-          ) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            mySlot.setJustifyContent(value);
-          }
-        }
-      },
-      {
-        title: '垂直对齐',
-        type: 'Select',
-        options: [
-          { value: 'flex-start', label: '居上' },
-          { value: 'center', label: '居中' },
-          { value: 'flex-end', label: '居下' }
-        ],
-        ifVisible({ data, focusArea, slot }: Result): undefined | boolean {
-          const item = getColItem(data, focusArea);
-          if (item) {
-            const mySlot = slot.get(item.slot);
-            return mySlot.getLayout() === 'flex-row';
-          }
-        },
-        value: {
-          get({ data, focusArea, slot }: Result) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            return mySlot.getAlignItems();
-          },
-          set(
-            { data, focusArea, slot }: Result,
-            value: ColumnInnerJustifyType
-          ) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            mySlot.setAlignItems(value);
-          }
-        }
-      },
-      {
-        title: '水平对齐',
-        type: 'Select',
-        options: [
-          { value: 'flex-start', label: '居左' },
-          { value: 'center', label: '居中' },
-          { value: 'flex-end', label: '居右' }
-        ],
-        ifVisible({ data, focusArea, slot }: Result): undefined | boolean {
-          const item = getColItem(data, focusArea);
-          if (item) {
-            const mySlot = slot.get(item.slot);
-            return mySlot.getLayout() === 'flex-column';
-          }
-        },
-        value: {
-          get({ data, focusArea, slot }: Result) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            return mySlot.getAlignItems();
-          },
-          set(
-            { data, focusArea, slot }: Result,
-            value: ColumnInnerJustifyType
-          ) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            mySlot.setAlignItems(value);
-          }
-        }
-      },
-      {
-        title: '垂直对齐',
-        type: 'Select',
-        options: [
-          { value: 'flex-start', label: '居上' },
-          { value: 'center', label: '居中' },
-          { value: 'flex-end', label: '居下' },
-          { value: 'space-around', label: '均匀排列' },
-          { value: 'space-between', label: '两端对齐' }
-        ],
-        ifVisible({ data, focusArea, slot }: Result): undefined | boolean {
-          const item = getColItem(data, focusArea);
-          if (item) {
-            const mySlot = slot.get(item.slot);
-            return mySlot.getLayout() === 'flex-column';
-          }
-        },
-        value: {
-          get({ data, focusArea, slot }: Result) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            return mySlot.getJustifyContent();
-          },
-          set(
-            { data, focusArea, slot }: Result,
-            value: ColumnInnerJustifyType
-          ) {
-            const item = getColItem(data, focusArea);
-            const mySlot = slot.get(item.slot);
-            mySlot.setJustifyContent(value);
-          }
-        }
-      },
+      ...SlotLayoutEditor(mySlot),
       {
         title: '前移',
         type: 'Button',
@@ -939,7 +929,7 @@ export default {
             if (!item) {
               return;
             }
-            slot.remove(item.slot);
+            slot.remove(item?.slot);
             data.rows[rowIndex].columns.splice(colIndex, 1);
           }
         }
@@ -982,10 +972,12 @@ export default {
             type: 'Switch',
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
                 const item = getColItem(data, focusArea);
                 return item?.colStyle?.overflowY === 'auto';
               },
               set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
                 const item = getColItem(data, focusArea);
                 if (!item.colStyle) {
                   item.colStyle = {};
@@ -999,10 +991,12 @@ export default {
             type: 'Switch',
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
                 const item = getColItem(data, focusArea);
                 return item?.colStyle?.overflowX === 'auto';
               },
               set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
                 const item = getColItem(data, focusArea);
                 if (!item.colStyle) {
                   item.colStyle = {};
@@ -1015,7 +1009,7 @@ export default {
       }
     ];
 
-    cate3.title = "事件";
+    cate3.title = '事件';
     cate3.items = [
       {
         title: '点击',
@@ -1030,7 +1024,7 @@ export default {
             if (!focusArea) return;
             const item = getColItem(data, focusArea);
             if (value && !output.get(item.key)) {
-              output.add(item.key, '列点击', { type: "boolean" });
+              output.add(item.key, '列点击', { type: 'boolean' });
             }
             if (!value && output.get(item.key)) {
               output.remove(item.key);
@@ -1043,6 +1037,7 @@ export default {
         title: '点击事件',
         type: '_Event',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
           const item = getColItem(data, focusArea);
           return !!item?.useClick;
         },
@@ -1057,5 +1052,5 @@ export default {
     return {
       title: '列'
     };
-  },
-}
+  }
+};

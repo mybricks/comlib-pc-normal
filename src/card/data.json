@@ -3,7 +3,9 @@
   "useExtra": false,
   "bordered": true,
   "hoverable": false,
+  "cursor": false,
   "size": "default",
   "style": {},
-  "bodyStyle": {}
+  "bodyStyle": {},
+  "outputContent": ""
 }

@@ -115,7 +115,7 @@ const RuntimeActions = {
   }
 };
 
-type Actions = 'push'|'replace'|'back'|'forward'|'redirect'|'openWindow'|'openTab';
+export type Actions = 'push'|'replace'|'back'|'forward'|'redirect'|'openWindow'|'openTab';
 
 const actions: Actions[] = ['push', 'replace', 'back', 'forward', 'redirect', 'openWindow', 'openTab'];
 

@@ -1,24 +1,14 @@
 {
   "title": "卡片",
   "namespace": "mybricks.normal-pc.card",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "卡片",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/card.ee9a0bc3eefdad95.svg",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "slots": [
-    {
-      "id": "body",
-      "title": "卡片内容容器"
-    },
-    {
-      "id": "extra",
-      "title": "卡片操作容器"
-    }
-  ],
   "inputs": [
     {
       "id": "title",
@@ -28,5 +18,15 @@
       }
     }
   ],
-  "outputs": []
+  "outputs": [],
+  "slots": [
+    {
+      "id": "body",
+      "title": "卡片内容容器"
+    },
+    {
+      "id": "extra",
+      "title": "卡片操作容器"
+    }
+  ]
 }

@@ -1,24 +1,14 @@
 {
   "title": "对话框",
   "namespace": "mybricks.normal-pc.dialog",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "对话框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
-  "data": "./data.json",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/dialog.caf8c35864953e6c.svg",
-  "slots": [
-    {
-      "id": "container",
-      "title": "对话框容器"
-    },
-    {
-      "id": "footer",
-      "title": "底部内容"
-    }
-  ],
   "inputs": [
     {
       "id": "open",
@@ -43,14 +33,14 @@
     },
     {
       "id": "showFooter",
-      "title": "显示底部按钮",
+      "title": "显示底部内容",
       "schema": {
         "type": "follow"
       }
     },
     {
       "id": "hideFooter",
-      "title": "隐藏底部按钮",
+      "title": "隐藏底部内容",
       "schema": {
         "type": "follow"
       }
@@ -73,7 +63,7 @@
   "outputs": [
     {
       "id": "cancel",
-      "title": "关闭",
+      "title": "关闭回调",
       "schema": {
         "type": "any"
       }
@@ -91,6 +81,12 @@
       "schema": {
         "type": "any"
       }
+    }
+  ],
+  "slots": [
+    {
+      "id": "container",
+      "title": "对话框容器"
     }
   ]
 }

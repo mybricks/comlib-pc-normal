@@ -1,131 +1,52 @@
-import { Data } from './constants';
+import { Data, OutputIds, SizeOptions } from './constants';
+import { Editor, EditorType } from '../utils/editor';
 
 export default {
-  ':root': [
-    {
-      title: '标题内容',
-      type: 'text',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.title;
-        },
-        set({ data }: EditorResult<Data>, value: string) {
-          data.title = value;
+  ':root': ({}, cate1, cate2, cate3) => {
+    cate1.title = '常规';
+    cate1.items = [
+      Editor<Data>('标题内容', EditorType.Text, 'title'),
+      Editor<Data>('开启卡片右上角操作', EditorType.Switch, 'useExtra')
+    ];
+
+    cate2.title = '样式';
+    cate2.items = [
+      Editor<Data>('卡片边框', EditorType.Switch, 'bordered'),
+      Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
+      Editor<Data>('鼠标移过时可浮起', EditorType.Select, 'size', {
+        options: SizeOptions
+      })
+    ];
+
+    cate3.title = '事件';
+    cate3.items = [
+      Editor<Data>('点击', EditorType.Switch, 'useClick', {
+        value: {
+          set({ data, output }: EditorResult<Data>, value: boolean) {
+            const hasEvent = output.get(OutputIds.Click);
+            if (value) {
+              !hasEvent && output.add(OutputIds.Click, '点击', { type: 'any' });
+            } else {
+              hasEvent && output.remove(OutputIds.Click);
+            }
+            data.useClick = value;
+          }
         }
-      }
-    },
-    {
-      title: '卡片边框',
-      type: 'Switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.bordered;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.bordered = value;
+      }),
+      Editor<Data>('点击输出内容', EditorType.Text, 'outputContent', {
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.useClick;
         }
-      }
-    },
-    {
-      title: '开启卡片右上角操作',
-      type: 'Switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.useExtra;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.useExtra = value;
+      }),
+      Editor<Data>('点击卡片', EditorType.Event, null, {
+        options: () => {
+          return {
+            outputId: OutputIds.Click
+          };
         }
-      }
-    },
-    {
-      title: '鼠标移过时可浮起',
-      type: 'Switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.hoverable;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.hoverable = value;
-        }
-      }
-    },
-    {
-      title: '尺寸',
-      type: 'select',
-      options: [
-        {
-          label: '正常',
-          value: 'default'
-        },
-        {
-          label: '小',
-          value: 'small'
-        }
-      ],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.size;
-        },
-        set({ data }: EditorResult<Data>, value: 'default' | 'small') {
-          data.size = value;
-        }
-      }
-    }
-    // {
-    //   title: '宽度',
-    //   type: 'slider',
-    //   options: {
-    //     min: 0,
-    //     max: 2000,
-    //     step: 100,
-    //     formatter: 'px'
-    //   },
-    //   value: {
-    //     get({ data }: EditorResult<Data>) {
-    //       return data.style.width ? parseInt(data.style.width) : 0;
-    //     },
-    //     set({ data }: EditorResult<Data>, value: number) {
-    //       const { width, ...res } = data.style;
-    //       if (value) {
-    //         res.width = `${value}px`;
-    //         data.style = res;
-    //       }
-    //     }
-    //   }
-    // }
-  ]
-  // '.ant-card-body': {
-  //   title: '卡片内容',
-  //   items: [
-  //     {
-  //       title: '间距',
-  //       type: 'Inputnumber',
-  //       options: [
-  //         { title: '上', min: 0, max: 50, width: 50 },
-  //         { title: '左', min: 0, max: 50, width: 50 },
-  //         { title: '下', min: 0, max: 50, width: 50 },
-  //         { title: '右', min: 0, max: 50, width: 50 }
-  //       ],
-  //       value: {
-  //         get({ data }: EditorResult<Data>) {
-  //           const { paddingTop, paddingLeft, paddingBottom, paddingRight } =
-  //             data.bodyStyle;
-  //           return [paddingTop, paddingLeft, paddingBottom, paddingRight];
-  //         },
-  //         set({ data }: EditorResult<Data>, value: number[]) {
-  //           const [paddingTop, paddingLeft, paddingBottom, paddingRight] =
-  //             value;
-  //           data.bodyStyle = {
-  //             ...data.bodyStyle,
-  //             paddingTop,
-  //             paddingLeft,
-  //             paddingBottom,
-  //             paddingRight
-  //           };
-  //         }
-  //       }
-  //     }
-  //   ]
-  // }
+      })
+    ];
+
+    return { title: '卡片' };
+  }
 };
