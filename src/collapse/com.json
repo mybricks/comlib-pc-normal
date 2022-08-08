@@ -1,0 +1,20 @@
+{
+  "title": "折叠面板",
+  "namespace": "mybricks.normal-pc.collapse",
+  "version": "1.0.0",
+  "description": "折叠面板",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

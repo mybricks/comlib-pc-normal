@@ -1,4 +1,4 @@
-import { SorterResult } from "m-ui/lib/table/interface";
+import { SorterResult } from "antd/lib/table/interface";
 
 export interface Pagination {
   total: number;

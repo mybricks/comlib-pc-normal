@@ -1,5 +1,6 @@
 export enum EditorType {
   Text = 'Text',
+  TextArea = 'TextArea',
   Switch = 'Switch',
   Select = 'Select',
   Character = 'Character',
@@ -7,6 +8,9 @@ export enum EditorType {
   Button = 'Button',
   Number = 'Number',
   Map = 'Map',
+  ColorPicker = 'ColorPicker',
+  Icon = 'Icon',
+  Slider = 'Slider',
   Event = '_Event',
 
   EventSwitch = 'EventSwitch'
@@ -15,10 +19,10 @@ export enum EditorType {
 export function Editor<Data>(
   title: string,
   type: EditorType,
-  key?: keyof Data,
+  key?: keyof Data | null,
   editorProps?: any
 ) {
-  const { get, set, outputId, title: eventTitle, schema } = editorProps || {};
+  const { value, title: eventTitle } = editorProps || {};
   let { options } = editorProps || {};
 
   switch (type) {
@@ -34,14 +38,12 @@ export function Editor<Data>(
       break;
     case EditorType.Event:
       return {
-        options: () => ({
-          outputId: outputId
-        }),
         ...editorProps,
         title,
         type
       };
     case EditorType.EventSwitch:
+      const { outputId, schema } = options;
       return {
         title,
         items: [
@@ -50,15 +52,15 @@ export function Editor<Data>(
             type: EditorType.Switch,
             value: {
               get(props: EditorResult<Data>) {
-                if (get) {
-                  return get(props);
+                if (value?.get) {
+                  return value?.get(props);
                 }
                 const { data } = props;
                 return data[key];
               },
               set(props: EditorResult<Data>, value: any) {
-                if (set) {
-                  return set(props, value);
+                if (value?.set) {
+                  return value?.set(props, value);
                 }
                 const { data, output } = props;
                 if (!!value) {
@@ -94,15 +96,15 @@ export function Editor<Data>(
     type,
     value: {
       get(props: EditorResult<Data>) {
-        if (get) {
-          return get(props);
+        if (value?.get) {
+          return value?.get(props);
         }
         const { data } = props;
         return data[key];
       },
       set(props: EditorResult<Data>, value: any) {
-        if (set) {
-          return set(props, value);
+        if (value?.set) {
+          return value?.set(props, value);
         }
         const { data } = props;
         data[key] = value;

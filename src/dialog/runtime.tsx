@@ -1,6 +1,15 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { Button, Modal } from 'antd';
-import { Data, FOOTER_CONTENT_TYPE, Event } from './constants';
+import * as Icons from '@ant-design/icons';
+import {
+  Data,
+  FOOTER_CONTENT_TYPE,
+  Event,
+  InputIds,
+  OutputIds,
+  Location,
+  SlotIds
+} from './constants';
 import css from './runtime.less';
 
 export default function Dialog({
@@ -10,10 +19,12 @@ export default function Dialog({
   slots,
   inputs,
   outputs,
+  logger,
   createPortal
 }: RuntimeParams<Data>) {
-  const ref = useRef();
+  const ref = useRef<any>();
   const [visible, setVisible] = useState(style.display !== 'none');
+  const [dataSource, setDataSource] = useState();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
 
@@ -21,37 +32,40 @@ export default function Dialog({
     // 非编辑模式
     if (env.runtime && inputs) {
       // 打开对话框
-      inputs['open'](() => {
+      inputs[InputIds.Open]((ds) => {
+        setDataSource(ds);
         setVisible(true);
       });
 
-      inputs['title']((val: string) => {
+      inputs[InputIds.SetTitle]((val: string) => {
         if (typeof val !== 'string') {
-          console.error('title 必须为string类型');
+          logger.error('title 必须为string类型');
         } else {
           data.title = val;
         }
       });
 
-      inputs['hideFooter'](() => {
+      inputs[InputIds.HideFooter](() => {
         data.useFooter = false;
       });
 
-      inputs['showFooter'](() => {
+      inputs[InputIds.ShowFooter](() => {
         data.useFooter = true;
       });
 
-      inputs['showTitle'](() => {
+      inputs[InputIds.ShowTitle](() => {
         data.hideTitle = false;
       });
 
-      inputs['hideTitle'](() => {
+      inputs[InputIds.HideTitle](() => {
         data.hideTitle = true;
       });
 
       // 关闭对话框
-      inputs['close'](() => {
-        close();
+      inputs[InputIds.Close](() => {
+        if (visible) {
+          close();
+        }
       });
 
       // 底部按钮动态隐藏/禁用
@@ -74,27 +88,25 @@ export default function Dialog({
         }
       });
     }
-  }, []);
+  }, [visible]);
 
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
+    outputs[OutputIds.Cancel]();
   }, []);
 
-  // 取消事件
+  // 【老】关闭对话框
   const cancel: () => void = useCallback(() => {
     close();
-    if (outputs) {
-      outputs['cancel'](true);
-    }
   }, []);
 
   const eventList = {};
   (data.footerBtns || []).forEach((item) => {
-    const { id } = item;
+    const { id, outputDs } = item;
     eventList[id] = () => {
       if (outputs && outputs[id]) {
-        outputs[id](true);
+        outputs[id](outputDs ? dataSource : true);
       }
     };
   });
@@ -102,10 +114,13 @@ export default function Dialog({
     return createPortal(
       <div className={css.container} ref={ref}>
         <RuntimeRender
-          cfg={{ ...data, bodyStyle: {
-            ...data.bodyStyle,
-            height: slots.container.size ? undefined : '100px'
-          }}}
+          cfg={{
+            ...data,
+            bodyStyle: {
+              ...data.bodyStyle,
+              height: slots.container.size ? undefined : '100px'
+            }
+          }}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -113,6 +128,7 @@ export default function Dialog({
               return ref.current;
             }
           }}
+          env={env}
         />
       </div>
     );
@@ -133,6 +149,7 @@ export default function Dialog({
               return ref.current;
             }
           }}
+          env={env}
         />
       </div>
     );
@@ -148,6 +165,7 @@ export default function Dialog({
             ...eventList,
             cancel
           }}
+          env={env}
         />
       </div>
     );
@@ -160,13 +178,15 @@ interface RuntimeRenderProps {
   event?: Event;
   visible?: boolean;
   getContainer?: any;
+  env: Env;
 }
 const RuntimeRender = ({
   cfg,
   slots,
   event,
   visible,
-  getContainer
+  getContainer,
+  env
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -184,27 +204,38 @@ const RuntimeRender = ({
   const renderFooter = () => {
     if (cfg.footerType === FOOTER_CONTENT_TYPE.BUTTONS) {
       return (footerBtns || []).map((item) => {
-        const { title, id, showText, icon, disabled, hidden, ...res } =
-          item;
+        const {
+          title,
+          id,
+          showText,
+          icon,
+          useIcon,
+          disabled,
+          hidden,
+          location,
+          ...res
+        } = item;
+        const Icon = useIcon && Icons && Icons[icon as string]?.render();
         return (
           <Button
             {...res}
             hidden={hidden}
             disabled={disabled}
             onClick={event?.[id]}
-            // icon={useIcon && <Icon type={icon} />}
             data-btn-id={id}
             key={id}
           >
-            {showText && title}
+            {useIcon && location !== Location.BACK && Icon}
+            {showText && env.i18n(title)}
+            {useIcon && location === Location.BACK && Icon}
           </Button>
         );
       });
     }
 
     return (
-      slots.footer &&
-      slots.footer.render({
+      slots[SlotIds.Footer] &&
+      slots[SlotIds.Footer].render({
         inputs: {
           slotProps(fn) {
             fn(cfg);
@@ -220,11 +251,11 @@ const RuntimeRender = ({
       width={width}
       keyboard={false}
       maskClosable={false}
-      title={hideTitle ? undefined : title}
-      okText={okText}
+      title={hideTitle ? undefined : env.i18n(title)}
+      okText={env.i18n(okText)}
       closable={closable}
       centered={centered}
-      cancelText={cancelText}
+      cancelText={env.i18n(cancelText)}
       wrapClassName={css.container}
       footer={useFooter ? renderFooter() : null}
       onCancel={event?.cancel}

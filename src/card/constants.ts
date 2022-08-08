@@ -15,4 +15,31 @@ export interface Data {
   style: any;
   bodyStyle?: any;
   hoverable?: boolean;
+  cursor?: boolean;
+  useClick?: boolean;
+  outputContent?: string;
 }
+
+export const OutputIds = {
+  Click: 'click'
+};
+
+export const InputIds = {
+  SetTitle: 'title'
+};
+
+export const SlotIds = {
+  Body: 'body',
+  Extra: 'extra'
+};
+
+export const SizeOptions = [
+  {
+    label: '正常',
+    value: 'default'
+  },
+  {
+    label: '小',
+    value: 'small'
+  }
+];

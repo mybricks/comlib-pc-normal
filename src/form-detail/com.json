@@ -1,0 +1,22 @@
+{
+  "title": "描述列表",
+  "namespace": "mybricks.normal-pc.form-detail",
+  "version": "1.0.0",
+  "description": "描述列表",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "slotProps",
+      "title": "插槽参数",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

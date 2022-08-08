@@ -1,0 +1,21 @@
+{
+  "title": "按钮",
+  "namespace": "mybricks.normal-pc.custom-button",
+  "version": "1.0.0",
+  "description": "按钮",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

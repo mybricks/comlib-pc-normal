@@ -1,0 +1,13 @@
+{
+  "loadingText": "请稍等...",
+  "size": "large",
+  "style": {
+    "position": "absolute",
+    "color": "#0075FF",
+    "fontWeight": "normal",
+    "fontSize": 14
+  },
+  "maskStyle": {
+    "backgroundColor": "rgba(0, 0, 0, 0.2)"
+  }
+}

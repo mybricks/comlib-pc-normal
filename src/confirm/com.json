@@ -1,0 +1,46 @@
+{
+  "title": "确认提示",
+  "namespace": "mybricks.normal-pc.tips",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "确认提示对话框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "弹出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancel",
+      "title": "取消",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

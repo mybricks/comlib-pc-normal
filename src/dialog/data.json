@@ -1,6 +1,7 @@
 {
   "okText": "确认",
   "title": "对话框",
+  "hideTitle": false,
   "closable": true,
   "centered": false,
   "useFooter": true,

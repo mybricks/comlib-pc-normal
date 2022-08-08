@@ -1,0 +1,9 @@
+{
+  "mode": "month",
+  "useCustomDateCell": false,
+  "useCustomHeader": false,
+  "useModeSwitch": true,
+  "useYearSelect": true,
+  "useMonthSelect": true,
+  "outputId": "clickDate"
+}

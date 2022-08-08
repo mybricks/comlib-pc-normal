@@ -1,10 +1,12 @@
 {
-  "src": "https://avatars.githubusercontent.com/u/79752242",
-  "evtType": "CUSTOM",
-  "naturalWidth": 414,
-  "naturalHeight": 414,
-  "imgStyle": {
-    "objectPosition": "center center",
-    "objectFit": "contain"
+  "images": [],
+  "dataSource": 1,
+  "configMode": 2,
+  "config": {
+    "width": 200,
+    "height": 200,
+    "preview": false,
+    "margin": [0, 0, 0, 0],
+    "customBorderStyle": {}
   }
 }

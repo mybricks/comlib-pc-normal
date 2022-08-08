@@ -1,0 +1,18 @@
+{
+  "type": "info",
+  "message": "消息提示",
+  "content": "辅助性文字介绍",
+  "isChoose": false,
+  "closable": false,
+  "showIcon": true,
+  "icon": "NormalHomeLine",
+  "color": "#0075ff",
+  "isColor": false,
+  "textColor": "#434343",
+  "showInfo": false,
+  "banner": false,
+  "isClose": true,
+  "openWidth": false,
+  "percentWidth": 100,
+  "width": 500
+}

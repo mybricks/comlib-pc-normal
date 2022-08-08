@@ -1,4 +1,4 @@
-import { ButtonProps } from 'm-ui/es/button';
+import { ButtonProps } from 'antd/es/button';
 
 export enum FOOTER_CONTENT_TYPE {
   NONE,
@@ -41,16 +41,35 @@ export interface Data {
   useFooter: boolean | number;
   footerType: number;
   cancelText: string;
-  width: number;
+  width?: number;
   hideTitle: boolean;
   bodyStyle?: React.CSSProperties;
   footerBtns: (ButtonProps & {
+    id: string;
     useIcon?: boolean;
     showText?: boolean;
     location?: Location;
     dynamicDisabled?: boolean;
     dynamicHidden?: boolean;
     hidden?: boolean;
+    // 输出传入数据
+    outputDs?: boolean;
   })[];
   getContainer?: () => any;
 }
+
+export const InputIds = {
+  Open: 'open',
+  Close: 'close',
+  SetTitle: 'title',
+  HideFooter: 'hideFooter',
+  ShowFooter: 'showFooter',
+  ShowTitle: 'showTitle',
+  HideTitle: 'hideTitle'
+};
+export const OutputIds = {
+  Cancel: 'cancel'
+};
+export const SlotIds = {
+  Footer: 'footer'
+};

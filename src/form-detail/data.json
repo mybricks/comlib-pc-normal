@@ -1,0 +1,12 @@
+{
+  "dataSource": 1,
+  "title": "描述列表的标题",
+  "showTitle": true,
+  "dynamicTitle": false,
+  "size": "default",
+  "layout": "horizontal",
+  "bordered": false,
+  "column": 3,
+  "items": [],
+  "colon": true
+}

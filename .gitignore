@@ -5,3 +5,4 @@ package-lock.json
 .temp-pub
 .vscode
 .DS_Store
+.history

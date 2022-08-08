@@ -1,0 +1,11 @@
+{
+  "asMapArea": false,
+  "style": {
+    "borderColor": "#AAA",
+    "borderWidth": "1px",
+    "borderStyle": "solid",
+    "borderRadius": "10px",
+    "backgroundColor": "#FFF"
+  },
+  "text": "按钮"
+}

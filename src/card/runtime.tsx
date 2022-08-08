@@ -1,14 +1,28 @@
 import React, { useEffect } from 'react';
 import { Card } from 'antd';
-import { Data } from './constants';
+import { Data, InputIds, OutputIds, SlotIds } from './constants';
 
-const RuntimeRender = (props: RuntimeParams<Data>) => {
-  const { data, slots, inputs, env } = props;
-  const { title, useExtra, bordered, size, style, bodyStyle, hoverable } = data;
+const CursorType = {
+  Pointer: 'pointer',
+  Default: 'default'
+};
+export default (props: RuntimeParams<Data>) => {
+  const { data, slots, inputs, env, outputs } = props;
+  const {
+    title,
+    useExtra,
+    bordered,
+    size,
+    style,
+    bodyStyle,
+    hoverable,
+    useClick,
+    outputContent
+  } = data;
 
   useEffect(() => {
-    if (env.runtime && inputs['title']) {
-      inputs['title']((val: string) => {
+    if (env.runtime) {
+      inputs[InputIds.SetTitle]((val: string) => {
         data.title = val;
       });
     }
@@ -16,19 +30,23 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
 
   return (
     <Card
-      title={title}
+      title={env.i18n(title)}
       size={size}
       bodyStyle={bodyStyle}
       bordered={bordered}
-      style={style}
-      extra={useExtra && slots['extra'] ? slots['extra'].render() : undefined}
+      style={{
+        ...style,
+        cursor: data.cursor ? CursorType.Pointer : CursorType.Default
+      }}
+      extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
       hoverable={hoverable}
+      onClick={() => {
+        if (useClick && outputs[OutputIds.Click]) {
+          outputs[OutputIds.Click](outputContent);
+        }
+      }}
     >
-      {slots['body'] && slots['body'].render()}
+      {slots[SlotIds.Body]?.render()}
     </Card>
   );
 };
-
-export default function (props: RuntimeParams<Data>) {
-  return <RuntimeRender {...props} />;
-}
