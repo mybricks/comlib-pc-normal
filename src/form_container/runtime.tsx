@@ -14,7 +14,7 @@ type FromControlInputId = 'validate' | 'getValue'
 export default function ({env, data, inputs, outputs, slots}) {
   const [form] = Form.useForm()
 
-  const childrenInputs = useMemo<{ [id: string]: { [key in FromControlInputId]: () => {}} }>(() => {
+  const childrenInputs = useMemo<{ [id: string]: { [key in FromControlInputId]: (item?: any) => {}} }>(() => {
     return {}
   }, [env.edit])
 
@@ -29,9 +29,9 @@ export default function ({env, data, inputs, outputs, slots}) {
         const id = item.id
         const input = childrenInputs[id]
         return new Promise((resolve, reject) => {
-          input?.validate().returnValidate(validateInfo => {//调用所有表单项的校验
-            item.validateStatus = validateInfo.validateStatus
-            item.help = validateInfo.help
+          input?.validate({ ...item }).returnValidate(validateInfo => {//调用所有表单项的校验
+            item.validateStatus = validateInfo?.validateStatus
+            item.help = validateInfo?.help
             resolve(validateInfo)
           })
         })
@@ -75,6 +75,7 @@ export default function ({env, data, inputs, outputs, slots}) {
     // })
     validate().then(isOk => {
       getValue().then(values => {
+        console.log('提交数据', values)
         outputs['submit'](values)
       })
     })
