@@ -7,7 +7,8 @@ export default function ({
   data,
   inputs,
   outputs,
-  logger
+  logger,
+  onError
 }: RuntimeParams<Data>) {
 
   // if (env.runtime) {
@@ -27,13 +28,15 @@ export default function ({
             { ...env, utils: { ...utils, moment } }
           ]);
         } catch (ex) {
-          console.error('js计算组件运行错误.', ex);
-          logger.error(`${ex}`);
+          //console.error('js计算组件运行错误.', ex)
+          onError(ex)
+          //logger.error(`${ex}`);
         }
       });
     } catch (ex) {
-      console.error('js计算组件运行错误.', ex);
-      logger.error(`${ex}`);
+      onError(ex)
+      // console.error('js计算组件运行错误.', ex);
+      // logger.error(`${ex}`);
     }
   }
   // }

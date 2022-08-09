@@ -61,7 +61,6 @@ export default function ({env, data, inputs, outputs, slots}) {
     // })
     validate().then(isOk => {
       getValue().then(values => {
-        debugger
         outputs['submit'](values)
       })
     })
