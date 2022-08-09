@@ -1,24 +1,38 @@
 import css from './runtime.less'
 
 import {Button, Form} from 'antd'
-import {useCallback, useMemo} from "react";
+import React, { useCallback, useMemo, useRef, useLayoutEffect, useEffect } from "react";
+
+interface FromControlProps {
+  com: any
+  value?: string | number
+  onChange?: (value: string | number | undefined) => void
+}
+
+type FromControlInputId = 'validate' | 'getValue'
 
 export default function ({env, data, inputs, outputs, slots}) {
   const [form] = Form.useForm()
 
-  const childrenInputs = useMemo<{ [id: string]: {} }>(() => {
+  const childrenInputs = useMemo<{ [id: string]: { [key in FromControlInputId]: () => {}} }>(() => {
     return {}
   }, [env.edit])
+
+
+  // useEffect(() => {
+  //   form.setFieldsValue({ item0: 'test', item1: '11' })
+  // }, [])
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
       Promise.all(data.items.map(item => {
         const id = item.id
         const input = childrenInputs[id]
-
         return new Promise((resolve, reject) => {
-          input['validate']().returnValidate(isOk => {//调用所有表单项的校验
-            resolve(isOk)
+          input?.validate().returnValidate(validateInfo => {//调用所有表单项的校验
+            item.validateStatus = validateInfo.validateStatus
+            item.help = validateInfo.help
+            resolve(validateInfo)
           })
         })
       })).then(values => {
@@ -39,7 +53,7 @@ export default function ({env, data, inputs, outputs, slots}) {
         const input = childrenInputs[id]
 
         return new Promise((resolve, reject) => {
-          input['getValue']().returnValue(val => {//调用所有表单项的 getValue/returnValue
+          input?.getValue().returnValue(val => {//调用所有表单项的 getValue/returnValue
             resolve({name: item.name, value: val})
           })
         })
@@ -68,7 +82,7 @@ export default function ({env, data, inputs, outputs, slots}) {
 
   const content = useMemo(() => {
     return slots['content'].render({
-      wrap(comAray: { id, jsx, def, inputs }[]) {
+      wrap(comAray: { id, jsx, def, inputs, outputs }[]) {
         const items = data.items
 
         if (comAray) {
@@ -87,15 +101,8 @@ export default function ({env, data, inputs, outputs, slots}) {
             }
 
             childrenInputs[com.id] = com.inputs
-
-            return (
-              <Form.Item key={com.id}
-                         label={item.label}
-                         name={item.name}
-                         data-formitem={com.id}>
-                {com.jsx}
-              </Form.Item>
-            )
+            
+            return <FromItem com={com} item={item} key={com.id} />
           })
 
           return jsx
@@ -105,7 +112,7 @@ export default function ({env, data, inputs, outputs, slots}) {
   }, [])
 
   const onFinish = (values) => { // 提交成功值输出
-    console.log(values)
+    outputs['submit'](values)
   }
 
   return (
@@ -130,4 +137,27 @@ export default function ({env, data, inputs, outputs, slots}) {
       </Form>
     </div>
   )
+}
+
+const FromItem = (props: { com, item }) => {
+  const { com, item }  = props
+
+  return (
+    <Form.Item
+      label={item.label}
+      name={item.name}
+      data-formitem={com.id}
+      validateStatus={item.validateStatus}
+      help={item.help}>
+      <JSXWrapper com={com} />
+    </Form.Item>
+  )
+}
+
+const JSXWrapper = ({ com, value, onChange }: FromControlProps) => {
+  useLayoutEffect(() => { // 初始化表单项值
+    com.inputs?.setValue(value)
+  }, [value])
+
+  return com.jsx
 }
