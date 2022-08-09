@@ -19,7 +19,10 @@
           "./src/form/com.json",
           "./src/form_container/com.json",
           "./src/form_text/com.json",
-          "./src/select/com.json"
+          "./src/select/com.json",
+          "./src/cascader/com.json",
+          "./src/input-number/com.json",
+          "./src/date-picker/com.json"
         ]
       },
       {
