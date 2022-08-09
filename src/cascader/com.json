@@ -1,0 +1,65 @@
+{
+  "title": "级联选择",
+  "namespace": "mybricks.normal-pc.cascader",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "级联选择",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/form.085afdee65645d49.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onChange",
+      "title": "值变化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "schema": "mybricks.normal-pc.form-container/form-item"
+}
