@@ -1,7 +1,7 @@
 {
   "title": "表单容器",
   "enable": true,
-  "namespace": "mybricks.normal-pc.form-container",
+  "namespace": "mybricks.normal-pc.form-container.0",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.0",

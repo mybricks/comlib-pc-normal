@@ -5,6 +5,7 @@
   "debugger": "pc-spa",
   "comAry": {
     "test": [
+      "./src/form-container/com.json",
       {
         "title": "常规",
         "comAry": [
