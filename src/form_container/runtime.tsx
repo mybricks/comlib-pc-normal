@@ -3,18 +3,18 @@ import css from './runtime.less'
 import {Button, Form} from 'antd'
 import React, { useCallback, useMemo, useRef, useLayoutEffect, useEffect } from "react";
 
-interface FromControlProps {
+interface FormControlProps {
   com: any
   value?: string | number
   onChange?: (value: string | number | undefined) => void
 }
 
-type FromControlInputId = 'validate' | 'getValue'
+type FormControlInputId = 'validate' | 'getValue'
 
 export default function ({env, data, inputs, outputs, slots}) {
   const [form] = Form.useForm()
 
-  const childrenInputs = useMemo<{ [id: string]: { [key in FromControlInputId]: (item?: any) => {}} }>(() => {
+  const childrenInputs = useMemo<{ [id: string]: { [key in FormControlInputId]: (item?: any) => {}} }>(() => {
     return {}
   }, [env.edit])
 
@@ -103,7 +103,7 @@ export default function ({env, data, inputs, outputs, slots}) {
 
             childrenInputs[com.id] = com.inputs
             
-            return <FromItem com={com} item={item} key={com.id} />
+            return <FormItem com={com} item={item} key={com.id} />
           })
 
           return jsx
@@ -140,7 +140,7 @@ export default function ({env, data, inputs, outputs, slots}) {
   )
 }
 
-const FromItem = (props: { com, item }) => {
+const FormItem = (props: { com, item }) => {
   const { com, item }  = props
 
   return (
@@ -155,7 +155,7 @@ const FromItem = (props: { com, item }) => {
   )
 }
 
-const JSXWrapper = ({ com, value, onChange }: FromControlProps) => {
+const JSXWrapper = ({ com, value, onChange }: FormControlProps) => {
   useLayoutEffect(() => { // 初始化表单项值
     com.inputs?.setValue(value)
   }, [value])

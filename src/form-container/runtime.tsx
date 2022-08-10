@@ -5,26 +5,28 @@ export interface Data {
   items: any[]
 }
 
-interface FromControlProps {
+interface FormControlProps {
   com: any
   value?: string | number
   onChange?: (value: string | number | undefined) => void
 }
 
-type FromControlInputId = 'validate' | 'getValue'
+type FormControlInputId = 'validate' | 'getValue'
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots } = props
   const [formRef] = Form.useForm()
 
-  const childrenInputs = useMemo<{ [id: string]: { [key in FromControlInputId]: (item?: any) => {}} }>(() => {
+  const childrenInputs = useMemo<{ [id: string]: { [key in FormControlInputId]: (item?: any) => {}} }>(() => {
     return {}
   }, [env.edit])
 
 
-  // useEffect(() => {
-  //   form.setFieldsValue({ item0: 'test', item1: '11' })
-  // }, [])
+  useLayoutEffect(() => {
+    inputs['initial']((val) => {
+      formRef.setFieldsValue(val)
+    })
+  }, [])
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -96,7 +98,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
             childrenInputs[com.id] = com.inputs
             
-            return <FromItem com={com} item={item} key={com.id} />
+            return <FormItem com={com} item={item} key={com.id} />
           })
 
           return jsx
@@ -118,7 +120,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   )
 }
 
-const FromItem = (props: { com, item }) => {
+const FormItem = (props: { com, item }) => {
   const { com, item }  = props
   return (
     <Form.Item
@@ -132,7 +134,7 @@ const FromItem = (props: { com, item }) => {
   )
 }
 
-const JSXWrapper = ({ com, value, onChange }: FromControlProps) => {
+const JSXWrapper = ({ com, value, onChange }: FormControlProps) => {
   useLayoutEffect(() => { // 初始化表单项值
     com.inputs?.setValue(value)
   }, [value])
