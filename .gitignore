@@ -6,3 +6,5 @@ package-lock.json
 .vscode
 .DS_Store
 .history
+
+yarn.lock
