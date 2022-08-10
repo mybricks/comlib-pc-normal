@@ -1,0 +1,47 @@
+{
+  "title": "表单",
+  "namespace": "mybricks.normal-pc.form-container",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "表单",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/form.085afdee65645d49.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "initial",
+      "title": "初始化表单",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onSubmit",
+      "title": "提交表单",
+      "rels": ["onFinish"],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onFinish",
+      "title": "提交数据输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "拖入表单项",
+      "schema": "mybricks.normal-pc.form-container/form-item"
+    }
+  ]
+}
