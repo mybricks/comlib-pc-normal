@@ -6,7 +6,7 @@ import {
   setPaginationSchema
 } from '../schema';
 import columnEditor from './table-item';
-import { InputIds } from '../constants';
+import { InputIds, OutputIds } from '../constants';
 import {
   batchActionBtnsEditor,
   colActionBtnsEditor,
@@ -15,14 +15,18 @@ import {
 import headerEditor from './table/header';
 import headerTitleEditor from './table/headerTitle';
 import paginationEditor from './table/pagination';
+import toolAreaEditor from './table/toolArea';
 import { rowSelectionEditor } from './table/rowSelection';
 import { columnDataUpdateEditor } from './table/columnDataUpdate';
 import tableStyleEditor from './table/tableStyle';
 import { dragEditor } from './table/drag';
 import addColumnEditor from './table/addColumn';
 import { expandEditor } from './table/expand';
-import { Data } from '../types';
 import { CodeEditor } from './table/codeEditor';
+import { refreshEditor } from './table/refresh';
+import { dynamicColumnEditor } from './table/dynamicColumn';
+import { submitEventEditor } from './table/submitEvent';
+import { Data } from '../types';
 
 function addDataSourceInput({ input, columns }) {
   const dataSchema = getColumnsDataSchema(columns);
@@ -49,32 +53,31 @@ export default {
     setDataSchema({ data, output, input });
     setPaginationSchema({ data, output });
   },
-  ':root': ({}: EditorResult<Data>, ...cateAry) => {
+  '@inputConnected'({ data }, fromPin, toPin) {
+    if (toPin.id === InputIds.SET_DATA_SOURCE) {
+      console.log(fromPin.schema, 'fromppp')
+      if (fromPin.schema.type === 'object' || fromPin.schema.type === 'array') {
+        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
+      } else {
+        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {}
+      }
+    }
+  },
+  ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [addColumnEditor, headerEditor, paginationEditor];
+    cateAry[0].items = [addColumnEditor, headerEditor, toolAreaEditor, paginationEditor];
 
     cateAry[1].title = '样式';
     cateAry[1].items = [tableStyleEditor];
 
     cateAry[2].title = '高级';
     cateAry[2].items = [
-      // {
-      //   title: '事件',
-      //   items: [
-      //     {
-      //       title: '表格数据输出',
-      //       type: '_Event',
-      //       options: () => {
-      //         return {
-      //           outputId: OutputIds.GET_TABLE_DATA
-      //         };
-      //       }
-      //     }
-      //   ]
-      // },
-      ...rowSelectionEditor,
+      // ...submitEventEditor,
+      ...refreshEditor,
+      ...rowSelectionEditor(props),
       ...dragEditor,
       ...columnDataUpdateEditor,
+      ...dynamicColumnEditor,
       ...expandEditor,
       ...CodeEditor
     ];

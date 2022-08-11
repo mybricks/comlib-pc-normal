@@ -1,33 +1,32 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
-// import { runJs } from '../../package/com-utils';
+import { runJs } from '@fangzhou/com-utils';
 import { Table, Tooltip, Pagination } from 'antd';
 import { TablePaginationConfig } from 'antd/es/table';
 import {
   SortableContainer,
   SortableElement,
-  SortableHandle
+  SortableHandle,
 } from 'react-sortable-hoc';
-import { MenuOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
+import { arrayMoveImmutable } from 'array-move';
+import { useObservable } from '@mybricks/rxui';
 import {
   TableCurrentDataSource,
-  CompareFn,
   SorterResult,
-  TableRowSelection
+  TableRowSelection,
 } from 'antd/es/table/interface';
-import css from './runtime.less';
-import { uuid } from '../utils';
-import { getPageInfo, getTemplateRenderScript } from './utils';
-import { useComputed, useObservable } from '@mybricks/rxui';
+import { getPageInfo, getTemplateRenderScript, flat, unFlat } from './utils';
+import { typeCheck, uuid } from '../utils';
+import { setPath } from '../utils/path';
 import { RowSelectionPostion, InputIds, OutputIds, SlotIds } from './constants';
-import { arrayMoveImmutable } from 'array-move';
 import { Data, ResponseData, IColumn } from './types';
 import ColumnRender from './components/ColumnRender';
 import ActionBtns from './components/ActionBtns';
-import { setPath } from '../utils/path';
-
-const { Column } = Table;
+import FilterColumnRender from './components/FilterColumn/index'
+import ColumnsTitleRender from './components/ColumnsTitleRender';
+import css from './runtime.less';
 
 interface Loading {
   spinning: boolean;
@@ -42,56 +41,28 @@ export class TableContent {
   filterMap: any;
 }
 
-export default function ({
-  env,
-  data,
-  inputs,
-  outputs,
-  slots
-}: RuntimeParams<Data>) {
+export default function (props: RuntimeParams<Data>) {
+  const { env,  data, inputs, outputs, slots } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  // const [filterMap, setFilterMap] = useState<any>({})
-  // const filterMap = useRef<any>({});
-  const tableContent: TableContent = useObservable(
-    TableContent,
-    (next) =>
-      next({
-        data,
-        env,
-        outputs,
-        dataSource: [],
-        loading: {
-          spinning: false,
-          tip: data.loadingTip
-        },
-        filterMap: {}
-      }),
-    { to: 'children' }
+  const [dynamicColumn, setDynamicColumn] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
+  const tableContent: TableContent = useObservable(TableContent, (next) =>
+    next({
+      data,
+      env,
+      outputs,
+      dataSource: [],
+      filterMap: {},
+    })
   );
-  // const expandableContent = useObservable(ExpandableContent, (next) =>
-  //   next({
-  //     expandedRowRender: (
-  //       record: Record<string, any>,
-  //       index: number,
-  //       indent: number,
-  //       expanded: boolean
-  //     ) => (
-  //       <ExpandedRowRender
-  //         record={record}
-  //         index={index}
-  //         indent={indent}
-  //         expanded={expanded}
-  //       />
-  //     ),
-  //     rowExpandable: () => true
-  //   })
-  // );
 
   if (data.hasPagination && data.showPaginationTotal) {
     // showTotal为fn，无法放入json。这个其实是数据的一部分
-    data.pagination.showTotal = (total: number) => `共 ${total} 条`;
+    data.pagination.showTotal = (total: number) =>
+      env.i18n({ text: '共 ${total} 条', params: { total } });
   } else {
     delete data.pagination.showTotal;
   }
@@ -117,54 +88,58 @@ export default function ({
         inputs[InputIds.SLOT_PROPS] &&
         inputs[InputIds.SLOT_PROPS]((ds: any) => {
           setTableData(data, ds);
-          tableContent.loading.spinning = false;
+          setLoading(false);
         });
       inputs[InputIds.SET_DATA_SOURCE]((ds: any) => {
         setTableData(data, ds);
-        tableContent.loading.spinning = false;
+        setLoading(false);
       });
 
       inputs[InputIds.END_LOADING](() => {
-        tableContent.loading.spinning = false;
+        setLoading(false);
       });
 
       inputs[InputIds.CLEAR_ROW_SELECTION](() => {
         setSelectedRowKeys([]);
         setSelectedRows([]);
       });
-      // inputs && inputs['configureToolbar']((ds: any) => {
-      //   if (typeCheck(ds, 'object')) {
-      //     data.batchBtns = data.batchBtns.map(item => {
-      //       const config = ds[item.name]
-      //       if (config) {
-      //         return Object.assign(item, config)
-      //       } else {
-      //         return item
-      //       }
-      //     })
-      //   }
-      // });
-
-      // if (data.immediate) {
-      //   const pageInfo = getPageInfo(data);
-      //   fetchData(outputs, data, { ...pageInfo }, env);
-      // }
 
       inputs[InputIds.SET_FILTER_INPUT]((ds) => {
         Object.assign(tableContent.filterMap, ds);
         // setFilterMap((prev) => ({...prev, ds}))
       });
       inputs[InputIds.REFRESH]((ds: any) => {
-        onRefreshTable(ds);
-        // fetchData(outputs, data, {...pageInfo, ...data.queryParams}, env);
+        if (data.jumpToFirstPageWhenRefresh) {
+          onRefreshTable({
+            ...ds,
+            [data.pageNumber || 'current']: 1,
+          });
+        } else {
+          onRefreshTable(ds);
+        }
       });
 
+      // 输出表格数据
       inputs[InputIds.GET_TABLE_DATA] &&
-        inputs[InputIds.GET_TABLE_DATA](() => {
-          if (outputs[OutputIds.GET_TABLE_DATA]) {
-            outputs[OutputIds.GET_TABLE_DATA](tableContent.dataSource);
+        inputs[InputIds.GET_TABLE_DATA]((val, relOutputs) => {
+          const outputFn =
+            relOutputs?.[OutputIds.GET_TABLE_DATA] ||
+            outputs[OutputIds.GET_TABLE_DATA];
+          if (outputFn) {
+            outputFn(tableContent.dataSource);
           }
         });
+
+      // 提交行为-输出表格数据
+      (data.submitActions || []).forEach((item) => {
+        inputs[item.id] &&
+          inputs[item.id]((val, relOutputs) => {
+            const outputFn = relOutputs?.[item.id] || outputs[item.id];
+            if (outputFn) {
+              outputFn(tableContent.dataSource);
+            }
+          });
+      });
 
       // 更新行数据
       inputs[InputIds.UPDATE_COLUMN_DATA] &&
@@ -186,14 +161,14 @@ export default function ({
             }
             return newItem
               ? {
-                  uuid: uuid(),
-                  ...newItem
-                }
+                uuid: uuid(),
+                ...newItem,
+              }
               : oldItem;
           });
           tableContent.dataSource = newDataSource.map((item, index) => ({
             ...item,
-            index: item.id
+            index: item.id,
           }));
         });
 
@@ -219,11 +194,36 @@ export default function ({
           }
         });
       }
+
+      // 设置动态显示列
+      if (data.useDynamicColumn && inputs[InputIds.SET_DYNAMIC_COL]) {
+        inputs[InputIds.SET_DYNAMIC_COL]((ds) => {
+          if (Array.isArray(ds)) {
+            setDynamicColumn(ds.filter((item) => !!item.dataIndex));
+          } else {
+            setDynamicColumn([]);
+          }
+        });
+      }
+      // 设置表格标题
+      if (
+        data.useDynamicTableTitle &&
+        inputs[InputIds.SET_DYNAMIC_TABLE_TITLE]
+      ) {
+        inputs[InputIds.SET_DYNAMIC_TABLE_TITLE]((val) => {
+          if (typeof val === 'string') {
+            data.tableTitle = val;
+          }
+        });
+      }
     }
   }, []);
 
   // 表格刷新前 数据聚合
   const onRefreshTable = useCallback((ds?: any) => {
+    if (!!edit) {
+      return;
+    }
     const pageInfo = getPageInfo(data);
     if (Object.prototype.toString.call(ds) !== '[object Object]') {
       ds = {};
@@ -233,21 +233,29 @@ export default function ({
       data.pagination.current = ds[data.pageNumber];
     }
 
-    data.queryParams = { ...data.queryParams, ...ds };
+    let submitValue = {
+      ...data.queryParams,
+      ...pageInfo,
+      ...ds,
+    };
+    if (data.cleanQueryParamsWhenRefresh) {
+      submitValue = {
+        ...pageInfo,
+        ...ds,
+      };
+    }
+
+    data.queryParams = { ...submitValue };
 
     if (data.hasPagination) {
-      if (data.queryParams.current) {
-        data.pagination.current = ~~data.queryParams.current;
+      if (submitValue.current) {
+        data.pagination.current = ~~submitValue.current;
       }
-      if (data.queryParams.pageSize) {
-        data.pagination.pageSize = ~~data.queryParams.pageSize;
+      if (submitValue.pageSize) {
+        data.pagination.pageSize = ~~submitValue.pageSize;
       }
     }
 
-    const submitValue = {
-      ...pageInfo,
-      ...data.queryParams
-    };
     if (data.sortParams && !submitValue.sortParams) {
       submitValue.sortParams = { ...data.sortParams };
     }
@@ -263,111 +271,110 @@ export default function ({
     submitPropsMethod(submitValue);
   }, []);
 
-  const submitPropsMethod = useCallback((props) => {
+  const submitPropsMethod = (props) => {
     if (data.useLoading) {
-      tableContent.loading.spinning = true;
+      setLoading(true);
     }
 
     outputs[OutputIds.ClickPagination](props);
-  }, []);
+  };
 
   if (env.runtime) {
     inputs[InputIds.GET_ROW_SELECTION] &&
-      inputs[InputIds.GET_ROW_SELECTION](() => {
-        outputs[OutputIds.GET_ROW_SELECTION]({
-          selectedRows,
-          selectedRowKeys
-        });
+      inputs[InputIds.GET_ROW_SELECTION]((val, relOutputs) => {
+        const outputFn =
+          relOutputs?.[OutputIds.GET_ROW_SELECTION] ||
+          outputs[OutputIds.GET_ROW_SELECTION];
+        if (outputFn) {
+          outputFn({
+            selectedRows,
+            selectedRowKeys,
+          });
+        }
       });
+    // 设置展开行
+    if (data.useExpand && inputs[InputIds.SET_EXPANDED_KEYS]) {
+      inputs[InputIds.SET_EXPANDED_KEYS](ds => {
+        let newKeys: string[],
+          isExpanded = false;
+        if (typeof ds === 'string') {
+          newKeys = [ds];
+          isExpanded = expandedRowKeys.includes(ds);
+        }
+        if (typeCheck(ds, 'OBJECT') && ds['uuid']) {
+          newKeys = [ds['uuid']];
+          isExpanded = expandedRowKeys.includes(ds['uuid']);
+        }
+        if (typeCheck(ds, 'Array')) {
+          newKeys = ds.filter(item => typeof item === 'string');
+          isExpanded = newKeys.every(key => expandedRowKeys.includes(key));
+        }
+        if (newKeys) {
+          setExpandedRowKeys(isExpanded ?
+            [...expandedRowKeys]
+              .filter(key => !newKeys.includes(key))
+            :
+            [...expandedRowKeys, ...newKeys]
+              .filter((item, i, self) => item && self.indexOf(item) === i)
+          );
+        }
+      });
+    }
+
+    inputs[InputIds.PAGINATION](() => {
+      outputs['pagination']({
+        [data.pageNumber || 'current']:  data.pagination.current,
+        [data.pageSize || 'pageSize']:  data.pagination.pageSize
+      })
+    })
   }
-  // const getFetchDataParams = () => {
-  //   const pageInfo = getPageInfo(data)
-  //   return { ...pageInfo, ...data.queryParams }
-  // }
 
-  // const fetchData = useCallback((outputs: any, data: Data, queryParams: any, env) => {
-  //   if (data.useLoading) {
-  //     tableContent.loading.spinning = true
-  //   }
-
-  //   const promised = (fn, args) => {
-  //     return new Promise<any>((resolve, reject) => {
-  //       try {
-  //         fn(args, (res: any) => {
-  //           resolve(res);
-  //         })
-  //       } catch (e) {
-  //         console.error(e)
-  //       }
-  //     });
-  //   };
-
-  //   if (outputs && Object.keys(outputs).find(id => id === 'fetchData')) {
-  //     promised(outputs['fetchData'], queryParams).then((res) => {
-  //       setTableData(data, res);
-  //     }).finally(() => {
-  //       tableContent.loading.spinning = false
-  //     })
-  //   }
-
-  //   // if (data.api?.cdnUrl) {
-  //   //   fetchDataForService(data, queryParams, env)
-  //   // } else {
-  //   //   if (outputs && Object.keys(outputs).find(id => id === 'fetchData')) {
-  //   //     promised(outputs['fetchData'], queryParams).then((res) => {
-  //   //       setTableData(data, res);
-  //   //     }).finally(() => {
-  //   //       tableContent.loading.spinning = false
-  //   //     })
-  //   //   }
-  //   // }
-  // }, [])
+  const initDataSource = (dataSource) => {
+    return dataSource.map(({ children, ...rest }) => {
+      if (children && children.length) {
+        return {
+          uuid: uuid(),
+          children: initDataSource(children),
+          ...rest,
+        };
+      } else {
+        return {
+          uuid: uuid(),
+          ...rest,
+        };
+      }
+    });
+  };
 
   const setTableData = useCallback((data: Data, ds: ResponseData) => {
     if (data.onLoadData) {
       try {
         data.columns.forEach(
-          (item) => (data.columns[item.dataIndex || ''] = item)
+          (item) =>
+          ((data.columns as any)[item.dataIndex ? `${item.dataIndex}` : ''] =
+            item)
         );
-        runJs(data.onLoadData, [data, env]);
+        runJs(data.onLoadData, [data, { ...env, utils: { moment } }], { env });
       } catch (error) {
         console.error(error);
       }
     }
-    const { total, dataSource, extraColumns } = ds || {};
+    ds = Array.isArray(ds) ? { dataSource: ds } : ds;
+    const { total, dataSource, extraColumns, queryParams } = ds || {};
+    if (queryParams) {
+      Object.assign(data.queryParams, queryParams);
+    }
     data.extraColumns = extraColumns || data.extraColumns;
     if (dataSource) {
-      tableContent.dataSource = dataSource.map((data: any) => {
-        return {
-          uuid: uuid(),
-          ...data
-        };
-      });
+      tableContent.dataSource = initDataSource(dataSource);
     } else {
       tableContent.dataSource = tableContent.dataSource || [];
     }
     // tableContent.dataSource = dataSource || []
-    if (data.hasPagination && total !== undefined) {
+    if (data.pagination && total !== undefined) {
       data.pagination.total = total || 0;
     }
   }, []);
-
-  // const fetchDataForService = useCallback((data: Data, queryParams: any, env) => {
-  //   const extraParams = extraparamsRuntime({ field: 'extra', env, data })
-  //   serviceRuntime({
-  //     env,
-  //     data,
-  //     params: { ...extraParams, ...queryParams },
-  //     field: 'api'
-  //   }).then((r: any) => {
-  //     setTableData(data, r)
-  //   }).catch(e => {
-  //     tableContent.outputs['resultError'](e)
-  //     console.warn(e)
-  //   }).finally(() => {
-  //     tableContent.loading.spinning = false
-  //   })
-  // }, [])
 
   const paginationChange = useCallback((pagination: TablePaginationConfig) => {
     const { current, pageSize } = pagination;
@@ -375,14 +382,17 @@ export default function ({
       data.pagination.current = current || 1;
       data.pagination.pageSize = pageSize || 20;
 
-      if (data.queryParams[data.pageNumber]) {
-        delete data.queryParams[data.pageNumber];
-      }
+      // if (data.queryParams[data.pageNumber]) {
+      //   delete data.queryParams[data.pageNumber];
+      // }
+      // if (data.queryParams[data.pageSize]) {
+      //   delete data.queryParams[data.pageSize];
+      // }
 
       const submitValue = {
+        ...data.queryParams,
         [data.pageNumber || 'current']: current,
         [data.pageSize || 'pageSize']: pageSize,
-        ...data.queryParams
       };
       if (data.sortParams && !submitValue.sortParams) {
         submitValue.sortParams = { ...data.sortParams };
@@ -397,12 +407,6 @@ export default function ({
         );
       }
       submitPropsMethod(submitValue);
-      // fetchData(
-      //   outputs,
-      //   data,
-      //   {[data.pageNumber || 'current']: current, [data.pageSize || 'pageSize']: pageSize, ...data.queryParams},
-      //   env
-      // );
     }
   }, []);
 
@@ -411,9 +415,16 @@ export default function ({
     if (column?.sorter === true) {
       data.sortParams = {
         order,
-        field
+        field,
       };
-      onRefreshTable();
+      if (data.jumpToFirstPageWhenRefresh) {
+        onRefreshTable({
+          ...data.queryParams,
+          [data.pageNumber || 'current']: 1,
+        });
+      } else {
+        onRefreshTable(data.queryParams);
+      }
     } else {
       data.sortParams = undefined;
     }
@@ -425,7 +436,7 @@ export default function ({
       if (curr.filter) {
         return {
           ...pre,
-          [curr.dataIndex]: curr.filter
+          [`${curr.dataIndex}`]: curr.filter,
         };
       }
       return pre;
@@ -437,28 +448,16 @@ export default function ({
       )
     ) {
       data.filterParams = filter;
-      onRefreshTable();
+      if (data.jumpToFirstPageWhenRefresh) {
+        onRefreshTable({
+          ...data.queryParams,
+          [data.pageNumber || 'current']: 1,
+        });
+      } else {
+        onRefreshTable(data.queryParams);
+      }
     }
   }, []);
-
-  // const sorterChange = useCallback(sorter => {
-  //   const outputModel = {
-  //     type: 'sorter',
-  //     order: sorter.order,
-  //     field: sorter.field
-  //   }
-  //   const columnItem = data.columns.find(item => item.dataIndex === sorter.field)
-  //   if (columnItem?.sorter?.type === 'request') {
-  //     if (data.hasPagination) {
-  //       data.pagination.current = 1
-  //     }
-  //     const dataParams = getFetchDataParams()
-  //     outputs['columnAction'](outputModel, (res) => {
-  //       data.queryParams = { ...data.queryParams, ...res }
-  //       fetchData(outputs, data, { ...dataParams, ...res }, env)
-  //     })
-  //   }
-  // }, [])
 
   const onChange = useCallback(
     (
@@ -467,6 +466,9 @@ export default function ({
       sorter: SorterResult<any>,
       extra: TableCurrentDataSource<any[]>
     ) => {
+      if (env.edit) {
+        return;
+      }
       const { action } = extra;
       if (action === 'paginate') {
         paginationChange(pagination);
@@ -479,6 +481,79 @@ export default function ({
     []
   );
 
+  // hack i18n翻译
+  const formatI18nNumWithJSX = (
+    i18nStr: string,
+    dots: string[],
+    jsxFns: ((str: any) => any)[]
+  ) => {
+    let isUseJSXFn = false;
+    if (!dots.length || !jsxFns.length) {
+      return i18nStr;
+    }
+    const [dot, ...restDots] = dots;
+    const [jsxFn, ...restFns] = jsxFns;
+    if (dot === '') {
+      return formatI18nNumWithJSX(i18nStr, restDots, restFns);
+    }
+    const list = i18nStr.split(dot);
+    return list.map((str, idx) => {
+      if (idx === 0) {
+        return formatI18nNumWithJSX(str, restDots, restFns);
+      }
+      const node = (
+        <>
+          {isUseJSXFn
+            ? dot
+            : jsxFn(formatI18nNumWithJSX(dot, restDots, restFns))}
+          {formatI18nNumWithJSX(str, restDots, restFns)}
+        </>
+      );
+      isUseJSXFn = true;
+      return node;
+    });
+  };
+  const formatActionBtn = (btns: any[]) => {
+    return (btns || []).map((item) => {
+      const { popConfig } = item || {};
+      return {
+        ...(item || {}),
+        title: env.i18n(item?.title),
+        popConfig: {
+          ...(popConfig || {}),
+          popTitle: env.i18n(popConfig?.popTitle),
+          popContent: env.i18n(popConfig?.popContent),
+          popOkText: env.i18n(popConfig?.popOkText),
+          popCancelText: env.i18n(popConfig?.popCancelText),
+        },
+      };
+    });
+  };
+  const formatColumnItem = (columnItem: IColumn) => {
+    const actionBtns = [...(columnItem.actionBtns || [])];
+    const mappingEnum = {
+      ...(columnItem.mappingEnum || {}),
+    };
+    const colorEnum = { ...(columnItem.colorEnum || {}) };
+    const tagEnum = { ...(columnItem.tagEnum || {}) };
+    Object.keys(mappingEnum).forEach((key) => {
+      mappingEnum[key] = env.i18n(mappingEnum[key]);
+      mappingEnum[env.i18n(key)] = env.i18n(mappingEnum[key]);
+    });
+    Object.keys(colorEnum).forEach((key) => {
+      colorEnum[env.i18n(key)] = colorEnum[key];
+    });
+    Object.keys(tagEnum).forEach((key) => {
+      tagEnum[env.i18n(key)] = tagEnum[key];
+    });
+    return {
+      ...columnItem,
+      mappingEnum,
+      colorEnum,
+      tagEnum,
+      actionBtns: formatActionBtn(actionBtns),
+    };
+  };
   const renderCell = useCallback(
     (
       columnItem: IColumn,
@@ -492,7 +567,8 @@ export default function ({
     ) => {
       // const content = formatContent({ columnItem: {...columnItem}, value, record, index, colIndex });
       const columnRenderProps = {
-        columnItem,
+        tableContent,
+        columnItem: formatColumnItem(columnItem),
         value,
         record,
         index,
@@ -500,264 +576,56 @@ export default function ({
         env,
         slots,
         outputs,
-        data
+        data,
       };
 
       const columnView = <ColumnRender {...columnRenderProps} />;
       // Todo 大数据量 性能问题
-      if (
-        columnItem.useTooltip &&
-        ['text', 'color', 'link'].includes(columnItem.contentType)
-      ) {
+      if (columnItem.useTooltip) {
+        let title = value;
+        if (columnItem.contentType === 'date' && value !== undefined) {
+          const formatter = env.i18n(
+            columnItem?.dateConfig?.formatter || 'Y-MM-DD'
+          );
+          title = moment(value).isValid()
+            ? moment(value).format(formatter)
+            : moment(parseInt(value)).format(formatter);
+        }
         return (
           <Tooltip
             placement="topLeft"
-            title={columnView}
+            title={
+              columnItem.tooltipKey
+                ? `${record[columnItem.tooltipKey]}`
+                : `${title}`
+            }
             overlayClassName={css.ellipsisTooltip}
-            // 挂载到table上
-            // getTooltipContainer={(node) => {
-            //   return getParentNodeByTag(node, 'table');
-            // }}
+          // 挂载到table上
+          // getTooltipContainer={(node) => {
+          //   return getParentNodeByTag(node, 'table');
+          // }}
           >
-            <span className={css.ellipsisWrap}>{columnView}</span>
+            <span>{columnView}</span>
           </Tooltip>
         );
       }
-
       return columnView;
     },
-    []
+    [data.isEditing]
   );
 
-  const columns = useComputed(() => {
-    const renderTtl = (cItem: IColumn) => {
-      return cItem.hasTip ? (
-        <div>
-          <span style={{ marginRight: '6px' }}>{cItem.title}</span>
-          <Tooltip placement="topLeft" title={cItem.tip}>
-            <InfoCircleOutlined />
-          </Tooltip>
-        </div>
-      ) : (
-        cItem.title
-      );
-    };
-    // 获取列数据
-    const getColumns = () => {
-      const res = [...(data.columns || [])];
-      // 合并额外列数据
-      if (data.extraColumns && Array.isArray(data.extraColumns)) {
-        const uid = uuid();
-        const defaultColItem = {
-          title: '新增',
-          dataIndex: `${uid}`,
-          ellipsis: true,
-          width: 140,
-          key: uid,
-          uuid: uid,
-          contentType: 'text',
-          visible: true
-        };
-        data.extraColumns.forEach((colItem) => {
-          if (!colItem) {
-            return;
-          }
-          let { index, ...item } = colItem;
-          if (!index || index === -1) {
-            index = res.length;
-          } else {
-            index = index - 1;
-          }
-          res.splice(index, 0, {
-            ...defaultColItem,
-            ...item
-          });
-        });
-      }
-      if (data.draggable) {
-        res.splice(0, 0, {
-          title: '',
-          dataIndex: 'fzDraggable',
-          width: 30,
-          className: `${css.dragVisible} column-draggle`,
-          render: () => <DragHandle />
-        } as any);
-      }
-      return res;
-    };
-
-    return getColumns().map((cItem: IColumn, colIndex) => {
-      let sorter: boolean | CompareFn<any> | undefined;
-      let ellipsis;
-
-      if (cItem.visible === false) {
-        return null;
-      }
-
-      if (
-        cItem.ellipsis &&
-        ['text', 'color', 'link'].includes(cItem.contentType)
-      ) {
-        ellipsis = true;
-        if (cItem.useTooltip) {
-          ellipsis = { showTitle: false };
-        }
-      } else {
-        ellipsis = false;
-      }
-
-      if (cItem.sorter?.enable) {
-        switch (cItem.sorter.type) {
-          case 'length':
-            sorter = (a, b) => {
-              if (!a[cItem.dataIndex] || !b[cItem.dataIndex]) {
-                return 0;
-              }
-              return a[cItem.dataIndex].length - b[cItem.dataIndex].length;
-            };
-            break;
-          case 'size':
-            sorter = (a, b) => {
-              if (!a[cItem.dataIndex] || !b[cItem.dataIndex]) {
-                return 0;
-              }
-              return a[cItem.dataIndex] - b[cItem.dataIndex];
-            };
-            break;
-          case 'date':
-            sorter = (a, b) => {
-              if (!a[cItem.dataIndex] || !b[cItem.dataIndex]) {
-                return 0;
-              }
-              return (
-                moment(a[cItem.dataIndex]).valueOf() -
-                moment(b[cItem.dataIndex]).valueOf()
-              );
-            };
-            break;
-          default:
-            sorter = true;
-            break;
-        }
-      }
-      if (cItem.filter?.enable && cItem.filter?.filterSource !== 'remote') {
-        tableContent.filterMap[cItem.dataIndex] = cItem.filter.options;
-      }
-
-      const onFilter =
-        cItem.filter?.type !== 'request'
-          ? (value, record) => {
-              return record[cItem.dataIndex] == value;
-            }
-          : null;
-
-      return (
-        <Column
-          {...(cItem as any)}
-          className={`${css['column-min-width']} ${cItem.className}`}
-          title={renderTtl(cItem)}
-          ellipsis={ellipsis}
-          key={cItem.dataIndex}
-          filterMultiple={cItem.filter?.filterType !== 'single'}
-          render={
-            cItem.render
-              ? cItem.render
-              : (text, record, index) => {
-                  return renderCell(
-                    cItem,
-                    // dataIndex为空时text=record，会导致错误
-                    // 当dataIndex为空时，value设置为''
-                    cItem.dataIndex ? text : '',
-                    record,
-                    index,
-                    data.draggable ? colIndex - 1 : colIndex,
-                    slots,
-                    outputs,
-                    data
-                  );
-                }
-          }
-          showSorterTooltip={false}
-          sorter={sorter}
-          filters={tableContent.filterMap[cItem.dataIndex]}
-          onFilter={onFilter}
-          onHeaderCell={(): any => {
-            return {
-              'data-table-th-idx': colIndex
-            };
-          }}
-        />
-      );
-    });
-  });
-
-  // const onSelectChange = (selectedRowKeys) => {
-  //   setSelectedRowKeys(selectedRowKeys);
-  //   outputs['rowSelection'](getSelectedRows(selectedRowKeys));
-  // };
-
-  // const handleClear = () => {
-  //   setSelectedRowKeys([]);
-  // };
-
-  // const handleInvert = () => {
-  //   const selected = tableContent.dataSource
-  //     .filter((record) => !selectedRowKeys.includes(record.uuid))
-  //     .map((item) => item.uuid);
-  //   setSelectedRowKeys(selected);
-  // };
-
-  // const getSelectedRows = (keys) => {
-  //   return tableContent.dataSource.filter((record) =>
-  //     keys.includes(record.uuid)
-  //   );
-  // };
-
-  // const renderBatchBtns = () => {
-  //   if (Array.isArray(data.batchBtns)) {
-  //     return data.batchBtns.map((item, idx) => (
-  //       <Button
-  //         data-batch-action-btn
-  //         key={item.id}
-  //         type='link'
-  //         size='small'
-  //         disabled={item.disabled}
-  //         onClick={() => {
-  //           if (env?.runtime) {
-  //             selectedRowKeys.length !== 0 ? outputs[item.id](getSelectedRows(selectedRowKeys)) : message.error('请先选择要操作的行')
-  //           }
-  //         }}
-  //       >
-  //         {item.name}
-  //       </Button>
-  //     ));
-  //   }
-  // };
-
-  // const renderSelectActions = () => {
-  //   return (
-  //     <div data-select-action-container className={css['select-action-container']}>
-  //       <span className={css['info-part']}>
-  //         <span className={css['icon-wrapper']}>
-  //           <InfoCircleOutlined style={{fontSize: '14px', color: '#8ccff8'}}/>
-  //         </span>
-  //         <span className={css['desc-wrapper']}>
-  //           已选择
-  //           <span style={{padding: '0 6px', color: '#8ccff8', fontWeight: 'bold'}}>{selectedRowKeys.length}</span>项
-  //         </span>
-  //       </span>
-  //       <span className={css['btn-part']}>
-  //         <Button type='link' size='small' onClick={handleClear}>
-  //           清空
-  //         </Button>
-  //         <Button type='link' size='small' onClick={handleInvert}>
-  //           反选
-  //         </Button>
-  //         {renderBatchBtns()}
-  //       </span>
-  //     </div>
-  //   );
-  // };
+  const renderColumns = () => {
+    return ColumnsTitleRender({
+      ...props,
+      dynamicColumn,
+      tableContent,
+      renderCell
+    })
+  };
+  // hack: fix编辑时数据未及时响应
+  const renderColumnsWhenEdit = useCallback(() => {
+    return renderColumns();
+  }, [env.runtime ? undefined : JSON.stringify(data.columns)]);
 
   // 顶部显示批量操作按钮
   const useTopRowSelection =
@@ -783,21 +651,45 @@ export default function ({
           <div className={css.selectedWrap}>
             <ActionBtns
               colIndex={-1}
-              actionBtns={data.batchBtns}
+              actionBtns={formatActionBtn(data.batchBtns)}
               record={{
                 selectedRows,
-                selectedRowKeys
+                selectedRowKeys,
               }}
               btnWrapDataSetKey={false}
               btnDataSetKey="table-batch-btn"
+              tableContent={tableContent}
             />
             <div className={css.selectedInfo}>
-              已选中
-              <span className={css.blue} style={{ marginLeft: 2 }}>
-                {selectedRowKeys.length}
-              </span>
-              {data.rowSelectionLimit ? `/${data.rowSelectionLimit}` : ''}
-              <span style={{ marginLeft: 2 }}>项</span>
+              {formatI18nNumWithJSX(
+                env.i18n({
+                  text: '已选中${selected}${limit}项',
+                  params: {
+                    selected: selectedRowKeys.length,
+                    limit: data.rowSelectionLimit
+                      ? `/${data.rowSelectionLimit}`
+                      : '',
+                  },
+                }),
+                [
+                  `${selectedRowKeys.length}`,
+                  data.rowSelectionLimit ? `/${data.rowSelectionLimit}` : '',
+                ],
+                [
+                  (str) => (
+                    <span
+                      className={css.blue}
+                      style={{
+                        marginLeft: 2,
+                        marginRight: data.rowSelectionLimit ? 0 : 2,
+                      }}
+                    >
+                      {str}
+                    </span>
+                  ),
+                  (str) => <span style={{ marginLeft: 2 }}>{str}</span>,
+                ]
+              )}
             </div>
           </div>
         </div>
@@ -806,32 +698,30 @@ export default function ({
   };
 
   // 表格头部按钮渲染
-  const renderTableBtns = useComputed(() => {
+  const renderTableBtns = () => {
     if (!(data.useActionBtns && data.actionBtns && data.actionBtns.length)) {
       return;
     }
     return (
-      <div
-        className={classnames(css.width100, css.flex, css.flexRowReverse)}
-        data-table-header-action
-      >
+      <div data-table-header-action>
         <ActionBtns
           colIndex={-1}
-          actionBtns={data.actionBtns}
+          actionBtns={formatActionBtn(data.actionBtns)}
           record={{
             queryParams: data.queryParams,
             dataSource: tableContent.dataSource,
-            pagination: data.pagination
+            pagination: data.pagination,
           }}
           btnWrapDataSetKey={false}
           btnDataSetKey="table-header-btn"
+          tableContent={tableContent}
         />
       </div>
     );
-  });
+  };
 
   // 表格标题渲染
-  const renderTableTitle = useComputed(() => {
+  const renderTableTitle = () => {
     if (!data.useTableTitle) {
       return;
     }
@@ -842,24 +732,30 @@ export default function ({
           css.width100,
           css.title,
           data.useRowSelection &&
-            (data.rowSelectionPostion || []).includes(
-              RowSelectionPostion.TOP
-            ) &&
-            css.marginBottom
+          (data.rowSelectionPostion || []).includes(
+            RowSelectionPostion.TOP
+          ) &&
+          css.marginBottom
         )}
         style={data.tableTitleStyle}
         key="table-header-title"
       >
-        {data.tableTitle}
+        {env.i18n(data.tableTitle)}
         {data.useTableTitleWithCount && (
           <span className={css.totalTipWrap}>
-            （共<span className={css.blue}>{data.pagination.total}</span>
-            条）
+            {formatI18nNumWithJSX(
+              env.i18n({
+                text: '（共${total}条）',
+                params: { total: data.pagination.total },
+              }),
+              [`${data.pagination.total}`],
+              [(str) => <span className={css.blue}>{str}</span>]
+            )}
           </span>
         )}
       </div>
     );
-  });
+  };
 
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {
@@ -878,7 +774,7 @@ export default function ({
       if (!data.unAutoSelect) {
         outputs['rowSelection']({
           selectedRows,
-          selectedRowKeys
+          selectedRowKeys,
         });
       }
     },
@@ -907,7 +803,7 @@ export default function ({
         return { disabled: true };
       }
       return null;
-    }
+    },
   };
 
   // 支持拖拽
@@ -918,20 +814,36 @@ export default function ({
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     const { dataSource } = tableContent;
+    const flatDataSource = flat(dataSource);
     if (oldIndex !== newIndex) {
-      const newData = arrayMoveImmutable(
-        [].concat(dataSource),
+      const newFlatDataSource = arrayMoveImmutable(
+        [].concat(flatDataSource),
         oldIndex,
         newIndex
       ).filter((el) => !!el);
-      tableContent.dataSource = newData;
-      outputs[OutputIds.DRAG_FINISH](newData);
+      const newDataSource = unFlat(newFlatDataSource);
+      tableContent.dataSource = newDataSource;
+      const { parent, ...current } = newFlatDataSource[newIndex];
+      const index = newDataSource.findIndex((ele) => {
+        return ele.uuid === parent || (!parent && current.uuid === ele.uuid);
+      });
+      if (data.useDrapItem) {
+        outputs[OutputIds.DRAG_FINISH]({
+          data: newDataSource,
+          index,
+          current,
+          pagination: data.pagination,
+        });
+      } else {
+        outputs[OutputIds.DRAG_FINISH](newDataSource);
+      }
     }
   };
 
   const DraggableContainer = (props) => (
     <SortableContainerNew
-      useDragHandle
+      // useDragHandle
+      distance={2}
       disableAutoscroll
       helperClass={css.rowDragging}
       onSortEnd={onSortEnd}
@@ -939,31 +851,55 @@ export default function ({
     />
   );
 
+  const getIndex = (dataSource, restProps) => {
+    return flat(dataSource).findIndex(({ uuid }) => {
+      return uuid === restProps['data-row-key'];
+    });
+  };
+
   const DraggableBodyRow = ({ className, style, ...restProps }) => {
     const { dataSource } = tableContent;
+
     // function findIndex base on Table rowKey props and should always be a right array index
-    const index = dataSource.findIndex((x) => {
-      return x.uuid === restProps['data-row-key'];
-    });
+    // const index = dataSource.findIndex((x) => {
+    //   return x.uuid === restProps["data-row-key"];
+    // });
+
+    const index = getIndex(dataSource, restProps);
     return <SortableItem index={index} {...restProps} />;
   };
   // 是否显示分页 总数为0时不显示分页
   const isShowPagination = !!(data.hasPagination && data.pagination.total);
   // 设计态数据mock
-  const defaultDataSource = useMemo(() => {
-    const mockData = {
+  const mockData = useMemo(() => {
+    return {
       uuid: uuid(),
       guid: 0,
     };
-    data.columns.forEach(item => {
-      if (Array.isArray(item.dataIndex)) {
-        setPath(mockData, item.dataIndex.join('.'), `${item.title}1`,false);
-      } else {
-        mockData[item.dataIndex] = `${item.title}1`;
-      }
-    });
-    return [mockData];
   }, []);
+  const defaultDataSource = useMemo(() => {
+    const setDefaultDataSource = (columns) => {
+      if (Array.isArray(columns)) {
+        columns.forEach((item) => {
+          let defaultValue: any = `${item.title}1`;
+          if (item.contentType === 'date') {
+            defaultValue = moment().toString();
+          }
+          if (item.contentType === 'group') {
+            setDefaultDataSource(item.children);
+            return;
+          }
+          if (Array.isArray(item.dataIndex)) {
+            setPath(mockData, item.dataIndex.join('.'), defaultValue, false);
+          } else {
+            mockData[item.dataIndex] = defaultValue;
+          }
+        });
+      }
+    }
+    setDefaultDataSource(data.columns);
+    return [mockData];
+  }, [data.columns]);
 
   return (
     <div className={css.table}>
@@ -972,16 +908,28 @@ export default function ({
         className={classnames(
           css.headerContainer,
           useTopRowSelection && css.flexDirectionColumn,
-          (useTopRowSelection || data.useTableTitle || data.useActionBtns) &&
-            css.marginBottom
+          (useTopRowSelection || data.useTableTitle || data.useActionBtns || data.useColumnSetting) &&
+          css.marginBottom
         )}
-        // style={data.tableTitleContainerStyle}
+      // style={data.tableTitleContainerStyle}
       >
-        {renderTableTitle}
-        {(useTopRowSelection || (data.useActionBtns && data.actionBtns)) && (
+        {renderTableTitle()}
+        {(useTopRowSelection || (data.useActionBtns && data.actionBtns) || data.useColumnSetting) && (
           <div className={classnames(css.actionBtnsWrap, css.width100)}>
-            {useTopRowSelection && <RenderBatchBtns />}
-            {renderTableBtns}
+            {/* 渲染顶部操作按钮 */}
+            <div data-table-header-topRowSelection>
+              {useTopRowSelection && RenderBatchBtns()}
+            </div>
+            <div className={classnames(css.width100, css.flex, css.flexRowReverse)}>
+              {/* 渲染工作区tools */}
+              <div data-table-header-tools>
+                <FilterColumnRender data={data} />
+              </div>
+              {/* 渲染操作按钮 */}
+              <div data-table-header-tablebtns>
+                {renderTableBtns()}
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -989,7 +937,10 @@ export default function ({
       {/* {data.useRowSelection && renderSelectActions()} */}
       <Table
         dataSource={edit ? defaultDataSource : tableContent.dataSource}
-        loading={tableContent.loading}
+        loading={{
+          tip: data.loadingTip,
+          spinning: loading,
+        }}
         rowKey={data.rowKey || 'uuid'}
         size={data.size as any}
         bordered={data.bordered}
@@ -999,24 +950,33 @@ export default function ({
         showHeader={data.showHeader === false && env.runtime ? false : true}
         scroll={{
           x: '100%',
-          y: data.scroll.y ? data.scroll.y : void 0
+          y: data.scroll.y ? data.scroll.y : void 0,
         }}
         onRow={data.onRow}
         expandable={
           data.useExpand && slots[SlotIds.EXPAND_CONTENT]
             ? {
-                expandedRowKeys: edit ? [defaultDataSource[0].uuid] : undefined,
-                expandedRowRender: (record) => {
-                  return slots[SlotIds.EXPAND_CONTENT].render({
-                    inputs: {
-                      slotProps(fn) {
-                        fn(record);
-                      }
-                    }
-                  });
+              expandedRowKeys: edit ? [defaultDataSource[0].uuid] : expandedRowKeys, //增加动态设置
+              expandedRowRender: (record) => {
+                return slots[SlotIds.EXPAND_CONTENT].render({
+                  inputs: {
+                    slotProps(fn) {
+                      fn(record);
+                    },
+                  },
+                });
+              },
+              // 兼容展开/收起图标控制
+              onExpand: (isExpanded, record) => {
+                const currentKey = record['uuid'];
+                if (isExpanded) {
+                  setExpandedRowKeys([...expandedRowKeys, currentKey]);
+                } else {
+                  setExpandedRowKeys([...expandedRowKeys].filter(key => key !== currentKey));
                 }
-                //
               }
+              //
+            }
             : undefined
         }
         // expandable={data.expandable ? expandableContent : void 0}
@@ -1028,16 +988,16 @@ export default function ({
         components={
           data.draggable
             ? {
-                body: {
-                  wrapper: DraggableContainer,
-                  row: DraggableBodyRow
-                }
-              }
+              body: {
+                wrapper: DraggableContainer,
+                row: DraggableBodyRow,
+              },
+            }
             : null
         }
         onChange={onChange}
       >
-        {columns}
+        {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
       </Table>
       <div
         className={classnames(
@@ -1045,14 +1005,14 @@ export default function ({
           (data.hasPagination || useBottomRowSelection) && css.marginTop
         )}
       >
-        {useBottomRowSelection && <RenderBatchBtns />}
+        {useBottomRowSelection && RenderBatchBtns()}
         {isShowPagination && (
           <Pagination
             {...data.pagination}
             onChange={(current, pageSize) => {
               onChange({ current, pageSize }, {}, data.sortParams, {
                 action: 'paginate',
-                currentDataSource: []
+                currentDataSource: [],
               });
             }}
           />

@@ -7,12 +7,19 @@ export const CodeEditor = [
     type: 'code',
     options: {
       theme: 'light',
-      title: '数据赋值-代码编辑',
+      title: '代码编辑',
       comments: defaultCodeAnnotation,
       language: 'javascript',
       width: 600,
       minimap: {
         enabled: false
+      },
+      babel: true,
+      eslint: {
+        parserOptions: {
+          ecmaVersion: '2020',
+          sourceType: 'module'
+        }
       }
     },
     value: {

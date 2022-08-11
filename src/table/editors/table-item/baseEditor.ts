@@ -1,6 +1,9 @@
+import Tree from '../../../components/editorRender/fieldSelect';
 import { uuid } from '../../../utils';
+import { InputIds } from '../../constants';
 import { getActionSchema, setCol, setDataSchema } from '../../schema';
 import { Data } from '../../types';
+import { getColumnItem } from '../../utils';
 import { setLinkColAction } from './item/link';
 
 function removeActionBtns(actionBtns, output) {
@@ -26,7 +29,7 @@ const BaseEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item && item.title;
         },
         set(
@@ -42,14 +45,28 @@ const BaseEditor = {
     },
     {
       title: '字段',
-      type: 'Text',
+      type: 'editorRender',
       description: '与后端返回数据字段对应',
+      options: {
+        render: Tree
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
-          return ret;
+          const schema = data[`input${InputIds.SET_DATA_SOURCE}Schema`] || {};
+          let columnsSchema = {};
+          if (schema.type === 'array') {
+            columnsSchema = schema;
+          } else if (schema.type === 'object') {
+            const { properties = {} } = data[`input${InputIds.SET_DATA_SOURCE}Schema`] || {};
+            const dataSourceKey = Object.keys(properties).find(key => properties[key].type === 'array');
+            if (dataSourceKey) {
+              columnsSchema = properties[dataSourceKey].items;
+            }
+          }
+          return { field: ret,  schema: columnsSchema }
         },
         set(
           { data, focusArea, output, input }: EditorResult<Data>,
@@ -74,22 +91,28 @@ const BaseEditor = {
         { label: '状态点', value: 'badge' },
         { label: '链接', value: 'link' },
         { label: '标签', value: 'tag' },
+        { label: '日期', value: 'date' },
         { label: '按钮组', value: 'action' },
         { label: '图片', value: 'image' },
+        { label: '开关', value: 'switch' },
         { label: '自定义插槽', value: 'slotItem' },
+        { label: '分组', value: 'group' },
         // { label: '自定义渲染', value: 'custom' }
       ],
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          return data.columns[focusArea.dataset.tableThIdx].contentType;
+          return getColumnItem(data, focusArea).contentType;
         },
         set(
           { data, focusArea, output, input, slot }: EditorResult<Data>,
           value
         ) {
           if (!focusArea) return;
-          const column = data.columns[focusArea.dataset.tableThIdx];
+          const column = getColumnItem(data, focusArea);
+          if (value === 'group') {
+            column.children = column.children || [];
+          }
 
           if (value === 'action') {
             column.title = '操作';
@@ -125,6 +148,32 @@ const BaseEditor = {
             }
           }
 
+          if (value === 'switch') {
+            if (column.sorter?.enable) {
+              column.sorter.enable = false;
+            }
+
+            if (!column?.switchConfig?.id) {
+              const id = uuid();
+              column.switchConfig = {
+                id,
+              };
+            }
+            const paramRules = {
+              type: 'object',
+              properties: {
+                checked: {
+                  title: '当前状态',
+                  type: 'boolean'
+                },
+                record: getActionSchema(data)
+              }
+            };
+            output.add(column?.switchConfig?.id, column.title, paramRules);
+          } else {
+            output.remove(column?.switchConfig?.id);
+          }
+
           // if (value === 'custom') {
           //   if (column.sorter?.enable) {
           //     column.sorter.type = 'request';
@@ -154,7 +203,7 @@ const BaseEditor = {
             }
           }
 
-          column.contentType = value;
+          setCol(data, focusArea, value, 'contentType');
           setDataSchema({ data, input, output });
           setLinkColAction({ data, focusArea, output });
         }

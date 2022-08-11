@@ -17,6 +17,7 @@ interface RuntimeParams<T> {
   logger: any
   createPortal: any
   title?: string
+  onError: any
 }
 
 interface EditorResult<T> {

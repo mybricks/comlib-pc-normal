@@ -1,0 +1,34 @@
+{
+  "title": "对象合并",
+  "visibility": true,
+  "namespace": "fangzhou.normal-pc.data.object-merge",
+  "author": "",
+  "author_name": "",
+  "version": "1.0.0",
+  "description": "对象合并",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/java-script.dd6d0de51f7fc441.svg",
+  "editors": "./editors.ts",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "rtType": "js",
+  "docs": "https://docs.corp.kuaishou.com/k/home/VYA7eYQyTI9o/fcAD30unkqiVHbszm-osq9jAr#section=h.3bvg8wlpuaug",
+  "inputs": [
+    {
+      "id": "input0",
+      "title": "输入项0",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "maxConnections": 1,
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

@@ -28,7 +28,7 @@ const TagRender = (props: Props): JSX.Element => {
     const val = columnItem.mappingEnum[item] || item;
     return (
       <Tag
-        color={columnItem.tagEnum[item] || ''}
+        color={columnItem.tagEnum[item] || columnItem.tagEnum[val] || ''}
         key={val}
         className={css.tagItem}
       >

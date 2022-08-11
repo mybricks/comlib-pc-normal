@@ -1,5 +1,6 @@
 import { setCol } from '../../schema';
 import { Data } from '../../types';
+import { getColumnItem } from '../../utils';
 
 const StyleEditor = {
   title: '样式配置',
@@ -8,9 +9,14 @@ const StyleEditor = {
       title: '宽度(px)',
       type: 'Text',
       description: '列宽（像素）,若填写自动或不填写则组件默认分配宽度',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.contentType !== 'group';
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item && (item.width || '自动');
         },
         set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -35,7 +41,7 @@ const StyleEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.align || 'left';
         },
         set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -53,18 +59,20 @@ const StyleEditor = {
         { value: 'left', label: '左固定' },
         { value: 'right', label: '右固定' }
       ],
-      // ifVisible({ data, focusArea }: EditorResult<Data>) {
-      //   const item = data.columns[focusArea.dataset.tableThIdx];
-      //   return (
-      //     focusArea.dataset.tableThIdx === 0 ||
-      //     focusArea.dataset.tableThIdx === data.columns.length - 1 ||
-      //     !!item.fixed
-      //   );
-      // },
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.contentType !== 'group';
+        // return (
+        //   focusArea.dataset.tableThIdx === 0 ||
+        //   focusArea.dataset.tableThIdx === data.columns.length - 1 ||
+        //   !!item.fixed
+        // );
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.fixed;
         },
         set({ data, focusArea }, value: string) {

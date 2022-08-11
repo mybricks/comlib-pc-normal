@@ -1,5 +1,5 @@
-import { OutputIds } from '../../constants';
-import { setPaginationSchema } from '../../schema';
+import { InputIds, OutputIds } from '../../constants';
+import { setDataSchema, setPaginationSchema } from '../../schema';
 import { Data } from '../../types';
 
 const paginationEditor = {
@@ -20,8 +20,47 @@ const paginationEditor = {
         get({ data }: EditorResult<Data>) {
           return data.hasPagination;
         },
-        set({ data }: EditorResult<Data>, value: boolean) {
+        set({ data, input, output }: EditorResult<Data>, value: boolean) {
           data.hasPagination = value;
+          setDataSchema({ data, input, output });
+
+          if (value) {
+            const schema = {
+              title: '分页参数',
+              type: 'object',
+              properties: {
+                [data.pageNumber || 'current']: {
+                  title: '当前页',
+                  type: 'number'
+                },
+                [data.pageSize || 'pageSize']: {
+                  title: '每页条数',
+                  type: 'number'
+                }
+              }
+            };
+            input.add(InputIds.PAGINATION, '表格分页', schema);
+            output.add('pagination', '完成', schema);
+            input.get(InputIds.PAGINATION).setRels(['pagination']);
+          } else {
+            input.remove(InputIds.PAGINATION);
+            output.remove('pagination');
+          }
+        }
+      }
+    },
+    {
+      title: '刷新自动回到第1页',
+      type: 'Switch',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.isActive && data.hasPagination;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.jumpToFirstPageWhenRefresh;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.jumpToFirstPageWhenRefresh = value;
         }
       }
     },
@@ -75,45 +114,6 @@ const paginationEditor = {
         },
         set({ data }, value: boolean) {
           data.pagination.showSizeChanger = value;
-        }
-      }
-    },
-    {
-      title: '页码字段',
-      type: 'text',
-      description: '后台提供的服务接口所需的分页传参字段',
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.isActive && data.hasPagination;
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.pageNumber || 'current';
-        },
-        set({ data, output }: EditorResult<Data>, value: string) {
-          if (value.length) {
-            data.pageNumber = value;
-            setPaginationSchema({ data, output });
-          }
-        }
-      }
-    },
-    {
-      title: '每页条数字段',
-      type: 'text',
-      description:
-        '后台提供的服务接口所需的字段往往千变万化，表格内置了分页传参的字段，根据接口定义需要的字段',
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.isActive && data.hasPagination;
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.pageSize || 'pageSize';
-        },
-        set({ data, output }: EditorResult<Data>, value: string) {
-          if (value.length) {
-            data.pageSize = value;
-            setPaginationSchema({ data, output });
-          }
         }
       }
     },

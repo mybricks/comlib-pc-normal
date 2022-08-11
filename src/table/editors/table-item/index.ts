@@ -3,8 +3,10 @@ import { Data } from '../../types';
 import TagItemEditor from './item/tag';
 import LinkItemEditor from './item/link';
 import ImageItemEditor from './item/imgEditor';
+import SwitchItemEditor from './item/switchEditor';
 import InputItemEditors from './item/input';
 import CustomRenderEditors from './item/customRender';
+import GroupEditor from './item/group';
 import IndexEditor from './indexEditor';
 import SortEditor from './sortEditor';
 import FilterEditor from './filterEditor';
@@ -13,8 +15,11 @@ import BaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
 // import SlotItemEditor from './item/slotEditor';
 import CopyEditor from './copyEditor';
+import EditEditor from './editEditor';
 import DataMapingEditor from './dataMapEditor';
 import StyleEditor from './styleEditor';
+import TooltipEditor from './tooltipEditor';
+import { getColumnItem } from '../../utils';
 
 const column = {
   [COLUMN_EDITORS_CLASS_KEY]: (
@@ -27,21 +32,25 @@ const column = {
       TagItemEditor,
       LinkItemEditor,
       ImageItemEditor,
+      SwitchItemEditor({ data }),
       // SlotItemEditor,
       InputItemEditors,
       CustomRenderEditors,
-      DataMapingEditor,
+      GroupEditor,
+      DataMapingEditor(data),
       EllipsisEditor,
+      TooltipEditor,
       CopyEditor,
+      EditEditor,
       ...IndexEditor
     ];
     cateAry[1].title = '样式';
     cateAry[1].items = [StyleEditor, TitleTipEditor];
 
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     if (
       item &&
-      ['text', 'color', 'link', 'tag', 'badge'].includes(item.contentType)
+      ['text', 'color', 'link', 'tag', 'badge', 'date'].includes(item.contentType)
     ) {
       cateAry[2].title = '高级';
       cateAry[2].items = [SortEditor, FilterEditor];

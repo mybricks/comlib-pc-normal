@@ -3,48 +3,79 @@ import { getColumnsDataSchema, setDataSchema } from '../schema';
 import { Data, Location } from '../types';
 import { uuid } from '../../utils';
 import { rowSelectionEditor } from './table/rowSelection';
+import { getColumnItem, runScript } from '../utils';
 
-export const getActionBtnsEditor = ({
-  title = '',
-  titleKey,
-  titleItems = [],
-  btnsKey,
-  getBtns,
-  addBtns
-}) => {
+interface Props {
+  title?: string;
+  titleKey: string;
+  getTitleItems?: (res: any) => any[];
+  btnsKey: string;
+  codeDemo?: string;
+  getBtns: (res: any) => any[];
+  setBtns?: (res: any) => void;
+  addBtns: (res: any) => void;
+  suggestions?: any[];
+  getSuggestions?: (res: any) => any[];
+  runScript?: (res: any) => any[];
+}
+export const getActionBtnsEditor = (props: Props) => {
+  const {
+    title = '',
+    titleKey,
+    getTitleItems = () => [],
+    btnsKey,
+    getBtns,
+    setBtns,
+    addBtns,
+    codeDemo = '例：{status} === 1',
+    getSuggestions,
+    runScript
+  } = props;
   const getActionBtns = getBtns;
+  const updateActionBtns = (res) => {
+    if (setBtns) {
+      setBtns(res);
+    }
+  };
   function removeActionBtn({ data, focusArea, output }) {
+    if (!focusArea) return;
     const btns: any[] = getActionBtns({ data, focusArea });
     const btn = btns[focusArea.index];
-    const idx = btns.findIndex((item) => item.id === btn.id);
+    const idx = btns.findIndex((item) => item.id === btn?.id);
     if (idx !== -1) {
       btns.splice(idx, 1);
-      output.remove(btn.id);
+      output.remove(btn?.id);
     }
+    updateActionBtns({ data, focusArea });
   }
   function moveForwardActionBtn({ data, focusArea }) {
+    if (!focusArea) return;
     const btns: any[] = getActionBtns({ data, focusArea });
     const btn = btns[focusArea.index];
-    const idx = btns.findIndex((item) => item.id === btn.id);
+    const idx = btns.findIndex((item) => item.id === btn?.id);
     if (idx !== -1) {
       btns.splice(idx, 1);
       btns.splice(idx - 1, 0, btn);
     }
+    updateActionBtns({ data, focusArea });
   }
   function moveBackActionBtn({ data, focusArea }) {
+    if (!focusArea) return;
     const btns: any[] = getActionBtns({ data, focusArea });
     const btn = btns[focusArea.index];
-    const idx = btns.findIndex((item) => item.id === btn.id);
+    const idx = btns.findIndex((item) => item.id === btn?.id);
     if (idx !== -1) {
       btns.splice(idx, 1);
       btns.splice(idx + 1, 0, btn);
     }
+    updateActionBtns({ data, focusArea });
   }
   function allowMove({ data, focusArea }) {
+    if (!focusArea) return;
     const res = [];
     const btns: any[] = getActionBtns({ data, focusArea });
     const btn = btns[focusArea.index];
-    const idx = btns.findIndex((item) => item.id === btn.id);
+    const idx = btns.findIndex((item) => item.id === btn?.id);
     if (idx === -1) {
       return res;
     }
@@ -71,7 +102,7 @@ export const getActionBtnsEditor = ({
       get({ data, focusArea }) {
         if (!focusArea) return;
         const btn = getActionBtns({ data, focusArea })[focusArea.index];
-        return btn.style ? btn.style[attr] : null;
+        return btn?.style ? btn.style[attr] : null;
       },
       set({ data, focusArea }, value) {
         if (!focusArea) return;
@@ -80,26 +111,37 @@ export const getActionBtnsEditor = ({
           btn.style = Object.assign({}, defaultStyle);
         }
         btn.style[attr] = value;
+        updateActionBtns({ data, focusArea });
       }
     }
   });
   return {
-    [titleKey]: {
-      title: title || '操作列',
-      items: [
+    [titleKey]: (props: EditorResult<Data>, cate1) => {
+      cate1.title = title || '操作列';
+      cate1.items = [
         {
-          title: `添加${title}按钮`,
-          type: 'Button',
-          value: {
-            set({ data, focusArea, output, input }) {
-              addBtns({ data, focusArea, output, input });
-            }
-          }
-        },
-        ...titleItems
-      ]
+          title: title || '操作列',
+          items: [
+            {
+              title: `添加${title}按钮`,
+              type: 'Button',
+              value: {
+                set({ data, focusArea, output, input }) {
+                  addBtns({ data, focusArea, output, input });
+                  updateActionBtns({ data, focusArea });
+                }
+              }
+            },
+            ...getTitleItems(props)
+          ]
+        }
+      ];
+      return { title: title || '操作列' };
     },
-    [btnsKey]: ({}: EditorResult<Data>, ...cateAry) => {
+    [btnsKey]: ({ data, focusArea }: EditorResult<Data>, ...cateAry) => {
+      const suggestions = getSuggestions
+        ? getSuggestions({ data, focusArea })
+        : props.suggestions;
       cateAry[0].title = '常规';
       cateAry[0].items = [
         {
@@ -110,7 +152,7 @@ export const getActionBtnsEditor = ({
               if (!focusArea) return;
               const btn = getActionBtns({ data, focusArea })[focusArea.index];
 
-              return btn && btn.title;
+              return btn?.title;
             },
             set(
               { data, focusArea, output }: EditorResult<Data>,
@@ -123,6 +165,7 @@ export const getActionBtnsEditor = ({
               const btn = getActionBtns({ data, focusArea })[focusArea.index];
               btn.title = value;
               output.setTitle(btn.id, value);
+              updateActionBtns({ data, focusArea });
               // setTimestamp(data);
             }
           }
@@ -145,13 +188,14 @@ export const getActionBtnsEditor = ({
             get({ data, focusArea }: EditorResult<Data>) {
               if (!focusArea) return;
               const btn = getActionBtns({ data, focusArea })[focusArea.index];
-              return btn && btn.type;
+              return btn?.type;
             },
             set({ data, focusArea }: EditorResult<Data>, value) {
               if (!focusArea) return;
               const btn = getActionBtns({ data, focusArea })[focusArea.index];
               btn.style = Object.assign({}, defaultStyle);
               btn.type = value;
+              updateActionBtns({ data, focusArea });
               // setTimestamp(data);
             }
           }
@@ -165,7 +209,7 @@ export const getActionBtnsEditor = ({
               options: ({ data, focusArea }: EditorResult<Data>) => {
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
                 return {
-                  outputId: btn.id
+                  outputId: btn?.id
                 };
               }
             }
@@ -221,42 +265,46 @@ export const getActionBtnsEditor = ({
         {
           title: '图标',
           items: [
-            // {
-            //   title: '使用图标',
-            //   type: 'Switch',
-            //   value: {
-            //     get({ data, focusArea }: EditorResult<Data>) {
-            //       const btn = getActionBtns({ data, focusArea })[
-            //         focusArea.index
-            //       ];
-            //       return btn && btn.useIcon;
-            //     },
-            //     set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            //       const btn = getActionBtns({ data, focusArea })[
-            //         focusArea.index
-            //       ];
-            //       if (!btn.icon) {
-            //         btn.icon = 'HomeOutlined';
-            //       }
-            //       btn.useIcon = value;
-            //     }
-            //   }
-            // },
+            {
+              title: '使用图标',
+              type: 'Switch',
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  if (!focusArea) return;
+                  const btn = getActionBtns({ data, focusArea })[
+                    focusArea.index
+                  ];
+                  return btn?.useIcon;
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                  const btn = getActionBtns({ data, focusArea })[
+                    focusArea.index
+                  ];
+                  if (!btn.icon) {
+                    btn.icon = 'HomeOutlined';
+                  }
+                  btn.useIcon = value;
+                  updateActionBtns({ data, focusArea });
+                }
+              }
+            },
             {
               title: '显示文字',
               type: 'Switch',
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
+                  if (!focusArea) return;
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  return btn.showText === void 0 ? true : btn.showText;
+                  return btn?.showText === void 0 ? true : btn.showText;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: boolean) {
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
                   btn.showText = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -268,42 +316,48 @@ export const getActionBtnsEditor = ({
                 { label: '位于文字后', value: Location.BACK }
               ],
               ifVisible({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn?.useIcon && btn?.icon?.length && btn.showText;
+                return btn?.useIcon && btn?.icon?.length && btn?.showText;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
+                  if (!focusArea) return;
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  return btn.location || Location.FRONT;
+                  return btn?.location || Location.FRONT;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: Location) {
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
                   btn.location = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
             {
               type: 'Icon',
               ifVisible({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn && btn.useIcon;
+                return btn?.useIcon;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
+                  if (!focusArea) return;
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  return btn && btn.icon;
+                  return btn?.icon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
                   btn.icon = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             }
@@ -313,44 +367,45 @@ export const getActionBtnsEditor = ({
 
       cateAry[2].title = '高级';
       cateAry[2].items = [
-        // {
-        //   title: '权限控制',
-        //   items: [
-        //     {
-        //       title: '权限Key',
-        //       description: '唯一标识的权限key',
-        //       type: 'text',
-        //       value: {
-        //         get({ data, focusArea }: EditorResult<Data>) {
-        //           if (!focusArea) return;
-        //           const btn = getActionBtns({ data, focusArea })[
-        //             focusArea.index
-        //           ];
-        //           return btn.permissionKey;
-        //         },
-        //         set({ data, focusArea }: EditorResult<Data>, value: string) {
-        //           if (!focusArea) return;
-        //           const btn = getActionBtns({ data, focusArea })[
-        //             focusArea.index
-        //           ];
-        //           btn.permissionKey = value;
-        //         }
-        //       }
-        //     }
-        //   ]
-        // },
+        {
+          title: '权限控制',
+          items: [
+            {
+              title: '权限Key',
+              description: '唯一标识的权限key',
+              type: 'text',
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  if (!focusArea) return;
+                  const btn = getActionBtns({ data, focusArea })[
+                    focusArea.index
+                  ];
+                  return btn?.permissionKey;
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: string) {
+                  if (!focusArea) return;
+                  const btn = getActionBtns({ data, focusArea })[
+                    focusArea.index
+                  ];
+                  btn.permissionKey = value;
+                  updateActionBtns({ data, focusArea });
+                }
+              }
+            }
+          ]
+        },
         {
           title: '逻辑',
           items: [
             {
               title: '隐藏',
-              description:
-                '隐藏按钮的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1',
-              type: 'Textarea',
-              options() {
-                return {
-                  placeholder: '例：{status} === 1'
-                };
+              description: `隐藏按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
+              type: 'EXPCODE',
+              options: {
+                autoSize: true,
+                placeholder: `${codeDemo}`,
+                suggestions: suggestions,
+                run: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -358,8 +413,13 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-
-                  return btn && btn.isHiddenScript;
+                  if (getSuggestions) {
+                    return {
+                      value: btn?.isHiddenScript,
+                      suggestions: getSuggestions({ data, focusArea })
+                    };
+                  }
+                  return btn?.isHiddenScript;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
@@ -367,18 +427,19 @@ export const getActionBtnsEditor = ({
                     focusArea.index
                   ];
                   btn.isHiddenScript = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
             {
               title: '禁用',
-              description:
-                '禁用按钮的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1',
-              type: 'Textarea',
-              options() {
-                return {
-                  placeholder: '例：{status} === 1'
-                };
+              description: `禁用按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
+              type: 'EXPCODE',
+              options: {
+                autoSize: true,
+                placeholder: `${codeDemo}`,
+                suggestions: suggestions,
+                run: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -386,8 +447,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-
-                  return btn && btn.isDisabledScript;
+                  return btn?.isDisabledScript;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
@@ -395,6 +455,7 @@ export const getActionBtnsEditor = ({
                     focusArea.index
                   ];
                   btn.isDisabledScript = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             }
@@ -413,7 +474,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  return btn.supportPopover;
+                  return btn?.supportPopover;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
@@ -421,6 +482,7 @@ export const getActionBtnsEditor = ({
                     focusArea.index
                   ];
                   btn.supportPopover = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -429,7 +491,7 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn.supportPopover;
+                return btn?.supportPopover;
               },
               type: 'Switch',
               value: {
@@ -438,7 +500,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  const { useIcon } = btn.popConfig || {};
+                  const { useIcon } = btn?.popConfig || {};
                   return useIcon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: boolean) {
@@ -448,6 +510,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.useIcon = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -455,8 +518,8 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                const { useIcon } = btn.popConfig || {};
-                return btn.supportPopover && useIcon;
+                const { useIcon } = btn?.popConfig || {};
+                return btn?.supportPopover && useIcon;
               },
               type: 'Icon',
               value: {
@@ -466,7 +529,7 @@ export const getActionBtnsEditor = ({
                     focusArea.index
                   ];
                   const { popIcon = 'ExclamationCircleFilled' } =
-                    btn.popConfig || {};
+                    btn?.popConfig || {};
                   return popIcon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -476,6 +539,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popIcon = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -485,7 +549,7 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn.supportPopover;
+                return btn?.supportPopover;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -493,7 +557,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  const { popTitle = '标题' } = btn.popConfig || {};
+                  const { popTitle = '标题' } = btn?.popConfig || {};
                   return popTitle;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -503,6 +567,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popTitle = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -512,7 +577,7 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn.supportPopover;
+                return btn?.supportPopover;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -520,7 +585,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  const { popContent = '内容' } = btn.popConfig || {};
+                  const { popContent = '内容' } = btn?.popConfig || {};
                   return popContent;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -530,6 +595,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popContent = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -539,7 +605,7 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn.supportPopover;
+                return btn?.supportPopover;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -547,7 +613,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  const { popOkText = '确认' } = btn.popConfig || {};
+                  const { popOkText = '确认' } = btn?.popConfig || {};
                   return popOkText;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -557,6 +623,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popOkText = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -566,7 +633,7 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn.supportPopover;
+                return btn?.supportPopover;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -574,7 +641,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  const { popCancelText = '取消' } = btn.popConfig || {};
+                  const { popCancelText = '取消' } = btn?.popConfig || {};
                   return popCancelText;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -584,6 +651,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popCancelText = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             },
@@ -607,7 +675,7 @@ export const getActionBtnsEditor = ({
               ifVisible({ data, focusArea }: EditorResult<Data>) {
                 if (!focusArea) return;
                 const btn = getActionBtns({ data, focusArea })[focusArea.index];
-                return btn.supportPopover;
+                return btn?.supportPopover;
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -615,7 +683,7 @@ export const getActionBtnsEditor = ({
                   const btn = getActionBtns({ data, focusArea })[
                     focusArea.index
                   ];
-                  const { popPlacement = 'top' } = btn.popConfig || {};
+                  const { popPlacement = 'top' } = btn?.popConfig || {};
                   return popPlacement;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
@@ -625,6 +693,7 @@ export const getActionBtnsEditor = ({
                   ];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popPlacement = value;
+                  updateActionBtns({ data, focusArea });
                 }
               }
             }
@@ -640,18 +709,36 @@ export const getActionBtnsEditor = ({
 export const colActionBtnsEditor = getActionBtnsEditor({
   titleKey: '[data-table-action]',
   btnsKey: '[data-table-btn]',
-  titleItems: [
+  getSuggestions: ({ data }: EditorResult<Data>) => {
+    const res = [];
+    data.columns.forEach((col) => {
+      if (!res.find((item) => col.dataIndex === item.label)) {
+        res.push({
+          label: col.dataIndex,
+          insertText: `{${col.dataIndex}}` + ' === ',
+          detail: `当前行${col.dataIndex}值`
+        });
+      }
+    });
+    return res;
+  },
+  runScript: (script: string) => {
+    return runScript(script, {});
+  },
+  getTitleItems: () => [
     {
       title: '省略展示',
       type: 'Switch',
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
-          const colIndex = ~~focusArea.dataset.colIndex;
-          return data.columns[colIndex].ellipsisActionBtnsConfig.useEllipsis;
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea, 'colIndex');
+          return item.ellipsisActionBtnsConfig.useEllipsis;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-          const colIndex = ~~focusArea.dataset.colIndex;
-          data.columns[colIndex].ellipsisActionBtnsConfig.useEllipsis = value;
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea, 'colIndex');
+          item.ellipsisActionBtnsConfig.useEllipsis = value;
         }
       }
     },
@@ -663,17 +750,20 @@ export const colActionBtnsEditor = getActionBtnsEditor({
         { label: '聚焦', value: 'hover' }
       ],
       ifVisible({ data, focusArea }: EditorResult<Data>) {
-        const colIndex = ~~focusArea.dataset.colIndex;
-        return data.columns[colIndex].ellipsisActionBtnsConfig.useEllipsis;
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea, 'colIndex');
+        return item.ellipsisActionBtnsConfig.useEllipsis;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
-          const colIndex = ~~focusArea.dataset.colIndex;
-          return data.columns[colIndex].ellipsisActionBtnsConfig.trigger[0];
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea, 'colIndex');
+          return item.ellipsisActionBtnsConfig.trigger[0];
         },
         set({ data, focusArea }: EditorResult<Data>, value: 'click' | 'hover') {
-          const colIndex = ~~focusArea.dataset.colIndex;
-          data.columns[colIndex].ellipsisActionBtnsConfig.trigger = [value];
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea, 'colIndex');
+          item.ellipsisActionBtnsConfig.trigger = [value];
         }
       }
     },
@@ -681,32 +771,42 @@ export const colActionBtnsEditor = getActionBtnsEditor({
       title: '超过时省略',
       type: 'Inputnumber',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
-        const colIndex = ~~focusArea.dataset.colIndex;
-        return data.columns[colIndex].ellipsisActionBtnsConfig.useEllipsis;
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea, 'colIndex');
+        return item.ellipsisActionBtnsConfig.useEllipsis;
       },
       options: [{ min: 0, width: '100%' }],
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
-          const colIndex = ~~focusArea.dataset.colIndex;
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea, 'colIndex');
           return [
-            data.columns[colIndex].ellipsisActionBtnsConfig?.maxToEllipsis
+            item.ellipsisActionBtnsConfig?.maxToEllipsis
           ];
         },
         set({ data, focusArea }: EditorResult<Data>, value: number[]) {
-          const colIndex = ~~focusArea.dataset.colIndex;
-          data.columns[colIndex].ellipsisActionBtnsConfig.maxToEllipsis =
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea, 'colIndex');
+          item.ellipsisActionBtnsConfig.maxToEllipsis =
             value[0];
         }
       }
     }
   ],
   getBtns: ({ data, focusArea }: EditorResult<Data>) => {
-    const colIndex = ~~focusArea.dataset.colIndex;
-    return data.columns[colIndex].actionBtns;
+    if (!focusArea) return;
+    const item = getColumnItem(data, focusArea, 'colIndex');
+    return item.actionBtns;
+  },
+  setBtns: ({ data, focusArea }: EditorResult<Data>) => {
+    if (!focusArea) return;
+    const item = getColumnItem(data, focusArea, 'colIndex');
+    item.actionBtns = [...item.actionBtns];
   },
   addBtns: ({ data, focusArea, output }: EditorResult<Data>) => {
-    const colIndex = ~~focusArea.dataset.colIndex;
-    const btns = data.columns[colIndex].actionBtns;
+    if (!focusArea) return;
+    const item = getColumnItem(data, focusArea, 'colIndex');
+    const btns = item.actionBtns;
     const id = uuid();
     const title = `按钮${btns.length}`;
     btns.push({
@@ -728,6 +828,41 @@ export const headerActionBtnsEditor = getActionBtnsEditor({
   title: '顶部操作',
   titleKey: '[data-table-header-action]',
   btnsKey: '[data-table-header-btn]',
+  codeDemo: `支持queryParams(刷新参数)/dataSource(表格数据)/pagination(分页数据) 字段，\n例：{queryParams.status} === 1`,
+  suggestions: [
+    {
+      label: 'queryParams',
+      insertText: '{queryParams.${1}} === ',
+      detail: '刷新参数'
+    },
+    {
+      label: 'dataSource',
+      insertText: '{dataSource.${1}} === ',
+      detail: '表格数据'
+    },
+    {
+      label: 'pagination.current',
+      insertText: '{pagination.current} === ',
+      detail: '当前页码'
+    },
+    {
+      label: 'pagination.pageSize',
+      insertText: '{pagination.pageSize} === ',
+      detail: '当前条目数'
+    },
+    {
+      label: 'pagination.total',
+      insertText: '{pagination.total} === ',
+      detail: '当前总数'
+    }
+  ],
+  runScript: (script: string) => {
+    return runScript(script, {
+      queryParams: {},
+      dataSource: [],
+      pagination: {}
+    });
+  },
   getBtns: ({ data }: EditorResult<Data>) => {
     return data.actionBtns;
   },
@@ -753,7 +888,24 @@ export const batchActionBtnsEditor = getActionBtnsEditor({
   title: '批量操作',
   titleKey: '[data-table-batch-action]',
   btnsKey: '[data-table-batch-btn]',
-  titleItems: [...rowSelectionEditor],
+  codeDemo:
+    '支持selectedRows(勾选数据)/selectedRowKeys(勾选数据Key) 字段，\n例：{selectedRowKeys.length} > 1',
+  suggestions: [
+    {
+      label: 'selectedRows',
+      insertText: '{selectedRows.length} === ',
+      detail: '勾选数据列表'
+    },
+    {
+      label: 'selectedRowKeys',
+      insertText: '{selectedRowKeys.length} === ',
+      detail: '勾选数据Key列表'
+    }
+  ],
+  runScript: (script: string) => {
+    return runScript(script, { selectedRows: [], selectedRowKeys: [] });
+  },
+  getTitleItems: (props) => [...rowSelectionEditor(props)],
   getBtns: ({ data }: EditorResult<Data>) => {
     return data.batchBtns;
   },

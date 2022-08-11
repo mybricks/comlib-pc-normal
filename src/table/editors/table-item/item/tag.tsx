@@ -1,4 +1,5 @@
 import { Data } from '../../../types';
+import { getColumnItem } from '../../../utils';
 
 const setEllipsisConfig = (
   data: Data,
@@ -6,16 +7,14 @@ const setEllipsisConfig = (
   value: any,
   propName: string
 ) => {
-  const index = +focusArea.dataset.tableThIdx;
-  const item = data.columns[index];
+  const item = getColumnItem(data, focusArea);
   if (!item.ellipsisTagConfig) {
     item.ellipsisTagConfig = {};
   }
   item.ellipsisTagConfig[propName] = value;
 };
 const getEllipsisConfig = (data: Data, focusArea: any, propName: string) => {
-  const index = +focusArea.dataset.tableThIdx;
-  const item = data.columns[index];
+  const item = getColumnItem(data, focusArea);
   if (!item.ellipsisTagConfig) {
     item.ellipsisTagConfig = {
       trigger: 'hover'
@@ -28,7 +27,7 @@ const TagItemEditor = {
   title: '标签列设置',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     return item.contentType === 'tag';
   },
   items: [
@@ -37,7 +36,7 @@ const TagItemEditor = {
       type: 'Switch',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return item.contentType === 'tag';
       },
       value: {
@@ -60,7 +59,7 @@ const TagItemEditor = {
       description: '标签数量超过设置值时显示省略样式',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return (
           item.contentType === 'tag' &&
           getEllipsisConfig(data, focusArea, 'useEllipsis')
@@ -83,7 +82,7 @@ const TagItemEditor = {
       description: '开启后，省略提示框内仅展示多余标签项',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return (
           item.contentType === 'tag' &&
           getEllipsisConfig(data, focusArea, 'useEllipsis') &&
@@ -111,7 +110,7 @@ const TagItemEditor = {
       ],
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return (
           item.contentType === 'tag' &&
           getEllipsisConfig(data, focusArea, 'useEllipsis') &&

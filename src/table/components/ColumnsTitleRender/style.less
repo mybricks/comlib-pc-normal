@@ -1,0 +1,16 @@
+.ellipsisTooltip {
+  max-width: 400px;
+  max-height: 480px;
+  :global {
+    .ant-tooltip-inner {
+      overflow: auto;
+      max-height: 480px;
+      display: flex;
+      flex-wrap: wrap;
+      white-space: pre-wrap;
+    }
+  }
+}
+.columnMinWidth {
+  width: 40px; // hack 最小宽度
+}

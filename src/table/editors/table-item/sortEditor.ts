@@ -1,13 +1,14 @@
 import { Data, SorterType } from '../../types';
+import { getColumnItem } from '../../utils';
 
 const SortEditor = {
   title: '排序',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     return (
       item &&
-      ['text', 'color', 'link', 'tag', 'badge'].includes(item.contentType)
+      ['text', 'color', 'link', 'tag', 'badge', 'date'].includes(item.contentType)
     );
   },
   items: [
@@ -17,12 +18,12 @@ const SortEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.sorter?.enable;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           if (item.sorter) {
             item.sorter.enable = value;
           } else {
@@ -39,7 +40,7 @@ const SortEditor = {
       type: 'Select',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return item && item.sorter?.enable;
       },
       options: [
@@ -51,12 +52,12 @@ const SortEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.sorter?.type;
         },
         set({ data, focusArea }: EditorResult<Data>, value: SorterType) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           if (item.sorter) {
             item.sorter.type = value;
           }

@@ -1,4 +1,5 @@
 import { Data } from '../../../types';
+import { getColumnItem } from '../../../utils';
 
 // linkConfig初始化配置
 const defaultLinkConfig = {
@@ -11,19 +12,9 @@ const defaultScheam = {
   type: 'any'
 };
 
-// 获取列项属性
-const getColumnsItem = (data: Data, focusArea: any) => {
-  const index = +focusArea.dataset.tableThIdx;
-  return data.columns[index];
-};
 // 设置列项linkConfig
-const setLinkConfig = (
-  data: Data,
-  focusArea: any,
-  value: any,
-  propName: string
-) => {
-  const item = getColumnsItem(data, focusArea);
+const setLinkConfig = (data: Data, focusArea: any, value: any, propName: string) => {
+  const item = getColumnItem(data, focusArea);
   if (!item.linkConfig) {
     item.linkConfig = { ...defaultLinkConfig };
   }
@@ -31,7 +22,7 @@ const setLinkConfig = (
 };
 // 获取列项linkConfig
 const getLinkConfig = (data: Data, focusArea: any, propName: string) => {
-  const item = getColumnsItem(data, focusArea);
+  const item = getColumnItem(data, focusArea);
   if (!item.linkConfig) {
     item.linkConfig = { ...defaultLinkConfig };
   }
@@ -39,12 +30,7 @@ const getLinkConfig = (data: Data, focusArea: any, propName: string) => {
 };
 // 设置链接事件
 export const setLinkColAction = ({ data, focusArea, output }) => {
-  const {
-    key: colKey,
-    title,
-    linkConfig,
-    contentType
-  } = getColumnsItem(data, focusArea);
+  const { key: colKey, title, linkConfig, contentType } = getColumnItem(data, focusArea);
   const { type } = linkConfig || {};
   const key = `${colKey}-link-click`;
   if (contentType === 'link' && type === 'click') {
@@ -56,7 +42,7 @@ const LinkItemEditor = {
   title: '链接列设置',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     return item.contentType === 'link';
   },
   items: [
@@ -83,7 +69,7 @@ const LinkItemEditor = {
           return getLinkConfig(data, focusArea, 'type');
         },
         set({ data, focusArea, output }: EditorResult<Data>, value) {
-          const { key: colKey, title } = getColumnsItem(data, focusArea);
+          const { key: colKey, title } = getColumnItem(data, focusArea);
           const key = `${colKey}-link-click`;
           if (value === 'click') {
             if (!output.get(key)) {
@@ -91,10 +77,7 @@ const LinkItemEditor = {
             }
             output.setTitle(key, `点击${title}项`);
           }
-          if (
-            getLinkConfig(data, focusArea, 'type') === 'click' &&
-            value !== 'click'
-          ) {
+          if (getLinkConfig(data, focusArea, 'type') === 'click' && value !== 'click') {
             output.remove(key);
           }
           setLinkConfig(data, focusArea, value, 'type');
@@ -109,7 +92,7 @@ const LinkItemEditor = {
         return ['click'].includes(item);
       },
       options: ({ data, focusArea }: EditorResult<Data>) => {
-        const { key: colKey, title } = getColumnsItem(data, focusArea);
+        const { key: colKey } = getColumnItem(data, focusArea);
         const key = `${colKey}-link-click`;
         return {
           outputId: key
@@ -138,6 +121,9 @@ const LinkItemEditor = {
     {
       title: '自定义地址',
       type: 'textarea',
+      options: {
+        placeholder: '例：http://www.baidu.com/{id}'
+      },
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         const item = getLinkConfig(data, focusArea, 'type');
         return ['href'].includes(item);
@@ -183,21 +169,6 @@ const LinkItemEditor = {
         set({ data, focusArea }: EditorResult<Data>, value) {
           setLinkConfig(data, focusArea, value, 'routeType');
         }
-      }
-    },
-    {
-      title: '点击事件',
-      type: '_Event',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        const item = getLinkConfig(data, focusArea, 'type');
-        return ['click'].includes(item);
-      },
-      options: ({ data, focusArea }: EditorResult<Data>) => {
-        const { key: colKey } = getColumnsItem(data, focusArea);
-        const key = `${colKey}-link-click`;
-        return {
-          outputId: key
-        };
       }
     }
   ]

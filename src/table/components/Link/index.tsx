@@ -1,9 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
-import { observe } from '@mybricks/rxui';
 import classnames from 'classnames';
 import { IColumn } from '../../types';
-import { TableContent } from '../../runtime';
 import { route } from '../../../utils/history';
 import css from './style.less';
 import baseCss from '../../runtime.less';
@@ -11,6 +9,7 @@ import baseCss from '../../runtime.less';
 interface Props {
   value: any;
   record: any;
+  tableContent: any;
   columnItem: IColumn;
 }
 
@@ -21,8 +20,7 @@ function getTemplateHref(template: string, source: any) {
     .trim();
 }
 const LinkRender = (props: Props): JSX.Element => {
-  const tableContent = observe(TableContent, { from: 'parents' });
-  const { value, record, columnItem } = props;
+  const { value, record, columnItem, tableContent } = props;
   const { linkConfig, key: colKey, ellipsis } = columnItem;
   const { href, rowKey, type, routeType } = linkConfig || {};
 
@@ -54,7 +52,9 @@ const LinkRender = (props: Props): JSX.Element => {
 
   return (
     <Button type="link" onClick={onClick} className={css.linkBtn}>
-      <span className={classnames(ellipsis && baseCss.ellipsisWrap)}>{value}</span>
+      <span className={classnames(ellipsis && baseCss.ellipsisWrap)}>
+        {value}
+      </span>
     </Button>
   );
 };

@@ -1,15 +1,16 @@
 import { InputIds } from '../../constants';
 import { Schemas } from '../../schema';
 import { Data } from '../../types';
+import { getColumnItem } from '../../utils';
 
 const FilterEditor = {
   title: '筛选',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     return (
       item &&
-      ['text', 'color', 'link', 'tag', 'badge'].includes(item.contentType)
+      ['text', 'color', 'link', 'tag', 'badge', 'date'].includes(item.contentType)
     );
   },
   items: [
@@ -19,12 +20,12 @@ const FilterEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.filter?.enable;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           if (item.filter) {
             item.filter.enable = value;
           } else {
@@ -45,13 +46,13 @@ const FilterEditor = {
       description: '筛选支持单选或多选',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return item && item.filter?.enable;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return (item && item.filter?.filterType) || 'multi';
         },
         set(
@@ -59,7 +60,7 @@ const FilterEditor = {
           value: 'multi' | 'single'
         ) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           item.filter.filterType = value;
         }
       }
@@ -74,13 +75,13 @@ const FilterEditor = {
       description: '定义筛选项数据的来源方式',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return item && item.filter?.enable;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return (item && item.filter?.filterSource) || 'local';
         },
         set(
@@ -88,7 +89,7 @@ const FilterEditor = {
           value: 'local' | 'remote'
         ) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           item.filter.filterSource = value;
           if (value === 'remote') {
             input.add(InputIds.SET_FILTER_INPUT, '接收筛选项', Schemas.Object);
@@ -101,7 +102,7 @@ const FilterEditor = {
       type: 'Map',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return (
           item && item.filter?.enable && item.filter?.filterSource !== 'remote'
         );
@@ -109,7 +110,7 @@ const FilterEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           let opts = {};
           if (item && item.filter?.options) {
             opts = item.filter?.options.reduce((pre, curr) => {
@@ -127,7 +128,7 @@ const FilterEditor = {
             text: k,
             value: value[k]
           }));
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           if (item.filter) {
             item.filter.options = options;
           } else {
@@ -143,7 +144,7 @@ const FilterEditor = {
       type: 'Select',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        const item = getColumnItem(data, focusArea);
         return item && item.filter?.enable;
       },
       options: [
@@ -153,7 +154,7 @@ const FilterEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return (item && item.filter?.type) || 'local';
         },
         set(
@@ -161,7 +162,7 @@ const FilterEditor = {
           value: 'local' | 'request'
         ) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           if (item.filter) {
             item.filter.type = value;
           }

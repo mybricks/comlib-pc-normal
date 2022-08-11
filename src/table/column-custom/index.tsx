@@ -1,8 +1,7 @@
 import React, { Fragment, useCallback } from 'react'
 import { Space, Button, Tag } from 'antd'
+import { FallOutlined, RiseOutlined } from '@ant-design/icons'
 import css from '../runtime.less'
-import { RiseOutlined, FallOutlined } from '@ant-design/icons'
-
 interface ScratchBlock {
   // customType: CustomType
   key: string

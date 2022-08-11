@@ -1,10 +1,11 @@
 import { Data } from '../../../types';
+import { getColumnItem } from '../../../utils';
 
 const SlotEditor = {
   title: '插槽配置',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const column = data.columns[focusArea.dataset.tableThIdx];
+    const column = getColumnItem(data, focusArea);
     return column.contentType === 'slotItem';
   },
   items: [
@@ -20,7 +21,7 @@ const SlotEditor = {
         },
         set({ data, slot, focusArea }: EditorResult<Data>, namespace) {
           if (!focusArea) return;
-          const column = data.columns[focusArea.dataset.tableThIdx];
+          const column = getColumnItem(data, focusArea);
           data.selectComNameSpace = namespace;
           slot.get(column.slotId).addCom(namespace, false, { deletable: true });
         }

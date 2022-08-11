@@ -6,7 +6,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "表格",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/table.07650d06e7b2b09d.svg",
+  "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
@@ -14,9 +14,7 @@
     {
       "id": "tableData",
       "title": "输出表格数据",
-      "rels": [
-        "tableData"
-      ],
+      "rels": ["tableData"],
       "schema": {
         "type": "any"
       }

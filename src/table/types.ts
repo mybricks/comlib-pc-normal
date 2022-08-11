@@ -1,4 +1,5 @@
-import { SorterResult } from "antd/lib/table/interface";
+import { SorterResult } from 'antd/lib/table/interface';
+import { ReactElement } from 'react';
 
 export interface Pagination {
   total: number;
@@ -19,16 +20,30 @@ export interface Scroll {
   scrollToFirstRowOnChange: boolean;
 }
 
-export type ContentType = 'text' | 'color' | 'link' | 'tag' | 'action' | 'custom' | 'progress' | 'badge' | 'image' | 'slotItem' | 'input'
+export type ContentType =
+  | 'text'
+  | 'color'
+  | 'link'
+  | 'tag'
+  | 'action'
+  | 'custom'
+  | 'progress'
+  | 'badge'
+  | 'image'
+  | 'slotItem'
+  | 'input'
+  | 'date'
+  | 'switch'
+  | 'group';
 
-export interface CustomSpace  {
-  direction?: 'vertical' | 'horizontal'
-  wrap?: boolean
+export interface CustomSpace {
+  direction?: 'vertical' | 'horizontal';
+  wrap?: boolean;
 }
 
 interface ProgressConfig {
-  statusKeyName: string
-  statusEnum: Record<string, string>
+  statusKeyName: string;
+  statusEnum: Record<string, string>;
 }
 
 export interface ImageConfig {
@@ -49,6 +64,7 @@ export interface IColumn {
   dataIndex: string | string[];
   title: any;
   key?: string;
+  contentTemplate?: string;
   ellipsis: boolean;
   visible: boolean;
   width: string | number;
@@ -60,24 +76,24 @@ export interface IColumn {
   isMapping?: boolean;
   mappingEnum?: any;
   contentType: ContentType;
-  colorEnum?: any; 
-  sorter?: Sorter
-  filter?: Filter
-  actionBtns?: any[]
-  useTooltip?: boolean
-  columnDirection?: 'vertical' | 'horizontal'
-  customSpace?: CustomSpace
-  progressConfig?: ProgressConfig
+  colorEnum?: any;
+  sorter?: Sorter;
+  filter?: Filter;
+  actionBtns?: any[];
+  useTooltip?: boolean;
+  columnDirection?: 'vertical' | 'horizontal';
+  customSpace?: CustomSpace;
+  progressConfig?: ProgressConfig;
   ellipsisActionBtnsConfig?: {
     useEllipsis?: boolean;
     maxToEllipsis: number;
-    trigger?: ('click' | 'hover' | 'contextMenu')[]
+    trigger?: ('click' | 'hover' | 'contextMenu')[];
   };
   ellipsisTagConfig?: {
     useEllipsis?: boolean;
     maxToEllipsis?: number;
     onlyShowOver?: boolean;
-    trigger?: ('click' | 'hover' | 'contextMenu')
+    trigger?: 'click' | 'hover' | 'contextMenu';
   };
   linkConfig?: {
     type?: string;
@@ -89,33 +105,53 @@ export interface IColumn {
   fns?: any;
 
   imageConfig?: ImageConfig;
-  supportCopy?: boolean
-  slotId?: string
+  supportCopy?: boolean;
+  supportEdit?: boolean;
+  slotId?: string;
   slotConfig?: {
-    outputId?: string
-  }
-  keepWordWrap?: boolean
+    outputId?: string;
+  };
+  keepWordWrap?: boolean;
   inputConfig?: {
-    placeholder?: string
-  }
+    placeholder?: string;
+  };
+  dateConfig?: {
+    formatter?: string;
+    customFomatter?: boolean;
+  };
+  switchConfig?: {
+    id: string;
+    size?: 'default' | 'small';
+    checkedScript?: string;
+    checkedChildren?: ReactElement;
+    unCheckedChildren?: ReactElement;
+  };
   fixed?: string;
 
   customRenderCode?: string;
   className?: string;
+  tooltipKey?: string;
+
+  children?: IColumn[];
 }
 
-export type SorterType = 'length' | 'size' | 'request' | 'date'
+export type SorterType = 'length' | 'size' | 'request' | 'date';
 export interface Sorter {
-  enable: boolean
-  type: SorterType
+  enable: boolean;
+  type: SorterType;
 }
 
 export interface Filter {
-  enable?: boolean
-  type?: 'local' | 'request',
-  options?: any[]
-  filterSource?: 'local' | 'remote'
-  filterType?: 'multi' | 'single'
+  enable?: boolean;
+  type?: 'local' | 'request';
+  options?: any[];
+  filterSource?: 'local' | 'remote';
+  filterType?: 'multi' | 'single';
+}
+
+export interface SubmitAction {
+  id: string;
+  title: string;
 }
 
 export interface Data {
@@ -139,14 +175,14 @@ export interface Data {
   immediate: boolean;
   pageNumber: string;
   pageSize: string;
-  scratchOutputIds: string[]
-  expandable: boolean
-  expandableBlocks: any
-  batchBtns: any[]
-  loadingTip?: string
-  useInput?: boolean
-  onLoadData?: string
-  actionBtns: any[]
+  scratchOutputIds: string[];
+  expandable: boolean;
+  expandableBlocks: any;
+  batchBtns: any[];
+  loadingTip?: string;
+  useInput?: boolean;
+  onLoadData?: string;
+  actionBtns: any[];
   tableTitle?: string;
   tableTitleStyle?: any;
   // tableTitleContainerStyle?: any;
@@ -163,9 +199,9 @@ export interface Data {
     rowKey?: string;
   };
   sortParams?: SorterResult<any>;
-  filterParams: Record<string, string[] | null>
-  draggable?: boolean
-  unAutoSelect?: boolean
+  filterParams: Record<string, string[] | null>;
+  draggable?: boolean;
+  unAutoSelect?: boolean;
   selectComNameSpace?: string;
   isDisabledScript?: string;
   useHeaderSlot?: boolean;
@@ -178,15 +214,39 @@ export interface Data {
   useSetSelectedRowKeys?: boolean;
 
   useSlotProps?: boolean;
+  jumpToFirstPageWhenRefresh?: boolean;
+
+  // 刷新时覆盖历史筛选数据
+  cleanQueryParamsWhenRefresh?: boolean;
+  // 动态设置显示列
+  useDynamicColumn?: boolean;
+  // 动态设置表格标题
+  useDynamicTableTitle?: boolean;
+  // 提交行为
+  submitActions?: SubmitAction[];
+  //兼容拖拽item数据
+  useDrapItem: boolean;
+
+  //显示表格列筛选
+  useColumnSetting?: boolean;
+
+  // 标识表格当前正在编辑的单元格
+  isEditing?: string;
 }
 
 export interface ResponseData {
-  total?: number
-  dataSource?: any[]
-  extraColumns?: IColumn[]
+  total?: number;
+  dataSource?: any[];
+  extraColumns?: IColumn[];
+  queryParams?: any;
 }
 
 export enum Location {
-  FRONT = "front",
-  BACK = "back"
+  FRONT = 'front',
+  BACK = 'back',
+}
+
+export enum MappingEnumOption {
+  NOT_EXIST = '_fz_undefined_',
+  EMPTY_STRING = '_fz_empty_string_'
 }

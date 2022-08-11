@@ -3,10 +3,8 @@ import classnames from 'classnames';
 import { Button, Dropdown, Menu, Popconfirm } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { BaseButtonProps } from 'antd/es/button/button';
-import { observe } from '@mybricks/rxui';
-// import Icon from '@es/icon-select';
-import { TableContent } from '../runtime';
-import { getTemplateRenderScript } from '../utils';
+import * as Icons from '@ant-design/icons';
+import { findColumnItemByKey, getTemplateRenderScript } from '../utils';
 import { Location } from '../types';
 import css from './ActionBtns.less';
 
@@ -30,7 +28,8 @@ interface ActionBtnsProps {
   btnDataSetKey?: string;
   ellipsisActionBtns?: any[];
   dropdownProps?: any;
-  useBtnMargin?: boolean;
+  isRowBtn?: boolean;
+  tableContent: any;
 }
 
 export default function ActionBtns({
@@ -41,9 +40,9 @@ export default function ActionBtns({
   btnDataSetKey = 'table-btn',
   ellipsisActionBtns,
   dropdownProps,
-  useBtnMargin
+  isRowBtn,
+  tableContent
 }: ActionBtnsProps) {
-  const tableContent = observe(TableContent, { from: 'parents' });
   const btnWrapProps = {
     [`data-${btnWrapDataSetKey}`]: true
   };
@@ -60,10 +59,11 @@ export default function ActionBtns({
     text: string;
     location: Location;
   }) => {
+    const Icon = Icons && Icons[icon as string]?.render();
     if (location === Location.FRONT) {
       return (
         <>
-          <Icon type={icon} />
+          {Icon}
           <span>{text}</span>
         </>
       );
@@ -72,63 +72,41 @@ export default function ActionBtns({
       return (
         <>
           <span>{text}</span>
-          <Icon type={icon} />
+          {Icon}
         </>
       );
     }
   };
   const isHiddenBtn = (btn) => {
     let isHidden = false;
-    if (btn.isHiddenScript) {
+    if (btn.isHiddenScript && tableContent?.env?.runtime) {
       try {
         isHidden = eval(getTemplateRenderScript(btn.isHiddenScript))(record);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     }
-    if (tableContent?.env?.runtime && isHidden) {
-      return isHidden;
-    }
-    return false;
+    return isHidden;
   };
   const isDisabledBtn = (btn) => {
     let isDisabled = false;
-    if (btn.isDisabledScript) {
+    if (btn.isDisabledScript && tableContent?.env?.runtime) {
       try {
         isDisabled = eval(getTemplateRenderScript(btn.isDisabledScript))(
           record
         );
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     }
     return isDisabled;
   };
-  const renderActionBtn = (btn, btnIdx) => {
+  const renderPopconfirm = (btn, renderBtn) => {
     let isDisabled = isDisabledBtn(btn);
-    let isHidden = isHiddenBtn(btn);
-    const {
-      icon,
-      showText = true,
-      useIcon,
-      supportPopover,
-      popConfig = {}
-    } = btn;
-    const {
-      popTitle = '标题',
-      popContent = '内容',
-      popOkText = '确认',
-      popCancelText = '取消',
-      popPlacement = 'top',
-      popIcon = 'ExclamationCircleFilled',
-      useIcon: usePopIcon
-    } = popConfig;
-    if (tableContent?.env?.runtime && isHidden) {
-      return null;
-    }
-    // fixme: focusArea失焦问题
-    const onPopConfirm = () => {
-      tableContent.outputs[btn.id]({ ...record });
+    const onBtnClick = () => {
+      if (tableContent?.env?.runtime) {
+        tableContent.outputs[btn.id]({ ...record });
+      }
     };
 
     const PopTitleFC = () => {
@@ -145,8 +123,50 @@ export default function ActionBtns({
         </div>
       );
     };
+    const {
+      popTitle = '标题',
+      popContent = '内容',
+      popOkText = '确认',
+      popCancelText = '取消',
+      popPlacement = 'top',
+      popIcon = 'ExclamationCircleFilled',
+      useIcon: usePopIcon
+    } = btn.popConfig || {};
 
-    const Btn = () => {
+    return (
+      <Popconfirm
+        disabled={isDisabled}
+        overlayClassName={classnames(
+          css.popConfirm,
+          !usePopIcon && css.popConfirmNoIcon
+        )}
+        placement={popPlacement}
+        title={<PopTitleFC />}
+        okText={popOkText}
+        cancelText={popCancelText}
+        onConfirm={onBtnClick}
+        icon={usePopIcon && popIcon ? Icons[popIcon]?.render() : false}
+      >
+        <div>{renderBtn(btn)}</div>
+      </Popconfirm>
+    );
+  };
+
+  const renderActionBtn = (btn, btnIdx) => {
+    let isDisabled = isDisabledBtn(btn);
+    let isHidden = isHiddenBtn(btn);
+    const { icon, showText = true, useIcon, supportPopover } = btn;
+    if (tableContent?.env?.runtime && isHidden) {
+      return null;
+    }
+    if (
+      tableContent?.env?.runtime &&
+      !tableContent?.env?.hasPermission({ key: btn.permissionKey })
+    ) {
+      return null;
+    }
+
+    const renderBtn = () => {
       return (
         <Button
           size={btn.size}
@@ -181,54 +201,27 @@ export default function ActionBtns({
         data-col-index={colIndex}
         id={btn.id}
         style={{
-          marginBottom: useBtnMargin ? 4 : 0,
-          marginTop: useBtnMargin ? 4 : 0,
-          marginRight: btnIdx !== actionBtns.length - 1 ? 4 : 0
+          marginBottom: isRowBtn ? 4 : 0,
+          marginTop: isRowBtn ? 4 : 0,
+          marginRight: btnIdx !== actionBtns.length - 1 ? (isRowBtn ? 4 : 8) : 0
         }}
       >
-        {btn.supportPopover && tableContent?.env?.runtime ? (
-          <Popconfirm
-            disabled={isDisabled}
-            overlayClassName={classnames(
-              css.popConfirm,
-              !usePopIcon && css.popConfirmNoIcon
-            )}
-            placement={popPlacement}
-            title={<PopTitleFC />}
-            okText={popOkText}
-            cancelText={popCancelText}
-            onConfirm={onPopConfirm}
-            icon={usePopIcon ? <Icon type={popIcon} /> : false}
-          >
-            <div>
-              <Btn />
-            </div>
-          </Popconfirm>
-        ) : (
-          <Btn />
-        )}
+        {btn.supportPopover && tableContent?.env?.runtime
+          ? renderPopconfirm(btn, renderBtn)
+          : renderBtn()}
       </div>
     );
   };
+
   const renderMenuActionBtn = (btn) => {
     let isDisabled = isDisabledBtn(btn);
     let isHidden = isHiddenBtn(btn);
-    const { icon, showText = true, useIcon } = btn;
-
+    const { icon, showText = true, useIcon, supportPopover } = btn;
     if (tableContent?.env?.runtime && isHidden) {
       return null;
     }
-    return (
-      <Menu.Item
-        key={btn.id}
-        id={btn.id}
-        disabled={isDisabled}
-        onClick={() => {
-          if (tableContent?.env?.runtime) {
-            tableContent.outputs[btn.id]({ ...record });
-          }
-        }}
-      >
+    const renderBtn = () => {
+      return (
         <div
           style={{
             ...btn.style
@@ -242,6 +235,28 @@ export default function ActionBtns({
               })
             : showText && btn.title}
         </div>
+      );
+    };
+    const onBtnClick = () => {
+      if (tableContent?.env?.runtime) {
+        tableContent.outputs[btn.id]({ ...record });
+      }
+    };
+
+    return (
+      <Menu.Item
+        key={btn.id}
+        id={btn.id}
+        disabled={isDisabled}
+        onClick={() => {
+          if (!supportPopover) {
+            onBtnClick();
+          }
+        }}
+      >
+        {supportPopover && tableContent?.env?.runtime
+          ? renderPopconfirm(btn, renderBtn)
+          : renderBtn()}
       </Menu.Item>
     );
   };
@@ -252,7 +267,7 @@ export default function ActionBtns({
   );
 
   //  对齐方式
-  const align = tableContent?.data?.columns[colIndex]?.align;
+  const align = findColumnItemByKey(tableContent?.data?.columns, colIndex)?.column?.align;
   const justifyContents = {
     left: 'flex-start',
     center: 'center',
@@ -267,7 +282,7 @@ export default function ActionBtns({
       {...(btnWrapDataSetKey ? btnWrapProps : {})}
       // data-table-action
       data-col-index={colIndex}
-      className={css['action-btns']}
+      className={classnames(css['action-btns'], !isRowBtn && css.noWrap)}
       style={{
         justifyContent: justifyContents[align]
       }}

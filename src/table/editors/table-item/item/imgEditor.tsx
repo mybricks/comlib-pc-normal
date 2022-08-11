@@ -1,4 +1,5 @@
 import { Data, ImageConfig } from '../../../types';
+import { getColumnItem } from '../../../utils';
 
 // 兜底图片
 const defaultFallback =
@@ -13,11 +14,6 @@ const defaultConfig: ImageConfig = {
   placeholderSourceType: 'rowKey'
 };
 
-// 获取列项属性
-const getColumnsItem = (data: Data, focusArea: any) => {
-  const index = +focusArea.dataset.tableThIdx;
-  return data.columns[index];
-};
 // 设置列项imageConfig
 const setImageConfig = <T extends keyof ImageConfig, P extends ImageConfig[T]>(
   data: Data,
@@ -25,7 +21,7 @@ const setImageConfig = <T extends keyof ImageConfig, P extends ImageConfig[T]>(
   propName: T,
   value: P
 ) => {
-  const item = getColumnsItem(data, focusArea);
+  const item = getColumnItem(data, focusArea);
   if (!item.imageConfig) {
     item.imageConfig = {
       width: item.width || 100,
@@ -40,7 +36,7 @@ const getImageConfig = <T extends keyof ImageConfig>(
   focusArea: any,
   propName: T
 ): ImageConfig[T] => {
-  const item = getColumnsItem(data, focusArea);
+  const item = getColumnItem(data, focusArea);
   if (!item.imageConfig) {
     item.imageConfig = {
       width: item.width || 100,
@@ -54,7 +50,7 @@ const ImageItemEditor = {
   title: '图片列设置',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     return item.contentType === 'image';
   },
   items: [
@@ -129,6 +125,9 @@ const ImageItemEditor = {
           type: 'textarea',
           ifVisible({ data, focusArea }: EditorResult<Data>) {
             return getImageConfig(data, focusArea, 'useCustomSrc');
+          },
+          options: {
+            placeholder: '例：https://www.baidu.com/{id}'
           },
           value: {
             get: ({ data, focusArea }: EditorResult<Data>) => {
@@ -208,6 +207,9 @@ const ImageItemEditor = {
         {
           title: '自定义地址',
           type: 'textarea',
+          options: {
+            placeholder: '例：https://www.baidu.com/{id}'
+          },
           ifVisible({ data, focusArea }: EditorResult<Data>) {
             const item = getImageConfig(
               data,

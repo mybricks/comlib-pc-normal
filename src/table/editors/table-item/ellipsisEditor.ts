@@ -1,11 +1,13 @@
 import { setCol } from '../../schema';
 import { Data } from '../../types';
+import { getColumnItem } from '../../utils';
 
 const EllipsisEditor = {
   title: '省略换行配置',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
-    const item = data.columns[focusArea.dataset.tableThIdx];
-    return ['text', 'color', 'link'].includes(item.contentType);
+    if (!focusArea) return;
+    const item = getColumnItem(data, focusArea);
+    return ['text', 'color', 'link', 'date'].includes(item.contentType);
   },
   items: [
     {
@@ -15,7 +17,7 @@ const EllipsisEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.ellipsis;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
@@ -24,36 +26,39 @@ const EllipsisEditor = {
         }
       }
     },
-    {
-      title: '内容省略文字提示',
-      type: 'Switch',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        const item = data.columns[focusArea.dataset.tableThIdx];
-        return ['text', 'color', 'link'].includes(item.contentType);
-      },
-      value: {
-        get({ data, focusArea }: EditorResult<Data>) {
-          if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
-          return item.useTooltip;
-        },
-        set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-          if (!focusArea) return;
-          setCol(data, focusArea, value, 'useTooltip');
-        }
-      }
-    },
+    // {
+    //   title: '内容省略文字提示',
+    //   type: 'Switch',
+    //   ifVisible({ data, focusArea }: EditorResult<Data>) {
+    //     if (!focusArea) return;
+    //     const item = getColumnItem(data, focusArea);
+    //     return ['text', 'color', 'link', 'date'].includes(item.contentType);
+    //   },
+    //   value: {
+    //     get({ data, focusArea }: EditorResult<Data>) {
+    //       if (!focusArea) return;
+    //       const item = getColumnItem(data, focusArea);
+    //       return item.useTooltip;
+    //     },
+    //     set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+    //       if (!focusArea) return;
+    //       setCol(data, focusArea, value, 'useTooltip');
+    //     }
+    //   }
+    // },
     {
       title: '保留换行',
       type: 'Switch',
+      description: '开启后，当数据中存在换行时，超出时自动省略配置项不再生效',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
-        const item = data.columns[focusArea.dataset.tableThIdx];
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
         return ['text', 'color', 'link'].includes(item.contentType);
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.keepWordWrap;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {

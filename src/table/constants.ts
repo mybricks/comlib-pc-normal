@@ -2,8 +2,8 @@ export const BLOCKS_KEY = 'blocks'
 
 export const COLUMN_DATA_KEY = 'colData'
 
-export const COLUMN_EDITORS_CLASS_KEY = 
-'thead th:not(.ant-table-selection-column):not(.ant-table-cell-scrollbar):not(.ant-table-row-expand-icon-cell):not(.column-draggle)'
+export const COLUMN_EDITORS_CLASS_KEY =
+  'thead th:not(.ant-table-selection-column):not(.ant-table-cell-scrollbar):not(.ant-table-row-expand-icon-cell):not(.column-draggle)'
 
 export const TEMPLATE_RENDER_KEY = 'record'
 
@@ -20,13 +20,18 @@ export const InputIds = {
   END_LOADING: 'endLoading',
   UPDATE_COLUMN_DATA: 'updateColumnData',
   SET_FILTER_INPUT: 'filterInput',
-  GET_TABLE_DATA: 'tableData'
+  GET_TABLE_DATA: 'tableData',
+  SET_DYNAMIC_COL: 'setDynamicColumn',
+  SET_DYNAMIC_TABLE_TITLE: 'setDynamicTableTitle',
+  SET_EXPANDED_KEYS: 'setExpandedKeys',
+  PAGINATION: 'pagination'
 }
 export const OutputIds = {
   GET_ROW_SELECTION: 'rowSelection',
   ClickPagination: 'props',
   DRAG_FINISH: 'dragging',
-  GET_TABLE_DATA: 'tableData'
+  GET_TABLE_DATA: 'tableData',
+  MODIFY_CELL: 'modifyCell',
 }
 
 export enum RowSelectionPostion {

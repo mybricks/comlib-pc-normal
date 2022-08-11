@@ -1,4 +1,5 @@
 import { Data } from '../../../types';
+import { getColumnItem } from '../../../utils';
 
 // 默认代码注释
 const defaultCodeAnnotation = `/**
@@ -22,7 +23,7 @@ export default {
   title: '自定义渲染配置',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
-    const item = data.columns[focusArea.dataset.tableThIdx];
+    const item = getColumnItem(data, focusArea);
     return item.contentType === 'custom';
   },
   items: [
@@ -42,12 +43,12 @@ export default {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.customRenderCode || defaultCode;
         },
         set({ data, focusArea }: EditorResult<Data>, value) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           item.customRenderCode = value;
         }
       }

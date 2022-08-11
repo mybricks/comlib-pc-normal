@@ -43,7 +43,7 @@
       "key": "createTime",
       "visible": true,
       "ellipsis": true,
-      "contentType": "text",
+      "contentType": "date",
       "width": 200
     }
   ],
@@ -88,5 +88,6 @@
     "lineHeight": 1
   },
   "showPaginationTotal": true,
-  "rowSelectionPostion": ["top", "bottom"]
+  "rowSelectionPostion": ["top", "bottom"],
+  "useDrapItem": false
 }

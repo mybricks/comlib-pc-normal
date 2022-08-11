@@ -1,11 +1,13 @@
 import { setCol } from '../../schema';
 import { Data } from '../../types';
+import { getColumnItem } from '../../utils';
 
 const CopyEditor = {
   title: '复制',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
-    const item = data.columns[focusArea.dataset.tableThIdx];
-    return ['text'].includes(item.contentType);
+    if (!focusArea) return;
+    const item = getColumnItem(data, focusArea);
+    return ['text', 'date'].includes(item.contentType);
   },
   items: [
     {
@@ -15,7 +17,7 @@ const CopyEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const item = data.columns[focusArea.dataset.tableThIdx];
+          const item = getColumnItem(data, focusArea);
           return item.supportCopy;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {

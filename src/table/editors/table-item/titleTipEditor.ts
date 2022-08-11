@@ -1,4 +1,5 @@
 import { Data } from '../../types';
+import { getColumnItem } from '../../utils';
 
 const TitleTipEditor = {
   title: '提示配置',
@@ -9,11 +10,11 @@ const TitleTipEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          return data.columns[focusArea.dataset.tableThIdx].hasTip;
+          return getColumnItem(data, focusArea).hasTip;
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
-          data.columns[focusArea.dataset.tableThIdx].hasTip = value;
+          getColumnItem(data, focusArea).hasTip = value;
         }
       }
     },
@@ -22,16 +23,16 @@ const TitleTipEditor = {
       type: 'Textarea',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        return data.columns[focusArea.dataset.tableThIdx].hasTip;
+        return getColumnItem(data, focusArea).hasTip;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          return data.columns[focusArea.dataset.tableThIdx].tip;
+          return getColumnItem(data, focusArea).tip;
         },
         set({ data, focusArea }: EditorResult<Data>, value: string) {
           if (!focusArea) return;
-          data.columns[focusArea.dataset.tableThIdx].tip = value;
+          getColumnItem(data, focusArea).tip = value;
         }
       }
     }

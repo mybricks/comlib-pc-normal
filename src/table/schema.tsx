@@ -11,27 +11,41 @@ function getRefreshSchema() {
   return refreshSchema;
 }
 
-function getSingleDataSourceSchema(dataSchema = {}) {
-  const schema = {
+function getSingleDataSourceSchema(dataSchema = {}, config: any = {}) {
+  const { usePagination = true, useQuery = false } = config;
+  const schema: any = {
     title: '表格数据',
-    type: 'object',
-    properties: {
-      dataSource: {
-        title: '数据列表',
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: dataSchema
-        },
-        mock: 'array|50'
-      },
-      total: {
-        title: '总记录数',
-        type: 'number',
-        mock: '@integer(20, 100)'
-      }
-    }
+    type: 'follow',
+    // properties: {
+    //   dataSource: {
+    //     title: '数据列表',
+    //     type: 'array',
+    //     items: {
+    //       type: 'object',
+    //       properties: dataSchema
+    //     }
+    //   }
+    // }
   };
+
+  // if (useQuery) {
+  //   schema.properties.queryParams = {
+  //     title: '筛选参数',
+  //     type: 'object',
+  //     properties: {}
+  //   };
+  // }
+
+  // if (usePagination) {
+  //   schema.properties.total = {
+  //     title: '总记录数',
+  //     type: 'number'
+  //   };
+  // } else {
+  //   return schema.properties.dataSource
+  // }
+
+
   return schema;
 }
 
@@ -45,7 +59,7 @@ function getColumnsDataSchema(columns: IColumn[], outputId = '') {
     )
       return;
     const schema = {
-      type: 'any',
+      type: 'string',
       title: item.title
     };
     if (Array.isArray(item.dataIndex)) {
@@ -57,10 +71,10 @@ function getColumnsDataSchema(columns: IColumn[], outputId = '') {
   return dataSchema;
 }
 
-function setFetchDataSchema(dataSchema, output) {
+function setFetchDataSchema(dataSchema, output, config) {
   const pin = output.get('fetchData');
   if (pin) {
-    pin.setSchema(getSingleDataSourceSchema(dataSchema));
+    pin.setSchema(getSingleDataSourceSchema(dataSchema, config));
   }
 }
 
@@ -71,10 +85,10 @@ function setRefreshSchema(input) {
   }
 }
 
-function setDataSourceSchema(dataSchema, input) {
+function setDataSourceSchema(dataSchema, input, config) {
   const dataSourcePin = input.get('dataSource');
   if (dataSourcePin) {
-    dataSourcePin.setSchema(getSingleDataSourceSchema(dataSchema));
+    dataSourcePin.setSchema(getSingleDataSourceSchema(dataSchema, config));
   }
 }
 
@@ -225,12 +239,13 @@ function setDragFinishSchema({ dataSchema, output }) {
 
 function setDataSchema({ data, output, input }) {
   const dataSchema = getColumnsDataSchema(data.columns);
+  const config = { usePagination: data.hasPagination}
   if (data.isActive) {
-    setFetchDataSchema(dataSchema, output);
+    setFetchDataSchema(dataSchema, output, config);
     setRefreshSchema(input);
-    setDataSourceSchema(dataSchema, input);
+    setDataSourceSchema(dataSchema, input, config);
   } else {
-    setDataSourceSchema(dataSchema, input);
+    setDataSourceSchema(dataSchema, input, config);
   }
   setOutputsSchema(dataSchema, output, data);
   setRowSelectionSchema({ dataSchema, output });
@@ -356,5 +371,22 @@ export const Schemas = {
         }
       }
     }
-  })
+  }),
+  DYNAMIC_COL: {
+    title: '显示列数据',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        dataIndex: {
+          title: '表格字段',
+          type: 'string'
+        },
+        title: {
+          title: '表格标题',
+          type: 'string'
+        }
+      }
+    }
+  }
 };

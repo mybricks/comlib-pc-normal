@@ -10,11 +10,13 @@ const expandEditor = [
       get({ data }: EditorResult<Data>) {
         return data.useExpand;
       },
-      set({ data, slot }: EditorResult<Data>, value: boolean) {
+      set({ data, slot, input }: EditorResult<Data>, value: boolean) {
         if (value) {
           slot.add(SlotIds.EXPAND_CONTENT, `展开内容`);
+          input.add(InputIds.SET_EXPANDED_KEYS, '行展开状态', { title: '行数据/行标识', ...Schemas.Object });
         } else {
           slot.remove(SlotIds.EXPAND_CONTENT);
+          input.remove(InputIds.SET_EXPANDED_KEYS);
         }
         data.useExpand = value;
       }

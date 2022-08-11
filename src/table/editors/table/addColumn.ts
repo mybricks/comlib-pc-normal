@@ -1,19 +1,7 @@
-import { uuid } from '../../../utils';
 import { setDataSchema } from '../../schema';
-import { Data, IColumn } from '../../types';
+import { Data } from '../../types';
+import { getNewColumn } from '../../utils';
 
-function getNewColumn() {
-  const obj: IColumn = {
-    title: '新增',
-    dataIndex: `${uuid()}`,
-    ellipsis: true,
-    width: 140,
-    key: uuid(),
-    contentType: 'text',
-    visible: true
-  };
-  return obj;
-}
 const addColumnEditor = {
   title: '列',
   folded: true,
@@ -23,7 +11,7 @@ const addColumnEditor = {
       type: 'Button',
       value: {
         set({ data, output, input }: EditorResult<Data>) {
-          data.columns.push(getNewColumn());
+          data.columns = [...data.columns, getNewColumn()];
           setDataSchema({ data, output, input });
         }
       }

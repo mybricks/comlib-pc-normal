@@ -21,8 +21,8 @@ const dragEditor = [
         } else {
           output.remove(OutputIds.DRAG_FINISH);
         }
-      }
-    }
+      },
+    },
   },
   {
     title: '拖拽配置',
@@ -31,16 +31,31 @@ const dragEditor = [
     },
     items: [
       {
+        title: '获取拖拽项数据',
+        type: 'switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.draggable;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useDrapItem;
+          },
+          set({ data }, val: boolean) {
+            data.useDrapItem = val;
+          },
+        },
+      },
+      {
         title: '拖拽完成事件',
         type: '_Event',
         options: () => {
           return {
-            outputId: OutputIds.DRAG_FINISH
+            outputId: OutputIds.DRAG_FINISH,
           };
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 ];
 
 export { dragEditor };
