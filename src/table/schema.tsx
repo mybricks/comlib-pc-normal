@@ -13,14 +13,13 @@ function getRefreshSchema() {
 }
 
 function getSingleDataSourceSchema(dataSchema = {}, config: any = {}) {
-  const { usePagination = true, useQuery = false, useAny } = config;
-  if (useAny) {
+  const { usePagination = true } = config;
+  if (Object.keys(dataSchema).length === 0) {
     return {
       title: '表格数据',
       type: 'any'
     }
   }
-
   const schema: any = {
     title: '表格数据',
     type: 'object',
@@ -251,9 +250,9 @@ function setDragFinishSchema({ dataSchema, output }) {
   }
 }
 
-function setDataSchema({ data, output, input }, cfg: any) {
+function setDataSchema({ data, output, input }) {
   const dataSchema = getColumnsDataSchema(data.columns);
-  const config = { usePagination: data.hasPagination, ...cfg }
+  const config = { usePagination: data.hasPagination }
   if (data.isActive) {
     setFetchDataSchema(dataSchema, output, config);
     setRefreshSchema(input);

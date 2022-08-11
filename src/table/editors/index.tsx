@@ -50,7 +50,7 @@ export default {
   '@init': ({ data, output, input }: EditorResult<Data>) => {
     addRefreshInput({ input });
     addDataSourceInput({ input, columns: data.columns });
-    setDataSchema({ data, output, input }, { useAny: true });
+    setDataSchema({ data, output, input });
     setPaginationSchema({ data, output });
   },
   '@inputConnected'({ data }, fromPin, toPin) {
