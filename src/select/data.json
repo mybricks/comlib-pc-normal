@@ -1,5 +1,7 @@
 {
-  "options": [],
-  "disabled": false,
-  "visible": true
+  "visible": true,
+  "config": {
+    "options": [],
+    "disabled": false
+  }
 }

@@ -2,8 +2,10 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Select } from 'antd'
 
 interface Data {
-  options: any[]
-  disabled: boolean
+  config: {
+    options: any[]
+    disabled: boolean
+  }
   visible: boolean
 }
 
@@ -37,11 +39,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     })
 
     inputs['setDisabled']((val) => {
-      data.disabled = val
+      data.config.disabled = val
     })
 
     inputs['setOptions']((val) => {
-      data.options = val
+      data.config.options = val
     })
 
     inputs['setVisible']((val) => {
@@ -60,7 +62,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         allowClear
         value={value}
         placeholder="请选择"
-        {...data}
+        {...data.config}
         // options={[{ label: '选项一', value: '11'}, { label: '选项二', value: '22'}]}
         onChange={onChange}
       />
