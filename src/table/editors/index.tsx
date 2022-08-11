@@ -50,7 +50,7 @@ export default {
   '@init': ({ data, output, input }: EditorResult<Data>) => {
     addRefreshInput({ input });
     addDataSourceInput({ input, columns: data.columns });
-    setDataSchema({ data, output, input });
+    setDataSchema({ data, output, input }, { useAny: true });
     setPaginationSchema({ data, output });
   },
   '@inputConnected'({ data }, fromPin, toPin) {
@@ -60,6 +60,11 @@ export default {
       } else {
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {}
       }
+    }
+  },
+  '@inputDisConnected'({ input }, fromPin, toPin) {
+    if (toPin.id === InputIds.SET_DATA_SOURCE) {
+      input.get(toPin.id).setSchema({ title: '列表数据', type: 'any' });
     }
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {

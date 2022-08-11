@@ -1,6 +1,7 @@
 import { OutputIds } from './constants';
 import { Data, IColumn } from './types';
 import { setPath } from '../utils/path';
+import { getColumnItem } from './utils';
 
 function getRefreshSchema() {
   const refreshSchema = {
@@ -12,20 +13,27 @@ function getRefreshSchema() {
 }
 
 function getSingleDataSourceSchema(dataSchema = {}, config: any = {}) {
-  const { usePagination = true, useQuery = false } = config;
+  const { usePagination = true, useQuery = false, useAny } = config;
+  if (useAny) {
+    return {
+      title: '表格数据',
+      type: 'any'
+    }
+  }
+
   const schema: any = {
     title: '表格数据',
-    type: 'follow',
-    // properties: {
-    //   dataSource: {
-    //     title: '数据列表',
-    //     type: 'array',
-    //     items: {
-    //       type: 'object',
-    //       properties: dataSchema
-    //     }
-    //   }
-    // }
+    type: 'object',
+    properties: {
+      dataSource: {
+        title: '数据列表',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: dataSchema
+        }
+      }
+    }
   };
 
   // if (useQuery) {
@@ -36,14 +44,14 @@ function getSingleDataSourceSchema(dataSchema = {}, config: any = {}) {
   //   };
   // }
 
-  // if (usePagination) {
-  //   schema.properties.total = {
-  //     title: '总记录数',
-  //     type: 'number'
-  //   };
-  // } else {
-  //   return schema.properties.dataSource
-  // }
+  if (usePagination) {
+    schema.properties.total = {
+      title: '总记录数',
+      type: 'number'
+    };
+  } else {
+    return schema.properties.dataSource
+  }
 
 
   return schema;
@@ -51,23 +59,29 @@ function getSingleDataSourceSchema(dataSchema = {}, config: any = {}) {
 
 function getColumnsDataSchema(columns: IColumn[], outputId = '') {
   const dataSchema = {};
-  columns.map((item) => {
-    if (
-      item.contentType === 'action' ||
-      item.contentType === 'custom' ||
-      outputId
-    )
-      return;
-    const schema = {
-      type: 'string',
-      title: item.title
-    };
-    if (Array.isArray(item.dataIndex)) {
-      setPath(dataSchema, item.dataIndex.join('.'), schema, true);
-    } else {
-      dataSchema[item.dataIndex] = schema;
+  const setDataSchema = (columns) => {
+    if (Array.isArray(columns)) {
+      columns.forEach((item) => {
+        if (item.contentType === 'action' || item.contentType === 'custom' || outputId) {
+          return;
+        }
+        const schema = {
+          type: 'string',
+          title: item.title
+        };
+        if (item.contentType === 'group') {
+          setDataSchema(item.children);
+          return;
+        }
+        if (Array.isArray(item.dataIndex)) {
+          setPath(dataSchema, item.dataIndex.join('.'), schema, true);
+        } else {
+          dataSchema[item.dataIndex] = schema;
+        }
+      });
     }
-  });
+  };
+  setDataSchema(columns);
   return dataSchema;
 }
 
@@ -237,9 +251,9 @@ function setDragFinishSchema({ dataSchema, output }) {
   }
 }
 
-function setDataSchema({ data, output, input }) {
+function setDataSchema({ data, output, input }, cfg: any) {
   const dataSchema = getColumnsDataSchema(data.columns);
-  const config = { usePagination: data.hasPagination}
+  const config = { usePagination: data.hasPagination, ...cfg }
   if (data.isActive) {
     setFetchDataSchema(dataSchema, output, config);
     setRefreshSchema(input);
@@ -253,18 +267,15 @@ function setDataSchema({ data, output, input }) {
 }
 
 const setCol = (data: Data, focusArea: any, value: any, propName: string) => {
-  const index = +focusArea.dataset.tableThIdx;
-  const item = { ...data.columns[index] };
+  const item = getColumnItem(data, focusArea);
   if (!item) {
     return;
   }
   item[propName] = value;
-  const copyed = [...data.columns];
-  copyed.splice(index, 1, item);
-  data.columns = [...copyed];
-
+  data.columns = [...data.columns];
   return data.columns;
 };
+
 export {
   setCol,
   setDataSchema,
