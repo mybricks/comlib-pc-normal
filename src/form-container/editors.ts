@@ -13,6 +13,7 @@ function refreshSchema({data, inputs, outputs}) {
   }
 
   outputs.get('onFinish').setSchema(schema)
+  inputs.get('initial').setSchema(schema)
 }
 
 export default {
@@ -39,7 +40,20 @@ export default {
   
     refreshSchema({data, inputs, outputs})
   },
-  ':root': [],
+  ':root': [
+    {
+      title: '事件',
+      items: [
+        {
+          title: '初始化',
+          type: '_event',
+          options: {
+            outputId: 'onInitial'
+          }
+        }
+      ]
+    },
+  ],
   '[data-formitem]': [
     {
       title: '标题',

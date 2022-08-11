@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useCallback, useLayoutEffect } from 'react';
-import { Form, Button } from 'antd';
+import { Form, Button, Row, Col } from 'antd';
 
 export interface Data {
   items: any[]
@@ -23,9 +23,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
 
   useLayoutEffect(() => {
-    inputs['initial']((val) => {
+    inputs['setFieldsValue']((val) => {
       formRef.setFieldsValue(val)
     })
+
+    inputs['initial']((val) => {
+      formRef.setFieldsValue(val)
+
+      outputs['onInitial']({ values: val, formInstance: formRef })
+    })
+
+    inputs['resetFields']((val, outputRels) => {
+      formRef.resetFields()
+      outputRels['onResetFinish']()
+    })
+
+    inputs['submit']((val, outputRels) => {
+      submit(outputRels)
+    })
+
   }, [])
 
   const validate = useCallback(() => {
@@ -76,11 +92,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     })
   }, [])
 
-  const submit = () => {
+  const submit = (outputRels?: any) => {
     validate().then(() => {
       getValue().then(values => {
         console.log('提交数据', values)
-        outputs['onFinish'](values)
+        if (outputRels) {
+          outputRels['onFinish'](values)
+        } else {
+          outputs['onFinish'](values)
+        }
       })
     }).catch(e => {
       console.log('校验失败', e)
@@ -113,15 +133,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}>
       { content }
-      <Form.Item data-form-actions>
-        <Button type="primary" onClick={submit}>提交</Button>
-      </Form.Item>
+      <Row style={{ flex: '1 1 100%' }}>
+        <Col offset={8}>
+          <Form.Item data-form-actions>
+            <Button type="primary" onClick={() => submit()}>提交</Button>
+          </Form.Item>
+        </Col>
+      </Row>
     </Form>
   )
 }
 
 const FormItem = (props: { com, item }) => {
   const { com, item }  = props
+
   return (
     <Form.Item
       label={item?.label}
@@ -136,7 +161,7 @@ const FormItem = (props: { com, item }) => {
 
 const JSXWrapper = ({ com, value, onChange }: FormControlProps) => {
   useLayoutEffect(() => { // 初始化表单项值
-    com.inputs?.setValue(value)
+    com.inputs?.setValue(value) // 需求区分 表单API行为触发 与 用户行为触发 => inputs or _inputs
   }, [value])
 
   return com.jsx
