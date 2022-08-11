@@ -8,7 +8,6 @@ export default {
     setDesc(`（连接器为空）`)
   },
   '@connectorUpdated': ({data, input, output, setDesc, setAutoRun, isAutoRun}, {connector}) => {
-    console.log(connector,'111')
     if (connector.id === data.connector.id) {
       data.connector = {
         id: connector.id,

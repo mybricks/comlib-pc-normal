@@ -55,7 +55,6 @@ export default {
   },
   '@inputConnected'({ data }, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
-      console.log(fromPin.schema, 'fromppp')
       if (fromPin.schema.type === 'object' || fromPin.schema.type === 'array') {
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
       } else {
