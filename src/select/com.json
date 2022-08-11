@@ -36,6 +36,40 @@
       "rels": [
         "returnValue"
       ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setOptions",
+      "title": "设置数据源",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标题",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "any"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setVisible",
+      "title": "设置显示/隐藏",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [
