@@ -1,17 +1,16 @@
 {
   "title": "对象合并",
   "visibility": true,
-  "namespace": "fangzhou.normal-pc.data.object-merge",
-  "author": "",
-  "author_name": "",
+  "namespace": "mybricks.normal-pc.object-merge",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
   "version": "1.0.0",
   "description": "对象合并",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/java-script.dd6d0de51f7fc441.svg",
+  "icon": "",
   "editors": "./editors.ts",
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "rtType": "js",
-  "docs": "https://docs.corp.kuaishou.com/k/home/VYA7eYQyTI9o/fcAD30unkqiVHbszm-osq9jAr#section=h.3bvg8wlpuaug",
   "inputs": [
     {
       "id": "input0",
