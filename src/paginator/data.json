@@ -1,0 +1,23 @@
+{
+  "total": 20,
+  "text": "共 {total} 条结果",
+  "current": 1,
+  "currentPage": {
+    "pageNum": 1,
+    "pageSize": 10
+  },
+  "isDynamic": false,
+  "disabled": false,
+  "defaultPageSize": 10,
+  "align": "flex-end",
+  "size": "default",
+  "showSizeChanger": false,
+  "pageSizeOptions": [
+    "10",
+    "20",
+    "50",
+    "100"
+  ],
+  "showQuickJumper": false,
+  "hideOnSinglePage": false
+}

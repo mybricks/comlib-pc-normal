@@ -1,0 +1,27 @@
+{
+  "stepAry": [
+    {
+      "id": "step0",
+      "title": "步骤1",
+      "description": "点击修改描述",
+      "index": 0,
+      "connect": 0
+    }
+  ],
+  "current": 0,
+  "toolbar": {
+    "showActions": false,
+    "showDesc": 1,
+    "size": "default",
+    "type": "default",
+    "submit": true,
+    "reset": true,
+    "showSecondBtn": true,
+    "actionAlign": "flex-start",
+    "primaryBtnText": "下一步",
+    "secondBtnText": "上一步",
+    "resetText": "重置",
+    "submitText": "提交"
+  },
+  "fullSubmit": false
+}

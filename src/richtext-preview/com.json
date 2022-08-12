@@ -1,0 +1,16 @@
+{
+  "title": "富文本",
+  "namespace": "mybricks.normal-pc.richtext-preview",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "展示多姿多彩的富文本",
+  "icon": "",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "inputs": [],
+  "outputs": [],
+  "slots": []
+}

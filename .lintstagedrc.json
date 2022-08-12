@@ -1,0 +1,3 @@
+{
+  "src/**/*.{tsx,tx,jsx,js,css,less,md}": ["prettier --loglevel warn --write"]
+}

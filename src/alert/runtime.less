@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+
+  :global {
+    .ant-alert {
+      width: 100%;
+    }
+
+    .ant-alert-action {
+      cursor: pointer;
+    }
+
+    .ant-alert-description {
+      white-space: pre-wrap;
+    }
+
+    .anticon {
+      margin-top: 3px;
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "timestamp": "",
+  "dataSource": [],
+  "rowKey": "uuid",
+  "columns": [
+    {
+      "title": "名称",
+      "dataIndex": "name",
+      "key": "name",
+      "visible": true,
+      "ellipsis": true,
+      "valueType": "text",
+      "contentType": "text",
+      "colorEnum": { "bike": "#ff0000" },
+      "hasTip": false,
+      "tip": "",
+      "width": 200
+    },
+    {
+      "title": "业务线",
+      "dataIndex": "business",
+      "key": "business",
+      "visible": true,
+      "ellipsis": true,
+      "contentType": "text",
+      "valueType": "text",
+      "valueEnum": "",
+      "width": 200
+    },
+    {
+      "title": "状态",
+      "dataIndex": "status",
+      "key": "status",
+      "visible": true,
+      "ellipsis": true,
+      "isMapping": false,
+      "contentType": "text",
+      "width": 200
+    },
+    {
+      "title": "创建时间",
+      "dataIndex": "createTime",
+      "key": "createTime",
+      "visible": true,
+      "ellipsis": true,
+      "contentType": "date",
+      "width": 200
+    }
+  ],
+  "batchBtns": [],
+  "extraOutputs": [],
+  "bordered": false,
+  "size": "middle",
+  "queryParams": {},
+  "hasPagination": false,
+  "pagination": {
+    "pageSize": 20,
+    "current": 1,
+    "total": 20,
+    "showSizeChanger": false
+  },
+  "pageNumber": "current",
+  "pageSize": "pageSize",
+  "useRowSelection": false,
+  "rowSelection": {
+    "type": "checkbox"
+  },
+  "fixedHeader": false,
+  "scroll": {
+    "y": "",
+    "scrollToFirstRowOnChange": true
+  },
+  "useLoading": false,
+  "isActive": true,
+  "immediate": false,
+  "scratchOutputIds": [],
+  "expandableBlocks": {},
+  "expandable": false,
+  "loadingTip": "",
+  "useInput": false,
+  "actionBtns": [],
+  "tableTitle": "查询表格",
+  "tableTitleStyle": {
+    "fontSize": 16,
+    "color": "#434343",
+    "fontWeight": "bold",
+    "letterSpacing": 0,
+    "lineHeight": 1
+  },
+  "showPaginationTotal": true,
+  "rowSelectionPostion": ["top", "bottom"],
+  "useDrapItem": false
+}

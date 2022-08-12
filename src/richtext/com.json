@@ -1,0 +1,62 @@
+{
+  "title": "富文本输入",
+  "namespace": "mybricks.normal-pc.richtext",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "富文本输入",
+  "icon": "",
+  "data": "./data.json",
+  "upgrade": "./upgrade.ts",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "数据源",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "slotProps",
+      "title": "插槽参数",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "submit",
+      "title": "提交",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "done",
+      "title": "编辑完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "submit",
+      "title": "数据提交",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "数据变更",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": []
+}

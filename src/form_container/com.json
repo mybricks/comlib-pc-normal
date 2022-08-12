@@ -1,0 +1,69 @@
+{
+  "title": "表单容器",
+  "enable": true,
+  "namespace": "mybricks.normal-pc.form-container.0",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "表单",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/form.085afdee65645d49.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "slots": [
+    {
+      "id": "content",
+      "title": "表单项",
+      "schema": "mybricks.normal-pc.form-container/form-item",
+      "type": "scope"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "submit",
+      "title": "提交表单",
+      "rels": [
+        "submit",
+        "out0"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "reset",
+      "title": "重置表单",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "getFormValue",
+      "title": "获取表单值",
+      "rels": [
+        "getFormValue",
+        "out0"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "submit",
+      "title": "数据提交",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "afterReset",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

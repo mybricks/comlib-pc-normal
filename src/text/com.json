@@ -1,0 +1,65 @@
+{
+  "title": "文本",
+  "namespace": "mybricks.normal-pc.text",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "文本",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "configs": [
+    {
+      "id": "rows",
+      "title": "显示行数",
+      "schema": {
+        "type": "string"
+      },
+      "binding": "data.ellipsis.rows"
+    },
+    {
+      "id": "link",
+      "title": "输出内容",
+      "schema": {
+        "type": "string"
+      },
+      "binding": "data.outputContent"
+    },
+    {
+      "id": "text",
+      "title": "文本内容",
+      "schema": {
+        "type": "string"
+      },
+      "binding": "data.content"
+    },
+    {
+      "id": "cursorStyle",
+      "title": "鼠标样式",
+      "schema": {
+        "type": "boolean"
+      },
+      "binding": "data.click"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "content",
+      "title": "内容",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

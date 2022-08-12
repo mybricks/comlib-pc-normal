@@ -1,0 +1,69 @@
+{
+  "title": "Tabs",
+  "namespace": "mybricks.normal-pc.tabs",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "选项卡切换组件",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/tab.2b7188c7f5378c24.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "upgrade": "./upgrade.ts",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "slots": [
+    {
+      "id": "tab0",
+      "title": "内容"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "previous",
+      "title": "上一页",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "next",
+      "title": "下一页",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "active",
+      "title": "激活tab项",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "outActiveTab",
+      "title": "获取激活tab项",
+      "rels": [
+        "outActiveTab"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "tabClick",
+      "title": "标签页点击",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "outActiveTab",
+      "title": "激活tab项输出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

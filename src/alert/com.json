@@ -1,0 +1,29 @@
+{
+  "title": "警告提示",
+  "namespace": "mybricks.normal-pc.alert",
+  "version": "1.0.0",
+  "description": "警告提示",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "inputInfo",
+      "title": "信息",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "description",
+      "title": "辅助介绍文案",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": []
+}

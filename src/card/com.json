@@ -1,0 +1,32 @@
+{
+  "title": "卡片",
+  "namespace": "mybricks.normal-pc.card",
+  "version": "1.0.0",
+  "description": "卡片",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "title",
+      "title": "标题",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "body",
+      "title": "卡片内容容器"
+    },
+    {
+      "id": "extra",
+      "title": "卡片操作容器"
+    }
+  ]
+}

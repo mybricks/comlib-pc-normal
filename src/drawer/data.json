@@ -1,0 +1,14 @@
+{
+  "title":"标题",
+  "position": "right",
+  "showMask": true,
+  "visible": false,
+  "width": 720,
+  "height": 200,
+  "useFooter": false,
+  "footerAlign": "right",
+  "showFull": false,
+  "bodyStyle": {
+    "backgroundColor": ""
+  }
+}

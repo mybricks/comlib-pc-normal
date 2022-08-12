@@ -1,0 +1,6 @@
+{
+  "actionType": "start",
+  "timerType": "interval",
+  "delay": 1000,
+  "name": "定时器"
+}

@@ -1,0 +1,34 @@
+{
+  "title": "JS计算",
+  "visibility": true,
+  "namespace": "mybricks.normal-pc.jscode",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.8",
+  "description": "JS计算",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/java-script.dd6d0de51f7fc441.svg",
+  "editors": "./editors.ts",
+  "runtime": "./runtime.ts",
+  "upgrade": "./upgrade.ts",
+  "rtType": "js-autorun",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "input0",
+      "title": "输入项0",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output0",
+      "title": "输出项0(output0)",
+      "schema": {
+        "type": "unknown"
+      },
+      "editable": true
+    }
+  ]
+}

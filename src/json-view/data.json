@@ -1,0 +1,16 @@
+{
+  "dataSource": 1,
+  "json": [],
+  "indentWidth": 4,
+  "colors": {
+    "number": "blue",
+    "string": "green",
+    "key": "red",
+    "bracket": "gray"
+  },
+  "collapsed": 1,
+  "collapseStringsAfterLength": 0,
+  "displayObjectSize": false,
+  "enableClipboard": false,
+  "enableOutput": false
+}

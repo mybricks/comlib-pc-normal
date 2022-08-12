@@ -1,0 +1,29 @@
+{
+  "title": "插槽适配器",
+  "namespace": "mybricks.normal-pc.slot-adapter",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "插槽适配器",
+  "icon": "https://ali-ec.static.yximgs.com/kos/nlav11092/pkg/ks-merchant/fangzhou/icon.ef99284bbc2009ab.svg",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "data": "./data.json",
+  "upgrade": "./upgrade.ts",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "slotProps",
+      "title": "插槽数据",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "item",
+      "title": "适配内容"
+    }
+  ]
+}

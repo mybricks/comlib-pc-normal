@@ -1,0 +1,23 @@
+{
+  "title": "工具条",
+  "namespace": "mybricks.normal-pc.toolbar",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "工具条",
+  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/ks-merchant/fangzhou/toolbar.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "slotProps",
+      "title": "插槽参数",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ]
+}

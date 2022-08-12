@@ -1,0 +1,25 @@
+{
+  "title": "图片列表",
+  "namespace": "mybricks.normal-pc.image",
+  "version": "1.0.0",
+  "description": "可预览的图片",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "slotProps",
+      "title": "插槽参数",
+      "schema": {
+        "type": "array",
+        "items": {
+          "title": "图片链接",
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

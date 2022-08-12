@@ -1,0 +1,40 @@
+{
+  "treeData": [
+    {
+      "title": "0-0",
+      "key": "0-0",
+      "children": [
+        {
+          "title": "0-0-0",
+          "key": "0-0-0",
+          "children": []
+        }
+      ]
+    },
+    {
+      "title": "0-1",
+      "key": "0-1"
+    }
+  ],
+  "checkable": true,
+  "disableCheckbox": false,
+  "outParentNode": false,
+  "defaultExpandAll": true,
+  "expandedKeys": [],
+  "isEditing": "",
+  "isAdding": "",
+  "actionBtns": [
+    {
+      "type": "link",
+      "title": "修改",
+      "size": "middle",
+      "id": "modify"
+    },
+    {
+      "type": "link",
+      "title": "删除",
+      "size": "middle",
+      "id": "delete"
+    }
+  ]
+}

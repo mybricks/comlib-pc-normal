@@ -1,0 +1,23 @@
+{
+  "title": "日历",
+  "namespace": "mybricks.normal-pc.calendar",
+  "version": "1.0.0",
+  "description": "日历",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "数据输入",
+      "schema": {
+        "type": "object",
+        "properties":{}
+      }
+    }
+  ],
+  "outputs": []
+}

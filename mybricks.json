@@ -1,0 +1,64 @@
+{
+  "fileId": 2391,
+  "content": "",
+  "commitInfo": "init",
+  "debugger": "pc-spa",
+  "comAry": {
+    "test": [
+      {
+        "title": "常规",
+        "comAry": [
+          "./src/text/com.json",
+          "./src/image/com.json",
+          "./src/toolbar/com.json"
+        ]
+      },
+      {
+        "title": "表单",
+        "comAry": [
+          "./src/form/com.json",
+          "./src/form-container/com.json",
+          "./src/form_text/com.json",
+          "./src/select/com.json",
+          "./src/cascader/com.json",
+          "./src/input-number/com.json",
+          "./src/date-picker/com.json"
+        ]
+      },
+      {
+        "title": "数据",
+        "comAry": [
+          "./src/table/com.json"
+        ]
+      },
+      {
+        "title": "容器",
+        "comAry": [
+          "./src/grid/com.json",
+          "./src/card/com.json",
+          "./src/dialog/com.json",
+          "./src/tabs/com.json",
+          "./src/steps/com.json"
+        ]
+      },
+      "./src/_jscode/com.json",
+      "./src/_connector/com.json",
+      "./src/_message/com.json",
+      "./src/_link_to/com.json"
+    ],
+    "publish": [
+      "./src/toolbar/com.json",
+      "./src/card/com.json",
+      "./src/dialog/com.json",
+      "./src/form/com.json",
+      "./src/image/com.json",
+      "./src/steps/com.json",
+      "./src/table/com.json",
+      "./src/tabs/com.json",
+      "./src/text/com.json",
+      "./src/_jscode/com.json",
+      "./src/_connector/com.json",
+      "./src/_message/com.json"
+    ]
+  }
+}

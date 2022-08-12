@@ -1,0 +1,92 @@
+{
+  "title": "对话框",
+  "namespace": "mybricks.normal-pc.dialog",
+  "version": "1.0.0",
+  "description": "对话框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "打开",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "close",
+      "title": "关闭",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "showFooter",
+      "title": "显示底部内容",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "hideFooter",
+      "title": "隐藏底部内容",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "showTitle",
+      "title": "显示标题",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "hideTitle",
+      "title": "隐藏标题",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "cancel",
+      "title": "关闭回调",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "ok",
+      "title": "确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancelBtn",
+      "title": "取消",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "container",
+      "title": "对话框容器"
+    }
+  ]
+}

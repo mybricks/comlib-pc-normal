@@ -1,0 +1,29 @@
+{
+  "okText": "确认",
+  "title": "对话框",
+  "hideTitle": false,
+  "closable": true,
+  "centered": false,
+  "useFooter": true,
+  "footerType": 1,
+  "cancelText": "取消",
+  "width": 520,
+  "footerBtns": [
+    {
+      "id": "cancelBtn",
+      "title": "取消",
+      "icon": "",
+      "useIcon": false,
+      "showText": true,
+      "type": "default"
+    },
+    {
+      "id": "ok",
+      "title": "确认",
+      "type": "primary",
+      "icon": "",
+      "useIcon": false,
+      "showText": true
+    }
+  ]
+}

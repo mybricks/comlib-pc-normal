@@ -1,0 +1,33 @@
+{
+  "title": "对象合并",
+  "visibility": true,
+  "namespace": "mybricks.normal-pc.object-merge",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "version": "1.0.0",
+  "description": "对象合并",
+  "icon": "",
+  "editors": "./editors.ts",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "input0",
+      "title": "输入项0",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "maxConnections": 1,
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

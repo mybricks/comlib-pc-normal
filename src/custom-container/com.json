@@ -1,0 +1,18 @@
+{
+  "title": "自定义容器",
+  "namespace": "mybricks.normal-pc.custom-container",
+  "version": "1.0.0",
+  "description": "自定义容器",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

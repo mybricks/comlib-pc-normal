@@ -1,0 +1,79 @@
+{
+  "title": "步骤条",
+  "namespace": "mybricks.normal-pc.steps",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "步骤条",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/steps.bf297b5d0092baaf.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "slots": [
+    {
+      "id": "step0",
+      "title": "内容"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "nextStep",
+      "title": "下一步",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "prevStep",
+      "title": "上一步",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "submit",
+      "title": "数据提交",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "reset",
+      "title": "重置",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "nextStep",
+      "title": "下一步",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "submit",
+      "title": "数据提交",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "step0",
+      "title": "步骤0",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "reset",
+      "title": "重置",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+.stepbox {
+
+  // margin-top: 16px;
+  .verticalWrap {
+    display: flex;
+
+    :global {
+      .ant-steps {
+        width: fit-content;
+        word-break: keep-all;
+        justify-content: flex-start;
+      }
+
+      .ant-steps-item {
+        width: max-content;
+        min-height: 120px;
+
+        &:last-child {
+          min-height: unset;
+        }
+      }
+    }
+
+    .stepsContent {
+      margin-top: 0px;
+      width: 100%;
+    }
+  }
+
+  :global {
+    .ant-steps {
+      display: flex;
+      justify-content: center;
+    }
+
+    .ant-steps-item {
+      flex: none;
+      width: 258px;
+    }
+
+    .ant-btn {
+      box-sizing: border-box;
+    }
+  }
+
+  .stepsContent {
+    // background-color: #fafafa;
+    min-height: 100px;
+    line-height: 100px;
+    display: flex;
+    margin-top: 40px;
+
+    .content {
+      flex: 1;
+      width: 100%;
+      min-width: 0%;
+    }
+  }
+
+  .stepsAction {
+    margin-top: 24px;
+
+    >* {
+      margin: 0px 2px;
+    }
+  }
+}
+
+.preview {
+  background-color: rgba(253, 247, 166, 0.2);
+  outline: 1px dashed #d7d7d7;
+}

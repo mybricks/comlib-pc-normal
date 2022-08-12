@@ -1,0 +1,19 @@
+{
+  "title": "时间轴",
+  "namespace": "mybricks.normal-pc.timeline",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "时间轴",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/timeline.e7c1a1987ef47de2.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

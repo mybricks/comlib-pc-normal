@@ -1,0 +1,24 @@
+{
+  "title": "路由切换",
+  "namespace": "mybricks.normal-pc.page-router",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "路由切换",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/route.4be3b1fceb1e4c8b.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "rtType": "js",
+  "editors": "./editors.tsx",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "routerAction",
+      "title": "路由切换",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": []
+}

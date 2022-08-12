@@ -1,0 +1,15 @@
+{
+  "title": "JSON展示",
+  "namespace": "mybricks.normal-pc.json-view",
+  "version": "1.0.0",
+  "description": "展示JSON数据",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [],
+  "outputs": [],
+  "slots": []
+}

@@ -1,0 +1,41 @@
+{
+  "title": "服务接口",
+  "namespace": "mybricks.normal-pc.service",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "",
+  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/interface.a26a922b31a04c0b.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "rtType": "js-autorun",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "params",
+      "title": "发起请求",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "res",
+      "title": "成功",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "error",
+      "title": "错误",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

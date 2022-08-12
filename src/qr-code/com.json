@@ -1,0 +1,31 @@
+{
+  "title": "二维码",
+  "namespace": "mybricks.normal-pc.qr-code",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "二维码",
+  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/images/qrcode.d0a1ea7724014097.jpeg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "docs": "",
+  "inputs": [
+    {
+      "id": "link",
+      "title": "URL",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}
