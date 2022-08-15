@@ -30,10 +30,10 @@ export const Schemas = {
     type: 'string'
   },
   Expanded: {
-    type: 'void'
+    type: 'any'
   },
   Folded: {
-    type: 'void'
+    type: 'any'
   },
   ExpandedChange: {
     type: 'boolean'
