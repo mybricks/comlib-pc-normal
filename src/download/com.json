@@ -13,7 +13,7 @@
       "id": "url",
       "title": "资源地址",
       "schema": {
-        "type": "string"
+        "type": "any"
       }
     }
   ],

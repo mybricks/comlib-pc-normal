@@ -24,7 +24,20 @@
       "title": "插槽参数",
       "schema": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "value": {
+            "title": "文本内容",
+            "type": "string"
+          },
+          "formProps": {
+            "type": "object",
+            "properties": {
+              "disabled": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
       }
     },
     {
