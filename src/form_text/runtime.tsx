@@ -1,5 +1,5 @@
 import {Form, Input} from 'antd'
-import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 
 import css from './runtime.less'
 
@@ -11,7 +11,17 @@ export default function ({data, _inputs, inputs, _outputs, outputs}) {
     })
 
     inputs['validate']((val, outputRels) => {
-      outputRels['returnValidate'](data.value)
+      // outputRels['returnValidate'](data.value)
+      if (data.value) {
+        outputRels['returnValidate']({
+          validateStatus: 'success',
+        })
+      } else {
+        outputRels['returnValidate']({
+          validateStatus: 'error',
+          help: '请输入内容'
+        })
+      }
     })
 
     inputs['getValue']((val, outputRels) => {
