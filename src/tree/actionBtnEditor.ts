@@ -58,12 +58,8 @@ const addBtn = ({ data, output }: { data: Data, output: any }) => {
             title: '标题',
             type: 'string'
           },
-          key: {
-            title: '字段名',
-            type: 'string'
-          },
-          value: {
-            title: '值',
+          [data.keyFieldName]: {
+            title: '节点标识字段',
             type: 'string'
           },
           disableCheckbox: {
