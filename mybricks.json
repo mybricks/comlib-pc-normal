@@ -18,6 +18,7 @@
         "comAry": [
           "./src/form/com.json",
           "./src/form-container/com.json",
+          "./src/form-object-container/com.json",
           "./src/form_text/com.json",
           "./src/select/com.json",
           "./src/cascader/com.json",
