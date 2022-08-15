@@ -195,10 +195,22 @@ const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
     }
   });
 };
+//更新插槽的schema数据
+const slotPropsSchema = ({ input, dataSchema }) => {
+  const hasSlot = input.get(InputIds.SlotProps);
+  if(hasSlot) {
+    hasSlot.setSchema({
+      title: '插槽参数',
+      type: 'object',
+      properties: dataSchema
+    })
+  }
+}
 // 更新schema数据
 export const updateIOSchema = ({ data, input, output }) => {
   const dataSchema = getDataSourceSchema(data);
   setDataSourceSchema({ input, dataSchema });
+  slotPropsSchema({ input, dataSchema });
   setSuffixBtnClickSchema({ data, dataSchema, output });
 };
 export const Schemas = {
