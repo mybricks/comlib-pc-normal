@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import { runJs } from '@fangzhou/com-utils';
-import { Table, Tooltip, Pagination } from 'antd';
+import { Table, Tooltip, Pagination, Empty } from 'antd';
 import { TablePaginationConfig } from 'antd/es/table';
 import {
   SortableContainer,
@@ -904,7 +904,6 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <div className={css.table}>
       <div
-        data-table-header-container
         className={classnames(
           css.headerContainer,
           useTopRowSelection && css.flexDirectionColumn,
@@ -935,70 +934,74 @@ export default function (props: RuntimeParams<Data>) {
       </div>
       {data.useHeaderSlot && slots[data.headerSlotId].render()}
       {/* {data.useRowSelection && renderSelectActions()} */}
-      <Table
-        dataSource={edit ? defaultDataSource : tableContent.dataSource}
-        loading={{
-          tip: data.loadingTip,
-          spinning: loading,
-        }}
-        rowKey={data.rowKey || 'uuid'}
-        size={data.size as any}
-        bordered={data.bordered}
-        pagination={false}
-        // pagination={data.hasPagination && (data.pagination as any)}
-        rowSelection={data.useRowSelection && rowSelection}
-        showHeader={data.showHeader === false && env.runtime ? false : true}
-        scroll={{
-          x: '100%',
-          y: data.scroll.y ? data.scroll.y : void 0,
-        }}
-        onRow={data.onRow}
-        expandable={
-          data.useExpand && slots[SlotIds.EXPAND_CONTENT]
-            ? {
-              expandedRowKeys: edit ? [defaultDataSource[0].uuid] : expandedRowKeys, //增加动态设置
-              expandedRowRender: (record) => {
-                return slots[SlotIds.EXPAND_CONTENT].render({
-                  inputs: {
-                    slotProps(fn) {
-                      fn(record);
-                    },
+      {data.columns.length ? (
+        <Table
+          dataSource={edit ? defaultDataSource : tableContent.dataSource}
+          loading={{
+            tip: data.loadingTip,
+            spinning: loading
+          }}
+          rowKey={data.rowKey || 'uuid'}
+          size={data.size as any}
+          bordered={data.bordered}
+          pagination={false}
+          // pagination={data.hasPagination && (data.pagination as any)}
+          rowSelection={data.useRowSelection && rowSelection}
+          showHeader={data.showHeader === false && env.runtime ? false : true}
+          scroll={{
+            x: '100%',
+            y: data.scroll.y ? data.scroll.y : void 0
+          }}
+          onRow={data.onRow}
+          expandable={
+            data.useExpand && slots[SlotIds.EXPAND_CONTENT]
+              ? {
+                  expandedRowKeys: edit ? [defaultDataSource[0].uuid] : expandedRowKeys, //增加动态设置
+                  expandedRowRender: (record) => {
+                    return slots[SlotIds.EXPAND_CONTENT].render({
+                      inputs: {
+                        slotProps(fn) {
+                          fn(record);
+                        }
+                      }
+                    });
                   },
-                });
-              },
-              // 兼容展开/收起图标控制
-              onExpand: (isExpanded, record) => {
-                const currentKey = record['uuid'];
-                if (isExpanded) {
-                  setExpandedRowKeys([...expandedRowKeys, currentKey]);
-                } else {
-                  setExpandedRowKeys([...expandedRowKeys].filter(key => key !== currentKey));
+                  // 兼容展开/收起图标控制
+                  onExpand: (isExpanded, record) => {
+                    const currentKey = record['uuid'];
+                    if (isExpanded) {
+                      setExpandedRowKeys([...expandedRowKeys, currentKey]);
+                    } else {
+                      setExpandedRowKeys([...expandedRowKeys].filter((key) => key !== currentKey));
+                    }
+                  }
+                  //
                 }
-              }
-              //
-            }
-            : undefined
-        }
-        // expandable={data.expandable ? expandableContent : void 0}
-        // locale={{
-        //   triggerAsc: '点击升序',
-        //   triggerDesc: '点击降序',
-        //   cancelSort: '取消排序',
-        // }}
-        components={
-          data.draggable
-            ? {
-              body: {
-                wrapper: DraggableContainer,
-                row: DraggableBodyRow,
-              },
-            }
-            : null
-        }
-        onChange={onChange}
-      >
-        {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
-      </Table>
+              : undefined
+          }
+          // expandable={data.expandable ? expandableContent : void 0}
+          // locale={{
+          //   triggerAsc: '点击升序',
+          //   triggerDesc: '点击降序',
+          //   cancelSort: '取消排序',
+          // }}
+          components={
+            data.draggable
+              ? {
+                  body: {
+                    wrapper: DraggableContainer,
+                    row: DraggableBodyRow
+                  }
+                }
+              : null
+          }
+          onChange={onChange}
+        >
+          {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
+        </Table>
+      ) : (
+        <Empty description='请添加列' />
+      )}
       <div
         className={classnames(
           css.footerContainer,
