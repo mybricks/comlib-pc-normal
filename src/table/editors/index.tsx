@@ -6,12 +6,9 @@ import {
   setPaginationSchema
 } from '../schema';
 import columnEditor from './table-item';
-import { InputIds, OutputIds } from '../constants';
-import {
-  batchActionBtnsEditor,
-  colActionBtnsEditor,
-  headerActionBtnsEditor
-} from './actionBtns';
+import { InputIds } from '../constants';
+import { batchActionBtnsEditor, colActionBtnsEditor, headerActionBtnsEditor } from './actionBtns';
+
 import headerEditor from './table/header';
 import headerTitleEditor from './table/headerTitle';
 import paginationEditor from './table/pagination';
@@ -46,6 +43,38 @@ function addRefreshInput({ input }) {
   }
 }
 
+function getColumnsFromSchema(schema: any) {
+  function getColumnsFromSchemaProperties(properties) {
+    const columns: any = [];
+    Object.keys(properties).forEach((key) => {
+      if (properties[key].type === 'number' || properties[key].type === 'string') {
+        columns.push({
+          title: key,
+          dataIndex: key,
+          key,
+          width: 140,
+          visible: true,
+          ellipsis: true,
+          contentType: 'text'
+        });
+      }
+    });
+    return columns;
+  }
+  let columnSchema: any = {};
+  if (schema.type === 'array') {
+    columnSchema = schema.items.properties;
+  } else if (schema.type === 'object') {
+    const dataSourceKey = Object.keys(schema.properties).find(
+      (key) => schema.properties[key].type === 'array'
+    );
+    if (dataSourceKey) {
+      columnSchema = schema.properties[dataSourceKey].items.properties;
+    }
+  }
+  return getColumnsFromSchemaProperties(columnSchema);
+}
+
 export default {
   '@init': ({ data, output, input }: EditorResult<Data>) => {
     addRefreshInput({ input });
@@ -55,10 +84,18 @@ export default {
   },
   '@inputConnected'({ data }, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
+      const columns = getColumnsFromSchema(fromPin.schema);
+      data.columns.forEach(column => {
+        if (columns.some(item => item.dataIndex === column.dataIndex)) {
+          return;
+        }
+        columns.push(column);
+      })
+      data.columns = columns;
       if (fromPin.schema.type === 'object' || fromPin.schema.type === 'array') {
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
       } else {
-        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {}
+        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {};
       }
     }
   },

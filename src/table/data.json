@@ -2,51 +2,7 @@
   "timestamp": "",
   "dataSource": [],
   "rowKey": "uuid",
-  "columns": [
-    {
-      "title": "名称",
-      "dataIndex": "name",
-      "key": "name",
-      "visible": true,
-      "ellipsis": true,
-      "valueType": "text",
-      "contentType": "text",
-      "colorEnum": { "bike": "#ff0000" },
-      "hasTip": false,
-      "tip": "",
-      "width": 200
-    },
-    {
-      "title": "业务线",
-      "dataIndex": "business",
-      "key": "business",
-      "visible": true,
-      "ellipsis": true,
-      "contentType": "text",
-      "valueType": "text",
-      "valueEnum": "",
-      "width": 200
-    },
-    {
-      "title": "状态",
-      "dataIndex": "status",
-      "key": "status",
-      "visible": true,
-      "ellipsis": true,
-      "isMapping": false,
-      "contentType": "text",
-      "width": 200
-    },
-    {
-      "title": "创建时间",
-      "dataIndex": "createTime",
-      "key": "createTime",
-      "visible": true,
-      "ellipsis": true,
-      "contentType": "date",
-      "width": 200
-    }
-  ],
+  "columns": [],
   "batchBtns": [],
   "extraOutputs": [],
   "bordered": false,
@@ -88,6 +44,9 @@
     "lineHeight": 1
   },
   "showPaginationTotal": true,
-  "rowSelectionPostion": ["top", "bottom"],
+  "rowSelectionPostion": [
+    "top",
+    "bottom"
+  ],
   "useDrapItem": false
 }
