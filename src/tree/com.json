@@ -17,15 +17,28 @@
       "title": "输入数据",
       "schema": {
         "type": "array",
-        "$id": "treeArray",
         "items": {
           "type": "object",
           "properties": {
             "title": {
+              "title": "标题",
               "type": "string"
             },
+            "key": {
+              "title": "字段名",
+              "type": "string"
+            },
+            "disableCheckbox": {
+              "title": "禁用勾选",
+              "type": "boolean"
+            },
             "children": {
-              "$ref": "treeArray"
+              "title": "子项",
+              "type":"array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
             }
           }
         }
@@ -37,7 +50,8 @@
       "schema": {
         "type": "array",
         "items": {
-          "type": "any"
+          "title": "字段名",
+          "type": "string"
         }
       }
     },
@@ -51,7 +65,12 @@
             "type": "string"
           },
           "children": {
-            "$ref": "treeArray"
+            "title": "子项",
+            "type":"array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
           }
         }
       }
@@ -174,7 +193,24 @@
       "schema": {
         "title": "节点数据",
         "type": "object",
-        "properties": {}
+        "properties": {
+          "title": {
+            "title": "标题",
+            "type": "string"
+          },
+          "key": {
+            "title": "字段名",
+            "type": "string"
+          },
+          "value":{
+            "title": "值",
+            "type": "string"
+          },
+          "disableCheckbox": {
+            "title": "禁用勾选",
+            "type": "boolean"
+          }
+        }
       }
     },
     {
@@ -183,7 +219,25 @@
       "schema": {
         "title": "节点数据",
         "type": "object",
-        "properties": {}
+        "properties": {
+          "title": {
+            "title": "标题",
+            "type": "string"
+          },
+          "key": {
+            "title": "字段名",
+            "type": "string"
+          },
+          "value":{
+            "title": "值",
+            "type": "string"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "items": {}
+          }
+        }
       }
     }
   ]

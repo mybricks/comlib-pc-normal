@@ -15,7 +15,7 @@
       "title": "数据输入",
       "schema": {
         "type": "object",
-        "properties":{}
+        "properties": {}
       }
     }
   ],

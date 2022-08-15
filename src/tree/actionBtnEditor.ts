@@ -52,7 +52,21 @@ const addBtn = ({ data, output }: { data: Data, output: any }) => {
         title = '按钮';
     const schema = {
         title: '节点数据',
-        type: 'object'
+        type: 'object',
+        properties: {
+          title: {
+            title: '标题',
+            type: 'string'
+          },
+          [data.keyFieldName]: {
+            title: '节点标识字段',
+            type: 'string'
+          },
+          disableCheckbox: {
+            title: '禁用勾选',
+            type: 'boolean'
+          }
+        }
     };
     const defaultBtn = {
         id,

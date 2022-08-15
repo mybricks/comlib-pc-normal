@@ -24,6 +24,10 @@
             "title": "唯一标识",
             "type": "string"
           },
+          "menuType": {
+            "title": "类型",
+            "type": "string"
+          },
           "value": {
             "title": "其他数据",
             "type": "any"
@@ -43,6 +47,10 @@
           },
           "key": {
             "title": "唯一标识",
+            "type": "string"
+          },
+          "menuType": {
+            "title": "类型",
             "type": "string"
           },
           "value": {

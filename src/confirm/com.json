@@ -22,6 +22,12 @@
           },
           "content": {
             "type": "string"
+          },
+          "cancelText": {
+            "type": "string"
+          },
+          "okText": {
+            "type": "string"
           }
         }
       }
