@@ -1,8 +1,10 @@
 {
-  "fileId": 2391,
+  "folderId": "",
+  "folderIdStaging": 5620,
   "content": "",
   "commitInfo": "init",
   "debugger": "pc-spa",
+  "componentType": "PC",
   "comAry": {
     "test": [
       {
@@ -48,18 +50,49 @@
       "./src/_link_to/com.json"
     ],
     "publish": [
-      "./src/toolbar/com.json",
+      "./src/alert/com.json",
+      "./src/breadcrumb/com.json",
+      "./src/button/com.json",
+      "./src/calendar/com.json",
       "./src/card/com.json",
+      "./src/cascader/com.json",
+      "./src/clipboard/com.json",
+      "./src/collapse/com.json",
+      "./src/confirm/com.json",
+      "./src/custom-container/com.json",
       "./src/dialog/com.json",
-      "./src/form/com.json",
+      "./src/download/com.json",
+      "./src/drawer/com.json",
+      "./src/global-loading/com.json",
+      "./src/grid/com.json",
+      "./src/icon/com.json",
+      "./src/iframe/com.json",
       "./src/image/com.json",
+      "./src/json-view/com.json",
+      "./src/link/com.json",
+      "./src/merge/com.json",
+      "./src/message/com.json",
+      "./src/object-merge/com.json",
+      "./src/paginator/com.json",
+      "./src/popover/com.json",
+      "./src/qr-code/com.json",
+      "./src/result/com.json",
+      "./src/richtext/com.json",
+      "./src/richtext-preview/com.json",
+      "./src/service/com.json",
+      "./src/single-image/com.json",
+      "./src/slot-adapter/com.json",
+      "./src/sort-bar/com.json",
       "./src/steps/com.json",
       "./src/table/com.json",
       "./src/tabs/com.json",
       "./src/text/com.json",
-      "./src/_jscode/com.json",
-      "./src/_connector/com.json",
-      "./src/_message/com.json"
+      "./src/timeline/com.json",
+      "./src/toolbar/com.json",
+      "./src/timer/com.json",
+      "./src/tooltip/com.json",
+      "./src/tree/com.json",
+      "./src/typography/com.json"
     ]
   }
 }
