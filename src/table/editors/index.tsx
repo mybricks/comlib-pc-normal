@@ -82,16 +82,15 @@ export default {
     setDataSchema({ data, output, input });
     setPaginationSchema({ data, output });
   },
-  '@inputConnected'({ data }, fromPin, toPin) {
+  '@inputConnected'({ data, input }, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
-      const columns = getColumnsFromSchema(fromPin.schema);
-      data.columns.forEach(column => {
-        if (columns.some(item => item.dataIndex === column.dataIndex)) {
-          return;
+      if (data.columns.length === 0) {
+        data.columns = getColumnsFromSchema(fromPin.schema);
+        if (fromPin.schema.type === 'array') {
+          input.get(InputIds.SET_DATA_SOURCE).setSchema(fromPin.schema);
         }
-        columns.push(column);
-      })
-      data.columns = columns;
+      }
+      
       if (fromPin.schema.type === 'object' || fromPin.schema.type === 'array') {
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
       } else {
@@ -99,8 +98,8 @@ export default {
       }
     }
   },
-  '@inputDisConnected'({ input }, fromPin, toPin) {
-    if (toPin.id === InputIds.SET_DATA_SOURCE) {
+  '@inputDisConnected'({ data, input }, fromPin, toPin) {
+    if (toPin.id === InputIds.SET_DATA_SOURCE && data.columns.length === 0) {
       input.get(toPin.id).setSchema({ title: '列表数据', type: 'any' });
     }
   },
