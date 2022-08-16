@@ -44,6 +44,7 @@
           "./src/steps/com.json"
         ]
       },
+      "./src/code-segment/com.json",
       "./src/_jscode/com.json",
       "./src/_connector/com.json",
       "./src/_message/com.json",
@@ -92,7 +93,11 @@
       "./src/timer/com.json",
       "./src/tooltip/com.json",
       "./src/tree/com.json",
-      "./src/typography/com.json"
+      "./src/typography/com.json",
+      "./src/code-segment/com.json",
+      "./src/bottom-bar/com.json",
+      "./src/dropdown/com.json",
+      "./src/list/com.json"
     ]
   }
 }
