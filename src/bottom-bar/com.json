@@ -1,0 +1,13 @@
+{
+  "title": "置底工具栏",
+  "enable": true,
+  "namespace": "mybricks.bottom-bar",
+  "version": "1.0.0",
+  "description": "置底工具栏",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx"
+}

@@ -1,0 +1,75 @@
+import { Data, InputIds, OutputIds } from './constants';
+import { LayoutEditor } from './editor.ts/layoutEditor';
+
+export default {
+  ':root': ({ }: EditorResult<Data>, cate1, cate2) => {
+    cate1.title = '常规';
+    cate1.items = [...LayoutEditor];
+
+    cate2.title = '高级';
+    cate2.items = [
+      {
+        title: '获取列表数据',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useGetDataSource;
+          },
+          set({ data, input, output }: EditorResult<Data>, val: boolean) {
+            data.useGetDataSource = val;
+            const hasInputEvent = input.get(InputIds.GetDataSource);
+            const hasOutputEvent = output.get(OutputIds.GetDataSource);
+            if (val) {
+              !hasInputEvent &&
+                input.add(InputIds.GetDataSource, '获取列表数据', { type: 'any' });
+              !hasOutputEvent &&
+                output.add(OutputIds.GetDataSource, '数据输出', { type: 'array', items: { type: 'any' } });
+              input
+                .get(InputIds.GetDataSource)
+                .setRels([OutputIds.GetDataSource]);
+            } else {
+              hasInputEvent && input.remove(InputIds.GetDataSource);
+              hasOutputEvent && output.remove(OutputIds.GetDataSource);
+            }
+          }
+        }
+      },
+      {
+        title: 'loading',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useLoading;
+          },
+          set({ data, input }: EditorResult<Data>, val: boolean) {
+            data.useLoading = val;
+            if (val) {
+              !input.get(InputIds.LOADING) &&
+                input.add(InputIds.LOADING, '设置loading', { type: 'boolean' });
+            } else {
+              input.get(InputIds.LOADING) && input.remove(InputIds.LOADING);
+            }
+          }
+        }
+      },
+      {
+        title: '插槽数据传入',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useSlotProps;
+          },
+          set({ data, input }: EditorResult<Data>, val: boolean) {
+            data.useSlotProps = val;
+            if (val) {
+              !input.get(InputIds.SLOTPROPS) &&
+                input.add(InputIds.SLOTPROPS, '插槽数据', { type: 'array', items: { type: 'any' } });
+            } else {
+              input.get(InputIds.SLOTPROPS) && input.remove(InputIds.SLOTPROPS);
+            }
+          }
+        }
+      }
+    ];
+  }
+};
