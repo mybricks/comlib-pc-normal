@@ -1,0 +1,28 @@
+{
+  "title": "下拉菜单",
+  "namespace": "mybricks.normal-pc.dropdown",
+  "version": "1.0.0",
+  "description": "下拉菜单",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [],
+  "outputs": [
+    {
+      "id": "onChange",
+      "title": "选项改变",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
+    }
+  ]
+}

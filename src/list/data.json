@@ -1,0 +1,8 @@
+{
+  "layout": "vertical",
+  "grid": {
+    "column": 1,
+    "gutter": [0, 16]
+  },
+  "split": true
+}

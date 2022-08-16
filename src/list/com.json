@@ -1,0 +1,37 @@
+{
+  "title": "列表容器",
+  "enable": true,
+  "visibility": true,
+  "namespace": "mybricks.normal-pc.list",
+  "version": "1.0.0",
+  "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./List.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "输入数据",
+      "schema": {
+        "title": "列表数据",
+        "type": "array",
+        "items": {
+          "title": "列项数据",
+          "type": "object",
+          "properties": {}
+        }
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "item",
+      "capacity": 1,
+      "title": "列表项"
+    }
+  ]
+}
