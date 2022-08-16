@@ -1,0 +1,37 @@
+{
+  "title": "键映射",
+  "namespace": "mybricks.normal-pc.key-map",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "json键值映射",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": {
+        "type": "object",
+        "properties": {
+          
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "schema": {
+        "type": "object",
+        "properties": {
+
+        }
+      }
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,27 @@
+{
+  "title": "字符处理",
+  "namespace": "mybricks.normal-pc.string-handler",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "组件描述",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项"
+    }
+  ]
+}
