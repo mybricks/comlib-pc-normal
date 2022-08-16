@@ -52,7 +52,6 @@
       "./src/_link_to/com.json"
     ],
     "publish": [
-      "./src/service/com.json",
       "./src/alert/com.json",
       "./src/breadcrumb/com.json",
       "./src/button/com.json",
