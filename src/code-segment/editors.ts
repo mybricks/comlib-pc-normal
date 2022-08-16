@@ -49,10 +49,11 @@ export default {
             hostId,
             title,
             {
-              type: 'follow'
+              type: 'unknown'
             },
-            true,
-            1
+            {
+              editable: true
+            }
           );
         }
       }
