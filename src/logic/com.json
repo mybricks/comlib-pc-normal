@@ -1,0 +1,37 @@
+{
+  "title": "逻辑判断",
+  "namespace": "mybricks.normal-pc.logic",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "组件描述",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "input0",
+      "title": "输入项0",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onSuccess",
+      "title": "true",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "onFail",
+      "title": "false",
+      "schema": {
+        "type": "boolean"
+      }
+    }
+  ]
+}
