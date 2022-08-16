@@ -43,6 +43,7 @@
           "./src/steps/com.json"
         ]
       },
+      "./src/service/com.json",
       "./src/code-segment/com.json",
       "./src/_jscode/com.json",
       "./src/_connector/com.json",
