@@ -46,7 +46,7 @@ export default {
           const hostId = `output${idx}`;
           const title = `输出项${idx}`;
           output.add({
-            hostId,
+            id: hostId,
             title,
             schema: {
               type: 'unknown'
