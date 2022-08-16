@@ -1,5 +1,5 @@
 import { Data } from "./types";
-import { uuid } from '../components/blocks/util';
+import { uuid } from "../utils";
 
 interface Result {
   data: Data;
