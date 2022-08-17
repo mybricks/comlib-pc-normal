@@ -5,27 +5,21 @@ import {
   Data
 } from './constants';
 
-export default function ({ env, data, outputs, inputs, logger }: RuntimeParams<Data>) {
+
+export default function ({ env, data, outputs, inputs, onError }: RuntimeParams<Data>) {
   const { immediate } = data;
   if (env?.runtime && inputs) {
     inputs[INPUT_ID_PARAMS]((val) => {
-      fetchData(data, val, env, outputs, logger);
+      fetchData(data, val, env, outputs, onError);
     });
 
     if (immediate) {
-      fetchData(data, {}, env, outputs, logger);
+      fetchData(data, {}, env, outputs, onError);
     }
   }
 }
 
-function fetchData(data: Data, params: any, env: Env, outputs: any, logger: any) {
-  // if (data.isMock) {
-  //   setTimeout(() => {
-  //     outputs[OUTPUT_ID_RES](mockData);
-  //   }, 300);
-  //   return;
-  // }
-
+function fetchData(data: Data, params: any, env: Env, outputs: any, onError) {
   const {
     serviceContent: globalServiceContent = {},
     insideServiceContent = {},
@@ -35,7 +29,7 @@ function fetchData(data: Data, params: any, env: Env, outputs: any, logger: any)
     serviceType === 'inside' ? insideServiceContent : globalServiceContent;
 
   if (!serviceContent.id) {
-    logger.error('接口未选择');
+    onError('接口未选择');
     return
   }
 
@@ -45,12 +39,12 @@ function fetchData(data: Data, params: any, env: Env, outputs: any, logger: any)
       .then((r) => {
         outputs[OUTPUT_ID_RES](r);
       })
-      .catch((e) => {
-        logger.error(e && (e.message || e.error_msg))
+      .catch((e: any) => {
+        onError(`接口调用异常`);
         outputs[OUTPUT_ID_ERROR](e && (e.message || e.error_msg));
       });
-  } catch (e) {
-    logger.error(e && (e.message || e.error_msg))
+  } catch (e: any) {
+    onError(`接口调用异常`);
     outputs[OUTPUT_ID_ERROR](e && (e.message || e.error_msg));
   }
 }
