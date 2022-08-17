@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "步骤条",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/steps.bf297b5d0092baaf.svg",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",

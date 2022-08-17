@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "展示多姿多彩的富文本",
-  "icon": "",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
