@@ -5,12 +5,11 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "富文本输入",
-  "icon": "",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "upgrade": "./upgrade.ts",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "docs": "",
   "inputs": [
     {
       "id": "dataSource",

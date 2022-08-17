@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "工具条",
-  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/ks-merchant/fangzhou/toolbar.png",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",

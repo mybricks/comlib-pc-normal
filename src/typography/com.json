@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "展示文本基本格式",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/text.073091e8b501787b.svg",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",

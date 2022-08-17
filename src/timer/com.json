@@ -5,12 +5,11 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "",
-  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/icons/timer.cf76b361c33ac940.svg",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "rtType": "js",
   "editors": "./editors.tsx",
-  "docs": "",
   "inputs": [
     {
       "id": "trigger",

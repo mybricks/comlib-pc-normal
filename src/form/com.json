@@ -6,7 +6,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "表单",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/form.085afdee65645d49.svg",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",

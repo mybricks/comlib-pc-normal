@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "插槽适配器",
-  "icon": "https://ali-ec.static.yximgs.com/kos/nlav11092/pkg/ks-merchant/fangzhou/icon.ef99284bbc2009ab.svg",
+  "icon": "./icon.svg",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
   "data": "./data.json",

@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "二维码",
-  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/images/qrcode.d0a1ea7724014097.jpeg",
+  "icon": "./icon.jpeg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
