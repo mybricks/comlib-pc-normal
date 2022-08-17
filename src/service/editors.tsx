@@ -1,75 +1,72 @@
-import { Data, IService } from './constants'
+import { Data, IService } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
-  const { insideServiceContent } = data
-  const info = []
+  const { insideServiceContent } = data;
+  const info: string[] = [];
   if (insideServiceContent && insideServiceContent.title) {
-    info.push(`接口：${insideServiceContent.title}`)
+    info.push(`接口：${insideServiceContent.title}`);
   }
-  setDesc(info.join('\n'))
-}
+  setDesc(info.join('\n'));
+};
 export default {
   '@init': ({ data, setAutoRun, isAutoRun }: EditorResult<Data>) => {
-    const autoRun = isAutoRun ? isAutoRun() : false
+    const autoRun = isAutoRun ? isAutoRun() : false;
     if (autoRun || data.immediate) {
-      setAutoRun(true)
-      data.immediate = true
+      setAutoRun(true);
+      data.immediate = true;
+    }
+  },
+  '@connectorUpdated': ({ data, input, output, setDesc, setAutoRun, isAutoRun }, { connector }) => {
+    const { id, inputSchema, outputSchema } = connector;
+    if (id === data.connectorId) {
+      if (outputSchema) {
+        output.get('res')?.setSchema(outputSchema);
+      }
+      if (inputSchema) {
+        input.get('params')?.setSchema(connector.inputSchema);
+      }
+      setDesc(`接口: ${connector.title}`);
+    }
+  },
+  '@connectorRemoved': ({ data, input, output, setDesc }, { connector }) => {
+    const { id, inputSchema, outputSchema } = connector;
+    if (id === data.connectorId) {
+      data.connectorId = void 0;
+      if (outputSchema) {
+        output.get('res')?.setSchema(void 0);
+      }
+      if (inputSchema) {
+        input.get('params')?.setSchema(void 0);
+      }
+      setDesc(`${connector.title} 已失效`);
     }
   },
   ':root': [
-    // {
-    //   title: 'Mock请求',
-    //   type: 'switch',
-    //   value: {
-    //     get({ data }: EditorResult<Data>) {
-    //       return data.isMock;
-    //     },
-    //     set({ data }: EditorResult<Data>, value: boolean) {
-    //       data.isMock = value;
-    //     }
-    //   }
-    // },
-    // {
-    //   title: '立即请求',
-    //   type: 'switch',
-    //   ifVisible({ isAutoRun }: EditorResult<Data>) {
-    //     // 配置兼容
-    //     // 在项目面板起点
-    //     // 隐藏
-    //     const autoRun = isAutoRun ? isAutoRun() : false;
-    //     if (autoRun) {
-    //       return false;
-    //     }
-    //     return true;
-    //   },
-    //   value: {
-    //     get({ data }: EditorResult<Data>) {
-    //       return data.immediate;
-    //     },
-    //     set({ data, setAutoRun }: EditorResult<Data>, value: boolean) {
-    //       if (setAutoRun) {
-    //         setAutoRun(value);
-    //       }
-    //       data.immediate = value;
-    //     }
-    //   }
-    // },
     {
       title: '内部接口选择',
       type: 'insideService',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.insideServiceContent
+          return data.insideServiceContent;
         },
-        set({ data, setDesc }: EditorResult<Data>, value: IService) {
-          data.serviceType = 'inside'
+        set({ data, setDesc, input, output }: EditorResult<Data>, value: IService) {
+          const { content = {}, id } = value;
+          const { inputSchema, outputSchema } = content;
+          data.connectorId = id;
+          data.serviceType = 'inside';
           data.insideServiceContent = {
-            id: value.id,
-            title: value.content?.title,
+            id,
+            title: content.title
+          };
+          if (inputSchema) {
+            input.get('params')?.setSchema(inputSchema);
           }
-          setDescByData({ data, setDesc })
-        },
-      },
-    },
-  ],
-}
+          if (outputSchema) {
+            output.get('res')?.setSchema(outputSchema);
+          }
+          setDescByData({ data, setDesc });
+        }
+      }
+    }
+  ]
+};

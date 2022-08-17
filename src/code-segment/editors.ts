@@ -45,15 +45,15 @@ export default {
           const idx = getOutputOrder({ output });
           const hostId = `output${idx}`;
           const title = `输出项${idx}(${hostId})`;
-          output.add(
-            hostId,
+          output.add({
+            id: hostId,
             title,
-            {
-              type: 'follow'
+            schema: {
+              type: 'unknown'
             },
-            true,
-            1
-          );
+            editable: true,//可编辑
+            deletable: true
+          });
         }
       }
     },

@@ -15,13 +15,19 @@
         "then",
         "catch"
       ],
-      "title": "调用"
+      "title": "调用",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [
     {
       "id": "then",
-      "title": "结果"
+      "title": "结果",
+      "schema": {
+        "type": "unknown"
+      }
     },
     {
       "id": "catch",

@@ -11,34 +11,6 @@ export default {
       data.fns = encodeURIComponent(CODE_TEMPLATE);
     }
   },
-  // '@inputConnected': ({data, input, output, setAutoRun, isAutoRun}
-  //   , from: { id, title, schema, parent }
-  //   , to: { id, title, schema, parent }) => {
-  //   if (to.schema.type === 'follow') {
-  //     const inPin = input.get(to.id)
-  //     inPin.setSchema(from.schema)//follow
-  //   }
-  // },
-  // '@inputDisConnected': ({data, input, output, setAutoRun, isAutoRun}
-  //   , from: { id, title, schema, parent }
-  //   , to: { id, title, schema, parent }) => {
-  //   const inPin = input.get(to.id)
-  //   inPin.setSchema({type: 'follow'})//follow
-  // },
-  // '@outputConnected': ({data, input, output, setAutoRun, isAutoRun}
-  //   , from: { id, title, schema, parent }
-  //   , to: { id, title, schema, parent }) => {
-  //   if (from.schema.type === 'follow') {
-  //     const outPin = output.get(from.id)
-  //     outPin.setSchema(to.schema)//follow
-  //   }
-  // },
-  // '@outputDisConnected': ({data, input, output, setAutoRun, isAutoRun}
-  //   , from: { id, title, schema, parent }
-  //   , to: { id, title, schema, parent }) => {
-  //   const outPin = output.get(from.id)
-  //   outPin.setSchema({type: 'follow'})//follow
-  // },
   ':root': [
     // {
     //   title: '立即运行',
@@ -73,15 +45,15 @@ export default {
           const idx = getOutputOrder({output});
           const hostId = `output${idx}`;
           const title = `输出项${idx}`;
-          output.add(
-            hostId,
+          output.add({
+            id: hostId,
             title,
-            {
-              type: 'follow'
+            schema: {
+              type: 'unknown'
             },
-            true,
-            1
-          );
+            editable: true,//可编辑
+            deletable: true
+          })
         }
       }
     },

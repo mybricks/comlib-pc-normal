@@ -41,6 +41,35 @@
       "schema": {
         "type": "any"
       }
+    },
+
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
     }
   ],
   "outputs": [
@@ -77,6 +106,22 @@
       "schema": {
         "type": "any"
       }
+    },
+    
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
     }
   ],
   "slots": [
@@ -85,5 +130,6 @@
       "title": "拖入表单项",
       "schema": "mybricks.normal-pc.form-container/form-item"
     }
-  ]
+  ],
+  "schema": "mybricks.normal-pc.form-container/form-item"
 }

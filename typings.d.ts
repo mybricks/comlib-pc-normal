@@ -14,6 +14,8 @@ interface RuntimeParams<T> {
   slots: any
   inputs: any
   outputs: any
+  _inputs: any
+  _outputs: any
   logger: any
   createPortal: any
   title?: string

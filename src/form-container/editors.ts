@@ -40,6 +40,14 @@ export default {
   
     refreshSchema({data, inputs, outputs})
   },
+  '@parentUpdated'({id, data, parent}, {schema}) {
+    if (schema === 'mybricks.normal-pc.form-container/form-item') {
+      parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
+      data.isFormItem = true
+    } else {
+      data.isFormItem = false
+    }
+  },
   ':root': [
     {
       title: '事件',
