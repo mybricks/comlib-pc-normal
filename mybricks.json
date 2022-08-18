@@ -18,9 +18,7 @@
       {
         "title": "表单",
         "comAry": [
-          "./src/form/com.json",
           "./src/form-container/com.json",
-          "./src/form-object-container/com.json",
           "./src/form_text/com.json",
           "./src/select/com.json",
           "./src/cascader/com.json",
@@ -44,6 +42,8 @@
           "./src/steps/com.json"
         ]
       },
+      "./src/service/com.json",
+      "./src/code-segment/com.json",
       "./src/_jscode/com.json",
       "./src/_connector/com.json",
       "./src/_message/com.json",
@@ -55,7 +55,6 @@
       "./src/button/com.json",
       "./src/calendar/com.json",
       "./src/card/com.json",
-      "./src/cascader/com.json",
       "./src/clipboard/com.json",
       "./src/collapse/com.json",
       "./src/confirm/com.json",
@@ -92,7 +91,12 @@
       "./src/timer/com.json",
       "./src/tooltip/com.json",
       "./src/tree/com.json",
-      "./src/typography/com.json"
+      "./src/typography/com.json",
+      "./src/code-segment/com.json",
+      "./src/bottom-bar/com.json",
+      "./src/dropdown/com.json",
+      "./src/list/com.json",
+      "./src/page-router/com.json"
     ]
   }
 }

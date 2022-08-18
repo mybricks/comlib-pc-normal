@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useCallback, useLayoutEffect } from 'react';
+import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment } from 'react';
 import { Form, Button, Row, Col } from 'antd';
 
 export interface Data {
   items: any[]
+  isFormItem: boolean
 }
 
 interface FormControlProps {
@@ -14,7 +15,7 @@ interface FormControlProps {
 type FormControlInputId = 'validate' | 'getValue'
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, env, outputs, inputs, slots } = props
+  const { data, env, outputs, inputs, slots, _inputs } = props
   const [formRef] = Form.useForm()
 
   const childrenInputs = useMemo<{ [id: string]: { [key in FormControlInputId]: (item?: any) => {}} }>(() => {
@@ -24,11 +25,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     inputs['setFieldsValue']((val) => {
-      formRef.setFieldsValue(val)
+      setFieldsValue(val)
     })
 
     inputs['initial']((val) => {
-      formRef.setFieldsValue(val)
+      // formRef.setFieldsValue(val)
+
+      setFieldsValue(val)
 
       outputs['onInitial']({ values: val, formInstance: formRef })
     })
@@ -42,7 +45,43 @@ export default function Runtime(props: RuntimeParams<Data>) {
       submit(outputRels)
     })
 
+    // For 表单项私有
+    inputs['validate']((val, outputRels) => {
+      validate().then(r => {
+        outputRels['returnValidate']({
+          validateStatus: 'success',
+        })
+      })
+    })
+
+    inputs['getValue']((val, outputRels) => {
+      getValue().then(v => {
+        console.log('getValue', v)
+        outputRels['returnValue'](v)
+      })
+    })
+
+
+    inputs['setValue']((val) => {
+      setFieldsValue(val)
+    })
+
   }, [])
+
+  const setFieldsValue = (val) => {
+    console.log(val)
+    if (val) {
+      Object.keys(val).forEach(key => {
+        const item = data.items.find(item => item.name === key)
+        const input = childrenInputs[item.id]
+        if (Object.prototype.toString.call(val[key]) === '[Object Object]') {
+          input?.setValue({...val[key]})
+        } else {
+          input?.setValue(val[key])
+        }
+      })
+    }
+  }
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -128,19 +167,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [])
 
   return (
-    <Form
-      form={formRef}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}>
-      { content }
-      <Row style={{ flex: '1 1 100%' }}>
-        <Col offset={8}>
-          <Form.Item data-form-actions>
-            <Button type="primary" onClick={() => submit()}>提交</Button>
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+    <Fragment>
+      {
+        !data.isFormItem ?
+        (
+          <Form
+            form={formRef}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}>
+            { content }
+            <Row style={{ flex: '1 1 100%' }}>
+              <Col offset={8}>
+                <Form.Item data-form-actions>
+                  <Button type="primary" onClick={() => submit()}>提交</Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        ): content
+      }
+    </Fragment>
   )
 }
 

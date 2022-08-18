@@ -28,14 +28,12 @@ export interface IService {
  * @param content 接口内容
  */
 export interface Data {
-  // url: string;
-  // method: Method;
-  // query: object;
-  // body: object;
-  // queryKeys: string[];
   immediate: boolean;
   isMock: boolean;
   serviceContent: any;
   insideServiceContent: IService;
   serviceType: string;
+  connectorId: number | string;
+  inputSchema: any;
+  outputSchema: any;
 }

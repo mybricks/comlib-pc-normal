@@ -1,6 +1,5 @@
 {
   "title": "JS计算",
-  "visibility": true,
   "namespace": "mybricks.normal-pc.segment",
   "version": "1.0.0",
   "description": "JS计算",
@@ -15,7 +14,7 @@
       "id": "input0",
       "title": "输入项0",
       "schema": {
-        "type": "any"
+        "type": "follow"
       }
     }
   ],
@@ -24,8 +23,9 @@
       "id": "output0",
       "title": "输出项0(output0)",
       "schema": {
-        "type": "any"
-      }
+        "type": "unknown"
+      },
+      "editable": true
     }
   ]
 }
