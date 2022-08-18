@@ -76,7 +76,6 @@ const BaseEditor = {
           let valArr: string | string[] = value.trim().split('.');
           if (valArr.length === 1) valArr = valArr[0];
           setCol(data, focusArea, valArr, 'dataIndex');
-          setCol(data, focusArea, value, 'key');
           setDataSchema({ data, output, input });
         }
       }
