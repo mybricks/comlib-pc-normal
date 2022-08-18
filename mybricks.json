@@ -97,7 +97,6 @@
       "./src/download/com.json",
       "./src/key-map/com.json",
       "./src/logic/com.json",
-      "./src/collection/com.json",
       "./src/string-handler/com.json"
     ],
     "publish": [
