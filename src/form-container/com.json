@@ -29,7 +29,9 @@
     {
       "id": "submit",
       "title": "提交表单",
-      "rels": ["onFinish"],
+      "rels": [
+        "onFinish"
+      ],
       "schema": {
         "type": "any"
       }
@@ -37,12 +39,13 @@
     {
       "id": "resetFields",
       "title": "重置表单",
-      "rels": ["onResetFinish"],
+      "rels": [
+        "onResetFinish"
+      ],
       "schema": {
         "type": "any"
       }
     },
-
     {
       "id": "setValue",
       "title": "设置值",
@@ -107,7 +110,6 @@
         "type": "any"
       }
     },
-    
     {
       "id": "returnValidate",
       "title": "校验结果",
@@ -128,7 +130,8 @@
     {
       "id": "content",
       "title": "拖入表单项",
-      "schema": "mybricks.normal-pc.form-container/form-item"
+      "schema": "mybricks.normal-pc.form-container/form-item",
+      "type": "scope"
     }
   ],
   "schema": "mybricks.normal-pc.form-container/form-item"
