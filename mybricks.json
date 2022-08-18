@@ -11,8 +11,24 @@
         "title": "常规",
         "comAry": [
           "./src/text/com.json",
-          "./src/image/com.json",
-          "./src/toolbar/com.json"
+          "./src/link/com.json",
+          "./src/typography/com.json",
+          "./src/richtext-preview/com.json",
+          "./src/single-image/com.json",
+          "./src/toolbar/com.json",
+          "./src/button/com.json",
+          "./src/breadcrumb/com.json",
+          "./src/card/com.json",
+          "./src/tabs/com.json",
+          "./src/menu/com.json",
+          "./src/grid/com.json",
+          "./src/dialog/com.json",
+          "./src/steps/com.json",
+          "./src/popover/com.json",
+          "./src/tooltip/com.json",
+          "./src/icon/com.json",
+          "./src/dropdown/com.json",
+          "./src/sort-bar/com.json"
         ]
       },
       {
@@ -29,25 +45,60 @@
       {
         "title": "数据",
         "comAry": [
-          "./src/table/com.json"
+          "./src/table/com.json",
+          "./src/paginator/com.json",
+          "./src/timeline/com.json",
+          "./src/form-detail/com.json",
+          "./src/image/com.json",
+          "./src/json-view/com.json"
         ]
       },
       {
         "title": "容器",
         "comAry": [
-          "./src/grid/com.json",
-          "./src/card/com.json",
-          "./src/dialog/com.json",
-          "./src/tabs/com.json",
-          "./src/steps/com.json"
+          "./src/list/com.json",
+          "./src/drawer/com.json",
+          "./src/collapse/com.json"
         ]
+      },
+      {
+        "title": "自定义",
+        "comAry": [
+          "./src/custom-container/com.json"
+        ]
+      },
+      {
+        "title": "其它",
+        "comAry": [
+          "./src/calendar/com.json",
+          "./src/slot-adapter/com.json",
+          "./src/bottom-bar/com.json",
+          "./src/iframe/com.json",
+          "./src/qr-code/com.json"
+        ]
+      },
+      {
+        "title": "反馈",
+        "comAry": ["./src/alert/com.json"]
       },
       "./src/service/com.json",
       "./src/code-segment/com.json",
       "./src/_jscode/com.json",
       "./src/_connector/com.json",
       "./src/_message/com.json",
-      "./src/_link_to/com.json"
+      "./src/_link_to/com.json",
+      "./src/confirm/com.json",
+      "./src/message/com.json",
+      "./src/page-router/com.json",
+      "./src/global-loading/com.json",
+      "./src/timer/com.json",
+      "./src/clipboard/com.json",
+      "./src/merge/com.json",
+      "./src/download/com.json",
+      "./src/key-map/com.json",
+      "./src/logic/com.json",
+      "./src/collection/com.json",
+      "./src/string-handler/com.json"
     ],
     "publish": [
       "./src/alert/com.json",
