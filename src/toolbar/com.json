@@ -5,7 +5,7 @@
   "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "工具条",
-  "icon": "./icon.svg",
+  "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
