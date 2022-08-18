@@ -1,16 +1,14 @@
 {
   "title": "工具条",
   "namespace": "mybricks.normal-pc.toolbar",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "工具条",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "upgrade": "./upgrade.ts",
-  "docs": "",
   "inputs": [
     {
       "id": "slotProps",

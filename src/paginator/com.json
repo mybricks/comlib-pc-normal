@@ -1,15 +1,14 @@
 {
   "title": "分页器",
   "namespace": "mybricks.normal-pc.paginator",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "分页器",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "docs": "",
   "inputs": [
     {
       "id": "total",

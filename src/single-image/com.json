@@ -1,34 +1,14 @@
 {
   "title": "图片",
   "namespace": "mybricks.normal-pc.single-image",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "可预览的单图",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "upgrade": "./upgrade.ts",
-  "docs": "",
-  "configs": [
-    {
-      "id": "src",
-      "title": "图片地址",
-      "schema": {
-        "type": "string"
-      },
-      "binding": "data.image.src"
-    },
-    {
-      "id": "cursorStyle",
-      "title": "鼠标样式",
-      "schema": {
-        "type": "boolean"
-      },
-      "binding": "data.image.cursorStyle"
-    }
-  ],
   "inputs": [
     {
       "id": "imgSrc",
@@ -52,6 +32,24 @@
       "scheme": {
         "type": "any"
       }
+    }
+  ],
+  "configs": [
+    {
+      "id": "src",
+      "title": "图片地址",
+      "schema": {
+        "type": "string"
+      },
+      "binding": "data.image.src"
+    },
+    {
+      "id": "cursorStyle",
+      "title": "鼠标样式",
+      "schema": {
+        "type": "boolean"
+      },
+      "binding": "data.image.cursorStyle"
     }
   ]
 }

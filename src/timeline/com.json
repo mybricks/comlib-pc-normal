@@ -1,15 +1,14 @@
 {
   "title": "时间轴",
   "namespace": "mybricks.normal-pc.timeline",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "时间轴",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "docs": "",
   "slots": [
     {
       "id": "content",

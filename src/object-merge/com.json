@@ -1,16 +1,15 @@
 {
   "title": "对象合并",
-  "visibility": true,
   "namespace": "mybricks.normal-pc.object-merge",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "对象合并",
   "author": "Mybricks",
   "author_name": "Mybricks",
-  "version": "1.0.0",
-  "description": "对象合并",
   "icon": "",
-  "editors": "./editors.ts",
   "data": "./data.json",
   "runtime": "./runtime.ts",
-  "rtType": "js",
+  "editors": "./editors.ts",
   "inputs": [
     {
       "id": "input0",

@@ -1,21 +1,14 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "步骤条",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "docs": "",
-  "slots": [
-    {
-      "id": "step0",
-      "title": "内容"
-    }
-  ],
   "inputs": [
     {
       "id": "nextStep",
@@ -74,6 +67,12 @@
       "schema": {
         "type": "follow"
       }
+    }
+  ],
+  "slots": [
+    {
+      "id": "step0",
+      "title": "内容"
     }
   ]
 }

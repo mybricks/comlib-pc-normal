@@ -1,15 +1,14 @@
 {
   "title": "二维码",
   "namespace": "mybricks.normal-pc.qr-code",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "二维码",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.jpeg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
-  "docs": "",
   "inputs": [
     {
       "id": "link",

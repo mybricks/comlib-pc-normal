@@ -1,16 +1,14 @@
 {
   "title": "插槽适配器",
   "namespace": "mybricks.normal-pc.slot-adapter",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "插槽适配器",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
+  "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
-  "data": "./data.json",
-  "upgrade": "./upgrade.ts",
-  "docs": "",
   "inputs": [
     {
       "id": "slotProps",

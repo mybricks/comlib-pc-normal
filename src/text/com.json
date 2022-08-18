@@ -1,15 +1,32 @@
 {
   "title": "文本",
   "namespace": "mybricks.normal-pc.text",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "文本",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "docs": "",
+  "inputs": [
+    {
+      "id": "content",
+      "title": "内容",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
   "configs": [
     {
       "id": "rows",
@@ -42,24 +59,6 @@
         "type": "boolean"
       },
       "binding": "data.click"
-    }
-  ],
-  "inputs": [
-    {
-      "id": "content",
-      "title": "内容",
-      "schema": {
-        "type": "string"
-      }
-    }
-  ],
-  "outputs": [
-    {
-      "id": "click",
-      "title": "点击",
-      "schema": {
-        "type": "string"
-      }
     }
   ]
 }

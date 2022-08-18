@@ -1,11 +1,10 @@
 {
   "title": "表格",
-  "enable": true,
   "namespace": "mybricks.normal-pc.table",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "表格",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",

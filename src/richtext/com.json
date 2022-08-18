@@ -1,13 +1,12 @@
 {
   "title": "富文本输入",
   "namespace": "mybricks.normal-pc.richtext",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "富文本输入",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
-  "upgrade": "./upgrade.ts",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "inputs": [

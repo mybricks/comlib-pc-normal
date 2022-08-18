@@ -9,7 +9,7 @@
   "author_name": "MyBricks",
   "icon": "./icon.png",
   "data": "./data.json",
-  "runtime": "./List.tsx",
+  "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "inputs": [
     {

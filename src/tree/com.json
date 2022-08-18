@@ -1,16 +1,14 @@
 {
   "title": "树组件",
   "namespace": "mybricks.normal-pc.tree",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "树状图",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "upgrade": "./upgrade.ts",
-  "docs": "",
   "inputs": [
     {
       "id": "treeData",

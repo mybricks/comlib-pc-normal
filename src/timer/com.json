@@ -1,14 +1,14 @@
 {
   "title": "定时器",
   "namespace": "mybricks.normal-pc.timer",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.0",
-  "description": "",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.ts",
-  "rtType": "js",
   "editors": "./editors.tsx",
   "inputs": [
     {

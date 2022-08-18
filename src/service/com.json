@@ -1,17 +1,15 @@
 {
   "title": "服务接口",
   "namespace": "mybricks.normal-pc.service",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.0",
-  "description": "",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.ts",
-  "rtType": "js-autorun",
   "editors": "./editors.tsx",
-  "upgrade": "./upgrade.ts",
-  "docs": "",
   "inputs": [
     {
       "id": "params",

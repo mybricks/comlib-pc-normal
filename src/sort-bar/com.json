@@ -1,15 +1,14 @@
 {
   "title": "排序标题栏",
   "namespace": "mybricks.normal-pc.sort-bar",
+  "version": "1.0.0",
+  "description": "排序标题栏",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
-  "version": "1.0.0",
-  "description": "排序标题栏",
-  "runtime": "./runtime.tsx",
   "data": "./data.json",
+  "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "docs": "",
   "inputs": [
     {
       "id": "inputSettings",

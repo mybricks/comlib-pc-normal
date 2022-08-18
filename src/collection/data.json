@@ -1,0 +1,10 @@
+{
+  "resolveType": "sort",
+  "sort": {
+    "type": "up",
+    "sortKey": ""
+  },
+  "flat": {
+    "level": 1
+  }
+}

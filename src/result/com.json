@@ -1,20 +1,14 @@
 {
   "title": "结果页",
   "namespace": "mybricks.normal-pc.result",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
   "version": "1.0.0",
   "description": "结果页",
-  "icon": "./result.svg",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "slots": [
-    {
-      "id": "extra",
-      "title": "操作区"
-    }
-  ],
   "inputs": [
     {
       "id": "title",
@@ -36,6 +30,12 @@
       "schema": {
         "type": "string"
       }
+    }
+  ],
+  "slots": [
+    {
+      "id": "extra",
+      "title": "操作区"
     }
   ]
 }
