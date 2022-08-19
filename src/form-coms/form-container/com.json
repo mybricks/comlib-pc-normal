@@ -134,5 +134,8 @@
       "type": "scope"
     }
   ],
-  "schema": "mybricks.normal-pc.form-container/form-item"
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
 }
