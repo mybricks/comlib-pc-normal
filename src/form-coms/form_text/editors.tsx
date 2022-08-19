@@ -1,5 +1,7 @@
 export default {
   '@parentUpdated'({id, data, parent}, {schema}) {
+    console.log(schema)
+    debugger
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       parent['@_setFormItem']({id, schema: {type: 'string'}})
     }

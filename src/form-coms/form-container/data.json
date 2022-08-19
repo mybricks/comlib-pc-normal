@@ -2,5 +2,6 @@
   "items": [],
   "nameCount": 0,
   "actions": [],
-  "isFormItem": false
+  "isFormItem": false,
+  "dataType": "object"
 }

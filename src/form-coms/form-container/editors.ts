@@ -1,4 +1,4 @@
-import { Data } from './runtime'
+import { Data } from './types'
 
 function refreshSchema({data, inputs, outputs}) {
   const properties = {}
@@ -24,7 +24,7 @@ export default {
   },
   '@_setFormItem'({data, inputs, outputs, children, logs}, {id, schema}) {//As schema
     const item = data.items.find(item => item.id === id)
-    
+    debugger
     if (item) {
       item.schema = schema
     } else {
@@ -49,6 +49,22 @@ export default {
     }
   },
   ':root': [
+    {
+      title: '数据类型',
+      type: 'select',
+      options: [
+        { label: '对象', value: 'object' },
+        { label: '列表', value: 'list' }
+      ],
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.dataType
+        },
+        set({ data }: EditorResult<Data>, val) {
+          data.dataType = val
+        }
+      }
+    },
     {
       title: '事件',
       items: [
@@ -90,6 +106,21 @@ export default {
           const comId = focusArea.dataset['formitem']
           const item = data.items.find(item => item.id === comId)
           item.name = val
+        }
+      }
+    },
+    {
+      title: '必填',
+      type: 'Switch',
+      value: {
+        get({data, focusArea}: EditorResult<Data>) {
+          const comId = focusArea.dataset['formitem']
+          return data.items.find(item => item.id === comId).required
+        },
+        set({data, focusArea}: EditorResult<Data>, val) {
+          const comId = focusArea.dataset['formitem']
+          const item = data.items.find(item => item.id === comId)
+          item.required = val
         }
       }
     }

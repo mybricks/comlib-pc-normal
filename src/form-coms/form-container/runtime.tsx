@@ -1,18 +1,6 @@
 import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment } from 'react';
 import { Form, Button, Row, Col } from 'antd';
-
-export interface Data {
-  items: any[]
-  isFormItem: boolean
-}
-
-interface FormControlProps {
-  com: any
-  value?: string | number
-  onChange?: (value: string | number | undefined) => void
-}
-
-type FormControlInputId = 'validate' | 'getValue'
+import { Data, FormControlProps, FormControlInputId } from './types'
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props
@@ -33,7 +21,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
       setFieldsValue(val)
 
-      outputs['onInitial']({ values: val, formInstance: formRef })
+      outputs['onInitial']({ values: val })
     })
 
     inputs['resetFields']((val, outputRels) => {
@@ -45,7 +33,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       submit(outputRels)
     })
 
-    // For 表单项私有
+    // For 表单项私有1
     inputs['validate']((val, outputRels) => {
       validate().then(r => {
         outputRels['returnValidate']({
@@ -69,15 +57,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [])
 
   const setFieldsValue = (val) => {
-    console.log(val)
     if (val) {
       Object.keys(val).forEach(key => {
         const item = data.items.find(item => item.name === key)
-        const input = childrenInputs[item.id]
-        if (Object.prototype.toString.call(val[key]) === '[Object Object]') {
-          input?.setValue({...val[key]})
-        } else {
-          input?.setValue(val[key])
+        if (item) {
+          const input = childrenInputs[item.id]
+          if (Object.prototype.toString.call(val[key]) === '[Object Object]') {
+            input?.setValue({...val[key]})
+          } else {
+            input?.setValue(val[key])
+          }
         }
       })
     }
@@ -89,11 +78,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const id = item.id
         const input = childrenInputs[id]
         return new Promise((resolve, reject) => {
-          input?.validate({ ...item }).returnValidate(validateInfo => {//调用所有表单项的校验
-            item.validateStatus = validateInfo?.validateStatus
-            item.help = validateInfo?.help
-            resolve(validateInfo)
-          })
+          if (item.required) {
+            input?.validate({ ...item }).returnValidate(validateInfo => {//调用所有表单项的校验
+              item.validateStatus = validateInfo?.validateStatus
+              item.help = validateInfo?.help
+              resolve(validateInfo)
+            })
+          } else {
+            resolve({ validateStatus: 'success' })
+          }
         })
       })).then(values => {
         let rtn = false
@@ -134,7 +127,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const submit = (outputRels?: any) => {
     validate().then(() => {
       getValue().then(values => {
-        console.log('提交数据', values)
+        console.log('提交数据', values, outputRels)
         if (outputRels) {
           outputRels['onFinish'](values)
         } else {
@@ -146,10 +139,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     })
   }
 
-  const content = useMemo(() => {
+  const content = useCallback((props?: { field }) => {
     return slots['content'].render({
       wrap(comAray: { id, jsx, def, inputs, outputs }[]) {
         const items = data.items
+        if (data.dataType === 'list') {
+          console.log('items', items, comAray, props?.field)
+        }
 
         if (comAray) {
           const jsx = comAray.map((com, idx) => {
@@ -157,7 +153,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
             childrenInputs[com.id] = com.inputs
             
-            return <FormItem com={com} item={item} key={com.id} />
+            return <FormItem com={com} item={item} key={com.id} field={props?.field} />
           })
 
           return jsx
@@ -175,7 +171,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             form={formRef}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}>
-            { content }
+            { content() }
             <Row style={{ flex: '1 1 100%' }}>
               <Col offset={8}>
                 <Form.Item data-form-actions>
@@ -184,20 +180,47 @@ export default function Runtime(props: RuntimeParams<Data>) {
               </Col>
             </Row>
           </Form>
-        ): content
+        ): data.dataType === 'list' ? (
+          <FormListItem content={content} slots={slots}  env={env} />
+        ) : content()
       }
     </Fragment>
   )
 }
 
-const FormItem = (props: { com, item }) => {
-  const { com, item }  = props
+const FormListItem = ({ content, slots, env }) => {
+
+  if (env.edit) {
+    return content()
+  }
 
   return (
+    <Form.List name="item4">
+      {(fields, { add, remove }) => {
+        console.log('fields', fields)
+        return (
+          <>
+            {fields.map((field, index) => {
+              return <div key={field.key}>{content({ field })}</div>
+            })}
+            <Button onClick={() => { add() }}>添加</Button>
+          </>
+        )
+      }}
+    </Form.List>
+  )
+}
+
+const FormItem = (props: { com, item, field }) => {
+  const { com, item, field }  = props
+  console.log(field ? [field.name, item?.name] : item?.name)
+  return (
     <Form.Item
+      {...field}
       label={item?.label}
-      name={item?.name}
+      name={field ? [field.name, item?.name] : item?.name}
       data-formitem={com.id}
+      required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}>
       <JSXWrapper com={com} />

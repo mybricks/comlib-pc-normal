@@ -34,12 +34,12 @@
       {
         "title": "表单",
         "comAry": [
-          "./src/form-container/com.json",
-          "./src/form_text/com.json",
-          "./src/select/com.json",
-          "./src/cascader/com.json",
-          "./src/input-number/com.json",
-          "./src/date-picker/com.json"
+          "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form_text/com.json",
+          "./src/form-coms/select/com.json",
+          "./src/form-coms/cascader/com.json",
+          "./src/form-coms/input-number/com.json",
+          "./src/form-coms/date-picker/com.json"
         ]
       },
       {
@@ -83,7 +83,6 @@
       },
       "./src/service/com.json",
       "./src/code-segment/com.json",
-      "./src/_jscode/com.json",
       "./src/_connector/com.json",
       "./src/_message/com.json",
       "./src/_link_to/com.json",
