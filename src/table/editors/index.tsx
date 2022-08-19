@@ -7,8 +7,11 @@ import {
 } from '../schema';
 import columnEditor from './table-item';
 import { InputIds } from '../constants';
-import { batchActionBtnsEditor, colActionBtnsEditor, headerActionBtnsEditor } from './actionBtns';
-
+import {
+  batchActionBtnsEditor,
+  colActionBtnsEditor,
+  headerActionBtnsEditor
+} from './actionBtns';
 import headerEditor from './table/header';
 import headerTitleEditor from './table/headerTitle';
 import paginationEditor from './table/pagination';

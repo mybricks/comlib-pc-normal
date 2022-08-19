@@ -1,8 +1,8 @@
 import { uuid } from '../../../utils';
-import { InputIds, OutputIds, RowSelectionPostion } from '../../constants';
+import { InputIds, OutputIds, RowSelectionPostion, TEMPLATE_RENDER_KEY } from '../../constants';
 import { Schemas } from '../../schema';
 import { Data } from '../../types';
-import { runScript } from '../../utils';
+import { runScript } from '../../../utils/runExpCodeScript';
 
 function addBatchBtn({ data, output }) {
   if (!data.batchBtns) {
@@ -202,7 +202,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
             placeholder: `禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1`,
             suggestions: suggestions,
             run: (str: string) => {
-              return runScript(str, {});
+              return runScript(str, {}, TEMPLATE_RENDER_KEY);
             }
           },
           value: {

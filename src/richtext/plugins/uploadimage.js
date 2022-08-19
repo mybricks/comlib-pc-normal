@@ -141,7 +141,7 @@ export default function uploadimage(props) {
   register$1(editor);
   
   return {
-    setUrl: (modal, editor) => {
+    setUrl: (modal) => {
       if (editor) {
         const dom = editor.dom;
         const { type, url } = modal;

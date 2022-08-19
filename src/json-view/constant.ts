@@ -28,6 +28,7 @@ export interface Props {
  * @param enableClipboard 节点复制
  * @param enableOutput 节点输出
  * @param useSlotProps 使用插槽数据
+ * @param dataSourceType 数据源类型
  */
 export interface Data {
   dataSource: 1 | 2;
@@ -43,6 +44,7 @@ export interface Data {
   enableOutput: boolean;
   style?: CSSProperties;
   useSlotProps?: boolean;
+  dataSourceType?: 'array' | 'object';
 }
 
 export const InputIds = {

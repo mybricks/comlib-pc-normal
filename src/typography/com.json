@@ -14,7 +14,10 @@
       "id": "slotProps",
       "title": "插槽参数",
       "schema": {
-        "type": "follow"
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     }
   ]

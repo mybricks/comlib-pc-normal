@@ -9,7 +9,15 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "inputs": [],
+  "inputs": [
+    {
+      "id": "jsonData",
+      "title": "数据输入",
+      "schema": {
+        "type": "object"
+      }
+    }
+  ],
   "outputs": [],
   "slots": []
 }

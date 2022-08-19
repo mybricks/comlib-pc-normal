@@ -1,0 +1,35 @@
+{
+  "title": "加载中",
+  "namespace": "mybricks.normal-pc.spin",
+  "version": "1.0.0",
+  "description": "用于页面和区块的加载中状态",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "openLoading",
+      "title": "开始加载",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "closeLoading",
+      "title": "结束加载",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

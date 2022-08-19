@@ -67,6 +67,10 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: number[]) {
             data.defaultPageSize = value[0];
+            data.currentPage = {
+              ...data.currentPage,
+              pageSize: value[0]
+            };
           }
         }
       },

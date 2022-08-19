@@ -38,6 +38,7 @@ export interface Data {
   actionBtns: ActionBtn[];
   allNodeDeletable: boolean;
   keyFieldName: string;
+  useCheckEvent?: boolean;
 }
 
 export interface TreeData {

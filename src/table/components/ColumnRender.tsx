@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Badge, Input, message, Switch } from 'antd';
 import copy from 'copy-to-clipboard';
-import { getTemplateRenderScript } from '../utils';
+import { getTemplateRenderScript } from '../../utils/runExpCodeScript';
 import { IColumn, MappingEnumOption } from '../types';
 import ActionBtns from './ActionBtns';
 import TagRender from './Tag';
@@ -12,8 +12,8 @@ import DateRender from './Date';
 import css from '../runtime.less';
 import { typeCheck } from '../../utils';
 import { setPath } from '../../utils/path';
-import { OutputIds } from '../constants';
-import { SystemEditLine } from '@ant-design/icons';
+import { OutputIds, TEMPLATE_RENDER_KEY } from '../constants';
+import { EditOutlined } from '@ant-design/icons';
 
 interface ColumnRenderProps {
   columnItem: IColumn;
@@ -147,7 +147,7 @@ export default function ColumnRender({
         }}
         onBlur={editDone}
       />;
-      const editIcon = <SystemEditLine
+      const editIcon = <EditOutlined
         style={{
           marginLeft: '8px',
           color: '#b5b5b5',
@@ -280,7 +280,7 @@ export default function ColumnRender({
           try {
             let isHidden;
             if (isHiddenScript && env.runtime) {
-              isHidden = eval(getTemplateRenderScript(isHiddenScript))(record);
+              isHidden = eval(getTemplateRenderScript(isHiddenScript, false, TEMPLATE_RENDER_KEY))(record);
             }
             if (tempMaxToEllipsis < maxToEllipsis) {
               maxToEllipsisIdx += 1;
@@ -317,7 +317,7 @@ export default function ColumnRender({
         const { checkedScript } = columnItem?.switchConfig;
         if (checkedScript) {
           try {
-            cfg.defaultChecked = eval(getTemplateRenderScript(checkedScript))(record);
+            cfg.defaultChecked = eval(getTemplateRenderScript(checkedScript, false, TEMPLATE_RENDER_KEY))(record);
           } catch (e) {
             // console.log(e);
           }

@@ -1,9 +1,11 @@
 import { message } from 'antd';
 import { getColumnsDataSchema, setDataSchema } from '../schema';
 import { Data, Location } from '../types';
+import { TEMPLATE_RENDER_KEY } from '../constants';
 import { uuid } from '../../utils';
+import { runScript } from '../../utils/runExpCodeScript';
 import { rowSelectionEditor } from './table/rowSelection';
-import { getColumnItem, runScript } from '../utils';
+import { getColumnItem } from '../utils';
 
 interface Props {
   title?: string;
@@ -723,7 +725,7 @@ export const colActionBtnsEditor = getActionBtnsEditor({
     return res;
   },
   runScript: (script: string) => {
-    return runScript(script, {});
+    return runScript(script, {}, TEMPLATE_RENDER_KEY);
   },
   getTitleItems: () => [
     {
@@ -861,7 +863,7 @@ export const headerActionBtnsEditor = getActionBtnsEditor({
       queryParams: {},
       dataSource: [],
       pagination: {}
-    });
+    }, TEMPLATE_RENDER_KEY);
   },
   getBtns: ({ data }: EditorResult<Data>) => {
     return data.actionBtns;
@@ -903,7 +905,7 @@ export const batchActionBtnsEditor = getActionBtnsEditor({
     }
   ],
   runScript: (script: string) => {
-    return runScript(script, { selectedRows: [], selectedRowKeys: [] });
+    return runScript(script, { selectedRows: [], selectedRowKeys: [] }, TEMPLATE_RENDER_KEY);
   },
   getTitleItems: (props) => [...rowSelectionEditor(props)],
   getBtns: ({ data }: EditorResult<Data>) => {

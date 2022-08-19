@@ -23,8 +23,29 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.resolveType;
         },
-        set({ data }: EditorResult<Data>, val: string) {
+        set({ data, input, output }: EditorResult<Data>, val: string) {
           data.resolveType = val;
+          const inputPin = input.get('input');
+          const outputPin = output.get('output');
+          let inputSchema = { type: 'any' },
+            outputSchema = { type: 'any' };
+          switch (val) {
+            case ResolveType.SPLIT:
+              inputSchema = { type: 'string' };
+              outputSchema.type = 'array';
+              outputSchema['items'] = { type: 'string' };
+              break;
+            case ResolveType.REPLACE:
+              inputSchema = { type: 'string' };
+              outputSchema = { type: 'string' };
+              break;
+            case ResolveType.JOIN:
+              inputSchema = { type: 'array' };
+              outputSchema = { type: 'string' };
+              break;
+          }
+          inputPin.setSchema(inputSchema);
+          outputPin.setSchema(outputSchema);
         }
       }
     },

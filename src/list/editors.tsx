@@ -1,8 +1,8 @@
 import { Data, InputIds, OutputIds } from './constants';
-import { LayoutEditor } from './editor.ts/layoutEditor';
+import { LayoutEditor } from './editor/layoutEditor';
 
 export default {
-  ':root': ({ }: EditorResult<Data>, cate1, cate2) => {
+  ':root': ({}: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [...LayoutEditor];
 
@@ -20,13 +20,17 @@ export default {
             const hasInputEvent = input.get(InputIds.GetDataSource);
             const hasOutputEvent = output.get(OutputIds.GetDataSource);
             if (val) {
-              !hasInputEvent &&
-                input.add(InputIds.GetDataSource, '获取列表数据', { type: 'any' });
+              !hasInputEvent && input.add(InputIds.GetDataSource, '获取列表数据', { type: 'any' });
               !hasOutputEvent &&
-                output.add(OutputIds.GetDataSource, '数据输出', { type: 'array', items: { type: 'any' } });
-              input
-                .get(InputIds.GetDataSource)
-                .setRels([OutputIds.GetDataSource]);
+                output.add(OutputIds.GetDataSource, '数据输出', {
+                  type: 'array',
+                  items: {
+                    title: '列项数据',
+                    type: 'object',
+                    properties: {}
+                  }
+                });
+              input.get(InputIds.GetDataSource).setRels([OutputIds.GetDataSource]);
             } else {
               hasInputEvent && input.remove(InputIds.GetDataSource);
               hasOutputEvent && output.remove(OutputIds.GetDataSource);
@@ -63,7 +67,14 @@ export default {
             data.useSlotProps = val;
             if (val) {
               !input.get(InputIds.SLOTPROPS) &&
-                input.add(InputIds.SLOTPROPS, '插槽数据', { type: 'array', items: { type: 'any' } });
+                input.add(InputIds.SLOTPROPS, '插槽数据', {
+                  type: 'array',
+                  items: {
+                    title: '列项数据',
+                    type: 'object',
+                    properties: {}
+                  }
+                });
             } else {
               input.get(InputIds.SLOTPROPS) && input.remove(InputIds.SLOTPROPS);
             }

@@ -22,14 +22,34 @@ export default {
             data.dataSource = value;
             if (value === 2) {
               input.add(InputIds.SetJsonData, '数据输入', {
-                type: 'array',
-                items: {
-                  type: 'object'
-                }
+                type: 'any'
               });
             } else {
               input.remove(InputIds.SetJsonData);
             }
+          }
+        }
+      },
+      {
+        title: '数据源类型',
+        type: 'Select',
+        options: [
+          { label: '数组', value: 'array' },
+          { label: '对象', value: 'object' }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.dataSource === 2;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.dataSourceType;
+          },
+          set({ data, input }: EditorResult<Data>, value: 'array' | 'object') {
+            data.dataSourceType = value;
+            const dsInput = input.get(InputIds.SetJsonData);
+            const slotInput = input.get(InputIds.SlotProps);
+            dsInput.setSchema({ type: value });
+            slotInput.setSchema({ type: value });
           }
         }
       },
@@ -244,8 +264,7 @@ export default {
             data.useSlotProps = value;
             const isHas = input.get(InputIds.SlotProps);
             if (value) {
-              !isHas &&
-                input.add(InputIds.SlotProps, '插槽数据', { type: 'follow' });
+              !isHas && input.add(InputIds.SlotProps, '插槽数据', { type: 'any' });
             } else {
               isHas && input.remove(InputIds.SlotProps);
             }

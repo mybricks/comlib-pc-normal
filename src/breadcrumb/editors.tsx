@@ -21,7 +21,7 @@ const addItem = ({ data, output }) => {
       ...item,
       key
     });
-    output.add(key, '点击事件', { type: 'string' });
+    output.add(key, '点击事件', { type: 'any' })
   });
 };
 function findConfig({ data, focusArea }, propKey?: string) {

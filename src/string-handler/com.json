@@ -14,14 +14,17 @@
       "id": "input",
       "title": "输入项",
       "schema": {
-        "type": "string"
+        "type": "any"
       }
     }
   ],
   "outputs": [
     {
       "id": "output",
-      "title": "输出项"
+      "title": "输出项",
+      "schema": {
+        "type": "any"
+      }
     }
   ]
 }

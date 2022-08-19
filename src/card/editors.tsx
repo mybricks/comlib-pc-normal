@@ -25,7 +25,7 @@ export default {
           set({ data, output }: EditorResult<Data>, value: boolean) {
             const hasEvent = output.get(OutputIds.Click);
             if (value) {
-              !hasEvent && output.add(OutputIds.Click, '点击', { type: 'any' });
+              !hasEvent && output.add(OutputIds.Click, '点击', { type: 'string' });
             } else {
               hasEvent && output.remove(OutputIds.Click);
             }

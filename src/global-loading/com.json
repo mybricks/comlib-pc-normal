@@ -15,7 +15,7 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "string"
+        "type": "any"
       }
     },
     {

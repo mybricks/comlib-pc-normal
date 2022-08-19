@@ -17,10 +17,11 @@ import {
   SorterResult,
   TableRowSelection,
 } from 'antd/es/table/interface';
-import { getPageInfo, getTemplateRenderScript, flat, unFlat } from './utils';
+import { getPageInfo, flat, unFlat } from './utils';
 import { typeCheck, uuid } from '../utils';
 import { setPath } from '../utils/path';
-import { RowSelectionPostion, InputIds, OutputIds, SlotIds } from './constants';
+import { getTemplateRenderScript } from '../utils/runExpCodeScript';
+import { RowSelectionPostion, InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from './constants';
 import { Data, ResponseData, IColumn } from './types';
 import ColumnRender from './components/ColumnRender';
 import ActionBtns from './components/ActionBtns';
@@ -42,7 +43,7 @@ export class TableContent {
 }
 
 export default function (props: RuntimeParams<Data>) {
-  const { env,  data, inputs, outputs, slots } = props;
+  const { env, data, inputs, outputs, slots } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -794,7 +795,7 @@ export default function (props: RuntimeParams<Data>) {
       let isDisabled;
       try {
         isDisabled = data.isDisabledScript
-          ? eval(getTemplateRenderScript(data.isDisabledScript))(record)
+          ? eval(getTemplateRenderScript(data.isDisabledScript, false, TEMPLATE_RENDER_KEY))(record)
           : false;
       } catch (e) {
         console.error(`禁止勾选的表达式错误`, data.isDisabledScript, e);
@@ -904,6 +905,7 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <div className={css.table}>
       <div
+        data-table-header-container
         className={classnames(
           css.headerContainer,
           useTopRowSelection && css.flexDirectionColumn,

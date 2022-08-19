@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Tooltip, Dropdown, Menu, Checkbox, Button} from 'antd';
-import { SystemSettingLine } from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 
 export default function FilterColumnRender ({
   data,
@@ -122,7 +122,7 @@ export default function FilterColumnRender ({
             visible={visibleChange.visible}
             trigger={['click']}
             >
-            <Button icon={<SystemSettingLine />}></Button>
+            <Button icon={<SettingOutlined />}></Button>
           </Dropdown>
         </Tooltip>
       </div>

@@ -269,6 +269,10 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     // }
     data.checkedKeys = [...checkedKeys];
     setCheckedKeys([...checkedKeys]);
+    if (data.useCheckEvent) {
+      const resultKeys = data.outParentKeys ? checkedKeys : excludeParentKeys(data.treeData, checkedKeys);
+      outputs["check"](outputNodeValues(data.treeData, resultKeys));
+    }
   }, []);
 
   const onExpand = useCallback((expandedKeys: React.Key[]) => {

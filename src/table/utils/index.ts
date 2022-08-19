@@ -24,57 +24,6 @@ function getScratchScript(blocksOri) {
   return evalScript;
 }
 
-function templateRender(template: string) {
-  return template.replace(/\{(.*?)\}/g, (match, key) => `${TEMPLATE_RENDER_KEY}.${key.trim()}`);
-}
-
-function getTemplateRenderScript(template: string, noCatch?: boolean) {
-  let evalScript = `
-    (function(${TEMPLATE_RENDER_KEY}) {
-      try {
-        return ${templateRender(template)}
-      } catch(ex) {
-        console.error(ex)
-      }
-    })
-  `;
-  if (noCatch) {
-    evalScript = `
-    (function(${TEMPLATE_RENDER_KEY}) {
-      return ${templateRender(template)}
-    })
-  `;
-  }
-  return evalScript;
-}
-export const runScript = (scriptStr: string, args?: any) => {
-  let isBoolean = true;
-  if (scriptStr) {
-    try {
-      isBoolean = eval(getTemplateRenderScript(scriptStr, true))(args);
-    } catch (e) {
-      return [
-        {
-          message: e?.message,
-          startLineNumber: 0,
-          endLineNumber: `${scriptStr}`.split('\n').length + 1,
-          length: scriptStr.length + 1
-        }
-      ];
-    }
-  }
-  if (typeof isBoolean !== 'boolean') {
-    return [
-      {
-        message: '表达式结果需要是 布尔类型',
-        startLineNumber: 0,
-        endLineNumber: `${scriptStr}`.split('\n').length + 1,
-        length: scriptStr.length + 1
-      }
-    ];
-  }
-  return [];
-};
 
 const getPageInfo = (data: Data) => {
   if (data.hasPagination) {
@@ -153,8 +102,6 @@ const unFlat = (data) => {
 
 export {
   getScratchScript,
-  templateRender,
-  getTemplateRenderScript,
   getPageInfo,
   getParentNodeByTag,
   flat,

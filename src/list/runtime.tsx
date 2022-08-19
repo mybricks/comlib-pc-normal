@@ -16,7 +16,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     flexStyle,
     flexAlign,
   } = data;
-  const [dataSource, setDataSource] = useState<any[]>([]);
+  const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,12 +28,16 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
         inputs[InputIds.SLOTPROPS] &&
         inputs[InputIds.SLOTPROPS]((v) => {
           if (Array.isArray(v)) {
-            setDataSource(v.map((item) => ({ ...item, [rowKey]: uuid() })));
+            const ds = v.map((item) => ({ ...item, [rowKey]: uuid() }));
+            data.dataSource = ds;
+            setDataSource(ds);
           }
         });
       inputs[InputIds.DATA_SOURCE]((v) => {
         if (Array.isArray(v)) {
-          setDataSource(v.map((item) => ({ ...item, [rowKey]: uuid() })));
+          const ds = v.map((item) => ({ ...item, [rowKey]: uuid() }));
+          data.dataSource = ds;
+          setDataSource(ds);
         }
         setLoading(false);
       });

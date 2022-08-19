@@ -1,5 +1,6 @@
 import { Data } from "../../../types";
-import { getColumnItem, runScript } from "../../../utils";
+import { getColumnItem } from "../../../utils";
+import { runScript } from "../../../../utils/runExpCodeScript";
 
 interface Props {
     data: Data;

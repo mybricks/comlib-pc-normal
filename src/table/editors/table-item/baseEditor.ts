@@ -50,6 +50,11 @@ const BaseEditor = {
       options: {
         render: Tree
       },
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.contentType !== 'group';
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
@@ -66,16 +71,17 @@ const BaseEditor = {
               columnsSchema = properties[dataSourceKey].items;
             }
           }
-          return { field: ret,  schema: columnsSchema }
+          return { field: ret,  schema: columnsSchema };
         },
         set(
           { data, focusArea, output, input }: EditorResult<Data>,
           value: string
         ) {
-          if (!focusArea || focusArea.dataset.tableThIdx < 0) return;
+          if (!focusArea) return;
           let valArr: string | string[] = value.trim().split('.');
           if (valArr.length === 1) valArr = valArr[0];
           setCol(data, focusArea, valArr, 'dataIndex');
+          // setCol(data, focusArea, value, 'key');
           setDataSchema({ data, output, input });
         }
       }

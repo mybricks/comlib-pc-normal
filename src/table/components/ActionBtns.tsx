@@ -4,7 +4,9 @@ import { Button, Dropdown, Menu, Popconfirm } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { BaseButtonProps } from 'antd/es/button/button';
 import * as Icons from '@ant-design/icons';
-import { findColumnItemByKey, getTemplateRenderScript } from '../utils';
+import { findColumnItemByKey } from '../utils';
+import { getTemplateRenderScript } from '../../utils/runExpCodeScript';
+import { TEMPLATE_RENDER_KEY } from '../constants';
 import { Location } from '../types';
 import css from './ActionBtns.less';
 
@@ -81,7 +83,7 @@ export default function ActionBtns({
     let isHidden = false;
     if (btn.isHiddenScript && tableContent?.env?.runtime) {
       try {
-        isHidden = eval(getTemplateRenderScript(btn.isHiddenScript))(record);
+        isHidden = eval(getTemplateRenderScript(btn.isHiddenScript, false, TEMPLATE_RENDER_KEY))(record);
       } catch (e) {
         // console.log(e);
       }
@@ -92,7 +94,7 @@ export default function ActionBtns({
     let isDisabled = false;
     if (btn.isDisabledScript && tableContent?.env?.runtime) {
       try {
-        isDisabled = eval(getTemplateRenderScript(btn.isDisabledScript))(
+        isDisabled = eval(getTemplateRenderScript(btn.isDisabledScript, false, TEMPLATE_RENDER_KEY))(
           record
         );
       } catch (e) {

@@ -1,3 +1,4 @@
 export interface Data {
-    name: string
+  nameConfig: 0 | 1;
+  filename: string;
 }

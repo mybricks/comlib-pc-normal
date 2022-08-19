@@ -1160,8 +1160,30 @@ function outputVal(dataset: string) {
               if (dataset === 'btnId') {
                 const outPin = output.get(data.tools[index].id)
                 outPin.setSchema({
-                  type: 'follow',
-                })
+                  type: 'any'
+                });
+                if(value === 'number'){
+                  outPin.setSchema({
+                    type: 'number'
+                  })
+                }else if(value === 'string'){
+                  outPin.setSchema({
+                    type: 'string'
+                  })
+                }else if(value === 'object'){
+                  outPin.setSchema({
+                    type: 'object',
+                    properties: {}
+                  })
+                }else if(value === 'boolean'){
+                  outPin.setSchema({
+                    type: 'boolean'
+                  })
+                }else if(value === 'external'){
+                  outPin.setSchema({
+                    type: 'follow'
+                  })
+                }
               }
             })
             if (value === 'object') {

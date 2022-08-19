@@ -93,6 +93,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
               onClick={() => onClick(list)}
               className={css.outer}
               data-sort={list.key}
+              key={list.key}
             >
               <div className={css.inner}>
                 <div className={css.content}>{list.content}</div>
