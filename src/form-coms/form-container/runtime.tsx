@@ -179,7 +179,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             layout={data.layout}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}>
-            { content() }
+            {
+              data.dataType === 'list' ? (
+                <FormListItem content={content} slots={slots}  env={env} isFormItem={data.isFormItem} />
+              ) : content()
+            }
             <Row style={{ flex: '1 1 100%' }} data-form-actions>
               <Col offset={8}>
                 <Form.Item>
@@ -189,14 +193,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
             </Row>
           </Form>
         ): data.dataType === 'list' ? (
-          <FormListItem content={content} slots={slots}  env={env} />
+          <FormListItem content={content} slots={slots}  env={env} isFormItem={data.isFormItem} />
         ) : content()
       }
     </Fragment>
   )
 }
 
-const FormListItem = ({ content, slots, env }) => {
+const FormListItem = ({ content, slots, env, isFormItem }) => {
 
   if (env.edit) {
     return content()
@@ -211,7 +215,18 @@ const FormListItem = ({ content, slots, env }) => {
             {fields.map((field, index) => {
               return <div key={field.key}>{content({ field })}</div>
             })}
-            <Button onClick={() => { add() }}>添加</Button>
+            {
+              isFormItem ? <Button onClick={() => { add() }}>添加</Button> : (
+                <Row style={{ flex: '1 1 100%' }} data-form-actions>
+                  <Col offset={8}>
+                    <Form.Item>
+                      <Button onClick={() => { add() }}>添加</Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              )
+            }
+            
           </>
         )
       }}
