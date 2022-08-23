@@ -2,6 +2,7 @@ export interface Data {
   items: any[]
   isFormItem: boolean
   dataType: 'object' | 'list'
+  layout: 'horizontal' | 'vertical' | 'inline'
 }
 
 export interface FormControlProps {

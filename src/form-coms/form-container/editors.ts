@@ -78,62 +78,68 @@ export default {
       ]
     },
   ],
-  '[data-formitem]': [
-    {
-      title: '标题',
-      type: 'text',
-      value: {
-        get({data, focusArea}: EditorResult<Data>) {
-          const comId = focusArea.dataset['formitem']
-          return data.items.find(item => item.id === comId).label
-        },
-        set({data, focusArea}: EditorResult<Data>, val) {
-          const comId = focusArea.dataset['formitem']
-          const item = data.items.find(item => item.id === comId)
-          item.label = val
+  '[data-formitem]': {
+    title: '表单项',
+    items: [
+      {
+        title: '标题',
+        type: 'text',
+        value: {
+          get({data, focusArea}: EditorResult<Data>) {
+            const comId = focusArea.dataset['formitem']
+            return data.items.find(item => item.id === comId).label
+          },
+          set({data, focusArea}: EditorResult<Data>, val) {
+            const comId = focusArea.dataset['formitem']
+            const item = data.items.find(item => item.id === comId)
+            item.label = val
+          }
+        }
+      },
+      {
+        title: '字段',
+        type: 'text',
+        value: {
+          get({data, focusArea}: EditorResult<Data>) {
+            const comId = focusArea.dataset['formitem']
+            return data.items.find(item => item.id === comId).name
+          },
+          set({data, focusArea}: EditorResult<Data>, val) {
+            const comId = focusArea.dataset['formitem']
+            const item = data.items.find(item => item.id === comId)
+            item.name = val
+          }
+        }
+      },
+      {
+        title: '必填',
+        type: 'Switch',
+        value: {
+          get({data, focusArea}: EditorResult<Data>) {
+            const comId = focusArea.dataset['formitem']
+            return data.items.find(item => item.id === comId).required
+          },
+          set({data, focusArea}: EditorResult<Data>, val) {
+            const comId = focusArea.dataset['formitem']
+            const item = data.items.find(item => item.id === comId)
+            item.required = val
+          }
         }
       }
-    },
-    {
-      title: '字段',
-      type: 'text',
-      value: {
-        get({data, focusArea}: EditorResult<Data>) {
-          const comId = focusArea.dataset['formitem']
-          return data.items.find(item => item.id === comId).name
-        },
-        set({data, focusArea}: EditorResult<Data>, val) {
-          const comId = focusArea.dataset['formitem']
-          const item = data.items.find(item => item.id === comId)
-          item.name = val
+    ]
+  },
+  '[data-form-actions]': {
+    title: '操作',
+    items: [
+      {
+        title: '添加操作',
+        type: 'Button',
+        value: {
+          set({data, focusArea}: EditorResult<Data>) {
+            console.log('add')
+          }
         }
-      }
-    },
-    {
-      title: '必填',
-      type: 'Switch',
-      value: {
-        get({data, focusArea}: EditorResult<Data>) {
-          const comId = focusArea.dataset['formitem']
-          return data.items.find(item => item.id === comId).required
-        },
-        set({data, focusArea}: EditorResult<Data>, val) {
-          const comId = focusArea.dataset['formitem']
-          const item = data.items.find(item => item.id === comId)
-          item.required = val
-        }
-      }
-    }
-  ],
-  '[data-form-actions]': [
-    {
-      title: '添加操作',
-      type: 'Button',
-      value: {
-        set({data, focusArea}: EditorResult<Data>) {
-          console.log('add')
-        }
-      }
-    },
-  ]
+      },
+    ]
+  }
 }

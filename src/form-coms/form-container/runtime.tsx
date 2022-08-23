@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment } from 'react';
+import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useState } from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlProps, FormControlInputId } from './types'
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props
   const [formRef] = Form.useForm()
+  const [_fields, setFields] = useState([])
 
   const childrenInputs = useMemo<{ [id: string]: { [key in FormControlInputId]: (item?: any) => {}} }>(() => {
     return {}
@@ -119,7 +120,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
           rtn[item.name] = item.value
         })
 
-        resolve(rtn)
+        if (data.dataType === 'list') {
+          console.log('_fields', _fields)
+          resolve([rtn])
+        } else {
+          resolve(rtn)
+        }
+
       }).catch(e => reject(e))
     })
   }, [])
@@ -169,12 +176,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         (
           <Form
             form={formRef}
+            layout={data.layout}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}>
             { content() }
-            <Row style={{ flex: '1 1 100%' }}>
+            <Row style={{ flex: '1 1 100%' }} data-form-actions>
               <Col offset={8}>
-                <Form.Item data-form-actions>
+                <Form.Item>
                   <Button type="primary" onClick={() => submit()}>提交</Button>
                 </Form.Item>
               </Col>

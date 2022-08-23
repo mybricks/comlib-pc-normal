@@ -3,5 +3,6 @@
   "nameCount": 0,
   "actions": [],
   "isFormItem": false,
-  "dataType": "object"
+  "dataType": "object",
+  "layout": "horizontal"
 }
