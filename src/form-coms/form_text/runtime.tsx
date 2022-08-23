@@ -3,7 +3,8 @@ import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 
 import css from './runtime.less'
 
-export default function ({data, _inputs, inputs, _outputs, outputs}) {
+export default function ({env, data, _inputs, inputs, _outputs, outputs}) {
+  const { edit } = env
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
@@ -40,7 +41,13 @@ export default function ({data, _inputs, inputs, _outputs, outputs}) {
     props.addonBefore = data.title
   }
   let jsx = (
-    <Input {...props} type={"text"} value={data.value} onChange={changeValue}/>
+    <Input
+      {...props}
+      type={"text"}
+      value={data.value}
+      readOnly={!!edit}
+      onChange={changeValue}
+    />
   )
 
   return (
