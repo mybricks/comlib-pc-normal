@@ -5,7 +5,6 @@ import { Data, FormControlProps, FormControlInputId } from './types'
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props
   const [formRef] = Form.useForm()
-  const [_fields, setFields] = useState([])
 
   const childrenInputs = useMemo<{ [id: string]: { [key in FormControlInputId]: (item?: any) => {}} }>(() => {
     return {}
@@ -109,8 +108,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const input = childrenInputs[id]
 
         return new Promise((resolve, reject) => {
-          input?.getValue().returnValue(val => {//调用所有表单项的 getValue/returnValue
-            resolve({name: item.name, value: val})
+          input?.getValue().returnValue((val, key) => {//调用所有表单项的 getValue/returnValue
+            const value = {
+              name: item.name,
+              value: val
+            }
+            console.log(value, key)
+            resolve(value)
           })
         })
       })).then(values => {
@@ -121,7 +125,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
         })
 
         if (data.dataType === 'list') {
-          console.log('_fields', _fields)
           resolve([rtn])
         } else {
           resolve(rtn)
