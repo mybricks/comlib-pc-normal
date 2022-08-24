@@ -108,25 +108,48 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const input = childrenInputs[id]
 
         return new Promise((resolve, reject) => {
+          let count = 0
+          let value = {}
           input?.getValue().returnValue((val, key) => {//调用所有表单项的 getValue/returnValue
-            const value = {
-              name: item.name,
-              value: val
+            
+            console.log(item, value, key)
+            if (typeof data.fieldsLength !== 'undefined') {
+              value[key] = {
+                name: item.name,
+                value: val
+              }
+              count++
+              if (count == data.fieldsLength) {
+                resolve(value)
+              }
+            } else {
+              value = {
+                name: item.name,
+                value: val
+              }
+              resolve(value)
             }
-            console.log(value, key)
-            resolve(value)
           })
         })
       })).then(values => {
-        const rtn = {}
-
-        values.forEach(item => {
-          rtn[item.name] = item.value
-        })
-
         if (data.dataType === 'list') {
-          resolve([rtn])
+          const arr = []
+          values.forEach(valItem => {
+            console.log(valItem)
+            Object.keys(valItem).map(key => {
+              if (!arr[key]) {
+                arr[key] = {}
+              }
+              arr[key][valItem[key].name] = valItem[key].value
+            })
+
+          })
+          resolve(arr)
         } else {
+          const rtn = {}
+          values.forEach(item => {
+            rtn[item.name] = item.value
+          })
           resolve(rtn)
         }
 
@@ -189,7 +212,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             wrapperCol={{ span: 16 }}>
             {
               data.dataType === 'list' ? (
-                <FormListItem content={content} slots={slots}  env={env} isFormItem={data.isFormItem} />
+                <FormListItem content={content} slots={slots}  env={env} isFormItem={data.isFormItem} data={data} />
               ) : content()
             }
             <Row style={{ flex: '1 1 100%' }} data-form-actions>
@@ -201,14 +224,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
             </Row>
           </Form>
         ): data.dataType === 'list' ? (
-          <FormListItem content={content} slots={slots}  env={env} isFormItem={data.isFormItem} />
+          <FormListItem content={content} slots={slots}  env={env} isFormItem={data.isFormItem} data={data} />
         ) : content()
       }
     </Fragment>
   )
 }
 
-const FormListItem = ({ content, slots, env, isFormItem }) => {
+const FormListItem = ({ content, slots, env, isFormItem, data }) => {
 
   if (env.edit) {
     return content()
@@ -218,6 +241,8 @@ const FormListItem = ({ content, slots, env, isFormItem }) => {
     <Form.List name="item4">
       {(fields, { add, remove }) => {
         console.log('fields', fields)
+        data.fieldsLength = fields.length
+
         return (
           <>
             {fields.map((field, index) => {
@@ -254,13 +279,16 @@ const FormItem = (props: { com, item, field }) => {
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}>
-      <JSXWrapper com={com} />
+      <JSXWrapper com={com} field={field} />
     </Form.Item>
   )
 }
 
-const JSXWrapper = ({ com, value, onChange }: FormControlProps) => {
+const JSXWrapper = (props: FormControlProps) => {
+  const { com, value, onChange, field } = props
+
   useLayoutEffect(() => { // 初始化表单项值
+    console.log('setValue', value, field)
     com.inputs?.setValue(value) // 需求区分 表单API行为触发 与 用户行为触发 => inputs or _inputs
   }, [value])
 
