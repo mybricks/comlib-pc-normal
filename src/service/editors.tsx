@@ -1,5 +1,5 @@
 import { Data, IService } from './constants';
-
+const defaultSchema = { type: 'any' };
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { insideServiceContent } = data;
   const info: string[] = [];
@@ -8,6 +8,16 @@ const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   }
   setDesc(info.join('\n'));
 };
+
+function isValidSchema(schema) {
+  return (
+    schema &&
+    ['object', 'array', 'number', 'string', 'boolean', 'any', 'follow'].some(
+      (type) => schema.type === type
+    )
+  );
+}
+
 export default {
   '@init': ({ data, setAutoRun, isAutoRun }: EditorResult<Data>) => {
     const autoRun = isAutoRun ? isAutoRun() : false;
@@ -33,10 +43,10 @@ export default {
     if (id === data.connectorId) {
       data.connectorId = void 0;
       if (outputSchema) {
-        output.get('res')?.setSchema(void 0);
+        output.get('res')?.setSchema(defaultSchema);
       }
       if (inputSchema) {
-        input.get('params')?.setSchema(void 0);
+        input.get('params')?.setSchema(defaultSchema);
       }
       setDesc(`${connector.title} 已失效`);
     }
@@ -58,10 +68,10 @@ export default {
             id,
             title: content.title
           };
-          if (inputSchema) {
+          if (isValidSchema(inputSchema)) {
             input.get('params')?.setSchema(inputSchema);
           }
-          if (outputSchema) {
+          if (isValidSchema(outputSchema)) {
             output.get('res')?.setSchema(outputSchema);
           }
           setDescByData({ data, setDesc });
