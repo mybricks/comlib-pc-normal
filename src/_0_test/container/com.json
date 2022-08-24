@@ -1,0 +1,14 @@
+{
+  "title": "测试--容器",
+  "namespace": "test.container",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "表单容器",
+  "runtime": "./runtime.tsx",
+  "slots": [
+    {
+      "id": "content"
+    }
+  ]
+}
