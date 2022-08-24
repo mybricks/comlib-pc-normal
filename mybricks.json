@@ -93,12 +93,8 @@
       "./src/page-router/com.json",
       "./src/global-loading/com.json",
       "./src/timer/com.json",
-      "./src/clipboard/com.json",
       "./src/merge/com.json",
-      "./src/download/com.json",
-      "./src/key-map/com.json",
-      "./src/logic/com.json",
-      "./src/string-handler/com.json"
+      "./src/download/com.json"
     ],
     "publish": [
       "./src/alert/com.json",
