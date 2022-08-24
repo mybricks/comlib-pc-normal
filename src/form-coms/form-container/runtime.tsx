@@ -156,16 +156,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
         if (comAray) {
           const jsx = comAray.map((com, idx) => {
-            let item = items.find(item => item.id === com.id)
+            if (com) {
+              let item = items.find(item => item.id === com.id)
 
-            childrenInputs[com.id] = com.inputs
-            
-            return <FormItem com={com} item={item} key={com.id} field={props?.field} />
+              childrenInputs[com.id] = com.inputs
+              
+              return <FormItem com={com} item={item} key={com.id} field={props?.field} />
+            }
+
+            return <div key={idx}>组件错误</div>
           })
 
           return jsx
         }
-      }
+      },
+      key: props?.field.name
     })
   }, [])
 
