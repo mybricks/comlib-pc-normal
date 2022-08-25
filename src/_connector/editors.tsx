@@ -10,6 +10,8 @@ export default {
     setDesc(`（连接器为空）`)
   },
   '@connectorUpdated': ({data, input, output, setDesc, setAutoRun, isAutoRun}, {connector}) => {
+    if (!data.connector) return;
+
     if (connector.id === data.connector.id) {
       data.connector = {
         id: connector.id,
@@ -25,6 +27,8 @@ export default {
     }
   },
   '@connectorRemoved': ({data, input, output, setDesc, setAutoRun, isAutoRun}, {connector}) => {
+    if (!data.connector) return;
+
     if (connector.id === data.connector.id) {
       data.connector = void 0
 
