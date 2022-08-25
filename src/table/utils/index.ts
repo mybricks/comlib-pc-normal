@@ -100,12 +100,37 @@ const unFlat = (data) => {
   return ret;
 };
 
+// 计算代码提示
+function getSuggestions({ data }: { data: Data }) {
+  const res = [];
+  const getChildrenSuggestions = (columns: IColumn[]) => {
+    columns?.forEach((col) => {
+      if (['action'].includes(col.contentType)) return;
+      if (['group'].includes(col.contentType) && col.children) {
+        getChildrenSuggestions(col.children);
+        return;
+      }
+      const dataIndex = Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex;
+      if (!res.find((item) => dataIndex === item.label)) {
+        res.push({
+          label: dataIndex,
+          insertText: `{${dataIndex}}`,
+          detail: `当前行${dataIndex}值`
+        });
+      }
+    });
+  }
+  getChildrenSuggestions(data.columns);
+  return res;
+}
+
 export {
   getScratchScript,
   getPageInfo,
   getParentNodeByTag,
   flat,
-  unFlat
+  unFlat,
+  getSuggestions
 };
 
 export const findColumnItemByKey = (columns, key) => {

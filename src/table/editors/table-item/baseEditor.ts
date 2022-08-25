@@ -53,7 +53,7 @@ const BaseEditor = {
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
-        return item.contentType !== 'group';
+        return !['group', 'action'].includes(item.contentType);
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {

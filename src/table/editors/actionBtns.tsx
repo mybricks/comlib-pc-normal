@@ -5,7 +5,7 @@ import { TEMPLATE_RENDER_KEY } from '../constants';
 import { uuid } from '../../utils';
 import { runScript } from '../../utils/runExpCodeScript';
 import { rowSelectionEditor } from './table/rowSelection';
-import { getColumnItem } from '../utils';
+import { getColumnItem, getSuggestions } from '../utils';
 
 interface Props {
   title?: string;
@@ -711,19 +711,7 @@ export const getActionBtnsEditor = (props: Props) => {
 export const colActionBtnsEditor = getActionBtnsEditor({
   titleKey: '[data-table-action]',
   btnsKey: '[data-table-btn]',
-  getSuggestions: ({ data }: EditorResult<Data>) => {
-    const res = [];
-    data.columns.forEach((col) => {
-      if (!res.find((item) => col.dataIndex === item.label)) {
-        res.push({
-          label: col.dataIndex,
-          insertText: `{${col.dataIndex}}` + ' === ',
-          detail: `当前行${col.dataIndex}值`
-        });
-      }
-    });
-    return res;
-  },
+  getSuggestions: getSuggestions,
   runScript: (script: string) => {
     return runScript(script, {}, TEMPLATE_RENDER_KEY);
   },
