@@ -49,22 +49,22 @@ export default {
     }
   },
   ':root': [
-    {
-      title: '数据类型',
-      type: 'select',
-      options: [
-        { label: '对象', value: 'object' },
-        { label: '列表', value: 'list' }
-      ],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.dataType
-        },
-        set({ data }: EditorResult<Data>, val) {
-          data.dataType = val
-        }
-      }
-    },
+    // {
+    //   title: '数据类型',
+    //   type: 'select',
+    //   options: [
+    //     { label: '对象', value: 'object' },
+    //     { label: '列表', value: 'list' }
+    //   ],
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data.dataType
+    //     },
+    //     set({ data }: EditorResult<Data>, val) {
+    //       data.dataType = val
+    //     }
+    //   }
+    // },
     {
       title: '事件',
       items: [

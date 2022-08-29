@@ -269,7 +269,7 @@ const FormListItem = ({ content, slots, env, isFormItem, data }) => {
 
 const FormItem = (props: { com, item, field }) => {
   const { com, item, field }  = props
-  console.log(field ? [field.name, item?.name] : item?.name)
+  
   return (
     <Form.Item
       {...field}
@@ -288,7 +288,6 @@ const JSXWrapper = (props: FormControlProps) => {
   const { com, value, onChange, field } = props
 
   useLayoutEffect(() => { // 初始化表单项值
-    console.log('setValue', value, field)
     com.inputs?.setValue(value) // 需求区分 表单API行为触发 与 用户行为触发 => inputs or _inputs
   }, [value])
 
