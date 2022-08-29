@@ -56,7 +56,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onChange'](value)
   }
 
-  return (
+  return data.visible && (
     <div>
       <Select
         allowClear
