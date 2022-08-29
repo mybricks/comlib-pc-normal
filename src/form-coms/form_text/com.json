@@ -36,11 +36,25 @@
       "rels": [
         "returnValue"
       ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setVisible",
+      "title": "设置显示/隐藏",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [
     {
-      "id": "valueChanged",
+      "id": "onChange",
       "title": "值发生改变",
       "schema": {
         "type": "string"
