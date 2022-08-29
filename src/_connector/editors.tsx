@@ -69,10 +69,19 @@ export default {
   ]
 }
 
+function isValidSchema(schema) {
+  return (
+    schema &&
+    ['object', 'array', 'number', 'string', 'boolean', 'any', 'follow', 'unknown'].some(
+      (type) => schema.type === type
+    )
+  );
+}
+
 function updateIO({input, output}, connector) {
   const callInt = input.get('call')
   if (callInt) {
-    if (connector.inputSchema) {
+    if (isValidSchema(connector.inputSchema)) {
       callInt.setSchema(connector.inputSchema)
     } else {
       callInt.setSchema(defaultSchema)
@@ -80,7 +89,7 @@ function updateIO({input, output}, connector) {
   }
   const thenOut = output.get('then')
 
-  if (connector.outputSchema) {
+  if (isValidSchema(connector.outputSchema)) {
     thenOut.setSchema(connector.outputSchema)
   } else {
     thenOut.setSchema(defaultSchema)
