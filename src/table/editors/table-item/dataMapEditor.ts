@@ -17,7 +17,7 @@ const DataMapingEditor = (data: Data) => ({
     ...dateItemEditor,
     {
       title: '模板字符串',
-      type: 'EXPCODE',
+      type: 'EXPRESSION',
       description: '通过表格列字段自定义展示内容，默认为该列字段',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;

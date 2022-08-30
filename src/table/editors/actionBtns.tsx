@@ -18,7 +18,7 @@ interface Props {
   addBtns: (res: any) => void;
   suggestions?: any[];
   getSuggestions?: (res: any) => any[];
-  runScript?: (res: any) => any[];
+  runScript?: (res: any) => { success?: any; error?: any };
 }
 export const getActionBtnsEditor = (props: Props) => {
   const {
@@ -402,12 +402,12 @@ export const getActionBtnsEditor = (props: Props) => {
             {
               title: '隐藏',
               description: `隐藏按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
-              type: 'EXPCODE',
+              type: 'EXPRESSION',
               options: {
                 autoSize: true,
                 placeholder: `${codeDemo}`,
                 suggestions: suggestions,
-                run: runScript
+                runCode: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -436,12 +436,12 @@ export const getActionBtnsEditor = (props: Props) => {
             {
               title: '禁用',
               description: `禁用按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
-              type: 'EXPCODE',
+              type: 'EXPRESSION',
               options: {
                 autoSize: true,
                 placeholder: `${codeDemo}`,
                 suggestions: suggestions,
-                run: runScript
+                runCode: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -848,9 +848,9 @@ export const headerActionBtnsEditor = getActionBtnsEditor({
   ],
   runScript: (script: string) => {
     return runScript(script, {
-      queryParams: {},
-      dataSource: [],
-      pagination: {}
+        queryParams: {},
+        dataSource: [],
+        pagination: {}
     }, TEMPLATE_RENDER_KEY);
   },
   getBtns: ({ data }: EditorResult<Data>) => {
