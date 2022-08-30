@@ -1,12 +1,14 @@
-import { Data } from '../../../types';
-import { getColumnItem } from '../../../utils';
-import { runScript } from '../../../../utils/runExpCodeScript';
+import { Data } from "../../../types";
+import { getColumnItem } from "../../../utils";
+import { runScript } from "../../../../utils/runExpCodeScript";
 
 interface Props {
   data: Data;
 }
 const SwitchItemEditor = (props: Props) => {
-  const { data } = props;
+    const {
+        data,
+    } = props;
   // 提示项
   const res = [];
   data.columns.forEach((col) => {
@@ -78,9 +80,9 @@ const SwitchItemEditor = (props: Props) => {
             outputId: switchCfg?.id
           };
         }
-      }
+            },
     ]
   };
-};
+}
 
 export default SwitchItemEditor;
