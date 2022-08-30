@@ -54,16 +54,10 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
               });
             }
 
-            output.add(
-              OutputIds.GET_ROW_SELECTION,
-              '勾选数据',
-              Schemas.GetRowSelection(data)
-            );
+            output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.GetRowSelection(data));
             input.add(InputIds.CLEAR_ROW_SELECTION, '清空勾选', Schemas.Void);
             input.add(InputIds.GET_ROW_SELECTION, '输出勾选数据', Schemas.Void);
-            input
-              .get(InputIds.GET_ROW_SELECTION)
-              .setRels([OutputIds.GET_ROW_SELECTION]);
+            input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
           } else {
             data.rowKey = 'uuid';
             data.batchBtns.forEach((item) => {
@@ -119,9 +113,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
         {
           title: '勾选限制',
           type: 'inputnumber',
-          options: [
-            { title: '最多', min: 0, width: '100%', placeholder: '0为不限制' }
-          ],
+          options: [{ title: '最多', min: 0, width: '100%', placeholder: '0为不限制' }],
           ifVisible({ data }: EditorResult<Data>) {
             return data.selectionType !== 'radio';
           },
@@ -154,9 +146,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return (data.rowSelectionPostion || []).includes(
-                RowSelectionPostion.TOP
-              );
+              return (data.rowSelectionPostion || []).includes(RowSelectionPostion.TOP);
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               const temp = (data.rowSelectionPostion || []).filter(
@@ -177,9 +167,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return (data.rowSelectionPostion || []).includes(
-                RowSelectionPostion.BOTTOM
-              );
+              return (data.rowSelectionPostion || []).includes(RowSelectionPostion.BOTTOM);
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               const temp = (data.rowSelectionPostion || []).filter(
@@ -194,14 +182,13 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '禁止勾选',
-          description:
-            '禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1',
-          type: 'EXPCODE',
+          description: '禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1',
+          type: 'EXPRESSION',
           options: {
             autoSize: true,
             placeholder: `禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1`,
             suggestions: suggestions,
-            run: (str: string) => {
+            runCode: (str: string) => {
               return runScript(str, {}, TEMPLATE_RENDER_KEY);
             }
           },
@@ -224,11 +211,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
             set({ data, input }: EditorResult<Data>, value: boolean) {
               data.useSetSelectedRowKeys = value;
               if (value) {
-                input.add(
-                  InputIds.SET_ROW_SELECTION,
-                  '设置勾选项',
-                  Schemas.SET_ROW_SELECTION
-                );
+                input.add(InputIds.SET_ROW_SELECTION, '设置勾选项', Schemas.SET_ROW_SELECTION);
               } else {
                 input.remove(InputIds.SET_ROW_SELECTION);
               }

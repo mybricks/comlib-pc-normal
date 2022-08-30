@@ -18,7 +18,7 @@ interface Props {
   addBtns: (res: any) => void;
   suggestions?: any[];
   getSuggestions?: (res: any) => any[];
-  runScript?: (res: any) => any[];
+  runScript?: (res: any) => { success?: any; error?: any };
 }
 export const getActionBtnsEditor = (props: Props) => {
   const {
@@ -141,9 +141,7 @@ export const getActionBtnsEditor = (props: Props) => {
       return { title: title || '操作列' };
     },
     [btnsKey]: ({ data, focusArea }: EditorResult<Data>, ...cateAry) => {
-      const suggestions = getSuggestions
-        ? getSuggestions({ data, focusArea })
-        : props.suggestions;
+      const suggestions = getSuggestions ? getSuggestions({ data, focusArea }) : props.suggestions;
       cateAry[0].title = '常规';
       cateAry[0].items = [
         {
@@ -156,10 +154,7 @@ export const getActionBtnsEditor = (props: Props) => {
 
               return btn?.title;
             },
-            set(
-              { data, focusArea, output }: EditorResult<Data>,
-              value: string
-            ) {
+            set({ data, focusArea, output }: EditorResult<Data>, value: string) {
               if (!focusArea) return;
               if (typeof value !== 'string' || value.trim() === '') {
                 throw new Error(`请输入正确的按钮标题.`);
@@ -273,15 +268,11 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.useIcon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   if (!btn.icon) {
                     btn.icon = 'HomeOutlined';
                   }
@@ -296,15 +287,11 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.showText === void 0 ? true : btn.showText;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.showText = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -325,15 +312,11 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.location || Location.FRONT;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: Location) {
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.location = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -349,15 +332,11 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.icon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.icon = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -379,16 +358,12 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.permissionKey;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.permissionKey = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -402,19 +377,17 @@ export const getActionBtnsEditor = (props: Props) => {
             {
               title: '隐藏',
               description: `隐藏按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
-              type: 'EXPCODE',
+              type: 'EXPRESSION',
               options: {
                 autoSize: true,
                 placeholder: `${codeDemo}`,
                 suggestions: suggestions,
-                run: runScript
+                runCode: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   if (getSuggestions) {
                     return {
                       value: btn?.isHiddenScript,
@@ -425,9 +398,7 @@ export const getActionBtnsEditor = (props: Props) => {
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.isHiddenScript = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -436,26 +407,22 @@ export const getActionBtnsEditor = (props: Props) => {
             {
               title: '禁用',
               description: `禁用按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
-              type: 'EXPCODE',
+              type: 'EXPRESSION',
               options: {
                 autoSize: true,
                 placeholder: `${codeDemo}`,
                 suggestions: suggestions,
-                run: runScript
+                runCode: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.isDisabledScript;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.isDisabledScript = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -473,16 +440,12 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   return btn?.supportPopover;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.supportPopover = value;
                   updateActionBtns({ data, focusArea });
                 }
@@ -499,17 +462,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   const { useIcon } = btn?.popConfig || {};
                   return useIcon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: boolean) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.useIcon = value;
                   updateActionBtns({ data, focusArea });
@@ -527,18 +486,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
-                  const { popIcon = 'ExclamationCircleFilled' } =
-                    btn?.popConfig || {};
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
+                  const { popIcon = 'ExclamationCircleFilled' } = btn?.popConfig || {};
                   return popIcon;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popIcon = value;
                   updateActionBtns({ data, focusArea });
@@ -556,17 +510,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   const { popTitle = '标题' } = btn?.popConfig || {};
                   return popTitle;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popTitle = value;
                   updateActionBtns({ data, focusArea });
@@ -584,17 +534,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   const { popContent = '内容' } = btn?.popConfig || {};
                   return popContent;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popContent = value;
                   updateActionBtns({ data, focusArea });
@@ -612,17 +558,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   const { popOkText = '确认' } = btn?.popConfig || {};
                   return popOkText;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popOkText = value;
                   updateActionBtns({ data, focusArea });
@@ -640,17 +582,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   const { popCancelText = '取消' } = btn?.popConfig || {};
                   return popCancelText;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popCancelText = value;
                   updateActionBtns({ data, focusArea });
@@ -682,17 +620,13 @@ export const getActionBtnsEditor = (props: Props) => {
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   const { popPlacement = 'top' } = btn?.popConfig || {};
                   return popPlacement;
                 },
                 set({ data, focusArea }: EditorResult<Data>, value: string) {
                   if (!focusArea) return;
-                  const btn = getActionBtns({ data, focusArea })[
-                    focusArea.index
-                  ];
+                  const btn = getActionBtns({ data, focusArea })[focusArea.index];
                   btn.popConfig = btn.popConfig || {};
                   btn.popConfig.popPlacement = value;
                   updateActionBtns({ data, focusArea });
@@ -770,15 +704,12 @@ export const colActionBtnsEditor = getActionBtnsEditor({
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea, 'colIndex');
-          return [
-            item.ellipsisActionBtnsConfig?.maxToEllipsis
-          ];
+          return [item.ellipsisActionBtnsConfig?.maxToEllipsis];
         },
         set({ data, focusArea }: EditorResult<Data>, value: number[]) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea, 'colIndex');
-          item.ellipsisActionBtnsConfig.maxToEllipsis =
-            value[0];
+          item.ellipsisActionBtnsConfig.maxToEllipsis = value[0];
         }
       }
     }
@@ -847,11 +778,15 @@ export const headerActionBtnsEditor = getActionBtnsEditor({
     }
   ],
   runScript: (script: string) => {
-    return runScript(script, {
-      queryParams: {},
-      dataSource: [],
-      pagination: {}
-    }, TEMPLATE_RENDER_KEY);
+    return runScript(
+      script,
+      {
+        queryParams: {},
+        dataSource: [],
+        pagination: {}
+      },
+      TEMPLATE_RENDER_KEY
+    );
   },
   getBtns: ({ data }: EditorResult<Data>) => {
     return data.actionBtns;
