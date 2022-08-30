@@ -83,7 +83,6 @@
         "title": "反馈",
         "comAry": ["./src/alert/com.json"]
       },
-      "./src/service/com.json",
       "./src/code-segment/com.json",
       "./src/_connector/com.json",
       "./src/_message/com.json",
@@ -125,7 +124,6 @@
       "./src/result/com.json",
       "./src/richtext/com.json",
       "./src/richtext-preview/com.json",
-      "./src/service/com.json",
       "./src/single-image/com.json",
       "./src/slot-adapter/com.json",
       "./src/sort-bar/com.json",

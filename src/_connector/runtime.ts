@@ -1,12 +1,12 @@
-function callCon({env, data, outputs}) {
+function callCon({env, data, outputs}, params = {}) {
   if (data.connector) {
-    env.callConnector(data.connector, data.params).then(val => {
+    env.callConnector(data.connector, params).then(val => {
       outputs['then'](val)
     }).catch(err => {
       outputs['catch'](err)
     })
   } else {
-    outputs['catch'](`没有配置连接器.`)
+    outputs['catch'](`没有选择接口`)
   }
 }
 
@@ -15,8 +15,8 @@ export default function ({env, data, inputs, outputs}) {
     if (data.immediate) {
       callCon({env, data, outputs})
     } else {
-      inputs['call'](opts => {
-        callCon({env, data, outputs}, opts)
+      inputs['call'](params => {
+        callCon({env, data, outputs}, params)
       })
     }
   }
