@@ -1,0 +1,46 @@
+{
+  "title": "测试--列表",
+  "namespace": "test.list",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "表单容器",
+  "runtime": "./runtime.tsx",
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "curDS",
+          "title": "当前数据",
+          "schema": {
+            "type": "object"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "test",
+          "title": "测试数据",
+          "schema": {
+            "type": "object"
+          }
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "ds",
+      "title": "数据源",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    }
+  ]
+}
