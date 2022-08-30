@@ -61,6 +61,13 @@
       }
     },
     {
+      "id": "onBlur",
+      "title": "失去焦点",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "returnValidate",
       "schema": {
         "type": "boolean"

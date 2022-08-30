@@ -1,4 +1,9 @@
+import { RuleKeys, defaultValidatorExample } from '../utils/validator'
+
 export default {
+  '@resize': {
+    options: ['width'],
+  },
   '@parentUpdated'({id, data, parent}, {schema}) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       parent['@_setFormItem']({id, schema: {type: 'string'}})
@@ -41,19 +46,6 @@ export default {
           },
         },
       },
-      // {
-      //   title: '显示前置文本',
-      //   type: 'switch',
-      //   description: '带标签的 input，设置前置标签',
-      //   value: {
-      //     get({data}) {
-      //       return data.addonBefore
-      //     },
-      //     set({data}, value: boolean) {
-      //       data.addonBefore = value
-      //     },
-      //   },
-      // },
       {
         title: '前置标签',
         type: 'text',
@@ -93,31 +85,64 @@ export default {
           },
         },
       },
-      // {
-      //   title: '校验规则',
-      //   description: '提供快捷校验配置',
-      //   type: 'ArrayCheckbox',
-      //   options: {
-      //     checkField: 'status',
-      //     visibleField: 'visible',
-      //     getTitle
-      //   },
-      //   value: {
-      //     get({data}) {
-      //       return [
-      //         {
-      //           key: 'required',
-      //           // status: !!item.rules?.includes(RuleKeys.REQUIRED),
-      //           visible: true,
-      //           title: '必填',
-      //           message: '${label}不能为空',
-      //         },
-      //       ]
-      //     },
-      //     set({data}, value: any) {
-      //     },
-      //   }
-      // },
+      {
+        title: '校验规则',
+        description: '提供快捷校验配置',
+        type: 'ArrayCheckbox',
+        options: {
+          checkField: 'status',
+          visibleField: 'visible',
+          getTitle,
+          items: [
+            {
+              title: '编辑校验规则',
+              type: 'code',
+              options: {
+                language: 'javascript',
+                enableFullscreen: false,
+                title: '编辑校验规则',
+                width: 600,
+                minimap: {
+                  enabled: false,
+                },
+                babel: true,
+                eslint: {
+                  parserOptions: {
+                    ecmaVersion: '2020',
+                    sourceType: 'module'
+                  }
+                }
+              },
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.CODE_VALIDATOR;
+              },
+              value: 'validateCode'
+            }
+          ]
+        },
+        value: {
+          get({data}) {
+            return data.rules || [
+              {
+                key: 'required',
+                visible: true,
+                title: '必填',
+                message: '${label}不能为空',
+              },
+              {
+                key: RuleKeys.CODE_VALIDATOR,
+                visible: true,
+                title: '代码校验',
+                validateCode: data.validatorCode || defaultValidatorExample
+              }
+            ]
+          },
+          set({data}, value: any) {
+            data.rules = value
+            console.log(value)
+          },
+        }
+      },
       {
         title: '事件',
         items: [
@@ -126,6 +151,13 @@ export default {
             type: '_event',
             options: {
               outputId: 'onChange'
+            }
+          },
+          {
+            title: '失去焦点',
+            type: '_event',
+            options: {
+              outputId: 'onBlur'
             }
           }
         ]

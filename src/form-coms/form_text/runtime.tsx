@@ -56,6 +56,12 @@ export default function ({env, data, _inputs, inputs, _outputs, outputs}: Runtim
     outputs['onChange'](value)
   }, [])
 
+  const onBlur = useCallback((e) => {
+    const value = e.target.value
+    data.value = value
+    outputs['onBlur'](value)
+  }, [])
+
   let jsx = (
     <Input
       type="text"
@@ -63,6 +69,7 @@ export default function ({env, data, _inputs, inputs, _outputs, outputs}: Runtim
       value={data.value}
       readOnly={!!edit}
       onChange={changeValue}
+      onBlur={onBlur}
     />
   )
 
