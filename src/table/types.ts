@@ -232,6 +232,12 @@ export interface Data {
 
   // 标识表格当前正在编辑的单元格
   isEditing?: string;
+
+  // 逻辑连线不再触发列配置弹窗
+  noMatchSchema?: boolean;
+
+  // 输出表格数据
+  outputTableData?: boolean;
 }
 
 export interface ResponseData {

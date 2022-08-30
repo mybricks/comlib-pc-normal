@@ -39,31 +39,37 @@ const paginationEditor = {
                 }
               }
             };
-            input.add(InputIds.PAGINATION, '表格分页', schema);
-            output.add('pagination', '完成', schema);
-            input.get(InputIds.PAGINATION).setRels(['pagination']);
+            input.add(InputIds.PAGINATION, '获取分页数据', { type: 'any' });
+            output.add(OutputIds.PAGINATION, '输出分页数据', schema);
+            input.get(InputIds.PAGINATION).setRels([OutputIds.PAGINATION]);
+
+            input.add(InputIds.SET_PAGINATION, '设置分页数据', schema);
+            output.add(OutputIds.SET_PAGINATION, '设置完成', { type: 'any' });
+            input.get(InputIds.SET_PAGINATION).setRels([OutputIds.SET_PAGINATION]);
           } else {
             input.remove(InputIds.PAGINATION);
-            output.remove('pagination');
+            output.remove(OutputIds.PAGINATION);
+            input.remove(InputIds.SET_PAGINATION);
+            output.remove(OutputIds.SET_PAGINATION);
           }
         }
       }
     },
-    {
-      title: '刷新自动回到第1页',
-      type: 'Switch',
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.isActive && data.hasPagination;
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.jumpToFirstPageWhenRefresh;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.jumpToFirstPageWhenRefresh = value;
-        }
-      }
-    },
+    // {
+    //   title: '刷新自动回到第1页',
+    //   type: 'Switch',
+    //   ifVisible({ data }: EditorResult<Data>) {
+    //     return data.isActive && data.hasPagination;
+    //   },
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data.jumpToFirstPageWhenRefresh;
+    //     },
+    //     set({ data }: EditorResult<Data>, value: boolean) {
+    //       data.jumpToFirstPageWhenRefresh = value;
+    //     }
+    //   }
+    // },
     {
       title: '每页显示条数',
       type: 'Slider',
@@ -114,6 +120,23 @@ const paginationEditor = {
         },
         set({ data }, value: boolean) {
           data.pagination.showSizeChanger = value;
+        }
+      }
+    },
+    {
+      title: '页码切换器配置',
+      type: 'List',
+      description: "配置条数切换器可选的条目数，仅识别正整数",
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.pagination.options;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.pageSizeOptions;
+        },
+        set({ data }: EditorResult<Data>, value: string[]) {
+          let numReg: RegExp = /^[1-9]\d*$/;
+          data.pageSizeOptions = value.filter(val => numReg.test(val.trim()));
         }
       }
     },

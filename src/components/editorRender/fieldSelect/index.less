@@ -1,33 +1,20 @@
-.dropdown {
-  height: 400px;
-  max-height: 400px;
-}
-.gap {
-  padding-right: 6px;
-}
-
-.input {
-  width: 100%;
-  display: block;
-  padding: 5px 10px;
-  border-radius: 3px;
-  border: 1px solid #EEE;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  line-height: 1;
-  font-size: 12px;
-
-  &:hover {
-    border-color: #fa6400;
+.wrap {
+  display:flex;
+  .input {
+    height: 26px;
   }
-
-  &:focus {
-    border-color: #fa6400;
-    -webkit-box-shadow: 0 0 0 2px #fa640033;
-    box-shadow: 0 0 0 2px #fa640033;
+  .btn {
+    height: 26px;
   }
-}
-
-.auto {
-  width: 100%;
+  .treeSelect {
+    width: 100%;
+    :global {
+      .ant-select-selector {
+        height: 26px !important;
+      }
+      .ant-select-selection-item {
+        line-height: 25px !important;
+      }
+    }
+  }
 }

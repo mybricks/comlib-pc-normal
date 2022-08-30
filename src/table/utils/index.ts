@@ -24,7 +24,6 @@ function getScratchScript(blocksOri) {
   return evalScript;
 }
 
-
 const getPageInfo = (data: Data) => {
   if (data.hasPagination) {
     return {
@@ -119,19 +118,12 @@ function getSuggestions({ data }: { data: Data }) {
         });
       }
     });
-  }
+  };
   getChildrenSuggestions(data.columns);
   return res;
 }
 
-export {
-  getScratchScript,
-  getPageInfo,
-  getParentNodeByTag,
-  flat,
-  unFlat,
-  getSuggestions
-};
+export { getScratchScript, getPageInfo, getParentNodeByTag, flat, unFlat, getSuggestions };
 
 export const findColumnItemByKey = (columns, key) => {
   let res;
@@ -180,4 +172,43 @@ export const getNewColumn = () => {
     visible: true
   };
   return obj;
+};
+
+export const removeActionBtns = (actionBtns, output) => {
+  actionBtns.forEach((item) => {
+    output.remove(item.id);
+  });
+};
+
+export const setColumns = ({ data, slot, output }, val) => {
+  data.columns.forEach((column) => {
+    if (!val.find((temp) => temp.key === column.key)) {
+      if (column.actionBtns && column.actionBtns.length !== 0) {
+        removeActionBtns(column.actionBtns, output);
+      } else {
+      }
+      if (column.slotId && slot.get(column.slotId)) {
+        slot.remove(column.slotId);
+      }
+    }
+  });
+  data.columns = [
+    ...val.map((item) => {
+      let dataIndex =
+        typeof item.dataIndex === 'string' ? item.dataIndex.trim().split('.') : item.dataIndex;
+      if (Array.isArray(dataIndex) && dataIndex.length === 1) {
+        dataIndex = dataIndex[0];
+      }
+      return {
+        title: item.title,
+        key: uuid(),
+        width: 140,
+        visible: true,
+        ellipsis: true,
+        contentType: 'text',
+        ...item,
+        dataIndex
+      };
+    })
+  ];
 };

@@ -99,7 +99,7 @@ const BaseEditor = {
         { label: '日期', value: 'date' },
         { label: '按钮组', value: 'action' },
         { label: '图片', value: 'image' },
-        { label: '开关', value: 'switch' },
+        // { label: '开关', value: 'switch' },
         { label: '自定义插槽', value: 'slotItem' },
         { label: '分组', value: 'group' },
         // { label: '自定义渲染', value: 'custom' }
