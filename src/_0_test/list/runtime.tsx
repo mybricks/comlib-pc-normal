@@ -4,7 +4,7 @@ export default function ({env, data, slots, inputs}) {
   // inputs['ds'](ds => {
   //   if(Array.isArray(ds)){
   //     ds.forEach(item=>{
-  //       slots['content'].inputs['curDS'](item)
+  //       slots['content'].inputs['curDS'](item)//也可以这样异步推送数据
   //     })
   //   }
   // })
@@ -21,7 +21,7 @@ export default function ({env, data, slots, inputs}) {
       {/*</div>*/}
       {
         slots['content'].render({
-          inputValues: {
+          inputValues: {//当前数据，对应slot 的 inputs
             curDS: 'aaa'
           },
           key:0
