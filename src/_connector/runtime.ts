@@ -1,4 +1,4 @@
-function callCon({env, data, outputs},params) {
+function callCon({env, data, outputs}, params = {}) {
   if (data.connector) {
     env.callConnector(data.connector, params).then(val => {
       outputs['then'](val)
@@ -6,7 +6,7 @@ function callCon({env, data, outputs},params) {
       outputs['catch'](err)
     })
   } else {
-    outputs['catch'](`没有配置连接器.`)
+    outputs['catch'](`没有选择接口`)
   }
 }
 
