@@ -1,8 +1,4 @@
 {
-  "folderId": "",
-  "folderIdStaging": 5620,
-  "content": "",
-  "commitInfo": "init",
   "debugger": "pc-spa",
   "componentType": "PC",
   "comAry": {
@@ -13,7 +9,6 @@
           "./src/_0_test/container/com.json",
           "./src/_0_test/text/com.json",
           "./src/_0_test/list/com.json",
-          "./src/_0_test/table-ori/com.json",
           "./src/text/com.json",
           "./src/link/com.json",
           "./src/typography/com.json",
@@ -28,11 +23,10 @@
           "./src/grid/com.json",
           "./src/dialog/com.json",
           "./src/steps/com.json",
-          "./src/popover/com.json",
-          "./src/tooltip/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/richtext/com.json"
         ]
       },
       {
@@ -62,12 +56,7 @@
         "comAry": [
           "./src/list/com.json",
           "./src/drawer/com.json",
-          "./src/collapse/com.json"
-        ]
-      },
-      {
-        "title": "自定义",
-        "comAry": [
+          "./src/collapse/com.json",
           "./src/custom-container/com.json"
         ]
       },
@@ -75,7 +64,6 @@
         "title": "其它",
         "comAry": [
           "./src/calendar/com.json",
-          "./src/slot-adapter/com.json",
           "./src/bottom-bar/com.json",
           "./src/iframe/com.json",
           "./src/qr-code/com.json"
@@ -83,41 +71,91 @@
       },
       {
         "title": "反馈",
-        "comAry": ["./src/alert/com.json"]
+        "comAry": [
+          "./src/alert/com.json",
+          "./src/result/com.json",
+          "./src/spin/com.json",
+          "./src/popover/com.json",
+          "./src/tooltip/com.json"
+        ]
       },
       "./src/code-segment/com.json",
       "./src/_connector/com.json",
-      "./src/_message/com.json",
-      "./src/_link_to/com.json",
       "./src/confirm/com.json",
       "./src/message/com.json",
       "./src/page-router/com.json",
       "./src/global-loading/com.json",
       "./src/timer/com.json",
       "./src/merge/com.json",
-      "./src/download/com.json"
+      "./src/download/com.json",
+      "./src/object-merge/com.json"
     ],
     "publish": [
-      "./src/alert/com.json",
-      "./src/breadcrumb/com.json",
-      "./src/button/com.json",
-      "./src/calendar/com.json",
-      "./src/card/com.json",
-      "./src/clipboard/com.json",
-      "./src/collapse/com.json",
+      {
+        "title": "常规",
+        "comAry": [
+          "./src/text/com.json",
+          "./src/link/com.json",
+          "./src/typography/com.json",
+          "./src/richtext-preview/com.json",
+          "./src/single-image/com.json",
+          "./src/toolbar/com.json",
+          "./src/button/com.json",
+          "./src/breadcrumb/com.json",
+          "./src/card/com.json",
+          "./src/tabs/com.json",
+          "./src/menu/com.json",
+          "./src/grid/com.json",
+          "./src/dialog/com.json",
+          "./src/steps/com.json",
+          "./src/icon/com.json",
+          "./src/dropdown/com.json",
+          "./src/sort-bar/com.json",
+          "./src/richtext/com.json"
+        ]
+      },
+      {
+        "title": "数据",
+        "comAry": [
+          "./src/table/com.json",
+          "./src/paginator/com.json",
+          "./src/timeline/com.json",
+          "./src/form-detail/com.json",
+          "./src/image/com.json",
+          "./src/json-view/com.json"
+        ]
+      },
+      {
+        "title": "容器",
+        "comAry": [
+          "./src/list/com.json",
+          "./src/drawer/com.json",
+          "./src/collapse/com.json",
+          "./src/custom-container/com.json"
+        ]
+      },
+      {
+        "title": "其它",
+        "comAry": [
+          "./src/calendar/com.json",
+          "./src/bottom-bar/com.json",
+          "./src/iframe/com.json",
+          "./src/qr-code/com.json"
+        ]
+      },
+      {
+        "title": "反馈",
+        "comAry": [
+          "./src/alert/com.json",
+          "./src/result/com.json",
+          "./src/spin/com.json",
+          "./src/popover/com.json",
+          "./src/tooltip/com.json"
+        ]
+      },
+      "./src/code-segment/com.json",
+      "./src/_connector/com.json",
       "./src/confirm/com.json",
-      "./src/custom-container/com.json",
-      "./src/dialog/com.json",
-      "./src/download/com.json",
-      "./src/drawer/com.json",
-      "./src/global-loading/com.json",
-      "./src/grid/com.json",
-      "./src/icon/com.json",
-      "./src/iframe/com.json",
-      "./src/image/com.json",
-      "./src/json-view/com.json",
-      "./src/link/com.json",
-      "./src/merge/com.json",
       "./src/message/com.json",
       "./src/object-merge/com.json",
       "./src/paginator/com.json",
@@ -135,15 +173,12 @@
       "./src/text/com.json",
       "./src/timeline/com.json",
       "./src/toolbar/com.json",
+      "./src/page-router/com.json",
+      "./src/global-loading/com.json",
       "./src/timer/com.json",
-      "./src/tooltip/com.json",
-      "./src/tree/com.json",
-      "./src/typography/com.json",
-      "./src/code-segment/com.json",
-      "./src/bottom-bar/com.json",
-      "./src/dropdown/com.json",
-      "./src/list/com.json",
-      "./src/page-router/com.json"
+      "./src/merge/com.json",
+      "./src/download/com.json",
+      "./src/object-merge/com.json"
     ]
   }
 }
