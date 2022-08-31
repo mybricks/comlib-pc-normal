@@ -12,6 +12,7 @@ interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs } = props
   const [value, setValue] = useState()
+  const [loading, setLoading] = useState(false)
 
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -46,6 +47,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.config.options = val
     })
 
+    inputs['setLoading']((val: boolean) => {
+      setLoading(val)
+    })
+
     inputs['setVisible']((val) => {
       data.visible = val
     })
@@ -63,6 +68,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={value}
         placeholder="请选择"
         {...data.config}
+        loading={loading}
         // options={[{ label: '选项一', value: '11'}, { label: '选项二', value: '22'}]}
         onChange={onChange}
       />

@@ -70,6 +70,13 @@
       "schema": {
         "type": "boolean"
       }
+    },
+    {
+      "id": "setLoading",
+      "title": "设置加载中状态",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [
