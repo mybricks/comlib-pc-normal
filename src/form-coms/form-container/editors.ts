@@ -1,6 +1,6 @@
 import { Data } from './types'
 
-function refreshSchema({data, inputs, outputs}) {
+function refreshSchema({data, inputs, outputs, slots}) {
   const properties = {}
   data.items.forEach(item => {
     const {id, label, schema, name } = item
@@ -11,18 +11,17 @@ function refreshSchema({data, inputs, outputs}) {
     type: 'object',
     properties
   }
-
+  console.log(slots)
   outputs.get('onFinish').setSchema(schema)
   inputs.get('initial').setSchema(schema)
 }
 
 export default {
-  '@childRemove'({data, inputs, outputs, logs}, {id, title}) {
+  '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
     data.items = data.items.filter(item => item.id !== id)
-
-    refreshSchema({data, inputs, outputs})
+    refreshSchema({data, inputs, outputs, slots})
   },
-  '@_setFormItem'({data, inputs, outputs, children, logs}, {id, schema}) {//As schema
+  '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
     const item = data.items.find(item => item.id === id)
 
     if (item) {
@@ -37,8 +36,7 @@ export default {
         label: `表单项${nowC}`
       })
     }
-  
-    refreshSchema({data, inputs, outputs})
+    refreshSchema({data, inputs, outputs, slots})
   },
   '@parentUpdated'({id, data, parent}, {schema}) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {

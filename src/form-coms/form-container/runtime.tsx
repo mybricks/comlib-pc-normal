@@ -17,11 +17,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     })
 
     inputs['initial']((val) => {
-      // formRef.setFieldsValue(val)
-
       setFieldsValue(val)
-
-      outputs['onInitial']({ values: val })
+      slots['content'].inputs['onInitial']({ values: val })
     })
 
     inputs['resetFields']((val, outputRels) => {
@@ -196,6 +193,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return jsx
         }
       },
+      inputValues: {},
       key: props?.field.name
     })
   }, [])

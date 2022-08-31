@@ -3,6 +3,7 @@ export interface Data {
   isFormItem: boolean
   dataType: 'object' | 'list'
   layout: 'horizontal' | 'vertical' | 'inline'
+  fieldsLength?: number
 }
 
 export interface FormControlProps {

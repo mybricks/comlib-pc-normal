@@ -85,20 +85,6 @@
       }
     },
     {
-      "id": "onInitial",
-      "title": "初始化表单",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "values": {
-            "title": "表单值",
-            "type": "object",
-            "properties": {}
-          }
-        }
-      }
-    },
-    {
       "id": "onResetFinish",
       "title": "重置完成",
       "schema": {
@@ -126,7 +112,23 @@
       "id": "content",
       "title": "拖入表单项",
       "schema": "mybricks.normal-pc.form-container/form-item",
-      "type": "scope"
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "onInitial",
+          "title": "初始化表单",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "values": {
+                "title": "表单值",
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      ]
     }
   ],
   "schema": [
