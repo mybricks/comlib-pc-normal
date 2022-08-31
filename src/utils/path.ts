@@ -35,7 +35,9 @@ function setPath(obj: Object = {}, path: string, value: any, setSchema?: boolean
       result[key] = {};
     if (setSchema) {
       result[key].type = 'object';
-      result[key].properties = {};
+      if (!result[key].properties) {
+        result[key].properties = {};
+      }
       result = result[key].properties
     } else {
       if (Object.prototype.toString.call(result[key]) !== '[object Object]')

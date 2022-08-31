@@ -24,10 +24,11 @@ const addColumnEditor = {
       options: {
         addText: '添加列',
         getTitle: (item: IColumn) => {
+          const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           if (item.visible) {
-            return `${item.title}(${item.dataIndex})`;
+            return `${item.title}(${path})`;
           } else {
-            return `【隐藏】${item.title}(${item.dataIndex})`;
+            return `【隐藏】${item.title}(${path})`;
           }
         },
         onAdd: () => {

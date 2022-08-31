@@ -1,5 +1,5 @@
-import { OutputIds } from './constants';
-import { Data, IColumn } from './types';
+import { InputIds, OutputIds } from './constants';
+import { Data } from './types';
 import { setPath } from '../utils/path';
 import { getColumnItem } from './utils';
 
@@ -20,11 +20,36 @@ function getSingleDataSourceSchema(dataSchema = {}) {
       type: 'object',
       properties: dataSchema
     }
-  }
+  };
 }
 
-function getColumnsDataSchema(columns: IColumn[], outputId = '') {
+function schema2Obj(schema: any = {}, parentKey = '', config: any = { isRoot: true }) {
+  const { isRoot = false } = config;
+  const { type } = schema;
+  const res: any = {};
+  if (type !== 'object' && type !== 'array') return;
+  const properties = (type === 'object' ? schema.properties : schema.items.properties) || {};
+  Object.keys(properties).forEach((key) => {
+    const subSchema = properties[key];
+    const targetKey = isRoot ? key : `${parentKey}.${key}`;
+    res[targetKey] = subSchema;
+    if (subSchema?.type === 'object') {
+      Object.assign(
+        res,
+        schema2Obj(properties[key], targetKey, {
+          ...config,
+          isRoot: false
+        })
+      );
+    }
+  });
+  return res;
+}
+function getColumnsDataSchema(data: Data, outputId = '') {
+  const { columns } = data;
   const dataSchema = {};
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+
   const setDataSchema = (columns) => {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
@@ -33,7 +58,8 @@ function getColumnsDataSchema(columns: IColumn[], outputId = '') {
         }
         const schema = {
           type: 'string',
-          title: item.title
+          title: item.title,
+          ...schemaObj[Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex]
         };
         if (item.contentType === 'group') {
           setDataSchema(item.children);
@@ -120,7 +146,7 @@ function setOutputsSchema(dataSchema, output, data) {
             type: 'array',
             items: {
               type: 'object',
-              properties: getColumnsDataSchema(data.columns)
+              properties: getColumnsDataSchema(data)
             }
           }
         }
@@ -168,7 +194,7 @@ function getActionSchema(data: Data) {
   const paramRules = {
     title: '表格行数据',
     type: 'object',
-    properties: getColumnsDataSchema(data.columns)
+    properties: getColumnsDataSchema(data)
   };
 
   return paramRules;
@@ -223,21 +249,22 @@ function getFilterSchema(data: Data) {
     type: 'object',
     properties: {}
   };
-  data.columns.filter(item => item.filter?.enable && item.filter?.type === 'request').forEach(item => {
-    const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
-    schema.properties[key] = {
-      type: 'any'
-    }
-  });
+  data.columns
+    .filter((item) => item.filter?.enable && item.filter?.type === 'request')
+    .forEach((item) => {
+      const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+      schema.properties[key] = {
+        type: 'any'
+      };
+    });
   return schema;
 }
-function setFilterSchema({ data, output }: { data: Data, output: any}) {
+function setFilterSchema({ data, output }: { data: Data; output: any }) {
   output.get(OutputIds.FILTER)?.setSchema(getFilterSchema(data));
 }
 
-
 function setDataSchema({ data, output, input }) {
-  const dataSchema = getColumnsDataSchema(data.columns);
+  const dataSchema = getColumnsDataSchema(data);
   // const config = { usePagination: data.hasPagination }
   setDataSourceSchema(dataSchema, input);
   setOutputsSchema(dataSchema, output, data);
@@ -276,7 +303,7 @@ export const Schemas = {
   },
   RECORD: (data: Data) => ({
     type: 'object',
-    properties: getColumnsDataSchema(data.columns)
+    properties: getColumnsDataSchema(data)
   }),
   GetRowSelection: (data: Data) => ({
     title: '勾选数据',
@@ -294,7 +321,7 @@ export const Schemas = {
         type: 'array',
         items: {
           type: 'object',
-          properties: getColumnsDataSchema(data.columns)
+          properties: getColumnsDataSchema(data)
         }
       }
     }
@@ -322,7 +349,7 @@ export const Schemas = {
         type: 'array',
         items: {
           type: 'object',
-          properties: getColumnsDataSchema(data.columns)
+          properties: getColumnsDataSchema(data)
         }
       }
     }
@@ -331,7 +358,7 @@ export const Schemas = {
     type: 'array',
     items: {
       type: 'object',
-      properties: getColumnsDataSchema(data.columns)
+      properties: getColumnsDataSchema(data)
     }
   }),
   GET_TABLE_DATA: (data) => ({
@@ -339,11 +366,10 @@ export const Schemas = {
     type: 'array',
     items: {
       type: 'object',
-      properties: getColumnsDataSchema(data.columns)
+      properties: getColumnsDataSchema(data)
     }
   }),
-  SLOT_PROPS: (data: Data) =>
-    getSingleDataSourceSchema(getColumnsDataSchema(data.columns)),
+  SLOT_PROPS: (data: Data) => getSingleDataSourceSchema(getColumnsDataSchema(data)),
   HEADER_BTN_CLICK: (data: Data) => ({
     type: 'object',
     properties: {
@@ -362,7 +388,7 @@ export const Schemas = {
         type: 'array',
         items: {
           type: 'object',
-          properties: getColumnsDataSchema(data.columns)
+          properties: getColumnsDataSchema(data)
         }
       }
     }
