@@ -11,6 +11,8 @@ interface Data {
     disabled: boolean
     addonBefore: string
     addonAfter: string
+    showCount: boolean
+    maxLength?: number
   }
 }
 

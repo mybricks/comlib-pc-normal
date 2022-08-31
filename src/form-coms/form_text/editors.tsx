@@ -86,6 +86,32 @@ export default {
         },
       },
       {
+        title: '显示字数',
+        type: 'switch',
+        description: '是否展示字数',
+        value: {
+          get({data}) {
+            return data.config.showCount
+          },
+          set({data}, value: boolean) {
+            data.config.showCount = value
+          },
+        },
+      },
+      {
+        title: '最大长度',
+        type: 'Text',
+        description: '是否展示字数',
+        value: {
+          get({data}) {
+            return data.config.maxLength
+          },
+          set({data}, value: number) {
+            data.config['maxLength'] = value
+          },
+        },
+      },
+      {
         title: '校验规则',
         description: '提供快捷校验配置',
         type: 'ArrayCheckbox',
@@ -122,6 +148,13 @@ export default {
         },
         value: {
           get({data}) {
+            data.rules.map(item => {
+              if (item.key === RuleKeys.CODE_VALIDATOR) {
+                item.validateCode = decodeURIComponent(item.validateCode.code)
+              }
+              return item
+            })
+
             return data.rules || [
               {
                 key: 'required',
@@ -133,7 +166,7 @@ export default {
                 key: RuleKeys.CODE_VALIDATOR,
                 visible: true,
                 title: '代码校验',
-                validateCode: data.validatorCode || defaultValidatorExample
+                validateCode: defaultValidatorExample
               }
             ]
           },
