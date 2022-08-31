@@ -36,7 +36,7 @@ const column = {
       SwitchItemEditor({ data }),
       // SlotItemEditor,
       InputItemEditors,
-      CustomRenderEditors,
+      // CustomRenderEditors,
       GroupEditor,
       DataMapingEditor(data),
       EllipsisEditor,

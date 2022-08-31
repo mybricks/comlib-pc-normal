@@ -12,48 +12,15 @@ function getRefreshSchema() {
   return refreshSchema;
 }
 
-function getSingleDataSourceSchema(dataSchema = {}, config: any = {}) {
-  const { usePagination = true } = config;
-  if (Object.keys(dataSchema).length === 0) {
-    return {
-      title: '表格数据',
-      type: 'any'
+function getSingleDataSourceSchema(dataSchema = {}) {
+  return {
+    title: '数据列表',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: dataSchema
     }
   }
-  const schema: any = {
-    title: '表格数据',
-    type: 'object',
-    properties: {
-      dataSource: {
-        title: '数据列表',
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: dataSchema
-        }
-      }
-    }
-  };
-
-  // if (useQuery) {
-  //   schema.properties.queryParams = {
-  //     title: '筛选参数',
-  //     type: 'object',
-  //     properties: {}
-  //   };
-  // }
-
-  if (usePagination) {
-    schema.properties.total = {
-      title: '总记录数',
-      type: 'number'
-    };
-  } else {
-    return schema.properties.dataSource
-  }
-
-
-  return schema;
 }
 
 function getColumnsDataSchema(columns: IColumn[], outputId = '') {
@@ -84,24 +51,24 @@ function getColumnsDataSchema(columns: IColumn[], outputId = '') {
   return dataSchema;
 }
 
-function setFetchDataSchema(dataSchema, output, config) {
-  const pin = output.get('fetchData');
-  if (pin) {
-    pin.setSchema(getSingleDataSourceSchema(dataSchema, config));
-  }
-}
+// function setFetchDataSchema(dataSchema, output, config) {
+//   const pin = output.get('fetchData');
+//   if (pin) {
+//     pin.setSchema(getSingleDataSourceSchema(dataSchema, config));
+//   }
+// }
 
-function setRefreshSchema(input) {
-  const refreshPin = input.get('refresh');
-  if (refreshPin) {
-    refreshPin.setSchema(getRefreshSchema());
-  }
-}
+// function setRefreshSchema(input) {
+//   const refreshPin = input.get('refresh');
+//   if (refreshPin) {
+//     refreshPin.setSchema(getRefreshSchema());
+//   }
+// }
 
-function setDataSourceSchema(dataSchema, input, config) {
+function setDataSourceSchema(dataSchema, input) {
   const dataSourcePin = input.get('dataSource');
   if (dataSourcePin) {
-    dataSourcePin.setSchema(getSingleDataSourceSchema(dataSchema, config));
+    dataSourcePin.setSchema(getSingleDataSourceSchema(dataSchema));
   }
 }
 
@@ -250,19 +217,33 @@ function setDragFinishSchema({ dataSchema, output }) {
   }
 }
 
+// 设置筛选数据schema
+function getFilterSchema(data: Data) {
+  const schema = {
+    type: 'object',
+    properties: {}
+  };
+  data.columns.filter(item => item.filter?.enable && item.filter?.type === 'request').forEach(item => {
+    const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+    schema.properties[key] = {
+      type: 'any'
+    }
+  });
+  return schema;
+}
+function setFilterSchema({ data, output }: { data: Data, output: any}) {
+  output.get(OutputIds.FILTER)?.setSchema(getFilterSchema(data));
+}
+
+
 function setDataSchema({ data, output, input }) {
   const dataSchema = getColumnsDataSchema(data.columns);
-  const config = { usePagination: data.hasPagination }
-  if (data.isActive) {
-    setFetchDataSchema(dataSchema, output, config);
-    setRefreshSchema(input);
-    setDataSourceSchema(dataSchema, input, config);
-  } else {
-    setDataSourceSchema(dataSchema, input, config);
-  }
+  // const config = { usePagination: data.hasPagination }
+  setDataSourceSchema(dataSchema, input);
   setOutputsSchema(dataSchema, output, data);
   setRowSelectionSchema({ dataSchema, output });
   setDragFinishSchema({ dataSchema, output });
+  setFilterSchema({ data, output });
 }
 
 const setCol = (data: Data, focusArea: any, value: any, propName: string) => {
@@ -293,6 +274,10 @@ export const Schemas = {
   Void: {
     type: 'any'
   },
+  RECORD: (data: Data) => ({
+    type: 'object',
+    properties: getColumnsDataSchema(data.columns)
+  }),
   GetRowSelection: (data: Data) => ({
     title: '勾选数据',
     type: 'object',
@@ -396,6 +381,18 @@ export const Schemas = {
           title: '表格标题',
           type: 'string'
         }
+      }
+    }
+  },
+  FILTER: (data: Data) => getFilterSchema(data),
+  SORTER: {
+    type: 'object',
+    properties: {
+      field: {
+        type: 'string'
+      },
+      order: {
+        type: 'string'
       }
     }
   }

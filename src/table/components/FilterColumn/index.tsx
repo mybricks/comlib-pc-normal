@@ -109,7 +109,7 @@ export default function FilterColumnRender ({
  
   const renderFilterColumn = () => {
     if (!data.useColumnSetting) {
-      return;
+      return null;
     }
     return (
       <div data-table-header-filter style={{ paddingLeft: '12px'}}>

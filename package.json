@@ -22,7 +22,6 @@
   "homepage": "https://github.com/visualbricks/comlib-pc-normal#readme",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@fangzhou/cloud": "^1.0.9",
     "@fangzhou/com-utils": "^1.1.10",
     "@mybricks/rxui": "^1.0.71",
     "antd": "^4.18.5",

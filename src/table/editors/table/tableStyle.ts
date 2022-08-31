@@ -1,6 +1,4 @@
 import { unitConversion } from '../../../utils';
-import { InputIds } from '../../constants';
-import { Schemas } from '../../schema';
 import { Data } from '../../types';
 
 const tableStyleEditor = {
@@ -35,40 +33,6 @@ const tableStyleEditor = {
         },
         set({ data }: EditorResult<Data>, value: boolean) {
           data.bordered = value;
-        }
-      }
-    },
-    {
-      title: '显示加载动画',
-      type: 'Switch',
-      description: '是否在数据加载的过程中展示loading动画',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.useLoading;
-        },
-        set({ data, input }: EditorResult<Data>, value: boolean) {
-          if (value) {
-            input.add(InputIds.END_LOADING, '结束加载', Schemas.Void);
-          } else {
-            input.remove(InputIds.END_LOADING);
-          }
-          data.useLoading = value;
-        }
-      }
-    },
-    {
-      title: '加载自定义文案',
-      type: 'Text',
-      description: '显示在loading图标下的文案',
-      ifVisible({ data }) {
-        return data.useLoading;
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.loadingTip;
-        },
-        set({ data }: EditorResult<Data>, value: string) {
-          data.loadingTip = value;
         }
       }
     },

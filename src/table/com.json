@@ -10,15 +10,5 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
   "inputs": [],
-  "outputs": [
-    {
-      "id": "props",
-      "title": "分页参数输出",
-      "schema": {
-        "title": "",
-        "type": "object",
-        "properties": {}
-      }
-    }
-  ]
+  "outputs": []
 }

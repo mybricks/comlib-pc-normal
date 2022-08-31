@@ -17,6 +17,7 @@ export const InputIds = {
   SLOT_PROPS: 'slotProps',
   SET_DATA_SOURCE: 'dataSource',
   REFRESH: 'refresh',
+  START_LOADING: 'startLoading',
   END_LOADING: 'endLoading',
   UPDATE_COLUMN_DATA: 'updateColumnData',
   SET_FILTER_INPUT: 'filterInput',
@@ -25,7 +26,10 @@ export const InputIds = {
   SET_DYNAMIC_TABLE_TITLE: 'setDynamicTableTitle',
   SET_EXPANDED_KEYS: 'setExpandedKeys',
   PAGINATION: 'pagination',
-  SET_PAGINATION: 'setPagination'
+  SET_PAGINATION: 'setPagination',
+
+  GET_SORT: 'getSorter',
+  GET_FILTER: 'getFilter',
 }
 export const OutputIds = {
   GET_ROW_SELECTION: 'rowSelection',
@@ -34,7 +38,12 @@ export const OutputIds = {
   GET_TABLE_DATA: 'tableData',
   MODIFY_CELL: 'modifyCell',
   PAGINATION: 'pagination',
-  SET_PAGINATION: 'setPagination'
+  SET_PAGINATION: 'setPagination',
+
+  FILTER: 'filter',
+  SORTER: 'sorter',
+  GET_FILTER: 'getFilter',
+  GET_SORT: 'getSorter'
 }
 
 export enum RowSelectionPostion {

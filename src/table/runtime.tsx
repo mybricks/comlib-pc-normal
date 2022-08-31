@@ -1,28 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
-import { runJs } from '@fangzhou/com-utils';
-import { Table, Tooltip, Pagination, Empty } from 'antd';
-import { TablePaginationConfig } from 'antd/es/table';
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
-} from 'react-sortable-hoc';
-import { MenuOutlined } from '@ant-design/icons';
-import { arrayMoveImmutable } from 'array-move';
+import { Table, Tooltip, Empty } from 'antd';
 import { useObservable } from '@mybricks/rxui';
+import isEqual from 'lodash/isEqual';
 import {
-  TableCurrentDataSource,
   SorterResult,
   TableRowSelection,
 } from 'antd/es/table/interface';
-import { getPageInfo, flat, unFlat } from './utils';
-import { typeCheck, uuid } from '../utils';
+import { uuid } from '../utils';
 import { setPath } from '../utils/path';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import { RowSelectionPostion, InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from './constants';
-import { Data, ResponseData, IColumn } from './types';
+import { Data, IColumn } from './types';
 import ColumnRender from './components/ColumnRender';
 import ActionBtns from './components/ActionBtns';
 import FilterColumnRender from './components/FilterColumn/index'
@@ -60,64 +50,36 @@ export default function (props: RuntimeParams<Data>) {
     })
   );
 
-  if (data.hasPagination && data.showPaginationTotal) {
-    // showTotal为fn，无法放入json。这个其实是数据的一部分
-    data.pagination.showTotal = (total: number) =>
-      env.i18n({ text: '共 ${total} 条', params: { total } });
-  } else {
-    delete data.pagination.showTotal;
-  }
-
-  const DragHandle = SortableHandle(() => (
-    <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />
-  ));
-
   useEffect(() => {
-    // 编辑模式下，禁用分页点击
-    data.pagination.disabled = !!edit;
-
     if (runtime) {
       tableContent.dataSource = [];
-      if (data.hasPagination) {
-        data.pagination.total = 0;
-      }
       if (!data.fixedHeader) {
         data.scroll.y = undefined;
       }
 
-      data.useSlotProps &&
-        inputs[InputIds.SLOT_PROPS] &&
-        inputs[InputIds.SLOT_PROPS]((ds: any) => {
-          setTableData(data, ds);
-          setLoading(false);
-        });
+      // 设置数据源
       inputs[InputIds.SET_DATA_SOURCE]((ds: any) => {
-        setTableData(data, ds);
+        setTableData(ds);
         setLoading(false);
       });
 
+      // 表格loading
+      inputs[InputIds.START_LOADING](() => {
+        setLoading(true);
+      });
       inputs[InputIds.END_LOADING](() => {
         setLoading(false);
       });
 
+      // 清空勾选
       inputs[InputIds.CLEAR_ROW_SELECTION](() => {
         setSelectedRowKeys([]);
         setSelectedRows([]);
       });
 
+      // 动态设置筛选数据源
       inputs[InputIds.SET_FILTER_INPUT]((ds) => {
         Object.assign(tableContent.filterMap, ds);
-        // setFilterMap((prev) => ({...prev, ds}))
-      });
-      inputs[InputIds.REFRESH]((ds: any) => {
-        if (data.jumpToFirstPageWhenRefresh) {
-          onRefreshTable({
-            ...ds,
-            [data.pageNumber || 'current']: 1,
-          });
-        } else {
-          onRefreshTable(ds);
-        }
       });
 
       // 输出表格数据
@@ -131,53 +93,11 @@ export default function (props: RuntimeParams<Data>) {
           }
         });
 
-      // 提交行为-输出表格数据
-      (data.submitActions || []).forEach((item) => {
-        inputs[item.id] &&
-          inputs[item.id]((val, relOutputs) => {
-            const outputFn = relOutputs?.[item.id] || outputs[item.id];
-            if (outputFn) {
-              outputFn(tableContent.dataSource);
-            }
-          });
-      });
-
-      // 更新行数据
-      inputs[InputIds.UPDATE_COLUMN_DATA] &&
-        inputs[InputIds.UPDATE_COLUMN_DATA]((ds: any) => {
-          const oldDataSource = tableContent.dataSource;
-          const { rowKey, use } =
-            tableContent.data.columnDataUpdateConfig || {};
-          if (!(use && rowKey && ds)) {
-            return;
-          }
-          const newDataSource = oldDataSource.map((oldItem) => {
-            let newItem;
-            if (Array.isArray(ds)) {
-              newItem = ds.find(
-                (temp) => temp && temp[rowKey] === oldItem[rowKey]
-              );
-            } else if (ds[rowKey] && ds[rowKey] === oldItem[rowKey]) {
-              newItem = ds;
-            }
-            return newItem
-              ? {
-                uuid: uuid(),
-                ...newItem,
-              }
-              : oldItem;
-          });
-          tableContent.dataSource = newDataSource.map((item, index) => ({
-            ...item,
-            index: item.id,
-          }));
-        });
-
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
         inputs[InputIds.SET_ROW_SELECTION]((val) => {
-          const newSelectedRowKeys = [];
-          const newSelectedRows = [];
+          const newSelectedRowKeys: string[] = [];
+          const newSelectedRows: any[]= [];
           (Array.isArray(val) ? val : [val]).forEach((selected) => {
             const rowKey =
               typeof selected === 'object' ? selected?.[data.rowKey] : selected;
@@ -217,129 +137,33 @@ export default function (props: RuntimeParams<Data>) {
           }
         });
       }
-
-      inputs[InputIds.SET_PAGINATION] &&
-        inputs[InputIds.SET_PAGINATION]((ds, relOutputs) => {
-        if (ds?.[data.pageNumber] !== undefined && typeof ds?.[data.pageNumber] === 'number') {
-          data.pagination.current = ds[data.pageNumber];
-        }
-        if (ds?.[data.pageSize] !== undefined && typeof ds?.[data.pageSize] === 'number') {
-          data.pagination.pageSize = ds[data.pageSize];
-        }
-        relOutputs[OutputIds.SET_PAGINATION]();
-      })
+      
+      // 获取筛选数据
+      inputs[InputIds.GET_FILTER] &&
+        inputs[InputIds.GET_FILTER]((val, relOutputs) => {
+          relOutputs[OutputIds.GET_FILTER](data.filterParams);
+        });
+      
+      // 获取排序数据
+      inputs[InputIds.GET_SORT] &&
+        inputs[InputIds.GET_SORT]((val, relOutputs) => {
+          relOutputs[OutputIds.GET_SORT](data.sortParams);
+        });
     }
   }, []);
 
-  // 表格刷新前 数据聚合
-  const onRefreshTable = useCallback((ds?: any) => {
-    if (!!edit) {
-      return;
-    }
-    const pageInfo = getPageInfo(data);
-    if (Object.prototype.toString.call(ds) !== '[object Object]') {
-      ds = {};
-    }
-
-    if (data.hasPagination && ds[data.pageNumber]) {
-      data.pagination.current = ds[data.pageNumber];
-    }
-
-    let submitValue = {
-      ...data.queryParams,
-      ...pageInfo,
-      ...ds,
-    };
-    if (data.cleanQueryParamsWhenRefresh) {
-      submitValue = {
-        ...pageInfo,
-        ...ds,
-      };
-    }
-
-    data.queryParams = { ...submitValue };
-
-    if (data.hasPagination) {
-      if (submitValue.current) {
-        data.pagination.current = ~~submitValue.current;
-      }
-      if (submitValue.pageSize) {
-        data.pagination.pageSize = ~~submitValue.pageSize;
-      }
-    }
-
-    if (data.sortParams && !submitValue.sortParams) {
-      submitValue.sortParams = { ...data.sortParams };
-    }
-    if (data.filterParams && !submitValue.filterParams) {
-      submitValue.filterParams = Object.keys(data.filterParams).reduce(
-        (pre, curr) => {
-          const val = data.filterParams[curr];
-          return val !== null ? { ...pre, [curr]: val } : { ...pre };
-        },
-        {}
-      );
-    }
-    submitPropsMethod(submitValue);
-  }, []);
-
-  const submitPropsMethod = (props) => {
-    if (data.useLoading) {
-      setLoading(true);
-    }
-
-    outputs[OutputIds.ClickPagination](props);
-  };
-
-  if (env.runtime) {
-    inputs[InputIds.GET_ROW_SELECTION] &&
-      inputs[InputIds.GET_ROW_SELECTION]((val, relOutputs) => {
-        const outputFn =
-          relOutputs?.[OutputIds.GET_ROW_SELECTION] ||
-          outputs[OutputIds.GET_ROW_SELECTION];
-        if (outputFn) {
-          outputFn({
+  useEffect(() => {
+    if (env.runtime) {
+      // 获取勾选数据
+      inputs[InputIds.GET_ROW_SELECTION] &&
+        inputs[InputIds.GET_ROW_SELECTION]((val, relOutputs) => {
+          relOutputs[OutputIds.GET_ROW_SELECTION]({
             selectedRows,
             selectedRowKeys,
           });
-        }
-      });
-    // 设置展开行
-    if (data.useExpand && inputs[InputIds.SET_EXPANDED_KEYS]) {
-      inputs[InputIds.SET_EXPANDED_KEYS](ds => {
-        let newKeys: string[],
-          isExpanded = false;
-        if (typeof ds === 'string') {
-          newKeys = [ds];
-          isExpanded = expandedRowKeys.includes(ds);
-        }
-        if (typeCheck(ds, 'OBJECT') && ds['uuid']) {
-          newKeys = [ds['uuid']];
-          isExpanded = expandedRowKeys.includes(ds['uuid']);
-        }
-        if (typeCheck(ds, 'Array')) {
-          newKeys = ds.filter(item => typeof item === 'string');
-          isExpanded = newKeys.every(key => expandedRowKeys.includes(key));
-        }
-        if (newKeys) {
-          setExpandedRowKeys(isExpanded ?
-            [...expandedRowKeys]
-              .filter(key => !newKeys.includes(key))
-            :
-            [...expandedRowKeys, ...newKeys]
-              .filter((item, i, self) => item && self.indexOf(item) === i)
-          );
-        }
-      });
+        });
     }
-
-    inputs[InputIds.PAGINATION](() => {
-      outputs['pagination']({
-        [data.pageNumber || 'current']:  data.pagination.current,
-        [data.pageSize || 'pageSize']:  data.pagination.pageSize
-      })
-    })
-  }
+  }, [selectedRows, selectedRowKeys]);
 
   const initDataSource = (dataSource) => {
     return dataSource.map(({ children, ...rest }) => {
@@ -357,141 +181,62 @@ export default function (props: RuntimeParams<Data>) {
       }
     });
   };
-
-  const setTableData = useCallback((data: Data, ds: ResponseData) => {
-    if (data.onLoadData) {
-      try {
-        data.columns.forEach(
-          (item) =>
-          ((data.columns as any)[item.dataIndex ? `${item.dataIndex}` : ''] =
-            item)
-        );
-        runJs(data.onLoadData, [data, { ...env, utils: { moment } }], { env });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    ds = Array.isArray(ds) ? { dataSource: ds } : ds;
-    const { total, dataSource, extraColumns, queryParams } = ds || {};
-    if (queryParams) {
-      Object.assign(data.queryParams, queryParams);
-    }
-    data.extraColumns = extraColumns || data.extraColumns;
-    if (dataSource) {
-      tableContent.dataSource = initDataSource(dataSource);
+  const setTableData = useCallback((ds: any) => {
+    if (Array.isArray(ds)) {
+      tableContent.dataSource = initDataSource(ds);
     } else {
       tableContent.dataSource = tableContent.dataSource || [];
-    }
-    // tableContent.dataSource = dataSource || []
-    if (data.pagination && total !== undefined) {
-      data.pagination.total = total || 0;
-    }
-  }, []);
-
-  const paginationChange = useCallback((pagination: TablePaginationConfig) => {
-    const { current, pageSize } = pagination;
-    if (data.hasPagination) {
-      data.pagination.current = current || 1;
-      data.pagination.pageSize = pageSize || 20;
-
-      // if (data.queryParams[data.pageNumber]) {
-      //   delete data.queryParams[data.pageNumber];
-      // }
-      // if (data.queryParams[data.pageSize]) {
-      //   delete data.queryParams[data.pageSize];
-      // }
-
-      const submitValue = {
-        ...data.queryParams,
-        [data.pageNumber || 'current']: current,
-        [data.pageSize || 'pageSize']: pageSize,
-      };
-      if (data.sortParams && !submitValue.sortParams) {
-        submitValue.sortParams = { ...data.sortParams };
-      }
-      if (data.filterParams && !submitValue.filterParams) {
-        submitValue.filterParams = Object.keys(data.filterParams).reduce(
-          (pre, curr) => {
-            const val = data.filterParams[curr];
-            return val !== null ? { ...pre, [curr]: val } : { ...pre };
-          },
-          {}
-        );
-      }
-      submitPropsMethod(submitValue);
     }
   }, []);
 
   const sorterChange = useCallback((sorter: SorterResult<any>) => {
-    const { field, order, column } = sorter || {};
-    if (column?.sorter === true) {
-      data.sortParams = {
-        order,
-        field,
-      };
-      if (data.jumpToFirstPageWhenRefresh) {
-        onRefreshTable({
-          ...data.queryParams,
-          [data.pageNumber || 'current']: 1,
-        });
-      } else {
-        onRefreshTable(data.queryParams);
+    const { field, order } = sorter || {};
+    const column = data.columns.find(item => isEqual(item.dataIndex, field));
+    if (column?.sorter?.type === 'request') {
+      const sortParams = {
+        field: Array.isArray(field) ? field.join('.') : field,
+        order
       }
-    } else {
-      data.sortParams = undefined;
+      data.sortParams = sortParams;
+      outputs[OutputIds.SORTER](sortParams);
     }
   }, []);
 
   const filterChange = useCallback((filter: any) => {
     const filterKey = Object.keys(filter);
-    const enaleObj = data.columns.reduce((pre, curr) => {
-      if (curr.filter) {
-        return {
-          ...pre,
-          [`${curr.dataIndex}`]: curr.filter,
-        };
+    const filterParams = {};
+    let isOutput = false;
+    filterKey.forEach(key => {
+      const col = data.columns.find(item => `${item.dataIndex}` === key);
+      if (col) {
+        filterParams[Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex] = filter[key];
       }
-      return pre;
-    }, {});
-    if (
-      filterKey.some(
-        (i) =>
-          enaleObj[i] && enaleObj[i].enable && enaleObj[i].type === 'request'
-      )
-    ) {
-      data.filterParams = filter;
-      if (data.jumpToFirstPageWhenRefresh) {
-        onRefreshTable({
-          ...data.queryParams,
-          [data.pageNumber || 'current']: 1,
-        });
-      } else {
-        onRefreshTable(data.queryParams);
+      if (col && col.filter?.enable && col.filter?.type === 'request') {
+        isOutput = true;
       }
+    });
+    data.filterParams = filterParams;
+    if (isOutput) {
+      outputs[OutputIds.FILTER](filterParams);
     }
   }, []);
 
-  const onChange = useCallback(
-    (
-      pagination: TablePaginationConfig,
-      filters,
-      sorter: SorterResult<any>,
-      extra: TableCurrentDataSource<any[]>
-    ) => {
-      if (env.edit) {
-        return;
-      }
-      const { action } = extra;
-      if (action === 'paginate') {
-        paginationChange(pagination);
-      } else if (action === 'sort') {
+  const onChange = useCallback((pagination, filters, sorter, extra) => {
+    if (env.edit) {
+      return;
+    }
+    const { action } = extra;
+    switch (action) {
+      case 'sort':
         sorterChange(sorter);
-      } else if (action === 'filter') {
+        break;
+      case 'filter':
         filterChange(filters);
-      }
-    },
-    []
-  );
+        break;
+      default:
+        break;
+    }
+  }, []);
 
   // hack i18n翻译
   const formatI18nNumWithJSX = (
@@ -522,7 +267,7 @@ export default function (props: RuntimeParams<Data>) {
         </>
       );
       isUseJSXFn = true;
-      return node;
+      return <div key={idx}>{node}</div>;
     });
   };
   const formatActionBtn = (btns: any[]) => {
@@ -655,7 +400,7 @@ export default function (props: RuntimeParams<Data>) {
       !(data.useRowSelection && data.batchBtns && data.batchBtns.length) ||
       data.selectionType === 'radio'
     ) {
-      return;
+      return null;
     }
     return (
       <div className={css.width100} data-table-batch-action>
@@ -712,7 +457,7 @@ export default function (props: RuntimeParams<Data>) {
   // 表格头部按钮渲染
   const renderTableBtns = () => {
     if (!(data.useActionBtns && data.actionBtns && data.actionBtns.length)) {
-      return;
+      return null;
     }
     return (
       <div data-table-header-action>
@@ -735,7 +480,7 @@ export default function (props: RuntimeParams<Data>) {
   // 表格标题渲染
   const renderTableTitle = () => {
     if (!data.useTableTitle) {
-      return;
+      return null;
     }
     return (
       <div
@@ -793,7 +538,7 @@ export default function (props: RuntimeParams<Data>) {
     type: data.selectionType === 'radio' ? 'radio' : 'checkbox',
     getCheckboxProps: (record) => {
       if (edit) {
-        return { disabled: true };
+        return { disabled: true } as any;
       }
       const rowKey = record[data.rowKey];
       if (
@@ -818,70 +563,6 @@ export default function (props: RuntimeParams<Data>) {
     },
   };
 
-  // 支持拖拽
-  const SortableItem = SortableElement((props) => <tr {...props} />);
-  const SortableContainerNew = SortableContainer((props) => (
-    <tbody {...props} />
-  ));
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    const { dataSource } = tableContent;
-    const flatDataSource = flat(dataSource);
-    if (oldIndex !== newIndex) {
-      const newFlatDataSource = arrayMoveImmutable(
-        [].concat(flatDataSource),
-        oldIndex,
-        newIndex
-      ).filter((el) => !!el);
-      const newDataSource = unFlat(newFlatDataSource);
-      tableContent.dataSource = newDataSource;
-      const { parent, ...current } = newFlatDataSource[newIndex];
-      const index = newDataSource.findIndex((ele) => {
-        return ele.uuid === parent || (!parent && current.uuid === ele.uuid);
-      });
-      if (data.useDrapItem) {
-        outputs[OutputIds.DRAG_FINISH]({
-          data: newDataSource,
-          index,
-          current,
-          pagination: data.pagination,
-        });
-      } else {
-        outputs[OutputIds.DRAG_FINISH](newDataSource);
-      }
-    }
-  };
-
-  const DraggableContainer = (props) => (
-    <SortableContainerNew
-      // useDragHandle
-      distance={2}
-      disableAutoscroll
-      helperClass={css.rowDragging}
-      onSortEnd={onSortEnd}
-      {...props}
-    />
-  );
-
-  const getIndex = (dataSource, restProps) => {
-    return flat(dataSource).findIndex(({ uuid }) => {
-      return uuid === restProps['data-row-key'];
-    });
-  };
-
-  const DraggableBodyRow = ({ className, style, ...restProps }) => {
-    const { dataSource } = tableContent;
-
-    // function findIndex base on Table rowKey props and should always be a right array index
-    // const index = dataSource.findIndex((x) => {
-    //   return x.uuid === restProps["data-row-key"];
-    // });
-
-    const index = getIndex(dataSource, restProps);
-    return <SortableItem index={index} {...restProps} />;
-  };
-  // 是否显示分页 总数为0时不显示分页
-  const isShowPagination = !!(data.hasPagination && data.pagination.total);
   // 设计态数据mock
   const mockData = useMemo(() => {
     return {
@@ -901,10 +582,12 @@ export default function (props: RuntimeParams<Data>) {
             setDefaultDataSource(item.children);
             return;
           }
-          if (Array.isArray(item.key)) {
+          if (Array.isArray(item.dataIndex)) {
             setPath(mockData, item.key, defaultValue, false);
+            setPath(mockData, item.dataIndex.join('.'), defaultValue, false);
           } else {
             mockData[item.key] = defaultValue;
+            mockData[item.dataIndex] = defaultValue;
           }
         });
       }
@@ -923,13 +606,12 @@ export default function (props: RuntimeParams<Data>) {
           (useTopRowSelection || data.useTableTitle || data.useActionBtns || data.useColumnSetting) &&
           css.marginBottom
         )}
-      // style={data.tableTitleContainerStyle}
       >
         {renderTableTitle()}
         {(useTopRowSelection || (data.useActionBtns && data.actionBtns) || data.useColumnSetting) && (
           <div className={classnames(css.actionBtnsWrap, css.width100)}>
             {/* 渲染顶部操作按钮 */}
-            <div data-table-header-topRowSelection>
+            <div data-table-header-toprowselection>
               {useTopRowSelection && RenderBatchBtns()}
             </div>
             <div className={classnames(css.width100, css.flex, css.flexRowReverse)}>
@@ -945,8 +627,7 @@ export default function (props: RuntimeParams<Data>) {
           </div>
         )}
       </div>
-      {data.useHeaderSlot && slots[data.headerSlotId].render()}
-      {/* {data.useRowSelection && renderSelectActions()} */}
+      {data.useHeaderSlot && data.headerSlotId && slots[data.headerSlotId].render()}
       {data.columns.length ? (
         <Table
           dataSource={edit ? defaultDataSource : tableContent.dataSource}
@@ -958,14 +639,12 @@ export default function (props: RuntimeParams<Data>) {
           size={data.size as any}
           bordered={data.bordered}
           pagination={false}
-          // pagination={data.hasPagination && (data.pagination as any)}
-          rowSelection={data.useRowSelection && rowSelection}
+          rowSelection={data.useRowSelection ? rowSelection : undefined}
           showHeader={data.showHeader === false && env.runtime ? false : true}
           scroll={{
             x: '100%',
             y: data.scroll.y ? data.scroll.y : void 0
           }}
-          onRow={data.onRow}
           expandable={
             data.useExpand && slots[SlotIds.EXPAND_CONTENT]
               ? {
@@ -988,25 +667,8 @@ export default function (props: RuntimeParams<Data>) {
                       setExpandedRowKeys([...expandedRowKeys].filter((key) => key !== currentKey));
                     }
                   }
-                  //
                 }
               : undefined
-          }
-          // expandable={data.expandable ? expandableContent : void 0}
-          // locale={{
-          //   triggerAsc: '点击升序',
-          //   triggerDesc: '点击降序',
-          //   cancelSort: '取消排序',
-          // }}
-          components={
-            data.draggable
-              ? {
-                  body: {
-                    wrapper: DraggableContainer,
-                    row: DraggableBodyRow
-                  }
-                }
-              : null
           }
           onChange={onChange}
         >
@@ -1022,17 +684,6 @@ export default function (props: RuntimeParams<Data>) {
         )}
       >
         {useBottomRowSelection && RenderBatchBtns()}
-        {isShowPagination && (
-          <Pagination
-            {...data.pagination}
-            onChange={(current, pageSize) => {
-              onChange({ current, pageSize }, {}, data.sortParams, {
-                action: 'paginate',
-                currentDataSource: [],
-              });
-            }}
-          />
-        )}
       </div>
     </div>
   );
