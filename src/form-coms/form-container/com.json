@@ -94,11 +94,6 @@
             "title": "表单值",
             "type": "object",
             "properties": {}
-          },
-          "formInstance": {
-            "title": "表单实例",
-            "type": "object",
-            "properties": {}
           }
         }
       }

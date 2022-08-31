@@ -194,14 +194,13 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '禁止勾选',
-          description:
-            '禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1',
-          type: 'EXPCODE',
+          description: '禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1',
+          type: 'EXPRESSION',
           options: {
             autoSize: true,
             placeholder: `禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{status} === 1`,
             suggestions: suggestions,
-            run: (str: string) => {
+            runCode: (str: string) => {
               return runScript(str, {}, TEMPLATE_RENDER_KEY);
             }
           },

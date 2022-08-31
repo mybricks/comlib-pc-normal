@@ -30,26 +30,30 @@ const runScript = (scriptStr: string, args?: any, templateRenderKey?: string) =>
     try {
       isBoolean = eval(getTemplateRenderScript(scriptStr, true, templateRenderKey))(args);
     } catch (e) {
-      return [
+      return {
+        error: [
+          {
+            message: (e as unknown as Error)?.message,
+            startLineNumber: 0,
+            endLineNumber: `${scriptStr}`.split('\n').length + 1,
+            length: scriptStr.length + 1
+          }
+        ]
+      };
+    }
+  }
+  if (typeof isBoolean !== 'boolean') {
+    return {
+      error: [
         {
-          message: e?.message,
+          message: '表达式结果需要是 布尔类型',
           startLineNumber: 0,
           endLineNumber: `${scriptStr}`.split('\n').length + 1,
           length: scriptStr.length + 1
         }
-      ];
-    }
+      ]
+    };
   }
-  if (typeof isBoolean !== 'boolean') {
-    return [
-      {
-        message: '表达式结果需要是 布尔类型',
-        startLineNumber: 0,
-        endLineNumber: `${scriptStr}`.split('\n').length + 1,
-        length: scriptStr.length + 1
-      }
-    ];
-  }
-  return [];
+  return { success: true };
 };
 export { templateRender, getTemplateRenderScript, runScript };

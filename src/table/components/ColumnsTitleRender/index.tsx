@@ -27,7 +27,10 @@ export default ({ env, data, slots, outputs, dynamicColumn, tableContent, render
   };
   // 获取列数据
   const getColumns = () => {
-    let res = [...(data.columns || [])];
+    let res = [...(data.columns || [])].map(item => ({
+      ...item,
+      dataIndex: env.edit ? item.key : item.dataIndex
+    }));
     // 合并额外列数据
     if (data.extraColumns && Array.isArray(data.extraColumns)) {
       const uid = uuid();

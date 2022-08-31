@@ -6,18 +6,6 @@ const headerEditor = {
   title: '头部设置',
   items: [
     {
-      title: '显示表头',
-      type: 'switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.showHeader === false ? false : true;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.showHeader = value;
-        }
-      }
-    },
-    {
       title: '显示标题',
       type: 'switch',
       value: {

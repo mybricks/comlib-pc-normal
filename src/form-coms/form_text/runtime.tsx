@@ -3,7 +3,18 @@ import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 
 import css from './runtime.less'
 
-export default function ({env, data, _inputs, inputs, _outputs, outputs}) {
+interface Data {
+  value: string
+  visible: boolean
+  config: {
+    allowClear: boolean
+    disabled: boolean
+    addonBefore: string
+    addonAfter: string
+  }
+}
+
+export default function ({env, data, _inputs, inputs, _outputs, outputs}: RuntimeParams<Data>) {
   const { edit } = env
 
   useLayoutEffect(() => {
@@ -12,7 +23,6 @@ export default function ({env, data, _inputs, inputs, _outputs, outputs}) {
     })
 
     inputs['validate']((val, outputRels) => {
-      // outputRels['returnValidate'](data.value)
       if (data.value) {
         outputRels['returnValidate']({
           validateStatus: 'success',
@@ -28,25 +38,38 @@ export default function ({env, data, _inputs, inputs, _outputs, outputs}) {
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value)
     })
+
+    inputs['setVisible']((val: boolean) => {
+      data.visible = val
+    })
+
+    inputs['setDisabled']((val: boolean) => {
+      data.config.disabled = val
+    })
   }, [])
+
+  
 
   const changeValue = useCallback((e) => {
     const value = e.target.value
     data.value = value
-    outputs['valueChanged'](value)
+    outputs['onChange'](value)
   }, [])
 
-  const props = {} as any
-  if (data.addonBefore) {
-    props.addonBefore = data.title
-  }
+  const onBlur = useCallback((e) => {
+    const value = e.target.value
+    data.value = value
+    outputs['onBlur'](value)
+  }, [])
+
   let jsx = (
     <Input
-      {...props}
-      type={"text"}
+      type="text"
+      {...data.config}
       value={data.value}
       readOnly={!!edit}
       onChange={changeValue}
+      onBlur={onBlur}
     />
   )
 

@@ -31,6 +31,10 @@ export default function Dialog({
   useEffect(() => {
     // 非编辑模式
     if (env.runtime && inputs) {
+      slots['container'].outputs['close'](val=>{
+        setVisible(false)
+      })
+
       // 打开对话框
       inputs[InputIds.Open]((ds) => {
         setDataSource(ds);

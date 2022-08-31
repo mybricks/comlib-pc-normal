@@ -15,10 +15,11 @@ import BaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
 // import SlotItemEditor from './item/slotEditor';
 import CopyEditor from './copyEditor';
-import EditEditor from './editEditor';
+// import EditEditor from './editEditor';
 import DataMapingEditor from './dataMapEditor';
 import StyleEditor from './styleEditor';
 import TooltipEditor from './tooltipEditor';
+import VisibleEditor from './visibleEditor';
 import { getColumnItem } from '../../utils';
 
 const column = {
@@ -41,7 +42,7 @@ const column = {
       EllipsisEditor,
       TooltipEditor,
       CopyEditor,
-      EditEditor,
+      // EditEditor,
       ...IndexEditor
     ];
     cateAry[1].title = '样式';
@@ -53,7 +54,7 @@ const column = {
       ['text', 'color', 'link', 'tag', 'badge', 'date'].includes(item.contentType)
     ) {
       cateAry[2].title = '高级';
-      cateAry[2].items = [SortEditor, FilterEditor];
+      cateAry[2].items = [VisibleEditor, SortEditor, FilterEditor];
     }
     return {
       title: '表格列'

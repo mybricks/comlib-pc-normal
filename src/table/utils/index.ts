@@ -24,7 +24,6 @@ function getScratchScript(blocksOri) {
   return evalScript;
 }
 
-
 const getPageInfo = (data: Data) => {
   if (data.hasPagination) {
     return {
@@ -100,13 +99,31 @@ const unFlat = (data) => {
   return ret;
 };
 
-export {
-  getScratchScript,
-  getPageInfo,
-  getParentNodeByTag,
-  flat,
-  unFlat
-};
+// 计算代码提示
+function getSuggestions({ data }: { data: Data }) {
+  const res = [];
+  const getChildrenSuggestions = (columns: IColumn[]) => {
+    columns?.forEach((col) => {
+      if (['action'].includes(col.contentType)) return;
+      if (['group'].includes(col.contentType) && col.children) {
+        getChildrenSuggestions(col.children);
+        return;
+      }
+      const dataIndex = Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex;
+      if (!res.find((item) => dataIndex === item.label)) {
+        res.push({
+          label: dataIndex,
+          insertText: `{${dataIndex}}`,
+          detail: `当前行${dataIndex}值`
+        });
+      }
+    });
+  };
+  getChildrenSuggestions(data.columns);
+  return res;
+}
+
+export { getScratchScript, getPageInfo, getParentNodeByTag, flat, unFlat, getSuggestions };
 
 export const findColumnItemByKey = (columns, key) => {
   let res;
@@ -155,4 +172,43 @@ export const getNewColumn = () => {
     visible: true
   };
   return obj;
+};
+
+export const removeActionBtns = (actionBtns, output) => {
+  actionBtns.forEach((item) => {
+    output.remove(item.id);
+  });
+};
+
+export const setColumns = ({ data, slot, output }, val) => {
+  data.columns.forEach((column) => {
+    if (!val.find((temp) => temp.key === column.key)) {
+      if (column.actionBtns && column.actionBtns.length !== 0) {
+        removeActionBtns(column.actionBtns, output);
+      } else {
+      }
+      if (column.slotId && slot.get(column.slotId)) {
+        slot.remove(column.slotId);
+      }
+    }
+  });
+  data.columns = [
+    ...val.map((item) => {
+      let dataIndex =
+        typeof item.dataIndex === 'string' ? item.dataIndex.trim().split('.') : item.dataIndex;
+      if (Array.isArray(dataIndex) && dataIndex.length === 1) {
+        dataIndex = dataIndex[0];
+      }
+      return {
+        title: item.title,
+        key: uuid(),
+        width: 140,
+        visible: true,
+        ellipsis: true,
+        contentType: 'text',
+        ...item,
+        dataIndex
+      };
+    })
+  ];
 };

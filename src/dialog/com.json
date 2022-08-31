@@ -86,7 +86,18 @@
   "slots": [
     {
       "id": "container",
-      "title": "对话框容器"
+      "title": "对话框容器",
+      "type": "scope",
+      "inputs": [],
+      "outputs": [
+        {
+          "id": "close",
+          "title": "关闭",
+          "schema": {
+            "type": "any"
+          }
+        }
+      ]
     }
   ]
 }

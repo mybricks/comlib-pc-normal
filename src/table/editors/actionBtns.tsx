@@ -5,7 +5,7 @@ import { TEMPLATE_RENDER_KEY } from '../constants';
 import { uuid } from '../../utils';
 import { runScript } from '../../utils/runExpCodeScript';
 import { rowSelectionEditor } from './table/rowSelection';
-import { getColumnItem } from '../utils';
+import { getColumnItem, getSuggestions } from '../utils';
 
 interface Props {
   title?: string;
@@ -18,7 +18,7 @@ interface Props {
   addBtns: (res: any) => void;
   suggestions?: any[];
   getSuggestions?: (res: any) => any[];
-  runScript?: (res: any) => any[];
+  runScript?: (res: any) => { success?: any; error?: any };
 }
 export const getActionBtnsEditor = (props: Props) => {
   const {
@@ -402,12 +402,12 @@ export const getActionBtnsEditor = (props: Props) => {
             {
               title: '隐藏',
               description: `隐藏按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
-              type: 'EXPCODE',
+              type: 'EXPRESSION',
               options: {
                 autoSize: true,
                 placeholder: `${codeDemo}`,
                 suggestions: suggestions,
-                run: runScript
+                runCode: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -436,12 +436,12 @@ export const getActionBtnsEditor = (props: Props) => {
             {
               title: '禁用',
               description: `禁用按钮的表达式（{}, =, <, >, ||, &&）, ${codeDemo}`,
-              type: 'EXPCODE',
+              type: 'EXPRESSION',
               options: {
                 autoSize: true,
                 placeholder: `${codeDemo}`,
                 suggestions: suggestions,
-                run: runScript
+                runCode: runScript
               },
               value: {
                 get({ data, focusArea }: EditorResult<Data>) {
@@ -711,19 +711,7 @@ export const getActionBtnsEditor = (props: Props) => {
 export const colActionBtnsEditor = getActionBtnsEditor({
   titleKey: '[data-table-action]',
   btnsKey: '[data-table-btn]',
-  getSuggestions: ({ data }: EditorResult<Data>) => {
-    const res = [];
-    data.columns.forEach((col) => {
-      if (!res.find((item) => col.dataIndex === item.label)) {
-        res.push({
-          label: col.dataIndex,
-          insertText: `{${col.dataIndex}}` + ' === ',
-          detail: `当前行${col.dataIndex}值`
-        });
-      }
-    });
-    return res;
-  },
+  getSuggestions: getSuggestions,
   runScript: (script: string) => {
     return runScript(script, {}, TEMPLATE_RENDER_KEY);
   },
@@ -860,9 +848,9 @@ export const headerActionBtnsEditor = getActionBtnsEditor({
   ],
   runScript: (script: string) => {
     return runScript(script, {
-      queryParams: {},
-      dataSource: [],
-      pagination: {}
+        queryParams: {},
+        dataSource: [],
+        pagination: {}
     }, TEMPLATE_RENDER_KEY);
   },
   getBtns: ({ data }: EditorResult<Data>) => {

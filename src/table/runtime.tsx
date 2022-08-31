@@ -121,7 +121,7 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       // 输出表格数据
-      inputs[InputIds.GET_TABLE_DATA] &&
+      data.outputTableData && inputs[InputIds.GET_TABLE_DATA] &&
         inputs[InputIds.GET_TABLE_DATA]((val, relOutputs) => {
           const outputFn =
             relOutputs?.[OutputIds.GET_TABLE_DATA] ||
@@ -217,6 +217,17 @@ export default function (props: RuntimeParams<Data>) {
           }
         });
       }
+
+      inputs[InputIds.SET_PAGINATION] &&
+        inputs[InputIds.SET_PAGINATION]((ds, relOutputs) => {
+        if (ds?.[data.pageNumber] !== undefined && typeof ds?.[data.pageNumber] === 'number') {
+          data.pagination.current = ds[data.pageNumber];
+        }
+        if (ds?.[data.pageSize] !== undefined && typeof ds?.[data.pageSize] === 'number') {
+          data.pagination.pageSize = ds[data.pageSize];
+        }
+        relOutputs[OutputIds.SET_PAGINATION]();
+      })
     }
   }, []);
 
@@ -890,10 +901,10 @@ export default function (props: RuntimeParams<Data>) {
             setDefaultDataSource(item.children);
             return;
           }
-          if (Array.isArray(item.dataIndex)) {
-            setPath(mockData, item.dataIndex.join('.'), defaultValue, false);
+          if (Array.isArray(item.key)) {
+            setPath(mockData, item.key, defaultValue, false);
           } else {
-            mockData[item.dataIndex] = defaultValue;
+            mockData[item.key] = defaultValue;
           }
         });
       }
@@ -1002,7 +1013,7 @@ export default function (props: RuntimeParams<Data>) {
           {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
         </Table>
       ) : (
-        <Empty description='请添加列' />
+          <Empty description='请添加列或连接数据源' className={css.emptyWrap} />
       )}
       <div
         className={classnames(

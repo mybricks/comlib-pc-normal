@@ -24,7 +24,8 @@ export const InputIds = {
   SET_DYNAMIC_COL: 'setDynamicColumn',
   SET_DYNAMIC_TABLE_TITLE: 'setDynamicTableTitle',
   SET_EXPANDED_KEYS: 'setExpandedKeys',
-  PAGINATION: 'pagination'
+  PAGINATION: 'pagination',
+  SET_PAGINATION: 'setPagination'
 }
 export const OutputIds = {
   GET_ROW_SELECTION: 'rowSelection',
@@ -32,6 +33,8 @@ export const OutputIds = {
   DRAG_FINISH: 'dragging',
   GET_TABLE_DATA: 'tableData',
   MODIFY_CELL: 'modifyCell',
+  PAGINATION: 'pagination',
+  SET_PAGINATION: 'setPagination'
 }
 
 export enum RowSelectionPostion {

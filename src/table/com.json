@@ -9,16 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
-  "inputs": [
-    {
-      "id": "tableData",
-      "title": "输出表格数据",
-      "rels": ["tableData"],
-      "schema": {
-        "type": "any"
-      }
-    }
-  ],
+  "inputs": [],
   "outputs": [
     {
       "id": "props",
@@ -27,13 +18,6 @@
         "title": "",
         "type": "object",
         "properties": {}
-      }
-    },
-    {
-      "id": "tableData",
-      "title": "表格数据输出",
-      "schema": {
-        "type": "follow"
       }
     }
   ]

@@ -1,22 +1,8 @@
 import dateItemEditor from './item/dateEditor';
 import { setCol } from '../../schema';
 import { Data, MappingEnumOption } from '../../types';
-import { getColumnItem } from '../../utils';
+import { getColumnItem, getSuggestions } from '../../utils';
 
-function getSuggestions(data: Data) {
-  const res = [];
-  data.columns.forEach((col) => {
-    const dataIndex = Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex;
-    if (!res.find((item) => dataIndex === item.label)) {
-      res.push({
-        label: dataIndex,
-        insertText: `{${dataIndex}}`,
-        detail: `当前行${dataIndex}值`
-      });
-    }
-  });
-  return res;
-}
 const DataMapingEditor = (data: Data) => ({
   title: '数据处理',
   ifVisible({ data, focusArea }: EditorResult<Data>) {
@@ -31,7 +17,7 @@ const DataMapingEditor = (data: Data) => ({
     ...dateItemEditor,
     {
       title: '模板字符串',
-      type: 'EXPCODE',
+      type: 'EXPRESSION',
       description: '通过表格列字段自定义展示内容，默认为该列字段',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -41,7 +27,7 @@ const DataMapingEditor = (data: Data) => ({
       options: {
         autoSize: true,
         placeholder: '例：{startTime}-{endTime}',
-        suggestions: getSuggestions(data),
+        suggestions: getSuggestions({ data }),
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {

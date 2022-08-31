@@ -7,30 +7,30 @@ import {
 } from '../schema';
 import columnEditor from './table-item';
 import { InputIds } from '../constants';
-import {
-  batchActionBtnsEditor,
-  colActionBtnsEditor,
-  headerActionBtnsEditor
-} from './actionBtns';
+import { batchActionBtnsEditor, colActionBtnsEditor, headerActionBtnsEditor } from './actionBtns';
 import headerEditor from './table/header';
 import headerTitleEditor from './table/headerTitle';
-import paginationEditor from './table/pagination';
+// import paginationEditor from './table/pagination';
 import toolAreaEditor from './table/toolArea';
 import { rowSelectionEditor } from './table/rowSelection';
-import { columnDataUpdateEditor } from './table/columnDataUpdate';
+// import { columnDataUpdateEditor } from './table/columnDataUpdate';
 import tableStyleEditor from './table/tableStyle';
-import { dragEditor } from './table/drag';
+// import { dragEditor } from './table/drag';
 import addColumnEditor from './table/addColumn';
 import { expandEditor } from './table/expand';
-import { CodeEditor } from './table/codeEditor';
+// import { CodeEditor } from './table/codeEditor';
 import { refreshEditor } from './table/refresh';
-import { dynamicColumnEditor } from './table/dynamicColumn';
-import { submitEventEditor } from './table/submitEvent';
-import { Data } from '../types';
+// import { dynamicColumnEditor } from './table/dynamicColumn';
+import addColBySchema from './addColBySchema';
+import { schema2Options } from '../../components/editorRender/fieldSelect';
+// import { submitEventEditor } from './table/submitEvent';
+import { Data, IColumn } from '../types';
+import { setColumns } from '../utils';
+import { uuid } from '../../utils';
 
 function addDataSourceInput({ input, columns }) {
   const dataSchema = getColumnsDataSchema(columns);
-  const title = '输入数据';
+  const title = '设置数据源';
   const schema = getSingleDataSourceSchema(dataSchema);
 
   if (!input.get(InputIds.SET_DATA_SOURCE)) {
@@ -54,7 +54,7 @@ function getColumnsFromSchema(schema: any) {
         columns.push({
           title: key,
           dataIndex: key,
-          key,
+          key: uuid(),
           width: 140,
           visible: true,
           ellipsis: true,
@@ -77,28 +77,56 @@ function getColumnsFromSchema(schema: any) {
   }
   return getColumnsFromSchemaProperties(columnSchema);
 }
+function mergeColumns(col1: IColumn[], col2: IColumn[]) {
+  const res = [...col2];
+  col1.forEach((item) => {
+    if (!res.find((temp) => temp.dataIndex === item.dataIndex)) {
+      res.push(item);
+    }
+  });
+  return res;
+}
 
 export default {
   '@init': ({ data, output, input }: EditorResult<Data>) => {
-    addRefreshInput({ input });
+    // addRefreshInput({ input });
     addDataSourceInput({ input, columns: data.columns });
     setDataSchema({ data, output, input });
     setPaginationSchema({ data, output });
   },
-  '@inputConnected'({ data, input }, fromPin, toPin) {
+  '@inputConnected'({ data, input, output, slot }, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
-      if (data.columns.length === 0) {
-        data.columns = getColumnsFromSchema(fromPin.schema);
-        if (fromPin.schema.type === 'array') {
-          input.get(InputIds.SET_DATA_SOURCE).setSchema(fromPin.schema);
+      if (data.noMatchSchema) {
+        return;
+      }
+      const columns = mergeColumns(getColumnsFromSchema(fromPin.schema), data.columns);
+      let columnsSchema = {};
+      if (fromPin.schema.type === 'array') {
+        columnsSchema = fromPin.schema;
+      } else if (fromPin.schema.type === 'object') {
+        const { properties = {} } = fromPin.schema;
+        const dataSourceKey = Object.keys(properties).find(
+          (key) => properties[key].type === 'array'
+        );
+        if (dataSourceKey) {
+          columnsSchema = properties[dataSourceKey].items;
         }
       }
-      
-      if (fromPin.schema.type === 'object' || fromPin.schema.type === 'array') {
-        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
-      } else {
-        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {};
-      }
+      const options = schema2Options(columnsSchema, '', {
+        isRoot: true,
+        useArray: false,
+        noType: true
+      });
+      data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
+      addColBySchema({
+        columns,
+        dataIndexOptions: options,
+        onFinish: ({ columns, noMatchSchema }) => {
+          setColumns({ data, output, slot }, columns);
+          data.noMatchSchema = noMatchSchema;
+          setDataSchema({ data, output, input });
+        }
+      });
     }
   },
   '@inputDisConnected'({ data, input }, fromPin, toPin) {
@@ -108,7 +136,12 @@ export default {
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [addColumnEditor, headerEditor, toolAreaEditor, paginationEditor];
+    cateAry[0].items = [
+      addColumnEditor,
+      headerEditor,
+      toolAreaEditor,
+      // paginationEditor
+    ];
 
     cateAry[1].title = '样式';
     cateAry[1].items = [tableStyleEditor];
@@ -118,14 +151,14 @@ export default {
       // ...submitEventEditor,
       ...refreshEditor,
       ...rowSelectionEditor(props),
-      ...dragEditor,
-      ...columnDataUpdateEditor,
-      ...dynamicColumnEditor,
-      ...expandEditor,
-      ...CodeEditor
+      // ...dragEditor,
+      // ...columnDataUpdateEditor,
+      // ...dynamicColumnEditor,
+      ...expandEditor
+      // ...CodeEditor
     ];
   },
-  '.ant-pagination': paginationEditor,
+  // '.ant-pagination': paginationEditor,
   ...columnEditor,
   ...headerTitleEditor,
   ...colActionBtnsEditor,

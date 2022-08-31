@@ -1,12 +1,6 @@
 import { setDataSchema } from '../../schema';
 import { Data } from '../../types';
-import { getColumnItemInfo, getNewColumn } from '../../utils';
-
-function removeActionBtns(actionBtns, output) {
-  actionBtns.forEach((item) => {
-    output.remove(item.id);
-  });
-}
+import { getColumnItemInfo, getNewColumn, removeActionBtns } from '../../utils';
 
 const IndexEditor = [
   {

@@ -170,7 +170,7 @@ function setOutputsSchema(dataSchema, output, data) {
   //     });
   //   }
   // });
-  output.get(OutputIds.GET_TABLE_DATA).setSchema({
+  output.get(OutputIds.GET_TABLE_DATA)?.setSchema?.({
     title: '表格数据',
     type: 'array',
     items: {
