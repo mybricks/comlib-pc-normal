@@ -49,7 +49,7 @@ export default {
             const dsInput = input.get(InputIds.SetJsonData);
             const slotInput = input.get(InputIds.SlotProps);
             dsInput.setSchema({ type: value });
-            slotInput.setSchema({ type: value });
+            slotInput?.setSchema({ type: value });
           }
         }
       },
