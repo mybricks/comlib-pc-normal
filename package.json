@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "mybricks dev",
-    "checkFile": "mybricks checkFile"
+    "checkFile": "mybricks checkFile",
+    "lint-staged": "npx lint-staged --allow-empty"
   },
   "pre-commit": [
-    "checkFile"
+    "checkFile",
+    "lint-staged"
   ],
   "repository": {
     "type": "git",
@@ -36,6 +38,8 @@
     "@types/node": "^17.0.13",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
-    "pre-commit": "^1.2.2"
+    "lint-staged": "^13.0.3",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.7.1"
   }
 }
