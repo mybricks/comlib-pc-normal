@@ -6,11 +6,13 @@
   "version": "1.0.0",
   "description": "表单容器",
   "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
   "slots": [
     {
       "id": "content",
       "title": "内容",
       "type": "scope",
+      "default": true,
       "inputs": [
         {
           "id": "curDS",

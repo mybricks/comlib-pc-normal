@@ -31,7 +31,7 @@ export default function Dialog({
   useEffect(() => {
     // 非编辑模式
     if (env.runtime && inputs) {
-      slots['container'].outputs['close'](val=>{
+      slots['container'].outputs['ok'](val=>{
         setVisible(false)
       })
 

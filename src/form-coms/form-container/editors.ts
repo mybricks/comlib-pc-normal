@@ -23,7 +23,7 @@ export default {
   },
   '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
     const item = data.items.find(item => item.id === id)
-
+debugger
     if (item) {
       item.schema = schema
     } else {
