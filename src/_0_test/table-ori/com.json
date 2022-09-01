@@ -1,0 +1,14 @@
+{
+  "title": "测试--模拟原表格",
+  "namespace": "test.table-ori",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "模拟原表格",
+  "runtime": "./runtime.tsx",
+  "slots": [
+    {
+      "id": "content"
+    }
+  ]
+}
