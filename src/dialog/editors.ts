@@ -2,7 +2,7 @@ import { isEmptyString, uuid } from '../utils';
 import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds } from './constants';
 
 export default {
-  ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
+  ':root': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -188,29 +188,35 @@ export default {
     ];
 
     cate3.title = '事件';
-    cate3.items = [
-      {
-        title: '事件',
-        items: [
-          {
-            title: '关闭回调',
-            type: '_Event',
-            ifVisible({ data }: EditorResult<Data>) {
-              return !!data.closable;
-            },
-            options: () => {
-              return {
-                outputId: 'cancel'
-              };
-            }
-          }
-        ]
-      }
-    ];
+    // cate3.items = [
+    //   {
+    //     title: '事件',
+    //     items: [
+    //       {
+    //         title: '关闭回调',
+    //         type: '_Event',
+    //         options: () => {
+    //           return {
+    //             outputId: 'cancel'
+    //           };
+    //         }
+    //       },
+    //       {
+    //         title: '确认',
+    //         type: '_Event',
+    //         options: ({ slot }: EditorResult<Data>) => {
+    //           return {
+    //             outputId: slot['container'].output['']
+    //           };
+    //         }
+    //       }
+    //     ]
+    //   }
+    // ];
 
     return { title: '对话框' };
   },
-  '[data-btn-id]': ({}: EditorResult<Data>, cate1, cate2) => {
+  '[data-btn-id]': ({ }: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -273,38 +279,38 @@ export default {
       moveDelete('btnId')
     ];
 
-    cate2.title = '事件';
-    cate2.items = [
-      useDynamic('btnId'),
-      {
-        title: '事件',
-        items: [
-          {
-            title: '输出传入数据',
-            type: 'Switch',
-            value: {
-              get({ data, focusArea }: EditorResult<Data>) {
-                return get(data, focusArea, 'btnId', 'outputDs');
-              },
-              set({ data, focusArea }: EditorResult<Data>, val: boolean) {
-                const res = get(data, focusArea, 'btnId', 'obj');
-                res.outputDs = val;
-              }
-            }
-          },
-          {
-            title: '单击',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const res = get(data, focusArea, 'btnId', 'id');
-              return {
-                outputId: res
-              };
-            }
-          }
-        ]
-      }
-    ];
+    // cate2.title = '事件';
+    // cate2.items = [
+    //   useDynamic('btnId'),
+    //   {
+    //     title: '事件',
+    //     items: [
+    //       {
+    //         title: '输出传入数据',
+    //         type: 'Switch',
+    //         value: {
+    //           get({ data, focusArea }: EditorResult<Data>) {
+    //             return get(data, focusArea, 'btnId', 'outputDs');
+    //           },
+    //           set({ data, focusArea }: EditorResult<Data>, val: boolean) {
+    //             const res = get(data, focusArea, 'btnId', 'obj');
+    //             res.outputDs = val;
+    //           }
+    //         }
+    //       },
+    //       {
+    //         title: '单击',
+    //         type: '_Event',
+    //         options: ({ data, focusArea }: EditorResult<Data>) => {
+    //           const res = get(data, focusArea, 'btnId', 'id');
+    //           return {
+    //             outputId: res
+    //           };
+    //         }
+    //       }
+    //     ]
+    //   }
+    // ];
     return { title: '按钮' };
   }
 };

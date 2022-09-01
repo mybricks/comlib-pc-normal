@@ -31,14 +31,21 @@ export default function Dialog({
   useEffect(() => {
     // 非编辑模式
     if (env.runtime && inputs) {
-      slots['container'].outputs['ok'](val=>{
-        setVisible(false)
-      })
-
       // 打开对话框
-      inputs[InputIds.Open]((ds) => {
+      inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
+        slots['container'].inputs['curDS'](ds); //推送数据
         setVisible(true);
+        // 监听scope取消输出
+        slots['container'].outputs['cancel']((val) => {
+          close();
+          relOutputs['cancelBtn'](val);
+        });
+        // 监听scope确认输出
+        slots['container'].outputs['ok']((val) => {
+          close();
+          relOutputs['ok'](val);
+        });
       });
 
       inputs[InputIds.SetTitle]((val: string) => {
@@ -97,7 +104,6 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
-    outputs[OutputIds.Cancel]();
   }, []);
 
   // 【老】关闭对话框
@@ -110,7 +116,13 @@ export default function Dialog({
     const { id, outputDs } = item;
     eventList[id] = () => {
       if (outputs && outputs[id]) {
-        outputs[id](outputDs ? dataSource : true);
+        if (id === 'ok') {
+          slots['container'].inputs['ok']();
+        } else if (id === 'cancelBtn') {
+          slots['container'].inputs['cancel']();
+        } else {
+          outputs[id](outputDs ? dataSource : true);
+        }
       }
     };
   });
@@ -208,17 +220,7 @@ const RuntimeRender = ({
   const renderFooter = () => {
     if (cfg.footerType === FOOTER_CONTENT_TYPE.BUTTONS) {
       return (footerBtns || []).map((item) => {
-        const {
-          title,
-          id,
-          showText,
-          icon,
-          useIcon,
-          disabled,
-          hidden,
-          location,
-          ...res
-        } = item;
+        const { title, id, showText, icon, useIcon, disabled, hidden, location, ...res } = item;
         const Icon = useIcon && Icons && Icons[icon as string]?.render();
         return (
           <Button

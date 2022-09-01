@@ -15,7 +15,11 @@
       "title": "打开",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "cancelBtn",
+        "ok"
+      ]
     },
     {
       "id": "close",
@@ -88,13 +92,42 @@
       "id": "container",
       "title": "对话框容器",
       "type": "scope",
-      "inputs": [],
+      "inputs": [
+        {
+          "id": "curDS",
+          "title": "输入数据",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "cancel",
+          "title": "取消事件",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "ok",
+          "title": "确认事件",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ],
       "outputs": [
         {
-          "id": "close",
-          "title": "关闭",
+          "id": "cancel",
+          "title": "取消输出数据",
           "schema": {
-            "type": "any"
+            "type": "follow"
+          }
+        },
+        {
+          "id": "ok",
+          "title": "确认输出数据",
+          "schema": {
+            "type": "follow"
           }
         }
       ]
