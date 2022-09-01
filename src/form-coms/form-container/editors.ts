@@ -13,8 +13,8 @@ function refreshSchema({data, inputs, outputs, slots}) {
   }
   
   outputs.get('onFinish').setSchema(schema)
-  inputs.get('initial').setSchema(schema)
-  slots.get('content').inputs.get('onInitial').setSchema(schema)
+  inputs.get('setFieldsValue').setSchema(schema)
+  slots?.get('content').inputs.get('setFieldsValue').setSchema(schema)
 }
 
 export default {

@@ -5,7 +5,7 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 
 interface Data {
-  value: string;
+  value: string | undefined;
   visible: boolean;
   rules: any[];
   config: {
@@ -42,6 +42,10 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
 
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
+    });
+
+    inputs['resetValue'](() => {
+      data.value = void 0;
     });
 
     inputs['setVisible']((val: boolean) => {

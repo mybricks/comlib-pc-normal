@@ -14,16 +14,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     inputs['setFieldsValue']((val) => {
+      resetFields();
       setFieldsValue(val);
+      slots['content'].inputs['setFieldsValue'](val);
     });
 
-    inputs['initial']((val) => {
-      setFieldsValue(val);
-      slots['content'].inputs['onInitial']({ values: val });
-    });
+    // inputs['initial']((val) => {
+    //   setFieldsValue(val);
+    //   slots['content'].inputs['onInitial']({ values: val });
+    // });
 
     inputs['resetFields']((val, outputRels) => {
-      formRef.resetFields();
+      // formRef.resetFields();
+      resetFields();
       outputRels['onResetFinish']();
     });
 
@@ -31,8 +34,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       submit(outputRels);
     });
 
-    // For 表单项私有1
-    inputs['validate']((val, outputRels) => {
+    // For 表单项私有
+    _inputs['validate']((val, outputRels) => {
       validate().then((r) => {
         outputRels['returnValidate']({
           validateStatus: 'success'
@@ -40,14 +43,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
     });
 
-    inputs['getValue']((val, outputRels) => {
+    _inputs['getValue']((val, outputRels) => {
       getValue().then((v) => {
         console.log('getValue', v);
         outputRels['returnValue'](v);
       });
     });
 
-    inputs['setValue']((val) => {
+    _inputs['setValue']((val) => {
       setFieldsValue(val);
     });
   }, []);
@@ -66,6 +69,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       });
     }
+  };
+
+  const resetFields = () => {
+    data.items.forEach((item) => {
+      const id = item.id;
+      const input = childrenInputs[id];
+      input?.resetValue();
+    });
   };
 
   const validate = useCallback(() => {
