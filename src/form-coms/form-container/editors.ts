@@ -11,9 +11,10 @@ function refreshSchema({data, inputs, outputs, slots}) {
     type: 'object',
     properties
   }
-  console.log(slots)
+  
   outputs.get('onFinish').setSchema(schema)
   inputs.get('initial').setSchema(schema)
+  slots.get('content').inputs.get('onInitial').setSchema(schema)
 }
 
 export default {
@@ -23,7 +24,6 @@ export default {
   },
   '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
     const item = data.items.find(item => item.id === id)
-debugger
     if (item) {
       item.schema = schema
     } else {
@@ -110,7 +110,7 @@ debugger
         }
       },
       {
-        title: '必填',
+        title: '必填样式',
         type: 'Switch',
         value: {
           get({data, focusArea}: EditorResult<Data>) {
