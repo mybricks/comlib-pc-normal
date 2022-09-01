@@ -66,13 +66,6 @@
   ],
   "outputs": [
     {
-      "id": "cancel",
-      "title": "关闭回调",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
       "id": "ok",
       "title": "确认",
       "schema": {
@@ -94,38 +87,38 @@
       "type": "scope",
       "inputs": [
         {
-          "id": "curDS",
+          "id": "dataSource",
           "title": "输入数据",
           "schema": {
             "type": "follow"
           }
         },
         {
-          "id": "cancel",
+          "id": "cancelBtn",
           "title": "取消事件",
           "schema": {
-            "type": "follow"
+            "type": "any"
           }
         },
         {
           "id": "ok",
           "title": "确认事件",
           "schema": {
-            "type": "follow"
+            "type": "any"
           }
         }
       ],
       "outputs": [
         {
-          "id": "cancel",
-          "title": "取消输出数据",
+          "id": "cancelBtn",
+          "title": "取消输出",
           "schema": {
             "type": "follow"
           }
         },
         {
           "id": "ok",
-          "title": "确认输出数据",
+          "title": "确认输出",
           "schema": {
             "type": "follow"
           }

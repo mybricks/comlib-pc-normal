@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds } from './constants';
 
 export default {
   ':root': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -112,8 +112,8 @@ export default {
             },
             type: 'Button',
             value: {
-              set({ data, output }: EditorResult<Data>) {
-                addBtn({ data, output });
+              set({ data, input, output, slot }: EditorResult<Data>) {
+                addBtn({ data, input, output, slot });
               }
             }
           }
@@ -188,31 +188,6 @@ export default {
     ];
 
     cate3.title = '事件';
-    // cate3.items = [
-    //   {
-    //     title: '事件',
-    //     items: [
-    //       {
-    //         title: '关闭回调',
-    //         type: '_Event',
-    //         options: () => {
-    //           return {
-    //             outputId: 'cancel'
-    //           };
-    //         }
-    //       },
-    //       {
-    //         title: '确认',
-    //         type: '_Event',
-    //         options: ({ slot }: EditorResult<Data>) => {
-    //           return {
-    //             outputId: slot['container'].output['']
-    //           };
-    //         }
-    //       }
-    //     ]
-    //   }
-    // ];
 
     return { title: '对话框' };
   },
@@ -227,7 +202,7 @@ export default {
             return get(data, focusArea, 'btnId', 'title');
           },
           set(
-            { data, focusArea, output, input }: EditorResult<Data>,
+            { data, focusArea, output, input, slot }: EditorResult<Data>,
             value: string
           ) {
             if (typeof value !== 'string' || value.trim() === '') {
@@ -243,6 +218,8 @@ export default {
               input.setTitle(`hidden${res.id}`, `隐藏-${value}按钮`);
               input.setTitle(`show${res.id}`, `显示-${value}按钮`);
             }
+            slot.get(SlotIds.Container).inputs.setTitle(res.id, `${value}`);
+            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}输出数据`);
             res.title = value;
           }
         }
@@ -279,43 +256,11 @@ export default {
       moveDelete('btnId')
     ];
 
-    // cate2.title = '事件';
-    // cate2.items = [
-    //   useDynamic('btnId'),
-    //   {
-    //     title: '事件',
-    //     items: [
-    //       {
-    //         title: '输出传入数据',
-    //         type: 'Switch',
-    //         value: {
-    //           get({ data, focusArea }: EditorResult<Data>) {
-    //             return get(data, focusArea, 'btnId', 'outputDs');
-    //           },
-    //           set({ data, focusArea }: EditorResult<Data>, val: boolean) {
-    //             const res = get(data, focusArea, 'btnId', 'obj');
-    //             res.outputDs = val;
-    //           }
-    //         }
-    //       },
-    //       {
-    //         title: '单击',
-    //         type: '_Event',
-    //         options: ({ data, focusArea }: EditorResult<Data>) => {
-    //           const res = get(data, focusArea, 'btnId', 'id');
-    //           return {
-    //             outputId: res
-    //           };
-    //         }
-    //       }
-    //     ]
-    //   }
-    // ];
     return { title: '按钮' };
   }
 };
 
-function addBtn({ data, output }: { data: Data; output: any }) {
+function addBtn({ data, input, output, slot }: { data: Data, input: any, output: any, slot: any }) {
   const { footerBtns } = data;
   const id = uuid(),
     title = `按钮${footerBtns.length + 1}`;
@@ -329,10 +274,12 @@ function addBtn({ data, output }: { data: Data; output: any }) {
     icon: '',
     useIcon: false,
     showText: true,
-    type: 'default',
-    outputDs: false
+    type: 'default'
   };
   output.add(id, title, schema);
+  slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'follow' });
+  slot.get(SlotIds.Container).outputs.add(id, `${title}输出数据`, { type: 'follow' });
+  input.get(InputIds.Open).setRels([...data.footerBtns.map(({ id }) => id), id]);
   data.footerBtns.unshift(defaultBtn);
 }
 
@@ -442,8 +389,8 @@ function moveDelete(dataset: string) {
         title: '新增操作',
         type: 'Button',
         value: {
-          set({ data, output }: EditorResult<Data>) {
-            addBtn({ data, output });
+          set({ data, input, output, slot }: EditorResult<Data>) {
+            addBtn({ data, input, output, slot });
           }
         }
       },
@@ -454,10 +401,15 @@ function moveDelete(dataset: string) {
           return data.footerBtns.length > 1;
         },
         value: {
-          set({ data, focusArea, output }: EditorResult<Data>) {
+          set({ data, focusArea, input, output, slot }: EditorResult<Data>) {
             get(data, focusArea, dataset, 'obj', (index) => {
-              output.remove(data.footerBtns[index].id);
+              const btnId = data.footerBtns[index].id;
+              output.remove(btnId);
+              slot.get(SlotIds.Container).inputs.remove(btnId);
+              slot.get(SlotIds.Container).outputs.remove(btnId);
+
               data.footerBtns.splice(index, 1);
+              input.get(InputIds.Open).setRels(data.footerBtns.map(({ id }) => id));
             });
           }
         }

@@ -8,7 +8,8 @@ import {
   InputIds,
   OutputIds,
   Location,
-  SlotIds
+  SlotIds,
+  SlotInputIds
 } from './constants';
 import css from './runtime.less';
 
@@ -34,17 +35,20 @@ export default function Dialog({
       // 打开对话框
       inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
-        slots['container'].inputs['curDS'](ds); //推送数据
+        slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
         setVisible(true);
-        // 监听scope取消输出
-        slots['container'].outputs['cancel']((val) => {
-          close();
-          relOutputs['cancelBtn'](val);
-        });
-        // 监听scope确认输出
-        slots['container'].outputs['ok']((val) => {
-          close();
-          relOutputs['ok'](val);
+
+        // 监听scope输出
+        (data.footerBtns || []).forEach((item) => {
+          const { id } = item;
+          if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
+            slots[SlotIds.Container].outputs[id]((val) => {
+              if (['ok', 'cancelBtn'].includes(id)) {
+                close();
+              }
+              relOutputs[id](val);
+            });
+          }
         });
       });
 
@@ -113,16 +117,10 @@ export default function Dialog({
 
   const eventList = {};
   (data.footerBtns || []).forEach((item) => {
-    const { id, outputDs } = item;
+    const { id } = item;
     eventList[id] = () => {
-      if (outputs && outputs[id]) {
-        if (id === 'ok') {
-          slots['container'].inputs['ok']();
-        } else if (id === 'cancelBtn') {
-          slots['container'].inputs['cancel']();
-        } else {
-          outputs[id](outputDs ? dataSource : true);
-        }
+      if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
+        slots[SlotIds.Container].inputs[id]();
       }
     };
   });
@@ -268,7 +266,7 @@ const RuntimeRender = ({
       bodyStyle={bodyStyle}
       getContainer={getContainer}
     >
-      {slots['container'] && slots['container'].render()}
+      {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>
   );
 };

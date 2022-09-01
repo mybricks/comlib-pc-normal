@@ -52,8 +52,6 @@ export interface Data {
     dynamicDisabled?: boolean;
     dynamicHidden?: boolean;
     hidden?: boolean;
-    // 输出传入数据
-    outputDs?: boolean;
   })[];
   getContainer?: () => any;
 }
@@ -71,5 +69,9 @@ export const OutputIds = {
   Cancel: 'cancel'
 };
 export const SlotIds = {
-  Footer: 'footer'
+  Footer: 'footer',
+  Container: 'container'
+};
+export const SlotInputIds = {
+  DataSource: 'dataSource',
 };
