@@ -52,9 +52,12 @@ export interface Data {
     dynamicDisabled?: boolean;
     dynamicHidden?: boolean;
     hidden?: boolean;
+    visible: boolean;
   })[];
   getContainer?: () => any;
 }
+
+export const DefaultEvent = ['ok', 'cancelBtn'];
 
 export const InputIds = {
   Open: 'open',

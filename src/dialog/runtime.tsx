@@ -9,7 +9,8 @@ import {
   OutputIds,
   Location,
   SlotIds,
-  SlotInputIds
+  SlotInputIds,
+  DefaultEvent
 } from './constants';
 import css from './runtime.less';
 
@@ -40,10 +41,11 @@ export default function Dialog({
 
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
-          const { id } = item;
+          const { id, visible } = item;
+          if (DefaultEvent.includes(id) && !visible) return;
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
-              if (['ok', 'cancelBtn'].includes(id)) {
+              if (DefaultEvent.includes(id)) {
                 close();
               }
               relOutputs[id](val);
@@ -218,12 +220,23 @@ const RuntimeRender = ({
   const renderFooter = () => {
     if (cfg.footerType === FOOTER_CONTENT_TYPE.BUTTONS) {
       return (footerBtns || []).map((item) => {
-        const { title, id, showText, icon, useIcon, disabled, hidden, location, ...res } = item;
+        const {
+          title,
+          id,
+          showText,
+          icon,
+          useIcon,
+          disabled,
+          hidden,
+          visible = true,
+          location,
+          ...res
+        } = item;
         const Icon = useIcon && Icons && Icons[icon as string]?.render();
         return (
           <Button
             {...res}
-            hidden={hidden}
+            hidden={!visible || hidden}
             disabled={disabled}
             onClick={event?.[id]}
             data-btn-id={id}

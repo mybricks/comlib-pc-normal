@@ -1,5 +1,80 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent } from './constants';
+
+const defaultSchema = { type: 'follow' };
+
+const updateOpenRels = (data: Data): any[] => {
+  return data.footerBtns.filter(({ id, visible }) => {
+    if (DefaultEvent.includes(id)) {
+      return visible;
+    }
+    return true;
+  }).map(({ id }) => id);
+};
+
+function addBtn({ data, input, output, slot }: { data: Data, input: any, output: any, slot: any }, defaultId?: string) {
+  const { footerBtns } = data;
+  const titleMap = {
+    [DefaultEvent[0]]: '确认',
+    [DefaultEvent[1]]: '取消',
+  }
+  const id = defaultId || uuid(),
+    title = defaultId ? titleMap[defaultId] : `按钮${footerBtns.length + 1}`;
+  const schema = {
+    type: 'any'
+  };
+
+  const defaultBtn: any = {
+    id,
+    title,
+    icon: '',
+    useIcon: false,
+    showText: true,
+    type: 'default'
+  };
+
+  output.add(id, title, schema);
+  slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'follow' });
+  slot.get(SlotIds.Container).outputs.add(id, `${title}输出数据`, { type: 'follow' });
+  input.get(InputIds.Open).setRels([...updateOpenRels(data), id]);
+
+  if (!DefaultEvent.includes(id)) {
+    data.footerBtns.unshift(defaultBtn);
+  }
+}
+
+function removeBtn({ data, focusArea, input, output, slot }: { data: Data, focusArea: any, input: any, output: any, slot: any },) {
+  get(data, focusArea, 'btnId', 'obj', (index: number) => {
+    const btnId = data.footerBtns[index].id;
+
+    output.remove(btnId);
+    slot.get(SlotIds.Container).inputs.remove(btnId);
+    slot.get(SlotIds.Container).outputs.remove(btnId);
+    input.get(InputIds.Open).setRels(updateOpenRels(data));
+
+    if (!DefaultEvent.includes(btnId)) {
+      data.footerBtns.splice(index, 1);
+    }
+  });
+}
+
+function get(
+  data: Data,
+  focusArea: any,
+  dataset: string,
+  val = 'obj',
+  cb?: any
+) {
+  if (!focusArea) return;
+  const key = focusArea.dataset[dataset];
+  const index = data.footerBtns.findIndex((def) => def.id === key);
+  if (index === -1) return;
+  if (cb) cb(index);
+  if (val === 'obj') {
+    return data.footerBtns[index];
+  }
+  return data.footerBtns[index][val];
+}
 
 export default {
   ':root': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -97,6 +172,48 @@ export default {
                   !hasSlot && slot.add(SlotIds.Footer, '底部内容');
                 } else {
                   hasSlot && slot.remove(SlotIds.Footer);
+                }
+              }
+            }
+          },
+          {
+            title: '隐藏确认按钮',
+            type: 'Switch',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.useFooter && data.footerType === FOOTER_CONTENT_TYPE.BUTTONS;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return !data.footerBtns.find(({ id }) => id === DefaultEvent[0])?.visible;
+              },
+              set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+                const res = data.footerBtns.find(({ id }) => id === DefaultEvent[0]);
+                res && (res.visible = !value);
+                if (value) {
+                  removeBtn({ data, focusArea, input, output, slot })
+                } else {
+                  addBtn({ data, input, output, slot }, DefaultEvent[0]);
+                }
+              }
+            }
+          },
+          {
+            title: '隐藏取消按钮',
+            type: 'Switch',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.useFooter && data.footerType === FOOTER_CONTENT_TYPE.BUTTONS;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return !data.footerBtns.find(({ id }) => id === DefaultEvent[1])?.visible;
+              },
+              set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+                const res = data.footerBtns.find(({ id }) => id === DefaultEvent[1]);
+                res && (res.visible = !value);
+                if (value) {
+                  removeBtn({ data, focusArea, input, output, slot })
+                } else {
+                  addBtn({ data, input, output, slot }, DefaultEvent[1]);
                 }
               }
             }
@@ -253,6 +370,28 @@ export default {
         ]
       },
       icon('btnId'),
+      {
+        title: '隐藏',
+        type: 'Switch',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const res = get(data, focusArea, 'btnId', 'obj');
+          return DefaultEvent.includes(res?.id);
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            return !get(data, focusArea, 'btnId', 'visible');
+          },
+          set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+            const res = get(data, focusArea, 'btnId', 'obj');
+            res.visible = !value;
+            if (value) {
+              removeBtn({ data, focusArea, input, output, slot })
+            } else {
+              addBtn({ data, input, output, slot }, res.id);
+            }
+          }
+        }
+      },
       moveDelete('btnId')
     ];
 
@@ -260,46 +399,6 @@ export default {
   }
 };
 
-function addBtn({ data, input, output, slot }: { data: Data, input: any, output: any, slot: any }) {
-  const { footerBtns } = data;
-  const id = uuid(),
-    title = `按钮${footerBtns.length + 1}`;
-  const schema = {
-    type: 'any'
-  };
-
-  const defaultBtn: any = {
-    id,
-    title,
-    icon: '',
-    useIcon: false,
-    showText: true,
-    type: 'default'
-  };
-  output.add(id, title, schema);
-  slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'follow' });
-  slot.get(SlotIds.Container).outputs.add(id, `${title}输出数据`, { type: 'follow' });
-  input.get(InputIds.Open).setRels([...data.footerBtns.map(({ id }) => id), id]);
-  data.footerBtns.unshift(defaultBtn);
-}
-
-function get(
-  data: Data,
-  focusArea: any,
-  dataset: string,
-  val = 'obj',
-  cb?: any
-) {
-  if (!focusArea) return;
-  const key = focusArea.dataset[dataset];
-  const index = data.footerBtns.findIndex((def) => def.id === key);
-  if (index === -1) return;
-  if (cb) cb(index);
-  if (val === 'obj') {
-    return data.footerBtns[index];
-  }
-  return data.footerBtns[index][val];
-}
 
 function icon(dataset: string) {
   return {
@@ -397,20 +496,13 @@ function moveDelete(dataset: string) {
       {
         title: '删除',
         type: 'Button',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.footerBtns.length > 1;
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const { id } = get(data, focusArea, dataset, 'obj');
+          return !DefaultEvent.includes(id);
         },
         value: {
           set({ data, focusArea, input, output, slot }: EditorResult<Data>) {
-            get(data, focusArea, dataset, 'obj', (index) => {
-              const btnId = data.footerBtns[index].id;
-              output.remove(btnId);
-              slot.get(SlotIds.Container).inputs.remove(btnId);
-              slot.get(SlotIds.Container).outputs.remove(btnId);
-
-              data.footerBtns.splice(index, 1);
-              input.get(InputIds.Open).setRels(data.footerBtns.map(({ id }) => id));
-            });
+            removeBtn({ data, focusArea, input, output, slot });
           }
         }
       },
@@ -482,8 +574,8 @@ function useDynamic(dataset: string) {
               type: 'follow'
             };
             if (value) {
-              input.add(`disable${res.id}`, `禁用-${res.title}按钮`, schema);
-              input.add(`enable${res.id}`, `启用-${res.title}按钮`, schema);
+              input.add(`disable${res.id}`, `禁用 - ${res.title}按钮`, schema);
+              input.add(`enable${res.id}`, `启用 - ${res.title}按钮`, schema);
             } else {
               input.remove(`disable${res.id}`);
               input.remove(`enable${res.id}`);
@@ -505,8 +597,8 @@ function useDynamic(dataset: string) {
               type: 'follow'
             };
             if (value) {
-              input.add(`hidden${res.id}`, `隐藏-${res.title}按钮`, schema);
-              input.add(`show${res.id}`, `显示-${res.title}按钮`, schema);
+              input.add(`hidden${res.id}`, `隐藏 - ${res.title}按钮`, schema);
+              input.add(`show${res.id}`, `显示 - ${res.title}按钮`, schema);
             } else {
               input.remove(`hidden${res.id}`);
               input.remove(`show${res.id}`);

@@ -15,7 +15,8 @@
       "icon": "",
       "useIcon": false,
       "showText": true,
-      "type": "default"
+      "type": "default",
+      "visible": true
     },
     {
       "id": "ok",
@@ -23,7 +24,8 @@
       "type": "primary",
       "icon": "",
       "useIcon": false,
-      "showText": true
+      "showText": true,
+      "visible": true
     }
   ]
 }
