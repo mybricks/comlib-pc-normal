@@ -22,6 +22,7 @@ export interface Data {
   showCancelBtn?: boolean;
   visible: boolean;
   inputData: any;
+  width?: number;
 }
 
 export const InputIds = {
