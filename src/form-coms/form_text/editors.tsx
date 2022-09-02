@@ -101,14 +101,14 @@ export default {
       {
         title: '最大长度',
         type: 'InputNumber',
-        description: '可输入的内容最大长度, 0 为不限制',
-        options: [{ min: 0 }],
+        description: '可输入的内容最大长度, -1 为不限制',
+        options: [{ min: -1 }],
         value: {
           get({ data }) {
-            return data.config.maxLength || 0;
+            return data.config.maxLength || [-1];
           },
           set({ data }, value: number) {
-            data.config['maxLength'] = value;
+            data.config['maxLength'] = value[0];
           }
         }
       },
