@@ -100,11 +100,12 @@ export default {
       },
       {
         title: '最大长度',
-        type: 'Text',
-        description: '是否展示字数',
+        type: 'InputNumber',
+        description: '可输入的内容最大长度, 0 为不限制',
+        options: [{ min: 0 }],
         value: {
           get({ data }) {
-            return data.config.maxLength;
+            return data.config.maxLength || 0;
           },
           set({ data }, value: number) {
             data.config['maxLength'] = value;
