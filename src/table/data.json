@@ -1,52 +1,22 @@
 {
-  "timestamp": "",
-  "dataSource": [],
   "rowKey": "uuid",
+  "dataSource": [],
   "columns": [],
-  "batchBtns": [],
-  "extraOutputs": [],
-  "bordered": false,
-  "size": "middle",
-  "queryParams": {},
-  "hasPagination": false,
-  "pagination": {
-    "pageSize": 20,
-    "current": 1,
-    "total": 20,
-    "showSizeChanger": false
-  },
-  "pageNumber": "current",
-  "pageSize": "pageSize",
-  "useRowSelection": false,
-  "rowSelection": {
-    "type": "checkbox"
-  },
   "fixedHeader": false,
   "scroll": {
     "y": "",
     "scrollToFirstRowOnChange": true
   },
-  "useLoading": false,
-  "isActive": true,
-  "immediate": false,
-  "scratchOutputIds": [],
-  "expandableBlocks": {},
-  "expandable": false,
-  "loadingTip": "",
-  "useInput": false,
-  "actionBtns": [],
-  "tableTitle": "查询表格",
-  "tableTitleStyle": {
-    "fontSize": 16,
-    "color": "#434343",
-    "fontWeight": "bold",
-    "letterSpacing": 0,
-    "lineHeight": 1
+  "bordered": false,
+  "size": "middle",
+  "useRowSelection": false,
+  "rowSelection": {
+    "type": "checkbox"
   },
-  "showPaginationTotal": true,
   "rowSelectionPostion": [
     "top",
     "bottom"
   ],
-  "useDrapItem": false
+  "useLoading": false,
+  "loadingTip": ""
 }

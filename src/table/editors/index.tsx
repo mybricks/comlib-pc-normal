@@ -1,22 +1,20 @@
-import { setDataSchema, getSingleDataSourceSchema } from '../schema';
-import columnEditor from './table-item';
 import { InputIds } from '../constants';
-import { batchActionBtnsEditor, colActionBtnsEditor, headerActionBtnsEditor } from './actionBtns';
-import headerEditor from './table/header';
-import headerTitleEditor from './table/headerTitle';
-import toolAreaEditor from './table/toolArea';
-import { rowSelectionEditor } from './table/rowSelection';
-import tableStyleEditor from './table/tableStyle';
-import addColumnEditor from './table/addColumn';
-import { expandEditor } from './table/expand';
-import { EventEditor } from './table/event';
 import { Data } from '../types';
 import { uuid } from '../../utils';
-import { LoadingEditor } from './table/loading';
+import { setDataSchema, Schemas } from '../schema';
+import columnEditor from './table-item';
+import HeaderEditor from './table/header';
+import ToolAreaEditor from './table/toolArea';
+import TableStyleEditor from './table/tableStyle';
+import AddColumnEditor from './table/addColumn';
+import ExpandEditor from './table/expand';
+import EventEditor from './table/event';
+import LoadingEditor from './table/loading';
+import { getRowSelectionEditor } from './table/rowSelection';
 
-function addDataSourceInput({ input, columns }) {
+function addDataSourceInput({ input }) {
   if (!input.get(InputIds.SET_DATA_SOURCE)) {
-    input.add(InputIds.SET_DATA_SOURCE, '设置数据源', getSingleDataSourceSchema(columns));
+    input.add(InputIds.SET_DATA_SOURCE, '设置数据源', Schemas.Array);
   }
 }
 
@@ -53,11 +51,11 @@ function getColumnsFromSchema(schema: any) {
 }
 
 export default {
-  '@init': ({ data, output, input }: EditorResult<Data>) => {
-    addDataSourceInput({ input, columns: data.columns });
-    setDataSchema({ data, output, input });
+  '@init': ({ data, output, input, ...res }: EditorResult<Data>) => {
+    addDataSourceInput({ input });
+    setDataSchema({ data, output, input, ...res });
   },
-  '@inputConnected'({ data, input, output, slot }, fromPin, toPin) {
+  '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
       if (data.columns.length === 0) {
         data.columns = getColumnsFromSchema(fromPin.schema);
@@ -71,27 +69,23 @@ export default {
       } else {
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {};
       }
-      setDataSchema({ data, output, input });
+      setDataSchema({ data, output, input, ...res });
     }
   },
   '@inputDisConnected'({ data, input }, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE && data.columns.length === 0) {
-      input.get(toPin.id).setSchema({ title: '列表数据', type: 'any' });
+      input.get(toPin.id).setSchema({ title: '列表数据', type: Schemas.Array });
     }
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [addColumnEditor, headerEditor, toolAreaEditor];
+    cateAry[0].items = [AddColumnEditor, HeaderEditor, ToolAreaEditor];
 
     cateAry[1].title = '样式';
-    cateAry[1].items = [...LoadingEditor, tableStyleEditor];
+    cateAry[1].items = [...LoadingEditor, TableStyleEditor];
 
     cateAry[2].title = '高级';
-    cateAry[2].items = [...EventEditor, ...rowSelectionEditor(props), ...expandEditor];
+    cateAry[2].items = [...EventEditor, ...ExpandEditor, ...getRowSelectionEditor(props)];
   },
-  ...columnEditor,
-  ...headerTitleEditor,
-  ...colActionBtnsEditor,
-  ...headerActionBtnsEditor,
-  ...batchActionBtnsEditor
+  ...columnEditor
 };

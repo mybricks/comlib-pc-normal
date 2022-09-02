@@ -1,0 +1,47 @@
+@import '../../runtime.less';
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  :global {
+    .ant-btn {
+      box-sizing: border-box;
+    }
+    .ant-pagination {
+      white-space: nowrap;
+    }
+  }
+  .title {
+    font-size: @fontSize2;
+    color: @fontColor2;
+    display: flex;
+    align-items: center;
+    .totalTipWrap {
+      font-size: 12px;
+      color: @fontColor;
+      font-weight: normal;
+    }
+  }
+}
+.marginBottom {
+  margin-bottom: 16px;
+}
+.flex {
+  display: flex;
+}
+.flexRowReverse {
+  flex-direction: row-reverse;
+}
+.flexDirectionColumn {
+  flex-direction: column;
+}
+.width100 {
+  width: 100%;
+}
+.actionBtnsWrap {
+  display: flex;
+  justify-content: space-between;
+}
+.emptyWrap {
+  min-width: 100px;
+}

@@ -46,9 +46,9 @@ const addColumnEditor = {
         get({ data }: EditorResult<Data>) {
           return [...data.columns];
         },
-        set({ data, output, input, slot }: EditorResult<Data>, val: IColumn[]) {
-          setColumns({ data, output, slot }, val);
-          setDataSchema({ data, output, input });
+        set({ data, output, input, slot, ...res }: EditorResult<Data>, val: IColumn[]) {
+          setColumns({ data, slot }, val);
+          setDataSchema({ data, output, input, slot, ...res });
         }
       }
     }

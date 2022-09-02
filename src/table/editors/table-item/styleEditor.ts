@@ -1,5 +1,5 @@
 import { setCol } from '../../schema';
-import { Data } from '../../types';
+import { AlignEnum, ContentTypeEnum, Data } from '../../types';
 import { getColumnItem } from '../../utils';
 
 const StyleEditor = {
@@ -12,7 +12,7 @@ const StyleEditor = {
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
-        return item.contentType !== 'group';
+        return item.contentType !== ContentTypeEnum.Group;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
@@ -26,7 +26,7 @@ const StyleEditor = {
           } else {
             width = value && value.match(/^[1-9]\d*$/gi) ? ~~value : void 0;
           }
-          setCol(data, focusArea, width, 'width');
+          setCol({ data, focusArea }, 'width', width);
         }
       }
     },
@@ -34,19 +34,19 @@ const StyleEditor = {
       title: '对齐方式',
       type: 'Select',
       options: [
-        { label: '左对齐', value: 'left' },
-        { label: '居中对齐', value: 'center' },
-        { label: '右对齐', value: 'right' }
+        { label: '左对齐', value: AlignEnum.Left },
+        { label: '居中对齐', value: AlignEnum.Center },
+        { label: '右对齐', value: AlignEnum.Right }
       ],
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return item.align || 'left';
+          return item.align || AlignEnum.Left;
         },
-        set({ data, focusArea }: EditorResult<Data>, value: string) {
+        set({ data, focusArea }: EditorResult<Data>, value: AlignEnum) {
           if (!focusArea) return;
-          setCol(data, focusArea, value, 'align');
+          setCol({ data, focusArea }, 'align', value);
         }
       }
     },
@@ -62,12 +62,7 @@ const StyleEditor = {
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
-        return item.contentType !== 'group';
-        // return (
-        //   focusArea.dataset.tableThIdx === 0 ||
-        //   focusArea.dataset.tableThIdx === data.columns.length - 1 ||
-        //   !!item.fixed
-        // );
+        return item.contentType !== ContentTypeEnum.Group;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
@@ -77,7 +72,7 @@ const StyleEditor = {
         },
         set({ data, focusArea }, value: string) {
           if (!focusArea) return;
-          setCol(data, focusArea, value, 'fixed');
+          setCol({ data, focusArea }, 'fixed', value);
         }
       }
     }

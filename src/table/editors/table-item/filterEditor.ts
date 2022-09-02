@@ -1,6 +1,6 @@
 import { InputIds, OutputIds } from '../../constants';
-import { Schemas } from '../../schema';
-import { Data, Filter, IColumn } from '../../types';
+import { Schemas, setDataSchema } from '../../schema';
+import { ContentTypeEnum, Data, Filter, FilterTypeEnum, IColumn } from '../../types';
 import { getColumnItem } from '../../utils';
 
 interface Props {
@@ -15,17 +15,17 @@ const addFilterIO = ({ data, output, input }: Props) => {
 
   // 接口筛选
   const needRequestEvent = data.columns.some(
-    (item) => item.filter?.enable && item.filter?.type === 'request'
+    (item) => item.filter?.enable && item.filter?.type === FilterTypeEnum.Request
   );
   if (needRequestEvent) {
     if (!event1) {
-      output.add(OutputIds.FILTER, '筛选', Schemas.FILTER(data));
+      output.add(OutputIds.FILTER, '筛选', Schemas.Object);
     }
     if (!event2) {
-      output.add(OutputIds.GET_FILTER, '筛选数据', Schemas.FILTER(data));
+      output.add(OutputIds.GET_FILTER, '筛选数据', Schemas.Object);
     }
     if (!event3) {
-      input.add(InputIds.GET_FILTER, '筛选数据', Schemas.Void);
+      input.add(InputIds.GET_FILTER, '获取筛选数据', Schemas.Void);
       input.get(InputIds.GET_FILTER).setRels([OutputIds.GET_SORT]);
     }
   }
@@ -39,10 +39,10 @@ const addFilterIO = ({ data, output, input }: Props) => {
   const event4 = input.get(InputIds.SET_FILTER_INPUT);
   // 远程数据源
   const needRemoteEvent = data.columns.some(
-    (item) => item.filter?.enable && item.filter?.filterSource === 'remote'
+    (item) => item.filter?.enable && item.filter?.filterSource === FilterTypeEnum.Request
   );
   if (needRemoteEvent) {
-    !event4 && input.add(InputIds.SET_FILTER_INPUT, '接收筛选项', Schemas.Object);
+    !event4 && input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
   }
   if (!needRemoteEvent) {
     event4 && input.remove(InputIds.SET_FILTER_INPUT);
@@ -64,7 +64,7 @@ const FilterEditor = {
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
     const item = getColumnItem(data, focusArea);
-    return item && ['text', 'color', 'link', 'tag', 'badge', 'date'].includes(item.contentType);
+    return item && [ContentTypeEnum.Text, ContentTypeEnum.SlotItem].includes(item.contentType);
   },
   items: [
     {
@@ -76,11 +76,12 @@ const FilterEditor = {
           const item = getColumnItem(data, focusArea);
           return item.filter?.enable;
         },
-        set({ data, focusArea, input, output }: EditorResult<Data>, value: boolean) {
+        set({ data, focusArea, input, output, ...res }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           setFilterProps(item, 'enable', value);
           addFilterIO({ data, output, input });
+          setDataSchema({ data, focusArea, input, output, ...res });
         }
       }
     },
@@ -88,8 +89,8 @@ const FilterEditor = {
       title: '筛选类型',
       type: 'Select',
       options: [
-        { label: '多选', value: 'multi' },
-        { label: '单选', value: 'single' }
+        { label: '多选', value: FilterTypeEnum.Multiple },
+        { label: '单选', value: FilterTypeEnum.Single }
       ],
       description: '筛选支持单选或多选',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
@@ -101,9 +102,9 @@ const FilterEditor = {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return (item && item.filter?.filterType) || 'multi';
+          return (item && item.filter?.filterType) || FilterTypeEnum.Multiple;
         },
-        set({ data, focusArea }: EditorResult<Data>, value: 'multi' | 'single') {
+        set({ data, focusArea }: EditorResult<Data>, value: FilterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           setFilterProps(item, 'filterType', value);
@@ -114,8 +115,8 @@ const FilterEditor = {
       title: '筛选项来源',
       type: 'Select',
       options: [
-        { label: '本地定义', value: 'local' },
-        { label: '接口获取', value: 'remote' }
+        { label: '本地定义', value: FilterTypeEnum.Local },
+        { label: '接口获取', value: FilterTypeEnum.Request }
       ],
       description: '定义筛选项数据的来源方式',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
@@ -127,13 +128,14 @@ const FilterEditor = {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return (item && item.filter?.filterSource) || 'local';
+          return (item && item.filter?.filterSource) || FilterTypeEnum.Local;
         },
-        set({ data, focusArea, input, output }: EditorResult<Data>, value: 'local' | 'remote') {
+        set({ data, focusArea, input, output, ...res }: EditorResult<Data>, value: FilterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           setFilterProps(item, 'filterSource', value);
           addFilterIO({ data, output, input });
+          setDataSchema({ data, focusArea, input, output, ...res });
         }
       }
     },
@@ -143,7 +145,7 @@ const FilterEditor = {
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
-        return item && item.filter?.enable && item.filter?.filterSource !== 'remote';
+        return item && item.filter?.enable && item.filter?.filterSource !== FilterTypeEnum.Request;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
@@ -180,20 +182,21 @@ const FilterEditor = {
         return item && item.filter?.enable;
       },
       options: [
-        { label: '本地筛选', value: 'local' },
-        { label: '请求接口', value: 'request' }
+        { label: '本地筛选', value: FilterTypeEnum.Local },
+        { label: '请求接口', value: FilterTypeEnum.Request }
       ],
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return (item && item.filter?.type) || 'local';
+          return (item && item.filter?.type) || FilterTypeEnum.Local;
         },
-        set({ data, output, input, focusArea }: EditorResult<Data>, value: 'local' | 'request') {
+        set({ data, output, input, focusArea, ...res }: EditorResult<Data>, value: FilterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           setFilterProps(item, 'type', value);
           addFilterIO({ data, input, output });
+          setDataSchema({ data, focusArea, input, output, ...res });
         }
       }
     }

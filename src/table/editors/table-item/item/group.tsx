@@ -1,5 +1,5 @@
 import { setDataSchema } from '../../../schema';
-import { Data } from '../../../types';
+import { ContentTypeEnum, Data } from '../../../types';
 import { getColumnItem, getNewColumn } from '../../../utils';
 
 export default {
@@ -7,18 +7,18 @@ export default {
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
     const item = getColumnItem(data, focusArea);
-    return item.contentType === 'group';
+    return item.contentType === ContentTypeEnum.Group;
   },
   items: [
     {
       title: '添加子项',
       type: 'Button',
       value: {
-        set({ data, focusArea, output, input }: EditorResult<Data>) {
+        set({ data, focusArea, output, input, ...res }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          item.children = [...item.children, getNewColumn()];
-          setDataSchema({ data, output, input });
+          item.children = [...(item.children || []), getNewColumn()];
+          setDataSchema({ data, focusArea, output, input, ...res });
           data.columns = [...data.columns];
         }
       }

@@ -1,6 +1,6 @@
 import { setDataSchema } from '../../schema';
 import { Data } from '../../types';
-import { getColumnItemInfo, getNewColumn, removeActionBtns } from '../../utils';
+import { getColumnItemInfo, getNewColumn } from '../../utils';
 
 const IndexEditor = [
   {
@@ -43,19 +43,14 @@ const IndexEditor = [
     title: '删除',
     type: 'Button',
     value: {
-      set({ data, focusArea, output, input, slot }: EditorResult<Data>) {
+      set({ data, focusArea, input, slot, ...res }: EditorResult<Data>) {
         if (!focusArea) return;
         const { index, parent, column } = getColumnItemInfo(data, focusArea);
-        if (column.actionBtns && column.actionBtns.length !== 0) {
-          removeActionBtns(column.actionBtns, output);
-          parent.splice(index, 1);
-        } else {
-          parent.splice(index, 1);
-        }
+        parent.splice(index, 1);
         if (column.slotId && slot.get(column.slotId)) {
           slot.remove(column.slotId);
         }
-        setDataSchema({ data, output, input });
+        setDataSchema({ data, focusArea, input, slot, ...res });
       }
     }
   },
@@ -63,11 +58,11 @@ const IndexEditor = [
     title: '列前添加列',
     type: 'Button',
     value: {
-      set({ data, focusArea, output, input }: EditorResult<Data>) {
+      set({ data, focusArea, output, input, ...res }: EditorResult<Data>) {
         if (!focusArea) return;
         const { index, parent } = getColumnItemInfo(data, focusArea);
         parent.splice(index, 0, getNewColumn());
-        setDataSchema({ data, output, input });
+        setDataSchema({ data, focusArea, output, input, ...res });
       }
     }
   },
@@ -75,11 +70,11 @@ const IndexEditor = [
     title: '列后添加列',
     type: 'Button',
     value: {
-      set({ data, focusArea, output, input }: EditorResult<Data>) {
+      set({ data, focusArea, output, input, ...res }: EditorResult<Data>) {
         if (!focusArea) return;
         const { index, parent } = getColumnItemInfo(data, focusArea);
         parent.splice(index + 1, 0, getNewColumn());
-        setDataSchema({ data, output, input });
+        setDataSchema({ data, focusArea, output, input, ...res });
       }
     }
   }

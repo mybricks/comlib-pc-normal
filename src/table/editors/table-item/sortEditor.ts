@@ -1,4 +1,4 @@
-import { Data, SorterType } from '../../types';
+import { ContentTypeEnum, Data, SorterType, SorterTypeEnum } from '../../types';
 import { getColumnItem } from '../../utils';
 import { InputIds, OutputIds } from '../../constants';
 import { Schemas } from '../../schema';
@@ -14,7 +14,7 @@ const addSorterIO = ({ data, output, input }: Props) => {
   const event3 = input.get(InputIds.GET_SORT);
 
   const needEvent = data.columns.some(
-    (item) => item.sorter?.enable && item.sorter?.type === 'request'
+    (item) => item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Request
   );
   if (needEvent) {
     if (!event1) {
@@ -24,7 +24,7 @@ const addSorterIO = ({ data, output, input }: Props) => {
       output.add(OutputIds.GET_SORT, '排序数据', Schemas.SORTER);
     }
     if (!event3) {
-      input.add(InputIds.GET_SORT, '排序数据', Schemas.Void);
+      input.add(InputIds.GET_SORT, '获取排序数据', Schemas.Void);
       input.get(InputIds.GET_SORT).setRels([OutputIds.GET_SORT]);
     }
   }
@@ -41,7 +41,7 @@ const SortEditor = {
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
     const item = getColumnItem(data, focusArea);
-    return item && ['text', 'color', 'link', 'tag', 'badge', 'date'].includes(item.contentType);
+    return item && [ContentTypeEnum.Text, ContentTypeEnum.SlotItem].includes(item.contentType);
   },
   items: [
     {
@@ -61,7 +61,7 @@ const SortEditor = {
           } else {
             item.sorter = {
               enable: value,
-              type: 'length'
+              type: SorterTypeEnum.Length
             };
           }
           addSorterIO({ data, input, output });
@@ -77,10 +77,10 @@ const SortEditor = {
         return item && item.sorter?.enable;
       },
       options: [
-        { label: '字符长度', value: 'length' },
-        { label: '数字大小', value: 'size' },
-        { label: '时间前后', value: 'date' },
-        { label: '请求接口', value: 'request' }
+        { label: '字符长度', value: SorterTypeEnum.Length },
+        { label: '数字大小', value: SorterTypeEnum.Size },
+        { label: '时间前后', value: SorterTypeEnum.Date },
+        { label: '请求接口', value: SorterTypeEnum.Request }
       ],
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
