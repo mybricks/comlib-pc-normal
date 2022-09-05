@@ -9,7 +9,15 @@
   "data": "./data.json",
   "runtime": "./index.tsx",
   "editors": "./editors.tsx",
-  "inputs": [],
+  "inputs": [
+    {
+      "id": "content",
+      "title": "动态提示",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
   "outputs": [],
   "slots": [
     {

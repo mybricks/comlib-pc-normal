@@ -1,14 +1,14 @@
 import { Data, Trigger, Placement } from './types';
 export default {
   '@init': ({ data, style }: EditorResult<Data>) => {
-    style.width = 200;
+    style.width = '100%';
   },
   '@resize': {
-    options: ['width'],
+    options: ['width']
   },
   ':root': [
     {
-      title: '标题',
+      title: '提示内容',
       type: 'Text',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -16,8 +16,8 @@ export default {
         },
         set({ data }: EditorResult<Data>, val: string) {
           data.title = val;
-        },
-      },
+        }
+      }
     },
     {
       title: '触发方式',
@@ -25,16 +25,16 @@ export default {
       options: [
         {
           label: '悬浮',
-          value: 'hover',
+          value: 'hover'
         },
         {
           label: '点击',
-          value: 'click',
+          value: 'click'
         },
         {
           label: '聚焦',
-          value: 'focus',
-        },
+          value: 'focus'
+        }
       ],
       value: {
         get({ data }: EditorResult<Data>) {
@@ -42,8 +42,8 @@ export default {
         },
         set({ data }: EditorResult<Data>, val: Trigger) {
           data.trigger = val;
-        },
-      },
+        }
+      }
     },
     {
       title: '方向',
@@ -51,20 +51,20 @@ export default {
       options: [
         {
           label: '上',
-          value: 'top',
+          value: 'top'
         },
         {
           label: '下',
-          value: 'bottom',
+          value: 'bottom'
         },
         {
           label: '左',
-          value: 'left',
+          value: 'left'
         },
         {
           label: '右',
-          value: 'right',
-        },
+          value: 'right'
+        }
       ],
       value: {
         get({ data }: EditorResult<Data>) {
@@ -72,8 +72,8 @@ export default {
         },
         set({ data }: EditorResult<Data>, val: Placement) {
           data.placement = val;
-        },
-      },
-    },
-  ],
+        }
+      }
+    }
+  ]
 };
