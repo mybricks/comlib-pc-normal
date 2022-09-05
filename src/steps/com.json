@@ -8,11 +8,12 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editor",
   "inputs": [
     {
       "id": "nextStep",
       "title": "下一步",
+      "rels": ["nextStep"],
       "schema": {
         "type": "follow"
       }
@@ -27,6 +28,7 @@
     {
       "id": "submit",
       "title": "数据提交",
+      "rels": ["submit"],
       "schema": {
         "type": "follow"
       }
@@ -34,6 +36,7 @@
     {
       "id": "reset",
       "title": "重置",
+      "rels": ["reset"],
       "schema": {
         "type": "follow"
       }
@@ -55,15 +58,15 @@
       }
     },
     {
-      "id": "step0",
-      "title": "步骤0",
+      "id": "reset",
+      "title": "重置",
       "schema": {
         "type": "follow"
       }
     },
     {
-      "id": "reset",
-      "title": "重置",
+      "id": "step0",
+      "title": "步骤0",
       "schema": {
         "type": "follow"
       }
@@ -72,7 +75,17 @@
   "slots": [
     {
       "id": "step0",
-      "title": "内容"
+      "title": "内容区【1】",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "step0_input_0",
+          "title": "进入",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ]
     }
   ]
 }

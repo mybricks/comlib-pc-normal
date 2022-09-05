@@ -31,6 +31,7 @@ interface EditorResult<T> {
   diagram: any
   style: any
   catelog: any
+  slots?: any
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDesc: (desc?: string) => void
