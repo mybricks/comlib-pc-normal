@@ -1,9 +1,13 @@
-export type AlignType = 'flex-start' | 'center' | 'flex-end';
-export type SizeType = 'default' | 'small' | 'simple';
-export class Page {
-  pageNum: number;
-  pageSize: number
-};
+export enum AlignTypeEnum {
+  FlexStart = 'flex-start',
+  Center = 'center',
+  FlexEnd = 'flex-end'
+}
+export enum SizeTypeEnum {
+  Default = 'default',
+  Small = 'small',
+  Simple = 'simple'
+}
 
 /**
  * 数据源
@@ -20,18 +24,55 @@ export class Page {
  * @param hideOnSinglePage 只有一页时隐藏分页器
  * @param size 尺寸
  */
-export class Data {
+export interface Data {
   total: number;
   text: string;
   current: number;
-  currentPage: Page;
+  currentPage: {
+    pageNum: number;
+    pageSize: number;
+  };
   isDynamic: boolean;
   disabled?: boolean;
   defaultPageSize: number;
-  align: AlignType;
-  size: SizeType;
+  align: AlignTypeEnum;
+  size: SizeTypeEnum;
   showSizeChanger?: boolean;
   pageSizeOptions?: string[];
   showQuickJumper?: boolean;
   hideOnSinglePage?: boolean;
 }
+
+export const OutputIds = {
+  PageChange: 'pageChange',
+  GetPageInfo: 'getPageInfo'
+};
+export const InputIds = {
+  SetEnable: 'setEnable',
+  SetDisable: 'setDisable',
+
+  SetTotal: 'setTotal',
+  SetPageNum: 'setPageNum',
+
+  GetPageInfo: 'getPageInfo'
+};
+export const Schemas = {
+  Any: {
+    type: 'any'
+  }
+};
+
+export const templateRender = (template: string, params: any) => {
+  return template.replace(/\{([^\{\}]*?)\}/g, (match, key) => {
+    switch (key?.trim?.()) {
+      case 'total':
+        return params?.total;
+      case 'start':
+        return params?.start;
+      case 'end':
+        return params?.end;
+      default:
+        return `{${key}}`;
+    }
+  });
+};

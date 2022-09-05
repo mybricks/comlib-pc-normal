@@ -1,8 +1,8 @@
-import React, { CSSProperties, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Pagination } from 'antd';
-import { Data } from './constants';
+import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
 
-const RuntimeRender = (props: RuntimeParams<Data>) => {
+export default (props: RuntimeParams<Data>) => {
   const { data, inputs, outputs, env } = props;
   const {
     total,
@@ -17,17 +17,16 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
     pageSizeOptions,
     hideOnSinglePage
   } = data;
-  const wrapStyle: CSSProperties = {
-    display: 'flex',
-    // height: showSizeChanger ? `${pageSizeOptions.length * 32 + 32}px` : '100%',
-    justifyContent: align
-  };
 
   const setTotal = (total: number) => {
-    data.total = total;
+    if (typeof total === 'number') {
+      data.total = total;
+    }
   };
   const setPageNum = (pageNum: number) => {
-    data.current = pageNum;
+    if (typeof pageNum === 'number') {
+      data.current = pageNum;
+    }
   };
   const setDisable = () => {
     data.disabled = true;
@@ -35,15 +34,17 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   const setEnable = () => {
     data.disabled = false;
   };
+
   useEffect(() => {
     if (env.runtime) {
-      inputs['total'] && inputs['total'](setTotal);
-      inputs['pageNum'] && inputs['pageNum'](setPageNum);
-      inputs['disable'] && inputs['disable'](setDisable);
-      inputs['enable'] && inputs['enable'](setEnable);
-      inputs['currentPage'] && inputs['currentPage']((val, relOutputs) => {
-        relOutputs['output'](data.currentPage);
+      inputs[InputIds.SetTotal](setTotal);
+      inputs[InputIds.SetPageNum](setPageNum);
+      inputs[InputIds.GetPageInfo]((val, relOutputs) => {
+        relOutputs[OutputIds.GetPageInfo](data.currentPage);
       });
+
+      inputs[InputIds.SetDisable] && inputs[InputIds.SetDisable](setDisable);
+      inputs[InputIds.SetEnable] && inputs[InputIds.SetEnable](setEnable);
     }
   }, []);
 
@@ -52,20 +53,20 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
       pageNum,
       pageSize
     };
-    outputs['pageChange'] && outputs['pageChange'](data.currentPage);
     setPageNum(pageNum);
+    outputs[OutputIds.PageChange](data.currentPage);
   };
 
   const totalText = (total: number, range: number[]) => {
-    return env.i18n({
-      text,
-      params: { total, start: range[0], end: range[1] }
-    });
+    return templateRender(text, { total, start: range[0], end: range[1] });
   };
 
   return (
     <div
-      style={wrapStyle}
+      style={{
+        display: 'flex',
+        justifyContent: align
+      }}
       ref={(node) => {
         // hack
         if (node?.parentElement?.style) {
@@ -78,8 +79,8 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         showTotal={totalText}
         current={current}
         defaultPageSize={defaultPageSize}
-        size={size === 'simple' ? 'default' : size}
-        simple={size === 'simple'}
+        size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
+        simple={size === SizeTypeEnum.Simple}
         showQuickJumper={showQuickJumper}
         showSizeChanger={showSizeChanger}
         pageSizeOptions={pageSizeOptions}
@@ -90,7 +91,3 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
     </div>
   );
 };
-
-export default function (props: RuntimeParams<Data>) {
-  return <RuntimeRender {...props} />;
-}
