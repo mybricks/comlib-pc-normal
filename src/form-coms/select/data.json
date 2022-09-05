@@ -2,6 +2,7 @@
   "visible": true,
   "config": {
     "options": [],
-    "disabled": false
+    "disabled": false,
+    "mode": "default"
   }
 }
