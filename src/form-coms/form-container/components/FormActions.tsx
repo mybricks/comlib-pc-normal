@@ -26,6 +26,10 @@ const FormActions = (props: Props) => {
         <Form.Item>
           <Space>
             {actions.items.map((item) => {
+              if (typeof item.visible !== 'undefined' && !item.visible) {
+                return null;
+              }
+
               return (
                 <Button
                   type={item.type}

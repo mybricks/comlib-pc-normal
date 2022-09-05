@@ -168,7 +168,7 @@ export default {
     title: '操作区',
     items: [
       {
-        title: '显示操作',
+        title: '显示操作区',
         type: 'Switch',
         value: {
           get({data}: EditorResult<Data>) {
@@ -176,6 +176,21 @@ export default {
           },
           set({data}: EditorResult<Data>, val) {
             data.actions.visible = val
+          }
+        }
+      },
+      {
+        title: '显示提交操作',
+        type: 'Switch',
+        value: {
+          get({data}: EditorResult<Data>) {
+            return data.actions.items.find(item => item.key === 'submit')?.visible
+          },
+          set({data}: EditorResult<Data>, val) {
+            const submitItem = data.actions.items.find(item => item.key === 'submit')
+            if (submitItem) {
+              submitItem.visible = val
+            }
           }
         }
       },
@@ -209,7 +224,6 @@ export default {
         value: {
           get({data, focusArea}: EditorResult<Data>) {
             const comId = focusArea.dataset.formActionsItem as string
-            console.log(focusArea, data.actions.items.find(item => item.key === comId))
             return comId && data.actions.items.find(item => item.key === comId)?.title
           },
           set({data, focusArea, output}: EditorResult<Data>, val) {
@@ -222,6 +236,31 @@ export default {
             if (item) {
               item.title = val
               output.setTitle(item.outputId, `点击${item.title}`)
+            }
+          }
+        }
+      },
+      {
+        title: '显示',
+        type: 'Switch',
+        ifVisible ({ data, focusArea }) {
+          const actions = data.actions.items
+          const itemId = focusArea.dataset['formActionsItem']
+          const item = actions.find(item => item.key === itemId)
+
+          return item.key === 'submit'
+        },
+        value: {
+          get({data, focusArea}: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string
+            return data.actions.items.find(item => item.key === comId)?.visible
+          },
+          set({data, focusArea, output}: EditorResult<Data>, val) {
+
+            const comId = focusArea.dataset['formActionsItem']
+            const item = data.actions.items.find(item => item.key === comId)
+            if (item) {
+              item.visible = val
             }
           }
         }

@@ -8,12 +8,13 @@
         "title": "提交",
         "type": "primary",
         "isDefault": true,
+        "visible": true,
         "outputId": "onClickSubmit",
         "key": "submit"
       },
       {
         "title": "取消",
-        "isDefault": true,
+        "isDefault": false,
         "outputId": "onClickCancel",
         "key": "cancel"
       }

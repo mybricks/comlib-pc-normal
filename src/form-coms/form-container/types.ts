@@ -6,6 +6,7 @@ interface Action {
   outputId: string
   type?: ButtonType
   key: string
+  visible?: boolean
 }
 
 interface Actions {
