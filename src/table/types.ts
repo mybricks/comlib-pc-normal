@@ -1,5 +1,3 @@
-import { SorterResult } from 'antd/lib/table/interface';
-
 export enum ContentTypeEnum {
   Text = 'text',
   SlotItem = 'slotItem',
@@ -36,7 +34,7 @@ export interface Filter {
 }
 
 export interface IColumn {
-  key?: string;
+  key: string;
   dataIndex: string | string[];
   title: any;
   contentType: ContentTypeEnum;
@@ -118,7 +116,10 @@ export interface Data {
   useSetSelectedRowKeys?: boolean;
 
   // 排序参数
-  sortParams?: SorterResult<any>;
+  sortParams?: {
+    id?: string;
+    order?: string;
+  };
   // 筛选参数
   filterParams: Record<string, string[] | null>;
 
@@ -129,6 +130,4 @@ export interface Data {
 
   // 使用列展开
   useExpand?: boolean;
-  // 输出表格数据
-  outputTableData?: boolean;
 }

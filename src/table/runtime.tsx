@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
-import isEqual from 'lodash/isEqual';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from './constants';
 import { formatDataSource, getDefaultDataSource } from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
-import { Data, FilterTypeEnum, RowSelectionTypeEnum, SorterTypeEnum } from './types';
+import { Data, FilterTypeEnum, RowSelectionTypeEnum } from './types';
 import ColumnRender from './components/ColumnRender';
 import ColumnsTitleRender from './components/ColumnsTitleRender';
 import TableHeader from './components/TableHeader';
@@ -68,11 +67,28 @@ export default function (props: RuntimeParams<Data>) {
         inputs[InputIds.GET_FILTER]((val, relOutputs) => {
           relOutputs[OutputIds.GET_FILTER](data.filterParams);
         });
+      // 设置筛选数据
+      inputs[InputIds.SET_FILTER] &&
+        inputs[InputIds.SET_FILTER]((val) => {
+          data.filterParams = {
+            ...data.filterParams,
+            ...val
+          };
+        });
 
       // 获取排序数据
       inputs[InputIds.GET_SORT] &&
         inputs[InputIds.GET_SORT]((val, relOutputs) => {
           relOutputs[OutputIds.GET_SORT](data.sortParams);
+        });
+      // 设置排序数据
+      inputs[InputIds.SET_SORT] &&
+        inputs[InputIds.SET_SORT]((val) => {
+          const { order, id } = val || {};
+          data.sortParams = {
+            order,
+            id
+          };
         });
     }
   }, []);
@@ -80,8 +96,7 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       // 输出表格数据
-      data.outputTableData &&
-        inputs[InputIds.GET_TABLE_DATA] &&
+      inputs[InputIds.GET_TABLE_DATA] &&
         inputs[InputIds.GET_TABLE_DATA]((val, relOutputs) => {
           const outputFn =
             relOutputs?.[OutputIds.GET_TABLE_DATA] || outputs[OutputIds.GET_TABLE_DATA];
@@ -147,35 +162,26 @@ export default function (props: RuntimeParams<Data>) {
 
   const sorterChange = useCallback((sorter: SorterResult<any>) => {
     const { field, order } = sorter || {};
-    const column = data.columns.find((item) => isEqual(item.dataIndex, field));
-    if (column?.sorter?.type === SorterTypeEnum.Request) {
-      const sortParams = {
-        field: Array.isArray(field) ? field.join('.') : field,
-        order
-      };
-      data.sortParams = sortParams;
-      outputs[OutputIds.SORTER](sortParams);
-    }
+    const sortParams: any = {
+      id: Array.isArray(field) ? field.join('.') : field,
+      order
+    };
+    data.sortParams = order ? sortParams : undefined;
+    outputs[OutputIds.SORTER](data.sortParams);
   }, []);
 
   const filterChange = useCallback((filter: any) => {
     const filterKey = Object.keys(filter);
     const filterParams = {};
-    let isOutput = false;
     filterKey.forEach((key) => {
       const col = data.columns.find((item) => `${item.dataIndex}` === key);
       if (col) {
         filterParams[Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex] =
           filter[key];
       }
-      if (col && col.filter?.enable && col.filter?.type === FilterTypeEnum.Request) {
-        isOutput = true;
-      }
     });
     data.filterParams = filterParams;
-    if (isOutput) {
-      outputs[OutputIds.FILTER](filterParams);
-    }
+    outputs[OutputIds.FILTER](data.filterParams);
   }, []);
 
   const onChange = useCallback((pagination, filters, sorter, extra) => {

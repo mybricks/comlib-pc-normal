@@ -142,21 +142,27 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
   const setDataSchema = (columns: IColumn[]) => {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
-        if (item.filter?.enable && item.filter?.type === FilterTypeEnum.Request) {
+        if (item.filter?.enable) {
           const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           schema1.properties[key] = {
-            type: 'any',
-            ...(schemaObj[key] || {})
+            type: 'array',
+            items: {
+              type: 'string',
+              ...(schemaObj[key] || {})
+            }
           };
           schema2.properties[key] = {
             type: 'array',
             items: {
-              text: {
-                type: 'string'
-              },
-              value: {
-                type: 'any',
-                ...(schemaObj[key] || {})
+              type: 'object',
+              properties: {
+                text: {
+                  type: 'string'
+                },
+                value: {
+                  type: 'any',
+                  ...(schemaObj[key] || {})
+                }
               }
             }
           };
@@ -170,6 +176,8 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
   setDataSchema(data.columns);
 
   output.get(OutputIds.FILTER)?.setSchema(schema1);
+  input.get(OutputIds.GET_FILTER)?.setSchema(schema1);
+  input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
 
@@ -253,7 +261,7 @@ export const Schemas = {
   SORTER: {
     type: 'object',
     properties: {
-      field: {
+      id: {
         type: 'string'
       },
       order: {

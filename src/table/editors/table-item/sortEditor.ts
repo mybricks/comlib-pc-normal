@@ -1,4 +1,4 @@
-import { ContentTypeEnum, Data, SorterType, SorterTypeEnum } from '../../types';
+import { ContentTypeEnum, Data, SorterTypeEnum } from '../../types';
 import { getColumnItem } from '../../utils';
 import { InputIds, OutputIds } from '../../constants';
 import { Schemas } from '../../schema';
@@ -12,11 +12,10 @@ const addSorterIO = ({ data, output, input }: Props) => {
   const event1 = output.get(OutputIds.SORTER);
   const event2 = output.get(OutputIds.GET_SORT);
   const event3 = input.get(InputIds.GET_SORT);
+  const event4 = input.get(InputIds.SET_SORT);
 
-  const needEvent = data.columns.some(
-    (item) => item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Request
-  );
-  if (needEvent) {
+  const useSort = data.columns.some((item) => item.sorter?.enable);
+  if (useSort) {
     if (!event1) {
       output.add(OutputIds.SORTER, '排序', Schemas.SORTER);
     }
@@ -27,12 +26,14 @@ const addSorterIO = ({ data, output, input }: Props) => {
       input.add(InputIds.GET_SORT, '获取排序数据', Schemas.Void);
       input.get(InputIds.GET_SORT).setRels([OutputIds.GET_SORT]);
     }
-  }
-
-  if (!needEvent) {
+    if (!event4) {
+      input.add(InputIds.SET_SORT, '设置排序数据', Schemas.SORTER);
+    }
+  } else {
     event1 && output.remove(OutputIds.SORTER);
     event2 && output.remove(OutputIds.GET_SORT);
     event3 && input.remove(InputIds.GET_SORT);
+    event4 && input.remove(InputIds.SET_SORT);
   }
 };
 
@@ -88,7 +89,7 @@ const SortEditor = {
           const item = getColumnItem(data, focusArea);
           return item.sorter?.type;
         },
-        set({ data, focusArea, output, input }: EditorResult<Data>, value: SorterType) {
+        set({ data, focusArea, output, input }: EditorResult<Data>, value: SorterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           if (item.sorter) {

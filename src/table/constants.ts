@@ -30,12 +30,16 @@ export const InputIds = {
   // 设置筛选项
   SET_FILTER_INPUT: 'filterInput',
   // 获取表格数据
-  GET_TABLE_DATA: 'tableData',
+  GET_TABLE_DATA: 'getTableData',
 
   // 获取排序数据
   GET_SORT: 'getSorter',
+  // 设置筛选数据
+  SET_SORT: 'setSorter',
   // 获取筛选数据
   GET_FILTER: 'getFilter',
+  // 设置筛选数据
+  SET_FILTER: 'setFilter',
 
   /** 区块输入项 */
   // 展开行数据
@@ -55,7 +59,7 @@ export const OutputIds = {
   // 输出勾选项
   GET_ROW_SELECTION: 'outRowSelection',
   // 输出表格数据
-  GET_TABLE_DATA: 'tableData',
+  GET_TABLE_DATA: 'getTableData',
   // 输出勾选数据
   GET_FILTER: 'getFilter',
   // 输出排序数据

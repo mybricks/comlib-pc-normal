@@ -4,12 +4,19 @@ import { Table, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { CompareFn } from 'antd/es/table/interface';
-import { AlignEnum, FilterTypeEnum, IColumn, SorterTypeEnum } from '../../types';
+import { AlignEnum, Data, FilterTypeEnum, IColumn, SorterTypeEnum } from '../../types';
 import css from './style.less';
 
 const { Column, ColumnGroup } = Table;
 
-export default ({ env, data, slots, filterMap, renderCell }) => {
+interface Props {
+  env: Env;
+  data: Data;
+  slots: any;
+  filterMap: any;
+  renderCell: any;
+}
+export default ({ env, data, slots, filterMap, renderCell }: Props) => {
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -25,7 +32,7 @@ export default ({ env, data, slots, filterMap, renderCell }) => {
     );
   };
   // 获取列数据
-  const getColumns = () => {
+  const getColumns = (): IColumn[] => {
     let res = [...(data.columns || [])].map((item) => ({
       ...item,
       dataIndex: env.edit ? item.key : item.dataIndex
@@ -117,11 +124,13 @@ export default ({ env, data, slots, filterMap, renderCell }) => {
           });
         }}
         showSorterTooltip={false}
+        sortOrder={data?.sortParams?.id === `${cItem.dataIndex}` ? data?.sortParams?.order : null}
         sorter={sorter}
         filters={filterMap[`${cItem.dataIndex}`]?.map((item) => ({
           text: item.text,
           value: item.value
         }))}
+        filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onHeaderCell={(): any => {
           return {

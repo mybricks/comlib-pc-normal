@@ -12,12 +12,12 @@ const addFilterIO = ({ data, output, input }: Props) => {
   const event1 = output.get(OutputIds.FILTER);
   const event2 = output.get(OutputIds.GET_FILTER);
   const event3 = input.get(InputIds.GET_FILTER);
+  const event4 = input.get(InputIds.SET_FILTER);
+  const event5 = input.get(InputIds.SET_FILTER_INPUT);
 
   // 接口筛选
-  const needRequestEvent = data.columns.some(
-    (item) => item.filter?.enable && item.filter?.type === FilterTypeEnum.Request
-  );
-  if (needRequestEvent) {
+  const useFilter = data.columns.some((item) => item.filter?.enable);
+  if (useFilter) {
     if (!event1) {
       output.add(OutputIds.FILTER, '筛选', Schemas.Object);
     }
@@ -26,26 +26,20 @@ const addFilterIO = ({ data, output, input }: Props) => {
     }
     if (!event3) {
       input.add(InputIds.GET_FILTER, '获取筛选数据', Schemas.Void);
-      input.get(InputIds.GET_FILTER).setRels([OutputIds.GET_SORT]);
+      input.get(InputIds.GET_FILTER).setRels([OutputIds.GET_FILTER]);
     }
-  }
-
-  if (!needRequestEvent) {
+    if (!event4) {
+      input.add(InputIds.SET_FILTER, '设置筛选数据', Schemas.Object);
+    }
+    if (!event5) {
+      input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
+    }
+  } else {
     event1 && output.remove(OutputIds.FILTER);
     event2 && output.remove(OutputIds.GET_FILTER);
     event3 && input.remove(InputIds.GET_FILTER);
-  }
-
-  const event4 = input.get(InputIds.SET_FILTER_INPUT);
-  // 远程数据源
-  const needRemoteEvent = data.columns.some(
-    (item) => item.filter?.enable && item.filter?.filterSource === FilterTypeEnum.Request
-  );
-  if (needRemoteEvent) {
-    !event4 && input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
-  }
-  if (!needRemoteEvent) {
-    event4 && input.remove(InputIds.SET_FILTER_INPUT);
+    event4 && input.remove(InputIds.SET_FILTER);
+    event5 && input.remove(InputIds.SET_FILTER_INPUT);
   }
 };
 

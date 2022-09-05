@@ -12,12 +12,6 @@ import EventEditor from './table/event';
 import LoadingEditor from './table/loading';
 import { getRowSelectionEditor } from './table/rowSelection';
 
-function addDataSourceInput({ input }) {
-  if (!input.get(InputIds.SET_DATA_SOURCE)) {
-    input.add(InputIds.SET_DATA_SOURCE, '设置数据源', Schemas.Array);
-  }
-}
-
 function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -51,23 +45,12 @@ function getColumnsFromSchema(schema: any) {
 }
 
 export default {
-  '@init': ({ data, output, input, ...res }: EditorResult<Data>) => {
-    addDataSourceInput({ input });
-    setDataSchema({ data, output, input, ...res });
-  },
   '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
-      if (data.columns.length === 0) {
+      if (data.columns.length === 0 && fromPin.schema.type === 'array') {
         data.columns = getColumnsFromSchema(fromPin.schema);
-        if (fromPin.schema.type === 'array') {
-          input.get(InputIds.SET_DATA_SOURCE).setSchema(fromPin.schema);
-        }
-      }
-
-      if (fromPin.schema.type === 'object' || fromPin.schema.type === 'array') {
+        input.get(InputIds.SET_DATA_SOURCE).setSchema(fromPin.schema);
         data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
-      } else {
-        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = {};
       }
       setDataSchema({ data, output, input, ...res });
     }
