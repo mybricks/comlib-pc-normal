@@ -17,6 +17,15 @@ export default {
           slots.get('content').inputs.add('test', 'test', { type: 'any' });
         }
       }
+    },
+    {},
+    {
+      title: '添加内部事件',
+      type: '_event',
+      options: {
+        outputId: 'ok',
+        slotId: 'content'
+      }
     }
   ]
 };

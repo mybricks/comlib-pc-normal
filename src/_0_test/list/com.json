@@ -44,5 +44,17 @@
         }
       }
     }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确认",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    }
   ]
 }
