@@ -2,8 +2,18 @@
   "content": "文字",
   "outputContent": "",
   "align": "left",
+  "isEllipsis": false,
   "ellipsis": {
     "rows": 3
   },
-  "click": false
+  "style": {
+    "fontWeight": 400,
+    "fontSize": "14px",
+    "fontStyle": "normal",
+    "lineHeight": "14px",
+    "letterSpacing": "0px",
+    "color": "#000000"
+  },
+  "useClick": false,
+  "useDynamicStyle": false
 }
