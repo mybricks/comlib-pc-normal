@@ -80,5 +80,5 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     />
   );
 
-  return <div className={css.fiText}>{jsx}</div>;
+  return data.visible && <div className={css.fiText}>{jsx}</div>;
 }
