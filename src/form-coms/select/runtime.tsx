@@ -1,77 +1,76 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { Select } from 'antd'
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { Select } from 'antd';
+import { validateFormItem } from '../utils/validator';
 
 interface Data {
   config: {
-    options: any[]
-    disabled: boolean
-  }
-  visible: boolean
+    options: any[];
+    disabled: boolean;
+    allowClear: boolean;
+    placeholder: string;
+    loading?: boolean;
+    mode?: 'tags' | 'multiple';
+  };
+  visible: boolean;
+  rules: any[];
+  value: number | string | undefined;
 }
 
-export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs } = props
-  const [value, setValue] = useState()
-  const [loading, setLoading] = useState(false)
-
+export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
-      if (value) {
-        outputRels['returnValidate']({
-          validateStatus: 'success',
+      validateFormItem({
+        value: data.value,
+        env,
+        rules: data.rules
+      })
+        .then((r) => {
+          outputRels['returnValidate'](r);
         })
-      } else {
-        outputRels['returnValidate']({
-          validateStatus: 'error',
-          help: '请选择一项'
-        })
-      }
-    })
+        .catch((e) => {
+          outputRels['returnValidate'](e);
+        });
+    });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value)
-    })
-  }, [value])
+      outputRels['returnValue'](data.value);
+    });
 
-  useLayoutEffect(() => {
     inputs['setValue']((val) => {
-      setValue(val)
-      onChange(val)
-    })
+      data.value = val;
+      onChange(val);
+    });
 
     inputs['setDisabled']((val) => {
-      data.config.disabled = val
-    })
+      data.config.disabled = val;
+    });
 
     inputs['setOptions']((val) => {
-      data.config.options = val
-    })
+      data.config.options = val;
+    });
 
     inputs['setLoading']((val: boolean) => {
-      setLoading(val)
-    })
+      data.config.loading = val;
+    });
 
     inputs['setVisible']((val) => {
-      data.visible = val
-    })
-  }, [])
+      data.visible = val;
+    });
+  }, []);
 
-  const onChange = (value) => {
-    setValue(value)
-    outputs['onChange'](value)
-  }
+  const onChange = useCallback((value) => {
+    data.value = value;
+    outputs['onChange'](value);
+  }, []);
+  const onBlur = useCallback((e) => {
+    outputs['onBlur'](data.value);
+  }, []);
 
-  return data.visible && (
-    <div>
-      <Select
-        allowClear
-        value={value}
-        placeholder="请选择"
-        {...data.config}
-        loading={loading}
-        // options={[{ label: '选项一', value: '11'}, { label: '选项二', value: '22'}]}
-        onChange={onChange}
-      />
-    </div>
-  )
+  return (
+    data.visible && (
+      <div>
+        <Select {...data.config} value={data.value} onChange={onChange} onBlur={onBlur} />
+      </div>
+    )
+  );
 }
