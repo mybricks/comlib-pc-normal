@@ -10,6 +10,22 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "outputs": [],
+  "inputs": [
+    {
+      "id": "_title",
+      "title": "动态标题",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "content",
+      "title": "动态内容",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
   "slots": [
     {
       "id": "carrier",
