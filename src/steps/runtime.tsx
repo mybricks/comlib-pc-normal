@@ -31,11 +31,9 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
         if (data.current < stepAry.length - 1) {
           stepAry[data.current].content = ds;
           data.current += 1;
-          //
         } else if (data.fullSubmit) {
           return outputs['submit'](collectParams(ds));
         }
-        outputs['nextStep'](ds);
       });
 
       inputs['prevStep'](prev);
@@ -45,6 +43,10 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       });
 
       inputs['reset']((ds: any) => reset(ds));
+
+      inputs['getIndex'](() => {
+        outputs['getIndex'](data.current);
+      });
 
       // stepAry.forEach((item) => {
       //   if (item && item.useDynamicDisplay) {
@@ -66,19 +68,14 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   }, [data.current]);
 
   const stepIntoHook = () => {
-    const slotInputs = Object.values(slots[stepAry[data.current].id].inputs);
-    console.log(slots[stepAry[data.current].id], slotInputs);
-    slotInputs?.forEach((input) => {
-      input({ current: data.current });
-    });
+    const slotInputs = slots[stepAry[data.current].id].inputs;
+    slotInputs[`${stepAry[data.current].id}_into`]({ current: data.current });
   };
 
   const stepLeaveHook = () => {
     if (preIndex === undefined) return Promise.resolve();
-    const slotOutputs = Object.values(slots[stepAry[preIndex].id].outputs);
-    console.log('----------preIndex----------', preIndex);
-    console.log('----------slotOutputs-----------', slotOutputs);
-    return Promise.all(slotOutputs.map((output) => output()));
+    const slotInputs = slots[stepAry[preIndex].id].inputs;
+    return Promise.all([slotInputs[`${stepAry[preIndex].id}_leave`]()]);
   };
 
   const getCurrentStep = (pre?): any => {
@@ -95,7 +92,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     return params;
   };
 
-  const prev = useCallback(({ id }) => {
+  const prev = useCallback(() => {
     if (runtime) {
       if (data.current > 0) {
         data.current -= 1;

@@ -13,7 +13,6 @@
     {
       "id": "nextStep",
       "title": "下一步",
-      "rels": ["nextStep"],
       "schema": {
         "type": "follow"
       }
@@ -22,7 +21,7 @@
       "id": "prevStep",
       "title": "上一步",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
@@ -40,35 +39,43 @@
       "schema": {
         "type": "follow"
       }
+    },
+    {
+      "id": "getIndex",
+      "title": "获取当前步骤（从0开始）",
+      "rels": ["getIndex"],
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [
     {
-      "id": "nextStep",
-      "title": "下一步",
-      "schema": {
-        "type": "follow"
-      }
-    },
-    {
       "id": "submit",
       "title": "数据提交",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
       "id": "reset",
       "title": "重置",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
       "id": "step0",
       "title": "步骤0",
       "schema": {
-        "type": "follow"
+        "type": "any"
+      }
+    },
+    {
+      "id": "getIndex",
+      "title": "当前步骤",
+      "schema": {
+        "type": "number"
       }
     }
   ],
@@ -79,10 +86,17 @@
       "type": "scope",
       "inputs": [
         {
-          "id": "step0_input_0",
-          "title": "进入",
+          "id": "step0_into",
+          "title": "显示",
           "schema": {
-            "type": "follow"
+            "type": "any"
+          }
+        },
+        {
+          "id": "step0_leave",
+          "title": "隐藏",
+          "schema": {
+            "type": "any"
           }
         }
       ]
