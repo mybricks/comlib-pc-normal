@@ -5,7 +5,20 @@ export default {
       type: 'button',
       value: {
         set({ data, inputs, outputs, slots, setDesc }, connector) {
-          slots.add({ id: 'test', title: 'test', type: 'scope' });
+          slots.add({
+            id: 'test',
+            title: 'test',
+            type: 'scope',
+            inputs: [
+              {
+                id: 'test',
+                title: 'Test',
+                schema: {
+                  type: 'string'
+                }
+              }
+            ]
+          });
         }
       }
     },

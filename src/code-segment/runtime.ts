@@ -3,13 +3,13 @@ import moment from 'moment';
 import { Data } from './constants';
 
 export default function ({
-  env,
-  data,
-  inputs,
-  outputs,
-  logger,
-  onError
-}: RuntimeParams<Data>) {
+                           env,
+                           data,
+                           inputs,
+                           outputs,
+                           logger,
+                           onError
+                         }: RuntimeParams<Data>) {
   // if (env.runtime) {
   const { fns, runImmediate } = data;
   if (fns) {
