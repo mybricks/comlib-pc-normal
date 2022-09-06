@@ -62,7 +62,7 @@
           "id": "dataSource",
           "title": "输入数据",
           "schema": {
-            "type": "follow"
+            "type": "any"
           }
         }
       ],
