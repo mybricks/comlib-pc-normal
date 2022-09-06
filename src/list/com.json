@@ -14,7 +14,7 @@
   "inputs": [
     {
       "id": "dataSource",
-      "title": "输入数据",
+      "title": "设置数据源",
       "schema": {
         "title": "列表数据",
         "type": "array",
