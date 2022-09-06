@@ -3,7 +3,6 @@ import { ListGridType, ListItemLayout } from 'antd/lib/list';
 export enum InputIds {
   DATA_SOURCE = 'dataSource',
   LOADING = 'loading',
-  SLOTPROPS = 'slotProps',
 
   GetDataSource = 'getdataSource'
 }
@@ -42,7 +41,6 @@ export interface Data {
   layout: ListItemLayout;
   grid: ListGridType;
 
-  useSlotProps?: boolean;
   useLoading?: boolean;
   useGetDataSource?: boolean;
 
