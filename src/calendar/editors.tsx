@@ -1,5 +1,5 @@
 import { Editor, EditorType } from '../utils/editor';
-import { Data, OUTPUTS, SLOTS, DateSchema, MonthSchema } from './constants';
+import { Data, OutputIds, SlotIds, Schemas, InputIds } from './constants';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -26,39 +26,34 @@ export default {
     cate2.items = [
       Editor<Data>('点击日期', EditorType.EventSwitch, 'useClickDateEvent', {
         options: {
-          outputId: OUTPUTS.ClickDate,
-          schema: DateSchema
+          outputId: OutputIds.ClickDate,
+          schema: Schemas.DateSchema
         }
       }),
       Editor<Data>('点击月份', EditorType.EventSwitch, 'useClickMonthEvent', {
         options: {
-          outputId: OUTPUTS.ClickMonth,
-          schema: MonthSchema
+          outputId: OutputIds.ClickMonth,
+          schema: Schemas.MonthSchema
         }
       }),
       Editor<Data>('日期变化', EditorType.EventSwitch, 'useDateChangeEvent', {
         options: {
-          outputId: OUTPUTS.DateChange,
-          schema: DateSchema
+          outputId: OutputIds.DateChange,
+          schema: Schemas.DateSchema
         }
       }),
       Editor<Data>('月份变化', EditorType.EventSwitch, 'useMonthChangeEvent', {
         options: {
-          outputId: OUTPUTS.MonthChange,
-          schema: MonthSchema
+          outputId: OutputIds.MonthChange,
+          schema: Schemas.MonthSchema
         }
       }),
-      Editor<Data>(
-        '年/月面板切换',
-        EditorType.EventSwitch,
-        'useModeChangeEvent',
-        {
-          options: {
-            outputId: OUTPUTS.ModeChange,
-            schema: MonthSchema
-          }
+      Editor<Data>('年/月面板切换', EditorType.EventSwitch, 'useModeChangeEvent', {
+        options: {
+          outputId: OutputIds.ModeChange,
+          schema: Schemas.MonthSchema
         }
-      )
+      })
     ];
 
     cate3.title = '高级';
@@ -67,23 +62,17 @@ export default {
         value: {
           set({ data, slot }: EditorResult<Data>, value: boolean) {
             if (value) {
-              slot.add(SLOTS.DateCell, '日期内容插槽');
+              slot.add({ id: SlotIds.DateCell, title: '日期内容插槽', type: 'scope' });
+              slot
+                .get(SlotIds.DateCell)
+                .inputs.add(InputIds.CurrentDate, '当前日期', Schemas.String);
+              slot
+                .get(SlotIds.DateCell)
+                .inputs.add(InputIds.CurrentDs, '当前数据', Schemas.CurrentDs);
             } else {
-              slot.remove(SLOTS.DateCell);
+              slot.remove(SlotIds.DateCell);
             }
             data.useCustomDateCell = value;
-          }
-        }
-      }),
-      Editor<Data>('顶部插槽', EditorType.Switch, 'useCustomHeader', {
-        value: {
-          set({ data, slot }: EditorResult<Data>, value: boolean) {
-            if (value) {
-              slot.add(SLOTS.HeaderRender, '顶部插槽');
-            } else {
-              slot.remove(SLOTS.HeaderRender);
-            }
-            data.useCustomHeader = value;
           }
         }
       })
