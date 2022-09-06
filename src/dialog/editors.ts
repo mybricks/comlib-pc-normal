@@ -607,8 +607,8 @@ function useDynamic(dataset: string) {
               type: 'any'
             };
             if (value) {
-              input.add(`disable${res.id}`, `禁用 - ${res.title}按钮`, schema);
-              input.add(`enable${res.id}`, `启用 - ${res.title}按钮`, schema);
+              input.add(`disable${res.id}`, `禁用-${res.title}按钮`, schema);
+              input.add(`enable${res.id}`, `启用-${res.title}按钮`, schema);
             } else {
               input.remove(`disable${res.id}`);
               input.remove(`enable${res.id}`);
@@ -630,8 +630,8 @@ function useDynamic(dataset: string) {
               type: 'any'
             };
             if (value) {
-              input.add(`hidden${res.id}`, `隐藏 - ${res.title}按钮`, schema);
-              input.add(`show${res.id}`, `显示 - ${res.title}按钮`, schema);
+              input.add(`hidden${res.id}`, `隐藏-${res.title}按钮`, schema);
+              input.add(`show${res.id}`, `显示-${res.title}按钮`, schema);
             } else {
               input.remove(`hidden${res.id}`);
               input.remove(`show${res.id}`);

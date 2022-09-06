@@ -34,34 +34,6 @@
       "schema": {
         "type": "string"
       }
-    },
-    {
-      "id": "showFooter",
-      "title": "显示底部内容",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "hideFooter",
-      "title": "隐藏底部内容",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "showTitle",
-      "title": "显示标题",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "hideTitle",
-      "title": "隐藏标题",
-      "schema": {
-        "type": "any"
-      }
     }
   ],
   "outputs": [
@@ -91,20 +63,6 @@
           "title": "输入数据",
           "schema": {
             "type": "follow"
-          }
-        },
-        {
-          "id": "cancelBtn",
-          "title": "取消事件",
-          "schema": {
-            "type": "any"
-          }
-        },
-        {
-          "id": "ok",
-          "title": "确认事件",
-          "schema": {
-            "type": "any"
           }
         }
       ],
