@@ -9,20 +9,6 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "inputs": [
-    {
-      "id": "slotProps",
-      "title": "插槽参数",
-      "schema": {
-        "title": "列表数据",
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  ],
+  "inputs": [],
   "slots": []
 }

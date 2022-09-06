@@ -59,7 +59,7 @@ export const BaseEditor = [
           !hasEvent &&
             input.add(
               InputIds.SetDataSource,
-              '数据输入',
+              '设置数据源',
               Schemas.SetDataSource(data)
             );
         } else {
