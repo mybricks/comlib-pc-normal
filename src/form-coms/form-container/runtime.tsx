@@ -1,13 +1,23 @@
 import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useState } from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlProps, FormControlInputId } from './types';
+import FormActions from './components/FormActions';
+
+type FormControlInput = {
+  returnValidate: (val) => {};
+};
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
   const [formRef] = Form.useForm();
 
   const childrenInputs = useMemo<{
-    [id: string]: { [key in FormControlInputId]: (item?: any) => {} };
+    [id: string]: {
+      [key in FormControlInputId]: (item?: any) => {
+        returnValidate: (val) => {};
+        returnValue: (val) => {};
+      };
+    };
   }>(() => {
     return {};
   }, [env.edit]);
@@ -169,14 +179,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   const submit = (outputRels?: any) => {
+    submitMethod('onFinish', outputRels);
+  };
+
+  const submitMethod = (outputId: string, outputRels?: any) => {
     validate()
       .then(() => {
         getValue().then((values) => {
           console.log('提交数据', values, outputRels);
           if (outputRels) {
-            outputRels['onFinish'](values);
+            outputRels[outputId](values);
           } else {
-            outputs['onFinish'](values);
+            outputs[outputId](values);
           }
         });
       })
@@ -229,15 +243,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
           ) : (
             content()
           )}
-          <Row style={{ flex: '1 1 100%' }} data-form-actions>
-            <Col offset={8}>
-              <Form.Item>
-                <Button type='primary' onClick={() => submit()}>
-                  提交
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
+          {data.actions.visible && (
+            <FormActions data={data} outputs={outputs} submit={submitMethod} />
+          )}
         </Form>
       ) : data.dataType === 'list' ? (
         <FormListItem
@@ -262,7 +270,6 @@ const FormListItem = ({ content, slots, env, isFormItem, data }) => {
   return (
     <Form.List name='item4'>
       {(fields, { add, remove }) => {
-        console.log('fields', fields);
         data.fieldsLength = fields.length;
 
         return (

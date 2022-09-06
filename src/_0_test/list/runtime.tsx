@@ -19,7 +19,8 @@ export default function ({ env, data, slots, inputs, outputs }) {
       <div>
         <button
           onClick={(e) => {
-            outputs.ok('aaaaaa');
+            //outputs.ok('aaaaaa');
+            slots.test.inputs.test('aaaa');
           }}
         >
           Test
@@ -31,6 +32,14 @@ export default function ({ env, data, slots, inputs, outputs }) {
         // },
         // key:0
       })}
+      {slots['test']
+        ? slots['test'].render({
+            // inputValues: {//当前数据，对应slot 的 inputs
+            //   curDS: 'aaa'
+            // },
+            // key:0
+          })
+        : null}
       {/*{*/}
       {/*  slots['content'].render({*/}
       {/*    inputValues: {*/}

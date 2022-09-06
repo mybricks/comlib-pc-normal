@@ -69,6 +69,21 @@
         "type": "object",
         "properties": {}
       }
+    },
+    {
+      "id": "onClickSubmit",
+      "title": "点击提交",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onClickCancel",
+      "title": "点击取消",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "_inputs": [
