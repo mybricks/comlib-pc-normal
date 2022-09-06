@@ -23,7 +23,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
     return cItem.hasTip ? (
       <div>
         <span style={{ marginRight: '6px' }}>{title}</span>
-        <Tooltip placement='topLeft' title={tip} overlayClassName={css.ellipsisTooltip}>
+        <Tooltip placement="topLeft" title={tip} overlayClassName={css.ellipsisTooltip}>
           <InfoCircleOutlined />
         </Tooltip>
       </div>

@@ -17,7 +17,7 @@
     "submit": true,
     "reset": true,
     "showSecondBtn": true,
-    "actionAlign": "flex-start",
+    "actionAlign": "center",
     "primaryBtnText": "下一步",
     "secondBtnText": "上一步",
     "resetText": "重置",

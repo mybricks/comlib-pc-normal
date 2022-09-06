@@ -318,7 +318,7 @@ export default function (props: RuntimeParams<Data>) {
           {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
         </Table>
       ) : (
-        <Empty description='请添加列或连接数据源' className={css.emptyWrap} />
+        <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
       )}
       <TableFooter
         env={env}

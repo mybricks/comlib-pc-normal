@@ -41,8 +41,8 @@ export function ImgRender({ item, env, onClick }: { item: ImageItem; env: any; o
     <Image
       alt={alt}
       src={env.getAssetsPath(src)}
-      width='100%'
-      height='100%'
+      width="100%"
+      height="100%"
       style={{
         ...customBorderStyle,
         cursor: cursorStyle ? 'pointer' : 'unset'

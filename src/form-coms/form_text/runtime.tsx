@@ -71,7 +71,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
 
   let jsx = (
     <Input
-      type='text'
+      type="text"
       {...data.config}
       value={data.value}
       readOnly={!!edit}

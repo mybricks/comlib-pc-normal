@@ -85,7 +85,7 @@ export default function Tree({ editConfig }: any) {
         />
       )}
       <Button
-        size='small'
+        size="small"
         onClick={() => {
           setUseTreeSelect(!useTreeSelect);
         }}
