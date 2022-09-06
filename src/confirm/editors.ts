@@ -62,6 +62,15 @@ export default {
         }
       }
     }),
+    Editor<Data>('宽度', EditorType.Slider, 'width', {
+      description: '设置0将使用默认宽度：520',
+      options: {
+        max: 5000,
+        min: 0,
+        step: 100,
+        formatter: 'px'
+      }
+    }),
     {
       title: '底部按钮',
       items: [

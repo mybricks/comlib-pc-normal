@@ -1,5 +1,5 @@
 import { setCol } from '../../schema';
-import { Data } from '../../types';
+import { ContentTypeEnum, Data } from '../../types';
 import { getColumnItem } from '../../utils';
 
 const VisibleEditor = {
@@ -7,7 +7,7 @@ const VisibleEditor = {
   ifVisible({ data, focusArea }: EditorResult<Data>) {
     if (!focusArea) return;
     const item = getColumnItem(data, focusArea);
-    return item.contentType !== 'group';
+    return item.contentType !== ContentTypeEnum.Group;
   },
   items: [
     {
@@ -21,7 +21,7 @@ const VisibleEditor = {
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
-          setCol(data, focusArea, value, 'visible');
+          setCol({ data, focusArea }, 'visible', value);
         }
       }
     }

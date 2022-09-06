@@ -1,7 +1,25 @@
 {
   "items": [],
   "nameCount": 0,
-  "actions": [],
+  "actions": {
+    "visible": true,
+    "items": [
+      {
+        "title": "提交",
+        "type": "primary",
+        "isDefault": true,
+        "visible": true,
+        "outputId": "onClickSubmit",
+        "key": "submit"
+      },
+      {
+        "title": "取消",
+        "isDefault": false,
+        "outputId": "onClickCancel",
+        "key": "cancel"
+      }
+    ]
+  },
   "isFormItem": false,
   "dataType": "object",
   "layout": "horizontal"

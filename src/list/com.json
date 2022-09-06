@@ -20,8 +20,7 @@
         "type": "array",
         "items": {
           "title": "列项数据",
-          "type": "object",
-          "properties": {}
+          "type": "any"
         }
       }
     }
@@ -31,7 +30,24 @@
     {
       "id": "item",
       "capacity": 1,
-      "title": "列表项"
+      "title": "列表项",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "itemData",
+          "title": "当前项",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "index",
+          "title": "当前项序号",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
     }
   ]
 }

@@ -8,7 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editor",
   "inputs": [
     {
       "id": "nextStep",
@@ -21,12 +21,13 @@
       "id": "prevStep",
       "title": "上一步",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
       "id": "submit",
       "title": "数据提交",
+      "rels": ["submit"],
       "schema": {
         "type": "follow"
       }
@@ -34,45 +35,71 @@
     {
       "id": "reset",
       "title": "重置",
-      "schema": {
-        "type": "follow"
-      }
-    }
-  ],
-  "outputs": [
-    {
-      "id": "nextStep",
-      "title": "下一步",
+      "rels": ["reset"],
       "schema": {
         "type": "follow"
       }
     },
     {
+      "id": "getIndex",
+      "title": "获取当前步骤（从0开始）",
+      "rels": ["getIndex"],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
       "id": "submit",
       "title": "数据提交",
       "schema": {
-        "type": "follow"
+        "type": "any"
+      }
+    },
+    {
+      "id": "reset",
+      "title": "重置",
+      "schema": {
+        "type": "any"
       }
     },
     {
       "id": "step0",
       "title": "步骤0",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
-      "id": "reset",
-      "title": "重置",
+      "id": "getIndex",
+      "title": "当前步骤",
       "schema": {
-        "type": "follow"
+        "type": "number"
       }
     }
   ],
   "slots": [
     {
       "id": "step0",
-      "title": "内容"
+      "title": "内容区【1】",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "step0_into",
+          "title": "显示",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "step0_leave",
+          "title": "隐藏",
+          "schema": {
+            "type": "any"
+          }
+        }
+      ]
     }
   ]
 }

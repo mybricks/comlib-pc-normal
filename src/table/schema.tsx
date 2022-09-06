@@ -1,26 +1,13 @@
-import { InputIds, OutputIds } from './constants';
-import { Data } from './types';
+import { InputIds, OutputIds, SlotIds } from './constants';
+import { Data, FilterTypeEnum, IColumn } from './types';
 import { setPath } from '../utils/path';
 import { getColumnItem } from './utils';
 
-function getRefreshSchema() {
-  const refreshSchema = {
-    title: '条件参数对象',
-    type: 'object',
-    properties: {}
-  };
-  return refreshSchema;
-}
-
-function getSingleDataSourceSchema(dataSchema = {}) {
-  return {
-    title: '数据列表',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: dataSchema
-    }
-  };
+interface Props {
+  data: Data;
+  input: any;
+  output: any;
+  slot: any;
 }
 
 function schema2Obj(schema: any = {}, parentKey = '', config: any = { isRoot: true }) {
@@ -45,24 +32,22 @@ function schema2Obj(schema: any = {}, parentKey = '', config: any = { isRoot: tr
   });
   return res;
 }
-function getColumnsDataSchema(data: Data, outputId = '') {
+
+// 获取列数据schema
+function getColumnsDataSchema(schemaObj: object, { data }: Props) {
   const { columns } = data;
   const dataSchema = {};
-  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
 
-  const setDataSchema = (columns) => {
+  const setDataSchema = (columns: IColumn[]) => {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
-        if (item.contentType === 'action' || item.contentType === 'custom' || outputId) {
-          return;
-        }
         const schema = {
           type: 'string',
           title: item.title,
           ...schemaObj[Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex]
         };
         if (item.contentType === 'group') {
-          setDataSchema(item.children);
+          item.children && setDataSchema(item.children);
           return;
         }
         if (Array.isArray(item.dataIndex)) {
@@ -77,92 +62,62 @@ function getColumnsDataSchema(data: Data, outputId = '') {
   return dataSchema;
 }
 
-// function setFetchDataSchema(dataSchema, output, config) {
-//   const pin = output.get('fetchData');
-//   if (pin) {
-//     pin.setSchema(getSingleDataSourceSchema(dataSchema, config));
-//   }
-// }
-
-// function setRefreshSchema(input) {
-//   const refreshPin = input.get('refresh');
-//   if (refreshPin) {
-//     refreshPin.setSchema(getRefreshSchema());
-//   }
-// }
-
-function setDataSourceSchema(dataSchema, input) {
-  const dataSourcePin = input.get('dataSource');
-  if (dataSourcePin) {
-    dataSourcePin.setSchema(getSingleDataSourceSchema(dataSchema));
-  }
+// 数据源schema
+function setDataSourceSchema(dataSchema: object, { input }: Props) {
+  input.get('dataSource')?.setSchema({
+    title: '数据列表',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: dataSchema
+    }
+  });
 }
 
-function setOutputsSchema(dataSchema, output, data) {
-  data.batchBtns.forEach((btn) => {
-    const nbtn = output.get(btn.id);
-    if (nbtn) {
-      nbtn.setSchema({
+// 输出节点schema
+function setOutputsSchema(dataSchema, { output }: Props) {
+  output.get(OutputIds.ROW_SELECTION)?.setSchema?.({
+    title: '勾选数据',
+    type: 'object',
+    properties: {
+      selectedRowKeys: {
         title: '勾选数据',
-        type: 'object',
-        properties: {
-          selectedRowKeys: {
-            title: '勾选数据',
-            type: 'array',
-            items: {
-              type: 'string'
-            }
-          },
-          selectedRows: {
-            title: '勾选行完整数据',
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: dataSchema
-            }
-          }
+        type: 'array',
+        items: {
+          type: 'string'
         }
-      });
+      },
+      selectedRows: {
+        title: '勾选行完整数据',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: dataSchema
+        }
+      }
     }
   });
-  data.actionBtns?.forEach((btn) => {
-    const nbtn = output.get(btn.id);
-    if (nbtn) {
-      nbtn.setSchema({
-        type: 'object',
-        properties: {
-          queryParams: {
-            title: '筛选参数',
-            type: 'object',
-            properties: {}
-          },
-          pagination: {
-            title: '分页参数',
-            type: 'object',
-            properties: {}
-          },
-          dataSource: {
-            title: '表格数据',
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: getColumnsDataSchema(data)
-            }
-          }
+  output.get(OutputIds.GET_ROW_SELECTION)?.setSchema?.({
+    title: '勾选数据',
+    type: 'object',
+    properties: {
+      selectedRowKeys: {
+        title: '勾选数据',
+        type: 'array',
+        items: {
+          type: 'string'
         }
-      });
+      },
+      selectedRows: {
+        title: '勾选行完整数据',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: dataSchema
+        }
+      }
     }
   });
-  // data.scratchOutputIds.forEach((id) => {
-  //   const nbtn = output.get(id);
-  //   if (nbtn) {
-  //     nbtn.setSchema({
-  //       title: '表格行数据',
-  //       type: 'object',
-  //       properties: dataSchema
-  //     });
-  //   }
-  // });
   output.get(OutputIds.GET_TABLE_DATA)?.setSchema?.({
     title: '表格数据',
     type: 'array',
@@ -173,107 +128,104 @@ function setOutputsSchema(dataSchema, output, data) {
   });
 }
 
-function setPaginationSchema({ output, data }) {
-  output.get(OutputIds.ClickPagination).setSchema({
-    title: '分页参数',
+// 设置筛选数据schema
+function setFilterSchema(schemaObj, { data, input, output }: Props) {
+  const schema1 = {
     type: 'object',
-    properties: {
-      [data.pageNumber || 'current']: {
-        title: '当前页',
-        type: 'number'
-      },
-      [data.pageSize || 'pageSize']: {
-        title: '每页条数',
-        type: 'number'
-      }
+    properties: {}
+  };
+  const schema2 = {
+    type: 'object',
+    properties: {}
+  };
+
+  const setDataSchema = (columns: IColumn[]) => {
+    if (Array.isArray(columns)) {
+      columns.forEach((item) => {
+        if (item.filter?.enable) {
+          const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+          schema1.properties[key] = {
+            type: 'array',
+            items: {
+              type: 'string',
+              ...(schemaObj[key] || {})
+            }
+          };
+          schema2.properties[key] = {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                text: {
+                  type: 'string'
+                },
+                value: {
+                  type: 'any',
+                  ...(schemaObj[key] || {})
+                }
+              }
+            }
+          };
+        }
+        if (item.contentType === 'group' && item.children) {
+          setDataSchema(item.children);
+        }
+      });
+    }
+  };
+  setDataSchema(data.columns);
+
+  output.get(OutputIds.FILTER)?.setSchema(schema1);
+  input.get(OutputIds.GET_FILTER)?.setSchema(schema1);
+  input.get(InputIds.SET_FILTER)?.setSchema(schema1);
+  input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
+}
+
+// 展开行插槽作用域schema
+function setExpandSlotSchema(dataSchema, { slot }: Props) {
+  slot?.get(SlotIds.EXPAND_CONTENT)?.inputs?.get(InputIds.EXP_COL_VALUES)?.setSchema({
+    type: 'object',
+    properties: dataSchema
+  });
+}
+
+// 列插槽作用域schema
+function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }: Props) {
+  data.columns.forEach((col) => {
+    const key = Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex;
+    if (col.contentType === 'slotItem' && col.slotId) {
+      slot?.setTitle(col.slotId, `自定义${col.title}列`);
+      slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
+        type: 'object',
+        properties: dataSchema
+      });
+      slot
+        ?.get(col.slotId)
+        ?.inputs?.get(InputIds.SLOT_ROW_VALUE)
+        ?.setSchema({
+          type: 'string',
+          ...(schemaObj[key] || {})
+        });
     }
   });
 }
 
-function getActionSchema(data: Data) {
-  const paramRules = {
-    title: '表格行数据',
-    type: 'object',
-    properties: getColumnsDataSchema(data)
-  };
+export function setDataSchema({ data, output, input, slot }: EditorResult<Data>) {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
 
-  return paramRules;
+  setDataSourceSchema(dataSchema, { data, output, input, slot });
+  setOutputsSchema(dataSchema, { data, output, input, slot });
+  setFilterSchema(schemaObj, { data, output, input, slot });
+  setExpandSlotSchema(dataSchema, { data, output, input, slot });
+  setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
 }
 
-// 设置勾选输出数据schema
-function setRowSelectionSchema({ dataSchema, output }) {
-  const Pin = output.get(OutputIds.GET_ROW_SELECTION);
-  if (Pin) {
-    Pin.setSchema({
-      title: '勾选数据',
-      type: 'object',
-      properties: {
-        selectedRowKeys: {
-          title: '勾选数据',
-          type: 'array',
-          items: {
-            type: 'string'
-          }
-        },
-        selectedRows: {
-          title: '勾选行完整数据',
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: dataSchema
-          }
-        }
-      }
-    });
-  }
-}
-
-// 设置拖拽完成输出schema
-function setDragFinishSchema({ dataSchema, output }) {
-  const Pin = output.get(OutputIds.DRAG_FINISH);
-  if (Pin) {
-    Pin.setSchema({
-      title: '拖拽完成',
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: dataSchema
-      }
-    });
-  }
-}
-
-// 设置筛选数据schema
-function getFilterSchema(data: Data) {
-  const schema = {
-    type: 'object',
-    properties: {}
-  };
-  data.columns
-    .filter((item) => item.filter?.enable && item.filter?.type === 'request')
-    .forEach((item) => {
-      const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
-      schema.properties[key] = {
-        type: 'any'
-      };
-    });
-  return schema;
-}
-function setFilterSchema({ data, output }: { data: Data; output: any }) {
-  output.get(OutputIds.FILTER)?.setSchema(getFilterSchema(data));
-}
-
-function setDataSchema({ data, output, input }) {
-  const dataSchema = getColumnsDataSchema(data);
-  // const config = { usePagination: data.hasPagination }
-  setDataSourceSchema(dataSchema, input);
-  setOutputsSchema(dataSchema, output, data);
-  setRowSelectionSchema({ dataSchema, output });
-  setDragFinishSchema({ dataSchema, output });
-  setFilterSchema({ data, output });
-}
-
-const setCol = (data: Data, focusArea: any, value: any, propName: string) => {
+export const setCol = <T extends keyof IColumn, P extends IColumn[T]>(
+  { data, focusArea }: { data: Data; focusArea: any },
+  propName: T,
+  value: P
+) => {
   const item = getColumnItem(data, focusArea);
   if (!item) {
     return;
@@ -283,49 +235,22 @@ const setCol = (data: Data, focusArea: any, value: any, propName: string) => {
   return data.columns;
 };
 
-export {
-  setCol,
-  setDataSchema,
-  setPaginationSchema,
-  getColumnsDataSchema,
-  getActionSchema,
-  getRefreshSchema,
-  getSingleDataSourceSchema
-};
-
 export const Schemas = {
   Object: {
-    type: 'object',
-    properties: {}
+    type: 'object'
+  },
+  Any: {
+    type: 'any'
   },
   Void: {
     type: 'any'
   },
-  RECORD: (data: Data) => ({
-    type: 'object',
-    properties: getColumnsDataSchema(data)
-  }),
-  GetRowSelection: (data: Data) => ({
-    title: '勾选数据',
-    type: 'object',
-    properties: {
-      selectedRowKeys: {
-        title: '勾选数据',
-        type: 'array',
-        items: {
-          type: 'string'
-        }
-      },
-      selectedRows: {
-        title: '勾选行完整数据',
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: getColumnsDataSchema(data)
-        }
-      }
-    }
-  }),
+  Number: {
+    type: 'number'
+  },
+  Array: {
+    type: 'array'
+  },
   SET_ROW_SELECTION: {
     title: '勾选项',
     type: 'array',
@@ -333,88 +258,10 @@ export const Schemas = {
       type: 'string'
     }
   },
-  BATCH_BTN_CLICK: (data: Data) => ({
-    title: '勾选数据',
-    type: 'object',
-    properties: {
-      selectedRowKeys: {
-        title: '勾选数据',
-        type: 'array',
-        items: {
-          type: 'string'
-        }
-      },
-      selectedRows: {
-        title: '勾选行完整数据',
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: getColumnsDataSchema(data)
-        }
-      }
-    }
-  }),
-  DRAG_FINISH: (data: Data) => ({
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: getColumnsDataSchema(data)
-    }
-  }),
-  GET_TABLE_DATA: (data) => ({
-    title: '表格数据',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: getColumnsDataSchema(data)
-    }
-  }),
-  SLOT_PROPS: (data: Data) => getSingleDataSourceSchema(getColumnsDataSchema(data)),
-  HEADER_BTN_CLICK: (data: Data) => ({
-    type: 'object',
-    properties: {
-      queryParams: {
-        title: '筛选参数',
-        type: 'object',
-        properties: {}
-      },
-      pagination: {
-        title: '分页参数',
-        type: 'object',
-        properties: {}
-      },
-      dataSource: {
-        title: '表格数据',
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: getColumnsDataSchema(data)
-        }
-      }
-    }
-  }),
-  DYNAMIC_COL: {
-    title: '显示列数据',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        dataIndex: {
-          title: '表格字段',
-          type: 'string'
-        },
-        title: {
-          title: '表格标题',
-          type: 'string'
-        }
-      }
-    }
-  },
-  FILTER: (data: Data) => getFilterSchema(data),
   SORTER: {
     type: 'object',
     properties: {
-      field: {
+      id: {
         type: 'string'
       },
       order: {

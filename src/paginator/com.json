@@ -11,24 +11,24 @@
   "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "total",
+      "id": "setTotal",
       "title": "设置数据总数",
       "schema": {
         "type": "number"
       }
     },
     {
-      "id": "pageNum",
+      "id": "setPageNum",
       "title": "设置当前页码",
       "schema": {
         "type": "number"
       }
     },
     {
-      "id": "currentPage",
+      "id": "getPageInfo",
       "title": "获取分页数据",
       "rels": [
-        "output"
+        "getPageInfo"
       ],
       "schema": {
         "type": "any"
@@ -52,8 +52,8 @@
       }
     },
     {
-      "id": "output",
-      "title": "数据输出",
+      "id": "getPageInfo",
+      "title": "分页数据",
       "schema": {
         "type": "object",
         "properties": {

@@ -2,10 +2,10 @@ import { Data, Placement, Trigger } from './constants';
 
 export default {
   '@init': ({ data, style }: EditorResult<Data>) => {
-    style.width = 200;
+    style.width = '100%';
   },
   '@resize': {
-    options: ['width'],
+    options: ['width']
   },
   ':root'({ data }, ...cate) {
     cate[0].title = '配置';
@@ -13,9 +13,10 @@ export default {
       {
         title: '标题自定义',
         type: 'switch',
+        description: '支持自定义标题组件渲染，请拖入组件作为标题',
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.useTitleSlot;
+            return !!data.useTitleSlot;
           },
           set({ data, slot }: EditorResult<Data>, val: boolean) {
             if (val) {
@@ -24,8 +25,8 @@ export default {
               slot.remove('title');
             }
             data.useTitleSlot = val;
-          },
-        },
+          }
+        }
       },
       {
         title: '标题',
@@ -39,15 +40,16 @@ export default {
           },
           set({ data }: EditorResult<Data>, val: string) {
             data.title = val;
-          },
-        },
+          }
+        }
       },
       {
         title: '内容自定义',
         type: 'switch',
+        description: '支持自定义内容组件渲染，请拖入组件作为内容',
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.useContentSlot;
+            return !!data.useContentSlot;
           },
           set({ data, slot }: EditorResult<Data>, val: boolean) {
             if (val) {
@@ -56,8 +58,8 @@ export default {
               slot.remove('content');
             }
             data.useContentSlot = val;
-          },
-        },
+          }
+        }
       },
       {
         title: '内容',
@@ -71,8 +73,8 @@ export default {
           },
           set({ data }: EditorResult<Data>, val: string) {
             data.content = val;
-          },
-        },
+          }
+        }
       },
       {
         title: '触发方式',
@@ -80,16 +82,16 @@ export default {
         options: [
           {
             label: '悬浮',
-            value: 'hover',
+            value: 'hover'
           },
           {
             label: '点击',
-            value: 'click',
+            value: 'click'
           },
           {
             label: '聚焦',
-            value: 'focus',
-          },
+            value: 'focus'
+          }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
@@ -97,8 +99,8 @@ export default {
           },
           set({ data }: EditorResult<Data>, val: Trigger) {
             data.trigger = val;
-          },
-        },
+          }
+        }
       },
       {
         title: '方向',
@@ -106,20 +108,20 @@ export default {
         options: [
           {
             label: '上',
-            value: 'top',
+            value: 'top'
           },
           {
             label: '下',
-            value: 'bottom',
+            value: 'bottom'
           },
           {
             label: '左',
-            value: 'left',
+            value: 'left'
           },
           {
             label: '右',
-            value: 'right',
-          },
+            value: 'right'
+          }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
@@ -127,9 +129,9 @@ export default {
           },
           set({ data }: EditorResult<Data>, val: Placement) {
             data.placement = val;
-          },
-        },
-      },
+          }
+        }
+      }
     ];
-  },
+  }
 };
