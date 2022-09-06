@@ -1,11 +1,4 @@
-export interface Option {
-    label: string;
-    value: string;
-    children?: Option[];
-    key: string | number;
-    disabled?: boolean;
-    checked: boolean;
-}
+import { Option } from '../types';
 
 export interface Data {
     config: {

@@ -1,6 +1,7 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Data, Option } from './type';
+import { Option } from '../types';
+import { Data } from './types';
 
 let tempOptions: Option[] = [],
   optionsLength = 0,

@@ -1,7 +1,7 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Radio } from 'antd';
 import { validateFormItem } from '../utils/validator';
-import { Data } from './type';
+import { Data } from './types';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   data.config.options = data.staticOptions;
