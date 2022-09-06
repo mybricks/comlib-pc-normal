@@ -1,7 +1,6 @@
 import { CSSProperties } from 'react';
 
 export enum InputIds {
-  SlotProps = 'slotProps',
   ScrollIntoView = 'scrollInfoView',
   SetMaxHeight = 'setMaxHeight'
 }
@@ -26,15 +25,10 @@ export enum OverflowEnum {
   Hidden = 'hidden',
   Auto = 'auto'
 }
-type OverflowProps = 'visible' | 'hidden' | 'clip' | 'scroll' | 'auto';
-
 export interface Data {
-  id: string;
-  useSlotProps?: boolean;
-
+  style: CSSProperties;
   styleCatelog?: string;
   useHoverStyle?: boolean;
-  style?: CSSProperties;
   hoverStyle?: CSSProperties;
 
   useSrcollIntoView?: boolean;
@@ -42,12 +36,8 @@ export interface Data {
   block?: PositionEnum;
   inline?: PositionEnum;
 
-  overflowY?: OverflowProps;
-  overflowX?: OverflowProps;
+  overflowY?: OverflowEnum;
+  overflowX?: OverflowEnum;
 
   useClick?: boolean;
-
-  useSetMaxHeight?: boolean;
-
-  useFixed?: boolean;
 }

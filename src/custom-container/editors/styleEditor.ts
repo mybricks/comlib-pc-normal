@@ -80,42 +80,4 @@ export const StyleEditor = [
       }
     ]
   },
-  {
-    title: '最小宽度',
-    type: 'text',
-    description: '组件宽度需设置为适应内容/最大可能的宽度',
-    options: {
-      placeholder: '组件最小宽度，例如：100px'
-    },
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return data.style?.minWidth;
-      },
-      set({ data }: EditorResult<Data>, value: string) {
-        if (!data.style) {
-          data.style = {};
-        }
-        data.style.minWidth = unitConversion(value) || '';
-      }
-    }
-  },
-  {
-    title: '最小高度',
-    type: 'text',
-    description: '组件高度需设置为适应内容/最大可能的高度',
-    options: {
-      placeholder: '组件最小高度，例如：100px'
-    },
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return data.style?.minHeight;
-      },
-      set({ data }: EditorResult<Data>, value: string) {
-        if (!data.style) {
-          data.style = {};
-        }
-        data.style.minHeight = unitConversion(value) || '';
-      }
-    }
-  }
 ];
