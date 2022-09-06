@@ -153,7 +153,7 @@ export function setExchange({ data, focusArea }: any, type: 'up' | 'down') {
   data.items[idx2] = temp;
 }
 
-const getDataSourceSchema = (data: Data) => {
+export const getDataSourceSchema = (data: Data) => {
   const properties = {};
   data.items.forEach((item) => {
     properties[item.key] = { type: 'string' };
@@ -195,24 +195,14 @@ const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
     }
   });
 };
-//更新插槽的schema数据
-const slotPropsSchema = ({ input, dataSchema }) => {
-  const hasSlot = input.get(InputIds.SlotProps);
-  if(hasSlot) {
-    hasSlot.setSchema({
-      title: '插槽参数',
-      type: 'object',
-      properties: dataSchema
-    })
-  }
-}
+
 // 更新schema数据
 export const updateIOSchema = ({ data, input, output }) => {
   const dataSchema = getDataSourceSchema(data);
   setDataSourceSchema({ input, dataSchema });
-  slotPropsSchema({ input, dataSchema });
   setSuffixBtnClickSchema({ data, dataSchema, output });
 };
+
 export const Schemas = {
   SuffixClick: (data: Data) => {
     const dataSchema = getDataSourceSchema(data);
