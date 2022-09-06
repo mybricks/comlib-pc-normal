@@ -1,4 +1,10 @@
 {
-  "tools": [],
+  "btnList": [
+    {
+      "key": "btn0",
+      "text": "按钮0",
+      "showText": true
+    }
+  ],
   "layout": "flex-start"
 }
