@@ -1,13 +1,12 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Select } from 'antd';
+import { Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
-import { Data } from './types';
+import { Data } from './type';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+  data.config.options = data.staticOptions;
+  data.value = data.config.defaultValue;
   useLayoutEffect(() => {
-    data.value = data.config.defaultValue;
-    data.config.options = data.staticOptions;
-
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: data.value,
@@ -39,27 +38,33 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       data.config.options = val;
     });
 
-    inputs['setLoading']((val: boolean) => {
-      data.config.loading = val;
-    });
-
     inputs['setVisible']((val) => {
       data.visible = val;
     });
   }, []);
 
-  const onChange = useCallback((value) => {
-    data.value = value;
-    outputs['onChange'](value);
-  }, []);
-  const onBlur = useCallback((e) => {
-    outputs['onBlur'](data.value);
+  const onChange = useCallback((checkedValue) => {
+    data.value = checkedValue;
+    outputs['onChange'](checkedValue);
   }, []);
 
   return (
     data.visible && (
       <div>
-        <Select {...data.config} value={data.value} onChange={onChange} onBlur={onBlur} />
+        <Checkbox.Group {...data.config} onChange={onChange}>
+          {data.config?.options?.map((item, radioIdx) => {
+            const label = item.label;
+            return (
+              <div data-radio-form-item-radio-index={radioIdx} key={item.key || item.value}>
+                {
+                  <Checkbox value={item.value} disabled={item.disabled} style={{ marginRight: 8 }}>
+                    {label}
+                  </Checkbox>
+                }
+              </div>
+            );
+          })}
+        </Checkbox.Group>
       </div>
     )
   );
