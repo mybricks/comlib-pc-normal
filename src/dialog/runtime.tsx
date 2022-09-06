@@ -121,9 +121,10 @@ export default function Dialog({
   (data.footerBtns || []).forEach((item) => {
     const { id } = item;
     eventList[id] = () => {
-      if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
-        slots[SlotIds.Container].inputs[id]();
-      }
+      outputs[id]();
+      // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
+      // slots[SlotIds.Container].inputs[id]();
+      // }
     };
   });
   if (edit) {

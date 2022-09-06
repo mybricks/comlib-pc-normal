@@ -14,7 +14,7 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "any"
+        "type": "follow"
       },
       "rels": [
         "cancelBtn",
@@ -39,28 +39,28 @@
       "id": "showFooter",
       "title": "显示底部内容",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
       "id": "hideFooter",
       "title": "隐藏底部内容",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
       "id": "showTitle",
       "title": "显示标题",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
       "id": "hideTitle",
       "title": "隐藏标题",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     }
   ],

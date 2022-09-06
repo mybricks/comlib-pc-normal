@@ -1,7 +1,7 @@
 import { isEmptyString, uuid } from '../utils';
 import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent } from './constants';
 
-const defaultSchema = { type: 'follow' };
+const defaultSchema = { type: 'any' };
 
 const updateOpenRels = (data: Data): any[] => {
   return data.footerBtns.filter(({ id, visible }) => {
@@ -34,7 +34,7 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
   };
 
   output.add(id, title, schema);
-  slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'follow' });
+  // slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'any' });
   slot.get(SlotIds.Container).outputs.add(id, `${title}输出数据`, { type: 'follow' });
   input.get(InputIds.Open).setRels([...updateOpenRels(data), id]);
 
@@ -77,6 +77,18 @@ function get(
 }
 
 export default {
+  '@inputConnected'({ data, input, output, slots, ...slot }, fromPin, toPin) {
+    if (toPin.id === InputIds.Open) {
+      // input.get(InputIds.Open).setSchema(fromPin.schema);
+      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(fromPin.schema);
+    }
+  },
+  '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
+    if (toPin.id === InputIds.Open) {
+      // input.get(InputIds.Open).setSchema(defaultSchema);
+      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(defaultSchema);
+    }
+  },
   ':root': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
@@ -395,6 +407,27 @@ export default {
       moveDelete('btnId')
     ];
 
+    cate2.title = '事件';
+    cate2.items = [
+      {
+        title: '事件',
+        items: [
+          {
+            title: '单击',
+            type: '_Event',
+
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const res = get(data, focusArea, 'btnId', 'id');
+              return {
+                outputId: res,
+                slotId: SlotIds.Container
+              };
+            }
+          }
+        ]
+      }
+    ];
+
     return { title: '按钮' };
   }
 };
@@ -571,7 +604,7 @@ function useDynamic(dataset: string) {
           set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
             const res = get(data, focusArea, dataset, 'obj');
             const schema = {
-              type: 'follow'
+              type: 'any'
             };
             if (value) {
               input.add(`disable${res.id}`, `禁用 - ${res.title}按钮`, schema);
@@ -594,7 +627,7 @@ function useDynamic(dataset: string) {
           set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
             const res = get(data, focusArea, dataset, 'obj');
             const schema = {
-              type: 'follow'
+              type: 'any'
             };
             if (value) {
               input.add(`hidden${res.id}`, `隐藏 - ${res.title}按钮`, schema);
