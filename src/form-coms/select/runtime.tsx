@@ -1,23 +1,13 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
-
-interface Data {
-  config: {
-    options: any[];
-    disabled: boolean;
-    allowClear: boolean;
-    placeholder: string;
-    loading?: boolean;
-    mode?: 'tags' | 'multiple';
-  };
-  visible: boolean;
-  rules: any[];
-  value: number | string | undefined;
-}
+import { Data } from './types';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
+    data.value = data.config.defaultValue;
+    data.config.options = data.staticOptions;
+
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: data.value,

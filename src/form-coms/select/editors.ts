@@ -1,12 +1,35 @@
+import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { Option } from '../types';
+import { Data } from './types';
 
+let tempOptions: Option[] = [],
+  optionsLength,
+  addOption,
+  delOption;
+
+const initParams = (data: Data) => {
+  if (!data.staticOptions) {
+    data.staticOptions = [];
+  }
+  if (optionsLength === undefined) {
+    tempOptions = data.staticOptions || [];
+  }
+  optionsLength = (data.staticOptions || []).length;
+  addOption = (option) => {
+    data.staticOptions.push(option);
+  };
+  delOption = (index: number) => {
+    data.staticOptions.splice(index, 1);
+  };
+};
 export default {
   '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       parent['@_setFormItem']({ id, name: data.name, schema: { type: 'string' } })
     }
     // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-    //   data.type = 'formItem'
+    //   data.type = 'data'
     //
     //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
     // } else {
@@ -72,6 +95,102 @@ export default {
           },
           set({ data }, value: boolean) {
             data.config.disabled = value;
+          }
+        }
+      },
+      {
+        title: '提交数据为选项的{标签-值}',
+        type: 'Switch',
+        description: '开启后提交选项的标签（文本）和值',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.labelInValue;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.config.labelInValue = val;
+            const checkedList = data.staticOptions?.filter(opt => opt?.checked) || [];
+            if (checkedList.length > 0) {
+              switch (data.config.mode) {
+                case 'multiple':
+                case 'tags':
+                  data.config.defaultValue = checkedList.map(({ label, value }) => val ? { label, value } : value)
+                  break;
+                default:
+                  const { label, value } = checkedList[0];
+                  data.config.defaultValue = val ? { label, value } : value
+                  break;
+              }
+            }
+          }
+        }
+      },
+      // 选项配置
+      {
+        title: '静态选项配置',
+        type: 'array',
+        options: {
+          getTitle: ({ label, checked }) => {
+            return `${label}${checked ? ': 默认值' : ''}`;
+          },
+          onRemove: (index: number) => {
+            delOption(index);
+          },
+          onAdd: () => {
+            const defaultOption = {
+              label: `选项${optionsLength + 1}`,
+              value: `选项${optionsLength + 1}`,
+              key: uuid()
+            };
+            addOption(defaultOption);
+            return defaultOption;
+          },
+          items: [
+            {
+              title: '默认选中',
+              type: 'switch',
+              value: 'checked'
+            },
+            {
+              title: '选项标签',
+              type: 'textarea',
+              value: 'label'
+            },
+            {
+              title: '选项值',
+              type: 'valueSelect',
+              options: ['text', 'number', 'boolean'],
+              description: '选项的唯一标识，可以修改为有意义的值',
+              value: 'value'
+            }
+          ]
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            initParams(data);
+            return data.staticOptions;
+          },
+          set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
+            const initValue: any = [];
+            options.forEach(({ checked, value, label }) => {
+              if (checked) initValue.push(data.config.labelInValue ? { label, value } : value);
+            });
+            if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+              data.config.defaultValue = initValue;
+            } else {
+              data.config.defaultValue = initValue[0];
+              // 临时:使用tempOptions存储配置项的prev
+              tempOptions = options;
+              const formItemVal: any = data.config.defaultValue;
+              // 更新选项
+              options = options.map(option => {
+                const checked = formItemVal !== undefined && option.value === (data.config.labelInValue ? formItemVal?.value : formItemVal);
+                return {
+                  ...option,
+                  checked
+                }
+              });
+            }
+            data.staticOptions = options;
           }
         }
       },
