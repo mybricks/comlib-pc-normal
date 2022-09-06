@@ -10,9 +10,7 @@ let tempOptions: Option[] = [],
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
-    data.staticOptions = [...(data.config.options || [])].map((item) => ({
-      ...item
-    }));
+    data.staticOptions = [];
   }
   if (tempOptions.length !== data.staticOptions?.length) {
     tempOptions = data.staticOptions || [];

@@ -4,8 +4,6 @@ import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
-  data.config.options = data.staticOptions;
-  data.value = data.config.defaultValue;
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -27,7 +25,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
 
     inputs['setValue']((val) => {
       data.value = val;
-      onChange(val);
+      outputs['onChange'](val);
     });
 
     inputs['setDisabled']((val) => {
@@ -35,7 +33,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setOptions']((val) => {
-      data.config.options = val;
+      data.options = val;
     });
 
     inputs['setVisible']((val) => {
@@ -52,17 +50,13 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
   return (
     data.visible && (
       <div>
-        <Radio.Group {...data.config} onChange={onChange}>
-          {data.config?.options?.map((item, radioIdx) => {
+        <Radio.Group {...data.config} value={data.value} onChange={onChange}>
+          {(data.options || data.staticOptions)?.map((item, radioIdx) => {
             const label = item.label;
             return (
-              <div data-radio-form-item-radio-index={radioIdx} key={item.key || item.value}>
-                {
-                  <Radio value={item.value} disabled={item.disabled} style={{ marginRight: 8 }}>
-                    {label}
-                  </Radio>
-                }
-              </div>
+              <Radio value={item.value} disabled={item.disabled} style={{ marginRight: 8 }}>
+                {label}
+              </Radio>
             );
           })}
         </Radio.Group>
