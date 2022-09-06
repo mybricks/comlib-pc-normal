@@ -8,7 +8,9 @@ import {
   InputIds,
   OutputIds,
   Location,
-  SlotIds
+  SlotIds,
+  SlotInputIds,
+  DefaultEvent
 } from './constants';
 import css from './runtime.less';
 
@@ -31,14 +33,25 @@ export default function Dialog({
   useEffect(() => {
     // 非编辑模式
     if (env.runtime && inputs) {
-      slots['container'].outputs['ok'](val=>{
-        setVisible(false)
-      })
-
       // 打开对话框
-      inputs[InputIds.Open]((ds) => {
+      inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
+        slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
         setVisible(true);
+
+        // 监听scope输出
+        (data.footerBtns || []).forEach((item) => {
+          const { id, visible } = item;
+          if (DefaultEvent.includes(id) && !visible) return;
+          if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
+            slots[SlotIds.Container].outputs[id]((val) => {
+              if (DefaultEvent.includes(id)) {
+                close();
+              }
+              relOutputs[id](val);
+            });
+          }
+        });
       });
 
       inputs[InputIds.SetTitle]((val: string) => {
@@ -97,7 +110,6 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
-    outputs[OutputIds.Cancel]();
   }, []);
 
   // 【老】关闭对话框
@@ -107,11 +119,12 @@ export default function Dialog({
 
   const eventList = {};
   (data.footerBtns || []).forEach((item) => {
-    const { id, outputDs } = item;
+    const { id } = item;
     eventList[id] = () => {
-      if (outputs && outputs[id]) {
-        outputs[id](outputDs ? dataSource : true);
-      }
+      outputs[id]();
+      // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
+      // slots[SlotIds.Container].inputs[id]();
+      // }
     };
   });
   if (edit) {
@@ -216,6 +229,7 @@ const RuntimeRender = ({
           useIcon,
           disabled,
           hidden,
+          visible = true,
           location,
           ...res
         } = item;
@@ -223,7 +237,7 @@ const RuntimeRender = ({
         return (
           <Button
             {...res}
-            hidden={hidden}
+            hidden={!visible || hidden}
             disabled={disabled}
             onClick={event?.[id]}
             data-btn-id={id}
@@ -266,7 +280,7 @@ const RuntimeRender = ({
       bodyStyle={bodyStyle}
       getContainer={getContainer}
     >
-      {slots['container'] && slots['container'].render()}
+      {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>
   );
 };
