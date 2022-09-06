@@ -37,7 +37,7 @@
           "id": "itemData",
           "title": "当前项",
           "schema": {
-            "type": "follow"
+            "type": "any"
           }
         },
         {
