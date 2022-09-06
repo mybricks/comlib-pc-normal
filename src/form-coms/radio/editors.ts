@@ -4,15 +4,17 @@ import { Option } from '../types';
 import { Data } from './types';
 
 let tempOptions: Option[] = [],
-  optionsLength,
+  optionsLength = 0,
   addOption,
   delOption;
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
-    data.staticOptions = [];
+    data.staticOptions = [...(data.config.options || [])].map((item) => ({
+      ...item
+    }));
   }
-  if (optionsLength === undefined) {
+  if (tempOptions.length !== data.staticOptions?.length) {
     tempOptions = data.staticOptions || [];
   }
   optionsLength = (data.staticOptions || []).length;
@@ -23,6 +25,7 @@ const initParams = (data: Data) => {
     data.staticOptions.splice(index, 1);
   };
 };
+
 export default {
   '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
@@ -39,7 +42,6 @@ export default {
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
-
     catalog[0].items = [
       {
         title: '提示内容',
@@ -51,37 +53,6 @@ export default {
           },
           set({ data }, value: string) {
             data.config.placeholder = value;
-          }
-        }
-      },
-      {
-        title: '下拉框模式',
-        type: 'select',
-        description: '可设置下拉框的模式为多选或标签',
-        options: [
-          { label: '默认', value: 'default' },
-          { label: '多选', value: 'multiple' },
-          { label: '标签', value: 'tags' },
-        ],
-        value: {
-          get({ data }) {
-            return data.config.mode;
-          },
-          set({ data }, value: string) {
-            data.config.mode = value;
-          }
-        }
-      },
-      {
-        title: '显示清除图标',
-        type: 'switch',
-        description: '可以点击清除图标删除内容',
-        value: {
-          get({ data }) {
-            return data.config.allowClear;
-          },
-          set({ data }, value: boolean) {
-            data.config.allowClear = value;
           }
         }
       },
@@ -98,35 +69,9 @@ export default {
           }
         }
       },
-      {
-        title: '提交数据为选项的{标签-值}',
-        type: 'Switch',
-        description: '开启后提交选项的标签（文本）和值',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.config.labelInValue;
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.config.labelInValue = val;
-            const checkedList = data.staticOptions?.filter(opt => opt?.checked) || [];
-            if (checkedList.length > 0) {
-              switch (data.config.mode) {
-                case 'multiple':
-                case 'tags':
-                  data.config.defaultValue = checkedList.map(({ label, value }) => val ? { label, value } : value)
-                  break;
-                default:
-                  const { label, value } = checkedList[0];
-                  data.config.defaultValue = val ? { label, value } : value
-                  break;
-              }
-            }
-          }
-        }
-      },
       // 选项配置
       {
-        title: '静态选项配置',
+        title: "静态选项配置",
         type: 'array',
         options: {
           getTitle: ({ label, checked }) => {
@@ -139,6 +84,7 @@ export default {
             const defaultOption = {
               label: `选项${optionsLength + 1}`,
               value: `选项${optionsLength + 1}`,
+              type: 'default',
               key: uuid()
             };
             addOption(defaultOption);
@@ -151,6 +97,11 @@ export default {
               value: 'checked'
             },
             {
+              title: '禁用',
+              type: 'switch',
+              value: 'disabled'
+            },
+            {
               title: '选项标签',
               type: 'textarea',
               value: 'label'
@@ -161,7 +112,7 @@ export default {
               options: ['text', 'number', 'boolean'],
               description: '选项的唯一标识，可以修改为有意义的值',
               value: 'value'
-            }
+            },
           ]
         },
         value: {
@@ -170,26 +121,30 @@ export default {
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
-            const initValue: any = [];
-            options.forEach(({ checked, value, label }) => {
-              if (checked) initValue.push(data.config.labelInValue ? { label, value } : value);
+            tempOptions.forEach(oldOption => {
+              const newOption = options.find(option => option._id === oldOption._id);
+              const currentOption = data.staticOptions.find(option => option._id === oldOption._id);
+              if (newOption?.checked === currentOption?.checked) return;
+              // 设置了选项的默认选中
+              if (newOption?.checked && !oldOption?.checked) {
+                data.config.defaultValue = newOption.value;
+              }
+              // 取消了选项的默认选中
+              if (!newOption?.checked && oldOption?.checked) {
+                data.config.defaultValue = undefined;
+              }
             });
-            if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
-              data.config.defaultValue = initValue;
-            } else {
-              data.config.defaultValue = initValue[0];
-              // 临时:使用tempOptions存储配置项的prev
-              tempOptions = options;
-              const formItemVal: any = data.config.defaultValue;
-              // 更新选项
-              options = options.map(option => {
-                const checked = formItemVal !== undefined && option.value === (data.config.labelInValue ? formItemVal?.value : formItemVal);
-                return {
-                  ...option,
-                  checked
-                }
-              });
-            }
+            // 临时:使用tempOptions存储配置项的prev
+            tempOptions = options;
+            const formItemVal = data.config.defaultValue;
+            // 更新选项
+            options = options.map(option => {
+              const checked = formItemVal !== undefined && option.value === formItemVal;
+              return {
+                ...option,
+                checked
+              }
+            });
             data.staticOptions = options;
           }
         }
@@ -269,13 +224,6 @@ export default {
               outputId: 'onChange'
             }
           },
-          {
-            title: '失去焦点',
-            type: '_event',
-            options: {
-              outputId: 'onBlur'
-            }
-          }
         ]
       }
     ];
