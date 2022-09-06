@@ -1,21 +1,30 @@
 import { Button, Steps } from 'antd';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
 import css from './index.less';
 
 const { Step } = Steps;
 
+function usePrevious<T>(value: T): T {
+  const ref: any = useRef<T>();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
+
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
+  const preIndex = usePrevious<number>(data.current);
 
   useEffect(() => {
     if (runtime) {
       data.current = 0;
-      onStepInto();
     }
   }, []);
+
   useEffect(() => {
     if (runtime) {
       inputs['nextStep']((ds: any) => {
@@ -50,7 +59,13 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     }
   }, [stepAry]);
 
-  const onStepInto = () => {
+  useEffect(() => {
+    if (runtime) {
+      stepLeaveHook().then(stepIntoHook);
+    }
+  }, [data.current]);
+
+  const stepIntoHook = () => {
     const slotInputs = Object.values(slots[stepAry[data.current].id].inputs);
     console.log(slots[stepAry[data.current].id], slotInputs);
     slotInputs?.forEach((input) => {
@@ -58,8 +73,11 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     });
   };
 
-  const onStepLeave = () => {
-    const slotOutputs = Object.values(slots[stepAry[data.current].id].outputs);
+  const stepLeaveHook = () => {
+    if (preIndex === undefined) return Promise.resolve();
+    const slotOutputs = Object.values(slots[stepAry[preIndex].id].outputs);
+    console.log('----------preIndex----------', preIndex);
+    console.log('----------slotOutputs-----------', slotOutputs);
     return Promise.all(slotOutputs.map((output) => output()));
   };
 

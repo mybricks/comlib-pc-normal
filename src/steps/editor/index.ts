@@ -1,7 +1,7 @@
 import { uuid } from '../../utils';
 import { Data } from '../constants';
-import StepEditor from './step'
-import ActionEditor from './action'
+import StepEditor from './step';
+import ActionEditor from './action';
 
 const DefaultSchema = {
   type: 'follow'
@@ -119,17 +119,16 @@ export default {
           const id = uuid();
           slots.add({
             id,
-            title: `内容区【${data.stepAry.length+1}】`,
+            title: `内容区【${data.stepAry.length + 1}】`,
             type: 'scope',
-            // inputs: [
-            //     {
-            //         id: id+uuid(),
-            //         title: "进入",
-            //         schema: DefaultSchema
-            //     }
-            // ]
+            inputs: [
+              {
+                id: id + uuid(),
+                title: '进入',
+                schema: DefaultSchema
+              }
+            ]
           });
-          slots.get(id).inputs.add(id+uuid(), '进入', { type: 'follow' });
           output.add(id, `提交_${id}`, DefaultSchema);
           data.stepAry.push({
             id,

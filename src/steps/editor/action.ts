@@ -89,8 +89,7 @@ export default {
             options: ({ data }) => {
               const id = data.stepAry[data.current]?.id;
               return {
-                outputId: `${id}`,
-                slotId: `${id}`
+                outputId: `${id}`
               };
             }
           }
