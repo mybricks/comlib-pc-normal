@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Drawer } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Drawer } from 'antd';
 import classnames from 'classnames';
-import { Data, InputIds, OutputIds, SlotIds } from './constants';
+import { Data, InputIds, SlotIds, Location, OutputIds } from './constants';
+import * as Icons from '@ant-design/icons';
 import css from './runtime.less';
 
 export default function ({
@@ -29,51 +30,63 @@ export default function ({
     destroyOnClose
   } = data;
 
-  const onClose = () => {
-    setVisible((oldVal) => {
-      // 防止死循环
-      if (oldVal === true) {
-        outputs[OutputIds.Cancel](data.inputData);
-      }
-      return false;
+  const onClose = useCallback(() => {
+    setVisible(false);
+    onFooterBtnClick(OutputIds.Cancel);
+  }, []);
+
+  const registerOutputsEvent = useCallback((id: string, relOutputs: any) => {
+    slots[SlotIds.Content].outputs[id]((val) => {
+      setVisible(false);
+      relOutputs[id](val);
     });
-  };
-  const getFlexPostion = () => {
-    switch (footerAlign) {
-      case 'right':
-        return 'flex-end';
-      case 'center':
-        return 'center';
-      default:
-        return 'flex-start';
-    }
-  };
-  const flexP = getFlexPostion();
+  }, []);
 
   useEffect(() => {
     if (runtime) {
       inputs[InputIds.Close](() => {
         onClose();
       });
-
-      inputs[InputIds.Open](() => {
+      inputs[InputIds.Open]((val: any, relOutputs: any) => {
         setVisible(true);
+        slots[SlotIds.Content].inputs[SlotIds.DataSource](val);
+        data.footerBtns.forEach(({ id }) => {
+          registerOutputsEvent(id, relOutputs);
+        });
       });
-
       inputs[InputIds.SetTitle]((val) => {
         data.title = val;
-      });
-
-      inputs[InputIds.SetInputData]((val) => {
-        data.inputData = val;
       });
     }
   }, []);
 
-  const footer = useFooter && slots[SlotIds.Footer] && (
-    <div>{slots && slots[SlotIds.Footer].render()}</div>
-  );
-  const children = slots[SlotIds.Content]?.render();
+  const onFooterBtnClick = useCallback((id) => {
+    outputs[id]?.();
+  }, []);
+
+  const footer = useFooter
+    ? data.footerBtns.map((item: any) => {
+        const { title, id, showText, icon, useIcon, location, ...res } = item;
+        const Icon = useIcon && Icons && Icons[icon as string]?.render();
+
+        return (
+          <Button
+            {...res}
+            onClick={() => onFooterBtnClick(id)}
+            data-btn-id={id}
+            key={id}
+            className={css['footer-btns']}
+          >
+            {useIcon && location !== Location.BACK && Icon}
+            {showText && env.i18n(title)}
+            {useIcon && location === Location.BACK && Icon}
+          </Button>
+        );
+      })
+    : null;
+
+  const children = slots[SlotIds.Content].render();
+
   if (edit || debug) {
     return createPortal(
       <Drawer
@@ -89,7 +102,7 @@ export default function ({
         bodyStyle={bodyStyle}
         footerStyle={{
           display: 'flex',
-          justifyContent: flexP
+          justifyContent: footerAlign
         }}
         footer={footer}
         getContainer={false}
@@ -113,7 +126,7 @@ export default function ({
       bodyStyle={bodyStyle}
       footerStyle={{
         display: 'flex',
-        justifyContent: flexP
+        justifyContent: footerAlign
       }}
       footer={footer}
       destroyOnClose={destroyOnClose}
