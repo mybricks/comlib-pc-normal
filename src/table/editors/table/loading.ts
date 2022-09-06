@@ -2,7 +2,7 @@ import { InputIds } from '../../constants';
 import { Data } from '../../types';
 import { Schemas } from '../../schema';
 
-export const LoadingEditor = [
+const LoadingEditor = [
   {
     title: '动态设置loading',
     type: 'Switch',
@@ -43,3 +43,4 @@ export const LoadingEditor = [
     }
   }
 ];
+export default LoadingEditor;

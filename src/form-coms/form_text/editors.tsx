@@ -1,12 +1,12 @@
-import { RuleKeys, defaultValidatorExample } from '../utils/validator'
+import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 
 export default {
   '@resize': {
-    options: ['width'],
+    options: ['width']
   },
-  '@parentUpdated'({id, data, parent}, {schema}) {
+  '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({id, schema: {type: 'string'}})
+      parent['@_setFormItem']({ id, schema: { type: 'string' } });
     }
     // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
     //   data.type = 'formItem'
@@ -16,7 +16,7 @@ export default {
     //   data.type = 'normal'
     // }
   },
-  ':root'({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -25,91 +25,92 @@ export default {
         type: 'Text',
         description: '该提示内容会在值为空时显示',
         value: {
-          get({data}) {
-            return data.config.placeholder
+          get({ data }) {
+            return data.config.placeholder;
           },
-          set({data}, value: string) {
-            data.config.placeholder = value
-          },
-        },
+          set({ data }, value: string) {
+            data.config.placeholder = value;
+          }
+        }
       },
       {
         title: '显示清除图标',
         type: 'switch',
         description: '可以点击清除图标删除内容',
         value: {
-          get({data}) {
-            return data.config.allowClear
+          get({ data }) {
+            return data.config.allowClear;
           },
-          set({data}, value: boolean) {
-            data.config.allowClear = value
-          },
-        },
+          set({ data }, value: boolean) {
+            data.config.allowClear = value;
+          }
+        }
       },
       {
         title: '前置标签',
         type: 'text',
         description: '带标签的 input，设置前置标签',
         value: {
-          get({data}) {
-            return data.config.addonBefore
+          get({ data }) {
+            return data.config.addonBefore;
           },
-          set({data}, value: string) {
-            data.config.addonBefore = value
-          },
-        },
+          set({ data }, value: string) {
+            data.config.addonBefore = value;
+          }
+        }
       },
       {
         title: '后置标签',
         type: 'text',
         description: '带标签的 input，设置后置标签',
         value: {
-          get({data}) {
-            return data.config.addonAfter
+          get({ data }) {
+            return data.config.addonAfter;
           },
-          set({data}, value: string) {
-            data.config.addonAfter = value
-          },
-        },
+          set({ data }, value: string) {
+            data.config.addonAfter = value;
+          }
+        }
       },
       {
         title: '禁用状态',
         type: 'switch',
         description: '是否禁用状态',
         value: {
-          get({data}) {
-            return data.config.disabled
+          get({ data }) {
+            return data.config.disabled;
           },
-          set({data}, value: boolean) {
-            data.config.disabled = value
-          },
-        },
+          set({ data }, value: boolean) {
+            data.config.disabled = value;
+          }
+        }
       },
       {
         title: '显示字数',
         type: 'switch',
         description: '是否展示字数',
         value: {
-          get({data}) {
-            return data.config.showCount
+          get({ data }) {
+            return data.config.showCount;
           },
-          set({data}, value: boolean) {
-            data.config.showCount = value
-          },
-        },
+          set({ data }, value: boolean) {
+            data.config.showCount = value;
+          }
+        }
       },
       {
         title: '最大长度',
-        type: 'Text',
-        description: '是否展示字数',
+        type: 'InputNumber',
+        description: '可输入的内容最大长度, -1 为不限制',
+        options: [{ min: -1 }],
         value: {
-          get({data}) {
-            return data.config.maxLength
+          get({ data }) {
+            return data.config.maxLength || [-1];
           },
-          set({data}, value: number) {
-            data.config['maxLength'] = value
-          },
-        },
+          set({ data }, value: number) {
+            data.config['maxLength'] = value[0];
+          }
+        }
       },
       {
         title: '校验规则',
@@ -120,6 +121,25 @@ export default {
           visibleField: 'visible',
           getTitle,
           items: [
+            // {
+            //   title: '提示文字',
+            //   description: '提示文字的表达式（{}, =, <, >, ||, &&）, 例：${label}不能为空',
+            //   type: 'EXPRESSION',
+            //   options: {
+            //     autoSize: true,
+            //     placeholder: '例：${label}不能为空',
+            //     // suggestions: getSuggestions(true),
+            //   },
+            //   value: 'message'
+            // },
+            {
+              title: '提示文字',
+              type: 'Text',
+              value: 'message',
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.REQUIRED;
+              }
+            },
             {
               title: '编辑校验规则',
               type: 'code',
@@ -129,7 +149,7 @@ export default {
                 title: '编辑校验规则',
                 width: 600,
                 minimap: {
-                  enabled: false,
+                  enabled: false
                 },
                 babel: true,
                 eslint: {
@@ -147,33 +167,12 @@ export default {
           ]
         },
         value: {
-          get({data}) {
-            data.rules.map(item => {
-              if (item.key === RuleKeys.CODE_VALIDATOR) {
-                item.validateCode = decodeURIComponent(item.validateCode.code)
-              }
-              return item
-            })
-
-            return data.rules || [
-              {
-                key: 'required',
-                visible: true,
-                title: '必填',
-                message: '${label}不能为空',
-              },
-              {
-                key: RuleKeys.CODE_VALIDATOR,
-                visible: true,
-                title: '代码校验',
-                validateCode: defaultValidatorExample
-              }
-            ]
+          get({ data }) {
+            return data.rules.length > 0 ? data.rules : defaultRules;
           },
-          set({data}, value: any) {
-            data.rules = value
-            console.log(value)
-          },
+          set({ data }, value: any) {
+            data.rules = value;
+          }
         }
       },
       {
@@ -194,10 +193,10 @@ export default {
             }
           }
         ]
-      },
-    ]
+      }
+    ];
   }
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

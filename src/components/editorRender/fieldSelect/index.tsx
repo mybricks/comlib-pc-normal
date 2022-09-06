@@ -56,7 +56,7 @@ const isUseSelect = (options, val) => {
 };
 export default function Tree({ editConfig }: any) {
   const { value } = editConfig;
-  const { field, schema = {} } = value.get();
+  const { field, schema = {} } = value.get() || {};
   const options = schema2Options(schema, '', { isRoot: true, useArray: false });
   const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, field));
 
@@ -85,7 +85,7 @@ export default function Tree({ editConfig }: any) {
         />
       )}
       <Button
-        size='small'
+        size="small"
         onClick={() => {
           setUseTreeSelect(!useTreeSelect);
         }}

@@ -1,27 +1,12 @@
-import { uuid } from '../../../utils';
-import { InputIds, OutputIds, RowSelectionPostion, TEMPLATE_RENDER_KEY } from '../../constants';
-import { Schemas } from '../../schema';
-import { Data } from '../../types';
+import Tree from '../../../components/editorRender/fieldSelect';
 import { runScript } from '../../../utils/runExpCodeScript';
+import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
+import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
+import { Schemas, setDataSchema } from '../../schema';
+import { getColumnsSchema } from '../../utils';
 
-function addBatchBtn({ data, output }) {
-  if (!data.batchBtns) {
-    data.batchBtns = [];
-  }
-  if (data.batchBtns.length <= 0) {
-    const id = uuid();
-    const title = `批量操作${data.batchBtns.length}`;
-    data.batchBtns.push({
-      id,
-      title,
-      showText: true
-    });
-    output.add(id, title, Schemas.BATCH_BTN_CLICK(data));
-  }
-}
-
-const rowSelectionEditor = (props: EditorResult<Data>) => {
-  const suggestions = [];
+const getRowSelectionEditor = (props: EditorResult<Data>) => {
+  const suggestions: any[] = [];
   props?.data?.columns?.forEach((col) => {
     if (!suggestions.find((item) => col.dataIndex === item.label)) {
       suggestions.push({
@@ -39,36 +24,33 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
         get({ data }: EditorResult<Data>) {
           return data.useRowSelection;
         },
-        set({ data, input, output }: EditorResult<Data>, value: boolean) {
+        set({ data, input, output, slot, ...res }: EditorResult<Data>, value: boolean) {
           data.useRowSelection = value;
           if (value) {
-            if (!data.batchBtns?.length) {
-              addBatchBtn({ data, output });
-            } else {
-              const schema = Schemas.BATCH_BTN_CLICK(data);
-              data.batchBtns.forEach((item) => {
-                const { id, title } = item;
-                if (id && !output.get(id)) {
-                  output.add(id, title, schema);
-                }
-              });
-            }
+            slot.add({ id: SlotIds.ROW_SELECTION_OPERATION, title: `勾选操作区`, type: 'scope' });
+            slot
+              .get(SlotIds.ROW_SELECTION_OPERATION)
+              .inputs.add(
+                InputIds.ROW_SELECTION_SELECTED_ROW_KEYS,
+                '当前勾选数据-标识',
+                Schemas.Array
+              );
+            slot
+              .get(SlotIds.ROW_SELECTION_OPERATION)
+              .inputs.add(
+                InputIds.ROW_SELECTION_SELECTED_ROWS,
+                '当前勾选数据-行数据',
+                Schemas.Array
+              );
 
-            output.add(
-              OutputIds.GET_ROW_SELECTION,
-              '勾选数据',
-              Schemas.GetRowSelection(data)
-            );
+            output.add(OutputIds.ROW_SELECTION, '勾选事件', Schemas.Object);
+            output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.Object);
             input.add(InputIds.CLEAR_ROW_SELECTION, '清空勾选', Schemas.Void);
             input.add(InputIds.GET_ROW_SELECTION, '输出勾选数据', Schemas.Void);
-            input
-              .get(InputIds.GET_ROW_SELECTION)
-              .setRels([OutputIds.GET_ROW_SELECTION]);
+            input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
+            setDataSchema({ data, input, output, slot, ...res });
           } else {
             data.rowKey = 'uuid';
-            data.batchBtns.forEach((item) => {
-              output.remove(item.id);
-            });
             if (output.get(OutputIds.GET_ROW_SELECTION)) {
               output.remove(OutputIds.GET_ROW_SELECTION);
             }
@@ -92,12 +74,12 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           title: '勾选类型',
           type: 'Select',
           options: [
-            { label: '单选', value: 'radio' },
-            { label: '批量选择', value: 'checkbox' }
+            { label: '单选', value: RowSelectionTypeEnum.Radio },
+            { label: '批量选择', value: RowSelectionTypeEnum.Checkbox }
           ],
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.selectionType || 'checkbox';
+              return data.selectionType || RowSelectionTypeEnum.Checkbox;
             },
             set({ data }: EditorResult<Data>, value) {
               data.selectionType = value;
@@ -105,25 +87,11 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           }
         },
         {
-          title: '自动提交勾选数据',
-          type: 'Switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return !data.unAutoSelect;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.unAutoSelect = !value;
-            }
-          }
-        },
-        {
           title: '勾选限制',
           type: 'inputnumber',
-          options: [
-            { title: '最多', min: 0, width: '100%', placeholder: '0为不限制' }
-          ],
+          options: [{ title: '最多', min: 0, width: '100%', placeholder: '0为不限制' }],
           ifVisible({ data }: EditorResult<Data>) {
-            return data.selectionType !== 'radio';
+            return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -136,10 +104,13 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '勾选标识',
-          type: 'text',
+          type: 'editorRender',
+          options: {
+            render: Tree
+          },
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.rowKey;
+              return { field: data.rowKey, schema: getColumnsSchema(data) };
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.rowKey = value;
@@ -150,20 +121,18 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           title: `顶部显示`,
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
-            return data.selectionType !== 'radio';
+            return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return (data.rowSelectionPostion || []).includes(
-                RowSelectionPostion.TOP
-              );
+              return (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.TOP);
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               const temp = (data.rowSelectionPostion || []).filter(
-                (item) => item !== RowSelectionPostion.TOP
+                (item) => item !== RowSelectionPostionEnum.TOP
               );
               if (value) {
-                temp.push(RowSelectionPostion.TOP);
+                temp.push(RowSelectionPostionEnum.TOP);
               }
               data.rowSelectionPostion = temp;
             }
@@ -173,20 +142,18 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           title: `底部显示`,
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
-            return data.selectionType !== 'radio';
+            return data.selectionType !== RowSelectionTypeEnum.Radio;
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return (data.rowSelectionPostion || []).includes(
-                RowSelectionPostion.BOTTOM
-              );
+              return (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.BOTTOM);
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               const temp = (data.rowSelectionPostion || []).filter(
-                (item) => item !== RowSelectionPostion.BOTTOM
+                (item) => item !== RowSelectionPostionEnum.BOTTOM
               );
               if (value) {
-                temp.push(RowSelectionPostion.BOTTOM);
+                temp.push(RowSelectionPostionEnum.BOTTOM);
               }
               data.rowSelectionPostion = temp;
             }
@@ -223,11 +190,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
             set({ data, input }: EditorResult<Data>, value: boolean) {
               data.useSetSelectedRowKeys = value;
               if (value) {
-                input.add(
-                  InputIds.SET_ROW_SELECTION,
-                  '设置勾选项',
-                  Schemas.SET_ROW_SELECTION
-                );
+                input.add(InputIds.SET_ROW_SELECTION, '设置勾选项', Schemas.SET_ROW_SELECTION);
               } else {
                 input.remove(InputIds.SET_ROW_SELECTION);
               }
@@ -239,7 +202,7 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
           type: '_Event',
           options: () => {
             return {
-              outputId: OutputIds.GET_ROW_SELECTION
+              outputId: OutputIds.ROW_SELECTION
             };
           }
         }
@@ -248,4 +211,4 @@ const rowSelectionEditor = (props: EditorResult<Data>) => {
   ];
 };
 
-export { rowSelectionEditor };
+export { getRowSelectionEditor };

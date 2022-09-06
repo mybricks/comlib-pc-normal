@@ -1,23 +1,40 @@
 import React, { useEffect } from 'react';
 import { Typography } from 'antd';
-import { Data } from './constants';
+import {
+  AlignTypeEnum,
+  CursorTypeEnum,
+  Data,
+  InputIds,
+  OutputIds,
+  WhiteSpaceEnum
+} from './constants';
 
 const { Text, Paragraph } = Typography;
 
-export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
+export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   const { style } = data;
 
   const onClick = () => {
-    if (data.click) {
-      outputs['click'](data.outputContent || data.content || '');
+    if (data.useClick && outputs[OutputIds.Click]) {
+      outputs[OutputIds.Click](data.outputContent || data.content || '');
     }
   };
 
   useEffect(() => {
-    inputs['content']((value: string) => {
-      if (value != undefined && typeof value !== 'string') value = JSON.stringify(value);
-      data.content = value;
+    inputs[InputIds.SetContent]((value: string) => {
+      let res = value;
+      if (res != undefined && typeof res !== 'string') {
+        res = JSON.stringify(res);
+      }
+      data.content = res;
     });
+    inputs[InputIds.SetStyle] &&
+      inputs[InputIds.SetStyle]((value: any) => {
+        const { color, fontSize, fontWeight } = value || {};
+        data.style.color = color || data.style.color;
+        data.style.fontSize = fontSize || data.style.fontSize;
+        data.style.fontWeight = fontWeight || data.style.fontWeight;
+      });
   }, []);
 
   return (
@@ -25,35 +42,34 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
       style={{
         height: 'fit-content',
         maxWidth: '100%',
-        textAlign: data.align || 'left'
+        textAlign: data.align || AlignTypeEnum.Left
       }}
     >
-      {data.isEllipsis ? (
+      {data.isEllipsis && data.ellipsis?.rows > 1 ? (
         <Paragraph
           style={{
             ...style,
-            whiteSpace: 'pre-wrap',
-            cursor: data.click ? 'pointer' : 'default'
+            whiteSpace: WhiteSpaceEnum.PreWrap,
+            cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
-          type={data.textType}
           onClick={onClick}
           ellipsis={data.ellipsis || {}}
         >
-          {env.i18n(data.content) || ''}
+          {data.content || ''}
         </Paragraph>
       ) : (
         <Text
           style={{
             ...style,
-            whiteSpace: 'pre-wrap',
-            cursor: data.click ? 'pointer' : 'default'
+            whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
+            cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
-          type={data.textType}
           onClick={onClick}
+          ellipsis={data.ellipsis || {}}
         >
-          {env.i18n(data.content) || ''}
+          {data.content || ''}
         </Text>
       )}
     </div>
   );
-}
+};

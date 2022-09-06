@@ -1,85 +1,40 @@
-import { uuid } from '../../../utils';
-import { Schemas } from '../../schema';
+import { SlotIds } from '../../constants';
 import { Data } from '../../types';
 
 const headerEditor = {
   title: '头部设置',
   items: [
     {
-      title: '显示标题',
+      title: '标题区插槽',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.useTableTitle;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.useTableTitle = value;
-        }
-      }
-    },
-    {
-      title: '显示总数',
-      type: 'switch',
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.useTableTitle;
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.useTableTitleWithCount;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.useTableTitleWithCount = value;
-        }
-      }
-    },
-    {
-      title: '显示操作',
-      type: 'switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.useActionBtns;
-        },
-        set({ data, output }: EditorResult<Data>, value: boolean) {
-          data.useActionBtns = value;
-          data.actionBtns = data.actionBtns ? data.actionBtns : [];
-          if (value) {
-            if (data.actionBtns.length <= 0) {
-              const id = uuid();
-              const title = `按钮${data.actionBtns?.length}`;
-              data.actionBtns?.push({
-                id,
-                title,
-                type: 'primary',
-                showText: true
-              });
-            }
-            data.actionBtns.forEach((item) => {
-              output.add(item.id, item.title, Schemas.HEADER_BTN_CLICK(data));
-            });
-          }
-          if (!value) {
-            data.actionBtns.forEach((item) => {
-              output.remove(item.id);
-            });
-          }
-        }
-      }
-    },
-    {
-      title: '插槽',
-      type: 'switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.useHeaderSlot;
+          return data.useHeaderTitleSlot;
         },
         set({ data, slot }: EditorResult<Data>, value: boolean) {
-          data.headerSlotId = 'headerSlot';
           if (value) {
-            slot.add('headerSlot', '头部内容');
+            slot.add(SlotIds.HEADER_TITLE, '标题区插槽');
           } else {
-            slot.remove('headerSlot');
+            slot.remove(SlotIds.HEADER_TITLE);
           }
-          data.useHeaderSlot = value;
+          data.useHeaderTitleSlot = value;
+        }
+      }
+    },
+    {
+      title: '操作区插槽',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.useHeaderOperationSlot;
+        },
+        set({ data, slot }: EditorResult<Data>, value: boolean) {
+          if (value) {
+            slot.add(SlotIds.HEADER_OPERATION, '操作区插槽');
+          } else {
+            slot.remove(SlotIds.HEADER_OPERATION);
+          }
+          data.useHeaderOperationSlot = value;
         }
       }
     }

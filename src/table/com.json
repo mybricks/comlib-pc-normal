@@ -9,6 +9,32 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
-  "inputs": [],
-  "outputs": []
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "设置数据源",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "getTableData",
+      "title": "获取表格数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getTableData"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "getTableData",
+      "title": "表格数据",
+      "schema": {
+        "type": "array"
+      }
+    }
+  ]
 }

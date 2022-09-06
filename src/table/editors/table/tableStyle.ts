@@ -1,5 +1,5 @@
 import { unitConversion } from '../../../utils';
-import { Data } from '../../types';
+import { Data, SizeEnum } from '../../types';
 
 const tableStyleEditor = {
   title: '表格样式',
@@ -8,18 +8,15 @@ const tableStyleEditor = {
       title: '布局风格',
       type: 'Select',
       options: [
-        { value: 'default', label: '默认' },
-        { value: 'middle', label: '适中布局' },
-        { value: 'small', label: '紧凑布局' }
+        { value: SizeEnum.Default, label: '默认' },
+        { value: SizeEnum.Middle, label: '适中布局' },
+        { value: SizeEnum.Small, label: '紧凑布局' }
       ],
       value: {
         get({ data }: EditorResult<Data>) {
           return data.size;
         },
-        set(
-          { data }: EditorResult<Data>,
-          value: 'default' | 'middle' | 'small'
-        ) {
+        set({ data }: EditorResult<Data>, value: SizeEnum) {
           data.size = value;
         }
       }
@@ -64,19 +61,6 @@ const tableStyleEditor = {
         }
       }
     }
-    // {
-    //   title: '样式',
-    //   type: 'Style',
-    //   options: ['BGCOLOR'],
-    //   value: {
-    //     get({ data }) {
-    //       return data.bgColor;
-    //     },
-    //     set({ data }, value: Record<string, string>) {
-    //       data.bgColor = value;
-    //     }
-    //   }
-    // }
   ]
 };
 

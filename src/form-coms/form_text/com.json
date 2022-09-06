@@ -38,6 +38,13 @@
       ]
     },
     {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {

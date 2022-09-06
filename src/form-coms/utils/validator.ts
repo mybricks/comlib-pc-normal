@@ -10,33 +10,50 @@ export enum RuleKeys {
   CODE_VALIDATOR = 'codeValidator'
 }
 
-export const defaultValidatorExample = `export default async function (model, context) {
-  const item = model.curFormItem;
-  if (!model.curValue && ![0, false].includes(model.curValue)) {
-    context.failed(\`\${item.label}不能为空\`)
+export const defaultValidatorExample = `export default async function (value, context) {
+  if (!value && ![0, false].includes(value)) {
+    context.failed(\`内容不能为空\`);
   } else {
-    context.success();
+    context.successed();
   }
 }
 `
 
-function i18nString(s: string, env: Env, params?) {
-  if (params) {
-    Object.keys(params).forEach(param => {
-      params[param] = i18nString(params[param], env);
-    });
-    return env.i18n({
-      text: s,
-      params
-    })
+export const defaultRules = [
+  {
+    key: RuleKeys.REQUIRED,
+    status: false,
+    visible: true,
+    title: '必填',
+    message: '内容不能为空',
+  },
+  {
+    key: RuleKeys.CODE_VALIDATOR,
+    status: false,
+    visible: true,
+    title: '代码校验',
+    validateCode: defaultValidatorExample
   }
-  return env.i18n(s);
-}
+]
+
+// function i18nString(s: string, env: Env, params?) {
+//   if (params) {
+//     Object.keys(params).forEach(param => {
+//       params[param] = i18nString(params[param], env);
+//     });
+//     return env.i18n({
+//       text: s,
+//       params
+//     })
+//   }
+//   return env.i18n(s);
+// }
 
 export const ruleFnMap = {
-  [RuleKeys.REQUIRED]: ({ type, label, name, value, messageFn, env, message }) => {
+  [RuleKeys.REQUIRED]: ({ value, message, failed, successed }) => {
     if (!value && ![0, false].includes(value)) {
-      return messageFn(i18nString(message, env, { label, name, value }));
+      return failed(message)
+      // return messageFn(i18nString(message, env, { label, name, value }));
     }
     // if (Array.isArray(value) && ['treeSelect', 'cascader', 'tagsSelect', 'multipleSelect', 'checkbox'].includes(type) && value.length < 1) {
     //   return messageFn(i18nString(message, env, { label, name, value }));
@@ -44,7 +61,7 @@ export const ruleFnMap = {
     // if (['dateTimeRangePicker', 'timeRangePicker', 'rangePicker'].includes(type) && (value.some(def => def == null))) {
     //   return messageFn(i18nString(message, env, { label, name, value }));
     // }
-    return 'success';
+    return successed()
   },
   // [RuleKeys.MIN]: ({ label, name, value, limit, messageFn, success, env, message }) => {
   //   if (typeCheck(value, 'NUMBER') && value < limit) {
@@ -80,3 +97,42 @@ export const ruleFnMap = {
     return runJs(validateCode, args, { env });
   },
 };
+
+export function validateFormItem ({ value, env, rules }) {
+  const curRule = rules.filter(item => item.status) 
+
+  return new Promise((resolve, reject) => {
+    Promise.all(curRule.map(item => {
+      return new Promise((res, rej) => {
+        const validateFn = {
+          successed: () => res('success'),
+          failed: (msg: string) => rej(msg)
+        }
+
+        ruleFnMap[item.key]({
+          value,
+          env,
+          args: [
+            value, 
+            {
+              ...env,
+              ...validateFn
+            }
+          ],
+          validateCode: item.validateCode,
+          message: item.message,
+          ...validateFn
+        })
+      })
+    })).then(r => {
+      resolve({
+        validateStatus: 'success'
+      })
+    }).catch(e => {
+      reject({
+        validateStatus: 'error',
+        help: e
+      })
+    })
+  })
+}

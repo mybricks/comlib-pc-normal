@@ -1,68 +1,73 @@
-import {Form, Input} from 'antd'
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import { Form, Input } from 'antd';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { validateFormItem } from '../utils/validator';
 
-import css from './runtime.less'
+import css from './runtime.less';
 
 interface Data {
-  value: string
-  visible: boolean
+  value: string | undefined;
+  visible: boolean;
+  rules: any[];
   config: {
-    allowClear: boolean
-    disabled: boolean
-    addonBefore: string
-    addonAfter: string
-    showCount: boolean
-    maxLength?: number
-  }
+    allowClear: boolean;
+    disabled: boolean;
+    addonBefore: string;
+    addonAfter: string;
+    showCount: boolean;
+    maxLength?: number;
+  };
 }
 
-export default function ({env, data, _inputs, inputs, _outputs, outputs}: RuntimeParams<Data>) {
-  const { edit } = env
+export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
+  const { edit } = env;
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
-      data.value = val
-    })
+      data.value = val;
+    });
 
     inputs['validate']((val, outputRels) => {
-      if (data.value) {
-        outputRels['returnValidate']({
-          validateStatus: 'success',
+      validateFormItem({
+        value: data.value,
+        env,
+        rules: data.rules
+      })
+        .then((r) => {
+          outputRels['returnValidate'](r);
         })
-      } else {
-        outputRels['returnValidate']({
-          validateStatus: 'error',
-          help: '请输入内容'
-        })
-      }
-    })
+        .catch((e) => {
+          outputRels['returnValidate'](e);
+        });
+    });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value)
-    })
+      outputRels['returnValue'](data.value);
+    });
+
+    inputs['resetValue'](() => {
+      data.value = void 0;
+    });
 
     inputs['setVisible']((val: boolean) => {
-      data.visible = val
-    })
+      data.visible = val;
+    });
 
     inputs['setDisabled']((val: boolean) => {
-      data.config.disabled = val
-    })
-  }, [])
-
-  
+      data.config.disabled = val;
+    });
+  }, []);
 
   const changeValue = useCallback((e) => {
-    const value = e.target.value
-    data.value = value
-    outputs['onChange'](value)
-  }, [])
+    const value = e.target.value;
+    data.value = value;
+    outputs['onChange'](value);
+  }, []);
 
   const onBlur = useCallback((e) => {
-    const value = e.target.value
-    data.value = value
-    outputs['onBlur'](value)
-  }, [])
+    const value = e.target.value;
+    data.value = value;
+    outputs['onBlur'](value);
+  }, []);
 
   let jsx = (
     <Input
@@ -73,11 +78,7 @@ export default function ({env, data, _inputs, inputs, _outputs, outputs}: Runtim
       onChange={changeValue}
       onBlur={onBlur}
     />
-  )
+  );
 
-  return (
-    <div className={css.fiText}>
-      {jsx}
-    </div>
-  )
+  return data.visible && <div className={css.fiText}>{jsx}</div>;
 }
