@@ -9,7 +9,7 @@ import css from './style.less';
 export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
   useEffect(() => {
     if (env.runtime) {
-      data.btnList.forEach((item) => {
+      (data.btnList || []).forEach((item) => {
         const { key } = item;
         inputs[`${InputIds.SetOutputVal}_${key}`]?.((val: any) => {
           item.outputValue = val;
@@ -101,13 +101,13 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     });
   };
 
-  const normalBtnList = data.btnList
+  const normalBtnList = (data.btnList || [])
     .filter((item) => !(!hasPermission(item.permissionKey) || item.hidden))
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx < data.maxShowNumber : true
     );
 
-  const ellipsisBtnList = data.btnList
+  const ellipsisBtnList = (data.btnList || [])
     .filter((item) => !(!hasPermission(item.permissionKey) || item.hidden))
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx >= data.maxShowNumber : false
@@ -121,7 +121,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
       }}
     >
       <Space size={data.spaceSize} wrap key={env.edit ? JSON.stringify(data.spaceSize) : undefined}>
-        {data.btnList?.length > 0 || env.runtime ? (
+        {(data.btnList || []).length > 0 || env.runtime ? (
           <>
             {renderBtnList(normalBtnList)}
             {renderEllipsisList(ellipsisBtnList)}
