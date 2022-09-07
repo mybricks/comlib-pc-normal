@@ -1,6 +1,6 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Option } from '../types';
+import { InputIds, Option, OutputIds } from '../types';
 import { Data } from './types';
 
 let tempOptions: Option[] = [],
@@ -67,8 +67,23 @@ export default {
           get({ data }) {
             return data.config.mode;
           },
-          set({ data }, value: string) {
-            data.config.mode = value;
+          set({ data, input, output }: EditorResult<Data>, value: string) {
+            data.config.mode = value as any;
+            if (['multiple', 'tags'].includes(value)) {
+              const valueSchema = {
+                type: 'array'
+              }
+              input.get(InputIds.SetValue).setSchema(valueSchema);
+              output.get(OutputIds.OnChange).setSchema(valueSchema);
+              output.get(OutputIds.ReturnValue).setSchema(valueSchema);
+            } else {
+              const valueSchema = {
+                type: 'any'
+              }
+              input.get(InputIds.SetValue).setSchema(valueSchema);
+              output.get(OutputIds.OnChange).setSchema(valueSchema);
+              output.get(OutputIds.ReturnValue).setSchema(valueSchema);
+            }
           }
         }
       },

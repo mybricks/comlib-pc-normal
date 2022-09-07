@@ -13,3 +13,12 @@ export interface Option {
   disabled?: boolean;
   checked: boolean;
 }
+
+export const InputIds = {
+  SetValue: 'setValue'
+}
+
+export const OutputIds = {
+  OnChange: 'onChange',
+  ReturnValue: 'returnValue'
+}
