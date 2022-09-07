@@ -8,13 +8,22 @@
   "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editors/index.tsx",
   "inputs": [
     {
-      "id": "slotProps",
-      "title": "插槽参数",
+      "id": "setOutputVal_btn0",
+      "title": "设置按钮0输出数据",
       "schema": {
         "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "btn0",
+      "title": "单击按钮0",
+      "schema": {
+        "type": "any"
       }
     }
   ]

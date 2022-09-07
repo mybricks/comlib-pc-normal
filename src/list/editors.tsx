@@ -2,6 +2,15 @@ import { Data, InputIds, OutputIds } from './constants';
 import { LayoutEditor } from './editor/layoutEditor';
 
 export default {
+  '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
+    if (toPin.id === InputIds.DATA_SOURCE) {
+      let itemSchema = {};
+      if (fromPin.schema.type === 'array') {
+        itemSchema = fromPin.schema.items;
+        slots.get('item').inputs.get('itemData').setSchema(itemSchema);
+      }
+    }
+  },
   ':root': ({}: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [...LayoutEditor];
@@ -52,31 +61,6 @@ export default {
                 input.add(InputIds.LOADING, '设置loading', { type: 'boolean' });
             } else {
               input.get(InputIds.LOADING) && input.remove(InputIds.LOADING);
-            }
-          }
-        }
-      },
-      {
-        title: '插槽数据传入',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.useSlotProps;
-          },
-          set({ data, input }: EditorResult<Data>, val: boolean) {
-            data.useSlotProps = val;
-            if (val) {
-              !input.get(InputIds.SLOTPROPS) &&
-                input.add(InputIds.SLOTPROPS, '插槽数据', {
-                  type: 'array',
-                  items: {
-                    title: '列项数据',
-                    type: 'object',
-                    properties: {}
-                  }
-                });
-            } else {
-              input.get(InputIds.SLOTPROPS) && input.remove(InputIds.SLOTPROPS);
             }
           }
         }

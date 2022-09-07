@@ -8,7 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.ts",
+  "editors": "./editors/index.ts",
   "inputs": [
     {
       "id": "setFieldsValue",

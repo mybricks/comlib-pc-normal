@@ -14,8 +14,12 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "any"
-      }
+        "type": "follow"
+      },
+      "rels": [
+        "cancelBtn",
+        "ok"
+      ]
     },
     {
       "id": "close",
@@ -30,44 +34,9 @@
       "schema": {
         "type": "string"
       }
-    },
-    {
-      "id": "showFooter",
-      "title": "显示底部内容",
-      "schema": {
-        "type": "follow"
-      }
-    },
-    {
-      "id": "hideFooter",
-      "title": "隐藏底部内容",
-      "schema": {
-        "type": "follow"
-      }
-    },
-    {
-      "id": "showTitle",
-      "title": "显示标题",
-      "schema": {
-        "type": "follow"
-      }
-    },
-    {
-      "id": "hideTitle",
-      "title": "隐藏标题",
-      "schema": {
-        "type": "follow"
-      }
     }
   ],
   "outputs": [
-    {
-      "id": "cancel",
-      "title": "关闭回调",
-      "schema": {
-        "type": "any"
-      }
-    },
     {
       "id": "ok",
       "title": "确认",
@@ -88,13 +57,28 @@
       "id": "container",
       "title": "对话框容器",
       "type": "scope",
-      "inputs": [],
+      "inputs": [
+        {
+          "id": "dataSource",
+          "title": "输入数据",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ],
       "outputs": [
         {
-          "id": "close",
-          "title": "关闭",
+          "id": "cancelBtn",
+          "title": "取消输出",
           "schema": {
-            "type": "any"
+            "type": "follow"
+          }
+        },
+        {
+          "id": "ok",
+          "title": "确认输出",
+          "schema": {
+            "type": "follow"
           }
         }
       ]

@@ -23,7 +23,11 @@
       "title": "打开",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "cancel",
+        "ok"
+      ]
     },
     {
       "id": "title",
@@ -31,19 +35,19 @@
       "schema": {
         "type": "string"
       }
-    },
-    {
-      "id": "inputData",
-      "title": "接收数据",
-      "schema": {
-        "type": "any"
-      }
     }
   ],
   "outputs": [
     {
       "id": "cancel",
-      "title": "关闭回调",
+      "title": "取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "ok",
+      "title": "确认",
       "schema": {
         "type": "any"
       }
@@ -52,11 +56,33 @@
   "slots": [
     {
       "id": "content",
-      "title": "抽屉内容"
-    },
-    {
-      "id": "footer",
-      "title": "抽屉页脚"
+      "title": "抽屉内容",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "dataSource",
+          "title": "输入数据",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "cancel",
+          "title": "取消按钮输出数据",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "ok",
+          "title": "确认按钮输出数据",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ]
     }
   ]
 }
