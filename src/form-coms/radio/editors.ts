@@ -144,6 +144,7 @@ export default {
               }
             });
             data.staticOptions = options;
+            data.config.options = options;
           }
         }
       },

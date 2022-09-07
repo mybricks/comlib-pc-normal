@@ -33,7 +33,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setOptions']((val) => {
-      data.options = val;
+      data.config.options = val;
     });
 
     inputs['setVisible']((val) => {
@@ -51,10 +51,15 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     data.visible && (
       <div>
         <Radio.Group {...data.config} value={data.value} onChange={onChange}>
-          {(data.options || data.staticOptions)?.map((item, radioIdx) => {
+          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
             const label = item.label;
             return (
-              <Radio value={item.value} disabled={item.disabled} style={{ marginRight: 8 }}>
+              <Radio
+                key={item.value}
+                value={item.value}
+                disabled={item.disabled}
+                style={{ marginRight: 8 }}
+              >
                 {label}
               </Radio>
             );
