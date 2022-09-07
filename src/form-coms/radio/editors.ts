@@ -125,16 +125,16 @@ export default {
               if (newOption?.checked === currentOption?.checked) return;
               // 设置了选项的默认选中
               if (newOption?.checked && !oldOption?.checked) {
-                data.config.defaultValue = newOption.value;
+                data.value = newOption.value;
               }
               // 取消了选项的默认选中
               if (!newOption?.checked && oldOption?.checked) {
-                data.config.defaultValue = undefined;
+                data.value = undefined;
               }
             });
             // 临时:使用tempOptions存储配置项的prev
             tempOptions = options;
-            const formItemVal = data.config.defaultValue;
+            const formItemVal = data.value;
             // 更新选项
             options = options.map(option => {
               const checked = formItemVal !== undefined && option.value === formItemVal;
