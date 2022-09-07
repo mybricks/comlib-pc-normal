@@ -4,12 +4,12 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({id, data, parent}, {schema}) {
+  '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({id, schema: {type: 'string'}})
+      parent['@_setFormItem']({ id, schema: { type: 'string' } });
     }
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -27,28 +27,15 @@ export default {
         }
       },
       {
-        title: '前置标签',
-        type: 'text',
-        description: '带标签的 input，设置前置标签',
+        title: '显示清除图标',
+        type: 'switch',
+        description: '可以点击清除图标删除内容',
         value: {
           get({ data }) {
-            return data.config.addonBefore;
+            return data.config.allowClear;
           },
-          set({ data }, value: string) {
-            data.config.addonBefore = value;
-          }
-        }
-      },
-      {
-        title: '后置标签',
-        type: 'text',
-        description: '带标签的 input，设置后置标签',
-        value: {
-          get({ data }) {
-            return data.config.addonAfter;
-          },
-          set({ data }, value: string) {
-            data.config.addonAfter = value;
+          set({ data }, value: boolean) {
+            data.config.allowClear = value;
           }
         }
       },
@@ -66,35 +53,29 @@ export default {
         }
       },
       {
-        title: '数值精度',
-        description: '精确到小数点后几位',
-        type: "Slider",
-        options: {
-          max: 10,
-          min: 0,
-          steps: 1,
-          formatter: "/10",
-        },
+        title: '显示字数',
+        type: 'switch',
+        description: '是否展示字数',
         value: {
           get({ data }) {
-            return data.config.precision;
+            return data.config.showCount;
           },
-          set({ data }, value: number) {
-            data.config.precision = value;
+          set({ data }, value: boolean) {
+            data.config.showCount = value;
           }
         }
       },
       {
-        title: '步长',
-        type: 'Text',
-        description: '默认为1,只允许设置大于0的整数',
+        title: '内容最大长度',
+        type: 'InputNumber',
+        description: '可输入的内容最大长度, -1 为不限制',
+        options: [{ min: -1 }],
         value: {
           get({ data }) {
-            return data.config.step;
+            return data.config.maxLength || [-1];
           },
-          set({ data }, value: string) {
-            const num = parseInt(value, 10);
-            data.config.step = isNaN(num) || num <= 0 ? undefined : num;
+          set({ data }, value: number) {
+            data.config['maxLength'] = value[0];
           }
         }
       },
@@ -104,7 +85,6 @@ export default {
         type: 'ArrayCheckbox',
         options: {
           checkField: 'status',
-
           visibleField: 'visible',
           getTitle,
           items: [
@@ -160,12 +140,19 @@ export default {
             options: {
               outputId: 'onChange'
             }
+          },
+          {
+            title: '失去焦点',
+            type: '_event',
+            options: {
+              outputId: 'onBlur'
+            }
           }
         ]
-      },
-    ]
+      }
+    ];
   }
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

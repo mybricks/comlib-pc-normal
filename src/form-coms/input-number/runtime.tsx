@@ -1,45 +1,64 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { InputNumber } from 'antd'
-
+import { InputNumber } from 'antd';
+import { validateFormItem } from '../utils/validator';
 interface Data {
-  options: any[]
+  options: any[];
+  rules: any[];
+  config: {
+    disabled: boolean;
+    placeholder: string;
+    addonBefore: string;
+    addonAfter: string;
+    precision: number;
+    step: number;
+  };
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs } = props
-  const [value, setValue] = useState()
+  const { data, inputs, outputs, env } = props;
+  const [value, setValue] = useState();
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
-      setValue(val)
-    })
+      setValue(val);
+    });
 
     inputs['validate']((val, outputRels) => {
-      if (value) {
-        outputRels['returnValidate']({
-          validateStatus: 'success',
+      validateFormItem({
+        value: value,
+        env,
+        rules: data.rules
+      })
+        .then((r) => {
+          outputRels['returnValidate'](r);
         })
-      } else {
-        outputRels['returnValidate']({
-          validateStatus: 'error',
-          help:  `请输入${val.label}`
-        })
-      }
-    })
+        .catch((e) => {
+          outputRels['returnValidate'](e);
+        });
+    });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value)
-    })
-  }, [value])
+      outputRels['returnValue'](value);
+    });
+  }, [value]);
+
+  //重置
+  inputs['resetValue'](() => {
+    setValue(void 0);
+  });
+  //设置禁用
+  inputs['setDisabled']((val: boolean) => {
+    data.config.disabled = val;
+  });
 
   const onChange = (value) => {
-    setValue(value)
-    outputs['onChange'](value)
-  }
+    setValue(value);
+    outputs['onChange'](value);
+  };
 
   return (
     <div>
-      <InputNumber value={value} onChange={onChange} />
+      <InputNumber value={value} {...data.config} onChange={onChange} />
     </div>
-  )
+  );
 }
