@@ -9,22 +9,32 @@ export interface Item {
   [key: string]: any;
 }
 
-export enum DATA_SOURCE_TYPE {
+export enum ModeEnum {
+  Left = 'left',
+  Alternate = 'alternate',
+  Right = 'right'
+}
+export enum DataSourceEnum {
   STATIC = 1,
   DYNAMIC = 2
 }
 export interface Data {
-  dataSource: DATA_SOURCE_TYPE;
+  dataSource: DataSourceEnum;
   timelines: Item[];
-  width?: string;
-  mode: 'left' | 'alternate' | 'right';
+  mode: ModeEnum;
   reverse?: boolean;
   supportCollapse?: boolean;
+  defaultCollapse?: boolean;
   useItemClick?: boolean;
+
+  useContentSlot?: boolean;
 }
 
 export const InputIds = {
-  SetDataSource: 'dataSource'
+  SetDataSource: 'dataSource',
+
+  CurrentDs: 'currentDs',
+  Index: 'index'
 };
 export const OutputIds = {
   ItemClick: 'itemClick'
@@ -34,6 +44,15 @@ export const SlotIds = {
 };
 
 export const Schemas = {
+  Any: {
+    type: 'any'
+  },
+  Object: {
+    type: 'object'
+  },
+  Number: {
+    type: 'number'
+  },
   [InputIds.SetDataSource]: {
     type: 'array',
     items: {
@@ -55,6 +74,23 @@ export const Schemas = {
           title: '节点颜色',
           type: 'string'
         }
+      }
+    }
+  },
+  [InputIds.CurrentDs]: {
+    type: 'object',
+    properties: {
+      title: {
+        title: '标题',
+        type: 'string'
+      },
+      subTitle: {
+        title: '子标题',
+        type: 'string'
+      },
+      description: {
+        title: '描述',
+        type: 'string'
       }
     }
   }
