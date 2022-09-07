@@ -5,7 +5,7 @@
   "showTime": false,
   "config": {
     "disabled": false,
-    "placeholder": "请输入内容",
+    "placeholder": "请选择日期",
     "picker": "date"
   }
 }

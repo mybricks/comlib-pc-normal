@@ -4,10 +4,10 @@
   "isMultiple": false,
   "maxTagCountType": "isResponsive",
   "rules": [],
-  "value": [],
+  "value": null,
   "config": {
     "allowClear": true,
-    "placeholder": "请输入内容",
+    "placeholder": "请选择",
     "disabled": false,
     "maxTagCount": "responsive",
     "changeOnSelect": false,

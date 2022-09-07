@@ -3,7 +3,7 @@
   "rules": [],
   "config": {
     "disabled": false,
-    "placeholder": "请输入内容",
+    "placeholder": "请输入数字",
     "addonBefore": "",
     "addonAfter": "",
     "precision": 0,
