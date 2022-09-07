@@ -18,27 +18,6 @@
       }
     },
     {
-      "id": "slotProps",
-      "title": "插槽参数",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "title": "文本内容",
-            "type": "string"
-          },
-          "formProps": {
-            "type": "object",
-            "properties": {
-              "disabled": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      }
-    },
-    {
       "id": "submit",
       "title": "提交",
       "schema": {

@@ -136,20 +136,6 @@ export default function ({
           modalCtx.editor?.setContent(val);
           modalCtx.content = val;
         });
-        inputs['slotProps'](({ value, formProps: { disabled} }: any) => {
-          if (disabled) {
-            editor.setMode('readonly');
-          } else {
-            editor.setMode('design');
-          }
-          if (value === void 0) return;
-          if (typeof value !== 'string') {
-            logger.error(`富文本数据源不是字符串`);
-            return;
-          }
-          modalCtx.editor?.setContent(value);
-          modalCtx.content = value;
-        });
         editor.setContent(modalCtx.content)
         if (modalCtx.loading) {
           setTimeout(() => {

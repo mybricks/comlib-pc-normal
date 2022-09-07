@@ -8,15 +8,6 @@ export default function({ env, modalCtx, data, inputs, logger }) {
       modalCtx.editor?.setContent(val);
       modalCtx.content = val;
     });
-    inputs['slotProps'](({ value }: any) => {
-      if (value === void 0) return;
-      if (typeof value !== 'string') {
-        logger.error(`富文本数据源不是字符串`);
-        return;
-      }
-      modalCtx.editor?.setContent(value);
-      modalCtx.content = value;
-    });
   }, [])
 
   const preiewContent = useComputed(() => {
