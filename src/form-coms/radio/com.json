@@ -1,8 +1,8 @@
 {
-  "title": "下拉框",
-  "namespace": "mybricks.normal-pc.select",
+  "title": "单选框",
+  "namespace": "mybricks.normal-pc.radio",
   "version": "1.0.0",
-  "description": "下拉框",
+  "description": "单选框",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
@@ -77,26 +77,12 @@
       "schema": {
         "type": "boolean"
       }
-    },
-    {
-      "id": "setLoading",
-      "title": "设置加载中状态",
-      "schema": {
-        "type": "boolean"
-      }
     }
   ],
   "outputs": [
     {
       "id": "onChange",
       "title": "值变化",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "onBlur",
-      "title": "失去焦点",
       "schema": {
         "type": "string"
       }

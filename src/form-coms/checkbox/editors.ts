@@ -1,19 +1,15 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { InputIds, Option, OutputIds } from '../types';
+import { Option } from '../types';
 import { Data } from './types';
 
-let tempOptions: Option[] = [],
-  optionsLength,
+let  optionsLength = 0,
   addOption,
   delOption;
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
     data.staticOptions = [];
-  }
-  if (optionsLength === undefined) {
-    tempOptions = data.staticOptions || [];
   }
   optionsLength = (data.staticOptions || []).length;
   addOption = (option) => {
@@ -23,13 +19,14 @@ const initParams = (data: Data) => {
     data.staticOptions.splice(index, 1);
   };
 };
+
 export default {
   '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'any' } })
+      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'array' } })
     }
     // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-    //   data.type = 'formItem'
+    //   data.type = 'data'
     //
     //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
     // } else {
@@ -39,67 +36,7 @@ export default {
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
-
     catalog[0].items = [
-      {
-        title: '提示内容',
-        type: 'Text',
-        description: '该提示内容会在值为空时显示',
-        value: {
-          get({ data }) {
-            return data.config.placeholder;
-          },
-          set({ data }, value: string) {
-            data.config.placeholder = value;
-          }
-        }
-      },
-      {
-        title: '下拉框模式',
-        type: 'select',
-        description: '可设置下拉框的模式为多选或标签',
-        options: [
-          { label: '默认', value: 'default' },
-          { label: '多选', value: 'multiple' },
-          { label: '标签', value: 'tags' },
-        ],
-        value: {
-          get({ data }) {
-            return data.config.mode;
-          },
-          set({ data, input, output }: EditorResult<Data>, value: string) {
-            data.config.mode = value as any;
-            if (['multiple', 'tags'].includes(value)) {
-              const valueSchema = {
-                type: 'array'
-              }
-              input.get(InputIds.SetValue).setSchema(valueSchema);
-              output.get(OutputIds.OnChange).setSchema(valueSchema);
-              output.get(OutputIds.ReturnValue).setSchema(valueSchema);
-            } else {
-              const valueSchema = {
-                type: 'any'
-              }
-              input.get(InputIds.SetValue).setSchema(valueSchema);
-              output.get(OutputIds.OnChange).setSchema(valueSchema);
-              output.get(OutputIds.ReturnValue).setSchema(valueSchema);
-            }
-          }
-        }
-      },
-      {
-        title: '显示清除图标',
-        type: 'switch',
-        description: '可以点击清除图标删除内容',
-        value: {
-          get({ data }) {
-            return data.config.allowClear;
-          },
-          set({ data }, value: boolean) {
-            data.config.allowClear = value;
-          }
-        }
-      },
       {
         title: '禁用状态',
         type: 'switch',
@@ -113,35 +50,9 @@ export default {
           }
         }
       },
-      {
-        title: '提交数据为选项的{标签-值}',
-        type: 'Switch',
-        description: '开启后提交选项的标签（文本）和值',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.config.labelInValue;
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.config.labelInValue = val;
-            const checkedList = data.staticOptions?.filter(opt => opt?.checked) || [];
-            if (checkedList.length > 0) {
-              switch (data.config.mode) {
-                case 'multiple':
-                case 'tags':
-                  data.value = checkedList.map(({ label, value }) => val ? { label, value } : value) as any;
-                  break;
-                default:
-                  const { label, value } = checkedList[0];
-                  data.value = val ? { label, value } : value as any;
-                  break;
-              }
-            }
-          }
-        }
-      },
       // 选项配置
       {
-        title: '静态选项配置',
+        title: "静态选项配置",
         type: 'array',
         options: {
           getTitle: ({ label, checked }) => {
@@ -154,6 +65,7 @@ export default {
             const defaultOption = {
               label: `选项${optionsLength + 1}`,
               value: `选项${optionsLength + 1}`,
+              type: 'default',
               key: uuid()
             };
             addOption(defaultOption);
@@ -181,7 +93,7 @@ export default {
               options: ['text', 'number', 'boolean'],
               description: '选项的唯一标识，可以修改为有意义的值',
               value: 'value'
-            }
+            },
           ]
         },
         value: {
@@ -190,26 +102,11 @@ export default {
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
-            const initValue: any = [];
-            options.forEach(({ checked, value, label }) => {
-              if (checked) initValue.push(data.config.labelInValue ? { label, value } : value);
+            const values: any[] = [];
+            options.forEach(({ checked, value }) => {
+              if (checked) values.push(value);
             });
-            if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
-              data.value = initValue;
-            } else {
-              data.value = initValue[0];
-              // 临时:使用tempOptions存储配置项的prev
-              tempOptions = options;
-              const formItemVal: any = data.value;
-              // 更新选项
-              options = options.map(option => {
-                const checked = formItemVal !== undefined && option.value === (data.config.labelInValue ? formItemVal?.value : formItemVal);
-                return {
-                  ...option,
-                  checked
-                }
-              });
-            }
+            data.value = values as any;
             data.staticOptions = options;
             data.config.options = options;
           }
@@ -290,13 +187,6 @@ export default {
               outputId: 'onChange'
             }
           },
-          {
-            title: '失去焦点',
-            type: '_event',
-            options: {
-              outputId: 'onBlur'
-            }
-          }
         ]
       }
     ];

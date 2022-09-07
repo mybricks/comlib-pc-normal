@@ -158,41 +158,10 @@ export default {
             }
           },
           {
-            title: '类型',
-            type: 'Select',
-            ifVisible({ data }) {
-              return data.useFooter;
-            },
-            options: [
-              {
-                label: '按钮组',
-                value: FOOTER_CONTENT_TYPE.BUTTONS
-              },
-              {
-                label: '插槽',
-                value: FOOTER_CONTENT_TYPE.SLOT
-              }
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.footerType || FOOTER_CONTENT_TYPE.BUTTONS;
-              },
-              set({ data, slot }: EditorResult<Data>, value: number) {
-                data.footerType = value;
-                const hasSlot = slot.get(SlotIds.Footer);
-                if (value === FOOTER_CONTENT_TYPE.SLOT) {
-                  !hasSlot && slot.add(SlotIds.Footer, '底部内容');
-                } else {
-                  hasSlot && slot.remove(SlotIds.Footer);
-                }
-              }
-            }
-          },
-          {
             title: '隐藏确认按钮',
             type: 'Switch',
             ifVisible({ data }: EditorResult<Data>) {
-              return data.useFooter && data.footerType === FOOTER_CONTENT_TYPE.BUTTONS;
+              return data.useFooter;
             },
             value: {
               get({ data }: EditorResult<Data>) {
@@ -213,7 +182,7 @@ export default {
             title: '隐藏取消按钮',
             type: 'Switch',
             ifVisible({ data }: EditorResult<Data>) {
-              return data.useFooter && data.footerType === FOOTER_CONTENT_TYPE.BUTTONS;
+              return data.useFooter;
             },
             value: {
               get({ data }: EditorResult<Data>) {
@@ -235,8 +204,7 @@ export default {
             ifVisible({ data }: EditorResult<Data>) {
               return (
                 !!data.footerBtns &&
-                data.useFooter &&
-                data.footerType === FOOTER_CONTENT_TYPE.BUTTONS
+                data.useFooter
               );
             },
             type: 'Button',

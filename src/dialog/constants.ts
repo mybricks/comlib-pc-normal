@@ -39,7 +39,6 @@ export interface Data {
   closable: boolean;
   centered: boolean;
   useFooter: boolean | number;
-  footerType: number;
   cancelText: string;
   width?: number;
   hideTitle: boolean;
