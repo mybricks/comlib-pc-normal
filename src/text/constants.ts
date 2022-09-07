@@ -22,6 +22,10 @@ export interface Data {
   ellipsis: Record<string, any>;
 
   useDynamicStyle?: boolean;
+
+  useHoverStyle?: boolean;
+  styleCatelog?: string;
+  hoverStyle?: Record<string, any>;
 }
 
 export const InputIds = {
