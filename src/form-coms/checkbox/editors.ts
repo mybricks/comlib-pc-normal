@@ -1,6 +1,7 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Data, Option } from './type';
+import { Option } from '../types';
+import { Data } from './types';
 
 let tempOptions: Option[] = [],
   optionsLength = 0,
@@ -9,9 +10,7 @@ let tempOptions: Option[] = [],
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
-    data.staticOptions = [...(data.config.options || [])].map((item) => ({
-      ...item
-    }));
+    data.staticOptions = [];
   }
   if (tempOptions.length !== data.staticOptions?.length) {
     tempOptions = data.staticOptions || [];
@@ -124,7 +123,7 @@ export default {
             options.forEach(({ checked, value }) => {
               if (checked) values.push(value);
             });
-            data.config.defaultValue = values;
+            data.value = values as any;
             data.staticOptions = options;
             tempOptions = options;
           }

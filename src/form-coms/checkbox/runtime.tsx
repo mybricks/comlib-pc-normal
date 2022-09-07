@@ -1,11 +1,9 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
-import { Data } from './type';
+import { Data } from './types';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
-  data.config.options = data.staticOptions;
-  data.value = data.config.defaultValue;
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -35,7 +33,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setOptions']((val) => {
-      data.config.options = val;
+      data.options = val;
     });
 
     inputs['setVisible']((val) => {
@@ -47,24 +45,15 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     data.value = checkedValue;
     outputs['onChange'](checkedValue);
   }, []);
-
   return (
     data.visible && (
       <div>
-        <Checkbox.Group {...data.config} onChange={onChange}>
-          {data.config?.options?.map((item, radioIdx) => {
-            const label = item.label;
-            return (
-              <div data-radio-form-item-radio-index={radioIdx} key={item.key || item.value}>
-                {
-                  <Checkbox value={item.value} disabled={item.disabled} style={{ marginRight: 8 }}>
-                    {label}
-                  </Checkbox>
-                }
-              </div>
-            );
-          })}
-        </Checkbox.Group>
+        <Checkbox.Group
+          {...data.config}
+          options={data.options || data.staticOptions}
+          value={data.value as any}
+          onChange={onChange}
+        />
       </div>
     )
   );
