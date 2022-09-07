@@ -41,7 +41,10 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setLoading']((val: boolean) => {
-      data.config.loading = val;
+      data.config = {
+        ...data.config,
+        loading: val
+      };
     });
 
     inputs['setVisible']((val) => {
