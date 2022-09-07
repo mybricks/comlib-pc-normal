@@ -219,48 +219,35 @@ const RuntimeRender = ({
   } = cfg;
 
   const renderFooter = () => {
-    if (cfg.footerType === FOOTER_CONTENT_TYPE.BUTTONS) {
-      return (footerBtns || []).map((item) => {
-        const {
-          title,
-          id,
-          showText,
-          icon,
-          useIcon,
-          disabled,
-          hidden,
-          visible = true,
-          location,
-          ...res
-        } = item;
-        const Icon = useIcon && Icons && Icons[icon as string]?.render();
-        return (
-          <Button
-            {...res}
-            hidden={!visible || hidden}
-            disabled={disabled}
-            onClick={event?.[id]}
-            data-btn-id={id}
-            key={id}
-          >
-            {useIcon && location !== Location.BACK && Icon}
-            {showText && env.i18n(title)}
-            {useIcon && location === Location.BACK && Icon}
-          </Button>
-        );
-      });
-    }
-
-    return (
-      slots[SlotIds.Footer] &&
-      slots[SlotIds.Footer].render({
-        inputs: {
-          slotProps(fn) {
-            fn(cfg);
-          }
-        }
-      })
-    );
+    return (footerBtns || []).map((item) => {
+      const {
+        title,
+        id,
+        showText,
+        icon,
+        useIcon,
+        disabled,
+        hidden,
+        visible = true,
+        location,
+        ...res
+      } = item;
+      const Icon = useIcon && Icons && Icons[icon as string]?.render();
+      return (
+        <Button
+          {...res}
+          hidden={!visible || hidden}
+          disabled={disabled}
+          onClick={event?.[id]}
+          data-btn-id={id}
+          key={id}
+        >
+          {useIcon && location !== Location.BACK && Icon}
+          {showText && env.i18n(title)}
+          {useIcon && location === Location.BACK && Icon}
+        </Button>
+      );
+    });
   };
 
   return (
