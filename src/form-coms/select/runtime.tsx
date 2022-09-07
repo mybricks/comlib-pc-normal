@@ -5,9 +5,6 @@ import { Data } from './types';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
-    data.value = data.config.defaultValue;
-    data.config.options = data.staticOptions;
-
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: data.value,
@@ -59,7 +56,13 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
   return (
     data.visible && (
       <div>
-        <Select {...data.config} value={data.value} onChange={onChange} onBlur={onBlur} />
+        <Select
+          {...data.config}
+          options={env.edit ? data.staticOptions : data.config.options}
+          value={data.value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
       </div>
     )
   );

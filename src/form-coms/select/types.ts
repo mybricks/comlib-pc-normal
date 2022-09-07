@@ -7,7 +7,6 @@ export interface Data {
         allowClear: boolean;
         placeholder: string;
         loading?: boolean;
-        defaultValue: any;
         mode?: 'tags' | 'multiple';
         labelInValue?: boolean;
     };

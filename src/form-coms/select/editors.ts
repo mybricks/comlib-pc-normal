@@ -113,11 +113,11 @@ export default {
               switch (data.config.mode) {
                 case 'multiple':
                 case 'tags':
-                  data.config.defaultValue = checkedList.map(({ label, value }) => val ? { label, value } : value)
+                  data.value = checkedList.map(({ label, value }) => val ? { label, value } : value) as any;
                   break;
                 default:
                   const { label, value } = checkedList[0];
-                  data.config.defaultValue = val ? { label, value } : value
+                  data.value = val ? { label, value } : value as any;
                   break;
               }
             }
@@ -151,6 +151,11 @@ export default {
               value: 'checked'
             },
             {
+              title: '禁用',
+              type: 'switch',
+              value: 'disabled'
+            },
+            {
               title: '选项标签',
               type: 'textarea',
               value: 'label'
@@ -175,12 +180,12 @@ export default {
               if (checked) initValue.push(data.config.labelInValue ? { label, value } : value);
             });
             if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
-              data.config.defaultValue = initValue;
+              data.value = initValue;
             } else {
-              data.config.defaultValue = initValue[0];
+              data.value = initValue[0];
               // 临时:使用tempOptions存储配置项的prev
               tempOptions = options;
-              const formItemVal: any = data.config.defaultValue;
+              const formItemVal: any = data.value;
               // 更新选项
               options = options.map(option => {
                 const checked = formItemVal !== undefined && option.value === (data.config.labelInValue ? formItemVal?.value : formItemVal);
@@ -191,6 +196,7 @@ export default {
               });
             }
             data.staticOptions = options;
+            data.config.options = options;
           }
         }
       },
