@@ -70,16 +70,39 @@ export default {
           set({ data, input, output }: EditorResult<Data>, value: string) {
             data.config.mode = value as any;
             if (['multiple', 'tags'].includes(value)) {
-              const valueSchema = {
+              const valueSchema = data.config.labelInValue ? {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    label: {
+                      type: 'string'
+                    },
+                    value: {
+                      type: 'any'
+                    }
+                  }
+                }
+              } : {
                 type: 'array'
-              }
+              };
               input.get(InputIds.SetValue).setSchema(valueSchema);
               output.get(OutputIds.OnChange).setSchema(valueSchema);
               output.get(OutputIds.ReturnValue).setSchema(valueSchema);
             } else {
-              const valueSchema = {
+              const valueSchema = data.config.labelInValue ? {
+                type: 'object',
+                properties: {
+                  label: {
+                    type: 'string'
+                  },
+                  value: {
+                    type: 'any'
+                  }
+                }
+              } : {
                 type: 'any'
-              }
+              };
               input.get(InputIds.SetValue).setSchema(valueSchema);
               output.get(OutputIds.OnChange).setSchema(valueSchema);
               output.get(OutputIds.ReturnValue).setSchema(valueSchema);
@@ -121,9 +144,51 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.config.labelInValue;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
+          set({ data, input, output }: EditorResult<Data>, val: boolean) {
             data.config.labelInValue = val;
             const checkedList = data.staticOptions?.filter(opt => opt?.checked) || [];
+            switch (data.config.mode) {
+              case 'multiple':
+              case 'tags':
+                const arrSchema = val ? {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      label: {
+                        type: 'string'
+                      },
+                      value: {
+                        type: 'any'
+                      }
+                    }
+                  }
+                } : {
+                  type: 'array'
+                };
+                input.get(InputIds.SetValue).setSchema(arrSchema);
+                output.get(OutputIds.OnChange).setSchema(arrSchema);
+                output.get(OutputIds.ReturnValue).setSchema(arrSchema);
+                break;
+              default:
+                const basicSchema = data.config.labelInValue ? {
+                  type: 'object',
+                  properties: {
+                    label: {
+                      type: 'string'
+                    },
+                    value: {
+                      type: 'any'
+                    }
+                  }
+                } : {
+                  type: 'any'
+                };
+                input.get(InputIds.SetValue).setSchema(basicSchema);
+                output.get(OutputIds.OnChange).setSchema(basicSchema);
+                output.get(OutputIds.ReturnValue).setSchema(basicSchema);
+                break;
+            }
             if (checkedList.length > 0) {
               switch (data.config.mode) {
                 case 'multiple':
