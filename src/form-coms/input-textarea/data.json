@@ -1,11 +1,11 @@
 {
-  "options": [],
+  "value": "",
   "visible": true,
   "rules": [],
-  "showTime": false,
   "config": {
-    "disabled": false,
+    "allowClear": true,
     "placeholder": "请输入内容",
-    "picker": "date"
+    "disabled": false,
+    "showCount": false
   }
 }
