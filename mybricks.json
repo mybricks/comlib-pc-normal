@@ -38,7 +38,7 @@
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/date-picker/com.json",
-          "./src/form-coms/text-area/com.json"
+          "./src/form-coms/input-textarea/com.json"
         ]
       },
       {

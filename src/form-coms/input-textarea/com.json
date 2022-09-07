@@ -1,6 +1,6 @@
 {
   "title": "文本域",
-  "namespace": "mybricks.normal-pc.text-area",
+  "namespace": "mybricks.normal-pc.input-textarea",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.0",
@@ -87,9 +87,6 @@
       }
     }
   ],
-  "_valueSchema": {
-    "type": "string"
-  },
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
     "*"

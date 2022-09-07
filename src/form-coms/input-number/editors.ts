@@ -6,7 +6,7 @@ export default {
   },
   '@parentUpdated'({id, data, parent}, {schema}) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({id, schema: {type: 'string'}})
+      parent['@_setFormItem']({id, schema: {type: 'number'}})
     }
   },
   ':root' ({data}: EditorResult<{ type }>, ...catalog) {

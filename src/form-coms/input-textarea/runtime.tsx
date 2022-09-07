@@ -66,15 +66,15 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     outputs['onBlur'](value);
   }, []);
 
-  let jsx = (
-    <Input.TextArea
-      {...data.config}
-      value={data.value}
-      readOnly={!!edit}
-      onChange={changeValue}
-      onBlur={onBlur}
-    />
+  return (
+    <div>
+      <Input.TextArea
+        {...data.config}
+        value={data.value}
+        readOnly={!!edit}
+        onChange={changeValue}
+        onBlur={onBlur}
+      />
+    </div>
   );
-
-  return <div>{jsx}</div>;
 }
