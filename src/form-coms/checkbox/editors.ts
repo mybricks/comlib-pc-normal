@@ -23,7 +23,7 @@ const initParams = (data: Data) => {
 export default {
   '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'string' } })
+      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'array' } })
     }
     // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
     //   data.type = 'data'
