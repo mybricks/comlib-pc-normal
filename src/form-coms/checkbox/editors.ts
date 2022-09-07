@@ -3,17 +3,13 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let tempOptions: Option[] = [],
-  optionsLength = 0,
+let  optionsLength = 0,
   addOption,
   delOption;
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
     data.staticOptions = [];
-  }
-  if (tempOptions.length !== data.staticOptions?.length) {
-    tempOptions = data.staticOptions || [];
   }
   optionsLength = (data.staticOptions || []).length;
   addOption = (option) => {
@@ -125,7 +121,7 @@ export default {
             });
             data.value = values as any;
             data.staticOptions = options;
-            tempOptions = options;
+            data.config.options = options;
           }
         }
       },

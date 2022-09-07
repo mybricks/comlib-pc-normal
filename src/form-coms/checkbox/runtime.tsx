@@ -33,7 +33,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setOptions']((val) => {
-      data.options = val;
+      data.config.options = val;
     });
 
     inputs['setVisible']((val) => {
@@ -50,7 +50,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       <div>
         <Checkbox.Group
           {...data.config}
-          options={data.options || data.staticOptions}
+          options={env.edit ? data.staticOptions : data.config.options}
           value={data.value as any}
           onChange={onChange}
         />
