@@ -47,7 +47,6 @@
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/image/com.json",
           "./src/json-view/com.json"
         ]
       },
@@ -121,7 +120,6 @@
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/image/com.json",
           "./src/json-view/com.json"
         ]
       },
