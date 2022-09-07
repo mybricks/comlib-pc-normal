@@ -28,6 +28,10 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       onChange(val);
     });
 
+    inputs['resetValue'](() => {
+      data.value = void 0;
+    });
+
     inputs['setDisabled']((val) => {
       data.config.disabled = val;
     });
