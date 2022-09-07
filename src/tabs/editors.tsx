@@ -12,7 +12,7 @@ export default {
           set({ data, slot }: EditorResult<Data>) {
             const key = uuid();
             const title = `新标签页`;
-            slot.add(`${key}`);
+            slot.add(`${key}`, '内容');
             const len = data.tabList.length;
             data.tabList.push({
               name: title,
@@ -22,19 +22,19 @@ export default {
           }
         }
       },
-      {
-        title: 'tab隐藏时渲染',
-        description: '需要在未切换到对应tab时，对tab插槽内组件设置数据时开启',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.forceRender;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.forceRender = value;
-          }
-        }
-      },
+      // {
+      //   title: 'tab隐藏时渲染',
+      //   description: '需要在未切换到对应tab时，对tab插槽内组件设置数据时开启',
+      //   type: 'Switch',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.forceRender;
+      //     },
+      //     set({ data }: EditorResult<Data>, value: boolean) {
+      //       data.forceRender = value;
+      //     }
+      //   }
+      // },
       {
         title: '事件',
         items: [
@@ -82,10 +82,7 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.tabPosition || 'top';
           },
-          set(
-            { data }: EditorResult<Data>,
-            value: 'left' | 'top' | 'bottom' | 'right'
-          ) {
+          set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
             data.tabPosition = value;
           }
         }
@@ -211,10 +208,7 @@ export default {
             const { index } = focusArea;
             return data.tabList[index]?.name;
           },
-          set(
-            { data, slot, focusArea, input }: EditorResult<Data>,
-            title: string
-          ) {
+          set({ data, slot, focusArea, input }: EditorResult<Data>, title: string) {
             const { index } = focusArea;
             const item = data.tabList[index];
             item.name = title;
@@ -251,10 +245,7 @@ export default {
             const { index } = focusArea;
             const { tabList } = data;
             if (index === 0) return;
-            [tabList[index - 1], tabList[index]] = [
-              tabList[index],
-              tabList[index - 1]
-            ];
+            [tabList[index - 1], tabList[index]] = [tabList[index], tabList[index - 1]];
           }
         }
       },
@@ -269,10 +260,7 @@ export default {
             const { index } = focusArea;
             const { tabList } = data;
             if (index === tabList.length - 1) return;
-            [tabList[index], tabList[index + 1]] = [
-              tabList[index + 1],
-              tabList[index]
-            ];
+            [tabList[index], tabList[index + 1]] = [tabList[index + 1], tabList[index]];
           }
         }
       },
@@ -284,8 +272,10 @@ export default {
             return focusArea.index;
           },
           set({ data, focusArea, slot }: EditorResult<Data>) {
-            slot.remove(data.tabList[focusArea.index]?.key);
-            data.tabList.splice(focusArea.index, 1);
+            if (data.tabList.length > 1) {
+              slot.remove(data.tabList[focusArea.index]?.key);
+              data.tabList.splice(focusArea.index, 1);
+            }
           }
         }
       }
@@ -306,45 +296,45 @@ export default {
             if (!focusArea) return;
             const { index } = focusArea;
             data.tabList[index].showIcon = value;
-            data.tabList[index].icon = "BellOutlined"
+            data.tabList[index].icon = 'BellOutlined';
           }
         }
       },
       {
-        title: "图标自定义",
-        type: "Switch",
-        description: "可选择是否需要自定义图标",
+        title: '图标自定义',
+        type: 'Switch',
+        description: '可选择是否需要自定义图标',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           const { index } = focusArea;
           return data.tabList[index].showIcon;
         },
         value: {
-          get({ data, focusArea }: EditorResult<Data>){
+          get({ data, focusArea }: EditorResult<Data>) {
             const { index } = focusArea;
-            return data.tabList[index].isChoose
+            return data.tabList[index].isChoose;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean){
+          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             const { index } = focusArea;
             data.tabList[index].isChoose = value;
-            if(!data.tabList[index].isChoose){
-              data.tabList[index].icon = "BellOutlined"
+            if (!data.tabList[index].isChoose) {
+              data.tabList[index].icon = 'BellOutlined';
             }
           }
         }
       },
       {
-        title: "选择图标",
-        type: "icon",
+        title: '选择图标',
+        type: 'icon',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           const { index } = focusArea;
-          return data.tabList[index].isChoose; 
+          return data.tabList[index].isChoose;
         },
         value: {
-          get({ data, focusArea }: EditorResult<Data>){
+          get({ data, focusArea }: EditorResult<Data>) {
             const { index } = focusArea;
             return data.tabList[index].icon;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: string){
+          set({ data, focusArea }: EditorResult<Data>, value: string) {
             const { index } = focusArea;
             data.tabList[index].icon = value;
           }
@@ -416,22 +406,22 @@ export default {
           }
         }
       },
-      {
-        title: '自定义输出内容',
-        type: 'Text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            return data.tabList[index]?.outputContent;
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            data.tabList[index].outputContent = value;
-          }
-        }
-      },
+      // {
+      //   title: '自定义输出内容',
+      //   type: 'Text',
+      //   value: {
+      //     get({ data, focusArea }: EditorResult<Data>) {
+      //       if (!focusArea) return;
+      //       const { index } = focusArea;
+      //       return data.tabList[index]?.outputContent;
+      //     },
+      //     set({ data, focusArea }: EditorResult<Data>, value: string) {
+      //       if (!focusArea) return;
+      //       const { index } = focusArea;
+      //       data.tabList[index].outputContent = value;
+      //     }
+      //   }
+      // },
       {
         title: '权限控制',
         items: [

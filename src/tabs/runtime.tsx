@@ -7,16 +7,8 @@ import * as Icons from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
-export default function ({
-  env,
-  data,
-  slots,
-  inputs,
-  outputs
-}: RuntimeParams<Data>) {
-  const [showTabs, setShowTabs] = useState<string[]>(
-    (data.tabList || []).map((item) => item.id)
-  );
+export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Data>) {
+  const [showTabs, setShowTabs] = useState<string[]>();
 
   //选择图标样式
   const chooseIcon = ({ icon }: { icon: ReactNode }) => {
@@ -24,41 +16,34 @@ export default function ({
     return <>{Icon}</>;
   };
 
-  const setDefaultActiveKey = () => {
-    if (data.tabList?.length) {
-      const tempTabs = data.tabList.filter(
-        (item) =>
-          (!item.permissionKey ||
-            env.hasPermission({ key: item.permissionKey })) &&
-          showTabs.includes(item.id)
-      );
-      if (
-        tempTabs.length &&
-        !tempTabs.find((item) => item.key === data.defaultActiveKey)
-      ) {
-        data.defaultActiveKey = tempTabs[0].key;
-      }
-      if (!data.defaultActiveKey) {
-        data.defaultActiveKey = data.tabList[0].key;
-      }
+  const findTargetIndex = useCallback(() => {
+    return data.tabList.findIndex(
+      ({ id, permissionKey }) =>
+        (!permissionKey || env.hasPermission({ key: permissionKey })) &&
+        showTabs?.includes(id as string)
+    );
+  }, [showTabs]);
+
+  const setActiveKey = () => {
+    const index = findTargetIndex();
+    if (index > 0) {
+      data.defaultActiveKey = data.tabList[index].key;
+    } else {
+      data.defaultActiveKey = data.tabList[0].key;
     }
   };
+
   useEffect(() => {
-    setDefaultActiveKey();
+    setShowTabs(() => data.tabList?.map((item) => item.id) || []);
+  }, [data.tabList.length]);
+
+  useEffect(() => {
+    setActiveKey();
   }, [showTabs]);
+
   useEffect(() => {
     if (data.tabList.length > 0 && !data.active) {
-      const index = data.tabList.findIndex(
-        (item) =>
-          (!item.permissionKey ||
-            env.hasPermission({ key: item.permissionKey })) &&
-          showTabs.includes(item.id)
-      );
-      if (data.tabList[index]) {
-        data.defaultActiveKey = data.tabList[index].key;
-      } else {
-        data.defaultActiveKey = data.tabList[0].key;
-      }
+      setActiveKey();
     }
     if (env.runtime) {
       // 激活
@@ -67,10 +52,7 @@ export default function ({
           const activeTab = data.tabList.find((item) => {
             return item.id === id;
           });
-          if (
-            activeTab &&
-            env.hasPermission({ key: activeTab.permissionKey })
-          ) {
+          if (activeTab && env.hasPermission({ key: activeTab.permissionKey })) {
             data.defaultActiveKey = activeTab.key;
             data.active = true;
           } else {
@@ -100,12 +82,8 @@ export default function ({
         });
       inputs[InputIds.OutActiveTab] &&
         inputs[InputIds.OutActiveTab]((val, relOutputs) => {
-          const current = data.tabList.filter(
-            (item) => item.key === data.defaultActiveKey
-          )[0];
-          relOutputs[OutputIds.OutActiveTab](
-            current.outputContent || current.name
-          );
+          const current = data.tabList.filter((item) => item.key === data.defaultActiveKey)[0];
+          relOutputs[OutputIds.OutActiveTab](current.outputContent || current.name);
         });
       data.tabList.forEach((item) => {
         item.dynamic &&
@@ -175,9 +153,8 @@ export default function ({
           const tabName = env.i18n(item.name);
           if (
             env.runtime &&
-            ((item.permissionKey &&
-              !env.hasPermission({ key: item.permissionKey })) ||
-              !showTabs.includes(item.id))
+            ((item.permissionKey && !env.hasPermission({ key: item.permissionKey })) ||
+              !showTabs?.includes(item.id))
           ) {
             return null;
           }
@@ -193,12 +170,10 @@ export default function ({
               }
               key={item.key}
               closable={!!item.closable}
-              forceRender={data.forceRender}
+              // forceRender={data.forceRender}
             >
               {data.hideSlots ? null : (
-                <div
-                  className={classnames(css.content, env.edit && css.minHeight)}
-                >
+                <div className={classnames(css.content, env.edit && css.minHeight)}>
                   {slots[item.key].render()}
                 </div>
               )}
@@ -220,12 +195,8 @@ export default function ({
         hideAdd={true}
         onEdit={env.edit ? undefined : onEdit}
         tabBarExtraContent={{
-          left: data.useLeftExtra
-            ? slots[SlotIds.LeftExtra].render()
-            : undefined,
-          right: data.useRigthExtra
-            ? slots[SlotIds.RigthExtra].render()
-            : undefined
+          left: data.useLeftExtra ? slots[SlotIds.LeftExtra].render() : undefined,
+          right: data.useRigthExtra ? slots[SlotIds.RigthExtra].render() : undefined
         }}
       >
         {renderItems()}
