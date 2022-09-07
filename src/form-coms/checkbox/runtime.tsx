@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Select } from 'antd';
+import { Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 
@@ -40,35 +40,23 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       data.config.options = val;
     });
 
-    inputs['setLoading']((val: boolean) => {
-      data.config = {
-        ...data.config,
-        loading: val
-      };
-    });
-
     inputs['setVisible']((val) => {
       data.visible = val;
     });
   }, []);
 
-  const onChange = useCallback((value) => {
-    data.value = value;
-    outputs['onChange'](value);
+  const onChange = useCallback((checkedValue) => {
+    data.value = checkedValue;
+    outputs['onChange'](checkedValue);
   }, []);
-  const onBlur = useCallback((e) => {
-    outputs['onBlur'](data.value);
-  }, []);
-
   return (
     data.visible && (
       <div>
-        <Select
+        <Checkbox.Group
           {...data.config}
           options={env.edit ? data.staticOptions : data.config.options}
-          value={data.value}
+          value={data.value as any}
           onChange={onChange}
-          onBlur={onBlur}
         />
       </div>
     )

@@ -1,8 +1,8 @@
 {
-  "title": "下拉框",
-  "namespace": "mybricks.normal-pc.select",
+  "title": "多选框",
+  "namespace": "mybricks.normal-pc.checkbox",
   "version": "1.0.0",
-  "description": "下拉框",
+  "description": "多选框",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
@@ -14,7 +14,7 @@
       "id": "setValue",
       "title": "设置值",
       "schema": {
-        "type": "string"
+        "type": "array"
       }
     },
     {
@@ -77,13 +77,6 @@
       "schema": {
         "type": "boolean"
       }
-    },
-    {
-      "id": "setLoading",
-      "title": "设置加载中状态",
-      "schema": {
-        "type": "boolean"
-      }
     }
   ],
   "outputs": [
@@ -91,14 +84,7 @@
       "id": "onChange",
       "title": "值变化",
       "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "onBlur",
-      "title": "失去焦点",
-      "schema": {
-        "type": "string"
+        "type": "array"
       }
     },
     {
@@ -112,7 +98,7 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "string"
+        "type": "array"
       }
     }
   ],
