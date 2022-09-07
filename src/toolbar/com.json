@@ -12,7 +12,7 @@
   "inputs": [
     {
       "id": "setOutputVal_btn0",
-      "title": "设置按钮0输出内容",
+      "title": "设置按钮0输出数据",
       "schema": {
         "type": "follow"
       }
@@ -21,7 +21,7 @@
   "outputs": [
     {
       "id": "btn0",
-      "title": "点击按钮0",
+      "title": "单击按钮0",
       "schema": {
         "type": "any"
       }

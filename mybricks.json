@@ -37,7 +37,8 @@
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/input-number/com.json",
-          "./src/form-coms/date-picker/com.json"
+          "./src/form-coms/date-picker/com.json",
+          "./src/form-coms/input-textarea/com.json"
         ]
       },
       {
@@ -47,7 +48,6 @@
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/image/com.json",
           "./src/json-view/com.json"
         ]
       },
@@ -121,7 +121,6 @@
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/image/com.json",
           "./src/json-view/com.json"
         ]
       },

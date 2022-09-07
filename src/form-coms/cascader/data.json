@@ -1,3 +1,16 @@
 {
-  "options": []
+  "options": [],
+  "visible": true,
+  "isMultiple": false,
+  "maxTagCountType": "isResponsive",
+  "rules": [],
+  "value": [],
+  "config": {
+    "allowClear": true,
+    "placeholder": "请输入内容",
+    "disabled": false,
+    "maxTagCount": "responsive",
+    "changeOnSelect": false,
+    "showSearch": false
+  }
 }

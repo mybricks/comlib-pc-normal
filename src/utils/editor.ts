@@ -58,19 +58,19 @@ export function Editor<Data>(
                 const { data } = props;
                 return data[key];
               },
-              set(props: EditorResult<Data>, value: any) {
+              set(props: EditorResult<Data>, val: any) {
                 if (value?.set) {
-                  return value?.set(props, value);
+                  return value?.set(props, val);
                 }
                 const { data, output } = props;
-                if (!!value) {
+                if (!!val) {
                   outputId &&
                     !output.get(outputId) &&
                     output.add(outputId, eventTitle || title, schema);
                 } else {
                   outputId && output.get(outputId) && output.remove(outputId);
                 }
-                data[key] = value;
+                data[key] = val;
               }
             }
           },
@@ -102,12 +102,12 @@ export function Editor<Data>(
         const { data } = props;
         return data[key];
       },
-      set(props: EditorResult<Data>, value: any) {
+      set(props: EditorResult<Data>, val: any) {
         if (value?.set) {
-          return value?.set(props, value);
+          return value?.set(props, val);
         }
         const { data } = props;
-        data[key] = value;
+        data[key] = val;
       }
     }
   };

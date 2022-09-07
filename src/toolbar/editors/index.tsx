@@ -7,7 +7,7 @@ import EllipsisEditor from './ellipsisEditor';
 
 export default {
   '@inputUpdated'({ data, output }: EditorResult<Data>, updatePin) {
-    const connectItem = data.btnList.find(
+    const connectItem = data.btnList?.find(
       (item) => `${InputIds.SetOutputVal}_${item.key}` === updatePin.id
     );
     if (connectItem) {
@@ -15,7 +15,7 @@ export default {
     }
   },
   '@inputConnected'({ data, output }: EditorResult<Data>, fromPin, toPin) {
-    const connectItem = data.btnList.find(
+    const connectItem = data.btnList?.find(
       (item) => `${InputIds.SetOutputVal}_${item.key}` === toPin.id
     );
     if (connectItem) {
@@ -23,7 +23,7 @@ export default {
     }
   },
   '@inputDisConnected'({ data, output }, fromPin, toPin) {
-    const connectItem = data.btnList.find(
+    const connectItem = data.btnList?.find(
       (item) => `${InputIds.SetOutputVal}_${item.key}` === toPin.id
     );
     if (connectItem) {

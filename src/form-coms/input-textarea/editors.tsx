@@ -4,12 +4,12 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({id, data, parent}, {schema}) {
+  '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({id, schema: { type: 'array', items: { type: 'any' }}})
+      parent['@_setFormItem']({ id, schema: { type: 'string' } });
     }
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -53,99 +53,29 @@ export default {
         }
       },
       {
-        title: '多选节点',
-        type: 'Switch',
-        description: '是否要多选',
+        title: '显示字数',
+        type: 'switch',
+        description: '是否展示字数',
         value: {
           get({ data }) {
-            return data.isMultiple;
+            return data.config.showCount;
           },
           set({ data }, value: boolean) {
-            data.isMultiple = value;
+            data.config.showCount = value;
           }
         }
       },
-      //选择自适应还是自选择点数
       {
-        title: '节点数配置',
-        type: "Select",
-        description: '多选结点是自适应还是自定义',
-        ifVisible({ data }) {
-          return data.isMultiple;
-        },
-        options: [
-          {
-            label: "自适应",
-            value: "isResponsive"
-          },
-          {
-            label: "自定义",
-            value: "isCustom"
-          }
-        ],
-        value: {
-          get({ data }){
-            if(!data.maxTagCountType){
-              data.maxTagCountType = "isResponsive"
-            }
-            return data.maxTagCountType
-          },
-          set({ data }, value: string ) {
-            data.maxTagCountType = value
-            if(data.maxTagCountType == "isResponsive"){
-              data.config.maxTagCount = 'responsive'
-            }
-          }
-        }
-      },
-      //输入框显示的最多节点数
-      {
-        title: '多选节点数',
-        type: 'Slider',
-        description: "输入框中显示的节点数",
-        ifVisible({ data }) {
-          return data.isMultiple && data.maxTagCountType === "isCustom";
-        },
-        options: {
-          max: 10,
-          min: 1,
-          steps: 1,
-          formatter: "/10"
-        },
+        title: '内容最大长度',
+        type: 'InputNumber',
+        description: '可输入的内容最大长度, -1 为不限制',
+        options: [{ min: -1 }],
         value: {
           get({ data }) {
-            if(!data.config.maxTagCount){
-              data.config.maxTagCount = 1
-            }
-            return data.config.maxTagCount;
+            return data.config.maxLength || [-1];
           },
-          set({ data }, value: number ) {
-            data.config.maxTagCount = value;
-          }
-        }
-      },
-      {
-        title: '允许选择任意一级',
-        type: 'Switch',
-        value: {
-          get({ data }) {
-            return data.config.changeOnSelect;
-          },
-          set({ data }, value: boolean) {
-            data.config.changeOnSelect = value;
-          }
-        }
-      },
-      {
-        title: '支持搜索',
-        type: 'Switch',
-        description: '开启后可输入内容搜索',
-        value: {
-          get({ data }) {
-            return data.config.showSearch;
-          },
-          set({ data }, value: boolean) {
-            data.config.showSearch = value;
+          set({ data }, value: number) {
+            data.config['maxLength'] = value[0];
           }
         }
       },
@@ -210,12 +140,19 @@ export default {
             options: {
               outputId: 'onChange'
             }
+          },
+          {
+            title: '失去焦点',
+            type: '_event',
+            options: {
+              outputId: 'onBlur'
+            }
           }
         ]
-      },
-    ]
+      }
+    ];
   }
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

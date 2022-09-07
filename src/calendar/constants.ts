@@ -1,60 +1,92 @@
-export enum INPUTS {
-  DataSource = 'dataSource'
+export enum InputIds {
+  DataSource = 'dataSource',
+
+  CurrentDate = 'currentDate',
+  CurrentDs = 'currentDs'
 }
-export enum OUTPUTS {
+export enum OutputIds {
   ClickDate = 'clickDate',
   ClickMonth = 'clickMonth',
   MonthChange = 'monthChange',
   DateChange = 'dateChange',
   ModeChange = 'modeChange'
 }
-export enum SLOTS {
+export enum SlotIds {
   DateCell = 'dateCell',
   HeaderRender = 'headerRender'
 }
-export const DateSchema = {
-  type: 'object',
-  properties: {
-    mode: {
-      type: 'string' // 'month' | 'year'
-    },
-    dataSource: {
-      type: 'array',
-      items: {
-        type: 'any'
+
+export const Schemas = {
+  Any: {
+    type: 'any'
+  },
+  String: {
+    type: 'string'
+  },
+  DateSchema: {
+    type: 'object',
+    properties: {
+      mode: {
+        type: 'string' // 'month' | 'year'
+      },
+      dataSource: {
+        type: 'array',
+        items: {
+          type: 'any'
+        }
+      },
+      date: {
+        type: 'string'
       }
-    },
-    date: {
-      type: 'string'
+    }
+  },
+  MonthSchema: {
+    type: 'object',
+    properties: {
+      mode: {
+        type: 'string' //'month' | 'year'
+      },
+      date: {
+        type: 'string'
+      },
+      month: {
+        type: 'string'
+      },
+      dataSource: {
+        type: 'array',
+        items: {
+          type: 'any'
+        }
+      },
+      firstDate: {
+        type: 'string'
+      },
+      lastDate: {
+        type: 'string'
+      }
+    }
+  },
+  CurrentDs: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        content: {
+          type: 'string'
+        },
+        color: {
+          type: 'string'
+        }
+      }
     }
   }
 };
-export const MonthSchema = {
-  type: 'object',
-  properties: {
-    mode: {
-      type: 'string' //'month' | 'year'
-    },
-    date: {
-      type: 'string'
-    },
-    month: {
-      type: 'string'
-    },
-    dataSource: {
-      type: 'array',
-      items: {
-        type: 'any'
-      }
-    },
-    firstDate: {
-      type: 'string'
-    },
-    lastDate: {
-      type: 'string'
-    }
-  }
-};
+
+export enum ModeEnum {
+  Month = 'month',
+  Year = 'year',
+  Date = 'date'
+}
 
 /**
  * 数据源

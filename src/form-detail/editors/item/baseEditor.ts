@@ -1,6 +1,6 @@
 import { uuid } from '../../../utils';
-import { Data, DataSourceEnum, TypeEnum } from '../../constants';
-import { getEleIdx, updateIOSchema } from '../utils';
+import { Data, DataSourceEnum, InputIds, TypeEnum } from '../../constants';
+import { getDataSourceSchema, getEleIdx, updateIOSchema } from '../utils';
 
 export const BaseEditor = [
   {
@@ -12,7 +12,7 @@ export const BaseEditor = [
         return data.items[getEleIdx({ data, focusArea })]?.label;
       },
       set(
-        { data, focusArea, input, output }: EditorResult<Data>,
+        { data, focusArea, input, output, slots }: EditorResult<Data>,
         value: string
       ) {
         if (!focusArea) return;
@@ -60,19 +60,16 @@ export const BaseEditor = [
           data.items[getEleIdx({ data, focusArea })]?.type || TypeEnum.Text
         );
       },
-      set({ data, focusArea, slot }: EditorResult<Data>, value: TypeEnum) {
+      set({ data, focusArea, slots }: EditorResult<Data>, value: TypeEnum) {
         if (!focusArea) return;
         const item = data.items[getEleIdx({ data, focusArea })];
         item.type = value;
         if (value === TypeEnum.AllSlot || value === TypeEnum.PartSlot) {
           const slotId = uuid();
           item.slotId = slotId;
-          slot.add(slotId, '自定义内容');
+          addScopeSlotInputs({ data, item, slots });
         } else {
-          if (slot.get(item.slotId)) {
-            slot.remove(item.slotId);
-            item.slotId = '';
-          }
+          removeScopeSlotInputs({ item, slots });
         }
       }
     }
@@ -95,3 +92,23 @@ export const BaseEditor = [
     }
   }
 ];
+
+function addScopeSlotInputs({ data, item, slots }) {
+  slots.add({
+    id: item.slotId,
+    title: '当前数据',
+    type: 'scope',
+    inputs: [
+      { id: InputIds.CurDs, title: '当前数据', schema: { type: 'string' } },
+      {
+        id: InputIds.DataSource,
+        title: '列表数据',
+        schema: { type: 'object', properties: getDataSourceSchema(data) }
+      }
+    ]
+  });
+}
+
+function removeScopeSlotInputs({ item, slots }) {
+  slots.remove(item.slotId)
+}

@@ -13,18 +13,24 @@ export interface Data {
   inputData?: any;
   maskClosable?: boolean;
   destroyOnClose?: boolean;
+  footerBtns: any[];
 }
 
 export const InputIds = {
   Open: 'open',
   Close: 'close',
-  SetTitle: 'title',
-  SetInputData: 'inputData'
+  SetTitle: 'title'
 }
 export const OutputIds = {
   Cancel: 'cancel',
 }
 export const SlotIds = {
   Content: 'content',
-  Footer: 'footer'
+  Footer: 'footer',
+  DataSource: 'dataSource'
+}
+
+export enum Location {
+  FRONT = 'front',
+  BACK = 'back'
 }

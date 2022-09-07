@@ -2,9 +2,16 @@ import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useS
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlProps, FormControlInputId } from './types';
 import FormActions from './components/FormActions';
+import { slotInputIds, inputIds } from './constants';
 
-type FormControlInput = {
-  returnValidate: (val) => {};
+type FormControlInputRels = {
+  validate: (val?: any) => {
+    returnValidate: (val) => {};
+  };
+  getValue: (val?: any) => {
+    returnValue: (val) => {};
+  };
+  [key: string]: (val?: any) => void;
 };
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -13,20 +20,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const childrenInputs = useMemo<{
     [id: string]: {
-      [key in FormControlInputId]: (item?: any) => {
-        returnValidate: (val) => {};
-        returnValue: (val) => {};
-      };
+      [key in FormControlInputId]: FormControlInputRels[key];
     };
   }>(() => {
     return {};
   }, [env.edit]);
 
+  console.log(data.layout);
+
   useLayoutEffect(() => {
-    inputs['setFieldsValue']((val) => {
+    inputs[inputIds.SET_FIELDS_VALUE]((val) => {
       resetFields();
       setFieldsValue(val);
-      slots['content'].inputs['setFieldsValue'](val);
+      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
 
     // inputs['initial']((val) => {

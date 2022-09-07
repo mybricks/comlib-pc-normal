@@ -12,7 +12,7 @@
   "inputs": [
     {
       "id": "jsonData",
-      "title": "数据输入",
+      "title": "设置数据源",
       "schema": {
         "type": "object"
       }

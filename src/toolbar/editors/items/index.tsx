@@ -24,8 +24,8 @@ const itemEditor = {
             if (!focusArea) return;
             const { item } = getBtnItemInfo(data, focusArea);
             item.text = value.trim();
-            output.setTitle(item.key, item.text);
-            input.setTitle(`${InputIds.SetOutputVal}_${item.key}`, `设置${item.text}输出内容`);
+            output.setTitle(item.key, `单击${item.text}`);
+            input.setTitle(`${InputIds.SetOutputVal}_${item.key}`, `设置${item.text}输出数据`);
             input.setTitle(`${InputIds.SetDisable}_${item.key}`, `禁用${item.text}`);
             input.setTitle(`${InputIds.SetEnable}_${item.key}`, `启用${item.text}`);
             input.setTitle(`${InputIds.SetHidden}_${item.key}`, `隐藏${item.text}`);
