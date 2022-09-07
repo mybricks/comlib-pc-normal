@@ -10,7 +10,6 @@ interface Props {
 
 const FormActions = (props: Props) => {
   const { actions } = props.data;
-  console.log(actions);
 
   const onClick = (item) => {
     if (item.outputId === 'onClickSubmit') {
