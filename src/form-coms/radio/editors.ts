@@ -42,19 +42,6 @@ export default {
 
     catalog[0].items = [
       {
-        title: '提示内容',
-        type: 'Text',
-        description: '该提示内容会在值为空时显示',
-        value: {
-          get({ data }) {
-            return data.config.placeholder;
-          },
-          set({ data }, value: string) {
-            data.config.placeholder = value;
-          }
-        }
-      },
-      {
         title: '禁用状态',
         type: 'switch',
         description: '是否禁用状态',
