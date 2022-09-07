@@ -9,16 +9,5 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "inputs": [
-    {
-      "id": "slotProps",
-      "title": "插槽参数",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      }
-    }
-  ]
+  "inputs": []
 }
