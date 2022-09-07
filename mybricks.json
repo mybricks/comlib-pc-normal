@@ -166,7 +166,6 @@
       "./src/richtext/com.json",
       "./src/richtext-preview/com.json",
       "./src/single-image/com.json",
-      "./src/slot-adapter/com.json",
       "./src/sort-bar/com.json",
       "./src/steps/com.json",
       "./src/table/com.json",
