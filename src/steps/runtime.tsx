@@ -181,7 +181,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
         </div>
       );
     if (data.toolbar.type === 'custom')
-      return <div style={{ height: 50 }}>{slots.customToolbar.render()}</div>;
+      return <div style={{ height: 32 }}>{slots.customToolbar.render()}</div>;
   };
 
   return (
