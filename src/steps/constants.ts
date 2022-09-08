@@ -9,29 +9,35 @@ export interface StepItem {
   content?: any;
 }
 
+export type ToolbarType = 'default' | 'custom' | 'never'
 interface Toolbar {
-  showDesc: number;
-  size: "small" | "default";
-  type: "default" | "navigation" | "dotted";
+  type: ToolbarType
   submit: boolean;
-  reset: boolean;
   showSecondBtn: boolean;
   actionAlign?: string;
-  showActions?: boolean;
   primaryBtnText?: string;
   secondBtnText?: string;
-  resetText?: string;
   submitText?: string;
+
 }
+
+interface Steps {
+  size: "small" | "default";
+  type: "default" | "navigation" | "dotted";
+  showDesc: boolean;
+  direction?: 'horizontal' | 'vertical'
+}
+
+
 /**
  * 数据源
  */
 export class Data {
+  steps: Steps
   current: number;
   stepAry: StepItem[];
   toolbar: Toolbar;
   fullSubmit: boolean;
   useSubmitBtnLoading: boolean;
   hideSlots?: boolean;
-  direction?: 'horizontal' | 'vertical'
 }

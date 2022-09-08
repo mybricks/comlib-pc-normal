@@ -25,17 +25,16 @@
       }
     },
     {
-      "id": "submit",
-      "title": "数据提交",
-      "rels": ["submit"],
+      "id": "jumpTo",
+      "title": "跳转",
       "schema": {
-        "type": "follow"
+        "type": "number"
       }
     },
     {
-      "id": "reset",
-      "title": "重置",
-      "rels": ["reset"],
+      "id": "submit",
+      "title": "数据提交",
+      "rels": ["submit"],
       "schema": {
         "type": "follow"
       }
@@ -53,13 +52,6 @@
     {
       "id": "submit",
       "title": "数据提交",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "reset",
-      "title": "重置",
       "schema": {
         "type": "any"
       }
