@@ -67,14 +67,16 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   }, []);
 
   return (
-    <div>
-      <Input.TextArea
-        {...data.config}
-        value={data.value}
-        readOnly={!!edit}
-        onChange={changeValue}
-        onBlur={onBlur}
-      />
-    </div>
+    data.visible && (
+      <div>
+        <Input.TextArea
+          {...data.config}
+          value={data.value}
+          readOnly={!!edit}
+          onChange={changeValue}
+          onBlur={onBlur}
+        />
+      </div>
+    )
   );
 }
