@@ -71,14 +71,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    <div>
-      <Cascader
-        value={data.value}
-        options={options}
-        {...data.config}
-        multiple={data.isMultiple}
-        onChange={onChange}
-      />
-    </div>
+    data.visible && (
+      <div>
+        <Cascader
+          value={data.value}
+          options={options}
+          {...data.config}
+          multiple={data.isMultiple}
+          onChange={onChange}
+        />
+      </div>
+    )
   );
 }

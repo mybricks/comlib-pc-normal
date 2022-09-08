@@ -1,6 +1,7 @@
 {
   "options": [],
   "rules": [],
+  "visible": true,
   "config": {
     "disabled": false,
     "placeholder": "请输入数字",

@@ -4,6 +4,7 @@ import { validateFormItem } from '../utils/validator';
 interface Data {
   options: any[];
   rules: any[];
+  visible: boolean;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -56,9 +57,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onChange'](value);
   };
 
+  inputs['setVisible']((val) => {
+    data.visible = val;
+  });
+
   return (
-    <div>
-      <InputNumber value={value} {...data.config} onChange={onChange} />
-    </div>
+    data.visible && (
+      <div>
+        <InputNumber value={value} {...data.config} onChange={onChange} />
+      </div>
+    )
   );
 }

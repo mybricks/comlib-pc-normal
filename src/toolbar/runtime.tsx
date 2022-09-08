@@ -120,7 +120,12 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
         justifyContent: data.layout
       }}
     >
-      <Space size={data.spaceSize} wrap key={env.edit ? JSON.stringify(data.spaceSize) : undefined}>
+      <div
+        className={css.spaceWrap}
+        style={{
+          gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
+        }}
+      >
         {(data.btnList || []).length > 0 || env.runtime ? (
           <>
             {renderBtnList(normalBtnList)}
@@ -129,7 +134,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
         ) : (
           <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
         )}
-      </Space>
+      </div>
     </div>
   );
 };
