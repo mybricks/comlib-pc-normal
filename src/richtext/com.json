@@ -12,7 +12,7 @@
   "inputs": [
     {
       "id": "dataSource",
-      "title": "数据源",
+      "title": "设置数据源",
       "schema": {
         "type": "string"
       }

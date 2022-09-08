@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
 import { uuid } from '../utils';
 import { loadPkg } from '../utils/loadPkg';
-
-import { useComputed, useObservable } from '@mybricks/rxui';
 
 import { Spin } from 'antd';
 
@@ -17,44 +15,34 @@ const customIconsId: string = '_pcEditor_customIcons_' + uuid();
 const videoIconId: string = '_pcEditor_videoIcon_' + uuid();
 
 const tinymceCDN: string =
-  'https://ali2.a.kwimgs.com/udata/pkg/eshop/fangzhou/pub/pkg/tinymce/5.7.1/tinymce.min.js';
+  'https://f2.eckwai.com/udata/pkg/eshop/fangzhou/pub/pkg/tinymce/5.7.1/tinymce.min.js';
 
 class Ctx {
   tinymceId!: string;
   tinymceFSId!: string;
 }
 
-export class ModalCtx {
-  val?: string;
-  editor?: any;
-  imgUrl?: string;
-  loading!: boolean;
-  Uploadimage?: any;
-  modalVisible!: boolean;
-  tinymceFSVisble!: boolean;
-  content: string;
-  toolbar: string;
-  // 自定义弹窗
-  modal: any;
-}
-
 export default function ({
   data,
-  modalCtx,
   outputs,
   inputs,
-  logger,
   env,
   readonly,
 }): JSX.Element {
   const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
-  const ctx: Ctx = useObservable(Ctx, (next) =>
-    next({
-      tinymceId,
-      tinymceFSId,
-    })
-  );
+  const valueRef = useRef('');
+  const uploadCb = useRef<any>({});
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [uploadModel, setUploadModel] = useState<any>({ title: '上传图片', type: 'image', url: '' });
+
+  inputs['submit'](() => {
+    outputs['submit'](valueRef.current);
+  });
+
   const textareaRef = useRef(null);
 
   const Load: () => void = useCallback(async () => {
@@ -63,7 +51,7 @@ export default function ({
     TinymceInit({
       target: textareaRef.current,
       height: data.style.height,
-      toolbar: modalCtx.toolbar?.join(' '),
+      toolbar: data.toolbar?.join(' '),
       isFS: false,
     });
   }, []);
@@ -78,38 +66,37 @@ export default function ({
     Init({
       readonly,
       target,
-      toolbar: modalCtx.toolbar?.join(' '),
+      toolbar: data.toolbar?.join(' '),
       selector,
       height,
       isFS,
       customIconsId,
       setUp: (editor: any) => {
-        if (!modalCtx.Uploadimage) {
-          modalCtx.Uploadimage = uploadimage({
+        if (!uploadCb.current) {
+          uploadCb.current = uploadimage({
             click: (type: string) => {
               switch (type) {
                 case 'uploadimage':
-                  modalCtx.modalVisible = true;
-                  modalCtx.modal = {
+                  setModalVisible(true);
+                  setUploadModel({
                     title: '上传图片',
                     type: 'image',
                     url: ''
-                  }
+                  });
                   break;
                 case 'uploadVideo':
-                    modalCtx.modalVisible = true;
-                    modalCtx.modal.title = '上传视频';
-                    modalCtx.modal = {
+                    setModalVisible(true);
+                    setUploadModel({
                       title: '上传视频',
                       type: 'video',
                       url: ''
-                    }
+                    })
                     break;
                 case 'customfullscreen':
-                  modalCtx.tinymceFSVisble = true;
+                  setTinymceFSVisble(true);
                   break;
                 case 'customfullscreenexit':
-                  modalCtx.tinymceFSVisble = false;
+                  setTinymceFSVisble(false);
                   break;
                 default:
                   break;
@@ -122,24 +109,16 @@ export default function ({
         editor.on('blur', () => {
           update(false);
         });
-        // editor.on('keyup', () => {
-        //   update(false);
-        // });
-        // editor.on('change', () => {
-        //   const content = editor.getContent({ format: 't' });
-        //   outputs.onChange(content);
-        // });
       },
       initCB: (editor) => {
-        modalCtx.editor = editor;
         inputs['dataSource']((val: any) => {
-          modalCtx.editor?.setContent(val);
-          modalCtx.content = val;
+          editor.setContent(val);
+          valueRef.current = val;
         });
-        editor.setContent(modalCtx.content)
-        if (modalCtx.loading) {
+        editor.setContent(valueRef.current)
+        if (loading) {
           setTimeout(() => {
-            modalCtx.loading = false;
+            setLoading(false);
           }, 50);
         }
       },
@@ -151,15 +130,15 @@ export default function ({
     if (!tinyMCE) return;
 
     const tinymceInstance =
-      modalCtx.tinymceFSVisble || bool
-        ? tinyMCE.editors[ctx.tinymceFSId]
-        : tinyMCE.editors[ctx.tinymceId];
+      tinymceFSVisble || bool
+        ? tinyMCE.editors[tinymceFSId]
+        : tinyMCE.editors[tinymceId];
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    modalCtx.content = content.trim() || '';
-    outputs['done'](modalCtx.content);
-    outputs.onChange(modalCtx.content);
+    valueRef.current = content.trim() || '';
+    outputs['done'](valueRef.current);
+    outputs.onChange(valueRef.current);
   }, []);
 
   useEffect(() => {
@@ -172,7 +151,7 @@ export default function ({
           tinyMCE.editors[id]?.remove();
         });
     };
-  }, [modalCtx.toolbar?.join(' ')]);
+  }, [data.toolbar.join(' ')]);
 
   useEffect(() => {
     if (readonly) {
@@ -180,7 +159,7 @@ export default function ({
       const body = isRuntime
         ? document
         : document.querySelector('iframe').contentDocument;
-      const container = body?.getElementById(`p${ctx.tinymceId}`);
+      const container = body?.getElementById(`p${tinymceId}`);
       const iframeEle = container?.querySelector('iframe');
       const editorEle = container?.querySelector(
         '.tox-editor-container'
@@ -190,51 +169,74 @@ export default function ({
           iframeEle.contentDocument.documentElement.offsetHeight + 'px';
       }
     }
-  }, [modalCtx.content, modalCtx.loading]);
+  }, [readonly]);
 
-  const RenderTextArea: JSX.Element = useComputed(() => {
+  const RenderTextArea: JSX.Element = useMemo(() => {
     return (
-      <Spin spinning={modalCtx.loading} tip='编辑器加载中...'>
+      <Spin spinning={loading} tip='编辑器加载中...'>
         <textarea
           ref={textareaRef}
-          id={ctx.tinymceId}
-          hidden={!modalCtx.loading}
+          id={tinymceId}
+          hidden={!loading}
           readOnly
         />
       </Spin>
     );
-  });
+  }, [loading]);
 
-  const RenderImgModal: JSX.Element | undefined = useComputed(() => {
-    return <ImgModal update={update} modalCtx={modalCtx} env={env} />;
-  });
+  const onModalClose = useCallback(() => {
+    setModalVisible(false);
+    setUploadModel({});
+  }, [])
 
-  const RenderFSTinyMCE: JSX.Element = useComputed(() => {
+  const onModalChange = useCallback((params) => {
+    setUploadModel((val: any) => ({ ...val, ...params}));
+  }, []);
+
+  const onModalOk = useCallback(() => {
+    onModalClose();
+    uploadCb.current?.setUrl(uploadModel);
+  }, [uploadModel]);
+
+  const RenderImgModal: JSX.Element | undefined = useMemo(() => {
     return (
-      modalCtx.tinymceFSVisble && (
+      <ImgModal
+        onChange={onModalChange}
+        onOk={onModalOk}
+        update={update}
+        uploadModel={uploadModel}
+        onClose={onModalClose}
+        visible={modalVisible}
+      />
+    );
+  }, [modalVisible, uploadModel]);
+
+  const RenderFSTinyMCE: JSX.Element | null = useMemo(() => {
+    return (
+      tinymceFSVisble ? (
         <div>
           <textarea
             ref={(node) => {
               const tinyMCE = getWindowVal('tinyMCE');
               if (!tinyMCE) return;
 
-              if (!tinyMCE.editors[ctx.tinymceFSId]) {
+              if (!tinyMCE.editors[tinymceFSId]) {
                 TinymceInit({
                   target: node,
                   height: '100%',
-                  toolbar: modalCtx.toolbar?.join(' '),
+                  toolbar: data.toolbar.join(' '),
                   isFS: true,
                 });
               }
             }}
-            id={ctx.tinymceFSId}
+            id={tinymceFSId}
             hidden
             readOnly
           />
         </div>
-      )
+      ) : null
     );
-  });
+  }, [tinymceFSVisble]);
 
   return (
     <div
@@ -242,7 +244,7 @@ export default function ({
         readonly ? css['editor-rich-text__readonly'] : ''
       }`}
       style={data.style}
-      id={`p${ctx.tinymceId}`}
+      id={`p${tinymceId}`}
     >
       {RenderTextArea}
       {RenderImgModal}
