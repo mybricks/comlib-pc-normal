@@ -41,22 +41,13 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   }, [dataSource]);
 
   const ListItemRender = ({ [rowKey]: key, index: index, ...res }) => {
-    //当前项的索引
-    {
-      slots['item'].render({
-        inputValues: {
-          index: index
-        },
-        key: key
-      });
-    }
-
     return (
       <List.Item key={key}>
-        {/* 当前项数据 */}
+        {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
-            itemData: res
+            itemData: res,
+            index: index
           },
           key: key
         })}
@@ -77,16 +68,6 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     };
   };
   const FlexLayoutRender = () => {
-    dataSource.map(({ [rowKey]: key, index: index, ...res }) => {
-      {
-        slots['item'].render({
-          inputValues: {
-            index: index
-          },
-          key: key
-        });
-      }
-    });
     return (
       <div
         style={{
@@ -94,11 +75,12 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
           ...getFlexStyle()
         }}
       >
-        {dataSource.map(({ [rowKey]: key, ...res }) => (
+        {dataSource.map(({ [rowKey]: key, index: index, ...res }) => (
           <div key={key}>
             {slots['item'].render({
               inputValues: {
-                itemData: res
+                itemData: res,
+                index: index
               },
               key: key
             })}
