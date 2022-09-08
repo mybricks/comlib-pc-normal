@@ -84,8 +84,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    <div>
-      <DatePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
-    </div>
+    data.visible && (
+      <div>
+        <DatePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
+      </div>
+    )
   );
 }
