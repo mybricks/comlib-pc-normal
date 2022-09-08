@@ -77,6 +77,12 @@ function get(
 }
 
 export default {
+  '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+    if (pin.id === InputIds.Open) {
+      // input.get(InputIds.Open).setSchema(pin.schema);
+      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
+    }
+  },
   '@inputConnected'({ data, input, output, slots, ...slot }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
       // input.get(InputIds.Open).setSchema(fromPin.schema);
