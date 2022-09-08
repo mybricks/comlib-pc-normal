@@ -1,5 +1,5 @@
 import { setCol } from '../../schema';
-import { AlignEnum, ContentTypeEnum, Data } from '../../types';
+import { AlignEnum, ContentTypeEnum, Data, FixedEnum } from '../../types';
 import { getColumnItem } from '../../utils';
 
 const StyleEditor = {
@@ -55,9 +55,9 @@ const StyleEditor = {
       type: 'Select',
       description: '对于列数很多的数据，可以固定前后的列，横向滚动查看其它数据',
       options: [
-        { value: '', label: '默认' },
-        { value: 'left', label: '左固定' },
-        { value: 'right', label: '右固定' }
+        { value: FixedEnum.Default, label: '默认' },
+        { value: FixedEnum.Left, label: '左固定' },
+        { value: FixedEnum.Right, label: '右固定' }
       ],
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -68,9 +68,9 @@ const StyleEditor = {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return item.fixed;
+          return item.fixed || FixedEnum.Default;
         },
-        set({ data, focusArea }, value: string) {
+        set({ data, focusArea }, value: FixedEnum) {
           if (!focusArea) return;
           setCol({ data, focusArea }, 'fixed', value);
         }
