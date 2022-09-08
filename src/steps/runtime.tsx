@@ -27,12 +27,12 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   useEffect(() => {
     if (runtime) {
-      inputs['nextStep']((ds: any, relOutputs) => {
+      inputs['nextStep']((ds: any) => {
         if (data.current < stepAry.length - 1) {
           stepAry[data.current].content = ds;
           data.current += 1;
         } else if (data.fullSubmit) {
-          return relOutputs['submit'](collectParams(ds));
+          return outputs['submit'](collectParams(ds));
         }
       });
 
