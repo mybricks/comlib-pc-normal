@@ -183,7 +183,7 @@ export default {
           const itemId = focusArea.dataset['formActionsItem']
           const item = actions.find(item => item.key === itemId)
 
-          return item.key === 'submit'
+          return item?.key === 'submit'
         },
         value: {
           get({data, focusArea}: EditorResult<Data>) {
