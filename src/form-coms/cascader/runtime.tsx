@@ -27,6 +27,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
+      onChange(val);
     });
 
     inputs['validate']((val, outputRels) => {

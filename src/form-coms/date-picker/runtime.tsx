@@ -27,6 +27,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       val = !result?._isValid ? undefined : result;
 
       setValue(val);
+      onChange(val);
     });
 
     inputs['validate']((val, outputRels) => {
