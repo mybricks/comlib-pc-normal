@@ -77,7 +77,12 @@ export interface Data {
 }
 
 export const InputIds = {
-  SetDataSource: 'dataSource',
-  SlotProps: 'slotProps',
-  SetTitle: 'title'
+  SetDataSource: 'setDataSource',
+  SetTitle: 'title',
+  CurDs: 'curDs',
+  DataSource: 'dataSource'
 };
+
+export const ScopeSlotIds = {
+  Content: 'content'
+}

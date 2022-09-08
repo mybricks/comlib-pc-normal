@@ -1,3 +1,12 @@
 {
-  "options": []
+  "options": [],
+  "rules": [],
+  "config": {
+    "disabled": false,
+    "placeholder": "请输入数字",
+    "addonBefore": "",
+    "addonAfter": "",
+    "precision": 0,
+    "step": 1
+  }
 }

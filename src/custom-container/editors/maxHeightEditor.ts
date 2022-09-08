@@ -1,10 +1,58 @@
 import { unitConversion } from '../../utils';
-import { Data, InputIds } from '../constants';
+import { Data } from '../constants';
 
 export const MaxHeightEditor = [
   {
-    title: '最大高度设置',
+    title: '最大/最小宽高设置',
     items: [
+      {
+        title: '最小宽度',
+        type: 'text',
+        description: '组件宽度需设置为适应内容/最大可能的宽度',
+        options: {
+          placeholder: '组件最小宽度，例如：100px/100%/calc(100px)'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.style?.minWidth;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.style.minWidth = unitConversion(value) || '';
+          }
+        }
+      },
+      {
+        title: '最小高度',
+        type: 'text',
+        description: '组件高度需设置为适应内容/最大可能的高度',
+        options: {
+          placeholder: '组件最小高度，例如：100px/100%/calc(100px)'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.style?.minHeight;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.style.minHeight = unitConversion(value) || '';
+          }
+        }
+      },
+      {
+        title: '最大宽度',
+        type: 'text',
+        description: '组件宽度需设置为适应内容宽度',
+        options: {
+          placeholder: '组件宽度需设置为适应内容宽度'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.style?.maxWidth;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.style.maxWidth = unitConversion(value) || '';
+          }
+        }
+      },
       {
         title: '最大高度',
         type: 'text',
@@ -17,31 +65,7 @@ export const MaxHeightEditor = [
             return data.style?.maxHeight;
           },
           set({ data }: EditorResult<Data>, value: string) {
-            if (!data.style) {
-              data.style = {};
-            }
             data.style.maxHeight = unitConversion(value) || '';
-          }
-        }
-      },
-      {
-        title: '动态设置',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.useSetMaxHeight;
-          },
-          set({ data, input }: EditorResult<Data>, value: boolean) {
-            const hasEvent = input.get(InputIds.SetMaxHeight);
-            if (value) {
-              !hasEvent &&
-                input.add(InputIds.SetMaxHeight, '设置最大高度', {
-                  type: 'string'
-                });
-            } else {
-              hasEvent && input.remove(InputIds.SetMaxHeight);
-            }
-            data.useSetMaxHeight = value;
           }
         }
       }

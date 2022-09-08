@@ -6,42 +6,46 @@ import { typeCheck, uuid } from '../utils';
 import { Data, InputIds, OutputIds } from './constant';
 import css from './runtime.less';
 
-export default function ({
-  env,
-  data,
-  inputs,
-  outputs,
-  title
-}: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
   const {
-    dataSource,
     colors,
     collapsed,
     collapseStringsAfterLength,
     displayObjectSize,
     enableClipboard,
-    enableOutput,
-    style,
-    useSlotProps
+    enableOutput
   } = data;
-  const [jsonObj, setJsonObj] = useState(data.json);
+  const [isError, setIsError] = useState(false);
+  const [jsonObj, setJsonObj] = useState<any>([]);
+
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetJsonData] && inputs[InputIds.SetJsonData](setJsonObj);
-      useSlotProps && inputs[InputIds.SlotProps](setJsonObj);
+      inputs[InputIds.SetJsonData]((val) => {
+        data.json = val;
+      });
     }
   }, []);
-  if (!typeCheck(jsonObj, ['ARRAY', 'OBJECT'])) {
-    try {
-      setJsonObj(JSON.parse(jsonObj));
-    } catch (e) {
-      if (env.edit)
-        return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
-      else {
+
+  useEffect(() => {
+    if (typeof data.json === 'string') {
+      try {
+        setJsonObj(JSON.parse(decodeURIComponent(data.json)));
+        setIsError(false);
+      } catch (e) {
+        setIsError(true);
         console.warn(`${title}:输入的JSON数据不合法`);
         setJsonObj([]);
       }
+    } else if (data.json && typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
+      setJsonObj(data.json);
+    } else {
+      setJsonObj([]);
+      setIsError(false);
     }
+  }, [data.json]);
+
+  if (isError && env.edit) {
+    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
   }
 
   const rootKey: React.Key = useMemo(() => {
@@ -83,8 +87,7 @@ export default function ({
         collapseStringsAfterLength !== 0 &&
         valString === value &&
         count > collapseStringsAfterLength;
-    if (dispalyEllisps)
-      valString = valString.substring(0, collapseStringsAfterLength) + '...';
+    if (dispalyEllisps) valString = valString.substring(0, collapseStringsAfterLength) + '...';
 
     const valueEle = (
       <span key={uuid()} style={valStyle}>
@@ -98,15 +101,9 @@ export default function ({
           {key !== rootKey && key}
         </span>
         {key !== rootKey && ':'}
-        {dispalyEllisps ? (
-          <Tooltip title={value}>{valueEle}</Tooltip>
-        ) : (
-          valueEle
-        )}
+        {dispalyEllisps ? <Tooltip title={value}>{valueEle}</Tooltip> : valueEle}
         {displayCount && (
-          <span className={css.count}>
-            {`${count} ${count > 1 ? 'items' : 'item'}`}
-          </span>
+          <span className={css.count}>{`${count} ${count > 1 ? 'items' : 'item'}`}</span>
         )}
       </div>
     );
@@ -161,24 +158,14 @@ export default function ({
       key: rootKey
     }
   ];
-  const editSettings = {
-      treeData: dataSource === 2 ? defaultTreeData : treeData,
-      showLine: { showLeafIcon: false },
-      switcherIcon: <DownOutlined />,
-      expandedKeys,
-      style
-    },
-    runtimeSettings = {
-      treeData: treeData,
-      showLine: { showLeafIcon: false },
-      switcherIcon: <DownOutlined />,
-      defaultExpandedKeys: expandedKeys,
-      style
-    };
-  if (env.edit) return <Tree {...editSettings} />;
+
   return (
     <Tree
-      {...runtimeSettings}
+      treeData={treeData}
+      showLine={{ showLeafIcon: false }}
+      switcherIcon={<DownOutlined />}
+      defaultExpandedKeys={expandedKeys}
+      expandedKeys={env.edit ? expandedKeys : undefined}
       key={expandedKeys.toString()}
       onSelect={(keys: any[], { node }) => {
         const nodeData = keyToData.get(node.key);
@@ -186,18 +173,15 @@ export default function ({
           //* 复制到剪贴板
           try {
             copy(JSON.stringify(nodeData));
-            message.success(env.i18n('节点数据已成功复制到剪贴板'));
+            message.success('节点数据已成功复制到剪贴板');
           } catch (e) {
-            message.error(env.i18n('复制失败'));
-            console.error(env.i18n('复制失败'), e);
+            message.error('复制失败');
+            console.error('复制失败', e);
           }
         }
         if (enableOutput) {
           outputs[OutputIds.Select] && outputs[OutputIds.Select](nodeData);
         }
-      }}
-      onExpand={(keys) => {
-        // setExpandedKeys(keys);
       }}
     />
   );

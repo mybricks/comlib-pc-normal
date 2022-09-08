@@ -14,7 +14,7 @@
       "id": "setValue",
       "title": "设置值",
       "schema": {
-        "type": "string"
+        "type": "number"
       }
     },
     {
@@ -36,6 +36,27 @@
       "rels": [
         "returnValue"
       ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setVisible",
+      "title": "设置显示/隐藏",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [
@@ -43,7 +64,7 @@
       "id": "onChange",
       "title": "值变化",
       "schema": {
-        "type": "string"
+        "type": "number"
       }
     },
     {
@@ -57,7 +78,7 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "string"
+        "type": "number"
       }
     }
   ],

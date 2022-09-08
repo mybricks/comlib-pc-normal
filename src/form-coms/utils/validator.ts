@@ -55,6 +55,10 @@ export const ruleFnMap = {
       return failed(message)
       // return messageFn(i18nString(message, env, { label, name, value }));
     }
+    // hack
+    if (Array.isArray(value) && value.length < 1) {
+      return failed(message)
+    }
     // if (Array.isArray(value) && ['treeSelect', 'cascader', 'tagsSelect', 'multipleSelect', 'checkbox'].includes(type) && value.length < 1) {
     //   return messageFn(i18nString(message, env, { label, name, value }));
     // }
@@ -98,8 +102,8 @@ export const ruleFnMap = {
   },
 };
 
-export function validateFormItem ({ value, env, rules }) {
-  const curRule = rules.filter(item => item.status) 
+export function validateFormItem({ value, env, rules }) {
+  const curRule = (rules || defaultRules).filter(item => item.status)
 
   return new Promise((resolve, reject) => {
     Promise.all(curRule.map(item => {
@@ -113,7 +117,7 @@ export function validateFormItem ({ value, env, rules }) {
           value,
           env,
           args: [
-            value, 
+            value,
             {
               ...env,
               ...validateFn

@@ -8,11 +8,6 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
-  "slots": [
-    {
-      "id": "content",
-      "title": "内容"
-    }
-  ]
+  "editors": "./editors/index.ts",
+  "slots": []
 }

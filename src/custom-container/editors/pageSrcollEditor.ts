@@ -15,28 +15,10 @@ export const PageScrollEditor = [
             data.useSrcollIntoView = value;
             const isHas = input.get(InputIds.ScrollIntoView);
             if (value) {
-              !isHas && input.add(InputIds.ScrollIntoView, '锚点滚动', { type: "any" });
+              !isHas && input.add(InputIds.ScrollIntoView, '锚点滚动', { type: 'any' });
             } else {
               isHas && input.remove(InputIds.ScrollIntoView);
             }
-          }
-        }
-      },
-      {
-        title: '锚点ID',
-        type: 'Text',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.useSrcollIntoView;
-        },
-        options: {
-          placeholder: '例如：id1'
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.id;
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.id = value;
           }
         }
       },

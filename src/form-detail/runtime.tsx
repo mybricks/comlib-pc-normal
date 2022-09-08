@@ -5,13 +5,7 @@ import { getRenderScript } from './utils';
 import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
 
-export default function ({
-  env,
-  data,
-  inputs,
-  slots,
-  outputs
-}: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const {
     items,
     dataSource,
@@ -65,7 +59,7 @@ export default function ({
     // }
   };
   const getDataSource = () => {
-    const res: Item[]= [];
+    const res: Item[] = [];
     let ds = rawData;
     (items || []).forEach((item) => {
       const labelStyle = {
@@ -84,14 +78,9 @@ export default function ({
         paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
       };
       const isHidden =
-        env.runtime &&
-        !!item.isHiddenScript &&
-        eval(getRenderScript(item.isHiddenScript))(rawData);
+        env.runtime && !!item.isHiddenScript && eval(getRenderScript(item.isHiddenScript))(rawData);
 
-      if (
-        typeof ds[item.key] === 'string' ||
-        typeof ds[item.key] === 'number'
-      ) {
+      if (typeof ds[item.key] === 'string' || typeof ds[item.key] === 'number') {
         res.push({
           ...item,
           value: ds[item.key],
@@ -188,15 +177,12 @@ export default function ({
             widthLimit,
             limit
           } = item || {};
-
           const SlotItem = slots[slotId]?.render({
-            inputs: {
-              slotProps(fn) {
-                fn({
-                  ...rawData
-                });
-              }
-            }
+            inputValues: {
+              [InputIds.CurDs]: value,
+              [InputIds.DataSource]: rawData
+            },
+            key: slotId
           });
           if (isHidden) {
             return null;
@@ -230,12 +216,9 @@ export default function ({
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetDataSource] &&
-        inputs[InputIds.SetDataSource](setDataSource);
-      data.useSlotProps !== false &&
-        inputs[InputIds.SlotProps] &&
-        inputs[InputIds.SlotProps](setDataSource);
-      dynamicTitle && inputs[InputIds.SetTitle] &&
+      inputs[InputIds.SetDataSource] && inputs[InputIds.SetDataSource](setDataSource);
+      dynamicTitle &&
+        inputs[InputIds.SetTitle] &&
         inputs[InputIds.SetTitle]((t: string) => {
           data.title = t;
         });
@@ -292,11 +275,7 @@ function MassiveValue({ value, customStyle, limit }) {
   return (
     <div ref={parentEle} style={customStyle}>
       {limit ? (
-        <Tooltip
-          title={value}
-          overlayClassName={css.ellipsisTooltip}
-          color="#fff"
-        >
+        <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color='#fff'>
           {value}
         </Tooltip>
       ) : (

@@ -4,18 +4,10 @@ export default function uploadimage(props) {
   const global = (window).tinyMCE.util.Tools.resolve('tinymce.PluginManager');
 
   function selectLocalImages(editor) {		
-      // if (!globalEditor) {
-      //   globalEditor = editor
-      // }
-      // globalEditor = editor
       click('uploadimage')
   }
 
   function selectLocalFullScreen(editor) {
-    // if (!globalEditor) {
-    //   globalEditor = editor
-    // }
-    // globalEditor = editor
     click('customfullscreen')
   }
 
@@ -25,10 +17,6 @@ export default function uploadimage(props) {
 
 
   const register$1 = function (editor) {
-    // if (!globalEditor) {
-    //   globalEditor = editor
-    // }
-    // globalEditor = editor
     editor.ui.registry.addButton('uploadimage', {
       icon: 'image',
       tooltip: '上传图片',
@@ -102,38 +90,15 @@ export default function uploadimage(props) {
     //   }
     // });
   };
-  // const Buttons = { register: register$1 };
 
   function Plugin () {
     global.add('uploadimage', function (editor) {        
-      // if (!globalEditor) {
-      //   globalEditor = editor
-      // }
-      // globalEditor = editor
-      // Buttons.register(editor);
     });
     global.add('customfullscreen', function (editor) {        
-      // if (!globalEditor) {
-      //   globalEditor = editor
-      // }
-      // globalEditor = editor
-      // Buttons.register(editor);
     });
     global.add('customfullscreenexit', function (editor) {        
-      // if (!globalEditor) {
-      //   globalEditor = editor
-      // }
-      // globalEditor = editor
-      // Buttons.register(editor);
     });
     global.add('uploadVideo', () => {});
-    // global.add('customlink', function (editor) {        
-    //   if (!globalEditor) {
-    //     globalEditor = editor
-    //   }
-    //   globalEditor = editor
-    //   Buttons.register(editor);
-    // });
   }
 
   Plugin();
@@ -146,7 +111,6 @@ export default function uploadimage(props) {
         const dom = editor.dom;
         const { type, url } = modal;
         if (type === 'image') {
-        
           editor.insertContent(dom.createHTML('img', {src: url}))
         }
         if (type === 'video') {

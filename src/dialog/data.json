@@ -5,7 +5,6 @@
   "closable": true,
   "centered": false,
   "useFooter": true,
-  "footerType": 1,
   "cancelText": "取消",
   "width": 520,
   "footerBtns": [
@@ -15,7 +14,8 @@
       "icon": "",
       "useIcon": false,
       "showText": true,
-      "type": "default"
+      "type": "default",
+      "visible": true
     },
     {
       "id": "ok",
@@ -23,7 +23,8 @@
       "type": "primary",
       "icon": "",
       "useIcon": false,
-      "showText": true
+      "showText": true,
+      "visible": true
     }
   ]
 }

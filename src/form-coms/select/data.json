@@ -1,7 +1,8 @@
 {
   "visible": true,
   "config": {
-    "options": [],
-    "disabled": false
+    "disabled": false,
+    "placeholder": "请选择",
+    "mode": "default"
   }
 }
