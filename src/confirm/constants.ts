@@ -20,15 +20,22 @@ export interface Data {
   cancelText: string;
   showTitle?: boolean;
   showCancelBtn?: boolean;
-  visible: boolean;
-  inputData: any;
   width?: number;
+  outputValue?: any;
 }
 
 export const InputIds = {
-  Open: 'open',
-}
+  Open: 'open'
+};
 export const OutputIds = {
   Ok: 'ok',
-  Cancel: 'cancel',
-}
+  Cancel: 'cancel'
+};
+export const Schemas = {
+  Any: {
+    type: 'any'
+  },
+  Follow: {
+    type: 'follow'
+  }
+};
