@@ -21,7 +21,6 @@ export function Init({
   initCB
 }: InitProps) {
   const tinyMCE = getWindowVal('tinyMCE');
-
   if (!tinyMCE) return;
 
   const plugins: string[] = [
