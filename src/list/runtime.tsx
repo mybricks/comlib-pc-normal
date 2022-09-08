@@ -56,7 +56,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
         {/* 当前项数据 */}
         {slots['item'].render({
           inputValues: {
-            itemData: res[0]
+            itemData: res
           },
           key: key
         })}
@@ -98,7 +98,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
           <div key={key}>
             {slots['item'].render({
               inputValues: {
-                itemData: res[0]
+                itemData: res
               },
               key: key
             })}
