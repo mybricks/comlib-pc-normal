@@ -4,7 +4,7 @@ export default {
     title: '操作项',
     items: [
       {
-        title: '显示副按钮',
+        title: '显示上一步',
         type: 'Switch',
         value: {
           set({ data }: EditorResult<Data>, value: boolean) {
@@ -12,18 +12,6 @@ export default {
           },
           get({ data }: EditorResult<Data>) {
             return data.toolbar.showSecondBtn;
-          }
-        }
-      },
-      {
-        title: '显示重置按钮',
-        type: 'Switch',
-        value: {
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.toolbar.reset = value;
-          },
-          get({ data }: EditorResult<Data>) {
-            return data.toolbar.reset;
           }
         }
       },
@@ -98,7 +86,7 @@ export default {
     ]
   },
   '[data-item-type="pre"]': {
-    title: '副按钮',
+    title: '上一步',
     items: [
       {
         title: '文案',
@@ -110,24 +98,6 @@ export default {
           },
           get({ data }: EditorResult<Data>) {
             return data.toolbar.secondBtnText;
-          }
-        }
-      }
-    ]
-  },
-  '[data-item-type="resetBtn"]': {
-    title: '重置按钮',
-    items: [
-      {
-        title: '文案',
-        type: 'Text',
-        value: {
-          set({ data }: EditorResult<Data>, value: string) {
-            if (!value) return;
-            data.toolbar.resetText = value;
-          },
-          get({ data }: EditorResult<Data>) {
-            return data.toolbar.resetText;
           }
         }
       }

@@ -1,4 +1,10 @@
 {
+  "steps": {
+    "size": "default",
+    "type": "default",
+    "direction": "horizontal",
+    "showDesc": true
+  },
   "stepAry": [
     {
       "id": "step0",
@@ -10,17 +16,13 @@
   ],
   "current": 0,
   "toolbar": {
-    "showActions": false,
-    "showDesc": 1,
-    "size": "default",
     "type": "default",
+    "showActions": false,
     "submit": true,
-    "reset": true,
     "showSecondBtn": true,
     "actionAlign": "center",
     "primaryBtnText": "下一步",
     "secondBtnText": "上一步",
-    "resetText": "重置",
     "submitText": "提交"
   },
   "fullSubmit": false
