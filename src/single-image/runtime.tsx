@@ -1,56 +1,37 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Image } from 'antd';
-import { Data, ImageItem } from './constants';
+import { Data, InputIds, OutputIds } from './constants';
 
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
-  const setImage = useCallback((ds) => {
-    data.image = {
-      ...data.image,
-      src: ds
-    };
-  }, []);
-
-  const onClick = useCallback(() => {
-    outputs['click'] && outputs['click']();
-  }, []);
+  const { alt, src, customStyle, useFallback, fallbackImgSrc, usePreview, previewImgSrc } = data;
 
   useEffect(() => {
     if (env.runtime) {
-      inputs['imgSrc'] && inputs['imgSrc'](setImage);
-      inputs['slotProps'] && inputs['slotProps'](setImage);
+      inputs[InputIds.SetImgSrc]((val) => {
+        if (typeof val === 'string') {
+          data.src = val;
+        }
+      });
     }
   }, []);
 
-  return <ImgRender item={data.image} env={env} onClick={onClick} />;
-}
-
-// 单图片渲染
-export function ImgRender({ item, env, onClick }: { item: ImageItem; env: any; onClick?: any }) {
-  const {
-    alt,
-    src,
-    fallback,
-    placeholder,
-    preview,
-    customBorderStyle,
-    supportFallback,
-    cursorStyle
-  } = item;
+  const onClick = useCallback(() => {
+    outputs[OutputIds.Click]();
+  }, []);
 
   return (
     <Image
       alt={alt}
-      src={env.getAssetsPath(src)}
+      src={src}
       width="100%"
       height="100%"
       style={{
-        ...customBorderStyle,
-        cursor: cursorStyle ? 'pointer' : 'unset'
+        cursor: 'pointer',
+        ...(customStyle || {})
       }}
-      fallback={supportFallback ? fallback : ''}
-      placeholder={placeholder}
-      preview={env.runtime && preview}
-      onClick={preview ? null : onClick}
+      fallback={useFallback && fallbackImgSrc ? fallbackImgSrc : undefined}
+      preview={usePreview && env.runtime ? { src: previewImgSrc || src } : false}
+      onClick={onClick}
     />
   );
 }

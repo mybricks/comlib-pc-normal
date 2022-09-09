@@ -96,7 +96,7 @@ export const BaseEditor = [
 function addScopeSlotInputs({ data, item, slots }) {
   slots.add({
     id: item.slotId,
-    title: '当前数据',
+    title: item.label,
     type: 'scope',
     inputs: [
       { id: InputIds.CurDs, title: '当前数据', schema: { type: 'string' } },

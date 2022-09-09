@@ -18,33 +18,35 @@ export default (props: RuntimeParams<Data>) => {
     hideOnSinglePage
   } = data;
 
-  const setTotal = (total: number) => {
-    if (typeof total === 'number') {
-      data.total = total;
-    }
-  };
   const setPageNum = (pageNum: number) => {
     if (typeof pageNum === 'number') {
       data.current = pageNum;
     }
   };
-  const setDisable = () => {
-    data.disabled = true;
-  };
-  const setEnable = () => {
-    data.disabled = false;
-  };
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetTotal](setTotal);
-      inputs[InputIds.SetPageNum](setPageNum);
+      data.total = 0;
+      inputs[InputIds.SetTotal]((val: number) => {
+        if (typeof val === 'number') {
+          data.total = val;
+        }
+      });
+      inputs[InputIds.SetPageNum]((val) => {
+        setPageNum(val);
+      });
       inputs[InputIds.GetPageInfo]((val, relOutputs) => {
         relOutputs[OutputIds.GetPageInfo](data.currentPage);
       });
 
-      inputs[InputIds.SetDisable] && inputs[InputIds.SetDisable](setDisable);
-      inputs[InputIds.SetEnable] && inputs[InputIds.SetEnable](setEnable);
+      inputs[InputIds.SetDisable] &&
+        inputs[InputIds.SetDisable](() => {
+          data.disabled = true;
+        });
+      inputs[InputIds.SetEnable] &&
+        inputs[InputIds.SetEnable](() => {
+          data.disabled = false;
+        });
     }
   }, []);
 

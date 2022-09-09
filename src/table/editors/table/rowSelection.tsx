@@ -81,7 +81,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             get({ data }: EditorResult<Data>) {
               return data.selectionType || RowSelectionTypeEnum.Checkbox;
             },
-            set({ data }: EditorResult<Data>, value) {
+            set({ data }: EditorResult<Data>, value: RowSelectionTypeEnum) {
               data.selectionType = value;
             }
           }

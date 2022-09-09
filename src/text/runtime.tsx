@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import {
   AlignTypeEnum,
@@ -12,7 +12,7 @@ import {
 const { Text, Paragraph } = Typography;
 
 export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
-  const { style } = data;
+  const [isHover, setIsHover] = useState(false);
 
   const onClick = () => {
     if (data.useClick && outputs[OutputIds.Click]) {
@@ -40,15 +40,24 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   return (
     <div
       style={{
-        height: 'fit-content',
-        maxWidth: '100%',
-        textAlign: data.align || AlignTypeEnum.Left
+        textAlign: data.align || AlignTypeEnum.Left,
+        lineHeight: 1
+      }}
+      onMouseOver={() => {
+        if (data.useHoverStyle && data.hoverStyle) {
+          setIsHover(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (data.useHoverStyle && data.hoverStyle) {
+          setIsHover(false);
+        }
       }}
     >
       {data.isEllipsis && data.ellipsis?.rows > 1 ? (
         <Paragraph
           style={{
-            ...style,
+            ...(isHover ? data.hoverStyle : data.style),
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
@@ -60,7 +69,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
       ) : (
         <Text
           style={{
-            ...style,
+            ...(isHover ? data.hoverStyle : data.style),
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}

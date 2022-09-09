@@ -1,8 +1,6 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { Modal, message, Spin, Input } from 'antd';
-import { ModalCtx } from '../richText';
-import { useObservable, useComputed } from '@mybricks/rxui';
+import { Modal, Spin, Input } from 'antd';
 // import { uploadFilesToCDN } from '../../utils/uploadFilesToCDN';
 
 import css from '../richText.less';
@@ -11,7 +9,7 @@ const disabledStyle = {
   color: 'rgba(0,0,0,.25)',
   background: '#f5f5f5',
   borderColor: '#d9d9d9',
-  cursor: 'not-allowed',
+  cursor: 'not-allowed'
 } as {
   color: string;
   background: string;
@@ -21,8 +19,11 @@ const disabledStyle = {
 
 interface Props {
   update: any;
-  modalCtx: ModalCtx;
-  env: any;
+  onClose: any;
+  visible: boolean;
+  uploadModel: any;
+  onOk: () => void;
+  onChange: (params: any) => void;
 }
 
 class Ctx {
@@ -52,92 +53,75 @@ const renderPreview = ({ type, url }) => {
     case 'video':
       return (
         <div>
-          <video controls width='100%' height={200} src={url} />
+          <video controls width="100%" height={200} src={url} />
         </div>
       );
   }
 };
-export default function ImgModal({ update, modalCtx, env }: Props) {
+export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel }: Props) {
   const ref = useRef();
-  const ctx: Ctx = useObservable(Ctx, (next) => {
-    next({
-      container: void 0,
-    });
-  });
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef();
 
-  const Close = useCallback(() => {
-    modalCtx.modal = {};
-    modalCtx.modalVisible = false;
-  }, []);
-
-  const modalJSX = useComputed(() => (
+  return (
     <div ref={ref}>
       <input
         style={{ display: 'none' }}
-        type='file'
-        accept={getMIMEType(modalCtx.modal.type)}
-        ref={(node) => (ctx.container = node)}
+        type="file"
+        accept={getMIMEType(uploadModel.type)}
+        ref={inputRef}
         className={css['editor-upload__input']}
         onChange={(evt) => {
-          const file: any =
-            (evt.target && evt.target.files && evt.target.files[0]) || null;
+          const file: any = (evt.target && evt.target.files && evt.target.files[0]) || null;
           if (file) {
-            modalCtx.modal.uploading = true;
-            upload(file, (url) => {
-              modalCtx.modal.uploading = false;
-              modalCtx.modal.url = url;
-            });
-            evt.target.value = '';
+            setUploading(true);
+            // upload(file, (url) => {
+            // setUploading(false);
+            // modalCtx.modal.url = url;
+            // });
           }
         }}
       />
       <Modal
-        title={modalCtx.modal.title}
-        visible={modalCtx?.modalVisible}
+        title={uploadModel.title}
+        visible={visible}
         width={520}
         bodyStyle={{
-          padding: '8px 24px',
+          padding: '8px 24px'
         }}
         maskClosable={false}
         footer={[
-          <div className={css['editor-rich-text__footBtn']} key='button'>
+          <div className={css['editor-rich-text__footBtn']} key="button">
             <div
               className={`${css['editor-rich-text__modalbtn']} ${css['editor-rich-text__footBtn-determine']}`}
-              style={modalCtx?.modal.url?.length ? {} : disabledStyle}
-              onClick={() => {
-                if (!modalCtx?.modal.url?.length) return;
-                modalCtx.Uploadimage.setUrl(modalCtx.modal, modalCtx.editor);
-                Close();
-                update();
-              }}
+              style={uploadModel.url?.length ? {} : disabledStyle}
+              onClick={onOk}
             >
               确定
             </div>
-          </div>,
+          </div>
         ]}
-        onCancel={() => {
-          Close();
-        }}
+        onCancel={onClose}
         getContainer={() => ref.current}
         zIndex={1002}
       >
         <div
           className={css['editor-rich-text__modalbtn']}
           onClick={() => {
-            ctx.container?.click();
+            inputRef.current?.click();
           }}
         >
           文件选择
         </div>
         <Input
-          value={modalCtx.modal.url}
-          placeholder='文件地址'
+          value={uploadModel.url}
+          placeholder="文件地址"
           onChange={(e) => {
-            modalCtx.modal.url = e.target.value;
+            onChange({ url: e.target.value });
           }}
         />
         <div className={css['editor-rich-text__modal']}>
-          {modalCtx?.modal.url ? null : (
+          {uploadModel.url ? null : (
             <textarea
               onPaste={(e) => {
                 // modalCtx.modal.uploading = true;
@@ -148,7 +132,7 @@ export default function ImgModal({ update, modalCtx, env }: Props) {
               }}
               className={css['editor-rich-text__modal-text']}
               ref={(e) => {
-                if (modalCtx.modalVisible) {
+                if (visible) {
                   e?.focus();
                 } else if (e) {
                   resetTextArea(e);
@@ -157,24 +141,20 @@ export default function ImgModal({ update, modalCtx, env }: Props) {
             />
           )}
           <div className={css['editor-rich-text__modal-placeholder']}>
-            <Spin spinning={modalCtx.modal.uploading === true}>
-              {!modalCtx?.modal.url?.length ? (
-                <div
-                  className={css['editor-rich-text__modal-placeholder-text']}
-                >
+            <Spin spinning={uploading === true}>
+              {!uploadModel.url?.length ? (
+                <div className={css['editor-rich-text__modal-placeholder-text']}>
                   <div>可直接粘贴文件</div>
                 </div>
               ) : (
-                renderPreview(modalCtx?.modal)
+                renderPreview(uploadModel)
               )}
             </Spin>
           </div>
         </div>
       </Modal>
     </div>
-  ));
-
-  return modalJSX;
+  );
 }
 
 // function paste(e: any, set: (url: string) => void) {

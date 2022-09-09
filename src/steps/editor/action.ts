@@ -4,7 +4,7 @@ export default {
     title: '操作项',
     items: [
       {
-        title: '显示副按钮',
+        title: '显示上一步',
         type: 'Switch',
         value: {
           set({ data }: EditorResult<Data>, value: boolean) {
@@ -12,18 +12,6 @@ export default {
           },
           get({ data }: EditorResult<Data>) {
             return data.toolbar.showSecondBtn;
-          }
-        }
-      },
-      {
-        title: '显示重置按钮',
-        type: 'Switch',
-        value: {
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.toolbar.reset = value;
-          },
-          get({ data }: EditorResult<Data>) {
-            return data.toolbar.reset;
           }
         }
       },
@@ -98,7 +86,7 @@ export default {
     ]
   },
   '[data-item-type="pre"]': {
-    title: '副按钮',
+    title: '上一步',
     items: [
       {
         title: '文案',
@@ -110,24 +98,6 @@ export default {
           },
           get({ data }: EditorResult<Data>) {
             return data.toolbar.secondBtnText;
-          }
-        }
-      }
-    ]
-  },
-  '[data-item-type="resetBtn"]': {
-    title: '重置按钮',
-    items: [
-      {
-        title: '文案',
-        type: 'Text',
-        value: {
-          set({ data }: EditorResult<Data>, value: string) {
-            if (!value) return;
-            data.toolbar.resetText = value;
-          },
-          get({ data }: EditorResult<Data>) {
-            return data.toolbar.resetText;
           }
         }
       }
@@ -164,5 +134,75 @@ export default {
         ]
       }
     ]
+  },
+  '[data-item-type="extraBtn"]': ({ data, slots, output, input, focusArea }, cate1, cate2) => {
+    cate1.title = "常规"
+    cate1.items = [
+      {
+        title: '名称',
+        type: 'text',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getExtraBtn(data, focusArea)
+            return btn.text;
+          },
+          set({ data, focusArea }: EditorResult<Data>, val: string) {
+            updateExtraBtn(data, focusArea, {text: val})
+          }
+        }
+      },
+      {
+        title: '类型',
+        type: 'select',
+        options: {
+          options: [
+            { value: 'default', label: '默认' },
+            { value: 'primary', label: '主按钮' },
+            { value: 'dashed', label: '虚线按钮' },
+            { value: 'danger', label: '危险按钮' },
+            { value: 'link', label: '链接按钮' },
+            { value: 'text', label: '文字按钮' }
+          ]
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getExtraBtn(data, focusArea)
+            return btn.type;
+          },
+          set({ data, focusArea }: EditorResult<Data>, val: string) {
+            updateExtraBtn(data, focusArea, {type: val})
+          }
+        }
+      }
+    ]
+    cate2.title = "事件"
+    cate2.items = [
+      {
+        title: '事件',
+        items: [
+          {
+            title: '点击',
+            type: '_Event',
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const outputId = data.toolbar.extraBtns[focusArea.index].id
+              const slotId = data.stepAry[data.current].id
+              return {
+                outputId,
+                slotId
+              };
+            }
+          }
+        ]
+      }
+    ]
   }
 };
+
+const getExtraBtn = (data, focusArea) => {
+  return data.toolbar.extraBtns[focusArea.index]
+}
+
+const updateExtraBtn = (data, focusArea, val) => {
+  const btn = getExtraBtn(data, focusArea)
+  data.toolbar.extraBtns[focusArea.index] = {...btn, ...val}
+}

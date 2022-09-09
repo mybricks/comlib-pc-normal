@@ -12,22 +12,6 @@ export default {
     cate1.title = "常规"
     cate1.items = [
       {
-        title: '描述',
-        type: 'Select',
-        options: [
-          { label: '是', value: 1 },
-          { label: '否', value: 0 }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.toolbar.showDesc;
-          },
-          set({ data }: EditorResult<Data>, value: number) {
-            data.toolbar.showDesc = value;
-          }
-        }
-      },
-      {
         title: '类型',
         type: 'Select',
         options: [
@@ -36,10 +20,10 @@ export default {
         ],
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.toolbar.type;
+            return data.steps.type;
           },
           set({ data }: EditorResult<Data>, value: 'default' | 'navigation') {
-            data.toolbar.type = value;
+            data.steps.type = value;
           }
         }
       },
@@ -52,10 +36,10 @@ export default {
         ],
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.toolbar.size;
+            return data.steps.size;
           },
           set({ data }: EditorResult<Data>, value: 'default' | 'small') {
-            data.toolbar.size = value;
+            data.steps.size = value;
           }
         }
       },
@@ -68,18 +52,63 @@ export default {
         ],
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.direction || 'horizontal';
+            return data.steps.direction;
           },
           set({ data }: EditorResult<Data>, value: 'horizontal' | 'vertical') {
-            data.direction = value;
+            data.steps.direction = value;
           }
         }
       },
       {
+        title: '描述',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.steps.showDesc;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.steps.showDesc = value;
+          }
+        }
+      },
+      {
+        title: '操作栏',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.toolbar.showActions;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.toolbar.showActions = val
+          }
+        }
+      },
+      // {
+      //   title: '添加操作',
+      //   type: 'button',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return !!data.toolbar.showActions;
+      //   },
+      //   value: {
+      //     set({ data, output }: EditorResult<Data>, val: string) {
+      //       const id = uuid()
+      //       if (!data.toolbar.extraBtns) {
+      //         data.toolbar.extraBtns = []
+      //       }
+      //       data.toolbar.extraBtns?.push({
+      //         id,
+      //         type: 'default',
+      //         text: `按钮${data.toolbar.extraBtns.length + 1}`
+      //       })
+      //       output.add(id, '点击', { type: "any" })
+      //     }
+      //   }
+      // },
+      {
         title: '添加步骤',
         type: 'Button',
         value: {
-          set({ data, slots, output }: EditorResult<Data>) {
+          set({ data, slots, output, input }: EditorResult<Data>) {
             const id = uuid();
             slots.add({
               id,
@@ -99,6 +128,8 @@ export default {
               ]
             });
             output.add(id, `提交_${id}`, DefaultSchema);
+            //设置跳转title
+            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length}）`)
             data.stepAry.push({
               id,
               title: '新步骤',
@@ -117,18 +148,6 @@ export default {
     ]
     cate2.title = "高级"
     cate2.items = [
-      {
-        title: '按钮组',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return typeof data.toolbar.showActions === 'undefined' || data.toolbar.showActions;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.toolbar.showActions = value;
-          }
-        }
-      },
       {
         title: '隐藏插槽占位',
         type: 'Switch',

@@ -25,8 +25,8 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
   const itemContent = env.edit
     ? env.i18n(`${item.content}`)
     : item.src === 1
-      ? env.i18n(`${item.content}`)
-      : '';
+    ? env.i18n(`${item.content}`)
+    : '';
   switch (item.type) {
     case 'Text':
       return (
@@ -134,9 +134,7 @@ const EditRender = (props: RuntimeParams<Data>) => {
     if (!data.items || data.items.length === 0) {
       return <p className={css.suggestion}>在编辑栏中点击"添加文本"</p>;
     }
-    return (
-      <>{data.items.map((item) => itemRender({ ...props, data: item }))}</>
-    );
+    return <>{data.items.map((item) => itemRender({ ...props, data: item }))}</>;
   };
   return (
     <div className={css.container} style={data.style || {}}>
@@ -183,34 +181,31 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
       inputs[`${item.key}-append`]((ds: any) => {
         item.src = 1;
         if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
-          item.content =
-            item.content === '[外部获取]'
-              ? `${ds}`
-              : `${item.content || ''}${ds}`;
+          item.content = item.content === '[外部获取]' ? `${ds}` : `${item.content || ''}${ds}`;
         }
         setItemList([...itemList]);
       });
     });
-    inputs['slotProps'] &&
-      inputs['slotProps']((content: string | string[]) => {
-        if (
-          Array.isArray(content) &&
-          !content.some((item) => typeof item !== 'string')
-        ) {
-          content.forEach((item, idx) => {
-            if (itemList[idx]) {
-              itemList[idx].src = 1;
-              itemList[idx].content = item;
-            }
-          });
-          setItemList([...itemList]);
-        }
-        if (typeof content === 'string' && itemList[0]) {
-          itemList[0].content = content;
-          itemList[0].src = 1;
-          setItemList([...itemList]);
-        }
-      });
+    // inputs['slotProps'] &&
+    //   inputs['slotProps']((content: string | string[]) => {
+    //     if (
+    //       Array.isArray(content) &&
+    //       !content.some((item) => typeof item !== 'string')
+    //     ) {
+    //       content.forEach((item, idx) => {
+    //         if (itemList[idx]) {
+    //           itemList[idx].src = 1;
+    //           itemList[idx].content = item;
+    //         }
+    //       });
+    //       setItemList([...itemList]);
+    //     }
+    //     if (typeof content === 'string' && itemList[0]) {
+    //       itemList[0].content = content;
+    //       itemList[0].src = 1;
+    //       setItemList([...itemList]);
+    //     }
+    //   });
     inputs['append'] &&
       inputs['append']((ds) => {
         if (typeof ds === 'string') {

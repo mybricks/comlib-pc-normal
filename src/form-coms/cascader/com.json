@@ -14,7 +14,10 @@
       "id": "setValue",
       "title": "设置值",
       "schema": {
-        "type": "string"
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
       }
     },
     {
@@ -36,7 +39,57 @@
       "rels": [
         "returnValue"
       ]
-    }
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setVisible",
+      "title": "设置显示/隐藏",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setOptions",
+      "title": "输入数据源",
+      "schema": {
+        "title": "输入数据源数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "title": "值",
+              "type": "any"
+            },
+            "label": {
+              "title": "名称",
+              "type": "string"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+  }
   ],
   "outputs": [
     {

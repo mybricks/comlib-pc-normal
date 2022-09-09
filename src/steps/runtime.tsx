@@ -1,4 +1,4 @@
-import { Button, Steps } from 'antd';
+import { Button, message, Steps } from 'antd';
 import React, { useCallback, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
@@ -27,6 +27,8 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   useEffect(() => {
     if (runtime) {
+      inputs['prevStep'](prev);
+
       inputs['nextStep']((ds: any) => {
         if (data.current < stepAry.length - 1) {
           stepAry[data.current].content = ds;
@@ -36,28 +38,25 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
         }
       });
 
-      inputs['prevStep'](prev);
-
-      inputs['submit']((ds: any) => {
-        outputs['submit'](collectParams(ds));
+      inputs['jumpTo']((val: number) => {
+        if (!val || typeof val !== 'number') {
+          message.error('【步骤条】跳转步骤必须是数字');
+          return;
+        }
+        if (val > stepAry.length - 1) {
+          message.error('【步骤条】跳转步骤超出范围');
+          return;
+        }
+        data.current = val;
       });
 
-      inputs['reset']((ds: any) => reset(ds));
-
-      inputs['getIndex'](() => {
-        outputs['getIndex'](data.current);
+      inputs['submit']((ds: any, relOutputs) => {
+        relOutputs['submit'](collectParams(ds));
       });
 
-      // stepAry.forEach((item) => {
-      //   if (item && item.useDynamicDisplay) {
-      //     inputs[`show${item.id}`](() => {
-      //       item.hide = false;
-      //     });
-      //     inputs[`hide${item.id}`](() => {
-      //       item.hide = true;
-      //     });
-      //   }
-      // });
+      inputs['getIndex']((_, relOutputs) => {
+        relOutputs['getIndex'](data.current);
+      });
     }
   }, [stepAry]);
 
@@ -78,7 +77,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     return Promise.all([slotInputs[`${stepAry[preIndex].id}_leave`]()]);
   };
 
-  const getCurrentStep = (pre?): any => {
+  const getCurrentStep = (pre = null): any => {
     return stepAry[data.current + (pre ? pre : 0)] || {};
   };
 
@@ -111,16 +110,9 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     }
   }, []);
 
-  const submit = (ds: any = {}) => {
+  const submit = () => {
     if (runtime) {
       outputs['submit'](collectParams());
-    }
-  };
-
-  const reset = (ds: any = {}) => {
-    if (runtime) {
-      data.current = 0;
-      outputs['reset'](ds);
     }
   };
 
@@ -145,17 +137,73 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     return rtn;
   };
 
+  const renderPreviousBtn = () => {
+    return data.toolbar.showSecondBtn && data.current > 0 ? (
+      <Button
+        style={{ margin: '0 8px' }}
+        onClick={() => prev(getCurrentStep(-1))}
+        data-item-type="pre"
+      >
+        {env.i18n(data.toolbar.secondBtnText || '上一步')}
+      </Button>
+    ) : null;
+  };
+
+  const renderNextBtn = () => {
+    if (data.current === stepAry.length - 1) return null;
+    return (
+      <Button type="primary" onClick={() => next(getCurrentStep())} data-item-type="next">
+        {env.i18n(data.toolbar.primaryBtnText || '下一步')}
+      </Button>
+    );
+  };
+
+  const renderSubmitBtn = () => {
+    return data.fullSubmit && data.current === stepAry.length - 1 ? (
+      <Button type="primary" onClick={submit} data-item-type="submit">
+        {env.i18n(data.toolbar.submitText || '提交')}
+      </Button>
+    ) : null;
+  };
+
+  const renderExtraBtn = () => {
+    return data.toolbar.extraBtns?.length ? (
+      <>
+        {data.toolbar.extraBtns.map(({ id, text, type }) => (
+          <div key={id} data-item-type="extraBtn">
+            <Button type={type}>{text}</Button>
+          </div>
+        ))}
+      </>
+    ) : null;
+  };
+
+  const renderToolbar = () => {
+    return data.toolbar.showActions ? (
+      <div
+        className={css.stepsAction}
+        data-item-type="stepActions"
+        style={{ display: 'flex', justifyContent: data.toolbar.actionAlign }}
+      >
+        {renderPreviousBtn()}
+        {renderNextBtn()}
+        {renderSubmitBtn()}
+        {renderExtraBtn()}
+      </div>
+    ) : null;
+  };
+
   return (
     <div className={css.stepbox}>
-      <div className={classnames(data.direction === 'vertical' && css.verticalWrap)}>
+      <div className={classnames(data.steps.direction === 'vertical' && css.verticalWrap)}>
         <Steps
           current={data.current}
-          size={data.toolbar.size}
-          type={data.toolbar.type}
-          direction={data.direction || 'horizontal'}
+          size={data.steps.size}
+          type={data.steps.type}
+          direction={data.steps.direction || 'horizontal'}
         >
           {stepAry.map((item: any) => {
-            if (data.toolbar.showDesc) {
+            if (data.steps.showDesc) {
               return (
                 <Step
                   key={item.id}
@@ -182,39 +230,8 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
             <div className={css.content}>{renderSlots()}</div>
           </div>
         ) : null}
+        {renderToolbar()}
       </div>
-      {typeof data.toolbar.showActions === 'undefined' || data.toolbar.showActions ? (
-        <div
-          className={css.stepsAction}
-          data-item-type="stepActions"
-          style={{ display: 'flex', justifyContent: data.toolbar.actionAlign }}
-        >
-          {data.toolbar.showSecondBtn && data.current > 0 && (
-            <Button
-              style={{ margin: '0 8px' }}
-              onClick={() => prev(getCurrentStep(-1))}
-              data-item-type="pre"
-            >
-              {env.i18n(data.toolbar.secondBtnText || '上一步')}
-            </Button>
-          )}
-          {data.current < stepAry.length - 1 && (
-            <Button type="primary" onClick={() => next(getCurrentStep())} data-item-type="next">
-              {env.i18n(data.toolbar.primaryBtnText || '下一步')}
-            </Button>
-          )}
-          {data.current === stepAry.length - 1 && data.toolbar.submit && (
-            <Button type="primary" onClick={submit} data-item-type="submit">
-              {env.i18n(data.toolbar.submitText || '提交')}
-            </Button>
-          )}
-          {data.toolbar.reset && (
-            <Button danger onClick={reset} data-item-type="resetBtn">
-              {env.i18n(data.toolbar.resetText || '重置')}
-            </Button>
-          )}
-        </div>
-      ) : null}
     </div>
   );
 }

@@ -1,0 +1,11 @@
+{
+  "value": "",
+  "visible": true,
+  "rules": [],
+  "config": {
+    "allowClear": true,
+    "placeholder": "请输入内容",
+    "disabled": false,
+    "showCount": false
+  }
+}

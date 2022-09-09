@@ -12,30 +12,9 @@
   "inputs": [
     {
       "id": "dataSource",
-      "title": "数据源",
+      "title": "设置数据源",
       "schema": {
         "type": "string"
-      }
-    },
-    {
-      "id": "slotProps",
-      "title": "插槽参数",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "title": "文本内容",
-            "type": "string"
-          },
-          "formProps": {
-            "type": "object",
-            "properties": {
-              "disabled": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
       }
     },
     {

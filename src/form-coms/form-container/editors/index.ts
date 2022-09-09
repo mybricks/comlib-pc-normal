@@ -22,6 +22,15 @@ function refreshSchema({data, inputs, outputs, slots}) {
   slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
 }
 
+function fieldNameCheck (data: Data, name: string) {
+  const fieldNameList = data.items.map(item => item.name)
+  if (fieldNameList.includes(name)) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export default {
   '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
     data.items = data.items.filter(item => item.id !== id)
@@ -125,10 +134,20 @@ export default {
             const comId = focusArea.dataset['formitem']
             return data.items.find(item => item.id === comId).name
           },
-          set({data, focusArea}: EditorResult<Data>, val) {
+          set({data, focusArea, input, output, slots }: EditorResult<Data>, val) {
+            if (!val) {
+              return message.warn('字段名不能为空')
+            }
+
+            if (fieldNameCheck(data, val)) {
+              return message.warn('字段名不能重复')
+            }
+
             const comId = focusArea.dataset['formitem']
             const item = data.items.find(item => item.id === comId)
             item.name = val
+            
+            refreshSchema({data, inputs: input, outputs: output, slots})
           }
         }
       },
@@ -183,7 +202,7 @@ export default {
           const itemId = focusArea.dataset['formActionsItem']
           const item = actions.find(item => item.key === itemId)
 
-          return item.key === 'submit'
+          return item?.key === 'submit'
         },
         value: {
           get({data, focusArea}: EditorResult<Data>) {

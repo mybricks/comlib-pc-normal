@@ -1,7 +1,13 @@
 {
-  "timelines": [],
+  "timelines": [
+    {
+      "id": "item0",
+      "title": "节点0",
+      "subTitle": "副标题",
+      "description": "描述"
+    }
+  ],
   "reverse": false,
   "mode": "left",
-  "width": "500",
   "dataSource": 1
 }

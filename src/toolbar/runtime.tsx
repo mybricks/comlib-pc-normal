@@ -117,19 +117,18 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     <div
       className={css.toolbar}
       style={{
-        justifyContent: data.layout
+        justifyContent: data.layout,
+        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
       }}
     >
-      <Space size={data.spaceSize} wrap key={env.edit ? JSON.stringify(data.spaceSize) : undefined}>
-        {(data.btnList || []).length > 0 || env.runtime ? (
-          <>
-            {renderBtnList(normalBtnList)}
-            {renderEllipsisList(ellipsisBtnList)}
-          </>
-        ) : (
-          <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
-        )}
-      </Space>
+      {(data.btnList || []).length > 0 || env.runtime ? (
+        <>
+          {renderBtnList(normalBtnList)}
+          {renderEllipsisList(ellipsisBtnList)}
+        </>
+      ) : (
+        <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
+      )}
     </div>
   );
 };

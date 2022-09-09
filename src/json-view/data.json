@@ -1,7 +1,5 @@
 {
-  "dataSource": 1,
-  "json": [],
-  "indentWidth": 4,
+  "json": "[]",
   "colors": {
     "number": "blue",
     "string": "green",
@@ -12,6 +10,5 @@
   "collapseStringsAfterLength": 0,
   "displayObjectSize": false,
   "enableClipboard": false,
-  "enableOutput": false,
-  "dataSourceType": "object"
+  "enableOutput": false
 }

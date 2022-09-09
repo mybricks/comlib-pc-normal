@@ -11,15 +11,8 @@
   "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "imgSrc",
+      "id": "setImgSrc",
       "title": "图片地址",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "slotProps",
-      "title": "插槽参数",
       "schema": {
         "type": "string"
       }
@@ -28,28 +21,10 @@
   "outputs": [
     {
       "id": "click",
-      "title": "点击",
+      "title": "单击图片",
       "scheme": {
         "type": "any"
       }
-    }
-  ],
-  "configs": [
-    {
-      "id": "src",
-      "title": "图片地址",
-      "schema": {
-        "type": "string"
-      },
-      "binding": "data.image.src"
-    },
-    {
-      "id": "cursorStyle",
-      "title": "鼠标样式",
-      "schema": {
-        "type": "boolean"
-      },
-      "binding": "data.image.cursorStyle"
     }
   ]
 }

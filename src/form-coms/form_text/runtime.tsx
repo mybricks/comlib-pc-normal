@@ -24,6 +24,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
+      changeValue(val);
     });
 
     inputs['validate']((val, outputRels) => {
@@ -58,9 +59,8 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   }, []);
 
   const changeValue = useCallback((e) => {
-    const value = e.target.value;
-    data.value = value;
-    outputs['onChange'](value);
+    data.value = e;
+    outputs['onChange'](data.value);
   }, []);
 
   const onBlur = useCallback((e) => {

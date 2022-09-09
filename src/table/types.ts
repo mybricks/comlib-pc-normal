@@ -6,7 +6,12 @@ export enum ContentTypeEnum {
 export enum AlignEnum {
   Left = 'left',
   Center = 'center',
-  Right = 'right'
+  Right = 'right',
+}
+export enum FixedEnum {
+  Left = 'left',
+  Right = 'right',
+  Default = ''
 }
 export enum SorterTypeEnum {
   Length = 'length',
@@ -36,7 +41,7 @@ export interface Filter {
 export interface IColumn {
   key: string;
   dataIndex: string | string[];
-  title: any;
+  title: string;
   contentType: ContentTypeEnum;
 
   visible: boolean;
@@ -51,7 +56,7 @@ export interface IColumn {
 
   slotId?: string;
 
-  fixed?: string;
+  fixed?: FixedEnum;
 
   children?: IColumn[];
   className?: string;
@@ -105,7 +110,7 @@ export interface Data {
   // 使用勾选
   useRowSelection: boolean;
   // 勾选类型
-  selectionType: string;
+  selectionType: RowSelectionTypeEnum;
   // 勾选操作区位置
   rowSelectionPostion?: RowSelectionPostionEnum[];
   // 勾选限制

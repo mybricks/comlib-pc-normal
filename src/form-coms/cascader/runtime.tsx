@@ -1,55 +1,87 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { Cascader } from 'antd'
+import { Cascader } from 'antd';
+import { validateFormItem } from '../utils/validator';
 
 interface Data {
-  options: any[]
+  options: any[];
+  visible: boolean;
+  placeholder: string;
+  isMultiple: boolean;
+  maxTagCountType?: string;
+  value: number[] | string[];
+  rules: any[];
+  config: {
+    placeholder: string;
+    allowClear: boolean;
+    disabled: boolean;
+    maxTagCount?: 'responsive' | number;
+    changeOnSelect: boolean;
+    showSearch: boolean;
+  };
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs } = props
-  const [value, setValue] = useState()
+  const { data, inputs, outputs, env } = props;
+  const [options, setOptions] = useState();
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
-      setValue(val)
-    })
+      data.value = val;
+      onChange(val);
+    });
 
     inputs['validate']((val, outputRels) => {
-      if (value && value.length > 0) {
-        outputRels['returnValidate']({
-          validateStatus: 'success',
+      validateFormItem({
+        value: data.value,
+        env,
+        rules: data.rules
+      })
+        .then((r) => {
+          outputRels['returnValidate'](r);
         })
-      } else {
-        outputRels['returnValidate']({
-          validateStatus: 'error',
-          help: '请选择一项'
-        })
-      }
-    })
+        .catch((e) => {
+          outputRels['returnValidate'](e);
+        });
+    });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value)
-    })
-  }, [value])
+      outputRels['returnValue'](data.value);
+    });
+  }, [data.value]);
+
+  //重置，
+  inputs['resetValue'](() => {
+    data.value = [];
+  });
+  //显隐，这里不起作用
+  inputs['setVisible']((val: boolean) => {
+    data.visible = val;
+  });
+  //设置禁用
+  inputs['setDisabled']((val: boolean) => {
+    data.config.disabled = val;
+  });
+  //输入数据源
+  inputs['setOptions']((value) => {
+    setOptions(value);
+  });
 
   const onChange = (value) => {
-    setValue(value)
-    outputs['onChange'](value)
-  }
+    data.value = value;
+    outputs['onChange'](value);
+  };
 
   return (
-    <div>
-      <Cascader
-        allowClear
-        value={value}
-        options={[{ label: '选项一', value: '11', children: [
-          {
-            value: 'hangzhou',
-            label: 'Hangzhou',
-          },
-        ]}, { label: '选项二', value: '22'}]}
-        onChange={onChange}
-      />
-    </div>
-  )
+    data.visible && (
+      <div>
+        <Cascader
+          value={data.value}
+          options={options}
+          {...data.config}
+          multiple={data.isMultiple}
+          onChange={onChange}
+        />
+      </div>
+    )
+  );
 }

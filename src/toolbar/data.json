@@ -6,5 +6,9 @@
       "showText": true
     }
   ],
-  "layout": "flex-start"
+  "layout": "flex-start",
+  "spaceSize": [
+    4,
+    4
+  ]
 }

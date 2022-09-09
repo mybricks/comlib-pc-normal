@@ -1,3 +1,11 @@
 {
-  "options": []
+  "options": [],
+  "visible": true,
+  "rules": [],
+  "showTime": false,
+  "config": {
+    "disabled": false,
+    "placeholder": "请选择日期",
+    "picker": "date"
+  }
 }
