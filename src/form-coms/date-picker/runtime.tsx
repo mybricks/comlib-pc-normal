@@ -27,6 +27,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       val = !result?._isValid ? undefined : result;
 
       setValue(val);
+      onChange(val);
     });
 
     inputs['validate']((val, outputRels) => {
@@ -52,7 +53,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   inputs['resetValue'](() => {
     setValue(void 0);
   });
-  //显隐，这里不起作用
+  //显隐
   inputs['setVisible']((val: boolean) => {
     data.visible = val;
   });
@@ -65,8 +66,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //时间戳转换
     const num = Number(value);
     const result: any = isNaN(num) ? moment(value) : moment(num);
-    value = !result?._isValid ? undefined : result;
-
+    if (value === null) {
+      value = undefined;
+    } else if ((value = !result?._isValid)) {
+      value = undefined;
+    } else {
+      value = result;
+    }
     setValue(value);
     outputs['onChange'](value);
   };

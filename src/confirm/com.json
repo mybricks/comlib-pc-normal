@@ -28,6 +28,9 @@
           },
           "okText": {
             "type": "string"
+          },
+          "outputValue": {
+            "type": "any"
           }
         }
       }

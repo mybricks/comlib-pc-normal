@@ -1,5 +1,5 @@
 import { Editor, EditorType } from '../utils/editor';
-import { Data, TypeEnum, TypeEnumMap } from './constants';
+import { Data, InputIds, OutputIds, Schemas, TypeEnum, TypeEnumMap } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { type, showTitle, title, content } = data;
@@ -19,6 +19,22 @@ const TypeOptions = [
 ];
 
 export default {
+  '@inputConnected'({ output }, fromPin, toPin) {
+    if (toPin.id === InputIds.Open) {
+      const outputSchema =
+        fromPin.schema?.type === 'object'
+          ? fromPin.schema?.properties?.outputValue
+          : fromPin.schema;
+      output.get(OutputIds.Ok).setSchema(outputSchema);
+      output.get(OutputIds.Cancel).setSchema(outputSchema);
+    }
+  },
+  '@inputDisConnected'({ output }, fromPin, toPin) {
+    if (toPin.id === InputIds.Open) {
+      output.get(OutputIds.Ok).setSchema(Schemas.Any);
+      output.get(OutputIds.Cancel).setSchema(Schemas.Any);
+    }
+  },
   '@init'({ data, setDesc }: EditorResult<Data>) {
     setDescByData({ data, setDesc });
   },
