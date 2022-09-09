@@ -2,6 +2,7 @@
   "btnList": [
     {
       "key": "btn0",
+      "doubleClickKey": "doubleClick0",
       "text": "按钮0",
       "showText": true
     }
