@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button, Dropdown, Menu, Space } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
@@ -42,6 +42,12 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
       outputs[item.key](item.outputValue);
     }
   };
+
+  const onDoubleClick = useCallback((item: BtnItem) => {
+    if (env.runtime) {
+      outputs[item.doubleClickKey](item.outputValue);
+    }
+  }, []);
 
   const renderTextAndIcon = (item: BtnItem) => {
     const { useIcon, icon, iconLocation, iconDistance, text, showText } = item;
@@ -93,6 +99,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             shape={shape}
             disabled={disabled}
             onClick={() => onClick(item)}
+            onDoubleClick={() => onDoubleClick(item)}
           >
             {renderTextAndIcon(item)}
           </Button>
