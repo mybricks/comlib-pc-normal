@@ -12,7 +12,14 @@
   "outputs": [
     {
       "id": "click",
-      "title": "点击",
+      "title": "单击",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "dbClick",
+      "title": "双击",
       "schema": {
         "type": "any"
       }

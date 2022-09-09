@@ -16,6 +16,7 @@ const addEditor = [
           text: `按钮${data.btnList.length}`
         };
         output.add(newItem.key, `单击${newItem.text}`, Schemas.Any);
+        output.add(newItem.doubleClickKey, `双击${newItem.text}`, Schemas.Any);
         input.add(
           `${InputIds.SetOutputVal}_${newItem.key}`,
           `设置${newItem.text}输出数据`,
