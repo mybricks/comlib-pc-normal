@@ -83,7 +83,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
       inputs[InputIds.OutActiveTab] &&
         inputs[InputIds.OutActiveTab]((val, relOutputs) => {
           const current = data.tabList.filter((item) => item.key === data.defaultActiveKey)[0];
-          relOutputs[OutputIds.OutActiveTab](current.outputContent || current.name);
+          relOutputs[OutputIds.OutActiveTab](current);
         });
       data.tabList.forEach((item) => {
         item.dynamic &&
@@ -113,7 +113,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   const handleClickItem = useCallback((values) => {
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
       const current = data.tabList.filter((item) => item.key === values)[0];
-      outputs[OutputIds.OnTabClick](current.outputContent || current.name);
+      outputs[OutputIds.OnTabClick](current);
     }
 
     if (!data.prohibitClick) {
