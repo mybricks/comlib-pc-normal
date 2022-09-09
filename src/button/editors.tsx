@@ -57,10 +57,17 @@ export default {
       ]
     },
     {
-      title: '点击',
+      title: '单击',
       type: '_Event',
       options: {
         outputId: OutputIds.Click
+      }
+    },
+    {
+      title: '双击',
+      type: '_Event',
+      options: {
+        outputId: OutputIds.DbClick
       }
     }
   ]
