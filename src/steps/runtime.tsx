@@ -166,22 +166,31 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     ) : null;
   };
 
+  const renderExtraBtn = () => {
+    return data.toolbar.extraBtns?.length ? (
+      <>
+        {data.toolbar.extraBtns.map(({ id, text, type }) => (
+          <div key={id} data-item-type="extraBtn">
+            <Button type={type}>{text}</Button>
+          </div>
+        ))}
+      </>
+    ) : null;
+  };
+
   const renderToolbar = () => {
-    if (data.toolbar.type === 'never') return null;
-    if (data.toolbar.type === 'default')
-      return (
-        <div
-          className={css.stepsAction}
-          data-item-type="stepActions"
-          style={{ display: 'flex', justifyContent: data.toolbar.actionAlign }}
-        >
-          {renderPreviousBtn()}
-          {renderNextBtn()}
-          {renderSubmitBtn()}
-        </div>
-      );
-    if (data.toolbar.type === 'custom')
-      return <div style={{ height: 32 }}>{slots.customToolbar.render()}</div>;
+    return data.toolbar.showActions ? (
+      <div
+        className={css.stepsAction}
+        data-item-type="stepActions"
+        style={{ display: 'flex', justifyContent: data.toolbar.actionAlign }}
+      >
+        {renderPreviousBtn()}
+        {renderNextBtn()}
+        {renderSubmitBtn()}
+        {renderExtraBtn()}
+      </div>
+    ) : null;
   };
 
   return (
@@ -221,8 +230,8 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
             <div className={css.content}>{renderSlots()}</div>
           </div>
         ) : null}
+        {renderToolbar()}
       </div>
-      {renderToolbar()}
     </div>
   );
 }

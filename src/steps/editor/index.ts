@@ -1,5 +1,5 @@
 import { uuid } from '../../utils';
-import { Data, ToolbarType } from '../constants';
+import { Data } from '../constants';
 import StepEditor from './step';
 import ActionEditor from './action';
 
@@ -72,6 +72,39 @@ export default {
         }
       },
       {
+        title: '操作栏',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.toolbar.showActions;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.toolbar.showActions = val
+          }
+        }
+      },
+      // {
+      //   title: '添加操作',
+      //   type: 'button',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return !!data.toolbar.showActions;
+      //   },
+      //   value: {
+      //     set({ data, output }: EditorResult<Data>, val: string) {
+      //       const id = uuid()
+      //       if (!data.toolbar.extraBtns) {
+      //         data.toolbar.extraBtns = []
+      //       }
+      //       data.toolbar.extraBtns?.push({
+      //         id,
+      //         type: 'default',
+      //         text: `按钮${data.toolbar.extraBtns.length + 1}`
+      //       })
+      //       output.add(id, '点击', { type: "any" })
+      //     }
+      //   }
+      // },
+      {
         title: '添加步骤',
         type: 'Button',
         value: {
@@ -115,46 +148,6 @@ export default {
     ]
     cate2.title = "高级"
     cate2.items = [
-      {
-        title: '操作栏',
-        type: 'select',
-        options: {
-          options: [
-            {
-              label: "默认",
-              value: "default"
-            },
-            {
-              label: "自定义",
-              value: "custom"
-            },
-            {
-              label: "无操作",
-              value: "never"
-            }
-          ]
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.toolbar.type;
-          },
-          set({ data, slots }: EditorResult<Data>, val: ToolbarType) {
-            data.toolbar.type = val
-            if (val === "custom") {
-              slots.add({
-                id: "customToolbar",
-                title: "自定义操作栏",
-                type: "scope"
-              })
-            } else {
-              const customToolbarSlot = slots.get('customToolbar')
-              if (customToolbarSlot) {
-                slots.remove("customToolbar")
-              }
-            }
-          }
-        }
-      },
       {
         title: '隐藏插槽占位',
         type: 'Switch',
