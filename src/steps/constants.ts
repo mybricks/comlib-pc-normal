@@ -9,23 +9,27 @@ export interface StepItem {
   content?: any;
 }
 
-export type ToolbarType = 'default' | 'custom' | 'never'
+type ExtraBtn = {
+  id: string
+  type: "link" | "text" | "ghost" | "default" | "primary" | "dashed"
+  text: string
+}
 interface Toolbar {
-  type: ToolbarType
   submit: boolean;
   showSecondBtn: boolean;
   actionAlign?: string;
   primaryBtnText?: string;
   secondBtnText?: string;
   submitText?: string;
-
+  showActions: boolean
+  extraBtns?: Array<ExtraBtn>
 }
 
 interface Steps {
   size: "small" | "default";
   type: "default" | "navigation" | "dotted";
   showDesc: boolean;
-  direction?: 'horizontal' | 'vertical'
+  direction?: 'horizontal' | 'vertical',
 }
 
 
