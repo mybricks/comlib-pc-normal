@@ -11,5 +11,6 @@ export interface Data {
 }
 
 export const OutputIds = {
-  Click: 'click'
+  Click: 'click',
+  DbClick: 'dbClick'
 }

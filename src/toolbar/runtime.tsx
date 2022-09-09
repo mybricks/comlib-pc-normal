@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Button, Dropdown, Menu, Space } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
@@ -7,6 +7,8 @@ import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
 
 export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
+  const timerRef = useRef<any>();
+
   useEffect(() => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
@@ -37,11 +39,18 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     return true;
   };
 
-  const onClick = (item: BtnItem) => {
+  const handleClick = useCallback(({ detail }, item: BtnItem) => {
     if (env.runtime) {
-      outputs[item.key](item.outputValue);
+      clearTimeout(timerRef.current);
+      if (detail === 1) {
+        timerRef.current = setTimeout(() => {
+          outputs[item.key](item.outputValue);
+        }, 200);
+      } else if (detail === 2) {
+        outputs[item.doubleClickKey](item.outputValue);
+      }
     }
-  };
+  }, []);
 
   const renderTextAndIcon = (item: BtnItem) => {
     const { useIcon, icon, iconLocation, iconDistance, text, showText } = item;
@@ -63,7 +72,11 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
       <Menu>
         {btnList.map((item) => {
           return (
-            <Menu.Item key={item.key} disabled={item.disabled} onClick={() => onClick(item)}>
+            <Menu.Item
+              key={item.key}
+              disabled={item.disabled}
+              onClick={(e) => handleClick(e, item)}
+            >
               {renderTextAndIcon(item)}
             </Menu.Item>
           );
@@ -92,7 +105,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             size={size}
             shape={shape}
             disabled={disabled}
-            onClick={() => onClick(item)}
+            onClick={(e) => handleClick(e, item)}
           >
             {renderTextAndIcon(item)}
           </Button>
