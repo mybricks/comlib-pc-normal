@@ -1,6 +1,16 @@
 import { uuid } from '../utils';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 
+const DefaultSchema = {
+  type: 'any'
+};
+
+const getId = (data) => {
+  const last = data.tabList.slice().pop();
+  const index = parseInt(last.id.substring(3)) + 1;
+  return `tab${index}`;
+};
+
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
@@ -9,32 +19,34 @@ export default {
         title: '添加标签页',
         type: 'Button',
         value: {
-          set({ data, slot }: EditorResult<Data>) {
+          set({ data, slots }: EditorResult<Data>) {
             const key = uuid();
-            const title = `新标签页`;
-            slot.add(`${key}`, '内容');
-            const len = data.tabList.length;
+            const id = getId(data);
+            slots.add({
+              id,
+              title: `内容区【${data.tabList.length + 1}】`,
+              type: 'scope',
+              inputs: [
+                {
+                  id: `${id}_into`,
+                  title: '显示',
+                  schema: DefaultSchema
+                },
+                {
+                  id: `${id}_leave`,
+                  title: '隐藏',
+                  schema: DefaultSchema
+                }
+              ]
+            });
             data.tabList.push({
-              name: title,
-              key: key,
-              id: `tab${len}`
+              id,
+              key,
+              name: '新标签页'
             });
           }
         }
       },
-      // {
-      //   title: 'tab隐藏时渲染',
-      //   description: '需要在未切换到对应tab时，对tab插槽内组件设置数据时开启',
-      //   type: 'Switch',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.forceRender;
-      //     },
-      //     set({ data }: EditorResult<Data>, value: boolean) {
-      //       data.forceRender = value;
-      //     }
-      //   }
-      // },
       {
         title: '事件',
         items: [
@@ -58,7 +70,6 @@ export default {
         options: [
           { value: 'card', label: '卡片' },
           { value: 'line', label: '简约' }
-          // { value: 'editable-card', label: '可编辑' }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
@@ -194,8 +205,6 @@ export default {
         }
       }
     ];
-
-    return { title: 'Tabs' };
   },
   '.ant-tabs-tab': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
@@ -208,12 +217,10 @@ export default {
             const { index } = focusArea;
             return data.tabList[index]?.name;
           },
-          set({ data, slot, focusArea, input }: EditorResult<Data>, title: string) {
+          set({ data, focusArea, input }: EditorResult<Data>, title: string) {
             const { index } = focusArea;
             const item = data.tabList[index];
             item.name = title;
-
-            slot.setTitle(item.key, title);
             input.setTitle(item.key, `${title}的通知数`);
           }
         }
@@ -221,6 +228,9 @@ export default {
       {
         title: 'id',
         type: 'Text',
+        options: {
+          readonly: true
+        },
         description: '指定后可作为tab页签的唯一标识，控制页签的激活状态',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
@@ -271,9 +281,9 @@ export default {
           get({ focusArea }: EditorResult<Data>) {
             return focusArea.index;
           },
-          set({ data, focusArea, slot }: EditorResult<Data>) {
+          set({ data, focusArea, slots }: EditorResult<Data>) {
             if (data.tabList.length > 1) {
-              slot.remove(data.tabList[focusArea.index]?.key);
+              slots.remove(data.tabList[focusArea.index]?.id);
               data.tabList.splice(focusArea.index, 1);
             }
           }
@@ -406,22 +416,6 @@ export default {
           }
         }
       },
-      // {
-      //   title: '自定义输出内容',
-      //   type: 'Text',
-      //   value: {
-      //     get({ data, focusArea }: EditorResult<Data>) {
-      //       if (!focusArea) return;
-      //       const { index } = focusArea;
-      //       return data.tabList[index]?.outputContent;
-      //     },
-      //     set({ data, focusArea }: EditorResult<Data>, value: string) {
-      //       if (!focusArea) return;
-      //       const { index } = focusArea;
-      //       data.tabList[index].outputContent = value;
-      //     }
-      //   }
-      // },
       {
         title: '权限控制',
         items: [
@@ -447,7 +441,6 @@ export default {
         ]
       }
     ];
-
     return { title: '标签页' };
   }
 };
