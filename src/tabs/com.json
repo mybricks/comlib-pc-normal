@@ -54,7 +54,21 @@
       "id": "outActiveTab",
       "title": "激活tab项输出",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string"
+          },
+          "permissionKey": {
+            "title": "标签页权限key",
+            "type": "string"
+          }
+        }
       }
     }
   ],
