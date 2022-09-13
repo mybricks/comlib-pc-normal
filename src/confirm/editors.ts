@@ -22,7 +22,7 @@ export default {
   '@inputConnected'({ output }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
       const outputSchema =
-        fromPin.schema?.type === 'object'
+        fromPin.schema?.type === 'object' && fromPin.schema?.properties?.outputValue
           ? fromPin.schema?.properties?.outputValue
           : fromPin.schema;
       output.get(OutputIds.Ok).setSchema(outputSchema);
