@@ -163,6 +163,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   };
 
   const renderItems = () => {
+    console.log(data, slots);
     return (
       <>
         {data.tabList.map((item) => {

@@ -1,8 +1,9 @@
 import { Button, message, Steps } from 'antd';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
 import { usePrevious } from '../utils/hooks';
+import { isObject } from '../utils';
 import css from './index.less';
 
 const { Step } = Steps;
@@ -52,13 +53,23 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
         relOutputs['getIndex'](data.current);
       });
 
-      if (data.fullSubmit) {
-        stepAry.forEach(({ id }) => {
-          slots[id].outputs[`${id}_submit`]((val) => {
-            fullSubmitCache[id] = val;
+      stepAry.forEach(({ id }, index) => {
+        //最后一步没有next，submit output
+        if (index < stepAry.length - 1) {
+          slots[id].outputs[`${id}_next`]((val) => {
+            if (data.current < stepAry.length - 1) {
+              data.current += 1;
+            }
           });
-        });
-      }
+        }
+        if (data.fullSubmit && index < stepAry.length - 1) {
+          slots[id].outputs[`${id}_submit`]((val) => {
+            if (isObject(val)) {
+              fullSubmitCache = { ...fullSubmitCache, ...val };
+            }
+          });
+        }
+      });
     }
   }, [stepAry]);
 
@@ -114,12 +125,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   const submit = () => {
     if (runtime) {
-      if (data.fullSubmit) {
-        const { id } = stepAry.slice().pop();
-        slots[id].inputs[`${id}_leave`]();
-        outputs['submit'](fullSubmitCache);
-      } else {
-      }
+      outputs['submit'](fullSubmitCache);
     }
   };
 

@@ -91,15 +91,6 @@
             "type": "any"
           }
         }
-      ],
-      "outputs": [
-        {
-          "id": "step0_submit",
-          "title": "提交",
-          "schema": {
-            "type": "follow"
-          }
-        }
       ]
     }
   ]

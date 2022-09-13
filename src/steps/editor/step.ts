@@ -1,4 +1,5 @@
 import { Data } from '../constants';
+import { updateStepOutput } from './index'
 export default {
   '[data-item-type="step"]': {
     title: '步骤',
@@ -111,6 +112,7 @@ export default {
                 idx === data.stepAry.length - 1 ? '提交' : `第${idx + 1}步 -> 下一步`
               );
             });
+            updateStepOutput(data, slots)
           }
         }
       }

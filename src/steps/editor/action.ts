@@ -94,7 +94,8 @@ export default {
             options: ({ data }) => {
               const id = data.stepAry[data.current]?.id;
               return {
-                outputId: `${id}`
+                outputId: `${id}`,
+                slotId: id
               };
             }
           }
@@ -142,77 +143,80 @@ export default {
           {
             title: '点击',
             type: '_Event',
-            options: () => {
+            options: ({ data }) => {
+              const outputId = 'submit'
+              const { id: slotId } = data.stepAry.slice().pop()
               return {
-                outputId: 'submit'
-              };
+                outputId,
+                slotId
+              }
             }
           }
         ]
       }
     ]
   },
-  '[data-item-type="extraBtn"]': ({ data, slots, output, input, focusArea }, cate1, cate2) => {
-    cate1.title = "常规"
-    cate1.items = [
-      {
-        title: '名称',
-        type: 'text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const btn = getExtraBtn(data, focusArea)
-            return btn.text;
-          },
-          set({ data, focusArea }: EditorResult<Data>, val: string) {
-            updateExtraBtn(data, focusArea, { text: val })
-          }
-        }
-      },
-      {
-        title: '类型',
-        type: 'select',
-        options: {
-          options: [
-            { value: 'default', label: '默认' },
-            { value: 'primary', label: '主按钮' },
-            { value: 'dashed', label: '虚线按钮' },
-            { value: 'danger', label: '危险按钮' },
-            { value: 'link', label: '链接按钮' },
-            { value: 'text', label: '文字按钮' }
-          ]
-        },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const btn = getExtraBtn(data, focusArea)
-            return btn.type;
-          },
-          set({ data, focusArea }: EditorResult<Data>, val: string) {
-            updateExtraBtn(data, focusArea, { type: val })
-          }
-        }
-      }
-    ]
-    cate2.title = "事件"
-    cate2.items = [
-      {
-        title: '事件',
-        items: [
-          {
-            title: '点击',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const outputId = data.toolbar.extraBtns[focusArea.index].id
-              const slotId = data.stepAry[data.current].id
-              return {
-                outputId,
-                slotId
-              };
-            }
-          }
-        ]
-      }
-    ]
-  }
+  // '[data-item-type="extraBtn"]': ({ data, slots, output, input, focusArea }, cate1, cate2) => {
+  //   cate1.title = "常规"
+  //   cate1.items = [
+  //     {
+  //       title: '名称',
+  //       type: 'text',
+  //       value: {
+  //         get({ data, focusArea }: EditorResult<Data>) {
+  //           const btn = getExtraBtn(data, focusArea)
+  //           return btn.text;
+  //         },
+  //         set({ data, focusArea }: EditorResult<Data>, val: string) {
+  //           updateExtraBtn(data, focusArea, { text: val })
+  //         }
+  //       }
+  //     },
+  //     {
+  //       title: '类型',
+  //       type: 'select',
+  //       options: {
+  //         options: [
+  //           { value: 'default', label: '默认' },
+  //           { value: 'primary', label: '主按钮' },
+  //           { value: 'dashed', label: '虚线按钮' },
+  //           { value: 'danger', label: '危险按钮' },
+  //           { value: 'link', label: '链接按钮' },
+  //           { value: 'text', label: '文字按钮' }
+  //         ]
+  //       },
+  //       value: {
+  //         get({ data, focusArea }: EditorResult<Data>) {
+  //           const btn = getExtraBtn(data, focusArea)
+  //           return btn.type;
+  //         },
+  //         set({ data, focusArea }: EditorResult<Data>, val: string) {
+  //           updateExtraBtn(data, focusArea, { type: val })
+  //         }
+  //       }
+  //     }
+  //   ]
+  //   cate2.title = "事件"
+  //   cate2.items = [
+  //     {
+  //       title: '事件',
+  //       items: [
+  //         {
+  //           title: '点击',
+  //           type: '_Event',
+  //           options: ({ data, focusArea }: EditorResult<Data>) => {
+  //             const outputId = data.toolbar.extraBtns[focusArea.index].id
+  //             const slotId = data.stepAry[data.current].id
+  //             return {
+  //               outputId,
+  //               slotId
+  //             };
+  //           }
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // }
 };
 
 const getExtraBtn = (data, focusArea) => {
