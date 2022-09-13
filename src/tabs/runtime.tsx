@@ -170,11 +170,10 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
               }
               key={item.key}
               closable={!!item.closable}
-              // forceRender={data.forceRender}
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
-                  {slots[item.key].render()}
+                  {slots[item.key]?.render()}
                 </div>
               )}
             </TabPane>

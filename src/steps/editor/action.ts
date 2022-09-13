@@ -1,22 +1,39 @@
-import { Data } from '../constants';
+import { Data, Btn } from '../constants';
 export default {
   '[data-item-type="stepActions"]': {
     title: '操作项',
     items: [
       {
-        title: '显示上一步',
-        type: 'Switch',
+        title: '按钮组',
+        type: 'select',
+        options: {
+          options: [
+            {
+              label: "上一步",
+              value: "previous"
+            },
+            {
+              label: "下一步",
+              value: "next"
+            },
+            {
+              label: "提交",
+              value: "submit"
+            },
+          ],
+          mode: "multiple"
+        },
         value: {
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.toolbar.showSecondBtn = value;
-          },
           get({ data }: EditorResult<Data>) {
-            return data.toolbar.showSecondBtn;
+            return data.toolbar.btns || [];
+          },
+          set({ data }: EditorResult<Data>, val: Array<Btn>) {
+            data.toolbar.btns = val
           }
         }
       },
       {
-        title: '按钮组对齐',
+        title: '对齐方式',
         type: 'Select',
         options: [
           { label: '左对齐', value: 'flex-start' },
@@ -147,7 +164,7 @@ export default {
             return btn.text;
           },
           set({ data, focusArea }: EditorResult<Data>, val: string) {
-            updateExtraBtn(data, focusArea, {text: val})
+            updateExtraBtn(data, focusArea, { text: val })
           }
         }
       },
@@ -170,7 +187,7 @@ export default {
             return btn.type;
           },
           set({ data, focusArea }: EditorResult<Data>, val: string) {
-            updateExtraBtn(data, focusArea, {type: val})
+            updateExtraBtn(data, focusArea, { type: val })
           }
         }
       }
@@ -204,5 +221,5 @@ const getExtraBtn = (data, focusArea) => {
 
 const updateExtraBtn = (data, focusArea, val) => {
   const btn = getExtraBtn(data, focusArea)
-  data.toolbar.extraBtns[focusArea.index] = {...btn, ...val}
+  data.toolbar.extraBtns[focusArea.index] = { ...btn, ...val }
 }

@@ -14,14 +14,16 @@ function usePrevious<T>(value: T): T {
   return ref.current;
 }
 
+let fullSubmitCache = {};
+
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
-
   useEffect(() => {
     if (runtime) {
       data.current = 0;
+      fullSubmitCache = {};
     }
   }, []);
 
@@ -57,6 +59,14 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       inputs['getIndex']((_, relOutputs) => {
         relOutputs['getIndex'](data.current);
       });
+
+      if (data.fullSubmit) {
+        stepAry.forEach(({ id }) => {
+          slots[id].outputs[`${id}_submit`]((val) => {
+            fullSubmitCache[id] = val;
+          });
+        });
+      }
     }
   }, [stepAry]);
 
@@ -112,7 +122,12 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   const submit = () => {
     if (runtime) {
-      outputs['submit'](collectParams());
+      if (data.fullSubmit) {
+        const { id } = stepAry.slice().pop();
+        slots[id].inputs[`${id}_leave`]();
+        outputs['submit'](fullSubmitCache);
+      } else {
+      }
     }
   };
 
@@ -138,7 +153,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   };
 
   const renderPreviousBtn = () => {
-    return data.toolbar.showSecondBtn && data.current > 0 ? (
+    return data.toolbar.btns.includes('previous') && data.current > 0 ? (
       <Button
         style={{ margin: '0 8px' }}
         onClick={() => prev(getCurrentStep(-1))}
@@ -150,7 +165,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   };
 
   const renderNextBtn = () => {
-    if (data.current === stepAry.length - 1) return null;
+    if (data.current === stepAry.length - 1 || !data.toolbar.btns.includes('next')) return null;
     return (
       <Button type="primary" onClick={() => next(getCurrentStep())} data-item-type="next">
         {env.i18n(data.toolbar.primaryBtnText || '下一步')}
@@ -159,7 +174,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   };
 
   const renderSubmitBtn = () => {
-    return data.fullSubmit && data.current === stepAry.length - 1 ? (
+    return data.current === stepAry.length - 1 && data.toolbar.btns.includes('submit') ? (
       <Button type="primary" onClick={submit} data-item-type="submit">
         {env.i18n(data.toolbar.submitText || '提交')}
       </Button>

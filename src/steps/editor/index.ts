@@ -19,7 +19,7 @@ export default {
           { label: '导航类型', value: 'navigation' }
         ],
         value: {
-          get({ data }: EditorResult<Data>) {
+          get({ data, slots }: EditorResult<Data>) {
             return data.steps.type;
           },
           set({ data }: EditorResult<Data>, value: 'default' | 'navigation') {
@@ -125,6 +125,15 @@ export default {
                   title: '隐藏',
                   schema: DefaultSchema
                 }
+              ],
+              outputs: [
+                {
+                  id: `${id}_submit`,
+                  title: "提交",
+                  schema: {
+                    type: "follow"
+                  }
+                }
               ]
             });
             output.add(id, `提交_${id}`, DefaultSchema);
@@ -169,8 +178,17 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.fullSubmit;
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
+          set({ data, slots }: EditorResult<Data>, value: boolean) {
             data.fullSubmit = value;
+            if (value) {
+              data.stepAry.forEach(({ id }) => {
+                slots.get(id).outputs.add(`${id}_submit`, '提交', { type: "follow" })
+              })
+            }else{
+              data.stepAry.forEach(({ id }) => {
+                slots.get(id).outputs.remove(`${id}_submit`)
+              })
+            }
           }
         }
       },
