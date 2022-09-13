@@ -97,7 +97,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   const collectParams = (ds: any = {}) => {
     const params = ds;
     stepAry.forEach(({ content }) => {
-      if (Object.prototype.toString.call(content) === '[object Object]') {
+      if (isObject(content)) {
         Object.assign(params, content);
       }
     });
