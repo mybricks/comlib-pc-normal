@@ -163,6 +163,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   };
 
   const renderItems = () => {
+    console.log(data, slots);
     return (
       <>
         {data.tabList.map((item) => {
@@ -189,7 +190,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
-                  {slots[item.id].render()}
+                  {slots[item.key]?.render()}
                 </div>
               )}
             </TabPane>

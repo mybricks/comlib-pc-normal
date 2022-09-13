@@ -19,7 +19,7 @@ export default {
           { label: '导航类型', value: 'navigation' }
         ],
         value: {
-          get({ data }: EditorResult<Data>) {
+          get({ data, slots }: EditorResult<Data>) {
             return data.steps.type;
           },
           set({ data }: EditorResult<Data>, value: 'default' | 'navigation') {
@@ -110,36 +110,20 @@ export default {
         value: {
           set({ data, slots, output, input }: EditorResult<Data>) {
             const id = uuid();
-            slots.add({
-              id,
-              title: `内容区【${data.stepAry.length + 1}】`,
-              type: 'scope',
-              inputs: [
-                {
-                  id: `${id}_into`,
-                  title: '显示',
-                  schema: DefaultSchema
-                },
-                {
-                  id: `${id}_leave`,
-                  title: '隐藏',
-                  schema: DefaultSchema
-                }
-              ]
-            });
-            output.add(id, `提交_${id}`, DefaultSchema);
-            //设置跳转title
-            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length}）`)
             data.stepAry.push({
               id,
               title: '新步骤',
               description: '新添加的步骤',
               index: data.stepAry.length
             });
+            addSlot(data, slots, id)
+            output.add(id, `提交_${id}`, DefaultSchema);
+            //设置跳转title
+            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length}）`)
             data.stepAry.forEach((item, idx) => {
               output.setTitle(
                 item.id,
-                idx === data.stepAry.length - 1 ? '提交' : `第${idx + 1}步 -> 下一步`
+                idx === data.stepAry.length - 1 ? '提交' : `下一步`
               );
             });
           }
@@ -166,33 +150,95 @@ export default {
         description:
           '当最后一步仍然需要数据记录时打开，会在最后一步数据校验通过后触发全量提交，通常最后一步只用于确认，则不需要开启',
         value: {
-          get({ data }: EditorResult<Data>) {
-            return data.fullSubmit;
+          get({ data, slots }: EditorResult<Data>) {
+            return !!data.fullSubmit;
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
+          set({ data, slots }: EditorResult<Data>, value: boolean) {
             data.fullSubmit = value;
+            updateStepOutput(data, slots)
           }
         }
-      },
-      {
-        title: '事件',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !!data.fullSubmit;
-        },
-        items: [
-          {
-            title: '数据提交',
-            type: '_Event',
-            options: () => {
-              return {
-                outputId: 'submit'
-              };
-            }
-          }
-        ]
       }
     ]
   },
   ...StepEditor,
   ...ActionEditor
 };
+
+const addSlot = (data, slots, id) => {
+  const { fullSubmit } = data
+  slots.add({
+    id,
+    title: `内容区【${data.stepAry.length}】`,
+    type: 'scope',
+    inputs: [
+      {
+        id: `${id}_into`,
+        title: '显示',
+        schema: DefaultSchema
+      },
+      {
+        id: `${id}_leave`,
+        title: '隐藏',
+        schema: DefaultSchema
+      }
+    ],
+    outputs: fullSubmit ? [
+      {
+        id: `${id}_submit`,
+        title: "提交",
+        schema: {
+          type: "follow"
+        }
+      },
+      {
+        id: `${id}_next`,
+        title: "下一步",
+        schema: {
+          type: "any"
+        }
+      }
+    ] : [
+      {
+        id: `${id}_next`,
+        title: "下一步",
+        schema: {
+          type: "any"
+        }
+      }
+    ]
+  });
+  updateStepOutput(data, slots)
+}
+
+export const updateStepOutput = (data, slots) => {
+  const { fullSubmit } = data
+  let index = 0;
+  while (index < data.stepAry.length) {
+    const { id } = data.stepAry[index]
+    const slot = slots.get(id)
+    if (index < data.stepAry.length - 1) {
+      if (!slot.outputs.get(`${id}_next`)) {
+        slot.outputs.add(`${id}_next`, '下一步', { type: "any" })
+      }
+      if (fullSubmit) {
+        if (!slot.outputs.get(`${id}_submit`)) {
+          slot.outputs.add(`${id}_submit`, '提交', { type: "follow" })
+        }
+      } else {
+        if (slot.outputs.get(`${id}_submit`)) {
+          slot.outputs.remove(`${id}_submit`)
+        }
+      }
+    } else {
+      //最后一步没有next，submit output
+      if (slot.outputs.get(`${id}_next`)) {
+        slot.outputs.remove(`${id}_next`)
+      }
+      if (slot.outputs.get(`${id}_submit`)) {
+        slot.outputs.remove(`${id}_submit`)
+      }
+    }
+    index++
+  }
+}

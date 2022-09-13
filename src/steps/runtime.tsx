@@ -1,20 +1,22 @@
 import { Button, message, Steps } from 'antd';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
 import { usePrevious } from '../utils/hooks';
+import { isObject } from '../utils';
 import css from './index.less';
 
 const { Step } = Steps;
 
+let fullSubmitCache = {};
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
-
   useEffect(() => {
     if (runtime) {
       data.current = 0;
+      fullSubmitCache = {};
     }
   }, []);
 
@@ -50,6 +52,24 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       inputs['getIndex']((_, relOutputs) => {
         relOutputs['getIndex'](data.current);
       });
+
+      stepAry.forEach(({ id }, index) => {
+        //最后一步没有next，submit output
+        if (index < stepAry.length - 1) {
+          slots[id].outputs[`${id}_next`]((val) => {
+            if (data.current < stepAry.length - 1) {
+              data.current += 1;
+            }
+          });
+        }
+        if (data.fullSubmit && index < stepAry.length - 1) {
+          slots[id].outputs[`${id}_submit`]((val) => {
+            if (isObject(val)) {
+              fullSubmitCache = { ...fullSubmitCache, ...val };
+            }
+          });
+        }
+      });
     }
   }, [stepAry]);
 
@@ -77,7 +97,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   const collectParams = (ds: any = {}) => {
     const params = ds;
     stepAry.forEach(({ content }) => {
-      if (Object.prototype.toString.call(content) === '[object Object]') {
+      if (isObject(content)) {
         Object.assign(params, content);
       }
     });
@@ -105,7 +125,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   const submit = () => {
     if (runtime) {
-      outputs['submit'](collectParams());
+      outputs['submit'](fullSubmitCache);
     }
   };
 
@@ -131,7 +151,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   };
 
   const renderPreviousBtn = () => {
-    return data.toolbar.showSecondBtn && data.current > 0 ? (
+    return data.toolbar.btns.includes('previous') && data.current > 0 ? (
       <Button
         style={{ margin: '0 8px' }}
         onClick={() => prev(getCurrentStep(-1))}
@@ -143,7 +163,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   };
 
   const renderNextBtn = () => {
-    if (data.current === stepAry.length - 1) return null;
+    if (data.current === stepAry.length - 1 || !data.toolbar.btns.includes('next')) return null;
     return (
       <Button type="primary" onClick={() => next(getCurrentStep())} data-item-type="next">
         {env.i18n(data.toolbar.primaryBtnText || '下一步')}
@@ -152,7 +172,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   };
 
   const renderSubmitBtn = () => {
-    return data.fullSubmit && data.current === stepAry.length - 1 ? (
+    return data.current === stepAry.length - 1 && data.toolbar.btns.includes('submit') ? (
       <Button type="primary" onClick={submit} data-item-type="submit">
         {env.i18n(data.toolbar.submitText || '提交')}
       </Button>

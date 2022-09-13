@@ -30,7 +30,7 @@ export function isEmptyString(str: string): boolean {
 function typeCheck(variable, type) {
   if (Array.isArray(type)) {
     let bool = false
-    for(let i = 0; i < type.length; i++) {
+    for (let i = 0; i < type.length; i++) {
       if (typeCheck(variable, type[i])) {
         bool = true
         break
@@ -43,7 +43,7 @@ function typeCheck(variable, type) {
   }
 }
 
-function unitConversion (value: string) {
+function unitConversion(value: string) {
   if (/^\d+(?:%)$/.test(value)) {
     return value
   } else if (/^(?:calc)/.test(value)) {
@@ -62,13 +62,13 @@ function deepCopy(obj: any, cache: any = []) {
   if (hit) {
     return hit.copy
   }
-  const copy: any = Array.isArray(obj) ?  [] :   {}
+  const copy: any = Array.isArray(obj) ? [] : {}
 
   cache.push({
     original: obj,
     copy
   })
-  
+
   Object.keys(obj).forEach(key => {
     copy[key] = deepCopy(obj[key], cache)
   })
@@ -105,4 +105,8 @@ export function loadScript(src: string, varName: string) {
     };
     document.head.appendChild(script);
   });
+}
+
+export const isObject = (obj: any) => {
+  return Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1] === 'Object';
 }
