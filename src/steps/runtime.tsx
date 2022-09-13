@@ -2,20 +2,12 @@ import { Button, message, Steps } from 'antd';
 import React, { useCallback, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
+import { usePrevious } from '../utils/hooks';
 import css from './index.less';
 
 const { Step } = Steps;
 
-function usePrevious<T>(value: T): T {
-  const ref: any = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-}
-
 let fullSubmitCache = {};
-
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);

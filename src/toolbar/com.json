@@ -25,6 +25,13 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "doubleClick0",
+      "title": "双击按钮0",
+      "schema": {
+        "type": "any"
+      }
     }
   ]
 }

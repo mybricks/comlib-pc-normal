@@ -25,6 +25,7 @@ const itemEditor = {
             const { item } = getBtnItemInfo(data, focusArea);
             item.text = value.trim();
             output.setTitle(item.key, `单击${item.text}`);
+            output.setTitle(item.doubleClickKey, `双击${item.text}`);
             input.setTitle(`${InputIds.SetOutputVal}_${item.key}`, `设置${item.text}输出数据`);
             input.setTitle(`${InputIds.SetDisable}_${item.key}`, `禁用${item.text}`);
             input.setTitle(`${InputIds.SetEnable}_${item.key}`, `启用${item.text}`);
@@ -43,6 +44,16 @@ const itemEditor = {
               const { item } = getBtnItemInfo(data, focusArea);
               return {
                 outputId: item.key
+              };
+            }
+          },
+          {
+            title: '双击',
+            type: '_Event',
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const { item } = getBtnItemInfo(data, focusArea);
+              return {
+                outputId: item.doubleClickKey
               };
             }
           }

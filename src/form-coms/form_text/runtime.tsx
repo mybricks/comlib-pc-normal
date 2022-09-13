@@ -61,7 +61,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    outputs['onChange'](value);
+    outputs['onChange'](data.value);
   }, []);
 
   const onBlur = useCallback((e) => {

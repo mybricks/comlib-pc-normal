@@ -12,7 +12,7 @@ export interface TabList {
   num?: number | string;
   outputContent?: string;
   permissionKey?: string;
-  id?: string;
+  id: string;
 
   tooltipText?: string;
   //设置tabs中是否需要icon
@@ -34,7 +34,7 @@ export interface Data {
   centered: boolean;
   tabList: TabList[];
   prohibitClick: boolean;
-  defaultActiveKey: string;
+  defaultActiveKey: string | undefined;
   tabPosition: 'left' | 'top' | 'bottom' | 'right';
   hideAdd?: boolean;
   hideSlots?: boolean;

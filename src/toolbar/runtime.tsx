@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button, Dropdown, Menu, Space } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
@@ -42,6 +42,12 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
       outputs[item.key](item.outputValue);
     }
   };
+
+  const onDoubleClick = useCallback((item: BtnItem) => {
+    if (env.runtime) {
+      outputs[item.doubleClickKey](item.outputValue);
+    }
+  }, []);
 
   const renderTextAndIcon = (item: BtnItem) => {
     const { useIcon, icon, iconLocation, iconDistance, text, showText } = item;
@@ -93,6 +99,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             shape={shape}
             disabled={disabled}
             onClick={() => onClick(item)}
+            onDoubleClick={() => onDoubleClick(item)}
           >
             {renderTextAndIcon(item)}
           </Button>
@@ -117,24 +124,18 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     <div
       className={css.toolbar}
       style={{
-        justifyContent: data.layout
+        justifyContent: data.layout,
+        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
       }}
     >
-      <div
-        className={css.spaceWrap}
-        style={{
-          gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
-        }}
-      >
-        {(data.btnList || []).length > 0 || env.runtime ? (
-          <>
-            {renderBtnList(normalBtnList)}
-            {renderEllipsisList(ellipsisBtnList)}
-          </>
-        ) : (
-          <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
-        )}
-      </div>
+      {(data.btnList || []).length > 0 || env.runtime ? (
+        <>
+          {renderBtnList(normalBtnList)}
+          {renderEllipsisList(ellipsisBtnList)}
+        </>
+      ) : (
+        <div className={css.suggestion}>在编辑栏中点击"添加按钮"</div>
+      )}
     </div>
   );
 };

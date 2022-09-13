@@ -65,6 +65,10 @@ export interface BtnItem {
   disabled?: boolean;
   // 隐藏
   hidden?: boolean;
+
+  // 双击事件Id
+  doubleClickKey: string;
+
   // 输出内容
   outputValue?: any;
 }

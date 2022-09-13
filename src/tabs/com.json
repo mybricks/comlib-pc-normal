@@ -54,14 +54,45 @@
       "id": "outActiveTab",
       "title": "激活tab项输出",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string"
+          },
+          "permissionKey": {
+            "title": "标签页权限key",
+            "type": "string"
+          }
+        }
       }
     }
   ],
   "slots": [
     {
       "id": "tab0",
-      "title": "内容"
+      "title": "内容区【1】",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "tab0_into",
+          "title": "显示",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "tab0_leave",
+          "title": "隐藏",
+          "schema": {
+            "type": "any"
+          }
+        }
+      ]
     }
   ]
 }
