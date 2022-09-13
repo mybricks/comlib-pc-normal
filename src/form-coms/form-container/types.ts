@@ -14,6 +14,8 @@ interface Actions {
   visible: boolean;
 }
 
+export type LabelWidthType = 'px' | 'span'
+
 export interface Data {
   items: any[]
   isFormItem: boolean
@@ -21,6 +23,9 @@ export interface Data {
   layout: 'horizontal' | 'vertical' | 'inline'
   fieldsLength?: number
   actions: Actions
+  labelWidthType: LabelWidthType
+  labelWidth: number
+  wrapperCol: number
 }
 
 export interface FormControlProps {
