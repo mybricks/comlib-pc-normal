@@ -24,18 +24,18 @@ export default {
         }
       }
     },
-    {
-      title: '是否合并',
-      type: 'switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return !!data.isMerge;
-        },
-        set({ data }: EditorResult<Data>, val: boolean) {
-          data.isMerge = val;
-        }
-      }
-    }
+    // {
+    //   title: '是否合并',
+    //   type: 'switch',
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return !!data.isMerge;
+    //     },
+    //     set({ data }: EditorResult<Data>, val: boolean) {
+    //       data.isMerge = val;
+    //     }
+    //   }
+    // }
   ]
 };
 
