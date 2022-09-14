@@ -5,8 +5,8 @@
       "justify": "start",
       "align": "stretch",
       "gutter": [
-        4,
-        4
+        0,
+        0
       ],
       "wrap": true,
       "columns": [

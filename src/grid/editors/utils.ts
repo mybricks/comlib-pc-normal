@@ -34,7 +34,7 @@ export function addRow({ data, slot }: EditorResult<Data>, columnCount: number) 
     key: rowId,
     justify: JustifyTypeEnum.Start,
     align: AlignTypeEnum.Stretch,
-    gutter: [4, 4],
+    gutter: [0, 0],
     wrap: true,
     columns
   };
