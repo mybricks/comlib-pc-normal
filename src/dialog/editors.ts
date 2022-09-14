@@ -71,7 +71,7 @@ function get(
   if (index === -1) return;
   if (cb) cb(index);
   if (val === 'obj') {
-    return data.footerBtns[index];
+    return data.footerBtns[index] || {};
   }
   return data.footerBtns[index][val];
 }
@@ -504,7 +504,7 @@ function moveDelete(dataset: string) {
         title: '删除',
         type: 'Button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const { id } = get(data, focusArea, dataset, 'obj');
+          const id = get(data, focusArea, dataset, 'obj')?.id;
           return !DefaultEvent.includes(id);
         },
         value: {
