@@ -54,13 +54,16 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
           return item.id === id;
         });
         if (activeTab) {
-          data.defaultActiveKey = activeTab.key;
-          data.active = true;
-        } else {
-          data.defaultActiveKey = undefined;
-          data.active = false;
-          message.error('标签页不存在');
+          const { permissionKey } = activeTab;
+          if (!permissionKey || (permissionKey && env.hasPermission({ key: permissionKey }))) {
+            data.defaultActiveKey = activeTab.key;
+            data.active = true;
+            return;
+          }
         }
+        data.defaultActiveKey = undefined;
+        data.active = false;
+        message.error('标签页不存在');
       });
       // 上一页
       inputs[InputIds.PreviousTab](() => {
@@ -167,7 +170,6 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   };
 
   const renderItems = () => {
-    console.log(data, slots);
     return (
       <>
         {data.tabList.map((item) => {
