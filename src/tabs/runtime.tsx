@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, ReactNode } from 'react';
 import classnames from 'classnames';
-import { Tabs, Tooltip } from 'antd';
+import { message, Tabs, Tooltip } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 import css from './tabs.less';
 import * as Icons from '@ant-design/icons';
@@ -19,9 +19,10 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   const preKey = usePrevious<string | undefined>(data.defaultActiveKey);
   const findTargetIndex = useCallback(() => {
     return data.tabList.findIndex(
-      ({ id, permissionKey }) =>
+      ({ id, permissionKey, key }) =>
         (!permissionKey || env.hasPermission({ key: permissionKey })) &&
-        showTabs?.includes(id as string)
+        showTabs?.includes(id as string) &&
+        key === data.defaultActiveKey
     );
   }, [showTabs]);
 
@@ -52,12 +53,13 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         const activeTab = data.tabList.find((item) => {
           return item.id === id;
         });
-        if (activeTab && env.hasPermission({ key: activeTab.permissionKey })) {
+        if (activeTab) {
           data.defaultActiveKey = activeTab.key;
           data.active = true;
         } else {
           data.defaultActiveKey = undefined;
           data.active = false;
+          message.error('标签页不存在');
         }
       });
       // 上一页
@@ -115,8 +117,10 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
 
   const tabIntoHook = () => {
     const currentTab = data.tabList.find(({ key }) => key === data.defaultActiveKey);
-    const slotInputs = slots[currentTab.id].inputs;
-    slotInputs[`${currentTab.id}_into`]();
+    if (currentTab) {
+      const slotInputs = slots[currentTab.id].inputs;
+      slotInputs[`${currentTab.id}_into`]();
+    }
   };
 
   const tabLeaveHook = () => {
