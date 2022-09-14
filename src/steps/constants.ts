@@ -9,6 +9,8 @@ export interface StepItem {
   content?: any;
 }
 
+export type Btn = 'previous' | 'next' | 'submit'
+
 type ExtraBtn = {
   id: string
   type: "link" | "text" | "ghost" | "default" | "primary" | "dashed"
@@ -16,12 +18,12 @@ type ExtraBtn = {
 }
 interface Toolbar {
   submit: boolean;
-  showSecondBtn: boolean;
   actionAlign?: string;
   primaryBtnText?: string;
   secondBtnText?: string;
   submitText?: string;
   showActions: boolean
+  btns: Array<Btn>
   extraBtns?: Array<ExtraBtn>
 }
 

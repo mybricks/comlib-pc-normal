@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useState } from 'react';
 import { Form, Button, Row, Col } from 'antd';
-import { Data, FormControlProps, FormControlInputId } from './types';
-import FormActions from './components/FormActions';
-import { slotInputIds, inputIds } from './constants';
+import { Data, FormControlInputId } from './types';
+import SlotContent from './SlotContent';
+import { getLabelCol } from './utils';
+import { slotInputIds, inputIds, outputIds } from './constants';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -26,19 +27,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return {};
   }, [env.edit]);
 
-  console.log(data.layout);
-
   useLayoutEffect(() => {
     inputs[inputIds.SET_FIELDS_VALUE]((val) => {
       resetFields();
       setFieldsValue(val);
       slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
-
-    // inputs['initial']((val) => {
-    //   setFieldsValue(val);
-    //   slots['content'].inputs['onInitial']({ values: val });
-    // });
 
     inputs['resetFields']((val, outputRels) => {
       // formRef.resetFields();
@@ -185,7 +179,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   const submit = (outputRels?: any) => {
-    submitMethod('onFinish', outputRels);
+    submitMethod(outputIds.ON_FINISH, outputRels);
   };
 
   const submitMethod = (outputId: string, outputRels?: any) => {
@@ -205,64 +199,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
   };
 
-  const content = useCallback((props?: { field }) => {
-    return slots['content'].render({
-      wrap(comAray: { id; jsx; def; inputs; outputs }[]) {
-        const items = data.items;
-        if (data.dataType === 'list') {
-          console.log('items', items, comAray, props?.field);
-        }
-
-        if (comAray) {
-          const jsx = comAray.map((com, idx) => {
-            if (com) {
-              let item = items.find((item) => item.id === com.id);
-
-              childrenInputs[com.id] = com.inputs;
-
-              return <FormItem com={com} item={item} key={com.id} field={props?.field} />;
-            }
-
-            return <div key={idx}>组件错误</div>;
-          });
-
-          return jsx;
-        }
-      },
-      inputValues: {},
-      key: props?.field.name
-    });
-  }, []);
-
   return (
     <Fragment>
       {!data.isFormItem ? (
-        <Form form={formRef} layout={data.layout} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-          {data.dataType === 'list' ? (
-            <FormListItem
-              content={content}
-              slots={slots}
-              env={env}
-              isFormItem={data.isFormItem}
-              data={data}
-            />
-          ) : (
-            content()
-          )}
-          {data.actions.visible && (
-            <FormActions data={data} outputs={outputs} submit={submitMethod} />
-          )}
+        <Form
+          form={formRef}
+          layout={data.layout}
+          labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
+          wrapperCol={{ span: 16 }}
+        >
+          <SlotContent
+            slots={slots}
+            data={data}
+            childrenInputs={childrenInputs}
+            outputs={outputs}
+            submit={submitMethod}
+          />
         </Form>
-      ) : data.dataType === 'list' ? (
-        <FormListItem
-          content={content}
-          slots={slots}
-          env={env}
-          isFormItem={data.isFormItem}
-          data={data}
-        />
       ) : (
-        content()
+        <SlotContent slots={slots} data={data} childrenInputs={childrenInputs} />
       )}
     </Fragment>
   );
@@ -311,32 +266,4 @@ const FormListItem = ({ content, slots, env, isFormItem, data }) => {
       }}
     </Form.List>
   );
-};
-
-const FormItem = (props: { com; item; field }) => {
-  const { com, item, field } = props;
-
-  return (
-    <Form.Item
-      {...field}
-      label={item?.label}
-      name={field ? [field.name, item?.name] : item?.name}
-      data-formitem={com.id}
-      required={item?.required}
-      validateStatus={item?.validateStatus}
-      help={item?.help}
-    >
-      <JSXWrapper com={com} field={field} />
-    </Form.Item>
-  );
-};
-
-const JSXWrapper = (props: FormControlProps) => {
-  const { com, value, onChange, field } = props;
-
-  // useLayoutEffect(() => { // 初始化表单项值
-  //   com.inputs?.setValue(value) // 需求区分 表单API行为触发 与 用户行为触发 => inputs or _inputs
-  // }, [value])
-
-  return com.jsx;
 };

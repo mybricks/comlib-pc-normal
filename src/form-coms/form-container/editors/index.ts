@@ -1,8 +1,9 @@
 import { message } from 'antd'
-import { Data } from '../types'
+import { Data, LabelWidthType } from '../types'
 import { FormLayout } from 'antd/es/form/Form'
 import { actionsEditor } from './actions'
 import { outputIds, inputIds, slotInputIds } from '../constants'
+import { uuid } from '../../../utils'
 
 function refreshSchema({data, inputs, outputs, slots}) {
   const properties = {}
@@ -31,6 +32,10 @@ function fieldNameCheck (data: Data, name: string) {
   }
 }
 
+function isHorizontal (data: Data) {
+  return data.layout === 'horizontal'
+}
+
 export default {
   '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
     data.items = data.items.filter(item => item.id !== id)
@@ -38,7 +43,9 @@ export default {
   },
   '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
     const item = data.items.find(item => item.id === id)
+    // console.log('_setFormItem', id)
     if (item) {
+      // console.log('_setFormItem item')
       item.schema = schema
     } else {
       const nowC = data.nameCount++
@@ -63,21 +70,64 @@ export default {
   ':root': [
     {
       title: '布局',
-      type: 'Select',
-      options: [
-        { label: '水平', value: 'horizontal' },
-        { label: '垂直', value: 'vertical' },
-        { label: '内联', value: 'inline' },
-      ],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.layout
+      items: [
+        {
+          title: '类型',
+          type: 'Select',
+          options: [
+            { label: '水平', value: 'horizontal' },
+            { label: '垂直', value: 'vertical' },
+            { label: '内联', value: 'inline' },
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.layout
+            },
+            set({ data }: EditorResult<Data>, value: FormLayout) {
+              data.layout = value
+            },
+          }
         },
-        set({ data }: EditorResult<Data>, value: FormLayout) {
-          data.layout = value
-        },
-      }
+        {
+          title: '标题',
+          items: [
+            {
+              title: '类型',
+              type: 'Select',
+              options: [
+                { label: '固定像素', value: 'px' },
+                // { label: '24 栅格', value: 'span' },
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelWidthType
+                },
+                set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                  data.labelWidthType = value
+                },
+              }
+            },
+            {
+              title: '标题宽度(px)',
+              type: 'inputNumber',
+              options: [{ min: -1 }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.labelWidthType === 'px'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.labelWidth]
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelWidth = value[0]
+                }
+              },
+            },
+          ]
+        }
+      ]
     },
+    
     actionsEditor
     // {
     //   title: '数据类型',

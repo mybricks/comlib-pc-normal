@@ -11,7 +11,13 @@ interface RuntimeParams<T> {
   data: T
   env: Env
   style: any
-  slots: any
+  slots: {
+    [key: string]: {
+      render: (props: { wrap?: any, inputValues?: any, key?: number }) => React.ReactNode
+      inputs: any
+      [key: string]: any
+    }
+  }
   inputs: any
   outputs: any
   _inputs: any

@@ -22,5 +22,7 @@
   },
   "isFormItem": false,
   "dataType": "object",
-  "layout": "horizontal"
+  "layout": "horizontal",
+  "labelWidthType": "px",
+  "labelWidth": "98"
 }

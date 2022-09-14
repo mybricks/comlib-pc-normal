@@ -59,7 +59,8 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   }, []);
 
   const changeValue = useCallback((e) => {
-    data.value = e;
+    const value = e.target.value;
+    data.value = value;
     outputs['onChange'](data.value);
   }, []);
 

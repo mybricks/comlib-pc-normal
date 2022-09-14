@@ -17,13 +17,13 @@
   "current": 0,
   "toolbar": {
     "type": "default",
-    "showActions": false,
+    "showActions": true,
     "submit": true,
-    "showSecondBtn": true,
     "actionAlign": "center",
     "primaryBtnText": "下一步",
     "secondBtnText": "上一步",
-    "submitText": "提交"
+    "submitText": "提交",
+    "btns": ["previous", "next", "submit"]
   },
   "fullSubmit": false
 }

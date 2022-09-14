@@ -14,3 +14,8 @@ export const outputIds = {
 export const slotInputIds = {
   SET_FIELDS_VALUE: 'setFieldsValue'
 }
+
+export const labelWidthTypes = {
+  SPAN: 'span',
+  PX: 'px'
+}
