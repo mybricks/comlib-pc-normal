@@ -3,7 +3,7 @@ import { Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 
-export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -24,8 +24,12 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setValue']((val) => {
-      data.value = val;
-      onChange(val);
+      if (!Array.isArray(val)) {
+        logger.error(`多选框的值应为数组格式`);
+      } else {
+        data.value = val;
+        onChange(val);
+      }
     });
 
     inputs['resetValue'](() => {
