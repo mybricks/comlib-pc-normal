@@ -6,7 +6,7 @@ export interface Data {
     };
     visible: boolean;
     rules: any[];
-    value: number | string | undefined;
+    value?: any[];
     staticOptions: Option[];
     options: any[];
 }

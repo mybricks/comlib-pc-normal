@@ -9,7 +9,15 @@ let  optionsLength = 0,
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
-    data.staticOptions = [];
+    const defaultOption = {
+      label: `选项1`,
+      value: `选项1`,
+      type: 'default',
+      checked: false,
+      key: uuid()
+    };
+    data.staticOptions = [defaultOption];
+    data.config.options = data.staticOptions;
   }
   optionsLength = (data.staticOptions || []).length;
   addOption = (option) => {

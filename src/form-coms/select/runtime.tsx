@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 
-export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -24,8 +24,18 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setValue']((val) => {
-      data.value = val;
-      onChange(val);
+      if (
+        data.config.mode &&
+        ['multiple', 'tags'].includes(data.config.mode) &&
+        !Array.isArray(val)
+      ) {
+        logger.error(
+          `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+        );
+      } else {
+        data.value = val;
+        onChange(val);
+      }
     });
 
     inputs['resetValue'](() => {
