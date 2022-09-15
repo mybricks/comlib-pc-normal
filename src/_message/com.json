@@ -1,49 +1,35 @@
 {
   "title": "消息提示",
   "namespace": "mybricks.normal-pc.message",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "测试按钮",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.0",
-  "description": "消息提示",
-  "icon": "https://ali2.a.kwimgs.com/udata/pkg/ks-merchant/fangzhou/static_picture/message.264077f1550a93b8.svg",
+  "icon": "./icon.svg",
+  "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "rtType": "js",
+  "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "info",
-      "title": "默认消息",
+      "id": "showMsg",
+      "title": "弹出",
+      "rels": [
+        "closeMsg"
+      ],
       "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "success",
-      "title": "成功消息",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "warning",
-      "title": "警告消息",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "error",
-      "title": "错误消息",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "loading",
-      "title": "加载消息",
-      "schema": {
-        "type": "string"
+        "type": "any"
       }
     }
   ],
-  "outputs": []
+  "outputs": [
+    {
+      "id": "closeMsg",
+      "title": "提示结束",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": []
 }
