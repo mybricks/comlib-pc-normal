@@ -78,17 +78,17 @@ function get(
 
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+    console.log('inputUpdated')
     if (pin.id === InputIds.Open) {
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
     }
   },
-  '@slotOutputUpdated'({ data, slots, slot }, slotId, pin) {
-    console.log('slotOutputUpdated', slots, slot, pin)
-    if (pin.id === InputIds.Open) {
-      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
-    }
+  '@slotInputUpdated'({ data, slots, output }, slotId, pin) {
+    console.log('slotInputUpdated')
+    output.get(pin.id).setSchema(pin.schema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('inputDisConnected')
     if (toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(defaultSchema);
     }
