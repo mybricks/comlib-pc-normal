@@ -1,32 +1,38 @@
-import { get } from 'lodash';
-import { Data } from './constants';
+import { Data, OutputIds } from './constants';
 
-export default function ({
-  inputs,
-  outputs,
-  logger,
-  onError
-}: RuntimeParams<Data>) {
+export default function ({ inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   try {
-    let res: any = {};
-    let inputsCount = Object.keys(inputs).length;
+    let valList: any = [];
+    const inputNum = Object.keys(inputs).length;
+    const triggerKeys = new Set();
 
-    Object.keys(inputs).forEach(key => {
+    const getOutputVal = () => {
+      let res = {};
+      valList.forEach((val) => {
+        if (val && typeof val === 'object' && !Array.isArray(val)) {
+          res = {
+            ...res,
+            ...val
+          };
+        }
+      });
+      return res;
+    };
+
+    Object.keys(inputs).forEach((key, index) => {
       inputs[key]((val: any) => {
-        res = {
-          ...res,
-          ...val
+        triggerKeys.add(key);
+        valList[index] = val;
+        if (triggerKeys.size === inputNum) {
+          outputs[OutputIds.Output](getOutputVal());
+          triggerKeys.clear();
+          valList = [];
         }
-        if (--inputsCount === 0) {
-          inputsCount = Object.keys(inputs).length;
-          outputs.output(res);
-        }
-      })
-    })
-    
-  } catch (ex) {
+      });
+    });
+  } catch (ex: any) {
     console.error('js计算组件运行错误.', ex);
     logger.error(`${ex}`);
-    onError?.(ex)
+    onError?.(ex);
   }
 }

@@ -1,4 +1,11 @@
-export interface Data {
-  inputSchema: any;
-  outputSchema: any;
-}
+export interface Data {}
+
+export const OutputIds = {
+  Output: 'output'
+};
+
+export const Schemas = {
+  Follow: {
+    type: 'follow'
+  }
+};

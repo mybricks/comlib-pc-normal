@@ -1,49 +1,50 @@
-import { CODE_TEMPLATE, COMMENTS, Data } from './constants';
+import { Data, OutputIds, Schemas } from './constants';
 
-function mergeSchema(schema1: any = {}, schema2: any = {}) {
-  const schema = schema1;
-  schema.properties = {
-    ...schema.properties,
-    ...schema2.properties
+// 获取输出schema
+function getOutputSchema(input) {
+  const res = {};
+  const inputList = input.get();
+  (inputList || []).forEach((item) => {
+    const schema = input.get(item?.id)?.schema;
+    Object.assign(res, schema?.properties);
+  });
+  return {
+    type: 'object',
+    properties: res
   };
-  return schema;
+}
+
+// 获取输入项序号
+function getInputOrder({ input }) {
+  const ports = input.get();
+  const { id } = ports.pop();
+  return (Number(id.slice(5)) || 0) + 1;
 }
 
 export default {
-  '@outputConnected'({ data, output }, fromPin, toPIn) {
+  '@inputUpdated'({ input, output }: EditorResult<Data>, updatePin) {
+    if (updatePin.id !== OutputIds.Output) {
+      output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+    }
   },
-  '@inputConnected'({ data, output }, fromPin) {
-    data.outputSchema = mergeSchema(data.outputSchema, fromPin.schema)
-    output.get('output').setSchema(data.outputSchema);
+  '@inputConnected'({ output, input }: EditorResult<Data>) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(input));
   },
-  '@inputDisConnected'({ data, input }, fromPin, toPIn) {
-  },
-  '@outputDisConnected'({ data, output }, fromPin, toPIn) {
+  '@inputDisConnected'({ output, input }: EditorResult<Data>) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(input));
   },
   ':root': [
     {
       title: '添加输入项',
       type: 'Button',
       value: {
-        set({ input }) {
+        set({ input }: EditorResult<Data>) {
           const idx = getInputOrder({ input });
           const title = `输入项${idx}`;
           const hostId = `input${idx}`;
-          input.add(
-            hostId,
-            title,
-            {
-              type: 'follow'
-            }
-          );
+          input.add(hostId, title, Schemas.Follow, true);
         }
       }
-    },
+    }
   ]
 };
-
-function getInputOrder({ input }) {
-  const ports = input.get();
-  const { id } = ports.pop();
-  return Number(id.slice(5)) + 1;
-}
