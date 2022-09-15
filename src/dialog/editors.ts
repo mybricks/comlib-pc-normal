@@ -82,6 +82,12 @@ export default {
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
     }
   },
+  '@slotOutputUpdated'({ data, slots, slot }, slotId, pin) {
+    console.log('slotOutputUpdated', slots, slot, pin)
+    if (pin.id === InputIds.Open) {
+      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
+    }
+  },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(defaultSchema);
