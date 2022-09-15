@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.message",
   "version": "1.0.0",
   "rtType": "js",
-  "description": "测试按钮",
+  "description": "消息提示",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",

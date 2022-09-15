@@ -17,7 +17,7 @@ function getOutputSchema(input) {
 // 获取输入项序号
 function getInputOrder({ input }) {
   const ports = input.get();
-  const { id } = ports.pop();
+  const { id } = ports?.pop?.() || {};
   return (Number(id.slice(5)) || 0) + 1;
 }
 

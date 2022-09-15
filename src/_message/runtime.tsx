@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
 
 // 运行时执行
-const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
+const runtimeExecute = ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   const { type, content, duration } = data;
   //结束提示
   const onClose = () => {
@@ -12,7 +12,7 @@ const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => 
   // 显示信息
   const open = (str?: string) => {
     message[type]({
-      content: env.i18n(str) || ' ',
+      content: str || ' ',
       duration,
       onClose: onClose
     });

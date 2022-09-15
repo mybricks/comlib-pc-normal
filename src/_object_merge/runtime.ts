@@ -2,7 +2,7 @@ import { Data, OutputIds } from './constants';
 
 export default function ({ inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   try {
-    let valList: any = [];
+    let valList: any[] = [];
     const inputNum = Object.keys(inputs).length;
     const triggerKeys = new Set();
 

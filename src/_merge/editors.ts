@@ -1,48 +1,24 @@
-interface Data {
-  isMerge: boolean;
-}
+import { Data, Schemas } from './constants';
 
+// 获取输入项序号
+function getInputOrder({ input }) {
+  const ports = input.get();
+  const { id } = ports?.pop?.() || {};
+  return (Number(id.slice(5)) || 0) + 1;
+}
 export default {
   ':root': [
     {
       title: '添加输入项',
       type: 'Button',
       value: {
-        set({ data, input }) {
-          const idx = getInputOrder({ data, input });
+        set({ input }: EditorResult<Data>) {
+          const idx = getInputOrder({ input });
           const title = `输入项${idx}`;
           const hostId = `input${idx}`;
-          input.add(
-            hostId,
-            title,
-            {
-              type: 'follow'
-            },
-            true,
-            1
-          );
+          input.add(hostId, title, Schemas.Follow, true);
         }
       }
-    },
-    // {
-    //   title: '是否合并',
-    //   type: 'switch',
-    //   value: {
-    //     get({ data }: EditorResult<Data>) {
-    //       return !!data.isMerge;
-    //     },
-    //     set({ data }: EditorResult<Data>, val: boolean) {
-    //       data.isMerge = val;
-    //     }
-    //   }
-    // }
+    }
   ]
 };
-
-function getInputOrder({ data, input }) {
-  if (data.inputCount === void 0) {
-    const c = Object.keys(input.get()).length;
-    data.inputCount = c;
-  }
-  return data.inputCount++;
-}
