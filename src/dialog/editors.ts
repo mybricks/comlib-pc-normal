@@ -357,6 +357,23 @@ export default {
       },
       icon('btnId'),
       {
+        title: '事件',
+        items: [
+          {
+            title: '单击',
+            type: '_Event',
+
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const res = get(data, focusArea, 'btnId', 'id');
+              return {
+                outputId: res,
+                slotId: SlotIds.Container
+              };
+            }
+          }
+        ]
+      },
+      {
         title: '隐藏',
         type: 'Switch',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
@@ -379,27 +396,6 @@ export default {
         }
       },
       moveDelete('btnId')
-    ];
-
-    cate2.title = '事件';
-    cate2.items = [
-      {
-        title: '事件',
-        items: [
-          {
-            title: '单击',
-            type: '_Event',
-
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const res = get(data, focusArea, 'btnId', 'id');
-              return {
-                outputId: res,
-                slotId: SlotIds.Container
-              };
-            }
-          }
-        ]
-      }
     ];
 
     return { title: '按钮' };
