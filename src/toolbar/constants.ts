@@ -7,7 +7,11 @@ export const InputIds = {
   SetHidden: 'setHidden',
   SetVisible: 'setVisible',
 
-  SetOutputVal: 'setOutputVal'
+  SetBtnText: 'setBtnText'
+};
+
+export const OutputIds = {
+  DoubleClick: 'doubleClick'
 };
 
 export const Schemas = {

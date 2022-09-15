@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Button, Dropdown, Menu, Space } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { InputIds } from './constants';
+import { InputIds, OutputIds } from './constants';
 import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
 
@@ -11,8 +11,10 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
         const { key } = item;
-        inputs[`${InputIds.SetOutputVal}_${key}`]?.((val: any) => {
-          item.outputValue = val;
+        inputs[`${InputIds.SetBtnText}_${key}`]?.((val: string) => {
+          if (val && typeof val === 'string') {
+            item.text = val;
+          }
         });
         inputs[`${InputIds.SetDisable}_${key}`]?.(() => {
           item.disabled = true;
@@ -39,13 +41,13 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
 
   const onClick = (item: BtnItem) => {
     if (env.runtime) {
-      outputs[item.key](item.outputValue);
+      outputs[item.key]();
     }
   };
 
   const onDoubleClick = useCallback((item: BtnItem) => {
     if (env.runtime) {
-      outputs[item.doubleClickKey](item.outputValue);
+      outputs[`${OutputIds.DoubleClick}_${item.key}`]();
     }
   }, []);
 

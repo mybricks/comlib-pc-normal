@@ -9,15 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
-  "inputs": [
-    {
-      "id": "setOutputVal_btn0",
-      "title": "设置按钮0输出数据",
-      "schema": {
-        "type": "follow"
-      }
-    }
-  ],
+  "inputs": [],
   "outputs": [
     {
       "id": "btn0",
@@ -27,7 +19,7 @@
       }
     },
     {
-      "id": "doubleClick0",
+      "id": "doubleClick_btn0",
       "title": "双击按钮0",
       "schema": {
         "type": "any"
