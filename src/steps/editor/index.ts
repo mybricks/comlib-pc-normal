@@ -174,12 +174,12 @@ const addSlot = (data, slots, id) => {
     inputs: [
       {
         id: `${id}_into`,
-        title: '显示',
+        title: '当该步骤显示',
         schema: DefaultSchema
       },
       {
         id: `${id}_leave`,
-        title: '隐藏',
+        title: '当该步骤隐藏',
         schema: DefaultSchema
       }
     ],
