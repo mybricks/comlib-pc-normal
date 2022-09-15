@@ -24,6 +24,9 @@ const initParams = (data: Data) => {
   };
 };
 export default {
+  '@resize': {
+    options: ['width']
+  },
   '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       parent['@_setFormItem']({ id, name: data.name, schema: { type: 'any' } })
