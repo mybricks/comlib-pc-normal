@@ -2,6 +2,7 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
+import css from './runtime.less';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
@@ -72,7 +73,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
 
   return (
     data.visible && (
-      <div>
+      <div className={css.select}>
         <Select
           {...data.config}
           options={env.edit ? data.staticOptions : data.config.options}
