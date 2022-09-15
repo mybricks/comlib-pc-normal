@@ -3,40 +3,33 @@
     {
       "key": "row_0",
       "justify": "start",
-      "gutter": [4, 4],
-      "align": "middle",
-      "flex": 0,
-      "backgroundColor": "",
+      "align": "stretch",
+      "gutter": [
+        0,
+        0
+      ],
+      "wrap": true,
       "columns": [
         {
-          "justify": "flex-start",
-          "align": "center",
-          "backgroundColor": "",
-          "span": 8, 
-          "key": "column_0", 
+          "span": 8,
+          "key": "column_0",
           "slot": "slot_0",
           "widthOption": "span",
           "width": 300,
           "colStyle": {}
         },
-        { 
-          "justify": "flex-start",
-          "align": "center",
-          "backgroundColor": "",
-          "span": 8, 
-          "key": "column_1", 
+        {
+          "span": 8,
+          "key": "column_1",
           "slot": "slot_1",
           "widthOption": "span",
           "width": 300,
           "colStyle": {}
         },
-        { 
-          "justify": "flex-start",
-          "align": "center",
-          "backgroundColor": "",
-          "span": 8, 
-          "key": "column_2", 
-          "slot": "slot_2" ,
+        {
+          "span": 8,
+          "key": "column_2",
+          "slot": "slot_2",
           "widthOption": "span",
           "width": 300,
           "colStyle": {}
@@ -44,10 +37,6 @@
       ]
     }
   ],
-  "style": {
-  },
-  "rowStyle": {
-    "flex": 0,
-    "alignItems": ""
-  }
+  "style": {},
+  "widthUnit": "%"
 }

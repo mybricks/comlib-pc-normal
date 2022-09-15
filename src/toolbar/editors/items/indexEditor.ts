@@ -1,6 +1,6 @@
+import { InputIds } from '../../constants';
 import { Data } from '../../types';
 import { getBtnItemInfo } from '../../utils';
-import { InputIds } from '../../constants';
 
 const IndexEditor = [
   {
@@ -48,7 +48,7 @@ const IndexEditor = [
         if (!focusArea) return;
         const { item, index } = getBtnItemInfo(data, focusArea);
         output.remove(item.key);
-        input.remove(`${InputIds.SetOutputVal}_${item.key}`);
+        input.remove(`${InputIds.SetBtnText}_${item.key}`);
         input.remove(`${InputIds.SetDisable}_${item.key}`);
         input.remove(`${InputIds.SetEnable}_${item.key}`);
         input.remove(`${InputIds.SetHidden}_${item.key}`);

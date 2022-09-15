@@ -69,14 +69,14 @@
       "outputs": [
         {
           "id": "cancelBtn",
-          "title": "取消输出",
+          "title": "取消",
           "schema": {
             "type": "follow"
           }
         },
         {
           "id": "ok",
-          "title": "确认输出",
+          "title": "确认",
           "schema": {
             "type": "follow"
           }

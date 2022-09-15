@@ -34,6 +34,8 @@ export interface BtnItem {
   key: string;
   // 按钮文字
   text: string;
+  // 动态设置按钮文字
+  useDynamicText?: boolean;
 
   // 形状
   shape?: ShapeEnum;
@@ -65,12 +67,6 @@ export interface BtnItem {
   disabled?: boolean;
   // 隐藏
   hidden?: boolean;
-
-  // 双击事件Id
-  doubleClickKey: string;
-
-  // 输出内容
-  outputValue?: any;
 }
 
 /**

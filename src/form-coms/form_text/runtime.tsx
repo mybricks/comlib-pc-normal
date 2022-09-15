@@ -24,7 +24,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
-      changeValue(val);
+      outputs['onChange'](data.value);
     });
 
     inputs['validate']((val, outputRels) => {

@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { InputNumber } from 'antd';
 import { validateFormItem } from '../utils/validator';
+import css from './runtime.less';
 interface Data {
   options: any[];
   rules: any[];
@@ -64,7 +65,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     data.visible && (
-      <div>
+      <div className={css.inputNumber}>
         <InputNumber value={value} {...data.config} onChange={onChange} />
       </div>
     )
