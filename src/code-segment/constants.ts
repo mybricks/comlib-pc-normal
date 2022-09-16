@@ -1,13 +1,11 @@
-export const CODE_TEMPLATE = `
-export default function ({ inputValue, outputs }, context) {
-  outputs['output0'](inputValue);
-}`;
+export const CODE_TEMPLATE = 
+`  output0(inputValue);`;
 
 export const COMMENTS = `/**
 * @param inputValue: any 输入项的值
 * @parma outputs: any 输出项
 * @param context: ContextProps 内置方法
-* outputs['output0'](val: any) => void 输出项函数
+* output0(val: any) => void 输出项函数
 *
 * interface Utils {
 *   // 获取cookies
@@ -16,8 +14,6 @@ export const COMMENTS = `/**
 *   moment: (params:any) => any;
 * }
 * interface ContextProps {
-*   // 发送网络请求
-*   callService: (serviceId: string, params: Object) => Promise<any>;
 *   // 获取URL参数
 *   getQuery: () => object;
 *   // i18n方法
@@ -26,26 +22,21 @@ export const COMMENTS = `/**
 *   utils: Utils
 * }
 * 例子
-* export default function ({ inputValue, outputs }, context) {
-*   // 获取输出项函数
-*   const out0 = outputs['output0'];
-*     
-*   // 多输出的情况
-*   // const out1 = outputs['output1'];
-*   // const out2 = outputs['output2'];
-*   // const out[n] = outputs['outputn'];
-*   
+* ({ context, inputValue, output0, output1, output2 }) => {
 *   const res = '该值输出给下一个组件使用' + inputValue
 *   
 *   // 向输出项（output0）输出结果
-*   out0(res); 
+*   output0(res); 
+*   
+*   // 多输出的情况
+*   // output1(res); 
+*   // output2(res); 
 * }
 */`;
 
 export interface Data {
-  fns: string | {
-    code: string;
-    transformCode: string
-  };
+  transformCode: string;
+  fnParams: string[];
+  fnBody: string;
   runImmediate: boolean;
 }
