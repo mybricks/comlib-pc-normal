@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 import { validateFormItem } from '../utils/validator';
+import css from './runtime.less';
 
 interface Data {
   options: any[];
@@ -91,7 +92,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     data.visible && (
-      <div>
+      <div className={css.datePicker}>
         <DatePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
       </div>
     )
