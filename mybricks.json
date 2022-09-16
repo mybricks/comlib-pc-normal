@@ -81,7 +81,7 @@
           "./src/tooltip/com.json"
         ]
       },
-      "./src/code-segment/com.json",
+      "./src/_code_segment/com.json",
       "./src/_connector/com.json",
       "./src/confirm/com.json",
       "./src/message/com.json",
@@ -154,7 +154,7 @@
           "./src/tooltip/com.json"
         ]
       },
-      "./src/code-segment/com.json",
+      "./src/_code_segment/com.json",
       "./src/_connector/com.json",
       "./src/confirm/com.json",
       "./src/message/com.json",

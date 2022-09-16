@@ -38,6 +38,9 @@ export default {
   '@inputConnected'({ data }, fromPin) {
     data.inputSchema = fromPin.schema;
   },
+  '@inputDisConnected'({ data }) {
+    data.inputSchema = { type: 'any' };
+  },
   ':root': [
     {
       title: '添加输出项',
