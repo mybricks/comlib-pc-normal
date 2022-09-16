@@ -83,15 +83,41 @@ export default {
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
     }
   },
-  '@slotInputUpdated'({ data, slots, output }, slotId, pin) {
-    console.log('slotInputUpdated')
-    output.get(pin.id).setSchema(pin.schema);
+  '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+    console.log('outputUpdated')
+  },
+  '@slotInputUpdated'({ data, slots, output }, ...res) {
+    console.log('slotInputUpdated', res)
+    // output.get(fromPin.id)
+    // && output.get(fromPin.id).setSchema(fromPin.schema);
+  },
+  '@slotOutputUpdated'({ data, slots, output }, fromPin, slotId, toPin) {
+    console.log('slotOutputUpdated')
+  },
+  '@slotInputConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+    console.log('slotInputConnected', fromPin, toPin)
+    output.get(toPin.id)
+      && output.get(toPin.id).setSchema(fromPin.schema);
+  },
+  '@slotInputDisConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+    console.log('slotInputDisConnected',)
+    output.get(toPin.id)
+      && output.get(toPin.id).setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
     console.log('inputDisConnected')
     if (toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(defaultSchema);
     }
+  },
+  '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('inputConnected')
+  },
+  '@outputConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('outputConnected')
+  },
+  '@outputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('outputDisConnected')
   },
   ':root': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
