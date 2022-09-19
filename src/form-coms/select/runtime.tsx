@@ -3,6 +3,8 @@ import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
+import { uuid } from '../../utils';
+import { Option } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
@@ -47,8 +49,47 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       data.config.disabled = val;
     });
 
-    inputs['setOptions']((val) => {
-      data.config.options = val;
+    inputs['setOptions']((ds) => {
+      let tempDs: Option[] = [];
+      if (Array.isArray(ds)) {
+        ds.forEach((item, index) => {
+          tempDs.push({
+            checked: false,
+            disabled: false,
+            lable: `选项${index}`,
+            value: `${uuid()}`,
+            ...item
+          });
+        });
+      } else {
+        tempDs = [
+          {
+            checked: false,
+            disabled: false,
+            lable: `选项`,
+            value: `${uuid()}`,
+            ...(ds || {})
+          }
+        ];
+      }
+      let newValArray: any[] = [],
+        newVal;
+      tempDs.map((item) => {
+        const { checked, value } = item;
+        if (checked && value != undefined) {
+          newVal = value;
+          newValArray.push(value);
+        }
+      });
+      data.value =
+        data.config.mode && ['tags', 'multiple'].includes(data.config.mode) ? newValArray : newVal;
+      data.config.options = tempDs.map(({ label, value, disabled }) => {
+        return {
+          label,
+          value,
+          disabled
+        };
+      });
     });
 
     inputs['setLoading']((val: boolean) => {

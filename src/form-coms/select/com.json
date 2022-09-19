@@ -60,12 +60,20 @@
           "type": "object",
           "properties": {
             "label": {
-              "title": "标题",
+              "title": "标签",
               "type": "string"
             },
             "value": {
               "title": "值",
               "type": "any"
+            },
+            "disabled": {
+              "title": "禁用",
+              "type": "boolean"
+            },
+            "checked": {
+              "title": "选中",
+              "type": "boolean"
             }
           }
         }
