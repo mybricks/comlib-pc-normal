@@ -2,6 +2,8 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
+import { Option } from '../types';
+import { uuid } from '../../utils';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
@@ -40,8 +42,38 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       data.config.disabled = val;
     });
 
-    inputs['setOptions']((val) => {
-      data.config.options = val;
+    inputs['setOptions']((ds) => {
+      let tempDs: Option[] = [];
+      if (Array.isArray(ds)) {
+        ds.forEach((item, index) => {
+          tempDs.push({
+            checked: false,
+            disabled: false,
+            lable: `选项${index}`,
+            value: `${uuid()}`,
+            ...item
+          });
+        });
+      } else {
+        tempDs = [
+          {
+            checked: false,
+            disabled: false,
+            lable: `选项`,
+            value: `${uuid()}`,
+            ...(ds || {})
+          }
+        ];
+      }
+      let newValArray: any[] = [];
+      tempDs.map((item) => {
+        const { checked, value } = item;
+        if (checked && value != undefined) {
+          newValArray.push(value);
+        }
+      });
+      data.value = newValArray;
+      data.config.options = tempDs;
     });
 
     inputs['setVisible']((val) => {

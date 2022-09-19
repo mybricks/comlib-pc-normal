@@ -1,8 +1,8 @@
 {
-  "title": "文字链接",
+  "title": "链接",
   "namespace": "mybricks.normal-pc.link",
   "version": "1.0.0",
-  "description": "文字链接",
+  "description": "链接",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",

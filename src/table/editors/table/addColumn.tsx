@@ -1,6 +1,6 @@
 import visibleOpt from '../../../components/editorRender/visibleOpt';
 import { setDataSchema } from '../../schema';
-import { Data, IColumn } from '../../types';
+import { Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
 import { getNewColumn, setColumns } from '../../utils';
 
 const addColumnEditor = {
@@ -20,6 +20,23 @@ const addColumnEditor = {
       }
     },
     {
+      title: '列宽分配',
+      type: 'Select',
+      options: [
+        { label: '固定列宽(不自动适配)', value: TableLayoutEnum.FixedWidth },
+        { label: '按比例分配多余宽度', value: TableLayoutEnum.Fixed },
+        { label: '按比例适配（无横向滚动条）', value: TableLayoutEnum.Auto }
+      ],
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.tableLayout || TableLayoutEnum.Fixed;
+        },
+        set({ data }: EditorResult<Data>, value: TableLayoutEnum) {
+          data.tableLayout = value;
+        }
+      }
+    },
+    {
       title: '',
       type: 'array',
       options: {
@@ -29,7 +46,9 @@ const addColumnEditor = {
         getTitle: (item: IColumn) => {
           const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           if (item.visible) {
-            return `${item.title}(${path})`;
+            return `【${item.width === WidthTypeEnum.Auto ? '自适应' : `${item.width}px`}】${
+              item.title
+            }(${path})`;
           } else {
             return `【隐藏】${item.title}(${path})`;
           }
