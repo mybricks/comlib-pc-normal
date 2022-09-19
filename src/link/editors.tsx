@@ -109,6 +109,10 @@ export default {
           {
             label: '前进',
             value: 'forward'
+          },
+          {
+            label: '自定义',
+            value: 'customEvent'
           }
         ],
         value: {
@@ -116,9 +120,26 @@ export default {
             if (!data.routeType) data.routeType = 'openTab';
             return data.routeType;
           },
-          set({ data }: EditorResult<Data>, value: Actions) {
+          set({ data, output }: EditorResult<Data>, value: Actions | 'customEvent') {
             data.routeType = value;
+            if (data.routeType === 'customEvent') {
+              output.add('click', '点击链接', { type: 'string' });
+            } else {
+              output.remove('click');
+            }
           }
+        }
+      },
+      {
+        title: '点击链接',
+        type: '_Event',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.routeType === 'customEvent';
+        },
+        options: () => {
+          return {
+            outputId: 'click'
+          };
         }
       }
     ];
@@ -202,8 +223,7 @@ export default {
             },
             value: {
               get: ({ data }: EditorResult<Data>) => {
-                if (!data.hoverStyle)
-                  data.hoverStyle = { ...data.style, color: '#40a9ff' };
+                if (!data.hoverStyle) data.hoverStyle = { ...data.style, color: '#40a9ff' };
                 return data.hoverStyle;
               },
               set: ({ data }: EditorResult<Data>, value) => {
