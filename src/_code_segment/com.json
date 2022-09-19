@@ -21,9 +21,9 @@
   "outputs": [
     {
       "id": "output0",
-      "title": "output0",
+      "title": "输出项0(output0)",
       "schema": {
-        "type": "string"
+        "type": "unknown"
       },
       "editable": true
     }
