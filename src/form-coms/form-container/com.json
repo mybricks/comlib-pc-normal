@@ -119,7 +119,7 @@
   "slots": [
     {
       "id": "content",
-      "title": "拖入表单项",
+      "title": "表单容器",
       "schema": "mybricks.normal-pc.form-container/form-item",
       "type": "scope",
       "inputs": [
