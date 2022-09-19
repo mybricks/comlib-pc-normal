@@ -3,13 +3,10 @@ import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
 import { usePrevious } from '../utils/hooks';
-import { isObject } from '../utils';
 import css from './index.less';
 
 const { Step } = Steps;
 
-let fullSubmitCache = {};
-let previousDataCache = {};
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
@@ -17,8 +14,6 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   useEffect(() => {
     if (runtime) {
       data.current = 0;
-      fullSubmitCache = {};
-      previousDataCache = {};
     }
   }, []);
 
@@ -49,21 +44,14 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       });
 
       stepAry.forEach(({ id }, index) => {
-        //最后一步没有next，submit output
+        //最后一步没有next output
         if (index < stepAry.length - 1) {
           slots[id].outputs[`${id}_next`]((val) => {
             if (data.current < stepAry.length - 1) {
-              previousDataCache[data.current] = val;
+              stepAry[data.current].content = val;
               data.current += 1;
             }
           });
-          if (data.fullSubmit) {
-            slots[id].outputs[`${id}_submit`]((val) => {
-              if (isObject(val)) {
-                fullSubmitCache = { ...fullSubmitCache, ...val };
-              }
-            });
-          }
         }
       });
     }
@@ -75,12 +63,17 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     }
   }, [data.current]);
 
+  const getPreviousData = () => {
+    const content = {};
+    for (let i = 0; i < data.current; i++) {
+      content[i] = stepAry[i].content;
+    }
+    return content;
+  };
+
   const stepIntoHook = () => {
     const slotInputs = slots[stepAry[data.current].id].inputs;
-    slotInputs[`${stepAry[data.current].id}_into`]({
-      current: data.current,
-      data: previousDataCache
-    });
+    slotInputs[`${stepAry[data.current].id}_into`](getPreviousData());
   };
 
   const stepLeaveHook = () => {
@@ -110,7 +103,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   const submit = () => {
     if (runtime) {
-      outputs['submit'](fullSubmitCache);
+      outputs['submit'](data.fullSubmit ? getPreviousData() : undefined);
     }
   };
 
