@@ -8,7 +8,9 @@ export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
-      Editor<Data>('标题', EditorType.Text, 'message', {
+      {
+        title: '标题',
+        type: 'TextArea',
         value: {
           get({ data }: EditorResult<Data>) {
             return decodeURIComponent(data.message);
@@ -17,7 +19,7 @@ export default {
             data.message = encodeURIComponent(value);
           }
         }
-      }),
+      },
       Editor<Data>('类型', EditorType.Select, 'type', {
         options: TypeOptions
       }),
