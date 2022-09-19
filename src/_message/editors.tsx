@@ -61,6 +61,19 @@ export default {
           setDescByData({ data, setDesc });
         }
       }
+    },
+    {
+      title: '内容输入',
+      type: 'switch',
+      description: '开关打开接收外部动态内容, 关闭后仅接受静态内容',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isExternal;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.isExternal = value;
+        }
+      }
     }
   ]
 };

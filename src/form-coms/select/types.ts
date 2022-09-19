@@ -12,6 +12,6 @@ export interface Data {
     };
     visible: boolean;
     rules: any[];
-    value?: number | string;
+    value?: number | string | number[] | string[];
     staticOptions: Option[];
 }

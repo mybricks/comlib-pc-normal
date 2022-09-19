@@ -71,7 +71,7 @@ function get(
   if (index === -1) return;
   if (cb) cb(index);
   if (val === 'obj') {
-    return data.footerBtns[index];
+    return data.footerBtns[index] || {};
   }
   return data.footerBtns[index][val];
 }
@@ -79,19 +79,11 @@ function get(
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     if (pin.id === InputIds.Open) {
-      // input.get(InputIds.Open).setSchema(pin.schema);
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
-    }
-  },
-  '@inputConnected'({ data, input, output, slots, ...slot }, fromPin, toPin) {
-    if (toPin.id === InputIds.Open) {
-      // input.get(InputIds.Open).setSchema(fromPin.schema);
-      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(fromPin.schema);
     }
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
-      // input.get(InputIds.Open).setSchema(defaultSchema);
       slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(defaultSchema);
     }
   },
@@ -357,6 +349,23 @@ export default {
       },
       icon('btnId'),
       {
+        title: '事件',
+        items: [
+          {
+            title: '单击',
+            type: '_Event',
+
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const res = get(data, focusArea, 'btnId', 'id');
+              return {
+                outputId: res,
+                slotId: SlotIds.Container
+              };
+            }
+          }
+        ]
+      },
+      {
         title: '隐藏',
         type: 'Switch',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
@@ -379,27 +388,6 @@ export default {
         }
       },
       moveDelete('btnId')
-    ];
-
-    cate2.title = '事件';
-    cate2.items = [
-      {
-        title: '事件',
-        items: [
-          {
-            title: '单击',
-            type: '_Event',
-
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const res = get(data, focusArea, 'btnId', 'id');
-              return {
-                outputId: res,
-                slotId: SlotIds.Container
-              };
-            }
-          }
-        ]
-      }
     ];
 
     return { title: '按钮' };
@@ -504,7 +492,7 @@ function moveDelete(dataset: string) {
         title: '删除',
         type: 'Button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const { id } = get(data, focusArea, dataset, 'obj');
+          const id = get(data, focusArea, dataset, 'obj')?.id;
           return !DefaultEvent.includes(id);
         },
         value: {

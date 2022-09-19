@@ -8,7 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editors/index.ts",
   "slots": [
     {
       "id": "slot_0",

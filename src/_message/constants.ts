@@ -19,10 +19,20 @@ export const TypeEnumMap = {
  * @param content 提示内容
  * @param type 提示类型
  * @param duration 关闭延时
+ * @param isExternal 输入类型选择
  */
 export interface Data {
   title: string;
   content?: string;
   type: TypeEnum;
   duration: number;
+  isExternal: boolean;
+  isMulti: boolean;
 }
+
+export const InputIds = {
+  Open: 'showMsg'
+};
+export const OutputIds = {
+  Close: 'closeMsg'
+};

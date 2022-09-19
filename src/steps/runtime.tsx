@@ -9,6 +9,7 @@ import css from './index.less';
 const { Step } = Steps;
 
 let fullSubmitCache = {};
+let previousDataCache = {};
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
@@ -17,6 +18,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     if (runtime) {
       data.current = 0;
       fullSubmitCache = {};
+      previousDataCache = {};
     }
   }, []);
 
@@ -58,16 +60,17 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
         if (index < stepAry.length - 1) {
           slots[id].outputs[`${id}_next`]((val) => {
             if (data.current < stepAry.length - 1) {
+              previousDataCache[data.current] = val;
               data.current += 1;
             }
           });
-        }
-        if (data.fullSubmit && index < stepAry.length - 1) {
-          slots[id].outputs[`${id}_submit`]((val) => {
-            if (isObject(val)) {
-              fullSubmitCache = { ...fullSubmitCache, ...val };
-            }
-          });
+          if (data.fullSubmit) {
+            slots[id].outputs[`${id}_submit`]((val) => {
+              if (isObject(val)) {
+                fullSubmitCache = { ...fullSubmitCache, ...val };
+              }
+            });
+          }
         }
       });
     }
@@ -81,7 +84,10 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   const stepIntoHook = () => {
     const slotInputs = slots[stepAry[data.current].id].inputs;
-    slotInputs[`${stepAry[data.current].id}_into`]({ current: data.current });
+    slotInputs[`${stepAry[data.current].id}_into`]({
+      current: data.current,
+      data: previousDataCache
+    });
   };
 
   const stepLeaveHook = () => {

@@ -34,13 +34,13 @@
         "comAry": [
           "./src/form-coms/form-container/com.json",
           "./src/form-coms/form_text/com.json",
-          "./src/form-coms/radio/com.json",
-          "./src/form-coms/checkbox/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
-          "./src/form-coms/input-number/com.json",
           "./src/form-coms/date-picker/com.json",
-          "./src/form-coms/input-textarea/com.json"
+          "./src/form-coms/input-number/com.json",
+          "./src/form-coms/input-textarea/com.json",
+          "./src/form-coms/radio/com.json",
+          "./src/form-coms/checkbox/com.json"
         ]
       },
       {
@@ -83,14 +83,14 @@
       },
       "./src/_code_segment/com.json",
       "./src/_connector/com.json",
-      "./src/confirm/com.json",
-      "./src/message/com.json",
-      "./src/page-router/com.json",
-      "./src/global-loading/com.json",
-      "./src/timer/com.json",
-      "./src/merge/com.json",
-      "./src/download/com.json",
-      "./src/object-merge/com.json"
+      "./src/_confirm/com.json",
+      "./src/_message/com.json",
+      "./src/_page_router/com.json",
+      "./src/_global_loading/com.json",
+      "./src/_timer/com.json",
+      "./src/_merge/com.json",
+      "./src/_download/com.json",
+      "./src/_object_merge/com.json"
     ],
     "publish": [
       {
@@ -117,6 +117,20 @@
         ]
       },
       {
+        "title": "表单",
+        "comAry": [
+          "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form_text/com.json",
+          "./src/form-coms/select/com.json",
+          "./src/form-coms/cascader/com.json",
+          "./src/form-coms/date-picker/com.json",
+          "./src/form-coms/input-number/com.json",
+          "./src/form-coms/input-textarea/com.json",
+          "./src/form-coms/radio/com.json",
+          "./src/form-coms/checkbox/com.json"
+        ]
+      },
+      {
         "title": "数据",
         "comAry": [
           "./src/table/com.json",
@@ -156,29 +170,14 @@
       },
       "./src/_code_segment/com.json",
       "./src/_connector/com.json",
-      "./src/confirm/com.json",
-      "./src/message/com.json",
-      "./src/object-merge/com.json",
-      "./src/paginator/com.json",
-      "./src/popover/com.json",
-      "./src/qr-code/com.json",
-      "./src/result/com.json",
-      "./src/richtext/com.json",
-      "./src/richtext-preview/com.json",
-      "./src/single-image/com.json",
-      "./src/sort-bar/com.json",
-      "./src/steps/com.json",
-      "./src/table/com.json",
-      "./src/tabs/com.json",
-      "./src/text/com.json",
-      "./src/timeline/com.json",
-      "./src/toolbar/com.json",
-      "./src/page-router/com.json",
-      "./src/global-loading/com.json",
-      "./src/timer/com.json",
-      "./src/merge/com.json",
-      "./src/download/com.json",
-      "./src/object-merge/com.json"
+      "./src/_confirm/com.json",
+      "./src/_message/com.json",
+      "./src/_page_router/com.json",
+      "./src/_global_loading/com.json",
+      "./src/_timer/com.json",
+      "./src/_merge/com.json",
+      "./src/_download/com.json",
+      "./src/_object_merge/com.json"
     ]
   }
 }
