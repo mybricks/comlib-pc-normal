@@ -4,7 +4,7 @@ import { Actions } from '../utils/history';
 export interface Data {
   content: string;
   url: string;
-  routeType: Actions;
+  routeType: Actions | 'customEvent';
   isChoose: boolean;
   icon?: string;
   location?: string;

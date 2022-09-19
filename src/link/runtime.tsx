@@ -4,7 +4,7 @@ import { route } from '../utils/history';
 import { Data, InputIds } from './constants';
 import css from './runtime.less';
 
-export default function ({ data, inputs, env }: RuntimeParams<Data>) {
+export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   const { style, useHoverStyle, hoverStyle, routeType } = data;
   const ref = useRef(null);
 
@@ -41,6 +41,10 @@ export default function ({ data, inputs, env }: RuntimeParams<Data>) {
   };
 
   const onClick = () => {
+    if (routeType === 'customEvent') {
+      outputs['click'] && outputs['click'](data.url);
+      return;
+    }
     if (data.url === '') {
       console.warn('目标地址为空!');
     } else if (typeof data.url === 'string') {
