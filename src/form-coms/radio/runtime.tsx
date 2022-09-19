@@ -2,6 +2,8 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Radio } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
+import { uuid } from '../../utils';
+import { Option } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
@@ -36,8 +38,38 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       data.config.disabled = val;
     });
 
-    inputs['setOptions']((val) => {
-      data.config.options = val;
+    inputs['setOptions']((ds) => {
+      let tempDs: Option[] = [];
+      if (Array.isArray(ds)) {
+        ds.forEach((item, index) => {
+          tempDs.push({
+            checked: false,
+            disabled: false,
+            lable: `单选框${index}`,
+            value: `${uuid()}`,
+            ...item
+          });
+        });
+      } else {
+        tempDs = [
+          {
+            checked: false,
+            disabled: false,
+            lable: `单选框`,
+            value: `${uuid()}`,
+            ...(ds || {})
+          }
+        ];
+      }
+      let newVal;
+      tempDs.map((radio) => {
+        const { checked, value } = radio;
+        if (checked && value != undefined) {
+          newVal = value;
+        }
+      });
+      data.value = newVal;
+      data.config.options = tempDs;
     });
 
     inputs['setVisible']((val) => {
@@ -62,6 +94,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
                 key={item.value}
                 value={item.value}
                 disabled={item.disabled}
+                checked={item.checked}
                 style={{ marginRight: 8 }}
               >
                 {label}
