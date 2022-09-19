@@ -11,8 +11,24 @@ export default {
   },
   ':root': [
     {
+      title: '内容输入',
+      type: 'switch',
+      description: '开关打开接收外部动态内容, 关闭后仅接受静态内容',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isExternal;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.isExternal = value;
+        }
+      }
+    },
+    {
       title: '提示内容',
       type: 'Text',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.isExternal;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.content;
@@ -59,19 +75,6 @@ export default {
         set({ data, setDesc }: EditorResult<Data>, value: TypeEnum) {
           data.type = value;
           setDescByData({ data, setDesc });
-        }
-      }
-    },
-    {
-      title: '内容输入',
-      type: 'switch',
-      description: '开关打开接收外部动态内容, 关闭后仅接受静态内容',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.isExternal;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.isExternal = value;
         }
       }
     },

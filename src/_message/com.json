@@ -1,9 +1,9 @@
 {
-  "title": "弹出提示",
+  "title": "消息提示",
   "namespace": "mybricks.normal-pc.message",
   "version": "1.0.0",
   "rtType": "js",
-  "description": "弹出提示",
+  "description": "消息提示",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
@@ -13,7 +13,7 @@
   "inputs": [
     {
       "id": "showMsg",
-      "title": "弹出",
+      "title": "弹出提示",
       "schema": {
         "type": "follow"
       }
