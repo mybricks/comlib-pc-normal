@@ -75,7 +75,7 @@ export default {
             return data.config.maxLength || [-1];
           },
           set({ data }, value: number) {
-            data.config['maxLength'] = value[0];
+            data.config['maxLength'] = value;
           }
         }
       },

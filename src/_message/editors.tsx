@@ -1,4 +1,4 @@
-import { Data, TypeEnum, TypeEnumMap } from './constants';
+import { Data, TypeEnum, TypeEnumMap, OutputIds } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { type, content } = data;
@@ -72,6 +72,25 @@ export default {
         },
         set({ data }: EditorResult<Data>, value: boolean) {
           data.isExternal = value;
+        }
+      }
+    },
+    {
+      title: '提示结束',
+      type: 'switch',
+      description: '开关打开后开启提示结束输出, 关闭后无结束事件输出',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isEnd;
+        },
+        set({ data, output }: EditorResult<Data>, value: boolean) {
+          data.isEnd = value;
+          if (value && !output.get(OutputIds.Close)) {
+            output.add(OutputIds.Close, '提示结束', { type: 'any' });
+          }
+          if (!value && output.get(OutputIds.Close)) {
+            output.remove(OutputIds.Close);
+          }
         }
       }
     }
