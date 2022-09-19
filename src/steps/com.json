@@ -14,7 +14,7 @@
       "id": "nextStep",
       "title": "下一步",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
@@ -29,14 +29,6 @@
       "title": "跳转",
       "schema": {
         "type": "number"
-      }
-    },
-    {
-      "id": "submit",
-      "title": "数据提交",
-      "rels": ["submit"],
-      "schema": {
-        "type": "follow"
       }
     },
     {
