@@ -4,7 +4,15 @@ import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from './constants';
 import { formatDataSource, getDefaultDataSource } from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
-import { Data, FilterTypeEnum, RowSelectionTypeEnum } from './types';
+import {
+  ContentTypeEnum,
+  Data,
+  FilterTypeEnum,
+  IColumn,
+  RowSelectionTypeEnum,
+  TableLayoutEnum,
+  WidthTypeEnum
+} from './types';
 import ColumnRender from './components/ColumnRender';
 import ColumnsTitleRender from './components/ColumnsTitleRender';
 import TableHeader from './components/TableHeader';
@@ -269,6 +277,32 @@ export default function (props: RuntimeParams<Data>) {
     return getDefaultDataSource(data.columns);
   }, [data.columns]);
 
+  // 获取表格显示列宽度和
+  const getUseWidth = () => {
+    let hasAuto, width;
+    const getWidth = (list: IColumn[]) => {
+      let count = 0;
+      list.forEach((item) => {
+        if (!item.visible || hasAuto) {
+          return;
+        }
+        if (item.width === WidthTypeEnum.Auto && item.contentType !== ContentTypeEnum.Group) {
+          hasAuto = true;
+          return;
+        }
+        if (item.contentType === ContentTypeEnum.Group && item.children?.length) {
+          count = count + getWidth(item.children);
+        } else {
+          count = count + (+(item.width || 0) || 0);
+        }
+      });
+      return count;
+    };
+    width = getWidth(data.columns);
+    // 当任意列为自适应时，宽度为100%
+    return hasAuto ? '100%' : width;
+  };
+
   return (
     <div className={css.table}>
       <TableHeader
@@ -280,6 +314,9 @@ export default function (props: RuntimeParams<Data>) {
       />
       {data.columns.length ? (
         <Table
+          style={{
+            width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
+          }}
           dataSource={edit ? defaultDataSource : dataSource}
           loading={{
             tip: data.loadingTip,
@@ -314,6 +351,11 @@ export default function (props: RuntimeParams<Data>) {
               : undefined
           }
           onChange={onChange}
+          tableLayout={
+            (data.tableLayout === TableLayoutEnum.FixedWidth
+              ? TableLayoutEnum.Fixed
+              : data.tableLayout) || TableLayoutEnum.Fixed
+          }
         >
           {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
         </Table>

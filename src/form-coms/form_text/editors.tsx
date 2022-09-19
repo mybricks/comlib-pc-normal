@@ -105,7 +105,7 @@ export default {
         options: [{ min: -1 }],
         value: {
           get({ data }) {
-            return data.config.maxLength || [-1];
+            return [data.config.maxLength];
           },
           set({ data }, value: number) {
             data.config['maxLength'] = value[0];

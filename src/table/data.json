@@ -18,5 +18,6 @@
     "bottom"
   ],
   "useLoading": false,
+  "tableLayout": "fixed",
   "loadingTip": ""
 }
