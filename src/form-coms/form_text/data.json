@@ -8,6 +8,7 @@
     "disabled": false,
     "addonBefore": "",
     "addonAfter": "",
-    "showCount": false
+    "showCount": false,
+    "maxLength": -1
   }
 }

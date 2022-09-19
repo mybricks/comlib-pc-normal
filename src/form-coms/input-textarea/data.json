@@ -6,6 +6,7 @@
     "allowClear": true,
     "placeholder": "请输入内容",
     "disabled": false,
-    "showCount": false
+    "showCount": false,
+    "maxLength": -1
   }
 }

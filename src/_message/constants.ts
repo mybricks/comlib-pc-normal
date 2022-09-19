@@ -28,6 +28,7 @@ export interface Data {
   duration: number;
   isExternal: boolean;
   isMulti: boolean;
+  isEnd: boolean;
 }
 
 export const InputIds = {

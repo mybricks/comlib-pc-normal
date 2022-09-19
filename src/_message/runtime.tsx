@@ -28,14 +28,14 @@ const runtimeExecute = ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         } else if (typeof val !== 'string') {
           //输入为数组，对象，布尔，null
           if (val === null) {
-            val = content;
+            val = 'null';
           } else if (val === undefined) {
-            val = content;
+            val = 'undefined';
           } else {
             val = JSON.stringify(val);
           }
         } else if (val === '') {
-          val = content;
+          val = ' ';
         }
 
         try {

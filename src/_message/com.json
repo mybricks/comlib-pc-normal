@@ -13,23 +13,12 @@
   "inputs": [
     {
       "id": "showMsg",
-      "title": "弹出",
-      "rels": [
-        "closeMsg"
-      ],
+      "title": "弹出提示",
       "schema": {
-        "type": "any"
+        "type": "follow"
       }
     }
   ],
-  "outputs": [
-    {
-      "id": "closeMsg",
-      "title": "提示结束",
-      "schema": {
-        "type": "any"
-      }
-    }
-  ],
+  "outputs": [],
   "slots": []
 }
