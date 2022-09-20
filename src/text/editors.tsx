@@ -6,6 +6,56 @@ export default {
   },
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
+    const eventItems = [
+      {
+        title: '点击事件',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useClick;
+          },
+          set({ data, output }: EditorResult<Data>, value: boolean) {
+            const event = output.get(OutputIds.Click);
+            if (value) {
+              !event && output.add(OutputIds.Click, '点击', Schemas.String);
+            } else {
+              event && output.remove(OutputIds.Click);
+            }
+            data.useClick = value;
+          }
+        }
+      },
+      {
+        title: '点击输出内容',
+        type: 'text',
+        options: {
+          placeholder: '默认输出文本内容'
+        },
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useClick;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.outputContent;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.outputContent = value;
+          }
+        }
+      },
+      {
+        title: '点击事件',
+        type: '_Event',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useClick;
+        },
+        options: () => {
+          return {
+            outputId: OutputIds.Click
+          };
+        }
+      }
+    ];
     cate1.items = [
       {
         title: '对齐方式',
@@ -78,7 +128,8 @@ export default {
             data.ellipsis = { rows: value[0] };
           }
         }
-      }
+      },
+      ...eventItems
     ];
 
     cate2.title = '样式';
@@ -186,58 +237,6 @@ export default {
             }
           }
         ]
-      }
-    ];
-
-    cate3.title = '事件';
-    cate3.items = [
-      {
-        title: '点击事件',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.useClick;
-          },
-          set({ data, output }: EditorResult<Data>, value: boolean) {
-            const event = output.get(OutputIds.Click);
-            if (value) {
-              !event && output.add(OutputIds.Click, '点击', Schemas.String);
-            } else {
-              event && output.remove(OutputIds.Click);
-            }
-            data.useClick = value;
-          }
-        }
-      },
-      {
-        title: '点击输出内容',
-        type: 'text',
-        options: {
-          placeholder: '默认输出文本内容'
-        },
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.useClick;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.outputContent;
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.outputContent = value;
-          }
-        }
-      },
-      {
-        title: '点击事件',
-        type: '_Event',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.useClick;
-        },
-        options: () => {
-          return {
-            outputId: OutputIds.Click
-          };
-        }
       }
     ];
 
