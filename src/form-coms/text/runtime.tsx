@@ -21,19 +21,15 @@ interface Data {
 export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
   const { edit } = env;
 
-  const [value, setValue] = useState();
-
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
-      setValue(val);
-      outputs['onChange'](value);
+      outputs['onChange'](data.value);
     });
 
     inputs['validate']((val, outputRels) => {
       validateFormItem({
-        // value: data.value,
-        value,
+        value: data.value,
         env,
         rules: data.rules
       })
@@ -44,16 +40,12 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
           outputRels['returnValidate'](e);
         });
     });
-    console.log('----text1111', `data.value ${data.value} ---`, value);
     inputs['getValue']((val, outputRels) => {
-      console.log('----text2222', `data.value ${data.value} ---`, value);
-      outputRels['returnValue'](value);
-      // outputRels['returnValue'](data.value);
+      outputRels['returnValue'](data.value);
     });
 
     inputs['resetValue'](() => {
       data.value = void 0;
-      setValue(void 0);
     });
 
     inputs['setVisible']((val: boolean) => {
@@ -63,13 +55,12 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     inputs['setDisabled']((val: boolean) => {
       data.config.disabled = val;
     });
-  }, [value]);
+  }, []);
 
   const changeValue = useCallback((e) => {
-    // const value = e.target.value;
-    data.value = e.target.value;
-    setValue(e.target.value);
-    outputs['onChange'](e.target.value);
+    const value = e.target.value;
+    data.value = value;
+    outputs['onChange'](value);
   }, []);
 
   const onBlur = useCallback((e) => {
@@ -82,7 +73,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     <Input
       type="text"
       {...data.config}
-      value={value}
+      value={data.value}
       readOnly={!!edit}
       onChange={changeValue}
       onBlur={onBlur}
