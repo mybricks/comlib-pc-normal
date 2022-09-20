@@ -26,8 +26,9 @@ export default {
       setAutoRun(true);
       data.runImmediate = true;
     }
-    data.fnBody = data.fnBody || encodeURIComponent(CODE_TEMPLATE);
-    data.fnParams = data.fnParams || getFnParams({ data, outputs: output });
+    data.fns = data.fns || encodeURIComponent(CODE_TEMPLATE);
+    // data.fnBody = data.fnBody || encodeURIComponent(CODE_TEMPLATE);
+    // data.fnParams = data.fnParams || getFnParams({ data, outputs: output });
   },
   '@pinRemoved'({ data, outputs}){
     // data.fnParams = getFnParams({ data, outputs });

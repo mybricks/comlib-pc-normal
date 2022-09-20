@@ -7,7 +7,6 @@ export const COMMENTS = `/**
 * @param inputValue: any 输入项的值
 * @parma outputs: any 输出项
 * @param context: ContextProps 内置方法
-* output0(val: any) => void 输出项函数
 *
 * interface Utils {
 *   // 获取cookies
@@ -24,7 +23,8 @@ export const COMMENTS = `/**
 *   utils: Utils
 * }
 * 例子
-* ({ context, inputValue, output0, output1, output2 }) => {
+* ({ context, inputValue, outputs }) => {
+*   const { output0, output1, output2 } = outputs;
 *   const res = '该值输出给下一个组件使用' + inputValue
 *   
 *   // 向输出项（output0）输出结果
