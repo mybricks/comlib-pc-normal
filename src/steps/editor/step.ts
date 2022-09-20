@@ -106,7 +106,7 @@ export default {
             }
 
             data.stepAry.forEach((item, idx) => {
-              slots.get(item.id).setTitle(`内容区【${idx + 1}】`)
+              slots.get(item.id).setTitle(`步骤${idx + 1}`)
               output.setTitle(
                 item.id,
                 idx === data.stepAry.length - 1 ? '提交' : `第${idx + 1}步 -> 下一步`

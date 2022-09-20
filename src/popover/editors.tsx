@@ -133,5 +133,32 @@ export default {
         }
       }
     ];
+    cate[1].title = '样式';
+    cate[1].items = [
+      {
+        title: '',
+        type: 'Style',
+        options: {
+          plugins: ['bgColor', 'border', 'bgImage', 'font']
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return {
+              background: data.style?.background || '#fff',
+              borderRadius: data.style?.borderRadius || 4
+            };
+          },
+          set({ data }: EditorResult<Data>, value: any) {
+            if (!data.style) {
+              data.style = {};
+            }
+            data.style = {
+              ...data.style,
+              ...value
+            };
+          }
+        }
+      }
+    ];
   }
 };
