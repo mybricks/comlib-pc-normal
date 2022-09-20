@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, ReactNode } from 'react';
 import classnames from 'classnames';
 import { message, Tabs, Tooltip } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
-import css from './tabs.less';
+import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { usePrevious } from '../utils/hooks';
 
