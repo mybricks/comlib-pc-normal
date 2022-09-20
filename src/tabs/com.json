@@ -1,5 +1,5 @@
 {
-  "title": "Tabs",
+  "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
   "version": "1.0.0",
   "description": "选项卡切换组件",
@@ -75,7 +75,7 @@
   "slots": [
     {
       "id": "tab0",
-      "title": "内容区【1】",
+      "title": "标签页【1】",
       "type": "scope",
       "inputs": [
         {
