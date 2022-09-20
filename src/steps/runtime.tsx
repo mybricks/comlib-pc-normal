@@ -32,7 +32,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
           message.error('【步骤条】跳转步骤必须是数字');
           return;
         }
-        if (val > stepAry.length - 1) {
+        if (val > stepAry.length - 1 || val < 0) {
           message.error('【步骤条】跳转步骤超出范围');
           return;
         }
