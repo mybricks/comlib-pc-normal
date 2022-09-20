@@ -30,7 +30,7 @@ export default {
     data.fnParams = data.fnParams || getFnParams({ data, outputs: output });
   },
   '@pinRemoved'({ data, outputs}){
-    data.fnParams = getFnParams({ data, outputs });
+    // data.fnParams = getFnParams({ data, outputs });
   },
   '@inputUpdated'({ data }, fromPin) {
     data.inputSchema = fromPin.schema;
@@ -59,8 +59,8 @@ export default {
             editable: true,
             deletable: true
           });
-          data.fnParams = getFnParams({ data, outputs: output });
-          forceRender.run();
+          // data.fnParams = getFnParams({ data, outputs: output });
+          // forceRender.run();
         }
       }
     },
@@ -74,7 +74,8 @@ export default {
           minimap: {
             enabled: false
           },
-          forceRender,
+          lineNumbers: 'on',
+          // forceRender,
           eslint: {
             parserOptions: {
               ecmaVersion: '2020',
@@ -83,18 +84,18 @@ export default {
           },
           schema: data.inputSchema
         };
-        Object.defineProperty(option, 'fnParams', {
-          get() {
-            return getFnParams({data, outputs });
-          },
-          configurable: true
-        });
-        Object.defineProperty(option, 'extraLib', {
-          get() {
-            return getExtralib({ outputs });
-          },
-          configurable: true
-        });
+        // Object.defineProperty(option, 'fnParams', {
+        //   get() {
+        //     return getFnParams({data, outputs });
+        //   },
+        //   configurable: true
+        // });
+        // Object.defineProperty(option, 'extraLib', {
+        //   get() {
+        //     return getExtralib({ outputs });
+        //   },
+        //   configurable: true
+        // });
         return option;
       },
       title: '代码编辑',
@@ -103,9 +104,10 @@ export default {
           return data.fnBody || CODE_TEMPLATE;
         },
         set({ data }: EditorResult<Data>, fns: any) {
-          const { code, transformCode } = fns;
-          data.fnBody = code;
-          data.transformCode = transformCode;
+          // const { code, transformCode } = fns;
+          // data.fnBody = code;
+          // data.transformCode = transformCode;
+          data.fns = fns;
         }
       }
     }
