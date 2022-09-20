@@ -1,4 +1,4 @@
-import { Data, TypeEnum, TypeEnumMap, OutputIds } from './constants';
+import { Data, TypeEnum, TypeEnumMap, OutputIds, InputIds } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { type, content } = data;
@@ -18,8 +18,13 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.isExternal;
         },
-        set({ data }: EditorResult<Data>, value: boolean) {
+        set({ data, input }: EditorResult<Data>, value: boolean) {
           data.isExternal = value;
+          if (!data.isExternal) {
+            input.get(InputIds.Open).setSchema({ type: 'any' });
+          } else {
+            input.get(InputIds.Open).setSchema({ type: 'follow' });
+          }
         }
       }
     },
