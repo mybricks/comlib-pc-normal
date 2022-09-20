@@ -423,7 +423,72 @@ export default {
     ];
 
     return { title: '按钮' };
-  }
+  },
+  '.ant-modal-title': {
+    title: '标题',
+    items: [
+      {
+        title: '内容',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.title;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (isEmptyString(value)) {
+              data.title = value;
+            }
+          }
+        }
+      }
+    ]
+  },
+  '.ant-modal-close': {
+    title: '关闭按钮',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.closable;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.closable = value;
+          }
+        }
+      }
+    ]
+  },
+  '.ant-modal-footer': {
+    title: '底部内容',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useFooter;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.useFooter = value;
+          }
+        }
+      },
+      {
+        title: '新增操作',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.footerBtns;
+        },
+        type: 'Button',
+        value: {
+          set({ data, input, output, slot }: EditorResult<Data>) {
+            addBtn({ data, input, output, slot });
+          }
+        }
+      }
+    ]
+  },
 };
 
 
