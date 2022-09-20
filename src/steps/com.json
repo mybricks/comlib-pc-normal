@@ -34,7 +34,9 @@
     {
       "id": "getIndex",
       "title": "获取当前步骤（从0开始）",
-      "rels": ["getIndex"],
+      "rels": [
+        "getIndex"
+      ],
       "schema": {
         "type": "any"
       }
@@ -66,7 +68,7 @@
   "slots": [
     {
       "id": "step0",
-      "title": "内容区【1】",
+      "title": "步骤1",
       "type": "scope",
       "inputs": [
         {

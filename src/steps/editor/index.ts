@@ -167,7 +167,7 @@ export default {
 const addSlot = (data, slots, id) => {
   slots.add({
     id,
-    title: `内容区【${data.stepAry.length}】`,
+    title: `步骤${data.stepAry.length}`,
     type: 'scope',
     inputs: [
       {
