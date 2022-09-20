@@ -7,11 +7,11 @@ const getFnString = (fnBody: string, fnParams: string[]) => {
 };
 
 export default function ({ env, data, inputs, outputs, logger, onError }: RuntimeParams<Data>) {
-  const { transformCode, fnBody, fnParams, runImmediate } = data;
-  const fns = {
-    transformCode: transformCode || getFnString(fnBody, fnParams),
-    code: getFnString(fnBody, fnParams)
-  };
+  const { transformCode, fnBody, fns, fnParams, runImmediate } = data;
+  // const fns = {
+  //   transformCode: transformCode || getFnString(fnBody, fnParams),
+  //   code: getFnString(fnBody, fnParams)
+  // };
 
   const runJSParams = {
     context: {
@@ -20,7 +20,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
       hasPermission: env.hasPermission,
       utils: { ...utils, moment }
     },
-    ...outputs
+    outputs
   };
   
   try {
