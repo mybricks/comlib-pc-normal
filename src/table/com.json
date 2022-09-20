@@ -1,8 +1,8 @@
 {
-  "title": "表格",
+  "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
   "version": "1.0.0",
-  "description": "表格",
+  "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.png",

@@ -1,11 +1,11 @@
 {
-  "title": "组合表单项容器",
-  "namespace": "mybricks.normal-pc.form-object-container",
+  "title": "日期范围选择框",
+  "namespace": "mybricks.normal-pc.range-picker",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.0",
-  "description": "组合表单项容器",
-  "icon": "",
+  "description": "日期范围选择框",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
@@ -14,8 +14,10 @@
       "id": "setValue",
       "title": "设置值",
       "schema": {
-        "type": "object",
-        "properties": {}
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     },
     {
@@ -37,9 +39,37 @@
       "rels": [
         "returnValue"
       ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setVisible",
+      "title": "设置显示/隐藏",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [
+    {
+      "id": "onChange",
+      "title": "值变化",
+      "schema": {
+        "type": "string"
+      }
+    },
     {
       "id": "returnValidate",
       "title": "校验结果",
@@ -55,12 +85,8 @@
       }
     }
   ],
-  "slots": [
-    {
-      "id": "content",
-      "title": "拖入表单项",
-      "schema": "mybricks.normal-pc.form-container/form-item"
-    }
-  ],
-  "schema": "mybricks.normal-pc.form-container/form-item"
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
 }

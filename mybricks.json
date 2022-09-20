@@ -33,10 +33,11 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
-          "./src/form-coms/form_text/com.json",
+          "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/date-picker/com.json",
+          "./src/form-coms/range-picker/com.json",
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/input-textarea/com.json",
           "./src/form-coms/radio/com.json",
@@ -81,16 +82,16 @@
           "./src/tooltip/com.json"
         ]
       },
-      "./src/_code_segment/com.json",
+      "./src/_code-segment/com.json",
       "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
-      "./src/_page_router/com.json",
-      "./src/_global_loading/com.json",
+      "./src/_page-router/com.json",
+      "./src/_global-loading/com.json",
       "./src/_timer/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object_merge/com.json"
+      "./src/_object-merge/com.json"
     ],
     "publish": [
       {
@@ -120,10 +121,11 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
-          "./src/form-coms/form_text/com.json",
+          "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/date-picker/com.json",
+          "./src/form-coms/range-picker/com.json",
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/input-textarea/com.json",
           "./src/form-coms/radio/com.json",
@@ -168,16 +170,16 @@
           "./src/tooltip/com.json"
         ]
       },
-      "./src/_code_segment/com.json",
+      "./src/_code-segment/com.json",
       "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
-      "./src/_page_router/com.json",
-      "./src/_global_loading/com.json",
+      "./src/_page-router/com.json",
+      "./src/_global-loading/com.json",
       "./src/_timer/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object_merge/com.json"
+      "./src/_object-merge/com.json"
     ]
   }
 }

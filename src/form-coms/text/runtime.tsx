@@ -40,7 +40,6 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
           outputRels['returnValidate'](e);
         });
     });
-
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
     });
@@ -61,7 +60,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    outputs['onChange'](data.value);
+    outputs['onChange'](value);
   }, []);
 
   const onBlur = useCallback((e) => {

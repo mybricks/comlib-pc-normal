@@ -4,22 +4,7 @@ import { Editor, EditorType } from '../utils/editor';
 export default {
   ':root': ({}, cate1, cate2, cate3) => {
     cate1.title = '常规';
-    cate1.items = [
-      Editor<Data>('标题内容', EditorType.Text, 'title'),
-      Editor<Data>('开启卡片右上角操作', EditorType.Switch, 'useExtra')
-    ];
-
-    cate2.title = '样式';
-    cate2.items = [
-      Editor<Data>('卡片边框', EditorType.Switch, 'bordered'),
-      Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
-      Editor<Data>('鼠标移过时可浮起', EditorType.Select, 'size', {
-        options: SizeOptions
-      })
-    ];
-
-    cate3.title = '事件';
-    cate3.items = [
+    const eventItems = [
       Editor<Data>('点击', EditorType.Switch, 'useClick', {
         value: {
           set({ data, output }: EditorResult<Data>, value: boolean) {
@@ -43,7 +28,24 @@ export default {
           return {
             outputId: OutputIds.Click
           };
+        },
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.useClick;
         }
+      })
+    ];
+    cate1.items = [
+      Editor<Data>('标题内容', EditorType.Text, 'title'),
+      Editor<Data>('开启卡片右上角操作', EditorType.Switch, 'useExtra'),
+      ...eventItems
+    ];
+
+    cate2.title = '样式';
+    cate2.items = [
+      Editor<Data>('卡片边框', EditorType.Switch, 'bordered'),
+      Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
+      Editor<Data>('鼠标移过时可浮起', EditorType.Select, 'size', {
+        options: SizeOptions
       })
     ];
 

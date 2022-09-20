@@ -19,6 +19,7 @@ export enum TypeEnum {
  * @param displayObjectSize 是否展示条目
  * @param enableClipboard 节点复制
  * @param enableOutput 节点输出
+ * @param dataSourceType 数据源类型
  */
 export interface Data {
   json: any;
@@ -30,6 +31,7 @@ export interface Data {
   displayObjectSize: boolean;
   enableClipboard: boolean;
   enableOutput: boolean;
+  dataSourceType?: 'default' | 'array' | 'object';
 }
 
 export const InputIds = {
