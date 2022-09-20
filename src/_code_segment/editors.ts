@@ -101,7 +101,7 @@ export default {
       title: '代码编辑',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.fnBody || CODE_TEMPLATE;
+          return data.fns || CODE_TEMPLATE;
         },
         set({ data }: EditorResult<Data>, fns: any) {
           // const { code, transformCode } = fns;
