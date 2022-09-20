@@ -81,16 +81,16 @@
           "./src/tooltip/com.json"
         ]
       },
-      "./src/_code_segment/com.json",
+      "./src/_code-segment/com.json",
       "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
-      "./src/_page_router/com.json",
-      "./src/_global_loading/com.json",
+      "./src/_page-router/com.json",
+      "./src/_global-loading/com.json",
       "./src/_timer/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object_merge/com.json"
+      "./src/_object-merge/com.json"
     ],
     "publish": [
       {
@@ -168,16 +168,16 @@
           "./src/tooltip/com.json"
         ]
       },
-      "./src/_code_segment/com.json",
+      "./src/_code-segment/com.json",
       "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
-      "./src/_page_router/com.json",
-      "./src/_global_loading/com.json",
+      "./src/_page-router/com.json",
+      "./src/_global-loading/com.json",
       "./src/_timer/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object_merge/com.json"
+      "./src/_object-merge/com.json"
     ]
   }
 }
