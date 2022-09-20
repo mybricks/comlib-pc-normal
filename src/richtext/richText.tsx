@@ -32,7 +32,7 @@ export default function ({
   const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
-  const uploadCb = useRef<any>({});
+  const uploadCb = useRef<any>();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
