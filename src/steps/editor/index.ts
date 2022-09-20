@@ -119,7 +119,7 @@ export default {
             addSlot(data, slots, id)
             output.add(id, `提交_${id}`, DefaultSchema);
             //设置跳转title
-            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length}）`)
+            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
             data.stepAry.forEach((item, idx) => {
               output.setTitle(
                 item.id,
@@ -203,7 +203,7 @@ export const updateStepOutput = (data, slots) => {
       if (!slot.outputs.get(`${id}_next`)) {
         slot.outputs.add(`${id}_next`, '下一步', { type: "follow" })
       }
-      
+
     } else {
       //最后一步没有next output
       if (slot.outputs.get(`${id}_next`)) {
