@@ -1,5 +1,7 @@
-export const CODE_TEMPLATE = 
-`  output0(inputValue);`;
+export const CODE_TEMPLATE = `({ context, inputValue, outputs }) => {
+  const { output0 } = outputs;
+  output0(inputValue);
+}`;
 
 export const COMMENTS = `/**
 * @param inputValue: any 输入项的值
@@ -38,5 +40,6 @@ export interface Data {
   transformCode: string;
   fnParams: string[];
   fnBody: string;
+  fns: any;
   runImmediate: boolean;
 }
