@@ -6,7 +6,7 @@ export enum ContentTypeEnum {
 export enum AlignEnum {
   Left = 'left',
   Center = 'center',
-  Right = 'right',
+  Right = 'right'
 }
 export enum FixedEnum {
   Left = 'left',
@@ -37,6 +37,9 @@ export interface Filter {
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
 }
+export enum WidthTypeEnum {
+  Auto = 'auto'
+}
 
 export interface IColumn {
   key: string;
@@ -45,7 +48,7 @@ export interface IColumn {
   contentType: ContentTypeEnum;
 
   visible: boolean;
-  width?: string | number;
+  width?: number | WidthTypeEnum;
   align?: AlignEnum;
 
   hasTip?: boolean;
@@ -80,6 +83,11 @@ export enum RowSelectionTypeEnum {
   Radio = 'radio',
   Checkbox = 'checkbox'
 }
+export enum TableLayoutEnum {
+  FixedWidth = 'fixedWidth',
+  Fixed = 'fixed',
+  Auto = 'auto'
+}
 export interface Data {
   // 数据源唯一标识
   rowKey: string;
@@ -92,6 +100,9 @@ export interface Data {
   showHeader?: boolean;
   //显示表格列筛选
   useColumnSetting?: boolean;
+
+  // 列宽分配规则
+  tableLayout?: TableLayoutEnum;
 
   // 边框
   bordered: boolean;

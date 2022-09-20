@@ -48,6 +48,37 @@ export default {
             return data.toolbar.actionAlign;
           }
         }
+      },
+      {
+        title: '置底',
+        type: 'switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.toolbar.showActions;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.toolbar.fixed;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.toolbar.fixed = val
+          }
+        }
+      },
+      {
+        title: '底部距离',
+        type: 'inputNumber',
+        options: [{ min: 0, max: 100, width: 120 }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.toolbar.fixed;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.toolbar.bottom];
+          },
+          set({ data }: EditorResult<Data>, val: number[]) {
+            data.toolbar.bottom = val[0]
+          }
+        }
       }
     ]
   },

@@ -1,0 +1,8 @@
+{
+  "title": "提示名称",
+  "content": "弹出提示",
+  "duration": 3,
+  "type": "success",
+  "isExternal": true,
+  "isEnd": false
+}

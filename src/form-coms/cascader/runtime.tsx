@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Cascader } from 'antd';
 import { validateFormItem } from '../utils/validator';
+import css from './runtime.less';
 
 interface Data {
   options: any[];
@@ -73,7 +74,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     data.visible && (
-      <div>
+      <div className={css.cascader}>
         <Cascader
           value={data.value}
           options={options}

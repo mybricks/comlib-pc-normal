@@ -14,7 +14,7 @@
         "testOut"
       ],
       "schema": {
-        "type": "string"
+        "type": "follow"
       }
     }
   ],

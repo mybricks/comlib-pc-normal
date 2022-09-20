@@ -1,14 +1,20 @@
 import { setCol } from '../../schema';
-import { AlignEnum, ContentTypeEnum, Data, FixedEnum } from '../../types';
+import {
+  AlignEnum,
+  ContentTypeEnum,
+  Data,
+  FixedEnum,
+  TableLayoutEnum,
+  WidthTypeEnum
+} from '../../types';
 import { getColumnItem } from '../../utils';
 
 const StyleEditor = {
   title: '样式配置',
   items: [
     {
-      title: '宽度(px)',
-      type: 'Text',
-      description: '列宽（像素）,若填写自动或不填写则组件默认分配宽度',
+      title: '适应剩余宽度',
+      type: 'Switch',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
@@ -17,16 +23,32 @@ const StyleEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           const item = getColumnItem(data, focusArea);
-          return item && (item.width || '自动');
+          return item.width === WidthTypeEnum.Auto;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+          if (value) {
+            setCol({ data, focusArea }, 'width', WidthTypeEnum.Auto);
+          } else {
+            setCol({ data, focusArea }, 'width', 140);
+          }
+        }
+      }
+    },
+    {
+      title: '宽度(px)',
+      type: 'Text',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.contentType !== ContentTypeEnum.Group && item.width !== WidthTypeEnum.Auto;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const item = getColumnItem(data, focusArea);
+          return item.width;
         },
         set({ data, focusArea }: EditorResult<Data>, value: string) {
-          let width: string | number | undefined = value;
-          if (typeof value === 'number') {
-            width = value;
-          } else {
-            width = value && value.match(/^[1-9]\d*$/gi) ? ~~value : void 0;
-          }
-          setCol({ data, focusArea }, 'width', width);
+          setCol({ data, focusArea }, 'width', +(value || 140));
         }
       }
     },
@@ -62,7 +84,9 @@ const StyleEditor = {
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
-        return item.contentType !== ContentTypeEnum.Group;
+        return (
+          item.contentType !== ContentTypeEnum.Group && data.tableLayout !== TableLayoutEnum.Auto
+        );
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {

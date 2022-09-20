@@ -23,7 +23,8 @@
     "primaryBtnText": "下一步",
     "secondBtnText": "上一步",
     "submitText": "提交",
-    "btns": ["previous", "next", "submit"]
+    "btns": ["previous", "next", "submit"],
+    "bottom": 24
   },
   "fullSubmit": false
 }

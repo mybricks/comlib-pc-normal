@@ -8,7 +8,7 @@ const DefaultSchema = {
 };
 
 export default {
-  ':root': ({ }, cate1, cate2, cate3) => {
+  ':root': ({ }, cate1, cate2) => {
     cate1.title = "常规"
     cate1.items = [
       {
@@ -19,7 +19,7 @@ export default {
           { label: '导航类型', value: 'navigation' }
         ],
         value: {
-          get({ data, slots }: EditorResult<Data>) {
+          get({ data }: EditorResult<Data>) {
             return data.steps.type;
           },
           set({ data }: EditorResult<Data>, value: 'default' | 'navigation') {
@@ -119,7 +119,7 @@ export default {
             addSlot(data, slots, id)
             output.add(id, `提交_${id}`, DefaultSchema);
             //设置跳转title
-            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length}）`)
+            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
             data.stepAry.forEach((item, idx) => {
               output.setTitle(
                 item.id,
@@ -150,12 +150,11 @@ export default {
         description:
           '当最后一步仍然需要数据记录时打开，会在最后一步数据校验通过后触发全量提交，通常最后一步只用于确认，则不需要开启',
         value: {
-          get({ data, slots }: EditorResult<Data>) {
+          get({ data }: EditorResult<Data>) {
             return !!data.fullSubmit;
           },
-          set({ data, slots }: EditorResult<Data>, value: boolean) {
+          set({ data }: EditorResult<Data>, value: boolean) {
             data.fullSubmit = value;
-            updateStepOutput(data, slots)
           }
         }
       }
@@ -166,7 +165,6 @@ export default {
 };
 
 const addSlot = (data, slots, id) => {
-  const { fullSubmit } = data
   slots.add({
     id,
     title: `内容区【${data.stepAry.length}】`,
@@ -174,36 +172,21 @@ const addSlot = (data, slots, id) => {
     inputs: [
       {
         id: `${id}_into`,
-        title: '显示',
+        title: '当该步骤显示',
         schema: DefaultSchema
       },
       {
         id: `${id}_leave`,
-        title: '隐藏',
+        title: '当该步骤隐藏',
         schema: DefaultSchema
       }
     ],
-    outputs: fullSubmit ? [
+    outputs: [
       {
-        id: `${id}_submit`,
-        title: "提交",
+        id: `${id}_next`,
+        title: "下一步",
         schema: {
           type: "follow"
-        }
-      },
-      {
-        id: `${id}_next`,
-        title: "下一步",
-        schema: {
-          type: "any"
-        }
-      }
-    ] : [
-      {
-        id: `${id}_next`,
-        title: "下一步",
-        schema: {
-          type: "any"
         }
       }
     ]
@@ -212,31 +195,19 @@ const addSlot = (data, slots, id) => {
 }
 
 export const updateStepOutput = (data, slots) => {
-  const { fullSubmit } = data
   let index = 0;
   while (index < data.stepAry.length) {
     const { id } = data.stepAry[index]
     const slot = slots.get(id)
     if (index < data.stepAry.length - 1) {
       if (!slot.outputs.get(`${id}_next`)) {
-        slot.outputs.add(`${id}_next`, '下一步', { type: "any" })
+        slot.outputs.add(`${id}_next`, '下一步', { type: "follow" })
       }
-      if (fullSubmit) {
-        if (!slot.outputs.get(`${id}_submit`)) {
-          slot.outputs.add(`${id}_submit`, '提交', { type: "follow" })
-        }
-      } else {
-        if (slot.outputs.get(`${id}_submit`)) {
-          slot.outputs.remove(`${id}_submit`)
-        }
-      }
+
     } else {
-      //最后一步没有next，submit output
+      //最后一步没有next output
       if (slot.outputs.get(`${id}_next`)) {
         slot.outputs.remove(`${id}_next`)
-      }
-      if (slot.outputs.get(`${id}_submit`)) {
-        slot.outputs.remove(`${id}_submit`)
       }
     }
     index++

@@ -3,10 +3,8 @@ import { Data, BtnItem } from '../types';
 
 export const getNewBtn = (): BtnItem => {
   const key = uuid();
-  const doubleClickKey = uuid();
   return {
     key,
-    doubleClickKey,
     text: '按钮',
     showText: true
   };

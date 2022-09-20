@@ -3,12 +3,10 @@ import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames';
 import { Data } from './constants';
 import { usePrevious } from '../utils/hooks';
-import { isObject } from '../utils';
 import css from './index.less';
 
 const { Step } = Steps;
 
-let fullSubmitCache = {};
 export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
@@ -16,7 +14,6 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   useEffect(() => {
     if (runtime) {
       data.current = 0;
-      fullSubmitCache = {};
     }
   }, []);
 
@@ -26,10 +23,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
       inputs['nextStep']((ds: any) => {
         if (data.current < stepAry.length - 1) {
-          stepAry[data.current].content = ds;
           data.current += 1;
-        } else if (data.fullSubmit) {
-          return outputs['submit'](collectParams(ds));
         }
       });
 
@@ -38,15 +32,11 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
           message.error('【步骤条】跳转步骤必须是数字');
           return;
         }
-        if (val > stepAry.length - 1) {
+        if (val > stepAry.length - 1 || val < 0) {
           message.error('【步骤条】跳转步骤超出范围');
           return;
         }
         data.current = val;
-      });
-
-      inputs['submit']((ds: any, relOutputs) => {
-        relOutputs['submit'](collectParams(ds));
       });
 
       inputs['getIndex']((_, relOutputs) => {
@@ -54,18 +44,12 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       });
 
       stepAry.forEach(({ id }, index) => {
-        //最后一步没有next，submit output
+        //最后一步没有next output
         if (index < stepAry.length - 1) {
           slots[id].outputs[`${id}_next`]((val) => {
             if (data.current < stepAry.length - 1) {
+              stepAry[data.current].content = val;
               data.current += 1;
-            }
-          });
-        }
-        if (data.fullSubmit && index < stepAry.length - 1) {
-          slots[id].outputs[`${id}_submit`]((val) => {
-            if (isObject(val)) {
-              fullSubmitCache = { ...fullSubmitCache, ...val };
             }
           });
         }
@@ -79,9 +63,17 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     }
   }, [data.current]);
 
+  const getPreviousData = () => {
+    const content = {};
+    for (let i = 0; i < data.current; i++) {
+      content[i] = stepAry[i].content;
+    }
+    return content;
+  };
+
   const stepIntoHook = () => {
     const slotInputs = slots[stepAry[data.current].id].inputs;
-    slotInputs[`${stepAry[data.current].id}_into`]({ current: data.current });
+    slotInputs[`${stepAry[data.current].id}_into`](getPreviousData());
   };
 
   const stepLeaveHook = () => {
@@ -90,18 +82,8 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     return Promise.all([slotInputs[`${stepAry[preIndex].id}_leave`]()]);
   };
 
-  const getCurrentStep = (pre = null): any => {
-    return stepAry[data.current + (pre ? pre : 0)] || {};
-  };
-
-  const collectParams = (ds: any = {}) => {
-    const params = ds;
-    stepAry.forEach(({ content }) => {
-      if (isObject(content)) {
-        Object.assign(params, content);
-      }
-    });
-    return params;
+  const getCurrentStep = (pre?): any => {
+    return stepAry[data.current + (!!pre ? pre : 0)] || {};
   };
 
   const prev = useCallback(() => {
@@ -116,16 +98,12 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     if (runtime) {
       const { id } = item;
       outputs[id] && outputs[id](data.current);
-      // 兼容旧逻辑
-      if (!outputs[id] && outputs[data.current]) {
-        outputs[data.current](data.current);
-      }
     }
   }, []);
 
   const submit = () => {
     if (runtime) {
-      outputs['submit'](fullSubmitCache);
+      outputs['submit'](data.fullSubmit ? getPreviousData() : undefined);
     }
   };
 
@@ -196,7 +174,11 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       <div
         className={css.stepsAction}
         data-item-type="stepActions"
-        style={{ display: 'flex', justifyContent: data.toolbar.actionAlign }}
+        style={{
+          justifyContent: data.toolbar.actionAlign,
+          position: data.toolbar.fixed ? 'fixed' : 'static',
+          bottom: data.toolbar.bottom
+        }}
       >
         {renderPreviousBtn()}
         {renderNextBtn()}

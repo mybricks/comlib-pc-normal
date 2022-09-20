@@ -1,4 +1,4 @@
-import { Data, TypeEnum, TypeEnumMap } from './constants';
+import { Data, TypeEnum, TypeEnumMap, OutputIds } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
   const { type, content } = data;
@@ -11,8 +11,24 @@ export default {
   },
   ':root': [
     {
+      title: '内容输入',
+      type: 'switch',
+      description: '开关打开接收外部动态内容, 关闭后仅接受静态内容',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isExternal;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.isExternal = value;
+        }
+      }
+    },
+    {
       title: '提示内容',
       type: 'Text',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.isExternal;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.content;
@@ -59,6 +75,25 @@ export default {
         set({ data, setDesc }: EditorResult<Data>, value: TypeEnum) {
           data.type = value;
           setDescByData({ data, setDesc });
+        }
+      }
+    },
+    {
+      title: '提示结束',
+      type: 'switch',
+      description: '开关打开后开启提示结束输出, 关闭后无结束事件输出',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isEnd;
+        },
+        set({ data, output }: EditorResult<Data>, value: boolean) {
+          data.isEnd = value;
+          if (value && !output.get(OutputIds.Close)) {
+            output.add(OutputIds.Close, '提示结束', { type: 'any' });
+          }
+          if (!value && output.get(OutputIds.Close)) {
+            output.remove(OutputIds.Close);
+          }
         }
       }
     }

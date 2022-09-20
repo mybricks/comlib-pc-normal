@@ -4,7 +4,14 @@ import { Table, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { CompareFn } from 'antd/es/table/interface';
-import { AlignEnum, Data, FilterTypeEnum, IColumn, SorterTypeEnum } from '../../types';
+import {
+  AlignEnum,
+  Data,
+  FilterTypeEnum,
+  IColumn,
+  SorterTypeEnum,
+  WidthTypeEnum
+} from '../../types';
 import css from './style.less';
 
 const { Column, ColumnGroup } = Table;
@@ -47,8 +54,8 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
     if (children && cItem.contentType === 'group') {
       return (
         <ColumnGroup
+          key={`group_${cItem.dataIndex}`}
           title={renderTtl(cItem)}
-          width={cItem.width}
           align={cItem.align || AlignEnum.Left}
           onHeaderCell={(): any => {
             return {
@@ -109,7 +116,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
     return (
       <Column
         {...(cItem as any)}
-        className={`${css.columnMinWidth} ${cItem.className}`}
+        width={cItem.width === WidthTypeEnum.Auto ? undefined : cItem.width}
         title={renderTtl(cItem)}
         key={cItem.dataIndex}
         filterMultiple={cItem.filter?.filterType !== FilterTypeEnum.Single}

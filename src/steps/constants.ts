@@ -25,6 +25,8 @@ interface Toolbar {
   showActions: boolean
   btns: Array<Btn>
   extraBtns?: Array<ExtraBtn>
+  fixed?: boolean
+  bottom?: number
 }
 
 interface Steps {

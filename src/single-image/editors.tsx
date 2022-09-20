@@ -2,8 +2,8 @@ import { Data, OutputIds } from './constants';
 
 export default {
   '@init': ({ style }: EditorResult<Data>) => {
-    style.width = 200;
-    style.height = 200;
+    style.width = 'fit-content';
+    style.height = 'auto';
   },
   '@resize': {
     options: ['height', 'width']

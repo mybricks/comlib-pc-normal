@@ -1,4 +1,4 @@
-import { InputIds, Schemas } from '../constants';
+import { Schemas, OutputIds } from '../constants';
 import { Data } from '../types';
 import { getNewBtn } from '../utils';
 
@@ -7,7 +7,7 @@ const addEditor = [
     title: '添加按钮',
     type: 'Button',
     value: {
-      set({ data, output, input }: EditorResult<Data>) {
+      set({ data, output }: EditorResult<Data>) {
         if (!data.btnList) {
           data.btnList = [];
         }
@@ -16,12 +16,7 @@ const addEditor = [
           text: `按钮${data.btnList.length}`
         };
         output.add(newItem.key, `单击${newItem.text}`, Schemas.Any);
-        output.add(newItem.doubleClickKey, `双击${newItem.text}`, Schemas.Any);
-        input.add(
-          `${InputIds.SetOutputVal}_${newItem.key}`,
-          `设置${newItem.text}输出数据`,
-          Schemas.Follow
-        );
+        output.add(`${OutputIds.DoubleClick}_${newItem.key}`, `双击${newItem.text}`, Schemas.Any);
         data.btnList.push(newItem);
       }
     }
