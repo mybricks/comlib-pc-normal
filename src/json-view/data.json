@@ -1,5 +1,6 @@
 {
   "json": "[]",
+  "dataSourceType": "object",
   "colors": {
     "number": "blue",
     "string": "green",
