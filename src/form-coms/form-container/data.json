@@ -24,5 +24,5 @@
   "dataType": "object",
   "layout": "horizontal",
   "labelWidthType": "px",
-  "labelWidth": "98"
+  "labelWidth": 98
 }
