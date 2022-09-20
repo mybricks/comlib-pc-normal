@@ -37,6 +37,18 @@ const headerEditor = {
           data.useHeaderOperationSlot = value;
         }
       }
+    },
+    {
+      title: '列设置按钮',
+      type: 'Switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.useColumnSetting;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.useColumnSetting = value;
+        }
+      }
     }
   ]
 };
