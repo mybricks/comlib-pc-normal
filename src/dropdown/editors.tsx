@@ -1,5 +1,5 @@
-import { Data } from "./types";
-import { uuid } from "../utils";
+import { Data } from './types';
+import { uuid } from '../utils';
 
 interface Result {
   data: Data;
@@ -7,15 +7,14 @@ interface Result {
 }
 
 let tempOptions = [],
-    addOption,
-    delOption;
+  addOption,
+  delOption;
 
-//设置初始的options  
+//设置初始的options
 const initParams = (data: Data) => {
   tempOptions = data.options || [];
   addOption = (option) => {
-    if (!data.options)
-    data.options = [];
+    if (!data.options) data.options = [];
     data.options.push(option);
   };
   delOption = (index: number) => {
@@ -30,34 +29,43 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ":root"({ data }: EditorResult<Data>, ...cate) {
-    cate[0].title = "常规";
+  ':root'({ data }: EditorResult<Data>, ...cate) {
+    cate[0].title = '常规';
     cate[0].items = [
       //选项弹出位置
       {
-        title: "弹出位置",
-        type: "Select",
-        description:"选项弹出位置",
+        title: '弹出位置',
+        type: 'Select',
+        description: '选项弹出位置',
         options: [
-          { label: '左下方', value: "bottomLeft" },
-          { label: '中下方', value: "bottomCenter" },
-          { label: '右下方', value: "bottomRight" },
-          { label: '左上方', value: "topLeft" },
-          { label: '中上方', value: "topCenter" },
-          { label: '右上方', value: "topRight" },
+          { label: '左下方', value: 'bottomLeft' },
+          { label: '中下方', value: 'bottomCenter' },
+          { label: '右下方', value: 'bottomRight' },
+          { label: '左上方', value: 'topLeft' },
+          { label: '中上方', value: 'topCenter' },
+          { label: '右上方', value: 'topRight' }
         ],
         value: {
-          get({ data }: EditorResult<Data>){
+          get({ data }: EditorResult<Data>) {
             return data.placement;
           },
-          set({ data }: EditorResult<Data> , value: "bottomLeft" | "bottomCenter" | "bottomRight" | "topLeft" | "topCenter" | "topCenter"){
-            data.placement = value
+          set(
+            { data }: EditorResult<Data>,
+            value:
+              | 'bottomLeft'
+              | 'bottomCenter'
+              | 'bottomRight'
+              | 'topLeft'
+              | 'topCenter'
+              | 'topCenter'
+          ) {
+            data.placement = value;
           }
         }
       },
       //选项的配置
       {
-        title: "选项配置",
+        title: '选项配置',
         type: 'array',
         description: '选项配置跳转链接，可不填',
         options: {
@@ -91,7 +99,7 @@ export default {
               title: '禁用',
               type: 'switch',
               value: 'disabled'
-            },
+            }
           ]
         },
         value: {
@@ -102,30 +110,26 @@ export default {
           },
           set({ data }: EditorResult<Data>, options) {
             // 更新选项
-            options = options.map(option => {
+            options = options.map((option) => {
               return {
-                ...option,
+                ...option
                 //checked: option.value === data.value
-              }
+              };
             });
             data.options = options;
             tempOptions = options;
           }
         }
-      },  
-    ];
-    
-    cate[1].title = "事件";
-    cate[1].items = [
+      },
       {
         title: '选项改变',
-          type: '_Event',
-          options: () => {
-            return {
-              outputId: 'onChange'
-            };
-          }
+        type: '_Event',
+        options: () => {
+          return {
+            outputId: 'onChange'
+          };
+        }
       }
-    ]
-  },
+    ];
+  }
 };

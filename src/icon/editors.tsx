@@ -50,11 +50,7 @@ export default {
             }
           }
         }
-      }
-    ];
-
-    cate2.title = '事件';
-    cate2.items = [
+      },
       {
         title: '点击',
         type: '_Event',
