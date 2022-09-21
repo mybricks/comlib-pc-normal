@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum } from './constants';
 
 const defaultSchema = { type: 'any' };
 
@@ -472,6 +472,23 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.useFooter = value;
+          }
+        }
+      },
+      {
+        title: '对齐方式',
+        type: 'Select',
+        options: [
+          { value: AlignEnum.FlexStart, label: '居左' },
+          { value: AlignEnum.Center, label: '居中' },
+          { value: AlignEnum.FlexEnd, label: '居右' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.footerLayout;
+          },
+          set({ data }: EditorResult<Data>, value: AlignEnum) {
+            data.footerLayout = value;
           }
         }
       },

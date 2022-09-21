@@ -7,6 +7,7 @@
   "useFooter": true,
   "cancelText": "取消",
   "width": 520,
+  "footerLayout": "flex-end",
   "footerBtns": [
     {
       "id": "cancelBtn",
