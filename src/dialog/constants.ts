@@ -43,6 +43,7 @@ export interface Data {
   width?: number;
   hideTitle: boolean;
   bodyStyle?: React.CSSProperties;
+  footerLayout: AlignEnum;
   footerBtns: (ButtonProps & {
     id: string;
     useIcon?: boolean;
@@ -77,3 +78,10 @@ export const SlotIds = {
 export const SlotInputIds = {
   DataSource: 'dataSource',
 };
+
+export enum AlignEnum {
+  Unset = 'unset',
+  FlexStart = 'flex-start',
+  Center = 'center',
+  FlexEnd = 'flex-end'
+}

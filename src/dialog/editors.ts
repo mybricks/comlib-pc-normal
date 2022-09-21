@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum } from './constants';
 
 const defaultSchema = { type: 'any' };
 
@@ -34,6 +34,7 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
   };
 
   output.add(id, title, schema);
+  output.add(`${id}Click`, `点击${title}`, schema);
   // slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'any' });
   slot.get(SlotIds.Container).outputs.add(id, `${title}`, { type: 'follow' });
   input.get(InputIds.Open).setRels([...updateOpenRels(data), id]);
@@ -337,6 +338,7 @@ export default {
             }
             const res = get(data, focusArea, 'btnId', 'obj');
             output.setTitle(res.id, value);
+            output.setTitle(`${res.id}Click`, `点击${value}`);
             if (res.dynamicDisabled) {
               input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
               input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
@@ -346,7 +348,7 @@ export default {
               input.setTitle(`show${res.id}`, `显示-${value}按钮`);
             }
             slot.get(SlotIds.Container).inputs.setTitle(res.id, `${value}`);
-            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}输出数据`);
+            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
             res.title = value;
           }
         }
@@ -390,7 +392,7 @@ export default {
             options: ({ data, focusArea }: EditorResult<Data>) => {
               const res = get(data, focusArea, 'btnId', 'id');
               return {
-                outputId: res,
+                outputId: `${res}Click`,
                 slotId: SlotIds.Container
               };
             }
@@ -423,7 +425,89 @@ export default {
     ];
 
     return { title: '按钮' };
-  }
+  },
+  '.ant-modal-title': {
+    title: '标题',
+    items: [
+      {
+        title: '内容',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.title;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (isEmptyString(value)) {
+              data.title = value;
+            }
+          }
+        }
+      }
+    ]
+  },
+  '.ant-modal-close': {
+    title: '关闭按钮',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.closable;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.closable = value;
+          }
+        }
+      }
+    ]
+  },
+  '.ant-modal-footer': {
+    title: '底部内容',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useFooter;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.useFooter = value;
+          }
+        }
+      },
+      {
+        title: '对齐方式',
+        type: 'Select',
+        options: [
+          { value: AlignEnum.FlexStart, label: '居左' },
+          { value: AlignEnum.Center, label: '居中' },
+          { value: AlignEnum.FlexEnd, label: '居右' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.footerLayout;
+          },
+          set({ data }: EditorResult<Data>, value: AlignEnum) {
+            data.footerLayout = value;
+          }
+        }
+      },
+      {
+        title: '新增操作',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.footerBtns;
+        },
+        type: 'Button',
+        value: {
+          set({ data, input, output, slot }: EditorResult<Data>) {
+            addBtn({ data, input, output, slot });
+          }
+        }
+      }
+    ]
+  },
 };
 
 
