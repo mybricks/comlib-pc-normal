@@ -122,7 +122,7 @@ export default function Dialog({
   (data.footerBtns || []).forEach((item) => {
     const { id } = item;
     eventList[id] = () => {
-      outputs[id]();
+      outputs[`${id}Click`]();
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
       // }

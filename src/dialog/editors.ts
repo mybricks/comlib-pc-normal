@@ -34,6 +34,7 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
   };
 
   output.add(id, title, schema);
+  output.add(`${id}Click`, `点击${title}`, schema);
   // slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'any' });
   slot.get(SlotIds.Container).outputs.add(id, `${title}`, { type: 'follow' });
   input.get(InputIds.Open).setRels([...updateOpenRels(data), id]);
@@ -337,6 +338,7 @@ export default {
             }
             const res = get(data, focusArea, 'btnId', 'obj');
             output.setTitle(res.id, value);
+            output.setTitle(`${res.id}Click`, `点击${value}`);
             if (res.dynamicDisabled) {
               input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
               input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
@@ -346,7 +348,7 @@ export default {
               input.setTitle(`show${res.id}`, `显示-${value}按钮`);
             }
             slot.get(SlotIds.Container).inputs.setTitle(res.id, `${value}`);
-            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}输出数据`);
+            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
             res.title = value;
           }
         }
@@ -390,7 +392,7 @@ export default {
             options: ({ data, focusArea }: EditorResult<Data>) => {
               const res = get(data, focusArea, 'btnId', 'id');
               return {
-                outputId: res,
+                outputId: `${res}Click`,
                 slotId: SlotIds.Container
               };
             }
