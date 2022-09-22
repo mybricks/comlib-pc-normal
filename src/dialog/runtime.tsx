@@ -238,6 +238,8 @@ const RuntimeRender = ({
             hidden,
             visible = true,
             location,
+            dynamicHidden,
+            dynamicDisabled,
             ...res
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();

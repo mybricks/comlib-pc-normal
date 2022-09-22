@@ -379,6 +379,11 @@ export default {
       moveDelete('btnId')
     ];
 
+    cate2.title = '高级';
+    cate2.items = [
+      useDynamic('btnId'),
+    ];
+
     return { title: '按钮' };
   },
   '.ant-modal-title': {
