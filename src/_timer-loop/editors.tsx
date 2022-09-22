@@ -52,6 +52,24 @@ export default {
           setDescByData({ data, setDesc });
         }
       }
+    },
+    {
+      title: '取消操作',
+      description: '开启后，支持取消当前循环执行',
+      type: 'Switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.useCancel;
+        },
+        set({ data, input }: EditorResult<Data>, value: boolean) {
+          data.useCancel = value;
+          if (value) {
+            input.add(InputIds.Cancel, '取消', Schemas.Any);
+          } else {
+            input.remove(InputIds.Cancel);
+          }
+        }
+      }
     }
   ]
 };

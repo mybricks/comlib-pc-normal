@@ -1,5 +1,6 @@
 import { Data, InputIds } from './constants';
 
+// TODO: 调试结束清除定时器
 export default function (props: RuntimeParams<Data>) {
   const { env, data, outputs, inputs } = props;
   let timer;
@@ -11,7 +12,7 @@ export default function (props: RuntimeParams<Data>) {
         outputs[InputIds.Trigger](val);
       }, data.delay);
     });
-    inputs[InputIds.Cancel](() => {
+    inputs[InputIds.Cancel]?.(() => {
       clearTimeout(timer);
     });
   }
