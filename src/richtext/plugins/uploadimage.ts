@@ -1,5 +1,4 @@
 export default function uploadimage(props) {
-  // let globalEditor
   const { click, editor } = props 
   const global = (window).tinyMCE.util.Tools.resolve('tinymce.PluginManager');
 

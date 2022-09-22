@@ -22,7 +22,7 @@ export interface Event {
  * @param okText     确认按钮内容
  * @param closable   是否显示右上角关闭按钮
  * @param centered   是否设置垂直居中
- * @param useFooter  是否使用底部内容
+ * @param useFooter  是否使用工具条
  * @param cancelText 取消按钮内容
  * @param width      弹窗宽度
  * @param hideTitle  隐藏标题
@@ -43,6 +43,7 @@ export interface Data {
   width?: number;
   hideTitle: boolean;
   bodyStyle?: React.CSSProperties;
+  footerLayout: AlignEnum;
   footerBtns: (ButtonProps & {
     id: string;
     useIcon?: boolean;
@@ -77,3 +78,10 @@ export const SlotIds = {
 export const SlotInputIds = {
   DataSource: 'dataSource',
 };
+
+export enum AlignEnum {
+  Unset = 'unset',
+  FlexStart = 'flex-start',
+  Center = 'center',
+  FlexEnd = 'flex-end'
+}

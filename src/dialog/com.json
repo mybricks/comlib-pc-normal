@@ -3,8 +3,8 @@
   "namespace": "mybricks.normal-pc.dialog",
   "version": "1.0.0",
   "description": "对话框",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
@@ -17,8 +17,8 @@
         "type": "follow"
       },
       "rels": [
-        "cancelBtn",
-        "ok"
+        "ok",
+        "cancelBtn"
       ]
     },
     {
@@ -47,6 +47,20 @@
     {
       "id": "cancelBtn",
       "title": "取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "okClick",
+      "title": "点击确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancelClick",
+      "title": "点击取消",
       "schema": {
         "type": "any"
       }
