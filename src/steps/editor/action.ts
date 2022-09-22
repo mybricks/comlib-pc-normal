@@ -125,7 +125,7 @@ export default {
             options: ({ data }) => {
               const id = data.stepAry[data.current]?.id;
               return {
-                outputId: `${id}`,
+                outputId: id,
                 slotId: id
               };
             }
