@@ -113,7 +113,17 @@
       "id": "returnValidate",
       "title": "校验结果",
       "schema": {
-        "type": "boolean"
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
       }
     },
     {
