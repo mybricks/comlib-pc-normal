@@ -1,8 +1,8 @@
 {
   "title": "级联选择",
   "namespace": "mybricks.normal-pc.cascader",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
   "version": "1.0.0",
   "description": "级联选择",
   "icon": "./icon.svg",

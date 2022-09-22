@@ -1,8 +1,8 @@
 {
   "title": "日期范围选择框",
   "namespace": "mybricks.normal-pc.range-picker",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
   "version": "1.0.0",
   "description": "日期范围选择框",
   "icon": "./icon.svg",
