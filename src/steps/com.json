@@ -47,7 +47,7 @@
       "id": "submit",
       "title": "数据提交",
       "schema": {
-        "type": "any"
+        "type": "follow"
       }
     },
     {
@@ -75,7 +75,7 @@
           "id": "step0_into",
           "title": "当该步骤显示",
           "schema": {
-            "type": "any"
+            "type": "follow"
           }
         },
         {
