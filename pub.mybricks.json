@@ -57,6 +57,15 @@
         "./src/tooltip/com.json"
       ]
     },
+    {
+      "title": "其它",
+      "comAry": [
+        "./src/calendar/com.json",
+        "./src/bottom-bar/com.json",
+        "./src/iframe/com.json",
+        "./src/qr-code/com.json"
+      ]
+    },
     "./src/_code-segment/com.json",
     "./src/_connector/com.json",
     "./src/_confirm/com.json",
