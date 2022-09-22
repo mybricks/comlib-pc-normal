@@ -82,7 +82,7 @@ const BaseEditor = [
       },
       ,
       {
-        title: '圆框颜色',
+        title: '节点颜色',
         type: 'ColorPicker',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
