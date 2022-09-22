@@ -174,7 +174,7 @@ export default {
         }
       },
       {
-        title: '底部内容',
+        title: '工具条',
         items: [
           {
             title: '显示',
@@ -185,48 +185,6 @@ export default {
               },
               set({ data }: EditorResult<Data>, value: boolean) {
                 data.useFooter = value;
-              }
-            }
-          },
-          {
-            title: '隐藏确认按钮',
-            type: 'Switch',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.useFooter;
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return !data.footerBtns.find(({ id }) => id === DefaultEvent[0])?.visible;
-              },
-              set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
-                const res = data.footerBtns.find(({ id }) => id === DefaultEvent[0]);
-                res && (res.visible = !value);
-                if (value) {
-                  removeBtn({ data, focusArea, input, output, slot })
-                } else {
-                  addBtn({ data, input, output, slot }, DefaultEvent[0]);
-                }
-              }
-            }
-          },
-          {
-            title: '隐藏取消按钮',
-            type: 'Switch',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.useFooter;
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return !data.footerBtns.find(({ id }) => id === DefaultEvent[1])?.visible;
-              },
-              set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
-                const res = data.footerBtns.find(({ id }) => id === DefaultEvent[1]);
-                res && (res.visible = !value);
-                if (value) {
-                  removeBtn({ data, focusArea, input, output, slot })
-                } else {
-                  addBtn({ data, input, output, slot }, DefaultEvent[1]);
-                }
               }
             }
           },
@@ -463,7 +421,7 @@ export default {
     ]
   },
   '.ant-modal-footer': {
-    title: '底部内容',
+    title: '工具条',
     items: [
       {
         title: '显示',
@@ -491,6 +449,48 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: AlignEnum) {
             data.footerLayout = value;
+          }
+        }
+      },
+      {
+        title: '隐藏确认按钮',
+        type: 'Switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useFooter;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !data.footerBtns.find(({ id }) => id === DefaultEvent[0])?.visible;
+          },
+          set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+            const res = data.footerBtns.find(({ id }) => id === DefaultEvent[0]);
+            res && (res.visible = !value);
+            if (value) {
+              removeBtn({ data, focusArea, input, output, slot })
+            } else {
+              addBtn({ data, input, output, slot }, DefaultEvent[0]);
+            }
+          }
+        }
+      },
+      {
+        title: '隐藏取消按钮',
+        type: 'Switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useFooter;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !data.footerBtns.find(({ id }) => id === DefaultEvent[1])?.visible;
+          },
+          set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+            const res = data.footerBtns.find(({ id }) => id === DefaultEvent[1]);
+            res && (res.visible = !value);
+            if (value) {
+              removeBtn({ data, focusArea, input, output, slot })
+            } else {
+              addBtn({ data, input, output, slot }, DefaultEvent[1]);
+            }
           }
         }
       },
