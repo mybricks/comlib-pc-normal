@@ -1,8 +1,10 @@
 {
   "items": [],
   "nameCount": 0,
+  "formItemColumn": 1,
   "actions": {
     "visible": true,
+    "span": 24,
     "items": [
       {
         "title": "提交",
@@ -23,6 +25,9 @@
   "isFormItem": false,
   "dataType": "object",
   "layout": "horizontal",
+  "wrapperCol": 24,
   "labelWidthType": "px",
-  "labelWidth": 98
+  "labelWidth": 98,
+  "labelCol": 4,
+  "itemWidthType": "flex"
 }

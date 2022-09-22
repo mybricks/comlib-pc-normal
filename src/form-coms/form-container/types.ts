@@ -11,20 +11,31 @@ interface Action {
 
 interface Actions {
   items: Action[];
+  span: number;
   visible: boolean;
+}
+
+interface FormItems {
+  id: string; 
+  name: string
+  label: string
+  span: number
+  required?: boolean
 }
 
 export type LabelWidthType = 'px' | 'span'
 
 export interface Data {
-  items: any[]
+  items: FormItems[]
   isFormItem: boolean
+  formItemColumn: number
   dataType: 'object' | 'list'
   layout: 'horizontal' | 'vertical' | 'inline'
   fieldsLength?: number
   actions: Actions
   labelWidthType: LabelWidthType
   labelWidth: number
+  labelCol: number
   wrapperCol: number
 }
 
