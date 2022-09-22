@@ -88,7 +88,8 @@
       "./src/_message/com.json",
       "./src/_page-router/com.json",
       "./src/_global-loading/com.json",
-      "./src/_timer/com.json",
+      "./src/_timer-delay/com.json",
+      "./src/_timer-loop/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json"
@@ -176,7 +177,8 @@
       "./src/_message/com.json",
       "./src/_page-router/com.json",
       "./src/_global-loading/com.json",
-      "./src/_timer/com.json",
+      "./src/_timer-delay/com.json",
+      "./src/_timer-loop/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json"
