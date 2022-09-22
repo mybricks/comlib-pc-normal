@@ -131,16 +131,16 @@ const RuntimeActions = {
 };
 
 const getParams = (val, data: Data) => {
-  if (data?.useDefault) {
-    return {
-      title: data?.title,
-      url: data?.url
-    };
+  if (data?.useDynamic) {
+    if (typeof val === 'string') {
+      return val;
+    }
+    return undefined;
   }
-  if (typeof val === 'string') {
-    return val;
-  }
-  return undefined;
+  return {
+    title: data?.title,
+    url: data?.url
+  };
 };
 // 调试时执行
 const debugExecute = ({ inputs, data }: RuntimeParams<Data>) => {
