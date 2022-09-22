@@ -47,10 +47,10 @@ export default {
       title: '添加输出项',
       type: 'Button',
       value: {
-        set({ data, output }: EditorResult<Data>) {
+        set({ output }: EditorResult<Data>) {
           const idx = getOutputOrder({ output });
           const hostId = `output${idx}`;
-          const title = `输出项${idx}(${hostId})`;
+          const title = `输出项${idx}`;
           output.add({
             id: hostId,
             title,
