@@ -1,7 +1,7 @@
 import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
 import { ContentTypeEnum, Data, IColumn } from '../types';
-import { InputIds } from '../constants';
+import { InputIds, DefaultRowKey } from '../constants';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -86,13 +86,13 @@ export const formatDataSource = (dataSource) => {
   return dataSource.map(({ children, ...rest }) => {
     if (children && children.length) {
       return {
-        uuid: uuid(),
+        [DefaultRowKey]: uuid(),
         children: formatDataSource(children),
         ...rest
       };
     } else {
       return {
-        uuid: uuid(),
+        [DefaultRowKey]: uuid(),
         ...rest
       };
     }
@@ -101,7 +101,7 @@ export const formatDataSource = (dataSource) => {
 // 编辑态默认值
 export const getDefaultDataSource = (columns: IColumn[]) => {
   const mockData = {
-    uuid: uuid()
+    [DefaultRowKey]: uuid()
   };
   const setDefaultDataSource = (columns) => {
     if (Array.isArray(columns)) {

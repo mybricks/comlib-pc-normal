@@ -10,6 +10,7 @@ const addColumnEditor = {
     {
       title: '显示列头',
       type: 'switch',
+      description: '关闭后，不显示列标题行',
       value: {
         get({ data }: EditorResult<Data>) {
           return data.showHeader === false ? false : true;

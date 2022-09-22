@@ -72,3 +72,5 @@ export const OutputIds = {
   // 排序事件触发
   SORTER: 'sorter'
 };
+
+export const DefaultRowKey = '_uuid'

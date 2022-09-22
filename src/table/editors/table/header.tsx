@@ -6,6 +6,7 @@ const headerEditor = {
   items: [
     {
       title: '标题区插槽',
+      description: '开启后，支持在表格左上角自定义内容',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -23,6 +24,7 @@ const headerEditor = {
     },
     {
       title: '操作区插槽',
+      description: '开启后，支持在表格右上角自定义内容',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -40,6 +42,7 @@ const headerEditor = {
     },
     {
       title: '列设置按钮',
+      description: '开启后，支持在表格右上角显示列设置按钮，用于调整展示列',
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {

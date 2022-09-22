@@ -5,6 +5,7 @@ import { Schemas, setDataSchema } from '../../schema';
 const expandEditor = [
   {
     title: '表格行展开',
+    description: '开启后，支持自定义行展开内容',
     items: [
       {
         type: 'switch',

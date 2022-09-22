@@ -56,7 +56,7 @@ const isUseSelect = (options, val) => {
 };
 export default function Tree({ editConfig }: any) {
   const { value } = editConfig;
-  const { field, schema = {} } = value.get() || {};
+  const { field, schema = {}, placeholder } = value.get() || {};
   const options = schema2Options(schema, '', { isRoot: true, useArray: false });
   const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, field));
 
@@ -76,12 +76,14 @@ export default function Tree({ editConfig }: any) {
           onChange={onChange}
           showSearch
           treeDefaultExpandAll
+          placeholder={placeholder}
         />
       ) : (
         <Input
           className={css.input}
           defaultValue={field}
           onBlur={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
         />
       )}
       <Button

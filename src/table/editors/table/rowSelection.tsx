@@ -104,21 +104,27 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '勾选标识',
+          description: '勾选标识所对应的行数据，需要全局唯一',
           type: 'editorRender',
           options: {
             render: Tree
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return { field: data.rowKey, schema: getColumnsSchema(data) };
+              return {
+                field: data.rowKey || undefined,
+                schema: getColumnsSchema(data),
+                placeholder: '默认使用内置标识'
+              };
             },
             set({ data }: EditorResult<Data>, value: string) {
-              data.rowKey = value;
+              data.rowKey = value || undefined;
             }
           }
         },
         {
-          title: `顶部显示`,
+          title: `顶部勾选操作区显示`,
+          description: '开启后，显示顶部勾选操作区',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
             return data.selectionType !== RowSelectionTypeEnum.Radio;
@@ -139,7 +145,8 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
           }
         },
         {
-          title: `底部显示`,
+          title: `底部勾选操作区显示`,
+          description: '开启后，显示底部勾选操作区',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
             return data.selectionType !== RowSelectionTypeEnum.Radio;
@@ -182,6 +189,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         {
           title: '动态设置勾选项',
+          description: '开启后，支持通过逻辑连线设置勾选项',
           type: 'Switch',
           value: {
             get({ data }: EditorResult<Data>) {

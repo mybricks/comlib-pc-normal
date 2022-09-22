@@ -61,13 +61,18 @@ export default {
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [AddColumnEditor, ...ExpandEditor, HeaderEditor];
+    cateAry[0].items = [AddColumnEditor];
 
     cateAry[1].title = '样式';
     cateAry[1].items = [...LoadingEditor, TableStyleEditor];
 
     cateAry[2].title = '高级';
-    cateAry[2].items = [...EventEditor, ...getRowSelectionEditor(props)];
+    cateAry[2].items = [
+      ...EventEditor,
+      HeaderEditor,
+      ...ExpandEditor,
+      ...getRowSelectionEditor(props)
+    ];
   },
   ...columnEditor
 };

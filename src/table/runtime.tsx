@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
-import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from './constants';
+import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
 import { formatDataSource, getDefaultDataSource } from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import {
@@ -28,6 +28,8 @@ export default function (props: RuntimeParams<Data>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
+
+  const rowKey = data.rowKey || DefaultRowKey;
 
   const initFilterMap = () => {
     let res = {};
@@ -118,11 +120,12 @@ export default function (props: RuntimeParams<Data>) {
           const newSelectedRowKeys: string[] = [];
           const newSelectedRows: any[] = [];
           (Array.isArray(val) ? val : [val]).forEach((selected) => {
-            const rowKey = typeof selected === 'object' ? selected?.[data.rowKey] : selected;
-            const tempItem = dataSource.find((item) => rowKey === item[data.rowKey]);
-            if (tempItem && !newSelectedRowKeys.includes(rowKey)) {
+            // 目前行rowKey数据
+            const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
+            const tempItem = dataSource.find((item) => targetRowKeyVal === item[rowKey]);
+            if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
               newSelectedRows.push(tempItem);
-              newSelectedRowKeys.push(rowKey);
+              newSelectedRowKeys.push(targetRowKeyVal);
             }
           });
           if (newSelectedRowKeys.length > 0) {
@@ -132,7 +135,7 @@ export default function (props: RuntimeParams<Data>) {
         });
       }
     }
-  }, [dataSource]);
+  }, [dataSource, rowKey]);
   useEffect(() => {
     if (env.runtime) {
       // 动态设置筛选数据源
@@ -249,11 +252,11 @@ export default function (props: RuntimeParams<Data>) {
       if (edit) {
         return { disabled: true } as any;
       }
-      const rowKey = record[data.rowKey];
+      const targetRowKeyVal = record[rowKey];
       if (
         data.rowSelectionLimit &&
         selectedRowKeys.length >= data.rowSelectionLimit &&
-        !selectedRowKeys.includes(rowKey)
+        !selectedRowKeys.includes(targetRowKeyVal)
       ) {
         return { disabled: true };
       }
@@ -322,7 +325,7 @@ export default function (props: RuntimeParams<Data>) {
             tip: data.loadingTip,
             spinning: loading
           }}
-          rowKey={data.rowKey || 'uuid'}
+          rowKey={rowKey}
           size={data.size as any}
           bordered={data.bordered}
           pagination={false}
@@ -335,7 +338,7 @@ export default function (props: RuntimeParams<Data>) {
           expandable={
             data.useExpand && slots[SlotIds.EXPAND_CONTENT]
               ? {
-                  expandedRowKeys: edit ? [defaultDataSource[0].uuid] : undefined, //增加动态设置
+                  expandedRowKeys: edit ? [defaultDataSource[0][DefaultRowKey]] : undefined, //增加动态设置
                   expandedRowRender: (record, index) => {
                     return slots[SlotIds.EXPAND_CONTENT].render({
                       inputValues: {
