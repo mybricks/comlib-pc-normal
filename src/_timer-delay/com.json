@@ -17,13 +17,6 @@
       "schema": {
         "type": "follow"
       }
-    },
-    {
-      "id": "cancel",
-      "title": "取消",
-      "schema": {
-        "type": "any"
-      }
     }
   ],
   "outputs": [
