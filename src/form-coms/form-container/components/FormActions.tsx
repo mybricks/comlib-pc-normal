@@ -31,10 +31,6 @@ const FormActions = (props: Props) => {
   //   }
   // }, [layout])
 
-  if (!actions.visible) {
-    return null;
-  }
-
   return (
     // <Form.Item data-form-actions>
     <Space>

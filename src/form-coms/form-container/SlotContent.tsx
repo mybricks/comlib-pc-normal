@@ -35,9 +35,6 @@ const SlotContent = (props) => {
               let item = items.find((item) => item.id === com.id);
 
               childrenInputs[com.id] = com.inputs;
-              // console.log('-----items', data.items)
-              // console.log('comAray', comAray)
-              // console.log('-----com.id', com.id)
 
               return (
                 <FormItem data={data} com={com} item={item} key={com.id} field={props?.field} />
@@ -52,7 +49,9 @@ const SlotContent = (props) => {
               {isInlineModel && (
                 <InlineLayout data={data}>
                   {jsx}
-                  <FormActions data={data} outputs={outputs} submit={submit} />
+                  {data.actions.visible && (
+                    <FormActions data={data} outputs={outputs} submit={submit} />
+                  )}
                 </InlineLayout>
               )}
               {isHorizontalModel && (
@@ -66,7 +65,9 @@ const SlotContent = (props) => {
               {isVerticalModel && (
                 <VerticalLayout data={data}>
                   {jsx}
-                  <FormActions data={data} outputs={outputs} submit={submit} />
+                  {data.actions.visible && (
+                    <FormActions data={data} outputs={outputs} submit={submit} />
+                  )}
                 </VerticalLayout>
               )}
             </>
