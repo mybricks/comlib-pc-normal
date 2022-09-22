@@ -59,7 +59,7 @@
       }
     },
     {
-      "id": "cancelClick",
+      "id": "cancelBtnClick",
       "title": "点击取消",
       "schema": {
         "type": "any"

@@ -81,7 +81,7 @@ export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     // console.log('inputUpdated', pin)
     if (pin.id === InputIds.Open) {
-      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(pin.schema);
+      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
     }
   },
   // '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
@@ -89,26 +89,23 @@ export default {
   // },
   '@slotInputUpdated'({ data, slots, output }, pin) {
     // console.log('slotInputUpdated', pin)
-    output.get(pin.id)
-      && output.get(pin.id).setSchema(pin.schema);
+    output.get(pin.id)?.setSchema(pin.schema);
   },
   // '@slotOutputUpdated'({ data, slots, output }, pin) {
   //   console.log('slotOutputUpdated', pin)
   // },
   '@slotInputConnected'({ data, slots, output }, fromPin, slotId, toPin) {
     // console.log('slotInputConnected', fromPin, toPin)
-    output.get(toPin.id)
-      && output.get(toPin.id).setSchema(fromPin.schema);
+    output.get(toPin.id)?.setSchema(fromPin.schema);
   },
   '@slotInputDisConnected'({ data, slots, output }, fromPin, slotId, toPin) {
     // console.log('slotInputDisConnected',)
-    output.get(toPin.id)
-      && output.get(toPin.id).setSchema(defaultSchema);
+    output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
     // console.log('inputDisConnected')
     if (toPin.id === InputIds.Open) {
-      slots.get(SlotIds.Container).inputs.get(SlotInputIds.DataSource).setSchema(defaultSchema);
+      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
   },
   // '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
@@ -380,6 +377,11 @@ export default {
         }
       },
       moveDelete('btnId')
+    ];
+
+    cate2.title = '高级';
+    cate2.items = [
+      useDynamic('btnId'),
     ];
 
     return { title: '按钮' };
