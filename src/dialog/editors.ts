@@ -96,10 +96,16 @@ export default {
   // },
   '@slotInputConnected'({ data, slots, output }, fromPin, slotId, toPin) {
     // console.log('slotInputConnected', fromPin, toPin)
+    const btnId = toPin.id,
+      btn = data.footerBtns.find(btn => btn.id === btnId);
+    btn.isConnected = true;
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
   '@slotInputDisConnected'({ data, slots, output }, fromPin, slotId, toPin) {
-    // console.log('slotInputDisConnected',)
+    // console.log('slotInputDisConnected', toPin)
+    const btnId = toPin.id,
+      btn = data.footerBtns.find(btn => btn.id === btnId);
+    btn.isConnected = false;
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
