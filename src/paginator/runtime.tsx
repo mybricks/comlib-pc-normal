@@ -69,12 +69,6 @@ export default (props: RuntimeParams<Data>) => {
         display: 'flex',
         justifyContent: align
       }}
-      ref={(node) => {
-        // hack
-        if (node?.parentElement?.style) {
-          node.parentElement.style.overflow = 'unset';
-        }
-      }}
     >
       <Pagination
         total={total}
@@ -86,7 +80,7 @@ export default (props: RuntimeParams<Data>) => {
         showQuickJumper={showQuickJumper}
         showSizeChanger={showSizeChanger}
         pageSizeOptions={pageSizeOptions}
-        hideOnSinglePage={showSizeChanger ? false : hideOnSinglePage}
+        hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
         onChange={onChange}
         disabled={disabled}
       />
