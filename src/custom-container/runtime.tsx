@@ -12,6 +12,7 @@ export default function (props: RuntimeParams<Data>) {
 
     overflowY,
     overflowX,
+    useOverflowUnset,
 
     style,
     hoverStyle,
@@ -57,14 +58,25 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
+  const getOverflowStyle = () => {
+    const res = {
+      overflowY: overflowY || OverflowEnum.Hidden,
+      overflowX: overflowX || OverflowEnum.Hidden
+    };
+    if (useOverflowUnset) {
+      res.overflowX = res.overflowX === OverflowEnum.Hidden ? OverflowEnum.Unset : res.overflowX;
+      res.overflowY = res.overflowY === OverflowEnum.Hidden ? OverflowEnum.Unset : res.overflowY;
+    }
+    return res;
+  };
+
   return (
     <div
       ref={ref}
       className={css.container}
       style={{
         ...style,
-        overflowY: overflowY || OverflowEnum.Hidden,
-        overflowX: overflowX || OverflowEnum.Hidden,
+        ...getOverflowStyle(),
         cursor: useClick || useHoverStyle ? 'pointer' : ''
       }}
       onClick={() => {

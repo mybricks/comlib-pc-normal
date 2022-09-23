@@ -23,7 +23,8 @@ export enum PositionEnum {
 }
 export enum OverflowEnum {
   Hidden = 'hidden',
-  Auto = 'auto'
+  Auto = 'auto',
+  Unset = 'unset'
 }
 export interface Data {
   style: CSSProperties;
@@ -38,6 +39,7 @@ export interface Data {
 
   overflowY?: OverflowEnum;
   overflowX?: OverflowEnum;
+  useOverflowUnset?: boolean;
 
   useClick?: boolean;
 }
