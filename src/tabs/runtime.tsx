@@ -15,38 +15,23 @@ const chooseIcon = ({ icon }: { icon: ReactNode }) => {
 };
 
 export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Data>) {
-  const [showTabs, setShowTabs] = useState<string[]>();
+  const [showTabs, setShowTabs] = useState<string[]>(
+    () => data.tabList?.map((item) => item.id) || []
+  );
   const preKey = usePrevious<string | undefined>(data.defaultActiveKey);
-  const findTargetIndex = useCallback(() => {
-    return data.tabList.findIndex(
-      ({ id, permissionKey, key }) =>
-        (!permissionKey || env.hasPermission({ key: permissionKey })) &&
-        showTabs?.includes(id as string) &&
-        key === data.defaultActiveKey
-    );
-  }, [showTabs]);
-
-  const setActiveKey = () => {
-    const index = findTargetIndex();
-    if (index > 0) {
-      data.defaultActiveKey = data.tabList[index].key;
-    } else {
-      data.defaultActiveKey = data.tabList[0].key;
-    }
-  };
+  const findTargetByKey = useCallback(
+    (target = data.defaultActiveKey) => {
+      return data.tabList.find(
+        ({ id, permissionKey, key }) =>
+          (!permissionKey || env.hasPermission({ key: permissionKey })) &&
+          showTabs?.includes(id as string) &&
+          key === target
+      );
+    },
+    [showTabs]
+  );
 
   useEffect(() => {
-    setShowTabs(() => data.tabList?.map((item) => item.id) || []);
-  }, [data.tabList.length]);
-
-  useEffect(() => {
-    setActiveKey();
-  }, [showTabs]);
-
-  useEffect(() => {
-    if (data.tabList.length > 0 && !data.active) {
-      setActiveKey();
-    }
     if (env.runtime) {
       // 激活
       inputs[InputIds.SetActiveTab]((id) => {
@@ -84,7 +69,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         }
       });
       inputs[InputIds.OutActiveTab]((val, relOutputs) => {
-        const current = data.tabList.find(({ key }) => key === data.defaultActiveKey);
+        const current = findTargetByKey();
         relOutputs[OutputIds.OutActiveTab](current);
       });
       data.tabList.forEach((item) => {
@@ -114,13 +99,23 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
 
   useEffect(() => {
     if (env.runtime) {
+      tabRenderHook();
       tabLeaveHook().then(tabIntoHook);
     }
-  }, [data.defaultActiveKey]);
+  }, [data.defaultActiveKey, showTabs]);
+
+  const tabRenderHook = () => {
+    const currentTab = findTargetByKey();
+    if (currentTab && !currentTab.render) {
+      const slotInputs = slots[currentTab.id].inputs;
+      slotInputs[`${currentTab.id}_render`]();
+    }
+  };
 
   const tabIntoHook = () => {
-    const currentTab = data.tabList.find(({ key }) => key === data.defaultActiveKey);
+    const currentTab = findTargetByKey();
     if (currentTab) {
+      currentTab.render = true; //标记render状态
       const slotInputs = slots[currentTab.id].inputs;
       slotInputs[`${currentTab.id}_into`]();
     }
@@ -128,7 +123,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
 
   const tabLeaveHook = () => {
     if (preKey === undefined) return Promise.resolve();
-    const preTab = data.tabList.find(({ key }) => key === preKey);
+    const preTab = findTargetByKey(preKey);
     const slotInputs = slots[preTab.id].inputs;
     return Promise.all([slotInputs[`${preTab.id}_leave`]()]);
   };
