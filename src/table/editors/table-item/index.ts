@@ -7,7 +7,6 @@ import FilterEditor from './filterEditor';
 import BaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
 import StyleEditor from './styleEditor';
-import VisibleEditor from './visibleEditor';
 
 const column = {
   [COLUMN_EDITORS_CLASS_KEY]: ({}: EditorResult<Data>, ...cateAry) => {
@@ -17,7 +16,7 @@ const column = {
     cateAry[1].items = [StyleEditor, TitleTipEditor];
 
     cateAry[2].title = '高级';
-    cateAry[2].items = [VisibleEditor, SortEditor, FilterEditor];
+    cateAry[2].items = [SortEditor, FilterEditor];
     return {
       title: '表格列'
     };
