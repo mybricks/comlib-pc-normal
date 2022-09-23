@@ -48,14 +48,28 @@
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
-        "type": "boolean"
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setInvisible",
+      "title": "设置隐藏",
+      "schema": {
+        "type": "any"
       }
     },
     {
       "id": "setVisible",
-      "title": "设置显示/隐藏",
+      "title": "设置显示",
       "schema": {
-        "type": "boolean"
+        "type": "any"
       }
     }
   ],

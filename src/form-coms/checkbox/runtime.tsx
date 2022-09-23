@@ -38,8 +38,21 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       data.value = void 0;
     });
 
-    inputs['setDisabled']((val) => {
-      data.config.disabled = val;
+    //设置显示
+    inputs['setVisible'](() => {
+      data.visible = true;
+    });
+    //设置隐藏
+    inputs['setInvisible'](() => {
+      data.visible = false;
+    });
+    //设置禁用
+    inputs['setDisabled'](() => {
+      data.config.disabled = true;
+    });
+    //设置启用
+    inputs['setEnabled'](() => {
+      data.config.disabled = false;
     });
 
     inputs['setOptions']((ds) => {
@@ -74,10 +87,6 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       });
       data.value = newValArray;
       data.config.options = tempDs;
-    });
-
-    inputs['setVisible']((val) => {
-      data.visible = val;
     });
   }, []);
 

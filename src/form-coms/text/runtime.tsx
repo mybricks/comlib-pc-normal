@@ -48,12 +48,21 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
       data.value = void 0;
     });
 
-    inputs['setVisible']((val: boolean) => {
-      data.visible = val;
+    //设置显示
+    inputs['setVisible'](() => {
+      data.visible = true;
     });
-
-    inputs['setDisabled']((val: boolean) => {
-      data.config.disabled = val;
+    //设置隐藏
+    inputs['setInvisible'](() => {
+      data.visible = false;
+    });
+    //设置禁用
+    inputs['setDisabled'](() => {
+      data.config.disabled = true;
+    });
+    //设置启用
+    inputs['setEnabled'](() => {
+      data.config.disabled = false;
     });
   }, []);
 
