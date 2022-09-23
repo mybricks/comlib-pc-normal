@@ -12,8 +12,16 @@ const formatDate = (date?: moment.Moment, format?: string) => {
   date = moment(date);
   return date.isValid() ? date.format(format) : moment().format(format);
 };
+// 日期化数据
+const getMoment = (oriValue: any) => {
+  const isValid = moment(oriValue).isValid();
+  const num = Number(oriValue);
+  const result: any = isValid ? moment(oriValue) : isNaN(num) ? undefined : moment(num);
+  return result;
+};
+
 export default (props: RuntimeParams<Data>) => {
-  const { env, data, slots, inputs, outputs } = props;
+  const { env, data, slots, inputs, outputs, logger, title } = props;
   const { useCustomHeader, useCustomDateCell, useModeSwitch, useMonthSelect, useYearSelect } =
     data || {};
   // 数据源
@@ -36,6 +44,13 @@ export default (props: RuntimeParams<Data>) => {
         if (ds && typeof ds === 'object') {
           setDataSource(ds);
         }
+      });
+    }
+    if (env.runtime && inputs[InputIds.CurrentDate]) {
+      inputs[InputIds.CurrentDate]((value) => {
+        const date = getMoment(value);
+        date ? onChange(date) : logger.warn(`${title}: 设置当前日期输入不合法`);
+        setCurrDate(date || currDate);
       });
     }
   }, []);

@@ -16,6 +16,13 @@
       "schema": {
         "type": "object"
       }
+    },
+    {
+      "id": "currentDate",
+      "title": "设置当前日期",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": []
