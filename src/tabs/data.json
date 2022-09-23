@@ -6,7 +6,7 @@
       "id": "tab0"     
     }
   ],
-  "defaultActiveKey": null,
+  "defaultActiveKey": "tab0",
   "type": "card",
   "centered": false,
   "tabPosition": "top",
