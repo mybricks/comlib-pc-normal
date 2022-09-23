@@ -1,5 +1,5 @@
 import { Data } from '../../constants';
-import { getColIndex, getColItem } from '../utils';
+import { getColIndex, getColItem, updateCol } from '../utils';
 
 const IndexEditor = [
   {
@@ -11,7 +11,7 @@ const IndexEditor = [
       return colIndex !== undefined && colIndex !== 0;
     },
     value: {
-      set({ data, focusArea }: EditorResult<Data>) {
+      set({ data, focusArea, slot }: EditorResult<Data>) {
         if (!focusArea) return;
         const [rowIndex, colIndex] = getColIndex(focusArea);
         if (colIndex < 1) return;
@@ -19,6 +19,7 @@ const IndexEditor = [
         const oldColumn = row.columns[colIndex];
         row.columns[colIndex] = row.columns[colIndex - 1];
         row.columns[colIndex - 1] = oldColumn;
+        updateCol(row, slot)
       }
     }
   },
@@ -31,7 +32,7 @@ const IndexEditor = [
       return colIndex !== undefined && colIndex + 1 !== data.rows[rowIndex].columns.length;
     },
     value: {
-      set({ data, focusArea }: EditorResult<Data>) {
+      set({ data, focusArea, slot }: EditorResult<Data>) {
         if (!focusArea) return;
         const [rowIndex, colIndex] = getColIndex(focusArea);
         const row = data.rows[rowIndex];
@@ -39,6 +40,7 @@ const IndexEditor = [
         const oldColumn = row.columns[colIndex];
         row.columns[colIndex] = row.columns[colIndex + 1];
         row.columns[colIndex + 1] = oldColumn;
+        updateCol(row, slot)
       }
     }
   },
@@ -52,6 +54,7 @@ const IndexEditor = [
         const [rowIndex, colIndex] = getColIndex(focusArea);
         slot.remove(item?.slot);
         data.rows[rowIndex].columns.splice(colIndex, 1);
+        updateCol(data.rows[rowIndex], slot)
       }
     }
   }

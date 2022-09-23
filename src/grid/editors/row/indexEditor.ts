@@ -1,5 +1,5 @@
 import { Data } from '../../constants';
-import { addColumn, copyRow, divideColumn, getRowIndex, getRowItem } from '../utils';
+import { addColumn, copyRow, divideColumn, getRowIndex, getRowItem, updateCol } from '../utils';
 
 const IndexEditor = [
   {
@@ -8,6 +8,11 @@ const IndexEditor = [
     value: {
       set(props: EditorResult<Data>) {
         addColumn(props);
+        //最后一列“自动填充”需求
+        const { data, focusArea, slot } = props
+        if (!focusArea) return;
+        const row = getRowItem(data, focusArea);
+        updateCol(row, slot);
       }
     }
   },
