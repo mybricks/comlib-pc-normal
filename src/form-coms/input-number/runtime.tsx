@@ -56,7 +56,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //设置隐藏
   inputs['setInvisible'](() => {
     data.visible = false;
-    console.log('数字输入框显示和隐藏', data.visible);
   });
   //设置禁用
   inputs['setDisabled'](() => {
