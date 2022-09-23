@@ -1,5 +1,4 @@
-import { Schemas, setDataSchema } from '../../schema';
-import { InputIds, OutputIds } from '../../constants';
+import { OutputIds } from '../../constants';
 import { Data } from '../../types';
 
 const EventEditor = [
