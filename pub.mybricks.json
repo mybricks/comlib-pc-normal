@@ -10,7 +10,8 @@
         "./src/single-image/com.json",
         "./src/toolbar/com.json",
         "./src/button/com.json",
-        "./src/breadcrumb/com.json"
+        "./src/breadcrumb/com.json",
+        "./src/menu/com.json"
       ]
     },
     {
@@ -21,7 +22,8 @@
         "./src/dialog/com.json",
         "./src/tabs/com.json",
         "./src/steps/com.json",
-        "./src/drawer/com.json"
+        "./src/drawer/com.json",
+        "./src/list/com.json"
       ]
     },
     {
