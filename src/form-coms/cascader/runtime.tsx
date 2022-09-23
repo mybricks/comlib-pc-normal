@@ -54,13 +54,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
   inputs['resetValue'](() => {
     data.value = [];
   });
-  //显隐，这里不起作用
-  inputs['setVisible']((val: boolean) => {
-    data.visible = val;
+  //设置显示
+  inputs['setVisible'](() => {
+    data.visible = true;
+  });
+  //设置隐藏
+  inputs['setInvisible'](() => {
+    data.visible = false;
   });
   //设置禁用
-  inputs['setDisabled']((val: boolean) => {
-    data.config.disabled = val;
+  inputs['setDisabled'](() => {
+    data.config.disabled = true;
+  });
+  //设置启用
+  inputs['setEnabled'](() => {
+    data.config.disabled = false;
   });
   //输入数据源
   inputs['setOptions']((value) => {
