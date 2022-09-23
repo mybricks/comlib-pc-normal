@@ -290,6 +290,7 @@ export default {
             if (data.tabList.length > 1) {
               slots.remove(data.tabList[focusArea.index]?.id);
               data.tabList.splice(focusArea.index, 1);
+              data.defaultActiveKey = data.tabList[0].key;
             }
           }
         }
