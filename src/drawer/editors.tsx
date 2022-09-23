@@ -182,7 +182,6 @@ export default {
               throw new Error(`请输入正确的按钮标题.`);
             }
             const res = get(data, focusArea, 'btnId', 'obj');
-            slots.get(SlotIds.Content).inputs.get(res.id).setTitle(`${value}事件`);
             slots.get(SlotIds.Content).outputs.get(res.id).setTitle(`${value}输出数据`);
             output.setTitle(res.id, value);
             if (res.dynamicDisabled) {
