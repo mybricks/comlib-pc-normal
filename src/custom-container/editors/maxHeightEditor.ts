@@ -40,9 +40,9 @@ export const MaxHeightEditor = [
       {
         title: '最大宽度',
         type: 'text',
-        description: '组件宽度需设置为适应内容宽度',
+        description: '组件宽度需设置为适应内容/最大可能的宽度',
         options: {
-          placeholder: '组件宽度需设置为适应内容宽度'
+          placeholder: '组件最大宽度，例如：100px/100%/calc(100px)'
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -56,9 +56,9 @@ export const MaxHeightEditor = [
       {
         title: '最大高度',
         type: 'text',
-        description: '组件高度需设置为适应内容高度',
+        description: '组件高度需设置为适应内容/最大可能的高度',
         options: {
-          placeholder: '组件高度需设置为适应内容高度'
+          placeholder: '组件最大高度，例如：100px/100%/calc(100px)'
         },
         value: {
           get({ data }: EditorResult<Data>) {
