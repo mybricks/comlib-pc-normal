@@ -5,10 +5,14 @@ import {
   OutputIds,
   InputIds,
   Schemas,
-  templateRender
+  templateRender,
+  WidthTypeEnum
 } from './constants';
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({}: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [
@@ -29,6 +33,9 @@ export default {
             value: AlignTypeEnum.FlexEnd
           }
         ],
+        ifVisible({ style }: EditorResult<Data>) {
+          return style?.width !== WidthTypeEnum.FitContent;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.align;
@@ -129,6 +136,9 @@ export default {
             };
           }
         },
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.size !== SizeTypeEnum.Simple;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.text;
@@ -139,8 +149,12 @@ export default {
         }
       },
       {
-        title: '跳转页面功能',
+        title: '跳页功能',
         type: 'Switch',
+        description: '打开该功能后，支持直接输入页码跳转(当页数为1时，不显示跳页操作)',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.size !== SizeTypeEnum.Simple;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.showQuickJumper;
@@ -154,6 +168,9 @@ export default {
         title: '条数选择功能',
         type: 'Switch',
         description: '打开该功能后，不再支持页数为1时隐藏功能',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.size !== SizeTypeEnum.Simple;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.showSizeChanger;
@@ -168,7 +185,7 @@ export default {
         type: 'List',
         description: '配置条数切换器可选的条目数，仅识别正整数',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.showSizeChanger;
+          return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -184,7 +201,7 @@ export default {
         title: '页数为1时隐藏分页器',
         type: 'Switch',
         ifVisible({ data }: EditorResult<Data>) {
-          return !data.showSizeChanger;
+          return !data.showSizeChanger || data.size === SizeTypeEnum.Simple;
         },
         value: {
           get({ data }: EditorResult<Data>) {

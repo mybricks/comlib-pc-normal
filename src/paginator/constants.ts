@@ -1,3 +1,7 @@
+export enum WidthTypeEnum {
+  FitContent = 'fit-content'
+}
+
 export enum AlignTypeEnum {
   FlexStart = 'flex-start',
   Center = 'center',
