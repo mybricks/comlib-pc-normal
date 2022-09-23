@@ -79,6 +79,13 @@
       "type": "scope",
       "inputs": [
         {
+          "id": "tab0_render",
+          "title": "首次显示",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
           "id": "tab0_into",
           "title": "显示",
           "schema": {
