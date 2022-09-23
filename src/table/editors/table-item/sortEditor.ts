@@ -70,6 +70,20 @@ const SortEditor = {
       }
     },
     {
+      title: '排序事件',
+      type: '_Event',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.sorter?.enable;
+      },
+      options: () => {
+        return {
+          outputId: OutputIds.SORTER
+        };
+      }
+    },
+    {
       title: '排序方式',
       type: 'Select',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
@@ -87,7 +101,7 @@ const SortEditor = {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return item.sorter?.type;
+          return item.sorter?.type || SorterTypeEnum.Length;
         },
         set({ data, focusArea, output, input }: EditorResult<Data>, value: SorterTypeEnum) {
           if (!focusArea) return;
