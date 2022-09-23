@@ -40,7 +40,6 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
           outputRels['returnValidate'](e);
         });
     });
-
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
     });
@@ -49,19 +48,28 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
       data.value = void 0;
     });
 
-    inputs['setVisible']((val: boolean) => {
-      data.visible = val;
+    //设置显示
+    inputs['setVisible'](() => {
+      data.visible = true;
     });
-
-    inputs['setDisabled']((val: boolean) => {
-      data.config.disabled = val;
+    //设置隐藏
+    inputs['setInvisible'](() => {
+      data.visible = false;
+    });
+    //设置禁用
+    inputs['setDisabled'](() => {
+      data.config.disabled = true;
+    });
+    //设置启用
+    inputs['setEnabled'](() => {
+      data.config.disabled = false;
     });
   }, []);
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    outputs['onChange'](data.value);
+    outputs['onChange'](value);
   }, []);
 
   const onBlur = useCallback((e) => {

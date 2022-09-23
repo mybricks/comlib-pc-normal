@@ -35,7 +35,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs['resetFields']((val, outputRels) => {
-      // formRef.resetFields();
       resetFields();
       outputRels['onResetFinish']();
     });
@@ -55,7 +54,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     _inputs['getValue']((val, outputRels) => {
       getValue().then((v) => {
-        console.log('getValue', v);
         outputRels['returnValue'](v);
       });
     });
@@ -131,8 +129,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
             let value = {};
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
-
-              console.log(item, value, key);
               if (typeof data.fieldsLength !== 'undefined') {
                 value[key] = {
                   name: item.name,
@@ -157,7 +153,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
           if (data.dataType === 'list') {
             const arr = [];
             values.forEach((valItem) => {
-              console.log(valItem);
               Object.keys(valItem).map((key) => {
                 if (!arr[key]) {
                   arr[key] = {};
@@ -186,7 +181,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validate()
       .then(() => {
         getValue().then((values) => {
-          console.log('提交数据', values, outputRels);
           if (outputRels) {
             outputRels[outputId](values);
           } else {
@@ -206,7 +200,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           form={formRef}
           layout={data.layout}
           labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
-          wrapperCol={{ span: 16 }}
+          // wrapperCol={{ span: 16 }}
         >
           <SlotContent
             slots={slots}
@@ -223,6 +217,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 }
 
+/**
+ * @description 列表类型表单容器，暂不开放
+ */
 const FormListItem = ({ content, slots, env, isFormItem, data }) => {
   if (env.edit) {
     return content();

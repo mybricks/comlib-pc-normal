@@ -5,6 +5,7 @@ import { Schemas } from '../../schema';
 const LoadingEditor = [
   {
     title: '动态设置loading',
+    description: '开启后，支持通过逻辑连线设置表格为loading状态',
     type: 'Switch',
     value: {
       get({ data }: EditorResult<Data>) {
@@ -27,9 +28,12 @@ const LoadingEditor = [
     }
   },
   {
-    title: '加载自定义文案',
+    title: '自定义loading文案',
     type: 'Text',
-    description: '显示在loading图标下的文案',
+    description: 'loading文案',
+    options: {
+      placeholder: 'loading文案'
+    },
     ifVisible({ data }) {
       return data.useLoading;
     },

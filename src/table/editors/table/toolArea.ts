@@ -1,10 +1,10 @@
 import { Data } from '../../types';
 
 const toolAreaEditor = {
-  title: '工具区设置',
+  title: '操作区配置',
   items: [
     {
-      title: '自定义列',
+      title: '列设置按钮',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const FormActions = (props: Props) => {
-  const { actions, layout } = props.data;
+  const { actions, layout, formItemColumn } = props.data;
 
   const onClick = (item) => {
     if (item.outputId === outputIds.ON_CLICK_SUBMIT) {
@@ -31,13 +31,8 @@ const FormActions = (props: Props) => {
   //   }
   // }, [layout])
 
-  if (!actions.visible) {
-    return null;
-  }
-
   return (
-    // <Form.Item data-form-actions>
-    <Space>
+    <Space wrap>
       {actions.items.map((item) => {
         if (typeof item.visible !== 'undefined' && !item.visible) {
           return null;
@@ -45,43 +40,17 @@ const FormActions = (props: Props) => {
 
         return (
           <Button
+            data-form-actions-item={item.key}
             type={item.type}
             loading={item.loading}
             key={item.key}
             onClick={() => onClick(item)}
-            data-form-actions-item={item.key}
           >
             {item.title}
           </Button>
         );
       })}
     </Space>
-    // </Form.Item>
-    // <Row style={{  flex: '1 1 100%' }} data-form-actions>
-    //   <Col offset={actionsLayout.offset}>
-    //     <Form.Item>
-    //       <Space>
-    //         {actions.items.map((item) => {
-    //           if (typeof item.visible !== 'undefined' && !item.visible) {
-    //             return null;
-    //           }
-
-    //           return (
-    //             <Button
-    //               type={item.type}
-    //               loading={item.loading}
-    //               key={item.key}
-    //               onClick={() => onClick(item)}
-    //               data-form-actions-item={item.key}
-    //             >
-    //               {item.title}
-    //             </Button>
-    //           );
-    //         })}
-    //       </Space>
-    //     </Form.Item>
-    //   </Col>
-    // </Row>
   );
 };
 

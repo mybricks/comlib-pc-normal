@@ -26,7 +26,6 @@ const FormItem = (props: FormItemProps) => {
       {...field}
       label={item?.label}
       name={field ? [field.name, item?.name] : item?.name}
-      data-formitem={com.id}
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}

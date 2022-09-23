@@ -1,0 +1,10 @@
+{
+  "rules": [],
+  "visible": true,
+  "showTime": false,
+  "config": {
+    "disabled": false,
+    "picker": "date",
+    "placeholder": ["开始日期", "结束日期"]
+  }
+}

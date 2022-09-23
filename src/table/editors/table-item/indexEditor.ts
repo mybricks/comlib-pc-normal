@@ -1,6 +1,6 @@
-import { setDataSchema } from '../../schema';
+import { setCol, setDataSchema } from '../../schema';
 import { Data } from '../../types';
-import { getColumnItemInfo, getNewColumn } from '../../utils';
+import { getColumnItem, getColumnItemInfo, getNewColumn } from '../../utils';
 
 const IndexEditor = [
   {
@@ -40,21 +40,6 @@ const IndexEditor = [
     }
   },
   {
-    title: '删除',
-    type: 'Button',
-    value: {
-      set({ data, focusArea, input, slot, ...res }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const { index, parent, column } = getColumnItemInfo(data, focusArea);
-        parent.splice(index, 1);
-        if (column.slotId && slot.get(column.slotId)) {
-          slot.remove(column.slotId);
-        }
-        setDataSchema({ data, focusArea, input, slot, ...res });
-      }
-    }
-  },
-  {
     title: '列前添加列',
     type: 'Button',
     value: {
@@ -75,6 +60,36 @@ const IndexEditor = [
         const { index, parent } = getColumnItemInfo(data, focusArea);
         parent.splice(index + 1, 0, getNewColumn());
         setDataSchema({ data, focusArea, output, input, ...res });
+      }
+    }
+  },
+  {
+    title: '删除',
+    type: 'Button',
+    value: {
+      set({ data, focusArea, input, slot, ...res }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const { index, parent, column } = getColumnItemInfo(data, focusArea);
+        parent.splice(index, 1);
+        if (column.slotId && slot.get(column.slotId)) {
+          slot.remove(column.slotId);
+        }
+        setDataSchema({ data, focusArea, input, slot, ...res });
+      }
+    }
+  },
+  {
+    title: '隐藏',
+    type: 'Button',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      if (!focusArea) return;
+      const item = getColumnItem(data, focusArea);
+      return item.visible !== false;
+    },
+    value: {
+      set({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        setCol({ data, focusArea }, 'visible', false);
       }
     }
   }

@@ -21,9 +21,25 @@ export const TypeEnumMap = {
 /**
  * 数据源
  * @param type 类型
+ * @param useDynamic 使用动态配置
+ * @param url 默认链接
+ * @param title 默认窗口名称
  */
 export interface Data {
   type: TypeEnum;
+  useDynamic?: boolean;
   url?: string;
   title?: string;
 }
+
+export const InputIds = {
+  RouterAction: 'routerAction'
+};
+export const Schemas = {
+  String: {
+    type: 'string'
+  },
+  Any: {
+    type: 'any'
+  }
+};

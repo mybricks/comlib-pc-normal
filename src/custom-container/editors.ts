@@ -8,7 +8,7 @@ import { SlotLayoutEditor } from '../components/editors/SlotLayoutEditor';
 
 export default {
   '@init'({ style }: EditorResult<Data>) {
-    style.height = 20;
+    style.height = 'auto';
   },
   '@resize': {
     options: ['width', 'height']

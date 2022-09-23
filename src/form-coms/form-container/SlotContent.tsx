@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Col, Row } from 'antd';
 import FormItem from './components/FormItem';
 import FormActions from './components/FormActions';
 import InlineLayout from './layout/InlineLayout';
@@ -20,8 +21,11 @@ const SlotContent = (props) => {
     return data.layout === 'vertical';
   }, [data.layout]);
 
+  const FormActionsWrapper = () => {
+    return <FormActions data={data} outputs={outputs} submit={submit} />;
+  };
+
   const content = useMemo(() => {
-    console.log('-----content');
     return slots['content'].render({
       wrap(comAray: { id; jsx; def; inputs; outputs }[]) {
         const items = data.items;
@@ -35,12 +39,10 @@ const SlotContent = (props) => {
               let item = items.find((item) => item.id === com.id);
 
               childrenInputs[com.id] = com.inputs;
-              // console.log('-----items', data.items)
-              // console.log('comAray', comAray)
-              // console.log('-----com.id', com.id)
-
               return (
-                <FormItem data={data} com={com} item={item} key={com.id} field={props?.field} />
+                <Col data-formitem={com.id} key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
+                  <FormItem data={data} com={com} item={item} field={props?.field} />
+                </Col>
               );
             }
 
@@ -48,28 +50,23 @@ const SlotContent = (props) => {
           });
 
           return (
-            <>
+            <Row>
               {isInlineModel && (
-                <InlineLayout data={data}>
+                <InlineLayout data={data} actions={<FormActionsWrapper />}>
                   {jsx}
-                  <FormActions data={data} outputs={outputs} submit={submit} />
                 </InlineLayout>
               )}
               {isHorizontalModel && (
-                <HorizontalLayout
-                  data={data}
-                  actions={<FormActions data={data} outputs={outputs} submit={submit} />}
-                >
+                <HorizontalLayout data={data} actions={<FormActionsWrapper />}>
                   {jsx}
                 </HorizontalLayout>
               )}
               {isVerticalModel && (
-                <VerticalLayout data={data}>
+                <VerticalLayout data={data} actions={<FormActionsWrapper />}>
                   {jsx}
-                  <FormActions data={data} outputs={outputs} submit={submit} />
                 </VerticalLayout>
               )}
-            </>
+            </Row>
           );
         }
       },

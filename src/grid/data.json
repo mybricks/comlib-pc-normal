@@ -30,7 +30,7 @@
           "span": 8,
           "key": "column_2",
           "slot": "slot_2",
-          "widthOption": "span",
+          "widthOption": "auto",
           "width": 300,
           "colStyle": {}
         }

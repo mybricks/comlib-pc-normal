@@ -4,7 +4,6 @@ import { uuid } from '../../utils';
 import { setDataSchema, Schemas } from '../schema';
 import columnEditor from './table-item';
 import HeaderEditor from './table/header';
-import ToolAreaEditor from './table/toolArea';
 import TableStyleEditor from './table/tableStyle';
 import AddColumnEditor from './table/addColumn';
 import ExpandEditor from './table/expand';
@@ -62,13 +61,18 @@ export default {
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [AddColumnEditor, HeaderEditor, ToolAreaEditor];
+    cateAry[0].items = [AddColumnEditor];
 
     cateAry[1].title = '样式';
     cateAry[1].items = [...LoadingEditor, TableStyleEditor];
 
     cateAry[2].title = '高级';
-    cateAry[2].items = [...EventEditor, ...ExpandEditor, ...getRowSelectionEditor(props)];
+    cateAry[2].items = [
+      ...EventEditor,
+      HeaderEditor,
+      ...ExpandEditor,
+      ...getRowSelectionEditor(props)
+    ];
   },
   ...columnEditor
 };

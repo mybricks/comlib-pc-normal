@@ -3,8 +3,8 @@
   "namespace": "mybricks.normal-pc.radio",
   "version": "1.0.0",
   "description": "单选框",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
@@ -45,13 +45,6 @@
       }
     },
     {
-      "id": "setDisabled",
-      "title": "设置禁用",
-      "schema": {
-        "type": "boolean"
-      }
-    },
-    {
       "id": "setOptions",
       "title": "设置数据源",
       "schema": {
@@ -80,10 +73,31 @@
       }
     },
     {
-      "id": "setVisible",
-      "title": "设置显示/隐藏",
+      "id": "setDisabled",
+      "title": "设置禁用",
       "schema": {
-        "type": "boolean"
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setInvisible",
+      "title": "设置隐藏",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setVisible",
+      "title": "设置显示",
+      "schema": {
+        "type": "any"
       }
     }
   ],
@@ -99,7 +113,17 @@
       "id": "returnValidate",
       "title": "校验结果",
       "schema": {
-        "type": "boolean"
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
       }
     },
     {

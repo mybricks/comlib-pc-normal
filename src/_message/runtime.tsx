@@ -6,7 +6,9 @@ const runtimeExecute = ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   const { type, content, duration } = data;
   //结束提示
   const onClose = () => {
-    outputs[OutputIds.Close]();
+    if (data.isEnd) {
+      outputs[OutputIds.Close]();
+    }
   };
 
   // 显示信息

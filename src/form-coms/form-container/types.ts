@@ -11,20 +11,58 @@ interface Action {
 
 interface Actions {
   items: Action[];
+  span: number;
   visible: boolean;
+}
+
+interface FormItems {
+  id: string; 
+  name: string
+  label: string
+  span: number
+  required?: boolean
 }
 
 export type LabelWidthType = 'px' | 'span'
 
 export interface Data {
-  items: any[]
+  /**
+   * 表单项列表
+   */
+  items: FormItems[]
+  /**
+   * 是否作为表单项
+   */
   isFormItem: boolean
+  /**
+   * 单行列数
+   */
+  formItemColumn: number
+  /**
+   * 数据类型
+   */
   dataType: 'object' | 'list'
+  /**
+   * 布局类型
+   */
   layout: 'horizontal' | 'vertical' | 'inline'
   fieldsLength?: number
+  /**
+   * 操作项
+   */
   actions: Actions
+  /**
+   * 标题宽度类型
+   */
   labelWidthType: LabelWidthType
+  /**
+   * 标题宽度
+   */
   labelWidth: number
+  /**
+   * 标题宽度占比
+   */
+  labelCol: number
   wrapperCol: number
 }
 

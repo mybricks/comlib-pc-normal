@@ -1,9 +1,77 @@
-import { Data, OutputIds, Schemas, TypeEnum } from './constant';
+import { Data, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
+    const eventItems = [
+      {
+        title: '单击节点事件',
+        type: 'Switch',
+        description: '开启后单击节点将输出节点数据',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.enableOutput;
+          },
+          set({ data, output }: EditorResult<Data>, value: boolean) {
+            data.enableOutput = value;
+            if (value) {
+              output.add(OutputIds.Select, '单击节点', Schemas.Any);
+            } else {
+              output.remove(OutputIds.Select);
+            }
+          }
+        }
+      },
+      {
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableOutput;
+        },
+        items: [
+          {
+            title: '单击节点',
+            type: '_Event',
+            options: () => {
+              return {
+                outputId: OutputIds.Select
+              };
+            }
+          }
+        ]
+      }
+    ];
     cate1.items = [
+      {
+        title: '数据源',
+        type: 'Select',
+        options: [
+          { label: '静态配置', value: 'default' },
+          { label: '动态输入(数组)', value: 'array' },
+          { label: '动态输入(对象)', value: 'object' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.dataSourceType;
+          },
+          set({ data, input }: EditorResult<Data>, value: 'default' | 'array' | 'object') {
+            data.dataSourceType = value;
+            const dsInput = input.get(InputIds.SetJsonData);
+            console.log(value, value === 'default', !!dsInput);
+            if (value === 'default') {
+              dsInput && input.remove(InputIds.SetJsonData);
+            } else {
+              if (!dsInput) {
+                input.add(InputIds.SetJsonData, '设置数据源', {
+                  type: value
+                });
+              } else {
+                dsInput.setSchema({
+                  type: value
+                });
+              }
+            }
+          }
+        }
+      },
       {
         title: '默认展开深度',
         type: 'InputNumber',
@@ -58,6 +126,7 @@ export default {
           }
         }
       },
+      ...eventItems,
       {
         title: '默认JSON数据',
         type: 'Code',
@@ -68,6 +137,9 @@ export default {
           minimap: {
             enabled: false
           }
+        },
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.dataSourceType === 'default';
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -130,44 +202,6 @@ export default {
             data.colors[TypeEnum.Number] = value;
           }
         }
-      }
-    ];
-
-    cate3.title = '事件';
-    cate3.items = [
-      {
-        title: '单击节点事件',
-        type: 'Switch',
-        description: '开启后单击节点将输出节点数据',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.enableOutput;
-          },
-          set({ data, output }: EditorResult<Data>, value: boolean) {
-            data.enableOutput = value;
-            if (value) {
-              output.add(OutputIds.Select, '单击节点', Schemas.Any);
-            } else {
-              output.remove(OutputIds.Select);
-            }
-          }
-        }
-      },
-      {
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.enableOutput;
-        },
-        items: [
-          {
-            title: '单击节点',
-            type: '_Event',
-            options: () => {
-              return {
-                outputId: OutputIds.Select
-              };
-            }
-          }
-        ]
       }
     ];
   }

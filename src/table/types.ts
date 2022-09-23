@@ -90,7 +90,7 @@ export enum TableLayoutEnum {
 }
 export interface Data {
   // 数据源唯一标识
-  rowKey: string;
+  rowKey?: string;
   // 数据源
   dataSource: any[];
 

@@ -15,7 +15,7 @@
       "id": "routerAction",
       "title": "路由切换",
       "schema": {
-        "type": "string"
+        "type": "any"
       }
     }
   ],

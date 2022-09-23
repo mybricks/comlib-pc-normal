@@ -117,7 +117,7 @@ export default {
               index: data.stepAry.length
             });
             addSlot(data, slots, id)
-            output.add(id, `提交_${id}`, DefaultSchema);
+            output.add(id, '下一步', DefaultSchema);
             //设置跳转title
             input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
             data.stepAry.forEach((item, idx) => {
@@ -167,13 +167,15 @@ export default {
 const addSlot = (data, slots, id) => {
   slots.add({
     id,
-    title: `内容区【${data.stepAry.length}】`,
+    title: `步骤${data.stepAry.length}`,
     type: 'scope',
     inputs: [
       {
         id: `${id}_into`,
         title: '当该步骤显示',
-        schema: DefaultSchema
+        schema: {
+          type: "follow"
+        }
       },
       {
         id: `${id}_leave`,

@@ -1,10 +1,17 @@
-import { Data, TypeEnum, TypeEnumMap } from './constants';
+import { Data, InputIds, Schemas, TypeEnum, TypeEnumMap } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
-  const { type, url } = data;
+  const { type, useDynamic, url, title } = data;
   const info = [`类型：${TypeEnumMap[type]}`];
-  if (url) {
+  if (!useDynamic && url) {
     info.push(`路径：${url}`);
+  }
+  if (
+    !useDynamic &&
+    [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW].includes(type) &&
+    title
+  ) {
+    info.push(`窗口名称：${title}`);
   }
   setDesc(info.join('\n'));
 };
@@ -36,18 +43,33 @@ export default {
       }
     },
     {
+      title: '使用动态传入',
+      type: 'Switch',
+      description: '开启后，需要动态传入跳转路径',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.useDynamic;
+        },
+        set({ data, input, setDesc }: EditorResult<Data>, value: boolean) {
+          data.useDynamic = value;
+          input.get(InputIds.RouterAction).setSchema(value ? Schemas.String : Schemas.Any);
+          setDescByData({ data, setDesc });
+        }
+      }
+    },
+    {
       title: '跳转路径',
       type: 'Text',
       options: {
         placeholder: '请输入静态跳转路径'
       },
       ifVisible({ data }: EditorResult<Data>) {
-        return [
-          TypeEnum.PUSHSTATE,
-          TypeEnum.OPENTAB,
-          TypeEnum.OPENWINDOW,
-          TypeEnum.REDIRECT
-        ].includes(data.type);
+        return (
+          !data.useDynamic &&
+          [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW, TypeEnum.REDIRECT].includes(
+            data.type
+          )
+        );
       },
       value: {
         get({ data }: EditorResult<Data>) {
@@ -62,18 +84,23 @@ export default {
     {
       title: '窗口名称',
       type: 'Text',
+      description: '相同的窗口名称页面，不会重复打开新标签页/新窗口',
       options: {
         placeholder: '请输入窗口名称'
       },
       ifVisible({ data }: EditorResult<Data>) {
-        return [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW].includes(data.type);
+        return (
+          !data.useDynamic &&
+          [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW].includes(data.type)
+        );
       },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.title;
         },
-        set({ data }: EditorResult<Data>, value: string) {
+        set({ data, setDesc }: EditorResult<Data>, value: string) {
           data.title = value;
+          setDescByData({ data, setDesc });
         }
       }
     }

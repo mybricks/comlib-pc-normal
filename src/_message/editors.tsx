@@ -1,14 +1,6 @@
-import { Data, TypeEnum, TypeEnumMap, OutputIds } from './constants';
+import { Data, TypeEnum, TypeEnumMap, OutputIds, InputIds } from './constants';
 
-const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
-  const { type, content } = data;
-  const info = [`类型：${TypeEnumMap[type]}`, `内容：${content}`];
-  setDesc(info.join('\n'));
-};
 export default {
-  '@init'({ data, setDesc }: EditorResult<Data>) {
-    setDescByData({ data, setDesc });
-  },
   ':root': [
     {
       title: '内容输入',
@@ -18,8 +10,13 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.isExternal;
         },
-        set({ data }: EditorResult<Data>, value: boolean) {
+        set({ data, input }: EditorResult<Data>, value: boolean) {
           data.isExternal = value;
+          if (!data.isExternal) {
+            input.get(InputIds.Open).setSchema({ type: 'any' });
+          } else {
+            input.get(InputIds.Open).setSchema({ type: 'follow' });
+          }
         }
       }
     },
@@ -33,9 +30,8 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.content;
         },
-        set({ data, setDesc }: EditorResult<Data>, value: string) {
+        set({ data }: EditorResult<Data>, value: string) {
           data.content = value;
-          setDescByData({ data, setDesc });
         }
       }
     },
@@ -72,9 +68,8 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.type;
         },
-        set({ data, setDesc }: EditorResult<Data>, value: TypeEnum) {
+        set({ data }: EditorResult<Data>, value: TypeEnum) {
           data.type = value;
-          setDescByData({ data, setDesc });
         }
       }
     },

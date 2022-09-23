@@ -56,7 +56,7 @@
   "slots": [
     {
       "id": "content",
-      "title": "抽屉内容",
+      "title": "抽屉容器",
       "type": "scope",
       "inputs": [
         {

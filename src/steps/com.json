@@ -34,7 +34,9 @@
     {
       "id": "getIndex",
       "title": "获取当前步骤（从0开始）",
-      "rels": ["getIndex"],
+      "rels": [
+        "getIndex"
+      ],
       "schema": {
         "type": "any"
       }
@@ -45,7 +47,7 @@
       "id": "submit",
       "title": "数据提交",
       "schema": {
-        "type": "any"
+        "type": "follow"
       }
     },
     {
@@ -66,14 +68,14 @@
   "slots": [
     {
       "id": "step0",
-      "title": "内容区【1】",
+      "title": "步骤1",
       "type": "scope",
       "inputs": [
         {
           "id": "step0_into",
           "title": "当该步骤显示",
           "schema": {
-            "type": "any"
+            "type": "follow"
           }
         },
         {

@@ -10,7 +10,8 @@ import {
   Location,
   SlotIds,
   SlotInputIds,
-  DefaultEvent
+  DefaultEvent,
+  AlignEnum
 } from './constants';
 import css from './runtime.less';
 
@@ -121,7 +122,7 @@ export default function Dialog({
   (data.footerBtns || []).forEach((item) => {
     const { id } = item;
     eventList[id] = () => {
-      outputs[id]();
+      outputs[`${id}Click`]();
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
       // }
@@ -215,39 +216,50 @@ const RuntimeRender = ({
     useFooter,
     cancelText,
     width,
-    footerBtns
+    footerBtns,
+    footerLayout
   } = cfg;
-
   const renderFooter = () => {
-    return (footerBtns || []).map((item) => {
-      const {
-        title,
-        id,
-        showText,
-        icon,
-        useIcon,
-        disabled,
-        hidden,
-        visible = true,
-        location,
-        ...res
-      } = item;
-      const Icon = useIcon && Icons && Icons[icon as string]?.render();
-      return (
-        <Button
-          {...res}
-          hidden={!visible || hidden}
-          disabled={disabled}
-          onClick={event?.[id]}
-          data-btn-id={id}
-          key={id}
-        >
-          {useIcon && location !== Location.BACK && Icon}
-          {showText && env.i18n(title)}
-          {useIcon && location === Location.BACK && Icon}
-        </Button>
-      );
-    });
+    return (
+      <div
+        className="toolbar"
+        style={{
+          justifyContent: footerLayout || AlignEnum.FlexEnd
+        }}
+      >
+        {(footerBtns || []).map((item) => {
+          const {
+            title,
+            id,
+            showText,
+            icon,
+            useIcon,
+            disabled,
+            hidden,
+            visible = true,
+            location,
+            dynamicHidden,
+            dynamicDisabled,
+            ...res
+          } = item;
+          const Icon = useIcon && Icons && Icons[icon as string]?.render();
+          return (
+            <Button
+              {...res}
+              hidden={!visible || hidden}
+              disabled={disabled}
+              onClick={event?.[id]}
+              data-btn-id={id}
+              key={id}
+            >
+              {useIcon && location !== Location.BACK && Icon}
+              {showText && env.i18n(title)}
+              {useIcon && location === Location.BACK && Icon}
+            </Button>
+          );
+        })}
+      </div>
+    );
   };
 
   return (

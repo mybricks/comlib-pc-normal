@@ -24,7 +24,7 @@ export default {
             const id = getId(data);
             slots.add({
               id,
-              title: `标签页【${data.tabList.length + 1}】`,
+              title: `标签页${data.tabList.length + 1}`,
               type: 'scope',
               inputs: [
                 {

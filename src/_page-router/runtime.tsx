@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { Data } from './constants';
+import { Data, InputIds } from './constants';
 
 // pushState/replaceState 参数解析
 const getHistoryParams = (val) => {
@@ -131,24 +131,21 @@ const RuntimeActions = {
 };
 
 const getParams = (val, data: Data) => {
-  const { url, title } = data;
-  if (val && typeof val === 'string') {
-    return { url: val, title };
+  if (data?.useDynamic) {
+    if (typeof val === 'string') {
+      return val;
+    }
+    return undefined;
   }
-  if (val && typeof val?.url === 'string') {
-    const temp = getHistoryParams(val);
-    return {
-      ...temp,
-      title: temp?.title || title,
-      url: temp?.url || url
-    };
-  }
-  return { url, title };
+  return {
+    title: data?.title,
+    url: data?.url
+  };
 };
 // 调试时执行
 const debugExecute = ({ inputs, data }: RuntimeParams<Data>) => {
   const { type } = data;
-  inputs['routerAction']((val) => {
+  inputs[InputIds.RouterAction]((val) => {
     if (DebugActions[type]) {
       DebugActions[type](getParams(val, data));
     }
@@ -157,7 +154,7 @@ const debugExecute = ({ inputs, data }: RuntimeParams<Data>) => {
 // 运行时执行
 const runtimeExecute = ({ inputs, data }: RuntimeParams<Data>) => {
   const { type } = data;
-  inputs['routerAction']((val) => {
+  inputs[InputIds.RouterAction]((val) => {
     if (RuntimeActions[type]) {
       RuntimeActions[type](getParams(val, data));
     }

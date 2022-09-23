@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 export type Placement = "top" | "bottom" | "left" | "right";
 export type Trigger = "hover" | "focus" | "click";
 export interface Data {
@@ -8,4 +8,5 @@ export interface Data {
   trigger?: Trigger;
   useTitleSlot?: boolean;
   useContentSlot?: boolean;
+  style?: CSSProperties
 }
