@@ -54,7 +54,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     _inputs['getValue']((val, outputRels) => {
       getValue().then((v) => {
-        console.log('getValue', v);
         outputRels['returnValue'](v);
       });
     });
@@ -130,7 +129,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
             let value = {};
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
-              // console.log(`inputid`, input, item, value, key, val);
               if (typeof data.fieldsLength !== 'undefined') {
                 value[key] = {
                   name: item.name,
@@ -155,7 +153,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
           if (data.dataType === 'list') {
             const arr = [];
             values.forEach((valItem) => {
-              console.log(valItem);
               Object.keys(valItem).map((key) => {
                 if (!arr[key]) {
                   arr[key] = {};
@@ -184,7 +181,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validate()
       .then(() => {
         getValue().then((values) => {
-          console.log('提交数据', values, outputRels);
           if (outputRels) {
             outputRels[outputId](values);
           } else {
