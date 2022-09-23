@@ -18,15 +18,21 @@ export function addRow({ data, slot }: EditorResult<Data>, columnCount: number) 
 
   for (let i = 0; i < columnCount; i++) {
     const columnId = uuid();
+    //最后一列默认“自动填充”需求
+    let widthOption = WidthUnitEnum.Span, title = slotTitle
+    if (i === columnCount - 1) {
+      widthOption = WidthUnitEnum.Auto;
+      title = 'col-自适应'
+    }
     columns.push({
       span: 24 / columnCount,
       key: columnId,
       slot: columnId,
-      widthOption: WidthUnitEnum.Span,
+      widthOption,
       width: 300,
       colStyle: {}
     });
-    slot.add(columnId, slotTitle);
+    slot.add(columnId, title);
   }
 
   const rowId = uuid();
@@ -139,4 +145,16 @@ export function updateColumnsTitle(col: ColumnParams, slot: any) {
       slot.setTitle(col.slot, `col-默认`);
       break;
   }
+}
+
+//更新行，最后一列默认“自动填充”
+export const updateCol = (row, slot) => {
+  row.columns.forEach((col, index) => {
+    if (index < row.columns.length - 1) {
+      col.widthOption = 'span';
+    } else {
+      col.widthOption = 'auto';
+    }
+    updateColumnsTitle(col, slot)
+  });
 }
