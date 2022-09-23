@@ -28,6 +28,11 @@ export default {
               type: 'scope',
               inputs: [
                 {
+                  id: `${id}_render`,
+                  title: '首次显示',
+                  schema: DefaultSchema
+                },
+                {
                   id: `${id}_into`,
                   title: '显示',
                   schema: DefaultSchema

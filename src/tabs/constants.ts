@@ -3,7 +3,7 @@
  * @param key 唯一id
  * @param name 名称
  */
-export interface TabList {
+export interface TabItem {
   key: string;
   name: string;
   closable?: boolean;
@@ -19,6 +19,8 @@ export interface TabList {
   isChoose?: boolean;
   // 设置tabs中icon
   icon?: string;
+  //是否已经render
+  render?: boolean
 }
 /**
  * 数据源
@@ -32,7 +34,7 @@ export interface TabList {
 export interface Data {
   type: any;
   centered: boolean;
-  tabList: TabList[];
+  tabList: TabItem[];
   prohibitClick: boolean;
   defaultActiveKey: string | undefined;
   tabPosition: 'left' | 'top' | 'bottom' | 'right';
