@@ -17,7 +17,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
         if (Array.isArray(v)) {
-          const ds = v.map((item, index) => ({ ...item, [rowKey]: uuid(), index: index }));
+          const ds = v.map((item, index) => ({ item, [rowKey]: uuid(), index: index }));
           data.dataSource = ds;
           setDataSource(ds);
         }
@@ -40,13 +40,13 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     }
   }, [dataSource]);
 
-  const ListItemRender = ({ [rowKey]: key, index: index, ...res }) => {
+  const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
     return (
       <List.Item key={key}>
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
-            itemData: res,
+            itemData: item,
             index: index
           },
           key: key
@@ -75,11 +75,11 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
           ...getFlexStyle()
         }}
       >
-        {dataSource.map(({ [rowKey]: key, index: index, ...res }) => (
+        {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
           <div key={key}>
             {slots['item'].render({
               inputValues: {
-                itemData: res,
+                itemData: item,
                 index: index
               },
               key: key

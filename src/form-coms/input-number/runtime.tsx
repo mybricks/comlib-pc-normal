@@ -49,9 +49,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
   inputs['resetValue'](() => {
     setValue(void 0);
   });
+  //设置显示
+  inputs['setVisible'](() => {
+    data.visible = true;
+  });
+  //设置隐藏
+  inputs['setInvisible'](() => {
+    data.visible = false;
+    console.log('数字输入框显示和隐藏', data.visible);
+  });
   //设置禁用
-  inputs['setDisabled']((val: boolean) => {
-    data.config.disabled = val;
+  inputs['setDisabled'](() => {
+    data.config.disabled = true;
+  });
+  //设置启用
+  inputs['setEnabled'](() => {
+    data.config.disabled = false;
   });
 
   const onChange = (value) => {

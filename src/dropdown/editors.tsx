@@ -63,6 +63,23 @@ export default {
           }
         }
       },
+      {
+        title: '宽度',
+        type: 'text',
+        description: '搜索框宽度,支持百分比和定宽',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return String(data.width);
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (/^\d+$/.test(value)) {
+              data.width = `${value}px`;
+            } else {
+              data.width = value;
+            }
+          }
+        }
+      },
       //选项的配置
       {
         title: '选项配置',
