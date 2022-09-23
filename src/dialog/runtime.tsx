@@ -42,12 +42,12 @@ export default function Dialog({
 
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
-          const { id, visible } = item;
+          const { id, visible, isConnected } = item;
           if (DefaultEvent.includes(id) && !visible) return;
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
               if (DefaultEvent.includes(id)) {
-                close();
+                isConnected && close();
               }
               relOutputs[id](val);
             });
@@ -120,9 +120,10 @@ export default function Dialog({
 
   const eventList = {};
   (data.footerBtns || []).forEach((item) => {
-    const { id } = item;
+    const { id, isConnected } = item;
     eventList[id] = () => {
       outputs[`${id}Click`]();
+      !isConnected && close();
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
       // }
@@ -240,6 +241,7 @@ const RuntimeRender = ({
             location,
             dynamicHidden,
             dynamicDisabled,
+            isConnected,
             ...res
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();

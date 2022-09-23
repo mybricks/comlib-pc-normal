@@ -53,6 +53,7 @@ export interface Data {
     dynamicHidden?: boolean;
     hidden?: boolean;
     visible: boolean;
+    isConnected?: boolean;
   })[];
   getContainer?: () => any;
 }
