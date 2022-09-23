@@ -33,6 +33,9 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
 
   useEffect(() => {
     if (env.runtime) {
+      if (data.tabList.length && !data.active) {
+        data.defaultActiveKey = data.tabList[0].key;
+      }
       // 激活
       inputs[InputIds.SetActiveTab]((id) => {
         const activeTab = data.tabList.find((item) => {
