@@ -1,13 +1,13 @@
 import { Data, InputIds, Schemas, TypeEnum, TypeEnumMap } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
-  const { type, useDefault, url, title } = data;
+  const { type, useDynamic, url, title } = data;
   const info = [`类型：${TypeEnumMap[type]}`];
-  if (useDefault && url) {
+  if (!useDynamic && url) {
     info.push(`路径：${url}`);
   }
   if (
-    useDefault &&
+    !useDynamic &&
     [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW].includes(type) &&
     title
   ) {
@@ -43,16 +43,16 @@ export default {
       }
     },
     {
-      title: '使用静态配置',
+      title: '使用动态传入',
       type: 'Switch',
-      description: '开启后，支持填写静态跳转路径/窗口名称',
+      description: '开启后，需要动态传入跳转路径',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.useDefault;
+          return data.useDynamic;
         },
         set({ data, input, setDesc }: EditorResult<Data>, value: boolean) {
-          data.useDefault = value;
-          input.get(InputIds.RouterAction).setSchema(value ? Schemas.Any : Schemas.String);
+          data.useDynamic = value;
+          input.get(InputIds.RouterAction).setSchema(value ? Schemas.String : Schemas.Any);
           setDescByData({ data, setDesc });
         }
       }
@@ -65,7 +65,7 @@ export default {
       },
       ifVisible({ data }: EditorResult<Data>) {
         return (
-          data.useDefault &&
+          !data.useDynamic &&
           [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW, TypeEnum.REDIRECT].includes(
             data.type
           )
@@ -90,7 +90,7 @@ export default {
       },
       ifVisible({ data }: EditorResult<Data>) {
         return (
-          data.useDefault &&
+          !data.useDynamic &&
           [TypeEnum.PUSHSTATE, TypeEnum.OPENTAB, TypeEnum.OPENWINDOW].includes(data.type)
         );
       },

@@ -35,7 +35,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs['resetFields']((val, outputRels) => {
-      // formRef.resetFields();
       resetFields();
       outputRels['onResetFinish']();
     });
@@ -131,8 +130,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             let value = {};
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
-
-              console.log(item, value, key);
+              // console.log(`inputid`, input, item, value, key, val);
               if (typeof data.fieldsLength !== 'undefined') {
                 value[key] = {
                   name: item.name,
@@ -206,7 +204,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           form={formRef}
           layout={data.layout}
           labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
-          wrapperCol={{ span: 16 }}
+          // wrapperCol={{ span: 16 }}
         >
           <SlotContent
             slots={slots}
@@ -223,6 +221,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 }
 
+/**
+ * @description 列表类型表单容器，暂不开放
+ */
 const FormListItem = ({ content, slots, env, isFormItem, data }) => {
   if (env.edit) {
     return content();

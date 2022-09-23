@@ -21,13 +21,13 @@ export const TypeEnumMap = {
 /**
  * 数据源
  * @param type 类型
- * @param useDefault 使用默认配置
+ * @param useDynamic 使用动态配置
  * @param url 默认链接
  * @param title 默认窗口名称
  */
 export interface Data {
   type: TypeEnum;
-  useDefault?: boolean;
+  useDynamic?: boolean;
   url?: string;
   title?: string;
 }

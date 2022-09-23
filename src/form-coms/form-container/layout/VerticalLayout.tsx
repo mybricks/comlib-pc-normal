@@ -1,17 +1,28 @@
 import React from 'react';
+import { Form, Button, Row, Col, Space } from 'antd';
 import { Data } from '../types';
-import FormActions from '../components/FormActions';
-import styles from '../styles.less';
 
 interface VerticalLayoutProps {
   data: Data;
   children?: React.ReactNode;
+  actions?: React.ReactNode;
 }
 
 const VerticalLayout = (props: VerticalLayoutProps) => {
-  const { children } = props;
-  console.log('VerticalLayout 渲染');
-  return <div>{children}</div>;
+  const { children, actions, data } = props;
+
+  return (
+    <>
+      {children}
+      {data.actions.visible && (
+        <Col data-form-actions flex={`0 0 ${100 / data.formItemColumn}%`}>
+          <Form.Item label=" " colon={false}>
+            {actions}
+          </Form.Item>
+        </Col>
+      )}
+    </>
+  );
 };
 
 export default VerticalLayout;

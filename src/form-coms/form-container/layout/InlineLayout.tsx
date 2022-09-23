@@ -1,17 +1,27 @@
 import React from 'react';
 import { Data } from '../types';
-import FormActions from '../components/FormActions';
+import { Form, Button, Row, Col, Space } from 'antd';
 import styles from '../styles.less';
 
 interface InlineLayoutProps {
   data: Data;
   children?: React.ReactNode;
+  actions?: React.ReactNode;
 }
 
 const InlineLayout = (props: InlineLayoutProps) => {
-  const { children } = props;
-  console.log('InlineLayout 渲染');
-  return <div className={styles.slotInlineWrapper}>{children}</div>;
+  const { children, actions, data } = props;
+
+  return (
+    <div className={styles.slotInlineWrapper}>
+      {children}
+      {data.actions.visible && (
+        <Col data-form-actions flex={`0 0 ${100 / data.formItemColumn}%`}>
+          <Form.Item>{actions}</Form.Item>
+        </Col>
+      )}
+    </div>
+  );
 };
 
 export default InlineLayout;

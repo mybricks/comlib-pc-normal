@@ -54,7 +54,8 @@ export default {
         id,
         schema,
         name: `item${nowC}`,
-        label: `表单项${nowC}`
+        label: `表单项${nowC}`,
+        span: 24
       })
     }
     refreshSchema({data, inputs, outputs, slots})
@@ -89,14 +90,31 @@ export default {
           }
         },
         {
+          title: '每行列数',
+          type: 'Slider',
+          description: '每行的表单项个数',
+          options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.formItemColumn
+            },
+            set({ data }: EditorResult<Data>, value: number) {
+              data.formItemColumn = value
+            }
+          }
+        },
+        {
           title: '标题',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.layout === 'horizontal'
+          },
           items: [
             {
-              title: '类型',
+              title: '宽度类型',
               type: 'Select',
               options: [
                 { label: '固定像素', value: 'px' },
-                // { label: '24 栅格', value: 'span' },
+                { label: '24 栅格', value: 'span' },
               ],
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -110,7 +128,7 @@ export default {
             {
               title: '标题宽度(px)',
               type: 'inputNumber',
-              options: [{ min: -1 }],
+              options: [{ min: 1 }],
               ifVisible({ data }: EditorResult<Data>) {
                 return data.labelWidthType === 'px'
               },
@@ -121,8 +139,30 @@ export default {
                 set({ data }: EditorResult<Data>, value: number) {
                   data.labelWidth = value[0]
                 }
-              },
+              }
             },
+            {
+              title: '标题宽度(栅格)',
+              type: 'Slider',
+              options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.labelWidthType === 'span'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelCol
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelCol = value
+                }
+              }
+            }
+          ]
+        },
+        {
+          title: '表单项',
+          items: [
+
           ]
         }
       ]
@@ -212,10 +252,42 @@ export default {
           set({data, focusArea}: EditorResult<Data>, val) {
             const comId = focusArea.dataset['formitem']
             const item = data.items.find(item => item.id === comId)
-            item.required = val
+            item['required'] = val
           }
         }
-      }
+      },
+      // {
+      //   title: '表单项',
+      //   items: [
+      //     {
+      //       title: '宽度',
+      //       type: 'Slider',
+      //       options: [
+      //         {
+      //           max: 24,
+      //           min: 1,
+      //           step: 1,
+      //           formatter: '/24',
+      //         },
+      //       ],
+      //       // ifVisible({ data }: EditorResult<Data>) {
+      //       //   return data.layout === 'horizontal'
+      //       // },
+      //       value: {
+      //         get({ data, focusArea }: EditorResult<Data>) {
+      //           const comId = focusArea.dataset['formitem']
+      //           const item = data.items.find(item => item.id === comId)
+      //           return item.span || 24
+      //         },
+      //         set({ data, focusArea }: EditorResult<Data>, value: number) {
+      //           const comId = focusArea.dataset['formitem']
+      //           const item = data.items.find(item => item.id === comId)
+      //           item.span = value
+      //         }
+      //       },
+      //     },
+      //   ]
+      // }
     ]
   },
   '[data-form-actions]': actionsEditor,
