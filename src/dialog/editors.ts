@@ -44,19 +44,19 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
   }
 }
 
-function removeBtn({ data, focusArea, input, output, slot }: { data: Data, focusArea: any, input: any, output: any, slot: any },) {
-  get(data, focusArea, 'btnId', 'obj', (index: number) => {
-    const btnId = data.footerBtns[index].id;
+function removeBtn({ data, input, output, slot }:
+  { data: Data, input: any, output: any, slot: any },
+  btnId: string
+) {
+  const index = data.footerBtns?.findIndex(btn => btn.id === btnId);
+  output.remove(btnId);
+  output.remove(`${btnId}Click`);
+  slot.get(SlotIds.Container)?.outputs.remove(btnId);
+  input.get(InputIds.Open)?.setRels(updateOpenRels(data));
 
-    output.remove(btnId);
-    slot.get(SlotIds.Container).inputs.remove(btnId);
-    slot.get(SlotIds.Container).outputs.remove(btnId);
-    input.get(InputIds.Open).setRels(updateOpenRels(data));
-
-    if (!DefaultEvent.includes(btnId)) {
-      data.footerBtns.splice(index, 1);
-    }
-  });
+  if (!DefaultEvent.includes(btnId)) {
+    data.footerBtns.splice(index, 1);
+  }
 }
 
 function get(
@@ -369,7 +369,7 @@ export default {
             const res = get(data, focusArea, 'btnId', 'obj');
             res.visible = !value;
             if (value) {
-              removeBtn({ data, focusArea, input, output, slot })
+              removeBtn({ data, input, output, slot }, res.id);
             } else {
               addBtn({ data, input, output, slot }, res.id);
             }
@@ -468,7 +468,7 @@ export default {
             const res = data.footerBtns.find(({ id }) => id === DefaultEvent[0]);
             res && (res.visible = !value);
             if (value) {
-              removeBtn({ data, focusArea, input, output, slot })
+              removeBtn({ data, input, output, slot }, DefaultEvent[0])
             } else {
               addBtn({ data, input, output, slot }, DefaultEvent[0]);
             }
@@ -489,7 +489,7 @@ export default {
             const res = data.footerBtns.find(({ id }) => id === DefaultEvent[1]);
             res && (res.visible = !value);
             if (value) {
-              removeBtn({ data, focusArea, input, output, slot })
+              removeBtn({ data, input, output, slot }, DefaultEvent[1]);
             } else {
               addBtn({ data, input, output, slot }, DefaultEvent[1]);
             }
@@ -615,7 +615,7 @@ function moveDelete(dataset: string) {
         },
         value: {
           set({ data, focusArea, input, output, slot }: EditorResult<Data>) {
-            removeBtn({ data, focusArea, input, output, slot });
+            removeBtn({ data, input, output, slot }, get(data, focusArea, dataset, 'obj')?.id);
           }
         }
       },
