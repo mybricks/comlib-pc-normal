@@ -1,5 +1,5 @@
 import { Data } from '../../constants';
-import { getColIndex, getColItem, updateCol, addColumn } from '../utils';
+import { getColIndex, getColItem, updateCol, addColumnByPosition } from '../utils';
 
 const IndexEditor = [
   {
@@ -10,7 +10,7 @@ const IndexEditor = [
         type: 'Button',
         value: {
           set(props: EditorResult<Data>) {
-            addColumn(props, 'before');
+            addColumnByPosition(props, 'before');
           }
         }
       },
@@ -19,7 +19,7 @@ const IndexEditor = [
         type: 'Button',
         value: {
           set(props: EditorResult<Data>) {
-            addColumn(props, 'after');
+            addColumnByPosition(props, 'after');
           }
         }
       },

@@ -9,7 +9,7 @@ import {
 } from '../constants';
 
 function generateColumnsTitle(columnCount: number) {
-  return `col-${24 / columnCount} (${(100 / columnCount).toFixed(2)}%)`;
+  return `col-${24 / columnCount}`;
 }
 // 添加行
 export function addRow({ data, slot }: EditorResult<Data>, columnCount: number) {
@@ -44,7 +44,7 @@ export function addRow({ data, slot }: EditorResult<Data>, columnCount: number) 
 }
 
 // 添加列
-export function addColumn({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') {
+export function addColumn({ data, focusArea, slot }: EditorResult<Data>) {
   if (!focusArea) return;
   const item = getRowItem(data, focusArea);
   const lastColumn = item.columns[item.columns.length > 0 ? item.columns.length - 1 : 0];
@@ -57,17 +57,34 @@ export function addColumn({ data, focusArea, slot }: EditorResult<Data>, positio
     colStyle: {},
     span: lastColumn ? (lastColumn.span as number) : 4
   };
-  const [_, colIndex] = getColIndex(focusArea)
+  item.columns.push(column);
+  const title = generateColumnsTitle(24 / column?.span);
+  slot.add(id, title);
+}
+
+export const addColumnByPosition = ({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') => {
+  if (!focusArea) return;
+  const [rowIndex, colIndex] = getColIndex(focusArea)
+  const row = data.rows[rowIndex]
+  const lastColumn = row.columns[colIndex]
+  const id = uuid();
+  const column = {
+    key: id,
+    slot: id,
+    widthOption: WidthUnitEnum.Span,
+    width: 300,
+    colStyle: {},
+    span: (lastColumn.span as number) || 4
+  };
   if (position === 'before') {
-    item.columns.splice(colIndex, 0, column)
+    row.columns.splice(colIndex, 0, column)
   } else if (position === 'after') {
-    item.columns.splice(colIndex + 1, 0, column)
-  } else {
-    item.columns.push(column);
+    row.columns.splice(colIndex + 1, 0, column)
   }
   const title = generateColumnsTitle(24 / column?.span);
   slot.add(id, title);
 }
+
 // 复制行
 export function copyRow({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') {
   if (!focusArea) return;
@@ -95,7 +112,6 @@ export function copyRow({ data, focusArea, slot }: EditorResult<Data>, position?
   } else if (position === 'after') {
     data.rows.splice(rowIndex + 1, 0, JSON.parse(JSON.stringify(row)))
   }
-  // data.rows.push(JSON.parse(JSON.stringify(row)));
 }
 
 // 列等分
@@ -139,19 +155,19 @@ export function getColItem(data: Data, focusArea: any) {
 export function updateColumnsTitle(col: ColumnParams, slot: any) {
   switch (col.widthOption) {
     case WidthUnitEnum.Span:
-      slot.setTitle(col.slot, `col-${col.span} (${((col.span / 24) * 100).toFixed(2)}%)`);
+      slot.setTitle(col.slot, `col-${col.span}`);
       break;
     case WidthUnitEnum.Px:
       slot.setTitle(col.slot, `col-${col.width}px`);
       break;
     case WidthUnitEnum.Auto:
-      slot.setTitle(col.slot, `col-自适应`);
+      slot.setTitle(col.slot, `自适应`);
       break;
     case WidthUnitEnum.Media:
-      slot.setTitle(col.slot, `col-响应式`);
+      slot.setTitle(col.slot, `响应式`);
       break;
     default:
-      slot.setTitle(col.slot, `col-默认`);
+      slot.setTitle(col.slot, `默认`);
       break;
   }
 }
