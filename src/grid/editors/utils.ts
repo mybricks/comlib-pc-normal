@@ -158,7 +158,7 @@ export function updateColumnsTitle(col: ColumnParams, slot: any) {
       slot.setTitle(col.slot, `col-${col.span}`);
       break;
     case WidthUnitEnum.Px:
-      slot.setTitle(col.slot, `col-${col.width}px`);
+      slot.setTitle(col.slot, `固定（${col.width}px）`);
       break;
     case WidthUnitEnum.Auto:
       slot.setTitle(col.slot, `自适应`);
@@ -179,9 +179,7 @@ export const updateCol = (row, slot) => {
   if (autoColIndex >= 0 && autoColIndex < row.columns.length - 1) return
   //否则，保证最后一列是“自动填充”
   row.columns.forEach((col, index) => {
-    if (index < row.columns.length - 1) {
-      col.widthOption = 'span';
-    } else {
+    if(index===row.columns.length - 1){
       col.widthOption = 'auto';
     }
     updateColumnsTitle(col, slot)
@@ -195,7 +193,7 @@ const createColByWidth = (width: number = 280) => {
     slot: id,
     widthOption: WidthUnitEnum.Px,
     width,
-    span: 12,
+    span: 4,
     colStyle: {}
   }
 }
@@ -207,7 +205,7 @@ const createAutoCol = () => {
     slot: id,
     widthOption: WidthUnitEnum.Auto,
     width: 300,
-    span: 12,
+    span: 4,
     colStyle: {}
   }
 }
@@ -215,11 +213,11 @@ const createAutoCol = () => {
 export const twoColLayout = (data, slot) => {
   const columns: ColumnParams[] = [];
   const leftCol = createColByWidth(280)
-  slot.add(leftCol.slot, '左边固定');
+  slot.add(leftCol.slot, `固定（280px）`);
   columns.push(leftCol)
 
   const rightCol = createAutoCol()
-  slot.add(rightCol.slot, '右边自适应');
+  slot.add(rightCol.slot, '自适应');
   columns.push(rightCol)
 
   const rowId = uuid();
@@ -237,15 +235,15 @@ export const twoColLayout = (data, slot) => {
 export const threeColLayout = (data, slot) => {
   const columns: ColumnParams[] = [];
   const leftCol = createColByWidth(280)
-  slot.add(leftCol.slot, '左边固定');
+  slot.add(leftCol.slot, '固定（280px）');
   columns.push(leftCol)
 
   const centerCol = createAutoCol()
-  slot.add(centerCol.slot, '中间自适应');
+  slot.add(centerCol.slot, '自适应');
   columns.push(centerCol)
 
   const rightCol = createColByWidth(280)
-  slot.add(rightCol.slot, '右边固定');
+  slot.add(rightCol.slot, '固定（280px）');
   columns.push(rightCol)
 
   const rowId = uuid();

@@ -1,5 +1,6 @@
 import { Data } from '../../constants';
 import { getColIndex, getColItem, updateCol, addColumnByPosition } from '../utils';
+import { arrayMoveImmutable } from 'array-move'
 
 const IndexEditor = [
   {
@@ -37,9 +38,7 @@ const IndexEditor = [
             const [rowIndex, colIndex] = getColIndex(focusArea);
             if (colIndex < 1) return;
             const row = data.rows[rowIndex];
-            const oldColumn = row.columns[colIndex];
-            row.columns[colIndex] = row.columns[colIndex - 1];
-            row.columns[colIndex - 1] = oldColumn;
+            row.columns = arrayMoveImmutable(row.columns, colIndex, colIndex - 1)
             updateCol(row, slot)
           }
         }
@@ -58,9 +57,7 @@ const IndexEditor = [
             const [rowIndex, colIndex] = getColIndex(focusArea);
             const row = data.rows[rowIndex];
             if (colIndex === row.columns.length - 1) return;
-            const oldColumn = row.columns[colIndex];
-            row.columns[colIndex] = row.columns[colIndex + 1];
-            row.columns[colIndex + 1] = oldColumn;
+            row.columns = arrayMoveImmutable(row.columns, colIndex, colIndex + 1)
             updateCol(row, slot)
           }
         }
