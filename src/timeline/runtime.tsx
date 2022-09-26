@@ -69,7 +69,8 @@ export default function (props: RuntimeParams<Data>) {
             inputValues: {
               [InputIds.CurrentDs]: item,
               [InputIds.Index]: index
-            }
+            },
+            key: index
           })}
         </div>
       );
