@@ -18,21 +18,15 @@ export function addRow({ data, slot }: EditorResult<Data>, columnCount: number) 
 
   for (let i = 0; i < columnCount; i++) {
     const columnId = uuid();
-    //最后一列默认“自动填充”需求
-    let widthOption = WidthUnitEnum.Span, title = slotTitle
-    if (i === columnCount - 1) {
-      widthOption = WidthUnitEnum.Auto;
-      title = 'col-自适应'
-    }
     columns.push({
       span: 24 / columnCount,
       key: columnId,
       slot: columnId,
-      widthOption,
+      widthOption: WidthUnitEnum.Span,
       width: 300,
       colStyle: {}
     });
-    slot.add(columnId, title);
+    slot.add(columnId, slotTitle);
   }
 
   const rowId = uuid();
@@ -44,10 +38,13 @@ export function addRow({ data, slot }: EditorResult<Data>, columnCount: number) 
     wrap: true,
     columns
   };
+  //最后一列默认“自动填充”需求
+  updateCol(row, slot)
   data.rows.push(row);
 }
+
 // 添加列
-export function addColumn({ data, focusArea, slot }: EditorResult<Data>) {
+export function addColumn({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') {
   if (!focusArea) return;
   const item = getRowItem(data, focusArea);
   const lastColumn = item.columns[item.columns.length > 0 ? item.columns.length - 1 : 0];
@@ -60,14 +57,21 @@ export function addColumn({ data, focusArea, slot }: EditorResult<Data>) {
     colStyle: {},
     span: lastColumn ? (lastColumn.span as number) : 4
   };
-
-  item.columns.push(column);
+  const [_, colIndex] = getColIndex(focusArea)
+  if (position === 'before') {
+    item.columns.splice(colIndex, 0, column)
+  } else if (position === 'after') {
+    item.columns.splice(colIndex + 1, 0, column)
+  } else {
+    item.columns.push(column);
+  }
   const title = generateColumnsTitle(24 / column?.span);
   slot.add(id, title);
 }
 // 复制行
-export function copyRow({ data, focusArea, slot }: EditorResult<Data>) {
+export function copyRow({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') {
   if (!focusArea) return;
+  const rowIndex = getRowIndex(focusArea)
   const copyItem: IRow = getRowItem(data, focusArea);
   const rowId = uuid();
   const columns = copyItem.columns.map((item) => {
@@ -86,7 +90,12 @@ export function copyRow({ data, focusArea, slot }: EditorResult<Data>) {
     key: rowId,
     columns
   };
-  data.rows.push(JSON.parse(JSON.stringify(row)));
+  if (position === 'before') {
+    data.rows.splice(rowIndex, 0, JSON.parse(JSON.stringify(row)))
+  } else if (position === 'after') {
+    data.rows.splice(rowIndex + 1, 0, JSON.parse(JSON.stringify(row)))
+  }
+  // data.rows.push(JSON.parse(JSON.stringify(row)));
 }
 
 // 列等分
@@ -149,6 +158,10 @@ export function updateColumnsTitle(col: ColumnParams, slot: any) {
 
 //更新行，最后一列默认“自动填充”
 export const updateCol = (row, slot) => {
+  const autoColIndex = row.columns.findIndex(({ widthOption }) => widthOption === WidthUnitEnum.Auto)
+  //除了最后一列，前面有“自动填充”列，不处理
+  if (autoColIndex >= 0 && autoColIndex < row.columns.length - 1) return
+  //否则，保证最后一列是“自动填充”
   row.columns.forEach((col, index) => {
     if (index < row.columns.length - 1) {
       col.widthOption = 'span';
@@ -157,4 +170,76 @@ export const updateCol = (row, slot) => {
     }
     updateColumnsTitle(col, slot)
   });
+}
+
+const createColByWidth = (width: number = 280) => {
+  const id = uuid()
+  return {
+    key: id,
+    slot: id,
+    widthOption: WidthUnitEnum.Px,
+    width,
+    span: 12,
+    colStyle: {}
+  }
+}
+
+const createAutoCol = () => {
+  const id = uuid()
+  return {
+    key: id,
+    slot: id,
+    widthOption: WidthUnitEnum.Auto,
+    width: 300,
+    span: 12,
+    colStyle: {}
+  }
+}
+
+export const twoColLayout = (data, slot) => {
+  const columns: ColumnParams[] = [];
+  const leftCol = createColByWidth(280)
+  slot.add(leftCol.slot, '左边固定');
+  columns.push(leftCol)
+
+  const rightCol = createAutoCol()
+  slot.add(rightCol.slot, '右边自适应');
+  columns.push(rightCol)
+
+  const rowId = uuid();
+  const row: IRow = {
+    key: rowId,
+    justify: JustifyTypeEnum.Start,
+    align: AlignTypeEnum.Stretch,
+    gutter: [0, 0],
+    wrap: true,
+    columns
+  };
+  data.rows.push(row);
+}
+
+export const threeColLayout = (data, slot) => {
+  const columns: ColumnParams[] = [];
+  const leftCol = createColByWidth(280)
+  slot.add(leftCol.slot, '左边固定');
+  columns.push(leftCol)
+
+  const centerCol = createAutoCol()
+  slot.add(centerCol.slot, '中间自适应');
+  columns.push(centerCol)
+
+  const rightCol = createColByWidth(280)
+  slot.add(rightCol.slot, '右边固定');
+  columns.push(rightCol)
+
+  const rowId = uuid();
+  const row: IRow = {
+    key: rowId,
+    justify: JustifyTypeEnum.Start,
+    align: AlignTypeEnum.Stretch,
+    gutter: [0, 0],
+    wrap: true,
+    columns
+  };
+  data.rows.push(row);
 }
