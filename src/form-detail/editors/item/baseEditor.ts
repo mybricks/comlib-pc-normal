@@ -53,7 +53,8 @@ export const BaseEditor = [
           output.setTitle(outputId, `点击${item.label}`);
         }
         updateIOSchema({ data, input, output });
-        slots.get(item.slotId).setTitle(value);
+        // TODO
+        // slots.get(item.slotId).setTitle(value);
       }
     }
   },
