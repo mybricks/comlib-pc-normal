@@ -78,7 +78,7 @@ export interface Data {
 
 export const InputIds = {
   SetDataSource: 'setDataSource',
-  SetTitle: 'title',
+  SetTitle: 'setTitle',
   CurDs: 'curDs',
   DataSource: 'dataSource'
 };
