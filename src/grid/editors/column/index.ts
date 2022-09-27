@@ -8,7 +8,6 @@ import { getColItem } from '../utils';
 
 export default {
   '[data-type-col]': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2, cate3) => {
-    console.log('col')
     if (!focusArea) return;
     const item = getColItem(data, focusArea);
     const mySlot = slot.get(item.slot);

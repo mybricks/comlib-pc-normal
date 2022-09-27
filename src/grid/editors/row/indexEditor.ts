@@ -26,15 +26,15 @@ const IndexEditor = [
       {
         title: '上移',
         type: 'Button',
-        ifVisible({ focusArea }: EditorResult<Data>) {
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const index = getRowIndex(focusArea);
+          const index = getRowIndex(data, focusArea);
           return index !== undefined && index > 0;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            const index = getRowIndex(focusArea);
+            const index = getRowIndex(data, focusArea);
             if (index < 1) return;
             const oldRow = data.rows[index - 1];
             data.rows[index - 1] = data.rows[index];
@@ -47,13 +47,13 @@ const IndexEditor = [
         type: 'Button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const index = getRowIndex(focusArea);
+          const index = getRowIndex(data, focusArea);
           return index !== undefined && index < data.rows.length - 1;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            const index = getRowIndex(focusArea);
+            const index = getRowIndex(data, focusArea);
             if (index === data.rows.length - 1) return;
             const oldRow = data.rows[index + 1];
             data.rows[index + 1] = data.rows[index];
@@ -68,7 +68,7 @@ const IndexEditor = [
           set({ data, slot, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             const item = getRowItem(data, focusArea);
-            const index = getRowIndex(focusArea);
+            const index = getRowIndex(data, focusArea);
             item.columns.forEach((columnItem) => {
               slot.remove(columnItem.slot);
             });

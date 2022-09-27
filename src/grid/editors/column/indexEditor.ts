@@ -26,15 +26,15 @@ const IndexEditor = [
       {
         title: '前移',
         type: 'Button',
-        ifVisible({ focusArea }: EditorResult<Data>) {
+        ifVisible({ data ,focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const [rowIndex, colIndex] = getColIndex(focusArea);
+          const [rowIndex, colIndex] = getColIndex(data ,focusArea);
           return colIndex !== undefined && colIndex !== 0;
         },
         value: {
           set({ data, focusArea, slot }: EditorResult<Data>) {
             if (!focusArea) return;
-            const [rowIndex, colIndex] = getColIndex(focusArea);
+            const [rowIndex, colIndex] = getColIndex(data ,focusArea);
             if (colIndex < 1) return;
             const row = data.rows[rowIndex];
             const oldColumn = row.columns[colIndex];
@@ -49,13 +49,13 @@ const IndexEditor = [
         type: 'Button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          const [rowIndex, colIndex] = getColIndex(focusArea);
+          const [rowIndex, colIndex] = getColIndex(data ,focusArea);
           return colIndex !== undefined && colIndex + 1 !== data.rows[rowIndex].columns.length;
         },
         value: {
           set({ data, focusArea, slot }: EditorResult<Data>) {
             if (!focusArea) return;
-            const [rowIndex, colIndex] = getColIndex(focusArea);
+            const [rowIndex, colIndex] = getColIndex(data ,focusArea);
             const row = data.rows[rowIndex];
             if (colIndex === row.columns.length - 1) return;
             const oldColumn = row.columns[colIndex];
@@ -72,7 +72,7 @@ const IndexEditor = [
           set({ data, slot, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             const item = getColItem(data, focusArea);
-            const [rowIndex, colIndex] = getColIndex(focusArea);
+            const [rowIndex, colIndex] = getColIndex(data ,focusArea);
             slot.remove(item?.slot);
             data.rows[rowIndex].columns.splice(colIndex, 1);
             updateCol(data.rows[rowIndex], slot)

@@ -27,7 +27,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
   };
 
   const column = useCallback(
-    (column: ColumnParams, rowIndex: number, colIndex: number) => {
+    (column: ColumnParams, rowIndex: number | string, colIndex: number) => {
       let flex = '';
       let width;
       if (column.widthOption === WidthUnitEnum.Px) {
@@ -49,7 +49,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           span={column.widthOption === WidthUnitEnum.Span ? column.span : undefined}
           flex={flex}
           {...breakPointConfig}
-          data-index={`[${rowIndex}, ${colIndex}]`}
+          data-col-coordinate={JSON.stringify([rowIndex, column.key])}
           data-type-col={`col-${column.key}`}
           style={{
             ...column.colStyle,
@@ -83,7 +83,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
                   ? '50px'
                   : undefined
             }}
-            data-row-index={rowIndex}
+            data-row-index={row.key}
             data-type-row={`row-${row.key}`}
             key={row.key}
             justify={row.justify}
@@ -92,7 +92,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
             wrap={row.wrap}
           >
             {row.columns.map((item, colIndex) => {
-              return column(item, rowIndex, colIndex);
+              return column(item, row.key, colIndex);
             })}
           </Row>
         );
