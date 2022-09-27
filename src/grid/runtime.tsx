@@ -43,7 +43,6 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           isNaN(parseInt(val)) ? null : (breakPointConfig[key.split(' ')[0]] = parseInt(val));
         });
       }
-
       return (
         <Col
           key={column.key}
@@ -51,6 +50,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           flex={flex}
           {...breakPointConfig}
           data-index={`[${rowIndex}, ${colIndex}]`}
+          data-type-col={`col-${column.key}`}
           style={{
             ...column.colStyle,
             ...getMinMaxWidth(column),
@@ -84,6 +84,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
                   : undefined
             }}
             data-row-index={rowIndex}
+            data-type-row={`row-${row.key}`}
             key={row.key}
             justify={row.justify}
             align={row.align}

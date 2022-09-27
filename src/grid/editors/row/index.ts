@@ -4,7 +4,7 @@ import LayoutEditor from './layoutEditor';
 import StyleEditor from './styleEditor';
 
 export default {
-  '.ant-row': ({}: EditorResult<Data>, cate1, cate2) => {
+  '[data-type-row]': ({ }: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [...LayoutEditor, ...IndexEditor];
 

@@ -29,7 +29,7 @@ const IndexEditor = [
         ifVisible({ focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const index = getRowIndex(focusArea);
-          return index !== undefined && index !== 0;
+          return index !== undefined && index > 0;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
@@ -48,7 +48,7 @@ const IndexEditor = [
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const index = getRowIndex(focusArea);
-          return index !== undefined && index + 1 !== data.rows.length;
+          return index !== undefined && index < data.rows.length - 1;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
