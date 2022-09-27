@@ -1,6 +1,6 @@
 import { Data } from '../../constants';
 import { addColumn, copyRow, divideColumn, getRowIndex, getRowItem, updateCol } from '../utils';
-import { arrayMoveImmutable } from 'array-move'
+
 const IndexEditor = [
   {
     title: '行操作',
@@ -36,7 +36,9 @@ const IndexEditor = [
             if (!focusArea) return;
             const index = getRowIndex(focusArea);
             if (index < 1) return;
-            data.rows = arrayMoveImmutable(data.rows, index, index - 1)
+            const oldRow = data.rows[index - 1];
+            data.rows[index - 1] = data.rows[index];
+            data.rows[index] = oldRow;
           }
         }
       },
@@ -53,7 +55,9 @@ const IndexEditor = [
             if (!focusArea) return;
             const index = getRowIndex(focusArea);
             if (index === data.rows.length - 1) return;
-            data.rows = arrayMoveImmutable(data.rows, index, index + 1)
+            const oldRow = data.rows[index + 1];
+            data.rows[index + 1] = data.rows[index];
+            data.rows[index] = oldRow;
           }
         }
       },
