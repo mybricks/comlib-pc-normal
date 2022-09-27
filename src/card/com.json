@@ -22,11 +22,11 @@
   "slots": [
     {
       "id": "body",
-      "title": "卡片内容容器"
+      "title": "内容"
     },
     {
       "id": "extra",
-      "title": "卡片操作容器"
+      "title": "操作"
     }
   ]
 }
