@@ -10,15 +10,6 @@
 - 通用无代码，通过图形化编排的方式可实现复杂的功能
 - 方便且强大的即时调试能力
 
-##  ⌨️ 本地开发
-- 可以下载PC端应用-https://mybricks.world/
-- 或者clone到本地开发:
-```
-$ git clone git@github.com:mybricks/comlib-pc-normal.git
-$ npm install
-$ npm run start
-```
-
 ## 🤝 社区互助
 如果您在使用过程中碰到问题，可以加入Mybricks社区，获得产品与服务支持！  
 <img width="121" src="https://user-images.githubusercontent.com/77093461/192530868-113b794a-0fa5-480e-b18b-50f12d83897b.png">
