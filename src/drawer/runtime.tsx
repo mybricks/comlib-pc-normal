@@ -35,9 +35,9 @@ export default function ({
     onFooterBtnClick(OutputIds.Cancel);
   }, []);
 
-  const registerOutputsEvent = useCallback((id: string, relOutputs: any) => {
+  const registerOutputsEvent = useCallback((id: string, relOutputs: any, isConnected: boolean) => {
     slots[SlotIds.Content].outputs[id]((val) => {
-      setVisible(false);
+      isConnected && setVisible(false);
       relOutputs[id](val);
     });
   }, []);
@@ -50,8 +50,8 @@ export default function ({
       inputs[InputIds.Open]((val: any, relOutputs: any) => {
         setVisible(true);
         slots[SlotIds.Content].inputs[SlotIds.DataSource](val);
-        data.footerBtns.forEach(({ id }) => {
-          registerOutputsEvent(id, relOutputs);
+        data.footerBtns.forEach(({ id, isConnected }) => {
+          registerOutputsEvent(id, relOutputs, isConnected);
         });
       });
       inputs[InputIds.SetTitle]((val) => {
@@ -60,19 +60,20 @@ export default function ({
     }
   }, []);
 
-  const onFooterBtnClick = useCallback((id) => {
-    outputs[id]?.();
+  const onFooterBtnClick = useCallback((id, isConnected?: boolean) => {
+    outputs[`${id}Click`]?.();
+    !isConnected && setVisible(false);
   }, []);
 
   const footer = useFooter
     ? data.footerBtns.map((item: any) => {
-        const { title, id, showText, icon, useIcon, location, ...res } = item;
+        const { title, id, showText, icon, useIcon, location, isConnected, ...res } = item;
         const Icon = useIcon && Icons && Icons[icon as string]?.render();
 
         return (
           <Button
             {...res}
-            onClick={() => onFooterBtnClick(id)}
+            onClick={() => onFooterBtnClick(id, isConnected)}
             data-btn-id={id}
             key={id}
             className={css['footer-btns']}

@@ -1,7 +1,40 @@
 import { Data, Location, InputIds, SlotIds } from './constants';
 import { uuid } from '../utils';
 
+const defaultSchema = { type: 'any' };
+
 export default {
+  '@inputUpdated'({ data, input, output, slots }, pin) {
+    //id pin's id
+    // console.log('inputUpdated', pin)
+    if (pin.id === InputIds.Open) {
+      slots.get(SlotIds.Content)?.inputs.get(SlotIds.DataSource)?.setSchema(pin.schema);
+    }
+  },
+  '@slotInputUpdated'({ data, slots, output }, pin) {
+    // console.log('slotInputUpdated', pin)
+    output.get(pin.id)?.setSchema(pin.schema);
+  },
+  '@slotInputConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+    // console.log('slotInputConnected', fromPin, toPin)
+    const btnId = toPin.id,
+      btn = data.footerBtns.find((btn) => btn.id === btnId);
+    btn.isConnected = true;
+    output.get(toPin.id)?.setSchema(fromPin.schema);
+  },
+  '@slotInputDisConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+    // console.log('slotInputDisConnected', toPin)
+    const btnId = toPin.id,
+      btn = data.footerBtns.find((btn) => btn.id === btnId);
+    btn.isConnected = false;
+    output.get(toPin.id)?.setSchema(defaultSchema);
+  },
+  '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
+    // console.log('inputDisConnected')
+    if (toPin.id === InputIds.Open) {
+      slots.get(SlotIds.Content)?.inputs.get(SlotIds.DataSource)?.setSchema(defaultSchema);
+    }
+  },
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
@@ -168,7 +201,7 @@ export default {
     };
   },
   '[data-btn-id]': ({}: EditorResult<Data>, cate1, cate2) => {
-    cate1.title = '常规';
+    cate1.title = '按钮';
     cate1.items = [
       {
         title: '名称',
@@ -225,11 +258,6 @@ export default {
         ]
       },
       icon('btnId'),
-      moveDelete('btnId')
-    ];
-
-    cate2.title = '事件';
-    cate2.items = [
       {
         title: '事件',
         items: [
@@ -240,15 +268,33 @@ export default {
             options: ({ data, focusArea }: EditorResult<Data>) => {
               const res = get(data, focusArea, 'btnId', 'id');
               return {
-                outputId: res,
+                outputId: `${res}Click`,
                 slotId: SlotIds.Content
               };
             }
           }
         ]
-      }
+      },
+      moveDelete('btnId')
     ];
     return { title: '按钮' };
+  },
+  '.ant-drawer-title': {
+    title: '标题',
+    items: [
+      {
+        title: '内容',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.title;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.title = value;
+          }
+        }
+      }
+    ]
   }
 };
 
