@@ -33,7 +33,7 @@ export default function Dialog({
 
   useEffect(() => {
     // 非编辑模式
-    if (env.runtime && inputs) {
+    if (runtime && inputs) {
       // 打开对话框
       inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
@@ -129,6 +129,22 @@ export default function Dialog({
       // }
     };
   });
+  return (
+    <>
+      <div id="modalMount" className={css.container} ref={ref}></div>
+      <Modal
+        title="Basic Modal"
+        visible={true}
+        getContainer={() => {
+          const c = document.getElementById('modalMount');
+          console.log(c, ref, 'getget');
+          return c || ref.current;
+        }}
+      >
+        <p>内部</p>
+      </Modal>
+    </>
+  );
   if (edit) {
     return createPortal(
       <div className={css.container} ref={ref}>

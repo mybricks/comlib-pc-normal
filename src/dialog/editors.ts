@@ -78,6 +78,13 @@ function get(
 }
 
 export default {
+  '@init'({ style }) {
+    style.width = 800;
+    style.height = 500;
+  },
+  '@resize': {
+    options: ['width', 'height']
+  },
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     // console.log('inputUpdated', pin)
     if (pin.id === InputIds.Open) {
