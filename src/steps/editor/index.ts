@@ -171,6 +171,13 @@ const addSlot = (data, slots, id) => {
     type: 'scope',
     inputs: [
       {
+        id: `${id}_render`,
+        title: '当该步骤首次显示',
+        schema: {
+          type: "any"
+        }
+      },
+      {
         id: `${id}_into`,
         title: '当该步骤显示',
         schema: {
@@ -205,7 +212,6 @@ export const updateStepOutput = (data, slots) => {
       if (!slot.outputs.get(`${id}_next`)) {
         slot.outputs.add(`${id}_next`, '下一步', { type: "follow" })
       }
-
     } else {
       //最后一步没有next output
       if (slot.outputs.get(`${id}_next`)) {

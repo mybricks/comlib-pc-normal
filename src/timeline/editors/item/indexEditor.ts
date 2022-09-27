@@ -3,9 +3,9 @@ import { getTimelineItem } from '../utils';
 
 const IndexEditor = [
   {
-    title: '位置',
+    title: '操作',
     ifVisible({ data }: EditorResult<Data>) {
-      return data.dataSource === DataSourceEnum.STATIC;
+      return data.dataSource === DataSourceEnum.STATIC && data.timelines.length > 1;
     },
     items: [
       {
