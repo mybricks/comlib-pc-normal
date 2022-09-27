@@ -64,7 +64,7 @@ export function addColumn({ data, focusArea, slot }: EditorResult<Data>) {
 
 export const addColumnByPosition = ({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') => {
   if (!focusArea) return;
-  const [rowIndex, colIndex] = getColIndex(focusArea)
+  const [rowIndex, colIndex] = getColIndex(data, focusArea)
   const row = data.rows[rowIndex]
   const lastColumn = row.columns[colIndex]
   const id = uuid();
@@ -88,7 +88,7 @@ export const addColumnByPosition = ({ data, focusArea, slot }: EditorResult<Data
 // 复制行
 export function copyRow({ data, focusArea, slot }: EditorResult<Data>, position?: 'before' | 'after') {
   if (!focusArea) return;
-  const rowIndex = getRowIndex(focusArea)
+  const rowIndex = getRowIndex(data, focusArea)
   const copyItem: IRow = getRowItem(data, focusArea);
   const rowId = uuid();
   const columns = copyItem.columns.map((item) => {
@@ -132,22 +132,25 @@ export function divideColumn({ data, focusArea, slot }: EditorResult<Data>) {
   });
 }
 
-export function getRowIndex(focusArea) {
-  return ~~focusArea?.dataset?.rowIndex;
+export function getRowIndex(data, focusArea) {
+  const _key = focusArea.dataset.rowIndex
+  return data.rows.findIndex(({ key }) => key === _key)
 }
 // 获取行数据
 export function getRowItem(data: Data, focusArea: any) {
-  const index = getRowIndex(focusArea);
+  const index = getRowIndex(data, focusArea);
   return data.rows[index];
 }
 
-export function getColIndex(focusArea: any) {
-  const [rowIndex, colIndex]: number[] = JSON.parse(focusArea.dataset.index);
+export function getColIndex(data, focusArea: any) {
+  const [rowKey, colKey]: number[] = JSON.parse(focusArea.dataset.colCoordinate);
+  const rowIndex = data.rows.findIndex(({ key }) => key === rowKey)
+  const colIndex = data.rows[rowIndex].columns.findIndex(({ key }) => key === colKey)
   return [rowIndex, colIndex];
 }
 // 获取列数据
 export function getColItem(data: Data, focusArea: any) {
-  const [rowIndex, colIndex]: number[] = getColIndex(focusArea);
+  const [rowIndex, colIndex]: number[] = getColIndex(data, focusArea);
   return data.rows[rowIndex] && data.rows[rowIndex].columns[colIndex];
 }
 
@@ -179,7 +182,7 @@ export const updateCol = (row, slot) => {
   if (autoColIndex >= 0 && autoColIndex < row.columns.length - 1) return
   //否则，保证最后一列是“自动填充”
   row.columns.forEach((col, index) => {
-    if(index===row.columns.length - 1){
+    if (index === row.columns.length - 1) {
       col.widthOption = 'auto';
     }
     updateColumnsTitle(col, slot)

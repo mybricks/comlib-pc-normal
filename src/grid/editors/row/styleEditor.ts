@@ -9,7 +9,7 @@ const StyleEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getRowItem(data, focusArea);
-        return item.wrap;
+        return item?.wrap;
       },
       set({ data, focusArea }: EditorResult<Data>, value: boolean) {
         if (!focusArea) return;
@@ -44,7 +44,7 @@ const StyleEditor = [
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             const item = getRowItem(data, focusArea);
-            return item.useGutter;
+            return item?.useGutter;
           },
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;
@@ -67,13 +67,13 @@ const StyleEditor = [
         ifVisible({ focusArea, data }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getRowItem(data, focusArea);
-          return !!item.useGutter;
+          return !!item?.useGutter;
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             const item = getRowItem(data, focusArea);
-            return item.gutter[0];
+            return item?.gutter[0];
           },
           set({ data, focusArea }: EditorResult<Data>, value: string) {
             if (!focusArea) return;
