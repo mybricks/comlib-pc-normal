@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
-import {
-  Data,
-  InputIds,
-  MenuItem,
-  OutputIds,
-  findMenuItem,
-  uuid,
-  MenuTypeEnum
-} from './constants';
+import { Data, InputIds, MenuItem, OutputIds, findMenuItem, uuid, MenuTypeEnum } from './constants';
 import css from './style.less';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
@@ -31,9 +23,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         title: env.i18n(title),
         value: val,
         key: menuKey,
-        children: Array.isArray(children)
-          ? formatDataSource(children)
-          : undefined
+        children: Array.isArray(children) ? formatDataSource(children) : undefined
       };
     });
   };
@@ -58,9 +48,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   }, [dataSource]);
   useEffect(() => {
     if (env.runtime) {
+      //设置选中项
       inputs[InputIds.SetActiveItem]((val) => {
         setSelectedKeysByData(menuData, val);
       });
+      //设置数据
       inputs[InputIds.SetMenuData]((ds) => {
         const { dataSource, defaultActive } = ds || {};
         if (Array.isArray(dataSource)) {
@@ -69,6 +61,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           setSelectedKeysByData(tempData, defaultActive);
         }
       });
+      //获取选中值
       inputs[InputIds.GetActiveItem]((val, relOutputs) => {
         const temp = findMenuItem(menuData, selectedKeys[0]);
         relOutputs[OutputIds.GetActiveItem](temp);
@@ -85,8 +78,16 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   };
 
   const renderMenuItems = (ds: MenuItem[]) => {
+    //子菜单的点击事件
+    const menuOnClick = (e) => {
+      const clickItem = findMenuItem(menuData, e.key);
+      if (env.runtime) {
+        outputs[e.key](clickItem);
+      }
+    };
     return (ds || []).map((item) => {
       const { key, children, menuType, title } = item || {};
+      //分组菜单
       if (menuType === MenuTypeEnum.Group) {
         return (
           <div data-menu-item={key} key={key}>
@@ -96,6 +97,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           </div>
         );
       }
+      //父菜单
       if (menuType === MenuTypeEnum.SubMenu) {
         return (
           <Menu.SubMenu title={title} key={key} data-menu-item={key}>
@@ -103,8 +105,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           </Menu.SubMenu>
         );
       }
+      //最后的子菜单
       return (
-        <Menu.Item key={key} data-menu-item={key}>
+        <Menu.Item onClick={menuOnClick} key={key} data-menu-item={key}>
           {title}
         </Menu.Item>
       );
@@ -115,12 +118,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     return <div className={css.suggestion}>无静态数据</div>;
   }
   return (
-    <Menu
-      onClick={onClick}
-      mode={mode}
-      size="small"
-      selectedKeys={selectedKeys}
-    >
+    <Menu onClick={onClick} mode={mode} size="small" selectedKeys={selectedKeys}>
       {renderMenuItems(menuData)}
     </Menu>
   );
