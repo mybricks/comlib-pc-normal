@@ -82,6 +82,8 @@ export default {
     style.height = '100%';
     style.position = 'absolute';
     style.display = 'none';
+    style.left = 0;
+    style.top = 0;
   },
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     // console.log('inputUpdated', pin)
