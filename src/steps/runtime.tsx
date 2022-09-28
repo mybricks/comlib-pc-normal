@@ -59,6 +59,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   useEffect(() => {
     if (runtime) {
+      stepRenderHook();
       stepLeaveHook().then(stepIntoHook);
     }
   }, [data.current]);
@@ -71,7 +72,17 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     return content;
   };
 
+  const stepRenderHook = () => {
+    const currentStep = stepAry[data.current];
+    if (!currentStep?.render) {
+      const slotInputs = slots[stepAry[data.current].id].inputs;
+      slotInputs[`${stepAry[data.current].id}_render`] &&
+        slotInputs[`${stepAry[data.current].id}_render`]();
+    }
+  };
+
   const stepIntoHook = () => {
+    stepAry[data.current].render = true; //标记步骤渲染状态
     const slotInputs = slots[stepAry[data.current].id].inputs;
     slotInputs[`${stepAry[data.current].id}_into`](getPreviousData());
   };

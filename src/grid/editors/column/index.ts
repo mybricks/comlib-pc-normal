@@ -7,7 +7,7 @@ import EventEditor from './eventEditor';
 import { getColItem } from '../utils';
 
 export default {
-  '.ant-row > .ant-col': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2, cate3) => {
+  '[data-type-col]': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2, cate3) => {
     if (!focusArea) return;
     const item = getColItem(data, focusArea);
     const mySlot = slot.get(item.slot);

@@ -1,5 +1,5 @@
 import { Data } from '../constants';
-import { addRow } from './utils';
+import { addRow, twoColLayout, threeColLayout } from './utils';
 
 const AddRowEditor = [
   {
@@ -28,6 +28,29 @@ const AddRowEditor = [
         addRow(props, 3);
       }
     }
+  },
+  {
+    title: '常用布局',
+    items: [
+      {
+        title: '两栏布局',
+        type: 'Button',
+        value: {
+          set({ data, slot }: EditorResult<Data>) {
+            twoColLayout(data, slot)
+          }
+        }
+      },
+      {
+        title: '三栏布局',
+        type: 'Button',
+        value: {
+          set({ data, slot }: EditorResult<Data>) {
+            threeColLayout(data, slot)
+          }
+        }
+      }
+    ]
   }
 ];
 

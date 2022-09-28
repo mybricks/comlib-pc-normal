@@ -22,24 +22,21 @@ export default function Dialog({
   slots,
   inputs,
   outputs,
-  logger,
-  createPortal
+  logger
 }: RuntimeParams<Data>) {
   const ref = useRef<any>();
-  const [visible, setVisible] = useState(style.display !== 'none');
   const [dataSource, setDataSource] = useState();
   const { edit, runtime } = env;
-  const debug = !!(runtime && runtime.debug);
-
+  const [visible, setVisible] = useState(!!edit);
   useEffect(() => {
     // 非编辑模式
-    if (env.runtime && inputs) {
+    if (runtime && inputs) {
       // 打开对话框
       inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
         slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
         setVisible(true);
-
+        style.display = 'block';
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
           const { id, visible, isConnected } = item;
@@ -130,7 +127,7 @@ export default function Dialog({
     };
   });
   if (edit) {
-    return createPortal(
+    return (
       <div className={css.container} ref={ref}>
         <RuntimeRender
           cfg={{
@@ -140,6 +137,7 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
+          // maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -152,13 +150,14 @@ export default function Dialog({
       </div>
     );
   }
-  if (debug) {
-    return createPortal(
+  if (runtime) {
+    return (
       <div className={css.container} ref={ref}>
         <RuntimeRender
           cfg={data}
           visible={visible}
           slots={slots}
+          style={style}
           event={{
             ...eventList,
             cancel
@@ -167,22 +166,6 @@ export default function Dialog({
             if (ref) {
               return ref.current;
             }
-          }}
-          env={env}
-        />
-      </div>
-    );
-  }
-  if (runtime) {
-    return (
-      <div className={css.container}>
-        <RuntimeRender
-          cfg={data}
-          visible={visible}
-          slots={slots}
-          event={{
-            ...eventList,
-            cancel
           }}
           env={env}
         />
@@ -196,6 +179,8 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
+  style?: any;
+  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
 }
@@ -205,7 +190,9 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env
+  env,
+  style,
+  maskClosable
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -269,7 +256,7 @@ const RuntimeRender = ({
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable || false}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}
@@ -280,6 +267,9 @@ const RuntimeRender = ({
       onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
+      afterClose={() => {
+        if (style) style.display = 'none';
+      }}
     >
       {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>

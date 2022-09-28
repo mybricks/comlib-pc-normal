@@ -7,6 +7,7 @@ export interface StepItem {
   useDynamicDisplay?: boolean;
   hide?: boolean;
   content?: any;
+  render?: boolean
 }
 
 export type Btn = 'previous' | 'next' | 'submit'

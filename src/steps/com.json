@@ -72,6 +72,13 @@
       "type": "scope",
       "inputs": [
         {
+          "id": "step0_render",
+          "title": "当该步骤首次显示",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
           "id": "step0_into",
           "title": "当该步骤显示",
           "schema": {
