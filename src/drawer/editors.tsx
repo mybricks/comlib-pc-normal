@@ -35,6 +35,13 @@ export default {
       slots.get(SlotIds.Content)?.inputs.get(SlotIds.DataSource)?.setSchema(defaultSchema);
     }
   },
+  '@init'({ style }) {
+    style.height = '100%';
+    style.position = 'absolute';
+    style.display = 'none';
+    style.left = 0;
+    style.top = 0;
+  },
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
