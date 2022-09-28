@@ -111,7 +111,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
     const currentTab = findTargetByKey();
     if (currentTab && !currentTab.render) {
       const slotInputs = slots[currentTab.id].inputs;
-      slotInputs[`${currentTab.id}_render`]();
+      slotInputs[`${currentTab.id}_render`] && slotInputs[`${currentTab.id}_render`]();
     }
   };
 
