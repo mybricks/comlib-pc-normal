@@ -57,20 +57,6 @@
       "schema": {
         "type": "any"
       }
-    },
-    {
-      "id": "setInvisible",
-      "title": "设置隐藏",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "setVisible",
-      "title": "设置显示",
-      "schema": {
-        "type": "any"
-      }
     }
   ],
   "outputs": [
