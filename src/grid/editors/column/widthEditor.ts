@@ -39,12 +39,12 @@ const WidthEditor = [
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       const item = getColItem(data, focusArea);
-      return item.widthOption === WidthUnitEnum.Span;
+      return item?.widthOption === WidthUnitEnum.Span;
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        return getColItem(data, focusArea).span;
+        return getColItem(data, focusArea)?.span;
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
         if (!focusArea) return;
@@ -63,12 +63,12 @@ const WidthEditor = [
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       const item = getColItem(data, focusArea);
-      return item.widthOption === WidthUnitEnum.Px;
+      return item?.widthOption === WidthUnitEnum.Px;
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        return getColItem(data, focusArea).width;
+        return getColItem(data, focusArea)?.width;
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
         if (!focusArea) return;

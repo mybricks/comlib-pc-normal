@@ -125,16 +125,10 @@
       "inputs": [
         {
           "id": "setFieldsValue",
-          "title": "设置表单值",
+          "title": "表单值输入",
           "schema": {
             "type": "object",
-            "properties": {
-              "values": {
-                "title": "表单值",
-                "type": "object",
-                "properties": {}
-              }
-            }
+            "properties": {}
           }
         }
       ]

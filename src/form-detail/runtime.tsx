@@ -6,18 +6,7 @@ import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
-  const {
-    items,
-    dataSource,
-    size,
-    title,
-    showTitle,
-    dynamicTitle,
-    layout,
-    column,
-    bordered,
-    colon
-  } = data || {};
+  const { items, size, title, showTitle, layout, column, bordered, colon } = data || {};
 
   const [rawData, setRawData] = useState({});
 
@@ -217,8 +206,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetDataSource] && inputs[InputIds.SetDataSource](setDataSource);
-      dynamicTitle &&
-        inputs[InputIds.SetTitle] &&
+      inputs[InputIds.SetTitle] &&
         inputs[InputIds.SetTitle]((t: string) => {
           data.title = t;
         });
@@ -228,7 +216,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         id: uuid(),
         label: '用户名',
         key: 'username',
-        value: 'Power',
+        value: 'username',
         span: 1,
         labelStyle: {
           fontSize: 14,
@@ -275,7 +263,7 @@ function MassiveValue({ value, customStyle, limit }) {
   return (
     <div ref={parentEle} style={customStyle}>
       {limit ? (
-        <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color='#fff'>
+        <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color="#fff">
           {value}
         </Tooltip>
       ) : (

@@ -1,8 +1,38 @@
 import { uuid } from '../../../utils';
-import { Data, DataSourceEnum, InputIds, TypeEnum } from '../../constants';
+import { Data, DataSourceEnum, InputIds, ScopeSlotIds, TypeEnum } from '../../constants';
 import { getDataSourceSchema, getEleIdx, updateIOSchema } from '../utils';
 
 export const BaseEditor = [
+  {
+    title: '类型',
+    type: 'Select',
+    options: [
+      { label: '文本', value: TypeEnum.Text },
+      { label: '全局自定义插槽', value: TypeEnum.AllSlot },
+      { label: '局部自定义插槽', value: TypeEnum.PartSlot }
+    ],
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return (
+          data.items[getEleIdx({ data, focusArea })]?.type || TypeEnum.Text
+        );
+      },
+      set({ data, focusArea, slots }: EditorResult<Data>, value: TypeEnum) {
+        if (!focusArea) return;
+        const item = data.items[getEleIdx({ data, focusArea })];
+        item.type = value;
+        if (value === TypeEnum.AllSlot || value === TypeEnum.PartSlot) {
+          const slotId = uuid();
+          item.slotId = slotId;
+          item.value = void 0;
+          addScopeSlotInputs({ data, item, slots });
+        } else {
+          removeScopeSlotInputs({ item, slots });
+        }
+      }
+    }
+  },
   {
     title: '显示名称',
     type: 'Text',
@@ -20,9 +50,11 @@ export const BaseEditor = [
         item.label = value;
         const outputId = `${item.id}-suffixClick`;
         if (output.get(outputId)) {
-          output.setTitle(outputId, `点击${item.label}-${value}`);
+          output.setTitle(outputId, `点击${item.label}`);
         }
         updateIOSchema({ data, input, output });
+        // TODO
+        // slots.get(item.slotId).setTitle(value);
       }
     }
   },
@@ -45,41 +77,8 @@ export const BaseEditor = [
     }
   },
   {
-    title: '类型',
-    type: 'Select',
-    description: '描述列表的类型',
-    options: [
-      { label: '文本', value: TypeEnum.Text },
-      { label: '全局自定义插槽', value: TypeEnum.AllSlot },
-      { label: '局部自定义插槽', value: TypeEnum.PartSlot }
-    ],
-    value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        return (
-          data.items[getEleIdx({ data, focusArea })]?.type || TypeEnum.Text
-        );
-      },
-      set({ data, focusArea, slots }: EditorResult<Data>, value: TypeEnum) {
-        if (!focusArea) return;
-        const item = data.items[getEleIdx({ data, focusArea })];
-        item.type = value;
-        if (value === TypeEnum.AllSlot || value === TypeEnum.PartSlot) {
-          const slotId = uuid();
-          item.slotId = slotId;
-          addScopeSlotInputs({ data, item, slots });
-        } else {
-          removeScopeSlotInputs({ item, slots });
-        }
-      }
-    }
-  },
-  {
-    title: '字段值',
+    title: '默认值',
     type: 'Text',
-    ifVisible({ data }: EditorResult<Data>) {
-      return data.dataSource === DataSourceEnum.Default;
-    },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;

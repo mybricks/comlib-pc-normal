@@ -30,21 +30,5 @@ export const StyleEditor = [
         data.column = value;
       }
     }
-  },
-  {
-    title: '布局',
-    type: 'Select',
-    options: [
-      // { label: '垂直', value: LayoutEnum.Vertical },
-      { label: '水平', value: LayoutEnum.Horizontal }
-    ],
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return data.layout;
-      },
-      set({ data }: EditorResult<Data>, value: LayoutEnum) {
-        data.layout = value;
-      }
-    }
   }
 ];

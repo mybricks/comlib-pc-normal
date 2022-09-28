@@ -12,15 +12,15 @@
   "slots": [
     {
       "id": "slot_0",
-      "title": "col-8 (33.33%)"
+      "title": "col-8"
     },
     {
       "id": "slot_1",
-      "title": "col-8 (33.33%)"
+      "title": "col-8"
     },
     {
       "id": "slot_2",
-      "title": "col-自适应"
+      "title": "自适应"
     }
   ]
 }

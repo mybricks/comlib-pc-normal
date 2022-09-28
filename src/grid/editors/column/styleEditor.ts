@@ -73,8 +73,8 @@ const StyleEditor = [
           if (!focusArea) return;
           const item = getColItem(data, focusArea);
           return (
-            item.minMaxWidthOption === WidthUnitEnum.Px ||
-            item.minMaxWidthOption === WidthUnitEnum.Percent
+            item?.minMaxWidthOption === WidthUnitEnum.Px ||
+            item?.minMaxWidthOption === WidthUnitEnum.Percent
           );
         },
         options: [

@@ -16,7 +16,7 @@ const LayoutEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getRowItem(data, focusArea);
-        return item.justify;
+        return item?.justify;
       },
       set({ data, focusArea }: EditorResult<Data>, value: JustifyTypeEnum) {
         if (!focusArea) return;
@@ -38,7 +38,7 @@ const LayoutEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getRowItem(data, focusArea);
-        return item.align;
+        return item?.align;
       },
       set({ data, focusArea }: EditorResult<Data>, value: AlignTypeEnum) {
         if (!focusArea) return;
