@@ -14,7 +14,7 @@
 如果您在使用过程中碰到问题，可以加入Mybricks社区，获得产品与服务支持！  
 <img width="121" src="https://user-images.githubusercontent.com/77093461/192530868-113b794a-0fa5-480e-b18b-50f12d83897b.png">
 
-## ❤️ 赞助者
+## ❤️ 贡献者
 感谢所有为Mybricks做出贡献的伙伴们！
 <div>
   <a href="https://github.com/GodStream">
