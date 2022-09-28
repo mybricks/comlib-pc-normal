@@ -26,11 +26,9 @@ export default function Dialog({
   createPortal
 }: RuntimeParams<Data>) {
   const ref = useRef<any>();
-  const [visible, setVisible] = useState(style.display !== 'none');
   const [dataSource, setDataSource] = useState();
   const { edit, runtime } = env;
-  const debug = !!(runtime && runtime.debug);
-
+  const [visible, setVisible] = useState(!!edit);
   useEffect(() => {
     // 非编辑模式
     if (runtime && inputs) {
@@ -129,24 +127,8 @@ export default function Dialog({
       // }
     };
   });
-  return (
-    <>
-      <div id="modalMount" className={css.container} ref={ref}></div>
-      <Modal
-        title="Basic Modal"
-        visible={true}
-        getContainer={() => {
-          const c = document.getElementById('modalMount');
-          console.log(c, ref, 'getget');
-          return c || ref.current;
-        }}
-      >
-        <p>内部</p>
-      </Modal>
-    </>
-  );
   if (edit) {
-    return createPortal(
+    return (
       <div className={css.container} ref={ref}>
         <RuntimeRender
           cfg={{
@@ -156,6 +138,7 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
+          maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -168,8 +151,8 @@ export default function Dialog({
       </div>
     );
   }
-  if (debug) {
-    return createPortal(
+  if (runtime) {
+    return (
       <div className={css.container} ref={ref}>
         <RuntimeRender
           cfg={data}
@@ -183,22 +166,6 @@ export default function Dialog({
             if (ref) {
               return ref.current;
             }
-          }}
-          env={env}
-        />
-      </div>
-    );
-  }
-  if (runtime) {
-    return (
-      <div className={css.container}>
-        <RuntimeRender
-          cfg={data}
-          visible={visible}
-          slots={slots}
-          event={{
-            ...eventList,
-            cancel
           }}
           env={env}
         />
@@ -212,6 +179,7 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
+  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
 }
@@ -221,7 +189,8 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env
+  env,
+  maskClosable
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -285,7 +254,7 @@ const RuntimeRender = ({
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable || false}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}
