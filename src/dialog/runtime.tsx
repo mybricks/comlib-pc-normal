@@ -22,8 +22,7 @@ export default function Dialog({
   slots,
   inputs,
   outputs,
-  logger,
-  createPortal
+  logger
 }: RuntimeParams<Data>) {
   const ref = useRef<any>();
   const [dataSource, setDataSource] = useState();
@@ -37,7 +36,7 @@ export default function Dialog({
         setDataSource(ds);
         slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
         setVisible(true);
-
+        style.display = 'block';
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
           const { id, visible, isConnected } = item;
@@ -138,7 +137,7 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
-          maskClosable={true}
+          // maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -158,6 +157,7 @@ export default function Dialog({
           cfg={data}
           visible={visible}
           slots={slots}
+          style={style}
           event={{
             ...eventList,
             cancel
@@ -179,6 +179,7 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
+  style?: any;
   maskClosable?: boolean;
   getContainer?: any;
   env: Env;
@@ -190,6 +191,7 @@ const RuntimeRender = ({
   visible,
   getContainer,
   env,
+  style,
   maskClosable
 }: RuntimeRenderProps): JSX.Element => {
   const {
@@ -265,6 +267,9 @@ const RuntimeRender = ({
       onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
+      afterClose={() => {
+        if (style) style.display = 'none';
+      }}
     >
       {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>
