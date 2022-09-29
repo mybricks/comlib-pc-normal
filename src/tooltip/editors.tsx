@@ -84,7 +84,10 @@ export default {
         title: '',
         type: 'Style',
         options: {
-          plugins: ['bgColor', 'font']
+          plugins: ['bgColor', 'font'],
+          fontProps: {
+            fontFamily: false
+          }
         },
         value: {
           get({ data }: EditorResult<Data>) {
