@@ -170,7 +170,10 @@ export default {
         title: '默认样式',
         type: 'Style',
         options: {
-          plugins: ['Font']
+          plugins: ['Font'],
+          fontProps: {
+            fontFamily: false
+          }
         },
         ifVisible({ data }: EditorResult<Data>) {
           return !data.useHoverStyle;
@@ -207,7 +210,10 @@ export default {
             type: 'Style',
             catelog: '默认样式',
             options: {
-              plugins: ['Font']
+              plugins: ['Font'],
+              fontProps: {
+                fontFamily: false
+              }
             },
             value: {
               get: ({ data }: EditorResult<Data>) => {
@@ -222,7 +228,10 @@ export default {
             type: 'style',
             catelog: '激活样式',
             options: {
-              plugins: ['Font']
+              plugins: ['Font'],
+              fontProps: {
+                fontFamily: false
+              }
             },
             value: {
               get: ({ data }: EditorResult<Data>) => {
