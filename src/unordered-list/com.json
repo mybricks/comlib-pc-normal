@@ -1,0 +1,19 @@
+{
+  "title": "无序列表",
+  "namespace": "mybricks.normal-pc.unordered-list",
+  "version": "1.0.0",
+  "description": "展示无序列表",
+  "author": "ZhuPengqiang",
+  "author_name": "朱鹏强",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [],
+  "slots": [
+    {
+      "id": "content",
+      "title": "无序列表"
+    }
+  ]
+}
