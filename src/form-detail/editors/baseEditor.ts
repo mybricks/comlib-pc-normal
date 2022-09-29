@@ -1,8 +1,34 @@
 import { uuid } from '../../utils';
-import { Data, DataSourceEnum, InputIds, TypeEnum } from '../constants';
-import { Schemas, updateIOSchema } from './utils';
+import { Data, InputIds, TypeEnum } from '../constants';
+import { updateIOSchema } from './utils';
 
 export const BaseEditor = [
+  {
+    title: '显示冒号',
+    type: 'Switch',
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.colon;
+      },
+      set({ data }: EditorResult<Data>, value: boolean) {
+        data.colon = value;
+      }
+    }
+  },
+  {
+    title: '显示标题',
+    type: 'Switch',
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.showTitle;
+      },
+      set({ data, input }: EditorResult<Data>, value: boolean) {
+        data.showTitle = value;
+        if (value) input.add(InputIds.SetTitle, '设置标题', { type: 'string' });
+        else input.remove(InputIds.SetTitle);
+      }
+    }
+  },
   {
     title: '增加字段',
     type: 'Button',
@@ -38,30 +64,4 @@ export const BaseEditor = [
       }
     }
   },
-  {
-    title: '显示冒号',
-    type: 'Switch',
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return data.colon;
-      },
-      set({ data }: EditorResult<Data>, value: boolean) {
-        data.colon = value;
-      }
-    }
-  },
-  {
-    title: '显示标题',
-    type: 'Switch',
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return data.showTitle;
-      },
-      set({ data, input }: EditorResult<Data>, value: boolean) {
-        data.showTitle = value;
-        if (value) input.add(InputIds.SetTitle, '设置标题', { type: 'string' });
-        else input.remove(InputIds.SetTitle);
-      }
-    }
-  }
 ];
