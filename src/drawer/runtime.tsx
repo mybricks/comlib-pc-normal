@@ -8,6 +8,7 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
   const ref = useRef<any>();
   const { edit, runtime } = env;
   const [visible, setVisible] = useState(!!edit);
+  const debug = !!(runtime && runtime.debug);
   const {
     title,
     position,
@@ -79,6 +80,38 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
 
   const children = slots[SlotIds.Content].render();
 
+  if (edit || debug) {
+    return (
+      <div className={css.container} ref={ref}>
+        <Drawer
+          // className={classnames(debug && !visible && css.hide)}
+          maskClosable={maskClosable}
+          mask={showMask}
+          title={env.i18n(title)}
+          placement={position}
+          visible={edit ? true : visible}
+          onClose={onClose}
+          width={width}
+          height={height}
+          bodyStyle={bodyStyle}
+          footerStyle={{
+            display: 'flex',
+            justifyContent: footerAlign
+          }}
+          footer={footer}
+          getContainer={false}
+          destroyOnClose={destroyOnClose}
+          afterVisibleChange={(visible) => {
+            if (!visible) {
+              style.display = 'none';
+            }
+          }}
+        >
+          {children}
+        </Drawer>
+      </div>
+    );
+  }
   return (
     <div className={css.container} ref={ref}>
       <Drawer
@@ -86,7 +119,7 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
         mask={showMask}
         title={env.i18n(title)}
         placement={position}
-        visible={edit ? true : visible}
+        visible={visible}
         onClose={onClose}
         width={width}
         height={height}
@@ -95,10 +128,11 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
           display: 'flex',
           justifyContent: footerAlign
         }}
-        footer={footer}
         getContainer={false}
+        footer={footer}
         destroyOnClose={destroyOnClose}
         afterVisibleChange={(visible) => {
+          console.log(visible, 'afterVisibleChange');
           if (!visible) {
             style.display = 'none';
           }
