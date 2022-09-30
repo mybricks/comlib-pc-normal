@@ -4,8 +4,8 @@
   "namespace": "mybricks.normal-pc.drawer",
   "version": "1.0.0",
   "description": "抽屉从父窗体边缘滑入，覆盖住部分父窗体内容。用户在抽屉内操作时不必离开当前任务，操作完成后，可以平滑地回到原任务。",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
@@ -22,11 +22,11 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "any"
+        "type": "follow"
       },
       "rels": [
-        "cancel",
-        "ok"
+        "ok",
+        "cancel"
       ]
     },
     {
@@ -39,6 +39,13 @@
   ],
   "outputs": [
     {
+      "id": "ok",
+      "title": "确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
       "id": "cancel",
       "title": "取消",
       "schema": {
@@ -46,8 +53,15 @@
       }
     },
     {
-      "id": "ok",
-      "title": "确认",
+      "id": "okClick",
+      "title": "点击确认",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "cancelClick",
+      "title": "点击取消",
       "schema": {
         "type": "any"
       }
@@ -63,21 +77,21 @@
           "id": "dataSource",
           "title": "输入数据",
           "schema": {
-            "type": "follow"
+            "type": "any"
           }
         }
       ],
       "outputs": [
         {
-          "id": "cancel",
-          "title": "取消按钮输出数据",
+          "id": "ok",
+          "title": "确认",
           "schema": {
             "type": "follow"
           }
         },
         {
-          "id": "ok",
-          "title": "确认按钮输出数据",
+          "id": "cancel",
+          "title": "取消",
           "schema": {
             "type": "follow"
           }

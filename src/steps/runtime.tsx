@@ -76,7 +76,8 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     const currentStep = stepAry[data.current];
     if (!currentStep?.render) {
       const slotInputs = slots[stepAry[data.current].id].inputs;
-      slotInputs[`${stepAry[data.current].id}_render`]();
+      slotInputs[`${stepAry[data.current].id}_render`] &&
+        slotInputs[`${stepAry[data.current].id}_render`]();
     }
   };
 

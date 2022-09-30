@@ -1,22 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Drawer } from 'antd';
-import classnames from 'classnames';
 import { Data, InputIds, SlotIds, Location, OutputIds } from './constants';
 import * as Icons from '@ant-design/icons';
 import css from './runtime.less';
 
-export default function ({
-  style,
-  env,
-  data,
-  slots,
-  inputs,
-  outputs,
-  createPortal
-}: RuntimeParams<Data>) {
-  const [visible, setVisible] = useState(style.display !== 'none');
+export default function ({ style, env, data, slots, inputs, outputs }: RuntimeParams<Data>) {
+  const ref = useRef<any>();
   const { edit, runtime } = env;
-  const debug = !!(runtime && runtime.debug);
+  const [visible, setVisible] = useState(!!edit);
   const {
     title,
     position,
@@ -32,12 +23,11 @@ export default function ({
 
   const onClose = useCallback(() => {
     setVisible(false);
-    onFooterBtnClick(OutputIds.Cancel);
   }, []);
 
-  const registerOutputsEvent = useCallback((id: string, relOutputs: any) => {
+  const registerOutputsEvent = useCallback((id: string, relOutputs: any, isConnected: boolean) => {
     slots[SlotIds.Content].outputs[id]((val) => {
-      setVisible(false);
+      isConnected && setVisible(false);
       relOutputs[id](val);
     });
   }, []);
@@ -49,9 +39,10 @@ export default function ({
       });
       inputs[InputIds.Open]((val: any, relOutputs: any) => {
         setVisible(true);
+        style.display = 'block';
         slots[SlotIds.Content].inputs[SlotIds.DataSource](val);
-        data.footerBtns.forEach(({ id }) => {
-          registerOutputsEvent(id, relOutputs);
+        data.footerBtns.forEach(({ id, isConnected }) => {
+          registerOutputsEvent(id, relOutputs, isConnected);
         });
       });
       inputs[InputIds.SetTitle]((val) => {
@@ -60,19 +51,20 @@ export default function ({
     }
   }, []);
 
-  const onFooterBtnClick = useCallback((id) => {
-    outputs[id]?.();
+  const onFooterBtnClick = useCallback((id, isConnected?: boolean) => {
+    outputs[`${id}Click`]?.();
+    !isConnected && setVisible(false);
   }, []);
 
   const footer = useFooter
     ? data.footerBtns.map((item: any) => {
-        const { title, id, showText, icon, useIcon, location, ...res } = item;
+        const { title, id, showText, icon, useIcon, location, isConnected, ...res } = item;
         const Icon = useIcon && Icons && Icons[icon as string]?.render();
 
         return (
           <Button
             {...res}
-            onClick={() => onFooterBtnClick(id)}
+            onClick={() => onFooterBtnClick(id, isConnected)}
             data-btn-id={id}
             key={id}
             className={css['footer-btns']}
@@ -87,10 +79,9 @@ export default function ({
 
   const children = slots[SlotIds.Content].render();
 
-  if (edit || debug) {
-    return createPortal(
+  return (
+    <div className={css.container} ref={ref}>
       <Drawer
-        className={classnames(debug && !visible && css.hide)}
         maskClosable={maskClosable}
         mask={showMask}
         title={env.i18n(title)}
@@ -107,31 +98,14 @@ export default function ({
         footer={footer}
         getContainer={false}
         destroyOnClose={destroyOnClose}
+        afterVisibleChange={(visible) => {
+          if (!visible) {
+            style.display = 'none';
+          }
+        }}
       >
         {children}
       </Drawer>
-    );
-  }
-
-  return (
-    <Drawer
-      maskClosable={maskClosable}
-      mask={showMask}
-      title={env.i18n(title)}
-      placement={position}
-      visible={visible}
-      onClose={onClose}
-      width={width}
-      height={height}
-      bodyStyle={bodyStyle}
-      footerStyle={{
-        display: 'flex',
-        justifyContent: footerAlign
-      }}
-      footer={footer}
-      destroyOnClose={destroyOnClose}
-    >
-      {children}
-    </Drawer>
+    </div>
   );
 }
