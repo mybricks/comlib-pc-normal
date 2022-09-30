@@ -78,11 +78,6 @@ function get(
 }
 
 export default {
-  '@init'({ style }) {
-    style.height = '100%';
-    style.position = 'absolute';
-    style.display = 'none';
-  },
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     // console.log('inputUpdated', pin)
     if (pin.id === InputIds.Open) {

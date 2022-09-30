@@ -30,7 +30,7 @@ export default function Dialog({
   const [visible, setVisible] = useState(!!edit);
   useEffect(() => {
     // 非编辑模式
-    if (runtime && inputs) {
+    if (env.runtime && inputs) {
       // 打开对话框
       inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
