@@ -25,9 +25,11 @@ export default function Dialog({
   logger
 }: RuntimeParams<Data>) {
   const ref = useRef<any>();
+  const [visible, setVisible] = useState(style.display !== 'none');
   const [dataSource, setDataSource] = useState();
   const { edit, runtime } = env;
-  const [visible, setVisible] = useState(!!edit);
+  const debug = !!(runtime && runtime.debug);
+
   useEffect(() => {
     // 非编辑模式
     if (env.runtime && inputs) {
@@ -126,8 +128,24 @@ export default function Dialog({
       // }
     };
   });
+  return (
+    <>
+      <div id="modalMount" className={css.container} ref={ref}></div>
+      <Modal
+        title="Basic Modal"
+        visible={true}
+        getContainer={() => {
+          const c = document.getElementById('modalMount');
+          console.log(c, ref, 'getget');
+          return c || ref.current;
+        }}
+      >
+        <p>内部</p>
+      </Modal>
+    </>
+  );
   if (edit) {
-    return (
+    return createPortal(
       <div className={css.container} ref={ref}>
         <RuntimeRender
           cfg={{
@@ -150,8 +168,8 @@ export default function Dialog({
       </div>
     );
   }
-  if (runtime) {
-    return (
+  if (debug) {
+    return createPortal(
       <div className={css.container} ref={ref}>
         <RuntimeRender
           cfg={data}
@@ -166,6 +184,22 @@ export default function Dialog({
             if (ref) {
               return ref.current;
             }
+          }}
+          env={env}
+        />
+      </div>
+    );
+  }
+  if (runtime) {
+    return (
+      <div className={css.container}>
+        <RuntimeRender
+          cfg={data}
+          visible={visible}
+          slots={slots}
+          event={{
+            ...eventList,
+            cancel
           }}
           env={env}
         />
@@ -256,7 +290,7 @@ const RuntimeRender = ({
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={maskClosable || false}
+      maskClosable={false}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}
