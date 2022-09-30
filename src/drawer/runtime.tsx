@@ -1,13 +1,21 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Drawer } from 'antd';
+import classnames from 'classnames';
 import { Data, InputIds, SlotIds, Location, OutputIds } from './constants';
 import * as Icons from '@ant-design/icons';
 import css from './runtime.less';
 
-export default function ({ style, env, data, slots, inputs, outputs }: RuntimeParams<Data>) {
-  const ref = useRef<any>();
+export default function ({
+  style,
+  env,
+  data,
+  slots,
+  inputs,
+  outputs,
+  createPortal
+}: RuntimeParams<Data>) {
+  const [visible, setVisible] = useState(style.display !== 'none');
   const { edit, runtime } = env;
-  const [visible, setVisible] = useState(!!edit);
   const debug = !!(runtime && runtime.debug);
   const {
     title,
@@ -24,6 +32,7 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
 
   const onClose = useCallback(() => {
     setVisible(false);
+    onFooterBtnClick(OutputIds.Cancel);
   }, []);
 
   const registerOutputsEvent = useCallback((id: string, relOutputs: any, isConnected: boolean) => {
@@ -40,7 +49,6 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
       });
       inputs[InputIds.Open]((val: any, relOutputs: any) => {
         setVisible(true);
-        style.display = 'block';
         slots[SlotIds.Content].inputs[SlotIds.DataSource](val);
         data.footerBtns.forEach(({ id, isConnected }) => {
           registerOutputsEvent(id, relOutputs, isConnected);
@@ -81,45 +89,14 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
   const children = slots[SlotIds.Content].render();
 
   if (edit || debug) {
-    return (
-      <div className={css.container} ref={ref}>
-        <Drawer
-          // className={classnames(debug && !visible && css.hide)}
-          maskClosable={maskClosable}
-          mask={showMask}
-          title={env.i18n(title)}
-          placement={position}
-          visible={edit ? true : visible}
-          onClose={onClose}
-          width={width}
-          height={height}
-          bodyStyle={bodyStyle}
-          footerStyle={{
-            display: 'flex',
-            justifyContent: footerAlign
-          }}
-          footer={footer}
-          getContainer={false}
-          destroyOnClose={destroyOnClose}
-          afterVisibleChange={(visible) => {
-            if (!visible) {
-              style.display = 'none';
-            }
-          }}
-        >
-          {children}
-        </Drawer>
-      </div>
-    );
-  }
-  return (
-    <div className={css.container} ref={ref}>
+    return createPortal(
       <Drawer
+        className={classnames(debug && !visible && css.hide)}
         maskClosable={maskClosable}
         mask={showMask}
         title={env.i18n(title)}
         placement={position}
-        visible={visible}
+        visible={edit ? true : visible}
         onClose={onClose}
         width={width}
         height={height}
@@ -128,18 +105,34 @@ export default function ({ style, env, data, slots, inputs, outputs }: RuntimePa
           display: 'flex',
           justifyContent: footerAlign
         }}
-        getContainer={false}
         footer={footer}
+        getContainer={false}
         destroyOnClose={destroyOnClose}
-        afterVisibleChange={(visible) => {
-          console.log(visible, 'afterVisibleChange');
-          if (!visible) {
-            style.display = 'none';
-          }
-        }}
       >
         {children}
       </Drawer>
-    </div>
+    );
+  }
+
+  return (
+    <Drawer
+      maskClosable={maskClosable}
+      mask={showMask}
+      title={env.i18n(title)}
+      placement={position}
+      visible={visible}
+      onClose={onClose}
+      width={width}
+      height={height}
+      bodyStyle={bodyStyle}
+      footerStyle={{
+        display: 'flex',
+        justifyContent: footerAlign
+      }}
+      footer={footer}
+      destroyOnClose={destroyOnClose}
+    >
+      {children}
+    </Drawer>
   );
 }
