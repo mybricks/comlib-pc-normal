@@ -129,22 +129,6 @@ export default function Dialog({
       // }
     };
   });
-  return (
-    <>
-      <div id="modalMount" className={css.container} ref={ref}></div>
-      <Modal
-        title="Basic Modal"
-        visible={true}
-        getContainer={() => {
-          const c = document.getElementById('modalMount');
-          console.log(c, ref, 'getget');
-          return c || ref.current;
-        }}
-      >
-        <p>内部</p>
-      </Modal>
-    </>
-  );
   if (edit) {
     return createPortal(
       <div className={css.container} ref={ref}>
