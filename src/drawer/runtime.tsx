@@ -32,7 +32,7 @@ export default function ({
 
   const onClose = useCallback(() => {
     setVisible(false);
-    onFooterBtnClick(OutputIds.Cancel);
+    // onFooterBtnClick(OutputIds.Cancel);
   }, []);
 
   const registerOutputsEvent = useCallback((id: string, relOutputs: any, isConnected: boolean) => {
