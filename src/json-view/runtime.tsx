@@ -158,14 +158,18 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       key: rootKey
     }
   ];
-
+  const editConfig = env.edit
+    ? {
+        expandedKeys
+      }
+    : {};
   return (
     <Tree
       treeData={treeData}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
       defaultExpandedKeys={expandedKeys}
-      expandedKeys={env.edit ? expandedKeys : undefined}
+      {...editConfig}
       key={expandedKeys.toString()}
       onSelect={(keys: any[], { node }) => {
         const nodeData = keyToData.get(node.key);
