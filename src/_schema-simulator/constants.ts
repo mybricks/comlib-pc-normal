@@ -1,11 +1,11 @@
 /**
  * 数据源
- * @param title 名称
- * @param content 提示内容
- * @param type 提示类型
- * @param duration 关闭延时
- * @param isExternal 输入类型选择
+ * @param arrLength 数组长度
+ * @param strLength 字符串长度
+ * @param numberRange 数字范围
  */
-export class Data {
-
+ export interface Data {
+  arrLength: number;
+  strLength: number;
+  numberRange: [number, number]
 }

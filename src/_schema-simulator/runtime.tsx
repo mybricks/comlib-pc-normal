@@ -27,7 +27,7 @@ function GetRandomBoolean() {
 }
 
 //递归计算最小单元schema
-const minCulation = (schema) => {
+const minCulation = (schema, data: Data) => {
   //如果不是数组和对象，是最小单元了，就可以生成最小模块了
   //考虑了schema.type写错或者不存在的情况，返回空对象
   if (
@@ -39,9 +39,9 @@ const minCulation = (schema) => {
   ) {
     switch (schema.type) {
       case 'string':
-        return randomString(6);
+        return randomString(data.strLength);
       case 'number':
-        return GetRandomNum(10000, 999999);
+        return GetRandomNum(data.numberRange[0], data.numberRange[1]);
       case 'boolean':
         return GetRandomBoolean();
       case 'any':
@@ -57,7 +57,7 @@ const minCulation = (schema) => {
       } else {
         const keys = Object.keys(schema.properties);
         const vals = keys.map((e) => {
-          return minCulation(schema.properties[e]);
+          return minCulation(schema.properties[e], data);
         });
         const newObj = {};
         for (let i = 0; i < keys.length; i++) {
@@ -72,8 +72,9 @@ const minCulation = (schema) => {
       } else {
         const newArr: any[] = [];
         const items = schema.items;
-        for (let i = 0; i < 10; i++) {
-          newArr.push(minCulation(items));
+        //for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < data.arrLength; i++) {
+          newArr.push(minCulation(items, data));
         }
         return newArr;
       }
@@ -81,12 +82,12 @@ const minCulation = (schema) => {
   }
 };
 
-export default function ({ env, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ data, env, inputs, outputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   if (runtime) {
     if (inputs['inputSchema']) {
       inputs['inputSchema']((val: any) => {
-        outputs['outputData'](minCulation(val));
+        outputs['outputData'](minCulation(val, data));
       });
     }
   }
