@@ -1,0 +1,35 @@
+{
+  "title": "数据模拟器",
+  "namespace": "fangzhou.normal-pc.dataSimulator",
+  "author": "huangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.0.0",
+  "description": "根据schema数据生成的数据模拟器",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "rtType": "js",
+  "slots": [],
+  "inputs": [
+    {
+      "id": "inputSchema",
+      "title": "输入schema",
+      "rels": [
+        "outputData"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputData",
+      "title": "模拟数据输出",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}
