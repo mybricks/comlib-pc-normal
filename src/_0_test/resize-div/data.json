@@ -1,0 +1,21 @@
+{
+    "cols": [
+        {
+            "flex": 1,
+            "id": "col-1"
+        },
+        {
+            "flex": 1,
+            "id": "col-2"
+        },
+        {
+            "flex": 1,
+            "id": "col-3"
+        },
+        {
+            "flex": 1,
+            "id": "col-4"
+        }
+    ],
+    "gutter": 12
+}
