@@ -1,5 +1,5 @@
 import { Data, WidthUnitEnum } from '../../constants';
-import { getColItem, updateColumnsTitle } from '../utils';
+import { getColItem, updateSlotTitle } from '../utils';
 
 const WidthEditor = [
   {
@@ -21,7 +21,7 @@ const WidthEditor = [
         if (!focusArea) return;
         const item = getColItem(data, focusArea);
         item.widthOption = value;
-        updateColumnsTitle(item, slot);
+        updateSlotTitle(item, slot);
       }
     }
   },
@@ -50,7 +50,7 @@ const WidthEditor = [
         if (!focusArea) return;
         const item = getColItem(data, focusArea);
         item.span = value;
-        updateColumnsTitle(item, slot);
+        updateSlotTitle(item, slot);
       }
     }
   },
@@ -74,7 +74,7 @@ const WidthEditor = [
         if (!focusArea) return;
         const item = getColItem(data, focusArea);
         item.width = value;
-        updateColumnsTitle(item, slot);
+        updateSlotTitle(item, slot);
       }
     }
   },
