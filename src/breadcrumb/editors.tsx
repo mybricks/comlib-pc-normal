@@ -21,7 +21,7 @@ const addItem = ({ data, output }) => {
       ...item,
       key
     });
-    output.add(key, '点击事件', { type: 'any' })
+    output.add(key, '点击事件', { type: 'any' });
   });
 };
 function findConfig({ data, focusArea }, propKey?: string) {
@@ -133,7 +133,10 @@ export default {
         type: 'Style',
         options: {
           defaultOpen: true,
-          plugins: ['font']
+          plugins: ['font'],
+          fontProps: {
+            fontFamily: false
+          }
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
@@ -163,9 +166,7 @@ export default {
         type: 'Button',
         value: {
           set({ data, focusArea, output }: EditorResult<Data>) {
-            data.children = data.children.filter(
-              (i) => i.key !== focusArea.dataset['breadcrumb']
-            );
+            data.children = data.children.filter((i) => i.key !== focusArea.dataset['breadcrumb']);
             output.remove(focusArea.dataset?.breadcrumb);
           }
         }

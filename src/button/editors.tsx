@@ -43,7 +43,10 @@ export default {
           type: 'style',
           options: {
             defaultOpen: true,
-            plugins: ['border', 'font', 'bgcolor', 'bgimage']
+            plugins: ['border', 'font', 'bgcolor', 'bgimage'],
+            fontProps: {
+              fontFamily: false
+            }
           },
           value: {
             get: ({ data }: EditorResult<Data>) => {

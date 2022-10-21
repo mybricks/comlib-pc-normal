@@ -163,7 +163,8 @@ export default {
         options: {
           plugins: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
           fontProps: {
-            letterSpace: true
+            letterSpace: true,
+            fontFamily: false
           }
         },
         ifVisible({ data }: EditorResult<Data>) {
@@ -200,7 +201,8 @@ export default {
             options: {
               plugins: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
               fontProps: {
-                letterSpace: true
+                letterSpace: true,
+                fontFamily: false
               }
             },
             value: {
@@ -218,7 +220,8 @@ export default {
             options: {
               plugins: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
               fontProps: {
-                letterSpace: true
+                letterSpace: true,
+                fontFamily: false
               }
             },
             value: {

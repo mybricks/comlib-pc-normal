@@ -93,7 +93,8 @@
       "./src/_timer-loop/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object-merge/com.json"
+      "./src/_object-merge/com.json",
+      "./src/_schema-simulator/com.json"
     ],
     "publish": [
       {
@@ -182,7 +183,8 @@
       "./src/_timer-loop/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object-merge/com.json"
+      "./src/_object-merge/com.json",
+      "./src/_schema-simulator/com.json"
     ]
   }
 }
