@@ -1,4 +1,4 @@
-import { runJs, utils } from '@fangzhou/com-utils';
+import { runJs } from '../../../package/com-utils';
 
 export enum RuleKeys {
   REQUIRED = 'required',

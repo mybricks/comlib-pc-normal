@@ -1,4 +1,4 @@
-import { utils } from '@fangzhou/com-utils';
+import { utils } from '../../package/com-utils';
 
 interface Props {
   presets: string[];

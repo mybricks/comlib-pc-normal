@@ -69,20 +69,23 @@ const transformCodeByBabel = (val: string, props?: Props) => {
         /export\s+default.*function.*\(/g,
         '_RTFN_ = async function _RT_('
       );
-    } else {
+    } else if (/export\s+default.*function.*\(/g.test(temp)) {
       temp = temp.replace(
         /export\s+default.*function.*\(/g,
         '_RTFN_ = function _RT_('
       );
+    } else {
+      temp = `_RTFN_ = ${temp} `
     }
     res.transformCode = encodeURIComponent(
       babelInstance.transform(temp, {
-        presets: presets || ['env']
+        presets: presets || ['env'],
+        comments: false,
       }).code
     );
-    res.transformCode = `${encodeURIComponent(`(function() { var _RTFN_; `)}${
+    res.transformCode = `${encodeURIComponent(`(function() { var _RTFN_; \n`)}${
       res.transformCode
-    }${encodeURIComponent(`; return _RTFN_; })()`)}`;
+    }${encodeURIComponent(`\n; return _RTFN_; })()`)}`;
   } catch (e) {
     if (typeof errorCallback === 'function') {
       errorCallback(e);
