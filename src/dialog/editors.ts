@@ -3,15 +3,25 @@ import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, D
 
 const defaultSchema = { type: 'any' };
 
+/**
+ * 计算最新的relOuputs
+ * @param data 
+ * @returns 最新的relOuputs
+ */
 const updateOpenRels = (data: Data): any[] => {
-  return data.footerBtns.filter(({ id, visible }) => {
+  return data.footerBtns.filter(({ id, isConnected, visible }) => {
     if (DefaultEvent.includes(id)) {
-      return visible;
+      return visible && isConnected;
     }
-    return true;
+    return isConnected;
   }).map(({ id }) => id);
 };
 
+/**
+ * 新增按钮
+ * @param env 上下文 
+ * @param defaultId 确认/取消按钮的默认ID
+ */
 function addBtn({ data, input, output, slot }: { data: Data, input: any, output: any, slot: any }, defaultId?: string) {
   const { footerBtns } = data;
   const titleMap = {
@@ -44,6 +54,11 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
   }
 }
 
+/**
+ * 删除/隐藏按钮
+ * @param env 上下文 
+ * @param btnId 确认/取消按钮的默认ID
+ */
 function removeBtn({ data, input, output, slot }:
   { data: Data, input: any, output: any, slot: any },
   btnId: string
@@ -59,6 +74,15 @@ function removeBtn({ data, input, output, slot }:
   }
 }
 
+/**
+ * GET方法
+ * @param data 
+ * @param focusArea 
+ * @param dataset 
+ * @param val 
+ * @param cb 删除回调
+ * @returns 
+ */
 function get(
   data: Data,
   focusArea: any,
@@ -94,18 +118,22 @@ export default {
   // '@slotOutputUpdated'({ data, slots, output }, pin) {
   //   console.log('slotOutputUpdated', pin)
   // },
-  '@slotInputConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+  '@slotInputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     // console.log('slotInputConnected', fromPin, toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find(btn => btn.id === btnId);
     btn.isConnected = true;
+    const newRels = [...updateOpenRels(data)];
+    input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
-  '@slotInputDisConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+  '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     // console.log('slotInputDisConnected', toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find(btn => btn.id === btnId);
     btn.isConnected = false;
+    const newRels = [...updateOpenRels(data)];
+    input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
