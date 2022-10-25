@@ -15,18 +15,22 @@ export default {
     // console.log('slotInputUpdated', pin)
     output.get(pin.id)?.setSchema(pin.schema);
   },
-  '@slotInputConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+  '@slotInputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     // console.log('slotInputConnected', fromPin, toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find((btn) => btn.id === btnId);
     btn.isConnected = true;
+    const newRels = data.footerBtns.filter(({ isConnected }) => isConnected).map(({ id }) => id);
+    input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
-  '@slotInputDisConnected'({ data, slots, output }, fromPin, slotId, toPin) {
+  '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     // console.log('slotInputDisConnected', toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find((btn) => btn.id === btnId);
     btn.isConnected = false;
+    const newRels = data.footerBtns.filter(({ isConnected }) => isConnected).map(({ id }) => id);
+    input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
