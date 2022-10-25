@@ -1,4 +1,4 @@
-import { runJs, utils } from '@fangzhou/com-utils';
+import { runJs, utils } from '../../package/com-utils';
 import moment from 'moment';
 import { Data } from './constants';
 
