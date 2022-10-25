@@ -71,10 +71,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onChange'](value);
   };
 
-  inputs['setVisible']((val) => {
-    data.visible = val;
-  });
-
   return (
     data.visible && (
       <div className={css.inputNumber}>
