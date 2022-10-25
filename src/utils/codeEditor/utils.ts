@@ -1,9 +1,31 @@
+
+function getCookies() {
+  return document.cookie.split('; ').reduce((s: any, e) => {
+      const p = e.indexOf('=');
+      s[e.slice(0, p)] = e.slice(p + 1);
+      return s;
+  }, {});
+}
+
+function getParams() {
+  return location.search
+  .slice(1)
+  .split('&')
+  .reduce(function (s: any, a) {
+      let m = a.split('=');
+      if (m[0]) {
+          s[m[0]] = decodeURIComponent(m[1]);
+      }
+      return s;
+  }, {});
+}
+
 interface Props {
   presets?: string[];
   errorCallback?: (val: any) => void;
   babelInstance?: any;
 }
-const transformCode = (val: string, props?: Props) => {
+const transformCodeByBabel = (val: string, props?: Props) => {
   const {
     presets,
     errorCallback,
@@ -52,14 +74,8 @@ const transformCode = (val: string, props?: Props) => {
   return res;
 };
 
-export const transformCodeByBabel = (val: string, props?: Props) => {
-  if (!(window as any).Babel || typeof val !== 'string') {
-    return val;
-  }
-  try {
-    return transformCode(val, props);
-  } catch (e) {
-    // return val;
-  }
-  return val;
+export default {
+  getCookies,
+  getParams,
+  transformCodeByBabel
 };
