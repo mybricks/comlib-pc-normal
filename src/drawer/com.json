@@ -23,11 +23,7 @@
       "title": "打开",
       "schema": {
         "type": "follow"
-      },
-      "rels": [
-        "ok",
-        "cancel"
-      ]
+      }
     },
     {
       "id": "title",
