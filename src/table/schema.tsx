@@ -1,5 +1,5 @@
 import { InputIds, OutputIds, SlotIds } from './constants';
-import { Data, FilterTypeEnum, IColumn } from './types';
+import { Data, IColumn } from './types';
 import { setPath } from '../utils/path';
 import { getColumnItem } from './utils';
 
@@ -63,15 +63,34 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
 }
 
 // 数据源schema
-function setDataSourceSchema(dataSchema: object, { input }: Props) {
-  input.get('dataSource')?.setSchema({
-    title: '数据列表',
-    type: 'array',
-    items: {
+function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
+  if (data.usePagination) {
+    input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
+      title: '数据列表',
       type: 'object',
-      properties: dataSchema
-    }
-  });
+      properties: {
+        dataSource: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: dataSchema
+          }
+        },
+        total: {
+          type: 'number'
+        }
+      }
+    });
+  } else {
+    input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
+      title: '数据列表',
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: dataSchema
+      }
+    });
+  }
 }
 
 // 输出节点schema

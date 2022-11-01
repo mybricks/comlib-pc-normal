@@ -1,3 +1,5 @@
+import { Data as PaginationData } from '../paginator/constants';
+
 export enum ContentTypeEnum {
   Text = 'text',
   SlotItem = 'slotItem',
@@ -146,4 +148,7 @@ export interface Data {
 
   // 使用列展开
   useExpand?: boolean;
+
+  usePagination?: boolean;
+  paginationConfig: PaginationData;
 }
