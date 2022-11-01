@@ -8,7 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editor/index.ts",
   "inputs": [
     {
       "id": "previous",
@@ -76,7 +76,6 @@
     {
       "id": "tab0",
       "title": "标签页1",
-      "type": "scope",
       "inputs": [
         {
           "id": "tab0_render",
