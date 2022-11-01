@@ -33,42 +33,40 @@ const SlotContent = (props) => {
         //   console.log('items', items, comAray, props?.field);
         // }
 
-        if (comAray) {
-          const jsx = comAray.map((com, idx) => {
-            if (com) {
-              let item = items.find((item) => item.id === com.id);
+        const jsx = comAray?.map((com, idx) => {
+          if (com) {
+            let item = items.find((item) => item.id === com.id);
 
-              childrenInputs[com.id] = com.inputs;
-              return (
-                <Col data-formitem={com.id} key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
-                  <FormItem data={data} com={com} item={item} field={props?.field} />
-                </Col>
-              );
-            }
+            childrenInputs[com.id] = com.inputs;
+            return (
+              <Col data-formitem={com.id} key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
+                <FormItem data={data} com={com} item={item} field={props?.field} />
+              </Col>
+            );
+          }
 
-            return <div key={idx}>组件错误</div>;
-          });
+          return <div key={idx}>组件错误</div>;
+        });
 
-          return (
-            <Row>
-              {isInlineModel && (
-                <InlineLayout data={data} actions={<FormActionsWrapper />}>
-                  {jsx}
-                </InlineLayout>
-              )}
-              {isHorizontalModel && (
-                <HorizontalLayout data={data} actions={<FormActionsWrapper />}>
-                  {jsx}
-                </HorizontalLayout>
-              )}
-              {isVerticalModel && (
-                <VerticalLayout data={data} actions={<FormActionsWrapper />}>
-                  {jsx}
-                </VerticalLayout>
-              )}
-            </Row>
-          );
-        }
+        return (
+          <Row>
+            {isInlineModel && (
+              <InlineLayout data={data} actions={<FormActionsWrapper />}>
+                {jsx}
+              </InlineLayout>
+            )}
+            {isHorizontalModel && (
+              <HorizontalLayout data={data} actions={<FormActionsWrapper />}>
+                {jsx}
+              </HorizontalLayout>
+            )}
+            {isVerticalModel && (
+              <VerticalLayout data={data} actions={<FormActionsWrapper />}>
+                {jsx}
+              </VerticalLayout>
+            )}
+          </Row>
+        );
       },
       inputValues: {}
       // key: props?.field?.name
