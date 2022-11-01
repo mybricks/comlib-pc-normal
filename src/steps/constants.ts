@@ -41,7 +41,7 @@ interface Steps {
 /**
  * 数据源
  */
-export class Data {
+export interface Data {
   steps: Steps
   current: number;
   stepAry: StepItem[];
@@ -50,3 +50,6 @@ export class Data {
   useSubmitBtnLoading: boolean;
   hideSlots?: boolean;
 }
+
+export const INTO = '_into';
+export const LEAVE = '_leave'
