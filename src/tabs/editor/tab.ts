@@ -1,6 +1,6 @@
 import { Data } from '../constants';
 export default {
-  '.ant-tabs-tab': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
+  '.ant-tabs-tab': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -39,51 +39,87 @@ export default {
         }
       },
       {
-        title: '向前移动',
-        type: 'Button',
-        value: {
-          get({ focusArea }: EditorResult<Data>) {
-            return focusArea.index;
+        title: '事件',
+        items: [
+          {
+            title: '显示',
+            type: '_Event',
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const id = data.tabList[focusArea.index]?.id
+              return {
+                outputId: `${id}_into`
+              };
+            }
           },
-          set({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            const { tabList } = data;
-            if (index === 0) return;
-            [tabList[index - 1], tabList[index]] = [tabList[index], tabList[index - 1]];
-          }
-        }
-      },
-      {
-        title: '向后移动',
-        type: 'Button',
-        value: {
-          get({ focusArea }: EditorResult<Data>) {
-            return focusArea.index;
-          },
-          set({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            const { tabList } = data;
-            if (index === tabList.length - 1) return;
-            [tabList[index], tabList[index + 1]] = [tabList[index + 1], tabList[index]];
-          }
-        }
-      },
-      {
-        title: '删除',
-        type: 'Button',
-        value: {
-          get({ focusArea }: EditorResult<Data>) {
-            return focusArea.index;
-          },
-          set({ data, focusArea, slots }: EditorResult<Data>) {
-            if (data.tabList.length > 1) {
-              slots.remove(data.tabList[focusArea.index]?.id);
-              data.tabList.splice(focusArea.index, 1);
-              data.defaultActiveKey = data.tabList[0].key;
+          {
+            title: '隐藏',
+            type: '_Event',
+            options: ({ data, focusArea }: EditorResult<Data>) => {
+              const id = data.tabList[focusArea.index]?.id
+              return {
+                outputId: `${id}_leave`
+              };
             }
           }
-        }
-      }
+        ]
+      },
+      {
+        title: '操作',
+        items: [
+          {
+            title: '向前移动',
+            type: 'Button',
+            value: {
+              get({ focusArea }: EditorResult<Data>) {
+                return focusArea.index;
+              },
+              set({ data, focusArea }: EditorResult<Data>) {
+                const { index } = focusArea;
+                const { tabList } = data;
+                if (index === 0) return;
+                [tabList[index - 1], tabList[index]] = [tabList[index], tabList[index - 1]];
+              }
+            }
+          },
+          {
+            title: '向后移动',
+            type: 'Button',
+            value: {
+              get({ focusArea }: EditorResult<Data>) {
+                return focusArea.index;
+              },
+              set({ data, focusArea }: EditorResult<Data>) {
+                const { index } = focusArea;
+                const { tabList } = data;
+                if (index === tabList.length - 1) return;
+                [tabList[index], tabList[index + 1]] = [tabList[index + 1], tabList[index]];
+              }
+            }
+          },
+          {
+            title: '删除',
+            type: 'Button',
+            value: {
+              get({ focusArea }: EditorResult<Data>) {
+                return focusArea.index;
+              },
+              set({ data, focusArea, slots, output }: EditorResult<Data>) {
+                if (data.tabList.length > 1) {
+                  const id = data.tabList[focusArea.index]?.id
+                  if (id) {
+                    slots.remove(id);
+                    output.remove(`${id}_into`)
+                    output.remove(`${id}_leave`)
+                  }
+                  data.tabList.splice(focusArea.index, 1);
+                  data.defaultActiveKey = data.tabList[0].key;
+
+                }
+              }
+            }
+          }
+        ]
+      },
     ];
 
     cate2.title = '样式';

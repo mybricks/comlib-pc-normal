@@ -70,6 +70,20 @@
           }
         }
       }
+    },
+    {
+      "id": "tab0_into",
+      "title": "tab0显示",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "tab0_leave",
+      "title": "tab0隐藏",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "slots": [
