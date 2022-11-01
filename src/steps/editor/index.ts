@@ -2,6 +2,7 @@ import { uuid } from '../../utils';
 import { Data } from '../constants';
 import StepEditor from './step';
 import ActionEditor from './action';
+import { addSlot, addEventIO } from './util'
 
 const DefaultSchema = {
   type: 'any'
@@ -116,16 +117,12 @@ export default {
               description: '新添加的步骤',
               index: data.stepAry.length
             });
-            addSlot(data, slots, id)
-            output.add(id, '下一步', DefaultSchema);
+            addSlot(slots, id, `步骤${data.stepAry.length}`)
+            output.add(id, `步骤${data.stepAry.length}下一步`, DefaultSchema);
+            //添加事件i/0
+            addEventIO(output, id, `步骤${data.stepAry.length}`)
             //设置跳转title
             input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
-            data.stepAry.forEach((item, idx) => {
-              output.setTitle(
-                item.id,
-                idx === data.stepAry.length - 1 ? '提交' : `下一步`
-              );
-            });
           }
         }
       }
@@ -163,61 +160,3 @@ export default {
   ...StepEditor,
   ...ActionEditor
 };
-
-const addSlot = (data, slots, id) => {
-  slots.add({
-    id,
-    title: `步骤${data.stepAry.length}`,
-    type: 'scope',
-    inputs: [
-      {
-        id: `${id}_render`,
-        title: '当该步骤首次显示',
-        schema: {
-          type: "any"
-        }
-      },
-      {
-        id: `${id}_into`,
-        title: '当该步骤显示',
-        schema: {
-          type: "follow"
-        }
-      },
-      {
-        id: `${id}_leave`,
-        title: '当该步骤隐藏',
-        schema: DefaultSchema
-      }
-    ],
-    outputs: [
-      {
-        id: `${id}_next`,
-        title: "下一步",
-        schema: {
-          type: "follow"
-        }
-      }
-    ]
-  });
-  updateStepOutput(data, slots)
-}
-
-export const updateStepOutput = (data, slots) => {
-  let index = 0;
-  while (index < data.stepAry.length) {
-    const { id } = data.stepAry[index]
-    const slot = slots.get(id)
-    if (index < data.stepAry.length - 1) {
-      if (!slot.outputs.get(`${id}_next`)) {
-        slot.outputs.add(`${id}_next`, '下一步', { type: "follow" })
-      }
-    } else {
-      //最后一步没有next output
-      if (slot.outputs.get(`${id}_next`)) {
-        slot.outputs.remove(`${id}_next`)
-      }
-    }
-    index++
-  }
-}
