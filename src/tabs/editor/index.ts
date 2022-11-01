@@ -12,6 +12,11 @@ const getId = (data) => {
   return `tab${index}`;
 };
 
+const addEventIO = (output, id) => {
+    output.add(`${id}_into`, `${id}显示`, {type: 'any'})
+    output.add(`${id}_leave`, `${id}隐藏`, {type: 'any'})
+}
+
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
@@ -20,13 +25,14 @@ export default {
         title: '添加标签页',
         type: 'Button',
         value: {
-          set({ data, slots }: EditorResult<Data>) {
+          set({ data, slots, output }: EditorResult<Data>) {
             const key = uuid();
             const id = getId(data);
             slots.add({
               id,
               title: `标签页${data.tabList.length + 1}`
             })
+            addEventIO(output, id)
             // slots.add({
             //   id,
             //   title: `标签页${data.tabList.length + 1}`,
