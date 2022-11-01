@@ -29,6 +29,16 @@
       }
     },
     {
+      "id": "submitAndMerge",
+      "title": "提交表单(合并参数)",
+      "rels": [
+        "onMergeFinish"
+      ],
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
       "id": "resetFields",
       "title": "重置表单",
       "rels": [
@@ -42,6 +52,14 @@
   "outputs": [
     {
       "id": "onFinish",
+      "title": "提交数据输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onMergeFinish",
       "title": "提交数据输出",
       "schema": {
         "type": "object",

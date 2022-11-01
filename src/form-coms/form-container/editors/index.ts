@@ -5,7 +5,7 @@ import { actionsEditor } from './actions'
 import { outputIds, inputIds, slotInputIds } from '../constants'
 import { uuid } from '../../../utils'
 
-function refreshSchema({data, inputs, outputs, slots}) {
+function getSubmitSchema (data) {
   const properties = {}
   data.items.forEach(item => {
     const {id, label, schema, name } = item
@@ -16,11 +16,27 @@ function refreshSchema({data, inputs, outputs, slots}) {
     type: 'object',
     properties
   }
+
+  return schema
+}
+
+function refreshSchema({data, inputs, outputs, slots}) {
+  const schema = getSubmitSchema(data)
   
   outputs.get(outputIds.ON_FINISH).setSchema(schema)
   outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
+  refreshParamsSchema(data, outputs)
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
   slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
+}
+
+function refreshParamsSchema (data, outputs) {
+  const schema = getSubmitSchema(data)
+  if (data.paramsSchema?.type === 'object' ) {
+    schema.properties = { ...schema.properties, ...data.paramsSchema.properties }
+  }
+
+  outputs.get(outputIds.ON_MERGE_FINISH).setSchema(schema)
 }
 
 function fieldNameCheck (data: Data, name: string) {
@@ -37,6 +53,34 @@ function isHorizontal (data: Data) {
 }
 
 export default {
+  // '@inputUpdated'({ data, outputs }, fromPin, toPin) {
+  //   if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
+  //     if (fromPin.schema.type === 'object') {
+  //       data.paramsSchema = fromPin.schema
+  //     } else {
+  //       data.paramsSchema = {}
+  //     }
+  //     refreshParamsSchema(data, outputs)
+  //   }
+  // },
+  '@inputConnected'({ data, outputs }, fromPin, toPin) {
+    if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
+      if (fromPin.schema.type === 'object') {
+        data.paramsSchema = fromPin.schema
+      } else {
+        data.paramsSchema = {}
+      }
+      refreshParamsSchema(data, outputs)
+    }
+    
+  },
+  '@inputDisConnected'({ data, outputs }, fromPin, toPin) {
+    if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
+      data.paramsSchema = {}
+      refreshParamsSchema(data, outputs)
+    }
+    
+  },
   '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
     data.items = data.items.filter(item => item.id !== id)
     refreshSchema({data, inputs, outputs, slots})
