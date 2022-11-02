@@ -77,18 +77,18 @@ const IndexEditor = [
           }
         }
       },
-      {
-        title: '合并',
-        type: 'Button',
-        ifVisible(props: EditorResult<Data>) {
-          return canMerge(props);
-        },
-        value: {
-          set(props: EditorResult<Data>, val: string) {
-            mergeCol(props)
-          }
-        }
-      },
+      // {
+      //   title: '合并',
+      //   type: 'Button',
+      //   ifVisible(props: EditorResult<Data>) {
+      //     return canMerge(props);
+      //   },
+      //   value: {
+      //     set(props: EditorResult<Data>, val: string) {
+      //       mergeCol(props)
+      //     }
+      //   }
+      // },
       {
         title: '删除',
         type: 'Button',
