@@ -15,7 +15,7 @@ const PageSchema = {
 };
 export default [
   {
-    title: '开启分页',
+    title: '分页模式',
     type: 'Switch',
     value: {
       get({ data }: EditorResult<Data>) {
