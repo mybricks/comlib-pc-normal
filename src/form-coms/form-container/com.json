@@ -143,7 +143,7 @@
       "inputs": [
         {
           "id": "setFieldsValue",
-          "title": "表单值输入",
+          "title": "表单数据输入",
           "schema": {
             "type": "object",
             "properties": {}
