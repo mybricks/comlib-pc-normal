@@ -47,7 +47,17 @@
       "id": "tabClick",
       "title": "标签页点击",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string"
+          }
+        }
       }
     },
     {

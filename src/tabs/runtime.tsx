@@ -120,7 +120,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   const tabIntoHook = () => {
     const currentTab = findTargetByKey();
     if (currentTab) {
-      currentTab.render = true; //标记render状态
+      // currentTab.render = true; //标记render状态
       outputs[`${currentTab.id}_into`]();
     }
   };
@@ -133,8 +133,8 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
 
   const handleClickItem = useCallback((values) => {
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const current = data.tabList.filter((item) => item.key === values)[0];
-      outputs[OutputIds.OnTabClick](current);
+      const { id, name } = data.tabList.find((item) => item.key === values) || {};
+      outputs[OutputIds.OnTabClick]({ id, name });
     }
 
     if (!data.prohibitClick) {
