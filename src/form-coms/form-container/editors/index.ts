@@ -251,7 +251,7 @@ export default {
         value: {
           get({data, focusArea}: EditorResult<Data>) {
             const comId = focusArea.dataset['formitem']
-            return data.items.find(item => item.id === comId).label
+            return data.items.find(item => item.id === comId)?.label
           },
           set({data, focusArea}: EditorResult<Data>, val) {
             const comId = focusArea.dataset['formitem']
@@ -266,22 +266,24 @@ export default {
         value: {
           get({data, focusArea}: EditorResult<Data>) {
             const comId = focusArea.dataset['formitem']
-            return data.items.find(item => item.id === comId).name
+            return data.items.find(item => item.id === comId)?.name
           },
           set({data, focusArea, input, output, slots }: EditorResult<Data>, val) {
             if (!val) {
               return message.warn('字段名不能为空')
             }
 
-            if (fieldNameCheck(data, val)) {
-              return message.warn('字段名不能重复')
-            }
-
             const comId = focusArea.dataset['formitem']
             const item = data.items.find(item => item.id === comId)
-            item.name = val
-            
-            refreshSchema({data, inputs: input, outputs: output, slots})
+
+            if (item && item.name !== val) {
+              if (fieldNameCheck(data, val)) {
+                return message.warn('字段名不能重复')
+              }
+              item.name = val
+              
+              refreshSchema({data, inputs: input, outputs: output, slots})
+            }
           }
         }
       },
