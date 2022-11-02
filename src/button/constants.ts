@@ -3,7 +3,8 @@
  * @param text 文字标题
  * @param asMapArea 作为热区使用
  * @param style 样式
- * @param dataType 类型
+ * @param outVal 触发数据
+ * @param inVal external触发数据
  */
 export interface Data {
   text: string;
