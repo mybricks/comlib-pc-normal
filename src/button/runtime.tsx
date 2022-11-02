@@ -1,18 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { Data, OutputIds } from './constants';
 import css from './runtime.less';
 
-export default function ({ env, data, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
+  //如果data.dataType是'external'的
+  useEffect(() => {
+    if (env.runtime) {
+      inputs['external']((ds: any) => {
+        data.inVal = ds;
+      });
+    }
+  });
   const onClick = useCallback(() => {
     if (env.runtime) {
-      outputs[OutputIds.Click]();
+      const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
+      outputs[OutputIds.Click](outputVal);
     }
   }, []);
 
   const onDoubleClick = useCallback(() => {
     if (env.runtime) {
-      outputs[OutputIds.DbClick]();
+      const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;
+      outputs[OutputIds.DbClick](outputVal);
     }
   }, []);
 
