@@ -18,7 +18,7 @@ const updateOpenRels = (data: Data): any[] => {
 };
 
 /**
- * 新增按钮
+ * 新增/显示按钮
  * @param env 上下文 
  * @param defaultId 确认/取消按钮的默认ID
  */
@@ -40,14 +40,14 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
     icon: '',
     useIcon: false,
     showText: true,
-    type: 'default'
+    type: 'default',
+    isConnected: false
   };
 
   output.add(id, title, schema);
   output.add(`${id}Click`, `点击${title}`, schema);
   // slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'any' });
   slot.get(SlotIds.Container).outputs.add(id, `${title}`, { type: 'follow' });
-  input.get(InputIds.Open).setRels([...updateOpenRels(data), id]);
 
   if (!DefaultEvent.includes(id)) {
     data.footerBtns.unshift(defaultBtn);
