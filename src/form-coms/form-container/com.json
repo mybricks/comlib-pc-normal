@@ -12,7 +12,7 @@
   "inputs": [
     {
       "id": "setFieldsValue",
-      "title": "设置表单值",
+      "title": "设置表单数据",
       "schema": {
         "type": "object",
         "properties": {}
@@ -30,7 +30,7 @@
     },
     {
       "id": "submitAndMerge",
-      "title": "提交表单(合并参数)",
+      "title": "提交表单(合并输入项)",
       "rels": [
         "onMergeFinish"
       ],
