@@ -7,10 +7,10 @@ const PageSchema = {
   properties: {
     pageNum: {
       type: 'number'
+    },
+    pageSize: {
+      type: 'number'
     }
-    // pageSize: {
-    //   type: 'number'
-    // }
   }
 };
 export default [

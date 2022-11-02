@@ -22,13 +22,18 @@ export default (props: Props) => {
     align,
     showQuickJumper,
     showSizeChanger,
-    // pageSizeOptions,
+    pageSizeOptions,
     hideOnSinglePage
   } = data;
 
   const setPageNum = (pageNum: number) => {
     if (typeof pageNum === 'number') {
       data.current = pageNum;
+    }
+  };
+  const setPageSize = (pageSize: number) => {
+    if (typeof pageSize === 'number') {
+      data.pageSize = pageSize;
     }
   };
 
@@ -60,9 +65,10 @@ export default (props: Props) => {
 
   const onChange = (pageNum: number, pageSize: number) => {
     data.currentPage = {
-      pageNum
-      // pageSize
+      pageNum,
+      pageSize
     };
+    setPageSize(pageSize);
     setPageNum(pageNum);
     outputs[OutputIds.PageChange](data.currentPage);
   };
@@ -82,14 +88,13 @@ export default (props: Props) => {
         total={total}
         showTotal={totalText}
         current={current}
-        pageSize={pageSize || defaultPageSize}
+        pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
         // defaultPageSize={defaultPageSize}
         size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
         simple={size === SizeTypeEnum.Simple}
         showQuickJumper={showQuickJumper}
-        showSizeChanger={false}
-        // showSizeChanger={showSizeChanger}
-        // pageSizeOptions={pageSizeOptions}
+        showSizeChanger={showSizeChanger}
+        pageSizeOptions={pageSizeOptions}
         hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
         onChange={onChange}
         disabled={disabled}

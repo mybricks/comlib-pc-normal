@@ -72,23 +72,23 @@ export default {
           }
         }
       },
-      // {
-      //   title: '默认每页显示条数',
-      //   type: 'inputNumber',
-      //   options: [{ min: 0, max: 1000, width: 100 }],
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return [data.paginationConfig.defaultPageSize];
-      //     },
-      //     set({ data }: EditorResult<Data>, value: number[]) {
-      //       data.paginationConfig.defaultPageSize = value[0];
-      //       data.paginationConfig.currentPage = {
-      //         ...data.paginationConfig.currentPage,
-      //         pageSize: value[0]
-      //       };
-      //     }
-      //   }
-      // },
+      {
+        title: '默认每页显示条数',
+        type: 'inputNumber',
+        options: [{ min: 1, max: 1000, width: 100 }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.paginationConfig.defaultPageSize];
+          },
+          set({ data }: EditorResult<Data>, value: number[]) {
+            data.paginationConfig.defaultPageSize = value[0];
+            data.paginationConfig.currentPage = {
+              ...data.paginationConfig.currentPage,
+              pageSize: value[0]
+            };
+          }
+        }
+      },
       {
         title: '事件',
         items: [
@@ -110,7 +110,7 @@ export default {
       {
         title: '前置说明文字',
         type: 'EXPRESSION',
-        description: '格式：{total}总条目数',
+        description: '格式：{start}当前页起始条目，{end}当前页结束条目，{total}总条目数',
         options: {
           autoSize: true,
           placeholder: '例：共 {total} 条结果',
@@ -133,7 +133,7 @@ export default {
           ],
           runCode: (script) => {
             return {
-              success: templateRender(script, { total: 20 })
+              success: templateRender(script, { total: 20, start: 1, end: 10 })
             };
           }
         },
@@ -165,42 +165,42 @@ export default {
           }
         }
       },
-      // {
-      //   title: '条数选择功能',
-      //   type: 'Switch',
-      //   description: '打开该功能后，不再支持页数为1时隐藏功能',
-      //   ifVisible({ data }: EditorResult<Data>) {
-      //     return data.paginationConfig.size !== SizeTypeEnum.Simple;
-      //   },
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.paginationConfig.showSizeChanger;
-      //     },
-      //     set({ data }: EditorResult<Data>, value: boolean) {
-      //       data.paginationConfig.showSizeChanger = value;
-      //     }
-      //   }
-      // },
-      // {
-      //   title: '条数配置',
-      //   type: 'List',
-      //   description: '配置条数切换器可选的条目数，仅识别正整数',
-      //   ifVisible({ data }: EditorResult<Data>) {
-      //     return (
-      //       data.paginationConfig.showSizeChanger &&
-      //       data.paginationConfig.size !== SizeTypeEnum.Simple
-      //     );
-      //   },
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.paginationConfig.pageSizeOptions;
-      //     },
-      //     set({ data }: EditorResult<Data>, value: string[]) {
-      //       let numReg: RegExp = /^[1-9]\d*$/;
-      //       data.paginationConfig.pageSizeOptions = value.filter((val) => numReg.test(val.trim()));
-      //     }
-      //   }
-      // },
+      {
+        title: '条数选择功能',
+        type: 'Switch',
+        description: '打开该功能后，不再支持页数为1时隐藏功能',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.paginationConfig.showSizeChanger;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.paginationConfig.showSizeChanger = value;
+          }
+        }
+      },
+      {
+        title: '条数配置',
+        type: 'List',
+        description: '配置条数切换器可选的条目数，仅识别正整数',
+        ifVisible({ data }: EditorResult<Data>) {
+          return (
+            data.paginationConfig.showSizeChanger &&
+            data.paginationConfig.size !== SizeTypeEnum.Simple
+          );
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.paginationConfig.pageSizeOptions;
+          },
+          set({ data }: EditorResult<Data>, value: string[]) {
+            let numReg: RegExp = /^[1-9]\d*$/;
+            data.paginationConfig.pageSizeOptions = value.filter((val) => numReg.test(val.trim()));
+          }
+        }
+      },
       {
         title: '页数为1时隐藏分页器',
         type: 'Switch',

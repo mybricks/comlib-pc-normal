@@ -192,9 +192,8 @@ export default function (props: RuntimeParams<Data>) {
             data.paginationConfig.total = ds?.[numberItemKey[0]];
           }
         }
-        if (typeof ds?.pageTotal === 'number' && ds?.pageTotal >= 0) {
-          data.paginationConfig.pageSize =
-            (data.paginationConfig.total || 0) / (ds?.pageTotal || 1);
+        if (typeof ds?.pageSize === 'number' && ds?.pageSize > 0) {
+          data.paginationConfig.pageSize = ds?.pageSize;
         }
       }
       setDataSource(temp);
