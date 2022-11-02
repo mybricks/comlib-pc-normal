@@ -78,6 +78,9 @@ function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
         },
         total: {
           type: 'number'
+        },
+        pageTotal: {
+          type: 'number'
         }
       }
     });

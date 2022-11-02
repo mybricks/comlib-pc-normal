@@ -34,7 +34,7 @@ export interface Data {
   current: number;
   currentPage: {
     pageNum: number;
-    pageSize: number;
+    // pageSize: number;
   };
   isDynamic: boolean;
   disabled?: boolean;
@@ -45,6 +45,8 @@ export interface Data {
   pageSizeOptions?: string[];
   showQuickJumper?: boolean;
   hideOnSinglePage?: boolean;
+
+  pageSize?: number;
 }
 
 export const OutputIds = {
@@ -71,10 +73,10 @@ export const templateRender = (template: string, params: any) => {
     switch (key?.trim?.()) {
       case 'total':
         return params?.total;
-      case 'start':
-        return params?.start;
-      case 'end':
-        return params?.end;
+      // case 'start':
+      //   return params?.start;
+      // case 'end':
+      //   return params?.end;
       default:
         return `{${key}}`;
     }

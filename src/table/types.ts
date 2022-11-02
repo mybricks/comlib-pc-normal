@@ -1,4 +1,4 @@
-import { Data as PaginationData } from '../paginator/constants';
+import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
   Text = 'text',
