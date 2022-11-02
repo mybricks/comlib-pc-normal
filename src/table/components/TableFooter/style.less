@@ -1,13 +1,14 @@
 .footerContainer {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  .pagination {
+    display: 'flex';
+    flex-shrink: 0;
+  }
   :global {
     .ant-btn {
       box-sizing: border-box;
-    }
-    .ant-pagination {
-      width: 100%;
-      text-align: right;
     }
   }
 }

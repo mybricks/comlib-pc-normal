@@ -83,7 +83,6 @@
         ]
       },
       "./src/_code-segment/com.json",
-      "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
       "./src/_page-router/com.json",
@@ -173,7 +172,6 @@
         ]
       },
       "./src/_code-segment/com.json",
-      "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
       "./src/_page-router/com.json",

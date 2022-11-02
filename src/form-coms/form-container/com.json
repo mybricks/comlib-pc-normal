@@ -12,7 +12,7 @@
   "inputs": [
     {
       "id": "setFieldsValue",
-      "title": "设置表单值",
+      "title": "设置表单数据",
       "schema": {
         "type": "object",
         "properties": {}
@@ -29,6 +29,16 @@
       }
     },
     {
+      "id": "submitAndMerge",
+      "title": "提交表单(合并输入项)",
+      "rels": [
+        "onMergeFinish"
+      ],
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
       "id": "resetFields",
       "title": "重置表单",
       "rels": [
@@ -42,6 +52,14 @@
   "outputs": [
     {
       "id": "onFinish",
+      "title": "提交数据输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onMergeFinish",
       "title": "提交数据输出",
       "schema": {
         "type": "object",
@@ -125,7 +143,7 @@
       "inputs": [
         {
           "id": "setFieldsValue",
-          "title": "表单值输入",
+          "title": "表单数据输入",
           "schema": {
             "type": "object",
             "properties": {}

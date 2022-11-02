@@ -39,8 +39,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       outputRels['onResetFinish']();
     });
 
-    inputs['submit']((val, outputRels) => {
+    inputs[inputIds.SUBMIT]((val, outputRels) => {
       submit(outputRels);
+    });
+
+    inputs[inputIds.SUBMIT_AND_MERGE]((val, outputRels) => {
+      if (Object.prototype.toString.call(val) === '[object Object]') {
+        submitMethod(outputIds.ON_MERGE_FINISH, outputRels, val);
+      } else {
+        submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
+      }
     });
 
     // For 表单项私有
@@ -177,14 +185,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     submitMethod(outputIds.ON_FINISH, outputRels);
   };
 
-  const submitMethod = (outputId: string, outputRels?: any) => {
+  const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        getValue().then((values) => {
+        getValue().then((values: any) => {
+          const res = { ...values, ...params };
           if (outputRels) {
-            outputRels[outputId](values);
+            outputRels[outputId](res);
           } else {
-            outputs[outputId](values);
+            outputs[outputId](res);
           }
         });
       })

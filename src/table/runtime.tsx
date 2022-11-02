@@ -163,8 +163,38 @@ export default function (props: RuntimeParams<Data>) {
   const setTableData = useCallback(
     (ds: any) => {
       let temp = [...dataSource] || [];
-      if (Array.isArray(ds)) {
+      if (!data.usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds);
+      }
+      /**
+       * 分页特殊处理逻辑
+       * 当存在dataSource字段且为数组类型数据时，直接使用
+       * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
+       *
+       * 当存在total字段且为数字类型数据时，直接使用
+       * 当不存在total字段且仅有一个数字类型数据时，直接使用
+       */
+      if (data.usePagination && ds && typeof ds === 'object') {
+        const dsKey = Object.keys(ds);
+        if (Array.isArray(ds?.dataSource)) {
+          temp = formatDataSource(ds?.dataSource);
+        } else {
+          const arrayItemKey = dsKey.filter((key) => !!Array.isArray(ds[key]));
+          if (arrayItemKey.length === 1) {
+            temp = formatDataSource(ds?.[arrayItemKey[0]]);
+          }
+        }
+        if (typeof ds?.total === 'number') {
+          data.paginationConfig.total = ds?.total;
+        } else {
+          const numberItemKey = dsKey.filter((key) => !!(typeof ds[key] === 'number'));
+          if (numberItemKey.length === 1) {
+            data.paginationConfig.total = ds?.[numberItemKey[0]];
+          }
+        }
+        if (typeof ds?.pageSize === 'number' && ds?.pageSize > 0) {
+          data.paginationConfig.pageSize = ds?.pageSize;
+        }
       }
       setDataSource(temp);
     },
@@ -369,6 +399,8 @@ export default function (props: RuntimeParams<Data>) {
         env={env}
         data={data}
         slots={slots}
+        inputs={inputs}
+        outputs={outputs}
         selectedRows={selectedRows}
         selectedRowKeys={selectedRowKeys}
       />

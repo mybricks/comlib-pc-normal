@@ -7,5 +7,8 @@
     "borderRadius": "10px",
     "backgroundColor": "#FFF"
   },
-  "text": "按钮"
+  "text": "按钮",
+  "dataType": "number",
+  "outVal": 0,
+  "inVal": ""
 }

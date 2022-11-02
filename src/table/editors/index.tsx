@@ -1,7 +1,7 @@
 import { InputIds } from '../constants';
 import { Data } from '../types';
 import { uuid } from '../../utils';
-import { setDataSchema, Schemas } from '../schema';
+import { setDataSchema } from '../schema';
 import columnEditor from './table-item';
 import HeaderEditor from './table/header';
 import TableStyleEditor from './table/tableStyle';
@@ -10,6 +10,8 @@ import ExpandEditor from './table/expand';
 import EventEditor from './table/event';
 import LoadingEditor from './table/loading';
 import { getRowSelectionEditor } from './table/rowSelection';
+import UsePaginatorEditor from './table/paginator';
+import PaginatorEditor from './paginator';
 
 function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
@@ -46,22 +48,47 @@ function getColumnsFromSchema(schema: any) {
 export default {
   '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
-      if (data.columns.length === 0 && fromPin.schema.type === 'array') {
-        data.columns = getColumnsFromSchema(fromPin.schema);
-        input.get(InputIds.SET_DATA_SOURCE).setSchema(fromPin.schema);
-        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = fromPin.schema;
+      if (data.columns.length === 0) {
+        let tempSchema;
+        if (!data.usePagination && fromPin.schema.type === 'array') {
+          tempSchema = fromPin.schema;
+        }
+        /**
+         * 分页模式下特殊处理逻辑
+         * 当存在dataSource字段且为数组类型数据时，直接使用
+         * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
+         */
+        if (data.usePagination && fromPin.schema.type === 'object') {
+          if (fromPin.schema.properties?.dataSource?.type === 'array') {
+            tempSchema = fromPin.schema.properties?.dataSource;
+          } else {
+            const dsKey = Object.keys(fromPin.schema?.properties || {});
+            const arrayItemKey = dsKey.filter(
+              (key) => fromPin.schema.properties?.[key]?.type === 'array'
+            );
+            if (arrayItemKey.length === 1) {
+              tempSchema = fromPin.schema.properties?.[arrayItemKey[0]];
+            }
+          }
+        }
+
+        if (tempSchema) {
+          data.columns = getColumnsFromSchema(tempSchema);
+          input.get(InputIds.SET_DATA_SOURCE).setSchema(tempSchema);
+          data[`input${InputIds.SET_DATA_SOURCE}Schema`] = tempSchema;
+        }
       }
       setDataSchema({ data, output, input, ...res });
     }
   },
-  '@inputDisConnected'({ data, input }, fromPin, toPin) {
+  '@inputDisConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE && data.columns.length === 0) {
-      input.get(toPin.id).setSchema({ title: '列表数据', type: Schemas.Array });
+      setDataSchema({ data, output, input, ...res });
     }
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [AddColumnEditor];
+    cateAry[0].items = [AddColumnEditor, ...UsePaginatorEditor];
 
     cateAry[1].title = '样式';
     cateAry[1].items = [...LoadingEditor, TableStyleEditor];
@@ -74,5 +101,6 @@ export default {
       ...getRowSelectionEditor(props)
     ];
   },
-  ...columnEditor
+  ...columnEditor,
+  ...PaginatorEditor
 };

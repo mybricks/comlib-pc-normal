@@ -29,5 +29,6 @@
   "labelWidthType": "px",
   "labelWidth": 98,
   "labelCol": 4,
-  "itemWidthType": "flex"
+  "itemWidthType": "flex",
+  "paramsSchema": {}
 }

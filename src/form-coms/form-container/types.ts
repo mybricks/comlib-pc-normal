@@ -64,6 +64,11 @@ export interface Data {
    */
   labelCol: number
   wrapperCol: number
+
+  /**
+   * 合并参数 Schema
+   */
+  paramsSchema: any
 }
 
 export interface FormControlProps {

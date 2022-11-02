@@ -1,14 +1,16 @@
 export const inputIds = {
   SET_FIELDS_VALUE: 'setFieldsValue',
   SUBMIT: 'submit',
-  RESET_FIELDS: 'resetFields'
+  RESET_FIELDS: 'resetFields',
+  SUBMIT_AND_MERGE: 'submitAndMerge'
 }
 
 export const outputIds = {
   ON_FINISH: 'onFinish',
   ON_RESET_FINISH: 'onResetFinish',
   ON_CLICK_SUBMIT: 'onClickSubmit',
-  ON_CLICK_CANCEL: 'onClickCancel'
+  ON_CLICK_CANCEL: 'onClickCancel',
+  ON_MERGE_FINISH: 'onMergeFinish'
 }
 
 export const slotInputIds = {
