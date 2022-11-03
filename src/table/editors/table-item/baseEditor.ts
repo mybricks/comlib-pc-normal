@@ -41,7 +41,11 @@ const BaseEditor = {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
-          return { field: ret, schema: getColumnsSchema(data) };
+          return {
+            field: ret,
+            schema: getColumnsSchema(data),
+            disabled: item.contentType === ContentTypeEnum.SlotItem
+          };
         },
         set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value: string) {
           if (!focusArea) return;
@@ -79,7 +83,7 @@ const BaseEditor = {
             const slotId = uuid();
             column['slotId'] = slotId;
             slot.add({ id: slotId, title: `自定义${column.title}列`, type: 'scope' });
-            slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+            // slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
             slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
             slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
           } else {

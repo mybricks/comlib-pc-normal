@@ -24,7 +24,7 @@ export default React.memo((props: Props): JSX.Element | null => {
       [InputIds.SLOT_ROW_RECORD]: {
         ...record
       },
-      [InputIds.SLOT_ROW_VALUE]: value,
+      // [InputIds.SLOT_ROW_VALUE]: value,
       [InputIds.INDEX]: colIndex
     },
     key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${columnItem.key}`

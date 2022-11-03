@@ -56,7 +56,7 @@ const isUseSelect = (options, val) => {
 };
 export default function Tree({ editConfig }: any) {
   const { value } = editConfig;
-  const { field, schema = {}, placeholder } = value.get() || {};
+  const { field, schema = {}, placeholder, disabled } = value.get() || {};
   const options = schema2Options(schema, '', { isRoot: true, useArray: false });
   const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, field));
 
@@ -77,6 +77,7 @@ export default function Tree({ editConfig }: any) {
           showSearch
           treeDefaultExpandAll
           placeholder={placeholder}
+          disabled={disabled}
         />
       ) : (
         <Input
@@ -84,6 +85,7 @@ export default function Tree({ editConfig }: any) {
           defaultValue={field}
           onBlur={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          disabled={disabled}
         />
       )}
       <Button
@@ -92,6 +94,7 @@ export default function Tree({ editConfig }: any) {
           setUseTreeSelect(!useTreeSelect);
         }}
         className={css.btn}
+        disabled={disabled}
       >
         {useTreeSelect ? '选择' : '输入'}
       </Button>

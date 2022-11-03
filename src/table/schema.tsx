@@ -221,13 +221,13 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }:
         type: 'object',
         properties: dataSchema
       });
-      slot
-        ?.get(col.slotId)
-        ?.inputs?.get(InputIds.SLOT_ROW_VALUE)
-        ?.setSchema({
-          type: 'string',
-          ...(schemaObj[key] || {})
-        });
+      // slot
+      //   ?.get(col.slotId)
+      //   ?.inputs?.get(InputIds.SLOT_ROW_VALUE)
+      //   ?.setSchema({
+      //     type: 'string',
+      //     ...(schemaObj[key] || {})
+      //   });
     }
   });
 }
