@@ -60,6 +60,7 @@
           "./src/list/com.json",
           "./src/drawer/com.json",
           "./src/collapse/com.json",
+          "./src/anchor-menu-container/com.json",
           "./src/custom-container/com.json"
         ]
       },
@@ -149,6 +150,7 @@
           "./src/list/com.json",
           "./src/drawer/com.json",
           "./src/collapse/com.json",
+          "./src/anchor-menu-container/com.json",
           "./src/custom-container/com.json"
         ]
       },

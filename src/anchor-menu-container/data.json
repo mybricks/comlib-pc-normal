@@ -1,0 +1,24 @@
+{
+  "scrollConfig": {
+    "behavior": "auto",
+    "block": "start",
+    "inline": "nearest"
+  },
+  "useTitleFixed": true,
+  "titleAlign": "center",
+  "titleMargin": 10,
+  "slotList": [
+    {
+      "slotId": "item1",
+      "title": "菜单项1"
+    },
+    {
+      "slotId": "item2",
+      "title": "菜单项2"
+    },
+    {
+      "slotId": "item3",
+      "title": "菜单项3"
+    }
+  ]
+}
