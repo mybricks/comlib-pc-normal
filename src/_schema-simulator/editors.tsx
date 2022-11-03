@@ -1,7 +1,7 @@
 import { Data } from './constants';
 
 export default {
-  '@outputConnected'({ data }, toPin) {
+  '@outputConnected'({ data }, fromPin, toPin) {
     data.outSchema = toPin.schema;
   },
   ':root': [
