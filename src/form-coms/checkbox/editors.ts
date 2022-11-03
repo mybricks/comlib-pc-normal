@@ -3,7 +3,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let  optionsLength = 0,
+let optionsLength = 0,
   addOption,
   delOption;
 
