@@ -26,7 +26,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      if (!Array.isArray(val)) {
+      if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
         data.value = val;
