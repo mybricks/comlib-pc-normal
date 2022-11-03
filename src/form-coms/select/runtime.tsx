@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
-import { uuid } from '../../utils';
+import { typeCheck, uuid } from '../../utils';
 import { Option } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
@@ -35,9 +35,11 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         logger.error(
           `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
         );
-      } else {
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
         data.value = val;
-        onChange(val);
+        onChange(data.value);
+      } else {
+        logger.error(`下拉框的值应为基本类型`);
       }
     });
 
