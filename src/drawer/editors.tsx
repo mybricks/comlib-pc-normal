@@ -3,6 +3,24 @@ import { uuid } from '../utils';
 
 const defaultSchema = { type: 'any' };
 
+// 添加按钮事件
+function addBtnOutputs({ btn, output, slot }: { btn: any; output: any; slot: any }) {
+  const { id: btnId, title } = btn;
+  const followSchema = {
+    type: 'follow'
+  };
+  output.add(btnId, title, defaultSchema);
+  output.add(`${btnId}Click`, `点击${title}`, defaultSchema);
+  slot.get(SlotIds.Content)?.outputs.add(btnId, title, followSchema);
+}
+// 删除按钮事件
+function removeBtnOutputs({ btn, output, slot }: { btn: any; output: any; slot: any }) {
+  const { id: btnId } = btn;
+  output.remove(btnId);
+  output.remove(`${btnId}Click`);
+  slot.get(SlotIds.Content)?.outputs.remove(btnId);
+}
+
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {
     //id pin's id
@@ -93,8 +111,25 @@ export default {
               get({ data }: EditorResult<Data>) {
                 return data.useFooter;
               },
-              set({ data }: EditorResult<Data>, value: boolean) {
+              set({ data, input, output, slot }: EditorResult<Data>, value: boolean) {
                 data.useFooter = value;
+                if (value) {
+                  data.footerBtns.forEach((btn) => {
+                    addBtnOutputs({
+                      output,
+                      slot,
+                      btn
+                    });
+                  });
+                } else {
+                  data.footerBtns.forEach((btn) => {
+                    removeBtnOutputs({
+                      output,
+                      slot,
+                      btn
+                    });
+                  });
+                }
               }
             }
           },
@@ -219,8 +254,9 @@ export default {
               throw new Error(`请输入正确的按钮标题.`);
             }
             const res = get(data, focusArea, 'btnId', 'obj');
-            slots.get(SlotIds.Content).outputs.get(res.id).setTitle(`${value}输出数据`);
+            slots.get(SlotIds.Content).outputs.get(res.id).setTitle(`${value}`);
             output.setTitle(res.id, value);
+            output.setTitle(`${res.id}Click`, `点击${value}`);
             if (res.dynamicDisabled) {
               input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
               input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
@@ -314,13 +350,10 @@ function get(data: Data, focusArea: any, dataset: string, val = 'obj', cb?: any)
   return data.footerBtns[index][val];
 }
 
-function addBtn({ data, input, output, slots }: EditorResult<Data>) {
+function addBtn({ data, input, output, slot }: EditorResult<Data>) {
   const { footerBtns } = data;
   const id = uuid();
   const title = `按钮${footerBtns.length + 1}`;
-  const schema = {
-    type: 'any'
-  };
 
   const defaultBtn: any = {
     id,
@@ -329,13 +362,16 @@ function addBtn({ data, input, output, slots }: EditorResult<Data>) {
     useIcon: false,
     showText: true,
     type: 'default',
-    outputDs: false
+    outputDs: false,
+    isConnected: false
   };
 
   data.footerBtns.unshift(defaultBtn);
-  slots.get(SlotIds.Content).outputs.add(id, `${title}按钮输出数据`, schema);
-  output.add(id, title, schema);
-  input.get(InputIds.Open).setRels(data.footerBtns.map(({ id }) => id));
+  addBtnOutputs({
+    output,
+    slot,
+    btn: defaultBtn
+  });
 }
 
 function icon(dataset: string) {
@@ -438,14 +474,16 @@ function moveDelete(dataset: string) {
           return data.footerBtns.length > 1;
         },
         value: {
-          set({ data, focusArea, input, output, slots }: EditorResult<Data>) {
+          set({ data, focusArea, input, output, slot }: EditorResult<Data>) {
             get(data, focusArea, dataset, 'obj', (index: number) => {
-              const { id } = data.footerBtns[index];
-              slots.get(SlotIds.Content).inputs.remove(id);
-              slots.get(SlotIds.Content).outputs.remove(id);
-              output.remove(id);
+              const btn = data.footerBtns[index];
               data.footerBtns.splice(index, 1);
-              input.get(InputIds.Open).setRels(data.footerBtns.map(({ id }) => id));
+              if (btn.isConnected) {
+                input
+                  .get(InputIds.Open)
+                  .setRels(data.footerBtns.filter((btn) => btn.isConnected).map((btn) => btn.id));
+              }
+              removeBtnOutputs({ btn, slot, output });
             });
           }
         }

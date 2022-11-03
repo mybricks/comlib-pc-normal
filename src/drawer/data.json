@@ -1,5 +1,5 @@
 {
-  "title":"标题",
+  "title": "标题",
   "position": "right",
   "showMask": true,
   "visible": false,
@@ -18,7 +18,8 @@
       "icon": "",
       "useIcon": false,
       "showText": true,
-      "type": "default"
+      "type": "default",
+      "isConnected": false
     },
     {
       "id": "ok",
@@ -26,7 +27,8 @@
       "type": "primary",
       "icon": "",
       "useIcon": false,
-      "showText": true
+      "showText": true,
+      "isConnected": false
     }
   ]
 }
