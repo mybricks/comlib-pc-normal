@@ -16,7 +16,8 @@
       "useIcon": false,
       "showText": true,
       "type": "default",
-      "visible": true
+      "visible": true,
+      "isConnected": false
     },
     {
       "id": "ok",
@@ -25,7 +26,8 @@
       "icon": "",
       "useIcon": false,
       "showText": true,
-      "visible": true
+      "visible": true,
+      "isConnected": false
     }
   ]
 }
