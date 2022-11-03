@@ -8,28 +8,16 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "rtType": "js",
+  "rtType": "js-autorun",
   "slots": [],
-  "inputs": [
-    {
-      "id": "inputSchema",
-      "title": "输入schema",
-      "rels": [
-        "outputData"
-      ],
-      "schema": {
-        "type": "object",
-        "properties": {}
-      }
-    }
-  ],
   "outputs": [
     {
       "id": "outputData",
       "title": "模拟数据输出",
       "schema": {
-        "type": "any"
-      }
+        "type": "unknown"
+      },
+      "conMax": 1
     }
   ]
 }

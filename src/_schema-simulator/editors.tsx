@@ -1,6 +1,9 @@
 import { Data } from './constants';
 
 export default {
+  '@outputConnected'({ data }, toPin) {
+    data.outSchema = toPin.schema;
+  },
   ':root': [
     {
       title: '数组长度',
