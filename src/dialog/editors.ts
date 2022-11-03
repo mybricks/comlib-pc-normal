@@ -336,7 +336,6 @@ export default {
               input.setTitle(`hidden${res.id}`, `隐藏-${value}按钮`);
               input.setTitle(`show${res.id}`, `显示-${value}按钮`);
             }
-            slot.get(SlotIds.Container).inputs.setTitle(res.id, `${value}`);
             slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
             res.title = value;
           }
