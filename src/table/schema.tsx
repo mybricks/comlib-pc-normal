@@ -1,5 +1,5 @@
 import { InputIds, OutputIds, SlotIds } from './constants';
-import { Data, IColumn } from './types';
+import { ContentTypeEnum, Data, IColumn } from './types';
 import { setPath } from '../utils/path';
 import { getColumnItem } from './utils';
 
@@ -46,7 +46,10 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           title: item.title,
           ...schemaObj[Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex]
         };
-        if (item.contentType === 'group') {
+        if (item.contentType === ContentTypeEnum.SlotItem) {
+          return;
+        }
+        if (item.contentType === ContentTypeEnum.Group) {
           item.children && setDataSchema(item.children);
           return;
         }
@@ -189,7 +192,7 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
             }
           };
         }
-        if (item.contentType === 'group' && item.children) {
+        if (item.contentType === ContentTypeEnum.Group && item.children) {
           setDataSchema(item.children);
         }
       });

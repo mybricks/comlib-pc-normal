@@ -111,7 +111,7 @@ export default function (props: RuntimeParams<Data>) {
           const outputFn =
             relOutputs?.[OutputIds.GET_TABLE_DATA] || outputs[OutputIds.GET_TABLE_DATA];
           if (outputFn) {
-            outputFn(dataSource);
+            outputFn(dataSource.map(({ [DefaultRowKey]: key, ...res }) => res));
           }
         });
       // 动态设置勾选项
