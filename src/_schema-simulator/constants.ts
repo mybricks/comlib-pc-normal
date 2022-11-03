@@ -7,5 +7,6 @@
  export interface Data {
   arrLength: number;
   strLength: number;
-  numberRange: [number, number]
+  numberRange: [number, number];
+  outSchema: any;
 }
