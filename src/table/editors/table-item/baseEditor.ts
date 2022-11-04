@@ -44,7 +44,10 @@ const BaseEditor = {
           return {
             field: ret,
             schema: getColumnsSchema(data),
-            disabled: item.contentType === ContentTypeEnum.SlotItem
+            disabled:
+              item.contentType === ContentTypeEnum.SlotItem &&
+              !item.sorter?.enable &&
+              !item.filter?.enable
           };
         },
         set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value: string) {

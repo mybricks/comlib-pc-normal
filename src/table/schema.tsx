@@ -46,7 +46,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           title: item.title,
           ...schemaObj[Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex]
         };
-        if (item.contentType === ContentTypeEnum.SlotItem) {
+        if (item.contentType === ContentTypeEnum.SlotItem && `${item.dataIndex}`.startsWith('u_')) {
           return;
         }
         if (item.contentType === ContentTypeEnum.Group) {
