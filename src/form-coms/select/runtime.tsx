@@ -72,15 +72,21 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       }
       let newValArray: any[] = [],
         newVal;
+      let updateValue = false;
       tempDs.map((item) => {
         const { checked, value } = item;
         if (checked && value != undefined) {
+          updateValue = true;
           newVal = value;
           newValArray.push(value);
         }
       });
-      data.value =
-        data.config.mode && ['tags', 'multiple'].includes(data.config.mode) ? newValArray : newVal;
+      if (updateValue) {
+        data.value =
+          data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
+            ? newValArray
+            : newVal;
+      }
       data.config.options = tempDs.map(({ label, value, disabled }) => {
         return {
           label,
