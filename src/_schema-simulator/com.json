@@ -1,15 +1,15 @@
 {
   "title": "数据模拟器",
-  "namespace": "fangzhou.normal-pc.dataSimulator",
+  "namespace": "mybricks.normal-pc.dataSimulator",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "根据schema数据生成的数据模拟器",
   "author": "huangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.0",
-  "description": "根据schema数据生成的数据模拟器",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "rtType": "js-autorun",
-  "slots": [],
   "outputs": [
     {
       "id": "outputData",
