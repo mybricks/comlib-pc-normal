@@ -39,15 +39,30 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     return true;
   };
 
+  //如果data.dataType是'external'的
+  useEffect(() => {
+    if (env.runtime) {
+      (data.btnList || []).forEach((item) => {
+        const { key } = item;
+        inputs[key]((ds: any) => {
+          item.inVal = ds;
+        });
+      });
+    }
+  });
+
+  //单击事件，数据的输出
   const onClick = (item: BtnItem) => {
     if (env.runtime) {
-      outputs[item.key]();
+      const outputVal: string | number = item.dataType === 'external' ? item.inVal : item.outVal;
+      outputs[item.key](outputVal);
     }
   };
-
+  //双击事件，数据的输出
   const onDoubleClick = useCallback((item: BtnItem) => {
     if (env.runtime) {
-      outputs[`${OutputIds.DoubleClick}_${item.key}`]();
+      const outputVal: string | number = item.dataType === 'external' ? item.inVal : item.outVal;
+      outputs[`${OutputIds.DoubleClick}_${item.key}`](outputVal);
     }
   }, []);
 

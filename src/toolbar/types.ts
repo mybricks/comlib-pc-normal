@@ -67,6 +67,13 @@ export interface BtnItem {
   disabled?: boolean;
   // 隐藏
   hidden?: boolean;
+
+  //触发数据类型
+  dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
+  //输出值
+  outVal: any;
+  //外部输入值
+  inVal: any
 }
 
 /**

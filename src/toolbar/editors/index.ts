@@ -10,10 +10,7 @@ export default {
   },
   ':root': ({}: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
-    cate1.items = [...AddEditor, ...StyleEditor];
-
-    cate2.title = '高级';
-    cate2.items = [...EllipsisEditor];
+    cate1.items = [...AddEditor, ...StyleEditor,...EllipsisEditor];
     return {
       title: '工具条'
     };
