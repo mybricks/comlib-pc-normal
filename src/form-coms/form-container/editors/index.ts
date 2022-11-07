@@ -144,6 +144,7 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: number) {
               data.formItemColumn = value
+              data.actions.span = Math.floor(24 / value)
             }
           }
         },
