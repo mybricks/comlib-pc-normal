@@ -368,7 +368,7 @@ export default function (props: RuntimeParams<Data>) {
           expandable={
             data.useExpand && slots[SlotIds.EXPAND_CONTENT]
               ? {
-                  expandedRowKeys: edit ? [defaultDataSource[0][DefaultRowKey]] : undefined, //增加动态设置
+                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : undefined, //增加动态设置
                   expandedRowRender: (record, index) => {
                     return slots[SlotIds.EXPAND_CONTENT].render({
                       inputValues: {

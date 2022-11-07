@@ -1,4 +1,5 @@
 import React from 'react';
+import { DefaultRowKey } from '../constants';
 import { ContentTypeEnum, IColumn } from '../types';
 import SlotRender from './Slot';
 
@@ -28,7 +29,7 @@ export default function ColumnRender(props: ColumnRenderProps) {
     case ContentTypeEnum.SlotItem:
       return (
         <SlotRender
-          rowKey={data.rowKey || 'uuid'}
+          rowKey={data.rowKey || DefaultRowKey}
           value={oriValue}
           record={record}
           columnItem={columnItem}
