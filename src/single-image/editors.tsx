@@ -36,6 +36,15 @@ export default {
         }
       },
       {
+        title: '单击图片',
+        type: '_Event',
+        options() {
+          return {
+            outputId: OutputIds.Click
+          };
+        }
+      },
+      {
         title: '预览配置',
         items: [
           {
@@ -119,19 +128,6 @@ export default {
           set({ data }: EditorResult<Data>, value: string) {
             data.customStyle = value;
           }
-        }
-      }
-    ];
-
-    cate3.title = '事件';
-    cate3.items = [
-      {
-        title: '单击图片',
-        type: '_Event',
-        options() {
-          return {
-            outputId: OutputIds.Click
-          };
         }
       }
     ];
