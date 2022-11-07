@@ -5,6 +5,7 @@
   "actions": {
     "visible": true,
     "span": 24,
+    "align": "left",
     "items": [
       {
         "title": "提交",

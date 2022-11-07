@@ -16,7 +16,13 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
     <>
       {children}
       {data.actions.visible && (
-        <Col data-form-actions flex={`0 0 ${100 / data.formItemColumn}%`}>
+        <Col
+          data-form-actions
+          span={data.actions.span}
+          style={{
+            textAlign: data.actions.align
+          }}
+        >
           <Form.Item label=" " colon={false}>
             {actions}
           </Form.Item>

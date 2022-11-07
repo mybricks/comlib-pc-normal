@@ -49,7 +49,7 @@ const SlotContent = (props) => {
         });
 
         return (
-          <Row>
+          <Row gutter={isVerticalModel ? { xs: 8, sm: 16, md: 24 } : {}}>
             {isInlineModel && (
               <InlineLayout data={data} actions={<FormActionsWrapper />}>
                 {jsx}

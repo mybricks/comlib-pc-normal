@@ -13,10 +13,11 @@ interface Actions {
   items: Action[];
   span: number;
   visible: boolean;
+  align: 'left' | 'center' | 'right';
 }
 
 interface FormItems {
-  id: string; 
+  id: string;
   name: string
   label: string
   span: number
