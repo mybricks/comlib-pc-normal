@@ -5,7 +5,7 @@
   "description": "二维码",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "icon": "./icon.jpeg",
+  "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
