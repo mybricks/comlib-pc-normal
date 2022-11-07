@@ -1,4 +1,6 @@
 import { CODE_TEMPLATE, COMMENTS, Data } from './constants';
+import { utils } from '../../package/com-utils';
+import { jsonToSchema } from './util';
 
 const getFnParams = ({ data, outputs }) => {
   const params = ['context','inputValue', ...outputs.get().map(({ id }) => id)];
@@ -104,16 +106,44 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.fns || CODE_TEMPLATE;
         },
-        set({ data }: EditorResult<Data>, fns: any) {
-          // const { code, transformCode } = fns;
-          // data.fnBody = code;
-          // data.transformCode = transformCode;
+        set({ data, output, isAutoRun }: EditorResult<Data>, fns: any) {
           data.fns = fns;
+          if (isAutoRun && isAutoRun()) {
+            updateOutputSchema(output, fns);
+          }
         }
       }
     }
   ]
 };
+
+function updateOutputSchema(output, code) {
+  const outputs = {};
+  output.get().forEach(({ id }) => {
+    outputs[id] = (v: any) => {
+      try {
+        const schema = jsonToSchema(v);
+        output.get(id).setSchema(schema);
+      } catch (error) {
+        output.get(id).setSchema({ type: 'unknown' });
+      }
+    };
+  });
+
+  try {
+    const fn = eval(decodeURIComponent(code.code || code));
+    fn({
+      context: {
+        getQuery: () => {},
+        getUserInfo: () => {},
+        hasPermission: () => void 0,
+        uitls: { ...utils }
+      },
+      inputValue: void 0,
+      outputs
+    });
+  } catch (error) {}
+}
 
 function getOutputOrder({ output }) {
   const ports = output.get();
