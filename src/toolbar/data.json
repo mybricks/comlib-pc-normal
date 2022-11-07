@@ -3,7 +3,10 @@
     {
       "key": "btn0",
       "text": "按钮0",
-      "showText": true
+      "showText": true,
+      "dataType": "number",
+      "outVal": 0,
+      "inVal": ""
     }
   ],
   "layout": "flex-start",

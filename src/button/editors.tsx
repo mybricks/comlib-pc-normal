@@ -89,7 +89,17 @@ export default {
             { value: 'external', label: '外部传入' }
           ],
           value: {
-            get({ data }: EditorResult<Data>) {
+            get({ data, output }: EditorResult<Data>) {
+              const click = output.get(OutputIds.Click);
+              const dbClick = output.get(OutputIds.DbClick);
+              if (data.dataType === 'number') {
+                click.setSchema({
+                  type: 'number'
+                });
+                dbClick.setSchema({
+                  type: 'number'
+                });
+              }
               return data.dataType;
             },
             set(
@@ -176,7 +186,7 @@ export default {
               return data.outVal;
             },
             set({ data }: EditorResult<Data>, value: string) {
-              data.outVal = value;
+              data.outVal = Number(value) || 0;
             }
           }
         },
