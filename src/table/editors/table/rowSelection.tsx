@@ -60,6 +60,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             if (input.get(InputIds.GET_ROW_SELECTION)) {
               input.remove(InputIds.GET_ROW_SELECTION);
             }
+            slot.remove(SlotIds.ROW_SELECTION_OPERATION);
           }
         }
       }
