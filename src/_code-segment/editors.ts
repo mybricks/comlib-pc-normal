@@ -106,11 +106,9 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.fns || CODE_TEMPLATE;
         },
-        set({ data, output, isAutoRun }: EditorResult<Data>, fns: any) {
+        set({ data, output }: EditorResult<Data>, fns: any) {
           data.fns = fns;
-          if (isAutoRun && isAutoRun()) {
-            updateOutputSchema(output, fns);
-          }
+          updateOutputSchema(output, fns);
         }
       }
     }
