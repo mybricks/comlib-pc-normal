@@ -45,7 +45,11 @@ export default {
           },
           set({ data, slot }: EditorResult<Data>, value: boolean) {
             data.useExtra = value;
-            slot.add(SlotIds.Extra, '卡片操作容器');
+            if (data.useExtra === true) {
+              slot.add(SlotIds.Extra, '卡片操作容器');
+            } else {
+              slot.remove(SlotIds.Extra, '卡片操作容器');
+            }
           }
         }
       },
