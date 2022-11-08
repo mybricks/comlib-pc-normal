@@ -154,6 +154,23 @@ export default {
             }
           }
         ]
+      },
+      {
+        title: '高级',
+        items: [
+          {
+            title: '关闭时销毁',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.destroyOnClose;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.destroyOnClose = value;
+              }
+            }
+          }
+        ]
       }
     ];
 
@@ -214,22 +231,6 @@ export default {
           set({ data }: EditorResult<Data>, value: any) {
             data.height = value?.height;
             data.width = value?.width;
-          }
-        }
-      }
-    ];
-
-    cate3.title = '高级';
-    cate3.items = [
-      {
-        title: '关闭时销毁',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.destroyOnClose;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.destroyOnClose = value;
           }
         }
       }
