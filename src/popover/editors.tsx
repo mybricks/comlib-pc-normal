@@ -148,7 +148,7 @@ export default {
           get({ data }: EditorResult<Data>) {
             return {
               background: data.style?.background || '#fff',
-              borderRadius: data.style?.borderRadius || 4
+              borderRadius: data.style?.borderRadius || '4'
             };
           },
           set({ data }: EditorResult<Data>, value: any) {
