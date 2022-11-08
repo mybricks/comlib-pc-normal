@@ -3,8 +3,8 @@ import { message } from 'antd';
 
 export default {
   '@init'({ style }) {
-    style.width = 80;
-    style.height = 50;
+    style.width = 64;
+    style.height = 32;
   },
   '@resize': {
     options: ['width', 'height']

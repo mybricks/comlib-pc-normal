@@ -1,11 +1,17 @@
 {
   "asMapArea": false,
   "style": {
-    "borderColor": "#AAA",
+    "color": "#FFF",
+    "fontWeight": 400,
+    "fontStyle": "normal",
+    "letterSpace": "normal",
+    "fontSize": 14,
+    "lineHeight": 1.5715,
+    "background": "#0075ff",
+    "borderColor": "#0075ff",
     "borderWidth": "1px",
     "borderStyle": "solid",
-    "borderRadius": "10px",
-    "backgroundColor": "#FFF"
+    "borderRadius": "4px"
   },
   "text": "按钮",
   "dataType": "number",
