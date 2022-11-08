@@ -25,6 +25,28 @@ const BaseEditor = {
       }
     },
     {
+      title: '保留字段',
+      type: 'Switch',
+      description: '开启后，插槽列也支持字段填写',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return [ContentTypeEnum.SlotItem].includes(item.contentType);
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.keepDataIndex;
+        },
+        set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value: boolean) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'keepDataIndex', value);
+          setDataSchema({ data, focusArea, output, input, ...res });
+        }
+      }
+    },
+    {
       title: '字段',
       type: 'editorRender',
       description: '与后端返回数据字段对应',
@@ -44,16 +66,19 @@ const BaseEditor = {
           return {
             field: ret,
             schema: getColumnsSchema(data),
-            disabled:
-              item.contentType === ContentTypeEnum.SlotItem &&
-              !item.sorter?.enable &&
-              !item.filter?.enable
+            disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
           };
         },
         set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value: string) {
           if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
           let valArr: string | string[] = value.trim().split('.');
-          if (valArr.length === 1) valArr = valArr[0];
+          if (valArr.length === 1) {
+            valArr = valArr[0];
+          }
+          if (!`${valArr}`.startsWith('u_') && !item.keepDataIndex) {
+            setCol({ data, focusArea }, 'keepDataIndex', true);
+          }
           setCol({ data, focusArea }, 'dataIndex', valArr);
           setDataSchema({ data, focusArea, output, input, ...res });
         }

@@ -65,6 +65,8 @@ export interface IColumn {
 
   children?: IColumn[];
   className?: string;
+
+  keepDataIndex?: boolean;
 }
 
 export enum SizeEnum {

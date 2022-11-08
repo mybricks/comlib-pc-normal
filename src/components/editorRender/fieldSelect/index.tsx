@@ -68,7 +68,7 @@ export default function Tree({ editConfig }: any) {
 
   return (
     <div className={classnames(css.wrap, 'fangzhou-theme')}>
-      {useTreeSelect ? (
+      {useTreeSelect && !!options?.length ? (
         <TreeSelect
           defaultValue={field}
           className={css.treeSelect}
@@ -88,16 +88,18 @@ export default function Tree({ editConfig }: any) {
           disabled={disabled}
         />
       )}
-      <Button
-        size="small"
-        onClick={() => {
-          setUseTreeSelect(!useTreeSelect);
-        }}
-        className={css.btn}
-        disabled={disabled}
-      >
-        {useTreeSelect ? '选择' : '输入'}
-      </Button>
+      {!!options?.length ? (
+        <Button
+          size="small"
+          onClick={() => {
+            setUseTreeSelect(!useTreeSelect);
+          }}
+          className={css.btn}
+          disabled={disabled}
+        >
+          {useTreeSelect ? '选择' : '输入'}
+        </Button>
+      ) : null}
     </div>
   );
 }
