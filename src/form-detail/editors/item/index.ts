@@ -12,6 +12,6 @@ export const ItemsEditors = {
     cate2.title = '样式';
     cate2.items = [...StyleEditor];
 
-    return { title: '表单项配置' };
+    return { title: '描述项' };
   }
 };
