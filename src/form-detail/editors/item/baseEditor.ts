@@ -22,13 +22,12 @@ export const BaseEditor = [
         if (!focusArea) return;
         const item = data.items[getEleIdx({ data, focusArea })];
         item.type = value;
+        removeScopeSlotInputs({ item, slots });
         if (value === TypeEnum.AllSlot || value === TypeEnum.PartSlot) {
           const slotId = uuid();
           item.slotId = slotId;
           item.value = void 0;
           addScopeSlotInputs({ data, item, slots });
-        } else {
-          removeScopeSlotInputs({ item, slots });
         }
       }
     }
@@ -109,5 +108,7 @@ function addScopeSlotInputs({ data, item, slots }) {
 }
 
 function removeScopeSlotInputs({ item, slots }) {
-  slots.remove(item.slotId)
+  if(slots.get(item.slotId)) {
+    slots.remove(item.slotId)
+  }
 }
