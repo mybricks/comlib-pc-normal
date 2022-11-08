@@ -30,14 +30,14 @@ export const BaseEditor = [
     }
   },
   {
-    title: '增加字段',
+    title: '增加描述项',
     type: 'Button',
     value: {
       set({ data, input, output }: EditorResult<Data>) {
         const id = uuid();
         data.items.push({
           id: id,
-          label: `新增字段`,
+          label: `新增描述项`,
           key: id,
           value: ``,
           span: 1,
