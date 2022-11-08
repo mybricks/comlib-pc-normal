@@ -17,7 +17,7 @@
     "top",
     "bottom"
   ],
-  "useLoading": false,
+  "useLoading": true,
   "tableLayout": "fixed",
   "loadingTip": "",
   "usePagination": false,
