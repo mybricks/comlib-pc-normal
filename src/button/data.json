@@ -7,11 +7,10 @@
     "letterSpace": "normal",
     "fontSize": 14,
     "lineHeight": 1.5715,
-    "background": "#0075ff",
-    "borderColor": "#0075ff",
+    "background": "#1890ff",
+    "borderColor": "#1890ff",
     "borderWidth": "1px",
-    "borderStyle": "solid",
-    "borderRadius": "4px"
+    "borderStyle": "solid"
   },
   "text": "按钮",
   "dataType": "number",
