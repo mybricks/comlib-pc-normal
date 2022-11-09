@@ -8,5 +8,7 @@
     "disabled": false,
     "showCount": false,
     "maxLength": -1
-  }
+  },
+  "minRows": 3,
+  "maxRows": 6
 }

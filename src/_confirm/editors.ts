@@ -52,23 +52,11 @@ export default {
         set({ data, output, setDesc }: EditorResult<Data>, val: TypeEnum) {
           data.type = val;
           setDescByData({ data, setDesc });
-
           const cancelSchema = output.get(OutputIds.Ok).schema;
-          console.log('output.get(OutputIds.Ok).schema',output.get(OutputIds.Ok).schema);
-
           if(data.type === 'confirm'){
-            console.log('确认选项');
-            console.log('是否有OutputIds.Cancel', output.get(OutputIds.Cancel));
             output.add(OutputIds.Cancel, '取消', cancelSchema);
-
-            console.log('所有的output1', output.get(OutputIds.Cancel), output.get(OutputIds.Ok));
           }else{
-            console.log('其余选项');
-            console.log('确定有cancel的output嘛', output.get(OutputIds.Cancel));
-            console.log('output.remove(OutputIds.Cancel)');
             output.remove(OutputIds.Cancel);
-
-            console.log('所有的output2', output.get(OutputIds.Cancel), output.get(OutputIds.Ok));
           }
         }
       }

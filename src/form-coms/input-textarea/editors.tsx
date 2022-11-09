@@ -40,6 +40,24 @@ export default {
         }
       },
       {
+        title: '行数限制',
+        type: 'Inputnumber',
+        options: [
+          { title: '最小', min: 3, width: 100 },
+          { title: '最大', min: 6, width: 100 }
+        ],
+        description: '行数限制',
+        value: {
+          get({ data }) {
+            return [data.minRows || 3, data.maxRows || 6];
+          },
+          set({ data }, value: number[]) {
+            data.minRows = value[0];
+            data.maxRows = value[1];
+          }
+        }
+      },
+      {
         title: '禁用状态',
         type: 'switch',
         description: '是否禁用状态',
