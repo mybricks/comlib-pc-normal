@@ -58,12 +58,12 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     }
   }, [stepAry]);
 
-  useEffect(() => {
-    if (runtime) {
-      // stepRenderHook();
-      stepLeaveHook().then(stepIntoHook);
-    }
-  }, [data.current]);
+  // useEffect(() => {
+  //   if (runtime) {
+  //     // stepRenderHook();
+  //     stepLeaveHook().then(stepIntoHook);
+  //   }
+  // }, [data.current]);
 
   const getPreviousData = () => {
     const content = {};

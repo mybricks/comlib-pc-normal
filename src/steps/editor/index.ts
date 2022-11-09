@@ -141,20 +141,20 @@ export default {
           }
         }
       },
-      {
-        title: '全量提交',
-        type: 'Switch',
-        description:
-          '当最后一步仍然需要数据记录时打开，会在最后一步数据校验通过后触发全量提交，通常最后一步只用于确认，则不需要开启',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return !!data.fullSubmit;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.fullSubmit = value;
-          }
-        }
-      }
+      // {
+      //   title: '全量提交',
+      //   type: 'Switch',
+      //   description:
+      //     '当最后一步仍然需要数据记录时打开，会在最后一步数据校验通过后触发全量提交，通常最后一步只用于确认，则不需要开启',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return !!data.fullSubmit;
+      //     },
+      //     set({ data }: EditorResult<Data>, value: boolean) {
+      //       data.fullSubmit = value;
+      //     }
+      //   }
+      // }
     ]
   },
   ...StepEditor,
