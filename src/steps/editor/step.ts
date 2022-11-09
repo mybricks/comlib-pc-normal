@@ -49,31 +49,31 @@ export default {
           }
         }
       },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '显示',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const id = data.stepAry[focusArea.index]?.id
-              return {
-                outputId: `${id}${INTO}`
-              };
-            }
-          },
-          {
-            title: '隐藏',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const id = data.stepAry[focusArea.index]?.id
-              return {
-                outputId: `${id}${LEAVE}`
-              };
-            }
-          }
-        ]
-      },
+      // {
+      //   title: '事件',
+      //   items: [
+      //     {
+      //       title: '显示',
+      //       type: '_Event',
+      //       options: ({ data, focusArea }: EditorResult<Data>) => {
+      //         const id = data.stepAry[focusArea.index]?.id
+      //         return {
+      //           outputId: `${id}${INTO}`
+      //         };
+      //       }
+      //     },
+      //     {
+      //       title: '隐藏',
+      //       type: '_Event',
+      //       options: ({ data, focusArea }: EditorResult<Data>) => {
+      //         const id = data.stepAry[focusArea.index]?.id
+      //         return {
+      //           outputId: `${id}${LEAVE}`
+      //         };
+      //       }
+      //     }
+      //   ]
+      // },
       {
         title: '删除',
         type: 'Button',
