@@ -13,6 +13,8 @@ interface Data {
     showCount: boolean;
     maxLength?: number;
   };
+  minRows?: number;
+  maxRows?: number;
 }
 
 export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
@@ -84,6 +86,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
           readOnly={!!edit}
           onChange={changeValue}
           onBlur={onBlur}
+          autoSize={{ minRows: data.minRows, maxRows: data.maxRows }}
         />
       </div>
     )
