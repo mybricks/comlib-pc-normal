@@ -5,7 +5,7 @@ export const actionsEditor = {
   title: '操作区',
   items: [
     {
-      title: '显示操作区',
+      title: '显示',
       type: 'Switch',
       value: {
         get({ data }: EditorResult<Data>) {
@@ -17,7 +17,7 @@ export const actionsEditor = {
       }
     },
     {
-      title: '显示提交操作',
+      title: '显示提交按钮',
       type: 'Switch',
       ifVisible({ data }: EditorResult<Data>) {
         return data.actions.visible;
