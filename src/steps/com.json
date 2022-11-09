@@ -12,14 +12,14 @@
   "inputs": [
     {
       "id": "nextStep",
-      "title": "下一步",
+      "title": "显示下一步",
       "schema": {
         "type": "any"
       }
     },
     {
       "id": "prevStep",
-      "title": "上一步",
+      "title": "显示上一步",
       "schema": {
         "type": "any"
       }
