@@ -46,7 +46,7 @@ function proItem({ schema, val, key, fromAry }: { schema; val; key?; fromAry? })
 
       proObj(properties, val);
     } else {
-      const type = val === null || val === void 0 ? 'unknown' : typeof val;
+      const type = val === null || val === void 0 ? 'any' : typeof val;
       if (key === void 0) {
         schema.type = type;
       } else {
