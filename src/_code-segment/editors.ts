@@ -1,5 +1,4 @@
 import { CODE_TEMPLATE, COMMENTS, Data } from './constants';
-import { utils } from '../../package/com-utils';
 import { jsonToSchema } from './util';
 
 const getFnParams = ({ data, outputs }) => {
@@ -131,12 +130,6 @@ function updateOutputSchema(output, code) {
   try {
     const fn = eval(decodeURIComponent(code.code || code));
     fn({
-      context: {
-        getQuery: () => {},
-        getUserInfo: () => {},
-        hasPermission: () => void 0,
-        uitls: { ...utils }
-      },
       inputValue: void 0,
       outputs
     });
