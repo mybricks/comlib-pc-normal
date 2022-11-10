@@ -1,0 +1,13 @@
+{
+  "align": "start",
+  "direction": "horizontal",
+  "wrap": true,
+  "tags": [
+    {
+      "key": "tag1",
+      "content": "tag",
+      "color": "success"
+    }
+  ],
+  "dynamic": false
+}
