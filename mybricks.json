@@ -79,7 +79,8 @@
           "./src/result/com.json",
           "./src/spin/com.json",
           "./src/popover/com.json",
-          "./src/tooltip/com.json"
+          "./src/tooltip/com.json",
+          "./src/tagList/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -168,7 +169,8 @@
           "./src/result/com.json",
           "./src/spin/com.json",
           "./src/popover/com.json",
-          "./src/tooltip/com.json"
+          "./src/tooltip/com.json",
+          "./src/tagList/com.json"
         ]
       },
       "./src/_code-segment/com.json",
