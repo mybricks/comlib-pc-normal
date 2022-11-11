@@ -29,7 +29,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       });
 
       inputs['jumpTo']((val: number) => {
-        if (!val || typeof val !== 'number') {
+        if (typeof val !== 'number') {
           message.error('【步骤条】跳转步骤必须是数字');
           return;
         }
