@@ -37,7 +37,8 @@
         "./src/form-coms/input-number/com.json",
         "./src/form-coms/input-textarea/com.json",
         "./src/form-coms/radio/com.json",
-        "./src/form-coms/checkbox/com.json"
+        "./src/form-coms/checkbox/com.json",
+        "./src/form-coms/switch/com.json"
       ]
     },
     {
