@@ -1,4 +1,4 @@
-import { Data } from '../types';
+import { Data, TagSize } from '../types';
 import TagEditor from './tag';
 import { createTag } from './util';
 export default {
@@ -45,7 +45,35 @@ export default {
                 data.size = val[0];
               }
             }
-          }
+          },
+          // {
+          //   title: '标签大小',
+          //   type: 'select',
+          //   options: {
+          //     options: [
+          //       {
+          //         label: "小号",
+          //         value: "small-tag"
+          //       },
+          //       {
+          //         label: "中号",
+          //         value: "middle-tag"
+          //       },
+          //       {
+          //         label: "大号",
+          //         value: "large-tag"
+          //       }
+          //     ]
+          //   },
+          //   value: {
+          //     get({ data }: EditorResult<Data>) {
+          //       return data.tagSize || 'small-tag';
+          //     },
+          //     set({ data }: EditorResult<Data>, val: TagSize) {
+          //       data.tagSize = val
+          //     }
+          //   }
+          // }
         ]
       },
       {

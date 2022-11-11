@@ -6,8 +6,9 @@
     {
       "key": "tag1",
       "content": "tag",
-      "color": "success"
+      "color": "#52c41a"
     }
   ],
+  "tagSize": "small-tag",
   "dynamic": false
 }
