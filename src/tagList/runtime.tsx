@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { message, Space, Tag } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { Data, Tag as TagType } from './types';
@@ -6,7 +6,7 @@ import { uuid } from '../utils';
 import styles from './style.less';
 
 export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) {
-  const { tags, direction, align, wrap, size } = data;
+  const { tags, direction, align, wrap, size, tagSize } = data;
 
   const onTagChange = (index: number) => {
     const pre = data.tags[index];
@@ -35,6 +35,7 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
         return (
           <Tag.CheckableTag
             key={key}
+            className={styles[tagSize]}
             data-index={index}
             data-item-tag="tag"
             checked={checked as boolean}
@@ -47,6 +48,7 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
       return (
         <Tag
           key={key}
+          className={styles[tagSize]}
           data-index={index}
           data-item-tag="tag"
           color={color}

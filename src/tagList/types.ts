@@ -1,5 +1,7 @@
 import React from "react"
 import { SpaceProps, TagProps } from 'antd';
+
+export type TagSize = 'small-tag' | 'middle-tag' | 'large-tag'
  
 export interface Tag extends TagProps {
   key: string
@@ -12,4 +14,5 @@ export interface Tag extends TagProps {
 export interface Data extends SpaceProps {
   tags: Array<Tag>
   dynamic?: boolean
+  tagSize: TagSize
 }
