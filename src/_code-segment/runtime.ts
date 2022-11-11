@@ -14,12 +14,6 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
   // };
 
   const runJSParams = {
-    context: {
-      getQuery: env.getQuery,
-      getUserInfo: env.getUserInfo,
-      hasPermission: env.hasPermission,
-      utils: { ...utils, moment }
-    },
     outputs
   };
   
