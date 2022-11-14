@@ -33,6 +33,7 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/slider/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
