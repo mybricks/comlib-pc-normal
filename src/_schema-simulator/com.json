@@ -13,11 +13,12 @@
   "outputs": [
     {
       "id": "outputData",
-      "title": "模拟数据输出",
+      "title": "模拟数据",
       "schema": {
-        "type": "unknown"
+        "type": "follow"
       },
-      "conMax": 1
+      "conMax": 1,
+      "editable": true
     }
   ]
 }
