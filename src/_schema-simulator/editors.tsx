@@ -1,9 +1,20 @@
 import { Data } from './constants';
 
 export default {
-  '@outputConnected'({ data }, fromPin, toPin) {
-    data.outSchema = toPin.schema;
+  '@outputConnected'({ data, output }, fromPin, toPin) {
+    if (fromPin.schema.type === 'follow') {
+      data.outSchema = toPin.schema;
+      output.get('outputData').setSchema(data.outSchema);
+    } else {
+      data.outSchema = fromPin.schema;
+      output.get('outputData').setSchema(data.outSchema);
+    }
   },
+  '@outputUpdated'({ data, input, output, slots }, pin) {
+    console.log('outputUpdatedxx.schema', pin.schema);
+    data.outSchema = pin.schema;
+  },
+
   ':root': [
     {
       title: '数组长度',
