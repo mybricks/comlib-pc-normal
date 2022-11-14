@@ -1,0 +1,37 @@
+{
+  "title": "穿梭框",
+  "namespace": "mybricks.normal-pc.transfer",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "组件描述",
+  "docs": "组件使用说明文档链接",
+  "icon": "https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/icons/component.svg",
+  "runtime": "./runtime.tsx",
+  "data": "./data.json",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "name",
+      "title": "名称",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+     {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}
