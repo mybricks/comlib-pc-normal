@@ -38,7 +38,7 @@ export default {
             }
           },
           {
-            title: '方向',
+            title: '模式',
             type: 'select',
             options: {
               options: [
