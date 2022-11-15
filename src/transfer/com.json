@@ -12,26 +12,113 @@
   "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "name",
-      "title": "名称",
+      "id": "dataSource",
+      "title": "设置数据源",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "target": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
+    },
+    {
+      "id": "getData",
+      "title": "获取数据",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "dataOut"
+      ]
     }
   ],
   "outputs": [
-     {
-      "id": "click",
-      "title": "点击",
+    {
+      "id": "dataOut",
+      "title": "数据输出",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "target": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "disabled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "目标数据改变",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "boolean"
+            }
+          }
+        }
       }
     }
   ],
-  "slots": [
-    {
-      "id": "content",
-      "title": "内容"
-    }
-  ]
+  "slots": []
 }

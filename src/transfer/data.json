@@ -1,3 +1,10 @@
 {
-  "name": "demo"
+  "titles": ["源数据", "目标数据"],
+  "dataSource": [
+    {
+      "title": "item",
+      "description": "description",
+      "disabled": false
+    }
+  ]
 }

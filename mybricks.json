@@ -76,7 +76,8 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/transfer/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -89,8 +90,7 @@
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json",
-      "./src/transfer/com.json"
+      "./src/_schema-simulator/com.json"
     ],
     "publish": [
       {
@@ -163,7 +163,8 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/transfer/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -176,8 +177,7 @@
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json",
-      "./src/transfer/com.json"
+      "./src/_schema-simulator/com.json"
     ]
   }
 }

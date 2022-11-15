@@ -7,5 +7,6 @@ export type TransferItem = {
 }
 
 export interface Data extends TransferProps<TransferItem> {
-  
+  showDesc?: boolean
+  showPagination?: boolean
 }
