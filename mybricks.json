@@ -76,7 +76,8 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/transfer/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -162,7 +163,8 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/transfer/com.json"
         ]
       },
       "./src/_code-segment/com.json",

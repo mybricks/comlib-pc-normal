@@ -24,7 +24,9 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
         return;
       }
       data.tags = val.map((item) => {
-        item.key = uuid();
+        if (!item.key) {
+          item.key = uuid();
+        }
         return item;
       });
     });
