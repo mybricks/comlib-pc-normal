@@ -86,7 +86,7 @@
     },
     {
       "id": "returnValue",
-      "title": "输出数据",
+      "title": "值输出",
       "schema": {
         "type": "boolean"
       }

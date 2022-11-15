@@ -39,7 +39,9 @@ export default (props: RuntimeParams<Data>) => {
           }
         }}
       >
-        {slots[SlotIds.Body]?.render()}
+        <div className={data.title === '' ? css.noTitleContainer : css.container}>
+          {slots[SlotIds.Body]?.render()}
+        </div>
       </Card>
     </div>
   );
