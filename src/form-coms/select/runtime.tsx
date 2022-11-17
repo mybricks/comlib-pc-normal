@@ -33,12 +33,12 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
             `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
           );
         } else {
-          // onChange(val);
-          data.value = val;
+          onChange(val);
+          // data.value = val;
         }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
-        // onChange(val);
-        data.value = val;
+        onChange(val);
+        // data.value = val;
       } else {
         logger.error(`下拉框的值应为基本类型`);
       }
