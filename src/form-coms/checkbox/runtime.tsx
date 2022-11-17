@@ -29,13 +29,12 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        data.value = val;
         onChange(val);
       }
     });
 
     inputs['resetValue'](() => {
-      data.value = void 0;
+      onChange(void 0);
     });
 
     // //设置显示
@@ -78,14 +77,16 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
           }
         ];
       }
-      let newValArray: any[] = [];
+      let newValArray: any[] = [],
+        updateValue = false;
       tempDs.map((item) => {
         const { checked, value } = item;
         if (checked && value != undefined) {
           newValArray.push(value);
+          updateValue = true;
         }
       });
-      data.value = newValArray;
+      updateValue && onChange(newValArray);
       data.config.options = tempDs;
     });
   }, []);
