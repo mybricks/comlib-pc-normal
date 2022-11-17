@@ -26,12 +26,11 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['setValue']((val) => {
-      data.value = val;
-      outputs['onChange'](val);
+      changeValue(val);
     });
 
     inputs['resetValue'](() => {
-      data.value = void 0;
+      changeValue(void 0);
     });
 
     inputs['setOptions']((ds) => {
@@ -57,14 +56,16 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
           }
         ];
       }
-      let newVal;
+      let newVal,
+        updateValue = false;
       tempDs.map((radio) => {
         const { checked, value } = radio;
         if (checked && value != undefined) {
+          updateValue = true;
           newVal = value;
         }
       });
-      data.value = newVal;
+      updateValue && changeValue(newVal);
       data.config.options = tempDs;
     });
 
@@ -86,10 +87,14 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
   }, []);
 
-  const onChange = useCallback((e) => {
-    const { value } = e.target;
+  const changeValue = useCallback((value) => {
     data.value = value;
     outputs['onChange'](value);
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const { value } = e.target;
+    changeValue(value);
   }, []);
 
   return (
