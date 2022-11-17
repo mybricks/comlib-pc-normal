@@ -31,7 +31,7 @@ function moveBackActionBtn({ data, focusArea }) {
     }
 }
 function allowMove({ data, focusArea }) {
-    const res = [];
+    const res: string[] = [];
     const btns: any[] = data.actionBtns;
     const btnId = focusArea.dataset['btnId'];
     const idx = btns.findIndex((item) => item.id === btnId);
@@ -54,18 +54,18 @@ const addBtn = ({ data, output }: { data: Data, output: any }) => {
         title: '节点数据',
         type: 'object',
         properties: {
-          title: {
-            title: '标题',
-            type: 'string'
-          },
-          key: {
-            title: '字段名',
-            type: 'string'
-          },
-          disableCheckbox: {
-            title: '禁用勾选',
-            type: 'boolean'
-          }
+            title: {
+                title: '标题',
+                type: 'string'
+            },
+            key: {
+                title: '字段名',
+                type: 'string'
+            },
+            disableCheckbox: {
+                title: '禁用勾选',
+                type: 'boolean'
+            }
         }
     };
     const defaultBtn = {
@@ -102,11 +102,11 @@ export const actionBtnEditor = {
                 value: {
                     get({ data }: EditorResult<Data>) {
                         const btn = data.actionBtns.find(def => def.id === MODIFY_BTN_ID);
-                        return btn.hidden;
+                        return btn?.hidden;
                     },
                     set({ data }: EditorResult<Data>, value: boolean) {
                         const btn = data.actionBtns.find(def => def.id === MODIFY_BTN_ID);
-                        btn.hidden = value;
+                        btn && (btn.hidden = value);
                     }
                 }
             },
@@ -116,11 +116,11 @@ export const actionBtnEditor = {
                 value: {
                     get({ data }: EditorResult<Data>) {
                         const btn = data.actionBtns.find(def => def.id === DELETE_BTN_ID);
-                        return btn.hidden;
+                        return btn?.hidden;
                     },
                     set({ data }: EditorResult<Data>, value: boolean) {
                         const btn = data.actionBtns.find(def => def.id === DELETE_BTN_ID);
-                        btn.hidden = value;
+                        btn && (btn.hidden = value);
                     }
                 }
             },
@@ -129,7 +129,7 @@ export const actionBtnEditor = {
                 type: 'Switch',
                 ifVisible({ data }: EditorResult<Data>) {
                     const btn = data.actionBtns.find(def => def.id === DELETE_BTN_ID);
-                    return !btn.hidden;
+                    return !btn?.hidden;
                 },
                 value: {
                     get({ data }: EditorResult<Data>) {
