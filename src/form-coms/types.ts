@@ -9,7 +9,7 @@ export interface Option {
   label: string;
   value: string;
   children?: Option[];
-  key: string | number;
+  key?: string | number;
   disabled?: boolean;
   checked: boolean;
 }

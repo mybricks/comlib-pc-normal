@@ -1,0 +1,9 @@
+{
+  "maxTagCountType": "isResponsive",
+  "options": [],
+  "config": {
+    "disabled": false,
+    "placeholder": "请选择",
+    "showCheckedStrategy": "SHOW_CHILD"
+  }
+}
