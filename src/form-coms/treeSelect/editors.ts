@@ -22,7 +22,6 @@ export default {
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
-
     catalog[0].items = [
       {
         title: '提示内容',

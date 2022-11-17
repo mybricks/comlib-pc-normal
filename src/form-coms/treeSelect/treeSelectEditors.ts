@@ -1,5 +1,6 @@
 import { TreeSelect } from 'antd';
 import { InputIds, OutputIds } from '../types';
+import { SelectOptionFilterPropsType } from './const';
 import { Data } from './types';
 
 const treeSelectEditors = {
@@ -14,6 +15,44 @@ const treeSelectEditors = {
                 },
                 set({ data }: EditorResult<Data>, value: boolean) {
                     data.config.treeDefaultExpandAll = value;
+                }
+            }
+        },
+        {
+            title: '支持搜索',
+            type: 'Switch',
+            description: '开启后可输入内容搜索',
+            value: {
+                get({ data }: EditorResult<Data>) {
+                    return data.config.showSearch;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                    data.config.showSearch = value;
+                }
+            }
+        },
+        {
+            title: '搜索规则',
+            type: 'Select',
+            options: [
+                {
+                    label: '根据名称搜索',
+                    value: SelectOptionFilterPropsType.Label
+                },
+                {
+                    label: '根据值搜索',
+                    value: SelectOptionFilterPropsType.Value
+                }
+            ],
+            ifVisible({ data }: EditorResult<Data>) {
+                return data.config.showSearch;
+            },
+            value: {
+                get({ data }: EditorResult<Data>) {
+                    return data.config.treeNodeFilterProp;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                    data.config.treeNodeFilterProp = value;
                 }
             }
         },

@@ -4,6 +4,8 @@
   "config": {
     "disabled": false,
     "placeholder": "请选择",
-    "showCheckedStrategy": "SHOW_CHILD"
+    "allowClear": true,
+    "showCheckedStrategy": "SHOW_CHILD",
+    "treeNodeFilterProp": "label"
   }
 }
