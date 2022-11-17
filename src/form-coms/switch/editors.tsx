@@ -34,6 +34,28 @@ export default {
         }
       },
       {
+        title: '默认值',
+        type: 'select',
+        options: [
+          {
+            label: 'True',
+            value: true
+          },
+          {
+            label: 'False',
+            value: false
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.config.checked;
+          },
+          set({ data }, value: boolean) {
+            data.config.checked = value;
+          }
+        }
+      },
+      {
         title: '校验规则',
         description: '提供快捷校验配置',
         type: 'ArrayCheckbox',
