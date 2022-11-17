@@ -30,7 +30,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         logger.error(`多选框的值应为数组格式`);
       } else {
         data.value = val;
-        onChange(val);
+        // onChange(val);
       }
     });
 
