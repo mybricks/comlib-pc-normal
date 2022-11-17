@@ -4,11 +4,6 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, schema: { type: 'string' } });
-    }
-  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
