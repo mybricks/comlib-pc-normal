@@ -27,24 +27,23 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      if (
-        data.config.mode &&
-        ['multiple', 'tags'].includes(data.config.mode) &&
-        !Array.isArray(val)
-      ) {
-        logger.error(
-          `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
-        );
+      if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+        if (!Array.isArray(val)) {
+          logger.error(
+            `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+          );
+        } else {
+          onChange(val);
+        }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
-        data.value = val;
-        onChange(data.value);
+        onChange(val);
       } else {
         logger.error(`下拉框的值应为基本类型`);
       }
     });
 
     inputs['resetValue'](() => {
-      data.value = void 0;
+      onChange(void 0);
     });
 
     inputs['setOptions']((ds) => {
@@ -82,10 +81,9 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         }
       });
       if (updateValue) {
-        data.value =
-          data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
-            ? newValArray
-            : newVal;
+        onChange(
+          data.config.mode && ['tags', 'multiple'].includes(data.config.mode) ? newValArray : newVal
+        );
       }
       data.config.options = tempDs.map(({ label, value, disabled }) => {
         return {
