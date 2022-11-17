@@ -240,13 +240,6 @@ export default {
             options: {
               outputId: 'upload'
             }
-          },
-          {
-            title: '值发生改变',
-            type: '_event',
-            options: {
-              outputId: 'onChange'
-            }
           }
         ]
       }
