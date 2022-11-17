@@ -62,7 +62,7 @@ export default {
           }
         }
       },
-      TreeSelectEditors,
+      ...TreeSelectEditors,
       {
         title: '校验规则',
         description: '提供快捷校验配置',
