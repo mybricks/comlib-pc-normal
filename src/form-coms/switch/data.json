@@ -1,6 +1,7 @@
 {
   "visible": true,
   "rules": [],
+  "checked": false,
   "config": {
     "disabled": false
   }

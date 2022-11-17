@@ -6,6 +6,7 @@ interface Data {
   value: boolean | undefined;
   visible: boolean;
   rules: any[];
+  checked: boolean;
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -18,17 +19,16 @@ interface Data {
 
 export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
   const { edit } = env;
-  const [checked, setChecked] = useState<boolean>();
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
-      setChecked(val);
+      data.checked = val;
       outputs['onChange'](val);
     });
 
     inputs['validate']((val, outputRels) => {
       validateFormItem({
-        value: checked,
+        value: data.checked,
         env,
         rules: data.rules
       })
@@ -41,11 +41,11 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](checked);
+      outputRels['returnValue'](data.checked);
     });
 
     inputs['resetValue'](() => {
-      setChecked(false);
+      data.checked = false;
     });
 
     // //设置显示
@@ -64,17 +64,17 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
-  }, [checked]);
+  }, [data.checked]);
 
   const changeValue = useCallback((checked) => {
-    setChecked(checked);
+    data.checked = checked;
     outputs['onChange'](checked);
   }, []);
 
   return (
     data.visible && (
       <Switch
-        checked={checked}
+        checked={data.checked}
         {...data.config}
         onChange={changeValue}
         // onBlur={onBlur}
