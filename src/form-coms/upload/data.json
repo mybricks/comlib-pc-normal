@@ -1,0 +1,13 @@
+{
+  "rules": [],
+  "config": {
+    "fileKey": "file",
+    "buttonText": "点击上传",
+    "name": "file",
+    "listType": "text",
+    "fileType": [],
+    "fileSize": 0,
+    "fileCount": 0,
+    "uploadStyle": {}
+  }
+}
