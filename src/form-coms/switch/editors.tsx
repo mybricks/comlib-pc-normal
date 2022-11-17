@@ -48,10 +48,10 @@ export default {
         ],
         value: {
           get({ data }) {
-            return data.checked;
+            return data.config.checked;
           },
           set({ data }, value: boolean) {
-            data.checked = value;
+            data.config.checked = value;
           }
         }
       },
