@@ -27,7 +27,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
 
     inputs['setValue']((val) => {
       data.value = val;
-      // outputs['onChange'](val);
+      outputs['onChange'](val);
     });
 
     inputs['resetValue'](() => {
