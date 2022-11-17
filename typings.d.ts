@@ -8,6 +8,8 @@ interface Env {
   [x: string]: any
 }
 interface RuntimeParams<T> {
+  /** 组件ID **/
+  id: string
   data: T
   env: Env
   style: any
@@ -24,11 +26,14 @@ interface RuntimeParams<T> {
   _outputs: any
   logger: any
   createPortal: any
+  /** 父容器插槽 **/
+  parentSlot: any
   title?: string
   onError: (params: Error | string) => null
 }
 
 interface EditorResult<T> {
+  id: string
   data: T
   focusArea: any
   output: any

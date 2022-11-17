@@ -27,7 +27,12 @@ const SlotContent = (props) => {
 
   const content = useMemo(() => {
     return slots['content'].render({
-      wrap(comAray: { id; jsx; def; inputs; outputs }[]) {
+      itemWrap(com: { id; jsx }) {
+        const item = data.items.find((item) => item.id === com.id);
+
+        return <FormItem data={data} com={com} item={item} field={props?.field} />;
+      },
+      wrap(comAray: { id; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
         // if (data.dataType === 'list') {
         //   console.log('items', items, comAray, props?.field);
@@ -36,15 +41,26 @@ const SlotContent = (props) => {
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let item = items.find((item) => item.id === com.id);
+            if (!item) return;
 
             childrenInputs[com.id] = com.inputs;
+
+            if (typeof item?.visible !== 'undefined') {
+              item.visible = com.style.display !== 'none';
+            } else {
+              item['visible'] = true;
+            }
+
             return (
-              <Col data-formitem={com.id} key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
-                <FormItem data={data} com={com} item={item} field={props?.field} />
-              </Col>
+              item?.visible && (
+                <Col key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
+                  {com.jsx}
+                </Col>
+              )
             );
           }
 
+          console.error(com, comAray);
           return <div key={idx}>组件错误</div>;
         });
 
