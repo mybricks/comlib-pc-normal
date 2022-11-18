@@ -468,10 +468,8 @@ export default {
                   }
                 };
                 if(data.dropdownSearchOption === true){
-                  input.add('setRemoteOptions', '设置远程数据源', contentSchema);
                   output.add('remoteSearch', '远程搜索', { type: 'any' });
                 }else{
-                  input.remove('setRemoteOptions');
                   output.remove('remoteSearch');
                 }
               }

@@ -120,16 +120,6 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
-    //开启远程搜索功能
-    if (data.dropdownSearchOption) {
-      outputs['remoteSearch']();
-    }
-    //设置远程数据源
-    if (data.dropdownSearchOption) {
-      inputs['setRemoteOptions']((ds) => {
-        data.remoteOptions = ds;
-      });
-    }
   }, []);
 
   const onChange = useCallback((value) => {
@@ -141,10 +131,12 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   }, []);
 
   const onSearch = (e) => {
+    //开启远程搜索功能
+    if (data.dropdownSearchOption) {
+      outputs['remoteSearch'](e);
+    }
     //1、远程数据源
-    if (e && data.dropdownSearchOption === true && data.remoteOptions) {
-      data.config.options = data.remoteOptions;
-    } else if (!e && data.dropdownSearchOption === true && data.remoteOptions) {
+    if (!e && data.dropdownSearchOption === true) {
       data.config.options = [];
     }
     //2、本地数据源, 不做处理
