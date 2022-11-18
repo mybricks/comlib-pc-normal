@@ -162,7 +162,6 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     outputs.upload(formData);
 
     const newFileList: UploadFile[] = onFormatFileList(fileList);
-    outputs.onChange(newFileList);
     setFileList([...newFileList]);
   };
   // 文件合法校验

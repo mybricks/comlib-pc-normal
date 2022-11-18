@@ -85,30 +85,6 @@
   ],
   "outputs": [
     {
-      "id": "onChange",
-      "title": "值发生改变",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "uid": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string"
-            },
-            "url": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    {
       "id": "returnValidate",
       "title": "校验结果",
       "schema": {
