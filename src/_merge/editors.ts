@@ -10,8 +10,9 @@ export default {
   '@inputConnected'({ data, output, input }: EditorResult<Data>) {
     output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
   },
-  '@inputDisConnected'({ output, input }: EditorResult<Data>) {
-    output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+  '@pinRemoved'({ data, output, input }: EditorResult<Data>, ...arg) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
+  },
   '@inputDisConnected'({ data, output, input }: EditorResult<Data>) {
     output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
   },
