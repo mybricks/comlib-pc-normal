@@ -1,24 +1,5 @@
 import { Data, OutputIds, Schemas } from './constants';
-
-// 获取输入项序号
-function getInputOrder({ input }) {
-  const ports = input.get();
-  const { id } = ports?.pop?.() || {};
-  return (Number(id.slice(5)) || 0) + 1;
-}
-// 获取输出schema
-function getOutputSchema(input) {
-  const res = {};
-  const inputList = input.get();
-  (inputList || []).forEach((item) => {
-    const schema = input.get(item?.id)?.schema;
-    Object.assign(res, schema?.properties);
-  });
-  return {
-    type: 'object',
-    properties: res
-  };
-}
+import { getInputOrder, getOutputSchema } from './utils';
 
 export default {
   '@inputUpdated'({ input, output }: EditorResult<Data>, updatePin) {

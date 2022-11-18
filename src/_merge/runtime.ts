@@ -1,5 +1,5 @@
-const SupportType = ['Array', 'Object'];
 import { OutputIds } from './constants';
+import { arrayMerge, isSameInputType, objMerge } from './utils';
 
 export default function ({ env, data, inputs, outputs }) {
   const { runtime } = env;
@@ -31,33 +31,3 @@ export default function ({ env, data, inputs, outputs }) {
     });
   }
 }
-
-const isSameInputType = (inputs) => {
-  const [first, ...rest] = inputs;
-  let type = getType(first);
-  if (!type || !SupportType.includes(type)) return;
-  const isSame = Object.values(rest).every((item) => {
-    return getType(item) === type;
-  });
-  return isSame ? type : null;
-};
-
-const getType = (obj) => {
-  return Object.prototype.toString.call(obj).match(/\[object (.*)\]/)?.[1];
-};
-
-const arrayMerge = (inputs) => {
-  const ret = new Set(
-    inputs.reduce((pre = [], cur) => {
-      return [...pre, ...cur];
-    }, [])
-  );
-  return Array.from(ret);
-};
-
-const objMerge = (inputs) => {
-  const ret = inputs.reduce((pre = {}, cur) => {
-    return { ...pre, ...cur };
-  }, {});
-  return ret;
-};
