@@ -38,7 +38,6 @@
         "title": "数据录入",
         "comAry": [
           "./src/form-coms/form-container/com.json",
-          "./src/form-coms/slider/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
@@ -49,7 +48,8 @@
           "./src/form-coms/radio/com.json",
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
-          "./src/form-coms/upload/com.json"
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json"
         ]
       },
       {
@@ -138,7 +138,8 @@
           "./src/form-coms/radio/com.json",
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
-          "./src/form-coms/upload/com.json"
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json"
         ]
       },
       {
