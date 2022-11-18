@@ -67,7 +67,6 @@ function getOutputSchema(data: Data, input) {
         const schema = input.get(item?.id)?.schema;
         return JSON.stringify(schema) === firstSchemaJSON;
     });
-    console.log(rest.length, isArraySameSchema, 'sssss')
     if (isArraySameSchema) {
         return data.isMerge ? firstSchema
             : {
