@@ -1,4 +1,4 @@
-import { Data, Schemas } from './constants';
+import { Data, OutputIds, Schemas } from './constants';
 
 // 获取输入项序号
 function getInputOrder({ input }) {
@@ -6,7 +6,32 @@ function getInputOrder({ input }) {
   const { id } = ports?.pop?.() || {};
   return (Number(id.slice(5)) || 0) + 1;
 }
+// 获取输出schema
+function getOutputSchema(input) {
+  const res = {};
+  const inputList = input.get();
+  (inputList || []).forEach((item) => {
+    const schema = input.get(item?.id)?.schema;
+    Object.assign(res, schema?.properties);
+  });
+  return {
+    type: 'object',
+    properties: res
+  };
+}
+
 export default {
+  '@inputUpdated'({ input, output }: EditorResult<Data>, updatePin) {
+    if (updatePin.id !== OutputIds.Output) {
+      output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+    }
+  },
+  '@inputConnected'({ output, input }: EditorResult<Data>) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+  },
+  '@inputDisConnected'({ output, input }: EditorResult<Data>) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+  },
   ':root': [
     {
       title: '添加输入项',
@@ -17,6 +42,18 @@ export default {
           const title = `输入项${idx}`;
           const hostId = `input${idx}`;
           input.add(hostId, title, Schemas.Follow, true);
+        }
+      }
+    },
+    {
+      title: '是否合并',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return !!data.isMerge;
+        },
+        set({ data }: EditorResult<Data>, val: boolean) {
+          data.isMerge = val;
         }
       }
     }
