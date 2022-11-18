@@ -87,20 +87,12 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   const singleProps: SliderSingleProps = {
     value: data.singleValue,
     onChange: changeValue,
-    style: {
-      width: '100%',
-      padding: '5px'
-    },
     onAfterChange,
     tipFormatter: formatter
   };
   const rangeProps: SliderRangeProps = {
     value: data.rangeValue,
     range: data.config.range || true,
-    style: {
-      width: '100%',
-      padding: '5px'
-    },
     onChange: changeValue,
     onAfterChange,
     tipFormatter: formatter

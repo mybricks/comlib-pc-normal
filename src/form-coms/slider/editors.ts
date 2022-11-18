@@ -4,7 +4,7 @@ import { InputIds, OutputIds } from '../types';
 
 export default {
   '@init'({ style }) {
-    style.width = '95%';
+    style.width = '100%';
     style.height = '100%';
   },
   '@resize': {
@@ -34,7 +34,7 @@ export default {
       {
         title: '展示单位',
         type: 'text',
-        description: '设置数值展示的单位',
+        description: '设置悬浮提示和输入时数值展示的单位',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.formatter;
