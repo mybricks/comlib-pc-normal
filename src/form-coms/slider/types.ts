@@ -1,7 +1,9 @@
-import type { SliderBaseProps, SliderSingleProps, SliderRangeProps } from 'antd/es/slider';
+import type { SliderSingleProps, SliderRangeProps } from 'antd/es/slider';
+
+export type SliderProps = SliderSingleProps | SliderRangeProps;
 
 export interface Data {
-    config: SliderSingleProps | SliderRangeProps;
+    config: SliderProps;
     visible: boolean;
     rules: any[];
     value?: number | [number, number];

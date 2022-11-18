@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { InputNumber, Slider, Row, Col } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { valueType } from 'antd/lib/statistic/utils';
-import { SliderSingleProps, SliderRangeProps } from 'antd/es/slider';
 import { InputNumberProps } from 'antd/es/input-number';
 import { typeCheck } from '../../utils';
 import css from './runtime.less';
@@ -29,8 +28,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      data.value = val;
-      outputs['onChange'](val);
+      onChange(val);
     });
 
     inputs['resetValue'](() => {
@@ -49,24 +47,13 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
   }, []);
 
-  /**更新表单项的值 */
-  useEffect(() => {
-    if (data.config.range) {
-      data.value = data.rangeValue;
-    } else {
-      data.value = data.singleValue;
-    }
-  }, [data.singleValue, data.rangeValue, data.config.range]);
-
   /**监听事件和格式化函数 */
   const changeValue = useCallback((val) => {
     data.value = val;
     if (typeCheck(val, 'number')) {
-      console.log('data.singleValue');
       data.singleValue = val;
     }
     if (typeCheck(val, 'array')) {
-      console.log('data.array');
       data.rangeValue = val;
     }
   }, []);
@@ -84,15 +71,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   );
 
   /**组件props */
-  const singleProps: SliderSingleProps = {
-    value: data.singleValue,
-    onChange: changeValue,
-    onAfterChange,
-    tipFormatter: formatter
-  };
-  const rangeProps: SliderRangeProps = {
-    value: data.rangeValue,
-    range: data.config.range || true,
+  const commonProps = {
     onChange: changeValue,
     onAfterChange,
     tipFormatter: formatter
@@ -111,13 +90,13 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   return (
     data.visible &&
     (data.config.range ? (
-      <Slider {...rangeProps} />
+      <Slider {...commonProps} range={data.config.range || true} value={data.rangeValue} />
     ) : !data.useInput ? (
-      <Slider {...singleProps} />
+      <Slider {...commonProps} value={data.singleValue} />
     ) : (
       <Row>
         <Col span={data.sliderSpan}>
-          <Slider {...singleProps} />
+          <Slider {...commonProps} value={data.singleValue} />
         </Col>
         <Col className={css.inputCol} span={data.inputSpan}>
           <InputNumber {...inputNumberProps} />
