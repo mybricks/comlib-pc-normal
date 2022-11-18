@@ -29,7 +29,7 @@ export default {
   },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
-
+    catalog[1].title = '高级';
 
     catalog[0].items = [
       {
@@ -353,6 +353,140 @@ export default {
               outputId: 'onBlur'
             }
           }
+        ]
+      },
+    ];
+
+    catalog[1].items = [
+      {
+        title: '输入配置',
+        ifVisible({ data }) {
+          return ['multiple', 'default'].includes(data.config.mode);
+        },
+        items: [
+          {
+            title: '输入',
+            type: 'Switch',
+            description: '开启后下拉框支持输入，可配置搜索规则',
+            value: {
+              get({ data }) {
+                return data.config.showSearch !== false
+              },
+              set({ data }, value: boolean) {
+                data.config.showSearch = value;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '默认搜索配置',
+        ifVisible({ data }) {
+          return ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false;
+        },
+        items: [
+          {
+            title: '搜索',
+            type: 'Switch',
+            description: '开启后下拉框可以配置默认搜索规则',
+            value: {
+              get({ data }) {
+                return data.config.filterOption !== false;
+              },
+              set({ data }, value: boolean) {
+                data.config.filterOption = value;
+              }
+            }
+          },
+          {
+            title: '规则',
+            type: 'Select',
+            options: [
+              {
+                label: '根据内容搜索',
+                value: 'label'
+              },
+              {
+                label: '根据值搜索',
+                value: 'value'
+              }
+            ],
+            ifVisible({ data }) {
+              return (
+                data.config.filterOption !== false
+              );
+            },
+            value: {
+              get({ data }) {
+                return data.config.optionFilterProp;
+              },
+              set({ data }, value: string) {
+                data.config.optionFilterProp = value;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '远程搜索',
+        ifVisible({ data }) {
+          return ['multiple', 'default'].includes(data.config.mode) && data.config.showSearch !== false;
+        },
+        items: [
+          {
+            title: '支持搜索动态获取选项',
+            type: 'Switch',
+            description: '开启后配置接口，通过"search"参数动态返回{label, value}对象的列表作为下拉选项',
+            value: {
+              get({ data }) {
+                return data.dropdownSearchOption;
+              },
+              set({ data, input, output }, value: boolean) {
+                data.dropdownSearchOption = value;
+                const contentSchema = {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "title": "标签",
+                        "type": "string"
+                      },
+                      "value": {
+                        "title": "值",
+                        "type": "any"
+                      },
+                      "disabled": {
+                        "title": "禁用",
+                        "type": "boolean"
+                      },
+                      "checked": {
+                        "title": "选中",
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                };
+                if(data.dropdownSearchOption === true){
+                  input.add('setRemoteOptions', '设置远程数据源', contentSchema);
+                  output.add('remoteSearch', '远程搜索', { type: 'any' });
+                }else{
+                  input.remove('setRemoteOptions');
+                  output.remove('remoteSearch');
+                }
+              }
+            }
+          },
+          {
+            title: '搜索',
+            type: '_event',
+            ifVisible({ data }) {
+              return data.dropdownSearchOption;
+            },
+            options: {
+              outputId: 'remoteSearch'
+            }
+          },
         ]
       }
     ];
