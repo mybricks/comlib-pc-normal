@@ -10,12 +10,6 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    console.log(parent, 'parentUpdated')
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'number' } })
-    }
-  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -38,7 +32,7 @@ export default {
         }
       },
       {
-        title: '单位',
+        title: '展示单位',
         type: 'text',
         description: '设置数值展示的单位',
         value: {
@@ -115,6 +109,27 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: number) {
             data.sliderSpan = value;
+          }
+        }
+      },
+      {
+        title: '数字输入框宽度',
+        type: 'slider',
+        options: {
+          max: 24,
+          min: 1,
+          steps: 1,
+          formatter: "/24栅格"
+        },
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.config.range && data.useInput;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.inputSpan;
+          },
+          set({ data }: EditorResult<Data>, value: number) {
+            data.inputSpan = value;
           }
         }
       },
@@ -199,27 +214,4 @@ export default {
       }
     ];
   },
-  '[data-slider-input]': {
-    title: '数字输入框',
-    items: [
-      {
-        title: '宽度',
-        type: 'slider',
-        options: {
-          max: 24,
-          min: 1,
-          steps: 1,
-          formatter: "/24栅格"
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.inputSpan;
-          },
-          set({ data }: EditorResult<Data>, value: number) {
-            data.inputSpan = value;
-          }
-        }
-      }
-    ]
-  }
 }

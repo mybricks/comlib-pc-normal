@@ -6,6 +6,7 @@ import { valueType } from 'antd/lib/statistic/utils';
 import { SliderSingleProps, SliderRangeProps } from 'antd/es/slider';
 import { InputNumberProps } from 'antd/es/input-number';
 import { typeCheck } from '../../utils';
+import css from './runtime.less';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
@@ -88,8 +89,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     onChange: changeValue,
     style: {
       width: '100%',
-      padding: '5px',
-      height: '32px'
+      padding: '5px'
     },
     onAfterChange,
     tipFormatter: formatter
@@ -99,8 +99,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     range: data.config.range || true,
     style: {
       width: '100%',
-      padding: '5px',
-      height: '32px'
+      padding: '5px'
     },
     onChange: changeValue,
     onAfterChange,
@@ -124,11 +123,11 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     ) : !data.useInput ? (
       <Slider {...singleProps} />
     ) : (
-      <Row gutter={10}>
+      <Row>
         <Col span={data.sliderSpan}>
           <Slider {...singleProps} />
         </Col>
-        <Col span={data.inputSpan} data-slider-input="inputnumber">
+        <Col className={css.inputCol} span={data.inputSpan}>
           <InputNumber {...inputNumberProps} />
         </Col>
       </Row>
