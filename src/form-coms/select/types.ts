@@ -9,9 +9,14 @@ export interface Data {
         loading?: boolean;
         mode?: 'tags' | 'multiple';
         labelInValue?: boolean;
+        showSearch: boolean;
+        filterOption: boolean;
+        optionFilterProp: string;
     };
     visible: boolean;
     rules: any[];
     value?: number | string | number[] | string[];
     staticOptions: Option[];
+    remoteOptions: any[];
+    dropdownSearchOption: boolean;
 }

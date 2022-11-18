@@ -27,17 +27,18 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      if (
-        data.config.mode &&
-        ['multiple', 'tags'].includes(data.config.mode) &&
-        !Array.isArray(val)
-      ) {
-        logger.error(
-          `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
-        );
+      if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+        if (!Array.isArray(val)) {
+          logger.error(
+            `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+          );
+        } else {
+          onChange(val);
+          // data.value = val;
+        }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
-        data.value = val;
-        onChange(data.value);
+        onChange(val);
+        // data.value = val;
       } else {
         logger.error(`下拉框的值应为基本类型`);
       }
@@ -129,6 +130,18 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     outputs['onBlur'](data.value);
   }, []);
 
+  const onSearch = (e) => {
+    //开启远程搜索功能
+    if (data.dropdownSearchOption) {
+      outputs['remoteSearch'](e);
+    }
+    //1、远程数据源
+    if (!e && data.dropdownSearchOption === true) {
+      data.config.options = [];
+    }
+    //2、本地数据源, 不做处理
+  };
+
   return (
     data.visible && (
       <div className={css.select}>
@@ -138,6 +151,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
           value={data.value}
           onChange={onChange}
           onBlur={onBlur}
+          onSearch={data.config.showSearch ? onSearch : void 0}
         />
       </div>
     )

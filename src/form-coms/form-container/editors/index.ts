@@ -53,16 +53,6 @@ function isHorizontal (data: Data) {
 }
 
 export default {
-  // '@inputUpdated'({ data, outputs }, fromPin, toPin) {
-  //   if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
-  //     if (fromPin.schema.type === 'object') {
-  //       data.paramsSchema = fromPin.schema
-  //     } else {
-  //       data.paramsSchema = {}
-  //     }
-  //     refreshParamsSchema(data, outputs)
-  //   }
-  // },
   '@inputConnected'({ data, outputs }, fromPin, toPin) {
     if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
       if (fromPin.schema.type === 'object') {
@@ -81,37 +71,64 @@ export default {
     }
     
   },
-  '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
-    data.items = data.items.filter(item => item.id !== id)
-    refreshSchema({data, inputs, outputs, slots})
-  },
-  '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
+  '@childAdd' ({data, inputs, outputs, logs, slots}, child) {
+    const { id, inputDefs } = child
     const item = data.items.find(item => item.id === id)
-    // console.log('_setFormItem', id)
+    const com = inputDefs.find(item => item.id === 'setValue')
+    
     if (item) {
       // console.log('_setFormItem item')
-      item.schema = schema
+      item.schema = com.schema
     } else {
       const nowC = data.nameCount++
 
       data.items.push({
         id,
-        schema,
+        schema: com.schema,
         name: `item${nowC}`,
         label: `表单项${nowC}`,
-        span: 24
+        span: 24,
+        visible: true,
       })
     }
     refreshSchema({data, inputs, outputs, slots})
   },
+  '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
+    data.items = data.items.filter(item => item.id !== id)
+    refreshSchema({data, inputs, outputs, slots})
+  },
+  // '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
+  //   const item = data.items.find(item => item.id === id)
+  //   // console.log('_setFormItem', id)
+  //   if (item) {
+  //     // console.log('_setFormItem item')
+  //     item.schema = schema
+  //   } else {
+  //     const nowC = data.nameCount++
+
+  //     data.items.push({
+  //       id,
+  //       schema,
+  //       name: `item${nowC}`,
+  //       label: `表单项${nowC}`,
+  //       span: 24,
+  //       visible: true,
+  //     })
+  //   }
+  //   refreshSchema({data, inputs, outputs, slots})
+  // },
   '@parentUpdated'({id, data, parent}, {schema}) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
+      // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true
+      data.actions.visible = false
     } else {
       data.isFormItem = false
     }
   },
+  // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
+  //   console.log(slot)
+  // },
   ':root': [
     {
       title: '布局',
@@ -213,7 +230,27 @@ export default {
       ]
     },
     
-    actionsEditor
+    actionsEditor,
+    // {
+    //   title: '选择表单项',
+    //   type: 'comSelector',
+    //   options: {
+    //     schema: 'mybricks.normal-pc.form-container/form-item',
+    //     type: 'add'
+    //   },
+    //   value: {
+    //     get () {
+
+    //     },
+    //     set({ data, slot }: EditorResult<Data>, namespace: string) {
+    //       console.log(namespace)
+    //       // data.selectComNameSpace = namespace;
+    //       slot
+    //         .get('content')
+    //         .addCom(namespace, false, { deletable: true, movable: true });
+    //     }
+    //   }
+    // }
     // {
     //   title: '数据类型',
     //   type: 'select',
@@ -230,33 +267,19 @@ export default {
     //     }
     //   }
     // },
-    // {
-    //   title: '事件',
-    //   items: [
-    //     {
-    //       title: '初始化',
-    //       type: '_event',
-    //       options: {
-    //         outputId: 'onInitial'
-    //       }
-    //     }
-    //   ]
-    // },
   ],
-  '[data-formitem]': {
+  ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
     items: [
       {
         title: '标题',
         type: 'text',
         value: {
-          get({data, focusArea}: EditorResult<Data>) {
-            const comId = focusArea.dataset['formitem']
-            return data.items.find(item => item.id === comId)?.label
+          get({id, data, focusArea}: EditorResult<Data>) {
+            return data.items.find(item => item.id === id)?.label
           },
-          set({data, focusArea}: EditorResult<Data>, val) {
-            const comId = focusArea.dataset['formitem']
-            const item = data.items.find(item => item.id === comId)
+          set({id, data, focusArea}: EditorResult<Data>, val) {
+            const item = data.items.find(item => item.id === id)
             item.label = val
           }
         }
@@ -265,17 +288,15 @@ export default {
         title: '字段',
         type: 'text',
         value: {
-          get({data, focusArea}: EditorResult<Data>) {
-            const comId = focusArea.dataset['formitem']
-            return data.items.find(item => item.id === comId)?.name
+          get({id, data, focusArea}: EditorResult<Data>) {
+            return data.items.find(item => item.id === id)?.name
           },
-          set({data, focusArea, input, output, slots }: EditorResult<Data>, val) {
+          set({id, data, focusArea, input, output, slots }: EditorResult<Data>, val) {
             if (!val) {
               return message.warn('字段名不能为空')
             }
 
-            const comId = focusArea.dataset['formitem']
-            const item = data.items.find(item => item.id === comId)
+            const item = data.items.find(item => item.id === id)
 
             if (item && item.name !== val) {
               if (fieldNameCheck(data, val)) {
@@ -292,13 +313,11 @@ export default {
         title: '必填样式',
         type: 'Switch',
         value: {
-          get({data, focusArea}: EditorResult<Data>) {
-            const comId = focusArea.dataset['formitem']
-            return data.items.find(item => item.id === comId).required
+          get({id, data, focusArea}: EditorResult<Data>) {
+            return data.items.find(item => item.id === id).required
           },
-          set({data, focusArea}: EditorResult<Data>, val) {
-            const comId = focusArea.dataset['formitem']
-            const item = data.items.find(item => item.id === comId)
+          set({id, data, focusArea}: EditorResult<Data>, val) {
+            const item = data.items.find(item => item.id === id)
             item['required'] = val
           }
         }
