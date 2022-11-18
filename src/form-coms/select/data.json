@@ -3,6 +3,10 @@
   "config": {
     "disabled": false,
     "placeholder": "请选择",
-    "mode": "default"
-  }
+    "mode": "default",
+    "showSearch": true,
+    "filterOption": true,
+    "optionFilterProp": "label"
+  },
+  "dropdownSearchOption": false
 }
