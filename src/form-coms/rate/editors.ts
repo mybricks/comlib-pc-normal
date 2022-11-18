@@ -33,13 +33,10 @@ export default {
         description: '初始设置的评分,只允许设置0-count, 以0.5为步长',
         value: {
           get({ data }) {
-            console.log('data.config.defaultValuexxx',data.config.defaultValue)
             return [data.config.defaultValue] || [2.5];
           },
           set({ data }, value: number[]) {
-            console.log('用户写的值',value)
             data.config.defaultValue = value[0];
-            console.log('用户写的值',data.config.defaultValue)
           }
         }
       },
@@ -121,7 +118,6 @@ export default {
           },
           set({ data }, value: string) {
             data.icon = value;
-            console.log('data.icon', data.icon)
           }
         }
       },
