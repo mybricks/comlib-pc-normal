@@ -1,3 +1,5 @@
+import { Data } from "./constants";
+
 const SupportType = ['Array', 'Object'];
 
 const isSameInputType = (inputs) => {
@@ -38,16 +40,44 @@ function getInputOrder({ input }) {
 }
 
 // 获取输出schema
-function getOutputSchema(input) {
+function getOutputSchema(data: Data, input) {
     const res = {};
-    const inputList = input.get();
-    (inputList || []).forEach((item) => {
+    const inputList = input.get() || [];
+    const [first, ...rest] = inputList;
+    const firstSchema = (input.get(first?.id)?.schema);
+    const firstSchemaJSON = JSON.stringify(firstSchema);
+
+    // 1. 对象合并
+    const isMergeObject = data.isMerge && (inputList || []).every((item) => {
         const schema = input.get(item?.id)?.schema;
-        Object.assign(res, schema?.properties);
+        return schema?.type === 'object';
     });
+    if (isMergeObject) {
+        (inputList || []).forEach((item) => {
+            const schema = input.get(item?.id)?.schema;
+            Object.assign(res, schema?.properties);
+        });
+        return {
+            type: 'object',
+            properties: res
+        };
+    }
+    // 2. 数组子项类型相同
+    const isArraySameSchema = (rest).every((item) => {
+        const schema = input.get(item?.id)?.schema;
+        return JSON.stringify(schema) === firstSchemaJSON;
+    });
+    console.log(rest.length, isArraySameSchema, 'sssss')
+    if (isArraySameSchema) {
+        return data.isMerge ? firstSchema
+            : {
+                type: 'array',
+                items: firstSchema
+            };
+    }
+    // 其他情形
     return {
-        type: 'object',
-        properties: res
+        type: 'array'
     };
 }
 

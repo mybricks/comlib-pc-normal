@@ -2,16 +2,18 @@ import { Data, OutputIds, Schemas } from './constants';
 import { getInputOrder, getOutputSchema } from './utils';
 
 export default {
-  '@inputUpdated'({ input, output }: EditorResult<Data>, updatePin) {
+  '@inputUpdated'({ data, input, output }: EditorResult<Data>, updatePin) {
     if (updatePin.id !== OutputIds.Output) {
-      output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+      output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
     }
   },
-  '@inputConnected'({ output, input }: EditorResult<Data>) {
-    output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+  '@inputConnected'({ data, output, input }: EditorResult<Data>) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
   },
   '@inputDisConnected'({ output, input }: EditorResult<Data>) {
     output.get(OutputIds.Output).setSchema(getOutputSchema(input));
+  '@inputDisConnected'({ data, output, input }: EditorResult<Data>) {
+    output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
   },
   ':root': [
     {
@@ -33,8 +35,9 @@ export default {
         get({ data }: EditorResult<Data>) {
           return !!data.isMerge;
         },
-        set({ data }: EditorResult<Data>, val: boolean) {
+        set({ data, input, output }: EditorResult<Data>, val: boolean) {
           data.isMerge = val;
+          output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
         }
       }
     }
