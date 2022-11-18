@@ -130,6 +130,18 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     outputs['onBlur'](data.value);
   }, []);
 
+  const onSearch = (e) => {
+    //开启远程搜索功能
+    if (data.dropdownSearchOption) {
+      outputs['remoteSearch'](e);
+    }
+    //1、远程数据源
+    if (!e && data.dropdownSearchOption === true) {
+      data.config.options = [];
+    }
+    //2、本地数据源, 不做处理
+  };
+
   return (
     data.visible && (
       <div className={css.select}>
@@ -139,6 +151,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
           value={data.value}
           onChange={onChange}
           onBlur={onBlur}
+          onSearch={data.config.showSearch ? onSearch : void 0}
         />
       </div>
     )
