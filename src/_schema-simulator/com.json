@@ -10,6 +10,18 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "inputs":[
+    {
+      "id": "mockTouch",
+      "title": "触发模拟",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "outputData"
+      ]
+    }
+  ],
   "outputs": [
     {
       "id": "outputData",
