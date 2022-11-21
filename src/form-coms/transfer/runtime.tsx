@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from 'react';
-import { message, Transfer, Typography } from 'antd';
+import { message, Transfer } from 'antd';
 import { Data } from './types';
-import { uuid } from '../utils';
+import { uuid } from '../../utils';
 import styles from './style.less';
 
-const { Text, Title } = Typography;
-
 export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) {
-  const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles } = data;
+  const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
+    data;
   const _dataSource = dataSource.map((item) => {
     if (!item.key) {
       item.key = uuid();
@@ -17,35 +16,45 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
 
   const [targetKeys, setTargetKeys] = useState<string[]>([]);
 
-  inputs['dataSource'](({ dataSource, target }) => {
+  inputs['setSource']((dataSource) => {
     if (!Array.isArray(dataSource)) {
       message.error('数据源必须是数组类型');
       return;
     }
     data.dataSource = dataSource;
-    if (!Array.isArray(target)) {
-      message.error('目标数据必须是数组类型');
-      return;
-    }
-    setTargetKeys(target);
   });
 
-  inputs['getData'](() => {
+  inputs['setValue']((val) => {
+    if (!Array.isArray(val)) {
+      message.error('穿梭框目标值必须是数组类型');
+      return;
+    }
+    setTargetKeys(val);
+  });
+
+  inputs['getValue'](() => {
     outputs['dataOut'](getTransferData());
   });
 
+  inputs['resetValue'](() => {
+    setTargetKeys([]);
+  });
+
+  inputs['setEnabled'](() => {
+    data.disabled = true;
+  });
+
+  inputs['setDisabled'](() => {
+    data.disabled = false;
+  });
+
   const getTransferData = useCallback(() => {
-    const lastSource = _dataSource.filter(({ key }) => !targetKeys.includes(key));
-    const targetData = _dataSource.filter(({ key }) => targetKeys.includes(key));
-    return {
-      source: lastSource,
-      target: targetData
-    };
+    return _dataSource.filter(({ key }) => targetKeys.includes(key));
   }, [targetKeys]);
 
   const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
     setTargetKeys(targetKeys);
-    outputs['onChange'](_dataSource.filter(({ key }) => targetKeys.includes(key)));
+    outputs['onChange'](getTransferData());
   };
 
   const renderItem = ({ title, description }) => {
@@ -63,7 +72,7 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
       showSearch={showSearch}
       showSelectAll
       oneWay={oneWay}
-      // render={item => `${item.title}-${item.description}`}
+      disabled={disabled}
       render={renderItem}
       pagination={showPagination && pagination}
       onChange={onChange}

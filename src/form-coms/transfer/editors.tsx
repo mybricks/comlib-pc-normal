@@ -86,6 +86,18 @@ export default {
             }
           },
           {
+            title: '禁用状态',
+            type: 'switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return !!data.disabled;
+              },
+              set({ data }: EditorResult<Data>, val: boolean) {
+                data.disabled = val;
+              }
+            }
+          },
+          {
             title: '分页',
             type: 'switch',
             value: {
