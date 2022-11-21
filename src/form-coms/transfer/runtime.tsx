@@ -49,12 +49,12 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
   });
 
   const getTransferData = useCallback(() => {
-    return _dataSource.filter(({ key }) => targetKeys.includes(key));
+    return targetKeys;
   }, [targetKeys]);
 
   const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
     setTargetKeys(targetKeys);
-    outputs['onChange'](getTransferData());
+    outputs['onChange'](targetKeys);
   };
 
   const renderItem = ({ title, description }) => {
