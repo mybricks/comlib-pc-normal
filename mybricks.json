@@ -48,6 +48,7 @@
           "./src/form-coms/radio/com.json",
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
+          "./src/form-coms/transfer/com.json",
           "./src/form-coms/upload/com.json"
         ]
       },
@@ -78,8 +79,7 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json",
-          "./src/transfer/com.json"
+          "./src/sort-bar/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -137,6 +137,7 @@
           "./src/form-coms/radio/com.json",
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
+          "./src/form-coms/transfer/com.json",
           "./src/form-coms/upload/com.json"
         ]
       },
@@ -167,8 +168,7 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json",
-          "./src/transfer/com.json"
+          "./src/sort-bar/com.json"
         ]
       },
       "./src/_code-segment/com.json",
