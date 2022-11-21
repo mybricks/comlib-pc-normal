@@ -54,7 +54,7 @@
         "type": "any"
       },
       "rels": [
-        "dataOut"
+        "returnValue"
       ],
       "desc": "获取穿梭框目标值"
     },
@@ -65,6 +65,16 @@
         "type": "any"
       },
       "desc": "重置穿梭框目标值"
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
     },
     {
       "id": "setDisabled",
@@ -85,7 +95,7 @@
   ],
   "outputs": [
     {
-      "id": "dataOut",
+      "id": "returnValue",
       "title": "数据输出",
       "schema": {
         "type": "array",
@@ -128,6 +138,23 @@
             "disabled": {
               "type": "boolean"
             }
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
           }
         }
       }
