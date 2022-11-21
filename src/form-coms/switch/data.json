@@ -2,6 +2,7 @@
   "visible": true,
   "rules": [],
   "config": {
-    "disabled": false
+    "disabled": false,
+    "checked": false
   }
 }

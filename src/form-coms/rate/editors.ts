@@ -9,48 +9,41 @@ export default {
 
     catalog[0].items = [
       {
-        title: '提示内容',
-        type: 'Text',
-        description: '该提示内容会在值为空时显示',
+        title: '评分总数',
+        type: 'Inputnumber',
+        options: [
+          { min:0 },
+        ],
+        description: '设置的评分数, 默认是5',
         value: {
           get({ data }) {
-            return data.config.placeholder;
+            return [data.config.count] || [5];
           },
-          set({ data }, value: string) {
-            data.config.placeholder = value;
+          set({ data }, value: number[]) {
+            data.config.count = value[0];
           }
         }
       },
       {
-        title: '前置标签',
-        type: 'text',
-        description: '带标签的 input，设置前置标签',
+        title: '默认值',
+        type: 'Inputnumber',
+        options: [
+          { min:0 },
+        ],
+        description: '初始设置的评分,只允许设置0-count, 以0.5为步长',
         value: {
           get({ data }) {
-            return data.config.addonBefore;
+            return [data.config.defaultValue] || [2.5];
           },
-          set({ data }, value: string) {
-            data.config.addonBefore = value;
+          set({ data }, value: number[]) {
+            data.config.defaultValue = value[0];
           }
         }
       },
       {
-        title: '后置标签',
-        type: 'text',
-        description: '带标签的 input，设置后置标签',
-        value: {
-          get({ data }) {
-            return data.config.addonAfter;
-          },
-          set({ data }, value: string) {
-            data.config.addonAfter = value;
-          }
-        }
-      },
-      {
-        title: '禁用状态',
+        title: '只读状态',
         type: 'switch',
-        description: '是否禁用状态',
+        description: '开启后为只读状态, 不可以改变',
         value: {
           get({ data }) {
             return data.config.disabled;
@@ -61,35 +54,85 @@ export default {
         }
       },
       {
-        title: '数值精度',
-        description: '精确到小数点后几位',
-        type: "Slider",
-        options: {
-          max: 10,
-          min: 0,
-          steps: 1,
-          formatter: "/10",
-        },
+        title: '其它字符',
+        type: 'switch',
+        description: '开启后可自定义字符',
         value: {
           get({ data }) {
-            return data.config.precision;
+            return data.isChoose;
           },
-          set({ data }, value: number) {
-            data.config.precision = value;
+          set({ data }, value: boolean) {
+            data.isChoose = value;
           }
         }
       },
       {
-        title: '步长',
-        type: 'Text',
-        description: '默认为1,只允许设置大于0的整数',
+        title: '其它字符类型',
+        type: 'Select',
+        ifVisible({ data }) {
+          return data.isChoose;
+        },
+        options: [
+          {
+            label: '文字',
+            value: 'font'
+          },
+          {
+            label: '图标',
+            value: 'icon'
+          }
+        ],
         value: {
           get({ data }) {
-            return data.config.step;
+            return data.choose;
           },
           set({ data }, value: string) {
-            const num = parseInt(value, 10);
-            data.config.step = isNaN(num) || num <= 0 ? undefined : num;
+            data.choose = value;
+          }
+        }
+      },
+      {
+        title: '文字',
+        type: 'text',
+        ifVisible({ data }) {
+          return data.isChoose && data.choose === 'font';
+        },
+        value: {
+          get({ data }) {
+            return data.font
+          },
+          set({ data }, value: string) {
+            data.font = value
+          },
+        },
+      },
+      {
+        title: '选择图标',
+        type: 'Icon',
+        ifVisible({ data }) {
+          return data.isChoose && data.choose === 'icon';
+        },
+        value: {
+          get({ data }) {
+            return data.icon;
+          },
+          set({ data }, value: string) {
+            data.icon = value;
+          }
+        }
+      },
+      {
+        title: '颜色',
+        type: 'colorPicker',
+        value: {
+          get({ data }) {
+            return data.color;
+          },
+          set({ data }, value: string) {
+            if (!data.color) {
+              data.color = '#f66801';
+            }
+            data.color = value;
           }
         }
       },

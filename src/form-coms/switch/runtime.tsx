@@ -13,22 +13,22 @@ interface Data {
     addonAfter: string;
     showCount: boolean;
     maxLength?: number;
+    checked: boolean;
   };
 }
 
 export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
   const { edit } = env;
-  const [checked, setChecked] = useState<boolean>();
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
-      setChecked(val);
+      data.config.checked = val;
       outputs['onChange'](val);
     });
 
     inputs['validate']((val, outputRels) => {
       validateFormItem({
-        value: checked,
+        value: data.config.checked,
         env,
         rules: data.rules
       })
@@ -41,11 +41,11 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](checked);
+      outputRels['returnValue'](data.config.checked);
     });
 
     inputs['resetValue'](() => {
-      setChecked(false);
+      data.config.checked = false;
     });
 
     // //设置显示
@@ -64,17 +64,16 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
-  }, [checked]);
+  }, [data.config.checked]);
 
   const changeValue = useCallback((checked) => {
-    setChecked(checked);
+    data.config.checked = checked;
     outputs['onChange'](checked);
   }, []);
 
   return (
     data.visible && (
       <Switch
-        checked={checked}
         {...data.config}
         onChange={changeValue}
         // onBlur={onBlur}

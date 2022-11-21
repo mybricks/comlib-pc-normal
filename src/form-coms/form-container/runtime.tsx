@@ -69,6 +69,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     _inputs['setValue']((val) => {
       setFieldsValue(val);
     });
+
+    // slots['content']._inputs['validateTrigger'](id=>{
+    //   const item = data.items.find(item => item.id === id)
+
+    //   console.log('validateTrigger', item)
+    // });
   }, []);
 
   const setFieldsValue = (val) => {
@@ -147,10 +153,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   resolve(value);
                 }
               } else {
-                value = {
-                  name: item.name,
-                  value: val
-                };
+                /** 隐藏的表单项，不收集数据 **/
+                if (item.visible) {
+                  value = {
+                    name: item.name,
+                    value: val
+                  };
+                }
+
                 resolve(value);
               }
             });

@@ -4,18 +4,6 @@ export default {
   // '@resize': {
   //   // options: ['width']
   // },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, schema: { type: 'boolean' } });
-    }
-    // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-    //   data.type = 'formItem'
-    //
-    //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
-    // } else {
-    //   data.type = 'normal'
-    // }
-  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -30,6 +18,28 @@ export default {
           },
           set({ data }, value: boolean) {
             data.config.disabled = value;
+          }
+        }
+      },
+      {
+        title: '默认值',
+        type: 'select',
+        options: [
+          {
+            label: 'True',
+            value: true
+          },
+          {
+            label: 'False',
+            value: false
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.config.checked;
+          },
+          set({ data }, value: boolean) {
+            data.config.checked = value;
           }
         }
       },

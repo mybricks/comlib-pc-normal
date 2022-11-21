@@ -1,7 +1,7 @@
-import { uuid } from "../utils";
-import { actionBtnEditor } from "./actionBtnEditor";
-import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID } from "./constants";
-import { pretreatTreeData, setCheckboxStatus, traverseTree } from "./utils";
+import { uuid } from '../utils';
+import { actionBtnEditor } from './actionBtnEditor';
+import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID } from './constants';
+import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
 interface Result {
   data: Data;
@@ -15,7 +15,7 @@ const buildNewNode = (uuid: string) => {
     title: uuid,
     value: uuid,
     key: uuid,
-    children: [],
+    children: []
   } as TreeData;
 };
 
@@ -24,7 +24,7 @@ const getItemProp = ({
   focusArea,
   dataset,
   val,
-  isParent = false,
+  isParent = false
 }: {
   data: Data;
   focusArea: any;
@@ -37,22 +37,14 @@ const getItemProp = ({
   const item = traverseTree({
     treeData: data.treeData,
     targetKey: key,
-    isParent,
+    isParent
   });
-  if (val === "obj") return item;
+  if (val === 'obj') return item;
   else return item[val];
 };
 
-const moveNode = ({
-  data,
-  focusArea,
-  isDown,
-}: {
-  data: Data;
-  focusArea: any;
-  isDown: boolean;
-}) => {
-  const key: string = focusArea.dataset["treeNodeId"];
+const moveNode = ({ data, focusArea, isDown }: { data: Data; focusArea: any; isDown: boolean }) => {
+  const key: string = focusArea.dataset['treeNodeId'];
   const index = data.treeData.findIndex((item) => item.key === key);
   if (index !== -1) {
     const target = data.treeData.splice(index, 1)[0];
@@ -65,9 +57,9 @@ const moveNode = ({
     const parent: TreeData = getItemProp({
       data,
       focusArea,
-      dataset: "treeNodeId",
-      val: "obj",
-      isParent: true,
+      dataset: 'treeNodeId',
+      val: 'obj',
+      isParent: true
     });
     if (parent && parent.children) {
       const chileIndex = parent.children.findIndex((item) => item.key === key);
@@ -82,7 +74,7 @@ const moveNode = ({
 };
 
 export default {
-  "@init": ({ data }: Result) => {
+  '@init': ({ data }: Result) => {
     pretreatTreeData({ treeData: data.treeData, data, defaultExpandAll: true });
     setCheckboxStatus({ treeData: data.treeData, value: false });
   },
@@ -91,12 +83,13 @@ export default {
     cate[1].title = '高级';
     cate[0].items = [
       {
-        title: "配置",
+        title: '配置',
         items: [
           {
-            title: "节点标识字段",
-            type: "text",
-            description: "不填时会根据节点位置生成唯一标识，存储在key属性中。所有节点的标识字段值在整个树范围内不能重复。",
+            title: '节点标识字段',
+            type: 'text',
+            description:
+              '不填时会根据节点位置生成唯一标识，存储在key属性中。所有节点的标识字段值在整个树范围内不能重复。',
             value: {
               get({ data }: EditorResult<Data>) {
                 if (!data.keyFieldName) {
@@ -106,36 +99,36 @@ export default {
               },
               set({ data }: EditorResult<Data>, value: string) {
                 data.keyFieldName = value;
-              },
-            },
+              }
+            }
           },
           {
-            title: "默认展开",
-            type: "switch",
+            title: '默认展开',
+            type: 'switch',
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.defaultExpandAll;
               },
               set({ data }: EditorResult<Data>, value: boolean) {
                 data.defaultExpandAll = value;
-              },
-            },
+              }
+            }
           },
           {
-            title: "勾选",
-            type: "Switch",
+            title: '勾选',
+            type: 'Switch',
             value: {
               get({ data }: Result) {
                 return data.checkable;
               },
               set({ data }: Result, value: boolean) {
                 data.checkable = value;
-              },
-            },
+              }
+            }
           },
           {
-            title: "禁用",
-            type: "Switch",
+            title: '禁用',
+            type: 'Switch',
             ifVisible({ data }: Result) {
               return data.checkable;
             },
@@ -146,12 +139,12 @@ export default {
               set({ data }: Result, value: boolean) {
                 setCheckboxStatus({ treeData: data.treeData, value });
                 data.disableCheckbox = value;
-              },
-            },
+              }
+            }
           },
           {
-            title: "输出父节点信息",
-            type: "Switch",
+            title: '输出父节点信息',
+            type: 'Switch',
             ifVisible({ data }: Result) {
               return data.checkable;
             },
@@ -161,47 +154,47 @@ export default {
               },
               set({ data }: Result, value: boolean) {
                 data.outParentKeys = value;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       },
       {
-        title: "添加节点",
-        type: "button",
+        title: '添加节点',
+        type: 'button',
         value: {
           set({ data }: EditorResult<Data>) {
             const newChildNode = buildNewNode(uuid());
             data.treeData.push(newChildNode);
-          },
-        },
+          }
+        }
       },
       {
-        title: "事件",
+        title: '事件',
         items: [
           {
-            title: "节点点击",
+            title: '节点点击',
             type: '_Event',
             options: () => {
               return {
-                outputId: "click",
+                outputId: 'click'
               };
-            },
+            }
           },
           {
-            title: "选中事件",
+            title: '选中事件',
             type: 'Switch',
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.useCheckEvent
+                return data.useCheckEvent;
               },
               set({ data, output }: EditorResult<Data>, val) {
                 if (val) {
                   output.add('check', '选中事件', {
-                    title: "选中项数据",
-                    type: "array",
+                    title: '选中项数据',
+                    type: 'array',
                     items: {
-                      type: "string"
+                      type: 'string'
                     }
                   });
                 } else {
@@ -212,19 +205,19 @@ export default {
             }
           },
           {
-            title: "选中事件",
+            title: '选中事件',
             type: '_Event',
             ifVisible({ data }: EditorResult<Data>) {
-              return data.useCheckEvent
+              return data.useCheckEvent;
             },
             options: () => {
               return {
-                outputId: "check",
+                outputId: 'check'
               };
-            },
-          },
-        ],
-      },
+            }
+          }
+        ]
+      }
     ];
     cate[1].items = [
       {
@@ -249,18 +242,20 @@ export default {
           set({ data, output }: EditorResult<Data>, value: boolean) {
             data.useActions = value;
             if (value && !data?.actionBtns?.length) {
-              data.actionBtns = [{
-                type: 'link',
-                title: '修改',
-                size: 'middle',
-                id: 'modify'
-              },
-              {
-                type: 'link',
-                title: '删除',
-                size: 'middle',
-                id: 'delete'
-              }];
+              data.actionBtns = [
+                {
+                  type: 'link',
+                  title: '修改',
+                  size: 'middle',
+                  id: 'modify'
+                },
+                {
+                  type: 'link',
+                  title: '删除',
+                  size: 'middle',
+                  id: 'delete'
+                }
+              ];
               const schema = {
                 type: 'object',
                 properties: {
@@ -305,81 +300,80 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: number[]) {
             data.maxDepth = value[0];
-          },
-        },
+          }
+        }
       },
       {
-        title: "添加完成",
+        title: '添加完成',
         type: '_Event',
         options: () => {
           return {
-            outputId: "addNodeDone",
+            outputId: 'addNodeDone'
           };
-        },
-      },
+        }
+      }
     ];
   },
   '[data-tree-node-id]': {
-    title: "树节点配置项",
+    title: '树节点配置项',
     items: [
       {
-        title: "标题",
-        type: "text",
+        title: '标题',
+        type: 'text',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             return getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "title",
+              dataset: 'treeNodeId',
+              val: 'title'
             });
           },
           set({ data, focusArea }: EditorResult<Data>, value: string) {
             const item = getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "obj",
+              dataset: 'treeNodeId',
+              val: 'obj'
             });
             item.title = value;
-          },
-        },
+          }
+        }
       },
       {
-        title: "值",
-        type: "text",
+        title: '值',
+        type: 'text',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             return getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "value",
+              dataset: 'treeNodeId',
+              val: 'value'
             });
           },
           set({ data, focusArea }: EditorResult<Data>, value: string) {
             const item = getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "obj",
+              dataset: 'treeNodeId',
+              val: 'obj'
             });
             item.value = value;
-          },
-        },
+          }
+        }
       },
       {
-        title: "添加子节点",
-        type: "button",
+        title: '添加子节点',
+        type: 'button',
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             const target: TreeData = getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "obj",
+              dataset: 'treeNodeId',
+              val: 'obj'
             });
-
 
             const newChildNode = buildNewNode(uuid());
             if (target.children) {
@@ -387,14 +381,14 @@ export default {
             } else {
               target.children = [newChildNode];
             }
-          },
-        },
+          }
+        }
       },
       {
-        title: "上移",
-        type: "button",
+        title: '上移',
+        type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const key: string = focusArea.dataset["treeNodeId"];
+          const key: string = focusArea.dataset['treeNodeId'];
           const index = data.treeData.findIndex((item) => item.key === key);
           if (index === 0) {
             return false;
@@ -403,25 +397,25 @@ export default {
             const parent: TreeData = getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "obj",
-              isParent: true,
+              dataset: 'treeNodeId',
+              val: 'obj',
+              isParent: true
             });
-            if (parent && parent.children[0].key === key) return false;
+            if (parent && parent.children?.[0].key === key) return false;
           }
           return true;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             moveNode({ data, focusArea, isDown: false });
-          },
-        },
+          }
+        }
       },
       {
-        title: "下移",
-        type: "button",
+        title: '下移',
+        type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const key: string = focusArea.dataset["treeNodeId"];
+          const key: string = focusArea.dataset['treeNodeId'];
           const index = data.treeData.findIndex((item) => item.key === key);
           if (index === data.treeData.length - 1) {
             return false;
@@ -430,30 +424,26 @@ export default {
             const parent: TreeData = getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "obj",
-              isParent: true,
+              dataset: 'treeNodeId',
+              val: 'obj',
+              isParent: true
             });
-            if (
-              parent &&
-              parent.children[parent.children.length - 1].key === key
-            )
-              return false;
+            if (parent && parent.children?.[parent.children.length - 1].key === key) return false;
           }
           return true;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             moveNode({ data, focusArea, isDown: true });
-          },
-        },
+          }
+        }
       },
       {
-        title: "删除节点",
-        type: "button",
+        title: '删除节点',
+        type: 'button',
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
-            const key: string = focusArea.dataset["treeNodeId"];
+            const key: string = focusArea.dataset['treeNodeId'];
             const index = data.treeData.findIndex((item) => item.key === key);
             if (index !== -1) {
               data.treeData.splice(index, 1);
@@ -461,25 +451,23 @@ export default {
               const parent: TreeData = getItemProp({
                 data,
                 focusArea,
-                dataset: "treeNodeId",
-                val: "obj",
-                isParent: true,
+                dataset: 'treeNodeId',
+                val: 'obj',
+                isParent: true
               });
               if (Array.isArray(parent.children)) {
-                const index = parent.children.findIndex(
-                  (item) => item.key === key
-                );
+                const index = parent.children.findIndex((item) => item.key === key);
                 index !== -1 && parent.children.splice(index, 1);
               }
             }
-          },
-        },
+          }
+        }
       },
       {
-        title: "删除所有子节点",
-        type: "button",
+        title: '删除所有子节点',
+        type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const key: string = focusArea.dataset["treeNodeId"];
+          const key: string = focusArea.dataset['treeNodeId'];
           const index = data.treeData.findIndex((item) => item.key === key);
           let target: TreeData;
           if (index !== -1) {
@@ -488,15 +476,15 @@ export default {
             target = getItemProp({
               data,
               focusArea,
-              dataset: "treeNodeId",
-              val: "obj",
+              dataset: 'treeNodeId',
+              val: 'obj'
             });
           }
           return target && target.children && target.children.length > 0;
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
-            const key: string = focusArea.dataset["treeNodeId"];
+            const key: string = focusArea.dataset['treeNodeId'];
             const index = data.treeData.findIndex((item) => item.key === key);
             if (index !== -1) {
               data.treeData[index].children = [];
@@ -504,15 +492,15 @@ export default {
               const target: TreeData = getItemProp({
                 data,
                 focusArea,
-                dataset: "treeNodeId",
-                val: "obj",
+                dataset: 'treeNodeId',
+                val: 'obj'
               });
               if (target && target.children) target.children = [];
             }
-          },
-        },
-      },
-    ],
+          }
+        }
+      }
+    ]
   },
   ...actionBtnEditor
 };
