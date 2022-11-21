@@ -1,0 +1,14 @@
+{
+  "value": "",
+  "visible": true,
+  "rules": [],
+  "config": {
+    "allowClear": true,
+    "placeholder": "请输入邮箱",
+    "disabled": false,
+    "addonBefore": "",
+    "addonAfter": "",
+    "showCount": false,
+    "maxLength": -1
+  }
+}
