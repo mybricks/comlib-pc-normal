@@ -54,8 +54,8 @@ export default function ({ data, inputs, outputs, slots, env }: RuntimeParams<Da
     setTargetKeys(val);
   });
 
-  inputs['getValue'](() => {
-    outputs['returnValue'](getTransferValue());
+  inputs['getValue']((_, outputRels) => {
+    outputRels['returnValue'](getTransferValue());
   });
 
   inputs['resetValue'](() => {
