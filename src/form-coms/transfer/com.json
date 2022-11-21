@@ -19,6 +19,9 @@
         "items": {
           "type": "object",
           "properties": {
+            "key": {
+              "type": "string"
+            },
             "title": {
               "type": "string"
             },
@@ -89,6 +92,9 @@
         "items": {
           "type": "object",
           "properties": {
+            "key": {
+              "type": "string"
+            },
             "title": {
               "type": "string"
             },
@@ -110,6 +116,9 @@
         "items": {
           "type": "object",
           "properties": {
+            "key": {
+              "type": "string"
+            },
             "title": {
               "type": "string"
             },
