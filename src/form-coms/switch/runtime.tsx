@@ -4,7 +4,6 @@ import { validateFormItem } from '../utils/validator';
 
 interface Data {
   value: boolean | undefined;
-  visible: boolean;
   rules: any[];
   config: {
     allowClear: boolean;
@@ -48,14 +47,6 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
       data.config.checked = false;
     });
 
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -72,12 +63,10 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   }, []);
 
   return (
-    data.visible && (
-      <Switch
-        {...data.config}
-        onChange={changeValue}
-        // onBlur={onBlur}
-      />
-    )
+    <Switch
+      {...data.config}
+      onChange={changeValue}
+      // onBlur={onBlur}
+    />
   );
 }

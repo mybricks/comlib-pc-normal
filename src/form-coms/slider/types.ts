@@ -4,7 +4,6 @@ export type SliderProps = SliderSingleProps | SliderRangeProps;
 
 export interface Data {
     config: SliderProps;
-    visible: boolean;
     rules: any[];
     value?: number | [number, number];
     singleValue?: number;

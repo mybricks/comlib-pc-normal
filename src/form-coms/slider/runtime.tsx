@@ -91,21 +91,18 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     formatter
   };
 
-  return (
-    data.visible &&
-    (data.config.range ? (
-      <Slider {...commonProps} range={data.config.range || true} value={data.rangeValue} />
-    ) : !data.useInput ? (
-      <Slider {...commonProps} value={data.singleValue} />
-    ) : (
-      <Row>
-        <Col span={data.sliderSpan}>
-          <Slider {...commonProps} value={data.singleValue} />
-        </Col>
-        <Col className={css.inputCol} span={data.inputSpan}>
-          <InputNumber {...inputNumberProps} />
-        </Col>
-      </Row>
-    ))
+  return data.config.range ? (
+    <Slider {...commonProps} range={data.config.range || true} value={data.rangeValue} />
+  ) : !data.useInput ? (
+    <Slider {...commonProps} value={data.singleValue} />
+  ) : (
+    <Row>
+      <Col span={data.sliderSpan}>
+        <Slider {...commonProps} value={data.singleValue} />
+      </Col>
+      <Col className={css.inputCol} span={data.inputSpan}>
+        <InputNumber {...inputNumberProps} />
+      </Col>
+    </Row>
   );
 }

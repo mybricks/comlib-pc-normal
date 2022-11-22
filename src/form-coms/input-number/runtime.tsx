@@ -5,7 +5,6 @@ import css from './runtime.less';
 interface Data {
   options: any[];
   rules: any[];
-  visible: boolean;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -49,14 +48,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   inputs['resetValue'](() => {
     setValue(void 0);
   });
-  // //设置显示
-  // inputs['setVisible'](() => {
-  //   data.visible = true;
-  // });
-  // //设置隐藏
-  // inputs['setInvisible'](() => {
-  //   data.visible = false;
-  // });
   //设置禁用
   inputs['setDisabled'](() => {
     data.config.disabled = true;
@@ -72,10 +63,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    data.visible && (
-      <div className={css.inputNumber}>
-        <InputNumber value={value} {...data.config} onChange={onChange} />
-      </div>
-    )
+    <div className={css.inputNumber}>
+      <InputNumber value={value} {...data.config} onChange={onChange} />
+    </div>
   );
 }

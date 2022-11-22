@@ -68,14 +68,6 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       data.config.options = tempDs;
     });
 
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -93,25 +85,23 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
   }, []);
 
   return (
-    data.visible && (
-      <div>
-        <Radio.Group {...data.config} value={data.value} onChange={onChange}>
-          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-            const label = item.label;
-            return (
-              <Radio
-                key={item.value}
-                value={item.value}
-                disabled={item.disabled}
-                checked={item.checked}
-                style={{ marginRight: 8 }}
-              >
-                {label}
-              </Radio>
-            );
-          })}
-        </Radio.Group>
-      </div>
-    )
+    <div>
+      <Radio.Group {...data.config} value={data.value} onChange={onChange}>
+        {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+          const label = item.label;
+          return (
+            <Radio
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              checked={item.checked}
+              style={{ marginRight: 8 }}
+            >
+              {label}
+            </Radio>
+          );
+        })}
+      </Radio.Group>
+    </div>
   );
 }
