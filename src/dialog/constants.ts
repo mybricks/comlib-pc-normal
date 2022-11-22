@@ -54,6 +54,7 @@ export interface Data {
     hidden?: boolean;
     visible: boolean;
     isConnected?: boolean;
+    useBtnLoading?: boolean;
   })[];
   getContainer?: () => any;
 }
