@@ -32,6 +32,10 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['resetValue'](() => {
+      // 迂回重置视图
+      data.value = 0;
+      data.singleValue = 0;
+      data.rangeValue = [0, 0];
       data.value = void 0;
       data.singleValue = void 0;
       data.rangeValue = void 0;
