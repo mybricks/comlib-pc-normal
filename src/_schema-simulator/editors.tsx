@@ -1,25 +1,36 @@
 import { Data } from './constants';
 
 export default {
-  '@outputConnected'({ data, output }, fromPin, toPin) {
-    if (fromPin.schema.type === 'follow') {
-      data.outSchema = toPin.schema;
-      output.get('outputData').setSchema(data.outSchema);
-    } else {
-      data.outSchema = fromPin.schema;
-      output.get('outputData').setSchema(data.outSchema);
-    }
-  },
+  //“any类型”
+  // '@outputConnected'({ data, output }, fromPin, toPin) {
+  //   //如果是“any”，schema跟着后面的schema
+  //   if (fromPin.schema.type === 'any') {
+  //     data.outSchema = toPin.schema;
+  //     output.get('outputData').setSchema(data.outSchema);
+  //   } else {
+  //     //否则，schema拿到自己编辑好的
+  //     data.outSchema = fromPin.schema;
+  //     output.get('outputData').setSchema(data.outSchema);
+  //   }
+  // },
+  // '@outputUpdated'({ data, input, output, slots }, pin) {
+  //   //编辑区更新了，重重存储
+  //   data.outSchema = pin.schema;
+  // },
+
+  //"follow类型"
   '@outputUpdated'({ data, input, output, slots }, pin) {
-    console.log('outputUpdatedxx.schema', pin.schema);
+    //编辑区更新了，重重存储
     data.outSchema = pin.schema;
+    //加上这一句会死循环
+    //output.get('outputData').setSchema(data.outSchema);
   },
 
   ':root': [
     {
       title: '数组长度',
       type: 'inputnumber',
-      options: [{ min: 1, max: 20, width: 60 }],
+      options: [{ min: 1, max: 100, width: 60 }],
       value: {
         get({ data }: EditorResult<Data>) {
           return [data.arrLength];
