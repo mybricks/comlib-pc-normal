@@ -1,5 +1,5 @@
 import { Data } from './types';
-
+import { RuleKeys, defaultRules } from '../utils/validator';
 export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '配置';
@@ -86,6 +86,18 @@ export default {
             }
           },
           {
+            title: '禁用状态',
+            type: 'switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return !!data.disabled;
+              },
+              set({ data }: EditorResult<Data>, val: boolean) {
+                data.disabled = val;
+              }
+            }
+          },
+          {
             title: '分页',
             type: 'switch',
             value: {
@@ -123,6 +135,63 @@ export default {
         ]
       },
       {
+        title: '校验',
+        items: [
+          {
+            title: '校验规则',
+            description: '提供快捷校验配置',
+            type: 'ArrayCheckbox',
+            options: {
+              checkField: 'status',
+              visibleField: 'visible',
+              getTitle,
+              items: [
+                {
+                  title: '提示文字',
+                  type: 'Text',
+                  value: 'message',
+                  ifVisible(item: any, index: number) {
+                    return item.key === RuleKeys.REQUIRED;
+                  }
+                },
+                {
+                  title: '编辑校验规则',
+                  type: 'code',
+                  options: {
+                    language: 'javascript',
+                    enableFullscreen: false,
+                    title: '编辑校验规则',
+                    width: 600,
+                    minimap: {
+                      enabled: false
+                    },
+                    babel: true,
+                    eslint: {
+                      parserOptions: {
+                        ecmaVersion: '2020',
+                        sourceType: 'module'
+                      }
+                    }
+                  },
+                  ifVisible(item: any, index: number) {
+                    return item.key === RuleKeys.CODE_VALIDATOR;
+                  },
+                  value: 'validateCode'
+                }
+              ]
+            },
+            value: {
+              get({ data }) {
+                return data.rules.length > 0 ? data.rules : defaultRules;
+              },
+              set({ data }, value: any) {
+                data.rules = value;
+              }
+            }
+          }
+        ]
+      },
+      {
         title: '事件',
         items: [
           {
@@ -138,4 +207,15 @@ export default {
       }
     ];
   }
+};
+
+const getTitle = (item: any, index: number) => {
+  const { key, title, numericalLimit, regExr } = item;
+  // let detail;
+  // if (key === RuleKeys.REG_EXP) {
+  //   detail = regExpressions.find(({ value }) => value === regExr)?.label;
+  // } else if ([RuleKeys.MIN, RuleKeys.MAX, RuleKeys.MIN_LENGTH, RuleKeys.MAX_LENGTH].includes(key)) {
+  //   detail = Array.isArray(numericalLimit) ? numericalLimit[0] || '0' : '0';
+  // }
+  return title;
 };

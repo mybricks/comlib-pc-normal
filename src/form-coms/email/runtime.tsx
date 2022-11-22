@@ -2,8 +2,6 @@ import { Form, Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { validateFormItem } from '../utils/validator';
 
-import css from './runtime.less';
-
 interface Data {
   value: string | undefined;
   visible: boolean;
@@ -18,16 +16,16 @@ interface Data {
   };
 }
 
-export default function (props: RuntimeParams<Data>) {
-  const { env, data, _inputs, inputs, _outputs, outputs, parentSlot, style } = props;
+export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
   const { edit } = env;
 
   useLayoutEffect(() => {
+    //1.设置值
     inputs['setValue']((val) => {
       data.value = val;
-      outputs['onChange'](val);
+      outputs['onChange'](data.value);
     });
-
+    //2.校验
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: data.value,
@@ -41,26 +39,31 @@ export default function (props: RuntimeParams<Data>) {
           outputRels['returnValidate'](e);
         });
     });
+    //3.获取值
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
     });
-
+    //4.重置值
     inputs['resetValue'](() => {
       data.value = void 0;
     });
-    //设置禁用
+    // //设置显示
+    // inputs['setVisible'](() => {
+    //   data.visible = true;
+    // });
+    // //设置隐藏
+    // inputs['setInvisible'](() => {
+    //   data.visible = false;
+    // });
+    //5.设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
     });
-    //设置启用
+    //6.设置启用
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
   }, []);
-
-  // const validateTrigger = () => {
-  //   parentSlot._inputs['validateTrigger'](props.id)
-  // }
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
@@ -85,5 +88,5 @@ export default function (props: RuntimeParams<Data>) {
     />
   );
 
-  return <div className={css.fiText}>{jsx}</div>;
+  return data.visible && <div>{jsx}</div>;
 }

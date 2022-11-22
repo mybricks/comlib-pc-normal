@@ -108,6 +108,10 @@ const minCulation = (schema, data: Data) => {
 export default function ({ data, env, inputs, outputs }: RuntimeParams<Data>) {
   const { runtime } = env;
   if (runtime) {
+    //触发输出
+    inputs['mockTouch']((val, outputRels) => {
+      outputRels['outputData'](minCulation(data.outSchema, data));
+    });
     //连接组件直接输出
     if (outputs['outputData']) {
       outputs['outputData'](minCulation(data.outSchema, data));

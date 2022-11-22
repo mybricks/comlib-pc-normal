@@ -752,7 +752,29 @@ function useDynamic(dataset: string) {
             res.dynamicHidden = value;
           }
         }
-      }
+      },
+      {
+        title: '加载动画',
+        type: 'Switch',
+        description: '开启后点击按钮展示加载动画，动画需手动连线关闭',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            return get(data, focusArea, dataset, 'useBtnLoading');
+          },
+          set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
+            const res = get(data, focusArea, dataset, 'obj');
+            const schema = {
+              type: 'any'
+            };
+            if (value) {
+              input.add(`stopLoading${res.id}`, `关闭-${res.title}加载动画`, schema);
+            } else {
+              input.remove(`stopLoading${res.id}`);
+            }
+            res.useBtnLoading = value;
+          }
+        }
+      },
     ]
   };
 }

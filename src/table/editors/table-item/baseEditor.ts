@@ -39,10 +39,18 @@ const BaseEditor = {
           const item = getColumnItem(data, focusArea);
           return item.keepDataIndex;
         },
-        set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value: boolean) {
+        set({ data, focusArea, output, input, slot, ...res }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          const hasEvent = slot.get(item.slotId).inputs.get(InputIds.SLOT_ROW_VALUE);
+          if (value) {
+            !hasEvent && [ContentTypeEnum.SlotItem].includes(item.contentType);
+            slot.get(item.slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+          } else {
+            hasEvent && slot.get(item.slotId).inputs.remove(InputIds.SLOT_ROW_VALUE);
+          }
           setCol({ data, focusArea }, 'keepDataIndex', value);
-          setDataSchema({ data, focusArea, output, input, ...res });
+          setDataSchema({ data, focusArea, output, input, slot, ...res });
         }
       }
     },
@@ -111,7 +119,9 @@ const BaseEditor = {
             const slotId = uuid();
             column['slotId'] = slotId;
             slot.add({ id: slotId, title: `自定义${column.title}列`, type: 'scope' });
-            // slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+            if (column.keepDataIndex) {
+              slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+            }
             slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
             slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
           } else {
