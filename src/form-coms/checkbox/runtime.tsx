@@ -38,14 +38,6 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       data.value = void 0;
     });
 
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -95,15 +87,13 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     outputs['onChange'](checkedValue);
   }, []);
   return (
-    data.visible && (
-      <div>
-        <Checkbox.Group
-          {...data.config}
-          options={env.edit ? data.staticOptions : data.config.options}
-          value={data.value as any}
-          onChange={onChange}
-        />
-      </div>
-    )
+    <div>
+      <Checkbox.Group
+        {...data.config}
+        options={env.edit ? data.staticOptions : data.config.options}
+        value={data.value as any}
+        onChange={onChange}
+      />
+    </div>
   );
 }

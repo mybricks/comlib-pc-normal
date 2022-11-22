@@ -104,14 +104,6 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       };
     });
 
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -143,17 +135,15 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   };
 
   return (
-    data.visible && (
-      <div className={css.select}>
-        <Select
-          {...data.config}
-          options={env.edit ? data.staticOptions : data.config.options}
-          value={data.value}
-          onChange={onChange}
-          onBlur={onBlur}
-          onSearch={data.config.showSearch ? onSearch : void 0}
-        />
-      </div>
-    )
+    <div className={css.select}>
+      <Select
+        {...data.config}
+        options={env.edit ? data.staticOptions : data.config.options}
+        value={data.value}
+        onChange={onChange}
+        onBlur={onBlur}
+        onSearch={data.config.showSearch ? onSearch : void 0}
+      />
+    </div>
   );
 }

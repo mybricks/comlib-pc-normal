@@ -1,0 +1,11 @@
+{
+  "visible": true,
+  "config": {
+    "disabled": false,
+    "min": 0,
+    "max": 100,
+    "range": false
+  },
+  "sliderSpan": 20,
+  "inputSpan": 4
+}

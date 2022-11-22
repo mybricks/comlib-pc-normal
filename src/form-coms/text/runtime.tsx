@@ -6,7 +6,6 @@ import css from './runtime.less';
 
 interface Data {
   value: string | undefined;
-  visible: boolean;
   rules: any[];
   config: {
     allowClear: boolean;

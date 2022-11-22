@@ -5,7 +5,6 @@ import css from './runtime.less';
 
 interface Data {
   options: any[];
-  visible: boolean;
   placeholder: string;
   isMultiple: boolean;
   maxTagCountType?: string;
@@ -54,14 +53,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   inputs['resetValue'](() => {
     data.value = [];
   });
-  // //设置显示
-  // inputs['setVisible'](() => {
-  //   data.visible = true;
-  // });
-  // //设置隐藏
-  // inputs['setInvisible'](() => {
-  //   data.visible = false;
-  // });
   //设置禁用
   inputs['setDisabled'](() => {
     data.config.disabled = true;
@@ -81,16 +72,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    data.visible && (
-      <div className={css.cascader}>
-        <Cascader
-          value={data.value}
-          options={options}
-          {...data.config}
-          multiple={data.isMultiple}
-          onChange={onChange}
-        />
-      </div>
-    )
+    <div className={css.cascader}>
+      <Cascader
+        value={data.value}
+        options={options}
+        {...data.config}
+        multiple={data.isMultiple}
+        onChange={onChange}
+      />
+    </div>
   );
 }

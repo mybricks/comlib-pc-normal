@@ -4,7 +4,6 @@ export interface Data {
         options: any[];
         disabled: boolean;
     };
-    visible: boolean;
     rules: any[];
     value?: any[];
     staticOptions: Option[];

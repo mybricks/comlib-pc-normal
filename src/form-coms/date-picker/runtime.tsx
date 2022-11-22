@@ -7,7 +7,6 @@ import css from './runtime.less';
 interface Data {
   options: any[];
   rules: any[];
-  visible: boolean;
   showTime: Record<string, unknown> | boolean;
   config: {
     disabled: boolean;
@@ -54,14 +53,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   inputs['resetValue'](() => {
     setValue(void 0);
   });
-  // //设置显示
-  // inputs['setVisible'](() => {
-  //   data.visible = true;
-  // });
-  // //设置隐藏
-  // inputs['setInvisible'](() => {
-  //   data.visible = false;
-  // });
   //设置禁用
   inputs['setDisabled'](() => {
     data.config.disabled = true;
@@ -99,10 +90,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    data.visible && (
-      <div className={css.datePicker}>
-        <DatePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
-      </div>
-    )
+    <div className={css.datePicker}>
+      <DatePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
+    </div>
   );
 }

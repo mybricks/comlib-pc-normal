@@ -49,7 +49,8 @@
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
           "./src/form-coms/transfer/com.json",
-          "./src/form-coms/upload/com.json"
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json"
         ]
       },
       {
@@ -138,7 +139,8 @@
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
           "./src/form-coms/transfer/com.json",
-          "./src/form-coms/upload/com.json"
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json"
         ]
       },
       {
