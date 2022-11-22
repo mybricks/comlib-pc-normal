@@ -146,17 +146,6 @@ export default {
               visibleField: 'visible',
               getTitle,
               items: [
-                // {
-                //   title: '提示文字',
-                //   description: '提示文字的表达式（{}, =, <, >, ||, &&）, 例：${label}不能为空',
-                //   type: 'EXPRESSION',
-                //   options: {
-                //     autoSize: true,
-                //     placeholder: '例：${label}不能为空',
-                //     // suggestions: getSuggestions(true),
-                //   },
-                //   value: 'message'
-                // },
                 {
                   title: '提示文字',
                   type: 'Text',
