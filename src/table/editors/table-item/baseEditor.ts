@@ -2,7 +2,7 @@ import Tree from '../../../components/editorRender/fieldSelect';
 import { uuid } from '../../../utils';
 import { InputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
-import { Schemas, setCol, setDataSchema } from '../../schema';
+import { getDefaultDataSchema, Schemas, setCol, setDataSchema } from '../../schema';
 import { getColumnItem, getColumnsSchema } from '../../utils';
 
 const BaseEditor = {
@@ -132,6 +132,30 @@ const BaseEditor = {
           }
           setCol({ data, focusArea }, 'contentType', value);
           setDataSchema({ data, focusArea, output, input, slot, ...res });
+        }
+      }
+    },
+    {
+      title: '列数据类型',
+      type: '_schema',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return (
+          [ContentTypeEnum.Text].includes(item.contentType) ||
+          ([ContentTypeEnum.SlotItem].includes(item.contentType) && item.keepDataIndex)
+        );
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.dataSchema || getDefaultDataSchema(item.dataIndex, data);
+        },
+        set({ data, focusArea, ...res }: EditorResult<Data>, value: object) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'dataSchema', value);
+          setDataSchema({ data, focusArea, ...res });
         }
       }
     }

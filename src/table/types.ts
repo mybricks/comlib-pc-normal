@@ -67,6 +67,7 @@ export interface IColumn {
   className?: string;
 
   keepDataIndex?: boolean;
+  dataSchema?: any;
 }
 
 export enum SizeEnum {

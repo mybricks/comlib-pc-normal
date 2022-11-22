@@ -9,28 +9,46 @@ interface Props {
   output: any;
   slot: any;
 }
-
-function schema2Obj(schema: any = {}, parentKey = '', config: any = { isRoot: true }) {
-  const { isRoot = false } = config;
-  const { type } = schema;
-  const res: any = {};
-  if (type !== 'object' && type !== 'array') return;
-  const properties = (type === 'object' ? schema.properties : schema.items.properties) || {};
-  Object.keys(properties).forEach((key) => {
-    const subSchema = properties[key];
-    const targetKey = isRoot ? key : `${parentKey}.${key}`;
-    res[targetKey] = subSchema;
-    if (subSchema?.type === 'object') {
-      Object.assign(
-        res,
-        schema2Obj(properties[key], targetKey, {
-          ...config,
-          isRoot: false
-        })
-      );
+export function getDefaultDataSchema(dataIndex: string | string[], data: Data) {
+  const columnIdx = Array.isArray(dataIndex) ? dataIndex.join('.') : dataIndex;
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  return schemaObj[columnIdx] || { type: 'string' };
+}
+function schema2Obj(schema: any = {}, data: Data) {
+  function loop(schema: any = {}, parentKey = '', config: any = { isRoot: true }) {
+    const { isRoot = false } = config;
+    const { type } = schema;
+    const res: any = {};
+    if (type !== 'object' && type !== 'array') return;
+    const properties = (type === 'object' ? schema.properties : schema.items.properties) || {};
+    Object.keys(properties).forEach((key) => {
+      const subSchema = properties[key];
+      const targetKey = isRoot ? key : `${parentKey}.${key}`;
+      res[targetKey] = subSchema;
+      if (subSchema?.type === 'object') {
+        Object.assign(
+          res,
+          loop(properties[key], targetKey, {
+            ...config,
+            isRoot: false
+          })
+        );
+      }
+    });
+    return res;
+  }
+  const schemaObj = loop(schema);
+  data.columns.forEach((item) => {
+    const idx = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+    if (
+      item.dataSchema &&
+      ([ContentTypeEnum.Text].includes(item.contentType) ||
+        ([ContentTypeEnum.SlotItem].includes(item.contentType) && item.keepDataIndex))
+    ) {
+      schemaObj[idx] = item.dataSchema;
     }
   });
-  return res;
+  return schemaObj;
 }
 
 // 获取列数据schema
@@ -236,7 +254,7 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }:
 }
 
 export function setDataSchema({ data, output, input, slot }: EditorResult<Data>) {
-  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
 
   setDataSourceSchema(dataSchema, { data, output, input, slot });
