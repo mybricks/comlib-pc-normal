@@ -1,5 +1,5 @@
 import { Data } from './types';
-import { RuleKeys, defaultRules } from '../utils/validator';
+import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
 export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '配置';
@@ -207,15 +207,4 @@ export default {
       }
     ];
   }
-};
-
-const getTitle = (item: any, index: number) => {
-  const { key, title, numericalLimit, regExr } = item;
-  // let detail;
-  // if (key === RuleKeys.REG_EXP) {
-  //   detail = regExpressions.find(({ value }) => value === regExr)?.label;
-  // } else if ([RuleKeys.MIN, RuleKeys.MAX, RuleKeys.MIN_LENGTH, RuleKeys.MAX_LENGTH].includes(key)) {
-  //   detail = Array.isArray(numericalLimit) ? numericalLimit[0] || '0' : '0';
-  // }
-  return title;
 };
