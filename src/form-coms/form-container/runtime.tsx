@@ -105,8 +105,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return new Promise((resolve, reject) => {
       Promise.all(
         data.items.map((item) => {
+          // 隐藏的表单项，不再校验
+          if (!item.visible) return { validateStatus: 'success' };
+
           const id = item.id;
           const input = childrenInputs[id];
+
           return new Promise((resolve, reject) => {
             input?.validate({ ...item }).returnValidate((validateInfo) => {
               //调用所有表单项的校验
@@ -133,8 +137,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const getValue = useCallback(() => {
     return new Promise((resolve, reject) => {
+      /** 隐藏的表单项，不收集数据 **/
+      const formItems = data.items.filter((item) => item.visible);
+
       Promise.all(
-        data.items.map((item) => {
+        formItems.map((item) => {
           const id = item.id;
           const input = childrenInputs[id];
 
@@ -153,13 +160,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   resolve(value);
                 }
               } else {
-                /** 隐藏的表单项，不收集数据 **/
-                if (item.visible) {
-                  value = {
-                    name: item.name,
-                    value: val
-                  };
-                }
+                value = {
+                  name: item.name,
+                  value: val
+                };
 
                 resolve(value);
               }
@@ -198,14 +202,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        getValue().then((values: any) => {
-          const res = { ...values, ...params };
-          if (outputRels) {
-            outputRels[outputId](res);
-          } else {
-            outputs[outputId](res);
-          }
-        });
+        getValue()
+          .then((values: any) => {
+            const res = { ...values, ...params };
+            if (outputRels) {
+              outputRels[outputId](res);
+            } else {
+              outputs[outputId](res);
+            }
+          })
+          .catch((e) => {
+            console.log('收集表单项值失败', e);
+          });
       })
       .catch((e) => {
         console.log('校验失败', e);

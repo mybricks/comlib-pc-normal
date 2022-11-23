@@ -23,6 +23,8 @@ interface FormItems {
   span: number
   required?: boolean
   visible: boolean
+  validateStatus?: string
+  help?: string
 }
 
 export type LabelWidthType = 'px' | 'span'
