@@ -98,5 +98,9 @@
       }
     }
   ],
-  "slots": []
+  "slots": [],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
 }
