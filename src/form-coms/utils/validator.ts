@@ -156,3 +156,8 @@ export function validateFormItem({ value, env, rules }) {
     })
   })
 }
+
+export const getTitle = (item: any, index: number) => {
+  const { key, title, numericalLimit, regExr } = item;
+  return title;
+};

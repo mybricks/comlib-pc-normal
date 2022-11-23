@@ -53,6 +53,7 @@
           "./src/form-coms/slider/com.json",
           "./src/form-coms/rate/com.json",
           "./src/form-coms/email/com.json",
+          "./src/form-coms/password/com.json",
           "./src/form-coms/phone-number/com.json"
         ]
       },
@@ -146,6 +147,7 @@
           "./src/form-coms/slider/com.json",
           "./src/form-coms/rate/com.json",
           "./src/form-coms/email/com.json",
+          "./src/form-coms/password/com.json",
           "./src/form-coms/phone-number/com.json"
         ]
       },

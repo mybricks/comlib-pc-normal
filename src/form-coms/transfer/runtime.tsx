@@ -43,6 +43,10 @@ export default function ({ data, inputs, outputs, slots, env }: RuntimeParams<Da
       message.error('数据源必须是数组类型');
       return;
     }
+    if (!dataSource.every((item) => !!item.key)) {
+      message.error('每个数据项必须包含唯一key标识');
+      return;
+    }
     data.dataSource = dataSource;
   });
 
