@@ -5,9 +5,8 @@ import { validateFormItem } from '../utils/validator';
 import css from './style.less';
 
 export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
+  const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
-  const [disabled, setDisabled] = useState<boolean>(false);
-
   const validate = useCallback(
     (val, outputRels) => {
       validateFormItem({
@@ -38,11 +37,11 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   });
 
   inputs['setDisabled'](() => {
-    setDisabled(true);
+    data.disabled = true;
   });
 
   inputs['setEnabled'](() => {
-    setDisabled(false);
+    data.disabled = false;
   });
 
   inputs['validate'](validate);
@@ -57,7 +56,12 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
 
   return (
     <div>
-      <Input.Password value={value} disabled={disabled} onChange={onChange} />
+      <Input.Password
+        placeholder={placeholder}
+        value={value}
+        disabled={disabled}
+        onChange={onChange}
+      />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
-
 export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '配置';
