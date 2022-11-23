@@ -7,7 +7,7 @@ import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
 
 const SlotContent = (props) => {
-  const { slots, data, childrenInputs, outputs, submit } = props;
+  const { slots, data, childrenInputs, outputs, submit, env } = props;
 
   const isInlineModel = useMemo(() => {
     return data.layout === 'inline';
@@ -49,6 +49,18 @@ const SlotContent = (props) => {
               item.visible = com.style.display !== 'none';
             } else {
               item['visible'] = true;
+            }
+
+            if (env.edit) {
+              return (
+                <Col
+                  style={{ display: com.style.display }}
+                  key={com.id}
+                  flex={`0 0 ${100 / data.formItemColumn}%`}
+                >
+                  {com.jsx}
+                </Col>
+              );
             }
 
             return (

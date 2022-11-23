@@ -230,6 +230,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           // wrapperCol={{ span: 16 }}
         >
           <SlotContent
+            env={env}
             slots={slots}
             data={data}
             childrenInputs={childrenInputs}
@@ -238,7 +239,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           />
         </Form>
       ) : (
-        <SlotContent slots={slots} data={data} childrenInputs={childrenInputs} />
+        <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
       )}
     </Fragment>
   );
