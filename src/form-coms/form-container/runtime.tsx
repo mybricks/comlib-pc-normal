@@ -105,8 +105,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return new Promise((resolve, reject) => {
       Promise.all(
         data.items.map((item) => {
+          // 隐藏的表单项，不再校验
+          if (!item.visible) return { validateStatus: 'success' };
+
           const id = item.id;
           const input = childrenInputs[id];
+
           return new Promise((resolve, reject) => {
             input?.validate({ ...item }).returnValidate((validateInfo) => {
               //调用所有表单项的校验
