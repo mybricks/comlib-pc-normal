@@ -90,6 +90,7 @@ export default function ({ data, inputs, outputs, slots, env }: RuntimeParams<Da
 
   return (
     <Transfer
+      className={styles.wrap}
       titles={titles}
       dataSource={_dataSource}
       targetKeys={targetKeys}
