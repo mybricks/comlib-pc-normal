@@ -30,6 +30,21 @@ export const BaseEditor = [
     }
   },
   {
+    title: '标题',
+    type: 'text',
+    ifVisible({ data }: EditorResult<Data>) {
+      return data.showTitle;
+    },
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.title;
+      },
+      set({ data }: EditorResult<Data>, value: string) {
+        data.title = value;
+      }
+    }
+  },
+  {
     title: '增加描述项',
     type: 'Button',
     value: {
@@ -37,9 +52,10 @@ export const BaseEditor = [
         const id = uuid();
         data.items.push({
           id: id,
-          label: `新增描述项`,
+          label: `描述项${data.items.length + 1}`,
           key: id,
-          value: ``,
+          showLable: true,
+          value: `field${data.items.length + 1}`,
           span: 1,
           labelStyle: {
             fontSize: 14,
