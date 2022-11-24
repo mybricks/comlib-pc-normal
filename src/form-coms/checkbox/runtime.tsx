@@ -35,6 +35,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['resetValue'](() => {
+      data.value = [];
       data.value = void 0;
     });
 

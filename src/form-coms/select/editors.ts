@@ -61,6 +61,9 @@ export default {
           set({ data, input, output }: EditorResult<Data>, value: string) {
             data.config.mode = value as any;
             if (['multiple', 'tags'].includes(value)) {
+              if (!Array.isArray(data.value)) {
+                data.value = [data.value] as any;
+              }
               const valueSchema = data.config.labelInValue ? {
                 type: 'array',
                 items: {
@@ -81,6 +84,9 @@ export default {
               output.get(OutputIds.OnChange).setSchema(valueSchema);
               output.get(OutputIds.ReturnValue).setSchema(valueSchema);
             } else {
+              if (Array.isArray(data.value)) {
+                data.value = data.value[0];
+              }
               const valueSchema = data.config.labelInValue ? {
                 type: 'object',
                 properties: {
@@ -467,9 +473,9 @@ export default {
                     }
                   }
                 };
-                if(data.dropdownSearchOption === true){
+                if (data.dropdownSearchOption === true) {
                   output.add('remoteSearch', '远程搜索', { type: 'any' });
-                }else{
+                } else {
                   output.remove('remoteSearch');
                 }
               }
