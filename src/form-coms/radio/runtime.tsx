@@ -31,6 +31,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
 
     inputs['resetValue'](() => {
+      data.value = '';
       data.value = void 0;
     });
 
