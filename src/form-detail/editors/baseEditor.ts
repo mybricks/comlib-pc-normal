@@ -45,6 +45,19 @@ export const BaseEditor = [
     }
   },
   {
+    title: '列数',
+    type: 'Slider',
+    options: [{ max: 12, min: 1, steps: 1, formatter: '/12' }],
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.column;
+      },
+      set({ data }: EditorResult<Data>, value: number) {
+        data.column = value;
+      }
+    }
+  },
+  {
     title: '增加描述项',
     type: 'Button',
     value: {

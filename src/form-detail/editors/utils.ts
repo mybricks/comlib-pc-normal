@@ -2,15 +2,11 @@ import { message } from 'antd';
 import { Data, InputIds } from '../constants';
 
 export function getEleIdx({ data, focusArea }: any): number {
-  // console.log(focusArea, 11);
   focusArea.ele.myEle = true;
   if (!focusArea.ele.parentNode) return 0;
   const tableEle = focusArea.ele.parentNode.parentNode;
   if (!tableEle) return 0;
-  //console.log('tableEle',tableEle)
-  // const tableRows = tableEle.getElementsByClassName('ant-descriptions-row');
   const tableRows = tableEle.children;
-  // console.log(tableRows1, 22);
   let dataItemIdx = -1;
   const tableRowsArr: any[] = Array.from(tableRows);
   first: for (let i = 0; i < tableRowsArr.length; i++) {
@@ -23,13 +19,10 @@ export function getEleIdx({ data, focusArea }: any): number {
       }
     }
   }
-  // console.log(rowIdx, eleIdx, 33);
   if (dataItemIdx === -1) {
     message.error('出错了:(');
     throw new Error('dataItemIdx not found.');
   }
-  //const dataItemIdx = (rowIdx) * parseFloat(data.column.toString()) + eleIdx;
-  // console.log(dataItemIdx, 44);
   delete focusArea.ele.myEle;
   return dataItemIdx;
 }
@@ -44,7 +37,6 @@ export function getSpanCount({ data, focusArea }: any): number {
   let spanCount = 0;
   outer: for (let i = 0; i < tableRows.length; i++) {
     spanCount = 0;
-    //console.log("tableRow: ", i)
     const itemChildren = Array.from(tableRows[i].children);
     for (let j = 0; j < itemChildren.length; j++) {
       const item: any = itemChildren[j];
