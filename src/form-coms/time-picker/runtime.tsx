@@ -68,7 +68,13 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   };
   return (
     <div className={styles.wrap}>
-      <TimePicker placeholder={placeholder} value={value} disabled={disabled} onChange={onChange} />
+      <TimePicker
+        placeholder={placeholder}
+        value={value}
+        disabled={disabled}
+        allowClear
+        onChange={onChange}
+      />
     </div>
   );
 }

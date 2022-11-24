@@ -57,6 +57,7 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   return (
     <div>
       <Input.Password
+        allowClear
         placeholder={placeholder}
         value={value}
         disabled={disabled}
