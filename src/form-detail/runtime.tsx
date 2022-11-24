@@ -1,13 +1,65 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Descriptions, Tooltip } from 'antd';
 import { uuid } from '../utils';
-import { getRenderScript } from './utils';
 import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const { items, size, title, showTitle, layout, column, bordered, colon } = data || {};
 
+  const formatData = useCallback((ds, items) => {
+    const res: Item[] = [];
+    (items || []).forEach((item) => {
+      const labelStyle = {
+        ...item.labelStyle,
+        marginLeft: item.stylePadding ? item.stylePadding[0] : 0
+      };
+      const contentStyle = {
+        ...item.contentStyle,
+        color: item.color || item.contentStyle?.color,
+        marginTop: item.stylePadding ? item.stylePadding[1] : 0
+      };
+      const itemStyle = {
+        paddingLeft: Array.isArray(item.padding) ? item.padding[0] : 0,
+        paddingRight: Array.isArray(item.padding) ? item.padding[1] : 0,
+        paddingTop: Array.isArray(item.padding) ? item.padding[2] : 0,
+        paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
+      };
+
+      if (typeof ds[item.key] === 'string' || typeof ds[item.key] === 'number') {
+        res.push({
+          ...item,
+          value: ds[item.key],
+          labelStyle,
+          contentStyle,
+          itemStyle
+        });
+      } else if (ds[item.key] && typeof ds[item.key] === 'object') {
+        res.push({
+          ...item,
+          value: ds[item.key].value,
+          color: ds[item.key].color,
+          labelStyle,
+          contentStyle,
+          itemStyle
+        });
+      } else {
+        if (ds[item.key] !== undefined) {
+          console.error('数据类型错误，仅支持对象，字符串或数字');
+        }
+        // 无数据
+        res.push({
+          ...item,
+          labelStyle,
+          contentStyle,
+          itemStyle
+        });
+      }
+    });
+    return res;
+  }, []);
+
+  const [dataSource, setData] = useState(formatData({}, items));
   const [rawData, setRawData] = useState({});
 
   const contentMap = {
@@ -33,7 +85,9 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       return limit ? (
         <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} />
       ) : (
-        <div style={widthLimit ? { width: widthLimit } : {}}>{env.i18n(value)}</div>
+        <div className={css.pre} style={widthLimit ? { width: widthLimit } : {}}>
+          {env.i18n(value)}
+        </div>
       );
     }
     // obj: (value) => {
@@ -47,65 +101,10 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     //   });
     // }
   };
-  const getDataSource = () => {
-    const res: Item[] = [];
-    let ds = rawData;
-    (items || []).forEach((item) => {
-      const labelStyle = {
-        ...item.labelStyle,
-        marginLeft: item.stylePadding ? item.stylePadding[0] : 0
-      };
-      const contentStyle = {
-        ...item.contentStyle,
-        color: item.color || item.contentStyle?.color,
-        marginTop: item.stylePadding ? item.stylePadding[1] : 0
-      };
-      const itemStyle = {
-        paddingLeft: Array.isArray(item.padding) ? item.padding[0] : 0,
-        paddingRight: Array.isArray(item.padding) ? item.padding[1] : 0,
-        paddingTop: Array.isArray(item.padding) ? item.padding[2] : 0,
-        paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
-      };
-      const isHidden =
-        env.runtime && !!item.isHiddenScript && eval(getRenderScript(item.isHiddenScript))(rawData);
 
-      if (typeof ds[item.key] === 'string' || typeof ds[item.key] === 'number') {
-        res.push({
-          ...item,
-          value: ds[item.key],
-          labelStyle,
-          contentStyle,
-          itemStyle,
-          isHidden
-        });
-      } else if (ds[item.key] && typeof ds[item.key] === 'object') {
-        res.push({
-          ...item,
-          value: ds[item.key].value,
-          color: ds[item.key].color,
-          labelStyle,
-          contentStyle,
-          itemStyle,
-          isHidden
-        });
-      } else {
-        if (ds[item.key] !== undefined) {
-          console.error('数据类型错误，仅支持对象，字符串或数字');
-        }
-        // 无数据
-        res.push({
-          ...item,
-          labelStyle,
-          contentStyle,
-          itemStyle,
-          isHidden
-        });
-      }
-    });
-    return res;
-  };
   const setDataSource = (ds: any) => {
     setRawData(ds);
+    setData(() => formatData(ds, data.items));
   };
 
   // 后置操作渲染
@@ -116,7 +115,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       const record = {
         ...rawData
       };
-      getDataSource().forEach((item) => {
+      dataSource.forEach((item) => {
         record[item.key] = item.value;
       });
       return (
@@ -150,14 +149,13 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         colon={colon}
         className={css.des}
       >
-        {getDataSource().map((item) => {
+        {dataSource.map((item) => {
           const {
             id,
             value,
             type,
             span,
             label,
-            isHidden,
             labelStyle,
             contentStyle,
             itemStyle,
@@ -174,9 +172,6 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             },
             key: slotId
           });
-          if (isHidden) {
-            return null;
-          }
           if (type === TypeEnum.AllSlot) {
             return (
               <Descriptions.Item label={''} key={id} span={span}>
@@ -215,6 +210,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     if (env.edit && items?.length === 0) {
       items.push({
         id: uuid(),
+        showLable: true,
         label: '描述项1',
         key: 'field1',
         value: 'field1',
@@ -265,10 +261,10 @@ function MassiveValue({ value, customStyle, limit }) {
     <div ref={parentEle} style={customStyle}>
       {limit ? (
         <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color="#fff">
-          {value}
+          <div className={css.pre}>{value}</div>
         </Tooltip>
       ) : (
-        value
+        <div className={css.pre}>{value}</div>
       )}
     </div>
   );
