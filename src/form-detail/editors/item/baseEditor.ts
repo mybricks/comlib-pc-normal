@@ -1,5 +1,5 @@
 import { uuid } from '../../../utils';
-import { Data, DataSourceEnum, InputIds, ScopeSlotIds, TypeEnum } from '../../constants';
+import { Data, InputIds, TypeEnum } from '../../constants';
 import { getDataSourceSchema, getEleIdx, updateIOSchema } from '../utils';
 
 export const BaseEditor = [
@@ -8,8 +8,7 @@ export const BaseEditor = [
     type: 'Select',
     options: [
       { label: '文本', value: TypeEnum.Text },
-      { label: '全局自定义插槽', value: TypeEnum.AllSlot },
-      { label: '局部自定义插槽', value: TypeEnum.PartSlot }
+      { label: '自定义插槽', value: TypeEnum.PartSlot }
     ],
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
@@ -33,7 +32,26 @@ export const BaseEditor = [
     }
   },
   {
-    title: '显示名称',
+    title: '显示标签',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      return data.items[getEleIdx({ data, focusArea })]?.type === TypeEnum.PartSlot;
+    },
+    type: 'Switch',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        const { showLable = true  } = data.items[getEleIdx({ data, focusArea })];
+        return showLable
+      },
+      set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+        data.items[getEleIdx({ data, focusArea })].showLable= value;
+      }
+    }
+  },
+  {
+    title: '标签名称',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      return  data.items[getEleIdx({ data, focusArea })].showLable;
+    },
     type: 'Text',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {

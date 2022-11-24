@@ -58,7 +58,7 @@ export const StyleEditor = [
         }
       },
       {
-        title: '宽度',
+        title: '最大宽度',
         type: 'text',
         value: {
           get({ data, focusArea }) {

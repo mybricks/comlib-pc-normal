@@ -164,7 +164,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             slotId,
             lineLimit,
             widthLimit,
-            limit
+            limit,
+            showLable = true
           } = item || {};
           const SlotItem = slots[slotId]?.render({
             inputValues: {
@@ -185,7 +186,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           }
           return (
             <Descriptions.Item
-              label={env.i18n(label)}
+              label={showLable ? env.i18n(label) : ''}
               key={id}
               span={span}
               labelStyle={labelStyle}
@@ -214,9 +215,9 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     if (env.edit && items?.length === 0) {
       items.push({
         id: uuid(),
-        label: '用户名',
-        key: 'username',
-        value: 'username',
+        label: '描述项1',
+        key: 'field1',
+        value: 'field1',
         span: 1,
         labelStyle: {
           fontSize: 14,
