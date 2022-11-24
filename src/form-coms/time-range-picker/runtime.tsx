@@ -83,6 +83,7 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
       <TimePicker.RangePicker
         placeholder={placeholder}
         value={value}
+        allowClear
         disabled={disabled}
         onChange={onChange}
       />
