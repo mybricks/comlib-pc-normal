@@ -77,6 +77,27 @@ export const actionsEditor = {
       },
     },
     {
+      title: '操作列表',
+      description: '可拖拽改变选项位置',
+      type: 'array',
+      options: {
+        deletable: false,
+        addable: false,
+        editable: false,
+        getTitle: (item) => {
+          return item?.title;
+        }
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.actions?.items || [];
+        },
+        set({ data }: EditorResult<Data>, val: any[]) {
+          data.actions.items = val;
+        }
+      }
+    },
+    {
       title: '添加操作',
       type: 'Button',
       ifVisible({ data }: EditorResult<Data>) {
