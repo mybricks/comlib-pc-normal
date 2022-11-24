@@ -27,6 +27,8 @@ export const BaseEditor = [
           item.slotId = slotId;
           item.value = void 0;
           addScopeSlotInputs({ data, item, slots });
+        } else {
+          item.showLable = true;
         }
       }
     }
