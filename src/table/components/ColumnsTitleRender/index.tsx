@@ -116,6 +116,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
     return (
       <Column
         {...(cItem as any)}
+        ellipsis={false}
         width={cItem.width === WidthTypeEnum.Auto ? undefined : cItem.width}
         title={renderTtl(cItem)}
         key={cItem.dataIndex}
