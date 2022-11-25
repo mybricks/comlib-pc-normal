@@ -301,6 +301,9 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       ...(fileListKey ? Array.from(node.querySelectorAll(fileListKey)) : []),
       uploadBtnKey ? uploadSelectWrap?.querySelector(uploadBtnKey) : uploadSelectWrap
     ];
+    if (listType === 'dragger') {
+      list.push(node);
+    }
     list.forEach((ele) => {
       Object.keys(uploadStyle || {}).forEach((key) => {
         if (ele) {
