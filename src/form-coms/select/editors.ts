@@ -61,7 +61,7 @@ export default {
           set({ data, input, output }: EditorResult<Data>, value: string) {
             data.config.mode = value as any;
             if (['multiple', 'tags'].includes(value)) {
-              if (!Array.isArray(data.value)) {
+              if (data.value != undefined && !Array.isArray(data.value)) {
                 data.value = [data.value] as any;
               }
               const valueSchema = data.config.labelInValue ? {
