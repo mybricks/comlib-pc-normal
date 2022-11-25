@@ -7,8 +7,40 @@ import css from './runtime.less';
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const { items, size, title, showTitle, layout, column, bordered, colon } = data || {};
 
-  const formatData = useCallback((ds, items) => {
+  const [rawData, setRawData] = useState({});
+
+  const contentMap = {
+    text: (value, lineLimit, widthLimit, limit) => {
+      const multiLine = {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        width: widthLimit,
+        display: '-webkit-box',
+        WebkitLineClamp: lineLimit,
+        WebkitBoxOrient: 'vertical',
+        wordWrap: 'break-word',
+        wordBreak: 'normal'
+      };
+      const singleLine = {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        width: widthLimit,
+        border: 'none'
+      };
+      const customStyle = lineLimit === 1 ? singleLine : multiLine;
+      return limit ? (
+        <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} />
+      ) : (
+        <div className={css.pre} style={widthLimit ? { width: widthLimit } : {}}>
+          {env.i18n(value)}
+        </div>
+      );
+    }
+  };
+  const getDataSource = useCallback(() => {
     const res: Item[] = [];
+    let ds = rawData;
     (items || []).forEach((item) => {
       const labelStyle = {
         ...item.labelStyle,
@@ -57,54 +89,10 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       }
     });
     return res;
-  }, []);
-
-  const [dataSource, setData] = useState(formatData({}, items));
-  const [rawData, setRawData] = useState({});
-
-  const contentMap = {
-    text: (value, lineLimit, widthLimit, limit) => {
-      const multiLine = {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        width: widthLimit,
-        display: '-webkit-box',
-        WebkitLineClamp: lineLimit,
-        WebkitBoxOrient: 'vertical',
-        wordWrap: 'break-word',
-        wordBreak: 'normal'
-      };
-      const singleLine = {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        width: widthLimit,
-        border: 'none'
-      };
-      const customStyle = lineLimit === 1 ? singleLine : multiLine;
-      return limit ? (
-        <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} />
-      ) : (
-        <div className={css.pre} style={widthLimit ? { width: widthLimit } : {}}>
-          {env.i18n(value)}
-        </div>
-      );
-    }
-    // obj: (value) => {
-    //   return Object.keys(value).map((key) => {
-    //     return (
-    //       <div style={{ display: 'flex', marginBottom: '12px' }}>
-    //         <div style={{ flex: '0 0 98px' }}>{key}:</div>
-    //         <div style={{ whiteSpace: 'nowrap' }}> {value[key]}</div>
-    //       </div>
-    //     );
-    //   });
-    // }
-  };
+  }, [rawData]);
 
   const setDataSource = (ds: any) => {
     setRawData(ds);
-    setData(() => formatData(ds, data.items));
   };
 
   // 后置操作渲染
@@ -115,7 +103,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       const record = {
         ...rawData
       };
-      dataSource.forEach((item) => {
+      getDataSource().forEach((item) => {
         record[item.key] = item.value;
       });
       return (
@@ -149,7 +137,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         colon={colon}
         className={css.des}
       >
-        {dataSource.map((item) => {
+        {getDataSource().map((item) => {
           const {
             id,
             value,
@@ -210,8 +198,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     if (env.edit && items?.length === 0) {
       items.push({
         id: uuid(),
-        showLable: true,
         label: '描述项1',
+        showLable: true,
         key: 'field1',
         value: 'field1',
         span: 1,
