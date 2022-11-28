@@ -6,8 +6,7 @@ import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const { items, size, title, showTitle, layout, column, bordered, colon } = data || {};
-
-  const [rawData, setRawData] = useState({});
+  data.rawData = data.rawData || {};
 
   const contentMap = {
     text: (value, lineLimit, widthLimit, limit) => {
@@ -40,8 +39,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   };
   const getDataSource = useCallback(() => {
     const res: Item[] = [];
-    let ds = rawData;
-    (items || []).forEach((item) => {
+    let ds = data.rawData;
+    (data.items || []).forEach((item) => {
       const labelStyle = {
         ...item.labelStyle,
         marginLeft: item.stylePadding ? item.stylePadding[0] : 0
@@ -89,10 +88,10 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       }
     });
     return res;
-  }, [rawData]);
+  }, []);
 
   const setDataSource = (ds: any) => {
-    setRawData(ds);
+    data.rawData = ds;
   };
 
   // 后置操作渲染
@@ -101,7 +100,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     const outputId = `${id}-suffixClick`;
     if (useSuffix && type === TypeEnum.Text) {
       const record = {
-        ...rawData
+        ...data.rawData
       };
       getDataSource().forEach((item) => {
         record[item.key] = item.value;
@@ -156,7 +155,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           const SlotItem = slots[slotId]?.render({
             inputValues: {
               [InputIds.CurDs]: value,
-              [InputIds.DataSource]: rawData
+              [InputIds.DataSource]: data.rawData
             },
             key: slotId
           });
@@ -234,17 +233,6 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
 }
 function MassiveValue({ value, customStyle, limit }) {
   const parentEle = useRef<HTMLDivElement>(null);
-  // const [showTooltip, setShowTooltip] = useState(false);
-
-  // useEffect(() => {
-  //   if (parentEle.current) {
-  //     const { scrollWidth, scrollHeight, clientHeight, clientWidth } =
-  //       parentEle.current;
-  //     setShowTooltip(
-  //       clientHeight < scrollHeight - 1 || clientWidth < scrollWidth
-  //     );
-  //   }
-  // }, [parentEle.current, value]);
   return (
     <div ref={parentEle} style={customStyle}>
       {limit ? (
