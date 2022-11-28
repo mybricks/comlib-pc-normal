@@ -73,6 +73,7 @@ export interface Data {
   colon: boolean;
   items: Item[];
   useSlotProps?: boolean;
+  rawData: any;
 }
 
 export const InputIds = {
