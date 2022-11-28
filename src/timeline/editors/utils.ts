@@ -37,9 +37,6 @@ export const updateSourceSchema = (input, schema) => {
 export const updateSlotSchema = (slots, schema) => {
   if (schema.type === 'array') {
     const item = schema.items;
-    slots[SlotIds.Content].inputs[InputIds.CurrentDs].setSchema({
-      type: 'object',
-      properties: item
-    });
+    slots.get(SlotIds.Content).inputs.get(InputIds.CurrentDs).setSchema(item);
   }
 };
