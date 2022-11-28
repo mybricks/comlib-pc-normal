@@ -1,11 +1,11 @@
-import { Data, DataSourceEnum } from '../../constants';
+import { Data } from '../../constants';
 import { getTimelineItem } from '../utils';
 
 const IndexEditor = [
   {
     title: '操作',
     ifVisible({ data }: EditorResult<Data>) {
-      return data.dataSource === DataSourceEnum.STATIC && data.timelines.length > 1;
+      return !data.isDynamic && data.timelines.length > 1;
     },
     items: [
       {

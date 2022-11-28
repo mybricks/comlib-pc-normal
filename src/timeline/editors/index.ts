@@ -1,19 +1,43 @@
+import { Data, OutputIds } from '../constants';
 import ItemEditor from './item';
-import BaseEditor from './baseEditor';
+import BaseEditor, { DefaultSourceSchema } from './baseEditor';
 import StyleEditor from './styleEditor';
-import EventEditor from './eventEditor';
+import { updateSourceSchema } from './utils';
 
 export default {
   '@resize': {
     options: ['width']
   },
-  ':root': ({ }, cate1, cate2, cate3) => {
-    cate1.title = '常规';
-    cate1.items = [...BaseEditor, ...EventEditor];
-
-    cate2.title = '样式';
-    cate2.items = [...StyleEditor];
-
+  '@inputConnected'(target, fromPin) {
+    console.log(target)
+    // updateSourceSchema(input, fromPin.schema);
+  },
+  '@inputDisConnected'({ data, input }) {
+    updateSourceSchema(input, DefaultSourceSchema);
+  },
+  ':root': ({ data }: EditorResult<Data>, ...cate) => {
+    cate[0].title = '常规';
+    cate[0].items = [
+      {
+        title: '数据源',
+        items: BaseEditor
+      },
+      {
+        title: '属性',
+        items: StyleEditor
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            type: '_Event',
+            options: {
+              outputId: OutputIds.ItemClick
+            }
+          }
+        ]
+      }
+    ];
     return { title: '时间轴' };
   },
   ...ItemEditor
