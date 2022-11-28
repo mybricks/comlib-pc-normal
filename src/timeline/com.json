@@ -9,5 +9,14 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
+  "outputs": [
+    {
+      "id": "itemClick",
+      "title": "单击节点",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
   "slots": []
 }
