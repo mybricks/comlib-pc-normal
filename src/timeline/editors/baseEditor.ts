@@ -14,13 +14,15 @@ const BaseEditor = [
       get({ data }: EditorResult<Data>) {
         return !!data.isDynamic;
       },
-      set({ data, input }: EditorResult<Data>, val: boolean) {
+      set({ data, input, slots }: EditorResult<Data>, val: boolean) {
         data.isDynamic = val;
         if (val) {
           input.add(InputIds.SetDataSource, '设置数据源', DefaultSourceSchema);
           data.timelines.splice(1);
         } else {
           input.remove(InputIds.SetDataSource);
+          data.useContentSlot = false;
+          slots.remove(SlotIds.Content);
         }
       }
     }
@@ -33,7 +35,7 @@ const BaseEditor = [
     },
     value: {
       get({ data }: EditorResult<Data>) {
-        return data.useContentSlot;
+        return !!data.useContentSlot;
       },
       set({ data, slots }: EditorResult<Data>, value: boolean) {
         data.useContentSlot = value;
