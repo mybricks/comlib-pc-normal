@@ -21,7 +21,7 @@ const BaseEditor = [
           data.timelines.splice(1);
         } else {
           input.remove(InputIds.SetDataSource);
-          data.useContentSlot = false;
+          data.useContentSlot = val;
           slots.remove(SlotIds.Content);
         }
       }
