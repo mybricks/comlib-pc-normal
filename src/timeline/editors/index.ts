@@ -8,9 +8,8 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@inputConnected'(target, fromPin) {
-    console.log(target)
-    // updateSourceSchema(input, fromPin.schema);
+  '@inputConnected'({ data, input }, fromPin) {
+    updateSourceSchema(input, fromPin.schema);
   },
   '@inputDisConnected'({ data, input }) {
     updateSourceSchema(input, DefaultSourceSchema);
