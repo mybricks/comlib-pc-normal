@@ -50,7 +50,9 @@
         "./src/form-coms/rate/com.json",
         "./src/form-coms/email/com.json",
         "./src/form-coms/password/com.json",
-        "./src/form-coms/phone-number/com.json"
+        "./src/form-coms/phone-number/com.json",
+        "./src/form-coms/time-picker/com.json",
+        "./src/form-coms/time-range-picker/com.json"
       ]
     },
     {
@@ -93,6 +95,7 @@
     "./src/_merge/com.json",
     "./src/_download/com.json",
     "./src/_object-merge/com.json",
-    "./src/_schema-simulator/com.json"
+    "./src/_schema-simulator/com.json",
+    "./src/_query/com.json"
   ]
 }

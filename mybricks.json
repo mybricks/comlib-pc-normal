@@ -99,7 +99,8 @@
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json"
+      "./src/_schema-simulator/com.json",
+      "./src/_query/com.json"
     ],
     "publish": [
       {
@@ -195,7 +196,8 @@
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json"
+      "./src/_schema-simulator/com.json",
+      "./src/_query/com.json"
     ]
   }
 }
