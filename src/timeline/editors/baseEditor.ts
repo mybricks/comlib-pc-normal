@@ -21,8 +21,10 @@ const BaseEditor = [
           data.timelines.splice(1);
         } else {
           input.remove(InputIds.SetDataSource);
-          data.useContentSlot = val;
-          slots.remove(SlotIds.Content);
+          data.useContentSlot = false;
+          if (slots?.get(SlotIds.Content)) {
+            slots.remove(SlotIds.Content);
+          }
         }
       }
     }
@@ -30,7 +32,7 @@ const BaseEditor = [
   {
     title: '自定义节点内容',
     type: 'Switch',
-    ifVisible({ data }: EditorResult<Data>) {
+    ifVisible({ data, slots }: EditorResult<Data>) {
       return !!data.isDynamic;
     },
     value: {
@@ -62,7 +64,9 @@ const BaseEditor = [
             ]
           });
         } else {
-          slots.remove(SlotIds.Content);
+          if (slots?.get(SlotIds.Content)) {
+            slots.remove(SlotIds.Content);
+          }
         }
       }
     }
