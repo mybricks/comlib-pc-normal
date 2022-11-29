@@ -22,7 +22,9 @@ const BaseEditor = [
         } else {
           input.remove(InputIds.SetDataSource);
           data.useContentSlot = val;
-          slots.remove(SlotIds.Content);
+          if (slots?.get(SlotIds.Content)) {
+            slots.remove(SlotIds.Content);
+          }
         }
       }
     }
@@ -62,7 +64,9 @@ const BaseEditor = [
             ]
           });
         } else {
-          slots.remove(SlotIds.Content);
+          if (slots?.get(SlotIds.Content)) {
+            slots.remove(SlotIds.Content);
+          }
         }
       }
     }
