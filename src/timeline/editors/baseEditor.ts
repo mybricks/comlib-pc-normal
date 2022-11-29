@@ -21,7 +21,7 @@ const BaseEditor = [
           data.timelines.splice(1);
         } else {
           input.remove(InputIds.SetDataSource);
-          data.useContentSlot = false;
+          data.useContentSlot = val;
           if (slots?.get(SlotIds.Content)) {
             slots.remove(SlotIds.Content);
           }
@@ -32,7 +32,7 @@ const BaseEditor = [
   {
     title: '自定义节点内容',
     type: 'Switch',
-    ifVisible({ data, slots }: EditorResult<Data>) {
+    ifVisible({ data }: EditorResult<Data>) {
       return !!data.isDynamic;
     },
     value: {
