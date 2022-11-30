@@ -37,7 +37,7 @@ function schema2Obj(schema: any = {}, data: Data) {
     });
     return res;
   }
-  const schemaObj = loop(schema);
+  const schemaObj = loop(schema) || {};
   data.columns.forEach((item) => {
     const idx = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
     if (
