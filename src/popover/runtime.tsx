@@ -17,11 +17,20 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
     return env.edit && (useTitleSlot || useContentSlot) ? true : undefined;
   }, [useTitleSlot, useContentSlot]);
 
+  const renderWrapText = (content: string) => {
+    return (
+      <div
+        style={{ whiteSpace: 'pre-wrap' }}
+        dangerouslySetInnerHTML={{ __html: content.replace('\\n', '<br/>') }}
+      />
+    );
+  };
+
   return (
     <Popover
       placement={placement}
-      title={useTitleSlot ? slots['title']?.render() : title}
-      content={useContentSlot ? slots['content']?.render() : content}
+      title={useTitleSlot ? slots['title']?.render() : renderWrapText(title as string)}
+      content={useContentSlot ? slots['content']?.render() : renderWrapText(content as string)}
       visible={visible}
       trigger={trigger}
       color={style?.background as string}
