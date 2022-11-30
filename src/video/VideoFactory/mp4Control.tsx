@@ -10,7 +10,6 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
     } else {
       ref.current.pause();
     }
-    console.log(ref);
   };
 
   return (

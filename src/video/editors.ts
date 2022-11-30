@@ -117,24 +117,26 @@ export default {
             }
           }
         ]
-      }
-    ];
-    cate[1].title = '样式';
-    cate[1].items = [
+      },
       {
         title: '样式',
-        type: 'Style',
-        options: {
-          plugins: ['border', 'bgcolor']
-        },
-        value: {
-          get: ({ data }: EditorResult<Data>) => {
-            return data.style;
-          },
-          set: ({ data }: EditorResult<Data>, value) => {
-            data.style = value;
+        items: [
+          {
+            title: '样式',
+            type: 'Style',
+            options: {
+              plugins: ['border', 'bgcolor']
+            },
+            value: {
+              get: ({ data }: EditorResult<Data>) => {
+                return data.style;
+              },
+              set: ({ data }: EditorResult<Data>, value) => {
+                data.style = value;
+              }
+            }
           }
-        }
+        ]
       }
     ];
   }
