@@ -1,0 +1,27 @@
+{
+  "title": "播放器",
+  "namespace": "@mybricks/comlib-pc-normal.pc.video",
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "version": "1.0.0",
+  "description": "播放器",
+  "docs": "组件使用说明文档链接",
+  "icon": "./icon.svg",
+  "runtime": "./runtime.tsx",
+  "data": "./data.json",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "link",
+      "title": "视频链接",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "screenshot",
+      "title": "截屏"
+    }
+  ],
+  "slots": []
+}
