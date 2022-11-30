@@ -24,7 +24,7 @@ export enum TypeEnum {
  */
 export interface Data {
   json: any;
-  jsonObj: {} | [];
+  jsonObj: { [propName: string]: any } | any[];
   colors: {
     [K in TypeEnum]: string;
   };
@@ -33,7 +33,7 @@ export interface Data {
   displayObjectSize: boolean;
   enableClipboard: boolean;
   enableOutput: boolean;
-  dataSourceType?: 'default' | 'array' | 'object';
+  dataSourceType: 'default' | 'array' | 'object';
 }
 
 export const InputIds = {
@@ -49,3 +49,8 @@ export const Schemas = {
     type: 'any'
   }
 };
+export const dataSourceTypeMap = {
+  'default': [],
+  'array': [],
+  'object': {},
+}
