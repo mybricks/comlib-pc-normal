@@ -10,6 +10,7 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
       const { Events, ErrorTypes, isSupported } = Hls;
       if (isSupported()) {
         hls = new Hls();
+
         //测试hls视频流 https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
         hls.attachMedia(ref.current);
         hls.on(Events.MEDIA_ATTACHED, () => {
@@ -36,8 +37,9 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
         });
       }
     });
+
     return () => {
-      hls.destroy();
+      hls?.destroy();
     };
   }, []);
   const handleClick = () => {
