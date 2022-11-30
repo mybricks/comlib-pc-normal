@@ -26,6 +26,20 @@
       "rels": [
         "getTableData"
       ]
+    },
+    {
+      "id": "startLoading",
+      "title": "开启loading",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "endLoading",
+      "title": "关闭loading",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [

@@ -12,11 +12,12 @@
   "inputs": [
     {
       "id": "setFieldsValue",
-      "title": "设置表单值",
+      "title": "设置表单数据",
       "schema": {
         "type": "object",
         "properties": {}
-      }
+      },
+      "desc": "给表单设置初始数据"
     },
     {
       "id": "submit",
@@ -26,7 +27,19 @@
       ],
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "触发表单进行校验并且提交数据"
+    },
+    {
+      "id": "submitAndMerge",
+      "title": "提交表单(合并输入项)",
+      "rels": [
+        "onMergeFinish"
+      ],
+      "schema": {
+        "type": "object"
+      },
+      "desc": "触发表单进行校验并且提交数据，同时透传输入的数据"
     },
     {
       "id": "resetFields",
@@ -36,12 +49,21 @@
       ],
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "触发表单所有字段进行重置"
     }
   ],
   "outputs": [
     {
       "id": "onFinish",
+      "title": "提交数据输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "onMergeFinish",
       "title": "提交数据输出",
       "schema": {
         "type": "object",
@@ -125,7 +147,7 @@
       "inputs": [
         {
           "id": "setFieldsValue",
-          "title": "表单值输入",
+          "title": "表单数据输入",
           "schema": {
             "type": "object",
             "properties": {}

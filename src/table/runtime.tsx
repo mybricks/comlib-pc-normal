@@ -111,7 +111,7 @@ export default function (props: RuntimeParams<Data>) {
           const outputFn =
             relOutputs?.[OutputIds.GET_TABLE_DATA] || outputs[OutputIds.GET_TABLE_DATA];
           if (outputFn) {
-            outputFn(dataSource);
+            outputFn(dataSource.map(({ [DefaultRowKey]: key, ...res }) => res));
           }
         });
       // 动态设置勾选项
@@ -163,8 +163,41 @@ export default function (props: RuntimeParams<Data>) {
   const setTableData = useCallback(
     (ds: any) => {
       let temp = [...dataSource] || [];
-      if (Array.isArray(ds)) {
+      if (!data.usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds);
+      } else if (data.usePagination && ds && typeof ds === 'object') {
+      /**
+       * 分页特殊处理逻辑
+       * 当存在dataSource字段且为数组类型数据时，直接使用
+       * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
+       *
+       * 当存在total字段且为数字类型数据时，直接使用
+       * 当不存在total字段且仅有一个数字类型数据时，直接使用
+       */
+        const dsKey = Object.keys(ds);
+        if (Array.isArray(ds?.dataSource)) {
+          temp = formatDataSource(ds?.dataSource);
+        } else {
+          const arrayItemKey = dsKey.filter((key) => !!Array.isArray(ds[key]));
+          if (arrayItemKey.length === 1) {
+            temp = formatDataSource(ds?.[arrayItemKey[0]]);
+          } else {
+            console.error('[数据表格]：未传入列表数据', ds);
+          }
+        }
+        if (typeof ds?.total === 'number') {
+          data.paginationConfig.total = ds?.total;
+        } else {
+          const numberItemKey = dsKey.filter((key) => !!(typeof ds[key] === 'number'));
+          if (numberItemKey.length === 1) {
+            data.paginationConfig.total = ds?.[numberItemKey[0]];
+          }
+        }
+        if (typeof ds?.pageSize === 'number' && ds?.pageSize > 0) {
+          data.paginationConfig.pageSize = ds?.pageSize;
+        }
+      } else {
+        console.error('[数据表格]：未传入列表数据', ds);
       }
       setDataSource(temp);
     },
@@ -338,7 +371,7 @@ export default function (props: RuntimeParams<Data>) {
           expandable={
             data.useExpand && slots[SlotIds.EXPAND_CONTENT]
               ? {
-                  expandedRowKeys: edit ? [defaultDataSource[0][DefaultRowKey]] : undefined, //增加动态设置
+                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : undefined, //增加动态设置
                   expandedRowRender: (record, index) => {
                     return slots[SlotIds.EXPAND_CONTENT].render({
                       inputValues: {
@@ -369,6 +402,8 @@ export default function (props: RuntimeParams<Data>) {
         env={env}
         data={data}
         slots={slots}
+        inputs={inputs}
+        outputs={outputs}
         selectedRows={selectedRows}
         selectedRowKeys={selectedRowKeys}
       />

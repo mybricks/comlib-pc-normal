@@ -6,7 +6,6 @@ import css from './runtime.less';
 
 interface Data {
   value: string | undefined;
-  visible: boolean;
   rules: any[];
   config: {
     allowClear: boolean;
@@ -18,13 +17,14 @@ interface Data {
   };
 }
 
-export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
+export default function (props: RuntimeParams<Data>) {
+  const { env, data, _inputs, inputs, _outputs, outputs, parentSlot, style } = props;
   const { edit } = env;
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
-      outputs['onChange'](data.value);
+      outputs['onChange'](val);
     });
 
     inputs['validate']((val, outputRels) => {
@@ -47,15 +47,6 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     inputs['resetValue'](() => {
       data.value = void 0;
     });
-
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -65,6 +56,10 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
       data.config.disabled = false;
     });
   }, []);
+
+  // const validateTrigger = () => {
+  //   parentSlot._inputs['validateTrigger'](props.id)
+  // }
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
@@ -89,5 +84,5 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     />
   );
 
-  return data.visible && <div className={css.fiText}>{jsx}</div>;
+  return <div className={css.fiText}>{jsx}</div>;
 }

@@ -12,14 +12,14 @@
   "inputs": [
     {
       "id": "nextStep",
-      "title": "下一步",
+      "title": "显示下一步",
       "schema": {
         "type": "any"
       }
     },
     {
       "id": "prevStep",
-      "title": "上一步",
+      "title": "显示上一步",
       "schema": {
         "type": "any"
       }
@@ -52,7 +52,7 @@
     },
     {
       "id": "step0",
-      "title": "步骤0",
+      "title": "步骤1下一步",
       "schema": {
         "type": "any"
       }
@@ -63,36 +63,26 @@
       "schema": {
         "type": "number"
       }
+    },
+    {
+      "id": "step0_into",
+      "title": "步骤1显示",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "step0_leave",
+      "title": "步骤1隐藏",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "slots": [
     {
       "id": "step0",
-      "title": "步骤1",
-      "type": "scope",
-      "inputs": [
-        {
-          "id": "step0_render",
-          "title": "当该步骤首次显示",
-          "schema": {
-            "type": "any"
-          }
-        },
-        {
-          "id": "step0_into",
-          "title": "当该步骤显示",
-          "schema": {
-            "type": "follow"
-          }
-        },
-        {
-          "id": "step0_leave",
-          "title": "当该步骤隐藏",
-          "schema": {
-            "type": "any"
-          }
-        }
-      ]
+      "title": "步骤1"
     }
   ]
 }

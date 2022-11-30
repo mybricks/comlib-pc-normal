@@ -1,5 +1,5 @@
 import { setCol, setDataSchema } from '../../schema';
-import { Data } from '../../types';
+import { ContentTypeEnum, Data } from '../../types';
 import { getColumnItem, getColumnItemInfo, getNewColumn } from '../../utils';
 
 const IndexEditor = [
@@ -84,7 +84,10 @@ const IndexEditor = [
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       const item = getColumnItem(data, focusArea);
-      return item.visible !== false;
+      return (
+        item.visible !== false &&
+        ![ContentTypeEnum.Group, ContentTypeEnum.SlotItem].includes(item.contentType)
+      );
     },
     value: {
       set({ data, focusArea }: EditorResult<Data>) {

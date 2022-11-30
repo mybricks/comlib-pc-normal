@@ -15,11 +15,7 @@
       "title": "打开",
       "schema": {
         "type": "follow"
-      },
-      "rels": [
-        "ok",
-        "cancelBtn"
-      ]
+      }
     },
     {
       "id": "close",
@@ -97,5 +93,6 @@
         }
       ]
     }
-  ]
+  ],
+  "rtType": "popup"
 }

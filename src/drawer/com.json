@@ -23,11 +23,7 @@
       "title": "打开",
       "schema": {
         "type": "follow"
-      },
-      "rels": [
-        "ok",
-        "cancel"
-      ]
+      }
     },
     {
       "id": "title",
@@ -37,36 +33,7 @@
       }
     }
   ],
-  "outputs": [
-    {
-      "id": "ok",
-      "title": "确认",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "cancel",
-      "title": "取消",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "okClick",
-      "title": "点击确认",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "cancelClick",
-      "title": "点击取消",
-      "schema": {
-        "type": "any"
-      }
-    }
-  ],
+  "outputs": [],
   "slots": [
     {
       "id": "content",
@@ -98,5 +65,6 @@
         }
       ]
     }
-  ]
+  ],
+  "rtType": "popup"
 }

@@ -1,6 +1,6 @@
 import Tree from '../../../components/editorRender/fieldSelect';
 import { runScript } from '../../../utils/runExpCodeScript';
-import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
+import { DefaultRowKey, InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
 import { Schemas, setDataSchema } from '../../schema';
 import { getColumnsSchema } from '../../utils';
@@ -50,7 +50,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
             setDataSchema({ data, input, output, slot, ...res });
           } else {
-            data.rowKey = 'uuid';
+            data.rowKey = DefaultRowKey;
             if (output.get(OutputIds.GET_ROW_SELECTION)) {
               output.remove(OutputIds.GET_ROW_SELECTION);
             }
@@ -60,6 +60,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             if (input.get(InputIds.GET_ROW_SELECTION)) {
               input.remove(InputIds.GET_ROW_SELECTION);
             }
+            slot.remove(SlotIds.ROW_SELECTION_OPERATION);
           }
         }
       }

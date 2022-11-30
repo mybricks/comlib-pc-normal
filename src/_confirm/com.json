@@ -43,13 +43,6 @@
       "schema": {
         "type": "any"
       }
-    },
-    {
-      "id": "cancel",
-      "title": "取消",
-      "schema": {
-        "type": "any"
-      }
     }
   ]
 }

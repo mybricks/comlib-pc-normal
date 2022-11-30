@@ -7,7 +7,7 @@ import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
 
 const SlotContent = (props) => {
-  const { slots, data, childrenInputs, outputs, submit } = props;
+  const { slots, data, childrenInputs, outputs, submit, env } = props;
 
   const isInlineModel = useMemo(() => {
     return data.layout === 'inline';
@@ -27,48 +27,74 @@ const SlotContent = (props) => {
 
   const content = useMemo(() => {
     return slots['content'].render({
-      wrap(comAray: { id; jsx; def; inputs; outputs }[]) {
+      itemWrap(com: { id; jsx }) {
+        const item = data.items.find((item) => item.id === com.id);
+
+        return <FormItem data={data} com={com} item={item} field={props?.field} />;
+      },
+      wrap(comAray: { id; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
         // if (data.dataType === 'list') {
         //   console.log('items', items, comAray, props?.field);
         // }
 
-        if (comAray) {
-          const jsx = comAray.map((com, idx) => {
-            if (com) {
-              let item = items.find((item) => item.id === com.id);
+        const jsx = comAray?.map((com, idx) => {
+          if (com) {
+            let item = items.find((item) => item.id === com.id);
+            if (!item) return;
 
-              childrenInputs[com.id] = com.inputs;
+            childrenInputs[com.id] = com.inputs;
+
+            if (typeof item?.visible !== 'undefined') {
+              item.visible = com.style.display !== 'none';
+            } else {
+              item['visible'] = true;
+            }
+
+            if (env.edit) {
               return (
-                <Col data-formitem={com.id} key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
-                  <FormItem data={data} com={com} item={item} field={props?.field} />
+                <Col
+                  style={{ display: com.style.display }}
+                  key={com.id}
+                  flex={`0 0 ${100 / data.formItemColumn}%`}
+                >
+                  {com.jsx}
                 </Col>
               );
             }
 
-            return <div key={idx}>组件错误</div>;
-          });
+            return (
+              item?.visible && (
+                <Col key={com.id} flex={`0 0 ${100 / data.formItemColumn}%`}>
+                  {com.jsx}
+                </Col>
+              )
+            );
+          }
 
-          return (
-            <Row>
-              {isInlineModel && (
-                <InlineLayout data={data} actions={<FormActionsWrapper />}>
-                  {jsx}
-                </InlineLayout>
-              )}
-              {isHorizontalModel && (
-                <HorizontalLayout data={data} actions={<FormActionsWrapper />}>
-                  {jsx}
-                </HorizontalLayout>
-              )}
-              {isVerticalModel && (
-                <VerticalLayout data={data} actions={<FormActionsWrapper />}>
-                  {jsx}
-                </VerticalLayout>
-              )}
-            </Row>
-          );
-        }
+          console.error(com, comAray);
+          return <div key={idx}>组件错误</div>;
+        });
+
+        return (
+          <Row gutter={isVerticalModel ? { xs: 8, sm: 16, md: 24 } : {}}>
+            {isInlineModel && (
+              <InlineLayout data={data} actions={<FormActionsWrapper />}>
+                {jsx}
+              </InlineLayout>
+            )}
+            {isHorizontalModel && (
+              <HorizontalLayout data={data} actions={<FormActionsWrapper />}>
+                {jsx}
+              </HorizontalLayout>
+            )}
+            {isVerticalModel && (
+              <VerticalLayout data={data} actions={<FormActionsWrapper />}>
+                {jsx}
+              </VerticalLayout>
+            )}
+          </Row>
+        );
       },
       inputValues: {}
       // key: props?.field?.name

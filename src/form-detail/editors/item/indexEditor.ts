@@ -29,7 +29,7 @@ export const IndexEditor = [
     }
   },
   {
-    title: '删除字段',
+    title: '删除',
     type: 'Button',
     value: {
       set({ data, focusArea, input, output }: EditorResult<Data>) {

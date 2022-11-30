@@ -30,7 +30,7 @@ export interface ColumnParams {
   colStyle: React.CSSProperties;
 
   widthOption: WidthUnitEnum;
-  width?: number;
+  width: number;
   // 响应式宽度
   breakPoints?: Object;
 
@@ -38,7 +38,7 @@ export interface ColumnParams {
   minMaxWidthOption?: WidthUnitEnum;
   minWidth?: number;
   maxWidth?: number;
-
+  flex: number
   useClick?: boolean;
 }
 

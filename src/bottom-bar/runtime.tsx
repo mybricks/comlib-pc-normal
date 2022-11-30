@@ -18,10 +18,10 @@ interface Tool {
   shape: 'circle' | 'round' | undefined;
   size: 'small' | 'middle' | 'large' | any;
   type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any;
-  hidden?: boolean
-  dynamicDisplay?: boolean
-  dynamicDisabled?: boolean
-  disabled?: boolean
+  hidden?: boolean;
+  dynamicDisplay?: boolean;
+  dynamicDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export interface Data {
@@ -35,7 +35,25 @@ export interface Data {
 
 export default function BottomBar({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
   const ref = useRef(null);
-  
+
+  if (env.runtime && inputs) {
+    data.tools.forEach((item) => {
+      const { id } = item;
+      item.dynamicDisplay &&
+        inputs[`hidden${id}`](() => {
+          item.hidden = true;
+        });
+      item.dynamicDisplay &&
+        inputs[`display${id}`](() => {
+          item.hidden = false;
+        });
+      item.dynamicDisabled &&
+        inputs[`disable${id}`]((ds) => {
+          item.disabled = ds;
+        });
+    });
+  }
+
   const btnClick = useCallback((item: Tool, type = 'btn') => {
     if (env.runtime) {
       const outputVal: string | number =
@@ -61,15 +79,15 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
     const marginStyle: AnyMap = {
       marginLeft: left + 2,
       marginRight: right + 2,
-      height: 'fit-content',
+      height: 'fit-content'
     };
-    return (
-       !tool.hidden ? <div key={id} data-btn-id={id} style={marginStyle} className={css.button}>
+    return !tool.hidden ? (
+      <div key={id} data-btn-id={id} style={marginStyle} className={css.button}>
         <Button type={type} size={size} shape={shape} onClick={() => fn(tool)} disabled={disabled}>
           {showText && env.i18n(title)}
         </Button>
-    </div> : null
-    );
+      </div>
+    ) : null;
   };
 
   const renderTools = useCallback((tools) => {
@@ -86,14 +104,14 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
     node.style.height = `${data.height || 64}px`;
     node.style.bottom = 0;
     node.style.zIndex = 2;
-  }, [])
+  }, []);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
     setStyle(node.parentElement);
-  }, [])
-  
+  }, []);
+
   if (env.runtime && !!document.getElementById(data.parentId)) {
     style.display = 'none';
     return ReactDOM.createPortal(
@@ -103,7 +121,7 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
           style={{
             justifyContent: data.layout,
             height: data.height || 64,
-            bottom: 0,
+            bottom: 0
           }}
         >
           {data.tools?.length > 0 ? (
@@ -118,8 +136,16 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
   }
 
   return (
-    <div className={css.toolbarWrapper} >
-      <div className={css.toolbar} ref={ref} style={{ justifyContent: data.layout, height: data.height || 64, width: data.width || '100%' }}>
+    <div className={css.toolbarWrapper}>
+      <div
+        className={css.toolbar}
+        ref={ref}
+        style={{
+          justifyContent: data.layout,
+          height: data.height || 64,
+          width: data.width || '100%'
+        }}
+      >
         {data.tools?.length > 0 ? (
           renderTools(data.tools)
         ) : (

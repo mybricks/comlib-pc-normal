@@ -34,3 +34,8 @@ export enum Location {
   FRONT = 'front',
   BACK = 'back'
 }
+
+export const DefaultEvent = {
+  Ok: 'ok',
+  Cancel: 'cancel'
+};

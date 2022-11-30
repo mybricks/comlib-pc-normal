@@ -30,16 +30,45 @@ export const BaseEditor = [
     }
   },
   {
-    title: '增加字段',
+    title: '标题',
+    type: 'text',
+    ifVisible({ data }: EditorResult<Data>) {
+      return data.showTitle;
+    },
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.title;
+      },
+      set({ data }: EditorResult<Data>, value: string) {
+        data.title = value;
+      }
+    }
+  },
+  {
+    title: '列数',
+    type: 'Slider',
+    options: [{ max: 12, min: 1, steps: 1, formatter: '/12' }],
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.column;
+      },
+      set({ data }: EditorResult<Data>, value: number) {
+        data.column = value;
+      }
+    }
+  },
+  {
+    title: '增加描述项',
     type: 'Button',
     value: {
       set({ data, input, output }: EditorResult<Data>) {
         const id = uuid();
         data.items.push({
           id: id,
-          label: `新增字段`,
+          label: `描述项${data.items.length + 1}`,
           key: id,
-          value: ``,
+          showLable: true,
+          value: `field${data.items.length + 1}`,
           span: 1,
           labelStyle: {
             fontSize: 14,

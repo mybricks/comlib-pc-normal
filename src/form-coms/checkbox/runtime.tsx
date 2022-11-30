@@ -26,26 +26,19 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      if (!Array.isArray(val)) {
+      if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        data.value = val;
+        // data.value = val;
         onChange(val);
       }
     });
 
     inputs['resetValue'](() => {
+      data.value = [];
       data.value = void 0;
     });
 
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -95,15 +88,13 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     outputs['onChange'](checkedValue);
   }, []);
   return (
-    data.visible && (
-      <div>
-        <Checkbox.Group
-          {...data.config}
-          options={env.edit ? data.staticOptions : data.config.options}
-          value={data.value as any}
-          onChange={onChange}
-        />
-      </div>
-    )
+    <div>
+      <Checkbox.Group
+        {...data.config}
+        options={env.edit ? data.staticOptions : data.config.options}
+        value={data.value as any}
+        onChange={onChange}
+      />
+    </div>
   );
 }

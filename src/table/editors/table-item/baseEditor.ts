@@ -2,7 +2,7 @@ import Tree from '../../../components/editorRender/fieldSelect';
 import { uuid } from '../../../utils';
 import { InputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
-import { Schemas, setCol, setDataSchema } from '../../schema';
+import { getDefaultDataSchema, Schemas, setCol, setDataSchema } from '../../schema';
 import { getColumnItem, getColumnsSchema } from '../../utils';
 
 const BaseEditor = {
@@ -25,6 +25,36 @@ const BaseEditor = {
       }
     },
     {
+      title: '保留字段',
+      type: 'Switch',
+      description: '开启后，插槽列也支持字段填写',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return [ContentTypeEnum.SlotItem].includes(item.contentType);
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.keepDataIndex;
+        },
+        set({ data, focusArea, output, input, slot, ...res }: EditorResult<Data>, value: boolean) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          const hasEvent = slot.get(item.slotId).inputs.get(InputIds.SLOT_ROW_VALUE);
+          if (value) {
+            !hasEvent && [ContentTypeEnum.SlotItem].includes(item.contentType);
+            slot.get(item.slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+          } else {
+            hasEvent && slot.get(item.slotId).inputs.remove(InputIds.SLOT_ROW_VALUE);
+          }
+          setCol({ data, focusArea }, 'keepDataIndex', value);
+          setDataSchema({ data, focusArea, output, input, slot, ...res });
+        }
+      }
+    },
+    {
       title: '字段',
       type: 'editorRender',
       description: '与后端返回数据字段对应',
@@ -41,12 +71,22 @@ const BaseEditor = {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
-          return { field: ret, schema: getColumnsSchema(data) };
+          return {
+            field: ret,
+            schema: getColumnsSchema(data),
+            disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
+          };
         },
         set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value: string) {
           if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
           let valArr: string | string[] = value.trim().split('.');
-          if (valArr.length === 1) valArr = valArr[0];
+          if (valArr.length === 1) {
+            valArr = valArr[0];
+          }
+          if (!`${valArr}`.startsWith('u_') && !item.keepDataIndex) {
+            setCol({ data, focusArea }, 'keepDataIndex', true);
+          }
           setCol({ data, focusArea }, 'dataIndex', valArr);
           setDataSchema({ data, focusArea, output, input, ...res });
         }
@@ -79,7 +119,9 @@ const BaseEditor = {
             const slotId = uuid();
             column['slotId'] = slotId;
             slot.add({ id: slotId, title: `自定义${column.title}列`, type: 'scope' });
-            slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+            if (column.keepDataIndex) {
+              slot.get(slotId).inputs.add(InputIds.SLOT_ROW_VALUE, '当前列数据', Schemas.Any);
+            }
             slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
             slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
           } else {
@@ -90,6 +132,30 @@ const BaseEditor = {
           }
           setCol({ data, focusArea }, 'contentType', value);
           setDataSchema({ data, focusArea, output, input, slot, ...res });
+        }
+      }
+    },
+    {
+      title: '列数据类型',
+      type: '_schema',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return (
+          [ContentTypeEnum.Text].includes(item.contentType) ||
+          ([ContentTypeEnum.SlotItem].includes(item.contentType) && item.keepDataIndex)
+        );
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.dataSchema || getDefaultDataSchema(item.dataIndex, data);
+        },
+        set({ data, focusArea, ...res }: EditorResult<Data>, value: object) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'dataSchema', value);
+          setDataSchema({ data, focusArea, ...res });
         }
       }
     }

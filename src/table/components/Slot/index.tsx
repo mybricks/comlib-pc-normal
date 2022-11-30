@@ -1,3 +1,4 @@
+import React from 'react';
 import { IColumn } from '../../types';
 import { InputIds } from '../../constants';
 
@@ -10,7 +11,7 @@ interface Props {
   rowKey: string;
 }
 
-export default (props: Props): JSX.Element | null => {
+export default React.memo((props: Props): JSX.Element | null => {
   const { value, record, colIndex, columnItem, slots } = props;
   const slotId = columnItem?.slotId;
 
@@ -28,4 +29,4 @@ export default (props: Props): JSX.Element | null => {
     },
     key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${columnItem.key}`
   });
-};
+});

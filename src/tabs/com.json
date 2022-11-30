@@ -8,7 +8,7 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editor/index.ts",
   "inputs": [
     {
       "id": "previous",
@@ -47,7 +47,17 @@
       "id": "tabClick",
       "title": "标签页点击",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "标签页id",
+            "type": "string"
+          },
+          "name": {
+            "title": "标签页标题",
+            "type": "string"
+          }
+        }
       }
     },
     {
@@ -70,36 +80,26 @@
           }
         }
       }
+    },
+    {
+      "id": "tab0_into",
+      "title": "tab0显示",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "tab0_leave",
+      "title": "tab0隐藏",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "slots": [
     {
       "id": "tab0",
-      "title": "标签页1",
-      "type": "scope",
-      "inputs": [
-        {
-          "id": "tab0_render",
-          "title": "首次显示",
-          "schema": {
-            "type": "any"
-          }
-        },
-        {
-          "id": "tab0_into",
-          "title": "显示",
-          "schema": {
-            "type": "any"
-          }
-        },
-        {
-          "id": "tab0_leave",
-          "title": "隐藏",
-          "schema": {
-            "type": "any"
-          }
-        }
-      ]
+      "title": "标签页1"
     }
   ]
 }

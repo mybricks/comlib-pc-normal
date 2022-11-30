@@ -1,5 +1,5 @@
 {
-  "title": "路由切换",
+  "title": "跳转到...",
   "namespace": "mybricks.normal-pc.page-router",
   "version": "1.0.0",
   "rtType": "js",

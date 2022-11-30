@@ -35,7 +35,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
         width = column.width + 'px';
       }
       if (column.widthOption === WidthUnitEnum.Auto) {
-        flex = '1';
+        flex = `${column.flex} ${column.flex} 0`;
       }
       let breakPointConfig = {};
       if (column.widthOption === WidthUnitEnum.Media) {

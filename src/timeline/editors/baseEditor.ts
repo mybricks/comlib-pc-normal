@@ -1,31 +1,30 @@
-import { Data, DataSourceEnum, InputIds, Schemas, SlotIds } from '../constants';
+import { Data, InputIds, SlotIds } from '../constants';
 import { getNewItem } from './utils';
+
+export const DefaultSourceSchema = {
+  type: 'array',
+  items: { type: 'any' }
+};
 
 const BaseEditor = [
   {
-    title: '数据来源',
-    type: 'Select',
-    options: [
-      {
-        label: '手动搭建',
-        value: DataSourceEnum.STATIC
-      },
-      {
-        label: '动态获取',
-        value: DataSourceEnum.DYNAMIC
-      }
-    ],
+    title: '动态数据',
+    type: 'switch',
     value: {
       get({ data }: EditorResult<Data>) {
-        return data.dataSource;
+        return !!data.isDynamic;
       },
-      set({ data, input }: EditorResult<Data>, value: DataSourceEnum) {
-        data.dataSource = value;
-        if (value === DataSourceEnum.DYNAMIC) {
-          input.add(InputIds.SetDataSource, '设置数据源', Schemas[InputIds.SetDataSource]);
+      set({ data, input, slots }: EditorResult<Data>, val: boolean) {
+        data.isDynamic = val;
+        if (val) {
+          input.add(InputIds.SetDataSource, '设置数据源', DefaultSourceSchema);
           data.timelines.splice(1);
         } else {
           input.remove(InputIds.SetDataSource);
+          data.useContentSlot = val;
+          if (slots?.get(SlotIds.Content)) {
+            slots.remove(SlotIds.Content);
+          }
         }
       }
     }
@@ -34,22 +33,40 @@ const BaseEditor = [
     title: '自定义节点内容',
     type: 'Switch',
     ifVisible({ data }: EditorResult<Data>) {
-      return data.dataSource === DataSourceEnum.DYNAMIC;
+      return !!data.isDynamic;
     },
     value: {
       get({ data }: EditorResult<Data>) {
-        return data.useContentSlot;
+        return !!data.useContentSlot;
       },
-      set({ data, slot }: EditorResult<Data>, value: boolean) {
+      set({ data, slots }: EditorResult<Data>, value: boolean) {
         data.useContentSlot = value;
         if (value) {
-          slot.add({ id: SlotIds.Content, title: '自定义节点内容', type: 'scope' });
-          slot
-            .get(SlotIds.Content)
-            .inputs.add(InputIds.CurrentDs, '当前项数据', Schemas[InputIds.CurrentDs]);
-          slot.get(SlotIds.Content).inputs.add(InputIds.Index, '当前序号', Schemas.Number);
+          slots.add({
+            id: SlotIds.Content,
+            title: '自定义节点内容',
+            type: 'scope',
+            inputs: [
+              {
+                id: InputIds.CurrentDs,
+                title: '当前项数据',
+                schema: {
+                  type: 'any'
+                }
+              },
+              {
+                id: InputIds.Index,
+                title: '当前序号',
+                schema: {
+                  type: 'number'
+                }
+              }
+            ]
+          });
         } else {
-          slot.remove(SlotIds.Content);
+          if (slots?.get(SlotIds.Content)) {
+            slots.remove(SlotIds.Content);
+          }
         }
       }
     }
@@ -58,7 +75,7 @@ const BaseEditor = [
     title: '添加时间轴节点',
     type: 'Button',
     ifVisible({ data }: EditorResult<Data>) {
-      return data.dataSource !== DataSourceEnum.DYNAMIC;
+      return !data.isDynamic;
     },
     value: {
       set({ data }: EditorResult<Data>) {

@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
-import { uuid } from '../../utils';
+import { typeCheck, uuid } from '../../utils';
 import { Option } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
@@ -27,21 +27,25 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      if (
-        data.config.mode &&
-        ['multiple', 'tags'].includes(data.config.mode) &&
-        !Array.isArray(val)
-      ) {
-        logger.error(
-          `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
-        );
-      } else {
-        data.value = val;
+      if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+        if (!Array.isArray(val)) {
+          logger.error(
+            `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+          );
+        } else {
+          onChange(val);
+          // data.value = val;
+        }
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
         onChange(val);
+        // data.value = val;
+      } else {
+        logger.error(`下拉框的值应为基本类型`);
       }
     });
 
     inputs['resetValue'](() => {
+      data.value = '';
       data.value = void 0;
     });
 
@@ -70,15 +74,21 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       }
       let newValArray: any[] = [],
         newVal;
+      let updateValue = false;
       tempDs.map((item) => {
         const { checked, value } = item;
         if (checked && value != undefined) {
+          updateValue = true;
           newVal = value;
           newValArray.push(value);
         }
       });
-      data.value =
-        data.config.mode && ['tags', 'multiple'].includes(data.config.mode) ? newValArray : newVal;
+      if (updateValue) {
+        data.value =
+          data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
+            ? newValArray
+            : newVal;
+      }
       data.config.options = tempDs.map(({ label, value, disabled }) => {
         return {
           label,
@@ -95,14 +105,6 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       };
     });
 
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
     //设置禁用
     inputs['setDisabled'](() => {
       data.config.disabled = true;
@@ -121,17 +123,28 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     outputs['onBlur'](data.value);
   }, []);
 
+  const onSearch = (e) => {
+    //开启远程搜索功能
+    if (data.dropdownSearchOption) {
+      outputs['remoteSearch'](e);
+    }
+    //1、远程数据源
+    if (!e && data.dropdownSearchOption === true) {
+      data.config.options = [];
+    }
+    //2、本地数据源, 不做处理
+  };
+
   return (
-    data.visible && (
-      <div className={css.select}>
-        <Select
-          {...data.config}
-          options={env.edit ? data.staticOptions : data.config.options}
-          value={data.value}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-      </div>
-    )
+    <div className={css.select}>
+      <Select
+        {...data.config}
+        options={env.edit ? data.staticOptions : data.config.options}
+        value={data.value}
+        onChange={onChange}
+        onBlur={onBlur}
+        onSearch={data.config.showSearch ? onSearch : void 0}
+      />
+    </div>
   );
 }

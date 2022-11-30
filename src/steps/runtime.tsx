@@ -1,7 +1,7 @@
 import { Button, message, Steps } from 'antd';
 import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames';
-import { Data } from './constants';
+import { Data, INTO, LEAVE } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
 
@@ -23,12 +23,13 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
       inputs['nextStep']((ds: any) => {
         if (data.current < stepAry.length - 1) {
+          stepAry[data.current].content = ds;
           data.current += 1;
         }
       });
 
       inputs['jumpTo']((val: number) => {
-        if (!val || typeof val !== 'number') {
+        if (typeof val !== 'number') {
           message.error('【步骤条】跳转步骤必须是数字');
           return;
         }
@@ -43,26 +44,26 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
         relOutputs['getIndex'](data.current);
       });
 
-      stepAry.forEach(({ id }, index) => {
-        //最后一步没有next output
-        if (index < stepAry.length - 1) {
-          slots[id].outputs[`${id}_next`]((val) => {
-            if (data.current < stepAry.length - 1) {
-              stepAry[data.current].content = val;
-              data.current += 1;
-            }
-          });
-        }
-      });
+      // stepAry.forEach(({ id }, index) => {
+      //   //最后一步没有next output
+      //   if (index < stepAry.length - 1) {
+      //     slots[id].outputs[`${id}_next`]((val) => {
+      //       if (data.current < stepAry.length - 1) {
+      //         stepAry[data.current].content = val;
+      //         data.current += 1;
+      //       }
+      //     });
+      //   }
+      // });
     }
   }, [stepAry]);
 
-  useEffect(() => {
-    if (runtime) {
-      stepRenderHook();
-      stepLeaveHook().then(stepIntoHook);
-    }
-  }, [data.current]);
+  // useEffect(() => {
+  //   if (runtime) {
+  //     // stepRenderHook();
+  //     stepLeaveHook().then(stepIntoHook);
+  //   }
+  // }, [data.current]);
 
   const getPreviousData = () => {
     const content = {};
@@ -83,14 +84,14 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
   const stepIntoHook = () => {
     stepAry[data.current].render = true; //标记步骤渲染状态
-    const slotInputs = slots[stepAry[data.current].id].inputs;
-    slotInputs[`${stepAry[data.current].id}_into`](getPreviousData());
+    const { id } = stepAry[data.current];
+    outputs[`${id}${INTO}`](getPreviousData());
   };
 
   const stepLeaveHook = () => {
     if (preIndex === undefined) return Promise.resolve();
-    const slotInputs = slots[stepAry[preIndex].id].inputs;
-    return Promise.all([slotInputs[`${stepAry[preIndex].id}_leave`]()]);
+    const { id } = stepAry[preIndex];
+    return Promise.all([outputs[`${id}${LEAVE}`]()]);
   };
 
   const getCurrentStep = (pre?): any => {

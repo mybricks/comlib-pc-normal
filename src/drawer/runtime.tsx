@@ -67,7 +67,8 @@ export default function ({
 
   const footer = useFooter
     ? data.footerBtns.map((item: any) => {
-        const { title, id, showText, icon, useIcon, location, isConnected, ...res } = item;
+        const { title, id, showText, icon, useIcon, location, isConnected, outputDs, ...res } =
+          item;
         const Icon = useIcon && Icons && Icons[icon as string]?.render();
 
         return (

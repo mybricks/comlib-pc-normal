@@ -47,6 +47,7 @@ export default function Dialog({
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
               if (DefaultEvent.includes(id)) {
+                item.loading = false;
                 isConnected && close();
               }
               relOutputs[id](val);
@@ -86,7 +87,7 @@ export default function Dialog({
         }
       });
 
-      // 底部按钮动态隐藏/禁用
+      // 底部按钮动态隐藏/禁用/关闭加载
       (data.footerBtns || []).forEach((item) => {
         if (item.dynamicDisabled) {
           inputs[`disable${item.id}`](() => {
@@ -102,6 +103,11 @@ export default function Dialog({
           });
           inputs[`show${item.id}`](() => {
             item.hidden = false;
+          });
+        }
+        if (item.useBtnLoading) {
+          inputs[`stopLoading${item.id}`](() => {
+            item.loading = false;
           });
         }
       });
@@ -123,7 +129,11 @@ export default function Dialog({
     const { id, isConnected } = item;
     eventList[id] = () => {
       outputs[`${id}Click`]();
-      !isConnected && close();
+      if (isConnected) {
+        item.loading = true;
+      } else {
+        close();
+      }
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
       // }
@@ -245,6 +255,8 @@ const RuntimeRender = ({
             dynamicHidden,
             dynamicDisabled,
             isConnected,
+            loading,
+            useBtnLoading,
             ...res
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
@@ -255,6 +267,7 @@ const RuntimeRender = ({
               disabled={disabled}
               onClick={event?.[id]}
               data-btn-id={id}
+              loading={useBtnLoading && loading}
               key={id}
             >
               {useIcon && location !== Location.BACK && Icon}

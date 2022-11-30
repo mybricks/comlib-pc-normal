@@ -6,7 +6,10 @@ export const getNewBtn = (): BtnItem => {
   return {
     key,
     text: '按钮',
-    showText: true
+    showText: true,
+    dataType: "number",
+    outVal: 0,
+    inVal: ''
   };
 };
 

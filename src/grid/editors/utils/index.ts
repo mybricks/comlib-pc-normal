@@ -1,0 +1,5 @@
+export { getColIndex, getColItem, getRowIndex, getRowItem, updateCol, updateSlotTitle } from './common'
+export { addRow, addColumn, addColumnByPosition, divideColumn, copyRow } from './insert'
+export { twoColLayout, threeColLayout } from './layout'
+export { canSplit, splitColumn } from './split'
+export { canMerge, mergeCol } from './merge'

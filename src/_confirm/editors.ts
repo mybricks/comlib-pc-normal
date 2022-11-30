@@ -21,18 +21,25 @@ const TypeOptions = [
 export default {
   '@inputConnected'({ output }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
+      //连接时拿到传递过来的inputValue的schema，给到确认和取消
+      //可以包含确认和其余类型
       const outputSchema =
-        fromPin.schema?.type === 'object' && fromPin.schema?.properties?.outputValue
+        ((fromPin.schema?.type === 'object') && (fromPin.schema?.properties?.outputValue !== undefined))
           ? fromPin.schema?.properties?.outputValue
           : fromPin.schema;
       output.get(OutputIds.Ok).setSchema(outputSchema);
-      output.get(OutputIds.Cancel).setSchema(outputSchema);
+
+      if(output.get(OutputIds.Cancel)){
+        output.get(OutputIds.Cancel).setSchema(outputSchema);
+      }
     }
   },
   '@inputDisConnected'({ output }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
       output.get(OutputIds.Ok).setSchema(Schemas.Any);
-      output.get(OutputIds.Cancel).setSchema(Schemas.Any);
+      if(output.get(OutputIds.Cancel)){
+        output.get(OutputIds.Cancel).setSchema(Schemas.Any);
+      }
     }
   },
   '@init'({ data, setDesc }: EditorResult<Data>) {
@@ -42,9 +49,15 @@ export default {
     Editor<Data>('类型', EditorType.Select, 'type', {
       options: TypeOptions,
       value: {
-        set({ data, setDesc }: EditorResult<Data>, val: TypeEnum) {
+        set({ data, output, setDesc }: EditorResult<Data>, val: TypeEnum) {
           data.type = val;
           setDescByData({ data, setDesc });
+          const cancelSchema = output.get(OutputIds.Ok).schema;
+          if(data.type === 'confirm'){
+            output.add(OutputIds.Cancel, '取消', cancelSchema);
+          }else{
+            output.remove(OutputIds.Cancel);
+          }
         }
       }
     }),

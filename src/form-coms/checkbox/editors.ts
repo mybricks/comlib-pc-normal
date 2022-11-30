@@ -3,7 +3,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let  optionsLength = 0,
+let optionsLength = 0,
   addOption,
   delOption;
 
@@ -31,18 +31,6 @@ const initParams = (data: Data) => {
 export default {
   '@resize': {
     options: ['width']
-  },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'array' } })
-    }
-    // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-    //   data.type = 'data'
-    //
-    //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
-    // } else {
-    //   data.type = 'normal'
-    // }
   },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';

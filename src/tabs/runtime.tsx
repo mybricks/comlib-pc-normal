@@ -71,10 +71,12 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
           data.defaultActiveKey = data.tabList[currentIndex + 1].key;
         }
       });
+      //获取当前激活步骤
       inputs[InputIds.OutActiveTab]((val, relOutputs) => {
         const current = findTargetByKey();
         relOutputs[OutputIds.OutActiveTab](current);
       });
+      //支持动态通知
       data.tabList.forEach((item) => {
         item.dynamic &&
           inputs[item.key] &&
@@ -102,7 +104,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
 
   useEffect(() => {
     if (env.runtime) {
-      tabRenderHook();
+      // tabRenderHook();
       tabLeaveHook().then(tabIntoHook);
     }
   }, [data.defaultActiveKey, showTabs]);
@@ -118,23 +120,21 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   const tabIntoHook = () => {
     const currentTab = findTargetByKey();
     if (currentTab) {
-      currentTab.render = true; //标记render状态
-      const slotInputs = slots[currentTab.id].inputs;
-      slotInputs[`${currentTab.id}_into`]();
+      // currentTab.render = true; //标记render状态
+      outputs[`${currentTab.id}_into`]();
     }
   };
 
   const tabLeaveHook = () => {
     if (preKey === undefined) return Promise.resolve();
     const preTab = findTargetByKey(preKey);
-    const slotInputs = slots[preTab.id].inputs;
-    return Promise.all([slotInputs[`${preTab.id}_leave`]()]);
+    return Promise.all([outputs[`${preTab.id}_leave`]()]);
   };
 
   const handleClickItem = useCallback((values) => {
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const current = data.tabList.filter((item) => item.key === values)[0];
-      outputs[OutputIds.OnTabClick](current);
+      const { id, name } = data.tabList.find((item) => item.key === values) || {};
+      outputs[OutputIds.OnTabClick]({ id, name });
     }
 
     if (!data.prohibitClick) {

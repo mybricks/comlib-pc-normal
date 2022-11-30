@@ -17,20 +17,25 @@
           "./src/toolbar/com.json",
           "./src/button/com.json",
           "./src/breadcrumb/com.json",
-          "./src/card/com.json",
-          "./src/tabs/com.json",
-          "./src/menu/com.json",
-          "./src/grid/com.json",
-          "./src/dialog/com.json",
-          "./src/steps/com.json",
-          "./src/icon/com.json",
-          "./src/dropdown/com.json",
-          "./src/sort-bar/com.json",
           "./src/richtext/com.json"
         ]
       },
       {
-        "title": "表单",
+        "title": "容器",
+        "comAry": [
+          "./src/grid/com.json",
+          "./src/dialog/com.json",
+          "./src/card/com.json",
+          "./src/tabs/com.json",
+          "./src/steps/com.json",
+          "./src/list/com.json",
+          "./src/drawer/com.json",
+          "./src/collapse/com.json",
+          "./src/custom-container/com.json"
+        ]
+      },
+      {
+        "title": "数据录入",
         "comAry": [
           "./src/form-coms/form-container/com.json",
           "./src/form-coms/text/com.json",
@@ -41,49 +46,50 @@
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/input-textarea/com.json",
           "./src/form-coms/radio/com.json",
-          "./src/form-coms/checkbox/com.json"
+          "./src/form-coms/checkbox/com.json",
+          "./src/form-coms/switch/com.json",
+          "./src/form-coms/transfer/com.json",
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json",
+          "./src/form-coms/rate/com.json",
+          "./src/form-coms/email/com.json",
+          "./src/form-coms/password/com.json",
+          "./src/form-coms/phone-number/com.json",
+          "./src/form-coms/time-picker/com.json",
+          "./src/form-coms/time-range-picker/com.json"
         ]
       },
       {
-        "title": "数据",
+        "title": "数据展示",
         "comAry": [
           "./src/table/com.json",
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/json-view/com.json"
-        ]
-      },
-      {
-        "title": "容器",
-        "comAry": [
-          "./src/list/com.json",
-          "./src/drawer/com.json",
-          "./src/collapse/com.json",
-          "./src/custom-container/com.json"
+          "./src/json-view/com.json",
+          "./src/tree/com.json"
         ]
       },
       {
         "title": "其它",
         "comAry": [
+          "./src/tagList/com.json",
           "./src/calendar/com.json",
           "./src/bottom-bar/com.json",
           "./src/iframe/com.json",
-          "./src/qr-code/com.json"
-        ]
-      },
-      {
-        "title": "反馈",
-        "comAry": [
+          "./src/qr-code/com.json",
           "./src/alert/com.json",
           "./src/result/com.json",
           "./src/spin/com.json",
           "./src/popover/com.json",
-          "./src/tooltip/com.json"
+          "./src/tooltip/com.json",
+          "./src/menu/com.json",
+          "./src/icon/com.json",
+          "./src/dropdown/com.json",
+          "./src/sort-bar/com.json"
         ]
       },
       "./src/_code-segment/com.json",
-      "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
       "./src/_page-router/com.json",
@@ -92,7 +98,9 @@
       "./src/_timer-loop/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object-merge/com.json"
+      "./src/_object-merge/com.json",
+      "./src/_schema-simulator/com.json",
+      "./src/_query/com.json"
     ],
     "publish": [
       {
@@ -106,16 +114,21 @@
           "./src/toolbar/com.json",
           "./src/button/com.json",
           "./src/breadcrumb/com.json",
-          "./src/card/com.json",
-          "./src/tabs/com.json",
-          "./src/menu/com.json",
+          "./src/richtext/com.json"
+        ]
+      },
+      {
+        "title": "容器",
+        "comAry": [
           "./src/grid/com.json",
           "./src/dialog/com.json",
+          "./src/card/com.json",
+          "./src/tabs/com.json",
           "./src/steps/com.json",
-          "./src/icon/com.json",
-          "./src/dropdown/com.json",
-          "./src/sort-bar/com.json",
-          "./src/richtext/com.json"
+          "./src/list/com.json",
+          "./src/drawer/com.json",
+          "./src/collapse/com.json",
+          "./src/custom-container/com.json"
         ]
       },
       {
@@ -130,7 +143,17 @@
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/input-textarea/com.json",
           "./src/form-coms/radio/com.json",
-          "./src/form-coms/checkbox/com.json"
+          "./src/form-coms/checkbox/com.json",
+          "./src/form-coms/switch/com.json",
+          "./src/form-coms/transfer/com.json",
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json",
+          "./src/form-coms/rate/com.json",
+          "./src/form-coms/email/com.json",
+          "./src/form-coms/password/com.json",
+          "./src/form-coms/phone-number/com.json",
+          "./src/form-coms/time-picker/com.json",
+          "./src/form-coms/time-range-picker/com.json"
         ]
       },
       {
@@ -140,39 +163,30 @@
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/json-view/com.json"
-        ]
-      },
-      {
-        "title": "容器",
-        "comAry": [
-          "./src/list/com.json",
-          "./src/drawer/com.json",
-          "./src/collapse/com.json",
-          "./src/custom-container/com.json"
+          "./src/json-view/com.json",
+          "./src/tree/com.json"
         ]
       },
       {
         "title": "其它",
         "comAry": [
+          "./src/tagList/com.json",
           "./src/calendar/com.json",
           "./src/bottom-bar/com.json",
           "./src/iframe/com.json",
-          "./src/qr-code/com.json"
-        ]
-      },
-      {
-        "title": "反馈",
-        "comAry": [
+          "./src/qr-code/com.json",
           "./src/alert/com.json",
           "./src/result/com.json",
           "./src/spin/com.json",
           "./src/popover/com.json",
-          "./src/tooltip/com.json"
+          "./src/tooltip/com.json",
+          "./src/menu/com.json",
+          "./src/icon/com.json",
+          "./src/dropdown/com.json",
+          "./src/sort-bar/com.json"
         ]
       },
       "./src/_code-segment/com.json",
-      "./src/_connector/com.json",
       "./src/_confirm/com.json",
       "./src/_message/com.json",
       "./src/_page-router/com.json",
@@ -181,7 +195,9 @@
       "./src/_timer-loop/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
-      "./src/_object-merge/com.json"
+      "./src/_object-merge/com.json",
+      "./src/_schema-simulator/com.json",
+      "./src/_query/com.json"
     ]
   }
 }

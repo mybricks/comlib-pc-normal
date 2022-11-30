@@ -32,3 +32,4 @@ export function runJs(scriptText: string | any, model?: [], props?: Props) {
 }
 
 export { utils }
+export { runExpression } from "./expression"

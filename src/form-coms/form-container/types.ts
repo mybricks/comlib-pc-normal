@@ -13,14 +13,18 @@ interface Actions {
   items: Action[];
   span: number;
   visible: boolean;
+  align: 'left' | 'center' | 'right';
 }
 
 interface FormItems {
-  id: string; 
+  id: string;
   name: string
   label: string
   span: number
   required?: boolean
+  visible: boolean
+  validateStatus?: string
+  help?: string
 }
 
 export type LabelWidthType = 'px' | 'span'
@@ -64,6 +68,11 @@ export interface Data {
    */
   labelCol: number
   wrapperCol: number
+
+  /**
+   * 合并参数 Schema
+   */
+  paramsSchema: any
 }
 
 export interface FormControlProps {

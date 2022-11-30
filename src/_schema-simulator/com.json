@@ -1,0 +1,36 @@
+{
+  "title": "数据模拟器",
+  "namespace": "mybricks.normal-pc.dataSimulator",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "根据schema数据生成的数据模拟器",
+  "author": "huangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs":[
+    {
+      "id": "mockTouch",
+      "title": "触发模拟",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "outputData"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputData",
+      "title": "模拟数据",
+      "schema": {
+        "type": "follow"
+      },
+      "conMax": 1,
+      "editable": true
+    }
+  ]
+}

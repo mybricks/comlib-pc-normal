@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Descriptions, Tooltip } from 'antd';
 import { uuid } from '../utils';
-import { getRenderScript } from './utils';
 import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const { items, size, title, showTitle, layout, column, bordered, colon } = data || {};
-
-  const [rawData, setRawData] = useState({});
+  data.rawData = data.rawData || {};
 
   const contentMap = {
     text: (value, lineLimit, widthLimit, limit) => {
@@ -33,24 +31,16 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       return limit ? (
         <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} />
       ) : (
-        <div style={widthLimit ? { width: widthLimit } : {}}>{env.i18n(value)}</div>
+        <div className={css.pre} style={widthLimit ? { width: widthLimit } : {}}>
+          {env.i18n(value)}
+        </div>
       );
     }
-    // obj: (value) => {
-    //   return Object.keys(value).map((key) => {
-    //     return (
-    //       <div style={{ display: 'flex', marginBottom: '12px' }}>
-    //         <div style={{ flex: '0 0 98px' }}>{key}:</div>
-    //         <div style={{ whiteSpace: 'nowrap' }}> {value[key]}</div>
-    //       </div>
-    //     );
-    //   });
-    // }
   };
-  const getDataSource = () => {
+  const getDataSource = useCallback(() => {
     const res: Item[] = [];
-    let ds = rawData;
-    (items || []).forEach((item) => {
+    let ds = data.rawData;
+    (data.items || []).forEach((item) => {
       const labelStyle = {
         ...item.labelStyle,
         marginLeft: item.stylePadding ? item.stylePadding[0] : 0
@@ -66,8 +56,6 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         paddingTop: Array.isArray(item.padding) ? item.padding[2] : 0,
         paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
       };
-      const isHidden =
-        env.runtime && !!item.isHiddenScript && eval(getRenderScript(item.isHiddenScript))(rawData);
 
       if (typeof ds[item.key] === 'string' || typeof ds[item.key] === 'number') {
         res.push({
@@ -75,8 +63,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           value: ds[item.key],
           labelStyle,
           contentStyle,
-          itemStyle,
-          isHidden
+          itemStyle
         });
       } else if (ds[item.key] && typeof ds[item.key] === 'object') {
         res.push({
@@ -85,8 +72,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           color: ds[item.key].color,
           labelStyle,
           contentStyle,
-          itemStyle,
-          isHidden
+          itemStyle
         });
       } else {
         if (ds[item.key] !== undefined) {
@@ -97,15 +83,15 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           ...item,
           labelStyle,
           contentStyle,
-          itemStyle,
-          isHidden
+          itemStyle
         });
       }
     });
     return res;
-  };
+  }, []);
+
   const setDataSource = (ds: any) => {
-    setRawData(ds);
+    data.rawData = ds;
   };
 
   // 后置操作渲染
@@ -114,7 +100,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     const outputId = `${id}-suffixClick`;
     if (useSuffix && type === TypeEnum.Text) {
       const record = {
-        ...rawData
+        ...data.rawData
       };
       getDataSource().forEach((item) => {
         record[item.key] = item.value;
@@ -157,25 +143,22 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             type,
             span,
             label,
-            isHidden,
             labelStyle,
             contentStyle,
             itemStyle,
             slotId,
             lineLimit,
             widthLimit,
-            limit
+            limit,
+            showLable = true
           } = item || {};
           const SlotItem = slots[slotId]?.render({
             inputValues: {
               [InputIds.CurDs]: value,
-              [InputIds.DataSource]: rawData
+              [InputIds.DataSource]: data.rawData
             },
             key: slotId
           });
-          if (isHidden) {
-            return null;
-          }
           if (type === TypeEnum.AllSlot) {
             return (
               <Descriptions.Item label={''} key={id} span={span}>
@@ -185,7 +168,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           }
           return (
             <Descriptions.Item
-              label={env.i18n(label)}
+              label={showLable ? env.i18n(label) : ''}
               key={id}
               span={span}
               labelStyle={labelStyle}
@@ -214,9 +197,10 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     if (env.edit && items?.length === 0) {
       items.push({
         id: uuid(),
-        label: '用户名',
-        key: 'username',
-        value: 'username',
+        label: '描述项1',
+        showLable: true,
+        key: 'field1',
+        value: 'field1',
         span: 1,
         labelStyle: {
           fontSize: 14,
@@ -249,25 +233,14 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
 }
 function MassiveValue({ value, customStyle, limit }) {
   const parentEle = useRef<HTMLDivElement>(null);
-  // const [showTooltip, setShowTooltip] = useState(false);
-
-  // useEffect(() => {
-  //   if (parentEle.current) {
-  //     const { scrollWidth, scrollHeight, clientHeight, clientWidth } =
-  //       parentEle.current;
-  //     setShowTooltip(
-  //       clientHeight < scrollHeight - 1 || clientWidth < scrollWidth
-  //     );
-  //   }
-  // }, [parentEle.current, value]);
   return (
     <div ref={parentEle} style={customStyle}>
       {limit ? (
         <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color="#fff">
-          {value}
+          <div className={css.pre}>{value}</div>
         </Tooltip>
       ) : (
-        value
+        <div className={css.pre}>{value}</div>
       )}
     </div>
   );

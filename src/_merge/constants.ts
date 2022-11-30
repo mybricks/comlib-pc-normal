@@ -1,4 +1,6 @@
-export interface Data {}
+export interface Data {
+  isMerge: boolean;
+}
 
 export const OutputIds = {
   Output: 'output'

@@ -1,3 +1,5 @@
+import { Data as PaginationData } from './components/Paginator/constants';
+
 export enum ContentTypeEnum {
   Text = 'text',
   SlotItem = 'slotItem',
@@ -63,6 +65,9 @@ export interface IColumn {
 
   children?: IColumn[];
   className?: string;
+
+  keepDataIndex?: boolean;
+  dataSchema?: any;
 }
 
 export enum SizeEnum {
@@ -146,4 +151,7 @@ export interface Data {
 
   // 使用列展开
   useExpand?: boolean;
+
+  usePagination?: boolean;
+  paginationConfig: PaginationData;
 }

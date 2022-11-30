@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Timeline, Badge } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { uuid } from '../utils';
-import { Data, DataSourceEnum, InputIds, Item, OutputIds, SlotIds } from './constants';
+import { Data, InputIds, Item, OutputIds, SlotIds } from './constants';
 import css from './runtime.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -11,13 +11,9 @@ export default function (props: RuntimeParams<Data>) {
   const [collapse, setCollapse] = useState(env.edit ? false : data.defaultCollapse);
   const [timelines, setTimelines] = useState<Item[]>([]);
 
-  const lastTimeLine = useMemo(() => {
-    return timelines[timelines.length - 1];
-  }, [timelines]);
-
   useEffect(() => {
     if (env.runtime) {
-      if (data.dataSource === DataSourceEnum.DYNAMIC) {
+      if (data.isDynamic) {
         inputs[InputIds.SetDataSource]((ds) => {
           if (!Array.isArray(ds)) {
             logger.error('接收数据需要为数组类型');
@@ -43,7 +39,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   useEffect(() => {
-    if (data.dataSource === DataSourceEnum.DYNAMIC) {
+    if (data.isDynamic) {
       if (env.edit) {
         setTimelines([data.timelines[0]]);
       }
@@ -51,15 +47,6 @@ export default function (props: RuntimeParams<Data>) {
       setTimelines(data.timelines);
     }
   }, [data.timelines]);
-
-  const handleOpen = () => {
-    setCollapse(false);
-  };
-  const handleClose = () => {
-    if (env.runtime) {
-      setCollapse(true);
-    }
-  };
 
   const ItemRender = (item, index) => {
     if (data.useContentSlot && slots[SlotIds.Content]) {
@@ -87,21 +74,27 @@ export default function (props: RuntimeParams<Data>) {
     );
   };
 
+  const handleToggle = () => {
+    setCollapse((pre) => !pre);
+  };
+
+  const CollapseRender = () => {
+    return data.supportCollapse ? (
+      <div onClick={handleToggle} className={css.center}>
+        {collapse ? (
+          <Badge count={data.timelines.length} size="small" showZero className={css.marginRight}>
+            <span>展开</span>
+          </Badge>
+        ) : (
+          <span className={css.marginRight}>收起</span>
+        )}
+        {collapse ? <DownOutlined /> : <UpOutlined />}
+      </div>
+    ) : null;
+  };
+
   return (
     <div className={css.timeline}>
-      <div
-        className={!collapse || !data.supportCollapse ? css.none : css.center}
-        onClick={handleOpen}
-      >
-        <Badge
-          color={lastTimeLine && lastTimeLine.color}
-          text={lastTimeLine && lastTimeLine.title}
-        />
-        <div className={css.openText}>
-          <span className={css.marginRight}>展开</span>
-          <DownOutlined />
-        </div>
-      </div>
       <Timeline
         mode={data.mode}
         reverse={data.reverse}
@@ -113,11 +106,9 @@ export default function (props: RuntimeParams<Data>) {
             <Timeline.Item color={color} data-timeline-id={id} key={_id || id}>
               <div
                 onClick={() => {
-                  if (data.useItemClick && outputs[OutputIds.ItemClick]) {
-                    outputs[OutputIds.ItemClick](item);
-                  }
+                  outputs[OutputIds.ItemClick](item);
                 }}
-                className={classnames(data.useItemClick && css.click)}
+                className={css.click}
               >
                 {ItemRender(item, index)}
               </div>
@@ -125,13 +116,7 @@ export default function (props: RuntimeParams<Data>) {
           );
         })}
       </Timeline>
-      <div
-        className={classnames(css.closeText, (collapse || !data.supportCollapse) && css.none)}
-        onClick={handleClose}
-      >
-        <span className={css.marginRight}>收起</span>
-        <UpOutlined />
-      </div>
+      {CollapseRender()}
     </div>
   );
 }

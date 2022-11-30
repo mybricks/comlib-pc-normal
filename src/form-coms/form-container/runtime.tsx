@@ -39,8 +39,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       outputRels['onResetFinish']();
     });
 
-    inputs['submit']((val, outputRels) => {
+    inputs[inputIds.SUBMIT]((val, outputRels) => {
       submit(outputRels);
+    });
+
+    inputs[inputIds.SUBMIT_AND_MERGE]((val, outputRels) => {
+      if (Object.prototype.toString.call(val) === '[object Object]') {
+        submitMethod(outputIds.ON_MERGE_FINISH, outputRels, val);
+      } else {
+        submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
+      }
     });
 
     // For 表单项私有
@@ -61,6 +69,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     _inputs['setValue']((val) => {
       setFieldsValue(val);
     });
+
+    // slots['content']._inputs['validateTrigger'](id=>{
+    //   const item = data.items.find(item => item.id === id)
+
+    //   console.log('validateTrigger', item)
+    // });
   }, []);
 
   const setFieldsValue = (val) => {
@@ -91,8 +105,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return new Promise((resolve, reject) => {
       Promise.all(
         data.items.map((item) => {
+          // 隐藏的表单项，不再校验
+          if (!item.visible) return { validateStatus: 'success' };
+
           const id = item.id;
           const input = childrenInputs[id];
+
           return new Promise((resolve, reject) => {
             input?.validate({ ...item }).returnValidate((validateInfo) => {
               //调用所有表单项的校验
@@ -119,8 +137,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const getValue = useCallback(() => {
     return new Promise((resolve, reject) => {
+      /** 隐藏的表单项，不收集数据 **/
+      const formItems = data.items.filter((item) => item.visible);
+
       Promise.all(
-        data.items.map((item) => {
+        formItems.map((item) => {
           const id = item.id;
           const input = childrenInputs[id];
 
@@ -143,6 +164,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   name: item.name,
                   value: val
                 };
+
                 resolve(value);
               }
             });
@@ -177,16 +199,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
     submitMethod(outputIds.ON_FINISH, outputRels);
   };
 
-  const submitMethod = (outputId: string, outputRels?: any) => {
+  const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        getValue().then((values) => {
-          if (outputRels) {
-            outputRels[outputId](values);
-          } else {
-            outputs[outputId](values);
-          }
-        });
+        getValue()
+          .then((values: any) => {
+            const res = { ...values, ...params };
+            if (outputRels) {
+              outputRels[outputId](res);
+            } else {
+              outputs[outputId](res);
+            }
+          })
+          .catch((e) => {
+            console.log('收集表单项值失败', e);
+          });
       })
       .catch((e) => {
         console.log('校验失败', e);
@@ -203,6 +230,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           // wrapperCol={{ span: 16 }}
         >
           <SlotContent
+            env={env}
             slots={slots}
             data={data}
             childrenInputs={childrenInputs}
@@ -211,7 +239,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           />
         </Form>
       ) : (
-        <SlotContent slots={slots} data={data} childrenInputs={childrenInputs} />
+        <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
       )}
     </Fragment>
   );

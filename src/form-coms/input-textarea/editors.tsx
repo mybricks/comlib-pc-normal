@@ -4,11 +4,6 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, schema: { type: 'string' } });
-    }
-  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -36,6 +31,24 @@ export default {
           },
           set({ data }, value: boolean) {
             data.config.allowClear = value;
+          }
+        }
+      },
+      {
+        title: '行数限制',
+        type: 'Inputnumber',
+        options: [
+          { title: '最小', min: 3, width: 100 },
+          { title: '最大', min: 6, width: 100 }
+        ],
+        description: '行数限制',
+        value: {
+          get({ data }) {
+            return [data.minRows || 3, data.maxRows || 6];
+          },
+          set({ data }, value: number[]) {
+            data.minRows = value[0];
+            data.maxRows = value[1];
           }
         }
       },

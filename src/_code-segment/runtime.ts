@@ -1,4 +1,4 @@
-import { runJs, utils } from '@fangzhou/com-utils';
+import { runJs, utils } from '../../package/com-utils';
 import moment from 'moment';
 import { Data } from './constants';
 
@@ -14,12 +14,6 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
   // };
 
   const runJSParams = {
-    context: {
-      getQuery: env.getQuery,
-      getUserInfo: env.getUserInfo,
-      hasPermission: env.hasPermission,
-      utils: { ...utils, moment }
-    },
     outputs
   };
   

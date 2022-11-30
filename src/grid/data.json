@@ -16,6 +16,7 @@
           "slot": "slot_0",
           "widthOption": "span",
           "width": 300,
+          "flex": 1,
           "colStyle": {}
         },
         {
@@ -24,6 +25,7 @@
           "slot": "slot_1",
           "widthOption": "span",
           "width": 300,
+          "flex": 1,
           "colStyle": {}
         },
         {
@@ -32,6 +34,7 @@
           "slot": "slot_2",
           "widthOption": "auto",
           "width": 300,
+          "flex": 1,
           "colStyle": {}
         }
       ]

@@ -31,7 +31,7 @@ export interface Item {
   widthLimit?: number;
   limit?: boolean;
   padding?: number[];
-
+  showLable: boolean;
   useSuffix?: boolean;
   suffixBtnText?: string;
   itemStyle?: any;
@@ -72,8 +72,8 @@ export interface Data {
   bordered: boolean;
   colon: boolean;
   items: Item[];
-
   useSlotProps?: boolean;
+  rawData: any;
 }
 
 export const InputIds = {
