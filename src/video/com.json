@@ -12,13 +12,6 @@
   "editors": "./editors.ts",
   "inputs": [
     {
-      "id": "link",
-      "title": "视频链接",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
       "id": "screenshot",
       "title": "截屏"
     }
