@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Typography, Tag } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import { Data, Item } from './constants';
@@ -145,10 +145,14 @@ const EditRender = (props: RuntimeParams<Data>) => {
 
 const RuntimeRender = (props: RuntimeParams<Data>) => {
   const { inputs, data } = props;
-  const [itemList, setItemList] = useState(cloneDeep(data.items));
+
+  useMemo(() => {
+    // TODO remove cloneDeep?
+    data.itemList = cloneDeep(data.items);
+  }, []);
 
   useEffect(() => {
-    itemList.forEach((item) => {
+    data.itemList.forEach((item) => {
       inputs[item.key]((ds: any) => {
         item.src = 1;
         if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
@@ -162,7 +166,6 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         } else {
           item.content = '';
         }
-        setItemList([...itemList]);
       });
       inputs[item.key + '-extend']((ds: any) => {
         item.src = 1;
@@ -175,7 +178,6 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         } else {
           item.content = '';
         }
-        setItemList([...itemList]);
       });
 
       inputs[`${item.key}-append`]((ds: any) => {
@@ -183,33 +185,12 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
           item.content = item.content === '[外部获取]' ? `${ds}` : `${item.content || ''}${ds}`;
         }
-        setItemList([...itemList]);
       });
     });
-    // inputs['slotProps'] &&
-    //   inputs['slotProps']((content: string | string[]) => {
-    //     if (
-    //       Array.isArray(content) &&
-    //       !content.some((item) => typeof item !== 'string')
-    //     ) {
-    //       content.forEach((item, idx) => {
-    //         if (itemList[idx]) {
-    //           itemList[idx].src = 1;
-    //           itemList[idx].content = item;
-    //         }
-    //       });
-    //       setItemList([...itemList]);
-    //     }
-    //     if (typeof content === 'string' && itemList[0]) {
-    //       itemList[0].content = content;
-    //       itemList[0].src = 1;
-    //       setItemList([...itemList]);
-    //     }
-    //   });
     inputs['append'] &&
       inputs['append']((ds) => {
         if (typeof ds === 'string') {
-          itemList.push({
+          data.itemList.push({
             src: 1,
             key: uuid(),
             type: 'Text',
@@ -219,13 +200,12 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
             fontStyle: 'normal',
             stylePadding: [0, 0]
           });
-          setItemList([...itemList]);
         }
       });
   }, []);
 
   const renderItems = () => {
-    return <>{itemList.map((item) => itemRender({ ...props, data: item }))}</>;
+    return <>{data.itemList.map((item) => itemRender({ ...props, data: item }))}</>;
   };
 
   return (
