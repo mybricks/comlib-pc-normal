@@ -16,12 +16,14 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     enableOutput
   } = data;
   const [isError, setIsError] = useState(false);
-  const [jsonObj, setJsonObj] = useState<any>([]);
 
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetJsonData]((val) => {
         data.json = val;
+      });
+      inputs[InputIds.GetJsonData]((_, outputRels) => {
+        outputRels[OutputIds.JsonData](data.jsonObj);
       });
     }
   }, []);
@@ -29,17 +31,17 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   useEffect(() => {
     if (typeof data.json === 'string') {
       try {
-        setJsonObj(JSON.parse(decodeURIComponent(data.json)));
+        data.jsonObj = JSON.parse(decodeURIComponent(data.json));
         setIsError(false);
       } catch (e) {
         setIsError(true);
         console.warn(`${title}:输入的JSON数据不合法`);
-        setJsonObj([]);
+        data.jsonObj = [];
       }
     } else if (data.json && typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
-      setJsonObj(data.json);
+      data.jsonObj = data.json;
     } else {
-      setJsonObj([]);
+      data.jsonObj = [];
       setIsError(false);
     }
   }, [data.json]);
@@ -53,7 +55,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }, []),
     keyToData = new Map(),
     expandedKeys: React.Key[] = [];
-  if (enableClipboard || enableOutput) keyToData.set(rootKey, jsonObj);
+  if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
   if (collapsed !== 0) expandedKeys.push(rootKey);
   /**
    * 树节点的title渲染
@@ -143,10 +145,10 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     {
       title: getTitle({
         key: rootKey,
-        value: jsonObj
+        value: data.jsonObj
       }),
       key: rootKey,
-      children: getTreeData(jsonObj, 1)
+      children: getTreeData(data.jsonObj, 1)
     }
   ];
   const defaultTreeData = [

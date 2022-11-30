@@ -16,8 +16,27 @@
       "schema": {
         "type": "object"
       }
+    },
+    {
+      "id": "getJsonData",
+      "title": "输出数据",
+      "desc": "输出设置的JSON数据源",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "jsonData"
+      ]
     }
   ],
-  "outputs": [],
+  "outputs": [
+    {
+      "id": "jsonData",
+      "title": "数据输出",
+      "schema": {
+        "type": "object"
+      }
+    }
+  ],
   "slots": []
 }
