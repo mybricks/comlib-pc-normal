@@ -3,7 +3,7 @@ import { Alert, Tooltip, Tree, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import { typeCheck, uuid } from '../utils';
-import { Data, InputIds, OutputIds } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds } from './constant';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
@@ -16,12 +16,14 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     enableOutput
   } = data;
   const [isError, setIsError] = useState(false);
-  const [jsonObj, setJsonObj] = useState<any>([]);
 
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetJsonData]((val) => {
         data.json = val;
+      });
+      inputs[InputIds.GetJsonData]((_, outputRels) => {
+        outputRels[OutputIds.JsonData](data.jsonObj);
       });
     }
   }, []);
@@ -29,17 +31,17 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   useEffect(() => {
     if (typeof data.json === 'string') {
       try {
-        setJsonObj(JSON.parse(decodeURIComponent(data.json)));
+        data.jsonObj = JSON.parse(decodeURIComponent(data.json));
         setIsError(false);
       } catch (e) {
         setIsError(true);
         console.warn(`${title}:输入的JSON数据不合法`);
-        setJsonObj([]);
+        data.jsonObj = dataSourceTypeMap[data.dataSourceType];
       }
     } else if (data.json && typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
-      setJsonObj(data.json);
+      data.jsonObj = data.json;
     } else {
-      setJsonObj([]);
+      data.jsonObj = dataSourceTypeMap[data.dataSourceType];
       setIsError(false);
     }
   }, [data.json]);
@@ -53,7 +55,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }, []),
     keyToData = new Map(),
     expandedKeys: React.Key[] = [];
-  if (enableClipboard || enableOutput) keyToData.set(rootKey, jsonObj);
+  if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
   if (collapsed !== 0) expandedKeys.push(rootKey);
   /**
    * 树节点的title渲染
@@ -143,10 +145,10 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     {
       title: getTitle({
         key: rootKey,
-        value: jsonObj
+        value: data.jsonObj
       }),
       key: rootKey,
-      children: getTreeData(jsonObj, 1)
+      children: getTreeData(data.jsonObj, 1)
     }
   ];
   const defaultTreeData = [
@@ -158,14 +160,18 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       key: rootKey
     }
   ];
-
+  const editConfig = env.edit
+    ? {
+        expandedKeys
+      }
+    : {};
   return (
     <Tree
       treeData={treeData}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
       defaultExpandedKeys={expandedKeys}
-      expandedKeys={env.edit ? expandedKeys : undefined}
+      {...editConfig}
       key={expandedKeys.toString()}
       onSelect={(keys: any[], { node }) => {
         const nodeData = keyToData.get(node.key);

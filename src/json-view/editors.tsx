@@ -1,4 +1,5 @@
-import { Data, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
+import { jsonToSchema } from '../_code-segment/util';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -52,13 +53,25 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.dataSourceType;
           },
-          set({ data, input }: EditorResult<Data>, value: 'default' | 'array' | 'object') {
+          set({ data, input, output }: EditorResult<Data>, value: 'default' | 'array' | 'object') {
             data.dataSourceType = value;
+            data.jsonObj = dataSourceTypeMap[value];
             const dsInput = input.get(InputIds.SetJsonData);
-            console.log(value, value === 'default', !!dsInput);
+            const dsOuput = output.get(OutputIds.JsonData);
             if (value === 'default') {
               dsInput && input.remove(InputIds.SetJsonData);
+              const jsonString = decodeURIComponent(data.json);
+              try {
+                data.jsonObj = JSON.parse(jsonString);
+                const schema = jsonToSchema(data.jsonObj);
+                dsOuput.setSchema(schema);
+              } catch {
+                console.error('静态数据格式错误');
+              }
             } else {
+              dsOuput.setSchema({
+                type: value
+              });
               if (!dsInput) {
                 input.add(InputIds.SetJsonData, '设置数据源', {
                   type: value
@@ -145,8 +158,17 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.json;
           },
-          set({ data }: EditorResult<Data>, value: string) {
+          set({ data, output }: EditorResult<Data>, value: string) {
             data.json = value;
+            const jsonString = decodeURIComponent(value);
+            const dsOuput = output.get(OutputIds.JsonData);
+            try {
+              const jsonData = JSON.parse(jsonString);
+              const schema = jsonToSchema(jsonData);
+              dsOuput.setSchema(schema);
+            } catch {
+              console.error('静态数据格式错误');
+            }
           }
         }
       }
