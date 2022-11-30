@@ -19,6 +19,18 @@ export default React.memo((props: Props): JSX.Element | null => {
     return null;
   }
 
+  if (!columnItem.keepDataIndex) {
+    return slots[slotId]?.render({
+      inputValues: {
+        [InputIds.SLOT_ROW_RECORD]: {
+          ...record
+        },
+        [InputIds.INDEX]: colIndex
+      },
+      key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${columnItem.key}`
+    });
+  }
+
   return slots[slotId]?.render({
     inputValues: {
       [InputIds.SLOT_ROW_RECORD]: {
