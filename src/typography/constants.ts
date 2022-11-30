@@ -56,4 +56,5 @@ export interface Data {
   style?: {
     [prop: string]: string;
   };
+  itemList: Item[];
 }
