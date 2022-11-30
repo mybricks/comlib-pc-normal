@@ -12,7 +12,8 @@ export enum TypeEnum {
 
 /**
  * 数据源
- * @param json json数据
+ * @param json json数据/静态json编码字符串
+ * @param jsonObj json数据转化的JSON对象
  * @param colors 不同类型对应的颜色
  * @param collapsed 默认展开深度
  * @param collapseStringsAfterLength 属性值最大长度
@@ -23,6 +24,7 @@ export enum TypeEnum {
  */
 export interface Data {
   json: any;
+  jsonObj: {} | [];
   colors: {
     [K in TypeEnum]: string;
   };
@@ -35,10 +37,12 @@ export interface Data {
 }
 
 export const InputIds = {
-  SetJsonData: 'jsonData'
+  SetJsonData: 'jsonData',
+  GetJsonData: 'getJsonData'
 };
 export const OutputIds = {
-  Select: 'nodeData'
+  Select: 'nodeData',
+  JsonData: 'jsonData'
 };
 export const Schemas = {
   Any: {
