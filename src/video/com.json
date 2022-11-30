@@ -1,6 +1,6 @@
 {
   "title": "播放器",
-  "namespace": "@mybricks/comlib-pc-normal.pc.video",
+  "namespace": "mybricks.normal-pc.video",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
   "version": "1.0.0",
