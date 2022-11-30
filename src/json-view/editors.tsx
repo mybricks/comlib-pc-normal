@@ -1,5 +1,5 @@
 import { jsonToSchema } from '../_code-segment/util';
-import { Data, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -55,14 +55,15 @@ export default {
           },
           set({ data, input, output }: EditorResult<Data>, value: 'default' | 'array' | 'object') {
             data.dataSourceType = value;
+            data.jsonObj = dataSourceTypeMap[value];
             const dsInput = input.get(InputIds.SetJsonData);
             const dsOuput = output.get(OutputIds.JsonData);
             if (value === 'default') {
               dsInput && input.remove(InputIds.SetJsonData);
               const jsonString = decodeURIComponent(data.json);
               try {
-                const jsonData = JSON.parse(jsonString);
-                const schema = jsonToSchema(jsonData);
+                data.jsonObj = JSON.parse(jsonString);
+                const schema = jsonToSchema(data.jsonObj);
                 dsOuput.setSchema(schema);
               } catch {
                 console.error('静态数据格式错误');

@@ -3,7 +3,7 @@ import { Alert, Tooltip, Tree, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import { typeCheck, uuid } from '../utils';
-import { Data, InputIds, OutputIds } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds } from './constant';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
@@ -36,12 +36,12 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       } catch (e) {
         setIsError(true);
         console.warn(`${title}:输入的JSON数据不合法`);
-        data.jsonObj = [];
+        data.jsonObj = dataSourceTypeMap[data.dataSourceType];
       }
     } else if (data.json && typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
       data.jsonObj = data.json;
     } else {
-      data.jsonObj = [];
+      data.jsonObj = dataSourceTypeMap[data.dataSourceType];
       setIsError(false);
     }
   }, [data.json]);
