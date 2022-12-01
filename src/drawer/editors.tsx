@@ -73,6 +73,18 @@ export default {
         }
       },
       {
+        title: '关闭按钮',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.closable;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.closable = value;
+          }
+        }
+      },
+      {
         title: '遮罩配置',
         items: [
           {
@@ -332,6 +344,23 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: string) {
             data.title = value;
+          }
+        }
+      }
+    ]
+  },
+  '.ant-drawer-close': {
+    title: '关闭按钮',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.closable;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.closable = value;
           }
         }
       }
