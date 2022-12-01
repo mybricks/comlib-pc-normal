@@ -4,7 +4,7 @@ import { validateFormItem } from '../utils/validator';
 
 import css from './runtime.less';
 
-interface Data {
+export interface Data {
   value: string | undefined;
   rules: any[];
   config: {
@@ -27,6 +27,11 @@ export default function (props: RuntimeParams<Data>) {
       outputs['onChange'](val);
     });
 
+    inputs['setInitialValue']((val) => {
+      data.value = val;
+      outputs['onInitial'](val);
+    });
+
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: data.value,
@@ -40,6 +45,7 @@ export default function (props: RuntimeParams<Data>) {
           outputRels['returnValidate'](e);
         });
     });
+
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
     });
