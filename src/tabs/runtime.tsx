@@ -132,13 +132,12 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   };
 
   const handleClickItem = useCallback((values) => {
+    if (!data.prohibitClick) {
+      data.defaultActiveKey = values;
+    }
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
       const { id, name } = data.tabList.find((item) => item.key === values) || {};
       outputs[OutputIds.OnTabClick]({ id, name });
-    }
-
-    if (!data.prohibitClick) {
-      data.defaultActiveKey = values;
     }
   }, []);
 
