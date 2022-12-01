@@ -23,6 +23,7 @@ export default function ({
     showMask,
     width,
     height,
+    closable,
     useFooter,
     footerAlign,
     bodyStyle,
@@ -93,6 +94,7 @@ export default function ({
     return createPortal(
       <Drawer
         className={classnames(debug && !visible && css.hide)}
+        closable={closable}
         maskClosable={maskClosable}
         mask={showMask}
         title={env.i18n(title)}
