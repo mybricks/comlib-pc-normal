@@ -77,6 +77,9 @@ export default {
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
+            if (data.closable === undefined) {
+              data.closable = true;
+            }
             return data.closable;
           },
           set({ data }: EditorResult<Data>, value: boolean) {
@@ -357,6 +360,9 @@ export default {
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
+            if (data.closable === undefined) {
+              data.closable = true;
+            }
             return data.closable;
           },
           set({ data }: EditorResult<Data>, value: boolean) {
