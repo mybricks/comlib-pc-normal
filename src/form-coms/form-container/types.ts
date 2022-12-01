@@ -82,7 +82,7 @@ export interface FormControlProps {
   field?: any
 }
 
-export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue'
+export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue'
 
 
 export type LayoutModel = "inline" | "row" | "column";

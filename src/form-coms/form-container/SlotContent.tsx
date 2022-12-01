@@ -44,6 +44,7 @@ const SlotContent = (props) => {
             if (!item) return;
 
             childrenInputs[com.id] = com.inputs;
+            // console.log(com.inputs.setInitialValue)
 
             if (typeof item?.visible !== 'undefined') {
               item.visible = com.style.display !== 'none';

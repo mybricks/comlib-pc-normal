@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useS
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlInputId } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol } from './utils';
+import { getLabelCol, isObject } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 
 type FormControlInputRels = {
@@ -29,8 +29,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     inputs[inputIds.SET_FIELDS_VALUE]((val) => {
-      resetFields();
+      // resetFields();
+
       setFieldsValue(val);
+      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+    });
+
+    inputs[inputIds.SET_INITIAL_VALUES]((val) => {
+      setInitialValues(val);
       slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
 
@@ -44,14 +50,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs[inputIds.SUBMIT_AND_MERGE]((val, outputRels) => {
-      if (Object.prototype.toString.call(val) === '[object Object]') {
+      if (isObject(val)) {
         submitMethod(outputIds.ON_MERGE_FINISH, outputRels, val);
       } else {
         submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
       }
     });
 
-    // For 表单项私有
+    //------ For 表单项私有 ---------
     _inputs['validate']((val, outputRels) => {
       validate().then((r) => {
         outputRels['returnValidate']({
@@ -83,10 +89,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const item = data.items.find((item) => item.name === key);
         if (item) {
           const input = childrenInputs[item.id];
-          if (Object.prototype.toString.call(val[key]) === '[Object Object]') {
+          if (isObject(val[key])) {
             input?.setValue({ ...val[key] });
           } else {
             input?.setValue(val[key]);
+          }
+        }
+      });
+    }
+  };
+
+  const setInitialValues = (val) => {
+    if (val) {
+      Object.keys(val).forEach((key) => {
+        const item = data.items.find((item) => item.name === key);
+        if (item) {
+          const input = childrenInputs[item.id];
+          if (isObject(val[key])) {
+            input?.setInitialValue({ ...val[key] });
+          } else {
+            input?.setInitialValue(val[key]);
           }
         }
       });

@@ -27,6 +27,7 @@ function refreshSchema({data, inputs, outputs, slots}) {
   outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
   refreshParamsSchema(data, outputs)
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
+  inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
   slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
 }
 
@@ -46,10 +47,6 @@ function fieldNameCheck (data: Data, name: string) {
   } else {
     return false
   }
-}
-
-function isHorizontal (data: Data) {
-  return data.layout === 'horizontal'
 }
 
 export default {
