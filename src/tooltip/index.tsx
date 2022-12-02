@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tooltip } from 'antd';
+import { isString } from '../utils';
 import { Data } from './types';
 
 export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
   const { title, placement, trigger, style } = data;
   inputs['content']((val) => {
-    let res = val;
-    if (res && typeof res !== 'string') {
-      res = JSON.stringify(val);
+    if (isString(val)) {
+      data.title = val;
+    } else {
+      data.title = JSON.stringify(val);
     }
-    data.title = res;
   });
   return (
     <Tooltip
