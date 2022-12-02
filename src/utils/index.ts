@@ -111,6 +111,10 @@ export const isObject = (obj: any) => {
   return Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1] === 'Object';
 }
 
+export const isString = (obj: any) => {
+  return typeof obj === "string" || Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1] === 'String';
+}
+
 export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[] => {
   if (!Array.isArray(array)) throw Error('parameter array must be typeof Array')
   if (fromIndex < 0) throw Error('parameter fromIndex must be greater than 0')
