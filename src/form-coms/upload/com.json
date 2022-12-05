@@ -18,13 +18,7 @@
         "items": {
           "type": "object",
           "properties": {
-            "uid": {
-              "type": "string"
-            },
             "name": {
-              "type": "string"
-            },
-            "status": {
               "type": "string"
             },
             "url": {
@@ -79,7 +73,15 @@
       "id": "uploadDone",
       "title": "上传完成",
       "schema": {
-        "type": "follow"
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
       }
     }
   ],
@@ -109,13 +111,7 @@
         "items": {
           "type": "object",
           "properties": {
-            "uid": {
-              "type": "string"
-            },
             "name": {
-              "type": "string"
-            },
-            "status": {
               "type": "string"
             },
             "url": {
