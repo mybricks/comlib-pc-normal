@@ -130,14 +130,14 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const onUploadComplete = (res: UploadFileList | UploadFileList[]) => {
     const list = Array.isArray(res) ? res : [res];
     list.forEach((item) => {
-      formatCompleteFile(item, fileList);
+      formatCompleteFile(item, fileListRef.current);
     });
-    setFileList([...fileList]);
+    setFileList([...fileListRef.current]);
   };
 
   // 文件数据格式化
   const onFormatFileList = (fileList: UploadFile[]) => {
-    let uploadedList = [];
+    let uploadedList = [...fileListRef.current];
     fileList.forEach((file) => {
       const { name } = file;
       const formItemResValue = {
@@ -146,7 +146,6 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
         percent: 0
       };
       uploadedList.push(formItemResValue);
-
       if (fileCount && uploadedList.length > fileCount) {
         uploadedList.shift();
       }
