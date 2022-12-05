@@ -54,6 +54,12 @@ export interface BtnItem {
   iconLocation?: LocationEnum;
   // 图标间距
   iconDistance?: number;
+  //是否图标自定义
+  isCustom?: boolean;
+  //自定义图标地址
+  src?: string;
+  //图标尺寸
+  contentSize: [number, number];
 
   // 权限key
   permissionKey?: string;
