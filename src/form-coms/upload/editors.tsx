@@ -41,6 +41,18 @@ const uploadEditors = [
   }
 ];
 
+const basicUploadDoneSchema = {
+  type: 'object',
+  properties: {
+    url: {
+      type: 'string'
+    },
+    name: {
+      type: 'string'
+    }
+  }
+};
+
 export default {
   '@resize': {
     options: ['width']
@@ -156,8 +168,17 @@ export default {
               get({ data }: EditorResult<Data>) {
                 return [data.config.fileCount];
               },
-              set({ data }: EditorResult<Data>, value: number[]) {
-                data.config.fileCount = value[0];
+              set({ data, input }: EditorResult<Data>, value: number[]) {
+                const [count] = value;
+                data.config.fileCount = count;
+                if (count > 1) {
+                  input.get('uploadDone').setSchema({
+                    type: 'array',
+                    items: basicUploadDoneSchema
+                  });
+                } else {
+                  input.get('uploadDone').setSchema(basicUploadDoneSchema);
+                }
               }
             }
           },
