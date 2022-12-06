@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
+  "icon": "./icon.svg",
   "inputs": [
     {
       "id": "input0",
