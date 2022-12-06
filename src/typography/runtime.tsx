@@ -35,7 +35,7 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           data-item-type="text"
           data-text-id={item.key}
           style={{
-            display: 'inline-block',
+            // display: 'inline-block',
             height: 'fit-content',
             maxWidth: '100%',
             paddingLeft: item.stylePadding?.[0] || 0,
