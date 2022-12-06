@@ -25,7 +25,6 @@ export default function (props: RuntimeParams<Data>) {
   useFormItemInputs({
     inputs,
     outputs,
-    env,
     configs: {
       setValue(val) {
         data.value = val;
@@ -33,8 +32,8 @@ export default function (props: RuntimeParams<Data>) {
       setInitialValue(val) {
         data.value = val;
       },
-      returnValue(cb) {
-        cb(data.value);
+      returnValue(output) {
+        output(data.value);
       },
       resetValue() {
         data.value = void 0;
@@ -44,6 +43,19 @@ export default function (props: RuntimeParams<Data>) {
       },
       setEnabled() {
         data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
+        })
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
       }
     }
   });
