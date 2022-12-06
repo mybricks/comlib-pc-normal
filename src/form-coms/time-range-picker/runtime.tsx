@@ -6,7 +6,7 @@ import { validateFormItem } from '../utils/validator';
 import { isValidInput, isNumber, isValidRange } from './util';
 import styles from './style.less';
 
-export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
+export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
   const validate = useCallback(
@@ -79,7 +79,7 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
     outputs['onChange']([values[0].valueOf(), values[1].valueOf()]);
   };
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} style={style}>
       <TimePicker.RangePicker
         placeholder={placeholder}
         value={value}

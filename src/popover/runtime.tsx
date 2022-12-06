@@ -1,16 +1,25 @@
 import React, { useMemo } from 'react';
 import { Popover } from 'antd';
 import { Data } from './constants';
+import { isString } from '../utils';
 import styles from './index.less';
 
 export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
   const { title, content, placement, trigger, useTitleSlot, useContentSlot, style } = data;
   inputs['_title']((val) => {
-    data.title = val;
+    if (isString(val)) {
+      data.title = val;
+    } else {
+      data.title = JSON.stringify(val);
+    }
   });
 
   inputs['content']((val) => {
-    data.content = val;
+    if (isString(val)) {
+      data.content = val;
+    } else {
+      data.content = JSON.stringify(val);
+    }
   });
 
   const visible = useMemo(() => {
