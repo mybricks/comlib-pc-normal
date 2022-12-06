@@ -2,6 +2,8 @@
   "rules": [],
   "visible": true,
   "showTime": false,
+  "contentType": "timeStamp",
+  "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "config": {
     "disabled": false,
     "picker": "date",
