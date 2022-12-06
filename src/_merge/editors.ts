@@ -25,7 +25,12 @@ export default {
           const idx = getInputOrder({ input });
           const title = `输入项${idx}`;
           const hostId = `input${idx}`;
-          input.add(hostId, title, Schemas.Follow, true);
+          input.add({
+            id: hostId,
+            title,
+            schema: Schemas.Follow,
+            deletable: true
+          });
         }
       }
     },
