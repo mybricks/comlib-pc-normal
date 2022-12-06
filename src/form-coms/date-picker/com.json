@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "data": "./data.json",

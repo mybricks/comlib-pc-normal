@@ -4,10 +4,12 @@ import moment from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 
-interface Data {
+export interface Data {
   options: any[];
   rules: any[];
   showTime: Record<string, unknown> | boolean;
+  contentType: string;
+  formatter: string;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -19,13 +21,70 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env } = props;
   const [value, setValue] = useState();
 
+  //输出数据变形函数
+  const transCalculation = (val, type, props) => {
+    let transValue;
+    switch (type) {
+      //1. 年-月-日 时:分:秒
+      case 'Y-MM-DD HH:mm:ss':
+        transValue = moment(val).format('YYYY-MM-DD HH:mm:ss');
+        break;
+      //2. 年-月-日 时:分
+      case 'Y-MM-DD HH:mm':
+        transValue = moment(val).format('Y-MM-DD HH:mm');
+        break;
+      //3. 年-月-日
+      case 'Y-MM-DD':
+        transValue = moment(val).format('Y-MM-DD');
+        break;
+      //4. 年-月
+      case 'Y-MM':
+        transValue = moment(val).format('Y-MM');
+        break;
+      //5. 年
+      case 'Y':
+        transValue = moment(val).format('Y');
+        break;
+      //6. 时间戳
+      case 'timeStamp':
+        transValue = Number(val);
+        break;
+      //7. 自定义
+      case 'custom':
+        let customDate = moment(val).format(props.data.formatter);
+        if (customDate.indexOf('Su')) {
+          customDate = customDate.replace('Su', '天');
+        }
+        if (customDate.indexOf('Mo')) {
+          customDate = customDate.replace('Mo', '一');
+        }
+        if (customDate.indexOf('Tu')) {
+          customDate = customDate.replace('Tu', '二');
+        }
+        if (customDate.indexOf('We')) {
+          customDate = customDate.replace('We', '三');
+        }
+        if (customDate.indexOf('Th')) {
+          customDate = customDate.replace('Th', '四');
+        }
+        if (customDate.indexOf('Fr')) {
+          customDate = customDate.replace('Fr', '五');
+        }
+        if (customDate.indexOf('Sa')) {
+          customDate = customDate.replace('Sa', '六');
+        }
+        transValue = customDate;
+        break;
+    }
+    return transValue;
+  };
+
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
       val = !result?._isValid ? undefined : result;
-
       setValue(val);
       onChange(val);
     });
@@ -45,7 +104,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value);
+      let transValue;
+      //1.null是从日期选择框不选日期的情况；
+      //2.undefined是手动设置值为空或者不正确的情况
+      if (value === null || value === undefined) {
+        transValue = undefined;
+      } else {
+        transValue = transCalculation(value, data.contentType, props);
+      }
+      outputRels['returnValue'](transValue);
     });
   }, [value]);
 
@@ -63,18 +130,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
 
   const onChange = (value) => {
-    //时间戳转换
-    const num = Number(value);
-    const result: any = isNaN(num) ? moment(value) : moment(num);
-    if (value === null) {
-      value = undefined;
-    } else if ((value = !result?._isValid)) {
-      value = undefined;
+    //自定义转换
+    let transValue;
+    if (value === null || value === undefined) {
+      transValue = undefined;
     } else {
-      value = result;
+      transValue = transCalculation(value, data.contentType, props);
     }
     setValue(value);
-    outputs['onChange'](value);
+    outputs['onChange'](transValue);
   };
 
   const getShowTime = () => {
