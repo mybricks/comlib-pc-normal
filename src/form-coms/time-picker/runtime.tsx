@@ -9,7 +9,7 @@ function isNumber(input) {
   return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
 }
 
-export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
+export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<Moment>();
   const validate = useCallback(
@@ -67,7 +67,7 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
     outputs['onChange'](time.valueOf());
   };
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} style={style}>
       <TimePicker
         placeholder={placeholder}
         value={value}

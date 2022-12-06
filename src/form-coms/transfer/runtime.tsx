@@ -5,7 +5,7 @@ import { uuid } from '../../utils';
 import { validateFormItem } from '../utils/validator';
 import styles from './style.less';
 
-export default function ({ data, inputs, outputs, slots, env }: RuntimeParams<Data>) {
+export default function ({ data, inputs, outputs, slots, env, style }: RuntimeParams<Data>) {
   const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
     data;
   const _dataSource = dataSource.map((item) => {
@@ -89,18 +89,20 @@ export default function ({ data, inputs, outputs, slots, env }: RuntimeParams<Da
   };
 
   return (
-    <Transfer
-      className={styles.wrap}
-      titles={titles}
-      dataSource={_dataSource}
-      targetKeys={targetKeys}
-      showSearch={showSearch}
-      showSelectAll
-      oneWay={oneWay}
-      disabled={disabled}
-      render={renderItem}
-      pagination={showPagination && pagination}
-      onChange={onChange}
-    />
+    <div style={style}>
+      <Transfer
+        className={styles.wrap}
+        titles={titles}
+        dataSource={_dataSource}
+        targetKeys={targetKeys}
+        showSearch={showSearch}
+        showSelectAll
+        oneWay={oneWay}
+        disabled={disabled}
+        render={renderItem}
+        pagination={showPagination && pagination}
+        onChange={onChange}
+      />
+    </div>
   );
 }
