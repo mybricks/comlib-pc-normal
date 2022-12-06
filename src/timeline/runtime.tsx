@@ -99,7 +99,12 @@ export default function (props: RuntimeParams<Data>) {
         {timelines.map((item: Item, index: number) => {
           const { color, id, _id } = item || {};
           return (
-            <Timeline.Item color={color} data-timeline-id={id} key={_id || id}>
+            <Timeline.Item
+              color={color}
+              className={css['timeline-item']}
+              data-timeline-id={id}
+              key={_id || id}
+            >
               <div
                 onClick={() => {
                   outputs[OutputIds.ItemClick](item);
