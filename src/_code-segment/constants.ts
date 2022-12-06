@@ -3,6 +3,11 @@ export const CODE_TEMPLATE = `({ inputValue, outputs }) => {
   output0(inputValue);
 }`;
 
+export const IMMEDIATE_CODE_TEMPLATE = `({ outputs }) => {
+  const { output0 } = outputs;
+  output0(0);
+}`;
+
 export const COMMENTS = `/**
 * @param inputValue: any 输入项的值
 * @parma outputs: any 输出项
