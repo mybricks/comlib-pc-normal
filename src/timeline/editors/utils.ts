@@ -19,11 +19,13 @@ export const getTimelineItem = (
 export const getNewItem = (data: Data) => {
   const id = uuid();
   const title = `节点${data.timelines.length}`;
+  const { color } = data.timelines[data.timelines.length - 1];
   return {
     id,
     title,
     subTitle: '副标题',
-    description: '描述'
+    description: '描述',
+    color
   };
 };
 
