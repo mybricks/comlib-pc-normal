@@ -1,4 +1,4 @@
-import { CODE_TEMPLATE, COMMENTS, Data } from './constants';
+import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
 import { jsonToSchema } from './util';
 
 const getFnParams = ({ data, outputs }) => {
@@ -26,8 +26,9 @@ export default {
     if (autoRun || data.runImmediate) {
       setAutoRun(true);
       data.runImmediate = true;
+      output.get('output0').setSchema({ type: 'number' });
     }
-    data.fns = data.fns || encodeURIComponent(CODE_TEMPLATE);
+    data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
     // data.fnBody = data.fnBody || encodeURIComponent(CODE_TEMPLATE);
     // data.fnParams = data.fnParams || getFnParams({ data, outputs: output });
   },
@@ -68,7 +69,7 @@ export default {
     },
     {
       type: 'code',
-      options: ({ data, outputs }) => {
+      options: ({ data, output }) => {
         const option = {
           babel: true,
           comments: COMMENTS,
@@ -83,6 +84,9 @@ export default {
               ecmaVersion: '2020',
               sourceType: 'module'
             }
+          },
+          onBlur: () => {
+            updateOutputSchema(output, data.fns);
           },
           schema: data.inputSchema
         };
@@ -103,11 +107,10 @@ export default {
       title: '代码编辑',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.fns || CODE_TEMPLATE;
+          return data.fns
         },
-        set({ data, output }: EditorResult<Data>, fns: any) {
+        set({ data }: EditorResult<Data>, fns: any) {
           data.fns = fns;
-          updateOutputSchema(output, fns);
         }
       }
     }
@@ -128,10 +131,12 @@ function updateOutputSchema(output, code) {
   });
 
   try {
-    const fn = eval(decodeURIComponent(code.code || code));
-    fn({
-      inputValue: void 0,
-      outputs
+    setTimeout(() => {
+      const fn = eval(decodeURIComponent(code.code || code));
+      fn({
+        inputValue: void 0,
+        outputs
+      });
     });
   } catch (error) {}
 }
