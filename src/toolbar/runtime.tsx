@@ -92,7 +92,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             height={contentSize[0]}
             src={src}
             preview={false}
-            fallback={'加载失败'}
+            alt={' '}
           ></Image>
         ) : null}
         {!useIcon || showText ? <span>{text}</span> : null}
@@ -102,7 +102,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             height={contentSize[0]}
             src={src}
             preview={false}
-            fallback={'加载失败'}
+            alt={' '}
           ></Image>
         ) : null}
       </Space>
