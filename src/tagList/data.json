@@ -6,7 +6,8 @@
     {
       "key": "tag1",
       "content": "tag",
-      "color": "#52c41a"
+      "color": "#52c41a",
+      "textColor": "#fff"
     }
   ],
   "tagSize": "small-tag",

@@ -22,7 +22,24 @@ export default {
             }
           },
           {
-            title: '颜色',
+            title: '图标',
+            type: 'icon',
+            value: {
+              get({}: EditorResult<Data>) {
+                return tag.icon;
+              },
+              set({}: EditorResult<Data>, val: string) {
+                tag.icon = val;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '样式',
+        items: [
+          {
+            title: '背景色',
             type: 'colorPicker',
             value: {
               get({}: EditorResult<Data>) {
@@ -34,14 +51,26 @@ export default {
             }
           },
           {
-            title: '图标',
-            type: 'icon',
+            title: '文本颜色',
+            type: 'colorPicker',
             value: {
               get({}: EditorResult<Data>) {
-                return tag.icon;
+                return tag.textColor;
               },
               set({}: EditorResult<Data>, val: string) {
-                tag.icon = val;
+                tag.textColor = val;
+              }
+            }
+          },
+          {
+            title: '边框颜色',
+            type: 'colorPicker',
+            value: {
+              get({}: EditorResult<Data>) {
+                return tag.borderColor;
+              },
+              set({}: EditorResult<Data>, val: string) {
+                tag.borderColor = val;
               }
             }
           }
