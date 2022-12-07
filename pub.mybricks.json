@@ -34,7 +34,7 @@
       "title": "数据录入",
       "comAry": [
         "./src/form-coms/form-container/com.json",
-        "./src/form-coms/formItem-container/com.json",
+        "./src/form-coms/form-item-container/com.json",
         "./src/form-coms/text/com.json",
         "./src/form-coms/select/com.json",
         "./src/form-coms/cascader/com.json",
