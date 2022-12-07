@@ -87,11 +87,23 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     return (
       <Space size={iconDistance} className={css.space}>
         {useIcon && src && iconLocation === LocationEnum.FRONT ? (
-          <Image width={contentSize[1]} height={contentSize[0]} src={src}></Image>
+          <Image
+            width={contentSize[1]}
+            height={contentSize[0]}
+            src={src}
+            preview={false}
+            fallback={'加载失败'}
+          ></Image>
         ) : null}
         {!useIcon || showText ? <span>{text}</span> : null}
         {useIcon && src && iconLocation === LocationEnum.BACK ? (
-          <Image width={contentSize[1]} height={contentSize[1]} src={src}></Image>
+          <Image
+            width={contentSize[1]}
+            height={contentSize[1]}
+            src={src}
+            preview={false}
+            fallback={'加载失败'}
+          ></Image>
         ) : null}
       </Space>
     );
