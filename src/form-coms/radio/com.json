@@ -14,7 +14,7 @@
       "id": "setValue",
       "title": "设置值",
       "schema": {
-        "type": "any"
+        "type": "string"
       }
     },
     {
@@ -92,7 +92,7 @@
       "id": "onChange",
       "title": "值变化",
       "schema": {
-        "type": "any"
+        "type": "string"
       }
     },
     {
@@ -116,7 +116,7 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "any"
+        "type": "string"
       }
     }
   ],
