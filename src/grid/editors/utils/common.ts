@@ -8,7 +8,10 @@ export const createColByWidth = (width: number = 280) => {
     widthOption: WidthUnitEnum.Px,
     width,
     span: 4,
-    colStyle: {},
+    colStyle: {
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    },
     flex: 1
   };
 };
@@ -21,7 +24,10 @@ export const createAutoCol = (flex: number = 1) => {
     widthOption: WidthUnitEnum.Auto,
     width: 300,
     span: 4,
-    colStyle: {},
+    colStyle: {
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    },
     flex
   };
 };
@@ -34,7 +40,10 @@ export const createColBySpan = (span: number = 4) => {
     widthOption: WidthUnitEnum.Span,
     width: 300,
     span,
-    colStyle: {},
+    colStyle: {
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    },
     flex: 1
   };
 };
