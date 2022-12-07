@@ -99,7 +99,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
         {useIcon && src && iconLocation === LocationEnum.BACK ? (
           <Image
             width={contentSize[1]}
-            height={contentSize[1]}
+            height={contentSize[0]}
             src={src}
             preview={false}
             fallback={'加载失败'}
