@@ -16,7 +16,7 @@ export default function ({ env, data, inputs, outputs, logger, onError, id }: Ru
         if (count === inputNum) {
           if (event?.exe) {
             event.exe({ options: res })
-            outputs['onFinish']({ options: res })
+            // outputs['onFinish']({ options: res })
           }
         }
       })
