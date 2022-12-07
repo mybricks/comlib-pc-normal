@@ -17,7 +17,11 @@ function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {
-      if (properties[key].type === 'number' || properties[key].type === 'string') {
+      if (
+        properties[key].type === 'number' ||
+        properties[key].type === 'string' ||
+        properties[key].type === 'boolean'
+      ) {
         columns.push({
           title: key,
           dataIndex: key,
