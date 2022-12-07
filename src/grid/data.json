@@ -17,7 +17,10 @@
           "widthOption": "span",
           "width": 300,
           "flex": 1,
-          "colStyle": {}
+          "colStyle": {
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
         },
         {
           "span": 8,
@@ -26,7 +29,10 @@
           "widthOption": "span",
           "width": 300,
           "flex": 1,
-          "colStyle": {}
+          "colStyle": {
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
         },
         {
           "span": 8,
@@ -35,7 +41,10 @@
           "widthOption": "auto",
           "width": 300,
           "flex": 1,
-          "colStyle": {}
+          "colStyle": {
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
         }
       ]
     }
