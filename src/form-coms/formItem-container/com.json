@@ -1,8 +1,8 @@
 {
   "title": "表单项容器",
-  "namespace": "mybricks.normal-pc.formItem-container",
-  "author": "MyBricks",
-  "author_name": "MyBricks",
+  "namespace": "mybricks.normal-pc.form-item-container",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
   "version": "1.0.0",
   "description": "表单项容器，支持拖入其他任意组件",
   "icon": "./icon.svg",
@@ -94,9 +94,6 @@
       ]
     }
   ],
-  "_valueSchema": {
-    "type": "any"
-  },
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
     "*"
