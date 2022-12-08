@@ -91,6 +91,7 @@ export default {
     refreshSchema({data, inputs, outputs, slots})
   },
   '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
+    // console.log('@childRemove', id, title)
     data.items = data.items.filter(item => item.id !== id)
     refreshSchema({data, inputs, outputs, slots})
   },
@@ -219,14 +220,26 @@ export default {
           ]
         },
         {
-          title: '表单项',
-          items: [
+          title: '提交隐藏表单项',
+          type: 'Switch',
+          description: '提交时收集被隐藏的表单项字段并进行校验',
+          value: {
+            get ({ data }: EditorResult<Data>) {
+              return data.submitHiddenFields
+            },
+            set ({ data }: EditorResult<Data>, val: boolean) {
+              data.submitHiddenFields = val
+            }
+          }
+        },
+        // {
+        //   title: '表单项',
+        //   items: [
 
-          ]
-        }
+        //   ]
+        // }
       ]
     },
-    
     actionsEditor,
     // {
     //   title: '选择表单项',

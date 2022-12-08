@@ -73,6 +73,8 @@ export interface Data {
    * 合并参数 Schema
    */
   paramsSchema: any
+
+  submitHiddenFields: boolean
 }
 
 export interface FormControlProps {

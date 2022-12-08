@@ -31,5 +31,6 @@
   "labelWidth": 98,
   "labelCol": 4,
   "itemWidthType": "flex",
-  "paramsSchema": {}
+  "paramsSchema": {},
+  "submitHiddenFields": false
 }

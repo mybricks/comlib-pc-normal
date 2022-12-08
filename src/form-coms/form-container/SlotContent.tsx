@@ -52,7 +52,7 @@ const SlotContent = (props) => {
               item['visible'] = true;
             }
 
-            if (env.edit) {
+            if (env.edit || data.submitHiddenFields) {
               return (
                 <Col
                   style={{ display: com.style.display }}

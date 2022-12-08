@@ -127,8 +127,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     return new Promise((resolve, reject) => {
       Promise.all(
         data.items.map((item) => {
-          // 隐藏的表单项，不再校验
-          if (!item.visible) return { validateStatus: 'success' };
+          if (!data.submitHiddenFields) {
+            // 隐藏的表单项，不再校验
+            if (!item.visible) return { validateStatus: 'success' };
+          }
 
           const id = item.id;
           const input = childrenInputs[id];
@@ -160,7 +162,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const getValue = useCallback(() => {
     return new Promise((resolve, reject) => {
       /** 隐藏的表单项，不收集数据 **/
-      const formItems = data.items.filter((item) => item.visible);
+      const formItems = data.submitHiddenFields
+        ? data.items
+        : data.items.filter((item) => item.visible);
 
       Promise.all(
         formItems.map((item) => {
@@ -186,6 +190,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   name: item.name,
                   value: val
                 };
+                console.log(value);
 
                 resolve(value);
               }
