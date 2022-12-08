@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { List, Spin } from 'antd';
+import classnames from 'classnames';
 import { Data, FlexDirectionEnum, InputIds, LayoutTypeEnum } from './constants';
 import { uuid } from '../utils';
 import css from './style.less';
@@ -116,7 +117,10 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
       dataSource={dataSource}
       renderItem={ListItemRender}
       rowKey={rowKey}
-      className={css.listWrap}
+      className={classnames(
+        css.listWrap,
+        dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
+      )}
     />
   );
 };
