@@ -58,6 +58,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         <Paragraph
           style={{
             ...(isHover ? data.hoverStyle : data.style),
+            wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
@@ -70,6 +71,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         <Text
           style={{
             ...(isHover ? data.hoverStyle : data.style),
+            wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
