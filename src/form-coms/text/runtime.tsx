@@ -65,30 +65,26 @@ export default function (props: RuntimeParams<Data>) {
     //   data.value = val;
     //   outputs['onChange'](val);
     // });
-
     // inputs['setInitialValue']((val) => {
     //   data.value = val;
     //   outputs['onInitial'](val);
     // });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
-        })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
+    // inputs['validate']((val, outputRels) => {
+    //   validateFormItem({
+    //     value: data.value,
+    //     env,
+    //     rules: data.rules
+    //   })
+    //     .then((r) => {
+    //       outputRels['returnValidate'](r);
+    //     })
+    //     .catch((e) => {
+    //       outputRels['returnValidate'](e);
+    //     });
+    // });
     // inputs['getValue']((val, outputRels) => {
     //   outputRels['returnValue'](data.value);
     // });
-
     // inputs['resetValue'](() => {
     //   data.value = void 0;
     // });
