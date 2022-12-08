@@ -8,8 +8,7 @@ export default {
       title: '应用事件',
       type: 'Select',
       options (props) {
-        console.log(props.env.events)
-        const options = props.env.events.map(item => {
+        const options = props.env?.events?.map(item => {
           return {
             label: item.title,
             value: item.type
@@ -67,7 +66,6 @@ export default {
             input.get('run').setTitle('触发事件')
           }
 
-          console.log(event)
           data.eventType = val
         }
       }
