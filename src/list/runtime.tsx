@@ -94,10 +94,6 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     return slots['item'].render();
   }
 
-  if (dataSource.length === 0 && env.runtime && !loading) {
-    return null;
-  }
-
   if (layoutType === LayoutTypeEnum.Flex) {
     return loading ? (
       <Spin spinning={loading} wrapperClassName={css.loading}>
