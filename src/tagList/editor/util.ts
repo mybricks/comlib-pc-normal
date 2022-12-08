@@ -9,7 +9,9 @@ export const createTag = () => {
   return {
     key: uuid(),
     content: '新标签',
-    color: '#52c41a'
+    color: '#52c41a',
+    textColor: '#fff',
+    borderColor: '#52c41a'
   };
 };
 
