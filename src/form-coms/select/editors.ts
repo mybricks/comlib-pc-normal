@@ -73,7 +73,7 @@ export default {
                       type: 'string'
                     },
                     value: {
-                      type: 'any'
+                      type: 'string'
                     }
                   }
                 }
@@ -94,11 +94,11 @@ export default {
                     type: 'string'
                   },
                   value: {
-                    type: 'any'
+                    type: 'string'
                   }
                 }
               } : {
-                type: 'any'
+                type: 'string'
               };
               input.get(InputIds.SetValue).setSchema(valueSchema);
               output.get(OutputIds.OnChange).setSchema(valueSchema);
@@ -156,7 +156,7 @@ export default {
                         type: 'string'
                       },
                       value: {
-                        type: 'any'
+                        type: 'string'
                       }
                     }
                   }
@@ -175,11 +175,11 @@ export default {
                       type: 'string'
                     },
                     value: {
-                      type: 'any'
+                      type: 'string'
                     }
                   }
                 } : {
-                  type: 'any'
+                  type: 'string'
                 };
                 input.get(InputIds.SetValue).setSchema(basicSchema);
                 output.get(OutputIds.OnChange).setSchema(basicSchema);
@@ -474,7 +474,7 @@ export default {
                   }
                 };
                 if (data.dropdownSearchOption === true) {
-                  output.add('remoteSearch', '远程搜索', { type: 'any' });
+                  output.add('remoteSearch', '远程搜索', { type: 'string' });
                 } else {
                   output.remove('remoteSearch');
                 }
