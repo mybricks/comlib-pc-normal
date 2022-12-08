@@ -128,145 +128,147 @@ export default {
   // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
   //   console.log(slot)
   // },
-  ':root': [
-    {
-      title: '布局',
-      items: [
-        {
-          title: '类型',
-          type: 'Select',
-          options: [
-            { label: '水平', value: 'horizontal' },
-            { label: '垂直', value: 'vertical' },
-            { label: '内联', value: 'inline' },
-          ],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.layout
-            },
-            set({ data }: EditorResult<Data>, value: FormLayout) {
-              data.layout = value
-            },
-          }
-        },
-        {
-          title: '每行列数',
-          type: 'Slider',
-          description: '每行的表单项个数',
-          options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.formItemColumn
-            },
-            set({ data }: EditorResult<Data>, value: number) {
-              data.formItemColumn = value
-              data.actions.span = Math.floor(24 / value)
+  ':root': ({ data, output }: EditorResult<Data>, cate1) => {
+    cate1.items = [
+      {
+        title: '布局',
+        items: [
+          {
+            title: '类型',
+            type: 'Select',
+            options: [
+              { label: '水平', value: 'horizontal' },
+              { label: '垂直', value: 'vertical' },
+              { label: '内联', value: 'inline' },
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.layout
+              },
+              set({ data }: EditorResult<Data>, value: FormLayout) {
+                data.layout = value
+              },
             }
-          }
-        },
-        {
-          title: '标题',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.layout === 'horizontal'
           },
-          items: [
-            {
-              title: '宽度类型',
-              type: 'Select',
-              options: [
-                { label: '固定像素', value: 'px' },
-                { label: '24 栅格', value: 'span' },
-              ],
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.labelWidthType
-                },
-                set({ data }: EditorResult<Data>, value: LabelWidthType) {
-                  data.labelWidthType = value
-                },
-              }
-            },
-            {
-              title: '标题宽度(px)',
-              type: 'inputNumber',
-              options: [{ min: 1 }],
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.labelWidthType === 'px'
+          {
+            title: '每行列数',
+            type: 'Slider',
+            description: '每行的表单项个数',
+            options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.formItemColumn
               },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return [data.labelWidth]
-                },
-                set({ data }: EditorResult<Data>, value: number) {
-                  data.labelWidth = value[0]
-                }
-              }
-            },
-            {
-              title: '标题宽度(栅格)',
-              type: 'Slider',
-              options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.labelWidthType === 'span'
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.labelCol
-                },
-                set({ data }: EditorResult<Data>, value: number) {
-                  data.labelCol = value
-                }
+              set({ data }: EditorResult<Data>, value: number) {
+                data.formItemColumn = value
+                data.actions.span = Math.floor(24 / value)
               }
             }
-          ]
-        },
-        {
-          title: '表单项',
-          items: [
+          },
+          {
+            title: '标题',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.layout === 'horizontal'
+            },
+            items: [
+              {
+                title: '宽度类型',
+                type: 'Select',
+                options: [
+                  { label: '固定像素', value: 'px' },
+                  { label: '24 栅格', value: 'span' },
+                ],
+                value: {
+                  get({ data }: EditorResult<Data>) {
+                    return data.labelWidthType
+                  },
+                  set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                    data.labelWidthType = value
+                  },
+                }
+              },
+              {
+                title: '标题宽度(px)',
+                type: 'inputNumber',
+                options: [{ min: 1 }],
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.labelWidthType === 'px'
+                },
+                value: {
+                  get({ data }: EditorResult<Data>) {
+                    return [data.labelWidth]
+                  },
+                  set({ data }: EditorResult<Data>, value: number) {
+                    data.labelWidth = value[0]
+                  }
+                }
+              },
+              {
+                title: '标题宽度(栅格)',
+                type: 'Slider',
+                options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.labelWidthType === 'span'
+                },
+                value: {
+                  get({ data }: EditorResult<Data>) {
+                    return data.labelCol
+                  },
+                  set({ data }: EditorResult<Data>, value: number) {
+                    data.labelCol = value
+                  }
+                }
+              }
+            ]
+          },
+          {
+            title: '表单项',
+            items: [
 
-          ]
-        }
-      ]
-    },
-    
-    actionsEditor,
-    // {
-    //   title: '选择表单项',
-    //   type: 'comSelector',
-    //   options: {
-    //     schema: 'mybricks.normal-pc.form-container/form-item',
-    //     type: 'add'
-    //   },
-    //   value: {
-    //     get () {
+            ]
+          }
+        ]
+      },
 
-    //     },
-    //     set({ data, slot }: EditorResult<Data>, namespace: string) {
-    //       console.log(namespace)
-    //       // data.selectComNameSpace = namespace;
-    //       slot
-    //         .get('content')
-    //         .addCom(namespace, false, { deletable: true, movable: true });
-    //     }
-    //   }
-    // }
-    // {
-    //   title: '数据类型',
-    //   type: 'select',
-    //   options: [
-    //     { label: '对象', value: 'object' },
-    //     { label: '列表', value: 'list' }
-    //   ],
-    //   value: {
-    //     get({ data }: EditorResult<Data>) {
-    //       return data.dataType
-    //     },
-    //     set({ data }: EditorResult<Data>, val) {
-    //       data.dataType = val
-    //     }
-    //   }
-    // },
-  ],
+      actionsEditor(data, output),
+      // {
+      //   title: '选择表单项',
+      //   type: 'comSelector',
+      //   options: {
+      //     schema: 'mybricks.normal-pc.form-container/form-item',
+      //     type: 'add'
+      //   },
+      //   value: {
+      //     get () {
+
+      //     },
+      //     set({ data, slot }: EditorResult<Data>, namespace: string) {
+      //       console.log(namespace)
+      //       // data.selectComNameSpace = namespace;
+      //       slot
+      //         .get('content')
+      //         .addCom(namespace, false, { deletable: true, movable: true });
+      //     }
+      //   }
+      // }
+      // {
+      //   title: '数据类型',
+      //   type: 'select',
+      //   options: [
+      //     { label: '对象', value: 'object' },
+      //     { label: '列表', value: 'list' }
+      //   ],
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.dataType
+      //     },
+      //     set({ data }: EditorResult<Data>, val) {
+      //       data.dataType = val
+      //     }
+      //   }
+      // },
+    ]
+  },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
     items: [
@@ -355,7 +357,9 @@ export default {
       // }
     ]
   },
-  '[data-form-actions]': actionsEditor,
+  '[data-form-actions]': ({ data, output }: EditorResult<Data>, cate1) => {
+    cate1.items = [actionsEditor(data, output)];
+  },
   '[data-form-actions-item]': {
     title: '操作',
     items: [
