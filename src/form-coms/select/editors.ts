@@ -80,6 +80,8 @@ export default {
               } : {
                 type: 'array'
               };
+              input.get(InputIds.SetInitialValue)?.setSchema(valueSchema);
+              output.get(OutputIds.OnInitial)?.setSchema(valueSchema);
               input.get(InputIds.SetValue).setSchema(valueSchema);
               output.get(OutputIds.OnChange).setSchema(valueSchema);
               output.get(OutputIds.ReturnValue).setSchema(valueSchema);
@@ -100,6 +102,8 @@ export default {
               } : {
                 type: 'string'
               };
+              input.get(InputIds.SetInitialValue)?.setSchema(valueSchema);
+              output.get(OutputIds.OnInitial)?.setSchema(valueSchema);
               input.get(InputIds.SetValue).setSchema(valueSchema);
               output.get(OutputIds.OnChange).setSchema(valueSchema);
               output.get(OutputIds.ReturnValue).setSchema(valueSchema);
@@ -163,6 +167,8 @@ export default {
                 } : {
                   type: 'array'
                 };
+                input.get(InputIds.SetInitialValue)?.setSchema(arrSchema);
+                output.get(OutputIds.OnInitial)?.setSchema(arrSchema);
                 input.get(InputIds.SetValue).setSchema(arrSchema);
                 output.get(OutputIds.OnChange).setSchema(arrSchema);
                 output.get(OutputIds.ReturnValue).setSchema(arrSchema);
@@ -181,6 +187,8 @@ export default {
                 } : {
                   type: 'string'
                 };
+                input.get(InputIds.SetInitialValue)?.setSchema(basicSchema);
+                output.get(OutputIds.OnInitial)?.setSchema(basicSchema);
                 input.get(InputIds.SetValue).setSchema(basicSchema);
                 output.get(OutputIds.OnChange).setSchema(basicSchema);
                 output.get(OutputIds.ReturnValue).setSchema(basicSchema);
@@ -345,6 +353,13 @@ export default {
       {
         title: '事件',
         items: [
+          {
+            title: '初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
           {
             title: '值发生改变',
             type: '_event',

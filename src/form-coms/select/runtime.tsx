@@ -54,6 +54,16 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       }
     });
 
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        if (!typeCheck(val, typeMap.type)) {
+          logger.error(typeMap.message);
+        } else {
+          onChange(val);
+          // data.value = val;
+        }
+      });
+
     inputs['resetValue'](() => {
       data.value = '';
       data.value = void 0;
