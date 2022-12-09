@@ -38,6 +38,7 @@
         "title": "数据录入",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
@@ -101,7 +102,8 @@
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
       "./src/_schema-simulator/com.json",
-      "./src/_query/com.json"
+      "./src/_query/com.json",
+      "./src/_events/com.json"
     ],
     "publish": [
       {
@@ -136,6 +138,7 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
           "./src/form-coms/cascader/com.json",
@@ -199,7 +202,8 @@
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
       "./src/_schema-simulator/com.json",
-      "./src/_query/com.json"
+      "./src/_query/com.json",
+      "./src/_events/com.json"
     ]
   }
 }
