@@ -66,36 +66,36 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
     }
   });
 
-  inputs['setValue']((val: number) => {
-    if (isNumber(val)) {
-      setValue(moment(val));
-      return;
-    }
-    //兼容moment
-    if (isMoment(val)) {
-      setValue(val);
-      return;
-    }
-    message.error('输入数据是时间戳或者moment对象');
-  });
+  // inputs['setValue']((val: number) => {
+  //   if (isNumber(val)) {
+  //     setValue(moment(val));
+  //     return;
+  //   }
+  //   //兼容moment
+  //   if (isMoment(val)) {
+  //     setValue(val);
+  //     return;
+  //   }
+  //   message.error('输入数据是时间戳或者moment对象');
+  // });
 
-  inputs['getValue']((_, outputRels) => {
-    outputRels['returnValue'](getValue());
-  });
+  // inputs['getValue']((_, outputRels) => {
+  //   outputRels['returnValue'](getValue());
+  // });
 
-  inputs['resetValue'](() => {
-    setValue(void 0);
-  });
+  // inputs['resetValue'](() => {
+  //   setValue(void 0);
+  // });
 
-  inputs['setDisabled'](() => {
-    data.disabled = true;
-  });
+  // inputs['setDisabled'](() => {
+  //   data.disabled = true;
+  // });
 
-  inputs['setEnabled'](() => {
-    data.disabled = false;
-  });
+  // inputs['setEnabled'](() => {
+  //   data.disabled = false;
+  // });
 
-  inputs['validate'](validate);
+  // inputs['validate'](validate);
 
   const getValue = useCallback(() => value?.valueOf(), [value]);
 
