@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -9,10 +9,20 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置多选框的值，并触发值变化事件输出",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置多选框的初始值，并触发初始化事件输出",
       "schema": {
         "type": "array"
       }
@@ -20,6 +30,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发多选框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -30,6 +41,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取多选框的值并输出",
       "schema": {
         "type": "any"
       },
@@ -40,6 +52,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空多选框的值",
       "schema": {
         "type": "any"
       }
@@ -88,6 +101,13 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "array"
+      }
+    },
     {
       "id": "onChange",
       "title": "值变化",
