@@ -4,7 +4,7 @@ export default function ({ env, data, inputs, outputs, logger, onError, id }: Ru
   const { runImmediate } = data;
   const { vars } = env;
   try {
-    if (vars?.getQuery()) {
+    if (vars?.getQuery) {
       if (runImmediate) {
         if (env.runtime) {
           outputs['queryData'](vars.getQuery());
