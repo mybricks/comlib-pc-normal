@@ -61,6 +61,8 @@ export default {
                   type: 'number'
                 }
               };
+              input.get(InputIds.SetInitialValue)?.setSchema(schema);
+              output.get(OutputIds.OnInitial)?.setSchema(schema);
               input.get(InputIds.SetValue).setSchema(schema);
               output.get(OutputIds.OnChange).setSchema(schema);
               output.get(OutputIds.ReturnValue).setSchema(schema);
@@ -68,6 +70,8 @@ export default {
               const schema = {
                 type: 'number'
               };
+              input.get(InputIds.SetInitialValue)?.setSchema(schema);
+              output.get(OutputIds.OnInitial)?.setSchema(schema);
               input.get(InputIds.SetValue).setSchema(schema);
               output.get(OutputIds.OnChange).setSchema(schema);
               output.get(OutputIds.ReturnValue).setSchema(schema);
