@@ -97,6 +97,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        //时间戳转换
+        if (val && Array.isArray(val)) {
+          //如果是输入的值不合规范，即会输出[null, null]
+          val = val.map((item) => {
+            const num = Number(item);
+            const result: any = isNaN(num) ? moment(val) : moment(num);
+            let data = !result?._isValid ? undefined : result;
+            return data;
+          });
+          setValue(val);
+          onChange(val);
+        }
+      });
+
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: value,
