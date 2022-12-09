@@ -1,6 +1,6 @@
 import { Data } from './types';
 
-export default function ({ env, data, inputs, outputs, logger, onError, id }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   const { runImmediate } = data;
   const { vars } = env;
   try {
