@@ -2,7 +2,7 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
-import { Option } from '../types';
+import { Option, OutputIds } from '../types';
 import { uuid } from '../../utils';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
@@ -29,8 +29,8 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        // data.value = val;
-        onChange(val);
+        data.value = val;
+        outputs[OutputIds.OnInitial](val);
       }
     });
 

@@ -3,6 +3,7 @@ import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
+import { OutputIds } from '../types';
 
 const { RangePicker } = DatePicker;
 
@@ -109,7 +110,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
             return data;
           });
           setValue(val);
-          onChange(val);
+          let transValue;
+          if (!Array.isArray(value)) {
+            transValue = null;
+          } else {
+            transValue = value.map((item) => {
+              return transCalculation(item, data.contentType, props);
+            });
+          }
+          outputs[OutputIds.OnInitial](transValue);
         }
       });
 

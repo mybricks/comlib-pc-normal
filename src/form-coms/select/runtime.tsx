@@ -4,7 +4,7 @@ import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
-import { Option } from '../types';
+import { Option, OutputIds } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
   const typeMap = useMemo(() => {
@@ -59,8 +59,8 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         if (!typeCheck(val, typeMap.type)) {
           logger.error(typeMap.message);
         } else {
-          onChange(val);
-          // data.value = val;
+          data.value = val;
+          outputs[OutputIds.OnInitial](val);
         }
       });
 
