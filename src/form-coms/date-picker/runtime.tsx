@@ -89,6 +89,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       onChange(val);
     });
 
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        //时间戳转换
+        const num = Number(val);
+        const result: any = isNaN(num) ? moment(val) : moment(num);
+        val = !result?._isValid ? undefined : result;
+        setValue(val);
+        onChange(val);
+      });
+
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: value,
