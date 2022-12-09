@@ -52,7 +52,9 @@ export const BaseEditor = [
   {
     title: '标签名称',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
-      return  data.items[getEleIdx({ data, focusArea })].showLable;
+      if (!focusArea) return;
+      const { showLable = true } = data.items[getEleIdx({ data, focusArea })];
+      return showLable;
     },
     type: 'Text',
     value: {
@@ -61,7 +63,7 @@ export const BaseEditor = [
         return data.items[getEleIdx({ data, focusArea })]?.label;
       },
       set(
-        { data, focusArea, input, output, slots }: EditorResult<Data>,
+        { data, focusArea, input, output }: EditorResult<Data>,
         value: string
       ) {
         if (!focusArea) return;

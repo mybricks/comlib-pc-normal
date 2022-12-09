@@ -4,7 +4,8 @@
       "id": "item0",
       "title": "节点0",
       "subTitle": "副标题",
-      "description": "描述"
+      "description": "描述",
+      "color": "#1677ff"
     }
   ],
   "reverse": false,

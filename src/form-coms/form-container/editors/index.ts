@@ -69,12 +69,11 @@ export default {
     
   },
   '@childAdd' ({data, inputs, outputs, logs, slots}, child) {
-    const { id, inputDefs } = child
+    const { id, inputDefs, outputDefs } = child
     const item = data.items.find(item => item.id === id)
-    const com = inputDefs.find(item => item.id === 'setValue')
+    const com = outputDefs.find(item => item.id === 'returnValue')
     
     if (item) {
-      // console.log('_setFormItem item')
       item.schema = com.schema
     } else {
       const nowC = data.nameCount++

@@ -5,6 +5,8 @@ import { Data, Tag as TagType } from './types';
 import { uuid } from '../utils';
 import styles from './style.less';
 
+const preset = ['success', 'processing', 'error', 'warning', 'default'];
+
 export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const { tags, direction, align, wrap, size, tagSize } = data;
 
@@ -32,36 +34,44 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
     });
 
   const renderTag = () => {
-    return tags.map(({ key, checkable, checked, content, icon, closable, color }, index) => {
-      if (checkable) {
+    return tags.map(
+      (
+        { key, checkable, checked, content, icon, closable, color, textColor, borderColor },
+        index
+      ) => {
+        const isPreset = preset.includes(color as string);
+        if (checkable) {
+          return (
+            <Tag.CheckableTag
+              key={key}
+              className={styles[tagSize]}
+              data-index={index}
+              data-item-tag="tag"
+              checked={checked as boolean}
+              style={!isPreset ? { color: textColor, borderColor } : {}}
+              onChange={() => onTagChange(index)}
+            >
+              {content}
+            </Tag.CheckableTag>
+          );
+        }
         return (
-          <Tag.CheckableTag
+          <Tag
             key={key}
             className={styles[tagSize]}
             data-index={index}
             data-item-tag="tag"
-            checked={checked as boolean}
-            onChange={() => onTagChange(index)}
+            color={color}
+            closable={closable}
+            onClose={() => onTagClose(index)}
+            icon={Icons && Icons[icon as string]?.render()}
+            style={!isPreset ? { color: textColor, borderColor } : {}}
           >
             {content}
-          </Tag.CheckableTag>
+          </Tag>
         );
       }
-      return (
-        <Tag
-          key={key}
-          className={styles[tagSize]}
-          data-index={index}
-          data-item-tag="tag"
-          color={color}
-          closable={closable}
-          onClose={() => onTagClose(index)}
-          icon={Icons && Icons[icon as string]?.render()}
-        >
-          {content}
-        </Tag>
-      );
-    });
+    );
   };
 
   return (

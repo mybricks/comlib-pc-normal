@@ -18,7 +18,10 @@ export default function ColumnRender(props: ColumnRenderProps) {
   const oriValue = props.value;
   let value = oriValue;
   try {
-    value = value && ['object', 'function'].includes(typeof value) ? JSON.stringify(value) : value;
+    value =
+      value && ['object', 'function', 'boolean'].includes(typeof value)
+        ? JSON.stringify(value)
+        : value;
   } catch (e) {
     console.error('JSON.stringify失败', value, e);
   }

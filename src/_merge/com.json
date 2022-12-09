@@ -1,5 +1,5 @@
 {
-  "title": "数据整合",
+  "title": "数据合并",
   "namespace": "mybricks.normal-pc.data.merge",
   "version": "1.0.0",
   "rtType": "js",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
+  "icon": "./icon.svg",
   "inputs": [
     {
       "id": "input0",

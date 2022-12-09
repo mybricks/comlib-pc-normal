@@ -50,17 +50,13 @@ export default function (props: RuntimeParams<Data>) {
 
   const ItemRender = (item, index) => {
     if (data.useContentSlot && slots[SlotIds.Content]) {
-      return (
-        <div className={classnames(env.edit && slots[SlotIds.Content].size === 0 && css.emptyWrap)}>
-          {slots[SlotIds.Content].render({
-            inputValues: {
-              [InputIds.CurrentDs]: item,
-              [InputIds.Index]: index
-            },
-            key: index
-          })}
-        </div>
-      );
+      return slots[SlotIds.Content].render({
+        inputValues: {
+          [InputIds.CurrentDs]: item,
+          [InputIds.Index]: index
+        },
+        key: index
+      });
     }
     const { title, subTitle, description } = item || {};
     return (
@@ -94,16 +90,21 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div className={css.timeline}>
+    <div className={css.wrap}>
       <Timeline
         mode={data.mode}
         reverse={data.reverse}
-        className={classnames(collapse && data.supportCollapse && css.none)}
+        className={classnames(css.timeline, { [css.none]: collapse && data.supportCollapse })}
       >
         {timelines.map((item: Item, index: number) => {
           const { color, id, _id } = item || {};
           return (
-            <Timeline.Item color={color} data-timeline-id={id} key={_id || id}>
+            <Timeline.Item
+              color={color}
+              className={css['timeline-item']}
+              data-timeline-id={id}
+              key={_id || id}
+            >
               <div
                 onClick={() => {
                   outputs[OutputIds.ItemClick](item);

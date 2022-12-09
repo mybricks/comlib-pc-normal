@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Button, Dropdown, Menu, Space } from 'antd';
+import { Button, Dropdown, Menu, Space, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { InputIds, OutputIds } from './constants';
@@ -67,15 +67,55 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
   }, []);
 
   const renderTextAndIcon = (item: BtnItem) => {
-    const { useIcon, icon, iconLocation, iconDistance, text, showText } = item;
+    const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
     const Icon = Icons && Icons[icon as string]?.render();
     return (
       <Space size={iconDistance}>
-        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? <span>{Icon}</span> : null}
+        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
+          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
+        ) : null}
         {!useIcon || showText ? <span>{text}</span> : null}
-        {useIcon && Icon && iconLocation === LocationEnum.BACK ? <span>{Icon}</span> : null}
+        {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
+          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
+        ) : null}
       </Space>
     );
+  };
+
+  const renderTextAndCustom = (item: BtnItem) => {
+    const { useIcon, iconLocation, iconDistance, text, showText, src, contentSize } = item;
+    return (
+      <Space size={iconDistance} className={css.space}>
+        {useIcon && src && iconLocation === LocationEnum.FRONT ? (
+          <Image
+            width={contentSize[1]}
+            height={contentSize[0]}
+            src={src}
+            preview={false}
+            alt={' '}
+          ></Image>
+        ) : null}
+        {!useIcon || showText ? <span>{text}</span> : null}
+        {useIcon && src && iconLocation === LocationEnum.BACK ? (
+          <Image
+            width={contentSize[1]}
+            height={contentSize[0]}
+            src={src}
+            preview={false}
+            alt={' '}
+          ></Image>
+        ) : null}
+      </Space>
+    );
+  };
+
+  const renderBtnContext = (item: BtnItem) => {
+    const { isCustom } = item;
+    if (isCustom === true) {
+      return renderTextAndCustom(item);
+    } else {
+      return renderTextAndIcon(item);
+    }
   };
 
   const renderEllipsisList = (btnList: BtnItem[]) => {
@@ -107,9 +147,9 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     }
     return btnList.map((item) => {
       if (!hasPermission(item.permissionKey) || item.hidden) return;
-      const { type, size, shape, disabled } = item;
+      const { type, size, shape, disabled, isCustom } = item;
       return (
-        <div key={item.key} data-btn-idx={item.key}>
+        <div key={item.key} data-btn-idx={item.key} className={css.button}>
           <Button
             type={type as any}
             size={size}
@@ -118,7 +158,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             onClick={() => onClick(item)}
             onDoubleClick={() => onDoubleClick(item)}
           >
-            {renderTextAndIcon(item)}
+            {renderBtnContext(item)}
           </Button>
         </div>
       );

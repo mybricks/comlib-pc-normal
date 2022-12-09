@@ -73,11 +73,66 @@ export default {
           //       data.tagSize = val
           //     }
           //   }
-          // }
+          // },
+          {
+            title: '动态数据',
+            type: 'switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return !!data.dynamic;
+              },
+              set({ data, input }: EditorResult<Data>, val: boolean) {
+                data.dynamic = val;
+                if (val) {
+                  input.add('dynamicTags', '输入动态标签列表', {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        icon: {
+                          title: '图标',
+                          type: 'string'
+                        },
+                        content: {
+                          title: '标签内容',
+                          type: 'string'
+                        },
+                        color: {
+                          title: '背景颜色',
+                          type: 'string'
+                        },
+                        textColor: {
+                          title: '文本颜色',
+                          type: 'string'
+                        },
+                        borderColor: {
+                          title: '边框颜色',
+                          type: 'string'
+                        },
+                        checkable: {
+                          title: '是否可选',
+                          type: 'boolean'
+                        },
+                        closable: {
+                          title: '是否可关闭',
+                          type: 'boolean'
+                        }
+                      }
+                    }
+                  });
+                } else {
+                  input.remove('dynamicTags');
+                }
+              }
+            }
+          }
         ]
       },
       {
         title: '操作',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.dynamic;
+        },
         items: [
           {
             title: '添加标签',
@@ -124,53 +179,6 @@ export default {
       //         }
       //     }
       // },
-    ];
-    cate[1].title = '高级';
-    cate[1].items = [
-      {
-        title: '动态数据',
-        type: 'switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return !!data.dynamic;
-          },
-          set({ data, input }: EditorResult<Data>, val: boolean) {
-            data.dynamic = val;
-            if (val) {
-              input.add('dynamicTags', '输入动态标签列表', {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    icon: {
-                      title: '图标',
-                      type: 'string'
-                    },
-                    content: {
-                      title: '标签内容',
-                      type: 'string'
-                    },
-                    color: {
-                      title: '颜色',
-                      type: 'string'
-                    },
-                    checkable: {
-                      title: '是否可选',
-                      type: 'boolean'
-                    },
-                    closable: {
-                      title: '是否可关闭',
-                      type: 'boolean'
-                    }
-                  }
-                }
-              });
-            } else {
-              input.remove('dynamicTags');
-            }
-          }
-        }
-      }
     ];
   },
   ...TagEditor

@@ -4,7 +4,7 @@ import { Input } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './style.less';
 
-export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
+export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
   const validate = useCallback(
@@ -55,7 +55,7 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   };
 
   return (
-    <div>
+    <div style={style}>
       <Input.Password
         allowClear
         placeholder={placeholder}

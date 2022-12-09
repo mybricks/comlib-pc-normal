@@ -5,6 +5,10 @@ declare module '*.less' {
 
 interface Env {
   ajax: (url: string, opt: Record<string, any>) => Promise<any>
+  events: any[]
+  vars: {
+    getQuery: () => any
+  }
   [x: string]: any
 }
 interface RuntimeParams<T> {
@@ -43,6 +47,7 @@ interface EditorResult<T> {
   style: any
   catelog: any
   slots?: any
+  env: Env
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDesc: (desc?: string) => void

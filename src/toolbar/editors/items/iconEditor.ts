@@ -3,7 +3,7 @@ import { getBtnItemInfo } from '../../utils';
 
 const IconEditor = [
   {
-    title: '使用图标',
+    title: '图标',
     type: 'Switch',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
@@ -20,7 +20,7 @@ const IconEditor = [
         if (value) {
           item.iconLocation = item.iconLocation || LocationEnum.FRONT;
           item.icon = item.icon || 'HomeOutlined';
-          item.iconDistance = item.iconDistance || 0;
+          item.iconDistance = item.iconDistance || 8;
         }
         item.useIcon = value;
       }
@@ -35,7 +35,29 @@ const IconEditor = [
     },
     items: [
       {
+        title: '自定义',
+        type: 'switch',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            return item.isCustom || false;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            item.isCustom = value;
+          }
+        }
+      },
+      { 
+        title: '图标库',
         type: 'Icon',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const { item } = getBtnItemInfo(data, focusArea);
+          return !item.isCustom;
+        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
@@ -46,6 +68,45 @@ const IconEditor = [
             if (!focusArea) return;
             const { item } = getBtnItemInfo(data, focusArea);
             item.icon = value;
+          }
+        }
+      },
+      {
+        title: '上传',
+        type: 'ImageSelector',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const { item } = getBtnItemInfo(data, focusArea);
+          return !!item.isCustom;
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            return item.src;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: string) {
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            item.src = value;
+          }
+        }
+      },
+      {
+        title: '尺寸',
+        type: 'InputNumber',
+        options: [
+          { title: '高度', min: 0, width: 100 },
+          { title: '宽度', min: 0, width: 100 }
+        ],
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const { item } = getBtnItemInfo(data, focusArea);
+            return item.contentSize || [14, 14];
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: [number, number]) {
+            const { item } = getBtnItemInfo(data, focusArea);
+            item.contentSize = value;
           }
         }
       },
@@ -109,7 +170,7 @@ const IconEditor = [
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
             const { item } = getBtnItemInfo(data, focusArea);
-            return [item.iconDistance || 0];
+            return [item.iconDistance];
           },
           set({ data, focusArea }: EditorResult<Data>, value: number[]) {
             if (!focusArea) return;
