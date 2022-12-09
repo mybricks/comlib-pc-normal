@@ -4,37 +4,49 @@ import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { uuid } from '../../utils';
 import { Option } from '../types';
+import useFormItemInputs from '../form-container/models/FormItem';
 
 export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
-  useLayoutEffect(() => {
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        data.value = val;
+      },
+      setInitialValue(val) {
+        data.value = val;
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        data.value = '';
+        data.value = void 0;
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
+  });
 
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
-
-    inputs['setValue']((val) => {
-      data.value = val;
-      outputs['onChange'](val);
-    });
-
-    inputs['resetValue'](() => {
-      data.value = '';
-      data.value = void 0;
-    });
-
+  useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
       let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
@@ -67,15 +79,6 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
       });
       data.value = newVal;
       data.config.options = tempDs;
-    });
-
-    //设置禁用
-    inputs['setDisabled'](() => {
-      data.config.disabled = true;
-    });
-    //设置启用
-    inputs['setEnabled'](() => {
-      data.config.disabled = false;
     });
   }, []);
 
