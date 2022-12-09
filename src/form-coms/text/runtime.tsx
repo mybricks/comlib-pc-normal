@@ -1,10 +1,11 @@
 import { Form, Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { validateFormItem } from '../utils/validator';
+import useFormItemInputs from '../form-container/models/FormItem';
 
 import css from './runtime.less';
 
-interface Data {
+export interface Data {
   value: string | undefined;
   rules: any[];
   config: {
@@ -21,40 +22,80 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, parentSlot, style } = props;
   const { edit } = env;
 
-  useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      data.value = val;
-      outputs['onChange'](val);
-    });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        data.value = val;
+      },
+      setInitialValue(val) {
+        data.value = val;
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        data.value = void 0;
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
+  });
 
-    inputs['resetValue'](() => {
-      data.value = void 0;
-    });
-    //设置禁用
-    inputs['setDisabled'](() => {
-      data.config.disabled = true;
-    });
-    //设置启用
-    inputs['setEnabled'](() => {
-      data.config.disabled = false;
-    });
+  useLayoutEffect(() => {
+    // inputs['setValue']((val) => {
+    //   data.value = val;
+    //   outputs['onChange'](val);
+    // });
+    // inputs['setInitialValue']((val) => {
+    //   data.value = val;
+    //   outputs['onInitial'](val);
+    // });
+    // inputs['validate']((val, outputRels) => {
+    //   validateFormItem({
+    //     value: data.value,
+    //     env,
+    //     rules: data.rules
+    //   })
+    //     .then((r) => {
+    //       outputRels['returnValidate'](r);
+    //     })
+    //     .catch((e) => {
+    //       outputRels['returnValidate'](e);
+    //     });
+    // });
+    // inputs['getValue']((val, outputRels) => {
+    //   outputRels['returnValue'](data.value);
+    // });
+    // inputs['resetValue'](() => {
+    //   data.value = void 0;
+    // });
+    // //设置禁用
+    // inputs['setDisabled'](() => {
+    //   data.config.disabled = true;
+    // });
+    // //设置启用
+    // inputs['setEnabled'](() => {
+    //   data.config.disabled = false;
+    // });
   }, []);
 
   // const validateTrigger = () => {

@@ -44,6 +44,7 @@ const SlotContent = (props) => {
             if (!item) return;
 
             childrenInputs[com.id] = com.inputs;
+            // console.log(com.inputs.setInitialValue)
 
             if (typeof item?.visible !== 'undefined') {
               item.visible = com.style.display !== 'none';
@@ -51,7 +52,7 @@ const SlotContent = (props) => {
               item['visible'] = true;
             }
 
-            if (env.edit) {
+            if (env.edit || data.submitHiddenFields) {
               return (
                 <Col
                   style={{ display: com.style.display }}
