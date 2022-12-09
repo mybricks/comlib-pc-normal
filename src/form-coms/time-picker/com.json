@@ -20,6 +20,14 @@
       "desc": "设置时间"
     },
     {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "schema": {
+        "type": "number"
+      },
+      "desc": "设置时间选择框初始值"
+    },
+    {
       "id": "getValue",
       "title": "获取值",
       "schema": {
@@ -66,6 +74,20 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值发生改变",
+      "schema": {
+        "type": "number"
+      }
+    },
     {
       "id": "returnValue",
       "title": "数据输出",
