@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo } from 'react';
 import { Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -7,6 +7,25 @@ import { typeCheck, uuid } from '../../utils';
 import { Option } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+  const typeMap = useMemo(() => {
+    if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+      return {
+        type: ['ARRAY', 'UNDEFINED'],
+        message: `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+      };
+    }
+    if (data.config.labelInValue) {
+      return {
+        type: ['OBJECT', 'UNDEFINED'],
+        message: `下拉框的值应为{label,value}对象格式`
+      };
+    }
+    return {
+      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'],
+      message: `下拉框的值应为基本类型`
+    };
+  }, [data.config.mode, data.config.labelInValue]);
+
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -27,20 +46,11 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
 
     inputs['setValue']((val) => {
-      if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
-        if (!Array.isArray(val)) {
-          logger.error(
-            `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
-          );
-        } else {
-          onChange(val);
-          // data.value = val;
-        }
-      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
+      if (!typeCheck(val, typeMap.type)) {
+        logger.error(typeMap.message);
+      } else {
         onChange(val);
         // data.value = val;
-      } else {
-        logger.error(`下拉框的值应为基本类型`);
       }
     });
 
@@ -116,6 +126,9 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   }, []);
 
   const onChange = useCallback((value) => {
+    if (value === undefined) {
+      data.value = '';
+    }
     data.value = value;
     outputs['onChange'](value);
   }, []);
