@@ -6,6 +6,7 @@ import { validateFormItem } from '../utils/validator';
 
 import css from './runtime.less';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { OutputIds } from '../types';
 
 interface UploadConfig {
   buttonText: string;
@@ -57,6 +58,11 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     inputs['setValue']((val: UploadFile[]) => {
       setFileList(val);
     });
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        setFileList(val);
+        outputs[OutputIds.OnInitial](val);
+      });
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: fileListRef.current,

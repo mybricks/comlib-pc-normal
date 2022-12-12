@@ -3,6 +3,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
+import { OutputIds } from '../types';
 
 export interface Data {
   options: any[];
@@ -88,6 +89,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
       setValue(val);
       onChange(val);
     });
+
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        //时间戳转换
+        const num = Number(val);
+        const result: any = isNaN(num) ? moment(val) : moment(num);
+        val = !result?._isValid ? undefined : result;
+        setValue(val);
+        //自定义转换
+        let transValue;
+        if (value === null || value === undefined) {
+          transValue = undefined;
+        } else {
+          transValue = transCalculation(value, data.contentType, props);
+        }
+        outputs[OutputIds.OnInitial](transValue);
+      });
 
     inputs['validate']((val, outputRels) => {
       validateFormItem({

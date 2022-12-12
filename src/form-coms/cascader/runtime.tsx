@@ -2,8 +2,9 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Cascader } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
+import useFormItemInputs from '../form-container/models/FormItem';
 
-interface Data {
+export interface Data {
   options: any[];
   placeholder: string;
   isMultiple: boolean;
@@ -24,42 +25,42 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env } = props;
   const [options, setOptions] = useState();
 
-  useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      data.value = val;
-      onChange(val);
-    });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        data.value = val;
+      },
+      setInitialValue(val) {
+        data.value = val;
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        data.value = [];
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
-  }, [data.value]);
-
-  //重置，
-  inputs['resetValue'](() => {
-    data.value = [];
-  });
-  //设置禁用
-  inputs['setDisabled'](() => {
-    data.config.disabled = true;
-  });
-  //设置启用
-  inputs['setEnabled'](() => {
-    data.config.disabled = false;
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
   });
   //输入数据源
   inputs['setOptions']((value) => {

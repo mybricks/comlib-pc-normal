@@ -14,6 +14,26 @@
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置上传表单项的值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置上传表单项的初始值，并触发初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -87,6 +107,24 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     {
       "id": "returnValidate",
       "title": "校验结果",

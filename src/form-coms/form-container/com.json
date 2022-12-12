@@ -3,15 +3,25 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "表单容器",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setFieldsValue",
+      "title": "设置表单数据（触发值变化）",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "desc": "给表单设置初始数据且触发表单项值变化输出"
+    },
+    {
+      "id": "setInitialValues",
       "title": "设置表单数据",
       "schema": {
         "type": "object",

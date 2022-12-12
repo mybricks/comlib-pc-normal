@@ -198,6 +198,13 @@ export default {
         title: '事件',
         items: [
           {
+            title: '初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
+          {
             title: '目标数据改变',
             type: '_Event',
             options: ({}: EditorResult<Data>) => {
