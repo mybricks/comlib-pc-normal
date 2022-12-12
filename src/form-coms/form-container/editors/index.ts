@@ -161,7 +161,10 @@ export default {
               },
               set({ data }: EditorResult<Data>, value: number) {
                 data.formItemColumn = value
-                data.actions.span = Math.floor(24 / value)
+                data.actions.span = (24 / value)
+                data.items.forEach(item => {
+                  item.span = (24 / value);
+                })
               }
             }
           },
@@ -321,8 +324,79 @@ export default {
           },
           set({ id, data }: EditorResult<Data>, value: string) {
             const item = data.items.find(item => item.id === id)
-            item['tooltip'] = value
+            item.tooltip = value
           },
+        },
+      },
+      {
+        title: '宽度模式',
+        type: 'Select',
+        options: [
+          {
+            label: '24栅格',
+            value: 'span'
+          },
+          {
+            label: '固定宽度(px)',
+            value: 'px'
+          }
+        ],
+        value: {
+          get({ data, id }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id)
+            return item?.widthOption;
+          },
+          set({ data, id }: EditorResult<Data>, value: LabelWidthType) {
+            const item = data.items.find(item => item.id === id);
+            item.widthOption = value;
+          }
+        },
+      },
+      {
+        title: '宽度配置(共24格)',
+        type: 'Slider',
+        options: [
+          {
+            max: 24,
+            min: 1,
+            step: 1,
+            formatter: '/24',
+          },
+        ],
+        ifVisible({ data, id }: EditorResult<Data>) {
+          const item = data.items.find(item => item.id === id)
+          return item?.widthOption !== 'px';
+        },
+        value: {
+          get({ data, id }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id)
+            return item?.span;
+          },
+          set({ data, id }: EditorResult<Data>, value: number) {
+            const item = data.items.find(item => item.id === id)
+            item.span = value;
+          }
+        },
+      },
+      {
+        title: '宽度配置(px)',
+        type: 'text',
+        options: {
+          type: 'number'
+        },
+        ifVisible({ data, id }: EditorResult<Data>) {
+          const item = data.items.find(item => item.id === id)
+          return item?.widthOption === 'px';
+        },
+        value: {
+          get({ data, id }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id)
+            return item?.width;
+          },
+          set({ data, id }: EditorResult<Data>, value: number) {
+            const item = data.items.find(item => item.id === id)
+            item.width = value;
+          }
         },
       },
       {
@@ -338,38 +412,6 @@ export default {
           }
         }
       },
-      // {
-      //   title: '表单项',
-      //   items: [
-      //     {
-      //       title: '宽度',
-      //       type: 'Slider',
-      //       options: [
-      //         {
-      //           max: 24,
-      //           min: 1,
-      //           step: 1,
-      //           formatter: '/24',
-      //         },
-      //       ],
-      //       // ifVisible({ data }: EditorResult<Data>) {
-      //       //   return data.layout === 'horizontal'
-      //       // },
-      //       value: {
-      //         get({ data, focusArea }: EditorResult<Data>) {
-      //           const comId = focusArea.dataset['formitem']
-      //           const item = data.items.find(item => item.id === comId)
-      //           return item.span || 24
-      //         },
-      //         set({ data, focusArea }: EditorResult<Data>, value: number) {
-      //           const comId = focusArea.dataset['formitem']
-      //           const item = data.items.find(item => item.id === comId)
-      //           item.span = value
-      //         }
-      //       },
-      //     },
-      //   ]
-      // }
     ]
   },
   '[data-form-actions]': ({ data, output }: EditorResult<Data>, cate1) => {

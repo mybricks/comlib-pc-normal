@@ -10,6 +10,7 @@ interface VerticalLayoutProps {
 
 const VerticalLayout = (props: VerticalLayoutProps) => {
   const { children, actions, data } = props;
+  const flexBasis = `${(data.actions.span * 100) / 24}%`;
 
   return (
     <>
@@ -17,7 +18,7 @@ const VerticalLayout = (props: VerticalLayoutProps) => {
       {data.actions.visible && (
         <Col
           data-form-actions
-          span={data.actions.span}
+          flex={`0 0 ${flexBasis}`}
           style={{
             textAlign: data.actions.align
           }}

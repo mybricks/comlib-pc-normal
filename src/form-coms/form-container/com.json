@@ -3,12 +3,13 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "表单容器",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setFieldsValue",

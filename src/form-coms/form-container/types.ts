@@ -26,6 +26,7 @@ interface FormItems {
   validateStatus?: string
   help?: string
   tooltip?: string
+  widthOption: LabelWidthType
 }
 
 export type LabelWidthType = 'px' | 'span'
