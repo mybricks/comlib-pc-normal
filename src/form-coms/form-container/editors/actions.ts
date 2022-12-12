@@ -79,7 +79,7 @@ export const actionsEditor = (data: Data, output) => {
       },
       {
         title: '操作列表',
-        description: '可拖拽改变选项位置',
+        description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
         type: 'array',
         options: {
           addText: '添加操作',
