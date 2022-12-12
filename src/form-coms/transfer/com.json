@@ -48,6 +48,17 @@
       "desc": "给穿梭框设置目标值"
     },
     {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "给穿梭框设置初始目标值"
+    },
+    {
       "id": "getValue",
       "title": "获取值",
       "schema": {
@@ -94,6 +105,16 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
     {
       "id": "returnValue",
       "title": "数据输出",
