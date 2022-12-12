@@ -2,49 +2,69 @@ import React, { useCallback, useState } from 'react';
 import { Data } from './types';
 import { Input } from 'antd';
 import { validateFormItem } from '../utils/validator';
+import useFormItemInputs from '../form-container/models/FormItem';
 import css from './style.less';
 
 export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
   const validate = useCallback(
-    (val, outputRels) => {
+    (output) => {
       validateFormItem({
         value,
         env,
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          output(r);
         })
         .catch((e) => {
-          outputRels['returnValidate'](e);
+          output(e);
         });
     },
     [value]
   );
 
-  inputs['setValue']((val: string) => {
-    setValue(val);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue,
+      setInitialValue: setValue,
+      returnValue(output) {
+        output(getValue());
+      },
+      setDisabled() {
+        data.disabled = true;
+      },
+      setEnabled() {
+        data.disabled = false;
+      },
+      validate
+    }
   });
 
-  inputs['getValue']((_, outputRels) => {
-    outputRels['returnValue'](getValue());
-  });
+  // inputs['setValue']((val: string) => {
+  //   setValue(val);
+  // });
 
-  inputs['resetValue'](() => {
-    setValue(void 0);
-  });
+  // inputs['getValue']((_, outputRels) => {
+  //   outputRels['returnValue'](getValue());
+  // });
 
-  inputs['setDisabled'](() => {
-    data.disabled = true;
-  });
+  // inputs['resetValue'](() => {
+  //   setValue(void 0);
+  // });
 
-  inputs['setEnabled'](() => {
-    data.disabled = false;
-  });
+  // inputs['setDisabled'](() => {
+  //   data.disabled = true;
+  // });
 
-  inputs['validate'](validate);
+  // inputs['setEnabled'](() => {
+  //   data.disabled = false;
+  // });
+
+  // inputs['validate'](validate);
 
   const getValue = useCallback(() => value, [value]);
 
