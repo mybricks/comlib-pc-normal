@@ -26,7 +26,12 @@ export default function ({ input, output }): boolean {
     }
   });
 
-  //1.0.1 -> 1.0.2
+  // 1.0.1 -> 1.0.2
+  output.get('upload').setSchema({
+    type: 'object'
+  })
+
+  //1.0.2 -> 1.0.3
   const valueSchema = {
     type: 'array',
     items: {

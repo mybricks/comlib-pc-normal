@@ -164,7 +164,7 @@
       "id": "upload",
       "title": "开始上传",
       "schema": {
-        "type": "any"
+        "type": "object"
       }
     }
   ],
