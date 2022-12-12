@@ -2,7 +2,10 @@ import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
-    type: 'number'
+    type: 'array',
+    items: {
+      type: 'number'
+    }
   };
 
   if (!input.get('setInitialValue')) {

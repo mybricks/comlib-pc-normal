@@ -82,13 +82,6 @@
       }
     },
     {
-      "id": "onChange",
-      "title": "值发生改变",
-      "schema": {
-        "type": "number"
-      }
-    },
-    {
       "id": "returnValue",
       "title": "数据输出",
       "schema": {
