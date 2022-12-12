@@ -10,6 +10,7 @@
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
