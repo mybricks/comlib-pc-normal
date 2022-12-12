@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "上传",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -126,7 +126,7 @@
       "id": "upload",
       "title": "开始上传",
       "schema": {
-        "type": "any"
+        "type": "object"
       }
     }
   ],
