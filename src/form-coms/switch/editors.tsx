@@ -110,6 +110,13 @@ export default {
         title: '事件',
         items: [
           {
+            title: '初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
+          {
             title: '值发生改变',
             type: '_event',
             options: {

@@ -6,50 +6,52 @@ import { valueType } from 'antd/lib/statistic/utils';
 import { InputNumberProps } from 'antd/es/input-number';
 import { typeCheck } from '../../utils';
 import css from './runtime.less';
+import useFormItemInputs from '../form-container/models/FormItem';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
-  useLayoutEffect(() => {
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        changeValue(val);
+      },
+      setInitialValue(val) {
+        changeValue(val);
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        // 迂回重置视图
+        data.value = 0;
+        data.singleValue = 0;
+        data.rangeValue = [0, 0];
+        data.value = void 0;
+        data.singleValue = void 0;
+        data.rangeValue = void 0;
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
-
-    inputs['setValue']((val) => {
-      onChange(val);
-    });
-
-    inputs['resetValue'](() => {
-      // 迂回重置视图
-      data.value = 0;
-      data.singleValue = 0;
-      data.rangeValue = [0, 0];
-      data.value = void 0;
-      data.singleValue = void 0;
-      data.rangeValue = void 0;
-    });
-
-    //设置禁用
-    inputs['setDisabled'](() => {
-      data.config.disabled = true;
-    });
-    //设置启用
-    inputs['setEnabled'](() => {
-      data.config.disabled = false;
-    });
-  }, []);
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
+  });
 
   /**监听事件和格式化函数 */
   const changeValue = useCallback((val) => {

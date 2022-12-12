@@ -2,7 +2,8 @@ import React, { useLayoutEffect, useState } from 'react';
 import { InputNumber } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
-interface Data {
+import useFormItemInputs from '../form-container/models/FormItem';
+export interface Data {
   options: any[];
   rules: any[];
   config: {
@@ -18,43 +19,42 @@ interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env } = props;
   const [value, setValue] = useState();
-
-  useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      setValue(val);
-      onChange(val);
-    });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        setValue(val);
+      },
+      setInitialValue(val) {
+        setValue(val);
+      },
+      returnValue(output) {
+        output(value);
+      },
+      resetValue() {
+        setValue(void 0);
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value);
-    });
-  }, [value]);
-
-  //重置
-  inputs['resetValue'](() => {
-    setValue(void 0);
-  });
-  //设置禁用
-  inputs['setDisabled'](() => {
-    data.config.disabled = true;
-  });
-  //设置启用
-  inputs['setEnabled'](() => {
-    data.config.disabled = false;
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
   });
 
   const onChange = (value) => {

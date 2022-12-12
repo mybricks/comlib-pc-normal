@@ -1,8 +1,9 @@
 import { Switch } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
 
-interface Data {
+export interface Data {
   value: boolean | undefined;
   rules: any[];
   config: {
@@ -19,43 +20,43 @@ interface Data {
 export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
   const { edit } = env;
 
-  useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      data.config.checked = val;
-      outputs['onChange'](val);
-    });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.config.checked,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        data.config.checked = val;
+      },
+      setInitialValue(val) {
+        data.config.checked = val;
+      },
+      returnValue(output) {
+        output(data.config.checked);
+      },
+      resetValue() {
+        data.config.checked = false;
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.config.checked,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.config.checked);
-    });
-
-    inputs['resetValue'](() => {
-      data.config.checked = false;
-    });
-
-    //设置禁用
-    inputs['setDisabled'](() => {
-      data.config.disabled = true;
-    });
-    //设置启用
-    inputs['setEnabled'](() => {
-      data.config.disabled = false;
-    });
-  }, [data.config.checked]);
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
+  });
 
   const changeValue = useCallback((checked) => {
     data.config.checked = checked;
