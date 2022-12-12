@@ -32,7 +32,7 @@ const formItemOutputIds = {
   RETURN_VALIDATE: 'returnValidate'
 }
 
-const useFormItemInputs = ({ inputs, outputs, configs }: FormItemInputsProps) => {
+const useFormItemInputs = ({ inputs, outputs, configs }: FormItemInputsProps, deps?: React.DependencyList) => {
   
   useLayoutEffect(() => {
     /**
@@ -104,7 +104,7 @@ const useFormItemInputs = ({ inputs, outputs, configs }: FormItemInputsProps) =>
       }
     });
 
-  }, [])
+  }, deps ? [...deps] : [])
 
   return
 }
