@@ -1,4 +1,4 @@
-export default function ({ input }): boolean {
+export default function ({ input, output }): boolean {
   //1.0.0 -> 1.0.1
   input.get('setValue').setSchema({
     type: 'array',
@@ -25,5 +25,10 @@ export default function ({ input }): boolean {
       }
     }
   });
+
+  // 1.0.1 -> 1.0.2
+  output.get('upload').setSchema({
+    type: 'object'
+  })
   return true;
 }
