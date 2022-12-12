@@ -1,6 +1,14 @@
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+
+  if (typeof data.minRows === "undefined") {
+    data.minRows = 3;
+  };
+  if (typeof data.maxRows === "undefined") {
+    data.maxRows = 6;
+  };
+
   const valueSchema = {
     "type": "string"
   }
