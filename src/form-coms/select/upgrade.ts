@@ -1,6 +1,20 @@
 import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+
+  if (typeof data.config.showSearch === "undefined") {
+    data.config.showSearch = true;
+  };
+  if (typeof data.config.filterOption === "undefined") {
+    data.config.filterOption = true;
+  };
+  if (typeof data.config.optionFilterProp === "undefined") {
+    data.config.optionFilterProp = "label";
+  };
+  if (typeof data.dropdownSearchOption === "undefined") {
+    data.dropdownSearchOption = false;
+  };
+
   let valueSchema: {} = {
     type: 'string'
   };
