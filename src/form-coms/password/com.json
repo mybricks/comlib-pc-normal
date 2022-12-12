@@ -20,6 +20,14 @@
       "desc": "设置密码"
     },
     {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置密码框初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "getValue",
       "title": "获取值",
       "schema": {
@@ -66,6 +74,13 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
     {
       "id": "returnValue",
       "title": "数据输出",
