@@ -119,9 +119,6 @@
       }
     }
   ],
-  "_valueSchema": {
-    "type": "string"
-  },
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
     "*"

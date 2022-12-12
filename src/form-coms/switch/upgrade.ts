@@ -1,6 +1,10 @@
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+  if (typeof data.config.checked === "undefined") {
+    data.config.checked = false;
+  };
+
   const valueSchema = {
     "type": "boolean"
   }
