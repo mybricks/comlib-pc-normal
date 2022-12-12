@@ -190,7 +190,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   name: item.name,
                   value: val
                 };
-                console.log(value);
+                // console.log(value);
 
                 resolve(value);
               }
