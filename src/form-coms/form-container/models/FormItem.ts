@@ -104,7 +104,7 @@ const useFormItemInputs = ({ inputs, outputs, configs }: FormItemInputsProps, de
       }
     });
 
-  }, deps ? [...deps] : [])
+  }, deps ? deps : [])
 
   return
 }
