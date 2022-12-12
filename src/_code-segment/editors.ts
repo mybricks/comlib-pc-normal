@@ -85,6 +85,7 @@ export default {
               sourceType: 'module'
             }
           },
+          autoSave: false,
           onBlur: () => {
             updateOutputSchema(output, data.fns);
           },
