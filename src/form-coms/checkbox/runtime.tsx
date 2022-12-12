@@ -29,8 +29,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        data.value = val;
-        outputs[OutputIds.OnInitial](val);
+        onChange(val);
       }
     });
 
@@ -39,8 +38,8 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         if (val !== undefined && !Array.isArray(val)) {
           logger.error(`多选框的值应为数组格式`);
         } else {
-          // data.value = val;
-          onChange(val);
+          data.value = val;
+          outputs[OutputIds.OnInitial](val);
         }
       });
 
