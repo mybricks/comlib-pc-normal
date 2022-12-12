@@ -311,6 +311,21 @@ export default {
         }
       },
       {
+        title: "标题提示",
+        type: "Text",
+        description: "展示在标题后面的悬浮提示内容",
+        value: {
+          get({ id, data }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id);
+            return item?.tooltip;
+          },
+          set({ id, data }: EditorResult<Data>, value: string) {
+            const item = data.items.find(item => item.id === id)
+            item['tooltip'] = value
+          },
+        },
+      },
+      {
         title: '必填样式',
         type: 'Switch',
         value: {

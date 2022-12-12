@@ -29,6 +29,7 @@ const FormItem = (props: FormItemProps) => {
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}
+      tooltip={item?.tooltip}
     >
       <JSXWrapper com={com} field={field} />
     </Form.Item>
