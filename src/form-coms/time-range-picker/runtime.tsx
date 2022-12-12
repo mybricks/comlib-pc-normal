@@ -52,27 +52,30 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
     message.error('输入数据是时间戳数组或者moment对象数组，长度为0或2');
   };
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    configs: {
-      setValue: setTimestampRange,
-      setInitialValue: setTimestampRange,
-      returnValue(output) {
-        output(getValue());
-      },
-      resetValue() {
-        setValue(void 0);
-      },
-      setDisabled() {
-        data.disabled = true;
-      },
-      setEnabled() {
-        data.disabled = false;
-      },
-      validate
-    }
-  });
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      configs: {
+        setValue: setTimestampRange,
+        setInitialValue: setTimestampRange,
+        returnValue(output) {
+          output(getValue());
+        },
+        resetValue() {
+          setValue(void 0);
+        },
+        setDisabled() {
+          data.disabled = true;
+        },
+        setEnabled() {
+          data.disabled = false;
+        },
+        validate
+      }
+    },
+    [value]
+  );
 
   // inputs['setValue']((val: [number, number]) => {
   //   if (Array.isArray(val) && !val.length) return;

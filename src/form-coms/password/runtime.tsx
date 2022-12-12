@@ -25,27 +25,30 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
     [value]
   );
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    configs: {
-      setValue,
-      setInitialValue: setValue,
-      returnValue(output) {
-        output(getValue());
-      },
-      resetValue() {
-        setValue(void 0);
-      },
-      setDisabled() {
-        data.disabled = true;
-      },
-      setEnabled() {
-        data.disabled = false;
-      },
-      validate
-    }
-  });
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      configs: {
+        setValue,
+        setInitialValue: setValue,
+        returnValue(output) {
+          output(getValue());
+        },
+        resetValue() {
+          setValue(void 0);
+        },
+        setDisabled() {
+          data.disabled = true;
+        },
+        setEnabled() {
+          data.disabled = false;
+        },
+        validate
+      }
+    },
+    [value]
+  );
 
   // inputs['setValue']((val: string) => {
   //   setValue(val);

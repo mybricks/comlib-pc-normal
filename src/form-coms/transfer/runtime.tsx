@@ -47,27 +47,30 @@ export default function ({ data, inputs, outputs, slots, env, style }: RuntimePa
     return targetKeys;
   }, [targetKeys]);
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    configs: {
-      setValue: setTarget,
-      setInitialValue: setTarget,
-      returnValue(output) {
-        output(getTransferValue());
-      },
-      resetValue() {
-        setTargetKeys(void 0);
-      },
-      setDisabled() {
-        data.disabled = true;
-      },
-      setEnabled() {
-        data.disabled = false;
-      },
-      validate
-    }
-  });
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      configs: {
+        setValue: setTarget,
+        setInitialValue: setTarget,
+        returnValue(output) {
+          output(getTransferValue());
+        },
+        resetValue() {
+          setTargetKeys(void 0);
+        },
+        setDisabled() {
+          data.disabled = true;
+        },
+        setEnabled() {
+          data.disabled = false;
+        },
+        validate
+      }
+    },
+    [targetKeys]
+  );
 
   inputs['setSource']((dataSource) => {
     if (!Array.isArray(dataSource)) {

@@ -44,27 +44,30 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
     message.error('输入数据是时间戳或者moment对象');
   };
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    configs: {
-      setValue: setTimestamp,
-      setInitialValue: setTimestamp,
-      returnValue(output) {
-        output(getValue());
-      },
-      resetValue() {
-        setValue(void 0);
-      },
-      setDisabled() {
-        data.disabled = true;
-      },
-      setEnabled() {
-        data.disabled = false;
-      },
-      validate
-    }
-  });
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      configs: {
+        setValue: setTimestamp,
+        setInitialValue: setTimestamp,
+        returnValue(output) {
+          output(getValue());
+        },
+        resetValue() {
+          setValue(void 0);
+        },
+        setDisabled() {
+          data.disabled = true;
+        },
+        setEnabled() {
+          data.disabled = false;
+        },
+        validate
+      }
+    },
+    [value]
+  );
 
   // inputs['setValue']((val: number) => {
   //   if (isNumber(val)) {
