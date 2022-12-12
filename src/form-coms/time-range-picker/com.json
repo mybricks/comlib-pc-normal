@@ -23,6 +23,17 @@
       "desc": "设置时间范围"
     },
     {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "desc": "设置时间范围选择框初始值"
+    },
+    {
       "id": "getValue",
       "title": "获取值",
       "schema": {
@@ -69,6 +80,16 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      }
+    },
     {
       "id": "returnValue",
       "title": "数据输出",
