@@ -19,43 +19,46 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env } = props;
   const [value, setValue] = useState();
-  useFormItemInputs({
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        setValue(val);
-      },
-      setInitialValue(val) {
-        setValue(val);
-      },
-      returnValue(output) {
-        output(value);
-      },
-      resetValue() {
-        setValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      validate(output) {
-        validateFormItem({
-          value,
-          env,
-          rules: data.rules
-        })
-          .then((r) => {
-            output(r);
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          setValue(val);
+        },
+        setInitialValue(val) {
+          setValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          setValue(void 0);
+        },
+        setDisabled() {
+          data.config.disabled = true;
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        validate(output) {
+          validateFormItem({
+            value,
+            env,
+            rules: data.rules
           })
-          .catch((e) => {
-            output(e);
-          });
+            .then((r) => {
+              output(r);
+            })
+            .catch((e) => {
+              output(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   const onChange = (value) => {
     setValue(value);

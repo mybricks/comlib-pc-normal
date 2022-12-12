@@ -24,43 +24,46 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env } = props;
   const [value, setValue] = useState<number>(data.config.defaultValue);
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        setValue(val);
-      },
-      setInitialValue(val) {
-        setValue(val);
-      },
-      returnValue(output) {
-        output(value);
-      },
-      resetValue() {
-        setValue(0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      validate(output) {
-        validateFormItem({
-          value: value,
-          env,
-          rules: data.rules
-        })
-          .then((r) => {
-            output(r);
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          setValue(val);
+        },
+        setInitialValue(val) {
+          setValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          setValue(0);
+        },
+        setDisabled() {
+          data.config.disabled = true;
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        validate(output) {
+          validateFormItem({
+            value: value,
+            env,
+            rules: data.rules
           })
-          .catch((e) => {
-            output(e);
-          });
+            .then((r) => {
+              output(r);
+            })
+            .catch((e) => {
+              output(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   //1、值变化
   const onChange = useCallback((value) => {
