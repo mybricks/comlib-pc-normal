@@ -15,10 +15,12 @@ export interface Option {
 }
 
 export const InputIds = {
-  SetValue: 'setValue'
+  SetValue: 'setValue',
+  SetInitialValue: 'setInitialValue'
 }
 
 export const OutputIds = {
   OnChange: 'onChange',
+  OnInitial: 'onInitial',
   ReturnValue: 'returnValue'
 }

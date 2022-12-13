@@ -1,4 +1,5 @@
 import React, { useCallback, useLayoutEffect } from 'react';
+import { OutputIds } from '../types';
 import { validateFormItem } from '../utils/validator';
 import { SlotIds } from './constants';
 
@@ -16,6 +17,11 @@ export default function (props: RuntimeParams<Data>) {
     inputs['setValue']((val) => {
       data.value = val;
       outputs['onChange'](val);
+    });
+
+    inputs['setInitialValue']((val) => {
+      data.value = val;
+      outputs[OutputIds.OnInitial](val);
     });
 
     inputs['validate']((val, outputRels) => {

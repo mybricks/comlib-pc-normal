@@ -27,6 +27,7 @@ function refreshSchema({data, inputs, outputs, slots}) {
   outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
   refreshParamsSchema(data, outputs)
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
+  inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
   slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
 }
 
@@ -46,10 +47,6 @@ function fieldNameCheck (data: Data, name: string) {
   } else {
     return false
   }
-}
-
-function isHorizontal (data: Data) {
-  return data.layout === 'horizontal'
 }
 
 export default {
@@ -93,6 +90,7 @@ export default {
     refreshSchema({data, inputs, outputs, slots})
   },
   '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
+    // console.log('@childRemove', id, title)
     data.items = data.items.filter(item => item.id !== id)
     refreshSchema({data, inputs, outputs, slots})
   },
@@ -225,11 +223,24 @@ export default {
             ]
           },
           {
-            title: '表单项',
-            items: [
-
-            ]
-          }
+            title: '提交隐藏表单项',
+            type: 'Switch',
+            description: '提交时收集被隐藏的表单项字段并进行校验',
+            value: {
+              get ({ data }: EditorResult<Data>) {
+                return data.submitHiddenFields
+              },
+              set ({ data }: EditorResult<Data>, val: boolean) {
+                data.submitHiddenFields = val
+              }
+            }
+          },
+          // {
+          //   title: '表单项',
+          //   items: [
+  
+          //   ]
+          // }
         ]
       },
 

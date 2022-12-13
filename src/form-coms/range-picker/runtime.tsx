@@ -3,6 +3,7 @@ import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
+import { OutputIds } from '../types';
 
 const { RangePicker } = DatePicker;
 
@@ -96,6 +97,30 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange(val);
       }
     });
+
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        //时间戳转换
+        if (val && Array.isArray(val)) {
+          //如果是输入的值不合规范，即会输出[null, null]
+          val = val.map((item) => {
+            const num = Number(item);
+            const result: any = isNaN(num) ? moment(val) : moment(num);
+            let data = !result?._isValid ? undefined : result;
+            return data;
+          });
+          setValue(val);
+          let transValue;
+          if (!Array.isArray(value)) {
+            transValue = null;
+          } else {
+            transValue = value.map((item) => {
+              return transCalculation(item, data.contentType, props);
+            });
+          }
+          outputs[OutputIds.OnInitial](transValue);
+        }
+      });
 
     inputs['validate']((val, outputRels) => {
       validateFormItem({

@@ -3,16 +3,26 @@
   "namespace": "mybricks.normal-pc.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "开关选择器",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
       "title": "设置数据",
+      "desc": "设置开关的值，并触发值变化事件输出",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置开关的初始值，并触发初始化事件输出",
       "schema": {
         "type": "boolean"
       }
@@ -20,6 +30,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发开关的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -30,6 +41,7 @@
     {
       "id": "getValue",
       "title": "获取数据",
+      "desc": "获取开关的值并输出",
       "schema": {
         "type": "any"
       },
@@ -40,6 +52,7 @@
     {
       "id": "resetValue",
       "title": "重置数据",
+      "desc": "清空开关的值",
       "schema": {
         "type": "any"
       }
@@ -60,6 +73,13 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "boolean"
+      }
+    },
     {
       "id": "onChange",
       "title": "数据发生改变",

@@ -5,8 +5,7 @@ import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
-  const { items, size, title, showTitle, layout, column, bordered, colon } = data || {};
-  data.rawData = data.rawData || {};
+  const { size, title, showTitle, layout, column, bordered, colon } = data || {};
 
   const contentMap = {
     text: (value, lineLimit, widthLimit, limit) => {
@@ -39,7 +38,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   };
   const getDataSource = useCallback(() => {
     const res: Item[] = [];
-    let ds = data.rawData;
+    let ds = data.rawData || {};
     (data.items || []).forEach((item) => {
       const labelStyle = {
         ...item.labelStyle,
@@ -124,7 +123,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     return null;
   };
   const RenderItems = () => {
-    if (!items?.length) return;
+    if (!data.items?.length) return;
 
     return (
       <Descriptions
@@ -194,8 +193,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           data.title = t;
         });
     }
-    if (env.edit && items?.length === 0) {
-      items.push({
+    if (env.edit && data.items?.length === 0) {
+      data.items.push({
         id: uuid(),
         label: '描述项1',
         showLable: true,

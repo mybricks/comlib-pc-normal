@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -9,11 +9,20 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
-      "desc": "设置滑动输入条的值",
+      "desc": "设置滑动输入条的值，并触发值变化事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置滑动输入条的初始值，并触发初始化事件输出",
       "schema": {
         "type": "number"
       }
@@ -43,7 +52,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
-      "desc": "重置滑动输入条的值",
+      "desc": "清空滑动输入条的值",
       "schema": {
         "type": "any"
       }
@@ -64,6 +73,13 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "number"
+      }
+    },
     {
       "id": "onChange",
       "title": "值变化",

@@ -75,6 +75,8 @@ export interface Data {
    * 合并参数 Schema
    */
   paramsSchema: any
+
+  submitHiddenFields: boolean
 }
 
 export interface FormControlProps {
@@ -84,7 +86,7 @@ export interface FormControlProps {
   field?: any
 }
 
-export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue'
+export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue'
 
 
 export type LayoutModel = "inline" | "row" | "column";

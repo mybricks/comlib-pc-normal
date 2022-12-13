@@ -3,16 +3,26 @@
   "namespace": "mybricks.normal-pc.form-phone-number",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "内置中国大陆11位手机号码校验",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置手机号输入框的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置手机号输入框的初始值，并触发初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -20,6 +30,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发手机号输入框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -30,6 +41,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取手机号输入框的值并输出",
       "schema": {
         "type": "any"
       },
@@ -40,6 +52,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空手机号输入框的值",
       "schema": {
         "type": "any"
       }
@@ -60,6 +73,13 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
     {
       "id": "onChange",
       "title": "值发生改变",
@@ -99,9 +119,6 @@
       }
     }
   ],
-  "_valueSchema": {
-    "type": "string"
-  },
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
     "*"

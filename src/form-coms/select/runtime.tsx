@@ -1,12 +1,14 @@
-import React, { useCallback, useLayoutEffect, useMemo } from 'react';
-import { Select } from 'antd';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { Select, Spin } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
-import { Option } from '../types';
+import { Option, OutputIds } from '../types';
 
 export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+  //fetching, 是否开启loading的开关
+  const [fetching, setFetching] = useState(false);
   const typeMap = useMemo(() => {
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
@@ -53,6 +55,16 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         // data.value = val;
       }
     });
+
+    inputs['setInitialValue'] &&
+      inputs['setInitialValue']((val) => {
+        if (!typeCheck(val, typeMap.type)) {
+          logger.error(typeMap.message);
+        } else {
+          data.value = val;
+          outputs[OutputIds.OnInitial](val);
+        }
+      });
 
     inputs['resetValue'](() => {
       data.value = '';
@@ -140,10 +152,12 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     //开启远程搜索功能
     if (data.dropdownSearchOption) {
       outputs['remoteSearch'](e);
+      setFetching(true);
     }
     //1、远程数据源
     if (!e && data.dropdownSearchOption === true) {
       data.config.options = [];
+      setFetching(false);
     }
     //2、本地数据源, 不做处理
   };
@@ -157,6 +171,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
         onChange={onChange}
         onBlur={onBlur}
         onSearch={data.config.showSearch ? onSearch : void 0}
+        notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
       />
     </div>
   );
