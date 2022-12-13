@@ -6,7 +6,7 @@ const StyleEditor = [
   {
     title: '样式',
     type: 'style',
-    options: ['BgColor', 'Border', 'BgImage'],
+    options: ['BgColor', 'Border', 'BgImage', 'Padding'],
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;

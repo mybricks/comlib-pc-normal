@@ -1,6 +1,7 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Tooltip } from 'antd';
 import React, { useMemo, useCallback } from 'react';
 import { ColumnParams, Data, WidthUnitEnum } from './constants';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import css from './runtime.less';
 
 export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
@@ -64,6 +65,11 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           }}
         >
           {slots[column.slot]?.render()}
+          {edit && (
+            <Tooltip title="列内容区域默认隐藏滚动，可通过滚动设置打开滚动">
+              <InfoCircleOutlined style={{ position: 'absolute', right: 8, top: 8, zIndex: 100 }} />
+            </Tooltip>
+          )}
         </Col>
       );
     },
