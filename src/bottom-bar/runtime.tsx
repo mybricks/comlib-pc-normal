@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'antd';
 import css from './runtime.less';
@@ -35,6 +35,7 @@ export interface Data {
 
 export default function BottomBar({ env, data, inputs, outputs, style }: RuntimeParams<Data>) {
   const ref = useRef(null);
+  const containerRef = useRef(null);
 
   if (env.runtime && inputs) {
     data.tools.forEach((item) => {
@@ -135,8 +136,15 @@ export default function BottomBar({ env, data, inputs, outputs, style }: Runtime
     );
   }
 
+  useLayoutEffect(() => {
+    // @ts-ignore
+    const parentElement = containerRef.current.parentElement;
+    parentElement.style.bottom = 0;
+    parentElement.style.removeProperty('top');
+  }, []);
+
   return (
-    <div className={css.toolbarWrapper}>
+    <div ref={containerRef} className={css.toolbarWrapper}>
       <div
         className={css.toolbar}
         ref={ref}
