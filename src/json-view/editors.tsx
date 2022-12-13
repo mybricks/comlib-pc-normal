@@ -129,13 +129,29 @@ export default {
       {
         title: '单击节点复制',
         type: 'Switch',
-        description: '开启后单击节点将属性值复制到粘贴板',
+        description: '开启后，单击节点，节点数据将复制到剪切板',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.enableClipboard;
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.enableClipboard = value;
+          }
+        }
+      },
+      {
+        title: '复制节点数据键值对',
+        type: 'Switch',
+        description: '默认单击节点仅复制属性值，开启后，会将属性的键值对复制到剪切板',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableClipboard;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.copyValueWithLabel;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.copyValueWithLabel = value;
           }
         }
       },
