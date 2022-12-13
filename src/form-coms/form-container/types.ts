@@ -11,6 +11,8 @@ interface Action {
 
 interface Actions {
   items: Action[];
+  widthOption: LabelWidthType;
+  width: number;
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
@@ -25,6 +27,8 @@ interface FormItems {
   visible: boolean
   validateStatus?: string
   help?: string
+  tooltip?: string
+  widthOption: LabelWidthType
 }
 
 export type LabelWidthType = 'px' | 'span'

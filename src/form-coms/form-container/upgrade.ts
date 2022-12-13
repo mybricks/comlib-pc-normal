@@ -15,7 +15,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_FIELDS_VALUE).setTitle('设置表单数据（触发值变化）')
   }
 
-
+  //1.1.0 ->1.1.1
+  if (!data.actions.widthOption) {
+    data.actions.widthOption = 'span';
+  }
+  data.items.forEach(item => {
+    if (!item.widthOption) {
+      item.widthOption = 'span'
+      item.span = 24 / data.formItemColumn;
+    }
+  })
 
   return true;
 }

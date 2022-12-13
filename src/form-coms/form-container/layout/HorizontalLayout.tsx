@@ -12,13 +12,18 @@ interface HorizontalLayoutProps {
 const HorizontalLayout = (props: HorizontalLayoutProps) => {
   const { children, actions, data } = props;
 
+  const actionFlexBasis =
+    data.actions.widthOption === 'px'
+      ? `${data.actions.width}px`
+      : `${(data.actions.span * 100) / 24}%`;
+
   return (
     <>
       {children}
       {data.actions.visible && (
         <Col
           data-form-actions
-          span={data.actions.span}
+          flex={`0 0 ${actionFlexBasis}`}
           style={{
             textAlign: data.actions.align
           }}
