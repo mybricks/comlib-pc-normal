@@ -52,6 +52,12 @@ export interface IColumn {
   visible: boolean;
   width?: number | WidthTypeEnum;
   align?: AlignEnum;
+  /** 内容字体颜色 */
+  contentColor?: string;
+  /** 表头背景色 */
+  titleBgColor?: string;
+  /** 表头字体色 */
+  titleColor?: string;
 
   hasTip?: boolean;
   tip?: string;

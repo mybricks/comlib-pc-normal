@@ -59,7 +59,11 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           align={cItem.align || AlignEnum.Left}
           onHeaderCell={(): any => {
             return {
-              'data-table-th-idx': cItem.key
+              'data-table-th-idx': cItem.key,
+              style: {
+                color: cItem.titleColor,
+                backgroundColor: cItem.titleBgColor
+              }
             };
           }}
         >
@@ -140,9 +144,20 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
         }))}
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
+        onCell={() => {
+          return {
+            style: {
+              color: cItem.contentColor
+            }
+          };
+        }}
         onHeaderCell={(): any => {
           return {
-            'data-table-th-idx': cItem.key
+            'data-table-th-idx': cItem.key,
+            style: {
+              color: cItem.titleColor,
+              backgroundColor: cItem.titleBgColor
+            }
           };
         }}
       />

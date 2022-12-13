@@ -9,6 +9,12 @@ import {
 } from '../../types';
 import { getColumnItem } from '../../utils';
 
+const DefaultColor = {
+  TitleColor: '#1f1f1f',
+  TitleBgColor: '#f5f7f9',
+  ContentColor: '#434343'
+};
+
 const StyleEditor = {
   title: '样式配置',
   items: [
@@ -97,6 +103,58 @@ const StyleEditor = {
         set({ data, focusArea }, value: FixedEnum) {
           if (!focusArea) return;
           setCol({ data, focusArea }, 'fixed', value);
+        }
+      }
+    },
+    {
+      title: '表头背景色',
+      type: 'ColorPicker',
+      ifVisible({ focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return true;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const item = getColumnItem(data, focusArea);
+          return item.titleBgColor || DefaultColor.TitleBgColor;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: string) {
+          setCol({ data, focusArea }, 'titleBgColor', value);
+        }
+      }
+    },
+    {
+      title: '表头字体颜色',
+      type: 'ColorPicker',
+      ifVisible({ focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return true;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const item = getColumnItem(data, focusArea);
+          return item.titleColor || DefaultColor.TitleColor;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: string) {
+          setCol({ data, focusArea }, 'titleColor', value);
+        }
+      }
+    },
+    {
+      title: '内容字体颜色',
+      type: 'ColorPicker',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.contentType === ContentTypeEnum.Text;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          const item = getColumnItem(data, focusArea);
+          return item.contentColor || DefaultColor.ContentColor;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: string) {
+          setCol({ data, focusArea }, 'contentColor', value);
         }
       }
     }

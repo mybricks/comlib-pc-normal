@@ -42,7 +42,7 @@ const addColumnEditor = {
       type: 'array',
       options: {
         addText: '添加列',
-        editable: false,
+        editable: true,
         customOptRender: visibleOpt,
         getTitle: (item: IColumn) => {
           const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
@@ -56,7 +56,19 @@ const addColumnEditor = {
         },
         onAdd: () => {
           return getNewColumn();
-        }
+        },
+        items: [
+          {
+            title: '列名',
+            type: 'Text',
+            value: 'title'
+          },
+          {
+            title: '字段',
+            type: 'Text',
+            value: 'dataIndex'
+          }
+        ]
       },
       value: {
         get({ data }: EditorResult<Data>) {

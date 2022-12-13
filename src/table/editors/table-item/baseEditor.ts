@@ -27,7 +27,7 @@ const BaseEditor = {
     {
       title: '保留字段',
       type: 'Switch',
-      description: '开启后，插槽列也支持字段填写',
+      description: '开启后，可编辑当前列字段和传递列数据',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);

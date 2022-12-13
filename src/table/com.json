@@ -15,7 +15,8 @@
       "title": "设置数据源",
       "schema": {
         "type": "array"
-      }
+      },
+      "desc": "设置表格数据"
     },
     {
       "id": "getTableData",
@@ -25,21 +26,24 @@
       },
       "rels": [
         "getTableData"
-      ]
+      ],
+      "desc": "获取表格数据并输出"
     },
     {
       "id": "startLoading",
       "title": "开启loading",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "设置表格为loading状态"
     },
     {
       "id": "endLoading",
       "title": "关闭loading",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "关闭表格loading状态"
     }
   ],
   "outputs": [
