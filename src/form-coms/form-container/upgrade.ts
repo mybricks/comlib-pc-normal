@@ -16,10 +16,13 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     }
 
     //1.1.0 ->1.1.1
+    if (!data.actions.widthOption) {
+        data.actions.widthOption = 'span';
+    }
     data.items.forEach(item => {
-        item.span = 24 / data.formItemColumn;
         if (!item.widthOption) {
             item.widthOption = 'span'
+            item.span = 24 / data.formItemColumn;
         }
     })
 

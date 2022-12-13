@@ -11,6 +11,8 @@ interface Action {
 
 interface Actions {
   items: Action[];
+  widthOption: LabelWidthType;
+  width: number;
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';

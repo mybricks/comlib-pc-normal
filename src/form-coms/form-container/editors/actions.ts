@@ -1,4 +1,4 @@
-import { Data } from '../types'
+import { Data, LabelWidthType } from '../types'
 import { uuid } from '../../../utils'
 
 export const actionsEditor = (data: Data, output) => {
@@ -36,26 +36,67 @@ export const actionsEditor = (data: Data, output) => {
         }
       },
       {
-        title: '宽度',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.visible;
+        title: '宽度模式',
+        type: 'Select',
+        options: [
+          {
+            label: '24栅格',
+            value: 'span'
+          },
+          {
+            label: '固定宽度(px)',
+            value: 'px'
+          }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.widthOption;
+          },
+          set({ data }: EditorResult<Data>, value: LabelWidthType) {
+            data.actions.widthOption = value;
+          }
         },
+      },
+      {
+        title: '宽度配置(共24格)',
         type: 'Slider',
-        description: '24 栅格，0 则为内容自适应',
-        options: {
-          max: 24,
-          min: 0,
-          steps: 1,
-          formatter: '/24'
+        options: [
+          {
+            max: 24,
+            min: 1,
+            step: 1,
+            formatter: '/24',
+          },
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.widthOption !== 'px';
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.actions?.span || 24
+            return data.actions.span;
           },
           set({ data }: EditorResult<Data>, value: number) {
-            data.actions.span = value
+            data.actions.span = value;
           }
-        }
+        },
+      },
+      {
+        title: '宽度配置(px)',
+        type: 'text',
+        options: {
+          type: 'number'
+        },
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.actions.widthOption === 'px';
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.width;
+          },
+          set({ data }: EditorResult<Data>, value: number) {
+            data.actions.width = value;
+          }
+        },
       },
       {
         title: '对齐方式',

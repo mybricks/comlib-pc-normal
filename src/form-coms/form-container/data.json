@@ -4,6 +4,7 @@
   "formItemColumn": 1,
   "actions": {
     "visible": true,
+    "widthOption": "span",
     "span": 24,
     "align": "left",
     "items": [

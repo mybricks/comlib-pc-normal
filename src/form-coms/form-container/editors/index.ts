@@ -83,7 +83,8 @@ export default {
         schema: com.schema,
         name: `item${nowC}`,
         label: `表单项${nowC}`,
-        span: 24,
+        widthOption: 'span',
+        span: 24 / data.formItemColumn,
         visible: true,
       })
     }
@@ -151,7 +152,7 @@ export default {
           {
             title: '每行列数',
             type: 'Slider',
-            description: '每行的表单项个数',
+            description: '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
             options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
             value: {
               get({ data }: EditorResult<Data>) {
