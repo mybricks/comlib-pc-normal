@@ -13,6 +13,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     collapseStringsAfterLength,
     displayObjectSize,
     enableClipboard,
+    copyValueWithLabel,
     enableOutput
   } = data;
   const [isError, setIsError] = useState(false);
@@ -127,6 +128,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
             value
           }),
           key: nodeKey,
+          label: key,
           children: null
         };
       if (typeCheck(value, ['ARRAY', 'OBJECT'])) {
@@ -178,7 +180,10 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
         if (enableClipboard) {
           //* 复制到剪贴板
           try {
-            copy(JSON.stringify(nodeData));
+            const nodeDataStr = JSON.stringify(
+              copyValueWithLabel && node.label !== undefined ? { [node.label]: nodeData } : nodeData
+            );
+            copy(nodeDataStr);
             message.success('节点数据已成功复制到剪贴板');
           } catch (e) {
             message.error('复制失败');

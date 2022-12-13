@@ -19,6 +19,7 @@ export enum TypeEnum {
  * @param collapseStringsAfterLength 属性值最大长度
  * @param displayObjectSize 是否展示条目
  * @param enableClipboard 节点复制
+ * @param copyValueWithLabel 节点复制输出键值对
  * @param enableOutput 节点输出
  * @param dataSourceType 数据源类型
  */
@@ -32,6 +33,7 @@ export interface Data {
   collapseStringsAfterLength: number;
   displayObjectSize: boolean;
   enableClipboard: boolean;
+  copyValueWithLabel: boolean;
   enableOutput: boolean;
   dataSourceType: 'default' | 'array' | 'object';
 }
