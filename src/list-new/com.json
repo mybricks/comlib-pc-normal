@@ -1,8 +1,8 @@
 {
   "title": "列表容器",
   "enable": true,
-  "visibility": false,
-  "namespace": "mybricks.normal-pc.list",
+  "visibility": true,
+  "namespace": "mybricks.normal-pc.list_new",
   "version": "1.0.0",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
@@ -15,6 +15,7 @@
     {
       "id": "dataSource",
       "title": "设置数据源",
+      "desc": "设置列表容器数据源，数据结构要求是数组",
       "schema": {
         "title": "列表数据",
         "type": "array",
@@ -36,6 +37,7 @@
         {
           "id": "itemData",
           "title": "当前项",
+          "desc": "当前项展示内容",
           "schema": {
             "type": "any"
           }
@@ -43,6 +45,7 @@
         {
           "id": "index",
           "title": "当前项序号",
+          "desc": "当前项展示的序号",
           "schema": {
             "type": "number"
           }
