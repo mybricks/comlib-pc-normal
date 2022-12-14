@@ -14,7 +14,7 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "follow"
+        "type": "unknown"
       }
     },
     {
@@ -72,8 +72,9 @@
           "id": "dataSource",
           "title": "输入数据",
           "schema": {
-            "type": "any"
-          }
+            "type": "follow"
+          },
+          "editable": true
         }
       ],
       "outputs": [

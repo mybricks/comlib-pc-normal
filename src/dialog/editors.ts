@@ -103,23 +103,26 @@ function get(
 
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
-    // console.log('inputUpdated', pin)
     if (pin.id === InputIds.Open) {
-      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
+      console.log('inputUpdated', pin)
+      // slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
     }
   },
-  // '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
-  //   console.log('outputUpdated', pin)
-  // },
+  '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+    console.log('outputUpdated', pin)
+  },
   '@slotInputUpdated'({ data, slots, output }, pin) {
-    // console.log('slotInputUpdated', pin)
+    console.log('slotInputUpdated', pin)
     output.get(pin.id)?.setSchema(pin.schema);
   },
-  // '@slotOutputUpdated'({ data, slots, output }, pin) {
-  //   console.log('slotOutputUpdated', pin)
-  // },
+  '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
+    if (slotId === SlotIds.Container && pin.id === SlotInputIds.DataSource) {
+      console.log('slotOutputUpdated', pin)
+      input.get(InputIds.Open)?.setSchema(pin.schema);
+    }
+  },
   '@slotInputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    // console.log('slotInputConnected', fromPin, toPin)
+    console.log('slotInputConnected', fromPin, toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find(btn => btn.id === btnId);
     btn.isConnected = true;
@@ -127,8 +130,11 @@ export default {
     input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
+  '@slotOuputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
+    console.log('slotOuputConnected', fromPin, toPin)
+  },
   '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    // console.log('slotInputDisConnected', toPin)
+    console.log('slotInputDisConnected', toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find(btn => btn.id === btnId);
     btn.isConnected = false;
@@ -142,8 +148,14 @@ export default {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
   },
-  // '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-  //   console.log('inputConnected')
+  '@outputConnected'({ data, output }, fromPin, toPin) {
+    console.log('outputConnected', 'toPin', fromPin, toPin);
+  },
+  '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('inputConnected')
+  },
+  // '@connectorUpdated'({ data, input, output, slots }, fromPin, toPin) {
+  //   console.log('connectorUpdated')
   // },
   // '@outputConnected'({ data, input, output, slots }, fromPin, toPin) {
   //   console.log('outputConnected')
