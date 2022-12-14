@@ -111,13 +111,14 @@ export default {
   '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     console.log('outputUpdated', pin)
   },
-  '@slotInputUpdated'({ data, slots, output }, pin) {
-    console.log('slotInputUpdated', pin)
+  '@slotInputUpdated'({ data, slots, output }, slotId, pin) {
+    console.log('slotInputUpdated', slotId, pin)
     output.get(pin.id)?.setSchema(pin.schema);
   },
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
+    console.log('slotOutputUpdated', slotId, pin)
     if (slotId === SlotIds.Container && pin.id === SlotInputIds.DataSource) {
-      console.log('slotOutputUpdated', pin)
+      console.log('slotOutputUpdated---inner', slotId, pin)
       input.get(InputIds.Open)?.setSchema(pin.schema);
     }
   },
@@ -143,9 +144,9 @@ export default {
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
-    // console.log('inputDisConnected')
+    console.log('inputDisConnected')
     if (toPin.id === InputIds.Open) {
-      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
+      // slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
   },
   '@outputConnected'({ data, output }, fromPin, toPin) {
