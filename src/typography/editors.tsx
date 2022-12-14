@@ -26,9 +26,9 @@ const contentSchema = {
   },
   defaultStyle = {
     fontSize: 12,
-    fontWeight: 'normal',
+    fontWeight: 400,
     letterSpacing: 0,
-    lineHeight: 1,
+    lineHeight: '12px',
     color: '#000'
   };
 
@@ -148,7 +148,7 @@ export default {
     title: '文本',
     items: [
       {
-        title: '动态获取文本',
+        title: '动态设置文本',
         type: 'Switch',
         value: {
           get({ data, focusArea }) {
@@ -163,7 +163,7 @@ export default {
               data.items.forEach((item, idx) => {
                 if (item.src === 2) {
                   input.add(item.key, `修改元素${idx + 1}内容`, contentSchema);
-                  input.add(item.key + '-extend', `修改元素${idx + 1}`, extendSchema);
+                  input.add(item.key + '-extend', `修改元素${idx + 1}内容和颜色`, extendSchema);
                 }
               });
             } else {
@@ -178,7 +178,7 @@ export default {
         }
       },
       {
-        title: '动态追加',
+        title: '动态追加文本',
         type: 'Switch',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
@@ -258,7 +258,13 @@ export default {
       },
       {
         title: '文本样式',
-        type: 'Character',
+        type: 'Style',
+        options: {
+          plugins: ['Font'],
+          fontProps: {
+            fontFamily: false
+          }
+        },
         value: {
           get({ data, focusArea }) {
             return findEle({ data, focusArea }, 'textId').style;
@@ -285,7 +291,7 @@ export default {
         }
       },
       {
-        title: '文本内容',
+        title: '静态文本内容',
         type: 'Textarea',
         value: {
           get({ data, focusArea }) {
@@ -325,7 +331,7 @@ export default {
     title: '标签',
     items: [
       {
-        title: '动态获取文本',
+        title: '动态设置文本',
         type: 'Switch',
         value: {
           get({ data, focusArea }) {
@@ -340,7 +346,7 @@ export default {
               data.items.forEach((item, idx) => {
                 if (item.src === 2) {
                   input.add(item.key, `修改元素${idx + 1}内容`, contentSchema);
-                  input.add(item.key + '-extend', `修改元素${idx + 1}`, extendSchema);
+                  input.add(item.key + '-extend', `修改元素${idx + 1}内容和颜色`, extendSchema);
                 }
               });
             } else {
