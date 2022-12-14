@@ -27,6 +27,14 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
     return { minWidth, maxWidth };
   };
 
+  const renderTips = () => {
+    return edit ? (
+      <Tooltip title="列内容区域默认隐藏滚动，可通过滚动设置打开滚动">
+        <InfoCircleOutlined style={{ position: 'absolute', right: 8, top: 8, zIndex: 2 }} />
+      </Tooltip>
+    ) : null;
+  };
+
   const column = useCallback(
     (column: ColumnParams, rowIndex: number | string, colIndex: number) => {
       let flex = '';
@@ -65,11 +73,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           }}
         >
           {slots[column.slot]?.render()}
-          {edit && (
-            <Tooltip title="列内容区域默认隐藏滚动，可通过滚动设置打开滚动">
-              <InfoCircleOutlined style={{ position: 'absolute', right: 8, top: 8, zIndex: 100 }} />
-            </Tooltip>
-          )}
+          {/* {renderTips()} */}
         </Col>
       );
     },
