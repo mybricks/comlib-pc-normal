@@ -29,7 +29,8 @@ export default (props: RuntimeParams<Data>) => {
         bordered={bordered}
         style={{
           ...style,
-          cursor: data.cursor ? CursorType.Pointer : CursorType.Default
+          cursor: data.cursor ? CursorType.Pointer : CursorType.Default,
+          height: '100%'
         }}
         extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
         hoverable={hoverable}
