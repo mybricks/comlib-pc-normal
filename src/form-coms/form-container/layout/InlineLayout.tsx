@@ -28,7 +28,7 @@ const InlineLayout = (props: InlineLayoutProps) => {
             textAlign: data.actions.align
           }}
         >
-          <Form.Item>{actions}</Form.Item>
+          <Form.Item style={{ marginRight: 0 }}>{actions}</Form.Item>
         </Col>
       )}
     </div>
