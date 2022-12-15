@@ -148,7 +148,8 @@ export function setExchange({ data, focusArea }: any, type: 'up' | 'down') {
 export const getDataSourceSchema = (data: Data) => {
   const properties = {};
   data.items.forEach((item) => {
-    properties[item.key] = { type: 'string' };
+    const subSchema = data.inputSchema && data.inputSchema.properties[item.key];
+    properties[item.key] = subSchema || { type: 'string' };
   });
   return properties;
 };
