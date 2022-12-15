@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-item-container",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "表单项容器，支持拖入其他任意组件",
   "icon": "./icon.svg",
   "data": "./data.json",
