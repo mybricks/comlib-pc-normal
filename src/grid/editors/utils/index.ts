@@ -1,5 +1,5 @@
-export { getColIndex, getColItem, getRowIndex, getRowItem, updateCol, updateSlotTitle } from './common'
-export { addRow, addColumn, addColumnByPosition, divideColumn, copyRow } from './insert'
-export { twoColLayout, threeColLayout } from './layout'
-export { canSplit, splitColumn } from './split'
-export { canMerge, mergeCol } from './merge'
+export * from './common';
+export * from './insert';
+export * from './layout';
+export * from './split';
+export * from './merge';

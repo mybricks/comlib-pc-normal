@@ -1,5 +1,5 @@
 import { Data } from '../../constants';
-import { addColumn, copyRow, divideColumn, getRowIndex, getRowItem, updateCol } from '../utils';
+import { addColumn, copyRow, divideColumnByAuto, getRowIndex, getRowItem, updateCol } from '../utils';
 
 const IndexEditor = [
   {
@@ -100,7 +100,7 @@ const IndexEditor = [
         type: 'Button',
         value: {
           set(props: EditorResult<Data>) {
-            divideColumn(props);
+            divideColumnByAuto(props);
           }
         }
       }]
