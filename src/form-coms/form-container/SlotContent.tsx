@@ -44,12 +44,15 @@ const SlotContent = (props) => {
             if (!item) return;
             const { widthOption, span, width } = item;
             childrenInputs[com.id] = com.inputs;
+
             const flexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
+
             if (typeof item?.visible !== 'undefined') {
               item.visible = com.style.display !== 'none';
             } else {
               item['visible'] = true;
             }
+
             if (env.edit || data.submitHiddenFields) {
               return (
                 <Col style={{ display: com.style.display }} key={com.id} flex={`0 0 ${flexBasis}`}>
