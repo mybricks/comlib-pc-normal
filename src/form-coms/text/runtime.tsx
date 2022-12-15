@@ -1,7 +1,8 @@
 import { Form, Input } from 'antd';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback } from 'react';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
 
 import css from './runtime.less';
 
@@ -60,47 +61,9 @@ export default function (props: RuntimeParams<Data>) {
     }
   });
 
-  useLayoutEffect(() => {
-    // inputs['setValue']((val) => {
-    //   data.value = val;
-    //   outputs['onChange'](val);
-    // });
-    // inputs['setInitialValue']((val) => {
-    //   data.value = val;
-    //   outputs['onInitial'](val);
-    // });
-    // inputs['validate']((val, outputRels) => {
-    //   validateFormItem({
-    //     value: data.value,
-    //     env,
-    //     rules: data.rules
-    //   })
-    //     .then((r) => {
-    //       outputRels['returnValidate'](r);
-    //     })
-    //     .catch((e) => {
-    //       outputRels['returnValidate'](e);
-    //     });
-    // });
-    // inputs['getValue']((val, outputRels) => {
-    //   outputRels['returnValue'](data.value);
-    // });
-    // inputs['resetValue'](() => {
-    //   data.value = void 0;
-    // });
-    // //设置禁用
-    // inputs['setDisabled'](() => {
-    //   data.config.disabled = true;
-    // });
-    // //设置启用
-    // inputs['setEnabled'](() => {
-    //   data.config.disabled = false;
-    // });
-  }, []);
-
-  // const validateTrigger = () => {
-  //   parentSlot._inputs['validateTrigger'](props.id)
-  // }
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id });
+  };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
@@ -111,6 +74,7 @@ export default function (props: RuntimeParams<Data>) {
   const onBlur = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
+    onValidateTrigger();
     outputs['onBlur'](value);
   }, []);
 
