@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlProps } from '../types';
+import { unitConversion } from '../../../utils';
 
 interface FormItemProps {
   data: Data;
@@ -20,7 +21,13 @@ const JSXWrapper = (props: FormControlProps) => {
 };
 
 const FormItem = (props: FormItemProps) => {
-  const { com, item, field } = props;
+  const { com, item, field, data } = props;
+  const style: React.CSSProperties = {
+    margin:
+      data.layout === 'inline'
+        ? item.inlineMargin?.map(String).map(unitConversion).join(' ')
+        : void 0
+  };
   return (
     <Form.Item
       {...field}
@@ -30,6 +37,7 @@ const FormItem = (props: FormItemProps) => {
       validateStatus={item?.validateStatus}
       help={item?.help}
       tooltip={item?.tooltip}
+      style={style}
     >
       <JSXWrapper com={com} field={field} />
     </Form.Item>

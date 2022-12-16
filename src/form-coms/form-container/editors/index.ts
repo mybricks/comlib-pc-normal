@@ -412,6 +412,40 @@ export default {
         },
       },
       {
+        title: '边距',
+        type: 'inputNumber',
+        options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layout === 'inline'
+        },
+        value: {
+          get({ id, data }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id)
+            if (!item.inlineMargin) item.inlineMargin = [0, 16, 0, 0]
+            return item.inlineMargin;
+          },
+          set({ id, data }: EditorResult<Data>, value: number[]) {
+            const item = data.items.find(item => item.id === id)
+            item.inlineMargin = value
+          }
+        }
+      },
+      {
+        title: '边距应用其它表单项及操作项',
+        type: 'Button',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layout === 'inline'
+        },
+        value: {
+          set({ id, data }: EditorResult<Data>) {
+            const curItem = data.items.find(item => item.id === id)
+            const margin = curItem?.inlineMargin || [0, 16, 0, 0];
+            data.items.forEach(item => item.inlineMargin = [...margin]);
+            data.actions.inlinePadding = [...margin];
+          }
+        }
+      },
+      {
         title: '必填样式',
         type: 'Switch',
         value: {
