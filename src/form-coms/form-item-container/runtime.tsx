@@ -53,14 +53,5 @@ export default function (props: RuntimeParams<Data>) {
   //   parentSlot._inputs['validateTrigger'](props.id)
   // }
 
-  return (
-    <div>
-      {slots[SlotIds.FormItem] &&
-        slots[SlotIds.FormItem].render({
-          inputValues: {
-            curValue: data.value
-          }
-        })}
-    </div>
-  );
+  return <div>{slots[SlotIds.FormItem] && slots[SlotIds.FormItem].render()}</div>;
 }
