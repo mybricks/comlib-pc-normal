@@ -127,7 +127,6 @@ export const actionsEditor = (data: Data, output) => {
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            if (!data.actions.inlinePadding) data.actions.inlinePadding = [0, 0, 0, 0]
             return data.actions.inlinePadding;
           },
           set({ data }: EditorResult<Data>, value: number[]) {
