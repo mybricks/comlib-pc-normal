@@ -78,6 +78,13 @@ export default function (props: RuntimeParams<Data>) {
     outputs['onBlur'](value);
   }, []);
 
+  const onPressEnter = useCallback((e) => {
+    const value = e.target.value;
+    data.value = value;
+    onValidateTrigger();
+    outputs['onPressEnter'](value);
+  }, []);
+
   let jsx = (
     <Input
       type="text"
@@ -86,6 +93,7 @@ export default function (props: RuntimeParams<Data>) {
       readOnly={!!edit}
       onChange={changeValue}
       onBlur={onBlur}
+      onPressEnter={onPressEnter}
     />
   );
 
