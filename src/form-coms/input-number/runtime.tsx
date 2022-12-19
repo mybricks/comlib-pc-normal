@@ -19,7 +19,7 @@ export interface Data {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<any>();
   useFormItemInputs(
     {
       inputs,
@@ -71,14 +71,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const onBlur = useCallback((e) => {
-    const value = e.target.value;
+    const value = Number(e.target.value);
     setValue(value);
     onValidateTrigger();
     outputs['onBlur'](value);
   }, []);
 
   const onPressEnter = useCallback((e) => {
-    const value = e.target.value;
+    const value = Number(e.target.value);
     setValue(value);
     onValidateTrigger();
     outputs['onPressEnter'](value);
