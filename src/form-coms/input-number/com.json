@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-number",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "数字输入框",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -83,6 +83,20 @@
     {
       "id": "onChange",
       "title": "值变化",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onBlur",
+      "title": "失去焦点",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "number"
       }
