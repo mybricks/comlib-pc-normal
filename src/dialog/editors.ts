@@ -103,9 +103,9 @@ function get(
 
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
-    if (pin.id === InputIds.Open) {
+    if (!data.isNew && pin.id === InputIds.Open) {
       console.log('inputUpdated', pin)
-      !data.isNew && slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
+      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
     }
   },
   // '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
@@ -117,8 +117,10 @@ export default {
   },
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
     console.log('slotOutputUpdated', slotId, pin)
-    if (slotId === SlotIds.Container && pin.id === SlotInputIds.DataSource) {
-      data.isNew && input.get(InputIds.Open)?.setSchema(pin.schema);
+    if (data.isNew
+      && slotId === SlotIds.Container
+      && pin.id === SlotInputIds.DataSource) {
+      input.get(InputIds.Open)?.setSchema(pin.schema);
     }
   },
   '@slotInputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
@@ -135,9 +137,11 @@ export default {
   },
   '@slotOuputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     console.log('slotOuputDisConnected', fromPin, slotId, toPin)
-    // if (slotId === SlotIds.Container && fromPin.id === SlotInputIds.DataSource) {
-    //   data.isNew && input.get(InputIds.Open)?.setSchema({ type: 'unknown' });
-    // }
+    if (data.isNew
+      && slotId === SlotIds.Container
+      && fromPin.id === SlotInputIds.DataSource) {
+      input.get(InputIds.Open)?.setSchema({ type: 'unknown' });
+    }
   },
   '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     // console.log('slotInputDisConnected', toPin)
@@ -150,19 +154,19 @@ export default {
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
     console.log('inputDisConnected')
-    if (toPin.id === InputIds.Open) {
-      !data.isNew && slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
+    if (!data.isNew && toPin.id === InputIds.Open) {
+      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
   },
   // '@outputConnected'({ data, output }, fromPin, toPin) {
   //   console.log('outputConnected', 'toPin', fromPin, toPin);
   // },
-  // '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-  //   console.log('inputConnected',fromPin,toPin)
-  //   if (toPin.id === InputIds.Open) {
-  //     !data.isNew && slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
-  //   }
-  // },
+  '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('inputConnected', fromPin, toPin)
+    if (!data.isNew && toPin.id === InputIds.Open) {
+      slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
+    }
+  },
   // '@connectorUpdated'({ data, input, output, slots }, fromPin, toPin) {
   //   console.log('connectorUpdated')
   // },
