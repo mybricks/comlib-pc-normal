@@ -38,7 +38,8 @@ export default function Runtime({
       if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        onChange(val);
+        data.value = val;
+        outputs['onChange'](data.value);
       }
     });
 
