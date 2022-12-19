@@ -5,8 +5,17 @@ import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
 import { Option, OutputIds } from '../types';
+import { validateTrigger } from '../form-container/models/validate';
 
-export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  logger,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
   const typeMap = useMemo(() => {
@@ -137,6 +146,9 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
   }, []);
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
   const onChange = useCallback((value) => {
     if (value === undefined) {
       data.value = '';
@@ -146,6 +158,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   }, []);
   const onBlur = useCallback((e) => {
     outputs['onBlur'](data.value);
+    onValidateTrigger();
   }, []);
 
   const onSearch = (e) => {
