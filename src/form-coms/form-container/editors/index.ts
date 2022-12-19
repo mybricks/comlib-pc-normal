@@ -85,7 +85,7 @@ export default {
         label: `表单项${nowC}`,
         widthOption: 'span',
         span: 24 / data.formItemColumn,
-        inlineMargin: [0, 16, 0, 0],
+        inlineMargin: [0, 16, 24, 0],
         visible: true,
       })
     }
@@ -439,7 +439,7 @@ export default {
         value: {
           set({ id, data }: EditorResult<Data>) {
             const curItem = data.items.find(item => item.id === id)
-            const margin = curItem?.inlineMargin || [0, 16, 0, 0];
+            const margin = curItem?.inlineMargin || [0, 16, 24, 0];
             data.items.forEach(item => item.inlineMargin = [...margin]);
             data.actions.inlinePadding = [...margin];
           }
