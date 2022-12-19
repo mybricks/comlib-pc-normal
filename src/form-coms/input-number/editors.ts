@@ -162,6 +162,20 @@ export default {
             options: {
               outputId: 'onChange'
             }
+          },
+          {
+            title: '失去焦点',
+            type: '_event',
+            options: {
+              outputId: 'onBlur'
+            }
+          },
+          {
+            title: '按下回车',
+            type: '_event',
+            options: {
+              outputId: 'onPressEnter'
+            }
           }
         ]
       },
