@@ -7,8 +7,17 @@ import { InputNumberProps } from 'antd/es/input-number';
 import { typeCheck } from '../../utils';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
 
-export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  logger,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   useFormItemInputs({
     inputs,
     outputs,
@@ -54,6 +63,9 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   });
 
   /**监听事件和格式化函数 */
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
   const changeValue = useCallback((val) => {
     data.value = val;
     if (typeCheck(val, 'number')) {
@@ -70,6 +82,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   const onAfterChange = useCallback((val) => {
     changeValue(val);
     outputs['onChange'](val);
+    onValidateTrigger();
   }, []);
   const formatter = useCallback(
     (value?: valueType) => `${value}${data.formatter || ''}`,
