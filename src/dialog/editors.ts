@@ -140,7 +140,7 @@ export default {
     if (data.isNew
       && slotId === SlotIds.Container
       && fromPin.id === SlotInputIds.DataSource) {
-      input.get(InputIds.Open)?.setSchema({ type: 'unknown' });
+      input.get(InputIds.Open)?.setSchema({ type: 'any' });
     }
   },
   '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {

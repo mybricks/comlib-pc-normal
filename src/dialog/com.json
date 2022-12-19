@@ -14,7 +14,7 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "unknown"
+        "type": "any"
       }
     },
     {
