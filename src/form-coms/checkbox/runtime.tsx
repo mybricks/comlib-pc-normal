@@ -4,8 +4,17 @@ import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { Option, OutputIds } from '../types';
 import { uuid } from '../../utils';
+import { validateTrigger } from '../form-container/models/validate';
 
-export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  logger,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -29,7 +38,8 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        onChange(val);
+        data.value = val;
+        outputs['onChange'](data.value);
       }
     });
 
@@ -95,7 +105,12 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
   const onChange = useCallback((checkedValue) => {
     data.value = checkedValue;
     outputs['onChange'](checkedValue);
+    onValidateTrigger();
   }, []);
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
+
   return (
     <div>
       <Checkbox.Group

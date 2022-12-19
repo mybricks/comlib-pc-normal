@@ -5,8 +5,16 @@ import { Data } from './types';
 import { uuid } from '../../utils';
 import { Option } from '../types';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
 
-export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   useFormItemInputs({
     inputs,
     outputs,
@@ -82,10 +90,15 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
     });
   }, []);
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
+
   const onChange = useCallback((e) => {
     const { value } = e.target;
     data.value = value;
     outputs['onChange'](value);
+    onValidateTrigger();
   }, []);
 
   return (
