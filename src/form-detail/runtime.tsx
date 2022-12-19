@@ -56,35 +56,13 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
       };
 
-      if (typeof ds[item.key] === 'string' || typeof ds[item.key] === 'number') {
-        res.push({
-          ...item,
-          value: ds[item.key],
-          labelStyle,
-          contentStyle,
-          itemStyle
-        });
-      } else if (ds[item.key] && typeof ds[item.key] === 'object') {
-        res.push({
-          ...item,
-          value: ds[item.key].value,
-          color: ds[item.key].color,
-          labelStyle,
-          contentStyle,
-          itemStyle
-        });
-      } else {
-        if (ds[item.key] !== undefined) {
-          console.error('数据类型错误，仅支持对象，字符串或数字');
-        }
-        // 无数据
-        res.push({
-          ...item,
-          labelStyle,
-          contentStyle,
-          itemStyle
-        });
-      }
+      res.push({
+        ...item,
+        value: ds[item.key],
+        labelStyle,
+        contentStyle,
+        itemStyle
+      });
     });
     return res;
   }, []);

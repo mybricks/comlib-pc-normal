@@ -17,12 +17,14 @@ export default function (props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
+      slots[SlotIds.FormItem].inputs['curValue'](data.value);
       outputs['onChange'](val);
       onValidateTrigger();
     });
 
     inputs['setInitialValue']((val) => {
       data.value = val;
+      slots[SlotIds.FormItem].inputs['curValue'](data.value);
       outputs[OutputIds.OnInitial](val);
     });
 
@@ -45,6 +47,7 @@ export default function (props: RuntimeParams<Data>) {
 
     inputs['resetValue'](() => {
       data.value = void 0;
+      slots[SlotIds.FormItem].inputs['curValue'](data.value);
     });
   }, []);
 
@@ -52,14 +55,5 @@ export default function (props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id });
   };
 
-  return (
-    <div>
-      {slots[SlotIds.FormItem] &&
-        slots[SlotIds.FormItem].render({
-          inputValues: {
-            curValue: data.value
-          }
-        })}
-    </div>
-  );
+  return <div>{slots[SlotIds.FormItem] && slots[SlotIds.FormItem].render()}</div>;
 }

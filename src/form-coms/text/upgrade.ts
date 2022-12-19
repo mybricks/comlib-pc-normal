@@ -14,5 +14,9 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add('onInitial', '初始化', valueSchema);
   }
 
+  if (!output.get('onPressEnter')) {
+    output.add('onPressEnter', '按下回车', valueSchema);
+  }
+
   return true;
 }

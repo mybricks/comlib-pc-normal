@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -90,6 +90,13 @@
     {
       "id": "onBlur",
       "title": "失去焦点",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "string"
       }
