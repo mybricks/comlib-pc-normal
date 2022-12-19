@@ -102,28 +102,27 @@ function get(
 }
 
 export default {
-  '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
-    if (pin.id === InputIds.Open) {
-      console.log('inputUpdated', pin)
-      // slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
-    }
-  },
-  '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
-    console.log('outputUpdated', pin)
-  },
+  // '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+  //   if (pin.id === InputIds.Open) {
+  //     console.log('inputUpdated', pin)
+  //     slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
+  //   }
+  // },
+  // '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+  //   console.log('outputUpdated', pin)
+  // },
   '@slotInputUpdated'({ data, slots, output }, slotId, pin) {
-    console.log('slotInputUpdated', slotId, pin)
+    // console.log('slotInputUpdated', slotId, pin)
     output.get(pin.id)?.setSchema(pin.schema);
   },
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
     console.log('slotOutputUpdated', slotId, pin)
     if (slotId === SlotIds.Container && pin.id === SlotInputIds.DataSource) {
-      console.log('slotOutputUpdated---inner', slotId, pin)
       input.get(InputIds.Open)?.setSchema(pin.schema);
     }
   },
   '@slotInputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotInputConnected', fromPin, toPin)
+    // console.log('slotInputConnected', fromPin, toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find(btn => btn.id === btnId);
     btn.isConnected = true;
@@ -135,7 +134,7 @@ export default {
     console.log('slotOuputConnected', fromPin, toPin)
   },
   '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotInputDisConnected', toPin)
+    // console.log('slotInputDisConnected', toPin)
     const btnId = toPin.id,
       btn = data.footerBtns.find(btn => btn.id === btnId);
     btn.isConnected = false;
@@ -143,18 +142,18 @@ export default {
     input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
-  '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputDisConnected')
-    if (toPin.id === InputIds.Open) {
-      // slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
-    }
-  },
-  '@outputConnected'({ data, output }, fromPin, toPin) {
-    console.log('outputConnected', 'toPin', fromPin, toPin);
-  },
-  '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputConnected')
-  },
+  // '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
+  //   console.log('inputDisConnected')
+  //   if (toPin.id === InputIds.Open) {
+  //     slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
+  //   }
+  // },
+  // '@outputConnected'({ data, output }, fromPin, toPin) {
+  //   console.log('outputConnected', 'toPin', fromPin, toPin);
+  // },
+  // '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
+  //   console.log('inputConnected')
+  // },
   // '@connectorUpdated'({ data, input, output, slots }, fromPin, toPin) {
   //   console.log('connectorUpdated')
   // },
