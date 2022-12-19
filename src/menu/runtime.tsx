@@ -5,7 +5,7 @@ import css from './style.less';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const { dataSource, mode } = data;
-  const [menuData, setMenuData] = useState<MenuItem[]>([]);
+  const [menuData, setMenuData] = useState<MenuItem[]>([...dataSource]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   const formatDataSource = (ds: MenuItem[], toJson?: boolean): MenuItem[] => {

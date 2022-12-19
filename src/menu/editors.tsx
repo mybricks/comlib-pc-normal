@@ -173,8 +173,99 @@ const groupItemEditors = (props) => {
             let list = beArr.filter((items) => {
               if (!afArr.includes(items)) return items;
             });
+            //对激活状态做处理
+            let befSelected;
+            let aftSelected;
+            let befAct;
+            let aftAct;
+            let difIndex;
+            let newVaules: any[] = [];
+
+            if (e.children === undefined) {
+              befSelected = [];
+            } else {
+              befSelected = e.children.map((item) => {
+                return {
+                  key: item.key,
+                  defaultActive: item.defaultActive || false
+                };
+              });
+            }
+
+            aftSelected = [...value].map((item) => {
+              return {
+                key: item.key,
+                defaultActive: item.defaultActive || false
+              };
+            });
+            //对value进行处理
+            if (befSelected.length === aftSelected.length) {
+              befAct = befSelected.map((item) => {
+                return item.defaultActive || false;
+              });
+              aftAct = aftSelected.map((item) => {
+                return item.defaultActive || false;
+              });
+              for (let i = 0; i < befSelected.length; i++) {
+                if (befAct[i] !== aftAct[i]) {
+                  difIndex = i;
+                }
+              }
+
+              if (
+                aftAct[difIndex] === true &&
+                befSelected[difIndex].key === aftSelected[difIndex].key
+              ) {
+                newVaules = [...value].map((item) => {
+                  if (item.key !== aftSelected[difIndex].key) {
+                    item.defaultActive = false;
+                  } else {
+                    item.defaultActive = true;
+                  }
+                  return item;
+                });
+              } else {
+                newVaules = [...value];
+              }
+            } else {
+              newVaules = [...value];
+            }
+
+            e.children = newVaules;
+
+            //对dataSource处理
+            let selectedKey;
+            if (difIndex !== undefined) {
+              selectedKey = aftSelected[difIndex].key;
+              if (aftAct[difIndex] === true) {
+                let newval = props.data.dataSource.map((item) => {
+                  if (item.key !== selectedKey) {
+                    item.defaultActive = false;
+                  }
+                  if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
+                    item.children = [...item.children].map((chil) => {
+                      if (chil.menuType === MenuTypeEnum.Menu && chil.key !== selectedKey) {
+                        chil.defaultActive = false;
+                      } else if (
+                        chil.menuType === MenuTypeEnum.Group &&
+                        chil.children !== undefined
+                      ) {
+                        chil.children = [...chil.children].map((groupChil) => {
+                          if (groupChil.key !== selectedKey) {
+                            groupChil.defaultActive = false;
+                          }
+                          return groupChil;
+                        });
+                      }
+                      return chil;
+                    });
+                  }
+                  return item;
+                });
+                props.data.dataSource = newval;
+              }
+            }
             //减少分组菜单子菜单的点击事件
-            e.children = value;
             props.output.remove(list[0]);
             const schema = {
               type: 'any'
@@ -208,7 +299,7 @@ export default {
     output.add(data.dataSource[0].key, `点击${data.dataSource[0].title}`, schema);
   },
   '@resize': {
-    options: ['width', 'height']
+    options: ['width']
   },
   ':root': [
     {
@@ -327,13 +418,103 @@ export default {
               }
             }
           }
-          let newVal = [...val].map((item) => {
-            if (item.menuType === MenuTypeEnum.SubMenu) {
-              item.defaultActive = false;
-            }
-            return item;
+          //对默认选中情况的, 数据处理
+          let newValues;
+          let befAct;
+          let aftAct;
+          let difIndex;
+          let selectedKey;
+          let befSelected = data.dataSource.map((item) => {
+            return {
+              key: item.key,
+              defaultActive: item.defaultActive || false
+            };
           });
-          data.dataSource = newVal;
+
+          let aftSelected = [...val].map((item) => {
+            return {
+              key: item.key,
+              defaultActive: item.defaultActive
+            };
+          });
+
+          //在没有删除的情况下，去做比较
+          //1）更新value
+          if (befSelected.length === aftSelected.length) {
+            befAct = data.dataSource.map((item) => {
+              return item.defaultActive || false;
+            });
+            aftAct = [...val].map((item) => {
+              return item.defaultActive || false;
+            });
+
+            for (let i = 0; i < befSelected.length; i++) {
+              if (befAct[i] !== aftAct[i]) {
+                difIndex = i;
+              }
+            }
+
+            if (
+              aftAct[difIndex] === true &&
+              befSelected[difIndex].key === aftSelected[difIndex].key
+            ) {
+              newValues = [...val].map((item) => {
+                if (item.key !== aftSelected[difIndex].key) {
+                  item.defaultActive = false;
+                } else {
+                  item.defaultActive = true;
+                }
+                return item;
+              });
+            }
+          }
+
+          if (newValues !== undefined) {
+            newValues = [...newValues].map((item) => {
+              //最外层改为父菜单后，将默认激活去除
+              if (item.menuType === MenuTypeEnum.SubMenu) {
+                item.defaultActive = false;
+              }
+              return item;
+            });
+          } else {
+            newValues = [...val].map((item) => {
+              //最外层改为父菜单后，将默认激活去除
+              if (item.menuType === MenuTypeEnum.SubMenu) {
+                item.defaultActive = false;
+              }
+              return item;
+            });
+          }
+          data.dataSource = newValues;
+
+          //2）更新dataSource
+          if (aftAct[difIndex] === true) {
+            selectedKey = aftSelected[difIndex].key;
+            let newData = data.dataSource.map((item) => {
+              if (item.key !== selectedKey) {
+                item.defaultActive = false;
+              }
+              if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
+                item.children = [...item.children].map((chil) => {
+                  if (chil.menuType === MenuTypeEnum.Menu && chil.key !== selectedKey) {
+                    chil.defaultActive = false;
+                  } else if (chil.menuType === MenuTypeEnum.Group && chil.children !== undefined) {
+                    chil.children = [...chil.children].map((groupChil) => {
+                      if (groupChil.key !== selectedKey) {
+                        groupChil.defaultActive = false;
+                      }
+                      return groupChil;
+                    });
+                  }
+                  return chil;
+                });
+              }
+              return item;
+            });
+            data.dataSource = newData;
+          }
+
           const schema = {
             type: 'any'
           };
@@ -415,6 +596,38 @@ export default {
             },
             set(props: EditorResult<Data>, value: boolean) {
               setMenuItem(props, 'defaultActive', value);
+
+              //默认激活的互斥
+              if (value === true) {
+                let selectedKey = getMenuItem(props, 'key');
+                let newval: any[] = [];
+                //对dataSource整体遍历
+                newval = props.data.dataSource.map((item) => {
+                  if (item.key !== selectedKey) {
+                    item.defaultActive = false;
+                  }
+                  if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
+                    item.children = [...item.children].map((chil) => {
+                      if (chil.menuType === MenuTypeEnum.Menu && chil.key !== selectedKey) {
+                        chil.defaultActive = false;
+                      } else if (
+                        chil.menuType === MenuTypeEnum.Group &&
+                        chil.children !== undefined
+                      ) {
+                        chil.children = [...chil.children].map((groupChil) => {
+                          if (groupChil.key !== selectedKey) {
+                            groupChil.defaultActive = false;
+                          }
+                          return groupChil;
+                        });
+                      }
+                      return chil;
+                    });
+                  }
+                  return item;
+                });
+                props.data.dataSource = newval;
+              }
             }
           }
         },
@@ -424,7 +637,6 @@ export default {
           options: [
             { label: '子菜单', value: MenuTypeEnum.Menu },
             { label: '父菜单', value: MenuTypeEnum.SubMenu }
-            //{ label: '分组', value: MenuTypeEnum.Group }
           ],
           value: {
             get(props: EditorResult<Data>) {
@@ -560,7 +772,105 @@ export default {
               let list = beArr.filter((items) => {
                 if (!afArr.includes(items)) return items;
               });
-              setMenuItem(props, 'children', [...value]);
+
+              //对默认值进行互斥操作
+              //1.改造value
+              //2.改造data.dataSource
+              let befSelected;
+              let aftSelected;
+              let befAct;
+              let aftAct;
+              let difIndex;
+              let difKey;
+              let newVaules: any[] = [];
+
+              if (getMenuItem(props, 'children') === undefined) {
+                befSelected = [];
+              } else {
+                befSelected = getMenuItem(props, 'children').map((item) => {
+                  return {
+                    key: item.key,
+                    defaultActive: item.defaultActive || false,
+                    menuType: item.menuType
+                  };
+                });
+              }
+
+              aftSelected = [...value].map((item) => {
+                return {
+                  key: item.key,
+                  defaultActive: item.defaultActive || false,
+                  menuType: item.menuType
+                };
+              });
+
+              if (befSelected.length === aftSelected.length) {
+                befAct = befSelected.map((item) => {
+                  return item.defaultActive || false;
+                });
+                aftAct = aftSelected.map((item) => {
+                  return item.defaultActive || false;
+                });
+
+                for (let i = 0; i < befSelected.length; i++) {
+                  if (befAct[i] !== aftAct[i]) {
+                    difIndex = i;
+                  }
+                }
+
+                if (difIndex !== undefined) {
+                  difKey = aftSelected[difIndex].key;
+                }
+
+                if (
+                  aftAct[difIndex] === true &&
+                  befSelected[difIndex].key === aftSelected[difIndex].key
+                ) {
+                  newVaules = [...value].map((item) => {
+                    if (item.key !== aftSelected[difIndex].key) {
+                      item.defaultActive = false;
+                    } else {
+                      item.defaultActive = true;
+                    }
+                    return item;
+                  });
+                  setMenuItem(props, 'children', [...newVaules]);
+                } else {
+                  setMenuItem(props, 'children', [...value]);
+                }
+
+                //对dataSource整体遍历
+                if (difKey !== undefined) {
+                  let newval: any[] = [];
+                  newval = props.data.dataSource.map((item) => {
+                    if (item.key !== difKey) {
+                      item.defaultActive = false;
+                    }
+                    if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
+                      item.children = [...item.children].map((chil) => {
+                        if (chil.menuType === MenuTypeEnum.Menu && chil.key !== difKey) {
+                          chil.defaultActive = false;
+                        } else if (
+                          chil.menuType === MenuTypeEnum.Group &&
+                          chil.children !== undefined
+                        ) {
+                          chil.children = [...chil.children].map((groupChil) => {
+                            if (groupChil.key !== difKey) {
+                              groupChil.defaultActive = false;
+                            }
+                            return groupChil;
+                          });
+                        }
+                        return chil;
+                      });
+                    }
+                    return item;
+                  });
+                  props.data.dataSource = newval;
+                }
+              } else {
+                setMenuItem(props, 'children', [...value]);
+              }
               //减少父菜单和分组菜单的点击事件
               const schema = {
                 type: 'any'
@@ -594,49 +904,6 @@ export default {
         {
           title: '位置',
           items: [
-            {
-              title: '前移',
-              type: 'Button',
-              ifVisible(props: EditorResult<Data>) {
-                return props.data.dataSource.indexOf(getMenuItem(props)) !== 0;
-              },
-              value: {
-                set(props: EditorResult<Data>) {
-                  let i = props.data.dataSource.indexOf(getMenuItem(props));
-                  let newval: any[] = [];
-                  for (let i = 0; i < props.data.dataSource.length; i++) {
-                    newval[i] = props.data.dataSource[i];
-                  }
-                  const item = getMenuItem(props);
-                  newval.splice(i, 1);
-                  newval.splice(i - 1, 0, item);
-                  props.data.dataSource = newval;
-                }
-              }
-            },
-            {
-              title: '后移',
-              type: 'Button',
-              ifVisible(props: EditorResult<Data>) {
-                return (
-                  props.data.dataSource.indexOf(getMenuItem(props)) !==
-                  props.data.dataSource.length - 1
-                );
-              },
-              value: {
-                set(props: EditorResult<Data>) {
-                  let i = props.data.dataSource.indexOf(getMenuItem(props));
-                  let newval: any[] = [];
-                  for (let i = 0; i < props.data.dataSource.length; i++) {
-                    newval[i] = props.data.dataSource[i];
-                  }
-                  const item = getMenuItem(props);
-                  newval.splice(i, 1);
-                  newval.splice(i + 1, 0, item);
-                  props.data.dataSource = newval;
-                }
-              }
-            },
             {
               title: '删除',
               type: 'Button',
