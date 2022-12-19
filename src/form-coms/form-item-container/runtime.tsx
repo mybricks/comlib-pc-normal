@@ -1,4 +1,5 @@
 import React, { useCallback, useLayoutEffect } from 'react';
+import { validateTrigger } from '../form-container/models/validate';
 import { OutputIds } from '../types';
 import { validateFormItem } from '../utils/validator';
 import { SlotIds } from './constants';
@@ -10,13 +11,14 @@ interface Data {
 }
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, style } = props;
+  const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, style } = props;
   const { edit } = env;
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
       outputs['onChange'](val);
+      onValidateTrigger();
     });
 
     inputs['setInitialValue']((val) => {
@@ -46,9 +48,9 @@ export default function (props: RuntimeParams<Data>) {
     });
   }, []);
 
-  // const validateTrigger = () => {
-  //   parentSlot._inputs['validateTrigger'](props.id)
-  // }
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
 
   return (
     <div>
