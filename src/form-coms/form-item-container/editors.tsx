@@ -6,6 +6,9 @@ export default {
   '@resize': {
     options: ['width']
   },
+  '@init': ({ style }) => {
+    style.width = '100%';
+  },
   // '@inputUpdated'({ data, input, output, slots }: EditorResult<any>, updatePin) {
   //   if (updatePin.id === InputIds.SetValue) {
   //     console.log(updatePin.schema, 'inputUpdated')
