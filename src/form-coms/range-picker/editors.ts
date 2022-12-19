@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 
 export default {
   '@resize': {
@@ -114,6 +115,59 @@ export default {
         }
       },
       {
+        title: '校验规则',
+        description: '提供快捷校验配置',
+        type: 'ArrayCheckbox',
+        options: {
+          checkField: 'status',
+
+          visibleField: 'visible',
+          getTitle,
+          items: [
+            {
+              title: '提示文字',
+              type: 'Text',
+              value: 'message',
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.REQUIRED;
+              }
+            },
+            {
+              title: '编辑校验规则',
+              type: 'code',
+              options: {
+                language: 'javascript',
+                enableFullscreen: false,
+                title: '编辑校验规则',
+                width: 600,
+                minimap: {
+                  enabled: false
+                },
+                babel: true,
+                eslint: {
+                  parserOptions: {
+                    ecmaVersion: '2020',
+                    sourceType: 'module'
+                  }
+                }
+              },
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.CODE_VALIDATOR;
+              },
+              value: 'validateCode'
+            }
+          ]
+        },
+        value: {
+          get({ data }) {
+            return data.rules.length > 0 ? data.rules : defaultRules;
+          },
+          set({ data }, value: any) {
+            data.rules = value;
+          }
+        }
+      },
+      {
         title: '输出数据处理',
         items: [
           {
@@ -179,3 +233,8 @@ export default {
     ]
   }
 }
+
+const getTitle = (item: any, index: number) => {
+  const { key, title, numericalLimit, regExr } = item;
+  return title;
+};
