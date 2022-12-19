@@ -3,6 +3,7 @@ import { Cascader } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
 
 export interface Data {
   options: any[];
@@ -22,7 +23,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env } = props;
+  const { data, inputs, outputs, env, parentSlot } = props;
   const [options, setOptions] = useState();
 
   useFormItemInputs({
@@ -67,9 +68,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     setOptions(value);
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id });
+  };
+
   const onChange = (value) => {
     data.value = value;
     outputs['onChange'](value);
+    onValidateTrigger();
   };
 
   return (

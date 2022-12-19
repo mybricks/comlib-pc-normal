@@ -4,6 +4,7 @@ import moment from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import { OutputIds } from '../types';
+import { validateTrigger } from '../form-container/models/validate';
 
 export interface Data {
   options: any[];
@@ -19,7 +20,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env } = props;
+  const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState();
 
   //输出数据变形函数
@@ -147,6 +148,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     data.config.disabled = false;
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id });
+  };
+
   const onChange = (value) => {
     //自定义转换
     let transValue;
@@ -157,6 +162,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
     setValue(value);
     outputs['onChange'](transValue);
+    onValidateTrigger();
   };
 
   const getShowTime = () => {
