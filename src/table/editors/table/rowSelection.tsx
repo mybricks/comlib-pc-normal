@@ -113,7 +113,7 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
           value: {
             get({ data }: EditorResult<Data>) {
               return {
-                field: data.rowKey || undefined,
+                value: data.rowKey || undefined,
                 schema: getColumnsSchema(data),
                 placeholder: '默认使用内置标识'
               };

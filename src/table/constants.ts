@@ -44,6 +44,7 @@ export const InputIds = {
   /** 区块输入项 */
   // 展开行数据
   EXP_COL_VALUES: 'expColValues',
+  EXP_ROW_VALUES: 'expRowValues',
   // 插槽项数据-当前列数据
   SLOT_ROW_VALUE: 'slotRowValue',
   // 插槽项数据-当前行数据

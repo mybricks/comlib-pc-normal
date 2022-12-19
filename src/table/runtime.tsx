@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
+import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
 import { formatDataSource, getDefaultDataSource } from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
@@ -166,14 +167,14 @@ export default function (props: RuntimeParams<Data>) {
       if (!data.usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds);
       } else if (data.usePagination && ds && typeof ds === 'object') {
-      /**
-       * 分页特殊处理逻辑
-       * 当存在dataSource字段且为数组类型数据时，直接使用
-       * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
-       *
-       * 当存在total字段且为数字类型数据时，直接使用
-       * 当不存在total字段且仅有一个数字类型数据时，直接使用
-       */
+        /**
+         * 分页特殊处理逻辑
+         * 当存在dataSource字段且为数组类型数据时，直接使用
+         * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
+         *
+         * 当存在total字段且为数字类型数据时，直接使用
+         * 当不存在total字段且仅有一个数字类型数据时，直接使用
+         */
         const dsKey = Object.keys(ds);
         if (Array.isArray(ds?.dataSource)) {
           temp = formatDataSource(ds?.dataSource);
@@ -373,13 +374,17 @@ export default function (props: RuntimeParams<Data>) {
               ? {
                   expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : undefined, //增加动态设置
                   expandedRowRender: (record, index) => {
-                    return slots[SlotIds.EXPAND_CONTENT].render({
-                      inputValues: {
-                        [InputIds.EXP_COL_VALUES]: {
-                          ...record
-                        },
-                        [InputIds.INDEX]: index
+                    const inputValues = {
+                      [InputIds.EXP_COL_VALUES]: {
+                        ...record
                       },
+                      [InputIds.INDEX]: index
+                    };
+                    if (data.useExpand && data.expandDataIndex) {
+                      inputValues[InputIds.EXP_ROW_VALUES] = get(record, data.expandDataIndex);
+                    }
+                    return slots[SlotIds.EXPAND_CONTENT].render({
+                      inputValues,
                       key: `${InputIds.EXP_COL_VALUES}-${index}`
                     });
                   }
