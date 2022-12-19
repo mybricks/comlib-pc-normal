@@ -133,6 +133,12 @@ export default {
   '@slotOuputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     console.log('slotOuputConnected', fromPin, toPin)
   },
+  '@slotOuputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
+    console.log('slotOuputDisConnected', fromPin, slotId, toPin)
+    // if (slotId === SlotIds.Container && fromPin.id === SlotInputIds.DataSource) {
+    //   input.get(InputIds.Open)?.setSchema({ type: 'unknown' });
+    // }
+  },
   '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     // console.log('slotInputDisConnected', toPin)
     const btnId = toPin.id,
