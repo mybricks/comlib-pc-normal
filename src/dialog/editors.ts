@@ -102,12 +102,12 @@ function get(
 }
 
 export default {
-  // '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
-  //   if (pin.id === InputIds.Open) {
-  //     console.log('inputUpdated', pin)
-  //     slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
-  //   }
-  // },
+  '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
+    if (pin.id === InputIds.Open) {
+      console.log('inputUpdated', pin)
+      !data.isNew && slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
+    }
+  },
   // '@outputUpdated'({ data, input, output, slots }, pin) {//id pin's id
   //   console.log('outputUpdated', pin)
   // },
@@ -118,7 +118,7 @@ export default {
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
     console.log('slotOutputUpdated', slotId, pin)
     if (slotId === SlotIds.Container && pin.id === SlotInputIds.DataSource) {
-      input.get(InputIds.Open)?.setSchema(pin.schema);
+      data.isNew && input.get(InputIds.Open)?.setSchema(pin.schema);
     }
   },
   '@slotInputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
@@ -136,7 +136,7 @@ export default {
   '@slotOuputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
     console.log('slotOuputDisConnected', fromPin, slotId, toPin)
     // if (slotId === SlotIds.Container && fromPin.id === SlotInputIds.DataSource) {
-    //   input.get(InputIds.Open)?.setSchema({ type: 'unknown' });
+    //   data.isNew && input.get(InputIds.Open)?.setSchema({ type: 'unknown' });
     // }
   },
   '@slotInputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
@@ -148,17 +148,20 @@ export default {
     input.get(InputIds.Open).setRels(newRels);
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
-  // '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
-  //   console.log('inputDisConnected')
-  //   if (toPin.id === InputIds.Open) {
-  //     slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
-  //   }
-  // },
+  '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
+    console.log('inputDisConnected')
+    if (toPin.id === InputIds.Open) {
+      !data.isNew && slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
+    }
+  },
   // '@outputConnected'({ data, output }, fromPin, toPin) {
   //   console.log('outputConnected', 'toPin', fromPin, toPin);
   // },
   // '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-  //   console.log('inputConnected')
+  //   console.log('inputConnected',fromPin,toPin)
+  //   if (toPin.id === InputIds.Open) {
+  //     !data.isNew && slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
+  //   }
   // },
   // '@connectorUpdated'({ data, input, output, slots }, fromPin, toPin) {
   //   console.log('connectorUpdated')

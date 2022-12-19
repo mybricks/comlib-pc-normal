@@ -26,6 +26,7 @@ export interface Event {
  * @param cancelText 取消按钮内容
  * @param width      弹窗宽度
  * @param hideTitle  隐藏标题
+ * @param isNew      是否为改造后的对话框
  */
 
 export enum Location {
@@ -42,6 +43,7 @@ export interface Data {
   cancelText: string;
   width?: number;
   hideTitle: boolean;
+  isNew?: boolean;
   bodyStyle?: React.CSSProperties;
   footerLayout: AlignEnum;
   footerBtns: (ButtonProps & {
