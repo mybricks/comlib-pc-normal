@@ -21,12 +21,31 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   if (!data.actions.widthOption) {
     data.actions.widthOption = 'span';
   }
+
   data.items.forEach(item => {
+    /**
+     * @description v1.1.1 表单项/操作项增加宽度配置项
+     */
     if (!item.widthOption) {
       item.widthOption = 'span'
       item.span = 24 / data.formItemColumn;
     }
+
+    /**
+     * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
+     */
+    if (!item.inlineMargin) {
+      item.inlineMargin = [0, 16, 24, 0]
+    }
+
   })
+
+  /**
+   * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
+   */
+  if (!data.actions.inlinePadding) {
+    data.actions.inlinePadding = [0, 0, 0, 0];
+  }
 
   /**
    * @description v1.1.2 , 新增子组件通知校验功能
@@ -44,13 +63,6 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     slot?.get('content')._inputs.add(slotInputIds.VALIDATE_TRIGGER, '触发校验', validateTriggerSchema)
   }
 
-  /**
-   * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
-   */
-  data.items.forEach(item => {
-    if (!item.inlineMargin) item.inlineMargin = [0, 16, 0, 0]
-  });
-  if (!data.actions.inlinePadding) data.actions.inlinePadding = [0, 0, 0, 0];
 
   return true;
 }
