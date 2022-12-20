@@ -1,7 +1,7 @@
 {
   "title": "下拉框",
   "namespace": "mybricks.normal-pc.select",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -71,7 +71,7 @@
             },
             "value": {
               "title": "值",
-              "type": "any"
+              "type": "string"
             },
             "disabled": {
               "title": "禁用",
