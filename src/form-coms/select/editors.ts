@@ -478,7 +478,7 @@ export default {
                       },
                       "value": {
                         "title": "值",
-                        "type": "any"
+                        "type": "string"
                       },
                       "disabled": {
                         "title": "禁用",
