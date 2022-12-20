@@ -33,6 +33,22 @@ export default {
     cate[0].title = '常规';
     cate[0].items = [
       {
+        title: '提示内容',
+        type: 'Text',
+        description: '自定义开关关闭时, 可编辑提示内容',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.isCustom;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.content;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.content = value;
+          }
+        }
+      },
+      {
         title: '自定义',
         type: 'Switch',
         description: '开启自定义后, 可自定义添加需要组件',

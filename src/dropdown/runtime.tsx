@@ -34,10 +34,12 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
       <div>
         <Dropdown overlay={menuRender({ data })} placement={data.placement} arrow>
           {data.isCustom === false ? (
-            <Space>
-              Hover me
-              <DownOutlined />
-            </Space>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {data.content}
+                <DownOutlined />
+              </Space>
+            </a>
           ) : (
             <div>{slots['carrier'] && slots['carrier'].render()}</div>
           )}
@@ -48,10 +50,12 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
     return (
       <div>
         {data.isCustom === false ? (
-          <Space>
-            Hover me
-            <DownOutlined />
-          </Space>
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {data.content}
+              <DownOutlined />
+            </Space>
+          </a>
         ) : (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
         )}
