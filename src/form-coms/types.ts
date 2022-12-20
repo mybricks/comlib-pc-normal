@@ -21,6 +21,7 @@ export const InputIds = {
 
 export const OutputIds = {
   OnChange: 'onChange',
+  OnBlur: 'onBlur',
   OnInitial: 'onInitial',
   ReturnValue: 'returnValue'
 }

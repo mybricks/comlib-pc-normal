@@ -23,6 +23,16 @@ const initParams = (data: Data) => {
     data.staticOptions.splice(index, 1);
   };
 };
+
+const updateValueSchema = ({ input, output, schema }) => {
+  input.get(InputIds.SetInitialValue)?.setSchema(schema);
+  output.get(OutputIds.OnInitial)?.setSchema(schema);
+  input.get(InputIds.SetValue).setSchema(schema);
+  output.get(OutputIds.OnChange).setSchema(schema);
+  output.get(OutputIds.OnBlur).setSchema(schema);
+  output.get(OutputIds.ReturnValue).setSchema(schema);
+};
+
 export default {
   '@resize': {
     options: ['width']
@@ -83,11 +93,7 @@ export default {
               } : {
                 type: 'array'
               };
-              input.get(InputIds.SetInitialValue)?.setSchema(valueSchema);
-              output.get(OutputIds.OnInitial)?.setSchema(valueSchema);
-              input.get(InputIds.SetValue).setSchema(valueSchema);
-              output.get(OutputIds.OnChange).setSchema(valueSchema);
-              output.get(OutputIds.ReturnValue).setSchema(valueSchema);
+              updateValueSchema({ input, output, schema: valueSchema });
             } else {
               if (Array.isArray(data.value)) {
                 data.value = data.value[0];
@@ -105,11 +111,7 @@ export default {
               } : {
                 type: 'string'
               };
-              input.get(InputIds.SetInitialValue)?.setSchema(valueSchema);
-              output.get(OutputIds.OnInitial)?.setSchema(valueSchema);
-              input.get(InputIds.SetValue).setSchema(valueSchema);
-              output.get(OutputIds.OnChange).setSchema(valueSchema);
-              output.get(OutputIds.ReturnValue).setSchema(valueSchema);
+              updateValueSchema({ input, output, schema: valueSchema });
             }
           }
         }
@@ -170,11 +172,7 @@ export default {
                 } : {
                   type: 'array'
                 };
-                input.get(InputIds.SetInitialValue)?.setSchema(arrSchema);
-                output.get(OutputIds.OnInitial)?.setSchema(arrSchema);
-                input.get(InputIds.SetValue).setSchema(arrSchema);
-                output.get(OutputIds.OnChange).setSchema(arrSchema);
-                output.get(OutputIds.ReturnValue).setSchema(arrSchema);
+                updateValueSchema({ input, output, schema: arrSchema });
                 break;
               default:
                 const basicSchema = data.config.labelInValue ? {
@@ -190,11 +188,7 @@ export default {
                 } : {
                   type: 'string'
                 };
-                input.get(InputIds.SetInitialValue)?.setSchema(basicSchema);
-                output.get(OutputIds.OnInitial)?.setSchema(basicSchema);
-                input.get(InputIds.SetValue).setSchema(basicSchema);
-                output.get(OutputIds.OnChange).setSchema(basicSchema);
-                output.get(OutputIds.ReturnValue).setSchema(basicSchema);
+                updateValueSchema({ input, output, schema: basicSchema });
                 break;
             }
             if (checkedList.length > 0) {
@@ -467,29 +461,30 @@ export default {
               },
               set({ data, input, output }, value: boolean) {
                 data.dropdownSearchOption = value;
+                let valueSchema = input.get(InputIds.SetValue).schema;
                 const contentSchema = {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "label": {
-                        "title": "标签",
-                        "type": "string"
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      label: {
+                        title: '标签',
+                        type: 'string',
                       },
-                      "value": {
-                        "title": "值",
-                        "type": "string"
+                      value: {
+                        title: '值',
+                        type: valueSchema?.type || 'string',
                       },
-                      "disabled": {
-                        "title": "禁用",
-                        "type": "boolean"
+                      disabled: {
+                        title: '禁用',
+                        type: 'boolean',
                       },
-                      "checked": {
-                        "title": "选中",
-                        "type": "boolean"
-                      }
-                    }
-                  }
+                      checked: {
+                        title: '选中',
+                        type: 'boolean',
+                      },
+                    },
+                  },
                 };
                 if (data.dropdownSearchOption === true) {
                   output.add('remoteSearch', '远程搜索', { type: 'string' });
