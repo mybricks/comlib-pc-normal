@@ -1,5 +1,4 @@
 import { Data } from './types';
-import { uuid } from '../utils';
 
 interface Result {
   data: Data;
@@ -124,7 +123,7 @@ export default {
           onAdd: () => {
             const defaultOption = {
               label: `选项${tempOptions.length + 1}`,
-              value: uuid()
+              value: ''
             };
             addOption(defaultOption);
             return defaultOption;
@@ -168,7 +167,7 @@ export default {
         }
       },
       {
-        title: '选项改变',
+        title: '点击',
         type: '_Event',
         options: () => {
           return {

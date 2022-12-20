@@ -13,7 +13,7 @@
   "outputs": [
     {
       "id": "onChange",
-      "title": "选项改变",
+      "title": "点击",
       "schema": {
         "type": "any"
       }
