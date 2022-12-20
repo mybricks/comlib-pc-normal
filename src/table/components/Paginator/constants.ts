@@ -27,6 +27,7 @@ export enum SizeTypeEnum {
  * @param showQuickJumper 跳转页面功能
  * @param hideOnSinglePage 只有一页时隐藏分页器
  * @param size 尺寸
+ * @param useFrontPage 前端分页
  */
 export interface Data {
   total: number;
@@ -47,6 +48,8 @@ export interface Data {
   hideOnSinglePage?: boolean;
 
   pageSize?: number;
+
+  useFrontPage?: boolean;
 }
 
 export const OutputIds = {

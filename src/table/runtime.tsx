@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import moment from 'moment';
 import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
@@ -11,6 +12,7 @@ import {
   FilterTypeEnum,
   IColumn,
   RowSelectionTypeEnum,
+  SorterTypeEnum,
   TableLayoutEnum,
   WidthTypeEnum
 } from './types';
@@ -29,6 +31,8 @@ export default function (props: RuntimeParams<Data>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
+  // 前端分页后表格数据
+  const [pageDataSource, setPageDataSource] = useState<any[]>([]);
 
   const rowKey = data.rowKey || DefaultRowKey;
 
@@ -161,12 +165,85 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [selectedRows, selectedRowKeys]);
 
+  // 前端分页逻辑
+  const filterDataSourceBySortAndFilter = () => {
+    let tempDataSource = [...dataSource];
+    let cItem;
+    // 排序
+    let sorter;
+    const { id, order } = data.sortParams || {};
+    cItem = data.columns.find((col) => col.dataIndex === id);
+    switch (cItem?.sorter?.type) {
+      case SorterTypeEnum.Length:
+        sorter = (a, b) => {
+          const aVal = get(a, cItem.dataIndex);
+          const bVal = get(b, cItem.dataIndex);
+          if (typeof aVal !== 'string' || typeof bVal !== 'string') {
+            return 0;
+          }
+          return aVal.length - bVal.length;
+        };
+        break;
+      case SorterTypeEnum.Size:
+        sorter = (a, b) => {
+          const aVal = get(a, cItem.dataIndex);
+          const bVal = get(b, cItem.dataIndex);
+          if (typeof aVal !== 'number' || typeof bVal !== 'number') {
+            return 0;
+          }
+          return aVal - bVal;
+        };
+        break;
+      case SorterTypeEnum.Date:
+        sorter = (a, b) => {
+          const aVal = get(a, cItem.dataIndex);
+          const bVal = get(b, cItem.dataIndex);
+          if (!aVal || !bVal) {
+            return 0;
+          }
+          return moment(aVal).valueOf() - moment(bVal).valueOf();
+        };
+        break;
+      default:
+        break;
+    }
+    if (sorter) {
+      tempDataSource.sort(sorter);
+      if (order === 'descend') {
+        tempDataSource = tempDataSource.reverse();
+      }
+    }
+    // 筛选
+    Object.keys(data.filterParams || {}).forEach((key) => {
+      const filterValues = data.filterParams?.[key];
+      cItem = data.columns.find((col) => col.dataIndex === key);
+      if (cItem && cItem?.filter?.type !== FilterTypeEnum.Request && filterValues) {
+        tempDataSource = tempDataSource.filter((record) => {
+          return filterValues?.some((value) => get(record, cItem.dataIndex) == value);
+        });
+      }
+    });
+    // 分页
+    const len = data.paginationConfig.pageSize || data.paginationConfig.defaultPageSize || 1;
+    const start = (data.paginationConfig.current - 1) * len;
+    const end = start + len;
+    data.paginationConfig.total = tempDataSource.length;
+    setPageDataSource([...tempDataSource.slice(start, end)]);
+  };
+  useEffect(() => {
+    if (env.runtime && data.paginationConfig.useFrontPage) {
+      filterDataSourceBySortAndFilter();
+    }
+  }, [dataSource, data.paginationConfig.current, data.paginationConfig.pageSize]);
+
   const setTableData = useCallback(
     (ds: any) => {
       let temp = [...dataSource] || [];
-      if (!data.usePagination && Array.isArray(ds)) {
+      // 是否后端分页
+      const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
+      if (!usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds);
-      } else if (data.usePagination && ds && typeof ds === 'object') {
+      } else if (usePagination && ds && typeof ds === 'object') {
         /**
          * 分页特殊处理逻辑
          * 当存在dataSource字段且为数组类型数据时，直接使用
@@ -229,22 +306,34 @@ export default function (props: RuntimeParams<Data>) {
     outputs[OutputIds.FILTER](data.filterParams);
   }, []);
 
-  const onChange = useCallback((pagination, filters, sorter, extra) => {
-    if (env.edit) {
-      return;
-    }
-    const { action } = extra;
-    switch (action) {
-      case 'sort':
-        sorterChange(sorter);
-        break;
-      case 'filter':
-        filterChange(filters);
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const onChange = useCallback(
+    (pagination, filters, sorter, extra) => {
+      if (env.edit) {
+        return;
+      }
+      const useFrontPage = data.paginationConfig?.useFrontPage;
+      const { action } = extra;
+      switch (action) {
+        case 'sort':
+          sorterChange(sorter);
+          if (useFrontPage) {
+            filterDataSourceBySortAndFilter();
+          }
+          break;
+        case 'filter':
+          filterChange(filters);
+          if (useFrontPage) {
+            // 前端分页时，筛选自动回到第一页
+            data.paginationConfig.current = 1;
+            filterDataSourceBySortAndFilter();
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [dataSource]
+  );
 
   const renderColumns = () => {
     return ColumnsTitleRender({
@@ -340,6 +429,8 @@ export default function (props: RuntimeParams<Data>) {
     return hasAuto ? '100%' : width;
   };
 
+  // 显示数据
+  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
   return (
     <div className={css.table}>
       <TableHeader
@@ -354,7 +445,7 @@ export default function (props: RuntimeParams<Data>) {
           style={{
             width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
           }}
-          dataSource={edit ? defaultDataSource : dataSource}
+          dataSource={edit ? defaultDataSource : realShowDataSource}
           loading={{
             tip: data.loadingTip,
             spinning: loading

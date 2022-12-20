@@ -100,7 +100,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
 
 // 数据源schema
 function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
-  if (data.usePagination) {
+  if (data.usePagination && !data.paginationConfig?.useFrontPage) {
     input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
       title: '数据列表',
       type: 'object',
