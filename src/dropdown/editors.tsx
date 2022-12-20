@@ -32,6 +32,19 @@ export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '常规';
     cate[0].items = [
+      {
+        title: '自定义',
+        type: 'Switch',
+        description: '开启自定义后, 可自定义添加需要组件',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isCustom;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.isCustom = value;
+          }
+        }
+      },
       //选项弹出位置
       {
         title: '弹出位置',

@@ -1,5 +1,6 @@
 {
   "options": [ {"label": "选项1", "value": "","disabled": "true"} ],
   "placement": "bottomLeft",
-  "width": 100
+  "width": 100,
+  "isCustom": false
 }

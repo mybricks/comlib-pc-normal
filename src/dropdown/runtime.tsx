@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown, Space } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import { Data } from './types';
 
 export default function ({ data, env, style, inputs, outputs, slots }: RuntimeParams<Data>) {
@@ -32,14 +33,28 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
     return (
       <div>
         <Dropdown overlay={menuRender({ data })} placement={data.placement} arrow>
-          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+          {data.isCustom === false ? (
+            <Space>
+              Hover me
+              <DownOutlined />
+            </Space>
+          ) : (
+            <div>{slots['carrier'] && slots['carrier'].render()}</div>
+          )}
         </Dropdown>
       </div>
     );
   } else {
     return (
       <div>
-        <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        {data.isCustom === false ? (
+          <Space>
+            Hover me
+            <DownOutlined />
+          </Space>
+        ) : (
+          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        )}
       </div>
     );
   }
