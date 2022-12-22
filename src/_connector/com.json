@@ -1,10 +1,10 @@
 {
-  "title": "服务接口",
-  "namespace": "mybricks.normal-pc.service",
+  "title": "连接器",
+  "namespace": "mybricks.core-comlib.connector",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.0",
-  "description": "服务接口",
+  "description": "连接器",
   "runtime": "./runtime.ts",
   "editors": "./editors.tsx",
   "icon": "./icon.svg",
@@ -36,6 +36,16 @@
       "schema": {
         "type": "string"
       }
+    }
+  ],
+  "configs": [
+    {
+      "id": "setUrl",
+      "title": "设置请求路径",
+      "schema": {
+        "type": "string"
+      },
+      "binding": "data.connectorConfig.url"
     }
   ]
 }
