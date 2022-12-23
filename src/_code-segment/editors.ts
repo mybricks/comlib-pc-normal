@@ -38,8 +38,11 @@ export default {
   '@inputUpdated'({ data }, fromPin) {
     data.inputSchema = fromPin.schema;
   },
-  '@inputConnected'({ data }, fromPin) {
+  '@inputConnected'({ data, output }, fromPin) {
     data.inputSchema = fromPin.schema;
+    if (data.fns === CODE_TEMPLATE) {
+      output.get('output0').setSchema({ type: 'unknown' });
+    }
   },
   '@inputDisConnected'({ data }) {
     data.inputSchema = { type: 'any' };
