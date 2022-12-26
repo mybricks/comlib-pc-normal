@@ -117,6 +117,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const id = item.id;
       const input = childrenInputs[id];
       input?.resetValue();
+      item.validateStatus = undefined;
+      item.help = undefined;
     });
   };
 
