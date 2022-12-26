@@ -43,7 +43,7 @@ export default function (props: RuntimeParams<Data>) {
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;
       if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
-        res[dataIndex] = cItem.filter.options;
+        res[env.edit ? cItem.key : dataIndex] = cItem.filter.options || [];
       }
     });
     setFilterMap(res);
@@ -346,10 +346,16 @@ export default function (props: RuntimeParams<Data>) {
       )
     });
   };
+
   // hack: fix编辑时数据未及时响应
+  useEffect(() => {
+    if (env.edit) {
+      initFilterMap();
+    }
+  }, [JSON.stringify(data.columns)]);
   const renderColumnsWhenEdit = useCallback(() => {
     return renderColumns();
-  }, [env.runtime ? undefined : JSON.stringify(data.columns)]);
+  }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
 
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {
