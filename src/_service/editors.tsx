@@ -73,7 +73,7 @@ export default {
           if (set) {
             configs.add({
               id: 'url',
-              title: '服务地址',
+              title: '设置服务地址',
               schema: {
                 type: 'string'
               },
