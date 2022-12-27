@@ -1,11 +1,14 @@
-import { Option } from '../types'
+import { CheckboxOptionType } from 'antd';
+
 export interface Data {
     config: {
-        options: any[];
+        options: CheckboxOptionType[];
         disabled: boolean;
     };
     rules: any[];
     value?: any[];
-    staticOptions: Option[];
+    checkAll: boolean;
+    checkAllText: string;
+    staticOptions: CheckboxOptionType[];
     options: any[];
 }
