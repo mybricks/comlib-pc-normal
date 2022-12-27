@@ -1,0 +1,11 @@
+{
+  "title": "test",
+  "namespace": "test.test",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "test",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx"
+
+}
