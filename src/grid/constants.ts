@@ -38,8 +38,9 @@ export interface ColumnParams {
   minMaxWidthOption?: WidthUnitEnum;
   minWidth?: number;
   maxWidth?: number;
-  flex: number
+  flex: number;
   useClick?: boolean;
+  slotStyle?: React.CSSProperties;
 }
 
 export interface IRow {
@@ -58,3 +59,9 @@ export interface Data {
   style: React.CSSProperties;
   widthUnit?: string;
 }
+
+export type SlotStyle = {
+  layout?: any;
+  layoutAlignItems?: any;
+  layoutJustifyContent?: any;
+};
