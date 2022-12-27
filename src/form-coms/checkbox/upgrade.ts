@@ -14,5 +14,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add('onInitial', '初始化', valueSchema);
   }
 
+  /**
+    * @description v1.0.3 增加全选框配置
+    */
+  if (!data.checkAll) {
+    data.checkAll = false;
+  }
+  if (!data.checkAllText) {
+    data.checkAllText = '全选';
+  }
+
   return true;
 }
