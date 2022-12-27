@@ -6,6 +6,9 @@ import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const { size, title, showTitle, layout, column, bordered, colon } = data || {};
+  const [rawData, setData] = useState({});
+  const rawDataRef = useRef({});
+  rawDataRef.current = rawData;
 
   const contentMap = {
     text: (value, lineLimit, widthLimit, limit) => {
@@ -38,7 +41,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   };
   const getDataSource = useCallback(() => {
     const res: Item[] = [];
-    let ds = data.rawData || {};
+    let ds = rawDataRef.current || {};
     (data.items || []).forEach((item) => {
       const labelStyle = {
         ...item.labelStyle,
@@ -67,9 +70,9 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     return res;
   }, []);
 
-  const setDataSource = (ds: any) => {
-    data.rawData = ds;
-  };
+  const setDataSource = useCallback((ds: any) => {
+    setData(ds);
+  }, []);
 
   // 后置操作渲染
   const SuffixRender = (props) => {
@@ -77,7 +80,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     const outputId = `${id}-suffixClick`;
     if (useSuffix && type === TypeEnum.Text) {
       const record = {
-        ...data.rawData
+        ...rawDataRef.current
       };
       getDataSource().forEach((item) => {
         record[item.key] = item.value;
@@ -132,7 +135,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           const SlotItem = slots[slotId]?.render({
             inputValues: {
               [InputIds.CurDs]: value,
-              [InputIds.DataSource]: data.rawData
+              [InputIds.DataSource]: rawDataRef.current
             },
             key: slotId
           });
