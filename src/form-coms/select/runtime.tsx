@@ -60,7 +60,7 @@ export default function Runtime({
       if (!typeCheck(val, typeMap.type)) {
         logger.error(typeMap.message);
       } else {
-        onChange(val);
+        changeValue(val);
         // data.value = val;
       }
     });
@@ -149,16 +149,19 @@ export default function Runtime({
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id });
   };
-  const onChange = useCallback((value) => {
+  const changeValue = useCallback((value) => {
     if (value === undefined) {
       data.value = '';
     }
     data.value = value;
     outputs['onChange'](value);
   }, []);
+  const onChange = useCallback((value) => {
+    changeValue(value);
+    onValidateTrigger();
+  }, []);
   const onBlur = useCallback((e) => {
     outputs['onBlur'](data.value);
-    onValidateTrigger();
   }, []);
 
   const onSearch = (e) => {
