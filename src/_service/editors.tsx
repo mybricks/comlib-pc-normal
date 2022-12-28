@@ -1,4 +1,5 @@
 const defaultSchema = { type: 'any' };
+import { INPUT_ID } from './const';
 
 export default {
   '@init': ({ data, setDesc, setAutoRun, isAutoRun }) => {
@@ -68,22 +69,25 @@ export default {
       //   return !data.immediate;
       // },
       value: {
-        get({ data, configs }) {
-          const cfg = configs.get('url');
-          return cfg !== void 0;
+        get({ input }) {
+          return input.get(INPUT_ID.SET_URL) !== void 0;
         },
-        set({ data, configs, setDesc }, set) {
-          if (set) {
-            configs.add({
-              id: 'url',
-              title: '设置服务地址',
-              schema: {
-                type: 'string'
-              },
-              binding: `data.connectorConfig.url`
-            });
+        set({ data, input }, use: boolean) {
+          const callPin = input.get('call');
+          if (use) {
+            input.add(INPUT_ID.SET_URL, '设置服务地址', { type: 'string' });
+            if (!callPin) {
+              input.add('call', '调用', { type: 'object' });
+            }
+            data.immediate = false;
+            data.useExternalUrl = true;
           } else {
-            configs.get('url').remove();
+            input.remove(INPUT_ID.SET_URL);
+            if (callPin) {
+              input.remove('call');
+            }
+            data.immediate = true;
+            data.useExternalUrl = false;
           }
         }
       }
