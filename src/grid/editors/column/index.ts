@@ -33,8 +33,7 @@ export default {
             }
             item.slotStyle = {
               ...item.slotStyle,
-              ...val,
-              position: val.layout === 'absolute' ? val.layout : 'inherit'
+              ...val
             };
           }
         }

@@ -12,7 +12,15 @@ export const createColByWidth = (width: number = 280) => {
       overflowX: 'hidden',
       overflowY: 'hidden'
     },
-    flex: 1
+    flex: 1,
+    slotStyle: {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap'
+    }
   };
 };
 
@@ -28,7 +36,15 @@ export const createAutoCol = (flex: number = 1) => {
       overflowX: 'hidden',
       overflowY: 'hidden'
     },
-    flex
+    flex,
+    slotStyle: {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap'
+    }
   };
 };
 
@@ -44,7 +60,15 @@ export const createColBySpan = (span: number = 4) => {
       overflowX: 'hidden',
       overflowY: 'hidden'
     },
-    flex: 1
+    flex: 1,
+    slotStyle: {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap'
+    }
   };
 };
 
