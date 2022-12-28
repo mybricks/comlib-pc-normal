@@ -59,9 +59,3 @@ export interface Data {
   style: React.CSSProperties;
   widthUnit?: string;
 }
-
-export type SlotStyle = {
-  layout?: any;
-  layoutAlignItems?: any;
-  layoutJustifyContent?: any;
-};
