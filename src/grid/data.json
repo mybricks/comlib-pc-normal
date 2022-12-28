@@ -20,6 +20,14 @@
           "colStyle": {
             "overflowX": "hidden",
             "overflowY": "hidden"
+          },
+          "slotStyle": {
+            "display": "flex",
+            "position": "inherit",
+            "flexDirection": "row",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "flexWrap": "nowrap"
           }
         },
         {
@@ -32,6 +40,14 @@
           "colStyle": {
             "overflowX": "hidden",
             "overflowY": "hidden"
+          },
+          "slotStyle": {
+            "display": "flex",
+            "position": "inherit",
+            "flexDirection": "row",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "flexWrap": "nowrap"
           }
         },
         {
@@ -44,6 +60,14 @@
           "colStyle": {
             "overflowX": "hidden",
             "overflowY": "hidden"
+          },
+          "slotStyle": {
+            "display": "flex",
+            "position": "inherit",
+            "flexDirection": "row",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "flexWrap": "nowrap"
           }
         }
       ]

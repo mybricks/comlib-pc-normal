@@ -87,7 +87,7 @@ export default function (props: RuntimeParams<Data>) {
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
     >
-      {slots[SlotIds.Content].render()}
+      {slots[SlotIds.Content].render({ style: data.slotStyle })}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { SlotLayoutEditor } from '../../../components/editors/SlotLayoutEditor';
 import { Data } from '../../constants';
 import IndexEditor from './indexEditor';
 import StyleEditor from './styleEditor';
@@ -12,7 +11,34 @@ export default {
     const item = getColItem(data, focusArea);
     const mySlot = slot.get(item.slot);
     cate1.title = '常规';
-    cate1.items = [...WidthEditor, ...SlotLayoutEditor(mySlot), ...IndexEditor];
+    cate1.items = [
+      ...WidthEditor,
+      {
+        title: '自动布局',
+        type: 'layout',
+        options: [],
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            const item = getColItem(data, focusArea);
+            const { slotStyle = {} } = item;
+            return slotStyle;
+          },
+          set({ data, focusArea, slot }: EditorResult<Data>, val: any) {
+            if (!focusArea) return;
+            const item = getColItem(data, focusArea);
+            if (!item.slotStyle) {
+              item.slotStyle = {};
+            }
+            item.slotStyle = {
+              ...item.slotStyle,
+              ...val
+            };
+          }
+        }
+      },
+      ...IndexEditor
+    ];
 
     cate2.title = '样式';
     cate2.items = [...StyleEditor];

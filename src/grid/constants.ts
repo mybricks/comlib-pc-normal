@@ -38,8 +38,9 @@ export interface ColumnParams {
   minMaxWidthOption?: WidthUnitEnum;
   minWidth?: number;
   maxWidth?: number;
-  flex: number
+  flex: number;
   useClick?: boolean;
+  slotStyle?: React.CSSProperties;
 }
 
 export interface IRow {
