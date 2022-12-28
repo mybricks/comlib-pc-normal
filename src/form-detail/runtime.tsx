@@ -126,19 +126,22 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             labelStyle,
             contentStyle,
             itemStyle,
-            slotId,
+            slotId = '',
             lineLimit,
             widthLimit,
             limit,
             showLable = true
           } = item || {};
-          const SlotItem = slots[slotId]?.render({
-            inputValues: {
-              [InputIds.CurDs]: value,
-              [InputIds.DataSource]: rawDataRef.current
-            },
-            key: slotId
-          });
+          const SlotItem =
+            type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
+              ? slots[slotId]?.render({
+                  inputValues: {
+                    [InputIds.CurDs]: value,
+                    [InputIds.DataSource]: rawDataRef.current
+                  },
+                  key: slotId
+                })
+              : null;
           if (type === TypeEnum.AllSlot) {
             return (
               <Descriptions.Item label={''} key={id} span={span}>
