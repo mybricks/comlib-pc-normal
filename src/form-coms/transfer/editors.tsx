@@ -4,6 +4,9 @@ export default {
   '@resize': {
     options: ['width']
   },
+  '@init': ({ style }) => {
+    style.width = '100%';
+  },
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '配置';
     cate[0].items = [

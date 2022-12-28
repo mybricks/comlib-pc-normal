@@ -9,6 +9,7 @@
           "./src/_0_test/container/com.json",
           "./src/_0_test/text/com.json",
           "./src/_0_test/list/com.json",
+          "./src/_0_test/test/com.json",
           "./src/text/com.json",
           "./src/link/com.json",
           "./src/typography/com.json",
@@ -104,7 +105,8 @@
       "./src/_object-merge/com.json",
       "./src/_schema-simulator/com.json",
       "./src/_query/com.json",
-      "./src/_events/com.json"
+      "./src/_events/com.json",
+      "./src/_service/com.json"
     ],
     "publish": [
       {
@@ -205,7 +207,8 @@
       "./src/_object-merge/com.json",
       "./src/_schema-simulator/com.json",
       "./src/_query/com.json",
-      "./src/_events/com.json"
+      "./src/_events/com.json",
+      "./src/_service/com.json"
     ]
   },
   "externals": [

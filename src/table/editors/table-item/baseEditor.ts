@@ -72,7 +72,7 @@ const BaseEditor = {
           const item = getColumnItem(data, focusArea);
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           return {
-            field: ret,
+            value: ret,
             schema: getColumnsSchema(data),
             disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
           };

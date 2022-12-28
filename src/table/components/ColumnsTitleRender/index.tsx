@@ -79,7 +79,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           sorter = (a, b) => {
             const aVal = get(a, cItem.dataIndex);
             const bVal = get(b, cItem.dataIndex);
-            if (!aVal || !bVal) {
+            if (typeof aVal !== 'string' || typeof bVal !== 'string') {
               return 0;
             }
             return aVal.length - bVal.length;
@@ -89,7 +89,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           sorter = (a, b) => {
             const aVal = get(a, cItem.dataIndex);
             const bVal = get(b, cItem.dataIndex);
-            if (!aVal || !bVal) {
+            if (typeof aVal !== 'number' || typeof bVal !== 'number') {
               return 0;
             }
             return aVal - bVal;

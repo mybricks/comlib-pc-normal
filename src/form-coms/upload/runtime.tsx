@@ -176,7 +176,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       let isAcceptFileType = true;
       if (acceptTypesList.length) {
         isAcceptFileType = acceptTypesList.some((element) => {
-          return file.name.includes(element);
+          return element.split('.').some((extname) => extname && file.name.includes);
         });
       } else {
         isAcceptFileType = true;

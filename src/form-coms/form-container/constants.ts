@@ -15,7 +15,8 @@ export const outputIds = {
 }
 
 export const slotInputIds = {
-  SET_FIELDS_VALUE: 'setFieldsValue'
+  SET_FIELDS_VALUE: 'setFieldsValue',
+  VALIDATE_TRIGGER: 'validateTrigger'
 }
 
 export const labelWidthTypes = {

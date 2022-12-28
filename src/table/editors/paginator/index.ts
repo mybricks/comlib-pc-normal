@@ -8,6 +8,7 @@ import {
   // WidthTypeEnum
 } from '../../components/Paginator/constants';
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
+import { setDataSchema } from '../../schema';
 
 export default {
   '[data-table-pagination]': ({}: EditorResult<Data>, cate1, cate2) => {
@@ -107,6 +108,20 @@ export default {
 
     cate2.title = '高级';
     cate2.items = [
+      {
+        title: '前端分页',
+        type: 'Switch',
+        description: '开启后，会自动根据当前页码/条目数分页展示',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.paginationConfig.useFrontPage;
+          },
+          set({ data, ...res }: EditorResult<Data>, value: boolean) {
+            data.paginationConfig.useFrontPage = value;
+            setDataSchema({ data, ...res });
+          }
+        }
+      },
       {
         title: '前置说明文字',
         type: 'EXPRESSION',

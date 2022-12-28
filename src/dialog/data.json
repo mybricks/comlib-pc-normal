@@ -8,6 +8,7 @@
   "cancelText": "取消",
   "width": 520,
   "footerLayout": "flex-end",
+  "isNew": true,
   "footerBtns": [
     {
       "id": "cancelBtn",

@@ -2,6 +2,7 @@ import { Form, Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
+import { validateTrigger } from '../form-container/models/validate';
 
 export interface Data {
   value: string | undefined;
@@ -16,7 +17,8 @@ export interface Data {
   };
 }
 
-export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
+export default function Runtime(props: RuntimeParams<Data>) {
+  const { data, inputs, outputs, env, parentSlot } = props;
   const { edit } = env;
 
   useFormItemInputs({
@@ -57,6 +59,10 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
     }
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id });
+  };
+
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
@@ -66,6 +72,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   const onBlur = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
+    onValidateTrigger();
     outputs['onBlur'](value);
   }, []);
 

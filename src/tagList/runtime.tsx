@@ -13,10 +13,12 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
   const onTagChange = (index: number) => {
     const pre = data.tags[index];
     data.tags[index] = { ...pre, checked: !pre.checked };
+    outputs['onChange'](!pre.checked);
   };
 
-  const onTagClose = (index: number) => {
+  const onTagClose = (index: number, tag: TagType) => {
     data.tags.splice(index, 1);
+    outputs['onClose'](tag);
   };
 
   inputs['dynamicTags'] &&
@@ -34,44 +36,41 @@ export default function ({ data, inputs, outputs, slots }: RuntimeParams<Data>) 
     });
 
   const renderTag = () => {
-    return tags.map(
-      (
-        { key, checkable, checked, content, icon, closable, color, textColor, borderColor },
-        index
-      ) => {
-        const isPreset = preset.includes(color as string);
-        if (checkable) {
-          return (
-            <Tag.CheckableTag
-              key={key}
-              className={styles[tagSize]}
-              data-index={index}
-              data-item-tag="tag"
-              checked={checked as boolean}
-              style={!isPreset ? { color: textColor, borderColor } : {}}
-              onChange={() => onTagChange(index)}
-            >
-              {content}
-            </Tag.CheckableTag>
-          );
-        }
+    return tags.map((tag, index) => {
+      const { key, checkable, checked, content, icon, closable, color, textColor, borderColor } =
+        tag;
+      const isPreset = preset.includes(color as string);
+      if (checkable) {
         return (
-          <Tag
+          <Tag.CheckableTag
             key={key}
             className={styles[tagSize]}
             data-index={index}
             data-item-tag="tag"
-            color={color}
-            closable={closable}
-            onClose={() => onTagClose(index)}
-            icon={Icons && Icons[icon as string]?.render()}
+            checked={checked as boolean}
             style={!isPreset ? { color: textColor, borderColor } : {}}
+            onChange={() => onTagChange(index)}
           >
             {content}
-          </Tag>
+          </Tag.CheckableTag>
         );
       }
-    );
+      return (
+        <Tag
+          key={key}
+          className={styles[tagSize]}
+          data-index={index}
+          data-item-tag="tag"
+          color={color}
+          closable={closable}
+          onClose={() => onTagClose(index, tag)}
+          icon={Icons && Icons[icon as string]?.render()}
+          style={!isPreset ? { color: textColor, borderColor } : {}}
+        >
+          {content}
+        </Tag>
+      );
+    });
   };
 
   return (

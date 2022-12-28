@@ -4,8 +4,17 @@ import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { Option, OutputIds } from '../types';
 import { uuid } from '../../utils';
+import { validateTrigger } from '../form-container/models/validate';
 
-export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  logger,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -29,7 +38,8 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (val !== undefined && !Array.isArray(val)) {
         logger.error(`多选框的值应为数组格式`);
       } else {
-        onChange(val);
+        changeValue(val);
+        outputs['onChange'](data.value);
       }
     });
 
@@ -44,8 +54,8 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       });
 
     inputs['resetValue'](() => {
-      data.value = [];
       data.value = void 0;
+      changeValue();
     });
 
     //设置禁用
@@ -92,12 +102,47 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
   }, []);
 
-  const onChange = useCallback((checkedValue) => {
-    data.value = checkedValue;
-    outputs['onChange'](checkedValue);
+  const [indeterminate, setIndeterminate] = useState(false);
+  const [checkAll, setCheckAll] = useState(false);
+
+  // 校验触发
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
+  // data.value变化事件
+  const changeValue = useCallback((checkedValue?: any[]) => {
+    if (Array.isArray(checkedValue)) {
+      setIndeterminate(!!checkedValue.length && checkedValue.length < data.config.options.length);
+      setCheckAll(checkedValue.length === data.config.options.length);
+      data.value = checkedValue;
+    } else {
+      setIndeterminate(false);
+      setCheckAll(false);
+      data.value = [];
+      data.value = void 0;
+    }
   }, []);
+  // 全选框组监听事件
+  const onChange = useCallback((checkedValue) => {
+    changeValue(checkedValue);
+    outputs['onChange'](checkedValue);
+    onValidateTrigger();
+  }, []);
+  // 全选框监听事件
+  const onCheckAllChange = (e) => {
+    data.value = e.target.checked ? data.config.options.map((item) => item.value) : [];
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
+    onValidateTrigger();
+  };
+
   return (
     <div>
+      {data.checkAll && (
+        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+          {data.checkAllText}
+        </Checkbox>
+      )}
       <Checkbox.Group
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}

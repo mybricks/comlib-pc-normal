@@ -1,7 +1,7 @@
 {
   "title": "对话框",
   "namespace": "mybricks.normal-pc.dialog",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "对话框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -14,7 +14,7 @@
       "id": "open",
       "title": "打开",
       "schema": {
-        "type": "follow"
+        "type": "any"
       }
     },
     {
@@ -72,8 +72,9 @@
           "id": "dataSource",
           "title": "输入数据",
           "schema": {
-            "type": "any"
-          }
+            "type": "follow"
+          },
+          "editable": true
         }
       ],
       "outputs": [

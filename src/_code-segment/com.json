@@ -23,7 +23,7 @@
       "id": "output0",
       "title": "输出项0",
       "schema": {
-        "type": "unknown"
+        "type": "number"
       },
       "editable": true
     }

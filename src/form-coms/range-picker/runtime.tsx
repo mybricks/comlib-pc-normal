@@ -4,6 +4,7 @@ import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import { OutputIds } from '../types';
+import { validateTrigger } from '../form-container/models/validate';
 
 const { RangePicker } = DatePicker;
 
@@ -20,7 +21,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env } = props;
+  const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<any>();
 
   //输出数据变形函数
@@ -162,6 +163,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     data.config.disabled = false;
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id });
+  };
+
   const onChange = (value) => {
     setValue(value);
     let transValue;
@@ -173,6 +178,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
     }
     outputs['onChange'](transValue);
+    onValidateTrigger();
   };
 
   const getShowTime = () => {

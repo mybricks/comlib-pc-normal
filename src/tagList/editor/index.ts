@@ -1,5 +1,5 @@
 import { Data, TagSize } from '../types';
-import TagEditor from './tag';
+import TagEditor, { TagSchema } from './tag';
 import { createTag } from './util';
 export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
@@ -86,39 +86,7 @@ export default {
                 if (val) {
                   input.add('dynamicTags', '输入动态标签列表', {
                     type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        icon: {
-                          title: '图标',
-                          type: 'string'
-                        },
-                        content: {
-                          title: '标签内容',
-                          type: 'string'
-                        },
-                        color: {
-                          title: '背景颜色',
-                          type: 'string'
-                        },
-                        textColor: {
-                          title: '文本颜色',
-                          type: 'string'
-                        },
-                        borderColor: {
-                          title: '边框颜色',
-                          type: 'string'
-                        },
-                        checkable: {
-                          title: '是否可选',
-                          type: 'boolean'
-                        },
-                        closable: {
-                          title: '是否可关闭',
-                          type: 'boolean'
-                        }
-                      }
-                    }
+                    items: TagSchema
                   });
                 } else {
                   input.remove('dynamicTags');

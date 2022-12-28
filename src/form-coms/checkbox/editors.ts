@@ -32,6 +32,9 @@ export default {
   '@resize': {
     options: ['width']
   },
+  '@init': ({ style }) => {
+    style.width = '100%';
+  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -46,6 +49,35 @@ export default {
           },
           set({ data }, value: boolean) {
             data.config.disabled = value;
+          }
+        }
+      },
+      {
+        title: '全选框',
+        type: 'switch',
+        description: '是否使用全选框',
+        value: {
+          get({ data }) {
+            return data.checkAll;
+          },
+          set({ data }, value: boolean) {
+            data.checkAll = value;
+          }
+        }
+      },
+      {
+        title: '全选框标签',
+        type: 'text',
+        description: '修改全选框的文案',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.checkAll;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.checkAllText;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.checkAllText = value;
           }
         }
       },

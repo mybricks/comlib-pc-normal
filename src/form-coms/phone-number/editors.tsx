@@ -25,8 +25,9 @@ const phoneNumberRules = [
 ];
 
 export default {
-  '@init'({ data }) {
+  '@init'({ data, style }) {
     data.rules = phoneNumberRules;
+    style.width = '100%';
   },
   '@resize': {
     options: ['width']

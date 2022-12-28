@@ -1,3 +1,4 @@
+import { InputIds } from '../types';
 import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -15,9 +16,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.dropdownSearchOption = false;
   };
 
-  let valueSchema: {} = {
-    type: 'string'
-  };
+  /**
+    * @description v1.0.2 增加"设置初始值"输入项和“初始化”输出项
+    */
+  const setValueSchema = input.get(InputIds.SetValue).schema;
+  let valueSchema = {};
   if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
     valueSchema = data.config.labelInValue ? {
       type: 'array',
@@ -27,9 +30,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
           label: {
             type: 'string'
           },
-          value: {
-            type: 'string'
-          }
+          value: setValueSchema
         }
       }
     } : {
@@ -42,13 +43,9 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
         label: {
           type: 'string'
         },
-        value: {
-          type: 'string'
-        }
+        value: setValueSchema
       }
-    } : {
-      type: 'string'
-    };
+    } : setValueSchema;
   }
   if (!input.get('setInitialValue')) {
     input.add('setInitialValue', '设置初始值', valueSchema);
@@ -56,6 +53,37 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (!output.get('onInitial')) {
     output.add('onInitial', '初始化', valueSchema);
   }
+
+  /**
+    * @description v1.0.3 统一“设置数据源”、“设置值”、“设置初始值”、“初始化”的schema
+    */
+  input.get('setInitialValue').setSchema(valueSchema);
+  output.get('onInitial').setSchema(valueSchema);
+  const dataSourceSchema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        label: {
+          title: '标签',
+          type: 'string',
+        },
+        value: {
+          title: '值',
+          type: setValueSchema?.type || 'string',
+        },
+        disabled: {
+          title: '禁用',
+          type: 'boolean',
+        },
+        checked: {
+          title: '选中',
+          type: 'boolean',
+        },
+      },
+    },
+  };
+  input.get('setOptions').setSchema(dataSourceSchema);
 
   return true;
 }

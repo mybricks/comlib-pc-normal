@@ -6,6 +6,9 @@ import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
   const { size, title, showTitle, layout, column, bordered, colon } = data || {};
+  const [rawData, setData] = useState({});
+  const rawDataRef = useRef({});
+  rawDataRef.current = rawData;
 
   const contentMap = {
     text: (value, lineLimit, widthLimit, limit) => {
@@ -38,7 +41,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   };
   const getDataSource = useCallback(() => {
     const res: Item[] = [];
-    let ds = data.rawData || {};
+    let ds = rawDataRef.current || {};
     (data.items || []).forEach((item) => {
       const labelStyle = {
         ...item.labelStyle,
@@ -56,42 +59,20 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
       };
 
-      if (typeof ds[item.key] === 'string' || typeof ds[item.key] === 'number') {
-        res.push({
-          ...item,
-          value: ds[item.key],
-          labelStyle,
-          contentStyle,
-          itemStyle
-        });
-      } else if (ds[item.key] && typeof ds[item.key] === 'object') {
-        res.push({
-          ...item,
-          value: ds[item.key].value,
-          color: ds[item.key].color,
-          labelStyle,
-          contentStyle,
-          itemStyle
-        });
-      } else {
-        if (ds[item.key] !== undefined) {
-          console.error('数据类型错误，仅支持对象，字符串或数字');
-        }
-        // 无数据
-        res.push({
-          ...item,
-          labelStyle,
-          contentStyle,
-          itemStyle
-        });
-      }
+      res.push({
+        ...item,
+        value: ds[item.key],
+        labelStyle,
+        contentStyle,
+        itemStyle
+      });
     });
     return res;
   }, []);
 
-  const setDataSource = (ds: any) => {
-    data.rawData = ds;
-  };
+  const setDataSource = useCallback((ds: any) => {
+    setData(ds);
+  }, []);
 
   // 后置操作渲染
   const SuffixRender = (props) => {
@@ -99,7 +80,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     const outputId = `${id}-suffixClick`;
     if (useSuffix && type === TypeEnum.Text) {
       const record = {
-        ...data.rawData
+        ...rawDataRef.current
       };
       getDataSource().forEach((item) => {
         record[item.key] = item.value;
@@ -145,19 +126,22 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             labelStyle,
             contentStyle,
             itemStyle,
-            slotId,
+            slotId = '',
             lineLimit,
             widthLimit,
             limit,
             showLable = true
           } = item || {};
-          const SlotItem = slots[slotId]?.render({
-            inputValues: {
-              [InputIds.CurDs]: value,
-              [InputIds.DataSource]: data.rawData
-            },
-            key: slotId
-          });
+          const SlotItem =
+            type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
+              ? slots[slotId]?.render({
+                  inputValues: {
+                    [InputIds.CurDs]: value,
+                    [InputIds.DataSource]: rawDataRef.current
+                  },
+                  key: slotId
+                })
+              : null;
           if (type === TypeEnum.AllSlot) {
             return (
               <Descriptions.Item label={''} key={id} span={span}>

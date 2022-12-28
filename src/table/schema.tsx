@@ -9,7 +9,23 @@ interface Props {
   output: any;
   slot: any;
 }
-export function getDefaultDataSchema(dataIndex: string | string[], data: Data) {
+
+function getColumnsWithExpand(data: Data) {
+  const list = [...data.columns];
+  if (data.useExpand && data.expandDataIndex) {
+    list.push({
+      dataIndex: data.expandDataIndex,
+      title: '展开行数据',
+      key: '_expandIndex',
+      contentType: ContentTypeEnum.Text
+    });
+  }
+  return list;
+}
+export function getDefaultDataSchema(dataIndex: string | string[] | undefined, data: Data) {
+  if (!dataIndex) {
+    return { type: 'string' };
+  }
   const columnIdx = Array.isArray(dataIndex) ? dataIndex.join('.') : dataIndex;
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   return schemaObj[columnIdx] || { type: 'string' };
@@ -38,7 +54,7 @@ function schema2Obj(schema: any = {}, data: Data) {
     return res;
   }
   const schemaObj = loop(schema) || {};
-  data.columns.forEach((item) => {
+  getColumnsWithExpand(data).forEach((item) => {
     const idx = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
     if (
       item.dataSchema &&
@@ -53,7 +69,6 @@ function schema2Obj(schema: any = {}, data: Data) {
 
 // 获取列数据schema
 function getColumnsDataSchema(schemaObj: object, { data }: Props) {
-  const { columns } = data;
   const dataSchema = {};
 
   const setDataSchema = (columns: IColumn[]) => {
@@ -79,13 +94,13 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
       });
     }
   };
-  setDataSchema(columns);
+  setDataSchema(getColumnsWithExpand(data));
   return dataSchema;
 }
 
 // 数据源schema
 function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
-  if (data.usePagination) {
+  if (data.usePagination && !data.paginationConfig?.useFrontPage) {
     input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
       title: '数据列表',
       type: 'object',
@@ -225,11 +240,23 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
 }
 
 // 展开行插槽作用域schema
-function setExpandSlotSchema(dataSchema, { slot }: Props) {
+function setExpandSlotSchema(schemaObj: object, dataSchema, { slot, data }: Props) {
   slot?.get(SlotIds.EXPAND_CONTENT)?.inputs?.get(InputIds.EXP_COL_VALUES)?.setSchema({
     type: 'object',
     properties: dataSchema
   });
+  if (data.useExpand && data.expandDataIndex) {
+    const key = Array.isArray(data.expandDataIndex)
+      ? data.expandDataIndex.join('.')
+      : data.expandDataIndex;
+    slot
+      ?.get(SlotIds.EXPAND_CONTENT)
+      ?.inputs?.get(InputIds.EXP_ROW_VALUES)
+      ?.setSchema({
+        type: 'string',
+        ...(schemaObj[key] || {})
+      });
+  }
 }
 
 // 列插槽作用域schema
@@ -260,7 +287,7 @@ export function setDataSchema({ data, output, input, slot }: EditorResult<Data>)
   setDataSourceSchema(dataSchema, { data, output, input, slot });
   setOutputsSchema(dataSchema, { data, output, input, slot });
   setFilterSchema(schemaObj, { data, output, input, slot });
-  setExpandSlotSchema(dataSchema, { data, output, input, slot });
+  setExpandSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
   setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
 }
 

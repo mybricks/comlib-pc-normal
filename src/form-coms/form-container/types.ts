@@ -16,6 +16,7 @@ interface Actions {
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
+  inlinePadding?: number[]
 }
 
 interface FormItems {
@@ -29,6 +30,7 @@ interface FormItems {
   help?: string
   tooltip?: string
   widthOption: LabelWidthType
+  inlineMargin?: number[]
 }
 
 export type LabelWidthType = 'px' | 'span'

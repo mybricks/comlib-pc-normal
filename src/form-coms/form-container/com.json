@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.1.1",
+  "version": "1.1.5",
   "description": "表单容器",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -161,6 +161,21 @@
           "schema": {
             "type": "object",
             "properties": {}
+          }
+        }
+      ],
+      "_inputs": [
+        {
+          "id": "validateTrigger",
+          "title": "触发校验",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              }
+            }
           }
         }
       ]

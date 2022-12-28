@@ -40,7 +40,12 @@ export default (props: RuntimeParams<Data>) => {
           }
         }}
       >
-        <div className={data.title === '' ? css.noTitleContainer : css.container}>
+        <div
+          style={{
+            overflow: props.style.height !== 'auto' ? 'auto' : void 0
+          }}
+          className={data.title === '' ? css.noTitleContainer : css.container}
+        >
           {slots[SlotIds.Body]?.render()}
         </div>
       </Card>

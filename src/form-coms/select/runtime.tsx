@@ -5,8 +5,17 @@ import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
 import { Option, OutputIds } from '../types';
+import { validateTrigger } from '../form-container/models/validate';
 
-export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  logger,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
   const typeMap = useMemo(() => {
@@ -51,7 +60,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (!typeCheck(val, typeMap.type)) {
         logger.error(typeMap.message);
       } else {
-        onChange(val);
+        changeValue(val);
         // data.value = val;
       }
     });
@@ -137,12 +146,19 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
   }, []);
 
-  const onChange = useCallback((value) => {
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id });
+  };
+  const changeValue = useCallback((value) => {
     if (value === undefined) {
       data.value = '';
     }
     data.value = value;
     outputs['onChange'](value);
+  }, []);
+  const onChange = useCallback((value) => {
+    changeValue(value);
+    onValidateTrigger();
   }, []);
   const onBlur = useCallback((e) => {
     outputs['onBlur'](data.value);

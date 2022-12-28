@@ -1,10 +1,17 @@
 function callCon({env, data, outputs}, params = {}) {
   if (data.connector) {
-    env.callConnector(data.connector, params).then(val => {
-      outputs['then'](val)
-    }).catch(err => {
-      outputs['catch'](err)
-    })
+    try {
+      env.callConnector(data.connector, params, data.connectorConfig).then(val => {
+        outputs['then'](val)
+      }).catch(err => {
+        outputs['catch'](err)
+      })
+    } catch (ex) {
+      console.error(ex)
+
+      outputs['catch'](`执行错误 ${ex.message||ex}`)
+      //onError(ex.message)
+    }
   } else {
     outputs['catch'](`没有选择接口`)
   }

@@ -4,10 +4,11 @@ import { Data, FormControlInputId } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
+import { ValidateInfo } from '../types';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
-    returnValidate: (val) => {};
+    returnValidate: (cb: (val: ValidateInfo) => void) => void;
   };
   getValue: (val?: any) => {
     returnValue: (val) => {};
@@ -15,14 +16,16 @@ type FormControlInputRels = {
   [key: string]: (val?: any) => void;
 };
 
+type FormControlInputType = {
+  [key in FormControlInputId]: FormControlInputRels[key];
+};
+
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
   const [formRef] = Form.useForm();
 
   const childrenInputs = useMemo<{
-    [id: string]: {
-      [key in FormControlInputId]: FormControlInputRels[key];
-    };
+    [id: string]: FormControlInputType;
   }>(() => {
     return {};
   }, [env.edit]);
@@ -57,7 +60,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
-    //------ For 表单项私有 ---------
+    //------ For 表单项私有 start ---------
     _inputs['validate']((val, outputRels) => {
       validate().then((r) => {
         outputRels['returnValidate']({
@@ -75,26 +78,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
     _inputs['setValue']((val) => {
       setFieldsValue(val);
     });
+    //------ For 表单项私有 end---------
 
-    // slots['content']._inputs['validateTrigger'](id=>{
-    //   const item = data.items.find(item => item.id === id)
-
-    //   console.log('validateTrigger', item)
-    // });
+    /**
+     * @description 响应触发对应表单项校验
+     */
+    slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER](({ id }) => {
+      const item = data.items.find((item) => item.id === id);
+      if (item) {
+        const input = childrenInputs[item.id];
+        validateForInput({ item, input });
+      }
+    });
   }, []);
 
   const setFieldsValue = (val) => {
     if (val) {
       Object.keys(val).forEach((key) => {
-        const item = data.items.find((item) => item.name === key);
-        if (item) {
-          const input = childrenInputs[item.id];
-          if (isObject(val[key])) {
-            input?.setValue({ ...val[key] });
-          } else {
-            input?.setValue(val[key]);
-          }
-        }
+        setValuesForInput({ childrenInputs, formItems: data.items, name: key }, 'setValue', val);
       });
     }
   };
@@ -102,15 +103,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const setInitialValues = (val) => {
     if (val) {
       Object.keys(val).forEach((key) => {
-        const item = data.items.find((item) => item.name === key);
-        if (item) {
-          const input = childrenInputs[item.id];
-          if (isObject(val[key])) {
-            input?.setInitialValue({ ...val[key] });
-          } else {
-            input?.setInitialValue(val[key]);
-          }
-        }
+        setValuesForInput(
+          { childrenInputs, formItems: data.items, name: key },
+          'setInitialValue',
+          val
+        );
       });
     }
   };
@@ -120,6 +117,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const id = item.id;
       const input = childrenInputs[id];
       input?.resetValue();
+      item.validateStatus = undefined;
+      item.help = undefined;
     });
   };
 
@@ -136,12 +135,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const input = childrenInputs[id];
 
           return new Promise((resolve, reject) => {
-            input?.validate({ ...item }).returnValidate((validateInfo) => {
-              //调用所有表单项的校验
-              item.validateStatus = validateInfo?.validateStatus;
-              item.help = validateInfo?.help;
-              resolve(validateInfo);
-            });
+            validateForInput({ item, input }, resolve);
           });
         })
       )
@@ -318,4 +312,32 @@ const FormListItem = ({ content, slots, env, isFormItem, data }) => {
       }}
     </Form.List>
   );
+};
+
+/**
+ * @description 触发表单项校验，并更新校验结果
+ */
+const validateForInput = (
+  { input, item }: { input: FormControlInputType; item: any },
+  cb?: (val: any) => void
+): void => {
+  input?.validate({ ...item }).returnValidate((validateInfo) => {
+    item.validateStatus = validateInfo?.validateStatus;
+    item.help = validateInfo?.help;
+    if (cb) {
+      cb(validateInfo);
+    }
+  });
+};
+
+const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
+  const item = formItems.find((item) => item.name === name);
+  if (item) {
+    const input = childrenInputs[item.id];
+    if (isObject(values[name])) {
+      input[inputId] && input[inputId]({ ...values[name] });
+    } else {
+      input[inputId] && input[inputId](values[name]);
+    }
+  }
 };

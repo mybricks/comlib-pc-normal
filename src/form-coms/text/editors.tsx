@@ -4,6 +4,9 @@ export default {
   '@resize': {
     options: ['width']
   },
+  '@init': ({ style }) => {
+    style.width = '100%';
+  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -185,6 +188,13 @@ export default {
             type: '_event',
             options: {
               outputId: 'onBlur'
+            }
+          },
+          {
+            title: '按下回车',
+            type: '_event',
+            options: {
+              outputId: 'onPressEnter'
             }
           }
         ]

@@ -49,7 +49,7 @@ export interface IColumn {
   title: string;
   contentType: ContentTypeEnum;
 
-  visible: boolean;
+  visible?: boolean;
   width?: number | WidthTypeEnum;
   align?: AlignEnum;
   /** 内容字体颜色 */
@@ -157,6 +157,8 @@ export interface Data {
 
   // 使用列展开
   useExpand?: boolean;
+  expandDataIndex?: string | string[];
+  expandDataSchema?: any;
 
   usePagination?: boolean;
   paginationConfig: PaginationData;

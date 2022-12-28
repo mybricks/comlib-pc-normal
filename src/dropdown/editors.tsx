@@ -1,5 +1,4 @@
 import { Data } from './types';
-import { uuid } from '../utils';
 
 interface Result {
   data: Data;
@@ -32,6 +31,35 @@ export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '常规';
     cate[0].items = [
+      {
+        title: '提示内容',
+        type: 'Text',
+        description: '自定义开关关闭时, 可编辑提示内容',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.isCustom;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.content;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.content = value;
+          }
+        }
+      },
+      {
+        title: '自定义',
+        type: 'Switch',
+        description: '开启自定义后, 可自定义添加需要组件',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isCustom;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.isCustom = value;
+          }
+        }
+      },
       //选项弹出位置
       {
         title: '弹出位置',
@@ -95,7 +123,7 @@ export default {
           onAdd: () => {
             const defaultOption = {
               label: `选项${tempOptions.length + 1}`,
-              value: uuid()
+              value: ''
             };
             addOption(defaultOption);
             return defaultOption;
@@ -139,7 +167,7 @@ export default {
         }
       },
       {
-        title: '选项改变',
+        title: '点击',
         type: '_Event',
         options: () => {
           return {

@@ -74,6 +74,7 @@ export interface Data {
   items: Item[];
   useSlotProps?: boolean;
   rawData: any;
+  inputSchema: any;
 }
 
 export const InputIds = {
