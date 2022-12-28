@@ -64,9 +64,9 @@ export default {
     {
       title: '配置服务地址',
       type: 'switch',
-      ifVisible({ data }) {
-        return !data.immediate;
-      },
+      // ifVisible({ data }) {
+      //   return !data.immediate;
+      // },
       value: {
         get({ data, configs }) {
           const cfg = configs.get('url');

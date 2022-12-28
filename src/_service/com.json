@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.service",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "服务接口",
   "runtime": "./runtime.ts",
   "editors": "./editors.tsx",
