@@ -42,4 +42,6 @@ export interface Data {
   useOverflowUnset?: boolean;
 
   useClick?: boolean;
+
+  slotStyle?: CSSProperties
 }

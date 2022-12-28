@@ -1,4 +1,3 @@
-import { SlotLayoutEditor } from '../../../components/editors/SlotLayoutEditor';
 import { Data } from '../../constants';
 import IndexEditor from './indexEditor';
 import StyleEditor from './styleEditor';

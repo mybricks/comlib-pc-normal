@@ -4,7 +4,6 @@ import { PageScrollEditor } from './editors/pageSrcollEditor';
 import { StyleEditor } from './editors/styleEditor';
 import { ClickEditor } from './editors/clickEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
-import { SlotLayoutEditor } from '../components/editors/SlotLayoutEditor';
 
 export default {
   '@init'({ style }: EditorResult<Data>) {
@@ -25,8 +24,24 @@ export default {
     cate2.title = '布局';
     cate2.items = [
       {
-        title: '布局',
-        items: SlotLayoutEditor(slot.get(SlotIds.Content))
+        title: '自动布局',
+        type: 'layout',
+        options: [],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            const { slotStyle = {} } = data;
+            return slotStyle;
+          },
+          set({ data }: EditorResult<Data>, val: any) {
+            if (!data.slotStyle) {
+              data.slotStyle = {};
+            }
+            data.slotStyle = {
+              ...data.slotStyle,
+              ...val
+            };
+          }
+        }
       },
       ...MaxHeightEditor,
       ...OverflowEditor
