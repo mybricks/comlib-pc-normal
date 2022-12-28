@@ -1,5 +1,39 @@
 import { Data, Tag } from '../types';
 import { getTagItem, arrayMove } from './util';
+export const TagSchema = {
+  type: 'object',
+  properties: {
+    icon: {
+      title: '图标',
+      type: 'string'
+    },
+    content: {
+      title: '标签内容',
+      type: 'string'
+    },
+    color: {
+      title: '背景颜色',
+      type: 'string'
+    },
+    textColor: {
+      title: '文本颜色',
+      type: 'string'
+    },
+    borderColor: {
+      title: '边框颜色',
+      type: 'string'
+    },
+    checkable: {
+      title: '是否可选',
+      type: 'boolean'
+    },
+    closable: {
+      title: '是否可关闭',
+      type: 'boolean'
+    }
+  }
+};
+
 export default {
   '.ant-space-item': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2) => {
     if (!focusArea) return;
@@ -139,9 +173,26 @@ export default {
           get({}: EditorResult<Data>) {
             return !!tag.checkable;
           },
-          set({}: EditorResult<Data>, val: boolean) {
+          set({ output }: EditorResult<Data>, val: boolean) {
             tag.checkable = val;
+            if (val) {
+              output.add('onChange', '选中状态改变时', { type: 'boolean' });
+            } else if (output.get('onChange')) {
+              output.remove('onChange');
+            }
           }
+        }
+      },
+      {
+        title: '选中状态改变',
+        type: '_Event',
+        ifVisible({}: EditorResult<Data>) {
+          return tag.checkable;
+        },
+        options: () => {
+          return {
+            outputId: 'onChange'
+          };
         }
       },
       {
@@ -155,9 +206,26 @@ export default {
           get({}: EditorResult<Data>) {
             return !!tag.closable;
           },
-          set({}: EditorResult<Data>, val: boolean) {
+          set({ output }: EditorResult<Data>, val: boolean) {
             tag.closable = val;
+            if (val) {
+              output.add('onClose', '标签关闭时', TagSchema);
+            } else if (output.get('onClose')) {
+              output.remove('onClose');
+            }
           }
+        }
+      },
+      {
+        title: '标签关闭时',
+        type: '_Event',
+        ifVisible({}: EditorResult<Data>) {
+          return tag.closable;
+        },
+        options: () => {
+          return {
+            outputId: 'onClose'
+          };
         }
       }
     ];
