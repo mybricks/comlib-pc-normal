@@ -24,6 +24,7 @@ function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
 
 function call({ env, data, outputs }) {
   if (data.callReady === READY) {
+    data.callReady = PARAMS_READY;
     callCon({ env, data, outputs }, data.params, data.connectorConfig);
   }
 }
