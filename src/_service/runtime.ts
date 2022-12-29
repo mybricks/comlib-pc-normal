@@ -39,7 +39,9 @@ export default function ({ env, data, inputs, outputs }) {
         call({ env, data, outputs });
       });
       inputs[INPUT_ID.SET_URL]((url: string) => {
-        data.connectorConfig.url = url;
+        if (url && typeof url === 'string') {
+          data.connectorConfig.url = url;
+        }
         data.callReady |= URL_READY;
         call({ env, data, outputs });
       });
