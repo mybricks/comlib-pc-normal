@@ -18,6 +18,7 @@ export interface Data {
   cursor?: boolean;
   useClick?: boolean;
   outputContent?: string;
+  dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
 }
 
 export const OutputIds = {

@@ -7,5 +7,6 @@
   "size": "default",
   "style": {},
   "bodyStyle": {},
-  "outputContent": ""
+  "outputContent": 0,
+  "dataType": "number"
 }
