@@ -35,7 +35,7 @@ export default function ({ env, data, inputs, outputs }) {
       callCon({ env, data, outputs });
     } else {
       inputs['call']((params) => {
-        data.params = params;
+        data.params = typeof params === 'object' ? params : {};
         data.callReady |= data.useExternalUrl ? PARAMS_READY : READY;
         call({ env, data, outputs });
       });
