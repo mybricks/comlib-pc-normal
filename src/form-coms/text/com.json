@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",

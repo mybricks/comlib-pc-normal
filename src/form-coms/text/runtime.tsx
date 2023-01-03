@@ -73,14 +73,12 @@ export default function (props: RuntimeParams<Data>) {
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
-    data.value = value;
     onValidateTrigger();
     outputs['onBlur'](value);
   }, []);
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    data.value = value;
     onValidateTrigger();
     outputs['onPressEnter'](value);
   }, []);
