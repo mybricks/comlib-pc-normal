@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { InputNumber } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -19,7 +19,7 @@ export interface Data {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
-  const [value, setValue] = useState<any>();
+  const [value, setValue] = useState<string | number>();
   useFormItemInputs(
     {
       inputs,
@@ -70,23 +70,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onChange'](value);
   };
 
-  const onBlur = useCallback((e) => {
-    const value = e.target.value;
-    setValue(value);
-    onValidateTrigger();
-    outputs['onBlur'](value);
-  }, []);
+  const onBlur = useCallback(
+    (e) => {
+      onValidateTrigger();
+      outputs['onBlur'](value);
+    },
+    [value]
+  );
 
-  const onPressEnter = useCallback((e) => {
-    const value = e.target.value;
-    setValue(value);
-    onValidateTrigger();
-    outputs['onPressEnter'](value);
-  }, []);
+  const onPressEnter = useCallback(
+    (e) => {
+      onValidateTrigger();
+      outputs['onPressEnter'](value);
+    },
+    [value]
+  );
 
   return (
     <div className={css.inputNumber}>
-      <InputNumber
+      <InputNumber<string | number>
         value={value}
         {...data.config}
         onChange={onChange}
