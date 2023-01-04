@@ -214,7 +214,7 @@ export default {
     cate2.items = [
       Editor<Data>('卡片边框', EditorType.Switch, 'bordered'),
       Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
-      Editor<Data>('鼠标移过时可浮起', EditorType.Select, 'size', {
+      Editor<Data>('尺寸', EditorType.Select, 'size', {
         options: SizeOptions
       })
     ];
