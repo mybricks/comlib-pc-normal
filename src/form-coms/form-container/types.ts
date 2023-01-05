@@ -19,7 +19,7 @@ interface Actions {
   inlinePadding?: number[]
 }
 
-interface FormItems {
+interface FormItemType {
   id: string;
   name: string
   label: string
@@ -39,7 +39,7 @@ export interface Data {
   /**
    * 表单项列表
    */
-  items: FormItems[]
+  items: FormItemType[]
   /**
    * 是否作为表单项
    */
@@ -80,7 +80,17 @@ export interface Data {
    */
   paramsSchema: any
 
+  /**
+   * 是否提交隐藏表单项字段
+   */
   submitHiddenFields: boolean
+
+  /**
+   * 动态配置项
+   */
+  configs: {
+    formItem: {}
+  }
 }
 
 export interface FormControlProps {

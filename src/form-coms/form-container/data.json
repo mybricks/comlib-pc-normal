@@ -39,5 +39,8 @@
   "labelCol": 4,
   "itemWidthType": "flex",
   "paramsSchema": {},
-  "submitHiddenFields": false
+  "submitHiddenFields": false,
+  "configs": {
+    "formItem": {}
+  }
 }

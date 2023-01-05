@@ -10,6 +10,40 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
   "upgrade": "./upgrade.ts",
+  "configs": [
+    {
+      "id": "formItemConfig",
+      "title": "表单项配置",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "[string]": {
+            "title": "name",
+            "type": "object",
+            "properties": {
+              "label": {
+                "title": "标题",
+                "type": "string"
+              },
+              "name": {
+                "title": "字段",
+                "type": "string"
+              },
+              "required": {
+                "title": "必填样式",
+                "type": "boolean"
+              },
+              "tooltip": {
+                "title": "标题提示",
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "binding": "data.configs.formItem"
+    }
+  ],
   "inputs": [
     {
       "id": "setFieldsValue",

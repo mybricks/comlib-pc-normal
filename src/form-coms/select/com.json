@@ -10,6 +10,16 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "configs": [
+    {
+      "id": "mode",
+      "title": "下拉框模式",
+      "schema": {
+        "type": "string"
+      },
+      "binding": "data.config.mode"
+    }
+  ],
   "inputs": [
     {
       "id": "setValue",

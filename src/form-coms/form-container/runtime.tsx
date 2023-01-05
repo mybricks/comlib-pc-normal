@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useS
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlInputId } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject } from './utils';
-import { slotInputIds, inputIds, outputIds } from './constants';
+import { getLabelCol, isObject, objectFilter } from './utils';
+import { slotInputIds, inputIds, outputIds, SLOT_ID } from './constants';
 import { ValidateInfo } from '../types';
 
 type FormControlInputRels = {
@@ -35,17 +35,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
       // resetFields();
 
       setFieldsValue(val);
-      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+      slots[SLOT_ID].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
 
     inputs[inputIds.SET_INITIAL_VALUES]((val) => {
       setInitialValues(val);
-      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+      slots[SLOT_ID].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
 
-    inputs['resetFields']((val, outputRels) => {
+    inputs[inputIds.RESET_FIELDS]((val, outputRels) => {
       resetFields();
-      outputRels['onResetFinish']();
+      outputRels[outputIds.ON_RESET_FINISH]();
     });
 
     inputs[inputIds.SUBMIT]((val, outputRels) => {
@@ -83,13 +83,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
     /**
      * @description 响应触发对应表单项校验
      */
-    slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER](({ id }) => {
+    slots[SLOT_ID]._inputs[slotInputIds.VALIDATE_TRIGGER](({ id }) => {
       const item = data.items.find((item) => item.id === id);
       if (item) {
         const input = childrenInputs[item.id];
         validateForInput({ item, input });
       }
     });
+  }, []);
+
+  useLayoutEffect(() => {
+    const formItemConfig = data.configs?.formItem;
+    if (formItemConfig) {
+      Object.keys(formItemConfig).forEach((nameKey) => {
+        data.items = data.items.map((item) => {
+          if (item.name === nameKey) {
+            if (formItemConfig[nameKey]) {
+              const { label, name, required, tooltip } = formItemConfig[nameKey];
+              const newItem = objectFilter({ label, name, required, tooltip });
+              item = { ...item, ...newItem };
+            }
+          }
+          return item;
+        });
+      });
+    }
   }, []);
 
   const setFieldsValue = (val) => {
@@ -184,7 +202,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   name: item.name,
                   value: val
                 };
-                // console.log(value);
 
                 resolve(value);
               }
@@ -227,6 +244,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           .then((values: any) => {
             const res = { ...values, ...params };
             if (outputRels) {
+              console.log(outputRels[outputId]);
               outputRels[outputId](res);
             } else {
               outputs[outputId](res);

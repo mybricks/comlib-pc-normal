@@ -12,3 +12,13 @@ export function getLabelCol (data: Data) {
 export function isObject (val: any) {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
+
+export function objectFilter(val: any) {
+  Object.keys(val).forEach(key => {
+    if ([undefined, null].includes(val[key])) {
+      delete val[key]
+    }
+  })
+
+  return val
+}

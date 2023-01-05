@@ -19,6 +19,8 @@ export const slotInputIds = {
   VALIDATE_TRIGGER: 'validateTrigger'
 }
 
+export const SLOT_ID = 'content'
+
 export const labelWidthTypes = {
   SPAN: 'span',
   PX: 'px'
