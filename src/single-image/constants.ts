@@ -2,7 +2,8 @@ export const OutputIds = {
   Click: 'click'
 };
 export const InputIds = {
-  SetImgSrc: 'setImgSrc'
+  SetImgSrc: 'setImgSrc',
+  SetPreviewImgSrc: 'setPreviewImgSrc'
 };
 
 export interface Data {
