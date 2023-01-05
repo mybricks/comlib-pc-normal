@@ -1,7 +1,7 @@
 {
   "link": "https://www.baidu.com/",
   "size": 128,
-  "renderAs": "svg",
+  "renderAs": "canvas",
   "icon": {
     "url": "https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/images/logo.b8d9b45951421ff5.jpeg",
     "width": "20%",
