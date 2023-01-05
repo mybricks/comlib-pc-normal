@@ -1,7 +1,7 @@
 {
   "title": "图片",
   "namespace": "mybricks.normal-pc.single-image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "可预览的单图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setImgSrc",
