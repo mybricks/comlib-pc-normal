@@ -12,6 +12,11 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
           data.src = val;
         }
       });
+      inputs[InputIds.SetPreviewImgSrc]((val) => {
+        if (typeof val === 'string') {
+          data.previewImgSrc = val;
+        }
+      });
     }
   }, []);
 
