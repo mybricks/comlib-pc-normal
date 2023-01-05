@@ -4,13 +4,15 @@ import { Data } from './constants';
 export default (props: RuntimeParams<Data>) => {
   const { inputs, data, outputs } = props;
   const { link, size, renderAs, icon, hasIcon } = data;
-  const qrRef = useRef<HTMLDivElement>();
+  const qrRef = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(1);
 
   useEffect(() => {
     inputs['link']((value: string) => {
       data.link = value;
     });
+
+    inputs['download'] && inputs['download'](downloadQR);
   }, []);
 
   const onClick = () => {
@@ -48,14 +50,14 @@ export default (props: RuntimeParams<Data>) => {
           size={size}
           renderAs={renderAs}
           imageSettings={
-            icon.url && hasIcon
+            icon?.url && hasIcon
               ? {
                   src: icon.url,
                   width: parseFloat(icon.width),
                   height: parseFloat(icon.height),
                   excavate: true
                 }
-              : null
+              : void 0
           }
         />
       ) : (

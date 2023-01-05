@@ -43,7 +43,7 @@ export default {
           type: "imageSelector",
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.icon.url;
+              return data.icon?.url;
             },
             set({ data }: EditorResult<Data>, value: string) {
               data.icon.url = value;

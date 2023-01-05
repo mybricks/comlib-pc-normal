@@ -9,13 +9,23 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "link",
       "title": "URL",
       "schema": {
         "type": "string"
-      }
+      },
+      "desc": "链接地址"
+    },
+    {
+      "id": "download",
+      "title": "下载二维码",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "下载二维码图片"
     }
   ],
   "outputs": [
