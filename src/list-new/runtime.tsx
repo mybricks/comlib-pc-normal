@@ -23,7 +23,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   //设置数据源输入及loading状态设置
   useEffect(() => {
     if (env.edit) {
-      setDataSource([{ id: 1, index: 0 }]);
+      setDataSource([{ id: 1 }]);
     }
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
@@ -143,8 +143,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
         data={data}
         lockAxis="y"
         onSortEnd={({ oldIndex, newIndex }) => {
-          const _dataSource = arrayMove(dataSource, oldIndex, newIndex);
-          setDataSource(_dataSource);
+          setDataSource(arrayMove(dataSource, oldIndex, newIndex));
         }}
       />
     );
