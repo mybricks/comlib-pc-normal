@@ -46,7 +46,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     if (env.runtime && useGetDataSource && inputs[InputIds.GetDataSource]) {
       inputs[InputIds.GetDataSource]((val, relOutputs) => {
         const outputFn = relOutputs?.[InputIds.GetDataSource] || outputs[InputIds.GetDataSource];
-        outputFn(dataSource.map(({ [rowKey]: key, ...res }) => ({ ...res })));
+        outputFn(dataSource.map(({ item }) => item));
       });
     }
   }, [dataSource]);
