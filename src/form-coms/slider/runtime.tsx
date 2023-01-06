@@ -93,12 +93,14 @@ export default function Runtime({
   const commonProps = {
     onChange: changeValue,
     onAfterChange,
-    tipFormatter: formatter
+    tipFormatter: formatter,
+    disabled: data.config.disabled
   };
   const inputNumberProps: InputNumberProps = {
     value: data.singleValue,
     min: data.config.min,
     max: data.config.max,
+    disabled: data.config.disabled,
     style: {
       width: '100%'
     },
