@@ -4,6 +4,14 @@ import classnames from 'classnames';
 import { Data, InputIds } from './constants';
 import { uuid } from '../utils';
 import css from './style.less';
+import { SortableList } from './sort';
+
+const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
+  const _array = array.slice();
+  const moveItem = _array.splice(form, 1)[0];
+  _array.splice(to, 0, moveItem);
+  return _array;
+};
 
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
@@ -15,7 +23,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   //设置数据源输入及loading状态设置
   useEffect(() => {
     if (env.edit) {
-      setDataSource([{ id: 1 }]);
+      setDataSource([{ id: 1, index: 0 }]);
     }
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
@@ -126,6 +134,22 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   if (slots['item'].size === 0) {
     return slots['item'].render();
   }
+
+  if (data.canSort) {
+    return (
+      <SortableList
+        items={dataSource}
+        slots={slots}
+        data={data}
+        lockAxis="y"
+        onSortEnd={({ oldIndex, newIndex }) => {
+          const _dataSource = arrayMove(dataSource, oldIndex, newIndex);
+          setDataSource(_dataSource);
+        }}
+      />
+    );
+  }
+
   //1) 自动换行
   if (data.isAuto === true && data.isCustom === false) {
     return loading ? (

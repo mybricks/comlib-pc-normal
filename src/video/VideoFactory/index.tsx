@@ -18,7 +18,7 @@ const getVideoTypeBySrc = (src) => {
 const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   const { data, inputs, env } = props;
   const { src, dynamicSrc, style } = data;
-  const videoRef = useRef<HTMLVideoElement>();
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const videoStrategy = {
     [VideoType.MP4]: () => <Mp4Video ref={videoRef} {...props} />,
@@ -37,7 +37,7 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
 
   const screenshot = (filename?) => {
     const canvas = document.createElement('canvas');
-    const { width, height } = videoRef.current.getBoundingClientRect();
+    const { width, height } = videoRef.current?.getBoundingClientRect();
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');

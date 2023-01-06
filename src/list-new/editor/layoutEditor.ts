@@ -68,6 +68,23 @@ export const LayoutEditor = [
         }
       },
       {
+        title: '可拖拽排序',
+        type: 'switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          const canSort = !!(data.isAuto && data.isCustom && data.grid.column === 1)
+          data.canSort = canSort
+          return canSort;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.canSort;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.canSort = val
+          }
+        }
+      },
+      {
         title: '间隔',
         type: 'InputNumber',
         options: [
