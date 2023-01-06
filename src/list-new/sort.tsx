@@ -9,9 +9,9 @@ const SortableItem = SortableElement(({ item, index, key, slots }) => (
     {slots['item'].render({
       inputValues: {
         itemData: item,
-        index: index
+        index
       },
-      key: key
+      key
     })}
   </div>
 ));
