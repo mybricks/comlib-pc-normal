@@ -1,4 +1,4 @@
-import { Data, OutputIds } from './constants';
+import { Data, InputIds, OutputIds } from './constants';
 
 export default {
   '@init': ({ style }: EditorResult<Data>) => {
@@ -54,15 +54,20 @@ export default {
               get({ data }: EditorResult<Data>) {
                 return data.usePreview;
               },
-              set({ data }: EditorResult<Data>, value: boolean) {
+              set({ data, input }: EditorResult<Data>, value: boolean) {
                 data.usePreview = value;
+                if (value) {
+                  input.add(InputIds.SetPreviewImgSrc, '预览图片地址', { type: 'string' });
+                } else {
+                  input.remove(InputIds.SetPreviewImgSrc);
+                }
               }
             }
           },
           {
             title: '预览图片地址',
             type: 'ImageSelector',
-            description: '不填，默认为当前图片地址',
+            description: '不填，默认为当前图片地址，支持通过连线动态设置。',
             ifVisible({ data }: EditorResult<Data>) {
               return data.usePreview;
             },
