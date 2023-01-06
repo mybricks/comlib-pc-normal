@@ -3,6 +3,11 @@ declare module '*.less' {
   export = resource;
 }
 
+declare module "*.svg" {
+  const resource: any;
+  export = resource;
+}
+
 interface Env {
   ajax: (url: string, opt: Record<string, any>) => Promise<any>
   events: any[]
