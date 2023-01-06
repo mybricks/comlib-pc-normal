@@ -72,7 +72,9 @@ export const LayoutEditor = [
         type: 'switch',
         ifVisible({ data }: EditorResult<Data>) {
           const canSort = !!(data.isAuto && data.isCustom && data.grid.column === 1)
-          data.canSort = canSort
+          if(!canSort){
+            data.canSort = canSort
+          }
           return canSort;
         },
         value: {
