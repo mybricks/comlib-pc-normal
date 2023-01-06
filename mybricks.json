@@ -10,7 +10,6 @@
           "./src/_0_test/text/com.json",
           "./src/_0_test/list/com.json",
           "./src/_0_test/test/com.json",
-          "./src/_0_test/observe/com.json",
           "./src/text/com.json",
           "./src/link/com.json",
           "./src/typography/com.json",

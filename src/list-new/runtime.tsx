@@ -136,7 +136,22 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   }
 
   if (data.canSort) {
-    return (
+    return env.edit ? (
+      <List
+        loading={loading}
+        grid={{
+          ...grid,
+          gutter
+        }}
+        dataSource={dataSource}
+        renderItem={ListItemRender}
+        rowKey={rowKey}
+        className={classnames(
+          css.listWrap,
+          dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
+        )}
+      />
+    ) : (
       <SortableList
         items={dataSource}
         slots={slots}
