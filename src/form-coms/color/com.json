@@ -1,0 +1,118 @@
+{
+  "title": "颜色选择框",
+  "namespace": "mybricks.normal-pc.color",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.0.0",
+  "description": "颜色选择框",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置颜色选择框的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置颜色选择框的初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发颜色选择框的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取颜色选择框的值并输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空颜色选择框的值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值变化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}
