@@ -55,7 +55,7 @@ const SlotContent = (props) => {
 
             if (env.edit || data.submitHiddenFields) {
               return (
-                <Col style={{ display: com.style.display }} key={com.id} flex={`0 0 ${flexBasis}`}>
+                <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
                   {com.jsx}
                 </Col>
               );
@@ -63,7 +63,7 @@ const SlotContent = (props) => {
 
             return (
               item?.visible && (
-                <Col key={com.id} flex={`0 0 ${flexBasis}`}>
+                <Col key={com.id} style={{ width: flexBasis }}>
                   {com.jsx}
                 </Col>
               )
