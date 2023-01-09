@@ -29,7 +29,7 @@ export default function (props: { color: string; onChangeComplete: (color: strin
         onChange={({ rgba, hex }) => {
           onSketchChangeComplete({ rgb: rgba, hex: hex });
         }}
-        // presetColors={presetColors}
+        presetColors={false}
       />
     </div>
   );
