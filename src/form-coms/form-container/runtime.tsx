@@ -181,10 +181,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
                 }
               } else {
                 value = {
-                  name: item.name,
+                  name: item.name || item.label,
                   value: val
                 };
-                // console.log(value);
 
                 resolve(value);
               }
@@ -265,54 +264,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     </Fragment>
   );
 }
-
-/**
- * @description 列表类型表单容器，暂不开放
- */
-const FormListItem = ({ content, slots, env, isFormItem, data }) => {
-  if (env.edit) {
-    return content();
-  }
-
-  return (
-    <Form.List name="item4">
-      {(fields, { add, remove }) => {
-        data.fieldsLength = fields.length;
-
-        return (
-          <>
-            {fields.map((field, index) => {
-              return <div key={field.key}>{content({ field })}</div>;
-            })}
-            {isFormItem ? (
-              <Button
-                onClick={() => {
-                  add();
-                }}
-              >
-                添加
-              </Button>
-            ) : (
-              <Row style={{ flex: '1 1 100%' }} data-form-actions>
-                <Col offset={8}>
-                  <Form.Item>
-                    <Button
-                      onClick={() => {
-                        add();
-                      }}
-                    >
-                      添加
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            )}
-          </>
-        );
-      }}
-    </Form.List>
-  );
-};
 
 /**
  * @description 触发表单项校验，并更新校验结果

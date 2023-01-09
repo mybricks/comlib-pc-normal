@@ -81,7 +81,7 @@ export default {
       data.items.push({
         id,
         schema: com.schema,
-        name: `item${nowC}`,
+        name: '',
         label: `表单项${nowC}`,
         widthOption: 'span',
         span: 24 / data.formItemColumn,
@@ -130,6 +130,22 @@ export default {
   // },
   ':root': ({ data, output }: EditorResult<Data>, cate1) => {
     cate1.items = [
+      // {
+      //   title: '数据类型',
+      //   type: 'select',
+      //   options: [
+      //     { label: '对象', value: 'object' },
+      //     { label: '列表', value: 'list' }
+      //   ],
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.dataType
+      //     },
+      //     set({ data }: EditorResult<Data>, val) {
+      //       data.dataType = val
+      //     }
+      //   }
+      // },
       {
         title: '布局',
         items: [
@@ -246,7 +262,7 @@ export default {
         ]
       },
 
-      actionsEditor(data, output),
+      !data.isFormItem && actionsEditor(data, output),
       // {
       //   title: '选择表单项',
       //   type: 'comSelector',
@@ -267,22 +283,6 @@ export default {
       //     }
       //   }
       // }
-      // {
-      //   title: '数据类型',
-      //   type: 'select',
-      //   options: [
-      //     { label: '对象', value: 'object' },
-      //     { label: '列表', value: 'list' }
-      //   ],
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.dataType
-      //     },
-      //     set({ data }: EditorResult<Data>, val) {
-      //       data.dataType = val
-      //     }
-      //   }
-      // },
     ]
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
@@ -306,7 +306,9 @@ export default {
         type: 'text',
         value: {
           get({id, data, focusArea}: EditorResult<Data>) {
-            return data.items.find(item => item.id === id)?.name
+            const item = data.items.find(item => item.id === id)
+
+            return item?.name || item?.label
           },
           set({id, data, focusArea, input, output, slots }: EditorResult<Data>, val) {
             if (!val) {
