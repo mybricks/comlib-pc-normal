@@ -27,98 +27,104 @@ const ColorMap = {
   }
 };
 
-const addColumnEditor = {
-  title: '列',
-  folded: true,
-  items: [
-    {
-      title: '显示列头',
-      type: 'switch',
-      description: '关闭后，不显示列标题行',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.showHeader === false ? false : true;
-        },
-        set({ data }: EditorResult<Data>, value: boolean) {
-          data.showHeader = value;
-        }
-      }
-    },
-    {
-      title: '列宽分配',
-      type: 'Select',
-      options: [
-        { label: '固定列宽(不自动适配)', value: TableLayoutEnum.FixedWidth },
-        { label: '按比例分配多余宽度', value: TableLayoutEnum.Fixed },
-        { label: '按比例适配（无横向滚动条）', value: TableLayoutEnum.Auto }
-      ],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.tableLayout || TableLayoutEnum.Fixed;
-        },
-        set({ data }: EditorResult<Data>, value: TableLayoutEnum) {
-          data.tableLayout = value;
-        }
-      }
-    },
-    {
-      title: '',
-      type: 'array',
-      options: {
-        addText: '添加列',
-        editable: true,
-        customOptRender: visibleOpt,
-        getTitle: (item: IColumn) => {
-          const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
-          const { color, text } = ColorMap[item.dataSchema?.type] || ColorMap.string;
-          if (item.visible) {
-            return (
-              <>
-                <span style={{ color }}>{text}</span>
-                <span>
-                  【{item.width === WidthTypeEnum.Auto ? '自适应' : `${item.width}px`}】{item.title}
-                  ({path})
-                </span>
-              </>
-            );
-          } else {
-            return (
-              <>
-                <span style={{ color }}>{text}</span>
-                <span>
-                  【隐藏】{item.title}({path})
-                </span>
-              </>
-            );
-          }
-        },
-        onAdd: () => {
-          return getNewColumn();
-        },
-        items: [
-          {
-            title: '列名',
-            type: 'Text',
-            value: 'title'
+const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
+  return {
+    title: '列',
+    folded: true,
+    items: [
+      {
+        title: '显示列头',
+        type: 'switch',
+        description: '关闭后，不显示列标题行',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.showHeader === false ? false : true;
           },
-          {
-            title: '字段',
-            type: 'Text',
-            value: 'dataIndex'
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.showHeader = value;
           }
-        ]
+        }
       },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return [...data.columns];
+      {
+        title: '列宽分配',
+        type: 'Select',
+        options: [
+          { label: '固定列宽(不自动适配)', value: TableLayoutEnum.FixedWidth },
+          { label: '按比例分配多余宽度', value: TableLayoutEnum.Fixed },
+          { label: '按比例适配（无横向滚动条）', value: TableLayoutEnum.Auto }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.tableLayout || TableLayoutEnum.Fixed;
+          },
+          set({ data }: EditorResult<Data>, value: TableLayoutEnum) {
+            data.tableLayout = value;
+          }
+        }
+      },
+      {
+        title: '',
+        type: 'array',
+        options: {
+          addText: '添加列',
+          editable: true,
+          customOptRender: visibleOpt,
+          getTitle: (item: IColumn) => {
+            const path = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+            const { color, text } = ColorMap[item.dataSchema?.type] || ColorMap.string;
+            if (item.visible) {
+              return (
+                <>
+                  <span style={{ color }}>{text}</span>
+                  <span>
+                    【{item.width === WidthTypeEnum.Auto ? '自适应' : `${item.width}px`}】
+                    {item.title}
+                    {path ? `(${path})` : ''}
+                  </span>
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <span style={{ color }}>{text}</span>
+                  <span>
+                    【隐藏】{item.title}({path})
+                  </span>
+                </>
+              );
+            }
+          },
+          onAdd: () => {
+            return getNewColumn(data);
+          },
+          items: [
+            {
+              title: '列名',
+              type: 'Text',
+              value: 'title'
+            },
+            {
+              title: '字段',
+              type: 'Text',
+              value: 'dataIndex',
+              options: {
+                placeholder: '不填默认使用 列名 作为字段'
+              }
+            }
+          ]
         },
-        set({ data, output, input, slot, ...res }: EditorResult<Data>, val: IColumn[]) {
-          setColumns({ data, slot }, val);
-          setDataSchema({ data, output, input, slot, ...res });
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [...data.columns];
+          },
+          set({ data, output, input, slot, ...res }: EditorResult<Data>, val: IColumn[]) {
+            setColumns({ data, slot }, val);
+            setDataSchema({ data, output, input, slot, ...res });
+          }
         }
       }
-    }
-  ]
+    ]
+  };
 };
 
-export default addColumnEditor;
+export default getAddColumnEditor;

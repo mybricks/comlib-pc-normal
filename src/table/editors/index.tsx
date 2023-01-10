@@ -5,7 +5,7 @@ import { setDataSchema } from '../schema';
 import columnEditor from './table-item';
 import HeaderEditor from './table/header';
 import TableStyleEditor from './table/tableStyle';
-import AddColumnEditor from './table/addColumn';
+import getAddColumnEditor from './table/addColumn';
 import ExpandEditor from './table/expand';
 import EventEditor from './table/event';
 import LoadingEditor from './table/loading';
@@ -92,7 +92,7 @@ export default {
   },
   ':root': (props: EditorResult<Data>, ...cateAry) => {
     cateAry[0].title = '常规';
-    cateAry[0].items = [AddColumnEditor, ...UsePaginatorEditor];
+    cateAry[0].items = [getAddColumnEditor(props), ...UsePaginatorEditor];
 
     cateAry[1].title = '样式';
     cateAry[1].items = [...LoadingEditor, TableStyleEditor];

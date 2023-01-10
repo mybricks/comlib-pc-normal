@@ -1,7 +1,7 @@
 import { InputIds, OutputIds, SlotIds } from './constants';
 import { ContentTypeEnum, Data, IColumn } from './types';
 import { setPath } from '../utils/path';
-import { getColumnItem } from './utils';
+import { getColumnItem, getColumnItemDataIndex } from './utils';
 
 interface Props {
   data: Data;
@@ -17,7 +17,8 @@ function getColumnsWithExpand(data: Data) {
       dataIndex: data.expandDataIndex,
       title: '展开行数据',
       key: '_expandIndex',
-      contentType: ContentTypeEnum.Text
+      contentType: ContentTypeEnum.Text,
+      dataSchema: data.expandDataSchema
     });
   }
   return list;
@@ -55,7 +56,7 @@ function schema2Obj(schema: any = {}, data: Data) {
   }
   const schemaObj = loop(schema) || {};
   getColumnsWithExpand(data).forEach((item) => {
-    const idx = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+    const idx = getColumnItemDataIndex(item);
     if (
       item.dataSchema &&
       ([ContentTypeEnum.Text].includes(item.contentType) ||
@@ -74,10 +75,11 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
   const setDataSchema = (columns: IColumn[]) => {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
+        const colDataIndex = getColumnItemDataIndex(item);
         const schema = {
           type: 'string',
           title: item.title,
-          ...schemaObj[Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex]
+          ...schemaObj[colDataIndex]
         };
         if (item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex) {
           return;
@@ -86,11 +88,7 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           item.children && setDataSchema(item.children);
           return;
         }
-        if (Array.isArray(item.dataIndex)) {
-          setPath(dataSchema, item.dataIndex.join('.'), schema, true);
-        } else {
-          dataSchema[item.dataIndex] = schema;
-        }
+        setPath(dataSchema, colDataIndex, schema, true);
       });
     }
   };
@@ -201,7 +199,7 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
         if (item.filter?.enable) {
-          const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+          const key = getColumnItemDataIndex(item);
           schema1.properties[key] = {
             type: 'array',
             items: {
@@ -234,7 +232,7 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
   setDataSchema(data.columns);
 
   output.get(OutputIds.FILTER)?.setSchema(schema1);
-  input.get(OutputIds.GET_FILTER)?.setSchema(schema1);
+  output.get(OutputIds.GET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
@@ -262,7 +260,7 @@ function setExpandSlotSchema(schemaObj: object, dataSchema, { slot, data }: Prop
 // 列插槽作用域schema
 function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }: Props) {
   data.columns.forEach((col) => {
-    const key = Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex;
+    const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
       slot?.setTitle(col.slotId, `自定义${col.title}列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({

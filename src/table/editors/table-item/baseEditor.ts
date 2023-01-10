@@ -57,7 +57,7 @@ const BaseEditor = {
     {
       title: '字段',
       type: 'editorRender',
-      description: '与后端返回数据字段对应',
+      description: '与后端返回数据字段对应，不填默认使用 列名 作为字段',
       options: {
         render: Tree
       },
@@ -74,6 +74,7 @@ const BaseEditor = {
           return {
             value: ret,
             schema: getColumnsSchema(data),
+            placeholder: '不填默认使用 列名 作为字段',
             disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
           };
         },

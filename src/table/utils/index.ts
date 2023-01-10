@@ -39,10 +39,11 @@ export const getColumnItemInfo = (
   return res || { column: {}, parent: [], index: -1 };
 };
 
-export const getNewColumn = () => {
+export const getNewColumn = (data?: Data) => {
   const obj: IColumn = {
-    title: '新增',
-    dataIndex: `${uuid()}`,
+    title: data ? `列${data?.columns?.length + 1}` : '新增',
+    dataIndex: '',
+    // dataIndex: `${uuid()}`,
     width: 140,
     key: uuid(),
     contentType: ContentTypeEnum.Text,
@@ -139,3 +140,28 @@ export const getColumnsSchema = (data: Data) => {
   }
   return columnsSchema;
 };
+
+/**
+ * 格式化列实际的 DataIndex 字段
+ * 仅支持 中文/英文字母/数字/./_
+ */
+export function formatColumnItemDataIndex(item: IColumn) {
+  if (item.dataIndex) {
+    return item.dataIndex;
+  }
+  let titleDataIndex: string | string[] = item.title
+    .split('')
+    .filter((val) => /[\u4e00-\u9fa5A-Za-z0-9\._]/.test(val))
+    .join('')
+    .split('.');
+  if (titleDataIndex.length <= 1) {
+    titleDataIndex = titleDataIndex[0];
+  }
+  return titleDataIndex;
+}
+// 获取列实际的 DataIndex 字段
+export function getColumnItemDataIndex(item: IColumn) {
+  const colDataIndex = formatColumnItemDataIndex(item);
+  const idx = Array.isArray(colDataIndex) ? colDataIndex.join('.') : colDataIndex;
+  return idx;
+}
