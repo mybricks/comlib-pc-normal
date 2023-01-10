@@ -25,7 +25,7 @@ export default {
         }
       },
       {
-        title: '宽度',
+        title: '色块宽度',
         type: 'text',
         description: '色块宽度',
         value: {
