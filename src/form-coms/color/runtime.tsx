@@ -127,7 +127,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     setIsShow(true);
   };
 
-  console;
   return (
     <div style={{ width: data.width }}>
       <div
