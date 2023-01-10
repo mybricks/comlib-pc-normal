@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Data, InputIds } from './constants';
 import { uuid } from '../utils';
 import css from './style.less';
-import { SortableList } from './sort';
+import { SortableList, SortableItem } from './sort';
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -46,7 +46,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     if (env.runtime && useGetDataSource && inputs[InputIds.GetDataSource]) {
       inputs[InputIds.GetDataSource]((val, relOutputs) => {
         const outputFn = relOutputs?.[InputIds.GetDataSource] || outputs[InputIds.GetDataSource];
-        outputFn(dataSource.map(({ [rowKey]: key, ...res }) => ({ ...res })));
+        outputFn(dataSource.map(({ item }) => item));
       });
     }
   }, [dataSource]);
@@ -136,12 +136,37 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   }
 
   if (data.canSort) {
-    return (
+    return env.edit ? (
+      <List
+        loading={loading}
+        grid={{
+          ...grid,
+          gutter
+        }}
+        dataSource={dataSource}
+        renderItem={ListItemRender}
+        rowKey={rowKey}
+        className={classnames(
+          css.listWrap,
+          dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
+        )}
+      />
+    ) : (
       <SortableList
-        items={dataSource}
-        slots={slots}
+        list={dataSource}
         data={data}
         lockAxis="y"
+        renderItem={({ key, item, index }) => (
+          <SortableItem key={key} index={index}>
+            {slots['item'].render({
+              inputValues: {
+                itemData: item,
+                index
+              },
+              key
+            })}
+          </SortableItem>
+        )}
         onSortEnd={({ oldIndex, newIndex }) => {
           setDataSource(arrayMove(dataSource, oldIndex, newIndex));
         }}

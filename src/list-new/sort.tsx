@@ -1,29 +1,35 @@
 import React from 'react';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { Data } from './constants';
 import styles from './style.less';
 
 const rowKey = '_itemKey';
 
-const SortableItem = SortableElement(({ item, index, key, slots }) => (
-  <div className={styles['sort-item']} style={{ zIndex: 100 }}>
-    {slots['item'].render({
-      inputValues: {
-        itemData: item,
-        index
-      },
-      key
-    })}
-  </div>
-));
+type SortableItemProps<T> = { key: string; item: T; index: number };
 
-const SortableList = SortableContainer(({ items, slots, data }) => {
+interface SortableListProps<T = any> {
+  list: Array<T>;
+  data: Data;
+  renderItem: ({ key, item, index }: SortableItemProps<T>) => void;
+}
+
+const SortableItem = SortableElement((props) => {
   return (
-    <div className={styles['sort-list']} style={{ rowGap: data.grid?.gutter[1] }}>
-      {items.map(({ [rowKey]: key, item }, index) => (
-        <SortableItem key={key} index={index} item={item} slots={slots} />
-      ))}
+    <div className={styles['sort-item']} style={{ zIndex: 100 }}>
+      {props.children}
     </div>
   );
 });
 
-export { SortableList };
+const SortableList = SortableContainer(({ list, data, renderItem }: SortableListProps) => {
+  return (
+    <div
+      className={styles['sort-list']}
+      style={{ rowGap: data.grid?.gutter ? data.grid?.gutter[1] : 8 }}
+    >
+      {list.map(({ [rowKey]: key, item }, index) => renderItem({ key, item, index }))}
+    </div>
+  );
+});
+
+export { SortableList, SortableItem };
