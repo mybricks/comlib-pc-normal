@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Data, InputIds } from './constants';
 import { uuid } from '../utils';
 import css from './style.less';
-import { SortableList } from './sort';
+import { SortableList, SortableItem } from './sort';
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -153,10 +153,20 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
       />
     ) : (
       <SortableList
-        items={dataSource}
-        slots={slots}
+        list={dataSource}
         data={data}
         lockAxis="y"
+        renderItem={({ key, item, index }) => (
+          <SortableItem key={key} index={index}>
+            {slots['item'].render({
+              inputValues: {
+                itemData: item,
+                index
+              },
+              key
+            })}
+          </SortableItem>
+        )}
         onSortEnd={({ oldIndex, newIndex }) => {
           setDataSource(arrayMove(dataSource, oldIndex, newIndex));
         }}
