@@ -107,7 +107,7 @@ export function setNextSpan({ data, focusArea }: any, toSetSpan: number) {
   delete focusArea.ele.myFlag;
 }
 
-export function setDelete({ data, focusArea }: any) {
+export function setDelete({ data, focusArea, slots }: any) {
   const deleteItemIdx = getEleIdx({ data, focusArea });
   const itemRowIdx = focusArea.index;
   const rowStart = deleteItemIdx - itemRowIdx;
@@ -126,7 +126,11 @@ export function setDelete({ data, focusArea }: any) {
       break;
     }
   }
-  data.items.splice(getEleIdx({ data, focusArea }), 1);
+  const item = data.items[deleteItemIdx];
+  if (item?.slotId) {
+    slots.remove(item.slotId);
+  }
+  data.items.splice(deleteItemIdx, 1);
 }
 
 export function setExchange({ data, focusArea }: any, type: 'up' | 'down') {
