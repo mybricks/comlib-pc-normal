@@ -97,7 +97,7 @@ const SlotContent = (props) => {
       inputValues: {}
       // key: props?.field?.name
     });
-  }, [data.layout]);
+  }, [data.layout, data.items]);
 
   return content;
 };

@@ -97,18 +97,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     if (formItemConfig) {
       Object.keys(formItemConfig).forEach((nameKey) => {
         data.items = data.items.map((item) => {
-          if (item.name === nameKey) {
-            if (formItemConfig[nameKey]) {
-              const { label, name, required, tooltip } = formItemConfig[nameKey];
-              const newItem = objectFilter({ label, name, required, tooltip });
-              item = { ...item, ...newItem };
-            }
+          if (item.name === nameKey && !!formItemConfig[nameKey]) {
+            const { label, name, required, tooltip } = formItemConfig[nameKey];
+            const newItem = objectFilter({ label, name, required, tooltip });
+            item = { ...item, ...newItem };
           }
           return item;
         });
       });
     }
-  }, []);
+  }, [data.configs?.formItem]);
 
   const setFieldsValue = (val) => {
     if (val) {
