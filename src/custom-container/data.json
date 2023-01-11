@@ -1,3 +1,11 @@
 {
-  "style": {}
+  "style": {},
+  "slotStyle": {
+    "display": "flex",
+    "position": "inherit",
+    "flexDirection": "row",
+    "alignItems": "flex-start",
+    "justifyContent": "flex-start",
+    "flexWrap": "nowrap"
+  }
 }
