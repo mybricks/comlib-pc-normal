@@ -4,7 +4,7 @@ import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
-import { formatDataSource, getDefaultDataSource } from './utils';
+import { formatColumnItemDataIndex, formatDataSource, getDefaultDataSource } from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import {
   ContentTypeEnum,
@@ -39,6 +39,9 @@ export default function (props: RuntimeParams<Data>) {
   const initFilterMap = () => {
     let res = {};
     data.columns.forEach((cItem) => {
+      if (env.runtime && !cItem.dataIndex && cItem.title) {
+        cItem.dataIndex = formatColumnItemDataIndex(cItem);
+      }
       const dataIndex = Array.isArray(cItem.dataIndex)
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;

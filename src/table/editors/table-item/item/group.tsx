@@ -17,7 +17,7 @@ export default {
         set({ data, focusArea, output, input, ...res }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          item.children = [...(item.children || []), getNewColumn()];
+          item.children = [...(item.children || []), getNewColumn(data)];
           setDataSchema({ data, focusArea, output, input, ...res });
           data.columns = [...data.columns];
         }

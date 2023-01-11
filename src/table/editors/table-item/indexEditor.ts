@@ -46,7 +46,7 @@ const IndexEditor = [
       set({ data, focusArea, output, input, ...res }: EditorResult<Data>) {
         if (!focusArea) return;
         const { index, parent } = getColumnItemInfo(data, focusArea);
-        parent.splice(index, 0, getNewColumn());
+        parent.splice(index, 0, getNewColumn(data));
         setDataSchema({ data, focusArea, output, input, ...res });
       }
     }
@@ -58,7 +58,7 @@ const IndexEditor = [
       set({ data, focusArea, output, input, ...res }: EditorResult<Data>) {
         if (!focusArea) return;
         const { index, parent } = getColumnItemInfo(data, focusArea);
-        parent.splice(index + 1, 0, getNewColumn());
+        parent.splice(index + 1, 0, getNewColumn(data));
         setDataSchema({ data, focusArea, output, input, ...res });
       }
     }
