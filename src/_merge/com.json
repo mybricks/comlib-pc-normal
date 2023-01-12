@@ -9,7 +9,6 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
-  "upgrade": "./upgrade.ts",
   "icon": "./icon.svg",
   "inputs": [
     {
