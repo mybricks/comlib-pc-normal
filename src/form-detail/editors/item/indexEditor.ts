@@ -32,9 +32,9 @@ export const IndexEditor = [
     title: '删除',
     type: 'Button',
     value: {
-      set({ data, focusArea, input, output }: EditorResult<Data>) {
+      set({ data, focusArea, input, output, slots }: EditorResult<Data>) {
         if (!focusArea || data.items.length <= 1) return;
-        setDelete({ data, focusArea });
+        setDelete({ data, focusArea, slots });
         updateIOSchema({ data, input, output });
       }
     }
