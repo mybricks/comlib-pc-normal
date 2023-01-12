@@ -9,11 +9,19 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "icon": "./icon.svg",
   "inputs": [
     {
       "id": "input0",
       "title": "输入项0",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "input1",
+      "title": "输入项1",
       "schema": {
         "type": "follow"
       }
