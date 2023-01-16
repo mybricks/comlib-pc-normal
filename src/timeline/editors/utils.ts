@@ -1,5 +1,7 @@
 import { uuid } from '../../utils';
 import { Data, Item, InputIds, SlotIds } from '../constants';
+import { DefaultSourceSchema } from './baseEditor';
+import { isEqual } from 'lodash';
 
 export const getTimelineItem = (
   data: Data,
@@ -39,6 +41,10 @@ export const updateSourceSchema = (input, schema) => {
 export const updateSlotSchema = (slots, schema) => {
   if (schema.type === 'array') {
     const item = schema.items;
-    slots.get(SlotIds.Content).inputs.get(InputIds.CurrentDs).setSchema(item);
+    slots.get(SlotIds.Content)?.inputs.get(InputIds.CurrentDs).setSchema(item);
   }
+};
+
+export const isEqualSchema = (sourceSchema) => {
+  return isEqual(sourceSchema, DefaultSourceSchema);
 };

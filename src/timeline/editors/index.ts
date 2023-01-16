@@ -2,17 +2,19 @@ import { Data, OutputIds } from '../constants';
 import ItemEditor from './item';
 import BaseEditor, { DefaultSourceSchema } from './baseEditor';
 import StyleEditor from './styleEditor';
-import { updateSourceSchema, updateSlotSchema } from './utils';
+import { updateSourceSchema, updateSlotSchema, isEqualSchema } from './utils';
 
 export default {
   '@resize': {
     options: ['width']
   },
-  '@inputConnected'({ data, input, slots }, fromPin) {
-    updateSourceSchema(input, fromPin.schema);
-    updateSlotSchema(slots, fromPin.schema)
+  '@inputConnected'({ input, slots }, fromPin) {
+    if (isEqualSchema(fromPin.schema)) {
+      updateSourceSchema(input, fromPin.schema);
+      updateSlotSchema(slots, fromPin.schema);
+    }
   },
-  '@inputDisConnected'({ data, input }) {
+  '@inputDisConnected'({ input }) {
     updateSourceSchema(input, DefaultSourceSchema);
   },
   ':root': ({ data }: EditorResult<Data>, ...cate) => {
