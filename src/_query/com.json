@@ -1,7 +1,7 @@
 {
   "title": "路由参数",
   "namespace": "mybricks.normal-pc.query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "rtType": "js-autorun",
   "description": "路由参数",
   "author": "tangxiaoxin",
@@ -28,7 +28,8 @@
       "title": "路由参数",
       "schema": {
         "type": "object"
-      }
+      },
+      "editable": true
     }
   ]
 }
