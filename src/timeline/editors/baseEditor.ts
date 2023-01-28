@@ -3,7 +3,23 @@ import { getNewItem } from './utils';
 
 export const DefaultSourceSchema = {
   type: 'array',
-  items: { type: 'any' }
+  items: {
+    type: 'object',
+    properties: {
+      title: {
+        type: 'string'
+      },
+      subTitle: {
+        type: 'string'
+      },
+      description: {
+        type: 'string'
+      },
+      color: {
+        type: 'string'
+      }
+    }
+  }
 };
 
 const BaseEditor = [
