@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "上传",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -25,6 +25,15 @@
             },
             "url": {
               "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
             }
           }
         }
@@ -43,6 +52,15 @@
               "type": "string"
             },
             "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
               "type": "string"
             }
           }
@@ -101,6 +119,15 @@
           },
           "url": {
             "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
           }
         }
       }
@@ -119,6 +146,15 @@
               "type": "string"
             },
             "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
               "type": "string"
             }
           }
@@ -154,6 +190,15 @@
               "type": "string"
             },
             "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
               "type": "string"
             }
           }

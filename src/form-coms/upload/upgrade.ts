@@ -42,10 +42,19 @@ export default function ({ input, output }): boolean {
         },
         url: {
           type: 'string'
+        },
+        status: {
+          type: 'string'
+        },
+        percent: {
+          type: 'number'
+        },
+        response: {
+          type: 'string'
         }
       }
     }
-  }
+  };
   if (!input.get('setInitialValue')) {
     input.add('setInitialValue', '设置初始值', valueSchema);
   }
@@ -53,5 +62,48 @@ export default function ({ input, output }): boolean {
     output.add('onInitial', '初始化', valueSchema);
   }
 
+  input.get('setValue').setSchema({
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        url: {
+          type: 'string'
+        },
+        status: {
+          type: 'string'
+        },
+        percent: {
+          type: 'number'
+        },
+        response: {
+          type: 'string'
+        }
+      }
+    }
+  });
+  input.get('uploadDone').setSchema({
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string'
+      },
+      url: {
+        type: 'string'
+      },
+      status: {
+        type: 'string'
+      },
+      percent: {
+        type: 'number'
+      },
+      response: {
+        type: 'string'
+      }
+    }
+  });
   return true;
 }
