@@ -1,11 +1,22 @@
-import { useCallback, useState } from 'react';
+import { useEffect } from 'react';
 
 export default (props) => {
-  const { data, slots, inputs, env, outputs } = props;
-  const { title, useExtra, bordered, size, style, bodyStyle, hoverable, useClick, outputContent } =
-    data;
+  const { data, slots, inputs } = props;
 
-  console.log('props.style', props.style);
+  useEffect(() => {
+    inputs['setValue']((ds) => {
+      data.value = ds;
+    });
+  }, []);
 
-  return <div>123</div>;
+  return (
+    <div>
+      123
+      {slots['content'].render({
+        inputValues: {
+          value: data.value
+        }
+      })}
+    </div>
+  );
 };
