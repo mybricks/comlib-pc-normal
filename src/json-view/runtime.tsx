@@ -47,17 +47,19 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
   }, [data.json]);
 
-  if (isError && env.edit) {
-    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
-  }
-
   const rootKey: React.Key = useMemo(() => {
       return uuid();
     }, []),
     keyToData = new Map(),
     expandedKeys: React.Key[] = [];
+
+  if (isError && env.edit) {
+    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
+  }
+
   if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
   if (collapsed !== 0) expandedKeys.push(rootKey);
+
   /**
    * 树节点的title渲染
    * @param props 组件属性
