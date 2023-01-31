@@ -21,6 +21,7 @@ interface UploadConfig {
   uploadStyle: React.CSSProperties;
   uploadIcon?: string;
   disabled: boolean;
+  useCustomRemove: boolean;
 }
 interface UploadFileList {
   uid?: string;
@@ -38,6 +39,7 @@ export interface Data {
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
+  const removeFileRef = useRef<UploadFile>();
   fileListRef.current = fileList;
   const uploadRef = useRef();
   const {
@@ -95,6 +97,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     inputs['uploadDone']((file: any) => {
       onUploadComplete(file);
     });
+    inputs['remove']((file: any) => {
+      onRemoveFile(typeof file === 'object' ? file : removeFileRef.current || {});
+    });
+  }, []);
+
+  const onRemoveFile = useCallback((file) => {
+    setFileList((list) => list.filter((item) => item.uid !== file.uid));
   }, []);
 
   const formatCompleteFile = (res: UploadFileList, tempList: UploadFileList[]) => {
@@ -207,7 +216,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   }, []);
 
   const onRemove = (file) => {
-    setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
+    if (!data.config.useCustomRemove) {
+      setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
+      return true;
+    }
+    removeFileRef.current = file;
+    outputs.remove(file);
+    return false;
   };
 
   const ImgPreview = (props: any) => {

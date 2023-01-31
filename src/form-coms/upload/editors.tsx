@@ -183,6 +183,18 @@ export default {
             }
           },
           {
+            title: '开启自定义删除',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config.useCustomRemove;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.config.useCustomRemove = value;
+              }
+            }
+          },
+          {
             title: '开启图片预览',
             type: 'Switch',
             value: {
@@ -267,6 +279,17 @@ export default {
             type: '_event',
             options: {
               outputId: 'upload'
+            }
+          },
+          {
+            ifVisible({ data }: EditorResult<Data>) {
+              console.log(12313313131313);
+              return data.config.useCustomRemove;
+            },
+            title: '文件删除',
+            type: '_event',
+            options: {
+              outputId: 'remove'
             }
           }
         ]
