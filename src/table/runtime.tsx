@@ -108,6 +108,26 @@ export default function (props: RuntimeParams<Data>) {
             id
           };
         });
+
+      // 动态设置显示列
+      if (data.useDynamicColumn && inputs[InputIds.SET_SHOW_COLUMNS]) {
+        inputs[InputIds.SET_SHOW_COLUMNS]((ds) => {
+          const showColumnList = ds?.filter?.((item) => item && typeof item === 'string') || [];
+          data.columns = (data.columns || []).map((item) => {
+            let visible = item.visible;
+            const dataIndexStr = Array.isArray(item.dataIndex)
+              ? item.dataIndex.join('.')
+              : item.dataIndex;
+            if (showColumnList && showColumnList.length) {
+              visible = showColumnList.includes(dataIndexStr);
+            }
+            return {
+              ...item,
+              visible
+            };
+          });
+        });
+      }
     }
   }, []);
 

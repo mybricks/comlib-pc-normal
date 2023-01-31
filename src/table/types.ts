@@ -162,4 +162,7 @@ export interface Data {
 
   usePagination?: boolean;
   paginationConfig: PaginationData;
+
+  // 动态设置显示列
+  useDynamicColumn?: boolean;
 }

@@ -54,7 +54,10 @@ export const InputIds = {
   // 勾选数据
   ROW_SELECTION_SELECTED_ROWS: 'rowSelectionSelectedRows',
   // 序号
-  INDEX: 'index'
+  INDEX: 'index',
+
+  // 动态设置显示列
+  SET_SHOW_COLUMNS: 'showColumns'
 };
 export const OutputIds = {
   // 输出勾选项

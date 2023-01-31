@@ -336,5 +336,11 @@ export const Schemas = {
         type: 'string'
       }
     }
+  },
+  SET_SHOW_COLUMNS: {
+    type: 'array',
+    items: {
+      type: 'string'
+    }
   }
 };

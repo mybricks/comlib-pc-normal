@@ -12,6 +12,7 @@ import LoadingEditor from './table/loading';
 import { getRowSelectionEditor } from './table/rowSelection';
 import UsePaginatorEditor from './table/paginator';
 import PaginatorEditor from './paginator';
+import DynamicColumnEditor from './table/dynamicColumn';
 
 function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
@@ -102,6 +103,7 @@ export default {
       ...EventEditor,
       HeaderEditor,
       ...ExpandEditor,
+      ...DynamicColumnEditor,
       ...getRowSelectionEditor(props)
     ];
   },
