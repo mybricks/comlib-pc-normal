@@ -11,8 +11,9 @@ declare module "*.svg" {
 interface Env {
   ajax: (url: string, opt: Record<string, any>) => Promise<any>
   events: any[]
-  vars: {
-    getQuery: () => any
+  vars?: {
+    getQuery: () => any;
+    getCookies: () => any;
   }
   [x: string]: any
 }

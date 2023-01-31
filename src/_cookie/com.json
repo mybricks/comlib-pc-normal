@@ -1,0 +1,36 @@
+{
+  "title": "cookie",
+  "namespace": "mybricks.normal-pc.cookie",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "cookie",
+  "author": "zhangzhenfeng",
+  "author_name": "zhangzhenfeng",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "getCookies",
+      "title": "获取cookie",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getCookies"
+      ],
+      "desc": "获取cookie"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "getCookies",
+      "title": "cookie",
+      "schema": {
+        "type": "object"
+      },
+      "editable": true
+    }
+  ]
+}
