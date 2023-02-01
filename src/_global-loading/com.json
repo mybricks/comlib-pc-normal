@@ -17,13 +17,6 @@
       "schema": {
         "type": "any"
       }
-    },
-    {
-      "id": "close",
-      "title": "关闭",
-      "schema": {
-        "type": "any"
-      }
     }
   ]
 }
