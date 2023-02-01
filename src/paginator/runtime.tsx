@@ -27,6 +27,7 @@ export default (props: RuntimeParams<Data>) => {
   useEffect(() => {
     if (env.runtime) {
       data.total = 0;
+      data.current = 1;
       inputs[InputIds.SetTotal]((val: number) => {
         if (typeof val === 'number') {
           data.total = val;
@@ -51,12 +52,14 @@ export default (props: RuntimeParams<Data>) => {
   }, []);
 
   const onChange = (pageNum: number, pageSize: number) => {
-    data.currentPage = {
-      pageNum,
-      pageSize
-    };
-    setPageNum(pageNum);
-    outputs[OutputIds.PageChange](data.currentPage);
+    if (env.runtime) {
+      data.currentPage = {
+        pageNum,
+        pageSize
+      };
+      setPageNum(pageNum);
+      outputs[OutputIds.PageChange](data.currentPage);
+    }
   };
 
   const totalText = (total: number, range: number[]) => {
