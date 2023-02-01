@@ -10,6 +10,9 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setFieldsValue",
