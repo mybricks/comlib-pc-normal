@@ -85,6 +85,16 @@ export default {
         label: `表单项${nowC}`,
         widthOption: 'span',
         span: 24 / data.formItemColumn,
+        descriptionStyle: {
+          whiteSpace: 'pre-wrap',
+          lineHeight: '12px',
+          letterSpacing: '0px',
+          fontSize: '12px',
+          fontWeight: 400,
+          color: 'rgba(0, 0, 0, 0.45)',
+          fontStyle: 'normal',
+          styleEditorUnfold: true
+        },
         inlineMargin: [0, 16, 24, 0],
         visible: true,
       })
@@ -340,6 +350,49 @@ export default {
           set({ id, data }: EditorResult<Data>, value: string) {
             const item = data.items.find(item => item.id === id)
             item.tooltip = value
+          },
+        },
+      },
+      {
+        title: "提示语",
+        type: "Text",
+        description: "展示在表单项下方的提示内容",
+        value: {
+          get({ id, data }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id);
+            return item?.description;
+          },
+          set({ id, data }: EditorResult<Data>, value: string) {
+            const item = data.items.find(item => item.id === id)
+            item.description = value
+          },
+        },
+      },
+      {
+        title: "提示语样式",
+        type: "Style",
+        options: ['font'],
+        description: "表单项提示语的字体样式",
+        value: {
+          get({ id, data }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id);
+            if (!item?.descriptionStyle) {
+              item.descriptionStyle = {
+                whiteSpace: 'pre-wrap',
+                lineHeight: '12px',
+                letterSpacing: '0px',
+                fontSize: '12px',
+                fontWeight: 400,
+                color: 'rgba(0, 0, 0, 0.45)',
+                fontStyle: 'normal',
+                styleEditorUnfold: false
+              };
+            }
+            return item?.descriptionStyle;
+          },
+          set({ id, data }: EditorResult<Data>, value: {}) {
+            const item = data.items.find(item => item.id === id)
+            item.descriptionStyle = value
           },
         },
       },

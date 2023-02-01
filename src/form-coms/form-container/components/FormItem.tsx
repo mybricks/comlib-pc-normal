@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { Data, FormControlProps } from '../types';
 import { unitConversion } from '../../../utils';
+import css from '../styles.less';
 
 interface FormItemProps {
   data: Data;
@@ -40,6 +41,13 @@ const FormItem = (props: FormItemProps) => {
       style={style}
     >
       <JSXWrapper com={com} field={field} />
+      {item.description && (
+        <div className={css.formItemDesc}>
+          <Form.Item noStyle>
+            <span style={item.descriptionStyle}>{item.description}</span>
+          </Form.Item>
+        </div>
+      )}
     </Form.Item>
   );
 };
