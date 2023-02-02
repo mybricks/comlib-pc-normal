@@ -1,0 +1,12 @@
+{
+  "options": [],
+  "rules": [],
+  "value": "",
+  "isFilter": false,
+  "isOnSearch": false,
+  "config": {
+    "allowClear": true,
+    "placeholder": "请输入",
+    "disabled": false
+  }
+}
