@@ -397,6 +397,26 @@ export default {
         },
       },
       {
+        title: '提示语样式应用所有表单项',
+        type: 'Button',
+        value: {
+          set({ id, data }: EditorResult<Data>) {
+            const item = data.items.find(item => item.id === id)
+            const descriptionStyle = item?.descriptionStyle || {
+              whiteSpace: 'pre-wrap',
+              lineHeight: '12px',
+              letterSpacing: '0px',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.45)',
+              fontStyle: 'normal',
+              styleEditorUnfold: false
+            };
+            data.items.forEach(item => item.descriptionStyle = descriptionStyle);
+          }
+        }
+      },
+      {
         title: '宽度模式',
         type: 'Select',
         options: [
