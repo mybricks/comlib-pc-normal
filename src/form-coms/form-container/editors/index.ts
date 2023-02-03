@@ -447,7 +447,7 @@ export default {
             type: 'inputNumber',
             options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
             ifVisible({ data }: EditorResult<Data>) {
-              return data.layout === 'inline'
+              return data.layout !== 'horizontal'
             },
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -464,7 +464,7 @@ export default {
             title: '边距应用其它表单项及操作项',
             type: 'Button',
             ifVisible({ data }: EditorResult<Data>) {
-              return data.layout === 'inline'
+              return data.layout !== 'horizontal'
             },
             value: {
               set({ id, data }: EditorResult<Data>) {

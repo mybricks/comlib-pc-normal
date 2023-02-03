@@ -25,7 +25,7 @@ const FormItem = (props: FormItemProps) => {
   const { com, item, field, data } = props;
   const style: React.CSSProperties = {
     margin:
-      data.layout === 'inline'
+      data.layout !== 'horizontal'
         ? item.inlineMargin?.map(String).map(unitConversion).join(' ')
         : void 0
   };
