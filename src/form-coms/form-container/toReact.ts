@@ -1,7 +1,9 @@
 import { getLabelCol } from './utils';
+import { unitConversion } from '../../utils';
 
 export default function ({ data, slots }) {
-  let fromItemsStr = slots['content'].render({
+  let content = ''
+  const fromItemsStr = slots['content'].render({
     itemWrap (com: { id; jsx }) {
       const item = data.items.find((item) => item.id === com.id);
 
@@ -42,47 +44,20 @@ export default function ({ data, slots }) {
     }
   })
 
-  let actionsStr = ''
-
-  data.actions.items.forEach((item) => {
-    if (typeof item.visible !== 'undefined' && !item.visible) {
-      return
-    }
-
-    actionsStr += `
-      <Button
-        ${item.type ? `type="${item.type}"` : '' }
-        ${item.loading ? `loading="${item.loading}"` : '' }
-      >
-        ${item.title}
-      </Button>
-    `
-  })
-
-  actionsStr = `<Space wrap>${actionsStr}</Space>`
+  const actionsStr = getActionsStr(data.actions)
   
   const labelCol = data.layout === 'horizontal' ? getLabelCol(data) : undefined
 
-  const actionFlexBasis =
-    data.actions.widthOption === 'px'
-      ? `${data.actions.width}px`
-      : `${(data.actions.span * 100) / 24}%`;
+  if (data.layout === 'horizontal') {
+    content = getHorizontalLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
+  } else if (data.layout === 'inline') {
+    content = getInlineLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
+  } else if (data.layout === 'vertical') {
+    content = getVerticalLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
+  }
 
-  const horizontalLayoutStr = `
-    ${fromItemsStr}
-    ${data.actions.visible && `<Col
-        flex="0 0 ${actionFlexBasis}"
-        style={{
-          textAlign: "${data.actions.align}"
-        }}
-      >
-        <Form.Item label=" " colon={false}>
-          ${actionsStr}
-        </Form.Item>
-      </Col>`}
-  `
 
-  const str = `<Form layout="${data.layout}" ${labelCol ? `labelCol={${getObjectStr(labelCol)}}` : ''}>${horizontalLayoutStr}</Form>`
+  const str = `<Form layout="${data.layout}" ${labelCol ? `labelCol={${getObjectStr(labelCol)}}` : ''}>${content}</Form>`
 
   return {
     imports: [
@@ -99,6 +74,91 @@ export default function ({ data, slots }) {
     style: '',
     js: ''
   }
+}
+
+function getHorizontalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
+  const actionFlexBasis =
+    actions.widthOption === 'px'
+      ? `${actions.width}px`
+      : `${(actions.span * 100) / 24}%`;
+
+  const horizontalLayoutStr = `
+    ${fromItemsStr}
+    ${actions.visible && `<Col
+        flex="0 0 ${actionFlexBasis}"
+        style={{
+          textAlign: "${actions.align}"
+        }}
+      >
+        <Form.Item label=" " colon={false}>
+          ${actionsStr}
+        </Form.Item>
+      </Col>`}
+  `
+
+  return horizontalLayoutStr
+}
+
+function getInlineLayoutStr ({ actions, fromItemsStr, actionsStr }) {
+  const actionStyle: React.CSSProperties = {
+    textAlign: actions.align,
+    padding: actions.inlinePadding?.map(String).map(unitConversion).join(' ')
+  };
+  const actionFlexBasis = actions.widthOption === 'px' ? `${actions.width}px` : `${(actions.span * 100) / 24}%`;
+
+  return `<div className={styles.slotInlineWrapper}>
+    ${fromItemsStr}
+    ${actions.visible && `<Col flex="0 0 ${actionFlexBasis}" style={${getObjectStr(actionStyle)}}>
+      <Form.Item style={{ marginRight: 0 }}>${actionsStr}</Form.Item>
+    </Col>
+    `}
+  </div>
+  `
+}
+
+function getVerticalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
+
+  const actionFlexBasis =
+    actions.widthOption === 'px'
+      ? `${actions.width}px`
+      : `${(actions.span * 100) / 24}%`;
+
+  return ` <>
+    ${fromItemsStr}
+    ${actions.visible && `<Col
+      flex="0 0 ${actionFlexBasis}"
+      style={{
+        textAlign: "${actions.align}"
+      }}
+    >
+      <Form.Item label=" " colon={false}>
+        ${actionsStr}
+      </Form.Item>
+    </Col>`}
+  </>`
+
+}
+
+function getActionsStr (actions) {
+  let actionsStr = ''
+
+  actions.items.forEach((item) => {
+    if (typeof item.visible !== 'undefined' && !item.visible) {
+      return
+    }
+
+    actionsStr += `<Button
+        ${item.type ? `type="${item.type}"` : '' }
+        ${item.loading ? `loading="${item.loading}"` : '' }
+      >
+        ${item.title}
+      </Button>
+    `
+  })
+
+  actionsStr = `<Space wrap>${actionsStr}</Space>`
+
+  return actionsStr
 }
 
 function getObjectStr (obj) {

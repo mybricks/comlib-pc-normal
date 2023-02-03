@@ -8,8 +8,6 @@ export default function ({ data }) {
 
   let str = `<Input type="text" ${configStr} />`
 
-  console.log(data.config, configStr)
-
   return {
     imports: [
       {
