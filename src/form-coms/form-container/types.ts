@@ -29,6 +29,7 @@ interface FormItems {
   validateStatus?: string
   help?: string
   tooltip?: string
+  labelStyle?: {}
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType

@@ -32,7 +32,7 @@ const FormItem = (props: FormItemProps) => {
   return (
     <Form.Item
       {...field}
-      label={item?.label}
+      label={<label style={item?.labelStyle}>{item?.label}</label>}
       name={field ? [field.name, item?.name] : item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}
