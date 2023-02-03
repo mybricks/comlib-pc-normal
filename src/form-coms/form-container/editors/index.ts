@@ -369,211 +369,216 @@ export default {
         },
       },
       {
-        title: "标题样式",
-        type: "Style",
-        options: ['font'],
-        description: "表单项标题的字体样式",
-        value: {
-          get({ id, data }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id);
-            if (!item?.labelStyle) {
-              item.labelStyle = {
-                lineHeight: '14px',
-                letterSpacing: '0px',
-                fontSize: '14px',
-                fontWeight: 400,
-                color: 'rgba(0, 0, 0, 0.85)',
-                fontStyle: 'normal',
-                styleEditorUnfold: false
-              };
+        title: '样式',
+        items: [
+          {
+            title: '宽度模式',
+            type: 'Select',
+            options: [
+              {
+                label: '24栅格',
+                value: 'span'
+              },
+              {
+                label: '固定宽度(px)',
+                value: 'px'
+              }
+            ],
+            value: {
+              get({ data, id }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id)
+                return item?.widthOption;
+              },
+              set({ data, id }: EditorResult<Data>, value: LabelWidthType) {
+                const item = data.items.find(item => item.id === id);
+                item.widthOption = value;
+              }
+            },
+          },
+          {
+            title: '宽度配置(共24格)',
+            type: 'Slider',
+            options: [
+              {
+                max: 24,
+                min: 1,
+                step: 1,
+                formatter: '/24',
+              },
+            ],
+            ifVisible({ data, id }: EditorResult<Data>) {
+              const item = data.items.find(item => item.id === id)
+              return item?.widthOption !== 'px';
+            },
+            value: {
+              get({ data, id }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id)
+                return item?.span;
+              },
+              set({ data, id }: EditorResult<Data>, value: number) {
+                const item = data.items.find(item => item.id === id)
+                item.span = value;
+              }
+            },
+          },
+          {
+            title: '宽度配置(px)',
+            type: 'text',
+            options: {
+              type: 'number'
+            },
+            ifVisible({ data, id }: EditorResult<Data>) {
+              const item = data.items.find(item => item.id === id)
+              return item?.widthOption === 'px';
+            },
+            value: {
+              get({ data, id }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id)
+                return item?.width;
+              },
+              set({ data, id }: EditorResult<Data>, value: number) {
+                const item = data.items.find(item => item.id === id)
+                item.width = value;
+              }
+            },
+          },
+          {
+            title: '边距',
+            type: 'inputNumber',
+            options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.layout === 'inline'
+            },
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id)
+                return item.inlineMargin;
+              },
+              set({ id, data }: EditorResult<Data>, value: number[]) {
+                const item = data.items.find(item => item.id === id)
+                item.inlineMargin = value
+              }
             }
-            return item?.labelStyle;
           },
-          set({ id, data }: EditorResult<Data>, value: {}) {
-            const item = data.items.find(item => item.id === id)
-            item.labelStyle = value
-          },
-        },
-      },
-      {
-        title: '标题样式应用所有表单项',
-        type: 'Button',
-        value: {
-          set({ id, data }: EditorResult<Data>, value: {}) {
-            const item = data.items.find(item => item.id === id)
-            const labelStyle = item?.labelStyle || {
-              lineHeight: '14px',
-              letterSpacing: '0px',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'rgba(0, 0, 0, 0.85)',
-              fontStyle: 'normal',
-              styleEditorUnfold: false
-            };
-            data.items.forEach(item => item.labelStyle = labelStyle);
-          }
-        }
-      },
-      {
-        title: "提示语样式",
-        type: "Style",
-        options: ['font'],
-        description: "表单项提示语的字体样式",
-        value: {
-          get({ id, data }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id);
-            if (!item?.descriptionStyle) {
-              item.descriptionStyle = {
-                whiteSpace: 'pre-wrap',
-                lineHeight: '12px',
-                letterSpacing: '0px',
-                fontSize: '12px',
-                fontWeight: 400,
-                color: 'rgba(0, 0, 0, 0.45)',
-                fontStyle: 'normal',
-                styleEditorUnfold: false
-              };
+          {
+            title: '边距应用其它表单项及操作项',
+            type: 'Button',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.layout === 'inline'
+            },
+            value: {
+              set({ id, data }: EditorResult<Data>) {
+                const curItem = data.items.find(item => item.id === id)
+                const margin = curItem?.inlineMargin || [0, 16, 24, 0];
+                data.items.forEach(item => item.inlineMargin = [...margin]);
+                data.actions.inlinePadding = [...margin];
+              }
             }
-            return item?.descriptionStyle;
-          },
-          set({ id, data }: EditorResult<Data>, value: {}) {
-            const item = data.items.find(item => item.id === id)
-            item.descriptionStyle = value
-          },
-        },
-      },
-      {
-        title: '提示语样式应用所有表单项',
-        type: 'Button',
-        value: {
-          set({ id, data }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-            const descriptionStyle = item?.descriptionStyle || {
-              whiteSpace: 'pre-wrap',
-              lineHeight: '12px',
-              letterSpacing: '0px',
-              fontSize: '12px',
-              fontWeight: 400,
-              color: 'rgba(0, 0, 0, 0.45)',
-              fontStyle: 'normal',
-              styleEditorUnfold: false
-            };
-            data.items.forEach(item => item.descriptionStyle = descriptionStyle);
-          }
-        }
-      },
-      {
-        title: '宽度模式',
-        type: 'Select',
-        options: [
-          {
-            label: '24栅格',
-            value: 'span'
           },
           {
-            label: '固定宽度(px)',
-            value: 'px'
-          }
-        ],
-        value: {
-          get({ data, id }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-            return item?.widthOption;
+            title: "标题样式",
+            type: "Style",
+            options: ['font'],
+            description: "表单项标题的字体样式",
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id);
+                if (!item?.labelStyle) {
+                  item.labelStyle = {
+                    lineHeight: '14px',
+                    letterSpacing: '0px',
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    color: 'rgba(0, 0, 0, 0.85)',
+                    fontStyle: 'normal',
+                    styleEditorUnfold: false
+                  };
+                }
+                return item?.labelStyle;
+              },
+              set({ id, data }: EditorResult<Data>, value: {}) {
+                const item = data.items.find(item => item.id === id)
+                item.labelStyle = value
+              },
+            },
           },
-          set({ data, id }: EditorResult<Data>, value: LabelWidthType) {
-            const item = data.items.find(item => item.id === id);
-            item.widthOption = value;
-          }
-        },
-      },
-      {
-        title: '宽度配置(共24格)',
-        type: 'Slider',
-        options: [
           {
-            max: 24,
-            min: 1,
-            step: 1,
-            formatter: '/24',
+            title: '标题样式应用所有表单项',
+            type: 'Button',
+            value: {
+              set({ id, data }: EditorResult<Data>, value: {}) {
+                const item = data.items.find(item => item.id === id)
+                const labelStyle = item?.labelStyle || {
+                  lineHeight: '14px',
+                  letterSpacing: '0px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'rgba(0, 0, 0, 0.85)',
+                  fontStyle: 'normal',
+                  styleEditorUnfold: false
+                };
+                data.items.forEach(item => item.labelStyle = labelStyle);
+              }
+            }
           },
-        ],
-        ifVisible({ data, id }: EditorResult<Data>) {
-          const item = data.items.find(item => item.id === id)
-          return item?.widthOption !== 'px';
-        },
-        value: {
-          get({ data, id }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-            return item?.span;
+          {
+            title: "提示语样式",
+            type: "Style",
+            options: ['font'],
+            description: "表单项提示语的字体样式",
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id);
+                if (!item?.descriptionStyle) {
+                  item.descriptionStyle = {
+                    whiteSpace: 'pre-wrap',
+                    lineHeight: '12px',
+                    letterSpacing: '0px',
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    color: 'rgba(0, 0, 0, 0.45)',
+                    fontStyle: 'normal',
+                    styleEditorUnfold: false
+                  };
+                }
+                return item?.descriptionStyle;
+              },
+              set({ id, data }: EditorResult<Data>, value: {}) {
+                const item = data.items.find(item => item.id === id)
+                item.descriptionStyle = value
+              },
+            },
           },
-          set({ data, id }: EditorResult<Data>, value: number) {
-            const item = data.items.find(item => item.id === id)
-            item.span = value;
-          }
-        },
-      },
-      {
-        title: '宽度配置(px)',
-        type: 'text',
-        options: {
-          type: 'number'
-        },
-        ifVisible({ data, id }: EditorResult<Data>) {
-          const item = data.items.find(item => item.id === id)
-          return item?.widthOption === 'px';
-        },
-        value: {
-          get({ data, id }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-            return item?.width;
+          {
+            title: '提示语样式应用所有表单项',
+            type: 'Button',
+            value: {
+              set({ id, data }: EditorResult<Data>) {
+                const item = data.items.find(item => item.id === id)
+                const descriptionStyle = item?.descriptionStyle || {
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: '12px',
+                  letterSpacing: '0px',
+                  fontSize: '12px',
+                  fontWeight: 400,
+                  color: 'rgba(0, 0, 0, 0.45)',
+                  fontStyle: 'normal',
+                  styleEditorUnfold: false
+                };
+                data.items.forEach(item => item.descriptionStyle = descriptionStyle);
+              }
+            }
           },
-          set({ data, id }: EditorResult<Data>, value: number) {
-            const item = data.items.find(item => item.id === id)
-            item.width = value;
-          }
-        },
-      },
-      {
-        title: '边距',
-        type: 'inputNumber',
-        options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === 'inline'
-        },
-        value: {
-          get({ id, data }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-            return item.inlineMargin;
-          },
-          set({ id, data }: EditorResult<Data>, value: number[]) {
-            const item = data.items.find(item => item.id === id)
-            item.inlineMargin = value
-          }
-        }
-      },
-      {
-        title: '边距应用其它表单项及操作项',
-        type: 'Button',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.layout === 'inline'
-        },
-        value: {
-          set({ id, data }: EditorResult<Data>) {
-            const curItem = data.items.find(item => item.id === id)
-            const margin = curItem?.inlineMargin || [0, 16, 24, 0];
-            data.items.forEach(item => item.inlineMargin = [...margin]);
-            data.actions.inlinePadding = [...margin];
-          }
-        }
+        ]
       },
       {
         title: '必填样式',
         type: 'Switch',
         value: {
-          get({id, data, focusArea}: EditorResult<Data>) {
+          get({ id, data, focusArea }: EditorResult<Data>) {
             return data.items.find(item => item.id === id).required
           },
-          set({id, data, focusArea}: EditorResult<Data>, val) {
+          set({ id, data, focusArea }: EditorResult<Data>, val) {
             const item = data.items.find(item => item.id === id)
             item['required'] = val
           }
