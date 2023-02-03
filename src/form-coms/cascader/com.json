@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "级联选择",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -93,6 +93,10 @@
             "label": {
               "title": "名称",
               "type": "string"
+            },
+            "disabled": {
+              "title": "禁用",
+              "type": "boolean"
             },
             "children": {
               "title": "子项",
