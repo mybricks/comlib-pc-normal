@@ -95,6 +95,15 @@ export default {
           fontStyle: 'normal',
           styleEditorUnfold: true
         },
+        labelStyle: {
+          lineHeight: '14px',
+          letterSpacing: '0px',
+          fontSize: '14px',
+          fontWeight: 400,
+          color: 'rgba(0, 0, 0, 0.85)',
+          fontStyle: 'normal',
+          styleEditorUnfold: false
+        },
         inlineMargin: [0, 16, 24, 0],
         visible: true,
       })
