@@ -43,5 +43,8 @@ export interface Data {
 
   useClick?: boolean;
 
-  slotStyle?: CSSProperties
+  slotStyle?: CSSProperties;
+
+  id?: string;
+  useFixed?: boolean;
 }
