@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Button, Row, Col, Space } from 'antd';
+import { Form, Col } from 'antd';
+import { unitConversion } from '../../../utils';
 import { Data } from '../types';
 
 interface VerticalLayoutProps {
@@ -10,23 +11,19 @@ interface VerticalLayoutProps {
 
 const VerticalLayout = (props: VerticalLayoutProps) => {
   const { children, actions, data } = props;
+  const { align, widthOption, width, span, inlinePadding } = data.actions;
 
-  const actionFlexBasis =
-    data.actions.widthOption === 'px'
-      ? `${data.actions.width}px`
-      : `${(data.actions.span * 100) / 24}%`;
+  const actionStyle: React.CSSProperties = {
+    textAlign: align,
+    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
+  };
+  const actionFlexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
 
   return (
     <>
       {children}
       {data.actions.visible && (
-        <Col
-          data-form-actions
-          flex={`0 0 ${actionFlexBasis}`}
-          style={{
-            textAlign: data.actions.align
-          }}
-        >
+        <Col data-form-actions flex={`0 0 ${actionFlexBasis}`} style={actionStyle}>
           <Form.Item label=" " colon={false}>
             {actions}
           </Form.Item>
