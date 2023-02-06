@@ -4,6 +4,7 @@ import { PageScrollEditor } from './editors/pageSrcollEditor';
 import { StyleEditor } from './editors/styleEditor';
 import { ClickEditor } from './editors/clickEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
+import { FixedEditor } from './editors/fixedEditor';
 
 export default {
   '@init'({ style }: EditorResult<Data>) {
@@ -44,7 +45,8 @@ export default {
         }
       },
       ...MaxHeightEditor,
-      ...OverflowEditor
+      ...OverflowEditor,
+      ...FixedEditor
     ];
 
     cate3.title = '高级';
