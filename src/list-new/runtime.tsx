@@ -65,7 +65,10 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
                 itemData: item,
                 index: index
               },
-              key: key
+              key: (() => {
+                console.log(key, 'list-new-key');
+                return key;
+              })()
             })}
           </div>
         ))}
