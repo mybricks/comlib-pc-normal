@@ -5,11 +5,11 @@ import { actionsEditor } from './actions'
 import { outputIds, inputIds, slotInputIds } from '../constants'
 import { uuid } from '../../../utils'
 
-function getSubmitSchema (data) {
+function getSubmitSchema(data) {
   const properties = {}
   data.items.forEach(item => {
-    const {id, label, schema, name } = item
-    properties[name] = { ...schema, title: label }
+    const { id, label, schema, name } = item
+    properties[name || label] = { ...schema, title: label }
   })
 
   const schema = {
