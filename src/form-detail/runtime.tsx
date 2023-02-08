@@ -61,7 +61,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
 
       res.push({
         ...item,
-        value: ds[item.key],
+        value: ds[item.key] === void 0 ? item.value : ds[item.key],
         labelStyle,
         contentStyle,
         itemStyle
