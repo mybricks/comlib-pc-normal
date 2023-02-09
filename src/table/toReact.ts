@@ -1,5 +1,4 @@
-import React from 'react';
-import { typeCheck } from '../utils';
+import { getObjectStr, getObjectDistrbuteStr } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
 import { ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
 
@@ -34,6 +33,11 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
   }
 }
 
+/**
+ * 获取表格头codeStr
+ * @param param0 RuntimeParams
+ * @returns tableHeaderStr
+ */
 function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
   const { useHeaderTitleSlot, useHeaderOperationSlot, useColumnSetting } = data;
   // 顶部显示批量操作按钮
@@ -60,6 +64,11 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
   return str;
 }
 
+/**
+ * 获取表格体codeStr
+ * @param param0 RuntimeParams
+ * @returns tableBodyStr
+ */
 function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   const tableStyle = {
     width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
@@ -134,6 +143,11 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   return `<Empty description="请添加列或连接数据源" style={${getObjectStr(emptyStyle)}} />`;
 }
 
+/**
+ * 获取表格底部codeStr
+ * @param param0 RuntimeParams
+ * @returns tableFooterStr
+ */
 function getTableFooterStr({ data, slots }) {
   const {
     total,
@@ -151,6 +165,7 @@ function getTableFooterStr({ data, slots }) {
     useBottomRowSelection,
     paginationConfig
   } = data;
+
   /**
    * 获取分页组件codeStr
    */
@@ -159,8 +174,10 @@ function getTableFooterStr({ data, slots }) {
 
     const paginationCfg = {
       total: total,
-      showTotal: (total: number, range: number[]) => {
-        return `total ${total} items`;
+      showTotal: () => {
+        return `(total: number, range: number[]) => {
+                  return \`共 \${total} 条结果\`;
+                }`
       },
       current,
       pageSize: pageSize || defaultPageSize || 1,
@@ -210,27 +227,6 @@ function getTableFooterStr({ data, slots }) {
             ${getPaginatorStr()}
           </div>`
 
-}
-
-function getObjectStr(obj) {
-  return JSON.stringify(obj)
-}
-
-function getValueStr(val) {
-  if (typeCheck(val, 'STRING')) {
-    return `"${val}"`;
-  }
-  if (typeCheck(val, ['OBJECT']))
-    return `{${getObjectStr(val)}}`;
-  return `{${val}}`;
-}
-
-function getObjectDistrbuteStr(obj) {
-  const strArr = Object.entries(obj).map(([key, value]) => {
-    if (value == null) return '';
-    return key + ' = ' + getValueStr(value);
-  })
-  return strArr.join('\n')
 }
 
 // 获取表格显示列宽度和
