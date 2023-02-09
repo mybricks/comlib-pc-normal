@@ -1,3 +1,4 @@
+import { TableProps } from 'antd';
 import { getObjectStr, getObjectDistrbuteStr } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
 import { ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
@@ -55,10 +56,12 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
       useHeaderOperationSlot ||
       useColumnSetting) ? '16px' : void 0,
   }
+  const headerCfg = {
+    style
+  };
   const str = `<div
-                style = {${getObjectStr(style)}}
+                ${getObjectDistrbuteStr(headerCfg)}
                 >
-                
               </div>`
 
   return str;
@@ -96,41 +99,50 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       backgroundColor: cItem.titleBgColor
     }
     const titleRenderStr = cItem.title;
-
+    const columnCfg: IColumn = {
+      ellipsis: false,
+      width: cItem.width === WidthTypeEnum.Auto ? void 0 : cItem.width,
+      title: titleRenderStr,
+      filterMultiple: cItem.filter?.filterType !== FilterTypeEnum.Single,
+      render: () => {
+        return `() => <></>`;
+      },
+      showSorterTooltip: false,
+      sortOrder: data?.sortParams?.id === cItem.dataIndex ? data?.sortParams?.order : void 0,
+      onCell: () => {
+        return `() => {
+                  return {
+                    style: ${getObjectStr(cellStyle)}
+                  };
+                }`
+      },
+      onHeaderCell: () => {
+        return `(): any => {
+                  return {
+                    style: ${getObjectStr(headerCellStyle)}
+                  };
+                }`
+      }
+    };
     return `<Table.Column
-              key = "${cItem.dataIndex || cItem.title}"
-              ellipsis = {false}
-              width = "${cItem.width === WidthTypeEnum.Auto ? '' : cItem.width}"
-              title = "${titleRenderStr}"
-              filterMultiple = {${cItem.filter?.filterType !== FilterTypeEnum.Single}}
-              render = {() => <></>}
-              showSorterTooltip = {false}
-              ${data?.sortParams?.id === cItem.dataIndex ? `sortOrder = ${data?.sortParams?.order}` : ""}
-              onCell = {() => {
-                return {
-                  style: ${getObjectStr(cellStyle)}
-                };
-              }}
-              onHeaderCell = {(): any => {
-                return {
-                  style: ${getObjectStr(headerCellStyle)}
-              };
-                  }}
+              ${getObjectDistrbuteStr(columnCfg)}
             />`;
   };
   if (data.columns.length) {
+    const { size, bordered, useRowSelection, showHeader } = data;
+    const tableCfg: TableProps<any> = {
+      style: tableStyle,
+      dataSource: [],
+      size,
+      bordered,
+      pagination: false,
+      // rowSelection:useRowSelection?rowSelection:void 0,
+      showHeader,
+      scroll: tableScroll,
+      tableLayout
+    };
     const str = `<Table
-                  style={
-                    ${getObjectStr(tableStyle)}
-                  }
-                  dataSource={[]}
-                  size="${data.size as any}"
-                  bordered={${data.bordered}}
-                  pagination={false}
-                  ${data.useRowSelection ? rowSelection : ''}
-                  showHeader={${data.showHeader}}
-                  scroll={${getObjectStr(tableScroll)}}
-                  tableLayout="${tableLayout}"
+                  ${getObjectDistrbuteStr(tableCfg)}
                   >
                   ${data.columns.map(getColumnStr).join('\n')}
                   </Table>`
@@ -139,8 +151,14 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   const emptyStyle = {
     border: '1px dashed rgb(176, 176, 176)',
     margin: 0
-  }
-  return `<Empty description="请添加列或连接数据源" style={${getObjectStr(emptyStyle)}} />`;
+  };
+  const emptyCfg = {
+    description: "请添加列或连接数据源",
+    style: emptyStyle
+  };
+  return `<Empty 
+            ${getObjectDistrbuteStr(emptyCfg)}
+          />`;
 }
 
 /**
