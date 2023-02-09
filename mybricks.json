@@ -224,7 +224,9 @@
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
     },
     {
       "name": "antd",
@@ -235,5 +237,6 @@
         "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.js"
       ]
     }
-  ]
+  ],
+  "folderId": 43
 }
