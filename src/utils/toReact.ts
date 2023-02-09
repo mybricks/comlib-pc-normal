@@ -8,7 +8,7 @@ function getValueStr(val) {
     if (typeCheck(val, 'STRING')) {
         return `"${val}"`;
     }
-    if (typeCheck(val, ['OBJECT']))
+    if (typeCheck(val, ['OBJECT', 'ARRAY']))
         return `{${getObjectStr(val)}}`;
     if (typeCheck(val, ['FUNCTION']))
         return `{${val()}}`;
