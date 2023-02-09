@@ -10,6 +10,8 @@ function getValueStr(val) {
     }
     if (typeCheck(val, ['OBJECT']))
         return `{${getObjectStr(val)}}`;
+    if (typeCheck(val, ['FUNCTION']))
+        return `{${val()}}`;
     return `{${val}}`;
 }
 
