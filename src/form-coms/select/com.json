@@ -1,7 +1,7 @@
 {
   "title": "下拉框",
   "namespace": "mybricks.normal-pc.select",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -10,6 +10,9 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
