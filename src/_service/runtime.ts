@@ -22,29 +22,30 @@ function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
   }
 }
 
-function call({ env, data, outputs }) {
+function call({ env, data, outputs, params }) {
   if (data.callReady === READY) {
     data.callReady = PARAMS_READY;
-    callCon({ env, data, outputs }, data.params, data.connectorConfig);
+    callCon({ env, data, outputs }, params, data.connectorConfig);
   }
 }
 
 export default function ({ env, data, inputs, outputs }) {
+  let curParams;
   if (env.runtime) {
     if (data.immediate) {
       callCon({ env, data, outputs });
     } else {
       inputs['call']((params) => {
-        data.params = typeof params === 'object' ? params : {};
         data.callReady |= data.useExternalUrl ? PARAMS_READY : READY;
-        call({ env, data, outputs });
+        curParams = params;
+        call({ env, data, params: typeof params === 'object' ? params : {}, outputs });
       });
       inputs[INPUT_ID.SET_URL]((url: string) => {
         if (url && typeof url === 'string') {
           data.connectorConfig.url = url;
         }
         data.callReady |= URL_READY;
-        call({ env, data, outputs });
+        call({ env, data, outputs, params: curParams });
       });
     }
   }
