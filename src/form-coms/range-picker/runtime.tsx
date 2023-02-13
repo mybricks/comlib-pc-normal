@@ -192,9 +192,76 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
   };
 
+  const { useDisabledDate, useDisabledTime, staticDisabledDate, staticDisabledTime } = data;
+  const getLimitByDateType = ({
+    limitItem,
+    baseDate,
+    defaultType
+  }: {
+    limitItem: TimeDateLimitItem;
+    baseDate?: Moment | null;
+    defaultType: 'days' | 'seconds';
+  }) => {
+    const { type, offset } = limitItem;
+    if (type !== 'custom') {
+      return [moment().add(offset, type).startOf(type), moment().add(offset, type).endOf(type)];
+    } else if (!!baseDate) {
+      return [
+        moment(baseDate).add(offset, defaultType).startOf(defaultType),
+        moment(baseDate).add(offset, defaultType).endOf(defaultType)
+      ];
+    }
+    return [];
+  };
+  /** 日期禁用函数 */
+  const disabledDate =
+    useDisabledDate === 'static'
+      ? (current) => {
+          // current: 所有日期
+          let startBool = false,
+            endBool = false;
+          const startTimeLimit = staticDisabledDate[0];
+          const endTimeLimit = staticDisabledDate[1];
+          const startLimit = getLimitByDateType({ limitItem: startTimeLimit, defaultType: 'days' });
+          const endLimit = getLimitByDateType({
+            limitItem: endTimeLimit,
+            defaultType: 'days',
+            baseDate: dates?.[0]
+          });
+
+          if (startTimeLimit.direction === 'before') {
+            if (current && current < startLimit[0]) {
+              startBool = true;
+            }
+          }
+          if (startTimeLimit.direction === 'after') {
+            if (current && current > startLimit[1]) {
+              startBool = true;
+            }
+          }
+          if (endTimeLimit.direction === 'before') {
+            if (current && current < endLimit[0]) {
+              endBool = true;
+            }
+          }
+          if (endTimeLimit.direction === 'after') {
+            if (current && current > endLimit[1]) {
+              endBool = true;
+            }
+          }
+          return startBool || endBool;
+        }
+      : void 0;
   return (
     <div className={css.rangePicker}>
-      <RangePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
+      <RangePicker
+        value={value}
+        {...data.config}
+        showTime={getShowTime()}
+        onChange={onChange}
+        onCalendarChange={(dates) => setDates(dates)}
+        disabledDate={disabledDate}
+      />
     </div>
   );
 }

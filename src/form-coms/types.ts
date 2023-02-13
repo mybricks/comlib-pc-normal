@@ -25,3 +25,25 @@ export const OutputIds = {
   OnInitial: 'onInitial',
   ReturnValue: 'returnValue'
 }
+
+export type DateType = "custom" | "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years";
+
+export type PickerComponentType = 'DatePicker' | 'RangePicker' | 'TimePicker' | 'TimeRangePicker';
+export interface TimeDateLimitItem {
+  title: string;
+  checked: false;
+  type: DateType;
+  offset: number;
+  direction: 'before' | 'after'
+}
+
+export const DateType = {
+  Custom: "custom",
+  Second: "seconds",
+  Minute: "minutes",
+  Hour: "hours",
+  Day: "days",
+  Week: "weeks",
+  Month: "months",
+  Year: "years",
+}; 
