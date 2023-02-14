@@ -39,10 +39,13 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     }
 
     /**
-     * @description v1.1.10 表单项增加默认”显示冒号“配置
+     * @description v1.1.10 表单项增加默认”显示冒号“配置；表单项字段trim
      */
     if (item.colon === undefined) {
       item.colon = 'default';
+    }
+    if (item.name !== item.name.trim()) {
+      item.name = item.name.trim();
     }
 
   });

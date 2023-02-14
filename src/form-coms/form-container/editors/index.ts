@@ -342,7 +342,8 @@ export default {
 
             return item?.name || item?.label
           },
-          set({id, data, focusArea, input, output, slots }: EditorResult<Data>, val) {
+          set({ id, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
+            val = val.trim();
             if (!val) {
               return message.warn('字段名不能为空')
             }
