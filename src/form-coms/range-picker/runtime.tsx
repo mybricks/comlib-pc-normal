@@ -5,7 +5,7 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import { OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
-import { getDisabledDate, getDisabledDateTime } from './getDisabledDateTime';
+import { getDisabledDateTime } from './getDisabledDateTime';
 
 const { RangePicker } = DatePicker;
 
@@ -201,6 +201,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   // 获得禁用日期时间
   const disabledDateTime = getDisabledDateTime({ data, dates });
 
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setDates([null, null]);
+    } else {
+      setDates(null);
+    }
+  };
+
   return (
     <div className={css.rangePicker}>
       <RangePicker
@@ -209,6 +217,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         showTime={getShowTime()}
         onChange={onChange}
         onCalendarChange={(dates) => setDates(dates)}
+        onOpenChange={onOpenChange}
         {...disabledDateTime}
       />
     </div>

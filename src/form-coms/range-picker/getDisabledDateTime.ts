@@ -46,7 +46,7 @@ export const getDisabledDateTime = ({ data, dates }: { data: Data, dates }) => {
     });
     const useStartDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
     const useEndDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
-    
+
     /** 日期禁用函数 */
     const disabledDate = (current) => {
         // current: 所有日期
