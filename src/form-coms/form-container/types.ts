@@ -25,6 +25,7 @@ interface FormItems {
   label: string
   span: number
   required?: boolean
+  colon?: FormItemColonType
   visible: boolean
   validateStatus?: string
   help?: string
@@ -77,6 +78,10 @@ export interface Data {
    */
   labelCol: number
   wrapperCol: number
+  /**
+   * 标题是否展示冒号
+   */
+  colon: FormItemColonType
 
   /**
    * 合并参数 Schema
@@ -95,5 +100,6 @@ export interface FormControlProps {
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue'
 
-
 export type LayoutModel = "inline" | "row" | "column";
+
+export type FormItemColonType = true | false | "default";

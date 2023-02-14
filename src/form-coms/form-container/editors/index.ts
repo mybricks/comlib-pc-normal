@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import { Data, LabelWidthType } from '../types'
+import { Data, FormItemColonType, LabelWidthType } from '../types'
 import { FormLayout } from 'antd/es/form/Form'
 import { actionsEditor } from './actions'
 import { outputIds, inputIds, slotInputIds } from '../constants'
@@ -85,6 +85,7 @@ export default {
         label: `表单项${nowC}`,
         widthOption: 'span',
         span: 24 / data.formItemColumn,
+        colon: 'default',
         descriptionStyle: {
           whiteSpace: 'pre-wrap',
           lineHeight: '12px',
@@ -256,7 +257,19 @@ export default {
                     data.labelCol = value
                   }
                 }
-              }
+              },
+              {
+                title: '显示冒号',
+                type: 'Switch',
+                value: {
+                  get({ data }: EditorResult<Data>) {
+                    return data.colon
+                  },
+                  set({ data }: EditorResult<Data>, value: boolean) {
+                    data.colon = value
+                  },
+                }
+              },
             ]
           },
           {
@@ -376,6 +389,25 @@ export default {
             item.description = value
           },
         },
+      },
+      {
+        title: '标题冒号',
+        type: 'Radio',
+        description:'当标题配置为空时，始终不展示冒号',
+        options: [
+          { label: '显示', value: true },
+          { label: '隐藏', value: false },
+          { label: '跟随容器配置', value: 'default' },
+        ],
+        value: {
+          get({ id, data, focusArea }: EditorResult<Data>) {
+            return data.items.find(item => item.id === id).colon
+          },
+          set({ id, data, focusArea }: EditorResult<Data>, val: FormItemColonType) {
+            const item = data.items.find(item => item.id === id)
+            item['colon'] = val
+          }
+        }
       },
       {
         title: '样式',

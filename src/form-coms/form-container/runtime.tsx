@@ -247,6 +247,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           form={formRef}
           layout={data.layout}
           labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
+          colon={data.colon}
           // wrapperCol={{ span: 16 }}
         >
           <SlotContent
