@@ -247,6 +247,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           form={formRef}
           layout={data.layout}
           labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
+          colon={data.colon}
           // wrapperCol={{ span: 16 }}
         >
           <SlotContent
@@ -282,7 +283,7 @@ const validateForInput = (
 };
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
-  const item = formItems.find((item) => item.name === name);
+  const item = formItems.find((item) => (item.name || item.label) === name);
   if (item) {
     const input = childrenInputs[item.id];
     if (isObject(values[name])) {

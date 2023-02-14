@@ -29,6 +29,8 @@ const FormItem = (props: FormItemProps) => {
         ? item.inlineMargin?.map(String).map(unitConversion).join(' ')
         : void 0
   };
+  const colon = item?.colon === 'default' ? data.colon : item.colon;
+
   return (
     <Form.Item
       {...field}
@@ -39,6 +41,7 @@ const FormItem = (props: FormItemProps) => {
       help={item?.help}
       tooltip={item?.tooltip}
       style={style}
+      colon={!!item?.label && colon}
     >
       <JSXWrapper com={com} field={field} />
       {item.description && (

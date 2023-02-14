@@ -39,5 +39,6 @@
   "labelCol": 4,
   "itemWidthType": "flex",
   "paramsSchema": {},
-  "submitHiddenFields": false
+  "submitHiddenFields": false,
+  "colon": true
 }
