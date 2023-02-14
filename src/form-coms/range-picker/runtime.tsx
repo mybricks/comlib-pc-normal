@@ -3,7 +3,7 @@ import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
-import { OutputIds } from '../types';
+import { DateType, OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 
 const { RangePicker } = DatePicker;
@@ -13,6 +13,10 @@ export interface Data {
   showTime: Record<string, unknown> | boolean;
   contentType: string;
   formatter: string;
+  useDisabledDate: 'dafault' | 'static';
+  useDisabledTime: 'dafault' | 'static';
+  staticDisabledDate: TimeDateLimitItem[];
+  staticDisabledTime: TimeDateLimitItem[];
   config: {
     disabled: boolean;
     placeholder: undefined | [string, string];
@@ -23,6 +27,7 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<any>();
+  const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -202,56 +207,117 @@ export default function Runtime(props: RuntimeParams<Data>) {
     baseDate?: Moment | null;
     defaultType: 'days' | 'seconds';
   }) => {
-    const { type, offset } = limitItem;
+    const { type, offset, direction } = limitItem;
     if (type !== 'custom') {
-      return [moment().add(offset, type).startOf(type), moment().add(offset, type).endOf(type)];
+      return direction === 'before'
+        ? moment().add(offset, type).startOf(type)
+        : moment().add(offset, type).endOf(type);
     } else if (!!baseDate) {
-      return [
-        moment(baseDate).add(offset, defaultType).startOf(defaultType),
-        moment(baseDate).add(offset, defaultType).endOf(defaultType)
-      ];
+      return direction === 'before'
+        ? moment(baseDate).add(offset, defaultType).startOf(defaultType)
+        : moment(baseDate).add(offset, defaultType).endOf(defaultType);
     }
     return [];
   };
-  /** 日期禁用函数 */
-  const disabledDate =
-    useDisabledDate === 'static'
-      ? (current) => {
-          // current: 所有日期
-          let startBool = false,
-            endBool = false;
-          const startTimeLimit = staticDisabledDate[0];
-          const endTimeLimit = staticDisabledDate[1];
-          const startLimit = getLimitByDateType({ limitItem: startTimeLimit, defaultType: 'days' });
-          const endLimit = getLimitByDateType({
-            limitItem: endTimeLimit,
-            defaultType: 'days',
-            baseDate: dates?.[0]
-          });
+  // 日期禁用数据
+  const startDateLimit = staticDisabledDate[0];
+  const endDateLimit = staticDisabledDate[1];
+  const startDate = getLimitByDateType({ limitItem: startDateLimit, defaultType: 'days' });
+  const endDate = getLimitByDateType({
+    limitItem: endDateLimit,
+    defaultType: 'days',
+    baseDate: dates?.[0]
+  });
+  const useStartDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
+  const useEndDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
+  // 时间禁用数据
+  const startTimeLimit = staticDisabledTime[0];
+  const endTimeLimit = staticDisabledTime[1];
+  const startTime = getLimitByDateType({ limitItem: startTimeLimit, defaultType: 'seconds' });
+  const endTime = getLimitByDateType({
+    limitItem: endTimeLimit,
+    defaultType: 'seconds',
+    baseDate: dates?.[0]
+  });
+  const useStartTimeLimit = data.showTime && useDisabledTime === 'static' && startTimeLimit.checked;
+  const useEndTimeLimit = data.showTime && useDisabledTime === 'static' && endTimeLimit.checked;
 
-          if (startTimeLimit.direction === 'before') {
-            if (current && current < startLimit[0]) {
-              startBool = true;
-            }
+  /** 日期禁用函数 */
+  const disabledDate = (current) => {
+    // current: 所有日期
+    let startBool = false,
+      endBool = false;
+
+    if (useStartDateLimit) {
+      if (startDateLimit.direction === 'before') {
+        if (current && current < startDate) {
+          startBool = true;
+        }
+      }
+      if (startDateLimit.direction === 'after') {
+        if (current && current > startDate) {
+          startBool = true;
+        }
+      }
+    }
+    if (useEndDateLimit) {
+      if (endDateLimit.direction === 'before') {
+        if (current && current < endDate) {
+          endBool = true;
+        }
+      }
+      if (endDateLimit.direction === 'after') {
+        if (current && current > endDate) {
+          endBool = true;
+        }
+      }
+    }
+    return startBool || endBool;
+  };
+
+  const range = (start: number, end: number): number[] => {
+    const result: number[] = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+  const formatter = (m, template?) => moment(m).format(template || 'Y-MM-DD');
+  /** 时间禁用函数 */
+  const disabledTime =
+    useDisabledTime === 'static' && data.showTime
+      ? (current) => {
+          const hours = moment().hours();
+          const minutes = moment().minutes();
+          const seconds = moment().seconds();
+          const limitDate = useStartDateLimit ? startDate : false;
+          if (!limitDate) {
+            return {
+              disabledHours: () => range(0, hours),
+              disabledMinutes: (selectedHour) => (selectedHour <= hours ? range(0, minutes) : []),
+              disabledSeconds: (selectedHour, selectedMinute) =>
+                selectedHour <= hours && selectedMinute.value <= minutes ? range(0, seconds) : []
+            };
           }
-          if (startTimeLimit.direction === 'after') {
-            if (current && current > startLimit[1]) {
-              startBool = true;
-            }
+          if (current && formatter(startDate) == formatter(current)) {
+            return {
+              disabledHours: () => range(0, hours),
+              disabledMinutes: (selectedHour) => (selectedHour <= hours ? range(0, minutes) : []),
+              disabledSeconds: (selectedHour, selectedMinute) => {
+                return selectedHour <= hours && selectedMinute.minutes <= minutes
+                  ? range(0, seconds)
+                  : [];
+              }
+            };
           }
-          if (endTimeLimit.direction === 'before') {
-            if (current && current < endLimit[0]) {
-              endBool = true;
-            }
-          }
-          if (endTimeLimit.direction === 'after') {
-            if (current && current > endLimit[1]) {
-              endBool = true;
-            }
-          }
-          return startBool || endBool;
+          return {
+            disabledHours: () => [],
+            disabledMinutes: () => [],
+            disabledSeconds: () => []
+          };
         }
       : void 0;
+
   return (
     <div className={css.rangePicker}>
       <RangePicker
@@ -261,6 +327,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         onCalendarChange={(dates) => setDates(dates)}
         disabledDate={disabledDate}
+        disabledTime={disabledTime}
       />
     </div>
   );
