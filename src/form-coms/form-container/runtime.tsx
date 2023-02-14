@@ -282,7 +282,7 @@ const validateForInput = (
 };
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
-  const item = formItems.find((item) => item.name === name);
+  const item = formItems.find((item) => (item.name || item.label) === name);
   if (item) {
     const input = childrenInputs[item.id];
     if (isObject(values[name])) {
