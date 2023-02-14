@@ -287,27 +287,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const disabledTime =
     useDisabledTime === 'static' && data.showTime
       ? (current) => {
-          const hours = moment().hours();
-          const minutes = moment().minutes();
-          const seconds = moment().seconds();
+          let hours = moment().hours(),
+            minutes = moment().minutes(),
+            seconds = moment().seconds();
           const limitDate = useStartDateLimit ? startDate : false;
-          if (!limitDate) {
+          if (useEndTimeLimit && endTimeLimit.type === 'custom' && dates?.[0]) {
+            hours = moment(dates[0]).hours();
+            minutes = moment(dates[0]).minutes();
+            seconds = moment(dates[0]).seconds();
+          }
+          if (!limitDate || (current && formatter(startDate) == formatter(current))) {
             return {
               disabledHours: () => range(0, hours),
               disabledMinutes: (selectedHour) => (selectedHour <= hours ? range(0, minutes) : []),
               disabledSeconds: (selectedHour, selectedMinute) =>
-                selectedHour <= hours && selectedMinute.value <= minutes ? range(0, seconds) : []
-            };
-          }
-          if (current && formatter(startDate) == formatter(current)) {
-            return {
-              disabledHours: () => range(0, hours),
-              disabledMinutes: (selectedHour) => (selectedHour <= hours ? range(0, minutes) : []),
-              disabledSeconds: (selectedHour, selectedMinute) => {
-                return selectedHour <= hours && selectedMinute.minutes <= minutes
-                  ? range(0, seconds)
-                  : [];
-              }
+                selectedHour <= hours && selectedMinute <= minutes ? range(0, seconds) : []
             };
           }
           return {
