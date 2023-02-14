@@ -9,6 +9,7 @@
           "./src/_0_test/container/com.json",
           "./src/_0_test/text/com.json",
           "./src/_0_test/list/com.json",
+          "./src/_0_test/slotRender/com.json",
           "./src/_0_test/test/com.json",
           "./src/text/com.json",
           "./src/link/com.json",
@@ -43,6 +44,7 @@
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
+          "./src/form-coms/auto-complete/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/date-picker/com.json",
           "./src/form-coms/range-picker/com.json",
@@ -148,6 +150,7 @@
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
+          "./src/form-coms/auto-complete/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/date-picker/com.json",
           "./src/form-coms/range-picker/com.json",
@@ -221,7 +224,9 @@
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
     },
     {
       "name": "antd",

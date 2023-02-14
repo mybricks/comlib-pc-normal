@@ -1,42 +1,35 @@
 {
-  "title": "级联选择",
-  "namespace": "mybricks.normal-pc.cascader",
+  "title": "自动完成",
+  "namespace": "mybricks.normal-pc.auto-complete",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.3",
-  "description": "级联选择",
+  "version": "1.0.0",
+  "description": "自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
-  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
-      "desc": "设置级联选择的值，并触发值变化事件输出",
+      "desc": "设置自动完成的值，并触发值变化事件输出",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "any"
-        }
+        "type": "string"
       }
     },
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置级联选择的初始值，并触发初始化事件输出",
+      "desc": "设置自动完成的初始值，并触发初始化事件输出",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "any"
-        }
+        "type": "string"
       }
     },
     {
       "id": "validate",
       "title": "校验",
-      "desc": "触发级联选择的校验检查，并输出校验结果",
+      "desc": "触发自动完成的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -47,7 +40,7 @@
     {
       "id": "getValue",
       "title": "获取值",
-      "desc": "获取级联选择的值并输出",
+      "desc": "获取自动完成的值并输出",
       "schema": {
         "type": "any"
       },
@@ -58,7 +51,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
-      "desc": "清空级联选择的值",
+      "desc": "清空自动完成的值",
       "schema": {
         "type": "any"
       }
@@ -88,23 +81,7 @@
           "properties": {
             "value": {
               "title": "值",
-              "type": "any"
-            },
-            "label": {
-              "title": "名称",
               "type": "string"
-            },
-            "disabled": {
-              "title": "禁用",
-              "type": "boolean"
-            },
-            "children": {
-              "title": "子项",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {}
-              }
             }
           }
         }
@@ -122,6 +99,13 @@
     {
       "id": "onChange",
       "title": "值变化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onBlur",
+      "title": "失去焦点",
       "schema": {
         "type": "string"
       }

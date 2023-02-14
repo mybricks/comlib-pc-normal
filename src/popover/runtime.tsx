@@ -27,12 +27,12 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
   }, [useTitleSlot, useContentSlot]);
 
   const renderWrapText = (content: string) => {
-    return (
+    return content !== '' ? (
       <div
         style={{ whiteSpace: 'pre-wrap' }}
         dangerouslySetInnerHTML={{ __html: content.replace('\\n', '<br/>') }}
       />
-    );
+    ) : null;
   };
 
   return (

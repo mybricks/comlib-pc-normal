@@ -1,25 +1,6 @@
 import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
 import { jsonToSchema } from './util';
 
-const getFnParams = ({ data, outputs }) => {
-  const params = ['context','inputValue', ...outputs.get().map(({ id }) => id)];
-  if (data.runImmediate) {
-    params.splice(1, 1);
-  }
-  return params;
-};
-
-const getExtralib = ({ outputs }) => {
-  return [
-    ...outputs.get().map(({ id, title }) => 
-    `/** \n* ${title} \n*/ \ndeclare function ${id}(val: any): void`),
-    `declare var inputValue: any;`,
-  ].join(';\n');
-};
-
-// editors inject run method
-const forceRender = { run: () => {} };
-
 export default {
   '@init': ({ data, setAutoRun, isAutoRun, output }: EditorResult<Data>) => {
     const autoRun = isAutoRun ? isAutoRun() : false;
@@ -29,31 +10,38 @@ export default {
       output.get('output0').setSchema({ type: 'number' });
     }
     data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
-    // data.fnBody = data.fnBody || encodeURIComponent(CODE_TEMPLATE);
-    // data.fnParams = data.fnParams || getFnParams({ data, outputs: output });
-  },
-  '@pinRemoved'({ data, outputs}){
-    // data.fnParams = getFnParams({ data, outputs });
-  },
-  '@inputUpdated'({ data }, fromPin) {
-    data.inputSchema = fromPin.schema;
   },
   '@inputConnected'({ data, output }, fromPin) {
-    data.inputSchema = fromPin.schema;
     if (data.fns === CODE_TEMPLATE) {
       output.get('output0').setSchema({ type: 'unknown' });
     }
   },
-  '@inputDisConnected'({ data }) {
-    data.inputSchema = { type: 'any' };
-  },
   ':root': [
+    {
+      title: '添加输入项',
+      type: 'Button',
+      value: {
+        set({ data, input }: EditorResult<Data>) {
+          const idx = getIoOrder(input);
+          const hostId = `input${idx}`;
+          const title = `输入项${idx}`;
+          input.add({
+            id: hostId,
+            title,
+            schema: {
+              type: 'follow'
+            },
+            deletable: true
+          });
+        }
+      }
+    },
     {
       title: '添加输出项',
       type: 'Button',
       value: {
         set({ output }: EditorResult<Data>) {
-          const idx = getOutputOrder({ output });
+          const idx = getIoOrder(output);
           const hostId = `output${idx}`;
           const title = `输出项${idx}`;
           output.add({
@@ -91,8 +79,7 @@ export default {
           autoSave: false,
           onBlur: () => {
             updateOutputSchema(output, data.fns);
-          },
-          schema: data.inputSchema
+          }
         };
         // Object.defineProperty(option, 'fnParams', {
         //   get() {
@@ -111,7 +98,7 @@ export default {
       title: '代码编辑',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.fns
+          return data.fns;
         },
         set({ data }: EditorResult<Data>, fns: any) {
           data.fns = fns;
@@ -123,6 +110,7 @@ export default {
 
 function updateOutputSchema(output, code) {
   const outputs = {};
+  const inputs = {};
   output.get().forEach(({ id }) => {
     outputs[id] = (v: any) => {
       try {
@@ -139,14 +127,15 @@ function updateOutputSchema(output, code) {
       const fn = eval(decodeURIComponent(code.code || code));
       fn({
         inputValue: void 0,
-        outputs
+        outputs,
+        inputs
       });
     });
   } catch (error) {}
 }
 
-function getOutputOrder({ output }) {
-  const ports = output.get();
+function getIoOrder(io) {
+  const ports = io.get();
   const { id } = ports.pop();
-  return Number(id.slice(6)) + 1;
+  return Number(id.replace(/\D+/, '')) + 1;
 }

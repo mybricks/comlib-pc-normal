@@ -3,8 +3,12 @@ import { InputIds, Data } from './constants';
 
 export default function ({ env, data, inputs }: RuntimeParams<Data>) {
   if (env?.runtime && inputs) {
-    inputs[InputIds.Open]((val) => {
-      const { loadingText: defaultLoadingText, maskStyle, ...spinProps } = data;
+    inputs[InputIds.Trigger]((val) => {
+      const { closeLoading, loadingText: defaultLoadingText, maskStyle, ...spinProps } = data;
+      if (closeLoading) {
+        GlobalLoading.close();
+        return;
+      }
       const loadingText = val && typeof val === 'string' ? val : data.loadingText;
 
       GlobalLoading.open(loadingText, spinProps);
@@ -18,9 +22,10 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
         });
       }
     });
-
-    inputs[InputIds.Close](() => {
-      GlobalLoading.close();
-    });
+    if (inputs[InputIds.Close]) {
+      inputs[InputIds.Close](() => {
+        GlobalLoading.close();
+      });
+    }
   }
 }

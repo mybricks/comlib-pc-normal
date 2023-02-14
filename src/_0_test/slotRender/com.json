@@ -1,32 +1,24 @@
 {
-  "title": "test",
-  "namespace": "test.test.test",
+  "title": "测试-插槽输出",
+  "namespace": "test.slotRender",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.1-beta.4",
-  "description": "test",
+  "version": "1.0.0",
+  "description": "@mybricks/render-web@1.1.13 组件显示隐藏触发作用域逻辑重新执行",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "inputs": [
-    {
-      "id": "setValue",
-      "title": "当前数据",
-      "schema": {
-        "type": "string"
-      }
-    }
-  ],
   "slots": [
     {
       "id": "content",
       "title": "内容",
       "type": "scope",
+      "default": true,
       "inputs": [
         {
-          "id": "value",
+          "id": "curDS",
           "title": "当前数据",
           "schema": {
-            "type": "string"
+            "type": "object"
           }
         }
       ]

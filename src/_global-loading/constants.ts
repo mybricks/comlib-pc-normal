@@ -7,9 +7,12 @@ export interface Data {
   size: 'small' | 'default' | 'large';
   style: React.CSSProperties;
   maskStyle: React.CSSProperties;
+
+  closeLoading?: boolean;
 }
 
 export const InputIds = {
+  Trigger: 'open',
   Open: 'open',
   Close: 'close'
 };

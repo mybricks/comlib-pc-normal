@@ -17,11 +17,16 @@ export default function (props: RuntimeParams<Data>) {
     style,
     hoverStyle,
     useHoverStyle,
-    useClick
+    useClick,
+    useFixed
   } = data;
   const ref = useRef<any>();
 
   useEffect(() => {
+    if (useFixed && (ref.current as HTMLElement)?.parentElement?.style) {
+      (ref.current as HTMLElement).parentElement.style.zIndex = '1001';
+    }
+
     if (env.runtime) {
       if (useSrcollIntoView && inputs[InputIds.ScrollIntoView]) {
         inputs[InputIds.ScrollIntoView](() => {
@@ -72,11 +77,13 @@ export default function (props: RuntimeParams<Data>) {
 
   return (
     <div
+      id={data?.id}
       ref={ref}
       className={css.container}
       style={{
         ...style,
         ...getOverflowStyle(),
+        position: useFixed ? 'fixed' : undefined,
         cursor: useClick || useHoverStyle ? 'pointer' : ''
       }}
       onClick={() => {
