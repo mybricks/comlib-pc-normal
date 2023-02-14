@@ -30,13 +30,7 @@ export default (props: Props): JSX.Element | null => {
                 [InputIds.ROW_SELECTION_SELECTED_ROW_KEYS]: selectedRowKeys,
                 [InputIds.ROW_SELECTION_SELECTED_ROWS]: selectedRows
               },
-              key: (() => {
-                console.log(
-                  `${SlotIds.ROW_SELECTION_OPERATION}-${JSON.stringify(selectedRowKeys)}`,
-                  'table-key'
-                );
-                return `${SlotIds.ROW_SELECTION_OPERATION}-${JSON.stringify(selectedRowKeys)}`;
-              })()
+              key: `${SlotIds.ROW_SELECTION_OPERATION}-${JSON.stringify(selectedRowKeys)}`
             })}
           </div>
           <div className={css.selectedInfo}>
