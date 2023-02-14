@@ -31,7 +31,7 @@ export type DateType = "custom" | "seconds" | "minutes" | "hours" | "days" | "we
 export type PickerComponentType = 'DatePicker' | 'RangePicker' | 'TimePicker' | 'TimeRangePicker';
 export interface TimeDateLimitItem {
   title: string;
-  checked: false;
+  checked: boolean;
   type: DateType;
   offset: number;
   direction: 'before' | 'after'

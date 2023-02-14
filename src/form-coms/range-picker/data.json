@@ -6,6 +6,38 @@
   "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "useDisabledDate": "default",
   "useDisabledTime": "default",
+  "staticDisabledDate": [
+    {
+      "title": "起始日期禁用",
+      "checked": true,
+      "type": "days",
+      "offset": 0,
+      "direction": "before"
+    },
+    {
+      "title": "结束日期禁用",
+      "checked": true,
+      "type": "custom",
+      "offset": 0,
+      "direction": "before"
+    }
+  ],
+  "staticDisabledTime": [
+    {
+      "title": "起始时间禁用",
+      "checked": true,
+      "type": "seconds",
+      "offset": 0,
+      "direction": "before"
+    },
+    {
+      "title": "结束时间禁用",
+      "checked": true,
+      "type": "custom",
+      "offset": 0,
+      "direction": "before"
+    }
+  ],
   "config": {
     "disabled": false,
     "picker": "date",

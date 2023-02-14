@@ -11,34 +11,34 @@ const baseTimeOptions = [
     { label: "当前分", value: DateType.Minute },
     { label: "当前秒", value: DateType.Second },
 ];
-const initDateRules = [
+const initDateRules: TimeDateLimitItem[] = [
     {
         title: '起始日期禁用',
         checked: true,
-        type: DateType.Day,
+        type: DateType.Day as DateType,
         offset: 0,
         direction: 'before'
     },
     {
         title: '结束日期禁用',
         checked: true,
-        type: DateType.Custom,
+        type: DateType.Custom as DateType,
         offset: 0,
         direction: 'before'
     }
 ];
-const initTimeRules = [
+const initTimeRules: TimeDateLimitItem[] = [
     {
         title: '起始时间禁用',
         checked: true,
-        type: DateType.Second,
+        type: DateType.Second as DateType,
         offset: 0,
         direction: 'before'
     },
     {
         title: '结束时间禁用',
         checked: true,
-        type: DateType.Custom,
+        type: DateType.Custom as DateType,
         offset: 0,
         direction: 'before'
     }
