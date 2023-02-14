@@ -52,12 +52,28 @@ export default {
         type: 'select',
         options: [
           {
+            label: '左上',
+            value: 'leftTop'
+          },
+          {
             label: '上',
             value: 'top'
           },
           {
+            label: '右上',
+            value: 'rightTop'
+          },
+          {
+            label: '左下',
+            value: 'leftBottom'
+          },
+          {
             label: '下',
             value: 'bottom'
+          },
+          {
+            label: '右下',
+            value: 'rightBottom'
           },
           {
             label: '左',
