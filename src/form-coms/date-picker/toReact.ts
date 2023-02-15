@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { DatePickerProps } from 'antd';
-import { getObjectDistrbuteStr, getObjectStr } from '../../utils/toReact';
+import { getObjectDistrbuteStr } from '../../utils/toReact';
 import { Data } from './runtime';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
@@ -8,14 +8,15 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         if (!data.showTime || typeof data.showTime === 'boolean') {
             return data.showTime;
         }
-        return {
-            defaultValue:
-                typeof data.showTime?.defaultValue === 'string'
-                    ? moment(data.showTime.defaultValue, 'HH:mm:ss')
-                    : undefined
-        };
+        return typeof data.showTime?.defaultValue === 'string'
+            ? {
+                defaultValue:
+                    moment(data.showTime.defaultValue, 'HH:mm:ss')
+            }
+            : true;
     };
     const datePickerCls = {
+        style: {}
     };
     const selectCfg: DatePickerProps = {
         // value,
@@ -27,7 +28,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div style={${getObjectStr(datePickerCls)}}>
+    const str = `<div ${getObjectDistrbuteStr(datePickerCls)}>
                    <DatePicker
                     ${getObjectDistrbuteStr(selectCfg)}
                    />

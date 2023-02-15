@@ -1,5 +1,5 @@
 import { SelectProps } from 'antd';
-import { getObjectDistrbuteStr, getObjectStr } from '../../utils/toReact';
+import { getObjectDistrbuteStr } from '../../utils/toReact';
 import { Data } from './types';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
@@ -15,7 +15,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // notFoundContent
     };
 
-    const str = `<div style={${getObjectStr(selectCls)}}>
+    const str = `<div ${getObjectDistrbuteStr(selectCls)}>
                    <Select
                     ${getObjectDistrbuteStr(selectCfg)}
                    />
