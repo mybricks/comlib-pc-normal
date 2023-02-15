@@ -37,16 +37,11 @@ const getEmptyRow = ({ data }: RuntimeParams<Data>) => {
 const renderRow = ({ data, slots, outputs }: RuntimeParams<Data>) => {
   return data.rows
     .map((row) => {
+      const rowStyle = !!row.backgroundColor
+        ? `style={{backgroundColor: ${row.backgroundColor}}}`
+        : '';
       return `<Row
-        style={${JSON.stringify({
-          backgroundColor: row.backgroundColor,
-          minHeight: row.columns.every((column) => slots[column.slot]?.size === 0)
-            ? '50px'
-            : undefined
-        })}}
-        data-row-index={${JSON.stringify(row.key)}}
-        data-type-row={${JSON.stringify(`row-${row.key}`)}}
-        key={${JSON.stringify(row.key)}}
+        ${rowStyle}
         justify={${JSON.stringify(row.justify)}}
         align={${JSON.stringify(row.align)}}
         gutter={${JSON.stringify(row.useGutter ? [row.gutter?.[0] || 0, 0] : [0, 0])}}
@@ -85,15 +80,13 @@ const renderCol = (
     });
   }
   const slotStr = slots[column.slot]?.render({ style: column.slotStyle });
+  const span = column.widthOption === WidthUnitEnum.Span ? `span={${column.span}}` : '';
   return `<Col
-      key={${JSON.stringify(column.key)}}
-      span={${column.widthOption === WidthUnitEnum.Span ? column.span : undefined}}
+      ${span}
       flex={${JSON.stringify(flex)}}
       ${Object.keys(breakPointConfig)
         .map((key) => `${key}={${breakPointConfig[key]}}`)
         .join('\n')}
-      data-col-coordinate={${JSON.stringify([rowIndex, column.key])}}
-      data-type-col={${JSON.stringify(`col-${column.key}`)}}
       style={${JSON.stringify({
         ...column.colStyle,
         ...getMinMaxWidth(column),
