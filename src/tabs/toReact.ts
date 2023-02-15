@@ -29,13 +29,13 @@ const renderTab = (props: RuntimeParams<Data>) => {
   const { data, slots } = props;
   const tabBarExtraContent = {} as { left: any; right: any };
   if (data.useLeftExtra) {
-    tabBarExtraContent.left = slots[SlotIds.LeftExtra].render();
+    tabBarExtraContent.left = slots[SlotIds.LeftExtra].render({});
   }
   if (data.useRigthExtra) {
-    tabBarExtraContent.right = slots[SlotIds.RigthExtra].render();
+    tabBarExtraContent.right = slots[SlotIds.RigthExtra].render({});
   }
   const tabBarExtraContentStr = !!Object.keys(tabBarExtraContent).length
-    ? `tabBarExtraContent={${tabBarExtraContent}}`
+    ? `tabBarExtraContent={${JSON.stringify(tabBarExtraContent)}}`
     : '';
   return `<Tabs
             activeKey={${data.defaultActiveKey?.toString()}}
