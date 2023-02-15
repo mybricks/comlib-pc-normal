@@ -45,7 +45,7 @@ export const getDisabledDateTime = ({ data, dates }: { data: Data, dates }) => {
         baseDate: dates?.[0]
     });
     const useStartDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
-    const useEndDateLimit = useDisabledDate === 'static' && startDateLimit.checked;
+    const useEndDateLimit = useDisabledDate === 'static' && endDateLimit.checked && dates?.[0];
 
     /** 日期禁用函数 */
     const disabledDate = (current) => {
@@ -90,9 +90,9 @@ export const getDisabledDateTime = ({ data, dates }: { data: Data, dates }) => {
         baseDate: dates?.[0]
     });
     const useStartTimeLimit = data.showTime && useDisabledTime === 'static' && startTimeLimit.checked;
-    const useEndTimeLimit = data.showTime && useDisabledTime === 'static' && endTimeLimit.checked;
+    const useEndTimeLimit = data.showTime && useDisabledTime === 'static' && endTimeLimit.checked && dates?.[0];
 
-    /** 时间禁用函数 */
+    /** 时间禁用函数----待完善，目前不支持固定范围---- */
     const disabledTime =
         useDisabledTime === 'static' && data.showTime
             ? (current) => {
@@ -100,7 +100,7 @@ export const getDisabledDateTime = ({ data, dates }: { data: Data, dates }) => {
                     minutes = moment().minutes(),
                     seconds = moment().seconds();
                 const limitDate = useStartDateLimit ? startDate : false;
-                if (useEndTimeLimit && endTimeLimit.type === 'custom' && dates?.[0]) {
+                if (useEndTimeLimit && endTimeLimit.type === 'custom') {
                     hours = moment(dates[0]).hours();
                     minutes = moment(dates[0]).minutes();
                     seconds = moment(dates[0]).seconds();
