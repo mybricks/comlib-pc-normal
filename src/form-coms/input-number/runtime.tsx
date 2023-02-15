@@ -86,11 +86,54 @@ export default function Runtime(props: RuntimeParams<Data>) {
     [value]
   );
 
+  //数字输入框实时校验位数, 多的小数位禁止输入
+  const NumberProps = {
+    formatter: (value: any) => {
+      let reg;
+      switch (data.config.precision) {
+        case 0:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+          return reg;
+        case 1:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d).*$/, '$1$2.$3');
+          return reg;
+        case 2:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 3:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 4:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 5:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 6:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 7:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 8:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 9:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+        case 10:
+          reg = `${value}`.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d\d\d\d\d).*$/, '$1$2.$3');
+          return reg;
+      }
+    }
+  };
+
   return (
     <div className={css.inputNumber}>
       <InputNumber<string | number>
         value={value}
         {...data.config}
+        {...NumberProps}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
