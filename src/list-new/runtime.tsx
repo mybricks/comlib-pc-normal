@@ -106,6 +106,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
           list={dataSource}
           data={data}
           lockAxis="y"
+          distance={2}
           renderItem={({ key, item, index }) => (
             <SortableItem key={key} index={index}>
               {slots['item'].render({
