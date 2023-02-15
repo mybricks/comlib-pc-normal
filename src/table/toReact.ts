@@ -1,6 +1,7 @@
 import { TableProps } from 'antd';
 import { getObjectStr, getObjectDistrbuteStr } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
+import { InputIds } from './constants';
 import { ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
@@ -114,9 +115,30 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       title: titleRenderStr,
       filterMultiple: cItem.filter?.filterType !== FilterTypeEnum.Single,
       render: () => {
-        return `(text, record, index) => {
-                  return ${cItem.dataIndex || cItem.title ? 'text' : ''};
-                }`;
+        const { slotId, keepDataIndex, contentType } = cItem;
+        switch (contentType) {
+          case ContentTypeEnum.Text:
+            return `(text, record, index) => {
+                      return ${cItem.dataIndex || cItem.title ? 'text' : ''};
+                    }`;
+          case ContentTypeEnum.SlotItem:
+            if (!slotId || !slots[slotId]?.render) {
+              return 'null';
+            }
+            const slotStr = slots[slotId]?.render({})?.trim() || '<></>';
+            if (keepDataIndex) {
+              return `(text, record, index) => {
+                        return ${slotStr};
+                      }`;
+            }
+            return `(text, record, index) => {
+                      return ${slotStr};
+                    }`;
+          default:
+            return `(text, record, index) => {
+                      return ${cItem.dataIndex || cItem.title ? 'text' : ''};
+                    }`;
+        }
       },
       showSorterTooltip: false,
       sortOrder: data?.sortParams?.id === cItem.dataIndex ? data?.sortParams?.order : void 0,
