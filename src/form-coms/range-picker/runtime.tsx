@@ -3,8 +3,9 @@ import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
-import { OutputIds } from '../types';
+import { OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
+import { getDisabledDateTime } from './getDisabledDateTime';
 
 const { RangePicker } = DatePicker;
 
@@ -13,6 +14,10 @@ export interface Data {
   showTime: Record<string, unknown> | boolean;
   contentType: string;
   formatter: string;
+  useDisabledDate: 'dafault' | 'static';
+  useDisabledTime: 'dafault' | 'static';
+  staticDisabledDate: TimeDateLimitItem[];
+  staticDisabledTime: TimeDateLimitItem[];
   config: {
     disabled: boolean;
     placeholder: undefined | [string, string];
@@ -23,6 +28,7 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<any>();
+  const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -192,9 +198,28 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
   };
 
+  // 获得禁用日期时间
+  const disabledDateTime = getDisabledDateTime({ data, dates });
+
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setDates([null, null]);
+    } else {
+      setDates(null);
+    }
+  };
+
   return (
     <div className={css.rangePicker}>
-      <RangePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
+      <RangePicker
+        value={value}
+        {...data.config}
+        showTime={getShowTime()}
+        onChange={onChange}
+        onCalendarChange={(dates) => setDates(dates)}
+        onOpenChange={onOpenChange}
+        {...disabledDateTime}
+      />
     </div>
   );
 }

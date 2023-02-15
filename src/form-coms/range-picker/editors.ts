@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { DisabledDateTimeEditor } from '../../components/editors/DisabledDateTimeEditor';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 
 export default {
@@ -8,7 +9,7 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%'
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -93,7 +94,7 @@ export default {
           return !!data.showTime;
         },
         value: {
-          
+
           get({ data }) {
             const showTime: any = data.showTime
             const defaultValue = showTime?.defaultValue;
@@ -114,6 +115,7 @@ export default {
           },
         }
       },
+      ...DisabledDateTimeEditor('RangePicker'),
       {
         title: '校验规则',
         description: '提供快捷校验配置',
@@ -180,7 +182,7 @@ export default {
               { label: '年-月-日', value: 'Y-MM-DD' },
               { label: '年-月', value: 'Y-MM' },
               { label: '年', value: 'Y' },
-              { label: '时间戳', value: 'timeStamp' }, 
+              { label: '时间戳', value: 'timeStamp' },
               { label: '自定义', value: 'custom' }
             ],
             value: {

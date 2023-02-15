@@ -38,13 +38,30 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
       item.inlineMargin = [0, 16, 24, 0]
     }
 
-  })
+    /**
+     * @description v1.1.10 表单项增加默认”显示冒号“配置；表单项字段trim
+     */
+    if (item.colon === undefined) {
+      item.colon = 'default';
+    }
+    if (item.name !== item.name.trim()) {
+      item.name = item.name.trim();
+    }
+
+  });
 
   /**
    * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
    */
   if (!data.actions.inlinePadding) {
     data.actions.inlinePadding = [0, 0, 0, 0];
+  }
+
+  /**
+    * @description v1.1.10 表单容器增加默认”显示冒号“配置
+    */
+  if (data.colon === undefined) {
+    data.colon = true;
   }
 
   /**
