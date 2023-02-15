@@ -4,6 +4,12 @@ import { SizeTypeEnum } from './components/Paginator/constants';
 import { ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
+
+  /**数据预处理 */
+  data.columns.map(item => {
+    if (!item.dataIndex) item.dataIndex = item.title;
+  });
+
   const tableHeaderStr = getTableHeaderStr({ data, slots });
   const tableBodyStr = getTableBodyStr({ data, slots });
   const tableFooterStr = getTableFooterStr({ data, slots });
@@ -85,6 +91,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
     : data.tableLayout) || TableLayoutEnum.Fixed;
   const rowSelection = '...ToDo...';
 
+  const defaultDataSource = data.columns.map(item => ({ [item.title]: '-' + item.title + '-' }));
+
   /**
    * 获取表格列codeStr
    * @param cItem 列数据
@@ -100,12 +108,15 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
     }
     const titleRenderStr = cItem.title;
     const columnCfg: IColumn = {
+      dataIndex: cItem.dataIndex,
       ellipsis: false,
       width: cItem.width === WidthTypeEnum.Auto ? void 0 : cItem.width,
       title: titleRenderStr,
       filterMultiple: cItem.filter?.filterType !== FilterTypeEnum.Single,
       render: () => {
-        return `() => <></>`;
+        return `(text, record, index) => {
+                  return ${cItem.dataIndex || cItem.title ? 'text' : ''};
+                }`;
       },
       showSorterTooltip: false,
       sortOrder: data?.sortParams?.id === cItem.dataIndex ? data?.sortParams?.order : void 0,
@@ -132,7 +143,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
     const { size, bordered, useRowSelection, showHeader } = data;
     const tableCfg: TableProps<any> = {
       style: tableStyle,
-      dataSource: [],
+      dataSource: defaultDataSource,
       size,
       bordered,
       pagination: false,
@@ -148,6 +159,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
                   </Table>`
     return str;
   }
+
   const emptyStyle = {
     border: '1px dashed rgb(176, 176, 176)',
     margin: 0
