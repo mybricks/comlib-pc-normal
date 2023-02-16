@@ -4,6 +4,11 @@ function getObjectStr(obj) {
     return JSON.stringify(obj)
 }
 
+/**
+ * 获取不同类型属性值的prop表示
+ * @param val 属性值
+ * @returns 属性值
+ */
 function getValueStr(val) {
     if (typeCheck(val, 'STRING')) {
         return `"${val}"`;
@@ -20,7 +25,12 @@ function getValueStr(val) {
     return `{${val}}`;
 }
 
-function getObjectDistrbuteStr(obj) {
+/**
+ * 根据对象获取组件props字符串
+ * @param obj 组件配置对象
+ * @returns 组件props字符串
+ */
+function getPropsFromObject(obj) {
     const strArr = Object.entries(obj).map(([key, value]) => {
         if (value == null) return '';
         const valueStr = getValueStr(value);
@@ -30,8 +40,28 @@ function getObjectDistrbuteStr(obj) {
     return strArr.join('\n')
 }
 
+/**
+ * 根据样式类获取样式对象
+ * @param allCls 所有的样式类映射
+ * @param clsAry 实际样式类数组
+ * @returns 样式对象
+ */
+function getClsStyle(allCls, clsAry) {
+    let style = {};
+    if (typeof clsAry === 'string') {
+        clsAry = [clsAry];
+    }
+    if (Array.isArray(clsAry)) {
+        clsAry.map(cls => {
+            style = Object.assign(style, allCls[cls]);
+        });
+    }
+    return style;
+}
+
 export {
     getObjectStr,
     getValueStr,
-    getObjectDistrbuteStr,
+    getPropsFromObject,
+    getClsStyle
 }

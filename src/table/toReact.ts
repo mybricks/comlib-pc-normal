@@ -1,8 +1,17 @@
 import { TableProps } from 'antd';
-import { getObjectStr, getObjectDistrbuteStr } from '../utils/toReact';
+import { getObjectStr, getPropsFromObject, getClsStyle } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
-import { InputIds } from './constants';
+import { InputIds, SlotIds } from './constants';
 import { ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
+
+const cssVariables = {
+  '@blue': '#0075ff',
+  '@fontColor': '#8c8c8c',
+  '@fontColor2': '#434343',
+  '@bgColor': '#f5f7f9',
+  '@fontSize': '14px',
+  '@fontSize2': '18px'
+};
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
 
@@ -15,10 +24,11 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
   const tableBodyStr = getTableBodyStr({ data, slots });
   const tableFooterStr = getTableFooterStr({ data, slots });
 
-  const tableCls = {
+  const tableStyle = {
+    style: {}
   };
 
-  const str = `<div style={${getObjectStr(tableCls)}}>
+  const str = `<div ${getPropsFromObject(tableStyle)}>
                 ${tableHeaderStr}
                 ${tableBodyStr}
                 ${tableFooterStr}
@@ -28,7 +38,11 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     imports: [
       {
         form: 'antd',
-        coms: ['Table', 'Empty', 'Pagination']
+        coms: ['Table', 'Empty', 'Pagination', 'Button', 'Tooltip', 'Dropdown', 'Menu', 'Checkbox']
+      },
+      {
+        form: '@ant-design/icons',
+        coms: ['SettingOutlined']
       },
       {
         form: 'antd/dist/antd.css',
@@ -47,28 +61,310 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
  * @returns tableHeaderStr
  */
 function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
-  const { useHeaderTitleSlot, useHeaderOperationSlot, useColumnSetting } = data;
+  const { useHeaderTitleSlot, useHeaderOperationSlot, useColumnSetting, useRowSelection, selectionType, rowSelectionPostion } = data;
+
   // 顶部显示批量操作按钮
   const useTopRowSelection =
-    data.useRowSelection &&
-    data.selectionType !== RowSelectionTypeEnum.Radio &&
-    (data.rowSelectionPostion || []).includes(RowSelectionPostionEnum.TOP);
+    useRowSelection &&
+    selectionType !== RowSelectionTypeEnum.Radio &&
+    (rowSelectionPostion || []).includes(RowSelectionPostionEnum.TOP);
 
-  const style = {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: useTopRowSelection ? 'column' : void 0,
-    marginBottom: (useTopRowSelection ||
-      useHeaderTitleSlot ||
-      useHeaderOperationSlot ||
-      useColumnSetting) ? '16px' : void 0,
-  }
-  const headerCfg = {
-    style
+  // 样式相关
+  const allCls = {
+    headerContainer: {
+      display: 'flex',
+      justifyContent: 'space-between'
+    },
+    marginBottom: {
+      marginBottom: '16px'
+    },
+    flex: {
+      display: 'flex'
+    },
+    flexRowReverse: {
+      flexDirection: 'row-reverse'
+    },
+    flexDirectionColumn: {
+      flexDirection: 'column'
+    },
+    width100: {
+      width: '100%'
+    },
+    actionBtnsWrap: {
+      display: 'flex',
+      justifyContent: 'space-between'
+    },
+    emptyWrap: {
+      minWidth: '100px'
+    }
+  };
+  const css = {
+    headerContainer: 'headerContainer',
+    flexDirectionColumn: 'flexDirectionColumn',
+    marginBottom: 'marginBottom',
+    actionBtnsWrap: 'actionBtnsWrap',
+    width100: 'width100',
+    flex: 'flex',
+    flexRowReverse: 'flexRowReverse',
+  };
+
+  const headerProps = {
+    style: {
+      ...getClsStyle(allCls, [
+        css.headerContainer,
+        useTopRowSelection && css.flexDirectionColumn,
+        (useTopRowSelection
+          || useHeaderTitleSlot
+          || useHeaderOperationSlot
+          || useColumnSetting)
+        && css.marginBottom
+      ])
+    }
+  };
+  const tableTitleStr =
+    (useHeaderTitleSlot && slots[SlotIds.HEADER_TITLE])
+      ? slots[SlotIds.HEADER_TITLE].render()?.trim()
+      : '';
+  const getActionStr = () => {
+    if (useTopRowSelection || useHeaderOperationSlot || useColumnSetting) {
+      const actionWrapProps = {
+        style: {
+          ...getClsStyle(allCls, [
+            css.actionBtnsWrap,
+            css.width100
+          ])
+        }
+      };
+      const rightActionWrapProps = {
+        style: {
+          ...getClsStyle(allCls, [
+            css.width100,
+            css.flex,
+            css.flexRowReverse
+          ])
+        }
+      };
+
+      /**
+       * 获取批量操作区域codeStr
+       * @returns codeStr
+       */
+      const getBatchBtnsStr = () => {
+        if (!useRowSelection || selectionType === RowSelectionTypeEnum.Radio) {
+          return ``;
+        }
+        const isEmpty = slots[SlotIds.ROW_SELECTION_OPERATION]?.size === 0;
+
+        // 样式相关
+        const allCls = {
+          blue: {
+            color: cssVariables['@blue']
+          },
+          width100: {
+            width: '100%'
+          },
+          flex: {
+            display: 'flex',
+          },
+          selectedWrap: {
+            display: 'flex',
+          },
+          selectedInfo: {
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: cssVariables['@fontSize'],
+            color: cssVariables['@fontColor'],
+            background: cssVariables['@bgColor'],
+            padding: '6px 12px',
+            borderRadius: '4px',
+            marginLeft: '8px',
+            whiteSpace: 'nowrap'
+          },
+          emptyWrap: {
+            minWidth: '100px'
+          }
+        };
+        const css = {
+          blue: 'blue',
+          width100: 'width100',
+          flex: 'flex',
+          selectedWrap: 'selectedWrap',
+          selectedInfo: 'selectedInfo',
+          emptyWrap: 'emptyWrap'
+        };
+
+        if (useTopRowSelection) {
+          return `<div ${getPropsFromObject({
+            style: {
+              ...getClsStyle(allCls, [
+                css.width100
+              ])
+            }
+          })}>
+                    <div ${getPropsFromObject({
+            style: {
+              ...getClsStyle(allCls, [
+                css.flex
+              ])
+            }
+          })}>
+                      <div ${getPropsFromObject({
+            style: {
+              ...getClsStyle(allCls, [
+                css.selectedWrap
+              ])
+            }
+          })}>
+                        <div ${getPropsFromObject({
+            style: {
+              ...getClsStyle(allCls, [
+                isEmpty && css.emptyWrap
+              ])
+            }
+          })}>
+                          ${slots[SlotIds.ROW_SELECTION_OPERATION].render({})}
+                        </div>
+                        <div ${getPropsFromObject({
+            style: {
+              ...getClsStyle(allCls, [
+                css.selectedInfo
+              ])
+            }
+          })}>
+                          已选中
+                          <span ${getPropsFromObject({
+            style: {
+              marginLeft: 2
+            }
+          })}>0</span>
+                          <span
+                          ${getPropsFromObject({
+            style: {
+              ...getClsStyle(allCls, [
+                css.blue
+              ]),
+              marginLeft: 2,
+              marginRight: data.rowSelectionLimit ? 0 : 2
+            }
+          })}
+                          >
+                          </span>
+                          项
+                        </div>
+                      </div>
+                    </div>
+                  </div>`
+        }
+        return ``;
+      };
+
+      /**
+       * 获取右上角操作区域codeStr
+       * @returns codeStr
+       */
+      const getTableBtnsStr = () => {
+        if ((useHeaderOperationSlot && slots[SlotIds.HEADER_OPERATION])) {
+          const isEmpty = slots[SlotIds.HEADER_OPERATION].size === 0;
+          const cfg = {
+            style: {
+              minWidth: isEmpty ? '100px' : void 0
+            }
+          };
+          return `<div ${getPropsFromObject(cfg)}>
+                    ${slots[SlotIds.HEADER_OPERATION].render({})}
+                  </div>`;
+        }
+        return '';
+      };
+      /**
+       * 获取筛选操作区codeStr
+       * @returns codeStr
+       */
+      const getTableFilterStr = () => {
+        if (!useColumnSetting) {
+          return '';
+        }
+        const genElements = (values) => {
+          if (!values) {
+            return null;
+          }
+          return values.map((ele) => {
+            ele.defaultChecked = true;
+            return addEle(ele.key, ele.title, ele.defaultChecked, ele.fun, ele.checkFun);
+          });
+        };
+
+        const addEle = (key: any, val: any, defaultChecked: any, fun: any, checkFun: any) => {
+          const checkboxProps = {
+            defaultChecked: true,
+            // onChange: fun,
+            // checked: checkFun
+          };
+          return `<Menu.Item>
+                    <Checkbox ${getPropsFromObject(checkboxProps)}>
+                      ${val}
+                    </Checkbox>
+                  </Menu.Item>`;
+        };
+
+        const menu = () => {
+          const checkboxAllProps = {
+            defaultChecked: true,
+            indeterminate: false,
+            // onChange: func,
+            // checked: checkAll,
+          };
+          return `<Menu>
+                    <Menu.Item>
+                      <Checkbox
+                        ${getPropsFromObject(checkboxAllProps)}
+                      >
+                        列展示
+                      </Checkbox>
+                    </Menu.Item>
+                    <Menu.Divider />
+                    ${genElements(data.columns).join('\n')}
+                  </Menu>`;
+        };
+        const dropDownProps = {
+          overlay: menu,
+          placement: "bottomRight",
+          arrow: true,
+          // onVisibleChange: handleVisibleChange,
+          // visible: visibleChange.visible,
+          trigger: ['click']
+        };
+        return `<div style={{ paddingLeft: '12px' }}>
+                  <Tooltip title="列设置">
+                    <Dropdown
+                      ${getPropsFromObject(dropDownProps)}
+                    >
+                      <Button icon={<SettingOutlined />}></Button>
+                    </Dropdown>
+                  </Tooltip>
+                </div>`
+      };
+
+      return `<div ${getPropsFromObject(actionWrapProps)}>
+                {/* 顶部操作按钮 */}
+                <div>${getBatchBtnsStr()}</div>
+                <div ${getPropsFromObject(rightActionWrapProps)}>
+                  {/* 工作区tools */}
+                  <div>
+                    ${getTableFilterStr()}
+                  </div>
+                  {/* 操作按钮 */}
+                  ${getTableBtnsStr()}
+                </div>
+              </div>`
+    }
+    return '';
   };
   const str = `<div
-                ${getObjectDistrbuteStr(headerCfg)}
+                ${getPropsFromObject(headerProps)}
                 >
+                ${tableTitleStr}
+                ${getActionStr()}
               </div>`
 
   return str;
@@ -108,14 +404,14 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       backgroundColor: cItem.titleBgColor
     }
     const titleRenderStr = cItem.title;
-    const columnCfg: IColumn = {
+    const columnProps: IColumn = {
       dataIndex: cItem.dataIndex,
       ellipsis: false,
       width: cItem.width === WidthTypeEnum.Auto ? void 0 : cItem.width,
       title: titleRenderStr,
       filterMultiple: cItem.filter?.filterType !== FilterTypeEnum.Single,
       render: () => {
-        const { slotId, keepDataIndex, contentType } = cItem;
+        const { slotId, contentType } = cItem;
         switch (contentType) {
           case ContentTypeEnum.Text:
             return `(text, record, index) => {
@@ -126,11 +422,6 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
               return 'null';
             }
             const slotStr = slots[slotId]?.render({})?.trim() || '<></>';
-            if (keepDataIndex) {
-              return `(text, record, index) => {
-                        return ${slotStr};
-                      }`;
-            }
             return `(text, record, index) => {
                       return ${slotStr};
                     }`;
@@ -158,12 +449,12 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       }
     };
     return `<Table.Column
-              ${getObjectDistrbuteStr(columnCfg)}
+              ${getPropsFromObject(columnProps)}
             />`;
   };
   if (data.columns.length) {
     const { size, bordered, useRowSelection, showHeader } = data;
-    const tableCfg: TableProps<any> = {
+    const tableProps: TableProps<any> = {
       style: tableStyle,
       dataSource: defaultDataSource,
       size,
@@ -175,7 +466,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       tableLayout
     };
     const str = `<Table
-                  ${getObjectDistrbuteStr(tableCfg)}
+                  ${getPropsFromObject(tableProps)}
                   >
                   ${data.columns.map(getColumnStr).join('\n')}
                   </Table>`
@@ -186,12 +477,12 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
     border: '1px dashed rgb(176, 176, 176)',
     margin: 0
   };
-  const emptyCfg = {
-    description: "请添加列或连接数据源",
+  const emptyProps = {
+    description: "请添加列",
     style: emptyStyle
   };
   return `<Empty 
-            ${getObjectDistrbuteStr(emptyCfg)}
+            ${getPropsFromObject(emptyProps)}
           />`;
 }
 
@@ -224,7 +515,7 @@ function getTableFooterStr({ data, slots }) {
   const getPaginatorStr = () => {
     if (!data.usePagination) return ``;
 
-    const paginationCfg = {
+    const paginationProps = {
       total: total,
       showTotal: () => {
         return `(total: number, range: number[]) => {
@@ -260,7 +551,7 @@ function getTableFooterStr({ data, slots }) {
         style={${getObjectStr(paginationStyle)}}
       >
         <Pagination
-          ${getObjectDistrbuteStr(paginationCfg)}
+          ${getPropsFromObject(paginationProps)}
         />
       </div>
     </div>`

@@ -1,5 +1,5 @@
 import { SelectProps } from 'antd';
-import { getObjectDistrbuteStr } from '../../utils/toReact';
+import { getPropsFromObject } from '../../utils/toReact';
 import { Data } from './types';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
@@ -9,15 +9,16 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         ...data.config,
         options: data.config.options,
         value: data.value,
+        mode: data.config.mode === 'default' ? void 0 : data.config.mode,
         // onChange,
         // onBlur,
         // onSearch,
         // notFoundContent
     };
 
-    const str = `<div ${getObjectDistrbuteStr(selectCls)}>
+    const str = `<div ${getPropsFromObject(selectCls)}>
                    <Select
-                    ${getObjectDistrbuteStr(selectCfg)}
+                    ${getPropsFromObject(selectCfg)}
                    />
                  </div>`
 

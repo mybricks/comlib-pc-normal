@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { DatePickerProps } from 'antd';
-import { getObjectDistrbuteStr } from '../../utils/toReact';
+import { getPropsFromObject } from '../../utils/toReact';
 import { Data } from './runtime';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
@@ -28,9 +28,9 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div ${getObjectDistrbuteStr(datePickerCls)}>
+    const str = `<div ${getPropsFromObject(datePickerCls)}>
                    <DatePicker
-                    ${getObjectDistrbuteStr(selectCfg)}
+                    ${getPropsFromObject(selectCfg)}
                    />
                  </div>`
 
