@@ -1,8 +1,8 @@
-import { TableProps } from 'antd';
+import { TableProps, TooltipProps } from 'antd';
 import { getObjectStr, getPropsFromObject, getClsStyle } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
 import { InputIds, SlotIds } from './constants';
-import { ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
+import { AlignEnum, ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
 
 const cssVariables = {
   '@blue': '#0075ff',
@@ -41,7 +41,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
       },
       {
         from: '@ant-design/icons',
-        coms: ['SettingOutlined']
+        coms: ['SettingOutlined', 'InfoCircleOutlined']
       },
       {
         from: 'antd/dist/antd.css',
@@ -395,26 +395,63 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
    * @returns 列数据jsx字符串
    */
   const getColumnStr = (cItem: IColumn) => {
+    const { children, contentColor, dataIndex, titleColor, titleBgColor, title, tip, hasTip, contentType, width, align, filter, slotId } = cItem;
     const cellStyle = {
-      color: cItem.contentColor
-    }
+      color: contentColor
+    };
     const headerCellStyle = {
-      color: cItem.titleColor,
-      backgroundColor: cItem.titleBgColor
-    }
-    const titleRenderStr = cItem.title;
+      color: titleColor,
+      backgroundColor: titleBgColor
+    };
+    const getTitleRenderStr = () => {
+      if (hasTip) {
+        const titleProps = {
+          style: { marginRight: '6px' }
+        };
+        const tooltipProps: TooltipProps = {
+          placement: 'topLeft',
+          title: tip,
+          // overlayClassName: css.ellipsisTooltip
+        };
+        return () => `<div>
+                      <span ${getPropsFromObject(titleProps)}>${title}</span>
+                      <Tooltip ${getPropsFromObject(tooltipProps)}>
+                        <InfoCircleOutlined />
+                      </Tooltip>
+                    </div>`
+      }
+      return title;
+    };
+    if (children && contentType === ContentTypeEnum.Group) {
+      const columnGroupProps = {
+        title: getTitleRenderStr(),
+        align: align || AlignEnum.Left,
+        onHeaderCell: () => {
+          return `(): any => {
+                    return {
+                      style: ${getObjectStr(headerCellStyle)}
+                    };
+                  }`
+        }
+      };
+      return `<Table.ColumnGroup
+                ${getPropsFromObject(columnGroupProps)}
+              >
+                <>${children.map((item) => getColumnStr(item)).join('\n')}</>
+              </Table.ColumnGroup>`
+    };
+
     const columnProps: IColumn = {
-      dataIndex: cItem.dataIndex,
+      dataIndex: dataIndex,
       ellipsis: false,
-      width: cItem.width === WidthTypeEnum.Auto ? void 0 : cItem.width,
-      title: titleRenderStr,
-      filterMultiple: cItem.filter?.filterType !== FilterTypeEnum.Single,
+      width: width === WidthTypeEnum.Auto ? void 0 : width,
+      title: getTitleRenderStr(),
+      filterMultiple: filter?.filterType !== FilterTypeEnum.Single,
       render: () => {
-        const { slotId, contentType } = cItem;
         switch (contentType) {
           case ContentTypeEnum.Text:
             return `(text, record, index) => {
-                      return ${cItem.dataIndex || cItem.title ? 'text' : ''};
+                      return ${dataIndex || title ? 'text' : ''};
                     }`;
           case ContentTypeEnum.SlotItem:
             if (!slotId || !slots[slotId]?.render) {
@@ -426,12 +463,19 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
                     }`;
           default:
             return `(text, record, index) => {
-                      return ${cItem.dataIndex || cItem.title ? 'text' : ''};
+                      return ${dataIndex || title ? 'text' : ''};
                     }`;
         }
       },
       showSorterTooltip: false,
       sortOrder: data?.sortParams?.id === cItem.dataIndex ? data?.sortParams?.order : void 0,
+      // sorter: sorter,
+      // filters: filterMap[`${cItem.dataIndex}`]?.map((item) => ({
+      //   text: item.text,
+      //   value: item.value
+      // })),
+      // filteredValue: data?.filterParams?.[`${cItem.dataIndex}`] || null,
+      // onFilter: onFilter,
       onCell: () => {
         return `() => {
                   return {
