@@ -1,4 +1,5 @@
 import { TableProps, TooltipProps } from 'antd';
+import { TableRowSelection } from 'antd/es/table/interface';
 import { getObjectStr, getPropsFromObject, getClsStyle } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
 import { InputIds, SlotIds } from './constants';
@@ -375,19 +376,9 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
  * @returns tableBodyStr
  */
 function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
-  const tableStyle = {
-    width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
-  }
-  const tableScroll = {
-    x: '100%',
-    y: data.scroll.y ? data.scroll.y : void 0
-  }
-  const tableLayout = (data.tableLayout === TableLayoutEnum.FixedWidth
-    ? TableLayoutEnum.Fixed
-    : data.tableLayout) || TableLayoutEnum.Fixed;
-  const rowSelection = '...ToDo...';
+  const { tableLayout, loadingTip } = data;
 
-  const defaultDataSource = data.columns.map(item => ({ [item.title]: '-' + item.title + '-' }));
+  const defaultDataSource = data.columns.map((item, inx) => ({ [item.title]: '-' + item.title + '-', '_uuid': item.title + inx }));
 
   /**
    * 获取表格列codeStr
@@ -496,17 +487,57 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
             />`;
   };
   if (data.columns.length) {
-    const { size, bordered, useRowSelection, showHeader } = data;
+    const { size, bordered, useRowSelection, showHeader, selectionType, useExpand } = data;
+    const rowKey = data.rowKey?.trim() || '_uuid';
+    // 勾选配置
+    const rowSelection: TableRowSelection<any> = {
+      selectedRowKeys: [],
+      preserveSelectedRowKeys: true,
+      onChange: () => {
+        return `(selectedRowKeys: any[], selectedRows: any[]) => {}`
+      },
+      type:
+        selectionType === RowSelectionTypeEnum.Radio
+          ? RowSelectionTypeEnum.Radio
+          : RowSelectionTypeEnum.Checkbox,
+      getCheckboxProps: () => {
+        return `(record) => null as any`
+      }
+    };
     const tableProps: TableProps<any> = {
-      style: tableStyle,
+      style: {
+        width: tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
+      },
       dataSource: defaultDataSource,
+      loading: {
+        tip: loadingTip,
+        spinning: false
+      },
+      rowKey,
       size,
       bordered,
       pagination: false,
-      // rowSelection:useRowSelection?rowSelection:void 0,
+      rowSelection: useRowSelection ? rowSelection : void 0,
       showHeader,
-      scroll: tableScroll,
-      tableLayout
+      scroll: {
+        x: '100%',
+        y: data.scroll.y ? data.scroll.y : void 0
+      },
+      expandable:
+        useExpand && slots[SlotIds.EXPAND_CONTENT]
+          ? () => `{
+            expandedRowKeys: ['${defaultDataSource[0][rowKey]}'],
+            expandedRowRender: (record, index) => {
+              return ${slots[SlotIds.EXPAND_CONTENT].render({})};
+            }
+          }`
+          : void 0
+      ,
+      // onChange: onChange,
+      tableLayout: (tableLayout === TableLayoutEnum.FixedWidth
+        ? TableLayoutEnum.Fixed
+        : tableLayout)
+        || TableLayoutEnum.Fixed
     };
     const str = `<Table
                   ${getPropsFromObject(tableProps)}
