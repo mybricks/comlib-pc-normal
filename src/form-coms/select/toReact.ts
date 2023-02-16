@@ -25,11 +25,11 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     return {
         imports: [
             {
-                form: 'antd',
+                from: 'antd',
                 coms: ['Select']
             },
             {
-                form: 'antd/dist/antd.css',
+                from: 'antd/dist/antd.css',
                 coms: []
             }
         ],

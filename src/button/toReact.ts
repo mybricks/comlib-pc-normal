@@ -14,7 +14,7 @@ export default function ({ data }) {
   return {
     imports: [
       // {
-      //   form: 'antd',
+      //   from: 'antd',
       //   coms: ['Button']
       // }
     ],

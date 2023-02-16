@@ -62,11 +62,11 @@ export default function ({ data, slots }) {
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['Form', 'Row', 'Col', 'Button', 'Space']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],

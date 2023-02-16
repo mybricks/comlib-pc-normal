@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { DatePickerProps } from 'antd';
 import { getPropsFromObject } from '../../utils/toReact';
 import { Data } from './runtime';
@@ -9,16 +8,15 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
             return data.showTime;
         }
         return typeof data.showTime?.defaultValue === 'string'
-            ? {
-                defaultValue:
-                    moment(data.showTime.defaultValue, 'HH:mm:ss')
-            }
+            ? () => `{
+                defaultValue: dayjs('${data.showTime.defaultValue}', 'HH:mm:ss')
+            }`
             : true;
     };
-    const datePickerCls = {
+    const datePickerWrapProps = {
         style: {}
     };
-    const selectCfg: DatePickerProps = {
+    const datePickerProps: DatePickerProps = {
         // value,
         showTime: getShowTime(),
         ...data.config,
@@ -28,20 +26,24 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div ${getPropsFromObject(datePickerCls)}>
+    const str = `<div ${getPropsFromObject(datePickerWrapProps)}>
                    <DatePicker
-                    ${getPropsFromObject(selectCfg)}
+                    ${getPropsFromObject(datePickerProps)}
                    />
                  </div>`
 
     return {
         imports: [
             {
-                form: 'antd',
+                from: 'antd',
                 coms: ['DatePicker']
             },
             {
-                form: 'antd/dist/antd.css',
+                from: 'dayjs',
+                default: 'dayjs'
+            },
+            {
+                from: 'antd/dist/antd.css',
                 coms: []
             }
         ],

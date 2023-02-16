@@ -14,7 +14,6 @@ const cssVariables = {
 };
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
-
   /**数据预处理 */
   data.columns.map(item => {
     if (!item.dataIndex) item.dataIndex = item.title;
@@ -37,15 +36,15 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['Table', 'Empty', 'Pagination', 'Button', 'Tooltip', 'Dropdown', 'Menu', 'Checkbox']
       },
       {
-        form: '@ant-design/icons',
+        from: '@ant-design/icons',
         coms: ['SettingOutlined']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],
