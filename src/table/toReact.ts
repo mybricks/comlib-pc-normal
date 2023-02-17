@@ -385,7 +385,7 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
  * @returns tableBodyStr
  */
 function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
-  const { tableLayout, loadingTip } = data;
+  const { tableLayout, loadingTip, columns, sortParams, filterParams } = data;
 
   const defaultDataSource = data.columns.map((item, inx) => ({ [item.title]: '-' + item.title + '-', '_uuid': item.title + inx }));
 
@@ -395,7 +395,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
    * @returns 列数据jsx字符串
    */
   const getColumnStr = (cItem: IColumn) => {
-    const { children, contentColor, dataIndex, titleColor, titleBgColor, title, tip, hasTip, contentType, width, align, filter, slotId } = cItem;
+    const { children, contentColor, dataIndex, titleColor, titleBgColor, title, tip, hasTip, contentType, width, align, filter, slotId, fixed } = cItem;
     const cellStyle = {
       color: contentColor
     };
@@ -493,7 +493,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
 
     // 筛选
     let filterMap = {};
-    data.columns.forEach((cItem) => {
+    columns.forEach((cItem) => {
       if (!cItem.dataIndex && cItem.title) {
         cItem.dataIndex = formatColumnItemDataIndex(cItem);
       }
@@ -516,6 +516,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
     // 列Props对象
     const columnProps: IColumn = {
       dataIndex: dataIndex,
+      fixed: fixed ? fixed : false,
       ellipsis: false,
       width: width === WidthTypeEnum.Auto ? void 0 : width,
       title: getTitleRenderStr(),
@@ -541,13 +542,13 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         }
       },
       showSorterTooltip: false,
-      sortOrder: data?.sortParams?.id === cItem.dataIndex ? data?.sortParams?.order : void 0,
+      sortOrder: sortParams?.id === cItem.dataIndex ? sortParams?.order : void 0,
       sorter,
       filters: filterMap[`${cItem.dataIndex}`]?.map((item) => ({
         text: item.text,
         value: item.value
       })),
-      filteredValue: data?.filterParams?.[`${cItem.dataIndex}`] || null,
+      filteredValue: filterParams?.[`${cItem.dataIndex}`] || null,
       onFilter: onFilter,
       onCell: () => {
         return `() => {
@@ -570,7 +571,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   };
 
   if (data.columns.length) {
-    const { size, bordered, useRowSelection, showHeader, selectionType, useExpand } = data;
+    const { size, bordered, useRowSelection, showHeader, selectionType, useExpand, scroll, fixedHeader } = data;
     const rowKey = data.rowKey?.trim() || '_uuid';
     // 勾选配置
     const rowSelection: TableRowSelection<any> = {
@@ -604,7 +605,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       showHeader,
       scroll: {
         x: '100%',
-        y: data.scroll.y ? data.scroll.y : void 0
+        y: (scroll.y && fixedHeader) ? scroll.y : void 0
       },
       expandable:
         useExpand && slots[SlotIds.EXPAND_CONTENT]
@@ -650,22 +651,10 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
  */
 function getTableFooterStr({ data, slots }) {
   const {
-    total,
-    text,
-    current,
-    disabled,
-    pageSize,
-    defaultPageSize,
-    size,
-    align,
     usePagination,
     useRowSelection,
     selectionType,
     rowSelectionPostion,
-    showQuickJumper,
-    showSizeChanger,
-    pageSizeOptions,
-    hideOnSinglePage,
     paginationConfig
   } = data;
 
@@ -699,6 +688,20 @@ function getTableFooterStr({ data, slots }) {
    * 获取分页器codeStr
    */
   const getPaginatorStr = () => {
+    const {
+      total,
+      current,
+      disabled,
+      pageSize,
+      defaultPageSize,
+      size,
+      align,
+      showQuickJumper,
+      showSizeChanger,
+      pageSizeOptions,
+      hideOnSinglePage,
+    } = data.paginationConfig;
+
     const paginationWrapProps = {
       style: {
         display: 'flex',
@@ -714,7 +717,7 @@ function getTableFooterStr({ data, slots }) {
       },
       current,
       pageSize: pageSize || defaultPageSize || 1,
-      size: size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : "small",
+      size: size === SizeTypeEnum.Small ? "small" : void 0,
       simple: size === SizeTypeEnum.Simple,
       showQuickJumper,
       showSizeChanger,
