@@ -9,7 +9,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         }
         return typeof data.showTime?.defaultValue === 'string'
             ? () => `{
-                defaultValue: dayjs('${data.showTime.defaultValue}', 'HH:mm:ss')
+                defaultValue: moment('${data.showTime.defaultValue}', 'HH:mm:ss')
             }`
             : true;
     };
@@ -39,8 +39,8 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
                 coms: ['DatePicker']
             },
             {
-                from: 'dayjs',
-                default: 'dayjs'
+                from: 'moment',
+                default: 'moment'
             },
             {
                 from: 'antd/dist/antd.css',

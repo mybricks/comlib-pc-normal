@@ -1,9 +1,10 @@
 import { TableProps, TooltipProps } from 'antd';
-import { TableRowSelection } from 'antd/es/table/interface';
+import { CompareFn, TableRowSelection } from 'antd/es/table/interface';
 import { getObjectStr, getPropsFromObject, getClsStyle } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
 import { InputIds, SlotIds } from './constants';
-import { AlignEnum, ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
+import { AlignEnum, ContentTypeEnum, Data, FilterTypeEnum, IColumn, RowSelectionPostionEnum, RowSelectionTypeEnum, SorterTypeEnum, TableLayoutEnum, WidthTypeEnum } from './types';
+import { formatColumnItemDataIndex } from './utils';
 
 const cssVariables = {
   '@blue': '#0075ff',
@@ -47,7 +48,15 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
       {
         from: 'antd/dist/antd.css',
         coms: []
-      }
+      },
+      {
+        from: 'lodash/get',
+        default: 'get'
+      },
+      {
+        from: 'moment',
+        default: 'moment'
+      },
     ],
     jsx: str,
     style: '',
@@ -394,6 +403,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       color: titleColor,
       backgroundColor: titleBgColor
     };
+
+    // 表头标题
     const getTitleRenderStr = () => {
       if (hasTip) {
         const titleProps = {
@@ -413,6 +424,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       }
       return title;
     };
+
+    // 分组列
     if (children && contentType === ContentTypeEnum.Group) {
       const columnGroupProps = {
         title: getTitleRenderStr(),
@@ -432,6 +445,75 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
               </Table.ColumnGroup>`
     };
 
+    // 排序
+    let sorter: boolean | CompareFn<any> | undefined;
+    if (cItem.sorter?.enable) {
+      switch (cItem.sorter.type) {
+        case SorterTypeEnum.Length:
+          sorter = () => {
+            return `(a, b) => {
+                      const aVal = get(a, '${cItem.dataIndex}');
+                      const bVal = get(b, '${cItem.dataIndex}');
+                      if (typeof aVal !== 'string' || typeof bVal !== 'string') {
+                        return 0;
+                      }
+                      return aVal.length - bVal.length;
+                    }`
+          };
+          break;
+        case SorterTypeEnum.Size:
+          sorter = () => {
+            return `(a, b) => {
+                      const aVal = get(a, '${cItem.dataIndex}');
+                      const bVal = get(b, '${cItem.dataIndex}');
+                      if (typeof aVal !== 'number' || typeof bVal !== 'number') {
+                        return 0;
+                      }
+                      return aVal - bVal;
+                    }`
+          };
+          break;
+        case SorterTypeEnum.Date:
+          sorter = () => {
+            return `(a, b) => {
+                      const aVal = get(a, '${cItem.dataIndex}');
+                      const bVal = get(b, '${cItem.dataIndex}');
+                      if (!aVal || !bVal) {
+                        return 0;
+                      }
+                      return moment(aVal).valueOf() - moment(bVal).valueOf();
+                    }`
+          }
+          break;
+        default:
+          sorter = true;
+          break;
+      }
+    }
+
+    // 筛选
+    let filterMap = {};
+    data.columns.forEach((cItem) => {
+      if (!cItem.dataIndex && cItem.title) {
+        cItem.dataIndex = formatColumnItemDataIndex(cItem);
+      }
+      const dataIndex = Array.isArray(cItem.dataIndex)
+        ? cItem.dataIndex.join('.')
+        : cItem.dataIndex;
+      if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
+        filterMap[dataIndex] = cItem.filter.options || [];
+      }
+    });
+    const onFilter =
+      cItem.filter?.type !== FilterTypeEnum.Request
+        ? () => {
+          return `(value, record) => {
+                    return get(record, '${cItem.dataIndex}') == value;
+                  }`
+        }
+        : null;
+
+    // 列Props对象
     const columnProps: IColumn = {
       dataIndex: dataIndex,
       ellipsis: false,
@@ -460,13 +542,13 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       },
       showSorterTooltip: false,
       sortOrder: data?.sortParams?.id === cItem.dataIndex ? data?.sortParams?.order : void 0,
-      // sorter: sorter,
-      // filters: filterMap[`${cItem.dataIndex}`]?.map((item) => ({
-      //   text: item.text,
-      //   value: item.value
-      // })),
-      // filteredValue: data?.filterParams?.[`${cItem.dataIndex}`] || null,
-      // onFilter: onFilter,
+      sorter,
+      filters: filterMap[`${cItem.dataIndex}`]?.map((item) => ({
+        text: item.text,
+        value: item.value
+      })),
+      filteredValue: data?.filterParams?.[`${cItem.dataIndex}`] || null,
+      onFilter: onFilter,
       onCell: () => {
         return `() => {
                   return {
@@ -486,6 +568,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
               ${getPropsFromObject(columnProps)}
             />`;
   };
+
   if (data.columns.length) {
     const { size, bordered, useRowSelection, showHeader, selectionType, useExpand } = data;
     const rowKey = data.rowKey?.trim() || '_uuid';
@@ -617,8 +700,10 @@ function getTableFooterStr({ data, slots }) {
    */
   const getPaginatorStr = () => {
     const paginationWrapProps = {
-      display: 'flex',
-      justifyContent: align
+      style: {
+        display: 'flex',
+        justifyContent: align
+      }
     };
     const paginationProps = {
       total: total,
@@ -629,7 +714,7 @@ function getTableFooterStr({ data, slots }) {
       },
       current,
       pageSize: pageSize || defaultPageSize || 1,
-      size: size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size,
+      size: size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : "small",
       simple: size === SizeTypeEnum.Simple,
       showQuickJumper,
       showSizeChanger,
