@@ -7,17 +7,19 @@ export default function (props: RuntimeParams<Data>) {
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['Tabs', 'Tooltip']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       },
-      {
-        form: '@ant-design/icons',
-        coms: icons
-      }
+      icons.length
+        ? {
+            from: '@ant-design/icons',
+            coms: icons
+          }
+        : void 0
     ],
     jsx: str,
     style: '',
@@ -27,21 +29,18 @@ export default function (props: RuntimeParams<Data>) {
 
 const renderTab = (props: RuntimeParams<Data>) => {
   const { data, slots } = props;
-  const tabBarExtraContent = {} as { left: any; right: any };
-  if (data.useLeftExtra) {
-    tabBarExtraContent.left = slots[SlotIds.LeftExtra].render({});
-  }
-  if (data.useRigthExtra) {
-    tabBarExtraContent.right = slots[SlotIds.RigthExtra].render({});
-  }
-  const tabBarExtraContentStr = !!Object.keys(tabBarExtraContent).length
-    ? `tabBarExtraContent={${JSON.stringify(tabBarExtraContent)}}`
-    : '';
+  const tabBarExtraContentStr =
+    data.useLeftExtra || data.useRigthExtra
+      ? `tabBarExtraContent={{
+      ${data.useLeftExtra ? `left: ${slots[SlotIds.LeftExtra].render({})},` : ''}
+      ${data.useRigthExtra ? `right: ${slots[SlotIds.RigthExtra].render({})}` : ''}
+    }}`
+      : '';
   return `<Tabs
-            activeKey={${data.defaultActiveKey?.toString()}}
-            type={${data.type.toString()}}
+            activeKey={${JSON.stringify(data.defaultActiveKey)}}
+            type={${JSON.stringify(data.type)}}
             centered={${data.centered}}
-            tabPosition={${data.tabPosition.toString()}}
+            tabPosition={${JSON.stringify(data.tabPosition)}}
             hideAdd={true}
             ${tabBarExtraContentStr}
         >
@@ -51,19 +50,23 @@ const renderTab = (props: RuntimeParams<Data>) => {
 
 const renderItem = ({ data, slots }: RuntimeParams<Data>) =>
   data.tabList
-    .map(
-      (item) => `<Tabs.TabPane
-                    tab={
-                        <Tooltip title={${item.tooltipText?.toString()}}>
-                            <span>
-                            ${item.showIcon ? `<${item.icon} />` : null}
-                            ${item.num === void 0 ? item.name : `${item.name} (${item.num})`}
-                            </span>
-                        </Tooltip>
-                    }
-                    closable={${!!item.closable}}
-                    >
-                    ${data.hideSlots ? null : `<div style={{minHeight: 100}}>${slots[item.id]?.render({})}</div>`}
-                    </Tabs.TabPane>`
-    )
+    .map((item) => {
+      const tabTitleContent = `<span>
+                                ${item.showIcon ? `<${item.icon} />` : ''}
+                                ${item.num === void 0 ? item.name : `${item.name} (${item.num})`}
+                              </span>`;
+      const tabTitle = !!item.tooltipText
+        ? `<Tooltip title={${JSON.stringify(item.tooltipText)}}>
+            ${tabTitleContent}
+          </Tooltip>`
+        : tabTitleContent;
+      return `<Tabs.TabPane
+        tab={
+            ${tabTitle}
+        }
+        closable={${!!item.closable}}
+        >
+        ${data.hideSlots ? '' : `<div style={{minHeight: 100}}>${slots[item.id]?.render({})}</div>`}
+        </Tabs.TabPane>`;
+    })
     .join('\n');

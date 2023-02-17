@@ -10,11 +10,11 @@ export default function (props: RuntimeParams<Data>) {
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['Row', 'Col', 'Tooltip']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],
