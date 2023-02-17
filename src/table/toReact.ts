@@ -56,6 +56,118 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
 }
 
 /**
+ * 获取批量操作区域codeStr
+ * @returns codeStr
+ */
+const getBatchBtnsStr = ({ data, slots }: { data: Data, slots: any }) => {
+  const { useRowSelection, selectionType } = data;
+  if (!useRowSelection || selectionType === RowSelectionTypeEnum.Radio) {
+    return ``;
+  }
+
+  const isEmpty = slots[SlotIds.ROW_SELECTION_OPERATION]?.size === 0;
+
+  // 样式相关
+  const allCls = {
+    blue: {
+      color: cssVariables['@blue']
+    },
+    width100: {
+      width: '100%'
+    },
+    flex: {
+      display: 'flex',
+    },
+    selectedWrap: {
+      display: 'flex',
+    },
+    selectedInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: cssVariables['@fontSize'],
+      color: cssVariables['@fontColor'],
+      background: cssVariables['@bgColor'],
+      padding: '6px 12px',
+      borderRadius: '4px',
+      marginLeft: '8px',
+      whiteSpace: 'nowrap'
+    },
+    emptyWrap: {
+      minWidth: '100px'
+    }
+  };
+  const css = {
+    blue: 'blue',
+    width100: 'width100',
+    flex: 'flex',
+    selectedWrap: 'selectedWrap',
+    selectedInfo: 'selectedInfo',
+    emptyWrap: 'emptyWrap'
+  };
+
+  return `<div ${getPropsFromObject({
+    style: {
+      ...getClsStyle(allCls, [
+        css.width100
+      ])
+    }
+  })}>
+              <div ${getPropsFromObject({
+    style: {
+      ...getClsStyle(allCls, [
+        css.flex
+      ])
+    }
+  })}>
+                <div ${getPropsFromObject({
+    style: {
+      ...getClsStyle(allCls, [
+        css.selectedWrap
+      ])
+    }
+  })}>
+                  <div ${getPropsFromObject({
+    style: {
+      ...getClsStyle(allCls, [
+        isEmpty && css.emptyWrap
+      ])
+    }
+  })}>
+                    ${slots[SlotIds.ROW_SELECTION_OPERATION].render({})}
+                  </div>
+                  <div ${getPropsFromObject({
+    style: {
+      ...getClsStyle(allCls, [
+        css.selectedInfo
+      ])
+    }
+  })}>
+                    已选中
+                    <span ${getPropsFromObject({
+    style: {
+      marginLeft: 2
+    }
+  })}>0</span>
+                    <span
+                    ${getPropsFromObject({
+    style: {
+      ...getClsStyle(allCls, [
+        css.blue
+      ]),
+      marginLeft: 2,
+      marginRight: data.rowSelectionLimit ? 0 : 2
+    }
+  })}
+                    >
+                    </span>
+                    项
+                  </div>
+                </div>
+              </div>
+            </div>`
+};
+
+/**
  * 获取表格头codeStr
  * @param param0 RuntimeParams
  * @returns tableHeaderStr
@@ -121,6 +233,7 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
       ])
     }
   };
+
   const tableTitleStr =
     (useHeaderTitleSlot && slots[SlotIds.HEADER_TITLE])
       ? slots[SlotIds.HEADER_TITLE].render()?.trim()
@@ -143,119 +256,6 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
             css.flexRowReverse
           ])
         }
-      };
-
-      /**
-       * 获取批量操作区域codeStr
-       * @returns codeStr
-       */
-      const getBatchBtnsStr = () => {
-        if (!useRowSelection || selectionType === RowSelectionTypeEnum.Radio) {
-          return ``;
-        }
-        const isEmpty = slots[SlotIds.ROW_SELECTION_OPERATION]?.size === 0;
-
-        // 样式相关
-        const allCls = {
-          blue: {
-            color: cssVariables['@blue']
-          },
-          width100: {
-            width: '100%'
-          },
-          flex: {
-            display: 'flex',
-          },
-          selectedWrap: {
-            display: 'flex',
-          },
-          selectedInfo: {
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: cssVariables['@fontSize'],
-            color: cssVariables['@fontColor'],
-            background: cssVariables['@bgColor'],
-            padding: '6px 12px',
-            borderRadius: '4px',
-            marginLeft: '8px',
-            whiteSpace: 'nowrap'
-          },
-          emptyWrap: {
-            minWidth: '100px'
-          }
-        };
-        const css = {
-          blue: 'blue',
-          width100: 'width100',
-          flex: 'flex',
-          selectedWrap: 'selectedWrap',
-          selectedInfo: 'selectedInfo',
-          emptyWrap: 'emptyWrap'
-        };
-
-        if (useTopRowSelection) {
-          return `<div ${getPropsFromObject({
-            style: {
-              ...getClsStyle(allCls, [
-                css.width100
-              ])
-            }
-          })}>
-                    <div ${getPropsFromObject({
-            style: {
-              ...getClsStyle(allCls, [
-                css.flex
-              ])
-            }
-          })}>
-                      <div ${getPropsFromObject({
-            style: {
-              ...getClsStyle(allCls, [
-                css.selectedWrap
-              ])
-            }
-          })}>
-                        <div ${getPropsFromObject({
-            style: {
-              ...getClsStyle(allCls, [
-                isEmpty && css.emptyWrap
-              ])
-            }
-          })}>
-                          ${slots[SlotIds.ROW_SELECTION_OPERATION].render({})}
-                        </div>
-                        <div ${getPropsFromObject({
-            style: {
-              ...getClsStyle(allCls, [
-                css.selectedInfo
-              ])
-            }
-          })}>
-                          已选中
-                          <span ${getPropsFromObject({
-            style: {
-              marginLeft: 2
-            }
-          })}>0</span>
-                          <span
-                          ${getPropsFromObject({
-            style: {
-              ...getClsStyle(allCls, [
-                css.blue
-              ]),
-              marginLeft: 2,
-              marginRight: data.rowSelectionLimit ? 0 : 2
-            }
-          })}
-                          >
-                          </span>
-                          项
-                        </div>
-                      </div>
-                    </div>
-                  </div>`
-        }
-        return ``;
       };
 
       /**
@@ -347,7 +347,7 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
 
       return `<div ${getPropsFromObject(actionWrapProps)}>
                 {/* 顶部操作按钮 */}
-                <div>${getBatchBtnsStr()}</div>
+                <div>${useTopRowSelection && getBatchBtnsStr({ data, slots })}</div>
                 <div ${getPropsFromObject(rightActionWrapProps)}>
                   {/* 工作区tools */}
                   <div>
@@ -575,20 +575,51 @@ function getTableFooterStr({ data, slots }) {
     defaultPageSize,
     size,
     align,
+    usePagination,
+    useRowSelection,
+    selectionType,
+    rowSelectionPostion,
     showQuickJumper,
     showSizeChanger,
     pageSizeOptions,
     hideOnSinglePage,
-    useBottomRowSelection,
     paginationConfig
   } = data;
 
+  const useBottomRowSelection =
+    useRowSelection &&
+    selectionType !== RowSelectionTypeEnum.Radio &&
+    (rowSelectionPostion || []).includes(RowSelectionPostionEnum.BOTTOM);
+
+  // 样式文件相关
+  const allCls = {
+    footerContainer: {
+      display: "flex",
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    pagination: {
+      display: 'flex',
+      flexShrink: 0
+    },
+    marginTop: {
+      marginTop: '16px'
+    }
+  };
+  const css = {
+    footerContainer: 'footerContainer',
+    pagination: 'pagination',
+    marginTop: 'marginTop',
+  };
+
   /**
-   * 获取分页组件codeStr
+   * 获取分页器codeStr
    */
   const getPaginatorStr = () => {
-    if (!data.usePagination) return ``;
-
+    const paginationWrapProps = {
+      display: 'flex',
+      justifyContent: align
+    };
     const paginationProps = {
       total: total,
       showTotal: () => {
@@ -606,44 +637,41 @@ function getTableFooterStr({ data, slots }) {
       hideOnSinglePage: showSizeChanger ? false : hideOnSinglePage,
       // onChange:onChange,
       disabled
-    }
-    const paginationStyle = {
-      display: 'flex',
-      justifyContent: align,
     };
-    const paginationContainerStyle = {
-      display: 'flex',
-      width: useBottomRowSelection ? void 0 : '100%',
-      justifyContent: paginationConfig.align || 'space-between',
-      flexShrink: 0
-    };
+
     return `
-    <div
-      style={${getObjectStr(paginationContainerStyle)}}
-    >
       <div
-        style={${getObjectStr(paginationStyle)}}
+        ${getPropsFromObject(paginationWrapProps)}
       >
         <Pagination
           ${getPropsFromObject(paginationProps)}
         />
-      </div>
-    </div>`
+      </div>`
   };
 
-  const footerContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginTop: (useBottomRowSelection || data.usePagination) ? '16px' : void 0
+  const footerWrapProps = {
+    style: {
+      ...getClsStyle(allCls, [css.footerContainer, (useBottomRowSelection || usePagination) && css.marginTop])
+    }
   };
+  const paginationWrapProps = {
+    style: {
+      ...getClsStyle(allCls, [css.pagination]),
+      width: useBottomRowSelection ? '' : '100%',
+      justifyContent: paginationConfig.align
+    }
+  };
+
   return `<div
-            style={${getObjectStr(footerContainerStyle)}}
+            ${getPropsFromObject(footerWrapProps)}
           >
-            ${data.useBottomRowSelection ? '批量按钮' : ''}
-            ${getPaginatorStr()}
-          </div>`
-
+            ${useBottomRowSelection ? getBatchBtnsStr({ data, slots }) : ''}
+            ${usePagination ? `<div
+                ${getPropsFromObject(paginationWrapProps)}
+              >
+                ${getPaginatorStr()}
+              </div>`: ''}
+          </div>`;
 }
 
 // 获取表格显示列宽度和
