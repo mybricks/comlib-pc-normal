@@ -689,6 +689,7 @@ function getTableFooterStr({ data, slots }) {
    */
   const getPaginatorStr = () => {
     const {
+      text,
       total,
       current,
       disabled,
@@ -712,7 +713,19 @@ function getTableFooterStr({ data, slots }) {
       total: total,
       showTotal: () => {
         return `(total: number, range: number[]) => {
-                  return \`共 \${total} 条结果\`;
+                  const res =  '${text}'.replace(/\{([^\{\}]*?)\}/g, (match, key) => {
+                    switch (key?.trim?.()) {
+                      case 'total':
+                        return total;
+                      case 'start':
+                        return range[0];
+                      case 'end':
+                        return range[1];
+                      default:
+                        return key;
+                    }
+                  })
+                  return res;
                 }`
       },
       current,
