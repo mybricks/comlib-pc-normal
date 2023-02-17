@@ -34,11 +34,12 @@ const getItemsStr = (list: Children[], separator: string, customSeparator: strin
     ${list
       .map((child, index) => {
         const { key, label, style } = child || {};
+        const styleStr = !!style ? `style={${JSON.stringify(style)}}` : '';
         return `<>
                   <Breadcrumb.Item
                     key={${JSON.stringify(key)}}
                   >
-                    <a style={${JSON.stringify(style)}}>${label}</a>
+                    <a ${styleStr}>${label}</a>
                   </Breadcrumb.Item>
                 ${
                   list.length - 1 !== index

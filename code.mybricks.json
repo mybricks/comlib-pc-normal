@@ -12,7 +12,8 @@
     "./src/form-coms/input-number/com.json",
     "./src/grid/com.json",
     "./src/card/com.json",
-    "./src/tabs/com.json"
+    "./src/tabs/com.json",
+    "./src/breadcrumb/com.json"
   ],
   "externals": [
     {
