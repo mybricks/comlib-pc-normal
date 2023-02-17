@@ -65,9 +65,9 @@ export default {
     {
       title: '配置服务地址',
       type: 'switch',
-      // ifVisible({ data }) {
-      //   return !data.immediate;
-      // },
+      ifVisible({ data }) {
+        return !data.immediate;
+      },
       value: {
         get({ input }) {
           return input.get(INPUT_ID.SET_URL) !== void 0;
