@@ -31,11 +31,11 @@ export default function ({ data, slots, style }) {
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['Card']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],

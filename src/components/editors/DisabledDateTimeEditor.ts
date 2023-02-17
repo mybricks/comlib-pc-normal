@@ -13,14 +13,14 @@ const baseTimeOptions = [
 ];
 const initDateRules: TimeDateLimitItem[] = [
     {
-        title: '起始日期禁用',
+        title: '起始日期禁选',
         checked: true,
         type: DateType.Day as DateType,
         offset: 0,
         direction: 'before'
     },
     {
-        title: '结束日期禁用',
+        title: '结束日期禁选',
         checked: true,
         type: DateType.Custom as DateType,
         offset: 0,
@@ -29,14 +29,14 @@ const initDateRules: TimeDateLimitItem[] = [
 ];
 const initTimeRules: TimeDateLimitItem[] = [
     {
-        title: '起始时间禁用',
+        title: '起始时间禁选',
         checked: true,
         type: DateType.Second as DateType,
         offset: 0,
         direction: 'before'
     },
     {
-        title: '结束时间禁用',
+        title: '结束时间禁选',
         checked: true,
         type: DateType.Custom as DateType,
         offset: 0,
@@ -46,7 +46,7 @@ const initTimeRules: TimeDateLimitItem[] = [
 
 export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
     {
-        title: "禁用日期",
+        title: "日期禁选",
         type: "Select",
         description: '选中“无”时的默认限制：结束日期小于开始日期',
         options: [
@@ -96,7 +96,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
                     type: "Select",
                     value: "type",
                     ifVisible(item) {
-                        return item.title === '起始日期禁用';
+                        return item.title === '起始日期禁选';
                     },
                     options: baseDateOptions,
                 },
@@ -105,7 +105,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
                     type: "Select",
                     value: "type",
                     ifVisible(item) {
-                        return item.title === '结束日期禁用';
+                        return item.title === '结束日期禁选';
                     },
                     options: [
                         { label: "起始日期", value: DateType.Custom },
@@ -142,7 +142,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
         },
     },
     {
-        title: "禁用时间",
+        title: "时间禁选",
         type: "Select",
         description: '默认无限制',
         ifVisible({ data }: EditorResult<any>) {
@@ -195,7 +195,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
                     type: "Select",
                     value: "type",
                     ifVisible(item) {
-                        return item.title === '起始时间禁用';
+                        return item.title === '起始时间禁选';
                     },
                     options: baseTimeOptions,
                 },
@@ -204,7 +204,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
                     type: "Select",
                     value: "type",
                     ifVisible(item) {
-                        return item.title === '结束时间禁用';
+                        return item.title === '结束时间禁选';
                     },
                     options: [
                         { label: "起始时间", value: DateType.Custom },

@@ -13,11 +13,11 @@ export default function ({ data }) {
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['InputNumber']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],

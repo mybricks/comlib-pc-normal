@@ -1,6 +1,5 @@
-import moment from 'moment';
 import { DatePickerProps } from 'antd';
-import { getObjectDistrbuteStr, getObjectStr } from '../../utils/toReact';
+import { getPropsFromObject } from '../../utils/toReact';
 import { Data } from './runtime';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
@@ -8,16 +7,16 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         if (!data.showTime || typeof data.showTime === 'boolean') {
             return data.showTime;
         }
-        return {
-            defaultValue:
-                typeof data.showTime?.defaultValue === 'string'
-                    ? moment(data.showTime.defaultValue, 'HH:mm:ss')
-                    : undefined
-        };
+        return typeof data.showTime?.defaultValue === 'string'
+            ? () => `{
+                defaultValue: moment('${data.showTime.defaultValue}', 'HH:mm:ss')
+            }`
+            : true;
     };
-    const datePickerCls = {
+    const datePickerWrapProps = {
+        style: {}
     };
-    const selectCfg: DatePickerProps = {
+    const datePickerProps: DatePickerProps = {
         // value,
         showTime: getShowTime(),
         ...data.config,
@@ -27,20 +26,24 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div style={${getObjectStr(datePickerCls)}}>
+    const str = `<div ${getPropsFromObject(datePickerWrapProps)}>
                    <DatePicker
-                    ${getObjectDistrbuteStr(selectCfg)}
+                    ${getPropsFromObject(datePickerProps)}
                    />
                  </div>`
 
     return {
         imports: [
             {
-                form: 'antd',
+                from: 'antd',
                 coms: ['DatePicker']
             },
             {
-                form: 'antd/dist/antd.css',
+                from: 'moment',
+                default: 'moment'
+            },
+            {
+                from: 'antd/dist/antd.css',
                 coms: []
             }
         ],
