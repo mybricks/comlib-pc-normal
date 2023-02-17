@@ -63,7 +63,7 @@ const renderItem = ({ data, slots }: RuntimeParams<Data>) =>
                     }
                     closable={${!!item.closable}}
                     >
-                    ${data.hideSlots ? null : `<div style={{minHeight: 100}}>${slots[item.id]?.render()}</div>`}
+                    ${data.hideSlots ? null : `<div style={{minHeight: 100}}>${slots[item.id]?.render({})}</div>`}
                     </Tabs.TabPane>`
     )
     .join('\n');

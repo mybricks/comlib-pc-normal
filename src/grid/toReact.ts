@@ -65,13 +65,8 @@ const renderCol = (
   outputs
 ) => {
   let flex = '';
-  let width;
-  if (column.widthOption === WidthUnitEnum.Px) {
-    flex = column.width + 'px';
-    width = column.width + 'px';
-  }
   if (column.widthOption === WidthUnitEnum.Auto) {
-    flex = `${column.flex} ${column.flex} 0`;
+    flex = `flex={"${column.flex} ${column.flex} 0"}`;
   }
   let breakPointConfig = {};
   if (column.widthOption === WidthUnitEnum.Media) {
@@ -83,14 +78,14 @@ const renderCol = (
   const span = column.widthOption === WidthUnitEnum.Span ? `span={${column.span}}` : '';
   return `<Col
       ${span}
-      flex={${JSON.stringify(flex)}}
+      ${flex}
       ${Object.keys(breakPointConfig)
         .map((key) => `${key}={${breakPointConfig[key]}}`)
         .join('\n')}
       style={${JSON.stringify({
         ...column.colStyle,
         ...getMinMaxWidth(column),
-        width,
+        width: column.widthOption === WidthUnitEnum.Px ? column.width : 'unset',
         cursor: column.useClick ? 'pointer' : 'unset'
       })}}
     >
