@@ -3,13 +3,16 @@
   "namespace": "mybricks.normal-pc.form-phone-number",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "内置中国大陆11位手机号码校验",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",

@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-range-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "时间范围选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -11,6 +11,9 @@
   "data": "./data.json",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",

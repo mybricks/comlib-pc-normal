@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -11,6 +11,9 @@
   "data": "./data.json",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setSource",

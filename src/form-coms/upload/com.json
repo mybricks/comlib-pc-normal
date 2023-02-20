@@ -3,13 +3,16 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "上传",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",

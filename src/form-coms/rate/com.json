@@ -3,13 +3,16 @@
   "namespace": "mybricks.normal-pc.rate",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "评分",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
