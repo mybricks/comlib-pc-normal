@@ -3,12 +3,15 @@
   "namespace": "mybricks.normal-pc.color",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "颜色选择框",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",

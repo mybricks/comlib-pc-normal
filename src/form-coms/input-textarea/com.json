@@ -3,13 +3,16 @@
   "namespace": "mybricks.normal-pc.input-textarea",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "文本域",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",

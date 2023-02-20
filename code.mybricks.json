@@ -13,7 +13,25 @@
     "./src/grid/com.json",
     "./src/card/com.json",
     "./src/tabs/com.json",
-    "./src/breadcrumb/com.json"
+    "./src/breadcrumb/com.json",
+    "./src/form-coms/auto-complete/com.json",
+    "./src/form-coms/cascader/com.json",
+    "./src/form-coms/color/com.json",
+    "./src/form-coms/email/com.json",
+    "./src/form-coms/text/com.json",
+    "./src/form-coms/input-textarea/com.json",
+    "./src/form-coms/password/com.json",
+    "./src/form-coms/phone-number/com.json",
+    "./src/form-coms/radio/com.json",
+    "./src/form-coms/range-picker/com.json",
+    "./src/form-coms/rate/com.json",
+    "./src/form-coms/search/com.json",
+    "./src/form-coms/slider/com.json",
+    "./src/form-coms/switch/com.json",
+    "./src/form-coms/time-picker/com.json",
+    "./src/form-coms/time-range-picker/com.json",
+    "./src/form-coms/transfer/com.json",
+    "./src/form-coms/upload/com.json"
   ],
   "externals": [
     {

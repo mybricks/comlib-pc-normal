@@ -3,12 +3,15 @@
   "namespace": "mybricks.normal-pc.auto-complete",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",

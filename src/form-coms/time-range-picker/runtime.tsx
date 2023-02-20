@@ -40,7 +40,6 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
       }
       //兼容moment
       if (val.every((item) => isMoment(item))) {
-        console.log('isMoment array');
         if (isValidRange(val, 'moment')) {
           setValue(val as unknown as [Moment, Moment]);
         } else {
