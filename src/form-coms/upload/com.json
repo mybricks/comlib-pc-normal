@@ -131,6 +131,21 @@
           }
         }
       }
+    },
+    {
+      "id": "remove",
+      "title": "删除文件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -210,6 +225,33 @@
       "title": "开始上传",
       "schema": {
         "type": "object"
+      }
+    },
+    {
+      "id": "remove",
+      "title": "删除文件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
+          }
+        }
       }
     }
   ],
