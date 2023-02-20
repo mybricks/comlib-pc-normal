@@ -29,7 +29,7 @@ export default function ({ input, output }): boolean {
   // 1.0.1 -> 1.0.2
   output.get('upload').setSchema({
     type: 'object'
-  })
+  });
 
   //1.0.2 -> 1.0.3
   const valueSchema = {
@@ -105,5 +105,45 @@ export default function ({ input, output }): boolean {
       }
     }
   });
+
+  if (!input.get('remove')) {
+    input.add('remove', '删除文件', {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        uid: {
+          type: 'string'
+        }
+      }
+    });
+  }
+
+  if (!output.get('remove')) {
+    output.add('remove', '删除文件', {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        uid: {
+          type: 'string'
+        },
+        url: {
+          type: 'string'
+        },
+        status: {
+          type: 'string'
+        },
+        percent: {
+          type: 'number'
+        },
+        response: {
+          type: 'string'
+        }
+      }
+    });
+  }
   return true;
 }
