@@ -189,8 +189,49 @@ export default {
               get({ data }: EditorResult<Data>) {
                 return data.config.useCustomRemove;
               },
-              set({ data }: EditorResult<Data>, value: boolean) {
+              set({ data, input, output }: EditorResult<Data>, value: boolean) {
                 data.config.useCustomRemove = value;
+                if (value) {
+                  !output.get('remove') &&
+                    output.add('remove', '删除文件', {
+                      type: 'object',
+                      properties: {
+                        name: {
+                          type: 'string'
+                        },
+                        uid: {
+                          type: 'string'
+                        },
+                        url: {
+                          type: 'string'
+                        },
+                        status: {
+                          type: 'string'
+                        },
+                        percent: {
+                          type: 'number'
+                        },
+                        response: {
+                          type: 'string'
+                        }
+                      }
+                    });
+                  !input.get('remove') &&
+                    input.add('remove', '删除文件', {
+                      type: 'object',
+                      properties: {
+                        name: {
+                          type: 'string'
+                        },
+                        uid: {
+                          type: 'string'
+                        }
+                      }
+                    });
+                } else {
+                  output.get('remove') && output.remove('remove');
+                  input.get('remove') && input.remove('remove');
+                }
               }
             }
           },
