@@ -4,16 +4,22 @@ import { unitConversion } from '../../utils';
 export default function ({ data, slots }) {
   let content = ''
   const fromItemsStr = slots['content'].render({
-    itemWrap (com: { id; jsx }) {
+    itemWrap(com: { id; jsx }) {
       const item = data.items.find((item) => item.id === com.id);
+      const style: React.CSSProperties = {
+        margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
+      };
+      const colon = item?.colon === 'default' ? data.colon : item.colon;
 
       return `<Form.Item
-                ${item?.label ? `label="${item.label}"` : '' }
-                ${item?.name ? `name="${item.name}"` : `name="${item.label}"` }
-                ${item?.required ? `required="${item.required}"` : '' }
-                ${item?.validateStatus ? `validateStatus="${item.validateStatus}"` : '' }
-                ${item?.help ? `help="${item.help}"` : '' }
-                ${item?.tooltip ? `tooltip="${item.tooltip}"` : '' }>${com.jsx}</Form.Item>`
+                ${item?.label ? `label="${item.label}"` : ''}
+                ${item?.name ? `name="${item.name}"` : `name="${item.label}"`}
+                ${item?.required ? `required="${item.required}"` : ''}
+                ${item?.validateStatus ? `validateStatus="${item.validateStatus}"` : ''}
+                ${item?.help ? `help="${item.help}"` : ''}
+                ${item?.tooltip ? `tooltip="${item.tooltip}"` : ''}
+                ${data.layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
+                colon={${!!item?.label && colon}}>${com.jsx}</Form.Item>`
     },
     wrap (comAry) {
       const jsx = comAry?.map((com, idx) => {
@@ -106,7 +112,13 @@ function getInlineLayoutStr ({ actions, fromItemsStr, actionsStr }) {
   };
   const actionFlexBasis = actions.widthOption === 'px' ? `${actions.width}px` : `${(actions.span * 100) / 24}%`;
 
-  return `<div className={styles.slotInlineWrapper}>
+  const slotInlineWrapperStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: '100%'
+  };
+
+  return `<div style={${getObjectStr(slotInlineWrapperStyle)}}>
     ${fromItemsStr}
     ${actions.visible && `<Col flex="0 0 ${actionFlexBasis}" style={${getObjectStr(actionStyle)}}>
       <Form.Item style={{ marginRight: 0 }}>${actionsStr}</Form.Item>
