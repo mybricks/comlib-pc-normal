@@ -31,13 +31,16 @@
     "./src/form-coms/time-picker/com.json",
     "./src/form-coms/time-range-picker/com.json",
     "./src/form-coms/transfer/com.json",
-    "./src/form-coms/upload/com.json"
+    "./src/form-coms/upload/com.json",
+    "./src/dialog/com.json"
   ],
   "externals": [
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
     },
     {
       "name": "antd",

@@ -248,8 +248,6 @@ const RuntimeRender = ({
             showText,
             icon,
             useIcon,
-            disabled,
-            hidden,
             visible = true,
             location,
             dynamicHidden,
@@ -263,8 +261,8 @@ const RuntimeRender = ({
           return (
             <Button
               {...res}
-              hidden={!visible || hidden}
-              disabled={disabled}
+              hidden={!visible || dynamicHidden}
+              disabled={dynamicDisabled}
               onClick={event?.[id]}
               data-btn-id={id}
               loading={useBtnLoading && loading}

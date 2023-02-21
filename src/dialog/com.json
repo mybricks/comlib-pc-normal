@@ -9,6 +9,9 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "open",
