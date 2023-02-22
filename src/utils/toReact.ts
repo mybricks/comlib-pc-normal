@@ -20,21 +20,27 @@ function getValueStr(val) {
         const objStr = getObjectStr(val);
         return `{${objStr}}`;
     }
-    if (typeCheck(val, ['FUNCTION']))
-        return `{${val()}}`;
+    if (typeCheck(val, ['FUNCTION'])) {
+        const valStr = val();
+        return valStr ? `{${valStr}}` : void 0;
+    }
     return `{${val}}`;
 }
 
 /**
  * 根据对象获取组件props字符串
- * @param obj 组件配置对象
+ * @param propsObj 组件props对象
+ * @param defaultPropsObj 组件props默认值
  * @returns 组件props字符串
  */
-function getPropsFromObject(obj) {
-    const strArr = Object.entries(obj).map(([key, value]) => {
+function getPropsFromObject(propsObj, defaultPropsObj?) {
+    const strArr = Object.entries(propsObj).map(([key, value]) => {
         if (value == null) return '';
+        const defaultValue = defaultPropsObj?.[key];
+        if (value === defaultValue) return '';
         const valueStr = getValueStr(value);
-        if (!valueStr) return '';
+        const defaultValueStr = getValueStr(defaultValue);
+        if (!valueStr || valueStr === defaultValueStr) return '';
         return key + ' = ' + valueStr;
     })
     return strArr.join('\n')

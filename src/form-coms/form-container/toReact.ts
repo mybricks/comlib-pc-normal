@@ -1,5 +1,6 @@
 import { getLabelCol } from './utils';
 import { unitConversion } from '../../utils';
+import { getPropsFromObject } from '../../utils/toReact';
 
 export default function ({ data, slots }) {
   let content = ''
@@ -21,7 +22,7 @@ export default function ({ data, slots }) {
                 ${data.layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
                 colon={${!!item?.label && colon}}>${com.jsx}</Form.Item>`
     },
-    wrap (comAry) {
+    wrap(comAry) {
       const jsx = comAry?.map((com, idx) => {
         if (com) {
           let item = data.items.find((item) => item.id === com.id);
@@ -51,7 +52,7 @@ export default function ({ data, slots }) {
   })
 
   const actionsStr = getActionsStr(data.actions)
-  
+
   const labelCol = data.layout === 'horizontal' ? getLabelCol(data) : undefined
 
   if (data.layout === 'horizontal') {
@@ -62,8 +63,16 @@ export default function ({ data, slots }) {
     content = getVerticalLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
   }
 
-
-  const str = `<Form layout="${data.layout}" ${labelCol ? `labelCol={${getObjectStr(labelCol)}}` : ''}>${content}</Form>`
+  const formProps = {
+    layout: data.layout,
+    labelCol,
+    colon: data.colon
+  }
+  const defaultFormProps = {
+    layout: "horizontal",
+    colon: true
+  }
+  const str = `<Form ${getPropsFromObject(formProps, defaultFormProps)}>${content}</Form>`
 
   return {
     imports: [
@@ -76,13 +85,13 @@ export default function ({ data, slots }) {
         coms: []
       }
     ],
-  	jsx: str,
+    jsx: str,
     style: '',
     js: ''
   }
 }
 
-function getHorizontalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
+function getHorizontalLayoutStr({ actions, fromItemsStr, actionsStr }) {
   const actionFlexBasis =
     actions.widthOption === 'px'
       ? `${actions.width}px`
@@ -90,7 +99,7 @@ function getHorizontalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
 
   const horizontalLayoutStr = `
     ${fromItemsStr}
-    ${actions.visible && `<Col
+    ${actions.visible ? `<Col
         flex="0 0 ${actionFlexBasis}"
         style={{
           textAlign: "${actions.align}"
@@ -99,13 +108,13 @@ function getHorizontalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
         <Form.Item label=" " colon={false}>
           ${actionsStr}
         </Form.Item>
-      </Col>`}
+      </Col>`: ''}
   `
 
   return horizontalLayoutStr
 }
 
-function getInlineLayoutStr ({ actions, fromItemsStr, actionsStr }) {
+function getInlineLayoutStr({ actions, fromItemsStr, actionsStr }) {
   const actionStyle: React.CSSProperties = {
     textAlign: actions.align,
     padding: actions.inlinePadding?.map(String).map(unitConversion).join(' ')
@@ -120,15 +129,15 @@ function getInlineLayoutStr ({ actions, fromItemsStr, actionsStr }) {
 
   return `<div style={${getObjectStr(slotInlineWrapperStyle)}}>
     ${fromItemsStr}
-    ${actions.visible && `<Col flex="0 0 ${actionFlexBasis}" style={${getObjectStr(actionStyle)}}>
+    ${actions.visible ? `<Col flex="0 0 ${actionFlexBasis}" style={${getObjectStr(actionStyle)}}>
       <Form.Item style={{ marginRight: 0 }}>${actionsStr}</Form.Item>
     </Col>
-    `}
+    `: ''}
   </div>
   `
 }
 
-function getVerticalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
+function getVerticalLayoutStr({ actions, fromItemsStr, actionsStr }) {
 
   const actionFlexBasis =
     actions.widthOption === 'px'
@@ -137,7 +146,7 @@ function getVerticalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
 
   return ` <>
     ${fromItemsStr}
-    ${actions.visible && `<Col
+    ${actions.visible ? `<Col
       flex="0 0 ${actionFlexBasis}"
       style={{
         textAlign: "${actions.align}"
@@ -146,12 +155,12 @@ function getVerticalLayoutStr ({ actions, fromItemsStr, actionsStr }) {
       <Form.Item label=" " colon={false}>
         ${actionsStr}
       </Form.Item>
-    </Col>`}
+    </Col>`: ''}
   </>`
 
 }
 
-function getActionsStr (actions) {
+function getActionsStr(actions) {
   let actionsStr = ''
 
   actions.items.forEach((item) => {
@@ -160,8 +169,8 @@ function getActionsStr (actions) {
     }
 
     actionsStr += `<Button
-        ${item.type ? `type="${item.type}"` : '' }
-        ${item.loading ? `loading="${item.loading}"` : '' }
+        ${item.type ? `type="${item.type}"` : ''}
+        ${item.loading ? `loading="${item.loading}"` : ''}
       >
         ${item.title}
       </Button>
@@ -173,7 +182,7 @@ function getActionsStr (actions) {
   return actionsStr
 }
 
-function getObjectStr (obj) {
+function getObjectStr(obj) {
 
   return JSON.stringify(obj)
 }
