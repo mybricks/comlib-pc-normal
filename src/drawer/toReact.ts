@@ -12,7 +12,7 @@ export default function ({ data, slots, style }) {
     
     let footerStr = data.footerBtns.map((item:any)=>{
       const { title, id, showText, icon, useIcon, location, isConnected, outputDs, ...res } = item;
-      if(item.icon!==''){
+      if(item.icon!== undefined || ''){
         iconArr.push(item.icon)
       }
 
@@ -60,7 +60,8 @@ export default function ({ data, slots, style }) {
   function unique (arr) {
     return Array.from(new Set(arr))
   };
-  iconArr = unique(iconArr)
+  iconArr = unique(iconArr);
+  iconArr = iconArr.filter(Boolean);
   
   return {
     imports: [

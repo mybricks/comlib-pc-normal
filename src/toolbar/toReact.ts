@@ -5,13 +5,13 @@ export default function ({ data }) {
   let ellipsesBtnStr = ''
   let iconArr:any = [];
   const getBtn = (item) => {
-    if(item.icon !== ''){
+    if(item.icon !== undefined || ''){
       iconArr.push(item.icon)
     }
     return `<Button 
               ${item.size === undefined ? '' : `size="${item.size}"`}
-              ${item.type === undefined ? '' : `size="${item.type}"`}
-              ${item.shape === undefined ? '' : `size="${item.shape}"`}
+              ${item.type === undefined ? '' : `type="${item.type}"`}
+              ${item.shape === undefined ? '' : `shape="${item.shape}"`}
               >
                 <Space 
                   size={${item.iconDistance}}
@@ -87,7 +87,8 @@ export default function ({ data }) {
   function unique (arr) {
     return Array.from(new Set(arr))
   };
-  iconArr = unique(iconArr)
+  iconArr = unique(iconArr);
+  iconArr = iconArr.filter(Boolean);
 
   return {
     imports: [
