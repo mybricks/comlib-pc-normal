@@ -1,5 +1,6 @@
 import { getLabelCol } from './utils';
 import { unitConversion } from '../../utils';
+import { getPropsFromObject } from '../../utils/toReact';
 
 export default function ({ data, slots }) {
   let content = ''
@@ -62,8 +63,16 @@ export default function ({ data, slots }) {
     content = getVerticalLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
   }
 
-
-  const str = `<Form layout="${data.layout}" ${labelCol ? `labelCol={${getObjectStr(labelCol)}}` : ''} colon={${data.colon}}>${content}</Form>`
+  const formProps = {
+    layout: data.layout,
+    labelCol,
+    colon: data.colon
+  }
+  const defaultFormProps = {
+    layout: "horizontal",
+    colon: true
+  }
+  const str = `<Form ${getPropsFromObject(formProps, defaultFormProps)}>${content}</Form>`
 
   return {
     imports: [
