@@ -18,7 +18,13 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     };
     const selectProps: SelectProps = {
         ...data.config,
-        options: data.config.options,
+        options: data.config.options?.map(opt => {
+            const { label, value } = opt;
+            return {
+                label,
+                value
+            }
+        }),
         value: data.value,
         mode: data.config.mode === 'default' ? void 0 : data.config.mode,
         // onChange,
@@ -27,11 +33,9 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // notFoundContent
     };
 
-    const str = `<div ${getPropsFromObject(selectCls)}>
-                   <Select
+    const str = `<Select
                     ${getPropsFromObject(selectProps, defaultSelectProps)}
-                   />
-                 </div>`
+                />`
 
     return {
         imports: [
