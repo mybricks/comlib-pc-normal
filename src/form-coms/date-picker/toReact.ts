@@ -16,6 +16,12 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     const datePickerWrapProps = {
         style: {}
     };
+
+    const defaultDatePickerProps = {
+        showTime: false,
+        disabled: false,
+        picker: 'date'
+    };
     const datePickerProps: DatePickerProps = {
         // value,
         showTime: getShowTime(),
@@ -28,7 +34,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
 
     const str = `<div ${getPropsFromObject(datePickerWrapProps)}>
                    <DatePicker
-                    ${getPropsFromObject(datePickerProps)}
+                    ${getPropsFromObject(datePickerProps, defaultDatePickerProps)}
                    />
                  </div>`
 
