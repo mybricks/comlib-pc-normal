@@ -50,10 +50,6 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         coms: []
       },
       {
-        from: 'lodash/get',
-        default: 'get'
-      },
-      {
         from: 'moment',
         default: 'moment'
       },
@@ -452,8 +448,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         case SorterTypeEnum.Length:
           sorter = () => {
             return `(a, b) => {
-                      const aVal = get(a, '${cItem.dataIndex}');
-                      const bVal = get(b, '${cItem.dataIndex}');
+                      const aVal = a['${cItem.dataIndex}'];
+                      const bVal = b['${cItem.dataIndex}'];
                       if (typeof aVal !== 'string' || typeof bVal !== 'string') {
                         return 0;
                       }
@@ -464,8 +460,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         case SorterTypeEnum.Size:
           sorter = () => {
             return `(a, b) => {
-                      const aVal = get(a, '${cItem.dataIndex}');
-                      const bVal = get(b, '${cItem.dataIndex}');
+                      const aVal = a['${cItem.dataIndex}'];
+                      const bVal = b['${cItem.dataIndex}'];
                       if (typeof aVal !== 'number' || typeof bVal !== 'number') {
                         return 0;
                       }
@@ -476,8 +472,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         case SorterTypeEnum.Date:
           sorter = () => {
             return `(a, b) => {
-                      const aVal = get(a, '${cItem.dataIndex}');
-                      const bVal = get(b, '${cItem.dataIndex}');
+                      const aVal = a['${cItem.dataIndex}'];
+                      const bVal = b['${cItem.dataIndex}'];
                       if (!aVal || !bVal) {
                         return 0;
                       }
@@ -493,6 +489,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
 
     // 筛选
     let filterMap = {};
+    const useFilter = cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request;
     columns.forEach((cItem) => {
       if (!cItem.dataIndex && cItem.title) {
         cItem.dataIndex = formatColumnItemDataIndex(cItem);
@@ -500,15 +497,15 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       const dataIndex = Array.isArray(cItem.dataIndex)
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;
-      if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
-        filterMap[dataIndex] = cItem.filter.options || [];
+      if (useFilter) {
+        filterMap[dataIndex] = cItem.filter?.options || [];
       }
     });
     const onFilter =
-      cItem.filter?.type !== FilterTypeEnum.Request
+      useFilter
         ? () => {
           return `(value, record) => {
-                    return get(record, '${cItem.dataIndex}') == value;
+                    return record['${cItem.dataIndex}'] == value;
                   }`
         }
         : null;
