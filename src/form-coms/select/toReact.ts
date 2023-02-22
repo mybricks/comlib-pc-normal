@@ -5,7 +5,18 @@ import { Data } from './types';
 export default function ({ data, slots }: RuntimeParams<Data>) {
     const selectCls = {
     };
-    const selectCfg: SelectProps = {
+
+    const defaultSelectProps = {
+        allowClear: false,
+        loading: false,
+        disabled: false,
+        mode: 'default',
+        labelInValue: false,
+        showSearch: data.config.mode === "default",
+        filterOption: true,
+        optionFilterProp: 'value',
+    };
+    const selectProps: SelectProps = {
         ...data.config,
         options: data.config.options,
         value: data.value,
@@ -18,7 +29,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
 
     const str = `<div ${getPropsFromObject(selectCls)}>
                    <Select
-                    ${getPropsFromObject(selectCfg)}
+                    ${getPropsFromObject(selectProps, defaultSelectProps)}
                    />
                  </div>`
 
