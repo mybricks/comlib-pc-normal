@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-number",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "数字输入框",
   "icon": "./icon.svg",
   "data": "./data.json",
