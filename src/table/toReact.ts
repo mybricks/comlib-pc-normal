@@ -1,4 +1,4 @@
-import { TableProps, TooltipProps } from 'antd';
+import { TableColumnProps, TableProps, TooltipProps } from 'antd';
 import { CompareFn, TableRowSelection } from 'antd/es/table/interface';
 import { getObjectStr, getPropsFromObject, getClsStyle } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
@@ -365,12 +365,13 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
     }
     return '';
   };
-  const str = `<div
+  const actionStr = getActionStr();
+  const str = (tableTitleStr || actionStr) ? `<div
                 ${getPropsFromObject(headerProps)}
                 >
                 ${tableTitleStr}
-                ${getActionStr()}
-              </div>`
+                ${actionStr}
+              </div>`: '';
 
   return str;
 }
@@ -427,6 +428,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         title: getTitleRenderStr(),
         align: align || AlignEnum.Left,
         onHeaderCell: () => {
+          if (!titleBgColor && !titleColor) return '';
           return `(): any => {
                     return {
                       style: ${getObjectStr(headerCellStyle)}
@@ -521,12 +523,10 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       render: () => {
         switch (contentType) {
           case ContentTypeEnum.Text:
-            return `(text, record, index) => {
-                      return ${dataIndex || title ? 'text' : ''};
-                    }`;
+            return ``;
           case ContentTypeEnum.SlotItem:
             if (!slotId || !slots[slotId]?.render) {
-              return 'null';
+              return '';
             }
             const slotStr = slots[slotId]?.render({})?.trim() || '<></>';
             return `(text, record, index) => {
@@ -562,8 +562,30 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
                 }`
       }
     };
+    // 列默认props
+    const defaultColumnProps: TableColumnProps<IColumn> = {
+      fixed: false,
+      ellipsis: false,
+      filterMultiple: true,
+      showSorterTooltip: true,
+      onCell: () => {
+        return `() => {
+                  return {
+                    style: {}
+                  };
+                }`;
+      },
+      onHeaderCell: () => {
+        return `(): any => {
+                  return {
+                    style: {}
+                  };
+                }`
+      }
+    };
+
     return `<Table.Column
-              ${getPropsFromObject(columnProps)}
+              ${getPropsFromObject(columnProps, defaultColumnProps)}
             />`;
   };
 
@@ -585,15 +607,24 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         return `(record) => null as any`
       }
     };
+    // 表格默认props
+    const defaultTableProps: TableProps<any> = {
+      loading: false,
+      rowKey: 'key',
+      size: 'default',
+      bordered: false,
+      showHeader: true,
+    };
+    // 表格props
     const tableProps: TableProps<any> = {
       style: {
         width: tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
       },
       dataSource: defaultDataSource,
-      loading: {
+      loading: loadingTip ? {
         tip: loadingTip,
         spinning: false
-      },
+      } : false,
       rowKey,
       size,
       bordered,
@@ -620,8 +651,9 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         : tableLayout)
         || TableLayoutEnum.Fixed
     };
+
     const str = `<Table
-                  ${getPropsFromObject(tableProps)}
+                  ${getPropsFromObject(tableProps, defaultTableProps)}
                   >
                   ${data.columns.map(getColumnStr).join('\n')}
                   </Table>`
@@ -706,6 +738,17 @@ function getTableFooterStr({ data, slots }) {
         justifyContent: align
       }
     };
+    // 分页器默认props
+    const defaultPaginationProps = {
+      total: 0,
+      size: 'default',
+      simple: false,
+      showQuickJumper: false,
+      pageSizeOptions: ["10", "20", "50", "100"],
+      hideOnSinglePage: false,
+      disabled: false
+    };
+    // 分页器props
     const paginationProps = {
       total: total,
       showTotal: () => {
@@ -742,7 +785,7 @@ function getTableFooterStr({ data, slots }) {
         ${getPropsFromObject(paginationWrapProps)}
       >
         <Pagination
-          ${getPropsFromObject(paginationProps)}
+          ${getPropsFromObject(paginationProps, defaultPaginationProps)}
         />
       </div>`
   };
@@ -760,7 +803,7 @@ function getTableFooterStr({ data, slots }) {
     }
   };
 
-  return `<div
+  return (useBottomRowSelection || usePagination) ? `<div
             ${getPropsFromObject(footerWrapProps)}
           >
             ${useBottomRowSelection ? getBatchBtnsStr({ data, slots }) : ''}
@@ -769,7 +812,7 @@ function getTableFooterStr({ data, slots }) {
               >
                 ${getPaginatorStr()}
               </div>`: ''}
-          </div>`;
+          </div>`: '';
 }
 
 // 获取表格显示列宽度和
