@@ -57,7 +57,7 @@ export default function ({ data, slots }) {
       iconsSet.add(iconName);
     }
     const iconStr = useIcon && Icons ? `<${iconName}/>` : '';
-    return `<Button ${getPropsFromObject(props)} data-btn-id="${id}">
+    return `<Button ${getPropsFromObject(props)}">
 ${useIcon && location === Location.FRONT ? iconStr : ''}
 ${showText ? title : ''}
 ${useIcon && location === Location.BACK ? iconStr : ''}
