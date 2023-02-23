@@ -29,15 +29,7 @@ export default function ({ data, slots }) {
     return iconStr;
   };
 
-  const iconsSet = new Set<string>(
-    (data.footerBtns || [])
-      .map((item) => {
-        return item.useIcon ? createIconStr(item.icon) : '';
-      })
-      .filter((icon) => !!icon)
-  );
-  let icons: string[] = [];
-  iconsSet.forEach((item) => icons.push(item));
+  const iconsSet = new Set<string>();
 
   const btns = (data.footerBtns || []).map((item) => {
     const {
@@ -59,8 +51,13 @@ export default function ({ data, slots }) {
       loading: useBtnLoading ? true : undefined,
       key: id
     };
-    const iconStr = useIcon && Icons ? `<${createIconStr(icon)}/>` : '';
-    return `<Button ${getPropsFromObject(props)} data-btn-id="${id}">
+    const iconName = createIconStr(icon);
+    // 收集使用到的图标
+    if (useIcon) {
+      iconsSet.add(iconName);
+    }
+    const iconStr = useIcon && Icons ? `<${iconName}/>` : '';
+    return `<Button ${getPropsFromObject(props)}">
 ${useIcon && location === Location.FRONT ? iconStr : ''}
 ${showText ? title : ''}
 ${useIcon && location === Location.BACK ? iconStr : ''}
@@ -90,21 +87,27 @@ ${useIcon && location === Location.BACK ? iconStr : ''}
   ${slots[SlotIds.Container].render({})}
 </Modal>`;
 
+  const importsList = [
+    {
+      from: 'antd',
+      coms: ['Button', 'Modal']
+    },
+    {
+      from: 'antd/dist/antd.css',
+      coms: []
+    }
+  ];
+
+  if (iconsSet.size > 0) {
+    let icons: string[] = [];
+    iconsSet.forEach((icon) => icons.push(icon));
+    importsList.push({
+      from: '@ant-design/icons',
+      coms: icons
+    });
+  }
   return {
-    imports: [
-      {
-        from: 'antd',
-        coms: ['Button', 'Modal']
-      },
-      {
-        from: 'antd/dist/antd.css',
-        coms: []
-      },
-      {
-        from: '@ant-design/icons',
-        coms: iconsSet
-      }
-    ],
+    imports: importsList,
     jsx,
     style: '',
     js: ''
