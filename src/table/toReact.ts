@@ -39,7 +39,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     imports: [
       {
         from: 'antd',
-        coms: ['Table', 'Empty', 'Pagination', 'Button', 'Tooltip', 'Dropdown', 'Menu', 'Checkbox']
+        coms: ['Table', 'Pagination', 'Button', 'Tooltip', 'Dropdown', 'Menu', 'Checkbox']
       },
       {
         from: '@ant-design/icons',
@@ -384,7 +384,7 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
 function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   const { tableLayout, loadingTip, columns, sortParams, filterParams } = data;
 
-  const defaultDataSource = data.columns.map((item, inx) => ({ [item.title]: '-' + item.title + '-', '_uuid': item.title + inx }));
+  const defaultDataSource = data.columns.map((item, inx) => ({ [item.title]: '-' + item.title + '-', 'key': item.title + inx }));
 
   /**
    * 获取表格列codeStr
@@ -589,88 +589,73 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
             />`;
   };
 
-  if (data.columns.length) {
-    const { size, bordered, useRowSelection, showHeader, selectionType, useExpand, scroll, fixedHeader } = data;
-    const rowKey = data.rowKey?.trim() || '_uuid';
-    // 勾选配置
-    const rowSelection: TableRowSelection<any> = {
-      selectedRowKeys: [],
-      preserveSelectedRowKeys: true,
-      onChange: () => {
-        return `(selectedRowKeys: any[], selectedRows: any[]) => {}`
-      },
-      type:
-        selectionType === RowSelectionTypeEnum.Radio
-          ? RowSelectionTypeEnum.Radio
-          : RowSelectionTypeEnum.Checkbox,
-      getCheckboxProps: () => {
-        return `(record) => null as any`
-      }
-    };
-    // 表格默认props
-    const defaultTableProps: TableProps<any> = {
-      loading: false,
-      rowKey: 'key',
-      size: 'default',
-      bordered: false,
-      showHeader: true,
-    };
-    // 表格props
-    const tableProps: TableProps<any> = {
-      style: {
-        width: tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
-      },
-      dataSource: defaultDataSource,
-      loading: loadingTip ? {
-        tip: loadingTip,
-        spinning: false
-      } : false,
-      rowKey,
-      size,
-      bordered,
-      pagination: false,
-      rowSelection: useRowSelection ? rowSelection : void 0,
-      showHeader,
-      scroll: {
-        x: '100%',
-        y: (scroll.y && fixedHeader) ? scroll.y : void 0
-      },
-      expandable:
-        useExpand && slots[SlotIds.EXPAND_CONTENT]
-          ? () => `{
+  const { size, bordered, useRowSelection, showHeader, selectionType, useExpand, scroll, fixedHeader } = data;
+  const rowKey = data.rowKey?.trim() || 'key';
+  // 勾选配置
+  const rowSelection: TableRowSelection<any> = {
+    selectedRowKeys: [],
+    preserveSelectedRowKeys: true,
+    onChange: () => {
+      return `(selectedRowKeys: any[], selectedRows: any[]) => {}`
+    },
+    type:
+      selectionType === RowSelectionTypeEnum.Radio
+        ? RowSelectionTypeEnum.Radio
+        : RowSelectionTypeEnum.Checkbox,
+    getCheckboxProps: () => {
+      return `(record) => null as any`
+    }
+  };
+  // 表格默认props
+  const defaultTableProps: TableProps<any> = {
+    loading: false,
+    rowKey: 'key',
+    size: 'default',
+    bordered: false,
+    showHeader: true,
+  };
+  // 表格props
+  const tableProps: TableProps<any> = {
+    style: {
+      width: tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
+    },
+    dataSource: defaultDataSource,
+    loading: loadingTip ? {
+      tip: loadingTip,
+      spinning: false
+    } : false,
+    rowKey,
+    size,
+    bordered,
+    pagination: false,
+    rowSelection: useRowSelection ? rowSelection : void 0,
+    showHeader,
+    scroll: {
+      x: '100%',
+      y: (scroll.y && fixedHeader) ? scroll.y : void 0
+    },
+    expandable:
+      useExpand && slots[SlotIds.EXPAND_CONTENT]
+        ? () => `{
             expandedRowKeys: ['${defaultDataSource[0][rowKey]}'],
             expandedRowRender: (record, index) => {
               return ${slots[SlotIds.EXPAND_CONTENT].render({})};
             }
           }`
-          : void 0
-      ,
-      // onChange: onChange,
-      tableLayout: (tableLayout === TableLayoutEnum.FixedWidth
-        ? TableLayoutEnum.Fixed
-        : tableLayout)
-        || TableLayoutEnum.Fixed
-    };
-
-    const str = `<Table
-                  ${getPropsFromObject(tableProps, defaultTableProps)}
-                  >
-                  ${data.columns.map(getColumnStr).join('\n')}
-                  </Table>`
-    return str;
-  }
-
-  const emptyStyle = {
-    border: '1px dashed rgb(176, 176, 176)',
-    margin: 0
+        : void 0
+    ,
+    // onChange: onChange,
+    // 列宽分配
+    tableLayout: (tableLayout === TableLayoutEnum.FixedWidth
+      ? TableLayoutEnum.Fixed
+      : tableLayout)
   };
-  const emptyProps = {
-    description: "请添加列",
-    style: emptyStyle
-  };
-  return `<Empty 
-            ${getPropsFromObject(emptyProps)}
-          />`;
+
+  return `<Table
+          ${getPropsFromObject(tableProps, defaultTableProps)}
+          >
+          ${data.columns.map(getColumnStr).join('\n')}
+          </Table>`
 }
 
 /**

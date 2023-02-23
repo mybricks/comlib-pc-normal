@@ -11,16 +11,55 @@ export default function ({ data, slots }) {
         margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
       };
       const colon = item?.colon === 'default' ? data.colon : item.colon;
-
+      const { styleEditorUnfold, fontFamily, letterSpacing, fontWeight: labelFontWeight, ...labelStyle } = item?.labelStyle;
+      const { styleEditorUnfold: temp, fontFamily: temp1, letterSpacing: temp2, whiteSpace, fontWeight: desFontWeight, ...descriptionStyle } = item?.descriptionStyle;
+      const defaultLabelProps = {
+        style: {
+          lineHeight: "14px",
+          letterSpacing: "0px",
+          fontSize: "14px",
+          fontWeight: 400,
+          color: "rgba(0, 0, 0, 0.85)",
+          fontStyle: "normal",
+        }
+      }
+      const labelProps = {
+        style: {
+          ...labelStyle,
+          fontWeight: parseInt(labelFontWeight)
+        }
+      };
+      const defaultDescriptionProps = {
+        style: {
+          lineHeight: '22px',
+          letterSpacing: '0px',
+          fontSize: '14px',
+          fontWeight: 400,
+          color: 'rgba(0, 0, 0, 0.88)',
+          fontStyle: 'normal',
+        }
+      }
+      const descriptionProps = {
+        style: {
+          ...descriptionStyle,
+          fontWeight: parseInt(desFontWeight)
+        }
+      }
       return `<Form.Item
-                ${item?.label ? `label="${item.label}"` : ''}
+                ${item?.label ? `label={<label ${getPropsFromObject(labelProps, defaultLabelProps)}>${item.label}</label>}` : ''}
                 ${item?.name ? `name="${item.name}"` : `name="${item.label}"`}
                 ${item?.required ? `required="${item.required}"` : ''}
                 ${item?.validateStatus ? `validateStatus="${item.validateStatus}"` : ''}
                 ${item?.help ? `help="${item.help}"` : ''}
                 ${item?.tooltip ? `tooltip="${item.tooltip}"` : ''}
                 ${data.layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
-                colon={${!!item?.label && colon}}>${com.jsx}</Form.Item>`
+                colon={${!!item?.label && colon}}>
+                  ${com.jsx}${item.description ? `<div style={{marginTop: '6px'}}>
+                      <Form.Item noStyle>
+                        <span ${getPropsFromObject(descriptionProps, defaultDescriptionProps)}>${item.description}</span>
+                      </Form.Item>
+                    </div>`: ''}
+                </Form.Item>`
     },
     wrap(comAry) {
       const jsx = comAry?.map((com, idx) => {
@@ -47,7 +86,7 @@ export default function ({ data, slots }) {
         return `<div>组件错误</div>;`
       });
 
-      return `<Row>${jsx.join('\n')}</Row>`
+      return `${jsx.join('\n')}`
     }
   })
 
@@ -97,7 +136,7 @@ function getHorizontalLayoutStr({ actions, fromItemsStr, actionsStr }) {
       ? `${actions.width}px`
       : `${(actions.span * 100) / 24}%`;
 
-  const horizontalLayoutStr = `
+  const horizontalLayoutStr = `<Row>
     ${fromItemsStr}
     ${actions.visible ? `<Col
         flex="0 0 ${actionFlexBasis}"
@@ -108,8 +147,9 @@ function getHorizontalLayoutStr({ actions, fromItemsStr, actionsStr }) {
         <Form.Item label=" " colon={false}>
           ${actionsStr}
         </Form.Item>
-      </Col>`: ''}
-  `
+      </Col>
+      `: ''}
+    </Row>`
 
   return horizontalLayoutStr
 }
@@ -127,14 +167,15 @@ function getInlineLayoutStr({ actions, fromItemsStr, actionsStr }) {
     width: '100%'
   };
 
-  return `<div style={${getObjectStr(slotInlineWrapperStyle)}}>
-    ${fromItemsStr}
-    ${actions.visible ? `<Col flex="0 0 ${actionFlexBasis}" style={${getObjectStr(actionStyle)}}>
-      <Form.Item style={{ marginRight: 0 }}>${actionsStr}</Form.Item>
-    </Col>
-    `: ''}
-  </div>
-  `
+  return `<Row style={{ width: "100%" }}>
+    <div style={${getObjectStr(slotInlineWrapperStyle)}}>
+      ${fromItemsStr}
+      ${actions.visible ? `<Col flex="0 0 ${actionFlexBasis}" style={${getObjectStr(actionStyle)}}>
+        <Form.Item style={{ marginRight: 0 }}>${actionsStr}</Form.Item>
+      </Col>
+      `: ''}
+    </div>
+  </Row>`
 }
 
 function getVerticalLayoutStr({ actions, fromItemsStr, actionsStr }) {
@@ -144,7 +185,7 @@ function getVerticalLayoutStr({ actions, fromItemsStr, actionsStr }) {
       ? `${actions.width}px`
       : `${(actions.span * 100) / 24}%`;
 
-  return ` <>
+  return `<Row>
     ${fromItemsStr}
     ${actions.visible ? `<Col
       flex="0 0 ${actionFlexBasis}"
@@ -156,7 +197,7 @@ function getVerticalLayoutStr({ actions, fromItemsStr, actionsStr }) {
         ${actionsStr}
       </Form.Item>
     </Col>`: ''}
-  </>`
+  </Row>`
 
 }
 
