@@ -40,7 +40,7 @@ export default function ({ data, slots, style }) {
       mask={${data.showMask}}
       title={${JSON.stringify(data.title)}}
       placement='${data.position}'
-      visible={${data.visible}}
+      visible={false}
       width={${data.width}}
       height={${data.height}}
       bodyStyle={${JSON.stringify(data.bodyStyle)}}
