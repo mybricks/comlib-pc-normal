@@ -57,7 +57,8 @@ export default function ({ data, slots }) {
       iconsSet.add(iconName);
     }
     const iconStr = useIcon && Icons ? `<${iconName}/>` : '';
-    return `<Button ${getPropsFromObject(props)}">
+
+    return `<Button ${getPropsFromObject(props)}>
 ${useIcon && location === Location.FRONT ? iconStr : ''}
 ${showText ? title : ''}
 ${useIcon && location === Location.BACK ? iconStr : ''}
@@ -71,7 +72,7 @@ ${useIcon && location === Location.BACK ? iconStr : ''}
 </div>`;
 
   const props = {
-    visible: true,
+    visible: false,
     width: data.width,
     keyboard: false,
     maskClosable: false,
