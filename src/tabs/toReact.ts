@@ -1,26 +1,27 @@
 import { Data, SlotIds } from './constants';
 export default function (props: RuntimeParams<Data>) {
   const str = renderTab(props);
+  const commonImports = [
+    {
+      from: 'antd',
+      coms: ['Tabs', 'Tooltip']
+    },
+    {
+      from: 'antd/dist/antd.css',
+      coms: []
+    }
+  ];
   const icons = props.data.tabList
     .map(({ icon, showIcon }) => (!!showIcon ? icon : void 0))
     .filter((item) => !!item);
+  if (!!icons.length) {
+    commonImports.push({
+      from: '@ant-design/icons',
+      coms: icons as string[]
+    });
+  }
   return {
-    imports: [
-      {
-        from: 'antd',
-        coms: ['Tabs', 'Tooltip']
-      },
-      {
-        from: 'antd/dist/antd.css',
-        coms: []
-      },
-      icons.length
-        ? {
-            from: '@ant-design/icons',
-            coms: icons
-          }
-        : void 0
-    ],
+    imports: commonImports,
     jsx: str,
     style: '',
     js: ''
@@ -37,7 +38,7 @@ const renderTab = (props: RuntimeParams<Data>) => {
     }}`
       : '';
   return `<Tabs
-            activeKey={${JSON.stringify(data.defaultActiveKey)}}
+            defaultActiveKey={${JSON.stringify(data.defaultActiveKey)}}
             type={${JSON.stringify(data.type)}}
             centered={${data.centered}}
             tabPosition={${JSON.stringify(data.tabPosition)}}
