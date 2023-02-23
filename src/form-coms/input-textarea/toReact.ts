@@ -6,11 +6,9 @@ export default function ({ data }) {
     }
   })
 
-  let str = `<div>
-              <Input.TextArea
-              autoSize={{ minRows: ${data.minRows}, maxRows: ${data.maxRows} }}
-              ${configStr} />
-            </div>`
+  let str = `<Input.TextArea
+                autoSize={{ minRows: ${data.minRows}, maxRows: ${data.maxRows} }}
+              ${configStr} />`
 
   return {
     imports: [

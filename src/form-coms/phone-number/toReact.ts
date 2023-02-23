@@ -6,10 +6,7 @@ export default function ({ data }) {
     }
   })
 
-  let str = `<div>
-              <Input
-              ${configStr} />
-            </div>`
+  let str = `<Input ${configStr} />`
 
   return {
     imports: [

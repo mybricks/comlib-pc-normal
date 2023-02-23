@@ -6,11 +6,9 @@ export default function ({ data }) {
     }
   })
 
-  let str = `<div>
-              <InputNumber 
+  let str = `<InputNumber 
                 style={{ width: '100%' }}
-              ${configStr} />
-            </div>`
+              ${configStr} />`
 
   return {
     imports: [

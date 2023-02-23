@@ -1,11 +1,9 @@
 export default function ({ data }) {
-  let str = `<div>
-              <Input.Password
+  let str = `<Input.Password
               allowClear
               placeholder="${data.placeholder}"
               disabled={${data.disabled || false}}
-              />
-            </div>`
+              />`
 
   return {
     imports: [

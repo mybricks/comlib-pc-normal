@@ -6,7 +6,7 @@ export default function ({ data }: RuntimeParams<Data>) {
     return (
         `<Radio
           value="${item.value}"
-          disabled={${item.disabled}}
+          ${item.disabled !== undefined ? `disabled={${item.disabled}}`: ''}
           checked={${item.checked}}
           style={{ marginRight: 8}}
         >
@@ -15,13 +15,13 @@ export default function ({ data }: RuntimeParams<Data>) {
     )
   })
 
-  const str = `<div>
-                  <Radio.Group 
-                  disabled={${data.config.disabled}}
-                  >
-                    ${radioStr}
-                  </Radio.Group>
-              </div>`
+  const str = `<Radio.Group
+                value={${JSON.stringify(data.value)}} 
+                disabled={${data.config.disabled}}
+                >
+                  ${radioStr}
+                </Radio.Group>`
+                  
 
     return {
         imports: [
