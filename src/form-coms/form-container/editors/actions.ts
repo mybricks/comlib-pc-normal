@@ -177,7 +177,7 @@ export const actionsEditor = (data: Data, output) => {
             return data.actions?.items || [];
           },
           set({ data }: EditorResult<Data>, val: any[]) {
-            data.actions.items = val;
+            // data.actions.items = val;
           }
         }
       },
