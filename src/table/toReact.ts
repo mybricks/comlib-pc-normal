@@ -384,7 +384,17 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
 function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   const { tableLayout, loadingTip, columns, sortParams, filterParams } = data;
 
-  const defaultDataSource = data.columns.map((item, inx) => ({ [item.title]: '-' + item.title + '-', 'key': item.title + inx }));
+
+  const defaultDataSource = data.columns.map((item, inx) => {
+    const dataIndex = item.dataIndex ?
+      (
+        Array.isArray(item.dataIndex) ?
+          item.dataIndex.join('.')
+          : item.dataIndex
+      )
+      : item.title;
+    return { [dataIndex]: '-' + item.title + '-', 'key': dataIndex }
+  });
 
   /**
    * 获取表格列codeStr
