@@ -7,14 +7,13 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     if (!data.showTime || typeof data.showTime === 'boolean') {
       return data.showTime;
     }
-    return {
-      defaultValue: Array.isArray(data.showTime?.defaultValue)
-        ? data.showTime?.defaultValue.map((item) => moment(item, 'HH:mm:ss'))
-        : undefined
-    };
+    return  Array.isArray(data.showTime?.defaultValue)
+        ? ()=> `{
+          defaultValue: [ moment('${data.showTime.defaultValue[0]}', 'HH:mm:ss'), moment('${data.showTime.defaultValue[1]}', 'HH:mm:ss')]
+        }`
+        : true
   };
-    const datePickerCls = {
-    };
+
     const datePickerCfg = {
         // value,
         showTime: getShowTime(),
@@ -25,17 +24,17 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div style={${getObjectStr(datePickerCls)}}>
-                   <DatePicker.RangePicker
-                   ${getPropsFromObject(datePickerCfg)}
-                   />
-                 </div>`
+    const str = `<DatePicker.RangePicker ${getPropsFromObject(datePickerCfg)} />`               
 
     return {
         imports: [
             {
                 from: 'antd',
                 coms: ['DatePicker']
+            },
+            {
+              from: 'moment',
+              default: 'moment'
             },
             {
                 from: 'antd/dist/antd.css',

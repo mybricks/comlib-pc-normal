@@ -8,7 +8,11 @@ export default function ({ data, slots, style }) {
     const slotExtra = slots['extra']?.render({});
 
     return `
-    <div>
+    <div
+      style={${JSON.stringify({  
+        height: '100%'
+      })}}
+    >
       <Card
       title="${data.title}"
       size="${data.size}"
@@ -21,7 +25,16 @@ export default function ({ data, slots, style }) {
       ${data.useExtra && slotExtra.length!==0 ? `extra={${slotExtra}}` : ''}
       hoverable={${data.hoverable}}
       >
-        ${slotBody}
+        ${slotBody.length!==0 ? `<div
+        style={${JSON.stringify({
+          overflowY: style.height !== 'auto' ? 'auto' : void 0,
+          overflowX: style.width !== 'auto' ? 'auto' : void 0,
+          height:  data.title === '' ? "calc(~'100% - 57.14px')" : '100%',
+          padding: '1px 0'
+        })}}
+        >`: ''}
+          ${slotBody}
+        ${slotBody.length!==0 ? `</div>` : ''}
       </Card>
     </div>`;
   };

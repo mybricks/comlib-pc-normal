@@ -32,11 +32,9 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div ${getPropsFromObject(datePickerWrapProps)}>
-                   <DatePicker
-                    ${getPropsFromObject(datePickerProps, defaultDatePickerProps)}
-                   />
-                 </div>`
+    const str = `<DatePicker
+                  ${getPropsFromObject(datePickerProps, defaultDatePickerProps)}
+                />`
 
     return {
         imports: [

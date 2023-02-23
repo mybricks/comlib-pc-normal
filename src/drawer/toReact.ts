@@ -44,7 +44,6 @@ export default function ({ data, slots, style }) {
       width={${data.width}}
       height={${data.height}}
       bodyStyle={${JSON.stringify(data.bodyStyle)}}
-      open={true}
       footerStyle={${JSON.stringify({
         display: 'flex',
         justifyContent: `${data.footerAlign}`

@@ -6,10 +6,7 @@ export default function ({ data }) {
     }
   })
 
-  let str = `<div>
-              <Input.Search
-              ${configStr} />
-            </div>`
+  let str = `<Input.Search ${configStr} />`         
 
   return {
     imports: [
