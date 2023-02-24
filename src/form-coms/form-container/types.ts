@@ -19,7 +19,7 @@ interface Actions {
   inlinePadding?: number[]
 }
 
-interface FormItems {
+export interface FormItems {
   id: string;
   name: string
   label: string
@@ -31,9 +31,12 @@ interface FormItems {
   help?: string
   tooltip?: string
   labelStyle?: {}
+  labelAlign?: 'left' | 'right'
+  labelAutoWrap?: boolean
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
+  width: number
   inlineMargin?: number[]
 }
 
