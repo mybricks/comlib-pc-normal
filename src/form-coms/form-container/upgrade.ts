@@ -1,4 +1,4 @@
-import { Data } from './types';
+import { Data, FormItems } from './types';
 import { inputIds, slotInputIds } from './constants'
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
@@ -46,6 +46,13 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     }
     if (item.name !== item.name.trim()) {
       item.name = item.name.trim();
+    }
+
+    /**
+     * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
+     */
+    if (item.labelAlign === undefined) {
+      item.labelAlign = 'right';
     }
 
   });
