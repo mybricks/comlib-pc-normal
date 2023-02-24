@@ -9,6 +9,9 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editor",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "nextStep",
