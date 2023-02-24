@@ -37,7 +37,7 @@ const renderSteps = (props: RuntimeParams<Data>) => {
       ? { display: 'flex', justifyContent: 'center' }
       : { width: 'fit-content', wordBreak: 'keep-all', justifyContent: 'flex-start' };
   return ` <Steps
-    current={${data.current}}
+    current={0}
     size={${JSON.stringify(data.steps.size)}}
     type={${JSON.stringify(data.steps.type)}}
     direction={${JSON.stringify(data.steps.direction || 'horizontal')}}
@@ -86,8 +86,6 @@ const renderStepContent = (props: RuntimeParams<Data>) => {
     lineHeight: 100,
     display: 'flex',
     marginTop: 40,
-    backgroundColor: 'rgba(253, 247, 166, 0.2)',
-    outline: '1px dashed #d7d7d7'
   };
   const contentStyle = {
     flex: 1,
@@ -96,7 +94,7 @@ const renderStepContent = (props: RuntimeParams<Data>) => {
   };
   return !data.hideSlots
     ? ` <div style={${JSON.stringify(contentWrapStyle)}}>
-    <div style={${JSON.stringify(contentStyle)}}>{${renderSlots(props)}}</div>
+    <div style={${JSON.stringify(contentStyle)}}>${renderSlots(props)}</div>
   </div>`
     : '';
 };
@@ -104,7 +102,7 @@ const renderStepContent = (props: RuntimeParams<Data>) => {
 const renderSlots = (props: RuntimeParams<Data>) => {
   const { slots } = props;
   return Object.keys(slots)
-    .map((id) => slots[id].render({ key: id }))
+    .map((id) => `<>${slots[id].render({ key: id })}</>`)
     .join('\n');
 };
 
@@ -123,20 +121,20 @@ const renderToolbar = (props: RuntimeParams<Data>) => {
   const previousBtn =
     data.toolbar.btns.includes('previous') && data.current > 0
       ? ` <Button>
-  {${data.toolbar.secondBtnText || '上一步'}}
+  ${data.toolbar.secondBtnText || '上一步'}
 </Button>`
       : '';
 
   const nextBtn = !(data.current === stepAry.length - 1 || !data.toolbar.btns.includes('next'))
     ? `<Button type="primary" >
-      {${data.toolbar.primaryBtnText || '下一步'}}
+    ${data.toolbar.primaryBtnText || '下一步'}
     </Button>`
     : '';
 
   const submitBtn =
     data.current === stepAry.length - 1 && data.toolbar.btns.includes('submit')
-      ? `<Button type="primary" onClick={submit} >
-    {${data.toolbar.submitText || '提交'}}
+      ? `<Button type="primary" >
+      ${data.toolbar.submitText || '提交'}
   </Button>`
       : '';
 
@@ -146,7 +144,7 @@ const renderToolbar = (props: RuntimeParams<Data>) => {
           ({ id, text, type }) =>
             `<Button key={${JSON.stringify(id)}} type={${
               JSON.stringify(type) || 'default'
-            }}>{${text}}</Button>`
+            }}>${text}</Button>`
         )
         .join('\n')
     : '';
@@ -155,10 +153,10 @@ const renderToolbar = (props: RuntimeParams<Data>) => {
     ? `<div
     style={${JSON.stringify(toolbarStyle)}}
   >
-    {${previousBtn}}
-    {${nextBtn}}
-    {${submitBtn}}
-    {${extraBtn}}
+    ${previousBtn}
+    ${nextBtn}
+    ${submitBtn}
+    ${extraBtn}
   </div>`
     : '';
 };
