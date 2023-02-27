@@ -505,20 +505,14 @@ export default {
             }
           },
           {
-            title: '标题冒号',
-            type: 'Radio',
-            description: '当标题配置为空时，始终不展示冒号',
-            options: [
-              { label: '显示', value: true },
-              { label: '隐藏', value: false },
-              { label: '跟随容器配置', value: 'default' },
-            ],
+            title: '标题自动换行',
+            type: 'Switch',
             value: {
               get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'colon');
+                return getFormItemProp({ data, id }, 'labelAutoWrap');
               },
-              set({ id, data }: EditorResult<Data>, value: FormItemColonType) {
-                setFormItemProps({ data, id }, 'colon', value);
+              set({ id, data }: EditorResult<Data>, value: boolean) {
+                setFormItemProps({ data, id }, 'labelAutoWrap', value);
               }
             }
           },
@@ -539,14 +533,20 @@ export default {
             }
           },
           {
-            title: '标题自动换行',
-            type: 'Switch',
+            title: '标题冒号',
+            type: 'Radio',
+            description: '当标题配置为空时，始终不展示冒号',
+            options: [
+              { label: '显示', value: true },
+              { label: '隐藏', value: false },
+              { label: '跟随容器配置', value: 'default' },
+            ],
             value: {
               get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAutoWrap');
+                return getFormItemProp({ data, id }, 'colon');
               },
-              set({ id, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, id }, 'labelAutoWrap', value);
+              set({ id, data }: EditorResult<Data>, value: FormItemColonType) {
+                setFormItemProps({ data, id }, 'colon', value);
               }
             }
           },
