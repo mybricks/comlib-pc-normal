@@ -51,7 +51,7 @@ function fieldNameCheck(data: Data, name: string) {
 function getFormItemProp({ data, id }: { data: Data, id: string }, name: keyof FormItems) {
   try {
     const item = data.items.find(item => item.id === id);
-    return item[name];
+    return item?.[name];
   } catch (e) {
     console.error(e);
   }
@@ -102,6 +102,8 @@ export default {
         widthOption: 'span',
         span: 24 / data.formItemColumn,
         colon: 'default',
+        labelAlign: 'right',
+        labelAutoWrap: false,
         descriptionStyle: {
           whiteSpace: 'pre-wrap',
           lineHeight: '12px',

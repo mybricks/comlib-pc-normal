@@ -16,23 +16,22 @@ export default function ({ data, slots }) {
       const defaultLabelProps = {
         style: {
           lineHeight: "14px",
-          letterSpacing: "0px",
           fontSize: "14px",
-          fontWeight: 400,
           color: "rgba(0, 0, 0, 0.85)",
           fontStyle: "normal",
+          fontWeight: 400,
         }
-      }
+      };
       const labelProps = {
         style: {
           ...labelStyle,
-          fontWeight: parseInt(labelFontWeight)
+          fontWeight: parseInt(labelFontWeight),
+          whiteSpace: item?.labelAutoWrap ? 'pre-wrap' : void 0,
         }
       };
       const defaultDescriptionProps = {
         style: {
           lineHeight: '22px',
-          letterSpacing: '0px',
           fontSize: '14px',
           fontWeight: 400,
           color: 'rgba(0, 0, 0, 0.88)',
@@ -53,6 +52,7 @@ export default function ({ data, slots }) {
                 ${item?.help ? `help="${item.help}"` : ''}
                 ${item?.tooltip ? `tooltip="${item.tooltip}"` : ''}
                 ${data.layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
+                ${item?.labelAlign === 'left' ? 'labelAlign="left"' : ''}
                 colon={${!!item?.label && colon}}>
                   ${com.jsx}${item.description ? `<div style={{marginTop: '6px'}}>
                       <Form.Item noStyle>
