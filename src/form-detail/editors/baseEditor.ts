@@ -59,7 +59,7 @@ export const BaseEditor = [
   },
   //内容做对齐需求
   {
-    title: '标题宽度',
+    title: '标签宽度',
     type: 'inputNumber',
     options: [{ min: 0, width: 120 }],
     value: {
