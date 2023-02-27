@@ -19,7 +19,7 @@ export default function (props: RuntimeParams<Data>) {
 
 const getJsx = (props: RuntimeParams<Data>) => {
   const { data } = props;
-  let directionStyle;
+  let directionStyle = '';
   if (data.steps.direction === 'vertical') {
     directionStyle = `style={{ display: 'flex' }}`;
   }
@@ -83,9 +83,9 @@ const renderStepContent = (props: RuntimeParams<Data>) => {
   const { data } = props;
   const contentWrapStyle = {
     minHeight: 100,
-    lineHeight: 100,
     display: 'flex',
-    marginTop: 40,
+    alignItems: 'center',
+    marginTop: 40
   };
   const contentStyle = {
     flex: 1,
@@ -100,9 +100,19 @@ const renderStepContent = (props: RuntimeParams<Data>) => {
 };
 
 const renderSlots = (props: RuntimeParams<Data>) => {
-  const { slots } = props;
+  const { slots, data } = props;
+  const stepAry = data.stepAry.filter((item) => !item.hide);
   return Object.keys(slots)
-    .map((id) => `<>${slots[id].render({ key: id })}</>`)
+    .map((id) => {
+      const currentStep = stepAry[data.current] || {};
+      const containerStyle = {
+        display: `${currentStep.id === id ? 'block' : 'none'}`,
+        height: '100%'
+      };
+      return `<div key={${JSON.stringify(id)}} style={${JSON.stringify(containerStyle)}}  >${slots[
+        id
+      ].render({ key: id })}</div>`;
+    })
     .join('\n');
 };
 
