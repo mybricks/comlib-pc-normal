@@ -48,6 +48,7 @@ export default (props: Props) => {
       });
       inputs[InputIds.SetPageNum]((val) => {
         setPageNum(val);
+        data.currentPage.pageNum = val;
       });
       inputs[InputIds.GetPageInfo]((val, relOutputs) => {
         relOutputs[OutputIds.GetPageInfo](data.currentPage);
