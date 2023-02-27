@@ -37,7 +37,7 @@ const renderSteps = (props: RuntimeParams<Data>) => {
       ? { display: 'flex', justifyContent: 'center' }
       : { width: 'fit-content', wordBreak: 'keep-all', justifyContent: 'flex-start' };
   return ` <Steps
-    current={0}
+    current={${data.current || 0}}
     size={${JSON.stringify(data.steps.size)}}
     type={${JSON.stringify(data.steps.type)}}
     direction={${JSON.stringify(data.steps.direction || 'horizontal')}}
