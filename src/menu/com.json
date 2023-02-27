@@ -1,7 +1,7 @@
 {
   "title": "菜单",
   "namespace": "mybricks.normal-pc.menu",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,9 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "outputs": [
     {
       "id": "click",
