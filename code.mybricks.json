@@ -14,7 +14,8 @@
         "./src/tabs/com.json",
         "./src/dialog/com.json",
         "./src/drawer/com.json",
-        "./src/menu/com.json"
+        "./src/menu/com.json",
+        "./src/steps/com.json"
       ]
     },
     {

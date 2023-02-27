@@ -57,6 +57,23 @@ export const BaseEditor = [
       }
     }
   },
+  //内容做对齐需求
+  {
+    title: '标题宽度',
+    type: 'inputNumber',
+    options: [{ min: 0, width: 120 }],
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return [data?.globalLabelStyle?.width || 'auto'];
+      },
+      set({ data }: EditorResult<Data>, val: number[]) {
+        if (!data.globalLabelStyle) {
+          data.globalLabelStyle = {};
+        }
+        data.globalLabelStyle.width = val[0];
+      }
+    }
+  },
   {
     title: '增加描述项',
     type: 'Button',
@@ -92,5 +109,5 @@ export const BaseEditor = [
         updateIOSchema({ data, input, output });
       }
     }
-  },
+  }
 ];
