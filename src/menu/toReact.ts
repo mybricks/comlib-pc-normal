@@ -9,29 +9,29 @@ export default function ({ data }) {
         return `
           <div key="${key}">
             <Menu.ItemGroup title="${title}" key="${key}">
-              ${renderMenuItems(children).toString().replace(',','')}
+              ${renderMenuItems(children).toString().replaceAll(',','')}
             </Menu.ItemGroup>
           </div>
-        `.toString().replace(',','')
+        `
       }
       //父菜单
       if(menuType === MenuTypeEnum.SubMenu){
         return `
           <Menu.SubMenu title="${title}" key="${key}">
-            ${renderMenuItems(children).toString().replace(',','')}
+            ${renderMenuItems(children).toString().replaceAll(',','')}
           </Menu.SubMenu>
-        `.toString().replace(',','')
+        `
       }
       //最后的子菜单
       return `
         <Menu.Item key="${key}">
           ${title}
         </Menu.Item>
-      `.toString().replace(',','')
+      `
     })
   }
 
-  let menuItemStr = renderMenuItems([...data.dataSource]).toString().replace(',','')
+  let menuItemStr = renderMenuItems([...data.dataSource]).toString().replaceAll(',','')
 
   const renderMenu = (
     data
@@ -42,7 +42,7 @@ export default function ({ data }) {
     </Menu>`;
   };
 
-  let str = renderMenu(data).toString().replace(',','');
+  let str = renderMenu(data).toString().replaceAll(',','');
 
   return {
     imports: [
