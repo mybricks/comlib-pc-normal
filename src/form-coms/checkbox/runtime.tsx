@@ -139,7 +139,12 @@ export default function Runtime({
   return (
     <div>
       {data.checkAll && (
-        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+        <Checkbox
+          indeterminate={indeterminate}
+          onChange={onCheckAllChange}
+          checked={checkAll}
+          disabled={data.config.disabled}
+        >
           {data.checkAllText}
         </Checkbox>
       )}

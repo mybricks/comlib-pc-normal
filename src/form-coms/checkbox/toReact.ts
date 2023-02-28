@@ -17,7 +17,7 @@ export default function ({ data }: RuntimeParams<Data>) {
     })
     
     const str = `${data.checkAll ? (
-                  `<Checkbox>
+                  `<Checkbox disabled={${data.config.disabled}}>
                     ${data.checkAllText}
                   </Checkbox>`
                 ): ''} 
