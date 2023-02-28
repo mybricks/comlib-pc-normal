@@ -134,9 +134,13 @@ export default {
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
             const values: any[] = [];
+            let renderError = false;
             options.forEach(({ checked, value }) => {
               if (checked) values.push(value);
+              if (value === undefined) renderError = true;
             });
+
+            data.renderError = renderError;
             data.value = values as any;
             data.staticOptions = options;
             data.config.options = options;

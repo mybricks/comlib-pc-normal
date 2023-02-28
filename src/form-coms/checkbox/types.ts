@@ -11,4 +11,5 @@ export interface Data {
     checkAllText: string;
     staticOptions: CheckboxOptionType[];
     options: any[];
+    renderError?: boolean;
 }
