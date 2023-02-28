@@ -13,7 +13,8 @@ export default function Runtime({
   outputs,
   logger,
   parentSlot,
-  id
+  id,
+  title
 }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -136,7 +137,7 @@ export default function Runtime({
     onValidateTrigger();
   };
   if (data.renderError) {
-    return <Alert message="渲染错误：存在选项值未定义！" type="error" />;
+    return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
   }
   return (
     <div>
