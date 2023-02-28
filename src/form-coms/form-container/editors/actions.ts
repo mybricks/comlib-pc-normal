@@ -1,5 +1,6 @@
 import { Data, LabelWidthType } from '../types'
 import { uuid } from '../../../utils'
+import visibleOpt from '../../../components/editorRender/visibleOpt'
 
 export const actionsEditor = (data: Data, output) => {
   return {
@@ -14,24 +15,6 @@ export const actionsEditor = (data: Data, output) => {
           },
           set({ data }: EditorResult<Data>, val) {
             data.actions.visible = val
-          }
-        }
-      },
-      {
-        title: '显示提交按钮',
-        type: 'Switch',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.visible;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.actions.items.find(item => item.key === 'submit')?.visible
-          },
-          set({ data }: EditorResult<Data>, val) {
-            const submitItem = data.actions.items.find(item => item.key === 'submit')
-            if (submitItem) {
-              submitItem.visible = val
-            }
           }
         }
       },
@@ -155,6 +138,7 @@ export const actionsEditor = (data: Data, output) => {
           addText: '添加操作',
           deletable: false,
           editable: false,
+          customOptRender: visibleOpt,
           getTitle: (item) => {
             return item?.title;
           },
@@ -166,6 +150,7 @@ export const actionsEditor = (data: Data, output) => {
               key: outputId,
               outputId,
               isDefault: false,
+              visible: true
             }
             output.add(outputId, `点击${title}`, { type: 'any' })
             data.actions.items.push(item)
@@ -177,7 +162,7 @@ export const actionsEditor = (data: Data, output) => {
             return data.actions?.items || [];
           },
           set({ data }: EditorResult<Data>, val: any[]) {
-            // data.actions.items = val;
+            data.actions.items = val;
           }
         }
       },
