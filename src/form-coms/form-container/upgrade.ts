@@ -87,6 +87,14 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     slot?.get('content')._inputs.add(slotInputIds.VALIDATE_TRIGGER, '触发校验', validateTriggerSchema)
   }
 
+  /**
+    * @description v1.1.15 操作项visible初始化
+    */
+  data.actions.items?.forEach(act => {
+    if (act && act.visible === undefined) {
+      act.visible = true;
+    }
+  })
 
   return true;
 }
