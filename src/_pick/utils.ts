@@ -1,8 +1,13 @@
-import { SuggestionType } from './types'
+import { SuggestionType } from './types';
 export const getCodeFromTemplate = (template: string) => {
-  const code = template.match(/(?<=\{)(.+?)(?=\})/g);
-  if (!code) throw new Error('表达式格式错误');
-  return code[0];
+  if (template.startsWith('{') && template.endsWith('}')) {
+    return template.substring(1, template.length - 1);
+  } else {
+    throw new Error('表达式格式错误');
+  }
+  //   const code = template.match(/(?<=\{)(.+?)(?=\})/g);
+  //   if (!code) throw new Error('表达式格式错误');
+  //   return code[0];
 };
 
 export const sandbox = (code: string | null) => {
@@ -23,8 +28,6 @@ export const getSuggestionFromSchema = (schema) => {
   return transform(schema.properties);
 };
 
-
-
 const transform = (properties) => {
   const _prop: SuggestionType[] = [];
   Object.keys(properties).forEach((key) => {
@@ -39,3 +42,5 @@ const transform = (properties) => {
   });
   return _prop;
 };
+
+export { uuid } from '../utils';
