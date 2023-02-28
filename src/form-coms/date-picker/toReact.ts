@@ -37,7 +37,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
                 />`
 
     const defaultDeps: { from: string, default: string }[] = [];
-    if (typeof data.showTime?.defaultValue === 'string') defaultDeps.push({
+    if (data.showTime?.defaultValue) defaultDeps.push({
         from: 'moment',
         default: 'moment'
     });
