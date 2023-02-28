@@ -17,9 +17,18 @@ const cssVariables = {
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
   /**数据预处理 */
+  let useMoment = false;
   data.columns.map(item => {
     if (!item.dataIndex) item.dataIndex = item.title;
+    if (item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Date) {
+      useMoment = true;
+    }
   });
+  const defaultDeps = useMoment ? [{
+    from: 'moment',
+    default: 'moment'
+  }] : [];
+
 
   const tableHeaderStr = getTableHeaderStr({ data, slots });
   const tableBodyStr = getTableBodyStr({ data, slots });
@@ -49,10 +58,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         from: 'antd/dist/antd.css',
         coms: []
       },
-      {
-        from: 'moment',
-        default: 'moment'
-      },
+      ...defaultDeps
     ],
     jsx: str,
     style: '',
