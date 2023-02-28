@@ -173,10 +173,8 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     fileList.forEach((file) => {
       formData.append(fileKey, file);
     });
+    fileListRef.current = onFormatFileList(fileList);
     outputs.upload(formData);
-
-    const newFileList: UploadFile[] = onFormatFileList(fileList);
-    setFileList([...newFileList]);
   };
   // 文件合法校验
   const beforeUpload = useCallback((file: File, fileList: File[]) => {
