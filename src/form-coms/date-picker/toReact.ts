@@ -36,16 +36,19 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
                   ${getPropsFromObject(datePickerProps, defaultDatePickerProps)}
                 />`
 
+    const defaultDeps: { from: string, default: string }[] = [];
+    if (typeof data.showTime?.defaultValue === 'string') defaultDeps.push({
+        from: 'moment',
+        default: 'moment'
+    });
+
     return {
         imports: [
             {
                 from: 'antd',
                 coms: ['DatePicker']
             },
-            {
-                from: 'moment',
-                default: 'moment'
-            },
+            ...defaultDeps,
             {
                 from: 'antd/dist/antd.css',
                 coms: []
