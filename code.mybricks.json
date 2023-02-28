@@ -6,6 +6,7 @@
       "title": "常规",
       "comAry": [
         "./src/button/com.json",
+        "./src/text/com.json",
         "./src/toolbar/com.json",
         "./src/breadcrumb/com.json",
         "./src/grid/com.json",
