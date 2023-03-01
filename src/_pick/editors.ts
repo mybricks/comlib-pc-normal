@@ -1,4 +1,4 @@
-import type { Data, PickType, SuggestionType } from './types';
+import type { Data, PickType } from './types';
 import { getSuggestionFromSchema, uuid } from './utils';
 
 const createPick = ({ title } = { title: '新取值' }) => {
@@ -43,7 +43,6 @@ const updatePicks = (data: Data, output) => {
   });
 };
 
-let suggestions: SuggestionType[] = [];
 export default {
   '@init': ({ data, output }: EditorResult<Data>) => {
     const initialPick = createPick({ title: '取值' });
@@ -56,66 +55,49 @@ export default {
   '@pinRemoved'({ data, output }) {
     updatePicks(data, output);
   },
-  // ':root': ({ data }: EditorResult<Data>, cate1) => {
-  //   cate1.title = '取数配置';
-  //   cate1.items = [
-  //     {
-  //       title: '取值表达式',
-  //       type: 'expression',
-  //       options: {
-  //         suggestions: data.suggestions
-  //       },
-  //       value: {
-  //         get({ data }: EditorResult<Data>) {
-  //           return data.expression;
-  //         },
-  //         set({ data }: EditorResult<Data>, val: string) {
-  //           data.expression = val;
-  //         }
-  //       }
-  //     }
-  //   ];
-  // },
-  ':root': [
-    {
-      title: '取值列表',
-      type: 'array',
-      description: `表达式用"{}"包裹，如{a}，级联取值{a.b.c}`,
-      options: {
-        addText: '添加取值',
-        editable: true,
-        draggable: false,
-        getTitle(item) {
-          return `${item.title}[${item.key}]`;
-        },
-        onAdd() {
-          return createPick();
-        },
-        items: [
-          {
-            title: '名称',
-            type: 'text',
-            value: 'title'
+  ':root': ({ data }: EditorResult<Data>, cate1) => {
+    cate1.title = '取数配置';
+    cate1.items = [
+      {
+        title: '取值列表',
+        type: 'array',
+        description: `表达式用"{}"包裹，如{a}，级联取值{a.b.c}`,
+        options: {
+          addText: '添加取值',
+          editable: true,
+          draggable: false,
+          getTitle(item) {
+            return `${item.title}[${item.key}]`;
           },
-          {
-            title: '表达式',
-            type: 'expression',
-            value: 'expression',
-            options: {
-              suggestions
+          onAdd() {
+            return createPick();
+          },
+          items: [
+            {
+              title: '名称',
+              type: 'text',
+              value: 'title'
+            },
+            {
+              title: '表达式',
+              type: 'expression',
+              value: 'expression',
+              options: {
+                suggestions: data.suggestions
+              }
             }
-          }
-        ]
-      },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return [...(data.picks || [])];
+          ]
         },
-        set({ data, output }: EditorResult<Data>, val: Array<PickType>) {
-          data.picks = val;
-          updateOutput(data, output);
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [...(data.picks || [])];
+          },
+          set({ data, output }: EditorResult<Data>, val: Array<PickType>) {
+            data.picks = val;
+            updateOutput(data, output);
+          }
         }
       }
-    }
-  ]
+    ];
+  }
 };
