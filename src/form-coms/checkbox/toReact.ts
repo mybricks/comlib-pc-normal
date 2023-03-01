@@ -25,7 +25,7 @@ export default function ({ data }: RuntimeParams<Data>) {
     ) : ''} 
       <Checkbox.Group
         disabled={${data.config.disabled}}
-        ${data.value?.length !== 0 ? `value={${JSON.stringify(data.value)}}` : ''}
+        ${data.value?.length !== 0 ? `defaultValue={${JSON.stringify(data.value)}}` : ''}
         ${data.config.options.length !== 0 ? `options={${JSON.stringify(newOptions)}}` : ''}
       />`
 
