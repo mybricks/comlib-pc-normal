@@ -653,7 +653,6 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
     expandable:
       useExpand && slots[SlotIds.EXPAND_CONTENT]
         ? () => `{
-            expandedRowKeys: ['${defaultDataSource[0][rowKey]}'],
             expandedRowRender: (record, index) => {
               return ${slots[SlotIds.EXPAND_CONTENT].render({})};
             }
