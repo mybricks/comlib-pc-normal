@@ -78,8 +78,9 @@ export default {
   // },
   ':root': [
     {
-      title: '',
+      title: '取值列表',
       type: 'array',
+      description: `表达式用"{}"包裹，如{a}，级联取值{a.b.c}`,
       options: {
         addText: '添加取值',
         editable: true,
@@ -100,7 +101,6 @@ export default {
             title: '表达式',
             type: 'expression',
             value: 'expression',
-            description: `表达式用"{}"包裹，如{a}，级联取值{a.b.c}`,
             options: {
               suggestions
             }
