@@ -20,6 +20,9 @@ export default {
     {
       title: '添加输入项',
       type: 'Button',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.runImmediate;
+      },
       value: {
         set({ data, input }: EditorResult<Data>) {
           const idx = getIoOrder(input);
