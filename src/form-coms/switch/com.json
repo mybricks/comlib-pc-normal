@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "开关选择器",
   "icon": "./icon.svg",
   "data": "./data.json",
