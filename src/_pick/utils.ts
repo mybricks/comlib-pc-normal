@@ -1,8 +1,9 @@
 import { SuggestionType } from './types';
 export const getCodeFromTemplate = (template: string) => {
   if (template.startsWith('{') && template.endsWith('}')) {
-    return template.substring(1, template.length - 1);
-  } else {
+    const code = template.substring(1, template.length - 1);
+    return !!code.trim() ? code : null;
+  } else if(!!template.trim()) {
     throw new Error('表达式格式错误');
   }
   //   const code = template.match(/(?<=\{)(.+?)(?=\})/g);
@@ -10,16 +11,20 @@ export const getCodeFromTemplate = (template: string) => {
   //   return code[0];
 };
 
-export const sandbox = (code: string | null) => {
+export const sandbox = (template: string) => {
+  const code = getCodeFromTemplate(template);
   const fn = new Function(
     'context',
     `with(context){
           return ${code}
       }`
   );
-
   return function (context: any) {
-    return fn(context);
+    const ret = fn(context);
+    if (typeof ret === 'undefined') {
+      throw new Error(`${code} is not defined`);
+    }
+    return ret;
   };
 };
 

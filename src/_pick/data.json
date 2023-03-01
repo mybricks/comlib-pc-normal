@@ -1,4 +1,10 @@
 {
-    "picks": [],
-    "suggestions": []
+  "picks": [
+    {
+      "key": "pick0",
+      "title": "取值",
+      "expression": ""
+    }
+  ],
+  "suggestions": []
 }
