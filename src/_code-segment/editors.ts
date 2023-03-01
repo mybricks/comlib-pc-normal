@@ -26,16 +26,19 @@ export default {
       value: {
         set({ data, input }: EditorResult<Data>) {
           const idx = getIoOrder(input);
-          const hostId = `input${idx}`;
-          const title = `输入项${idx}`;
-          input.add({
-            id: hostId,
-            title,
-            schema: {
-              type: 'follow'
-            },
-            deletable: true
-          });
+          const hostId = `input.p${idx}`;
+          const title = `参数${idx}`;
+
+          input.add(hostId, title, { type: 'follow' }, true);
+          console.log(input.get());
+          // input.add({
+          //   id: hostId,
+          //   title,
+          //   schema: {
+          //     type: 'follow'
+          //   },
+          //   deletable: true
+          // });
         }
       }
     },

@@ -11,11 +11,15 @@
   "rtType": "js-autorun",
   "inputs": [
     {
-      "id": "input0",
-      "title": "输入项0",
-      "schema": {
-        "type": "follow"
-      }
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "p0",
+          "title": "参数0",
+          "type": "follow"
+        }
+      ]
     }
   ],
   "outputs": [
