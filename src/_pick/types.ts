@@ -1,5 +1,4 @@
 export interface Data {
-  expression: string;
   suggestions: Array<SuggestionType>
   picks: Array<PickType>
 }

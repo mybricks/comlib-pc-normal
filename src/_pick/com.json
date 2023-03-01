@@ -9,7 +9,6 @@
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
   "rtType": "js",
-  "data": "./data.json",
   "inputs": [
     {
       "id": "inputContext",
@@ -20,15 +19,5 @@
       "editable": true
     }
   ],
-  "outputs": [
-    {
-      "id": "pick0",
-      "title": "取值",
-      "schema": {
-        "type": "any"
-      },
-      "editable": true,
-      "deletable": true
-    }
-  ]
+  "outputs": []
 }

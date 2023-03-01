@@ -45,6 +45,11 @@ const updatePicks = (data: Data, output) => {
 
 let suggestions: SuggestionType[] = [];
 export default {
+  '@init': ({ data, output }: EditorResult<Data>) => {
+    const initialPick = createPick({ title: '取值' });
+    data.picks = [initialPick];
+    output.add(initialPick.key, initialPick.title, { type: 'any' });
+  },
   '@inputConnected'({ data }, fromPin) {
     data.suggestions = getSuggestionFromSchema(fromPin.schema);
   },
