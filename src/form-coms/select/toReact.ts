@@ -25,7 +25,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
                 value
             }
         }),
-        value: data.value,
+        defaultValue: data.value,
         mode: data.config.mode === 'default' ? void 0 : data.config.mode,
         // onChange,
         // onBlur,

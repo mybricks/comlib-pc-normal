@@ -1,9 +1,8 @@
 import { message } from 'antd'
-import { Data, FormItemColonType, LabelWidthType } from '../types'
+import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { FormLayout } from 'antd/es/form/Form'
 import { actionsEditor } from './actions'
 import { outputIds, inputIds, slotInputIds } from '../constants'
-import { uuid } from '../../../utils'
 
 function getSubmitSchema(data) {
   const properties = {}
@@ -20,9 +19,9 @@ function getSubmitSchema(data) {
   return schema
 }
 
-function refreshSchema({data, inputs, outputs, slots}) {
+function refreshSchema({ data, inputs, outputs, slots }) {
   const schema = getSubmitSchema(data)
-  
+
   outputs.get(outputIds.ON_FINISH).setSchema(schema)
   outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
   refreshParamsSchema(data, outputs)
@@ -31,21 +30,38 @@ function refreshSchema({data, inputs, outputs, slots}) {
   slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
 }
 
-function refreshParamsSchema (data, outputs) {
+function refreshParamsSchema(data, outputs) {
   const schema = getSubmitSchema(data)
-  if (data.paramsSchema?.type === 'object' ) {
+  if (data.paramsSchema?.type === 'object') {
     schema.properties = { ...schema.properties, ...data.paramsSchema.properties }
   }
 
   outputs.get(outputIds.ON_MERGE_FINISH).setSchema(schema)
 }
 
-function fieldNameCheck (data: Data, name: string) {
+function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
   if (fieldNameList.includes(name)) {
     return true
   } else {
     return false
+  }
+}
+
+function getFormItemProp({ data, id }: { data: Data, id: string }, name: keyof FormItems) {
+  try {
+    const item = data.items.find(item => item.id === id);
+    return item?.[name];
+  } catch (e) {
+    console.error(e);
+  }
+}
+function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof FormItems, value: any) {
+  try {
+    const item = data.items.find(item => item.id === id) || {};
+    item[name] = value;
+  } catch (e) {
+    console.error(e);
   }
 }
 
@@ -59,20 +75,20 @@ export default {
       }
       refreshParamsSchema(data, outputs)
     }
-    
+
   },
   '@inputDisConnected'({ data, outputs }, fromPin, toPin) {
     if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
       data.paramsSchema = {}
       refreshParamsSchema(data, outputs)
     }
-    
+
   },
-  '@childAdd' ({data, inputs, outputs, logs, slots}, child) {
+  '@childAdd'({ data, inputs, outputs, logs, slots }, child) {
     const { id, inputDefs, outputDefs } = child
     const item = data.items.find(item => item.id === id)
     const com = outputDefs.find(item => item.id === 'returnValue')
-    
+
     if (item) {
       item.schema = com.schema
     } else {
@@ -86,6 +102,8 @@ export default {
         widthOption: 'span',
         span: 24 / data.formItemColumn,
         colon: 'default',
+        labelAlign: 'right',
+        labelAutoWrap: false,
         descriptionStyle: {
           whiteSpace: 'pre-wrap',
           lineHeight: '12px',
@@ -109,12 +127,12 @@ export default {
         visible: true,
       })
     }
-    refreshSchema({data, inputs, outputs, slots})
+    refreshSchema({ data, inputs, outputs, slots })
   },
-  '@childRemove'({data, inputs, outputs, logs, slots}, {id, title}) {
+  '@childRemove'({ data, inputs, outputs, logs, slots }, { id, title }) {
     // console.log('@childRemove', id, title)
     data.items = data.items.filter(item => item.id !== id)
-    refreshSchema({data, inputs, outputs, slots})
+    refreshSchema({ data, inputs, outputs, slots })
   },
   // '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
   //   const item = data.items.find(item => item.id === id)
@@ -136,7 +154,7 @@ export default {
   //   }
   //   refreshSchema({data, inputs, outputs, slots})
   // },
-  '@parentUpdated'({id, data, parent}, {schema}) {
+  '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true
@@ -277,10 +295,10 @@ export default {
             type: 'Switch',
             description: '提交时收集被隐藏的表单项字段并进行校验',
             value: {
-              get ({ data }: EditorResult<Data>) {
+              get({ data }: EditorResult<Data>) {
                 return data.submitHiddenFields
               },
-              set ({ data }: EditorResult<Data>, val: boolean) {
+              set({ data }: EditorResult<Data>, val: boolean) {
                 data.submitHiddenFields = val
               }
             }
@@ -288,7 +306,7 @@ export default {
           // {
           //   title: '表单项',
           //   items: [
-  
+
           //   ]
           // }
         ]
@@ -324,12 +342,11 @@ export default {
         title: '标题',
         type: 'text',
         value: {
-          get({id, data, focusArea}: EditorResult<Data>) {
-            return data.items.find(item => item.id === id)?.label
+          get({ id, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id }, 'label');
           },
-          set({id, data, focusArea}: EditorResult<Data>, val) {
-            const item = data.items.find(item => item.id === id)
-            item.label = val
+          set({ id, data }: EditorResult<Data>, val) {
+            setFormItemProps({ data, id }, 'label', val);
           }
         }
       },
@@ -337,7 +354,7 @@ export default {
         title: '字段',
         type: 'text',
         value: {
-          get({id, data, focusArea}: EditorResult<Data>) {
+          get({ id, data, focusArea }: EditorResult<Data>) {
             const item = data.items.find(item => item.id === id)
 
             return item?.name || item?.label
@@ -355,8 +372,8 @@ export default {
                 return message.warn('字段名不能重复')
               }
               item.name = val
-              
-              refreshSchema({data, inputs: input, outputs: output, slots})
+
+              refreshSchema({ data, inputs: input, outputs: output, slots })
             }
           }
         }
@@ -367,12 +384,10 @@ export default {
         description: "展示在标题后面的悬浮提示内容",
         value: {
           get({ id, data }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id);
-            return item?.tooltip;
+            return getFormItemProp({ data, id }, 'tooltip');
           },
           set({ id, data }: EditorResult<Data>, value: string) {
-            const item = data.items.find(item => item.id === id)
-            item.tooltip = value
+            setFormItemProps({ data, id }, 'tooltip', value);
           },
         },
       },
@@ -382,33 +397,12 @@ export default {
         description: "展示在表单项下方的提示内容",
         value: {
           get({ id, data }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id);
-            return item?.description;
+            return getFormItemProp({ data, id }, 'description');
           },
           set({ id, data }: EditorResult<Data>, value: string) {
-            const item = data.items.find(item => item.id === id)
-            item.description = value
+            setFormItemProps({ data, id }, 'description', value);
           },
         },
-      },
-      {
-        title: '标题冒号',
-        type: 'Radio',
-        description:'当标题配置为空时，始终不展示冒号',
-        options: [
-          { label: '显示', value: true },
-          { label: '隐藏', value: false },
-          { label: '跟随容器配置', value: 'default' },
-        ],
-        value: {
-          get({ id, data, focusArea }: EditorResult<Data>) {
-            return data.items.find(item => item.id === id).colon
-          },
-          set({ id, data, focusArea }: EditorResult<Data>, val: FormItemColonType) {
-            const item = data.items.find(item => item.id === id)
-            item['colon'] = val
-          }
-        }
       },
       {
         title: '样式',
@@ -428,12 +422,10 @@ export default {
             ],
             value: {
               get({ data, id }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
-                return item?.widthOption;
+                return getFormItemProp({ data, id }, 'widthOption');
               },
               set({ data, id }: EditorResult<Data>, value: LabelWidthType) {
-                const item = data.items.find(item => item.id === id);
-                item.widthOption = value;
+                setFormItemProps({ data, id }, 'widthOption', value);
               }
             },
           },
@@ -454,12 +446,10 @@ export default {
             },
             value: {
               get({ data, id }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
-                return item?.span;
+                return getFormItemProp({ data, id }, 'span');
               },
               set({ data, id }: EditorResult<Data>, value: number) {
-                const item = data.items.find(item => item.id === id)
-                item.span = value;
+                setFormItemProps({ data, id }, 'span', value);
               }
             },
           },
@@ -475,12 +465,11 @@ export default {
             },
             value: {
               get({ data, id }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
-                return item?.width;
+                return getFormItemProp({ data, id }, 'width');
+
               },
               set({ data, id }: EditorResult<Data>, value: number) {
-                const item = data.items.find(item => item.id === id)
-                item.width = value;
+                setFormItemProps({ data, id }, 'width', value);
               }
             },
           },
@@ -493,12 +482,10 @@ export default {
             },
             value: {
               get({ id, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
-                return item.inlineMargin;
+                return getFormItemProp({ data, id }, 'inlineMargin');
               },
               set({ id, data }: EditorResult<Data>, value: number[]) {
-                const item = data.items.find(item => item.id === id)
-                item.inlineMargin = value
+                setFormItemProps({ data, id }, 'inlineMargin', value);
               }
             }
           },
@@ -518,6 +505,52 @@ export default {
             }
           },
           {
+            title: '标题自动换行',
+            type: 'Switch',
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id }, 'labelAutoWrap');
+              },
+              set({ id, data }: EditorResult<Data>, value: boolean) {
+                setFormItemProps({ data, id }, 'labelAutoWrap', value);
+              }
+            }
+          },
+          {
+            title: '标题对齐方式',
+            type: 'Select',
+            options: [
+              { label: '左对齐', value: 'left' },
+              { label: '右对齐', value: 'right' },
+            ],
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id }, 'labelAlign');
+              },
+              set({ id, data }: EditorResult<Data>, value: 'left' | 'right') {
+                setFormItemProps({ data, id }, 'labelAlign', value);
+              }
+            }
+          },
+          {
+            title: '标题冒号',
+            type: 'Radio',
+            description: '当标题配置为空时，始终不展示冒号',
+            options: [
+              { label: '显示', value: true },
+              { label: '隐藏', value: false },
+              { label: '跟随容器配置', value: 'default' },
+            ],
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id }, 'colon');
+              },
+              set({ id, data }: EditorResult<Data>, value: FormItemColonType) {
+                setFormItemProps({ data, id }, 'colon', value);
+              }
+            }
+          },
+          {
             title: "标题样式",
             type: "Style",
             options: ['font'],
@@ -526,7 +559,7 @@ export default {
               get({ id, data }: EditorResult<Data>) {
                 const item = data.items.find(item => item.id === id);
                 if (!item?.labelStyle) {
-                  item.labelStyle = {
+                  setFormItemProps({ data, id }, 'labelStyle', {
                     lineHeight: '14px',
                     letterSpacing: '0px',
                     fontSize: '14px',
@@ -534,13 +567,12 @@ export default {
                     color: 'rgba(0, 0, 0, 0.85)',
                     fontStyle: 'normal',
                     styleEditorUnfold: false
-                  };
+                  });
                 }
                 return item?.labelStyle;
               },
               set({ id, data }: EditorResult<Data>, value: {}) {
-                const item = data.items.find(item => item.id === id)
-                item.labelStyle = value
+                setFormItemProps({ data, id }, 'labelStyle', value);
               },
             },
           },
@@ -572,7 +604,7 @@ export default {
               get({ id, data }: EditorResult<Data>) {
                 const item = data.items.find(item => item.id === id);
                 if (!item?.descriptionStyle) {
-                  item.descriptionStyle = {
+                  setFormItemProps({ data, id }, 'descriptionStyle', {
                     whiteSpace: 'pre-wrap',
                     lineHeight: '12px',
                     letterSpacing: '0px',
@@ -581,13 +613,12 @@ export default {
                     color: 'rgba(0, 0, 0, 0.45)',
                     fontStyle: 'normal',
                     styleEditorUnfold: false
-                  };
+                  });
                 }
                 return item?.descriptionStyle;
               },
               set({ id, data }: EditorResult<Data>, value: {}) {
-                const item = data.items.find(item => item.id === id)
-                item.descriptionStyle = value
+                setFormItemProps({ data, id }, 'descriptionStyle', value);
               },
             },
           },
@@ -617,12 +648,11 @@ export default {
         title: '必填样式',
         type: 'Switch',
         value: {
-          get({ id, data, focusArea }: EditorResult<Data>) {
-            return data.items.find(item => item.id === id).required
+          get({ id, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id }, 'required');
           },
-          set({ id, data, focusArea }: EditorResult<Data>, val) {
-            const item = data.items.find(item => item.id === id)
-            item['required'] = val
+          set({ id, data }: EditorResult<Data>, value) {
+            setFormItemProps({ data, id }, 'required', value);
           }
         }
       },
@@ -638,11 +668,11 @@ export default {
         title: '标题',
         type: 'text',
         value: {
-          get({data, focusArea}: EditorResult<Data>) {
+          get({ data, focusArea }: EditorResult<Data>) {
             const comId = focusArea.dataset.formActionsItem as string
             return comId && data.actions.items.find(item => item.key === comId)?.title
           },
-          set({data, focusArea, output}: EditorResult<Data>, val) {
+          set({ data, focusArea, output }: EditorResult<Data>, val) {
             if (!val) {
               return message.warn('操作标题不能为空')
             }
@@ -659,7 +689,7 @@ export default {
       {
         title: '显示',
         type: 'Switch',
-        ifVisible ({ data, focusArea }) {
+        ifVisible({ data, focusArea }) {
           const actions = data.actions.items
           const itemId = focusArea.dataset['formActionsItem']
           const item = actions.find(item => item.key === itemId)
@@ -667,11 +697,11 @@ export default {
           return item?.key === 'submit'
         },
         value: {
-          get({data, focusArea}: EditorResult<Data>) {
+          get({ data, focusArea }: EditorResult<Data>) {
             const comId = focusArea.dataset.formActionsItem as string
             return data.actions.items.find(item => item.key === comId)?.visible
           },
-          set({data, focusArea, output}: EditorResult<Data>, val) {
+          set({ data, focusArea, output }: EditorResult<Data>, val) {
 
             const comId = focusArea.dataset['formActionsItem']
             const item = data.actions.items.find(item => item.key === comId)
@@ -687,12 +717,12 @@ export default {
           {
             title: '点击',
             type: '_event',
-            options ({ data, focusArea }) {
+            options({ data, focusArea }) {
               const comId = focusArea.dataset['formActionsItem']
               const item = data.actions.items.find(item => item.key === comId)
-              if (!item) return 
+              if (!item) return
 
-              return  {
+              return {
                 outputId: item.outputId
               }
             }
@@ -702,7 +732,7 @@ export default {
       {
         title: '删除',
         type: 'Button',
-        ifVisible ({ data, focusArea }) {
+        ifVisible({ data, focusArea }) {
           const actions = data.actions.items
           const itemId = focusArea.dataset['formActionsItem']
           const item = actions.find(item => item.key === itemId)
@@ -710,7 +740,7 @@ export default {
           return item && !item?.isDefault
         },
         value: {
-          set({data, output, focusArea}: EditorResult<Data>) {
+          set({ data, output, focusArea }: EditorResult<Data>) {
             const actions = data.actions.items
             const itemId = focusArea.dataset['formActionsItem']
             const index = actions.findIndex(item => item.key === itemId)

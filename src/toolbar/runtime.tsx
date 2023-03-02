@@ -28,6 +28,12 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
         inputs[`${InputIds.SetVisible}_${key}`]?.(() => {
           item.hidden = false;
         });
+        inputs[`${InputIds.SetBtnOpenLoading}_${key}`]?.(() => {
+          item.loading = true;
+        });
+        inputs[`${InputIds.SetBtnCloseLoading}_${key}`]?.(() => {
+          item.loading = false;
+        });
       });
     }
   }, []);
@@ -147,7 +153,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     }
     return btnList.map((item) => {
       if (!hasPermission(item.permissionKey) || item.hidden) return;
-      const { type, size, shape, disabled, isCustom } = item;
+      const { type, size, shape, disabled, isCustom, loading } = item;
       return (
         <div key={item.key} data-btn-idx={item.key} className={css.button}>
           <Button
@@ -157,6 +163,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             disabled={disabled}
             onClick={() => onClick(item)}
             onDoubleClick={() => onDoubleClick(item)}
+            loading={loading}
           >
             {renderBtnContext(item)}
           </Button>

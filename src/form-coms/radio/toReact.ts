@@ -16,7 +16,7 @@ export default function ({ data }: RuntimeParams<Data>) {
   })
 
   const str = `<Radio.Group
-                value={${JSON.stringify(data.value)}} 
+                defaultValue={${JSON.stringify(data.value)}} 
                 disabled={${data.config.disabled}}
                 >
                   ${radioStr}

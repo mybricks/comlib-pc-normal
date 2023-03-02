@@ -34,7 +34,14 @@ const FormItem = (props: FormItemProps) => {
   return (
     <Form.Item
       {...field}
-      label={<label style={item?.labelStyle}>{item?.label}</label>}
+      label={
+        <label
+          style={{ ...item?.labelStyle, whiteSpace: item?.labelAutoWrap ? 'pre-wrap' : void 0 }}
+        >
+          {item?.label}
+        </label>
+      }
+      labelAlign={item?.labelAlign}
       name={field ? [field.name, item?.name] : item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}

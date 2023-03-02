@@ -4,6 +4,34 @@ import { getBtnItemInfo } from '../../utils';
 
 const DynamicEventEditor = [
   {
+    title: '动态设置loading',
+    type: 'Switch',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        return item.useDynamicLoading;
+      },
+      set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        const eventOpenKey = `${InputIds.SetBtnOpenLoading}_${item.key}`;
+        const eventCloseKey = `${InputIds.SetBtnCloseLoading}_${item.key}`;
+
+        const eventOpen = input.get(eventOpenKey);
+        const eventClose = input.get(eventOpenKey);
+        if (value) {
+          !eventOpen && input.add(eventOpenKey, `开启${item.text}loading`, Schemas.Any);
+          !eventClose && input.add(eventCloseKey, `关闭${item.text}loading`, Schemas.Any);
+        } else {
+          eventOpen && input.remove(eventOpenKey);
+          eventClose && input.remove(eventCloseKey);
+        }
+        item.useDynamicLoading = value;
+      }
+    }
+  },
+  {
     title: '动态设置按钮名称',
     type: 'Switch',
     value: {

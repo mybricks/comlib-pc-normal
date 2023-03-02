@@ -33,7 +33,7 @@ export default {
             const { slotStyle = {} } = data;
             return slotStyle;
           },
-          set({ data }: EditorResult<Data>, val: any) {
+          set({ data, slots }: EditorResult<Data>, val: any) {
             if (!data.slotStyle) {
               data.slotStyle = {};
             }
@@ -41,6 +41,7 @@ export default {
               ...data.slotStyle,
               ...val
             };
+            slots.get('content').setLayout(val.position)
           }
         }
       },

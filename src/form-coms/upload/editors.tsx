@@ -324,7 +324,6 @@ export default {
           },
           {
             ifVisible({ data }: EditorResult<Data>) {
-              console.log(12313313131313);
               return data.config.useCustomRemove;
             },
             title: '文件删除',
