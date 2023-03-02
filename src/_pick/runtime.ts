@@ -1,5 +1,6 @@
 import { Data } from './types';
 import Sandbox from './sandbox';
+import { isSimplePick, isCombinationPick } from './utils'
 export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>) {
   const sandbox = new Sandbox();
   inputs['inputContext']((context) => {
@@ -8,7 +9,7 @@ export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>
         outputs[key](context);
         return;
       }
-      if (!expression.startsWith(Sandbox.CONTEXT)) {
+      if (!isSimplePick(expression) && !isCombinationPick(expression)) {
         throw new Error(`对象取值 [${title}(${key})]: expression must start with "inputValue"`);
       }
       try {

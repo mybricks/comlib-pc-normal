@@ -42,4 +42,12 @@ const transform = (properties) => {
   return _prop;
 };
 
+export const isSimplePick = (expression: string) => {
+  return expression.startsWith(Sandbox.CONTEXT)
+}
+
+export const isCombinationPick = (expression: string) => {
+  return expression.startsWith('{')
+}
+
 export { uuid } from '../utils';
