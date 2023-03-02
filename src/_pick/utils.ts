@@ -1,5 +1,8 @@
 import { SuggestionType } from './types';
 import Sandbox from './sandbox';
+import { mock } from 'mock-json-schema';
+import toJsonSchema from 'to-json-schema';
+import debounce from 'lodash/debounce';
 export const getCodeFromTemplate = (template: string) => {
   //   const code = template.match(/(?<=\{)(.+?)(?=\})/g);
   //   if (!code) throw new Error('表达式格式错误');
@@ -42,12 +45,31 @@ const transform = (properties) => {
   return _prop;
 };
 
+export const getOutputSchema = (expression: string, inputSchema: any) => {
+  try {
+    const inputValue = mock(inputSchema);
+    const sandbox = new Sandbox();
+    const ret = sandbox.run({ context: inputValue, expression });
+    const schema = toJsonSchema(ret);
+    const outputSchema = legacySchema(schema);
+    return outputSchema;
+  } catch (error) {
+    return { type: 'any' };
+  }
+};
+
+const legacySchema = (schema: Record<string, any>) => {
+  const schemaStr = JSON.stringify(schema);
+  const retStr = schemaStr.replaceAll('integer', 'number');
+  return JSON.parse(retStr);
+};
+
 export const isSimplePick = (expression: string) => {
-  return expression.startsWith(Sandbox.CONTEXT)
-}
+  return expression.startsWith(Sandbox.CONTEXT);
+};
 
 export const isCombinationPick = (expression: string) => {
-  return expression.startsWith('{')
-}
+  return expression.startsWith('{');
+};
 
 export { uuid } from '../utils';

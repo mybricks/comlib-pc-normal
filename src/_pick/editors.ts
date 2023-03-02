@@ -1,5 +1,6 @@
 import type { Data, PickType } from './types';
-import { getSuggestionFromSchema, uuid } from './utils';
+import { getSuggestionFromSchema, uuid, getOutputSchema } from './utils';
+import debounce from 'lodash/debounce';
 
 const createPick = ({ title } = { title: '新取值' }) => {
   const key = uuid();
@@ -11,13 +12,12 @@ const createPick = ({ title } = { title: '新取值' }) => {
 };
 
 const updateOutput = (data: Data, output) => {
-  const outputsId = output.get().map(({ id }) => id);
-  outputsId.forEach((id) => {
-    const pick = data.picks.find(({ key }) => key === id);
+  output.get().forEach((port) => {
+    const pick = data.picks.find(({ key }) => key === port.id);
     if (!pick) {
-      output.remove(id);
+      output.remove(port.id);
     } else {
-      output.get(pick.key).setTitle(pick.title);
+      port.setTitle(pick.title);
     }
   });
   data.picks.forEach((item) => {
@@ -36,6 +36,15 @@ const updateOutput = (data: Data, output) => {
   });
 };
 
+const updateOutputSchema = debounce((data: Data, output) => {
+  output.get().forEach((port) => {
+    const pick = data.picks.find(({ key }) => key === port.id);
+    if (!pick) return true;
+    const outputSchema = getOutputSchema(pick.expression, data.inputSchema);
+    port.setSchema(outputSchema);
+  });
+}, 1000);
+
 const updatePicks = (data: Data, output) => {
   const outputsId = output.get().map(({ id }) => id);
   data.picks = data.picks.filter(({ key }) => {
@@ -51,9 +60,11 @@ export default {
   },
   '@inputConnected'({ data }, fromPin) {
     data.suggestions = getSuggestionFromSchema(fromPin.schema);
+    data.inputSchema = fromPin.schema;
   },
   '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
     data.suggestions = getSuggestionFromSchema(updatePin.schema);
+    data.inputSchema = updatePin.schema;
   },
   '@pinRemoved'({ data, output }) {
     updatePicks(data, output);
@@ -98,6 +109,7 @@ export default {
           set({ data, output }: EditorResult<Data>, val: Array<PickType>) {
             data.picks = val;
             updateOutput(data, output);
+            updateOutputSchema(data, output);
           }
         }
       }

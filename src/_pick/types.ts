@@ -1,6 +1,7 @@
 export interface Data {
   suggestions: Array<SuggestionType>
   picks: Array<PickType>
+  inputSchema: any
 }
 
 export type PickType = {
