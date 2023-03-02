@@ -18,9 +18,21 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
         runJs(fns, [runJSParams]);
       }
     }
-    inputs['input'](val => {
-      console.log(val)
-    })
+    inputs['input']((val) => {
+      try {
+        runJs(fns, [
+          {
+            ...runJSParams,
+            inputs: val,
+            inputValue: val['inputValue0']
+          }
+        ]);
+      } catch (ex: any) {
+        onError?.(ex);
+        console.error('js计算组件运行错误.', ex);
+        logger.error(`${ex}`);
+      }
+    });
     // Object.keys(inputs).forEach((key, index) => {
     //   inputs[key]((val) => {
     //     inputKeys.add(key);

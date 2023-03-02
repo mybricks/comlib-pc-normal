@@ -24,21 +24,11 @@ export default {
         return !data.runImmediate;
       },
       value: {
-        set({ data, input }: EditorResult<Data>) {
+        set({ input }: EditorResult<Data>) {
           const idx = getIoOrder(input);
-          const hostId = `input.p${idx}`;
+          const hostId = `input.inputValue${idx}`;
           const title = `参数${idx}`;
-
           input.add(hostId, title, { type: 'follow' }, true);
-          console.log(input.get());
-          // input.add({
-          //   id: hostId,
-          //   title,
-          //   schema: {
-          //     type: 'follow'
-          //   },
-          //   deletable: true
-          // });
         }
       }
     },

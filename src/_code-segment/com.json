@@ -15,7 +15,7 @@
       "title": "输入项",
       "schema": [
         {
-          "name": "p0",
+          "name": "inputValue0",
           "title": "参数0",
           "type": "follow"
         }
