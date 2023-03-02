@@ -26,9 +26,7 @@ const updateOutput = (data: Data, output) => {
       output.add({
         id: key,
         title,
-        schema: {
-          type: 'any'
-        },
+        schema: data.inputSchema,
         editable: true,
         deletable: true
       });
@@ -58,9 +56,10 @@ export default {
     data.picks = [initialPick];
     output.add(initialPick.key, initialPick.title, { type: 'any' });
   },
-  '@inputConnected'({ data }, fromPin) {
+  '@inputConnected'({ data, output }, fromPin) {
     data.suggestions = getSuggestionFromSchema(fromPin.schema);
     data.inputSchema = fromPin.schema;
+    updateOutputSchema(data, output);
   },
   '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
     data.suggestions = getSuggestionFromSchema(updatePin.schema);
