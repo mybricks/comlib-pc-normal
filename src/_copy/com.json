@@ -1,0 +1,23 @@
+{
+  "title": "复制",
+  "namespace": "mybricks.normal-pc.copy",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "复制功能",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "inputs": [
+    {
+      "id": "copy",
+      "title": "复制",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": []
+}
