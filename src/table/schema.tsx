@@ -115,6 +115,9 @@ function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
         },
         pageSize: {
           type: 'number'
+        },
+        pageNum: {
+          type: 'number'
         }
       }
     });
