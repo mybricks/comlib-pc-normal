@@ -45,6 +45,7 @@ const transform = (properties) => {
 };
 
 export const getOutputSchema = (expression: string, inputSchema: any) => {
+  if (!expression) return inputSchema;
   try {
     const inputValue = mock(inputSchema);
     const sandbox = new Sandbox();
