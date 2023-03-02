@@ -1,5 +1,5 @@
 import { SuggestionType } from './types';
-import Sandbox from './sandbox'
+import Sandbox from './sandbox';
 export const getCodeFromTemplate = (template: string) => {
   //   const code = template.match(/(?<=\{)(.+?)(?=\})/g);
   //   if (!code) throw new Error('表达式格式错误');
@@ -8,7 +8,8 @@ export const getCodeFromTemplate = (template: string) => {
 
 const defaultWrapSuggestion = {
   label: Sandbox.CONTEXT,
-  insertText: Sandbox.CONTEXT
+  insertText: Sandbox.CONTEXT,
+  detail: '输入数据'
 };
 
 export const getSuggestionFromSchema = (schema) => {

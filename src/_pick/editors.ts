@@ -64,7 +64,7 @@ export default {
       {
         title: '取值列表',
         type: 'array',
-        description: `表达式用"{}"包裹，如{a}，级联取值{a.b.c}`,
+        description: `取值表达式约定以“inputValue”开头，如对象取值“inputValue.a”，数组取值“inputValue[0]”`,
         options: {
           addText: '添加取值',
           editable: true,
