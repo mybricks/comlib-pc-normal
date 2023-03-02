@@ -2,7 +2,6 @@ import { SuggestionType } from './types';
 import Sandbox from './sandbox';
 import { mock } from 'mock-json-schema';
 import toJsonSchema from 'to-json-schema';
-import debounce from 'lodash/debounce';
 export const getCodeFromTemplate = (template: string) => {
   //   const code = template.match(/(?<=\{)(.+?)(?=\})/g);
   //   if (!code) throw new Error('表达式格式错误');

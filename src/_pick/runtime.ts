@@ -9,9 +9,9 @@ export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>
         outputs[key](context);
         return;
       }
-      if (!isSimplePick(expression) && !isCombinationPick(expression)) {
-        throw new Error(`对象取值 [${title}(${key})]: expression must start with "inputValue"`);
-      }
+      // if (!isSimplePick(expression) && !isCombinationPick(expression)) {
+      //   throw new Error(`对象取值 [${title}(${key})]: expression must start with "inputValue"`);
+      // }
       try {
         const ret = sandbox.run({ context, expression });
         outputs[key](ret);
