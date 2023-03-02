@@ -52,6 +52,9 @@ export default {
   '@inputConnected'({ data }, fromPin) {
     data.suggestions = getSuggestionFromSchema(fromPin.schema);
   },
+  '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
+    data.suggestions = getSuggestionFromSchema(updatePin.schema);
+  },
   '@pinRemoved'({ data, output }) {
     updatePicks(data, output);
   },

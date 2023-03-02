@@ -1,7 +1,7 @@
 import { Data } from './types';
-import { message } from 'antd';
-import { sandbox } from './utils';
-export default function ({ data, inputs, outputs }: RuntimeParams<Data>) {
+import Sandbox from './sandbox';
+export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>) {
+  const sandbox = new Sandbox();
   inputs['inputContext']((context) => {
     data.picks.map(({ key, expression }) => {
       if (!expression) {
@@ -9,10 +9,10 @@ export default function ({ data, inputs, outputs }: RuntimeParams<Data>) {
         return;
       }
       try {
-        const ret = sandbox(expression)(context);
+        const ret = sandbox.run({ context, expression });
         outputs[key](ret);
       } catch (error: any) {
-        message.error(`取值失败：${error.message}`);
+        onError?.(error);
       }
     });
   });
