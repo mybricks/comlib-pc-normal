@@ -99,8 +99,7 @@
     "./src/_schema-simulator/com.json",
     "./src/_query/com.json",
     "./src/_events/com.json",
-    "./src/_service/com.json",
-    "./src/_pick/com.json"
+    "./src/_service/com.json"
   ],
   "externals": [
     {
