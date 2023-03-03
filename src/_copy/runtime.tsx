@@ -6,11 +6,11 @@ export interface Data {
 }
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, inputs, data } = props;
+  const { env, inputs, outputs, data } = props;
   const { runtime } = env;
 
   if (runtime) {
-    inputs['copy']((val) => {
+    inputs['copy']((val, outputRels) => {
       //数据处理
       //1、输入为函数
       if (Object.prototype.toString.call(val) === '[object Function]') {
@@ -31,9 +31,9 @@ export default function (props: RuntimeParams<Data>) {
       data.text = val;
       try {
         copy(data.text);
-        message.success(env.i18n(`复制成功:${data.text}`));
+        outputRels['success'](val);
       } catch (e) {
-        message.success(env.i18n('复制失败', e));
+        outputRels['error'](val);
       }
     });
   }
