@@ -47,11 +47,11 @@ const transform = (properties) => {
 export const getOutputSchema = (expression: string, inputSchema: any) => {
   if (!expression) return inputSchema;
   try {
-    const inputValue = mock(inputSchema);
+    const mockInputValue = mock(inputSchema);
     const sandbox = new Sandbox();
-    const ret = sandbox.run({ context: inputValue, expression });
-    const schema = toJsonSchema(ret);
-    const outputSchema = legacySchema(schema);
+    const ret = sandbox.run({ context: mockInputValue, expression });
+    const mockSchema = toJsonSchema(ret);
+    const outputSchema = legacySchema(mockSchema);
     return outputSchema;
   } catch (error) {
     return { type: 'any' };
