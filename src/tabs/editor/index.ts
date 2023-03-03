@@ -64,73 +64,6 @@ export default {
         }
       },
       {
-        title: '事件',
-        items: [
-          {
-            title: '标签页点击',
-            type: '_Event',
-            options: () => {
-              return {
-                outputId: OutputIds.OnTabClick
-              };
-            }
-          }
-        ]
-      }
-    ];
-    cate2.title = '样式';
-    cate2.items = [
-      {
-        title: '外观',
-        type: 'Select',
-        options: [
-          { value: 'card', label: '卡片' },
-          { value: 'line', label: '简约' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.type;
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.type = value;
-          }
-        }
-      },
-      {
-        title: '页签位置',
-        type: 'Select',
-        options: [
-          { label: '上', value: 'top' },
-          { label: '左', value: 'left' },
-          { label: '右', value: 'right' },
-          { label: '下', value: 'bottom' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.tabPosition || 'top';
-          },
-          set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
-            data.tabPosition = value;
-          }
-        }
-      },
-      {
-        title: '标签居中',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.centered;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.centered = value;
-          }
-        }
-      }
-    ];
-
-    cate3.title = '高级';
-    cate3.items = [
-      {
         title: '额外内容',
         items: [
           {
@@ -217,6 +150,69 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.hideSlots = value;
+          }
+        }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '标签页点击',
+            type: '_Event',
+            options: () => {
+              return {
+                outputId: OutputIds.OnTabClick
+              };
+            }
+          }
+        ]
+      }
+    ];
+    cate2.title = '样式';
+    cate2.items = [
+      {
+        title: '外观',
+        type: 'Select',
+        options: [
+          { value: 'card', label: '卡片' },
+          { value: 'line', label: '简约' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.type;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.type = value;
+          }
+        }
+      },
+      {
+        title: '页签位置',
+        type: 'Select',
+        options: [
+          { label: '上', value: 'top' },
+          { label: '左', value: 'left' },
+          { label: '右', value: 'right' },
+          { label: '下', value: 'bottom' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.tabPosition || 'top';
+          },
+          set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
+            data.tabPosition = value;
+          }
+        }
+      },
+      {
+        title: '标签居中',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.centered;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.centered = value;
           }
         }
       }
