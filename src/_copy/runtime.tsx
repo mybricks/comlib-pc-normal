@@ -33,7 +33,7 @@ export default function (props: RuntimeParams<Data>) {
         copy(data.text);
         outputRels['success'](val);
       } catch (e) {
-        outputRels['error'](val);
+        outputRels['error'](e);
       }
     });
   }
