@@ -71,5 +71,11 @@ export default function ({
   if (!data.staticDisabledDate) data.staticDisabledDate = initDateRules;
   if (!data.staticDisabledTime) data.staticDisabledTime = initTimeRules;
 
+  /**
+   * @description v1.0.10 增加 默认时间处理 配置项
+   */
+  if (!data.timeTemplate) {
+    data.timeTemplate = ['current', 'current'];
+  }
   return true;
 }
