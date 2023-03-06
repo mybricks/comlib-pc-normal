@@ -32,8 +32,8 @@ export interface FormItems {
   help?: string
   tooltip?: string
   labelStyle?: {}
-  labelAlign?: 'left' | 'right'
-  labelAutoWrap?: boolean
+  labelAlign?: 'left' | 'right' | 'default'
+  labelAutoWrap?: boolean | 'default'
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
