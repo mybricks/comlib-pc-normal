@@ -11,8 +11,14 @@ export default function ({ data, slots }) {
         margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
       };
       const colon = item?.colon === 'default' ? data.colon : item.colon;
+      const whiteSpace =
+        item?.labelAutoWrap === 'default'
+          ? void 0
+          : (item.labelAutoWrap ? 'pre-wrap' : 'nowrap');
+
       const { styleEditorUnfold, fontFamily, letterSpacing, fontWeight: labelFontWeight, ...labelStyle } = item?.labelStyle;
-      const { styleEditorUnfold: temp, fontFamily: temp1, letterSpacing: temp2, whiteSpace, fontWeight: desFontWeight, ...descriptionStyle } = item?.descriptionStyle;
+      const { styleEditorUnfold: temp, fontFamily: temp1, letterSpacing: temp2, whiteSpace: temp3, fontWeight: desFontWeight, ...descriptionStyle } = item?.descriptionStyle;
+
       const defaultLabelProps = {
         style: {
           lineHeight: "14px",
@@ -26,7 +32,7 @@ export default function ({ data, slots }) {
         style: {
           ...labelStyle,
           fontWeight: parseInt(labelFontWeight),
-          whiteSpace: item?.labelAutoWrap ? 'pre-wrap' : void 0,
+          whiteSpace,
         }
       };
       const defaultDescriptionProps = {
@@ -44,6 +50,7 @@ export default function ({ data, slots }) {
           fontWeight: parseInt(desFontWeight)
         }
       }
+
       return `<Form.Item
                 ${item?.label ? `label={<label ${getPropsFromObject(labelProps, defaultLabelProps)}>${item.label}</label>}` : ''}
                 ${item?.name ? `name="${item.name}"` : `name="${item.label}"`}
@@ -52,7 +59,7 @@ export default function ({ data, slots }) {
                 ${item?.help ? `help="${item.help}"` : ''}
                 ${item?.tooltip ? `tooltip="${item.tooltip}"` : ''}
                 ${data.layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
-                ${item?.labelAlign === 'left' ? 'labelAlign="left"' : ''}
+                ${item?.labelAlign === 'default' ? '' : `labelAlign="${item.labelAlign}"`}
                 colon={${!!item?.label && colon}}>
                   ${com.jsx}${item.description ? `<div style={{marginTop: '6px'}}>
                       <Form.Item noStyle>
@@ -103,12 +110,14 @@ export default function ({ data, slots }) {
   }
 
   const formProps = {
-    layout: data.layout,
+    ...data.config,
     labelCol,
-    colon: data.colon
   }
   const defaultFormProps = {
+    labelWrap: false,
+    labelAlign: 'right',
     layout: "horizontal",
+    disabled: false,
     colon: true
   }
   const str = `<Form ${getPropsFromObject(formProps, defaultFormProps)}>${content}</Form>`
