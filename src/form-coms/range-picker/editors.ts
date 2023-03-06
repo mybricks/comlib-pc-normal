@@ -210,7 +210,47 @@ export default {
                 data.formatter = value;
               }
             }
-          }
+          },
+          {
+            title: "开始时间",
+            type: "Radio",
+            options: [
+              { label: `00:00:00`, value: "start" },
+              { label: "当前时间", value: "current" },
+              { label: `23:59:59`, value: "end" },
+            ],
+            ifVisible({ data }) {
+              return !data.showTime && data.config.picker === 'date';
+            },
+            value: {
+              get({ data }) {
+                return data.timeTemplate[0];
+              },
+              set({ data }, value: "current" | "start" | "end") {
+                data.timeTemplate[0] = value;
+              },
+            },
+          },
+          {
+            title: "结束时间",
+            type: "Radio",
+            options: [
+              { label: `00:00:00`, value: "start" },
+              { label: "当前时间", value: "current" },
+              { label: `23:59:59`, value: "end" },
+            ],
+            ifVisible({ data }) {
+              return !data.showTime && data.config.picker === 'date';
+            },
+            value: {
+              get({ data }) {
+                return data.timeTemplate[1];
+              },
+              set({ data }, value: "default" | "start" | "end") {
+                data.timeTemplate[1] = value;
+              },
+            },
+          },
         ]
       },
       {
