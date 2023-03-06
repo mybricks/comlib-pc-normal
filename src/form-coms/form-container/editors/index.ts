@@ -197,10 +197,10 @@ export default {
             ],
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.layout
+                return data.config?.layout || data.layout
               },
               set({ data }: EditorResult<Data>, value: FormLayout) {
-                data.layout = value
+                data.config.layout = value
               },
             }
           },
@@ -222,87 +222,6 @@ export default {
               }
             }
           },
-          {
-            title: '标题',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.layout === 'horizontal'
-            },
-            items: [
-              {
-                title: '宽度类型',
-                type: 'Select',
-                options: [
-                  { label: '固定像素', value: 'px' },
-                  { label: '24 栅格', value: 'span' },
-                ],
-                value: {
-                  get({ data }: EditorResult<Data>) {
-                    return data.labelWidthType
-                  },
-                  set({ data }: EditorResult<Data>, value: LabelWidthType) {
-                    data.labelWidthType = value
-                  },
-                }
-              },
-              {
-                title: '标题宽度(px)',
-                type: 'inputNumber',
-                options: [{ min: 1 }],
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.labelWidthType === 'px'
-                },
-                value: {
-                  get({ data }: EditorResult<Data>) {
-                    return [data.labelWidth]
-                  },
-                  set({ data }: EditorResult<Data>, value: number) {
-                    data.labelWidth = value[0]
-                  }
-                }
-              },
-              {
-                title: '标题宽度(栅格)',
-                type: 'Slider',
-                options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.labelWidthType === 'span'
-                },
-                value: {
-                  get({ data }: EditorResult<Data>) {
-                    return data.labelCol
-                  },
-                  set({ data }: EditorResult<Data>, value: number) {
-                    data.labelCol = value
-                  }
-                }
-              },
-              {
-                title: '显示冒号',
-                type: 'Switch',
-                value: {
-                  get({ data }: EditorResult<Data>) {
-                    return data.colon
-                  },
-                  set({ data }: EditorResult<Data>, value: boolean) {
-                    data.colon = value
-                  },
-                }
-              },
-            ]
-          },
-          {
-            title: '提交隐藏表单项',
-            type: 'Switch',
-            description: '提交时收集被隐藏的表单项字段并进行校验',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.submitHiddenFields
-              },
-              set({ data }: EditorResult<Data>, val: boolean) {
-                data.submitHiddenFields = val
-              }
-            }
-          },
           // {
           //   title: '表单项',
           //   items: [
@@ -310,6 +229,100 @@ export default {
           //   ]
           // }
         ]
+      },
+      {
+        title: '标题',
+        ifVisible({ data }: EditorResult<Data>) {
+          return (data.config?.layout || data.layout) === 'horizontal'
+        },
+        items: [
+          {
+            title: '宽度类型',
+            type: 'Select',
+            options: [
+              { label: '固定像素', value: 'px' },
+              { label: '24 栅格', value: 'span' },
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.labelWidthType
+              },
+              set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                data.labelWidthType = value
+              },
+            }
+          },
+          {
+            title: '标题宽度(px)',
+            type: 'inputNumber',
+            options: [{ min: 1 }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.labelWidthType === 'px'
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return [data.labelWidth]
+              },
+              set({ data }: EditorResult<Data>, value: number) {
+                data.labelWidth = value[0]
+              }
+            }
+          },
+          {
+            title: '标题宽度(栅格)',
+            type: 'Slider',
+            options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.labelWidthType === 'span'
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.labelCol
+              },
+              set({ data }: EditorResult<Data>, value: number) {
+                data.labelCol = value
+              }
+            }
+          },
+          {
+            title: '显示冒号',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config?.colon || data.colon
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.config.colon = value
+              },
+            }
+          },
+        ]
+      },
+      {
+        title: '提交隐藏表单项',
+        type: 'Switch',
+        description: '提交时收集被隐藏的表单项字段并进行校验',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.submitHiddenFields
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.submitHiddenFields = val
+          }
+        }
+      },
+      {
+        title: '禁用状态',
+        type: 'Switch',
+        description: '开启后，所以表单项和操作项都会被禁用',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.disabled
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.config.disabled = val
+          }
+        }
       },
 
       !data.isFormItem && actionsEditor(data, output),
@@ -478,7 +491,7 @@ export default {
             type: 'inputNumber',
             options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
             ifVisible({ data }: EditorResult<Data>) {
-              return data.layout !== 'horizontal'
+              return (data.config?.layout || data.layout) !== 'horizontal'
             },
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -493,7 +506,7 @@ export default {
             title: '边距应用其它表单项及操作项',
             type: 'Button',
             ifVisible({ data }: EditorResult<Data>) {
-              return data.layout !== 'horizontal'
+              return (data.config?.layout || data.layout) !== 'horizontal'
             },
             value: {
               set({ id, data }: EditorResult<Data>) {

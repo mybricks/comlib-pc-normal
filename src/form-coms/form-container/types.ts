@@ -1,3 +1,4 @@
+import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 interface Action {
   title: string
@@ -84,7 +85,11 @@ export interface Data {
   /**
    * 标题是否展示冒号
    */
-  colon: FormItemColonType
+  colon: boolean | undefined
+  /**
+   * 表单原生属性
+   */
+  config: FormProps
 
   /**
    * 合并参数 Schema
