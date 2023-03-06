@@ -6,6 +6,10 @@
   "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "useDisabledDate": "default",
   "useDisabledTime": "default",
+  "timeTemplate": [
+    "start",
+    "end"
+  ],
   "staticDisabledDate": [
     {
       "title": "起始日期禁用",

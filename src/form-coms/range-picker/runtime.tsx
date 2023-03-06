@@ -18,6 +18,7 @@ export interface Data {
   useDisabledTime: 'dafault' | 'static';
   staticDisabledDate: TimeDateLimitItem[];
   staticDisabledTime: TimeDateLimitItem[];
+  timeTemplate?: string[];
   config: {
     disabled: boolean;
     placeholder: undefined | [string, string];
@@ -31,8 +32,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
 
   //输出数据变形函数
-  const transCalculation = (val, type, props) => {
+  const transCalculation = (val, type, props, index) => {
     let transValue;
+
+    // 时间格式化条件：日期选择类型=date + 未开启时间选择
+    if (data.config.picker === 'date' && !data.showTime) {
+      switch (data.timeTemplate?.[index]) {
+        case 'start':
+          val = moment(val).startOf(data.config.picker || 'date');
+          break;
+        case 'end':
+          val = moment(val).endOf(data.config.picker || 'date');
+          break;
+        default:
+      }
+    }
+
     switch (type) {
       //1. 年-月-日 时:分:秒
       case 'Y-MM-DD HH:mm:ss':
@@ -121,8 +136,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           if (!Array.isArray(value)) {
             transValue = null;
           } else {
-            transValue = value.map((item) => {
-              return transCalculation(item, data.contentType, props);
+            transValue = value.map((item, index) => {
+              return transCalculation(item, data.contentType, props, index);
             });
           }
           outputs[OutputIds.OnInitial](transValue);
@@ -148,8 +163,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (!Array.isArray(value)) {
         transValue = null;
       } else {
-        transValue = value.map((item) => {
-          return transCalculation(item, data.contentType, props);
+        transValue = value.map((item, index) => {
+          return transCalculation(item, data.contentType, props, index);
         });
       }
       outputRels['returnValue'](transValue);
@@ -179,8 +194,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     if (!Array.isArray(value)) {
       transValue = null;
     } else {
-      transValue = value.map((item) => {
-        return transCalculation(item, data.contentType, props);
+      transValue = value.map((item, index) => {
+        return transCalculation(item, data.contentType, props, index);
       });
     }
     outputs['onChange'](transValue);
