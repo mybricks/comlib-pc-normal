@@ -79,14 +79,9 @@ export default {
             if (!callPin) {
               input.add('call', '调用', { type: 'object' });
             }
-            data.immediate = false;
             data.useExternalUrl = true;
           } else {
             input.remove(INPUT_ID.SET_URL);
-            if (callPin) {
-              input.remove('call');
-            }
-            data.immediate = true;
             data.useExternalUrl = false;
           }
         }
