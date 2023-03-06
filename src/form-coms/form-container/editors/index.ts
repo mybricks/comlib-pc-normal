@@ -102,8 +102,8 @@ export default {
         widthOption: 'span',
         span: 24 / data.formItemColumn,
         colon: 'default',
-        labelAlign: 'right',
-        labelAutoWrap: false,
+        labelAlign: 'default',
+        labelAutoWrap: 'default',
         descriptionStyle: {
           whiteSpace: 'pre-wrap',
           lineHeight: '12px',
@@ -293,6 +293,34 @@ export default {
               },
               set({ data }: EditorResult<Data>, value: boolean) {
                 data.config.colon = value
+              },
+            }
+          },
+          {
+            title: '自动换行',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config?.labelWrap
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.config.labelWrap = value
+              },
+            }
+          },
+          {
+            title: '对齐方式',
+            type: 'Radio',
+            options: [
+              { label: '左对齐', value: 'left' },
+              { label: '右对齐', value: 'right' }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config?.labelAlign
+              },
+              set({ data }: EditorResult<Data>, value: 'left' | 'right') {
+                data.config.labelAlign = value
               },
             }
           },
@@ -519,7 +547,12 @@ export default {
           },
           {
             title: '标题自动换行',
-            type: 'Switch',
+            type: 'Radio',
+            options: [
+              { label: '是', value: true },
+              { label: '否', value: false },
+              { label: '跟随容器配置', value: 'default' },
+            ],
             value: {
               get({ id, data }: EditorResult<Data>) {
                 return getFormItemProp({ data, id }, 'labelAutoWrap');
@@ -531,10 +564,11 @@ export default {
           },
           {
             title: '标题对齐方式',
-            type: 'Select',
+            type: 'Radio',
             options: [
               { label: '左对齐', value: 'left' },
               { label: '右对齐', value: 'right' },
+              { label: '跟随容器配置', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
