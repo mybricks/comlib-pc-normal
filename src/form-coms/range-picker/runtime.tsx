@@ -19,6 +19,8 @@ export interface Data {
   staticDisabledDate: TimeDateLimitItem[];
   staticDisabledTime: TimeDateLimitItem[];
   timeTemplate?: string[];
+  useRanges: boolean;
+  ranges: any[];
   config: {
     disabled: boolean;
     placeholder: undefined | [string, string];
@@ -26,10 +28,40 @@ export interface Data {
   };
 }
 
+export const DateType = {
+  Second: 'second',
+  Minute: 'minute',
+  Hour: 'hour',
+  Day: 'day',
+  Week: 'week',
+  Month: 'month',
+  Year: 'year'
+};
+
+export const formatRangeOptions = (list, env: Env) => {
+  let res = {};
+  if (Array.isArray(list)) {
+    list.forEach((item) => {
+      const { title, type, numList, value, label } = item || {};
+      if (numList) {
+        const [num1, num2] = numList;
+        const startDate = moment().add(-num1, type).startOf(type);
+        const endDate = moment().add(num2, type).endOf(type);
+        res[title] = [startDate, endDate];
+      }
+      if (value && Array.isArray(value)) {
+        res[label] = value.map((item) => moment(item));
+      }
+    });
+  }
+  return res;
+};
+
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
+  const rangeOptions = formatRangeOptions(data.ranges || [], env);
 
   //输出数据变形函数
   const transCalculation = (val, type, props, index) => {
@@ -229,6 +261,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <RangePicker
         value={value}
         {...data.config}
+        ranges={data.useRanges ? rangeOptions : []}
         showTime={getShowTime()}
         onChange={onChange}
         onCalendarChange={(dates) => setDates(dates)}

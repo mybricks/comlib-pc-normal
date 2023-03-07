@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { DisabledDateTimeEditor } from '../../components/editors/DisabledDateTimeEditor';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { DateType } from './runtime';
 
 export default {
   '@resize': {
@@ -82,6 +83,86 @@ export default {
             data.showTime = value;
           },
         }
+      },
+      {
+        title: "预设时间范围快捷选择",
+        type: "Switch",
+        value: {
+          get({ data }) {
+            return data.useRanges;
+          },
+          set({ data }, value: boolean) {
+            data.useRanges = value
+          },
+        },
+      },
+      {
+        // title: '预设时间范围',
+        ifVisible({ data }) {
+          return !!data.useRanges;
+        },
+        items: [
+          {
+            type: "Array",
+            options: {
+              getTitle: (item, index: number) => {
+                if (!item.title) {
+                  item.title = `预设范围${index + 1}`;
+                }
+                return item.title;
+              },
+              onAdd: (_id: string) => {
+                const actionItem = {
+                  title: "",
+                  type: DateType.Day,
+                  numList: [0, 0],
+                };
+                return actionItem;
+              },
+              items: [
+                {
+                  title: "名称",
+                  type: "Textarea",
+                  options: {
+                    autoSize: { maxRows: 1 },
+                  },
+                  value: "title",
+                },
+                {
+                  title: "区间类型",
+                  type: "Select",
+                  value: "type",
+                  options: [
+                    { label: "年", value: DateType.Year },
+                    { label: "月", value: DateType.Month },
+                    { label: "周", value: DateType.Week },
+                    { label: "天", value: DateType.Day },
+                    { label: "时", value: DateType.Hour },
+                    { label: "分", value: DateType.Minute },
+                    { label: "秒", value: DateType.Second },
+                  ],
+                },
+                {
+                  title: "区间",
+                  type: "InputNumber",
+                  value: "numList",
+                  options: [
+                    { title: "前", min: -1000, max: 1000, width: 100 },
+                    { title: "后", min: -1000, max: 1000, width: 100 },
+                  ],
+                },
+              ],
+            },
+            value: {
+              get({ data }) {
+                return data.ranges;
+              },
+              set({ data }, value: any[]) {
+                data.ranges = value;
+              }
+            },
+          },
+        ],
       },
       {
         title: '默认时间',
