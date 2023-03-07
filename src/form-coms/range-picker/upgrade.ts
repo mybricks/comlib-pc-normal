@@ -77,5 +77,23 @@ export default function ({
   if (!data.timeTemplate) {
     data.timeTemplate = ['current', 'current'];
   }
+
+  /**
+   * @description v1.0.11 增加 预设时间范围快捷选择 配置项
+   */
+  if (typeof data.useRanges === "undefined") {
+    data.useRanges = false;
+  };
+  if (typeof data.ranges === "undefined") {
+    data.ranges = [
+      { title: "今天", type: "day", numList: [0, 0] },
+      { title: "昨天", type: "day", numList: [1, -1] },
+      { title: "明天", type: "day", numList: [-1, 1] },
+      { title: "前后七天", type: "day", numList: [7, 7] },
+      { title: "本周", type: "week", numList: [0, 0] },
+      { title: "本月", type: "month", numList: [0, 0] }
+    ];
+  };
+
   return true;
 }

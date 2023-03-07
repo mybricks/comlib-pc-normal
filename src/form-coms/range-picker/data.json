@@ -42,6 +42,15 @@
       "direction": "before"
     }
   ],
+  "useRanges": false,
+  "ranges": [
+    { "title": "今天", "type": "day", "numList": [0, 0] },
+    { "title": "昨天", "type": "day", "numList": [1, -1] },
+    { "title": "明天", "type": "day", "numList": [-1, 1] },
+    { "title": "前后七天", "type": "day", "numList": [7, 7] },
+    { "title": "本周", "type": "week", "numList": [0, 0] },
+    { "title": "本月", "type": "month", "numList": [0, 0] }
+  ],
   "config": {
     "disabled": false,
     "picker": "date",
