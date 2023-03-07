@@ -60,6 +60,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
+    inputs[inputIds.SET_DISABLED](() => {
+      data.config.disabled = true;
+    });
+
+    inputs[inputIds.SET_ENABLED](() => {
+      data.config.disabled = false;
+    });
+
     //------ For 表单项私有 start ---------
     _inputs['validate']((val, outputRels) => {
       validate().then((r) => {

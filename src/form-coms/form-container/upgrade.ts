@@ -111,6 +111,12 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
       disabled: false
     }
   }
+  if (!input.get(inputIds.SET_DISABLED)) {
+    input.add('setDisabled', '设置禁用', { type: 'any' });
+  }
+  if (!input.get(inputIds.SET_ENABLED)) {
+    input.add('setEnabled', '设置启用', { type: 'any' });
+  }
 
   return true;
 }
