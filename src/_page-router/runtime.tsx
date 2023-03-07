@@ -22,6 +22,10 @@ const getHistoryParams = (val) => {
   }
 };
 
+const isUri = (url: string) => {
+  return /^http[s]?:\/\/([\w\-\.]+)+[\w-]*([\w\-\.\/\?%&=]+)?$/gi.test(url);
+};
+
 // 调试行为提示
 const DebugActions = {
   pushState: (val) => {
@@ -82,7 +86,12 @@ const RuntimeActions = {
   pushState: (val) => {
     const { state, title, url } = getHistoryParams(val);
     if (url) {
-      history.pushState(state, title, url);
+      if (isUri(url)) {
+        //兼容uri
+        window.location.href = url;
+      } else {
+        history.pushState(state, title, url);
+      }
     } else {
       console.warn(`路由地址不能为空`, val);
     }
