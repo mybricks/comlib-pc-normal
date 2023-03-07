@@ -94,6 +94,8 @@
     "./src/_global-loading/com.json",
     "./src/_timer-delay/com.json",
     "./src/_timer-loop/com.json",
+    "./src/_timer-debounce/com.json",
+    "./src/_timer-throttle/com.json",
     "./src/_merge/com.json",
     "./src/_download/com.json",
     "./src/_schema-simulator/com.json",
