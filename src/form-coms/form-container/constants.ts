@@ -3,7 +3,9 @@ export const inputIds = {
   SUBMIT: 'submit',
   RESET_FIELDS: 'resetFields',
   SUBMIT_AND_MERGE: 'submitAndMerge',
-  SET_INITIAL_VALUES: 'setInitialValues'
+  SET_INITIAL_VALUES: 'setInitialValues',
+  SET_DISABLED: 'setDisabled',
+  SET_ENABLED: 'setEnabled'
 }
 
 export const outputIds = {
