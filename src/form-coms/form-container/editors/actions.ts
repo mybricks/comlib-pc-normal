@@ -106,7 +106,7 @@ export const actionsEditor = (data: Data, output) => {
         type: 'inputNumber',
         options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout !== 'horizontal'
+          return (data.config?.layout || data.layout) !== 'horizontal'
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -121,7 +121,7 @@ export const actionsEditor = (data: Data, output) => {
         title: '边距应用所有表单项',
         type: 'Button',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout !== 'horizontal'
+          return (data.config?.layout || data.layout) !== 'horizontal'
         },
         value: {
           set({ data }: EditorResult<Data>) {

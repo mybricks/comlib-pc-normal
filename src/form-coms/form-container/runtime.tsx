@@ -5,6 +5,7 @@ import SlotContent from './SlotContent';
 import { getLabelCol, isObject } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
+import css from './styles.less';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -249,29 +250,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    <Fragment>
-      {!data.isFormItem ? (
-        <Form
-          form={formRef}
-          labelCol={
-            (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
-          }
-          {...data.config}
-          // wrapperCol={{ span: 16 }}
-        >
-          <SlotContent
-            env={env}
-            slots={slots}
-            data={data}
-            childrenInputs={childrenInputs}
-            outputs={outputs}
-            submit={submitMethod}
-          />
-        </Form>
-      ) : (
-        <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
-      )}
-    </Fragment>
+    <div className={css.wrapper}>
+      <Fragment>
+        {!data.isFormItem ? (
+          <Form
+            form={formRef}
+            labelCol={
+              (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
+            }
+            {...data.config}
+            // wrapperCol={{ span: 16 }}
+          >
+            <SlotContent
+              env={env}
+              slots={slots}
+              data={data}
+              childrenInputs={childrenInputs}
+              outputs={outputs}
+              submit={submitMethod}
+            />
+          </Form>
+        ) : (
+          <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
+        )}
+      </Fragment>
+    </div>
   );
 }
 
