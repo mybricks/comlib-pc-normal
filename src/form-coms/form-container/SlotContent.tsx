@@ -8,18 +8,19 @@ import VerticalLayout from './layout/VerticalLayout';
 
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env } = props;
+  const layout = data.config?.layout || data.layout;
 
   const isInlineModel = useMemo(() => {
-    return data.layout === 'inline';
-  }, [data.layout]);
+    return layout === 'inline';
+  }, [layout]);
 
   const isHorizontalModel = useMemo(() => {
-    return data.layout === 'horizontal';
-  }, [data.layout]);
+    return layout === 'horizontal';
+  }, [layout]);
 
   const isVerticalModel = useMemo(() => {
-    return data.layout === 'vertical';
-  }, [data.layout]);
+    return layout === 'vertical';
+  }, [layout]);
 
   const FormActionsWrapper = () => {
     return <FormActions data={data} outputs={outputs} submit={submit} />;
@@ -97,7 +98,7 @@ const SlotContent = (props) => {
       inputValues: {}
       // key: props?.field?.name
     });
-  }, [data.layout]);
+  }, [layout]);
 
   return content;
 };

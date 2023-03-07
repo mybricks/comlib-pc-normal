@@ -4,13 +4,15 @@ import { getPropsFromObject } from '../../utils/toReact';
 
 export default function ({ data, slots }) {
   let content = ''
+  const layout = data.config?.layout || data.layout;
+
   const fromItemsStr = slots['content'].render({
     itemWrap(com: { id; jsx }) {
       const item = data.items.find((item) => item.id === com.id);
       const style: React.CSSProperties = {
         margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
       };
-      const colon = item?.colon === 'default' ? data.colon : item.colon;
+      const colon = item?.colon === 'default' ? (data.config?.colon || data.colon) : item.colon;
       const whiteSpace =
         item?.labelAutoWrap === 'default'
           ? void 0
@@ -58,7 +60,7 @@ export default function ({ data, slots }) {
                 ${item?.validateStatus ? `validateStatus="${item.validateStatus}"` : ''}
                 ${item?.help ? `help="${item.help}"` : ''}
                 ${item?.tooltip ? `tooltip="${item.tooltip}"` : ''}
-                ${data.layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
+                ${layout !== 'horizontal' ? `style={${getObjectStr(style)}}` : ''}
                 ${item?.labelAlign === 'default' ? '' : `labelAlign="${item.labelAlign}"`}
                 colon={${!!item?.label && colon}}>
                   ${com.jsx}${item.description ? `<div style={{marginTop: '6px'}}>
@@ -99,13 +101,13 @@ export default function ({ data, slots }) {
 
   const actionsStr = getActionsStr(data.actions)
 
-  const labelCol = data.layout === 'horizontal' ? getLabelCol(data) : undefined
+  const labelCol = layout === 'horizontal' ? getLabelCol(data) : undefined
 
-  if (data.layout === 'horizontal') {
+  if (layout === 'horizontal') {
     content = getHorizontalLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
-  } else if (data.layout === 'inline') {
+  } else if (layout === 'inline') {
     content = getInlineLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
-  } else if (data.layout === 'vertical') {
+  } else if (layout === 'vertical') {
     content = getVerticalLayoutStr({ actions: data.actions, fromItemsStr, actionsStr })
   }
 
