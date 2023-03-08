@@ -339,19 +339,19 @@ export default {
           }
         }
       },
-      {
-        title: '禁用状态',
-        type: 'Switch',
-        description: '开启后，所以表单项和操作项都会被禁用',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.config.disabled
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.config.disabled = val
-          }
-        }
-      },
+      // {
+      //   title: '禁用状态',
+      //   type: 'Switch',
+      //   description: '开启后，所以表单项和操作项都会被禁用',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.config.disabled
+      //     },
+      //     set({ data }: EditorResult<Data>, val: boolean) {
+      //       data.config.disabled = val
+      //     }
+      //   }
+      // },
 
       !data.isFormItem && actionsEditor(data, output),
       // {
