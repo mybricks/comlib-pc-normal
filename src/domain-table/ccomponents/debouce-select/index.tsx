@@ -38,7 +38,9 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 				Object.keys(item)
 					.filter(key => key !== 'id')
 					.forEach(key => {
-						label += label ? '-' + item[key] : item[key];
+						if (typeof item[key] !== 'object' && !key.startsWith('_')) {
+							label += label ? '-' + item[key] : item[key];
+						}
 					});
 				return { label: label || item.id, value: item.id };
 			});
@@ -51,6 +53,7 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 			fetchRef.current += 1;
 			const fetchId = fetchRef.current;
 			
+			setOptions([]);
 			fetchOptions(value).then(newOptions => {
 				if (fetchId !== fetchRef.current) {
 					return;
@@ -60,14 +63,14 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 			});
 		};
 		
-		return debounce(loadOptions, 800);
+		return debounce(loadOptions, 500);
 	}, [fetchOptions]);
 	
 	useEffect(() => {
 		if (value) {
 			fetchOptions(value).then(options => setOptions(options));
 		}
-	}, [value]);
+	}, []);
 	
 	return (
 		<Select

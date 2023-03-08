@@ -5,6 +5,7 @@ import {ColumnsType} from 'antd/es/table';
 
 import styles from './runtime.less';
 import DebounceSelect from "./ccomponents/debouce-select";
+
 enum ModalAction {
 	CREATE = 'create',
 	EDIT = 'edit',
@@ -24,7 +25,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	const containerRef = useRef(null);
 	const baseFetchParams = useMemo(() => {
 		return {
-			serviceId: data.entity.id,
+			serviceId: data.entity?.id,
 			fileId: 318,
 			// projectId: 317,
 			isOnline: true
@@ -42,7 +43,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			body: JSON.stringify({
 				params: {
 					query,
-					fields: [{ name: 'id' }, ...data.fieldAry.map(f => ({ name: f.name }))],
+					fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
 					action: 'SELECT'
 				},
 				...baseFetchParams
@@ -103,32 +104,29 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		}
 	}, [data.entity]);
 	
-	const columns: ColumnsType<any> = useMemo(() => {
-		return data.fieldAry ? [
-			...data.fieldAry?.map(field => {
-				const title = field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name;
-				return {
+	const renderColumns: () => ColumnsType<any> = () => {
+		return data.fieldAry ? data.fieldAry?.map(field => {
+				const title = field.label || (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
+				return field.bizType === FieldBizType.FRONT_CUSTOM ? {
+					title: field.label || field.name,
+					key: field.id,
+					width: field.width || '100px',
+					render(_, data) {
+						return (
+							<>
+								<Button style={{ marginRight: '12px' }} size="small" onClick={() => onEdit(data)}>编辑</Button>
+								<Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>删除</Button>
+							</>
+						);
+					}
+				} : {
 					title: title,
 					dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
 					key: title,
-					width: '100px'
+					width: field.width || '100px',
 				};
-			}),
-			{
-				title: '操作',
-				key: 'operate',
-				width: '100px',
-				render(_, data) {
-					return (
-						<>
-							<Button style={{ marginRight: '12px' }} size="small" onClick={() => onEdit(data)}>编辑</Button>
-							<Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>删除</Button>
-						</>
-					);
-				}
-			}
-		] : [];
-	}, [data.fieldAry, onDelete, onEdit]);
+			}) : [];
+	};
 	
 	useEffect(() => {
 		if (!data.entity || !data.fieldAry?.length) {
@@ -160,7 +158,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		}).catch(_ => _);
 	}, [handleData, data.formFieldAry]);
 	
-	const formNode = useMemo(() => {
+	const renderFormNode = () => {
 		if (data.formFieldAry?.length) {
 			return (
 				<Form form={form} layout="inline" className={styles.form}>
@@ -176,7 +174,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 						}
 						
 						return (
-							<Form.Item style={{ width: '280px' }} key={field.id} name={field.name} label={field.label ?? field.name}>
+							<Form.Item style={{ minWidth: '280px' }} key={field.id} name={field.name} label={field.label ?? field.name}>
 								{item}
 							</Form.Item>
 						);
@@ -187,7 +185,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		}
 		
 		return null;
-	}, [data.formFieldAry, search, baseFetchParams]);
+	};
 	const openCreateModal = useCallback(() => setShowModalAction(ModalAction.CREATE), []);
 	const closeCreateModal = useCallback(() => setShowModalAction(''), []);
 	const handleCreate = useCallback(() => {
@@ -213,6 +211,14 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 				
 				if (showModalAction === ModalAction.EDIT) {
 					curValue.id = currentData.current?.id;
+				} else {
+					const fields = data.entity.fieldAry
+						.filter(field => field.bizType === FieldBizType.SYS_USER_CREATOR && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
+					
+					/** 创建者默认读 window 上用户信息 */
+					if (fields.length && window['LOGIN_USER_INFO']) {
+						fields.forEach(field => curValue[field.name] = window['LOGIN_USER_INFO'].id);
+					}
 				}
 				
 				fetch('/api/system/domain/run', {
@@ -227,7 +233,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 								showModalAction === ModalAction.CREATE
 									? undefined
 									: data.entity.fieldAry
-										.filter(field => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate),
+										.filter(field => field.bizType !== FieldBizType.MAPPING && field.bizType !== FieldBizType.SYS_USER_CREATOR && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate),
 							query: curValue,
 							action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE',
 						},
@@ -245,7 +251,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			})
 			.catch(_ => _)
 			.finally(() => setCreateLoading(false));
-	}, [showModalAction, data.fieldAry, data.entity, baseFetchParams]);
+	}, [showModalAction, data.entity, baseFetchParams]);
 	const createFormNode = useMemo(() => {
 		if (data.entity) {
 			return (
@@ -253,6 +259,14 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 					{
 						data.entity.fieldAry
 							.filter(field => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
+							.filter(field => {
+								/** 创建者且 window 上用户信息存在则不展示表单项 */
+								if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
+									return !window['LOGIN_USER_INFO'];
+								}
+								
+								return true;
+							})
 							.map(field => {
 								let placeholder = `请输入${field.name}`;
 								let item = <Input placeholder={placeholder} />;
@@ -285,11 +299,11 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
   return (
     <>
 	    <div className={styles.domainContainer}>
-		    {formNode}
+		    {renderFormNode()}
 		    <div className={styles.operateRow}>
 			    <Button type="primary" onClick={openCreateModal}>新增</Button>
 		    </div>
-		    <Table loading={loading} columns={columns} dataSource={dataSource} pagination={false}></Table>
+		    <Table loading={loading} columns={renderColumns()} dataSource={dataSource} pagination={false}></Table>
 	    </div>
 	    {/*{currentCreatePortal(*/}
 		  {/*  <div className={styles.container} ref={containerRef}>*/}
@@ -342,3 +356,4 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
     </>
   );
 }
+

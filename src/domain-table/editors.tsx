@@ -1,4 +1,4 @@
-import {Data, FieldDBType} from './constants';
+import {Data, FieldBizType, FieldDBType} from './constants';
 import {getEleIdx, updateIOSchema} from "../form-detail/editors/utils";
 
 export default {
@@ -126,26 +126,31 @@ export default {
 				  },
 				  value: {
 					  get({ data, output }: EditorResult<Data>) {
-						  return data.fieldAry?.map(field => field.mappingField ? `${field.id}.${field.mappingField.id}` : field.id) || [];
+						  return data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM)?.map(field => field.mappingField ? `${field.id}.${field.mappingField.id}` : field.id) || [];
 					  },
 					  set({ data, output, input }: EditorResult<Data>, value: string[]) {
-						  data.fieldAry = value
-							  .map(id => {
-									const ids = id.split('.');
-								  const item = data.entity.fieldAry.find(field => field.id === ids[0]);
-									if (!item) {
-										return;
-									}
-									
-									if (ids.length > 1) {
-										const mappingField = item.mapping?.entity.fieldAry.find(field => field.id === ids[1]);
-										
-										return mappingField ? { ...item, mappingField } : undefined;
-									} else {
-										return item;
-									}
-							  })
-							  .filter(Boolean);
+						  const fieldAry = value
+						  .map(id => {
+							  const ids = id.split('.');
+							  const item = data.entity.fieldAry.find(field => field.id === ids[0]);
+							  if (!item) {
+								  return;
+							  }
+							
+							  if (ids.length > 1) {
+								  const mappingField = item.mapping?.entity.fieldAry.find(field => field.id === ids[1]);
+								
+								  return mappingField ? { ...item, mappingField } : undefined;
+							  } else {
+								  return item;
+							  }
+						  })
+						  .filter(Boolean);
+							
+							if (fieldAry.length > 0) {
+								fieldAry.push({ name: '操作', label: '操作', bizType: FieldBizType.FRONT_CUSTOM, id: 'operate' });
+							}
+						  data.fieldAry = fieldAry;
 					  }
 				  }
 			  }
@@ -165,7 +170,7 @@ export default {
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
 						if (!focusArea) return;
-						const item = data.items[focusArea.index];
+						const item = data.formFieldAry[focusArea.index];
 						item.label = value;
 					}
 				}
@@ -222,6 +227,48 @@ export default {
 						if (!focusArea) return;
 						const item = data.formFieldAry[focusArea.index];
 						item.operator = value;
+					}
+				}
+			},
+		];
+	},
+	'th.ant-table-cell': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+		cate1.title = '常规';
+		cate1.items = [
+			{
+				title: '列名',
+				type: 'Text',
+				value: {
+					get({ data, focusArea }: EditorResult<Data>) {
+						console.log('focusArea', focusArea);
+						const field = data.fieldAry[focusArea?.index];
+						if (!focusArea || !field) return;
+						
+						return field.label ?? `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`;
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						const field = data.fieldAry[focusArea?.index];
+						if (!focusArea || !field) return;
+						
+						field.label = value;
+					}
+				}
+			},
+			{
+				title: '列宽',
+				type: 'Text',
+				value: {
+					get({ data, focusArea }: EditorResult<Data>) {
+						const field = data.fieldAry[focusArea?.index];
+						if (!focusArea || !field) return;
+						
+						return field.width ?? '100px';
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						const field = data.fieldAry[focusArea?.index];
+						if (!focusArea || !field) return;
+						
+						field.width = value;
 					}
 				}
 			},
