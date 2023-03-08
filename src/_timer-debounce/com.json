@@ -1,7 +1,7 @@
 {
   "title": "防抖",
   "namespace": "mybricks.normal-pc.timer-debounce",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "防抖",
   "author": "HuangQiuyun",
@@ -10,6 +10,7 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "trigger",
