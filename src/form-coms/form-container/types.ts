@@ -1,3 +1,4 @@
+import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 interface Action {
   title: string
@@ -31,8 +32,8 @@ export interface FormItems {
   help?: string
   tooltip?: string
   labelStyle?: {}
-  labelAlign?: 'left' | 'right'
-  labelAutoWrap?: boolean
+  labelAlign?: 'left' | 'right' | 'default'
+  labelAutoWrap?: boolean | 'default'
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
@@ -84,7 +85,11 @@ export interface Data {
   /**
    * 标题是否展示冒号
    */
-  colon: FormItemColonType
+  colon: boolean | undefined
+  /**
+   * 表单原生属性
+   */
+  config: FormProps
 
   /**
    * 合并参数 Schema
@@ -101,7 +106,7 @@ export interface FormControlProps {
   field?: any
 }
 
-export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue'
+export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
 
 export type LayoutModel = "inline" | "row" | "column";
 

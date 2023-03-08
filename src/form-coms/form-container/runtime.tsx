@@ -5,6 +5,7 @@ import SlotContent from './SlotContent';
 import { getLabelCol, isObject } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
+import css from './styles.less';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -59,6 +60,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
       }
     });
+
+    // inputs[inputIds.SET_DISABLED](() => {
+    //   data.config.disabled = true;
+    //   setDisabled();
+    // });
+
+    // inputs[inputIds.SET_ENABLED](() => {
+    //   data.config.disabled = false;
+    //   setEnabled();
+    // });
 
     //------ For 表单项私有 start ---------
     _inputs['validate']((val, outputRels) => {
@@ -119,6 +130,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
       input?.resetValue();
       item.validateStatus = undefined;
       item.help = undefined;
+    });
+  };
+
+  const setDisabled = () => {
+    data.items.forEach((item) => {
+      const id = item.id;
+      const input = childrenInputs[id];
+      input?.setDisabled && input?.setDisabled();
+    });
+  };
+
+  const setEnabled = () => {
+    data.items.forEach((item) => {
+      const id = item.id;
+      const input = childrenInputs[id];
+      input?.setEnabled && input?.setEnabled();
     });
   };
 
@@ -241,28 +268,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    <Fragment>
-      {!data.isFormItem ? (
-        <Form
-          form={formRef}
-          layout={data.layout}
-          labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
-          colon={data.colon}
-          // wrapperCol={{ span: 16 }}
-        >
-          <SlotContent
-            env={env}
-            slots={slots}
-            data={data}
-            childrenInputs={childrenInputs}
-            outputs={outputs}
-            submit={submitMethod}
-          />
-        </Form>
-      ) : (
-        <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
-      )}
-    </Fragment>
+    <div className={css.wrapper}>
+      <Fragment>
+        {!data.isFormItem ? (
+          <Form
+            form={formRef}
+            labelCol={
+              (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
+            }
+            {...data.config}
+            // wrapperCol={{ span: 16 }}
+          >
+            <SlotContent
+              env={env}
+              slots={slots}
+              data={data}
+              childrenInputs={childrenInputs}
+              outputs={outputs}
+              submit={submitMethod}
+            />
+          </Form>
+        ) : (
+          <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
+        )}
+      </Fragment>
+    </div>
   );
 }
 

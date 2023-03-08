@@ -1,8 +1,17 @@
-.slotInlineWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-.formItemDesc {
-  margin-top: 6px;
+.wrapper {
+  .slotInlineWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .formItemDesc {
+    margin-top: 6px;
+  }
+
+  :global {
+    .ant-form-item-label-wrap {
+      overflow: hidden;
+    }
+  }
 }

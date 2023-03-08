@@ -52,7 +52,10 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
      * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
      */
     if (item.labelAlign === undefined) {
-      item.labelAlign = 'right';
+      item.labelAlign = 'default';
+    }
+    if (item.labelAutoWrap === undefined) {
+      item.labelAutoWrap = 'default';
     }
 
   });
@@ -95,6 +98,25 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
       act.visible = true;
     }
   })
+
+  /**
+    * @description v1.1.16 表单容器增加 ~~整体禁用~~ 配置。*使用组件内置属性*
+    */
+  if (data.config === undefined) {
+    data.config = {
+      colon: data.colon,
+      layout: data.layout,
+      labelWrap: false,
+      labelAlign: 'right',
+      disabled: false
+    }
+  }
+  // if (!input.get(inputIds.SET_DISABLED)) {
+  //   input.add('setDisabled', '设置禁用', { type: 'any' });
+  // }
+  // if (!input.get(inputIds.SET_ENABLED)) {
+  //   input.add('setEnabled', '设置启用', { type: 'any' });
+  // }
 
   return true;
 }

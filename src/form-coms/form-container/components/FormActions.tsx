@@ -10,7 +10,7 @@ interface Props {
 }
 
 const FormActions = (props: Props) => {
-  const { actions, layout, formItemColumn } = props.data;
+  const { actions, layout, formItemColumn, config } = props.data;
 
   const onClick = (item) => {
     if (item.outputId === outputIds.ON_CLICK_SUBMIT) {
@@ -45,6 +45,7 @@ const FormActions = (props: Props) => {
             loading={item.loading}
             key={item.key}
             onClick={() => onClick(item)}
+            // disabled={config.disabled}
           >
             {item.title}
           </Button>
