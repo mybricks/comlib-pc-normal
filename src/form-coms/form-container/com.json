@@ -64,22 +64,6 @@
         "type": "any"
       },
       "desc": "触发表单所有字段进行重置"
-    },
-    {
-      "id": "setDisabled",
-      "title": "设置禁用",
-      "schema": {
-        "type": "any"
-      },
-      "desc": "禁用表单项及操作项"
-    },
-    {
-      "id": "setEnabled",
-      "title": "设置启用",
-      "schema": {
-        "type": "any"
-      },
-      "desc": "启用表单项及操作项"
     }
   ],
   "outputs": [
