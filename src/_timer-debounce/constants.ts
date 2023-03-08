@@ -18,4 +18,5 @@ export const Schemas = {
  */
 export interface Data {
   delay: number;
+  isleading: boolean
 }

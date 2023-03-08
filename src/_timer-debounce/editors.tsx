@@ -36,6 +36,18 @@ export default {
           setDescByData({ data, setDesc });
         }
       }
+    },
+    {
+      title: '立即执行',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isleading;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.isleading = value;
+        }
+      }
     }
   ]
 };
