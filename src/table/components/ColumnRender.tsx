@@ -15,7 +15,7 @@ interface ColumnRenderProps {
 export default function ColumnRender(props: ColumnRenderProps) {
   const { columnItem, record, index, slots, data } = props;
 
-  const oriValue = props.value;
+  const oriValue = props.value ?? null;
   let value = oriValue;
   try {
     value =
