@@ -25,6 +25,7 @@
       {
         "title": "取消",
         "isDefault": false,
+        "visible": true,
         "outputId": "onClickCancel",
         "key": "cancel"
       }
