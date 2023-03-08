@@ -63,10 +63,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     inputs[inputIds.SET_DISABLED](() => {
       data.config.disabled = true;
+      setDisabled();
     });
 
     inputs[inputIds.SET_ENABLED](() => {
       data.config.disabled = false;
+      setEnabled();
     });
 
     //------ For 表单项私有 start ---------
@@ -128,6 +130,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
       input?.resetValue();
       item.validateStatus = undefined;
       item.help = undefined;
+    });
+  };
+
+  const setDisabled = () => {
+    data.items.forEach((item) => {
+      const id = item.id;
+      const input = childrenInputs[id];
+      input?.setDisabled && input?.setDisabled();
+    });
+  };
+
+  const setEnabled = () => {
+    data.items.forEach((item) => {
+      const id = item.id;
+      const input = childrenInputs[id];
+      input?.setEnabled && input?.setEnabled();
     });
   };
 
