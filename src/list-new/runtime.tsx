@@ -24,7 +24,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   //设置数据源输入及loading状态设置
   useEffect(() => {
     if (env.edit) {
-      setDataSource([{ id: 1 }]);
+      setDataSource([{ id: 1, [rowKey]: uuid() }]);
     }
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {

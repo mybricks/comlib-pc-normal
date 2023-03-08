@@ -6,7 +6,7 @@ export default function (props: RuntimeParams<Data>) {
   // 防抖
   const debounceOutput = debounce((val) => {
     outputs[OutputIds.Trigger](val);
-  }, data.delay);
+  }, data.delay, data.isleading? {leading: true} : void 0 );
 
   if (env?.runtime && inputs) {
     inputs[InputIds.Trigger]((val) => {
