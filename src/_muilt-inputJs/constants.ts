@@ -1,7 +1,7 @@
 export const CODE_TEMPLATE = `({ outputs, inputs }) => {
   const { inputValue0 } = inputs;
   const { output0 } = outputs;
-  output0(inputValue);
+  output0(inputValue0);
 }`;
 
 export const IMMEDIATE_CODE_TEMPLATE = `({ outputs }) => {
