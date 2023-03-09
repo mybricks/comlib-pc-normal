@@ -104,7 +104,8 @@
     "./src/_service/com.json",
     "./src/_copy/com.json",
     "./src/_pick/com.json",
-    "./src/_muilt-inputJs/com.json"
+    "./src/_muilt-inputJs/com.json",
+    "./src/_array-merge/com.json"
   ],
   "externals": [
     {

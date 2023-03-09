@@ -1,0 +1,43 @@
+{
+    "title": "数组合并",
+    "namespace": "mybricks.normal-pc.array-merge",
+    "version": "1.0.0",
+    "description": "数组合并",
+    "author": "MyBricks",
+    "author_name": "MyBricks",
+    "icon": "./icon.svg",
+    "runtime": "./runtime.ts",
+    "editors": "./editors.ts",
+    "rtType": "js",
+    "inputs": [
+        {
+            "id": "input",
+            "title": "输入项",
+            "schema": [
+                {
+                    "name": "inputValue0",
+                    "title": "参数0",
+                    "type": "follow"
+                },
+                {
+                    "name": "inputValue1",
+                    "title": "参数1",
+                    "type": "follow"
+                }
+            ]
+        }
+    ],
+    "outputs": [
+        {
+            "id": "output",
+            "title": "输出项",
+            "schema": {
+                "type": "array",
+                "items": {
+                    "type": "any"
+                }
+            },
+            "editable": true
+        }
+    ]
+}
