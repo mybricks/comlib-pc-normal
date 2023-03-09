@@ -47,10 +47,6 @@ export default function ({ data }) {
   return {
     imports: [
       {
-        from: 'React',
-        coms: ['useState']
-      },
-      {
         from: 'antd',
         coms: ['Typography']
       },
