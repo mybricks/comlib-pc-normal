@@ -24,18 +24,11 @@ export default {
         return !data.runImmediate;
       },
       value: {
-        set({ data, input }: EditorResult<Data>) {
+        set({ input }: EditorResult<Data>) {
           const idx = getIoOrder(input);
-          const hostId = `input${idx}`;
-          const title = `输入项${idx}`;
-          input.add({
-            id: hostId,
-            title,
-            schema: {
-              type: 'follow'
-            },
-            deletable: true
-          });
+          const hostId = `input.inputValue${idx}`;
+          const title = `参数${idx}`;
+          input.add(hostId, title, { type: 'follow' }, true);
         }
       }
     },
@@ -56,8 +49,6 @@ export default {
             editable: true,
             deletable: true
           });
-          // data.fnParams = getFnParams({ data, outputs: output });
-          // forceRender.run();
         }
       }
     },
@@ -72,7 +63,6 @@ export default {
             enabled: false
           },
           lineNumbers: 'on',
-          // forceRender,
           eslint: {
             parserOptions: {
               ecmaVersion: '2020',
@@ -84,18 +74,6 @@ export default {
             updateOutputSchema(output, data.fns);
           }
         };
-        // Object.defineProperty(option, 'fnParams', {
-        //   get() {
-        //     return getFnParams({data, outputs });
-        //   },
-        //   configurable: true
-        // });
-        // Object.defineProperty(option, 'extraLib', {
-        //   get() {
-        //     return getExtralib({ outputs });
-        //   },
-        //   configurable: true
-        // });
         return option;
       },
       title: '代码编辑',
