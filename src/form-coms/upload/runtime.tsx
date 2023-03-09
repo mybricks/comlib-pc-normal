@@ -345,17 +345,17 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     }
   }
   if (
-    (data.config.listType === 'text' &&
-      data.isCustom === true &&
-      env.edit &&
-      slots['carrier'].length !== 0) ||
-    (data.config.listType === 'picture' &&
-      data.isCustom === true &&
-      env.edit &&
-      slots['carrier'].length !== 0)
+    (data.config.listType === 'text' && data.isCustom === true && env.edit) ||
+    (data.config.listType === 'picture' && data.isCustom === true && env.edit)
   ) {
     classnames.push(css.custom);
   }
+
+  //编辑态，自定义内容时不可编辑
+  let condition =
+    env.edit &&
+    data.isCustom === true &&
+    (data.config.listType === 'text' || data.config.listType === 'picture');
 
   return (
     <div ref={uploadRef} className={classnames.join(' ')}>
@@ -372,12 +372,11 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
             onpenImgPreview(file.url);
           }
         }}
-        disabled={disabled}
+        disabled={condition ? true : disabled}
         multiple={multiple}
         maxCount={fileCount}
         showUploadList={
-          (data.isShowUploadList === false && data.config.listType === 'text') ||
-          (data.isShowUploadList === false && data.config.listType === 'picture')
+          data.isShowUploadList === false && data.config.listType !== 'picture-card'
             ? false
             : { showPreviewIcon: usePreview }
         }

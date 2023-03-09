@@ -204,7 +204,7 @@ export default {
             type: 'Switch',
             description: '当上传列表类型为文字列表或者图片列表时, 默认展示文件列表',
             ifVisible({ data }: EditorResult<Data>) {
-              return data.config.listType === 'text' || data.config.listType === 'picture';
+              return data.config.listType !== 'picture-card';
             },
             value: {
               get({ data }: EditorResult<Data>) {
