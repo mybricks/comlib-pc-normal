@@ -344,7 +344,16 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       classnames.push(css.emptyDragger);
     }
   }
-  if (data.isCustom === true) {
+  if (
+    (data.config.listType === 'text' &&
+      data.isCustom === true &&
+      env.edit &&
+      slots['carrier'].length !== 0) ||
+    (data.config.listType === 'picture' &&
+      data.isCustom === true &&
+      env.edit &&
+      slots['carrier'].length !== 0)
+  ) {
     classnames.push(css.custom);
   }
 
@@ -366,12 +375,19 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         disabled={disabled}
         multiple={multiple}
         maxCount={fileCount}
-        showUploadList={data.isShowUploadList ? { showPreviewIcon: usePreview } : false}
+        showUploadList={
+          (data.isShowUploadList === false && data.config.listType === 'text') ||
+          (data.isShowUploadList === false && data.config.listType === 'picture')
+            ? false
+            : { showPreviewIcon: usePreview }
+        }
       >
-        {data.isCustom === false ? (
-          renderUploadText()
-        ) : (
+        {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
+        {(data.isCustom === true && data.config.listType === 'text') ||
+        (data.isCustom === true && data.config.listType === 'picture') ? (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        ) : (
+          renderUploadText()
         )}
       </UploadNode>
     </div>
