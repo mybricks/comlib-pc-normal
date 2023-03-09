@@ -183,9 +183,13 @@ export default {
             }
           },
           {
-            title: '自定义',
+            title: '自定义内容',
             type: 'Switch',
-            description: '开启自定义后, 可自定义添加需要组件',
+            description:
+              '当上传列表类型为文字列表或者图片列表时, 开启自定义后, 可自定义添加需要组件',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.listType === 'text' || data.config.listType === 'picture';
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.isCustom;
@@ -198,6 +202,10 @@ export default {
           {
             title: '展示文件列表',
             type: 'Switch',
+            description: '当上传列表类型为文字列表或者图片列表时, 默认展示文件列表',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.listType === 'text' || data.config.listType === 'picture';
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.isShowUploadList;
