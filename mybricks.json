@@ -116,7 +116,8 @@
       "./src/_service/com.json",
       "./src/_cookie/com.json",
       "./src/_copy/com.json",
-      "./src/_pick/com.json"
+      "./src/_pick/com.json",
+      "./src/_muilt-inputJs/com.json"
     ],
     "publish": [
       {
@@ -226,7 +227,8 @@
       "./src/_service/com.json",
       "./src/_cookie/com.json",
       "./src/_copy/com.json",
-      "./src/_pick/com.json"
+      "./src/_pick/com.json",
+      "./src/_muilt-inputJs/com.json"
     ]
   },
   "externals": [
