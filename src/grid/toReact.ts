@@ -85,7 +85,8 @@ const renderCol = (
       style={${JSON.stringify({
         ...column.colStyle,
         ...getMinMaxWidth(column),
-        width: column.widthOption === WidthUnitEnum.Px ? column.width : 'unset',
+        width:
+          column.widthOption === WidthUnitEnum.Px ? `${column.width}${WidthUnitEnum.Px}` : 'unset',
         cursor: column.useClick ? 'pointer' : 'unset'
       })}}
     >
