@@ -67,9 +67,23 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 	}, [fetchOptions]);
 	
 	useEffect(() => {
+		const promises = [fetchOptions('')];
 		if (value) {
-			fetchOptions(value).then(options => setOptions(options));
+			promises.push(fetchOptions(value));
 		}
+		
+		Promise.all(promises).then(([options1, options2 = []]) => {
+			const curOptions = [], curOptionsMap = {};
+			[...options2, ...options1].forEach(option => {
+				if (curOptionsMap[option.value]) {
+					return;
+				}
+				curOptions.push(option);
+				curOptionsMap[option.value] = 1;
+			});
+			
+			setOptions(curOptions);
+		});
 	}, []);
 	
 	return (

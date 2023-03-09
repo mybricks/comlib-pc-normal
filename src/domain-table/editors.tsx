@@ -1,5 +1,4 @@
 import {Data, FieldBizType, FieldDBType} from './constants';
-import {getEleIdx, updateIOSchema} from "../form-detail/editors/utils";
 
 export default {
   '@init'({ style, data }) {
@@ -60,7 +59,18 @@ export default {
 								data.entityId = entityId;
 								
 								const entity = data.domainAry.find(d => d.fileId === Number(domainFileId))?.entityList.find(entity => entity.id === entityId);
-								data.entity = JSON.parse(JSON.stringify(entity || null));
+								const curEntity = JSON.parse(JSON.stringify(entity || null));
+								
+								if (curEntity) {
+									curEntity.fieldAry.forEach(field => {
+										field.form = {};
+										
+										if ([FieldBizType.SYS_USER_UPDATER, FieldBizType.SYS_USER_CREATOR].includes(field.bizType)) {
+											field.form.required = true;
+										}
+									});
+									data.entity = curEntity;
+								}
 							}
             }
           }
@@ -155,9 +165,26 @@ export default {
 				  }
 			  }
 		  ]
-	  }
+	  },
+	  {
+		  title: '编辑新增弹框',
+		  items: [
+			  {
+				  title: '编辑弹框',
+				  type: 'Switch',
+				  value: {
+					  get({ data, output }: EditorResult<Data>) {
+						  return data.showActionModalForEdit;
+					  },
+					  set({ data, output, input }: EditorResult<Data>, value: boolean) {
+						  data.showActionModalForEdit = value;
+					  }
+				  }
+			  }
+		  ]
+	  },
   ],
-	'.ant-form-item': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+	'.search-form .ant-form-item': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
 		cate1.title = '常规';
 		cate1.items = [
 			{
@@ -232,6 +259,38 @@ export default {
 			},
 		];
 	},
+	'.ant-form-item-area': ({ focusArea, data }: EditorResult<Data>, cate1, cate2, cate3) => {
+		const field = data.entity.fieldAry.find(f => f.id === focusArea.dataset.fieldId);
+		
+		if (!field) {
+			return;
+		}
+		
+		cate1.title = '常规';
+		cate1.items = [
+			{
+				title: '表单项属性',
+				items: [
+					{
+						title: '是否必填',
+						type: 'Switch',
+						value: {
+							get({}: EditorResult<Data>) {
+								return field.form?.required;
+							},
+							set({ data, input, output }: EditorResult<Data>, value: string) {
+								if (!field.form) {
+									field.form = {};
+								}
+								
+								field.form.required = value;
+							}
+						}
+					},
+				],
+			}
+		];
+	},
 	'th.ant-table-cell': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
 		cate1.title = '常规';
 		cate1.items = [
@@ -240,7 +299,6 @@ export default {
 				type: 'Text',
 				value: {
 					get({ data, focusArea }: EditorResult<Data>) {
-						console.log('focusArea', focusArea);
 						const field = data.fieldAry[focusArea?.index];
 						if (!focusArea || !field) return;
 						
@@ -269,6 +327,29 @@ export default {
 						if (!focusArea || !field) return;
 						
 						field.width = value;
+					}
+				}
+			},
+			{
+				title: '对齐方式',
+				type: 'Select',
+				options: [
+					{ label: "左对齐", value: "left" },
+					{ label: "居中", value: "center" },
+					{ label: "右对齐", value: "right" }
+				],
+				value: {
+					get({ data, focusArea }: EditorResult<Data>) {
+						const field = data.fieldAry[focusArea?.index];
+						if (!focusArea || !field) return;
+						
+						return field.align ?? 'left';
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						const field = data.fieldAry[focusArea?.index];
+						if (!focusArea || !field) return;
+						
+						field.align = value;
 					}
 				}
 			},

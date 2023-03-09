@@ -3,5 +3,6 @@
   "fieldAry": [],
   "domainAry": [],
   "domainFileId": "",
-  "entityId": ""
+  "entityId": "",
+  "showActionModalForEdit": false
 }

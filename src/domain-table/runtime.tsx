@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Data, FieldBizType} from './constants';
-import {Button, Col, DatePicker, Form, Input, InputNumber, message, Modal, Row, Table} from 'antd';
+import {Button, Col, DatePicker, Form, Input, InputNumber, message, Modal, Row, Table, Radio} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 
 import styles from './runtime.less';
 import DebounceSelect from "./ccomponents/debouce-select";
+import {RuleMap} from "./rule";
 
 enum ModalAction {
 	CREATE = 'create',
@@ -14,7 +15,10 @@ enum ModalAction {
 export default function ({ env, data, outputs, inputs, createPortal }: RuntimeParams<Data>) {
 	const { edit, runtime } = env;
 	const debug = !!(runtime && runtime.debug);
-	// const currentCreatePortal = edit || debug ? createPortal : (a => a);
+	if (debug || runtime) {
+		data.showActionModalForEdit = false;
+	}
+	const currentCreatePortal = edit || debug ? createPortal : (a => a);
 	const [dataSource, setDataSource] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [showModalAction, setShowModalAction] = useState('');
@@ -23,6 +27,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	const [createForm] = Form.useForm();
 	const currentData = useRef<Record<string, unknown>>({});
 	const containerRef = useRef(null);
+	const domainContainerRef = useRef(null);
 	const baseFetchParams = useMemo(() => {
 		return {
 			serviceId: data.entity?.id,
@@ -44,6 +49,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 				params: {
 					query,
 					fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
+					page: edit ? { pageSize: 5 } : {},
 					action: 'SELECT'
 				},
 				...baseFetchParams
@@ -56,7 +62,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			}
 		})
 		.finally(() => setLoading(false));
-	}, [data.fieldAry, data.entity, baseFetchParams]);
+	}, [data.fieldAry, data.entity, baseFetchParams, edit]);
 	
 	const onDelete = useCallback((id: number) => {
 		fetch('/api/system/domain/run', {
@@ -110,6 +116,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 				return field.bizType === FieldBizType.FRONT_CUSTOM ? {
 					title: field.label || field.name,
 					key: field.id,
+					align: field.align || 'left',
 					width: field.width || '100px',
 					render(_, data) {
 						return (
@@ -123,6 +130,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 					title: title,
 					dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
 					key: title,
+					align: field.align || 'left',
 					width: field.width || '100px',
 				};
 			}) : [];
@@ -133,7 +141,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			return;
 		}
 		handleData();
-	}, [data.entity, data.fieldAry, handleData]);
+	}, [data.entity, data.fieldAry]);
 	
 	const search = useCallback(() => {
 		form.validateFields().then(value => {
@@ -161,7 +169,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	const renderFormNode = () => {
 		if (data.formFieldAry?.length) {
 			return (
-				<Form form={form} layout="inline" className={styles.form}>
+				<Form form={form} layout="inline" className={`${styles.form} search-form`}>
 					{data.formFieldAry.map(field => {
 						let item = <Input placeholder={`可输入${field.name}检索`} />;
 						
@@ -186,8 +194,14 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		
 		return null;
 	};
-	const openCreateModal = useCallback(() => setShowModalAction(ModalAction.CREATE), []);
-	const closeCreateModal = useCallback(() => setShowModalAction(''), []);
+	const openCreateModal = useCallback(() => {
+		setShowModalAction(ModalAction.CREATE);
+		createForm.resetFields();
+	}, []);
+	const closeCreateModal = useCallback(() => {
+		setShowModalAction('');
+		data.showActionModalForEdit = false;
+	}, []);
 	const handleCreate = useCallback(() => {
 		if (!data.entity) {
 			return;
@@ -210,10 +224,18 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 				});
 				
 				if (showModalAction === ModalAction.EDIT) {
+					const fields = data.entity.fieldAry
+					.filter(field => [FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
+					
+					/** 创建者默认读 window 上用户信息 */
+					if (fields.length && window['LOGIN_USER_INFO']) {
+						fields.forEach(field => curValue[field.name] = window['LOGIN_USER_INFO'].id);
+					}
+					
 					curValue.id = currentData.current?.id;
 				} else {
 					const fields = data.entity.fieldAry
-						.filter(field => field.bizType === FieldBizType.SYS_USER_CREATOR && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
+						.filter(field => [FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
 					
 					/** 创建者默认读 window 上用户信息 */
 					if (fields.length && window['LOGIN_USER_INFO']) {
@@ -249,10 +271,10 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 					}
 				})
 			})
-			.catch(_ => _)
+			.catch(console.log)
 			.finally(() => setCreateLoading(false));
 	}, [showModalAction, data.entity, baseFetchParams]);
-	const createFormNode = useMemo(() => {
+	const renderCreateFormNode = () => {
 		if (data.entity) {
 			return (
 				<Row gutter={24}>
@@ -260,9 +282,19 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 						data.entity.fieldAry
 							.filter(field => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
 							.filter(field => {
-								/** 创建者且 window 上用户信息存在则不展示表单项 */
-								if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
-									return !window['LOGIN_USER_INFO'];
+								/** 创建者、修改者且 window 上用户信息存在则不展示表单项 */
+								if (showModalAction === ModalAction.CREATE) {
+									if (field.bizType === FieldBizType.SYS_USER_CREATOR || field.bizType === FieldBizType.SYS_USER_UPDATER) {
+										return !window['LOGIN_USER_INFO'];
+									}
+								} else if (showModalAction === ModalAction.EDIT) {
+									/** 编辑时直接隐藏创建者对应的表单项 */
+									if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
+										return false;
+										/** 修改者且 window 上用户信息存在则不展示表单项 */
+									} else if (field.bizType === FieldBizType.SYS_USER_UPDATER) {
+										return !window['LOGIN_USER_INFO'];
+									}
 								}
 								
 								return true;
@@ -270,6 +302,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 							.map(field => {
 								let placeholder = `请输入${field.name}`;
 								let item = <Input placeholder={placeholder} />;
+								const rules: any[] = field.form?.required ? [RuleMap.required(field)] : [];
 								
 								if (field.bizType === FieldBizType.DATETIME) {
 									placeholder = `请选择${field.name}`;
@@ -278,13 +311,30 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 									item = <InputNumber placeholder={placeholder} />
 								} else if (field.mapping?.entity) {
 									item = <DebounceSelect placeholder="可输入关键词检索" field={field} fetchParams={baseFetchParams}/>
+								} else if (field.bizType === FieldBizType.PHONE) {
+									rules.push(RuleMap.phoneNumberValidator());
+								} else if (field.bizType === FieldBizType.EMAIL) {
+									rules.push(RuleMap.emailValidator());
+								} else if (field.bizType === FieldBizType.IMAGE) {
+								} else if (field.bizType === FieldBizType.RADIO) {
+									item = (
+										<Radio.Group>
+											<Radio value={1}>A</Radio>
+											<Radio value={2}>B</Radio>
+										</Radio.Group>
+									);
+								} else if (field.bizType === FieldBizType.CHECKBOX) {
+								} else if (field.bizType === FieldBizType.HREF) {
+								} else if (field.bizType === FieldBizType.APPEND_FILE) {
 								}
 								
 								return (
 									<Col span={12} key={field.id}>
-										<Form.Item labelCol={{ span: 6 }} name={field.name} label={field.name} required rules={[{ required: true, message: placeholder }]}>
-											{item}
-										</Form.Item>
+										<div className="ant-form-item-area" style={{ width: '100%' }} data-field-id={field.id}>
+											<Form.Item labelCol={{ span: 6 }} required={field.form?.required} name={field.name} label={field.name} rules={rules}>
+												{item}
+											</Form.Item>
+										</div>
 									</Col>
 								);
 							})
@@ -294,11 +344,11 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		}
 		
 		return null;
-	}, [data.entity, showModalAction, baseFetchParams]);
+	};
 	
   return (
     <>
-	    <div className={styles.domainContainer}>
+	    <div className={styles.domainContainer} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
 		    {renderFormNode()}
 		    <div className={styles.operateRow}>
 			    <Button type="primary" onClick={openCreateModal}>新增</Button>
@@ -312,7 +362,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			{/*	    width={800}*/}
 			{/*	    getContainer={containerRef.current && (edit || debug) ? containerRef.current : undefined}*/}
 			{/*	    className={styles.createModal}*/}
-			{/*	    visible={!!showModalAction}*/}
+			{/*	    visible={!!showModalAction || (edit && data.showActionModalForEdit)}*/}
 			{/*	    title={showModalAction === ModalAction.EDIT ? '编辑' : '新增'}*/}
 			{/*	    maskClosable*/}
 			{/*	    closable*/}
@@ -334,9 +384,9 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		    <Modal
 			    destroyOnClose
 			    width={800}
-			    getContainer={(edit || debug) ? document.querySelector('#_mybricks-geo-webview_').shadowRoot.querySelector('div > div') : undefined}
+			    getContainer={(edit || debug) ? (data.showActionModalForEdit && !showModalAction ? domainContainerRef.current : document.querySelector('#_mybricks-geo-webview_').shadowRoot.querySelector('div > div')) : undefined}
 			    className={styles.createModal}
-			    visible={!!showModalAction}
+			    visible={!!showModalAction || (edit && data.showActionModalForEdit)}
 			    title={showModalAction === ModalAction.EDIT ? '编辑' : '新增'}
 			    maskClosable
 			    closable
@@ -349,7 +399,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			    okButtonProps={{ loading: createLoading }}
 		    >
 			    <Form form={createForm}>
-				    {createFormNode}
+				    {renderCreateFormNode()}
 			    </Form>
 		    </Modal>
 	    </div>
