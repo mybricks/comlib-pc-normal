@@ -19,7 +19,7 @@ export default function ({ env, data, inputs, outputs }) {
         triggerKeys.add(key);
         if (triggerKeys.size === inputNum) {
           const type = isSameInputType(list);
-          if (isMerge && !!type) {
+          if (!!isMerge && !!type) {
             outputs[OutputIds.Output](mergeStrategy[type](list));
           } else {
             outputs[OutputIds.Output]([...list]);
