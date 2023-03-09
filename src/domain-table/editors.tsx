@@ -1,4 +1,7 @@
+import React from "react";
 import {Data, FieldBizType, FieldDBType} from './constants';
+import {uuid} from "../utils";
+import {RuleKeys, RuleMapByBizType} from "./rule";
 
 export default {
   '@init'({ style, data }) {
@@ -272,7 +275,7 @@ export default {
 				title: '表单项属性',
 				items: [
 					{
-						title: '是否必填',
+						title: '显示必填样式',
 						type: 'Switch',
 						value: {
 							get({}: EditorResult<Data>) {
@@ -287,8 +290,124 @@ export default {
 							}
 						}
 					},
-				],
-			}
+					[FieldBizType.RADIO, FieldBizType.CHECKBOX].includes(field.bizType) ? {
+						title: '下拉选项列表',
+						description: '可设置表单项下拉选项',
+						type: 'array',
+						options: {
+							addText: '添加选项',
+							editable: true,
+							getTitle: ({ label, checked }) => {
+								return `${label}${checked ? ': 默认值' : ''}`;
+							},
+							onRemove: (index: number) => {
+								field.form.options.splice(index, 1);
+							},
+							onAdd: () => {
+								return {
+									label: '选项' + ((field?.form?.options?.length || 0) + 1),
+									value: '选项' + ((field?.form?.options?.length || 0) + 1),
+									key: uuid()
+								};
+							},
+							items: [
+								{
+									title: '默认选中',
+									type: 'switch',
+									value: 'checked'
+								},
+								{
+									title: '禁用',
+									type: 'switch',
+									value: 'disabled'
+								},
+								{
+									title: '选项标签',
+									type: 'textarea',
+									value: 'label'
+								},
+								{
+									title: '选项值',
+									type: 'valueSelect',
+									options: ['text', 'number', 'boolean'],
+									description: '选项的唯一标识，可以修改为有意义的值',
+									value: 'value'
+								}
+							]
+						},
+						value: {
+							get({}: EditorResult<Data>) {
+								return field.form?.options ?? [];
+							},
+							set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
+								if (!field.form) {
+									field.form = {};
+								}
+								field.form.options = val;
+							}
+						}
+					} : undefined,
+					{
+						title: '校验规则',
+						description: '提供快捷校验配置',
+						type: 'ArrayCheckbox',
+						options: {
+							checkField: 'status',
+							visibleField: 'visible',
+							getTitle: item => item.title,
+							items: [
+								{
+									title: '提示文字',
+									type: 'Text',
+									value: 'message',
+									ifVisible(item: any, index: number) {
+										return item.key === RuleKeys.REQUIRED;
+									}
+								},
+								{
+									title: '编辑校验规则',
+									type: 'code',
+									options: {
+										language: 'javascript',
+										enableFullscreen: false,
+										title: '编辑校验规则',
+										width: 600,
+										minimap: {
+											enabled: false
+										},
+										babel: true,
+										eslint: {
+											parserOptions: {
+												ecmaVersion: '2020',
+												sourceType: 'module'
+											}
+										}
+									},
+									ifVisible(item: any, index: number) {
+										return item.key === RuleKeys.CODE_VALIDATOR;
+									},
+									value: 'validateCode'
+								}
+							]
+						},
+						value: {
+							get() {
+								if (!field.form?.rules?.length) {
+									if (!field.form) {
+										field.form = {};
+									}
+									field.form.rules = RuleMapByBizType[field.bizType] || [];
+								}
+								
+								return field.form.rules;
+							},
+							set({ data }, value: any) {
+								field.form.rules = value;
+							}
+						}
+					},
+				].filter(Boolean),
+			},
 		];
 	},
 	'th.ant-table-cell': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {

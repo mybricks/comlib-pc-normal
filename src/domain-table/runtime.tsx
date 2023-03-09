@@ -1,6 +1,20 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Data, FieldBizType} from './constants';
-import {Button, Col, DatePicker, Form, Input, InputNumber, message, Modal, Row, Table, Radio} from 'antd';
+import {
+	Button,
+	Col,
+	DatePicker,
+	Form,
+	Input,
+	InputNumber,
+	message,
+	Modal,
+	Row,
+	Table,
+	Radio,
+	Checkbox,
+	Upload
+} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 
 import styles from './runtime.less';
@@ -271,7 +285,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 					}
 				})
 			})
-			.catch(console.log)
+			.catch(error => console.log('表单校验参数不合法', error))
 			.finally(() => setCreateLoading(false));
 	}, [showModalAction, data.entity, baseFetchParams]);
 	const renderCreateFormNode = () => {
@@ -301,8 +315,9 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 							})
 							.map(field => {
 								let placeholder = `请输入${field.name}`;
+								let defaultValue = undefined;
 								let item = <Input placeholder={placeholder} />;
-								const rules: any[] = field.form?.required ? [RuleMap.required(field)] : [];
+								const rules: any[] = field.form?.rules?.filter(r => r.status).map(r => RuleMap[r.key]?.(field, r)) || [];
 								
 								if (field.bizType === FieldBizType.DATETIME) {
 									placeholder = `请选择${field.name}`;
@@ -312,18 +327,16 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 								} else if (field.mapping?.entity) {
 									item = <DebounceSelect placeholder="可输入关键词检索" field={field} fetchParams={baseFetchParams}/>
 								} else if (field.bizType === FieldBizType.PHONE) {
-									rules.push(RuleMap.phoneNumberValidator());
+									item = <Input addonBefore="+86" placeholder={placeholder} />;
 								} else if (field.bizType === FieldBizType.EMAIL) {
-									rules.push(RuleMap.emailValidator());
 								} else if (field.bizType === FieldBizType.IMAGE) {
+									item = <Upload />;
 								} else if (field.bizType === FieldBizType.RADIO) {
-									item = (
-										<Radio.Group>
-											<Radio value={1}>A</Radio>
-											<Radio value={2}>B</Radio>
-										</Radio.Group>
-									);
+									defaultValue = field.form?.options.find(opt => opt.checked)?.value;
+									item = <Radio.Group options={field.form?.options ?? []} />;
 								} else if (field.bizType === FieldBizType.CHECKBOX) {
+									defaultValue = field.form?.options.find(opt => opt.checked)?.value;
+									item = <Checkbox.Group options={field.form?.options ?? []} />;
 								} else if (field.bizType === FieldBizType.HREF) {
 								} else if (field.bizType === FieldBizType.APPEND_FILE) {
 								}
@@ -331,7 +344,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 								return (
 									<Col span={12} key={field.id}>
 										<div className="ant-form-item-area" style={{ width: '100%' }} data-field-id={field.id}>
-											<Form.Item labelCol={{ span: 6 }} required={field.form?.required} name={field.name} label={field.name} rules={rules}>
+											<Form.Item initialValue={defaultValue} labelCol={{ span: 6 }} required={field.form?.required} name={field.name} label={field.name} rules={rules}>
 												{item}
 											</Form.Item>
 										</div>
