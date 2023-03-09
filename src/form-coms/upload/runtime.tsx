@@ -34,9 +34,11 @@ interface UploadFileList {
 export interface Data {
   rules: any[];
   config: UploadConfig;
+  isShowUploadList: boolean;
+  isCustom: boolean;
 }
 
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
@@ -342,6 +344,18 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       classnames.push(css.emptyDragger);
     }
   }
+  if (
+    (data.config.listType === 'text' && data.isCustom === true && env.edit) ||
+    (data.config.listType === 'picture' && data.isCustom === true && env.edit)
+  ) {
+    classnames.push(css.custom);
+  }
+
+  //编辑态，自定义内容时不可编辑
+  let condition =
+    env.edit &&
+    data.isCustom === true &&
+    (data.config.listType === 'text' || data.config.listType === 'picture');
 
   return (
     <div ref={uploadRef} className={classnames.join(' ')}>
@@ -358,14 +372,22 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
             onpenImgPreview(file.url);
           }
         }}
-        disabled={disabled}
+        disabled={condition ? true : disabled}
         multiple={multiple}
         maxCount={fileCount}
-        showUploadList={{
-          showPreviewIcon: usePreview
-        }}
+        showUploadList={
+          data.isShowUploadList === false && data.config.listType !== 'picture-card'
+            ? false
+            : { showPreviewIcon: usePreview }
+        }
       >
-        {renderUploadText()}
+        {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
+        {(data.isCustom === true && data.config.listType === 'text') ||
+        (data.isCustom === true && data.config.listType === 'picture') ? (
+          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        ) : (
+          renderUploadText()
+        )}
       </UploadNode>
     </div>
   );
