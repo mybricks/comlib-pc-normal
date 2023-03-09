@@ -34,9 +34,11 @@ interface UploadFileList {
 export interface Data {
   rules: any[];
   config: UploadConfig;
+  isShowUploadList: boolean;
+  isCustom: boolean;
 }
 
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
@@ -342,6 +344,9 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       classnames.push(css.emptyDragger);
     }
   }
+  if (data.isCustom === true) {
+    classnames.push(css.custom);
+  }
 
   return (
     <div ref={uploadRef} className={classnames.join(' ')}>
@@ -361,11 +366,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
         disabled={disabled}
         multiple={multiple}
         maxCount={fileCount}
-        showUploadList={{
-          showPreviewIcon: usePreview
-        }}
+        showUploadList={data.isShowUploadList ? { showPreviewIcon: usePreview } : false}
       >
-        {renderUploadText()}
+        {data.isCustom === false ? (
+          renderUploadText()
+        ) : (
+          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        )}
       </UploadNode>
     </div>
   );

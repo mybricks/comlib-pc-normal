@@ -1,4 +1,4 @@
-export default function ({ input, output }): boolean {
+export default function ({ input, output, slot, data }): boolean {
   //1.0.0 -> 1.0.1
   input.get('setValue').setSchema({
     type: 'array',
@@ -145,5 +145,19 @@ export default function ({ input, output }): boolean {
       }
     });
   }
+
+  /**
+   * @description v1.0.7 , 新增自定义插槽, 展示文件列表
+   */
+  if (!slot?.get('carrier')) {
+    slot.add('carrier', '添加组件')
+  }
+  if (typeof data.isShowUploadList === "undefined") {
+    data.isShowUploadList = true;
+  };
+  if (typeof data.isCustom === "undefined") {
+    data.isCustom = false;
+  };
+
   return true;
 }
