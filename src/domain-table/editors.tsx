@@ -85,10 +85,10 @@ export default {
 			  ]
 		  },
 		  {
-			  title: '表单字段选择',
+			  title: '检索表单',
 			  items: [
 				  {
-					  title: '字段',
+					  title: '表单项',
 					  type: 'Select',
 					  ifVisible({ data }: EditorResult<Data>) {
 						  return !!data.entity;
@@ -114,10 +114,10 @@ export default {
 			  ]
 		  },
 		  {
-			  title: '表格字段选择',
+			  title: '数据表格',
 			  items: [
 				  {
-					  title: '字段',
+					  title: '表格列',
 					  type: 'Select',
 					  ifVisible({ data }: EditorResult<Data>) {
 						  return !!data.entity;
@@ -170,7 +170,19 @@ export default {
 							  data.fieldAry = fieldAry;
 						  }
 					  }
-				  }
+				  },
+				  {
+					  title: '开启分页',
+					  type: 'Switch',
+					  value: {
+						  get({ data, output }: EditorResult<Data>) {
+							  return data.pagination.show;
+						  },
+						  set({ data, output, input }: EditorResult<Data>, value: boolean) {
+							  data.pagination.show = value;
+						  }
+					  }
+				  },
 			  ]
 		  },
 		  {

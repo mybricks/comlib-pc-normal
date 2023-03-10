@@ -12,7 +12,7 @@ import {
 	Table,
 	Radio,
 	Checkbox,
-	Upload
+	Upload, Pagination
 } from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import DebounceSelect from "./ccomponents/debouce-select";
@@ -21,6 +21,8 @@ import {Data, FieldBizType, ModalAction} from './constants';
 
 import styles from './runtime.less';
 
+const INIT_PAGE = 1;
+const INIT_PAGE_SIZE = 20;
 export default function ({ env, data, outputs, inputs, createPortal }: RuntimeParams<Data>) {
 	const { edit, runtime } = env;
 	const debug = !!(runtime && runtime.debug);
@@ -37,6 +39,9 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	const currentData = useRef<Record<string, unknown>>({});
 	const containerRef = useRef(null);
 	const domainContainerRef = useRef(null);
+	const [page, setPage] = useState(INIT_PAGE);
+	const [pageSize, setPageSize] = useState(data.pagination?.pageSize || 20);
+	const [total, setTotal] = useState(0);
 	const baseFetchParams = useMemo(() => {
 		return {
 			serviceId: data.entity?.id,
@@ -46,8 +51,10 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		};
 	}, [data.entity]);
 	
-	const handleData = useCallback((query = {}) => {
+	const handleData = useCallback((query, pageInfo?: Record<string, unknown>) => {
 		setLoading(true);
+		const pageParams = pageInfo || { page, pageSize: edit ? 5 : pageSize };
+		pageParams.pagination = data.pagination?.show;
 		fetch('/api/system/domain/run', {
 			method: 'POST',
 			headers: {
@@ -58,20 +65,25 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 				params: {
 					query,
 					fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
-					page: edit ? { pageSize: 5 } : {},
+					page: pageParams,
 					action: 'SELECT'
 				},
 				...baseFetchParams
 			})
 		} as RequestInit)
 		.then(res => res.json())
-		.then(data => {
-			if (data.code === 1) {
-				setDataSource(data.data);
+		.then(res => {
+			if (res.code === 1) {
+				if (data.pagination.show) {
+					setDataSource(res.data.list);
+					setTotal(res.data.total);
+				} else {
+					setDataSource(res.data);
+				}
 			}
 		})
 		.finally(() => setLoading(false));
-	}, [data.fieldAry, data.entity, baseFetchParams, edit]);
+	}, [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, page, pageSize]);
 	
 	const onDelete = useCallback((id: number) => {
 		fetch('/api/system/domain/run', {
@@ -93,7 +105,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			if (data.code === 1) {
 				message.success('删除成功');
 				form.resetFields();
-				handleData();
+				handleData({});
 			} else {
 				message.error('删除失败');
 			}
@@ -149,8 +161,8 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		if (!data.entity || !data.fieldAry?.length) {
 			return;
 		}
-		handleData();
-	}, [data.entity, data.fieldAry]);
+		handleData({});
+	}, [data.entity, data.fieldAry, data.pagination.show]);
 	
 	const search = useCallback(() => {
 		form.validateFields().then(value => {
@@ -183,7 +195,6 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 						let placeholder = `可输入${field.name}检索`;
 						let defaultValue = undefined;
 						let item = <Input placeholder={placeholder} />;
-						const rules: any[] = field.form?.rules?.filter(r => r.status).map(r => RuleMap[r.key]?.(field, r)) || [];
 						
 						if (field.bizType === FieldBizType.DATETIME) {
 							placeholder = `可选择${field.name}检索`;
@@ -295,7 +306,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 					if (data.code === 1) {
 						setShowModalAction('');
 						form.resetFields();
-						handleData();
+						handleData({});
 					}
 				})
 			})
@@ -382,6 +393,12 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		return null;
 	};
 	
+	const onPageChange = (page: number, size: number) => {
+		setPage(page);
+		setPageSize(size);
+		handleData({}, { page, pageSize: size });
+	};
+	
   return (
     <>
 	    <div className={styles.domainContainer} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
@@ -390,6 +407,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			    <Button type="primary" onClick={openCreateModal}>新增</Button>
 		    </div>
 		    <Table loading={loading} columns={renderColumns()} dataSource={dataSource} pagination={false}></Table>
+		    <Pagination current={page} total={total} pageSize={pageSize} showSizeChanger hideOnSinglePage onChange={onPageChange} />
 	    </div>
 	    {/*{currentCreatePortal(*/}
 		  {/*  <div className={styles.container} ref={containerRef}>*/}

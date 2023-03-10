@@ -4,5 +4,9 @@
   "domainAry": [],
   "domainFileId": "",
   "entityId": "",
-  "showActionModalForEdit": ""
+  "showActionModalForEdit": "",
+  "pagination": {
+    "page": 1,
+    "pageSize": 20
+  }
 }
