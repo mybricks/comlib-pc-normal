@@ -43,3 +43,8 @@ export enum DefaultValueWhenCreate {
 	/** 当前时间 */
 	CURRENT_TIME = '$currentTime'
 }
+
+export enum ModalAction {
+	CREATE = 'create',
+	EDIT = 'edit',
+}

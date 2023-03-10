@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Data, FieldBizType} from './constants';
 import {
 	Button,
 	Col,
@@ -16,21 +15,17 @@ import {
 	Upload
 } from 'antd';
 import {ColumnsType} from 'antd/es/table';
-
-import styles from './runtime.less';
 import DebounceSelect from "./ccomponents/debouce-select";
 import {RuleMap} from "./rule";
+import {Data, FieldBizType, ModalAction} from './constants';
 
-enum ModalAction {
-	CREATE = 'create',
-	EDIT = 'edit',
-}
+import styles from './runtime.less';
 
 export default function ({ env, data, outputs, inputs, createPortal }: RuntimeParams<Data>) {
 	const { edit, runtime } = env;
 	const debug = !!(runtime && runtime.debug);
 	if (debug || runtime) {
-		data.showActionModalForEdit = false;
+		data.showActionModalForEdit = '';
 	}
 	const currentCreatePortal = edit || debug ? createPortal : (a => a);
 	const [dataSource, setDataSource] = useState([]);
@@ -164,7 +159,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			Object.keys(value).forEach(key => {
 				const filed = data.formFieldAry.find(field => field.name === key);
 				let item: Record<string, unknown>= {
-					operator: filed?.operator ?? '=',
+					operator: filed?.form?.operator ?? '=',
 					value: value[key]
 				};
 				try {
@@ -185,20 +180,39 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			return (
 				<Form form={form} layout="inline" className={`${styles.form} search-form`}>
 					{data.formFieldAry.map(field => {
-						let item = <Input placeholder={`可输入${field.name}检索`} />;
+						let placeholder = `可输入${field.name}检索`;
+						let defaultValue = undefined;
+						let item = <Input placeholder={placeholder} />;
+						const rules: any[] = field.form?.rules?.filter(r => r.status).map(r => RuleMap[r.key]?.(field, r)) || [];
 						
 						if (field.bizType === FieldBizType.DATETIME) {
-							item = <DatePicker showTime placeholder={`可选择${field.name}检索`} />;
+							placeholder = `可选择${field.name}检索`;
+							item = <DatePicker style={{ width: '100%' }} showTime placeholder={placeholder} />;
 						} else if (field.bizType === FieldBizType.NUMBER) {
-							item = <InputNumber placeholder={`可输入${field.name}检索`} />
+							item = <InputNumber placeholder={placeholder} />
 						} else if (field.mapping?.entity) {
 							item = <DebounceSelect placeholder="可输入关键词检索" field={field} fetchParams={baseFetchParams}/>
+						} else if (field.bizType === FieldBizType.PHONE) {
+							item = <Input addonBefore="+86" placeholder={placeholder} />;
+						} else if (field.bizType === FieldBizType.EMAIL) {
+						} else if (field.bizType === FieldBizType.IMAGE) {
+							item = <Upload />;
+						} else if (field.bizType === FieldBizType.RADIO) {
+							defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
+							item = <Radio.Group options={field.form?.options ?? []} />;
+						} else if (field.bizType === FieldBizType.CHECKBOX) {
+							defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
+							item = <Checkbox.Group options={field.form?.options ?? []} />;
+						} else if (field.bizType === FieldBizType.HREF) {
+						} else if (field.bizType === FieldBizType.APPEND_FILE) {
 						}
 						
 						return (
-							<Form.Item style={{ minWidth: '280px' }} key={field.id} name={field.name} label={field.label ?? field.name}>
-								{item}
-							</Form.Item>
+							<div className="ant-form-item-search" data-field-id={field.id}>
+								<Form.Item style={{ minWidth: '280px' }} initialValue={defaultValue} key={field.id} name={field.name} label={field.form?.label ?? field.name}>
+									{item}
+								</Form.Item>
+							</div>
 						);
 					})}
 					<Button type="primary" onClick={search}>查询</Button>
@@ -214,7 +228,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	}, []);
 	const closeCreateModal = useCallback(() => {
 		setShowModalAction('');
-		data.showActionModalForEdit = false;
+		data.showActionModalForEdit = '';
 	}, []);
 	const handleCreate = useCallback(() => {
 		if (!data.entity) {
@@ -269,7 +283,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 								showModalAction === ModalAction.CREATE
 									? undefined
 									: data.entity.fieldAry
-										.filter(field => field.bizType !== FieldBizType.MAPPING && field.bizType !== FieldBizType.SYS_USER_CREATOR && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate),
+										.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate && !field.form.disabledForEdit),
 							query: curValue,
 							action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE',
 						},
@@ -296,12 +310,14 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 						data.entity.fieldAry
 							.filter(field => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
 							.filter(field => {
+								/** 这一行必须要，读取 form 的 disabledForEdit 值才能被收集到依赖，才能对应响应编辑项变化 */
+								field.form.disabledForEdit;
 								/** 创建者、修改者且 window 上用户信息存在则不展示表单项 */
-								if (showModalAction === ModalAction.CREATE) {
+								if (showModalAction === ModalAction.CREATE || data.showActionModalForEdit === ModalAction.CREATE) {
 									if (field.bizType === FieldBizType.SYS_USER_CREATOR || field.bizType === FieldBizType.SYS_USER_UPDATER) {
 										return !window['LOGIN_USER_INFO'];
 									}
-								} else if (showModalAction === ModalAction.EDIT) {
+								} else if (showModalAction === ModalAction.EDIT || data.showActionModalForEdit === ModalAction.EDIT) {
 									/** 编辑时直接隐藏创建者对应的表单项 */
 									if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
 										return false;
@@ -309,10 +325,17 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 									} else if (field.bizType === FieldBizType.SYS_USER_UPDATER) {
 										return !window['LOGIN_USER_INFO'];
 									}
+									
+									return !field.form.disabledForEdit;
 								}
 								
 								return true;
 							})
+							// .filter(field => {
+							// 	if (data.showActionModalForEdit === ModalAction.EDIT) {}
+							//
+							// 	return true;
+							// })
 							.map(field => {
 								let placeholder = `请输入${field.name}`;
 								let defaultValue = undefined;
@@ -332,10 +355,10 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 								} else if (field.bizType === FieldBizType.IMAGE) {
 									item = <Upload />;
 								} else if (field.bizType === FieldBizType.RADIO) {
-									defaultValue = field.form?.options.find(opt => opt.checked)?.value;
+									defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
 									item = <Radio.Group options={field.form?.options ?? []} />;
 								} else if (field.bizType === FieldBizType.CHECKBOX) {
-									defaultValue = field.form?.options.find(opt => opt.checked)?.value;
+									defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
 									item = <Checkbox.Group options={field.form?.options ?? []} />;
 								} else if (field.bizType === FieldBizType.HREF) {
 								} else if (field.bizType === FieldBizType.APPEND_FILE) {
@@ -344,7 +367,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 								return (
 									<Col span={12} key={field.id}>
 										<div className="ant-form-item-area" style={{ width: '100%' }} data-field-id={field.id}>
-											<Form.Item initialValue={defaultValue} labelCol={{ span: 6 }} required={field.form?.required} name={field.name} label={field.name} rules={rules}>
+											<Form.Item initialValue={defaultValue} labelCol={{ span: 6 }} required={field.form?.required} name={field.name} label={field.form?.label ?? field.name} rules={rules}>
 												{item}
 											</Form.Item>
 										</div>
@@ -400,7 +423,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			    getContainer={(edit || debug) ? (data.showActionModalForEdit && !showModalAction ? domainContainerRef.current : document.querySelector('#_mybricks-geo-webview_').shadowRoot.querySelector('div > div')) : undefined}
 			    className={styles.createModal}
 			    visible={!!showModalAction || (edit && data.showActionModalForEdit)}
-			    title={showModalAction === ModalAction.EDIT ? '编辑' : '新增'}
+			    title={(showModalAction === ModalAction.EDIT || data.showActionModalForEdit === ModalAction.EDIT) ? '编辑' : '新增'}
 			    maskClosable
 			    closable
 			    onCancel={closeCreateModal}
