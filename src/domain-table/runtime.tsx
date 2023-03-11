@@ -40,7 +40,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	const containerRef = useRef(null);
 	const domainContainerRef = useRef(null);
 	const [page, setPage] = useState(INIT_PAGE);
-	const [pageSize, setPageSize] = useState(data.pagination?.pageSize || 20);
+	const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
 	const [total, setTotal] = useState(0);
 	const baseFetchParams = useMemo(() => {
 		return {
