@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -11,6 +11,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "dataSource",
