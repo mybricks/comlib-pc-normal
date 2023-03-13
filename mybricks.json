@@ -19,7 +19,8 @@
           "./src/toolbar/com.json",
           "./src/button/com.json",
           "./src/breadcrumb/com.json",
-          "./src/richtext/com.json"
+          "./src/richtext/com.json",
+          "./src/00_test/com.json"
         ]
       },
       {
