@@ -29,7 +29,11 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
         if (Array.isArray(v)) {
-          const ds = v.map((item, index) => ({ item, [rowKey]: uuid(), index: index }));
+          const ds = v.map((item, index) => ({
+            item,
+            [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid(),
+            index: index
+          }));
           data.dataSource = ds;
           setDataSource(ds);
         }
