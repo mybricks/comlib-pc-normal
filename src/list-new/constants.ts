@@ -30,5 +30,8 @@ export interface Data {
   column: number;
   //间隔
   grid: ListGridType;
-  canSort: boolean
+  canSort: boolean;
+
+  //自定义rowKey
+  rowKey: string;
 }
