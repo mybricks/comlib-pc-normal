@@ -45,7 +45,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	const domainContainerRef = useRef(null);
 	const searchFormValue = useRef({});
 	const [pageIndex, setPageIndex] = useState(INIT_PAGE);
-	const [pageSize, setPageSize] = useState<number>(3 || data.pagination?.pageSize || INIT_PAGE_SIZE);
+	const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
 	const [total, setTotal] = useState(0);
 	const baseFetchParams = useMemo(() => {
 		return {
@@ -159,9 +159,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			});
 			
 			setPageIndex(1);
-			setPageSize(3 || data.pagination?.pageSize || INIT_PAGE_SIZE);
+			setPageSize(data.pagination?.pageSize || INIT_PAGE_SIZE);
 			searchFormValue.current = curValue;
-			handleData(curValue, { pageIndex: 1, pageSize: 3 || data.pagination?.pageSize || INIT_PAGE_SIZE });
+			handleData(curValue, { pageIndex: 1, pageSize: data.pagination?.pageSize || INIT_PAGE_SIZE });
 		}).catch(_ => _);
 	}, [handleData, data.formFieldAry, data.pagination?.pageSize]);
 	
