@@ -148,7 +148,7 @@ export default function ({ input, output, slot, data }): boolean {
 
   /**
    * @description v1.0.7 , 新增自定义插槽, 展示文件列表
-   */
+  */
   if (!slot?.get('carrier')) {
     slot.add('carrier', '添加组件')
   }
@@ -159,5 +159,12 @@ export default function ({ input, output, slot, data }): boolean {
     data.isCustom = false;
   };
 
+  /**
+   * @description v1.0.8 , 新增尺寸校验
+  */
+  if (typeof data.imageSize === "undefined") {
+    data.imageSize = [0,0];
+  };
+  
   return true;
 }

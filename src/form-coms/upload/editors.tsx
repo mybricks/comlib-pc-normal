@@ -269,7 +269,24 @@ export default {
             }
           },
           {
-            title: '开启图片预览',
+            title: '开启多选',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config.multiple;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.config.multiple = value;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '图片配置',
+        items: [
+          {
+            title: '开启预览',
             type: 'Switch',
             value: {
               get({ data }: EditorResult<Data>) {
@@ -281,14 +298,19 @@ export default {
             }
           },
           {
-            title: '开启多选',
-            type: 'Switch',
+            title: '尺寸校验',
+            type: 'InputNumber',
+            description: '允许上传的图片尺寸, 0 表示宽高不限制',
+            options: [
+              { title: '宽(px)', min: 0, max: 2000, width: 100 },
+              { title: '高(px)', min: 0, max: 2000, width: 100 }
+            ],
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.config.multiple;
+                return data.imageSize;
               },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.config.multiple = value;
+              set({ data }: EditorResult<Data>, value: number[]) {
+                data.imageSize = value;
               }
             }
           }
