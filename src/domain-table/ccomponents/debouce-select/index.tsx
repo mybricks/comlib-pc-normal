@@ -2,6 +2,7 @@ import { Select, Spin } from 'antd';
 import type { SelectProps } from 'antd/es/select';
 import debounce from 'lodash/debounce';
 import React, {FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {ajax} from "../../util";
 
 interface DebounceSelectProps {
 	value?: string;
@@ -20,20 +21,13 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 	
 	const fetchOptions = useCallback((value: string) => {
 		setFetching(true);
-		return fetch('/api/system/domain/run', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			credentials: undefined,
-			body: JSON.stringify({
-				...fetchParams,
-				params: { action: 'SEARCH_BY_FIELD', field, query: { keyword: value }  }
-			})
-		} as RequestInit)
-		.then(res => res.json())
+		const { form, ...curField } = field;
+		return ajax({
+			...fetchParams,
+			params: { action: 'SEARCH_BY_FIELD', field: curField, query: { keyword: value }  }
+		})
 		.then(data => {
-			return (data.data ?? []).map(item => {
+			return (data ?? []).map(item => {
 				let label = '';
 				Object.keys(item)
 					.filter(key => key !== 'id')
@@ -73,7 +67,7 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 		}
 		
 		Promise.all(promises).then(([options1, options2 = []]) => {
-			const curOptions = [], curOptionsMap = {};
+			const curOptions: any[] = [], curOptionsMap = {};
 			[...options2, ...options1].forEach(option => {
 				if (curOptionsMap[option.value]) {
 					return;

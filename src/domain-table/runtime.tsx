@@ -12,24 +12,28 @@ import {
 	Table,
 	Radio,
 	Checkbox,
-	Upload, Pagination
+	Upload,
+	ConfigProvider
 } from 'antd';
 import {ColumnsType} from 'antd/es/table';
+/** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
+import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from "./ccomponents/debouce-select";
 import {RuleMap} from "./rule";
+import {ajax} from "./util";
 import {Data, FieldBizType, ModalAction} from './constants';
 
 import styles from './runtime.less';
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
-export default function ({ env, data, outputs, inputs, createPortal }: RuntimeParams<Data>) {
+export default function ({ env, data }: RuntimeParams<Data>) {
 	const { edit, runtime } = env;
 	const debug = !!(runtime && runtime.debug);
 	if (debug || runtime) {
 		data.showActionModalForEdit = '';
 	}
-	const currentCreatePortal = edit || debug ? createPortal : (a => a);
+	// const currentCreatePortal = edit || debug ? createPortal : (a => a);
 	const [dataSource, setDataSource] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [showModalAction, setShowModalAction] = useState('');
@@ -55,62 +59,42 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		setLoading(true);
 		const pageParams = pageInfo || { page, pageSize: edit ? 5 : pageSize };
 		pageParams.pagination = data.pagination?.show;
-		fetch('/api/system/domain/run', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
+		
+		ajax({
+			params: {
+				query,
+				fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
+				page: pageParams,
+				action: 'SELECT'
 			},
-			credentials: undefined,
-			body: JSON.stringify({
-				params: {
-					query,
-					fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
-					page: pageParams,
-					action: 'SELECT'
-				},
-				...baseFetchParams
-			})
-		} as RequestInit)
-		.then(res => res.json())
+			...baseFetchParams
+		})
 		.then(res => {
-			if (res.code === 1) {
-				if (data.pagination.show) {
-					setDataSource(res.data.list);
-					setTotal(res.data.total);
-				} else {
-					setDataSource(res.data);
-				}
+			if (data.pagination.show) {
+				setDataSource(res.list || []);
+				setTotal(res.total || 0);
+			} else {
+				setDataSource(res || []);
 			}
 		})
 		.finally(() => setLoading(false));
 	}, [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, page, pageSize]);
 	
 	const onDelete = useCallback((id: number) => {
-		fetch('/api/system/domain/run', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			credentials: undefined,
-			body: JSON.stringify({
+		ajax(
+			{
 				params: {
 					query: { id },
 					action: 'DELETE'
 				},
 				...baseFetchParams
-			})
-		} as RequestInit)
-		.then(res => res.json())
-		.then(data => {
-			if (data.code === 1) {
-				message.success('删除成功');
-				form.resetFields();
-				handleData({});
-			} else {
-				message.error('删除失败');
-			}
+			},
+			{ successTip: '删除成功', errorTip: '删除失败' }
+		)
+		.then(() => {
+			form.resetFields();
+			handleData({});
 		})
-		.catch(() => message.error('删除失败'));
 	}, [handleData, baseFetchParams]);
 	const onEdit = useCallback((item: Record<string, unknown>) => {
 		setShowModalAction(ModalAction.EDIT);
@@ -249,7 +233,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		createForm
 			.validateFields()
 			.then(value => {
-				const curValue = {};
+				const curValue: Record<string, unknown> = {};
 				
 				Object.keys(value).forEach(key => {
 					let item = value[key];
@@ -400,14 +384,24 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 	};
 	
   return (
-    <>
+    <ConfigProvider locale={zhCN}>
 	    <div className={styles.domainContainer} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
 		    {renderFormNode()}
 		    <div className={styles.operateRow}>
 			    <Button type="primary" onClick={openCreateModal}>新增</Button>
 		    </div>
-		    <Table loading={loading} columns={renderColumns()} dataSource={dataSource} pagination={false}></Table>
-		    <Pagination current={page} total={total} pageSize={pageSize} showSizeChanger hideOnSinglePage onChange={onPageChange} />
+		    <Table
+					loading={loading}
+					columns={renderColumns()}
+					dataSource={dataSource}
+					pagination={data.pagination?.show ? {
+						showSizeChanger: true,
+						total,
+						current: page,
+						pageSize,
+						onChange: onPageChange
+					} : false}
+				/>
 	    </div>
 	    {/*{currentCreatePortal(*/}
 		  {/*  <div className={styles.container} ref={containerRef}>*/}
@@ -438,7 +432,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 		    <Modal
 			    destroyOnClose
 			    width={800}
-			    getContainer={(edit || debug) ? (data.showActionModalForEdit && !showModalAction ? domainContainerRef.current : document.querySelector('#_mybricks-geo-webview_').shadowRoot.querySelector('div > div')) : undefined}
+			    getContainer={((edit || debug) ? (data.showActionModalForEdit && !showModalAction ? domainContainerRef.current : document.querySelector('#_mybricks-geo-webview_')?.shadowRoot?.querySelector('div > div')) : undefined) as any}
 			    className={styles.createModal}
 			    visible={!!showModalAction || (edit && data.showActionModalForEdit)}
 			    title={(showModalAction === ModalAction.EDIT || data.showActionModalForEdit === ModalAction.EDIT) ? '编辑' : '新增'}
@@ -457,7 +451,7 @@ export default function ({ env, data, outputs, inputs, createPortal }: RuntimePa
 			    </Form>
 		    </Modal>
 	    </div>
-    </>
+    </ConfigProvider>
   );
 }
 
