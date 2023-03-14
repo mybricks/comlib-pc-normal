@@ -36,6 +36,14 @@ export interface Data {
   config: UploadConfig;
   isShowUploadList: boolean;
   isCustom: boolean;
+  imageSize: number[];
+}
+
+interface Window {
+  Image: {
+    prototype: HTMLImageElement;
+    new (): HTMLImageElement;
+  };
 }
 
 export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
@@ -178,10 +186,38 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     fileListRef.current = onFormatFileList(fileList);
     outputs.upload(formData);
   };
+
+  //上传图片尺寸限制
+  //参数分别是上传的file，想要限制的宽，想要限制的高
+  const checkWH = (file, width, height) => {
+    return new Promise(function (resolve, reject) {
+      let filereader = new FileReader();
+      filereader.onload = (e: any) => {
+        let src: any = e.target.result;
+        const image = new window.Image();
+        image.onload = function () {
+          if (width && image.width != width) {
+            message.error(`请上传宽为${width}(px)的图片`);
+            //reject('error');
+          } else if (height && image.height != width) {
+            message.error(`请上传宽高为${height}}(px)的图片`);
+            // reject('error');
+          } else {
+            resolve('success');
+          }
+        };
+        image.onerror = reject;
+        image.src = src;
+      };
+      filereader.readAsDataURL(file);
+    });
+  };
+
   // 文件合法校验
   const beforeUpload = useCallback((file: File, fileList: File[]) => {
     const acceptTypesList = fileType || [];
     const isNotAccept = fileList.some((file) => {
+      let isImage = file.type.slice(0, 5) === 'image';
       let isAcceptFileType = true;
       if (acceptTypesList.length) {
         isAcceptFileType = acceptTypesList.some((element) => {
@@ -205,8 +241,13 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       if (!isAcceptFileSize) {
         message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
       }
-
-      return !(isAcceptFileType && isAcceptFileSize);
+      return !(
+        isAcceptFileType &&
+        isAcceptFileSize &&
+        (JSON.stringify(data.imageSize) === JSON.stringify([0, 0]) || !isImage
+          ? true
+          : !checkWH(file, data.imageSize[0], data.imageSize[1]))
+      );
     });
 
     if (!isNotAccept) {
