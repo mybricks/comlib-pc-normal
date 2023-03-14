@@ -128,6 +128,13 @@ export default function (props: RuntimeParams<Data>) {
           });
         });
       }
+
+      // 动态设置表头
+      if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
+        inputs[InputIds.SET_SHOW_TitleS]((val) => {
+          data.columns = val;
+        });
+      }
     }
   }, []);
 

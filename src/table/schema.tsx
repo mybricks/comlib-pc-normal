@@ -345,5 +345,22 @@ export const Schemas = {
     items: {
       type: 'string'
     }
+  },
+  SET_SHOW_TitleS: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string'
+        },
+        dataIndex: {
+          type: 'string'
+        },
+        width: {
+          type: 'number'
+        }
+      }
+    }
   }
 };
