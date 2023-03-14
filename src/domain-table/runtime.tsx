@@ -185,7 +185,6 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			item = <Radio.Group options={field.form?.options ?? []} />;
 		} else if (field.form.formItem === ComponentName.RADIO) {
 			item = <Checkbox.Group options={field.form?.options ?? []} />;
-		} else if (field.bizType === FieldBizType.HREF) {
 		} else if (field.bizType === FieldBizType.APPEND_FILE) {
 			item = <Upload />;
 		}

@@ -1,7 +1,7 @@
 import {message} from "antd";
 
-export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string } = {}) => {
-	return fetch('/api/system/domain/run', {
+export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; url?: string } = {}) => {
+	return fetch(option.url ?? '/api/system/domain/run', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
