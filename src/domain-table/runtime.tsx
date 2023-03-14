@@ -172,7 +172,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		if (field.form.formItem === ComponentName.DATE_PICKER) {
 			item = <DatePicker style={{ width: '100%' }} showTime placeholder={option.placeholder ?? `请选择${field.name}`} />;
 		} else if (field.form.formItem === ComponentName.INPUT_NUMBER) {
-			item = <InputNumber placeholder={placeholder} />
+			item = <InputNumber style={{ width: '100%' }} placeholder={placeholder} />
 		} else if (field.form.formItem === ComponentName.SELECT) {
 			item = <Select placeholder={option.placeholder ?? `请选择${field.name}`} options={field.form?.options ?? []} />
 		} else if (field.mapping?.entity && field.form.formItem === ComponentName.DEBOUNCE_SELECT) {
