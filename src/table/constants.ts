@@ -57,7 +57,10 @@ export const InputIds = {
   INDEX: 'index',
 
   // 动态设置显示列
-  SET_SHOW_COLUMNS: 'showColumns'
+  SET_SHOW_COLUMNS: 'showColumns',
+
+  //动态设置显示表头
+  SET_SHOW_TitleS: 'showTitles',
 };
 export const OutputIds = {
   // 输出勾选项
