@@ -42,6 +42,7 @@
       "100"
     ],
     "showQuickJumper": false,
-    "hideOnSinglePage": false
+    "hideOnSinglePage": false,
+    "useDynamicTitle": false
   }
 }

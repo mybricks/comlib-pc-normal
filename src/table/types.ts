@@ -165,4 +165,7 @@ export interface Data {
 
   // 动态设置显示列
   useDynamicColumn?: boolean;
+
+  //动态设置显示表格标题和字段
+  useDynamicTitle?: boolean;
 }
