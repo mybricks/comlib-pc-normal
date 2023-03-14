@@ -40,7 +40,13 @@ const FormItem = (props: FormItemProps) => {
   return (
     <Form.Item
       {...field}
-      label={<label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>}
+      label={
+        item?.hiddenLabel ? (
+          void 0
+        ) : (
+          <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
+        )
+      }
       labelAlign={labelAlign}
       name={field ? [field.name, item?.name] : item?.name}
       required={item?.required}

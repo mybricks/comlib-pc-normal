@@ -104,6 +104,7 @@ export default {
         colon: 'default',
         labelAlign: 'default',
         labelAutoWrap: 'default',
+        hiddenLabel: false,
         descriptionStyle: {
           whiteSpace: 'pre-wrap',
           lineHeight: '12px',
@@ -380,8 +381,23 @@ export default {
     title: '表单项',
     items: [
       {
+        title: '隐藏标题',
+        type: 'Switch',
+        value: {
+          get({ id, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id }, 'hiddenLabel');
+          },
+          set({ id, data }: EditorResult<Data>, val) {
+            setFormItemProps({ data, id }, 'hiddenLabel', val);
+          }
+        }
+      },
+      {
         title: '标题',
         type: 'text',
+        ifVisible({ id, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        },
         value: {
           get({ id, data }: EditorResult<Data>) {
             return getFormItemProp({ data, id }, 'label');
@@ -422,6 +438,9 @@ export default {
       {
         title: "标题提示",
         type: "Text",
+        ifVisible({ id, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        },
         description: "展示在标题后面的悬浮提示内容",
         value: {
           get({ id, data }: EditorResult<Data>) {
@@ -548,6 +567,9 @@ export default {
           {
             title: '标题自动换行',
             type: 'Radio',
+            ifVisible({ id, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            },
             options: [
               { label: '是', value: true },
               { label: '否', value: false },
@@ -565,6 +587,9 @@ export default {
           {
             title: '标题对齐方式',
             type: 'Radio',
+            ifVisible({ id, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            },
             options: [
               { label: '左对齐', value: 'left' },
               { label: '右对齐', value: 'right' },
@@ -582,6 +607,9 @@ export default {
           {
             title: '标题冒号',
             type: 'Radio',
+            ifVisible({ id, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
               { label: '显示', value: true },
@@ -601,6 +629,9 @@ export default {
             title: "标题样式",
             type: "Style",
             options: ['font'],
+            ifVisible({ id, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            },
             description: "表单项标题的字体样式",
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -626,6 +657,9 @@ export default {
           {
             title: '标题样式应用所有表单项',
             type: 'Button',
+            ifVisible({ id, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            },
             value: {
               set({ id, data }: EditorResult<Data>, value: {}) {
                 const item = data.items.find(item => item.id === id)
