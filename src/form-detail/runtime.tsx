@@ -5,7 +5,16 @@ import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
-  const { size, title, showTitle, layout, column, bordered, colon } = data || {};
+  const {
+    size,
+    title,
+    showTitle,
+    layout,
+    column,
+    bordered,
+    colon,
+    globalLabelStyle = {}
+  } = data || {};
   const [rawData, setData] = useState({});
   const rawDataRef = useRef({});
   rawDataRef.current = rawData;
@@ -115,6 +124,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         bordered={bordered}
         colon={colon}
         className={css.des}
+        labelStyle={globalLabelStyle}
       >
         {getDataSource().map((item) => {
           const {

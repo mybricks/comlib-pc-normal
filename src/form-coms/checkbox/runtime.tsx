@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Checkbox } from 'antd';
+import { Alert, Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { Option, OutputIds } from '../types';
@@ -13,7 +13,8 @@ export default function Runtime({
   outputs,
   logger,
   parentSlot,
-  id
+  id,
+  title
 }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -135,11 +136,18 @@ export default function Runtime({
     setCheckAll(e.target.checked);
     onValidateTrigger();
   };
-
+  if (data.renderError) {
+    return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
+  }
   return (
     <div>
       {data.checkAll && (
-        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+        <Checkbox
+          indeterminate={indeterminate}
+          onChange={onCheckAllChange}
+          checked={checkAll}
+          disabled={data.config.disabled}
+        >
           {data.checkAllText}
         </Checkbox>
       )}

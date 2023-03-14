@@ -1,4 +1,3 @@
-import { getObjectStr } from '../../utils/toReact';
 import { Data } from './runtime';
 
 export default function ({ data }: RuntimeParams<Data>) {
@@ -12,12 +11,11 @@ export default function ({ data }: RuntimeParams<Data>) {
       }
     })
     
-    const str = `<div style={${getObjectStr(CascaderCls)}}>
-                  <Cascader
+    const str = `<Cascader
                   ${configStr}
+                  style={{ width: '100%' }}
                   multiple={${data.isMultiple}}
-                  />
-                </div>`
+                  />`
 
     return {
         imports: [

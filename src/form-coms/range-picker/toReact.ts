@@ -1,49 +1,59 @@
-import moment from 'moment';
 import { getPropsFromObject, getObjectStr } from '../../utils/toReact';
 import { Data } from './runtime';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
+  const defaultDeps: { from: string, default: string }[] = [];
+
   const getShowTime = () => {
     if (!data.showTime || typeof data.showTime === 'boolean') {
       return data.showTime;
     }
-    return {
-      defaultValue: Array.isArray(data.showTime?.defaultValue)
-        ? data.showTime?.defaultValue.map((item) => moment(item, 'HH:mm:ss'))
-        : undefined
-    };
+
+    const defaultStartTime = (Array.isArray(data.showTime?.defaultValue) && data.showTime.defaultValue[0]);
+    const defaultEndTime = Array.isArray(data.showTime?.defaultValue) && data.showTime.defaultValue[1];
+
+    const defaultStartTimeStr = defaultStartTime ? `moment('${data.showTime.defaultValue[0]}', 'HH:mm:ss')`
+      : 'null';
+    const defaultEndTimeStr = defaultEndTime ? `moment('${data.showTime.defaultValue[1]}', 'HH:mm:ss')`
+      : 'null';
+
+    if (defaultStartTime || defaultEndTime) defaultDeps.push({
+      from: 'moment',
+      default: 'moment'
+    });
+    return defaultStartTime || defaultEndTime
+      ? () => `{
+          defaultValue: [ ${defaultStartTimeStr}, ${defaultEndTimeStr}]
+        }`
+      : true
   };
-    const datePickerCls = {
-    };
-    const datePickerCfg = {
-        // value,
-        showTime: getShowTime(),
-        ...data.config,
-        style: {
-            width: '100%'
-        },
-        // onChange,
-    };
 
-    const str = `<div style={${getObjectStr(datePickerCls)}}>
-                   <DatePicker.RangePicker
-                   ${getPropsFromObject(datePickerCfg)}
-                   />
-                 </div>`
+  const datePickerCfg = {
+    // value,
+    showTime: getShowTime(),
+    ...data.config,
+    style: {
+      width: '100%'
+    },
+    // onChange,
+  };
 
-    return {
-        imports: [
-            {
-                from: 'antd',
-                coms: ['DatePicker']
-            },
-            {
-                from: 'antd/dist/antd.css',
-                coms: []
-            }
-        ],
-        jsx: str,
-        style: '',
-        js: ''
-    }
+  const str = `<DatePicker.RangePicker ${getPropsFromObject(datePickerCfg)} />`
+
+  return {
+    imports: [
+      {
+        from: 'antd',
+        coms: ['DatePicker']
+      },
+      ...defaultDeps,
+      {
+        from: 'antd/dist/antd.css',
+        coms: []
+      }
+    ],
+    jsx: str,
+    style: '',
+    js: ''
+  }
 }

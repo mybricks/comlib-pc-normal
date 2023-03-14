@@ -297,6 +297,9 @@ export default function (props: RuntimeParams<Data>) {
         if (typeof ds?.pageSize === 'number' && ds?.pageSize > 0) {
           data.paginationConfig.pageSize = ds?.pageSize;
         }
+        if (typeof ds?.pageNum === 'number') {
+          data.paginationConfig.current = ds?.pageNum;
+        }
       } else {
         console.error('[数据表格]：未传入列表数据', ds);
       }

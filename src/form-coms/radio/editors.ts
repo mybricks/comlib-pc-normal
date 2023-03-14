@@ -108,19 +108,28 @@ export default {
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
+            let otherChanged = true;
             tempOptions.forEach(oldOption => {
               const newOption = options.find(option => option._id === oldOption._id);
               const currentOption = data.staticOptions.find(option => option._id === oldOption._id);
               if (newOption?.checked === currentOption?.checked) return;
-              // 设置了选项的默认选中
+              // 1. 设置了选项的默认选中
               if (newOption?.checked && !oldOption?.checked) {
+                otherChanged = false;
                 data.value = newOption.value;
               }
-              // 取消了选项的默认选中
+              // 2. 取消了选项的默认选中
               if (!newOption?.checked && oldOption?.checked) {
+                otherChanged = false;
                 data.value = undefined;
               }
             });
+            // 3. 非默认选中引起的set
+            if (otherChanged) {
+              options.forEach(option => {
+                if (option.checked) data.value = option.value;
+              })
+            }
             // 临时:使用tempOptions存储配置项的prev
             tempOptions = options;
             const formItemVal = data.value;

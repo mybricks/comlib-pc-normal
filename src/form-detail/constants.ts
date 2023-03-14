@@ -75,6 +75,7 @@ export interface Data {
   useSlotProps?: boolean;
   rawData: any;
   inputSchema: any;
+  globalLabelStyle: React.CSSProperties
 }
 
 export const InputIds = {

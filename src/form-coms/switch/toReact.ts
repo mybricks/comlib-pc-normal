@@ -6,7 +6,7 @@ export default function ({ data }) {
     }
   })
 
-  let str = `<Switch ${configStr} />`
+  let str = `<Switch disabled={${data.config.disabled}} defaultChecked={${data.config.checked}} />`
 
   return {
     imports: [

@@ -10,7 +10,9 @@
       "isCustom": false,
       "contentSize": [14, 14],
       "iconDistance": 8,
-      "src": ""
+      "src": "",
+      "loading": false,
+      "useDynamicLoading": false
     }
   ],
   "layout": "flex-start",

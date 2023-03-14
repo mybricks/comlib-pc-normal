@@ -16,6 +16,12 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     const datePickerWrapProps = {
         style: {}
     };
+
+    const defaultDatePickerProps = {
+        showTime: false,
+        disabled: false,
+        picker: 'date'
+    };
     const datePickerProps: DatePickerProps = {
         // value,
         showTime: getShowTime(),
@@ -26,11 +32,15 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // onChange,
     };
 
-    const str = `<div ${getPropsFromObject(datePickerWrapProps)}>
-                   <DatePicker
-                    ${getPropsFromObject(datePickerProps)}
-                   />
-                 </div>`
+    const str = `<DatePicker
+                  ${getPropsFromObject(datePickerProps, defaultDatePickerProps)}
+                />`
+
+    const defaultDeps: { from: string, default: string }[] = [];
+    if (data.showTime?.defaultValue) defaultDeps.push({
+        from: 'moment',
+        default: 'moment'
+    });
 
     return {
         imports: [
@@ -38,10 +48,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
                 from: 'antd',
                 coms: ['DatePicker']
             },
-            {
-                from: 'moment',
-                default: 'moment'
-            },
+            ...defaultDeps,
             {
                 from: 'antd/dist/antd.css',
                 coms: []

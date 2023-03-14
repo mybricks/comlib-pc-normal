@@ -50,22 +50,21 @@ const renderUploadText = (data)=>{
     }
 }
 
-    const str = `<div>
-                   <${UploadNode}
-                   name={'${data.config.fileKey}'}
-                   listType={'${data.config.listType}'}
-                   ${data.config.fileType.length !== 0 ? `accept={'${data.config.fileType.join()}'}` : '' }
-                   customRequest={() => {}}
-                   disabled={${data.config.disabled || false}}
-                   multiple={${data.config.multiple || false}}
-                   maxCount={${data.config.fileCount}}
-                   showUploadList={{
-                    showPreviewIcon: ${data.config.usePreview || false}
-                   }}
-                    >
-                      ${renderUploadText(data)}
-                    </${UploadNode}>
-                 </div>`
+    const str = `<${UploadNode}
+                  name={'${data.config.fileKey}'}
+                  ${data.config.listType !== 'dragger' ? `listType={'${data.config.listType}'}` : ''}
+                  ${data.config.fileType.length !== 0 ? `accept={'${data.config.fileType.join()}'}` : '' }
+                  customRequest={() => {}}
+                  disabled={${data.config.disabled || false}}
+                  multiple={${data.config.multiple || false}}
+                  maxCount={${data.config.fileCount}}
+                  showUploadList={{
+                  showPreviewIcon: ${data.config.usePreview || false}
+                  }}
+                  >
+                    ${renderUploadText(data)}
+                </${UploadNode}>`
+                   
 
     return {
         imports: [

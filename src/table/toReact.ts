@@ -1,4 +1,4 @@
-import { TableProps, TooltipProps } from 'antd';
+import { TableColumnProps, TableProps, TooltipProps } from 'antd';
 import { CompareFn, TableRowSelection } from 'antd/es/table/interface';
 import { getObjectStr, getPropsFromObject, getClsStyle } from '../utils/toReact';
 import { SizeTypeEnum } from './components/Paginator/constants';
@@ -17,9 +17,18 @@ const cssVariables = {
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
   /**数据预处理 */
+  let useMoment = false;
   data.columns.map(item => {
     if (!item.dataIndex) item.dataIndex = item.title;
+    if (item.sorter?.enable && item.sorter?.type === SorterTypeEnum.Date) {
+      useMoment = true;
+    }
   });
+  const defaultDeps = useMoment ? [{
+    from: 'moment',
+    default: 'moment'
+  }] : [];
+
 
   const tableHeaderStr = getTableHeaderStr({ data, slots });
   const tableBodyStr = getTableBodyStr({ data, slots });
@@ -39,7 +48,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
     imports: [
       {
         from: 'antd',
-        coms: ['Table', 'Empty', 'Pagination', 'Button', 'Tooltip', 'Dropdown', 'Menu', 'Checkbox']
+        coms: ['Table', 'Pagination', 'Button', 'Tooltip', 'Dropdown', 'Menu', 'Checkbox']
       },
       {
         from: '@ant-design/icons',
@@ -49,14 +58,7 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         from: 'antd/dist/antd.css',
         coms: []
       },
-      {
-        from: 'lodash/get',
-        default: 'get'
-      },
-      {
-        from: 'moment',
-        default: 'moment'
-      },
+      ...defaultDeps
     ],
     jsx: str,
     style: '',
@@ -369,12 +371,13 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
     }
     return '';
   };
-  const str = `<div
+  const actionStr = getActionStr();
+  const str = (tableTitleStr || actionStr) ? `<div
                 ${getPropsFromObject(headerProps)}
                 >
                 ${tableTitleStr}
-                ${getActionStr()}
-              </div>`
+                ${actionStr}
+              </div>`: '';
 
   return str;
 }
@@ -387,7 +390,17 @@ function getTableHeaderStr({ data, slots }: { data: Data, slots: any }) {
 function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
   const { tableLayout, loadingTip, columns, sortParams, filterParams } = data;
 
-  const defaultDataSource = data.columns.map((item, inx) => ({ [item.title]: '-' + item.title + '-', '_uuid': item.title + inx }));
+
+  const defaultDataSource = data.columns.map((item, inx) => {
+    const dataIndex = item.dataIndex ?
+      (
+        Array.isArray(item.dataIndex) ?
+          item.dataIndex.join('.')
+          : item.dataIndex
+      )
+      : item.title;
+    return { [dataIndex]: '-' + item.title + '-', 'key': dataIndex }
+  });
 
   /**
    * 获取表格列codeStr
@@ -431,6 +444,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         title: getTitleRenderStr(),
         align: align || AlignEnum.Left,
         onHeaderCell: () => {
+          if (!titleBgColor && !titleColor) return '';
           return `(): any => {
                     return {
                       style: ${getObjectStr(headerCellStyle)}
@@ -452,8 +466,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         case SorterTypeEnum.Length:
           sorter = () => {
             return `(a, b) => {
-                      const aVal = get(a, '${cItem.dataIndex}');
-                      const bVal = get(b, '${cItem.dataIndex}');
+                      const aVal = a['${cItem.dataIndex}'];
+                      const bVal = b['${cItem.dataIndex}'];
                       if (typeof aVal !== 'string' || typeof bVal !== 'string') {
                         return 0;
                       }
@@ -464,8 +478,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         case SorterTypeEnum.Size:
           sorter = () => {
             return `(a, b) => {
-                      const aVal = get(a, '${cItem.dataIndex}');
-                      const bVal = get(b, '${cItem.dataIndex}');
+                      const aVal = a['${cItem.dataIndex}'];
+                      const bVal = b['${cItem.dataIndex}'];
                       if (typeof aVal !== 'number' || typeof bVal !== 'number') {
                         return 0;
                       }
@@ -476,8 +490,8 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
         case SorterTypeEnum.Date:
           sorter = () => {
             return `(a, b) => {
-                      const aVal = get(a, '${cItem.dataIndex}');
-                      const bVal = get(b, '${cItem.dataIndex}');
+                      const aVal = a['${cItem.dataIndex}'];
+                      const bVal = b['${cItem.dataIndex}'];
                       if (!aVal || !bVal) {
                         return 0;
                       }
@@ -493,6 +507,7 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
 
     // 筛选
     let filterMap = {};
+    const useFilter = cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request;
     columns.forEach((cItem) => {
       if (!cItem.dataIndex && cItem.title) {
         cItem.dataIndex = formatColumnItemDataIndex(cItem);
@@ -500,15 +515,15 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       const dataIndex = Array.isArray(cItem.dataIndex)
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;
-      if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
-        filterMap[dataIndex] = cItem.filter.options || [];
+      if (useFilter) {
+        filterMap[dataIndex] = cItem.filter?.options || [];
       }
     });
     const onFilter =
-      cItem.filter?.type !== FilterTypeEnum.Request
+      useFilter
         ? () => {
           return `(value, record) => {
-                    return get(record, '${cItem.dataIndex}') == value;
+                    return record['${cItem.dataIndex}'] == value;
                   }`
         }
         : null;
@@ -524,12 +539,10 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
       render: () => {
         switch (contentType) {
           case ContentTypeEnum.Text:
-            return `(text, record, index) => {
-                      return ${dataIndex || title ? 'text' : ''};
-                    }`;
+            return ``;
           case ContentTypeEnum.SlotItem:
             if (!slotId || !slots[slotId]?.render) {
-              return 'null';
+              return '';
             }
             const slotStr = slots[slotId]?.render({})?.trim() || '<></>';
             return `(text, record, index) => {
@@ -565,83 +578,99 @@ function getTableBodyStr({ data, slots }: { data: Data, slots: any }) {
                 }`
       }
     };
+    // 列默认props
+    const defaultColumnProps: TableColumnProps<IColumn> = {
+      fixed: false,
+      ellipsis: false,
+      filterMultiple: true,
+      showSorterTooltip: true,
+      onCell: () => {
+        return `() => {
+                  return {
+                    style: {}
+                  };
+                }`;
+      },
+      onHeaderCell: () => {
+        return `(): any => {
+                  return {
+                    style: {}
+                  };
+                }`
+      }
+    };
+
     return `<Table.Column
-              ${getPropsFromObject(columnProps)}
+              ${getPropsFromObject(columnProps, defaultColumnProps)}
             />`;
   };
 
-  if (data.columns.length) {
-    const { size, bordered, useRowSelection, showHeader, selectionType, useExpand, scroll, fixedHeader } = data;
-    const rowKey = data.rowKey?.trim() || '_uuid';
-    // 勾选配置
-    const rowSelection: TableRowSelection<any> = {
-      selectedRowKeys: [],
-      preserveSelectedRowKeys: true,
-      onChange: () => {
-        return `(selectedRowKeys: any[], selectedRows: any[]) => {}`
-      },
-      type:
-        selectionType === RowSelectionTypeEnum.Radio
-          ? RowSelectionTypeEnum.Radio
-          : RowSelectionTypeEnum.Checkbox,
-      getCheckboxProps: () => {
-        return `(record) => null as any`
-      }
-    };
-    const tableProps: TableProps<any> = {
-      style: {
-        width: tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
-      },
-      dataSource: defaultDataSource,
-      loading: {
-        tip: loadingTip,
-        spinning: false
-      },
-      rowKey,
-      size,
-      bordered,
-      pagination: false,
-      rowSelection: useRowSelection ? rowSelection : void 0,
-      showHeader,
-      scroll: {
-        x: '100%',
-        y: (scroll.y && fixedHeader) ? scroll.y : void 0
-      },
-      expandable:
-        useExpand && slots[SlotIds.EXPAND_CONTENT]
-          ? () => `{
-            expandedRowKeys: ['${defaultDataSource[0][rowKey]}'],
+  const { size, bordered, useRowSelection, showHeader, selectionType, useExpand, scroll, fixedHeader } = data;
+  const rowKey = data.rowKey?.trim() || 'key';
+  // 勾选配置
+  const rowSelection: TableRowSelection<any> = {
+    selectedRowKeys: [],
+    preserveSelectedRowKeys: true,
+    onChange: () => {
+      return `(selectedRowKeys: any[], selectedRows: any[]) => {}`
+    },
+    type:
+      selectionType === RowSelectionTypeEnum.Radio
+        ? RowSelectionTypeEnum.Radio
+        : RowSelectionTypeEnum.Checkbox,
+    getCheckboxProps: () => {
+      return `(record) => null as any`
+    }
+  };
+  // 表格默认props
+  const defaultTableProps: TableProps<any> = {
+    loading: false,
+    rowKey: 'key',
+    size: 'default',
+    bordered: false,
+    showHeader: true,
+  };
+  // 表格props
+  const tableProps: TableProps<any> = {
+    style: {
+      width: tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth(data) : '100%'
+    },
+    dataSource: defaultDataSource,
+    loading: loadingTip ? {
+      tip: loadingTip,
+      spinning: false
+    } : false,
+    rowKey,
+    size,
+    bordered,
+    pagination: false,
+    rowSelection: useRowSelection ? rowSelection : void 0,
+    showHeader,
+    scroll: {
+      x: '100%',
+      y: (scroll.y && fixedHeader) ? scroll.y : void 0
+    },
+    expandable:
+      useExpand && slots[SlotIds.EXPAND_CONTENT]
+        ? () => `{
             expandedRowRender: (record, index) => {
               return ${slots[SlotIds.EXPAND_CONTENT].render({})};
             }
           }`
-          : void 0
-      ,
-      // onChange: onChange,
-      tableLayout: (tableLayout === TableLayoutEnum.FixedWidth
-        ? TableLayoutEnum.Fixed
-        : tableLayout)
-        || TableLayoutEnum.Fixed
-    };
-    const str = `<Table
-                  ${getPropsFromObject(tableProps)}
-                  >
-                  ${data.columns.map(getColumnStr).join('\n')}
-                  </Table>`
-    return str;
-  }
+        : void 0
+    ,
+    // onChange: onChange,
+    // 列宽分配
+    tableLayout: (tableLayout === TableLayoutEnum.FixedWidth
+      ? TableLayoutEnum.Fixed
+      : tableLayout)
+  };
 
-  const emptyStyle = {
-    border: '1px dashed rgb(176, 176, 176)',
-    margin: 0
-  };
-  const emptyProps = {
-    description: "请添加列",
-    style: emptyStyle
-  };
-  return `<Empty 
-            ${getPropsFromObject(emptyProps)}
-          />`;
+  return `<Table
+          ${getPropsFromObject(tableProps, defaultTableProps)}
+          >
+          ${data.columns.map(getColumnStr).join('\n')}
+          </Table>`
 }
 
 /**
@@ -709,6 +738,17 @@ function getTableFooterStr({ data, slots }) {
         justifyContent: align
       }
     };
+    // 分页器默认props
+    const defaultPaginationProps = {
+      total: 0,
+      size: 'default',
+      simple: false,
+      showQuickJumper: false,
+      pageSizeOptions: ["10", "20", "50", "100"],
+      hideOnSinglePage: false,
+      disabled: false
+    };
+    // 分页器props
     const paginationProps = {
       total: total,
       showTotal: () => {
@@ -745,7 +785,7 @@ function getTableFooterStr({ data, slots }) {
         ${getPropsFromObject(paginationWrapProps)}
       >
         <Pagination
-          ${getPropsFromObject(paginationProps)}
+          ${getPropsFromObject(paginationProps, defaultPaginationProps)}
         />
       </div>`
   };
@@ -763,7 +803,7 @@ function getTableFooterStr({ data, slots }) {
     }
   };
 
-  return `<div
+  return (useBottomRowSelection || usePagination) ? `<div
             ${getPropsFromObject(footerWrapProps)}
           >
             ${useBottomRowSelection ? getBatchBtnsStr({ data, slots }) : ''}
@@ -772,7 +812,7 @@ function getTableFooterStr({ data, slots }) {
               >
                 ${getPaginatorStr()}
               </div>`: ''}
-          </div>`;
+          </div>`: '';
 }
 
 // 获取表格显示列宽度和

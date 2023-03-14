@@ -1,4 +1,4 @@
-import { Data } from './types';
+import { Data, FormItems } from './types';
 import { inputIds, slotInputIds } from './constants'
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
@@ -48,6 +48,13 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
       item.name = item.name.trim();
     }
 
+    /**
+     * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
+     */
+    if (item.labelAlign === undefined) {
+      item.labelAlign = 'right';
+    }
+
   });
 
   /**
@@ -80,6 +87,14 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     slot?.get('content')._inputs.add(slotInputIds.VALIDATE_TRIGGER, '触发校验', validateTriggerSchema)
   }
 
+  /**
+    * @description v1.1.15 操作项visible初始化
+    */
+  data.actions.items?.forEach(act => {
+    if (act && act.visible === undefined) {
+      act.visible = true;
+    }
+  })
 
   return true;
 }

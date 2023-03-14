@@ -16,11 +16,10 @@ export default function ({ data, slots }: RuntimeParams<Data>) {
         // notFoundContent
     };
 
-    const str = `<div style={${getObjectStr(TimePickerCls)}}>
-                   <TimePicker
-                    ${getPropsFromObject(TimePickerCfg)}
-                   />
-                 </div>`
+    const str = `<TimePicker
+                  ${getPropsFromObject(TimePickerCfg)}
+                  style={{ width: '100%' }}
+                  />`               
 
     return {
         imports: [

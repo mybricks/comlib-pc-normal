@@ -9,7 +9,7 @@ export default {
   '[data-type-col]': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2, cate3) => {
     if (!focusArea) return;
     const item = getColItem(data, focusArea);
-    const mySlot = slot.get(item.slot);
+    const slotInstance = slot.get(item.slot);
     cate1.title = '常规';
     cate1.items = [
       ...WidthEditor,
@@ -34,6 +34,7 @@ export default {
               ...item.slotStyle,
               ...val
             };
+            slotInstance.setLayout(val.position)
           }
         }
       },

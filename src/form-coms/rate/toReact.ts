@@ -38,16 +38,14 @@ export default function ({ data }: RuntimeParams<Data>) {
         }
     };
 
-    const str = `<div style={${getObjectStr(rateCls)}}>
-                   <Rate
-                    ${getPropsFromObject(rateCfg)}
-                    ${data.isChoose && (data.choose === 'font' || 'icon')  ? 
-                    data.choose === 'font'
-                      ? `character={'${data.font}'}`
-                      : `character={<${iconStr()} />}`
-                    : ''}
-                   />
-                 </div>`
+    const str = ` <Rate
+                  ${getPropsFromObject(rateCfg)}
+                  ${data.isChoose && (data.choose === 'font' || 'icon')  ? 
+                  data.choose === 'font'
+                    ? `character={'${data.font}'}`
+                    : `character={<${iconStr()} />}`
+                  : ''}
+                />`
 
     return {
         imports: [

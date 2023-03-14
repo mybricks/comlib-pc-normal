@@ -16,12 +16,11 @@ export default function ({ data }: RuntimeParams<Data>) {
         // notFoundContent
     };
 
-    const str = `<div style={${getObjectStr(AutoCompleteCls)}}>
-                   <AutoComplete
+    const str = `<AutoComplete
                     ${getPropsFromObject(AutoCompleteCfg)}
+                    style={{ width: '100%' }}
                     ${data.options.length !==0 ? `options={${JSON.stringify(data.staticOptions)}}` : ''}
-                   />
-                 </div>`
+                   />`
 
     return {
         imports: [

@@ -79,7 +79,12 @@ export interface BtnItem {
   //输出值
   outVal: any;
   //外部输入值
-  inVal: any
+  inVal: any;
+
+  //是否开启loading
+  loading: boolean;
+  //设置动态加载
+  useDynamicLoading: boolean;
 }
 
 /**
