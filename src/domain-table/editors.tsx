@@ -105,6 +105,28 @@ export default {
 							    });
 						  }
 					  }
+				  },
+				  {
+					  type: 'array',
+					  ifVisible() {
+						  return !!data.formFieldAry;
+					  },
+					  options: {
+						  editable: false,
+						  addable: false,
+						  getTitle: ({ name }) => name,
+						  onRemove: (index: number) => {
+							  data.formFieldAry.splice(index, 1);
+						  },
+					  },
+					  value: {
+						  get({}: EditorResult<Data>) {
+							  return data.formFieldAry ?? [];
+						  },
+						  set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
+							  data.formFieldAry = val;
+						  }
+					  }
 				  }
 			  ]
 		  },
@@ -163,6 +185,32 @@ export default {
 								  fieldAry.push({ name: '操作', label: '操作', bizType: FieldBizType.FRONT_CUSTOM, id: 'operate' });
 							  }
 							  data.fieldAry = fieldAry;
+						  }
+					  }
+				  },
+				  {
+					  type: 'array',
+					  ifVisible() {
+						  return !!data.fieldAry;
+					  },
+					  options: {
+						  editable: false,
+						  addable: false,
+						  getTitle: ({ name }) => name,
+						  onRemove: (index: number) => {
+							  data.fieldAry.splice(index, 1);
+						  },
+					  },
+					  value: {
+						  get({}: EditorResult<Data>) {
+							  return data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM) ?? [];
+						  },
+						  set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
+								const curFields = val;
+							  if (curFields.length > 0) {
+								  curFields.push({ name: '操作', label: '操作', bizType: FieldBizType.FRONT_CUSTOM, id: 'operate' });
+							  }
+							  data.fieldAry = curFields;
 						  }
 					  }
 				  },
