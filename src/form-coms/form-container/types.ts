@@ -34,6 +34,7 @@ export interface FormItems {
   labelStyle?: {}
   labelAlign?: 'left' | 'right' | 'default'
   labelAutoWrap?: boolean | 'default'
+  hiddenLabel?: boolean
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
