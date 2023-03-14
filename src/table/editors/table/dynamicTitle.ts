@@ -5,7 +5,7 @@ import { Data } from '../../types';
 const DynamicTitleEditor = [
   {
     title: '动态设置表头',
-    description: '开启后, 支持通过逻辑连线, 动态设置表格标题和字段',
+    description: '开启后, 支持通过逻辑连线, 动态设置表格标题、字段和宽度',
     type: 'switch',
     value: {
       get({ data }: EditorResult<Data>) {
