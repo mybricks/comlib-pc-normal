@@ -35,7 +35,13 @@ const FormItem = (props: FormItemProps) => {
   const colon = item?.colon === 'default' ? formColon : item.colon;
   const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
   const whiteSpace =
-    item?.labelAutoWrap === 'default' ? void 0 : item.labelAutoWrap ? 'pre-wrap' : 'nowrap';
+    item?.labelAutoWrap === 'default'
+      ? data.config?.labelWrap
+        ? 'pre-wrap'
+        : 'nowrap'
+      : item.labelAutoWrap
+      ? 'pre-wrap'
+      : 'nowrap';
 
   return (
     <Form.Item

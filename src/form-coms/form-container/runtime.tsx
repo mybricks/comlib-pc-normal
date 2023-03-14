@@ -267,6 +267,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
   };
 
+  const { labelWrap, ...formCfg } = data.config;
+
   return (
     <div className={css.wrapper}>
       <Fragment>
@@ -276,7 +278,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
             }
-            {...data.config}
+            {...formCfg}
             // wrapperCol={{ span: 16 }}
           >
             <SlotContent
