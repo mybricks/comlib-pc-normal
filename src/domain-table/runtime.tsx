@@ -174,7 +174,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		} else if (field.form.formItem === ComponentName.INPUT_NUMBER) {
 			item = <InputNumber placeholder={placeholder} />
 		} else if (field.form.formItem === ComponentName.SELECT) {
-			item = <Select placeholder={option.placeholder ?? `请选择${field.name}`} />
+			item = <Select placeholder={option.placeholder ?? `请选择${field.name}`} options={field.form?.options ?? []} />
 		} else if (field.mapping?.entity && field.form.formItem === ComponentName.DEBOUNCE_SELECT) {
 			item = <DebounceSelect placeholder={option.placeholder ?? '可输入关键词检索'} field={field} fetchParams={baseFetchParams}/>
 		} else if (field.form.formItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
