@@ -1,14 +1,14 @@
-import { Select, Spin } from 'antd';
-import type { SelectProps } from 'antd/es/select';
+import {Select, Spin} from 'antd';
 import debounce from 'lodash/debounce';
-import React, {FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {ajax} from "../../util";
+import {Field} from "../../type";
 
 interface DebounceSelectProps {
 	value?: string;
 	onChange?(value: string): void;
 	fetchParams: Record<string, unknown>;
-	field: Record<string, unknown>;
+	field: Field;
 	placeholder: string;
 }
 type ValueType = any;

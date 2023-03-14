@@ -48,3 +48,33 @@ export enum ModalAction {
 	CREATE = 'create',
 	EDIT = 'edit',
 }
+
+export enum ComponentName {
+	INPUT = 'Input',
+	INPUT_NUMBER = 'InputNumber',
+	SELECT = 'Select',
+	DATE_PICKER = 'DatePicker',
+	UPLOAD = 'Upload',
+	IMAGE_UPLOAD = 'ImageUpload',
+	RADIO = 'Radio',
+	CHECKBOX = 'Checkbox',
+	DEBOUNCE_SELECT = 'DebounceSelect',
+}
+
+export const DefaultComponentNameMap = {
+	[FieldBizType.STRING]: ComponentName.INPUT,
+	[FieldBizType.NUMBER]: ComponentName.INPUT_NUMBER,
+	[FieldBizType.DATETIME]: ComponentName.DATE_PICKER,
+	[FieldBizType.HREF]: ComponentName.INPUT,
+	[FieldBizType.PHONE]: ComponentName.INPUT,
+	[FieldBizType.EMAIL]: ComponentName.INPUT,
+	[FieldBizType.IMAGE]: ComponentName.IMAGE_UPLOAD,
+	[FieldBizType.APPEND_FILE]: ComponentName.UPLOAD,
+	[FieldBizType.RADIO]: ComponentName.RADIO,
+	[FieldBizType.CHECKBOX]: ComponentName.CHECKBOX,
+	[FieldBizType.RELATION]: ComponentName.DEBOUNCE_SELECT,
+	[FieldBizType.MAPPING]: ComponentName.DEBOUNCE_SELECT,
+	[FieldBizType.SYS_USER]: ComponentName.DEBOUNCE_SELECT,
+	[FieldBizType.SYS_USER_CREATOR]: ComponentName.DEBOUNCE_SELECT,
+	[FieldBizType.SYS_USER_UPDATER]: ComponentName.DEBOUNCE_SELECT,
+};

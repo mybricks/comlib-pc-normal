@@ -1,31 +1,17 @@
 import React from "react";
-import {Data, FieldBizType, FieldDBType, ModalAction} from './constants';
+import {DefaultComponentNameMap, Data, FieldBizType, FieldDBType, ModalAction, ComponentName} from './constants';
 import {uuid} from "../utils";
 import {RuleKeys, RuleMapByBizType} from "./rule";
+import {ajax} from "./util";
 
 export default {
-  '@init'({ style, data }) {
-	  fetch('/api/system/domain/entity/list', {
-		  method: 'POST',
-		  headers: {
-			  'Content-Type': 'application/json'
-		  },
-		  credentials: undefined,
-		  body: JSON.stringify({
-			  fileId: 344
-		  })
-	  } as RequestInit)
-	  .then(res => res.json())
-	  .then(res => {
-			  if (res.code === 1) {
-					data.domainAry = res.data || [];
-			  }
-	  })
+  '@init'({ data }) {
+		ajax({ fileId: 344 }).then(res => data.domainAry = res || []);
   },
   '@resize': {
     options: ['width', 'height']
   },
-  ':root': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+  ':root': ({ data, focusArea }: EditorResult<Data>, cate1) => {
 		const fieldAry = data.entity?.fieldAry ?? [];
 		
 	  cate1.title = '常规';
@@ -39,7 +25,7 @@ export default {
 					  options (props) {
 						  return {
 							  get options() {
-								  const entityList = [];
+								  const entityList: Array<{ label: string; value: string }> = [];
 								  props.data.domainAry.forEach(domain => {
 									  domain.entityList
 									  .filter(entity => !entity.isSystem)
@@ -53,7 +39,7 @@ export default {
 						  }
 					  },
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.domainFileId ? `${data.domainFileId}.${data.entityId}` : undefined;
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: string = '') {
@@ -103,11 +89,20 @@ export default {
 						  }
 					  },
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.formFieldAry?.map(field => field.id) || [];
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: string[]) {
-							  data.formFieldAry = value.map(id => data.entity.fieldAry.find(entity => entity.id === id)).filter(Boolean);
+							  data.formFieldAry = value
+							    .map(id => data.entity.fieldAry.find(entity => entity.id === id))
+							    .filter(Boolean)
+							    .map(field => {
+										const curField = JSON.parse(JSON.stringify(field));
+										!curField.form && (curField.form = {});
+								    curField.form.formItem = DefaultComponentNameMap[field.bizType] || ComponentName.INPUT;
+										
+										return curField;
+							    });
 						  }
 					  }
 				  }
@@ -127,7 +122,7 @@ export default {
 							  mode: 'tags',
 							  multiple: true,
 							  get options() {
-								  const options = [];
+								  const options: Array<{ label: string; value: string }> = [];
 								  props.data.entity?.fieldAry?.forEach(field => {
 									  if (field.mapping?.entity) {
 										  field.mapping?.entity.fieldAry.forEach(f => {
@@ -142,7 +137,7 @@ export default {
 						  }
 					  },
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM)?.map(field => field.mappingField ? `${field.id}.${field.mappingField.id}` : field.id) || [];
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: string[]) {
@@ -175,7 +170,7 @@ export default {
 					  title: '开启分页',
 					  type: 'Switch',
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.pagination.show;
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: boolean) {
@@ -192,7 +187,7 @@ export default {
 					  title: '打开新增弹框',
 					  type: 'Switch',
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.showActionModalForEdit === ModalAction.CREATE;
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: boolean) {
@@ -209,7 +204,7 @@ export default {
 					  title: '打开编辑弹框',
 					  type: 'Switch',
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.showActionModalForEdit === ModalAction.EDIT;
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: boolean) {
@@ -223,7 +218,7 @@ export default {
 					  ifVisible({ data }: EditorResult<Data>) {
 						  return data.showActionModalForEdit === ModalAction.EDIT;
 					  },
-					  options (props) {
+					  options () {
 						  return {
 							  mode: 'tags',
 							  multiple: true,
@@ -233,17 +228,17 @@ export default {
 						  }
 					  },
 					  value: {
-						  get({ data, output }: EditorResult<Data>) {
+						  get() {
 							  return fieldAry.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate && !field.form.disabledForEdit).map(field => field.id);
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: string[]) {
-								const fields = fieldAry.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
+								const fields = fieldAry
+									.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
 							
 							  fields.forEach(field => {
-								  if (!field.form) {
-									  field.form = {};
-								  }
+								  !field.form && (field.form = {});
 								
+								  !field.form.formItem && (field.form.formItem = DefaultComponentNameMap[field.bizType] || ComponentName.INPUT);
 								  field.form.disabledForEdit = !value.includes(field.id);
 							  });
 						  }
@@ -253,7 +248,7 @@ export default {
 		  },
 	  ]
   },
-	'.ant-form-item-search': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+	'.ant-form-item-search': ({ data, focusArea }: EditorResult<Data>, cate1) => {
 		const field = data.formFieldAry.find(f => f.id === focusArea.dataset.fieldId);
 		
 		if (!field) {
@@ -266,7 +261,7 @@ export default {
 				title: '标签名称',
 				type: 'Text',
 				value: {
-					get({ data, focusArea }: EditorResult<Data>) {
+					get() {
 						return field.form?.label ?? field?.name;
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
@@ -277,10 +272,36 @@ export default {
 					}
 				}
 			},
-			[FieldBizType.RADIO, FieldBizType.CHECKBOX].includes(field.bizType) ? {
+			{
+				title: '表单项类型',
+				type: 'Select',
+				options: [
+					{ label: "输入框", value: ComponentName.INPUT },
+					{ label: "数字输入框", value: ComponentName.INPUT_NUMBER },
+					{ label: "下拉框", value: ComponentName.SELECT },
+					{ label: "时间选择器", value: ComponentName.DATE_PICKER },
+					{ label: "单选", value: ComponentName.RADIO },
+					{ label: "复选框", value: ComponentName.CHECKBOX },
+					{ label: "下拉搜索框", value: ComponentName.DEBOUNCE_SELECT },
+					{ label: "图片上传", value: ComponentName.IMAGE_UPLOAD },
+					{ label: "上传", value: ComponentName.UPLOAD }
+				],
+				value: {
+					get() {
+						return field.form?.formItem ?? ComponentName.INPUT;
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						field.form.formItem = value;
+					}
+				}
+			},
+			{
 				title: '下拉选项列表',
 				description: '可设置表单项下拉选项',
 				type: 'array',
+				ifVisible() {
+					return [ComponentName.RADIO, ComponentName.CHECKBOX, ComponentName.SELECT].includes(field.form.formItem);
+				},
 				options: {
 					addText: '添加选项',
 					editable: true,
@@ -333,7 +354,7 @@ export default {
 						field.form.options = val;
 					}
 				}
-			} : undefined,
+			},
 			{
 				title: '检索规则',
 				type: 'Select',
@@ -377,7 +398,7 @@ export default {
 					}
 				},
 				value: {
-					get({ data, focusArea }: EditorResult<Data>) {
+					get() {
 						return field.form.operator ?? '=';
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
@@ -390,7 +411,7 @@ export default {
 			},
 		].filter(Boolean);
 	},
-	'.ant-form-item-area': ({ focusArea, data }: EditorResult<Data>, cate1, cate2, cate3) => {
+	'.ant-form-item-area': ({ focusArea, data }: EditorResult<Data>, cate1) => {
 		const field = data.entity.fieldAry.find(f => f.id === focusArea.dataset.fieldId);
 		
 		if (!field) {
@@ -431,10 +452,36 @@ export default {
 					}
 				}
 			},
-			[FieldBizType.RADIO, FieldBizType.CHECKBOX].includes(field.bizType) ? {
+			{
+				title: '表单项类型',
+				type: 'Select',
+				options: [
+					{ label: "输入框", value: ComponentName.INPUT },
+					{ label: "数字输入框", value: ComponentName.INPUT_NUMBER },
+					{ label: "下拉框", value: ComponentName.SELECT },
+					{ label: "时间选择器", value: ComponentName.DATE_PICKER },
+					{ label: "单选", value: ComponentName.RADIO },
+					{ label: "复选框", value: ComponentName.CHECKBOX },
+					{ label: "下拉搜索框", value: ComponentName.DEBOUNCE_SELECT },
+					{ label: "图片上传", value: ComponentName.IMAGE_UPLOAD },
+					{ label: "上传", value: ComponentName.UPLOAD }
+				],
+				value: {
+					get() {
+						return field.form?.formItem ?? ComponentName.INPUT;
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						field.form.formItem = value;
+					}
+				}
+			},
+			{
 				title: '下拉选项列表',
 				description: '可设置表单项下拉选项',
 				type: 'array',
+				ifVisible() {
+					return [ComponentName.RADIO, ComponentName.CHECKBOX, ComponentName.SELECT].includes(field.form.formItem);
+				},
 				options: {
 					addText: '添加选项',
 					editable: true,
@@ -487,7 +534,7 @@ export default {
 						field.form.options = val;
 					}
 				}
-			} : undefined,
+			},
 			{
 				title: '校验规则',
 				description: '提供快捷校验配置',
@@ -501,7 +548,7 @@ export default {
 							title: '提示文字',
 							type: 'Text',
 							value: 'message',
-							ifVisible(item: any, index: number) {
+							ifVisible(item: any) {
 								return item.key === RuleKeys.REQUIRED;
 							}
 						},
@@ -524,7 +571,7 @@ export default {
 									}
 								}
 							},
-							ifVisible(item: any, index: number) {
+							ifVisible(item: any) {
 								return item.key === RuleKeys.CODE_VALIDATOR;
 							},
 							value: 'validateCode'
@@ -549,7 +596,7 @@ export default {
 			},
 		].filter(Boolean);
 	},
-	'th.ant-table-cell': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+	'th.ant-table-cell': ({ }: EditorResult<Data>, cate1) => {
 		cate1.title = '常规';
 		cate1.items = [
 			{

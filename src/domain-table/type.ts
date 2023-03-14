@@ -1,4 +1,4 @@
-import { DefaultValueWhenCreate } from './constants';
+import {DefaultValueWhenCreate, FieldBizType, FieldDBType} from './constants';
 
 export interface Entity {
 	/** 表 ID，在前端编辑页使用 */
@@ -52,4 +52,5 @@ export interface Field {
 	defaultValueWhenCreate?: DefaultValueWhenCreate;
 	/** 查询数据时格式化类型 */
 	showFormat: string;
+	form: any;
 }

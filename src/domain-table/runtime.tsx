@@ -1,19 +1,18 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
 	Button,
+	Checkbox,
 	Col,
+	ConfigProvider,
 	DatePicker,
 	Form,
 	Input,
 	InputNumber,
-	message,
 	Modal,
-	Row,
-	Table,
 	Radio,
-	Checkbox,
-	Upload,
-	ConfigProvider
+	Row, Select,
+	Table,
+	Upload
 } from 'antd';
 import {ColumnsType} from 'antd/es/table';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
@@ -21,9 +20,10 @@ import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from "./ccomponents/debouce-select";
 import {RuleMap} from "./rule";
 import {ajax} from "./util";
-import {Data, FieldBizType, ModalAction} from './constants';
+import {ComponentName, Data, FieldBizType, ModalAction} from './constants';
 
 import styles from './runtime.less';
+import {Field} from "./type";
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
@@ -43,8 +43,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	const currentData = useRef<Record<string, unknown>>({});
 	const containerRef = useRef(null);
 	const domainContainerRef = useRef(null);
-	const [page, setPage] = useState(INIT_PAGE);
-	const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
+	const searchFormValue = useRef({});
+	const [pageIndex, setPageIndex] = useState(INIT_PAGE);
+	const [pageSize, setPageSize] = useState<number>(3 || data.pagination?.pageSize || INIT_PAGE_SIZE);
 	const [total, setTotal] = useState(0);
 	const baseFetchParams = useMemo(() => {
 		return {
@@ -57,7 +58,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	
 	const handleData = useCallback((query, pageInfo?: Record<string, unknown>) => {
 		setLoading(true);
-		const pageParams = pageInfo || { page, pageSize: edit ? 5 : pageSize };
+		const pageParams = pageInfo || { pageIndex, pageSize: edit ? 5 : pageSize };
 		pageParams.pagination = data.pagination?.show;
 		
 		ajax({
@@ -78,22 +79,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			}
 		})
 		.finally(() => setLoading(false));
-	}, [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, page, pageSize]);
+	}, [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, pageIndex, pageSize]);
 	
 	const onDelete = useCallback((id: number) => {
-		ajax(
-			{
-				params: {
-					query: { id },
-					action: 'DELETE'
-				},
-				...baseFetchParams
-			},
-			{ successTip: '删除成功', errorTip: '删除失败' }
-		)
+		ajax({ params: { query: { id }, action: 'DELETE' }, ...baseFetchParams}, { successTip: '删除成功', errorTip: '删除失败' })
 		.then(() => {
-			form.resetFields();
-			handleData({});
+			handleData(searchFormValue.current);
 		})
 	}, [handleData, baseFetchParams]);
 	const onEdit = useCallback((item: Record<string, unknown>) => {
@@ -160,52 +151,74 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 				};
 				try {
 					if (item.isAfter) {
-						item = { value: item.valueOf() };
+						item.value = item.valueOf();
 					}
 				} catch {}
 				
 				curValue[key] = item;
 			});
 			
-			handleData(curValue);
+			setPageIndex(1);
+			setPageSize(3 || data.pagination?.pageSize || INIT_PAGE_SIZE);
+			searchFormValue.current = curValue;
+			handleData(curValue, { pageIndex: 1, pageSize: 3 || data.pagination?.pageSize || INIT_PAGE_SIZE });
 		}).catch(_ => _);
-	}, [handleData, data.formFieldAry]);
+	}, [handleData, data.formFieldAry, data.pagination?.pageSize]);
 	
-	const renderFormNode = () => {
+	const renderFormItemNode = useCallback((field: Field, option: { placeholder?: string }) => {
+		let placeholder = option.placeholder ?? `请输入${field.name}`;
+		let item = <Input placeholder={placeholder} />;
+		
+		if (field.form.formItem === ComponentName.DATE_PICKER) {
+			item = <DatePicker style={{ width: '100%' }} showTime placeholder={option.placeholder ?? `请选择${field.name}`} />;
+		} else if (field.form.formItem === ComponentName.INPUT_NUMBER) {
+			item = <InputNumber placeholder={placeholder} />
+		} else if (field.form.formItem === ComponentName.SELECT) {
+			item = <Select placeholder={option.placeholder ?? `请选择${field.name}`} />
+		} else if (field.mapping?.entity && field.form.formItem === ComponentName.DEBOUNCE_SELECT) {
+			item = <DebounceSelect placeholder={option.placeholder ?? '可输入关键词检索'} field={field} fetchParams={baseFetchParams}/>
+		} else if (field.form.formItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
+			item = <Input addonBefore="+86" placeholder={placeholder} />;
+		} else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
+			item = <Upload />;
+		} else if (field.form.formItem === ComponentName.RADIO) {
+			item = <Radio.Group options={field.form?.options ?? []} />;
+		} else if (field.form.formItem === ComponentName.RADIO) {
+			item = <Checkbox.Group options={field.form?.options ?? []} />;
+		} else if (field.bizType === FieldBizType.HREF) {
+		} else if (field.bizType === FieldBizType.APPEND_FILE) {
+			item = <Upload />;
+		}
+		
+		return item;
+	}, []);
+	
+	const renderSearchFormNode = () => {
 		if (data.formFieldAry?.length) {
 			return (
 				<Form form={form} layout="inline" className={`${styles.form} search-form`}>
 					{data.formFieldAry.map(field => {
-						let placeholder = `可输入${field.name}检索`;
+						let placeholder: string | undefined = undefined;
 						let defaultValue = undefined;
-						let item = <Input placeholder={placeholder} />;
 						
-						if (field.bizType === FieldBizType.DATETIME) {
+						if (field.form.formItem === ComponentName.INPUT || field.form.formItem === ComponentName.INPUT_NUMBER) {
+							placeholder = `可输入${field.name}检索`;
+						} else if (field.form.formItem === ComponentName.SELECT) {
 							placeholder = `可选择${field.name}检索`;
-							item = <DatePicker style={{ width: '100%' }} showTime placeholder={placeholder} />;
-						} else if (field.bizType === FieldBizType.NUMBER) {
-							item = <InputNumber placeholder={placeholder} />
-						} else if (field.mapping?.entity) {
-							item = <DebounceSelect placeholder="可输入关键词检索" field={field} fetchParams={baseFetchParams}/>
-						} else if (field.bizType === FieldBizType.PHONE) {
-							item = <Input addonBefore="+86" placeholder={placeholder} />;
-						} else if (field.bizType === FieldBizType.EMAIL) {
-						} else if (field.bizType === FieldBizType.IMAGE) {
-							item = <Upload />;
-						} else if (field.bizType === FieldBizType.RADIO) {
+						} else if ([ComponentName.RADIO, ComponentName.CHECKBOX, ComponentName.SELECT].includes(field.form.formItem)) {
 							defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
-							item = <Radio.Group options={field.form?.options ?? []} />;
-						} else if (field.bizType === FieldBizType.CHECKBOX) {
-							defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
-							item = <Checkbox.Group options={field.form?.options ?? []} />;
-						} else if (field.bizType === FieldBizType.HREF) {
-						} else if (field.bizType === FieldBizType.APPEND_FILE) {
 						}
 						
 						return (
 							<div className="ant-form-item-search" data-field-id={field.id}>
-								<Form.Item style={{ minWidth: '280px' }} initialValue={defaultValue} key={field.id} name={field.name} label={field.form?.label ?? field.name}>
-									{item}
+								<Form.Item
+									style={{ minWidth: '280px' }}
+									initialValue={defaultValue}
+									key={field.id}
+									name={field.name}
+									label={field.form?.label ?? field.name}
+								>
+									{renderFormItemNode(field, { placeholder })}
 								</Form.Item>
 							</div>
 						);
@@ -289,8 +302,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 				.then(data => {
 					if (data.code === 1) {
 						setShowModalAction('');
-						form.resetFields();
-						handleData({});
+						handleData(searchFormValue.current);
 					}
 				})
 			})
@@ -326,44 +338,26 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 								
 								return true;
 							})
-							// .filter(field => {
-							// 	if (data.showActionModalForEdit === ModalAction.EDIT) {}
-							//
-							// 	return true;
-							// })
 							.map(field => {
-								let placeholder = `请输入${field.name}`;
 								let defaultValue = undefined;
-								let item = <Input placeholder={placeholder} />;
 								const rules: any[] = field.form?.rules?.filter(r => r.status).map(r => RuleMap[r.key]?.(field, r)) || [];
 								
-								if (field.bizType === FieldBizType.DATETIME) {
-									placeholder = `请选择${field.name}`;
-									item = <DatePicker style={{ width: '100%' }} showTime placeholder={placeholder} />;
-								} else if (field.bizType === FieldBizType.NUMBER) {
-									item = <InputNumber placeholder={placeholder} />
-								} else if (field.mapping?.entity) {
-									item = <DebounceSelect placeholder="可输入关键词检索" field={field} fetchParams={baseFetchParams}/>
-								} else if (field.bizType === FieldBizType.PHONE) {
-									item = <Input addonBefore="+86" placeholder={placeholder} />;
-								} else if (field.bizType === FieldBizType.EMAIL) {
-								} else if (field.bizType === FieldBizType.IMAGE) {
-									item = <Upload />;
-								} else if (field.bizType === FieldBizType.RADIO) {
+								if ([ComponentName.RADIO, ComponentName.CHECKBOX, ComponentName.SELECT].includes(field.form.formItem)) {
 									defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
-									item = <Radio.Group options={field.form?.options ?? []} />;
-								} else if (field.bizType === FieldBizType.CHECKBOX) {
-									defaultValue = field.form?.options?.find(opt => opt.checked)?.value;
-									item = <Checkbox.Group options={field.form?.options ?? []} />;
-								} else if (field.bizType === FieldBizType.HREF) {
-								} else if (field.bizType === FieldBizType.APPEND_FILE) {
 								}
 								
 								return (
 									<Col span={12} key={field.id}>
 										<div className="ant-form-item-area" style={{ width: '100%' }} data-field-id={field.id}>
-											<Form.Item initialValue={defaultValue} labelCol={{ span: 6 }} required={field.form?.required} name={field.name} label={field.form?.label ?? field.name} rules={rules}>
-												{item}
+											<Form.Item
+												initialValue={defaultValue}
+												labelCol={{ span: 6 }}
+												required={field.form?.required}
+												name={field.name}
+												label={field.form?.label ?? field.name}
+												rules={rules}
+											>
+												{renderFormItemNode(field, {})}
 											</Form.Item>
 										</div>
 									</Col>
@@ -377,16 +371,16 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		return null;
 	};
 	
-	const onPageChange = (page: number, size: number) => {
-		setPage(page);
+	const onPageChange = (pageIndex: number, size: number) => {
+		setPageIndex(pageIndex);
 		setPageSize(size);
-		handleData({}, { page, pageSize: size });
+		handleData(searchFormValue.current, { pageIndex, pageSize: size });
 	};
 	
   return (
     <ConfigProvider locale={zhCN}>
 	    <div className={styles.domainContainer} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
-		    {renderFormNode()}
+		    {renderSearchFormNode()}
 		    <div className={styles.operateRow}>
 			    <Button type="primary" onClick={openCreateModal}>新增</Button>
 		    </div>
@@ -397,7 +391,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 					pagination={data.pagination?.show ? {
 						showSizeChanger: true,
 						total,
-						current: page,
+						current: pageIndex,
 						pageSize,
 						onChange: onPageChange
 					} : false}
