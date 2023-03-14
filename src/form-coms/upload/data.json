@@ -11,5 +11,6 @@
     "uploadStyle": {}
   },
   "isShowUploadList": true,
-  "isCustom": false
+  "isCustom": false,
+  "imageSize": [0, 0]
 }
