@@ -1,0 +1,12 @@
+{
+  "formFieldAry": [],
+  "fieldAry": [],
+  "domainAry": [],
+  "domainFileId": "",
+  "entityId": "",
+  "showActionModalForEdit": "",
+  "pagination": {
+    "page": 1,
+    "pageSize": 20
+  }
+}

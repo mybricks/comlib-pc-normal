@@ -71,6 +71,7 @@
         "title": "数据展示",
         "comAry": [
           "./src/table/com.json",
+          "./src/domain-table/com.json",
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",

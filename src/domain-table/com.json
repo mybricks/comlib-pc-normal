@@ -1,0 +1,13 @@
+{
+  "title": "领域模型",
+  "namespace": "mybricks.normal-pc.domain-table",
+  "version": "1.0.0",
+  "description": "领域模型",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "outputs": []
+}
