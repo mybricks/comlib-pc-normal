@@ -9,8 +9,5 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "target": {
-    "toReact": "./toReact.ts"
-  },
   "outputs": []
 }
