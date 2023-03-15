@@ -6,7 +6,7 @@ import {ajax} from "./util";
 
 export default {
   '@init'({ data }) {
-		ajax({ fileId: 344 }, { url: '/api/system/domain/entity/list' }).then(res => data.domainAry = res || []);
+		ajax({ fileId: 344 }, { url: '/api/system/domain/entity/list' }).then(res => (data.domainAry = res || []));
   },
   '@resize': {
     options: ['width', 'height']
@@ -28,7 +28,7 @@ export default {
 								  const entityList: Array<{ label: string; value: string }> = [];
 								  props.data.domainAry?.forEach(domain => {
 									  domain.entityList
-									  .filter(entity => !entity.isSystem)
+									  .filter(entity => !entity.isSystem && entity.isOpen)
 									  .forEach(entity => {
 										  entityList.push({ label: `${domain.fileName}.${entity.name}`, value: `${domain.fileId}.${entity.id}` })
 									  })
