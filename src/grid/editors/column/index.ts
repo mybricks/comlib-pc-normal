@@ -3,7 +3,7 @@ import IndexEditor from './indexEditor';
 import StyleEditor from './styleEditor';
 import WidthEditor from './widthEditor';
 import EventEditor from './eventEditor';
-import { getColItem } from '../utils';
+import { getColItem, setSlotLayout } from '../utils';
 import React from 'react';
 
 export default {
@@ -17,9 +17,11 @@ export default {
         type: 'layout',
         options: [],
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
+          get({ data, focusArea, slot }: EditorResult<Data>) {
             if (!focusArea) return;
             const item = getColItem(data, focusArea);
+            const slotInstance = slot.get(item.slot);
+            setSlotLayout(slotInstance, item.slotStyle)
             const { slotStyle = {} } = item;
             return slotStyle;
           },
@@ -34,15 +36,7 @@ export default {
               ...val
             };
             const slotInstance = slot.get(item.slot);
-            if (val.position === 'absolute') {
-              slotInstance.setLayout(val.position);
-            } else if (val.display === 'flex') {
-              if (val.flexDirection === 'row') {
-                slotInstance.setLayout('flex-row');
-              } else if (val.flexDirection === 'column') {
-                slotInstance.setLayout('flex-column');
-              }
-            }
+            setSlotLayout(slotInstance, val)
           }
         }
       },
