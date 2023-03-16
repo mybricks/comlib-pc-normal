@@ -29,8 +29,15 @@ export const actionsEditor = (data: Data, output) => {
           {
             label: '固定宽度(px)',
             value: 'px'
+          },
+          {
+            label: '填充剩余宽度',
+            value: 'flexFull'
           }
         ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.layout !== 'inline'
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.actions.widthOption;
@@ -52,7 +59,7 @@ export const actionsEditor = (data: Data, output) => {
           },
         ],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption !== 'px';
+          return data.actions.widthOption === 'span' && data.config.layout !== 'inline';
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -70,7 +77,7 @@ export const actionsEditor = (data: Data, output) => {
           type: 'number'
         },
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption === 'px';
+          return data.actions.widthOption === 'px' && data.config.layout !== 'inline';
         },
         value: {
           get({ data }: EditorResult<Data>) {

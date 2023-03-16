@@ -8,6 +8,7 @@ interface Action {
   type?: ButtonType
   key: string
   visible?: boolean
+  danger?: boolean
 }
 
 interface Actions {
@@ -42,7 +43,7 @@ export interface FormItems {
   inlineMargin?: number[]
 }
 
-export type LabelWidthType = 'px' | 'span'
+export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
   /**
@@ -64,7 +65,7 @@ export interface Data {
   /**
    * 布局类型
    */
-  layout: 'horizontal' | 'vertical' | 'inline'
+  layout?: 'horizontal' | 'vertical' | 'inline'
   fieldsLength?: number
   /**
    * 操作项

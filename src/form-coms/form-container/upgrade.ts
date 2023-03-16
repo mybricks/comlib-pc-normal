@@ -19,7 +19,7 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
    * @description v1.1.1 表单项/操作项增加宽度配置项
    */
   if (!data.actions.widthOption) {
-    data.actions.widthOption = 'span';
+    data.actions.widthOption = 'flexFull';
   }
 
   data.items.forEach(item => {
@@ -67,12 +67,12 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     data.actions.inlinePadding = [0, 0, 0, 0];
   }
 
-  /**
-    * @description v1.1.10 表单容器增加默认”显示冒号“配置
-    */
-  if (data.colon === undefined) {
-    data.colon = true;
-  }
+  // /**
+  //   * @description v1.1.10 表单容器增加默认”显示冒号“配置
+  //   */
+  // if (typeof data.colon === 'undefined') {
+  //   data.colon = true;
+  // }
 
   /**
    * @description v1.1.2 , 新增子组件通知校验功能
@@ -102,15 +102,19 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   /**
     * @description v1.1.16 表单容器增加 ~~整体禁用~~ 配置。*使用组件内置属性*
     */
-  if (data.config === undefined) {
+  if (typeof data.config === 'undefined') {
     data.config = {
-      colon: data.colon,
+      colon: data.colon || true,
       layout: data.layout,
       labelWrap: false,
       labelAlign: 'right',
-      disabled: false
+      // disabled: false
     }
+
+    delete data.colon
+    delete data.layout
   }
+
   // if (!input.get(inputIds.SET_DISABLED)) {
   //   input.add('setDisabled', '设置禁用', { type: 'any' });
   // }
