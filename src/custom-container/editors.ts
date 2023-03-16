@@ -41,7 +41,16 @@ export default {
               ...data.slotStyle,
               ...val
             };
-            slots.get('content').setLayout(val.position)
+            const slotInstance = slots.get('content');
+            if (val.position === 'absolute') {
+              slotInstance.setLayout(val.position);
+            } else if (val.display === 'flex') {
+              if (val.flexDirection === 'row') {
+                slotInstance.setLayout('flex-row');
+              } else if (val.flexDirection === 'column') {
+                slotInstance.setLayout('flex-column');
+              }
+            }
           }
         }
       },
