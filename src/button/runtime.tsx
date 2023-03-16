@@ -10,6 +10,21 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       inputs['external']((ds: any) => {
         data.inVal = ds;
       });
+      inputs['dynamicTitle']((val: any) => {
+        if (Object.prototype.toString.call(val) === '[object Function]') {
+          val = String(val);
+        } else if (typeof val !== 'string') {
+          //输入为数组，对象，布尔，null
+          if (val === null) {
+            val = 'null';
+          } else if (val === undefined) {
+            val = 'undefined';
+          } else {
+            val = JSON.stringify(val);
+          }
+        }
+        data.text = val;
+      });
     }
   });
   const onClick = useCallback(() => {
