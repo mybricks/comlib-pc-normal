@@ -6,6 +6,18 @@ import { ClickEditor } from './editors/clickEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
 import { FixedEditor } from './editors/fixedEditor';
 
+const setSlotLayout = (slot, val) => {
+  if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};
+
 export default {
   '@init'({ style }: EditorResult<Data>) {
     style.height = 'auto';
@@ -29,8 +41,10 @@ export default {
         type: 'layout',
         options: [],
         value: {
-          get({ data }: EditorResult<Data>) {
+          get({ data, slots }: EditorResult<Data>) {
             const { slotStyle = {} } = data;
+            const slotInstance = slots.get('content');
+            setSlotLayout(slotInstance, slotStyle);
             return slotStyle;
           },
           set({ data, slots }: EditorResult<Data>, val: any) {
@@ -42,15 +56,7 @@ export default {
               ...val
             };
             const slotInstance = slots.get('content');
-            if (val.position === 'absolute') {
-              slotInstance.setLayout(val.position);
-            } else if (val.display === 'flex') {
-              if (val.flexDirection === 'row') {
-                slotInstance.setLayout('flex-row');
-              } else if (val.flexDirection === 'column') {
-                slotInstance.setLayout('flex-column');
-              }
-            }
+            setSlotLayout(slotInstance, val);
           }
         }
       },
