@@ -1,6 +1,6 @@
 import { unitConversion } from '../../../utils';
 import { Data, OverflowEnum, WidthUnitEnum } from '../../constants';
-import { getColItem } from '../utils';
+import { getColItem, updateColStyle } from '../utils';
 
 const StyleEditor = [
   {
@@ -39,7 +39,7 @@ const StyleEditor = [
       set({ data, focusArea }: EditorResult<Data>, value: string) {
         if (!focusArea) return;
         const item = getColItem(data, focusArea);
-        item.colStyle.height = unitConversion(value);
+        updateColStyle(item, { height: unitConversion(value) });
       }
     }
   },
@@ -112,7 +112,7 @@ const StyleEditor = [
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;
             const item = getColItem(data, focusArea);
-            item.colStyle.overflowY = value ? OverflowEnum.Auto : OverflowEnum.None;
+            updateColStyle(item, { overflowY: value ? OverflowEnum.Auto : OverflowEnum.None });
           }
         }
       },
@@ -128,7 +128,7 @@ const StyleEditor = [
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;
             const item = getColItem(data, focusArea);
-            item.colStyle.overflowX = value ? OverflowEnum.Auto : OverflowEnum.None;
+            updateColStyle(item, { overflowX: value ? OverflowEnum.Auto : OverflowEnum.None });
           }
         }
       }
