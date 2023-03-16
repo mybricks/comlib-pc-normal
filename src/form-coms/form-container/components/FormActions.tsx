@@ -44,6 +44,7 @@ const FormActions = (props: Props) => {
             type={item.type}
             loading={item.loading}
             key={item.key}
+            danger={item?.danger}
             onClick={() => onClick(item)}
             // disabled={config.disabled}
           >

@@ -1,6 +1,7 @@
 import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { FormLayout } from 'antd/es/form/Form'
+import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { outputIds, inputIds, slotInputIds } from '../constants'
 
@@ -746,6 +747,24 @@ export default {
     title: '操作',
     items: [
       {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string
+            return data.actions.items.find(item => item.key === comId)?.visible
+          },
+          set({ data, focusArea, output }: EditorResult<Data>, val) {
+
+            const comId = focusArea.dataset['formActionsItem']
+            const item = data.actions.items.find(item => item.key === comId)
+            if (item) {
+              item.visible = val
+            }
+          }
+        }
+      },
+      {
         title: '标题',
         type: 'text',
         value: {
@@ -768,26 +787,48 @@ export default {
         }
       },
       {
-        title: '显示',
-        type: 'Switch',
-        ifVisible({ data, focusArea }) {
-          const actions = data.actions.items
-          const itemId = focusArea.dataset['formActionsItem']
-          const item = actions.find(item => item.key === itemId)
-
-          return item?.key === 'submit'
+        title: '风格',
+        type: 'Select',
+        options() {
+          return [
+            { value: 'primary', label: '主按钮' },
+            { value: 'default', label: '次按钮' },
+            { value: 'dashed', label: '虚线按钮' },
+            { value: 'link', label: '链接按钮' },
+            { value: 'text', label: '文字按钮' }
+          ];
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             const comId = focusArea.dataset.formActionsItem as string
-            return data.actions.items.find(item => item.key === comId)?.visible
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
 
+            return data.actions.items.find(item => item.key === comId)?.type || 'default'
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: ButtonType) {
             const comId = focusArea.dataset['formActionsItem']
             const item = data.actions.items.find(item => item.key === comId)
+
             if (item) {
-              item.visible = val
+              item.type = value
+            }
+          }
+        }
+      },
+      {
+        title: '危险按钮',
+        type: 'Switch',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string
+
+            return data.actions.items.find(item => item.key === comId)?.danger
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+            const comId = focusArea.dataset['formActionsItem']
+            const item = data.actions.items.find(item => item.key === comId)
+
+            if (item) {
+              item.danger = value
             }
           }
         }
