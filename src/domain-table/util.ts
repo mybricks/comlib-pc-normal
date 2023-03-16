@@ -1,7 +1,9 @@
 import {message} from "antd";
 
+let isProd = false;
+export const setIsProd = (value: boolean) => (isProd = value);
 export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; url?: string } = {}) => {
-	return fetch(option.url ?? '/api/system/domain/run', {
+	return fetch(option.url ?? (isProd ? '/runtime/api/domain/service/run' : '/api/system/domain/run'), {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'

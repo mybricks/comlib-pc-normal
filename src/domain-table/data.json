@@ -5,6 +5,9 @@
   "domainFileId": "",
   "entityId": "",
   "showActionModalForEdit": "",
+  "addBtn": {
+    "title": "新增"
+  },
   "pagination": {
     "page": 1,
     "pageSize": 20

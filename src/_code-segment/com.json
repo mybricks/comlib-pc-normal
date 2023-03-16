@@ -1,5 +1,6 @@
 {
   "title": "JS计算",
+  "visibility": false,
   "namespace": "mybricks.normal-pc.segment",
   "version": "1.0.2",
   "description": "JS计算",

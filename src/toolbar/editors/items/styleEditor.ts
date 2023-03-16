@@ -33,8 +33,8 @@ const StyleEditor = [
         type: 'Select',
         options() {
           return [
-            { value: TypeEnum.Default, label: '默认' },
             { value: TypeEnum.Primary, label: '主按钮' },
+            { value: TypeEnum.Default, label: '次按钮' },
             { value: TypeEnum.Dashed, label: '虚线按钮' },
             { value: TypeEnum.Danger, label: '危险按钮' },
             { value: TypeEnum.Link, label: '链接按钮' },
