@@ -1,3 +1,4 @@
+import React from 'react';
 import { uuid } from '../../../utils';
 import { WidthUnitEnum, Data, ColumnParams } from '../../constants';
 export const createColByWidth = (width: number = 280) => {
@@ -142,3 +143,13 @@ export function updateSlotTitle(col: ColumnParams, slot: any) {
   });
   slot.setTitle(col.slot, title);
 }
+
+export const updateColStyle = (col: ColumnParams, style: Partial<React.CSSProperties>) => {
+  if (!col.colStyle) {
+    col.colStyle = {};
+  }
+  col.colStyle = {
+    ...col.colStyle,
+    ...style
+  };
+};
