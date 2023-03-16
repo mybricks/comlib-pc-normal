@@ -62,7 +62,7 @@ export default {
 										  }
 									  });
 									  curEntity.fieldAry
-									    .filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
+									    .filter(field => ![FieldBizType.MAPPING].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
 											.forEach(field => {
 												field.form.formItem = DefaultComponentNameMap[field.bizType] || ComponentName.INPUT
 										  });
@@ -201,7 +201,9 @@ export default {
 					  options: {
 						  editable: false,
 						  addable: false,
-						  getTitle: ({ name }) => name,
+						  getTitle: ({ name, mappingField }) => {
+								return `${name}${mappingField ? ('.' + mappingField.name) : ''}`;
+						  },
 						  onRemove: (index: number) => {
 							  data.fieldAry.splice(index, 1);
 						  },
