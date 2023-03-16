@@ -19,20 +19,21 @@ import {ColumnsType} from 'antd/es/table';
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from "./ccomponents/debouce-select";
 import {RuleMap} from "./rule";
-import {ajax} from "./util";
+import {ajax, setIsProd} from "./util";
 import {ComponentName, Data, FieldBizType, ModalAction} from './constants';
+import {Field} from './type';
 
 import styles from './runtime.less';
-import {Field} from "./type";
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
 export default function ({ env, data }: RuntimeParams<Data>) {
-	const { edit, runtime } = env;
+	const { edit, runtime, projectId } = env;
 	const debug = !!(runtime && runtime.debug);
 	if (debug || runtime) {
 		data.showActionModalForEdit = '';
 	}
+	setIsProd(!!projectId);
 	// const currentCreatePortal = edit || debug ? createPortal : (a => a);
 	const [dataSource, setDataSource] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -48,13 +49,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
 	const [total, setTotal] = useState(0);
 	const baseFetchParams = useMemo(() => {
-		return {
-			serviceId: data.entity?.id,
-			fileId: 318,
-			// projectId: 317,
-			isOnline: true
-		};
-	}, [data.entity]);
+		return { serviceId: data.entity?.id, fileId: 318, projectId: projectId || undefined };
+	}, [data.entity, projectId]);
 	
 	const handleData = useCallback((query, pageInfo?: Record<string, unknown>) => {
 		setLoading(true);
@@ -223,6 +219,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 						);
 					})}
 					<Button type="primary" onClick={search}>查询</Button>
+					<Button data-add-button="1" className={styles.addBtn} onClick={openCreateModal}>{data.addBtn?.title ?? '新增'}</Button>
 				</Form>
 			);
 		}
@@ -380,9 +377,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     <ConfigProvider locale={zhCN}>
 	    <div className={styles.domainContainer} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
 		    {renderSearchFormNode()}
-		    <div className={styles.operateRow}>
-			    <Button type="primary" onClick={openCreateModal}>新增</Button>
-		    </div>
+		    {/*<div className={styles.operateRow}>*/}
+		    {/*</div>*/}
 		    <Table
 					loading={loading}
 					columns={renderColumns()}

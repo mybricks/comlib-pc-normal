@@ -46,7 +46,6 @@ export default {
 							  const [domainFileId, entityId] = value.split('.');
 							  if (data.domainFileId !== domainFileId || data.entityId !== entityId) {
 								  data.fieldAry = [];
-								  data.fieldAry = [];
 								  data.formFieldAry = [];
 								  data.domainFileId = Number(domainFileId);
 								  data.entityId = entityId;
@@ -62,6 +61,12 @@ export default {
 											  field.form.required = true;
 										  }
 									  });
+									  curEntity.fieldAry
+									    .filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
+											.forEach(field => {
+												field.form.formItem = DefaultComponentNameMap[field.bizType] || ComponentName.INPUT
+										  });
+										
 									  data.entity = curEntity;
 								  }
 							  }
@@ -703,6 +708,27 @@ export default {
 						if (!focusArea || !field) return;
 						
 						field.align = value;
+					}
+				}
+			},
+		];
+	},
+	'[data-add-button]': ({ }: EditorResult<Data>, cate1) => {
+		cate1.title = '常规';
+		cate1.items = [
+			{
+				title: '按钮文案',
+				type: 'Text',
+				value: {
+					get({ data }: EditorResult<Data>) {
+						return data.addBtn?.title ?? '新增';
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						if (!data.addBtn) {
+							data.addBtn = {};
+						}
+						
+						data.addBtn.title = value;
 					}
 				}
 			},
