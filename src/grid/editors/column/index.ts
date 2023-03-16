@@ -4,12 +4,11 @@ import StyleEditor from './styleEditor';
 import WidthEditor from './widthEditor';
 import EventEditor from './eventEditor';
 import { getColItem } from '../utils';
+import React from 'react';
 
 export default {
-  '[data-type-col]': ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2, cate3) => {
+  '[data-type-col]': ({ focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
     if (!focusArea) return;
-    const item = getColItem(data, focusArea);
-    const slotInstance = slot.get(item.slot);
     cate1.title = '常规';
     cate1.items = [
       ...WidthEditor,
@@ -24,7 +23,7 @@ export default {
             const { slotStyle = {} } = item;
             return slotStyle;
           },
-          set({ data, focusArea, slot }: EditorResult<Data>, val: any) {
+          set({ data, focusArea, slot }: EditorResult<Data>, val: React.CSSProperties) {
             if (!focusArea) return;
             const item = getColItem(data, focusArea);
             if (!item.slotStyle) {
@@ -34,7 +33,16 @@ export default {
               ...item.slotStyle,
               ...val
             };
-            slotInstance.setLayout(val.position)
+            const slotInstance = slot.get(item.slot);
+            if (val.position === 'absolute') {
+              slotInstance.setLayout(val.position);
+            } else if (val.display === 'flex') {
+              if (val.flexDirection === 'row') {
+                slotInstance.setLayout('flex-row');
+              } else if (val.flexDirection === 'column') {
+                slotInstance.setLayout('flex-column');
+              }
+            }
           }
         }
       },
