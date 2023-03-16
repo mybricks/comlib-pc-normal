@@ -49,8 +49,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
 	const [total, setTotal] = useState(0);
 	const baseFetchParams = useMemo(() => {
-		return { serviceId: data.entity?.id, fileId: 318, projectId: projectId || undefined };
-	}, [data.entity, projectId]);
+		return { serviceId: data.entity?.id, fileId: data.domainFileId, projectId: projectId || undefined };
+	}, [data.entity, projectId, data.domainFileId]);
 	
 	const handleData = useCallback((query, pageInfo?: Record<string, unknown>) => {
 		setLoading(true);

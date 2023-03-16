@@ -6,7 +6,8 @@ import {ajax} from "./util";
 
 export default {
   '@init'({ data }) {
-		ajax({ fileId: 344 }, { url: '/api/system/domain/entity/list' }).then(res => (data.domainAry = res || []));
+		const id = location.search.split('?').pop()?.split('&').find(key => key.startsWith('id='))?.replace('id=', '') ?? '';
+	  id && ajax({ fileId: id }, { url: '/api/system/domain/entity/list' }).then(res => (data.domainAry = res || []));
   },
   '@resize': {
     options: ['width', 'height']
