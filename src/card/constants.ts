@@ -19,6 +19,7 @@ export interface Data {
   useClick?: boolean;
   outputContent?: any;
   dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
+  borderStyle?: Object; 
 }
 
 export const OutputIds = {

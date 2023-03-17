@@ -36,6 +36,8 @@ export default (props: RuntimeParams<Data>) => {
     }
   }, []);
 
+  let borderSty = bordered ? data.borderStyle : {};
+
   return (
     <div className={css.card}>
       <Card
@@ -46,7 +48,8 @@ export default (props: RuntimeParams<Data>) => {
         style={{
           ...style,
           cursor: data.cursor ? CursorType.Pointer : CursorType.Default,
-          height: '100%'
+          height: '100%',
+          ...borderSty
         }}
         extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
         hoverable={hoverable}
