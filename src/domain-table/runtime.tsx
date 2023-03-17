@@ -19,7 +19,7 @@ import {ColumnsType} from 'antd/es/table';
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from "./ccomponents/debouce-select";
 import {RuleMap} from "./rule";
-import {ajax, setIsProd} from "./util";
+import {ajax} from "./util";
 import {ComponentName, Data, FieldBizType, ModalAction} from './constants';
 import {Field} from './type';
 
@@ -33,7 +33,6 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	if (debug || runtime) {
 		data.showActionModalForEdit = '';
 	}
-	setIsProd(!!projectId);
 	// const currentCreatePortal = edit || debug ? createPortal : (a => a);
 	const [dataSource, setDataSource] = useState([]);
 	const [loading, setLoading] = useState(false);
