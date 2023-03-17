@@ -274,31 +274,21 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 					}
 				}
 				
-				fetch('/api/system/domain/run', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
+				ajax({
+					params: {
+						fields:
+							showModalAction === ModalAction.CREATE
+								? undefined
+								: data.entity.fieldAry
+								.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate && !field.form.disabledForEdit),
+						query: curValue,
+						action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE',
 					},
-					credentials: undefined,
-					body: JSON.stringify({
-						params: {
-							fields:
-								showModalAction === ModalAction.CREATE
-									? undefined
-									: data.entity.fieldAry
-										.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate && !field.form.disabledForEdit),
-							query: curValue,
-							action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE',
-						},
-						...baseFetchParams
-					})
-				} as RequestInit)
-				.then(res => res.json())
-				.then(data => {
-					if (data.code === 1) {
-						setShowModalAction('');
-						handleData(searchFormValue.current);
-					}
+					...baseFetchParams
+				})
+				.then(() => {
+					setShowModalAction('');
+					handleData(searchFormValue.current);
 				})
 			})
 			.catch(error => console.log('表单校验参数不合法', error))
