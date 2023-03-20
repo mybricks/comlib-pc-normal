@@ -213,6 +213,24 @@ export default {
     cate2.title = '样式';
     cate2.items = [
       Editor<Data>('卡片边框', EditorType.Switch, 'bordered'),
+      {
+        type: 'style',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.bordered;
+        },
+        options: {
+          defaultOpen: true,
+          plugins: ['border']
+        },
+        value: {
+          get: ({ data }: EditorResult<Data>) => {
+            return data.borderStyle;
+          },
+          set: ({ data }: EditorResult<Data>, value) => {
+            data.borderStyle = value;
+          }
+        }
+      },
       Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
       Editor<Data>('尺寸', EditorType.Select, 'size', {
         options: SizeOptions

@@ -8,5 +8,11 @@
   "style": {},
   "bodyStyle": {},
   "outputContent": 0,
-  "dataType": "number"
+  "dataType": "number",
+  "borderStyle": {
+    "borderRadius": "8px 8px 8px 8px",
+    "borderColor": "#F0F0F0 #F0F0F0 #F0F0F0 #F0F0F0",
+    "borderWidth": "1px 1px 1px 1px",
+    "borderStyle": "solid solid solid solid"
+  }
 }
