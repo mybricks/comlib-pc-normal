@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useState } from 'react';
 import { Form, Button, Row, Col } from 'antd';
-import { Data, FormControlInputId } from './types';
+import { typeCheck } from '../../utils';
+import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
@@ -42,6 +43,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[inputIds.SET_INITIAL_VALUES]((val) => {
       setInitialValues(val);
       slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+    });
+
+    inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
+      setFormItemDesc(val);
     });
 
     inputs['resetFields']((val, outputRels) => {
@@ -131,6 +136,41 @@ export default function Runtime(props: RuntimeParams<Data>) {
       item.validateStatus = undefined;
       item.help = undefined;
     });
+  };
+
+  /**
+   * 设置表单项公共配置
+   * @param formItemsDesc 表单项配置对象
+   */
+  const setFormItemDesc = (formItemsDesc: { string: FormItems }) => {
+    if (typeCheck(formItemsDesc, ['Object'])) {
+      Object.entries(formItemsDesc).map(([name, props]) => {
+        if (!typeCheck(props, ['Object'])) {
+          console.warn(`表单项配置不是对象类型`);
+          return;
+        }
+
+        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
+        if (formItemIndex < 0) {
+          console.warn(`表单项${name}不存在`);
+          return;
+        }
+        const formItem = data.items[formItemIndex];
+        const newFormItem = { ...props };
+        const { descriptionStyle, labelStyle } = formItem;
+        if (!newFormItem.descriptionStyle) newFormItem.descriptionStyle = {};
+        if (!newFormItem.labelStyle) newFormItem.labelStyle = {};
+
+        Object.assign(newFormItem.descriptionStyle, descriptionStyle);
+        Object.assign(newFormItem.labelStyle, labelStyle);
+
+        const temp = {
+          ...formItem,
+          ...props
+        };
+        data.items[formItemIndex] = temp;
+      });
+    }
   };
 
   const setDisabled = () => {

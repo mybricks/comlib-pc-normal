@@ -1,5 +1,6 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds } from './constants'
+import { getFormItemPropsSchema } from './editors';
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
@@ -121,6 +122,13 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   // if (!input.get(inputIds.SET_ENABLED)) {
   //   input.add('setEnabled', '设置启用', { type: 'any' });
   // }
+
+  /**
+    * @description v1.1.19 表单容器增加“设置表单项配置”输入项，实现表单项公共配置动态配置
+    */
+  if (!input.get(inputIds.SET_FORM_ITEMS_PROPS)) {
+    input.add('setFormItemDesc', '设置表单项配置', getFormItemPropsSchema(data));
+  }
 
   return true;
 }

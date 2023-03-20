@@ -2,14 +2,45 @@ import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { FormLayout } from 'antd/es/form/Form'
 import { ButtonType } from 'antd/es/button/button'
+import { deepCopy } from '../../../utils'
 import { actionsEditor } from './actions'
-import { outputIds, inputIds, slotInputIds } from '../constants'
+import { outputIds, inputIds, slotInputIds, formItemPropsSchema } from '../constants'
 
 function getSubmitSchema(data) {
   const properties = {}
   data.items.forEach(item => {
     const { id, label, schema, name } = item
     properties[name || label] = { ...schema, title: label }
+  })
+
+  const schema = {
+    type: 'object',
+    properties
+  }
+  return schema
+}
+
+export function getFormItemPropsSchema(data: Data) {
+  const { layout } = data.config;
+  const { width, span, inlinePadding, ...res } = formItemPropsSchema;
+  const properties = {};
+
+  data.items.forEach(item => {
+    const { id, label, name, widthOption } = item
+    const formItemPropsschema = deepCopy(res);
+
+    // 动态配置项
+    if (layout !== 'horizontal') {
+      console.log('in', layout)
+      formItemPropsschema['inlinePadding'] = inlinePadding;
+    }
+    if (widthOption === 'px') {
+      formItemPropsschema['width'] = width;
+    }
+    if (widthOption === 'span') {
+      formItemPropsschema['span'] = span;
+    }
+    properties[name || label] = { type: 'object', title: label, properties: { ...formItemPropsschema } }
   })
 
   const schema = {
@@ -29,6 +60,7 @@ function refreshSchema({ data, inputs, outputs, slots }) {
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
   inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
   slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
+  refreshFormItemPropsSchema({ data, inputs })
 }
 
 function refreshParamsSchema(data, outputs) {
@@ -38,6 +70,12 @@ function refreshParamsSchema(data, outputs) {
   }
 
   outputs.get(outputIds.ON_MERGE_FINISH).setSchema(schema)
+}
+
+function refreshFormItemPropsSchema({ data, inputs }) {
+  const formItemPropsSchema = getFormItemPropsSchema(data)
+  console.log(formItemPropsSchema, 'formItemPropsSchema')
+  inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
 }
 
 function fieldNameCheck(data: Data, name: string) {
@@ -201,8 +239,9 @@ export default {
               get({ data }: EditorResult<Data>) {
                 return data.config?.layout || data.layout
               },
-              set({ data }: EditorResult<Data>, value: FormLayout) {
+              set({ data, inputs }: EditorResult<Data>, value: FormLayout) {
                 data.config.layout = value
+                refreshFormItemPropsSchema({ data, inputs });
               },
             }
           },
@@ -485,8 +524,9 @@ export default {
               get({ data, id }: EditorResult<Data>) {
                 return getFormItemProp({ data, id }, 'widthOption');
               },
-              set({ data, id }: EditorResult<Data>, value: LabelWidthType) {
+              set({ data, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, id }, 'widthOption', value);
+                refreshFormItemPropsSchema({ data, inputs });
               }
             },
           },
