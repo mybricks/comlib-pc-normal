@@ -3,7 +3,7 @@
   "slotStyle": {
     "display": "flex",
     "position": "inherit",
-    "flexDirection": "row",
+    "flexDirection": "column",
     "alignItems": "flex-start",
     "justifyContent": "flex-start",
     "flexWrap": "nowrap"

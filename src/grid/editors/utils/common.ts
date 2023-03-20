@@ -17,7 +17,7 @@ export const createColByWidth = (width: number = 280) => {
     slotStyle: {
       display: 'flex',
       position: 'inherit',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       flexWrap: 'nowrap'
@@ -41,7 +41,7 @@ export const createAutoCol = (flex: number = 1) => {
     slotStyle: {
       display: 'flex',
       position: 'inherit',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       flexWrap: 'nowrap'
@@ -65,7 +65,7 @@ export const createColBySpan = (span: number = 4) => {
     slotStyle: {
       display: 'flex',
       position: 'inherit',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       flexWrap: 'nowrap'
