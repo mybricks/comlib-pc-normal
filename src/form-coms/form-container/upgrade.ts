@@ -127,7 +127,7 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     * @description v1.1.19 表单容器增加“设置表单项配置”输入项，实现表单项公共配置动态配置
     */
   if (!input.get(inputIds.SET_FORM_ITEMS_PROPS)) {
-    input.add('setFormItemDesc', '设置表单项配置', getFormItemPropsSchema(data));
+    input.add(inputIds.SET_FORM_ITEMS_PROPS, '设置表单项配置', getFormItemPropsSchema(data));
   }
 
   return true;
