@@ -44,10 +44,10 @@ export const formItemPropsSchema = {
     type: 'string',
     title: '提示语'
   },
-  widthOption: {
-    type: 'string',
-    title: '宽度模式'
-  },
+  // widthOption: {
+  //   type: 'string',
+  //   title: '宽度模式'
+  // },
   span: {
     type: 'number',
     title: '栅格宽度'
@@ -56,28 +56,28 @@ export const formItemPropsSchema = {
     type: 'number',
     title: '像素宽度'
   },
-  inlinePadding: {
-    type: 'tuple',
-    items: [
-      {
-        "type": "number",
-        title: '上'
-      },
-      {
-        "type": "number",
-        title: '右'
-      },
-      {
-        "type": "number",
-        title: '下'
-      },
-      {
-        "type": "number",
-        title: '左'
-      },
-    ],
-    title: '边距'
-  },
+  // inlinePadding: {
+  //   type: 'tuple',
+  //   items: [
+  //     {
+  //       "type": "number",
+  //       title: '上'
+  //     },
+  //     {
+  //       "type": "number",
+  //       title: '右'
+  //     },
+  //     {
+  //       "type": "number",
+  //       title: '下'
+  //     },
+  //     {
+  //       "type": "number",
+  //       title: '左'
+  //     },
+  //   ],
+  //   title: '边距'
+  // },
   labelAutoWrap: {
     type: 'boolean',
     title: '标题是否换行'
@@ -94,8 +94,8 @@ export const formItemPropsSchema = {
     type: 'boolean',
     title: '必填样式'
   },
-  visible: {
-    type: 'boolean',
-    title: '是否显示'
-  },
+  // visible: {
+  //   type: 'boolean',
+  //   title: '是否显示'
+  // },
 }

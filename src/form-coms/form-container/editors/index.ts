@@ -22,7 +22,7 @@ function getSubmitSchema(data) {
 
 export function getFormItemPropsSchema(data: Data) {
   const { layout } = data.config;
-  const { width, span, inlinePadding, ...res } = formItemPropsSchema;
+  const { width, span, ...res } = formItemPropsSchema;
   const properties = {};
 
   data.items.forEach(item => {
@@ -30,10 +30,9 @@ export function getFormItemPropsSchema(data: Data) {
     const formItemPropsschema = deepCopy(res);
 
     // 动态配置项
-    if (layout !== 'horizontal') {
-      console.log('in', layout)
-      formItemPropsschema['inlinePadding'] = inlinePadding;
-    }
+    // if (layout !== 'horizontal') {
+    //   formItemPropsschema['inlinePadding'] = inlinePadding;
+    // }
     if (widthOption === 'px') {
       formItemPropsschema['width'] = width;
     }
@@ -74,7 +73,6 @@ function refreshParamsSchema(data, outputs) {
 
 function refreshFormItemPropsSchema({ data, inputs }) {
   const formItemPropsSchema = getFormItemPropsSchema(data)
-  console.log(formItemPropsSchema, 'formItemPropsSchema')
   inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
 }
 
@@ -241,7 +239,7 @@ export default {
               },
               set({ data, inputs }: EditorResult<Data>, value: FormLayout) {
                 data.config.layout = value
-                refreshFormItemPropsSchema({ data, inputs });
+                // refreshFormItemPropsSchema({ data, inputs });
               },
             }
           },
