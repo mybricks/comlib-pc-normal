@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import * as Icons from '@ant-design/icons';
 
 export default function ({ data, slots }) {
+  let defaultDeps: { from: string, coms: string[] }[] = [];
   const btnItemR = ({ icon }: { icon: ReactNode }) => {
     const Icon = Icons && Icons[icon as string]?.render();
     return { Icon };
@@ -77,22 +78,30 @@ ${useIcon && location === Location.BACK ? iconStr : ''}
     keyboard: false,
     maskClosable: false,
     title: data.hideTitle ? undefined : data.title,
-    okText: data.okText,
+    //okText: data.okText,
     closable: data.closable,
     centerd: data.centerd,
-    cancelText: data.cancelText,
+    //cancelText: data.cancelText,
     bodyStyle: data.bodyStyle
   };
 
-  const jsx = `<Modal ${getPropsFromObject(props)} footer={${footerStr}}>
+  const jsx = `<Modal ${getPropsFromObject(props)} ${data.useFooter ? `footer={${footerStr}}` : 'footer={null}'} >
   ${slots[SlotIds.Container].render({})}
 </Modal>`;
 
+if(!data.useFooter){
+  defaultDeps = [{
+    from: 'antd',
+    coms: ['Modal']
+  }]
+}else{
+  defaultDeps = [{
+    from: 'antd',
+    coms: ['Modal', 'Button']
+  }]
+}
   const importsList = [
-    {
-      from: 'antd',
-      coms: ['Button', 'Modal']
-    },
+    ...defaultDeps,
     {
       from: 'antd/dist/antd.css',
       coms: []
