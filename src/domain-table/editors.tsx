@@ -4,15 +4,18 @@ import {uuid} from "../utils";
 import {RuleKeys, RuleMapByBizType} from "./rule";
 import {ajax} from "./util";
 
+enum SizeEnum {
+	DEFAULT = 'default',
+	MIDDLE = 'middle',
+	SMALL = 'small'
+}
+
 export default {
   '@init'({ data }) {
 		const id = location.search.split('?').pop()?.split('&').find(key => key.startsWith('id='))?.replace('id=', '') ?? '';
 	  id && ajax({ fileId: id }, { url: '/api/system/domain/entity/list' }).then(res => (data.domainAry = res || []));
   },
-  '@resize': {
-    options: ['width', 'height']
-  },
-  ':root': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+  ':root': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
 		const fieldAry = data.entity?.fieldAry ?? [];
 		
 	  cate1.title = '常规';
@@ -236,6 +239,32 @@ export default {
 				  },
 			  ]
 		  },
+	  ];
+	
+	  cate2.title = '样式';
+		cate2.items = [
+			{
+				title: '表格布局风格',
+				type: 'Select',
+				options: [
+					{ value: SizeEnum.DEFAULT, label: '默认' },
+					{ value: SizeEnum.MIDDLE, label: '适中布局' },
+					{ value: SizeEnum.SMALL, label: '紧凑布局' }
+				],
+				value: {
+					get({ data }: EditorResult<Data>) {
+						return data.table?.size || SizeEnum.MIDDLE;
+					},
+					set({ data }: EditorResult<Data>, value: SizeEnum) {
+						!data.table && (data.table = {});
+						data.table.size = value;
+					}
+				}
+			},
+		];
+	
+	  cate3.title = '高级';
+	  cate3.items = [
 		  {
 			  title: '新增弹框',
 			  items: [
@@ -288,8 +317,8 @@ export default {
 							  return fieldAry.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate && !field.form.disabledForEdit).map(field => field.id);
 						  },
 						  set({ data, output, input }: EditorResult<Data>, value: string[]) {
-								const fields = fieldAry
-									.filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
+							  const fields = fieldAry
+							  .filter(field => ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate);
 							
 							  fields.forEach(field => {
 								  !field.form && (field.form = {});
@@ -302,7 +331,7 @@ export default {
 				  }
 			  ]
 		  },
-	  ]
+	  ];
   },
 	'.ant-form-item-search': ({ data, focusArea }: EditorResult<Data>, cate1) => {
 		const field = data.formFieldAry.find(f => f.id === focusArea.dataset.fieldId);
@@ -336,6 +365,7 @@ export default {
 					{ label: "数字输入框", value: ComponentName.INPUT_NUMBER },
 					{ label: "下拉框", value: ComponentName.SELECT },
 					{ label: "时间选择器", value: ComponentName.DATE_PICKER },
+					{ label: "文本域", value: ComponentName.TEXTAREA },
 					{ label: "单选", value: ComponentName.RADIO },
 					{ label: "复选框", value: ComponentName.CHECKBOX },
 					{ label: "下拉搜索框", value: ComponentName.DEBOUNCE_SELECT },
@@ -348,6 +378,22 @@ export default {
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
 						field.form.formItem = value;
+					}
+				}
+			},
+			{
+				title: '默认行数',
+				type: 'InputNumber',
+				options: [{ title: '', min: 1, width: 100 }],
+				ifVisible() {
+					return field.form.formItem === ComponentName.TEXTAREA;
+				},
+				value: {
+					get() {
+						return [field.form?.rows || 2];
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						field.form.rows = value[0] || 2;
 					}
 				}
 			},
@@ -516,6 +562,7 @@ export default {
 					{ label: "数字输入框", value: ComponentName.INPUT_NUMBER },
 					{ label: "下拉框", value: ComponentName.SELECT },
 					{ label: "时间选择器", value: ComponentName.DATE_PICKER },
+					{ label: "文本域", value: ComponentName.TEXTAREA },
 					{ label: "单选", value: ComponentName.RADIO },
 					{ label: "复选框", value: ComponentName.CHECKBOX },
 					{ label: "下拉搜索框", value: ComponentName.DEBOUNCE_SELECT },
@@ -528,6 +575,22 @@ export default {
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
 						field.form.formItem = value;
+					}
+				}
+			},
+			{
+				title: '默认行数',
+				type: 'InputNumber',
+				options: [{ title: '', min: 1, width: 100 }],
+				ifVisible() {
+					return field.form.formItem === ComponentName.TEXTAREA;
+				},
+				value: {
+					get() {
+						return [field.form?.rows || 2];
+					},
+					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+						field.form.rows = value[0] || 2;
 					}
 				}
 			},

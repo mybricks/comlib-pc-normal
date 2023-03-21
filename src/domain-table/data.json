@@ -1,6 +1,9 @@
 {
   "formFieldAry": [],
   "fieldAry": [],
+  "table": {
+    "size": "middle"
+  },
   "domainAry": [],
   "domainFileId": "",
   "entityId": "",

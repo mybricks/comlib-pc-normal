@@ -168,10 +168,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	
 	const renderFormItemNode = useCallback((field: Field, option: { placeholder?: string; onPressEnter?(): void }) => {
 		let placeholder = option.placeholder ?? `请输入${field.name}`;
-		let item = <Input placeholder={placeholder} onPressEnter={option.onPressEnter} />;
+		let item = <Input placeholder={placeholder} onPressEnter={option.onPressEnter} allowClear />;
 		
 		if (field.form.formItem === ComponentName.DATE_PICKER) {
 			item = <DatePicker style={{ width: '100%' }} showTime placeholder={option.placeholder ?? `请选择${field.name}`} />;
+		} else if (field.form.formItem === ComponentName.TEXTAREA) {
+			item = <Input.TextArea placeholder={placeholder} onPressEnter={option.onPressEnter} rows={field.form.rows || 2} allowClear />;
 		} else if (field.form.formItem === ComponentName.INPUT_NUMBER) {
 			item = <InputNumber style={{ width: '100%' }} onPressEnter={option.onPressEnter} placeholder={placeholder} />
 		} else if (field.form.formItem === ComponentName.SELECT) {
@@ -371,11 +373,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	
   return (
     <ConfigProvider locale={zhCN}>
-	    <div className={styles.domainContainer} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
+	    <div className={`${styles.domainContainer} ${edit ? styles.edit : ''}`} style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined} ref={domainContainerRef}>
 		    {renderSearchFormNode()}
 		    {/*<div className={styles.operateRow}>*/}
 		    {/*</div>*/}
 		    <Table
+			    size={data.table?.size || 'middle'}
 					loading={loading}
 					columns={renderColumns()}
 					dataSource={dataSource}
