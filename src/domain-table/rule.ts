@@ -297,7 +297,7 @@ export const RuleMapByBizType = {
 	[FieldBizType.SYS_USER_CREATOR]: [
 		{
 			key: RuleKeys.REQUIRED,
-			status: false,
+			status: true,
 			visible: true,
 			title: '必填',
 			message: '内容不能为空',
@@ -313,7 +313,7 @@ export const RuleMapByBizType = {
 	[FieldBizType.SYS_USER_UPDATER]: [
 		{
 			key: RuleKeys.REQUIRED,
-			status: false,
+			status: true,
 			visible: true,
 			title: '必填',
 			message: '内容不能为空',

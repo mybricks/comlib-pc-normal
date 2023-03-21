@@ -10,7 +10,8 @@ import {
 	InputNumber,
 	Modal,
 	Radio,
-	Row, Select,
+	Row,
+	Select,
 	Table,
 	Upload
 } from 'antd';
@@ -77,9 +78,14 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	}, [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, pageIndex, pageSize]);
 	
 	const onDelete = useCallback((id: number) => {
-		ajax({ params: { query: { id }, action: 'DELETE' }, ...baseFetchParams}, { successTip: '删除成功', errorTip: '删除失败' })
-		.then(() => {
-			handleData(searchFormValue.current);
+		Modal.confirm({
+			title: '确认删除',
+			onOk: () => {
+				ajax({ params: { query: { id }, action: 'DELETE' }, ...baseFetchParams}, { successTip: '删除成功', errorTip: '删除失败' })
+					.then(() => {
+						handleData(searchFormValue.current);
+					})
+			},
 		})
 	}, [handleData, baseFetchParams]);
 	const onEdit = useCallback((item: Record<string, unknown>) => {
@@ -160,20 +166,20 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		}).catch(_ => _);
 	}, [handleData, data.formFieldAry, data.pagination?.pageSize]);
 	
-	const renderFormItemNode = useCallback((field: Field, option: { placeholder?: string }) => {
+	const renderFormItemNode = useCallback((field: Field, option: { placeholder?: string; onPressEnter?(): void }) => {
 		let placeholder = option.placeholder ?? `请输入${field.name}`;
-		let item = <Input placeholder={placeholder} />;
+		let item = <Input placeholder={placeholder} onPressEnter={option.onPressEnter} />;
 		
 		if (field.form.formItem === ComponentName.DATE_PICKER) {
 			item = <DatePicker style={{ width: '100%' }} showTime placeholder={option.placeholder ?? `请选择${field.name}`} />;
 		} else if (field.form.formItem === ComponentName.INPUT_NUMBER) {
-			item = <InputNumber style={{ width: '100%' }} placeholder={placeholder} />
+			item = <InputNumber style={{ width: '100%' }} onPressEnter={option.onPressEnter} placeholder={placeholder} />
 		} else if (field.form.formItem === ComponentName.SELECT) {
 			item = <Select placeholder={option.placeholder ?? `请选择${field.name}`} options={field.form?.options ?? []} />
 		} else if (field.mapping?.entity && field.form.formItem === ComponentName.DEBOUNCE_SELECT) {
 			item = <DebounceSelect placeholder={option.placeholder ?? '可输入关键词检索'} field={field} fetchParams={baseFetchParams}/>
 		} else if (field.form.formItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
-			item = <Input addonBefore="+86" placeholder={placeholder} />;
+			item = <Input onPressEnter={option.onPressEnter} addonBefore="+86" placeholder={placeholder} />;
 		} else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
 			item = <Upload />;
 		} else if (field.form.formItem === ComponentName.RADIO) {
@@ -212,7 +218,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 									name={field.name}
 									label={field.form?.label ?? field.name}
 								>
-									{renderFormItemNode(field, { placeholder })}
+									{renderFormItemNode(field, { placeholder, onPressEnter: search })}
 								</Form.Item>
 							</div>
 						);
@@ -294,35 +300,36 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			.catch(error => console.log('表单校验参数不合法', error))
 			.finally(() => setCreateLoading(false));
 	}, [showModalAction, data.entity, baseFetchParams]);
+	const allowRenderCreateItem = data.entity?.fieldAry
+		.filter(field => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
+		.filter(field => {
+			/** 这一行必须要，读取 form 的 disabledForEdit 值才能被收集到依赖，才能对应响应编辑项变化 */
+			field.form.disabledForEdit;
+			/** 创建者、修改者且 window 上用户信息存在则不展示表单项 */
+			if (showModalAction === ModalAction.CREATE || data.showActionModalForEdit === ModalAction.CREATE) {
+				if (field.bizType === FieldBizType.SYS_USER_CREATOR || field.bizType === FieldBizType.SYS_USER_UPDATER) {
+					return !window['LOGIN_USER_INFO'];
+				}
+			} else if (showModalAction === ModalAction.EDIT || data.showActionModalForEdit === ModalAction.EDIT) {
+				/** 编辑时直接隐藏创建者对应的表单项 */
+				if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
+					return false;
+					/** 修改者且 window 上用户信息存在则不展示表单项 */
+				} else if (field.bizType === FieldBizType.SYS_USER_UPDATER) {
+					return !window['LOGIN_USER_INFO'];
+				}
+				
+				return !field.form.disabledForEdit;
+			}
+			
+			return true;
+		}) ?? [];
 	const renderCreateFormNode = () => {
 		if (data.entity) {
 			return (
 				<Row gutter={24}>
 					{
-						data.entity.fieldAry
-							.filter(field => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
-							.filter(field => {
-								/** 这一行必须要，读取 form 的 disabledForEdit 值才能被收集到依赖，才能对应响应编辑项变化 */
-								field.form.disabledForEdit;
-								/** 创建者、修改者且 window 上用户信息存在则不展示表单项 */
-								if (showModalAction === ModalAction.CREATE || data.showActionModalForEdit === ModalAction.CREATE) {
-									if (field.bizType === FieldBizType.SYS_USER_CREATOR || field.bizType === FieldBizType.SYS_USER_UPDATER) {
-										return !window['LOGIN_USER_INFO'];
-									}
-								} else if (showModalAction === ModalAction.EDIT || data.showActionModalForEdit === ModalAction.EDIT) {
-									/** 编辑时直接隐藏创建者对应的表单项 */
-									if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
-										return false;
-										/** 修改者且 window 上用户信息存在则不展示表单项 */
-									} else if (field.bizType === FieldBizType.SYS_USER_UPDATER) {
-										return !window['LOGIN_USER_INFO'];
-									}
-									
-									return !field.form.disabledForEdit;
-								}
-								
-								return true;
-							})
+						allowRenderCreateItem
 							.map(field => {
 								let defaultValue = undefined;
 								const rules: any[] = field.form?.rules?.filter(r => r.status).map(r => RuleMap[r.key]?.(field, r)) || [];
@@ -332,7 +339,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 								}
 								
 								return (
-									<Col span={12} key={field.id}>
+									<Col span={allowRenderCreateItem.length > 5 ? 12 : 24} key={field.id}>
 										<div className="ant-form-item-area" style={{ width: '100%' }} data-field-id={field.id}>
 											<Form.Item
 												initialValue={defaultValue}
@@ -409,7 +416,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	    <div className={styles.container} ref={containerRef}>
 		    <Modal
 			    destroyOnClose
-			    width={800}
+			    width={allowRenderCreateItem.length > 5 ? 800 : 600}
 			    getContainer={((edit || debug) ? (data.showActionModalForEdit && !showModalAction ? domainContainerRef.current : document.querySelector('#_mybricks-geo-webview_')?.shadowRoot?.querySelector('div > div')) : undefined) as any}
 			    className={styles.createModal}
 			    visible={!!showModalAction || (edit && data.showActionModalForEdit)}
@@ -424,7 +431,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			    confirmLoading={createLoading}
 			    okButtonProps={{ loading: createLoading }}
 		    >
-			    <Form form={createForm}>
+			    <Form form={createForm} layout={allowRenderCreateItem.length > 5 ? 'horizontal' : 'vertical'}>
 				    {renderCreateFormNode()}
 			    </Form>
 		    </Modal>
