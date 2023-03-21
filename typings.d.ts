@@ -48,6 +48,8 @@ interface EditorResult<T> {
   focusArea: any
   output: any
   input: any
+  inputs: any
+  outputs: any
   slot: any,
   diagram: any
   style: any
