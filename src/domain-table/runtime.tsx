@@ -416,7 +416,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 	    <div className={styles.container} ref={containerRef}>
 		    <Modal
 			    destroyOnClose
-			    width={allowRenderCreateItem.length > 5 ? 800 : 600}
+			    width={allowRenderCreateItem.length > 5 ? 800 : 520}
 			    getContainer={((edit || debug) ? (data.showActionModalForEdit && !showModalAction ? domainContainerRef.current : document.querySelector('#_mybricks-geo-webview_')?.shadowRoot?.querySelector('div > div')) : undefined) as any}
 			    className={styles.createModal}
 			    visible={!!showModalAction || (edit && data.showActionModalForEdit)}
@@ -431,7 +431,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			    confirmLoading={createLoading}
 			    okButtonProps={{ loading: createLoading }}
 		    >
-			    <Form form={createForm} layout={allowRenderCreateItem.length > 5 ? 'horizontal' : 'vertical'}>
+			    <Form form={createForm}>
 				    {renderCreateFormNode()}
 			    </Form>
 		    </Modal>
