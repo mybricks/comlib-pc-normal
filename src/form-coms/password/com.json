@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.password",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "密码输入框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -112,6 +112,13 @@
     {
       "id": "onChange",
       "title": "值发生改变",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "string"
       }

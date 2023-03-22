@@ -82,6 +82,12 @@ export default function ({
     onValidateTrigger();
   }, []);
 
+  const onPressEnter = useCallback((e) => {
+    const value = e.target.value;
+    onValidateTrigger();
+    outputs['onPressEnter'](value);
+  }, []);
+
   let jsx = (
     <Input
       type="text"
@@ -90,6 +96,7 @@ export default function ({
       readOnly={!!edit}
       onChange={changeValue}
       onBlur={onBlur}
+      onPressEnter={onPressEnter}
     />
   );
 
