@@ -56,11 +56,13 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		setLoading(true);
 		const pageParams = pageInfo || { pageIndex, pageSize: edit ? 5 : pageSize };
 		pageParams.pagination = data.pagination?.show;
+		const primaryField = data.entity?.fieldAry.find(field => field.isPrimaryKey);
 		
 		ajax({
 			params: {
 				query,
 				fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
+				orders: primaryField ? [{ fieldId: primaryField.id, order: 'DESC' }] : undefined,
 				page: pageParams,
 				action: 'SELECT'
 			},

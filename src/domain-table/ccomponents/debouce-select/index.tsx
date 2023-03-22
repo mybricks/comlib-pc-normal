@@ -22,9 +22,16 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 	const fetchOptions = useCallback((value: string) => {
 		setFetching(true);
 		const { form, ...curField } = field;
+		const primaryField = curField.mapping?.entity?.fieldAry.find(field => field.isPrimaryKey);
+		
 		return ajax({
 			...fetchParams,
-			params: { action: 'SEARCH_BY_FIELD', field: curField, query: { keyword: value }  }
+			params: {
+				action: 'SEARCH_BY_FIELD',
+				field: curField,
+				orders: primaryField ? [{ fieldId: primaryField.id, order: 'DESC' }] : undefined,
+				query: { keyword: value },
+			}
 		})
 		.then(data => {
 			return (data ?? []).map(item => {
