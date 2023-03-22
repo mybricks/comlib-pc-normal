@@ -114,6 +114,13 @@ export default {
             options: {
               outputId: 'onChange'
             }
+          },
+          {
+            title: '按下回车',
+            type: '_event',
+            options: {
+              outputId: 'onPressEnter'
+            }
           }
         ]
       }
