@@ -7,7 +7,8 @@ export interface Data {
   usePoster?: boolean;
   style?: CSSProperties;
   loop?: boolean;
-  dynamicSrc?: boolean
+  dynamicSrc?: boolean;
+  fit?: CSSProperties['objectFit']
 }
 
 export enum VideoType {
