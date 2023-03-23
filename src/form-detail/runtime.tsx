@@ -213,7 +213,10 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         type: TypeEnum.Text,
         direction: 'horizontal',
         useSuffix: false,
-        suffixBtnText: '查看更多'
+        suffixBtnText: '查看更多',
+        schema: {
+          type: 'string'
+        }
       });
     }
   }, [data]);

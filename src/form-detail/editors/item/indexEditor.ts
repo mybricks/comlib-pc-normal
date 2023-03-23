@@ -1,5 +1,6 @@
-import { Data } from '../../constants';
+import { Data, TypeEnum } from '../../constants';
 import { getEleIdx, setDelete, setExchange, updateIOSchema } from '../utils';
+import { updateScopeIOSchema } from './baseEditor';
 
 export const IndexEditor = [
   {
@@ -36,6 +37,11 @@ export const IndexEditor = [
         if (!focusArea || data.items.length <= 1) return;
         setDelete({ data, focusArea, slots });
         updateIOSchema({ data, input, output });
+        data.items.map((item)=>{
+          if(item.type !== TypeEnum.Text){
+            updateScopeIOSchema({ data, item, slots, input });
+          }
+        })
       }
     }
   }
