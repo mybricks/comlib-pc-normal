@@ -56,6 +56,124 @@ export default {
         }
       }
     ];
+    const styleItems = {
+      title: '样式',
+      items: [
+        {
+          title: '动态默认样式',
+          description: '开启后，可以通过逻辑连线修改默认样式',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useDynamicStyle;
+            },
+            set({ data, input }: EditorResult<Data>, value: boolean) {
+              const event = input.get(InputIds.SetStyle);
+              if (value) {
+                !event && input.add(InputIds.SetStyle, '设置默认样式', Schemas.Style);
+              } else {
+                event && input.remove(InputIds.SetStyle);
+              }
+              data.useDynamicStyle = value;
+            }
+          }
+        },
+        {
+          title: '激活样式',
+          description: '开启后，可以为链接分别配置默认样式和鼠标悬浮时的样式',
+          type: 'Switch',
+          value: {
+            get: ({ data }: EditorResult<Data>) => {
+              return data.useHoverStyle;
+            },
+            set: ({ data }: EditorResult<Data>, value: boolean) => {
+              data.useHoverStyle = value;
+            }
+          }
+        },
+        {
+          title: '默认样式',
+          type: 'Style',
+          options: {
+            plugins: ['Font'],
+            fontProps: {
+              fontFamily: false
+            }
+          },
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.useHoverStyle;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.style;
+            },
+            set({ data }: EditorResult<Data>, value: object) {
+              data.style = {
+                ...data.style,
+                ...value
+              };
+            }
+          }
+        },
+        {
+          title: '样式',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useHoverStyle;
+          },
+          catelogChange: {
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.styleCatelog;
+              },
+              set({ data, catelog }: EditorResult<Data>) {
+                data.styleCatelog = catelog;
+              }
+            }
+          },
+          items: [
+            {
+              type: 'Style',
+              catelog: '默认样式',
+              options: {
+                plugins: ['Font'],
+                fontProps: {
+                  fontFamily: false
+                }
+              },
+              value: {
+                get: ({ data }: EditorResult<Data>) => {
+                  return data.style;
+                },
+                set: ({ data }: EditorResult<Data>, value) => {
+                  data.style = value;
+                }
+              }
+            },
+            {
+              type: 'style',
+              catelog: '激活样式',
+              options: {
+                plugins: ['Font'],
+                fontProps: {
+                  fontFamily: false
+                }
+              },
+              value: {
+                get: ({ data }: EditorResult<Data>) => {
+                  if (!data.hoverStyle) {
+                    data.hoverStyle = { ...data.style };
+                  }
+                  return data.hoverStyle;
+                },
+                set: ({ data }: EditorResult<Data>, value) => {
+                  data.hoverStyle = value;
+                }
+              }
+            }
+          ]
+        }
+      ]
+    };
     cate1.items = [
       {
         title: '对齐方式',
@@ -129,124 +247,8 @@ export default {
           }
         }
       },
-      ...eventItems
-    ];
-
-    cate2.title = '样式';
-    cate2.items = [
-      {
-        title: '动态默认样式',
-        description: '开启后，可以通过逻辑连线修改默认样式',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.useDynamicStyle;
-          },
-          set({ data, input }: EditorResult<Data>, value: boolean) {
-            const event = input.get(InputIds.SetStyle);
-            if (value) {
-              !event && input.add(InputIds.SetStyle, '设置默认样式', Schemas.Style);
-            } else {
-              event && input.remove(InputIds.SetStyle);
-            }
-            data.useDynamicStyle = value;
-          }
-        }
-      },
-      {
-        title: '激活样式',
-        description: '开启后，可以为链接分别配置默认样式和鼠标悬浮时的样式',
-        type: 'Switch',
-        value: {
-          get: ({ data }: EditorResult<Data>) => {
-            return data.useHoverStyle;
-          },
-          set: ({ data }: EditorResult<Data>, value: boolean) => {
-            data.useHoverStyle = value;
-          }
-        }
-      },
-      {
-        title: '默认样式',
-        type: 'Style',
-        options: {
-          plugins: ['Font'],
-          fontProps: {
-            fontFamily: false
-          }
-        },
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.useHoverStyle;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.style;
-          },
-          set({ data }: EditorResult<Data>, value: object) {
-            data.style = {
-              ...data.style,
-              ...value
-            };
-          }
-        }
-      },
-      {
-        title: '样式',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.useHoverStyle;
-        },
-        catelogChange: {
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.styleCatelog;
-            },
-            set({ data, catelog }: EditorResult<Data>) {
-              data.styleCatelog = catelog;
-            }
-          }
-        },
-        items: [
-          {
-            type: 'Style',
-            catelog: '默认样式',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false
-              }
-            },
-            value: {
-              get: ({ data }: EditorResult<Data>) => {
-                return data.style;
-              },
-              set: ({ data }: EditorResult<Data>, value) => {
-                data.style = value;
-              }
-            }
-          },
-          {
-            type: 'style',
-            catelog: '激活样式',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false
-              }
-            },
-            value: {
-              get: ({ data }: EditorResult<Data>) => {
-                if (!data.hoverStyle) {
-                  data.hoverStyle = { ...data.style };
-                }
-                return data.hoverStyle;
-              },
-              set: ({ data }: EditorResult<Data>, value) => {
-                data.hoverStyle = value;
-              }
-            }
-          }
-        ]
-      }
+      ...eventItems,
+      styleItems
     ];
 
     return { title: '文本' };

@@ -1,4 +1,5 @@
 {
   "autoplay": true,
-  "controls": true
+  "controls": true,
+  "fit": "contain"
 }

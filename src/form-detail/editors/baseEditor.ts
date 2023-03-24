@@ -1,6 +1,7 @@
 import { uuid } from '../../utils';
 import { Data, InputIds, TypeEnum } from '../constants';
 import { updateIOSchema } from './utils';
+import { updateScopeIOSchema } from './item/baseEditor';
 
 export const BaseEditor = [
   {
@@ -78,7 +79,7 @@ export const BaseEditor = [
     title: '增加描述项',
     type: 'Button',
     value: {
-      set({ data, input, output }: EditorResult<Data>) {
+      set({ data, input, output, slots }: EditorResult<Data>) {
         const id = uuid();
         data.items.push({
           id: id,
@@ -104,9 +105,17 @@ export const BaseEditor = [
           type: TypeEnum.Text,
           direction: 'horizontal',
           useSuffix: false,
-          suffixBtnText: '查看更多'
+          suffixBtnText: '查看更多',
+          schema: {
+            type: 'string'
+          }
         });
         updateIOSchema({ data, input, output });
+        data.items.map((item)=>{
+          if(item.type !== TypeEnum.Text){
+            updateScopeIOSchema({ data, item, slots, input });
+          }
+        })
       }
     }
   }
