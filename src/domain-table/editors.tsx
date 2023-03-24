@@ -81,13 +81,13 @@ export default {
 		  },
 		  {
 			  title: '检索表单',
+			  ifVisible({ data }: EditorResult<Data>) {
+				  return !!data.entity;
+			  },
 			  items: [
 				  {
 					  title: '表单项',
 					  type: 'Select',
-					  ifVisible({ data }: EditorResult<Data>) {
-						  return !!data.entity;
-					  },
 					  options (props) {
 						  return {
 							  mode: 'tags',
@@ -129,7 +129,7 @@ export default {
 						  },
 					  },
 					  value: {
-						  get({}: EditorResult<Data>) {
+						  get({ data }: EditorResult<Data>) {
 							  return data.formFieldAry ?? [];
 						  },
 						  set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
@@ -141,13 +141,13 @@ export default {
 		  },
 		  {
 			  title: '数据表格',
+			  ifVisible({ data }: EditorResult<Data>) {
+				  return !!data.entity;
+			  },
 			  items: [
 				  {
 					  title: '表格列',
 					  type: 'Select',
-					  ifVisible({ data }: EditorResult<Data>) {
-						  return !!data.entity;
-					  },
 					  options (props) {
 						  return {
 							  mode: 'tags',
@@ -183,7 +183,7 @@ export default {
 								  if (ids.length > 1) {
 									  const mappingField = item.mapping?.entity.fieldAry.find(field => field.id === ids[1]);
 									
-									  return mappingField ? { ...item, mappingField } : undefined;
+									  return mappingField ? { ...item, mappingField: { ...mappingField, relationEntityId: item.mapping?.entity.id } } : undefined;
 								  } else {
 									  return item;
 								  }
@@ -715,23 +715,22 @@ export default {
 			},
 		].filter(Boolean);
 	},
-	'th.ant-table-cell': ({ }: EditorResult<Data>, cate1) => {
+	'th.ant-table-cell:not(:empty)': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+		if (!data.fieldAry?.length) {
+			return;
+		}
+		const field = data.fieldAry[focusArea?.index];
+		if (!focusArea || !field) return;
 		cate1.title = '常规';
 		cate1.items = [
 			{
 				title: '列名',
 				type: 'Text',
 				value: {
-					get({ data, focusArea }: EditorResult<Data>) {
-						const field = data.fieldAry[focusArea?.index];
-						if (!focusArea || !field) return;
-						
+					get({}: EditorResult<Data>) {
 						return field.label ?? `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`;
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-						const field = data.fieldAry[focusArea?.index];
-						if (!focusArea || !field) return;
-						
 						field.label = value;
 					}
 				}
@@ -740,16 +739,10 @@ export default {
 				title: '列宽',
 				type: 'Text',
 				value: {
-					get({ data, focusArea }: EditorResult<Data>) {
-						const field = data.fieldAry[focusArea?.index];
-						if (!focusArea || !field) return;
-						
+					get({}: EditorResult<Data>) {
 						return field.width ?? '100px';
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-						const field = data.fieldAry[focusArea?.index];
-						if (!focusArea || !field) return;
-						
 						field.width = value;
 					}
 				}
@@ -763,17 +756,26 @@ export default {
 					{ label: "右对齐", value: "right" }
 				],
 				value: {
-					get({ data, focusArea }: EditorResult<Data>) {
-						const field = data.fieldAry[focusArea?.index];
-						if (!focusArea || !field) return;
-						
+					get({}: EditorResult<Data>) {
 						return field.align ?? 'left';
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-						const field = data.fieldAry[focusArea?.index];
-						if (!focusArea || !field) return;
-						
 						field.align = value;
+					}
+				}
+			},
+			{
+				title: '开启排序',
+				type: 'Switch',
+				ifVisible() {
+					return field.bizType !== FieldBizType.FRONT_CUSTOM;
+				},
+				value: {
+					get({}: EditorResult<Data>) {
+						return field.sort;
+					},
+					set({ data, output, input }: EditorResult<Data>, value: boolean) {
+						field.sort = value;
 					}
 				}
 			},

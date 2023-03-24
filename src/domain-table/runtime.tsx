@@ -57,12 +57,15 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		const pageParams = pageInfo || { pageIndex, pageSize: edit ? 5 : pageSize };
 		pageParams.pagination = data.pagination?.show;
 		const primaryField = data.entity?.fieldAry.find(field => field.isPrimaryKey);
+		const orderFields = data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM && field.sorter).map(field => field.sorter);
+		/** 已有按主键排序 */
+		const hasPrimaryFieldOrder = orderFields.find(f => f.fieldId === primaryField);
 		
 		ajax({
 			params: {
 				query,
 				fields: [{ name: 'id' }, ...data.fieldAry.filter(field => field.bizType !== FieldBizType.FRONT_CUSTOM).map(f => ({ name: f.name }))],
-				orders: primaryField ? [{ fieldId: primaryField.id, order: 'DESC' }] : undefined,
+				orders: [...orderFields, hasPrimaryFieldOrder ? undefined : { fieldId: primaryField.id, order: 'DESC' }].filter(Boolean),
 				page: pageParams,
 				action: 'SELECT'
 			},
@@ -131,6 +134,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 					key: title,
 					align: field.align || 'left',
 					width: field.width || '100px',
+					sorter: field.sort,
 				};
 			}) : [];
 	};
@@ -372,6 +376,20 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		setPageSize(size);
 		handleData(searchFormValue.current, { pageIndex, pageSize: size });
 	};
+	/** 排序 */
+	const onTableChange = (_, __, sorter) => {
+		const fieldNames = Array.isArray(sorter.field) ? sorter.field : [sorter.field];
+		let field = data.fieldAry.find(f => f.name === fieldNames[0] && (fieldNames[1] ? f.mappingField.name === fieldNames[1] : true));
+		const orderMap = { ascend: 'ASC', descend: 'DESC' };
+		
+		if (field) {
+			field.sorter = sorter.order ? {
+				entityId: fieldNames.length > 1 ? field.mappingField.relationEntityId : data.entity.id,
+				filedId: fieldNames.length > 1 ? field.mappingField.id : field.id,
+				order: orderMap[sorter.order],
+			} : undefined;
+		}
+	};
 	
   return (
     <ConfigProvider locale={zhCN}>
@@ -384,6 +402,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 					loading={loading}
 					columns={renderColumns()}
 					dataSource={dataSource}
+			    onChange={onTableChange}
 					pagination={data.pagination?.show ? {
 						showSizeChanger: true,
 						total,
