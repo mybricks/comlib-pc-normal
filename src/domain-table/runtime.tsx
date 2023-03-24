@@ -151,9 +151,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 			const curValue = {};
 			
 			Object.keys(value).forEach(key => {
-				const filed = data.formFieldAry.find(field => field.name === key);
+				const field = data.formFieldAry.find(field => field.name === key);
 				let item: Record<string, unknown>= {
-					operator: filed?.form?.operator ?? '=',
+					operator: field?.form?.operator ?? '=',
 					value: value[key]
 				};
 				try {
@@ -385,9 +385,13 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 		if (field) {
 			field.sorter = sorter.order ? {
 				entityId: fieldNames.length > 1 ? field.mappingField.relationEntityId : data.entity.id,
-				filedId: fieldNames.length > 1 ? field.mappingField.id : field.id,
+				fieldId: fieldNames.length > 1 ? field.mappingField.id : field.id,
 				order: orderMap[sorter.order],
 			} : undefined;
+			
+			setPageIndex(1);
+			setPageSize(data.pagination?.pageSize || INIT_PAGE_SIZE);
+			handleData(searchFormValue.current, { pageIndex: 1, pageSize: data.pagination?.pageSize || INIT_PAGE_SIZE });
 		}
 	};
 	
