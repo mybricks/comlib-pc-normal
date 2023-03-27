@@ -86,6 +86,18 @@ export default {
           }
         }
       }
+    },
+    {
+      title: '数据模拟（调试时）',
+      type: 'switch',
+      value: {
+        get({ data }) {
+          return data.mock;
+        },
+        set({ data }, use: boolean) {
+	        data.mock = use;
+        }
+      }
     }
   ]
 };

@@ -4,7 +4,7 @@ function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
   if (data.connector) {
     try {
       env
-        .callConnector(data.connector, params, connectorConfig)
+        .callConnector(data.connector, params, { openMock: data.mock, ...connectorConfig })
         .then((val) => {
           outputs['then'](val);
         })
