@@ -7,6 +7,7 @@
   "description": "服务接口",
   "runtime": "./runtime.ts",
   "editors": "./editors.tsx",
+  "data": "./data.json",
   "icon": "./icon.svg",
   "rtType": "js-autorun",
   "inputs": [
