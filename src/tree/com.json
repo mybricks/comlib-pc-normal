@@ -44,7 +44,7 @@
     },
     {
       "id": "checkedValues",
-      "title": "设置选中项",
+      "title": "设置勾选项",
       "schema": {
         "type": "array",
         "items": {
