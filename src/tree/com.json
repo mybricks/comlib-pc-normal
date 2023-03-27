@@ -1,7 +1,7 @@
 {
   "title": "树组件",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -104,16 +104,6 @@
       }
     },
     {
-      "id": "outSelectedValues",
-      "title": "获取选中项数据",
-      "rels": [
-        "outSelectedValues"
-      ],
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
       "id": "addTips",
       "title": "设置添加提示文案",
       "schema": {
@@ -128,16 +118,6 @@
     {
       "id": "submit",
       "title": "勾选项数据输出",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      }
-    },
-    {
-      "id": "outSelectedValues",
-      "title": "选中项数据输出",
       "schema": {
         "type": "array",
         "items": {
