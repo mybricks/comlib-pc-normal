@@ -250,11 +250,11 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     });
   }, [checkedKeys]);
 
-  useEffect(() => {
-    inputs['outSelectedValues']((val, relOutputs) => {
-      relOutputs['outSelectedValues'](outputNodeValues(data.treeData, selectedKeys));
-    });
-  }, [selectedKeys]);
+  // useEffect(() => {
+  //   inputs['outSelectedValues']((val, relOutputs) => {
+  //     relOutputs['outSelectedValues'](outputNodeValues(data.treeData, selectedKeys));
+  //   });
+  // }, [selectedKeys]);
 
   const onCheck = useCallback((checkedKeys: React.Key[], info) => {
     // if (env.runtime) {
