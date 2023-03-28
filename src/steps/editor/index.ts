@@ -73,6 +73,18 @@ export default {
         }
       },
       {
+        title: '点击切换',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.steps.canClick;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.steps.canClick = val
+          }
+        }
+      },
+      {
         title: '操作栏',
         type: 'switch',
         value: {
