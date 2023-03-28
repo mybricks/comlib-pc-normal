@@ -36,9 +36,15 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (data.autoplay) {
-      videoRef.current?.play();
-    }
+    const manualPlay = function () {
+      if (!!data.autoplay) {
+        videoRef.current?.play();
+      }
+    };
+    videoRef.current?.addEventListener('loadedmetadata', manualPlay, false);
+    return () => {
+      videoRef.current?.removeEventListener('loadedmetadata', manualPlay);
+    };
   }, [data.autoplay]);
 
   const screenshot = (filename?) => {
