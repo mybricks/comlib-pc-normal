@@ -209,27 +209,20 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
           type={data.steps.type}
           direction={data.steps.direction || 'horizontal'}
         >
-          {stepAry.map((item: any) => {
+          {stepAry.map((item: any, index) => {
+            const stepProps = {
+              key: item.id,
+              title: env.i18n(item.title),
+              subTitle: env.i18n(item.subTitle),
+              'data-item-type': 'step'
+            };
             if (data.steps.showDesc) {
-              return (
-                <Step
-                  key={item.id}
-                  title={env.i18n(item.title)}
-                  subTitle={env.i18n(item.subTitle)}
-                  description={env.i18n(item.description)}
-                  data-item-type="step"
-                />
-              );
-            } else {
-              return (
-                <Step
-                  key={item.id}
-                  title={env.i18n(item.title)}
-                  subTitle={env.i18n(item.subTitle)}
-                  data-item-type="step"
-                />
-              );
+              stepProps['description'] = env.i18n(item.description);
             }
+            if (!!data.steps.canClick) {
+              stepProps['onStepClick'] = () => (data.current = index);
+            }
+            return <Step {...stepProps} />;
           })}
         </Steps>
         {!data.hideSlots ? (
