@@ -9,6 +9,7 @@ export interface Data {
   loop?: boolean;
   dynamicSrc?: boolean;
   fit?: CSSProperties['objectFit']
+  muted?: boolean
 }
 
 export enum VideoType {
