@@ -35,6 +35,12 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
     inputs['screenshot'](screenshot);
   }, []);
 
+  useEffect(() => {
+    if (data.autoplay) {
+      videoRef.current?.play();
+    }
+  }, [data.autoplay]);
+
   const screenshot = (filename?) => {
     const canvas = document.createElement('canvas');
     const { width, height } = videoRef.current?.getBoundingClientRect();
