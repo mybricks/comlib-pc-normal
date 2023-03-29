@@ -1,0 +1,58 @@
+.domainContainer {
+  width: 600px;
+  margin: auto;
+
+  &.edit {
+    min-height: 700px;
+  }
+}
+
+.form {
+  margin-bottom: 24px;
+
+  .addBtn {
+    margin-left: 8px;
+  }
+}
+
+.operateRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.createModal {
+  width: 600px;
+}
+
+.container {
+  :global {
+    .ant-modal-close {
+      position: absolute !important;
+    }
+
+    .ant-modal-title {
+      margin-right: 30px;
+    }
+    .ant-modal-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .ant-modal-body {
+      padding: 24px;
+      overflow: auto;
+    }
+    .ant-modal-footer {
+      padding: 10px 16px;
+      border-top: 1px solid #f0f0f0;
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        flex-flow: row wrap;
+      }
+    }
+  }
+}
