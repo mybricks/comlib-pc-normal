@@ -64,6 +64,7 @@ export default {
               },
               set({ data }: RuntimeParams<Data>, val: boolean) {
                 data.autoplay = val;
+                data.muted = val;
               }
             }
           },
