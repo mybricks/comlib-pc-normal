@@ -8,6 +8,7 @@ export interface Data {
   useDynamicTitle?: boolean;
   useDynamicExpand?: boolean;
   useExtra?: boolean;
+  isCustomTitle?: boolean
 }
 
 export const InputIds = {
@@ -22,7 +23,8 @@ export const OutputIds = {
 
 export const SlotIds = {
   Content: 'content',
-  Extra: 'extra'
+  Extra: 'extra',
+  Title: 'customTitle'
 };
 
 export const Schemas = {

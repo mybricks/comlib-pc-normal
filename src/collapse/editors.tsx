@@ -6,6 +6,23 @@ export default {
     cate1.title = '常规';
     cate1.items = [
       Editor<Data>('标题', EditorType.Text, 'title'),
+      {
+        title: '开启自定义标题',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isCustomTitle || false;
+          },
+          set({ data, slot }: EditorResult<Data>, value: boolean) {
+            data.isCustomTitle = value;
+            if (data.isCustomTitle === true) {
+              slot.add(SlotIds.Title, '标题容器');
+            } else {
+              slot.remove(SlotIds.Title, '标题容器');
+            }
+          }
+        }
+      },
       Editor<Data>('默认展开', EditorType.Switch, 'expanded'),
       Editor<Data>('额外操作', EditorType.Switch, 'useExtra', {
         description: '自定义渲染面板右上角的内容',
@@ -46,17 +63,11 @@ export default {
             const hasExpandedChangeEvent = output.get(OutputIds.ExpandedChange);
 
             if (value) {
-              !hasExpandedEvent &&
-                input.add(InputIds.Expanded, '展开', Schemas.Expanded);
-              !hasFoldedEvent &&
-                input.add(InputIds.Folded, '收起', Schemas.Folded);
+              !hasExpandedEvent && input.add(InputIds.Expanded, '展开', Schemas.Expanded);
+              !hasFoldedEvent && input.add(InputIds.Folded, '收起', Schemas.Folded);
 
               !hasExpandedChangeEvent &&
-                output.add(
-                  OutputIds.ExpandedChange,
-                  '展开收起事件',
-                  Schemas.ExpandedChange
-                );
+                output.add(OutputIds.ExpandedChange, '展开收起事件', Schemas.ExpandedChange);
             } else {
               hasExpandedEvent && input.remove(InputIds.Expanded);
               hasFoldedEvent && input.remove(InputIds.Folded);
@@ -68,9 +79,7 @@ export default {
       }),
       Editor<Data>('展开收起事件', EditorType.Event, null, {
         ifVisible({ data, output }) {
-          return !!(
-            data.useDynamicExpand && output.get(OutputIds.ExpandedChange)
-          );
+          return !!(data.useDynamicExpand && output.get(OutputIds.ExpandedChange));
         },
         options: {
           outputId: OutputIds.ExpandedChange
