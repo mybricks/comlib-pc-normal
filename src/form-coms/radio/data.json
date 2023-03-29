@@ -2,5 +2,7 @@
   "visible": true,
   "config": {
     "disabled": false
-  }
+  },
+  "enableButtonStyle": false,
+  "buttonStyle": "outline"
 }

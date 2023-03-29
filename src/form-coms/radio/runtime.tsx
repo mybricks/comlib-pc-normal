@@ -103,7 +103,13 @@ export default function Runtime({
 
   return (
     <div>
-      <Radio.Group {...data.config} value={data.value} onChange={onChange}>
+      <Radio.Group
+        optionType={data.enableButtonStyle ? 'button' : 'default'}
+        buttonStyle={data.buttonStyle}
+        {...data.config}
+        value={data.value}
+        onChange={onChange}
+      >
         {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
           const label = item.label;
           return (

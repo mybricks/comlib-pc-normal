@@ -58,7 +58,7 @@ export default {
       },
       // 选项配置
       {
-        title: "静态选项配置",
+        title: '静态选项配置',
         type: 'array',
         options: {
           getTitle: ({ label, checked }) => {
@@ -99,7 +99,7 @@ export default {
               options: ['text', 'number', 'boolean'],
               description: '选项的唯一标识，可以修改为有意义的值',
               value: 'value'
-            },
+            }
           ]
         },
         value: {
@@ -109,9 +109,11 @@ export default {
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
             let otherChanged = true;
-            tempOptions.forEach(oldOption => {
-              const newOption = options.find(option => option._id === oldOption._id);
-              const currentOption = data.staticOptions.find(option => option._id === oldOption._id);
+            tempOptions.forEach((oldOption) => {
+              const newOption = options.find((option) => option._id === oldOption._id);
+              const currentOption = data.staticOptions.find(
+                (option) => option._id === oldOption._id
+              );
               if (newOption?.checked === currentOption?.checked) return;
               // 1. 设置了选项的默认选中
               if (newOption?.checked && !oldOption?.checked) {
@@ -126,23 +128,61 @@ export default {
             });
             // 3. 非默认选中引起的set
             if (otherChanged) {
-              options.forEach(option => {
+              options.forEach((option) => {
                 if (option.checked) data.value = option.value;
-              })
+              });
             }
             // 临时:使用tempOptions存储配置项的prev
             tempOptions = options;
             const formItemVal = data.value;
             // 更新选项
-            options = options.map(option => {
+            options = options.map((option) => {
               const checked = formItemVal !== undefined && option.value === formItemVal;
               return {
                 ...option,
                 checked
-              }
+              };
             });
             data.staticOptions = options;
             data.config.options = options;
+          }
+        }
+      },
+      {
+        title: '使用按钮样式',
+        description: '是否使用按钮样式',
+        type: 'switch',
+        value: {
+          get({ data }) {
+            return data.enableButtonStyle;
+          },
+          set({ data }, value: boolean) {
+            data.enableButtonStyle = value;
+          }
+        }
+      },
+      {
+        title: '按钮选中后样式',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableButtonStyle;
+        },
+        options: [
+          {
+            value: 'outline',
+            label: '描边'
+          },
+          {
+            value: 'solid',
+            label: '填色'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.buttonStyle || 'outline';
+          },
+          set({ data }, value: string) {
+            data.buttonStyle = value;
           }
         }
       },
@@ -227,9 +267,9 @@ export default {
             options: {
               outputId: 'onChange'
             }
-          },
+          }
         ]
       }
     ];
   }
-}
+};
