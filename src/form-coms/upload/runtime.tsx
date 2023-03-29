@@ -50,7 +50,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
-  fileListRef.current = fileList;
+  // fileListRef.current = fileList;
   const uploadRef = useRef();
   const {
     fileKey,
