@@ -1,26 +1,29 @@
-import React, { useCallback, useMemo } from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Row,
-  Select,
-  Upload
+	Button,
+	Checkbox,
+	Col,
+	DatePicker,
+	Form,
+	Input,
+	InputNumber, message,
+	Radio,
+	Row,
+	Select,
+	Upload
 } from 'antd';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
 import DebounceSelect from './ccomponents/debouce-select';
 import { RuleMap } from './rule';
 import { ComponentName, Data, FieldBizType } from './constants';
 import { Field } from './type';
+import { ajax } from "../domain-table/util";
 
 import styles from './runtime.less';
 
 export default function ({ env, data }: RuntimeParams<Data>) {
   const { edit, projectId } = env;
+	const [loading, setLoading] = useState(false);
   const [createForm] = Form.useForm();
   const baseFetchParams = useMemo(() => {
     return {
@@ -107,17 +110,15 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           !field.defaultValueWhenCreate
       )
       .filter((field) => {
-	      /** 这一行必须要，读取 form 的 disabledForEdit 值才能被收集到依赖，才能对应响应编辑项变化 */
-	      field.form.disabledForEdit;
 	      /** 编辑时直接隐藏创建者对应的表单项 */
-	      if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
-		      return false;
-		      /** 修改者且 window 上用户信息存在则不展示表单项 */
-	      } else if (field.bizType === FieldBizType.SYS_USER_UPDATER) {
+	      if (
+					field.bizType === FieldBizType.SYS_USER_CREATOR ||
+		      field.bizType === FieldBizType.SYS_USER_UPDATER
+	      ) {
 		      return !window['LOGIN_USER_INFO'];
 	      }
 	
-	      return !field.form.disabledForEdit;
+	      return true;
       }) ?? [];
   const renderCreateFormNode = () => {
     if (data.entity) {
@@ -162,10 +163,80 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 
     return null;
   };
-
+	
+	const handleCreate = useCallback(() => {
+		if (!data.entity) {
+			return;
+		}
+		setLoading(true);
+		createForm
+		.validateFields()
+		.then((value) => {
+			const curValue: Record<string, unknown> = {};
+			
+			Object.keys(value).forEach((key) => {
+				let item = value[key];
+				try {
+					if (item.isAfter) {
+						item = (item as any).valueOf();
+					}
+				} catch {}
+				
+				curValue[key] = item;
+			});
+			
+			const fields = data.entity.fieldAry.filter(
+				(field) =>
+					[FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(
+						field.bizType
+					) &&
+					!field.isPrimaryKey &&
+					!field.isPrivate &&
+					!field.defaultValueWhenCreate
+			);
+			
+			/** 创建者默认读 window 上用户信息 */
+			if (fields.length && window['LOGIN_USER_INFO']) {
+				fields.forEach((field) => (curValue[field.name] = window['LOGIN_USER_INFO'].id));
+			}
+			
+			ajax(
+				{
+					params: {
+						fields: data.entity.fieldAry.filter(
+							(field) =>
+								![
+									FieldBizType.MAPPING,
+									FieldBizType.SYS_USER_CREATOR,
+									FieldBizType.SYS_USER_UPDATER
+								].includes(field.bizType) &&
+								!field.isPrimaryKey &&
+								!field.isPrivate &&
+								!field.defaultValueWhenCreate &&
+								!field.form.disabledForEdit
+						),
+						query: curValue,
+						action: 'INSERT'
+					},
+					...baseFetchParams
+				},
+				{
+					successTip: '提交成功',
+					errorTip: '提交失败',
+				}).then(() => createForm.resetFields());
+		})
+		.catch((error) => console.log('表单校验参数不合法', error))
+		.finally(() => setLoading(false));
+	}, [data.entity, baseFetchParams]);
+	
   return (
 	  <div className={`${styles.domainContainer} ${edit ? styles.edit : ''}`}>
-		  <Form form={createForm}>{renderCreateFormNode()}</Form>
+		  <Form form={createForm}>
+			  {renderCreateFormNode()}
+			  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+				  <Button type="primary" style={{ width: '100px' }} onClick={handleCreate} loading={loading}>提交</Button>
+			  </div>
+			</Form>
 	  </div>
   );
 }
