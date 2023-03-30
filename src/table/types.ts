@@ -168,4 +168,10 @@ export interface Data {
 
   //动态设置显示表格标题和字段
   useDynamicTitle?: boolean;
+
+  tableColor: {
+    titleColor: string;
+    titleBgColor: string;
+    contentColor: string;
+  };
 }
