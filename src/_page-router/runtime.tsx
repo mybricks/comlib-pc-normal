@@ -1,17 +1,17 @@
 import { message } from 'antd';
-import { Data, InputIds } from './constants';
+import { Data, InputIds, TypeEnum } from './constants';
 
 // pushState/replaceState 参数解析
 const getHistoryParams = (val) => {
   switch (typeof val) {
     case 'string':
       return {
-        state: history?.state || {},
+        state: {},
         title: '',
         url: val
       };
     case 'object':
-      const { state = history?.state || {}, title = '', url } = val || {};
+      const { state = {}, title = '', url } = val || {};
       return {
         state,
         title,
@@ -170,6 +170,22 @@ const runtimeExecute = ({ inputs, data }: RuntimeParams<Data>) => {
   });
 };
 
+const executeSwitch = ({ inputs, data, env }: RuntimeParams<Data>) => {
+  const { getRouter = () => ({}) } = env.vars;
+  const routerSwitcher = getRouter();
+  const { type } = data;
+  inputs[InputIds.RouterAction]((val) => {
+    if (routerSwitcher[type]) {
+      const params = getHistoryParams(getParams(val, data));
+      if ([TypeEnum.PUSHSTATE, TypeEnum.REDIRECT, TypeEnum.OPENTAB].includes(type) && !params.url) {
+        message.error(`路由地址不能为空: ${JSON.stringify(params)}`);
+        return;
+      }
+      routerSwitcher[type](params);
+    }
+  });
+};
+
 export default function (props: RuntimeParams<Data>) {
   const { env } = props;
   const { edit, runtime } = env;
@@ -178,12 +194,13 @@ export default function (props: RuntimeParams<Data>) {
   if (edit) {
     return;
   }
-  if (debug) {
-    debugExecute(props);
-    return;
-  }
-  if (runtime) {
-    runtimeExecute(props);
-    return;
-  }
+  executeSwitch(props);
+  // if (debug) {
+  //   debugExecute(props);
+  //   return;
+  // }
+  // if (runtime) {
+  //   runtimeExecute(props);
+  //   return;
+  // }
 }

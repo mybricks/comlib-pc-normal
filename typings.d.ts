@@ -14,6 +14,7 @@ interface Env {
   vars?: {
     getQuery: () => any;
     getCookies: () => any;
+    getRouter: () => Record<string, Function>
   }
   [x: string]: any
 }
