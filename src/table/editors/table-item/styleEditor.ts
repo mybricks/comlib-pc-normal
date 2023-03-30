@@ -9,7 +9,7 @@ import {
 } from '../../types';
 import { getColumnItem } from '../../utils';
 
-const DefaultColor = {
+export const DefaultColor = {
   TitleColor: '#1f1f1f',
   TitleBgColor: '#f5f7f9',
   ContentColor: '#434343'
