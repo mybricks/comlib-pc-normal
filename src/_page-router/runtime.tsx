@@ -170,9 +170,14 @@ const runtimeExecute = ({ inputs, data }: RuntimeParams<Data>) => {
   });
 };
 
-const executeSwitch = ({ inputs, data, env }: RuntimeParams<Data>) => {
+const executeSwitch = ({ inputs, data, env, logger, onError }: RuntimeParams<Data>) => {
   const { getRouter = () => ({}) } = env.vars;
   const routerSwitcher = getRouter();
+  if (!Object.keys(routerSwitcher).length) {
+    onError?.('环境变量 vars.getRouter 方法未实现');
+    console.error(`【跳转到...】组件： 环境变量 vars.getRouter 方法未实现`);
+    return;
+  }
   const { type } = data;
   inputs[InputIds.RouterAction]((val) => {
     if (routerSwitcher[type]) {
@@ -181,7 +186,13 @@ const executeSwitch = ({ inputs, data, env }: RuntimeParams<Data>) => {
         message.error(`路由地址不能为空: ${JSON.stringify(params)}`);
         return;
       }
-      routerSwitcher[type](params);
+      try {
+        routerSwitcher[type](params);
+      } catch (error) {
+        onError?.('【跳转到...】组件运行错误.');
+        console.error('【跳转到...】组件运行错误.', error);
+        logger.error(`${error}`);
+      }
     }
   });
 };
