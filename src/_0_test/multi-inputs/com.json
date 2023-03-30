@@ -1,0 +1,78 @@
+{
+  "title": "加法",
+  "namespace": "test.test.multiInputs",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "多项输入测试",
+  "author": "mybricks",
+  "author_name": "mybricks",
+  "runtime": "./runtime.ts",
+  "inputs": [
+    {
+      "id": "in0",
+      "title": "第一项",
+      "schema": [
+        {
+          "title": "参数0",
+          "name": "p0",
+          "type": "number"
+        },
+        {
+          "title": "参数1",
+          "name": "p1",
+          "type": "number"
+        }
+      ],
+      "desc": "第一项"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "out0",
+      "title": "out0",
+      "schema": {
+        "type": "indexObject",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "out1",
+      "title": "out1",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "22"
+          },
+          {
+            "type": "number",
+            "value": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "out2",
+      "title": "out2",
+      "schema": {
+        "type": "tuple",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    }
+  ]
+}
