@@ -1,10 +1,26 @@
+import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants';
 import { unitConversion } from '../../../utils';
+import { isEqual } from 'lodash';
 import { Data, SizeEnum } from '../../types';
 
 export const DEFAULT_COLOR = {
   TitleColor: '#1f1f1f',
   TitleBgColor: '#f5f7f9',
   ContentColor: '#434343'
+};
+
+//hack方法，解决由styleditor的get方法会自动触发set的问题
+let falg = false;
+const styleTrigger = () => {
+  falg = true;
+  // styleEditor的set会自动触发get，在100ms内都为true，表示由get触发的，100ms后则不受影响
+  setTimeout(() => {
+    falg = false;
+  }, 100);
+};
+
+const isTriggerByStyle = () => {
+  return falg;
 };
 
 const tableStyleEditor = {
@@ -67,60 +83,102 @@ const tableStyleEditor = {
         }
       }
     },
+    // {
+    //   title: '表头样式',
+    //   type: 'ColorPicker',
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data?.tableColor?.titleColor || DEFAULT_COLOR.TitleColor;
+    //     },
+    //     set({ data }: EditorResult<Data>, value: string) {
+    //       if (!data.tableColor) {
+    //         data.tableColor = {} as any;
+    //       }
+    //       data.columns = data.columns.map((item) => {
+    //         item.titleColor = value;
+    //         return item;
+    //       });
+    //       data.tableColor.titleColor = value;
+    //     }
+    //   }
+    // },
+    // {
+    //   title: '内容样式',
+    //   type: 'ColorPicker',
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data?.tableColor?.contentColor || DEFAULT_COLOR.ContentColor;
+    //     },
+    //     set({ data }: EditorResult<Data>, value: string) {
+    //       if (!data.tableColor) {
+    //         data.tableColor = {} as any;
+    //       }
+    //       data.columns = data.columns.map((item) => {
+    //         item.contentColor = value;
+    //         return item;
+    //       });
+    //       data.tableColor.contentColor = value;
+    //     }
+    //   }
+    // },
     {
-      title: '表头背景色',
-      type: 'ColorPicker',
+      title: '表头样式',
+      type: 'Style',
+      options: {
+        plugins: ['bgcolor', 'Font'],
+        fontProps: {
+          fontFamily: false,
+          lineHeight: false
+        }
+      },
       value: {
-        get({ data }: EditorResult<Data>) {
-          return data?.tableColor?.titleBgColor || DEFAULT_COLOR.TitleBgColor;
+        get({ data, id }: EditorResult<Data>) {
+          styleTrigger();
+          return data.headStyle || { ...DefaultHeadStyle };
         },
-        set({ data }: EditorResult<Data>, value: string) {
-          if (!data.tableColor) {
-            data.tableColor = {} as any;
+        set({ data, id }: EditorResult<Data>, value) {
+          // 是否是由get触发的set
+          if (isTriggerByStyle()) {
+            return;
           }
+          delete value.lineHeight;
+          delete value.display;
+          delete value.letterSpacing;
           data.columns = data.columns.map((item) => {
-            item.titleBgColor = value;
+            item.headStyle = { ...value };
             return item;
           });
-          data.tableColor.titleBgColor = value;
+          data.headStyle = value;
         }
       }
     },
     {
-      title: '表头字体颜色',
-      type: 'ColorPicker',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data?.tableColor?.titleColor || DEFAULT_COLOR.TitleColor;
-        },
-        set({ data }: EditorResult<Data>, value: string) {
-          if (!data.tableColor) {
-            data.tableColor = {} as any;
-          }
-          data.columns = data.columns.map((item) => {
-            item.titleColor = value;
-            return item;
-          });
-          data.tableColor.titleColor = value;
+      title: '内容样式',
+      type: 'Style',
+      options: {
+        plugins: ['bgColor', 'Font'],
+        fontProps: {
+          fontFamily: false,
+          lineHeight: false
         }
-      }
-    },
-    {
-      title: '内容字体颜色',
-      type: 'ColorPicker',
+      },
       value: {
-        get({ data }: EditorResult<Data>) {
-          return data?.tableColor?.contentColor || DEFAULT_COLOR.ContentColor;
+        get({ data, id }: EditorResult<Data>) {
+          styleTrigger();
+          return data.contentStyle || { ...DefaultContentStyle };
         },
-        set({ data }: EditorResult<Data>, value: string) {
-          if (!data.tableColor) {
-            data.tableColor = {} as any;
+        set({ data, id }: EditorResult<Data>, value) {
+          if (isTriggerByStyle()) {
+            return;
           }
+          delete value.lineHeight;
+          delete value.display;
+          delete value.letterSpacing;
           data.columns = data.columns.map((item) => {
-            item.contentColor = value;
+            item.contentStyle = { ...value };
             return item;
           });
-          data.tableColor.contentColor = value;
+          data.contentStyle = value;
         }
       }
     }

@@ -60,7 +60,7 @@ export const InputIds = {
   SET_SHOW_COLUMNS: 'showColumns',
 
   //动态设置显示表头
-  SET_SHOW_TitleS: 'showTitles',
+  SET_SHOW_TitleS: 'showTitles'
 };
 export const OutputIds = {
   // 输出勾选项
@@ -80,4 +80,7 @@ export const OutputIds = {
   SORTER: 'sorter'
 };
 
-export const DefaultRowKey = '_uuid'
+export const DefaultRowKey = '_uuid';
+
+export const DefaultHeadStyle = { color: '#1f1f1f', background: '#f5f7f9' };
+export const DefaultContentStyle = { color: '#434343' };
