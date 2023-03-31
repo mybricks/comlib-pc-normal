@@ -1,5 +1,5 @@
 import { Data, FormItems } from './types';
-import { inputIds, slotInputIds } from './constants'
+import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema } from './editors';
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
@@ -128,6 +128,17 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     */
   if (!input.get(inputIds.SET_FORM_ITEMS_PROPS)) {
     input.add(inputIds.SET_FORM_ITEMS_PROPS, '设置表单项配置', getFormItemPropsSchema(data));
+  }
+
+  /**
+    * @description v1.1.20 增加获取表单数据 I/O
+    */
+  if (!input.get(inputIds.GET_FIELDS_VALUE)) {
+    input.add(inputIds.GET_FIELDS_VALUE, '获取表单数据', { type: 'any' });
+  }
+
+  if (!output.get(outputIds.RETURN_VALUES)) {
+    output.add(inputIds.GET_FIELDS_VALUE, '表单数据输出', { type: 'object', properties: {}});
   }
 
   return true;

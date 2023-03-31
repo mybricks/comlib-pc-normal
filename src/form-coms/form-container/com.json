@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.1.19",
+  "version": "1.1.20",
   "description": "表单容器",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -42,6 +42,17 @@
         "type": "any"
       },
       "desc": "触发表单进行校验并且提交数据"
+    },
+    {
+      "id": "getFieldsValue",
+      "title": "获取表单数据",
+      "rels": [
+        "returnValues"
+      ],
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取表单数据（不会触发校验）"
     },
     {
       "id": "submitAndMerge",
@@ -109,6 +120,14 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "returnValues",
+      "title": "表单数据输出",
       "schema": {
         "type": "object",
         "properties": {}

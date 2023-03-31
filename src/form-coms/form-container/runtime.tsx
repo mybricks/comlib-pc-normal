@@ -1,6 +1,14 @@
-import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useState } from 'react';
-import { Form, Button, Row, Col } from 'antd';
-import { deepCopy, typeCheck } from '../../utils';
+import React, {
+  useEffect,
+  useMemo,
+  useCallback,
+  useLayoutEffect,
+  Fragment,
+  useState,
+  useRef
+} from 'react';
+import { Form } from 'antd';
+import { typeCheck } from '../../utils';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
 import { getLabelCol, isObject } from './utils';
@@ -24,6 +32,7 @@ type FormControlInputType = {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
+  // const formContext = useRef({ store: {} })
   const [formRef] = Form.useForm();
 
   const childrenInputs = useMemo<{
@@ -76,7 +85,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs[inputIds.SET_FIELDS_VALUE]((val) => {
       // resetFields();
-
       setFieldsValue(val);
       slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
@@ -103,6 +111,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
+    inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
+      getValue().then((v) => {
+        outputRels[outputIds.RETURN_VALUES](v);
+      });
+    });
+
     // inputs[inputIds.SET_DISABLED](() => {
     //   data.config.disabled = true;
     //   setDisabled();
@@ -114,23 +128,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // });
 
     //------ For 表单项私有 start ---------
-    _inputs['validate']((val, outputRels) => {
-      validate().then((r) => {
-        outputRels['returnValidate']({
-          validateStatus: 'success'
-        });
-      });
-    });
+    // _inputs['validate']((val, outputRels) => {
+    //   validate().then((r) => {
+    //     outputRels['returnValidate']({
+    //       validateStatus: 'success'
+    //     });
+    //   });
+    // });
 
-    _inputs['getValue']((val, outputRels) => {
-      getValue().then((v) => {
-        outputRels['returnValue'](v);
-      });
-    });
+    // _inputs['getValue']((val, outputRels) => {
+    //   getValue().then((v) => {
+    //     outputRels['returnValue'](v);
+    //   });
+    // });
 
-    _inputs['setValue']((val) => {
-      setFieldsValue(val);
-    });
+    // _inputs['setValue']((val) => {
+    //   setFieldsValue(val);
+    // });
     //------ For 表单项私有 end---------
 
     /**
@@ -144,6 +158,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
   }, []);
+
+  // useLayoutEffect(() => {
+  //   slots['content']._inputs['onChange'](({ id, value }) => {
+  //     const item = data.items.find((item) => item.id === id);
+  //     if (item) {
+  //       const fieldsValue = { [item.name || item.label]: value }
+  //       console.log({ ...formContext.current.store, ...fieldsValue });
+  //       formContext.current.store = { ...formContext.current.store, ...fieldsValue }
+  //       // setStore({ ...store, ...fieldsValue })
+  //       outputs['onValuesChange']({ ...formContext.current.store, ...fieldsValue })
+  //     }
+  //   });
+  // }, [])
 
   const setFieldsValue = (val) => {
     if (val) {
@@ -175,21 +202,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
-  const setDisabled = () => {
-    data.items.forEach((item) => {
-      const id = item.id;
-      const input = childrenInputs[id];
-      input?.setDisabled && input?.setDisabled();
-    });
-  };
+  // const setDisabled = () => {
+  //   data.items.forEach((item) => {
+  //     const id = item.id;
+  //     const input = childrenInputs[id];
+  //     input?.setDisabled && input?.setDisabled();
+  //   });
+  // };
 
-  const setEnabled = () => {
-    data.items.forEach((item) => {
-      const id = item.id;
-      const input = childrenInputs[id];
-      input?.setEnabled && input?.setEnabled();
-    });
-  };
+  // const setEnabled = () => {
+  //   data.items.forEach((item) => {
+  //     const id = item.id;
+  //     const input = childrenInputs[id];
+  //     input?.setEnabled && input?.setEnabled();
+  //   });
+  // };
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -244,7 +271,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   name: item.name,
                   value: val
                 };
+
                 count++;
+
                 if (count == data.fieldsLength) {
                   resolve(value);
                 }
@@ -274,10 +303,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
             resolve(arr);
           } else {
             const rtn = {};
-            values.forEach((item) => {
+
+            values.forEach((item: any) => {
               rtn[item.name] = item.value;
             });
-            resolve(rtn);
+
+            resolve({ ...rtn });
           }
         })
         .catch((e) => reject(e));
@@ -289,6 +320,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
+    // console.log('提交', formContext.current.store)
     validate()
       .then(() => {
         getValue()

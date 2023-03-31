@@ -55,6 +55,7 @@ function refreshSchema({ data, inputs, outputs, slots }) {
 
   outputs.get(outputIds.ON_FINISH).setSchema(schema)
   outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
+  outputs.get(outputIds.RETURN_VALUES).setSchema(schema)
   refreshParamsSchema(data, outputs)
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
   inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
@@ -393,6 +394,21 @@ export default {
       // },
 
       !data.isFormItem && actionsEditor(data, output),
+      // {
+      //   title: '事件',
+      //   items: [
+      //     {
+      //       title: '字段值更新',
+      //       type: '_event',
+      //       options({ data }) {
+
+      //         return {
+      //           outputId: 'onValuesChange',
+      //         }
+      //       }
+      //     }
+      //   ]
+      // }
       // {
       //   title: '选择表单项',
       //   type: 'comSelector',
