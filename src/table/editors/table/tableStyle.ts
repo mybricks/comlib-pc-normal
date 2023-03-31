@@ -9,20 +9,6 @@ export const DEFAULT_COLOR = {
   ContentColor: '#434343'
 };
 
-//hack方法，解决由styleditor的get方法会自动触发set的问题
-let falg = false;
-const styleTrigger = () => {
-  falg = true;
-  // styleEditor的set会自动触发get，在100ms内都为true，表示由get触发的，100ms后则不受影响
-  setTimeout(() => {
-    falg = false;
-  }, 100);
-};
-
-const isTriggerByStyle = () => {
-  return falg;
-};
-
 const tableStyleEditor = {
   title: '表格样式',
   items: [
@@ -133,14 +119,9 @@ const tableStyleEditor = {
       },
       value: {
         get({ data, id }: EditorResult<Data>) {
-          styleTrigger();
           return data.headStyle || { ...DefaultHeadStyle };
         },
         set({ data, id }: EditorResult<Data>, value) {
-          // 是否是由get触发的set
-          if (isTriggerByStyle()) {
-            return;
-          }
           delete value.lineHeight;
           delete value.display;
           delete value.letterSpacing;
@@ -164,13 +145,9 @@ const tableStyleEditor = {
       },
       value: {
         get({ data, id }: EditorResult<Data>) {
-          styleTrigger();
           return data.contentStyle || { ...DefaultContentStyle };
         },
         set({ data, id }: EditorResult<Data>, value) {
-          if (isTriggerByStyle()) {
-            return;
-          }
           delete value.lineHeight;
           delete value.display;
           delete value.letterSpacing;

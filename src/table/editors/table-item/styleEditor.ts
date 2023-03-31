@@ -16,20 +16,6 @@ export const DefaultColor = {
   ContentColor: '#434343'
 };
 
-//hack方法，解决由styleditor的get方法会自动触发set的问题
-let falg = false;
-const styleTrigger = () => {
-  falg = true;
-  // styleEditor的set会自动触发get，在100ms内都为true，表示由get触发的，100ms后则不受影响
-  setTimeout(() => {
-    falg = false;
-  }, 100);
-};
-
-const isTriggerByStyle = () => {
-  return falg;
-};
-
 const StyleEditor = {
   title: '样式配置',
   items: [
@@ -155,11 +141,9 @@ const StyleEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           const item = getColumnItem(data, focusArea);
-          styleTrigger();
           return item.headStyle || { ...DefaultHeadStyle };
         },
         set({ data, focusArea }: EditorResult<Data>, value) {
-          if (isTriggerByStyle()) return;
           delete value.lineHeight;
           delete value.display;
           delete value.letterSpacing;
@@ -184,11 +168,9 @@ const StyleEditor = {
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           const item = getColumnItem(data, focusArea);
-          styleTrigger();
           return item.contentStyle || { ...DefaultContentStyle };
         },
         set({ data, focusArea }: EditorResult<Data>, value) {
-          if (isTriggerByStyle()) return;
           delete value.lineHeight;
           delete value.display;
           delete value.letterSpacing;
