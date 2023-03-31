@@ -89,6 +89,7 @@ export default {
 					  title: '表单项',
 					  type: 'Select',
 					  options (props) {
+						  data.formFieldAry;
 						  return {
 							  mode: 'tags',
 							  multiple: true,
@@ -124,9 +125,6 @@ export default {
 						  editable: false,
 						  addable: false,
 						  getTitle: ({ name }) => name,
-						  onRemove: (index: number) => {
-							  data.formFieldAry.splice(index, 1);
-						  },
 					  },
 					  value: {
 						  get({ data }: EditorResult<Data>) {
@@ -149,6 +147,7 @@ export default {
 					  title: '表格列',
 					  type: 'Select',
 					  options (props) {
+						  data.fieldAry;
 						  return {
 							  mode: 'tags',
 							  multiple: true,
@@ -207,9 +206,6 @@ export default {
 						  addable: false,
 						  getTitle: ({ name, mappingField }) => {
 								return `${name}${mappingField ? ('.' + mappingField.name) : ''}`;
-						  },
-						  onRemove: (index: number) => {
-							  data.fieldAry.splice(index, 1);
 						  },
 					  },
 					  value: {
