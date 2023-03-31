@@ -138,8 +138,16 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
 
   if (!output.get(outputIds.RETURN_VALUES)) {
-    output.add(inputIds.GET_FIELDS_VALUE, '表单数据输出', { type: 'object', properties: {}});
+    output.add(outputIds.RETURN_VALUES, '表单数据输出', { type: 'object', properties: {} });
   }
+
+  if (output.get(outputIds.RETURN_VALUES) &&
+    input.get(inputIds.GET_FIELDS_VALUE) &&
+    !input.get(inputIds.GET_FIELDS_VALUE)?.rels?.includes(outputIds.RETURN_VALUES)) {
+    input.get(inputIds.GET_FIELDS_VALUE).setRels([outputIds.RETURN_VALUES]);
+  }
+
+  //=========== v1.1.20 end ===============
 
   return true;
 }
