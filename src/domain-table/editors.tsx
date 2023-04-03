@@ -333,7 +333,7 @@ export default {
 		  },
 	  ];
   },
-	'.ant-form-item-search': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+	'.ant-form-item-search': ({ data, focusArea }: EditorResult<Data>, cate1, cate2) => {
 		const field = data.formFieldAry.find(f => f.id === focusArea.dataset.fieldId);
 		
 		if (!field) {
@@ -512,8 +512,43 @@ export default {
 				}
 			},
 		].filter(Boolean);
+		
+		if (field.form?.formItem === ComponentName.DEBOUNCE_SELECT) {
+			cate2.title = '高级';
+			cate2.items = [
+				{
+					title: '选项名称',
+					description: '选择下拉选项显示的标签名称所对应的字段',
+					type: 'Select',
+					options () {
+						return {
+							get options() {
+								return [
+									{ label: '无', value: '' },
+									...(field.mapping?.entity?.fieldAry.map(f => ({ label: f.name, value: f.name })) ?? [])
+								];
+							},
+						}
+					},
+					value: {
+						get() {
+							return field.form?.mapping?.optionLabel ?? '';
+						},
+						set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+							if (!field.form) {
+								field.form = {};
+							}
+							if (!field.form.mapping) {
+								field.form.mapping = {};
+							}
+							field.form.mapping.optionLabel = value;
+						}
+					}
+				}
+			];
+		}
 	},
-	'.ant-form-item-area': ({ focusArea, data }: EditorResult<Data>, cate1) => {
+	'.ant-form-item-area': ({ focusArea, data }: EditorResult<Data>, cate1, cate2) => {
 		const field = data.entity.fieldAry.find(f => f.id === focusArea.dataset.fieldId);
 		
 		if (!field) {
@@ -714,6 +749,42 @@ export default {
 				}
 			},
 		].filter(Boolean);
+		
+		
+		if (field.form?.formItem === ComponentName.DEBOUNCE_SELECT) {
+			cate2.title = '高级';
+			cate2.items = [
+				{
+					title: '选项名称',
+					description: '选择下拉选项显示的标签名称所对应的字段',
+					type: 'Select',
+					options () {
+						return {
+							get options() {
+								return [
+									{ label: '无', value: '' },
+									...(field.mapping?.entity?.fieldAry.map(f => ({ label: f.name, value: f.name })) ?? [])
+								];
+							},
+						}
+					},
+					value: {
+						get() {
+							return field.form?.mapping?.optionLabel ?? '';
+						},
+						set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+							if (!field.form) {
+								field.form = {};
+							}
+							if (!field.form.mapping) {
+								field.form.mapping = {};
+							}
+							field.form.mapping.optionLabel = value;
+						}
+					}
+				}
+			];
+		}
 	},
 	'th.ant-table-cell:not(:empty)': ({ data, focusArea }: EditorResult<Data>, cate1) => {
 		if (!data.fieldAry?.length) {

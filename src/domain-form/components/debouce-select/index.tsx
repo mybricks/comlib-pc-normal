@@ -36,13 +36,17 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 		.then(data => {
 			return (data ?? []).map(item => {
 				let label = '';
-				Object.keys(item)
+				if (form.mapping?.optionLabel) {
+					label = item[form.mapping?.optionLabel];
+				} else {
+					Object.keys(item)
 					.filter(key => key !== 'id')
 					.forEach(key => {
 						if (typeof item[key] !== 'object' && !key.startsWith('_')) {
 							label += label ? '-' + item[key] : item[key];
 						}
 					});
+				}
 				return { label: label || item.id, value: item.id };
 			});
 		})
