@@ -151,7 +151,6 @@ export default {
           fontWeight: 400,
           color: 'rgba(0, 0, 0, 0.45)',
           fontStyle: 'normal',
-          styleEditorUnfold: true
         },
         labelStyle: {
           lineHeight: '14px',
@@ -160,7 +159,6 @@ export default {
           fontWeight: 400,
           color: 'rgba(0, 0, 0, 0.85)',
           fontStyle: 'normal',
-          styleEditorUnfold: false
         },
         inlineMargin: [0, 16, 24, 0],
         visible: true,
@@ -699,13 +697,13 @@ export default {
                     fontWeight: 400,
                     color: 'rgba(0, 0, 0, 0.85)',
                     fontStyle: 'normal',
-                    styleEditorUnfold: false
                   });
                 }
                 return item?.labelStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: {}) {
-                setFormItemProps({ data, id }, 'labelStyle', value);
+              set({ id, data }: EditorResult<Data>, value: any) {
+                const { styleEditorUnfold, ...style } = value;
+                setFormItemProps({ data, id }, 'labelStyle', style);
               },
             },
           },
@@ -725,7 +723,6 @@ export default {
                   fontWeight: 400,
                   color: 'rgba(0, 0, 0, 0.85)',
                   fontStyle: 'normal',
-                  styleEditorUnfold: false
                 };
                 data.items.forEach(item => item.labelStyle = labelStyle);
               }
@@ -748,13 +745,13 @@ export default {
                     fontWeight: 400,
                     color: 'rgba(0, 0, 0, 0.45)',
                     fontStyle: 'normal',
-                    styleEditorUnfold: false
                   });
                 }
                 return item?.descriptionStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: {}) {
-                setFormItemProps({ data, id }, 'descriptionStyle', value);
+              set({ id, data }: EditorResult<Data>, value: any) {
+                const { styleEditorUnfold, ...style } = value;
+                setFormItemProps({ data, id }, 'descriptionStyle', style);
               },
             },
           },
@@ -772,7 +769,6 @@ export default {
                   fontWeight: 400,
                   color: 'rgba(0, 0, 0, 0.45)',
                   fontStyle: 'normal',
-                  styleEditorUnfold: false
                 };
                 data.items.forEach(item => item.descriptionStyle = descriptionStyle);
               }
