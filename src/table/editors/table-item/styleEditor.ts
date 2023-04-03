@@ -1,4 +1,5 @@
 import { setCol } from '../../schema';
+import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants';
 import {
   AlignEnum,
   ContentTypeEnum,
@@ -9,7 +10,7 @@ import {
 } from '../../types';
 import { getColumnItem } from '../../utils';
 
-const DefaultColor = {
+export const DefaultColor = {
   TitleColor: '#1f1f1f',
   TitleBgColor: '#f5f7f9',
   ContentColor: '#434343'
@@ -106,55 +107,74 @@ const StyleEditor = {
         }
       }
     },
+    // {
+    //   title: '表头背景色',
+    //   type: 'ColorPicker',
+    //   ifVisible({ focusArea }: EditorResult<Data>) {
+    //     if (!focusArea) return;
+    //     return true;
+    //   },
+    //   value: {
+    //     get({ data, focusArea }: EditorResult<Data>) {
+    //       const item = getColumnItem(data, focusArea);
+    //       return item.titleBgColor || DefaultColor.TitleBgColor;
+    //     },
+    //     set({ data, focusArea }: EditorResult<Data>, value: string) {
+    //       setCol({ data, focusArea }, 'titleBgColor', value);
+    //     }
+    //   }
+    // },
     {
-      title: '表头背景色',
-      type: 'ColorPicker',
+      title: '表头样式',
+      type: 'Style',
       ifVisible({ focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         return true;
       },
+      options: {
+        plugins: ['bgColor', 'Font'],
+        fontProps: {
+          fontFamily: false,
+          lineHeight: false
+        }
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           const item = getColumnItem(data, focusArea);
-          return item.titleBgColor || DefaultColor.TitleBgColor;
+          return item.headStyle || { ...DefaultHeadStyle };
         },
-        set({ data, focusArea }: EditorResult<Data>, value: string) {
-          setCol({ data, focusArea }, 'titleBgColor', value);
+        set({ data, focusArea }: EditorResult<Data>, value) {
+          delete value.lineHeight;
+          delete value.display;
+          delete value.letterSpacing;
+          setCol({ data, focusArea }, 'headStyle', { ...value });
         }
       }
     },
     {
-      title: '表头字体颜色',
-      type: 'ColorPicker',
+      title: '内容样式',
+      type: 'Style',
       ifVisible({ focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         return true;
       },
-      value: {
-        get({ data, focusArea }: EditorResult<Data>) {
-          const item = getColumnItem(data, focusArea);
-          return item.titleColor || DefaultColor.TitleColor;
-        },
-        set({ data, focusArea }: EditorResult<Data>, value: string) {
-          setCol({ data, focusArea }, 'titleColor', value);
+      options: {
+        plugins: ['bgColor', 'Font'],
+        fontProps: {
+          fontFamily: false,
+          lineHeight: false
         }
-      }
-    },
-    {
-      title: '内容字体颜色',
-      type: 'ColorPicker',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getColumnItem(data, focusArea);
-        return item.contentType === ContentTypeEnum.Text;
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           const item = getColumnItem(data, focusArea);
-          return item.contentColor || DefaultColor.ContentColor;
+          return item.contentStyle || { ...DefaultContentStyle };
         },
-        set({ data, focusArea }: EditorResult<Data>, value: string) {
-          setCol({ data, focusArea }, 'contentColor', value);
+        set({ data, focusArea }: EditorResult<Data>, value) {
+          delete value.lineHeight;
+          delete value.display;
+          delete value.letterSpacing;
+          setCol({ data, focusArea }, 'contentStyle', { ...value });
         }
       }
     }
