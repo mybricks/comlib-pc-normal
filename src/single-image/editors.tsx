@@ -1,4 +1,7 @@
 import { Data, InputIds, OutputIds } from './constants';
+import { generateImg } from './utils';
+
+let loading = false;
 
 export default {
   '@init': ({ style }: EditorResult<Data>) => {
@@ -110,6 +113,53 @@ export default {
               },
               set({ data }: EditorResult<Data>, value: string) {
                 data.fallbackImgSrc = value;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: 'AI生成',
+        items: [
+          {
+            title: '图片描述(prompt)',
+            type: 'TextArea',
+            options: {
+              placeholder: '请输入图片描述'
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.ai_prompt;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.ai_prompt = value;
+              }
+            }
+          },
+          {
+            title: '点击生成',
+            type: 'Button',
+            value: {
+              set({ data }: EditorResult<Data>, value: string) {
+                if (loading) return;
+                if (!data.ai_prompt) {
+                  message.warning('请输入图片描述');
+                  return;
+                }
+                loading = true;
+                generateImg({ prompt: data.ai_prompt })
+                  .then((res) => {
+                    if (res.error) {
+                      message.error('请设置apikey');
+                    } else if (!res.data || !Array.isArray(res.data)) {
+                      message.error('请重试或修改图片描述');
+                    }
+                    data.src = res.data[0]?.url;
+                  })
+                  .catch(() => {})
+                  .finally(() => {
+                    loading = false;
+                  });
               }
             }
           }

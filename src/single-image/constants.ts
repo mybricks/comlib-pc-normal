@@ -17,4 +17,6 @@ export interface Data {
   fallbackImgSrc?: string;
 
   customStyle?: any;
+
+  ai_prompt?: string;
 }
