@@ -15,13 +15,14 @@ import {
   Table,
   Upload
 } from 'antd';
+import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from './components/debouce-select';
 import { RuleMap } from './rule';
 import { ajax } from './util';
-import { ComponentName, Data, FieldBizType, ModalAction } from './constants';
+import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
 import { Field } from './type';
 
 import styles from './runtime.less';
@@ -134,7 +135,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
               field.mapping?.entity ||
               (field.bizType === FieldBizType.DATETIME && field.showFormat)
             ) {
-              value[field.name] = item['_' + field.name];
+              value[field.name] = moment(item['_' + field.name] as any);
             } else {
               value[field.name] = item[field.name];
             }
@@ -203,7 +204,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         Object.keys(value).forEach((key) => {
           const field = data.formFieldAry.find((field) => field.name === key);
           let item: Record<string, unknown> = {
-            operator: field?.form?.operator ?? '=',
+            operator: field?.form?.operator ?? DefaultOperatorMap[field.form.formItem] ?? '=',
             value: value[key]
           };
           try {

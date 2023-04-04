@@ -79,3 +79,16 @@ export const DefaultComponentNameMap = {
 	[FieldBizType.SYS_USER_CREATOR]: ComponentName.DEBOUNCE_SELECT,
 	[FieldBizType.SYS_USER_UPDATER]: ComponentName.DEBOUNCE_SELECT,
 };
+
+export const DefaultOperatorMap = {
+	[ComponentName.INPUT]: 'LIKE',
+	[ComponentName.TEXTAREA]: 'LIKE',
+	[ComponentName.INPUT_NUMBER]: '=',
+	[ComponentName.SELECT]: '=',
+	[ComponentName.DATE_PICKER]: '=',
+	[ComponentName.UPLOAD]: '=',
+	[ComponentName.IMAGE_UPLOAD]: '=',
+	[ComponentName.RADIO]: '=',
+	[ComponentName.CHECKBOX]: '=',
+	[ComponentName.DEBOUNCE_SELECT]: '=',
+}

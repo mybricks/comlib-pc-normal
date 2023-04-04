@@ -1,5 +1,13 @@
 import React from "react";
-import {DefaultComponentNameMap, Data, FieldBizType, FieldDBType, ModalAction, ComponentName} from './constants';
+import {
+	DefaultComponentNameMap,
+	Data,
+	FieldBizType,
+	FieldDBType,
+	ModalAction,
+	ComponentName,
+	DefaultOperatorMap
+} from './constants';
 import {uuid} from "../utils";
 import {RuleKeys, RuleMapByBizType} from "./rule";
 import {ajax} from "./util";
@@ -501,7 +509,7 @@ export default {
 				},
 				value: {
 					get() {
-						return field.form.operator ?? '=';
+						return field.form.operator ?? DefaultOperatorMap[field.form.formItem] ?? '=';
 					},
 					set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
 						if (!field.form) {
