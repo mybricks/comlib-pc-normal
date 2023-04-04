@@ -24,14 +24,19 @@ export default {
         outputSchema: connector.outputSchema
       };
 	
-	    const callInt = input.get('call');
-	    if (callInt) {
-		    if (isValidSchema(connector.inputSchema)) {
-			    callInt.setSchema(connector.inputSchema);
-		    } else {
-			    callInt.setSchema(defaultSchema);
-		    }
-	    }
+			if (data.hasUpdatedOutputSchema) {
+				const callInt = input.get('call');
+				if (callInt) {
+					if (isValidSchema(connector.inputSchema)) {
+						callInt.setSchema(connector.inputSchema);
+					} else {
+						callInt.setSchema(defaultSchema);
+					}
+				}
+			} else {
+				data.outputSchema = connector.outputSchema;
+				updateIO({ input, output }, connector);
+			}
 
       setDesc(`已选择：${data.connector.title}`);
     }
@@ -117,6 +122,7 @@ export default {
 			  },
 			  set({ data, output }, outputSchema) {
 				  data.outputSchema = outputSchema;
+					data.hasUpdatedOutputSchema = true;
 					
 				  const thenOut = output.get('then');
 				  thenOut.setSchema(data.outputSchema);
