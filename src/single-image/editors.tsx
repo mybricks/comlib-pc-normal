@@ -1,5 +1,6 @@
 import { Data, InputIds, OutputIds } from './constants';
 import { generateImg } from './utils';
+import { message } from 'antd';
 
 let loading = false;
 
@@ -125,14 +126,27 @@ export default {
             title: '图片描述(prompt)',
             type: 'TextArea',
             options: {
-              placeholder: '请输入图片描述'
+              placeholder:
+                '请输入图片描述，可以包含图片的风格、内容和细节。如绘制一张油画，内容为明月高悬在河上，岸边的树林有飞鸟掠过。'
             },
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.ai_prompt;
+                return data.aiPrompt;
               },
               set({ data }: EditorResult<Data>, value: string) {
-                data.ai_prompt = value;
+                data.aiPrompt = value;
+              }
+            }
+          },
+          {
+            title: '使用AI丰富图片内容',
+            type: 'switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.enhancePrompt;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.enhancePrompt = value;
               }
             }
           },
@@ -142,12 +156,12 @@ export default {
             value: {
               set({ data }: EditorResult<Data>, value: string) {
                 if (loading) return;
-                if (!data.ai_prompt) {
+                if (!data.aiPrompt) {
                   message.warning('请输入图片描述');
                   return;
                 }
                 loading = true;
-                generateImg({ prompt: data.ai_prompt })
+                generateImg({ prompt: data.aiPrompt, enhance: data.enhancePrompt })
                   .then((res) => {
                     if (res.error) {
                       message.error('请设置apikey');

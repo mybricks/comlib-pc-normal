@@ -18,5 +18,6 @@ export interface Data {
 
   customStyle?: any;
 
-  ai_prompt?: string;
+  aiPrompt?: string;
+  enhancePrompt?: string;
 }

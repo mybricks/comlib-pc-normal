@@ -17,7 +17,7 @@ import {
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
-import zhCN from 'antd/es/locale/zh_CN';
+// import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from './ccomponents/debouce-select';
 import { RuleMap } from './rule';
 import { ajax } from './util';
@@ -551,7 +551,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   };
 
   return (
-    <ConfigProvider locale={zhCN}>
+    <>
       <div
         className={`${styles.domainContainer} ${edit ? styles.edit : ''}`}
         style={data.showActionModalForEdit ? { transform: 'translateZ(0)' } : undefined}
@@ -637,6 +637,6 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           <Form form={createForm}>{renderCreateFormNode()}</Form>
         </Modal>
       </div>
-    </ConfigProvider>
+    </>
   );
 }
