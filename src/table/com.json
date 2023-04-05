@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
+  "ai": "./ai.ts",
   "upgrade": "./upgrade.ts",
   "target": {
     "toReact": "./toReact.ts"

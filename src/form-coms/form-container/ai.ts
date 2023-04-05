@@ -12,6 +12,25 @@
 // }
 
 export default {
+  def: {
+    layout: "horizontal",
+    buttons:[{type:'default',title:'提交'}]
+  },
+  prompts: `
+    例如：
+    问：过滤表单
+    答：{type:'mybricks.normal-pc.form-container',buttons:[{type:'default',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
+    问：过滤表单，包含一个输入框
+    答：{
+          type:'mybricks.normal-pc.form-container',
+          buttons:[{type:'default',title:'查询'}],
+          slots:{
+            content:[
+               {type:'mybricks.normal-pc.form-text'}
+            ]
+          }
+       }
+  `,
   '@focus'({ data }) {
     const { items, ...otherData } = data
 
