@@ -10,7 +10,6 @@
 //     labelStyle: any
 //   }
 // }
-
 export default {
   def: {
     layout: "horizontal",
@@ -32,25 +31,34 @@ export default {
        }
   `,
   '@focus'({ data }) {
-    const { items, ...otherData } = data
+    const { items, config, ...otherData } = data
 
     return {
-      data: otherData,
+      data: {
+        config
+      },
       prompts: `
-      当前是一个表单容器
-      添加的物料namespace必须由以下定义中选出进行组合：['mybricks.normal-pc.form-text', 'mybricks.normal-pc.select', 'mybricks.normal-pc.radio', 'mybricks.normal-pc.password']
-      类型相关定义如下：type ActionType = 'addItem'; interface Res { type: ActionType, namespace: string, config: {label: stirng, name: string}};
-      返回的数据定义为 Res | Res[]
+      当前是一个表单容器,
+      添加组件的 namespace 必须由以下定义中选出进行组合：['form-text', 'select', 'radio', 'password', 'auto-complete', 'cascader', 'checkbox', 'date-picker', 'color', 'input-number', 'form-email', 'input-textarea', 'form-phone-number', 'range-picker', 'rate', 'search', 'slider', 'time-picker', 'time-range-picker', 'transfer', 'upload']
+      返回的数据类型定义为{type: 'addItem'|'updateForm', namespace: string, config: {label: stirng, name: string}}, 如果需要添加多个组件则返回数组结构
       以下是一些例子：
-      Q：添加输入框
-      A：{ type: 'addItem', namespace: 'mybricks.normal-pc.form-text', config: { label: '输入框', name: 'name0'  } }
-      Q：添加输入框和下拉框
-      A：[{ type: 'addItem', namespace: 'mybricks.normal-pc.form-text', config: { label: '输入框', name: 'name0'  } },{ type: 'addItem', namespace: 'mybricks.normal-pc.select', config: { label: '下拉框框', name: 'name1'  } }]
+      问：添加输入框
+      答：{ type: 'addItem', namespace: 'form-text', config: { label: '输入框', name: 'name0' } }
+      问：输入框、下拉框
+      答：[{ type: 'addItem', namespace: 'form-text', config: { label: '输入框', name: 'name0' } },{ type: 'addItem', namespace: 'select', config: { label: '下拉框', name: 'name1'  } }]
+      问：文本与上传
+      答：[{ type: 'addItem', namespace: 'form-text', config: { label: '输入框', name: 'name0' } },{ type: 'addItem', namespace: 'upload', config: { label: '上传', name: 'name1'  } }]
+      问：简单的登录表单
+      答：[{ type: 'addItem', namespace: 'form-text', config: { label: '用户名', name: 'username' } },{ type: 'addItem', namespace: 'password', config: { label: '密码', name: 'password'  } }]
+      问：内联布局
+      答：{type: 'updateForm', data: { config: { layout: 'inline' } }}
+      问：每行4列
+      答：{type: 'updateForm', data: { formItemColumn: 4 }}
       `
     }
   },
   '@update'({ data, newData, slots }) { // 1. 动态添加组件，2. 样式问题  { namespace: mybricks.normal-pc.form-container }
-    // console.log(data, newData)
+    console.log(data, newData)
     try {
       const slot = slots.get('content')
       const newItems: any[] = []
@@ -58,38 +66,42 @@ export default {
       if (Array.isArray(newData)) {
         newData.forEach(item => {
           if (item.type === 'addItem') {
-            const id = slot.addCom(item.namespace)
+            const id = slot.addCom(`mybricks.normal-pc.${item.namespace}`)
             newItems.push({ id, ...item.config })
           }
         })
       } else {
         if (newData.type === 'addItem') {
-          const id = slot.addCom(newData.namespace)
+          const id = slot.addCom(`mybricks.normal-pc.${newData.namespace}`)
           newItems.push({ id, ...newData.config })
         }
-      }
-      // if (newData.namespace) {
-      //   if (typeof newData.namespace === 'string') {
-      //     slot.addCom(newData.namespace)
-      //   } else if (Array.isArray(newData.namespace)) {
-      //     newData.namespace.forEach(namespace => {
-      //       const id = slot.addCom(namespace)
-      //       ids.push(id)
-      //     })
-      //   }
-      // }
 
-      setTimeout(() => {
+        if (newData.type === 'updateForm') {
+          if (typeof newData.data?.formItemColumn === 'number') {
+            data.formItemColumn = newData.data?.formItemColumn
+            data.actions.span = (24 / data.formItemColumn)
+            data.items.forEach(item => {
+              item.span = (24 / data.formItemColumn);
+            })
+          }
+
+          if (typeof newData.data?.config?.layout === 'string') {
+            data.config.layout = newData.data?.config?.layout
+          }
+        }
+      }
+
+      setTimeout(() => { // hack...
         newItems.forEach(newItem => {
           const item = data.items.find(item => item.id === newItem.id)
+          console.log(item, newItem)
           if (item) {
-            // console.log(item, newItem)
             newItem.name && (item.name = newItem.name + '_' + newItem.id)
             newItem.label && (item.label = newItem.label)
           }
         })
         // console.log(data.items)
-      }, 0)
+      }, 100)
       
     } catch (ex) {
       console.error(ex)
