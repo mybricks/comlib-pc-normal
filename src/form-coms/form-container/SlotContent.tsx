@@ -54,7 +54,7 @@ const SlotContent = (props) => {
               item['visible'] = true;
             }
 
-            if (env.edit || data.submitHiddenFields) {
+            if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
               return (
                 <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
                   {com.jsx}
