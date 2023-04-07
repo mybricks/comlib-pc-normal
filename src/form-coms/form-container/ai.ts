@@ -1,7 +1,8 @@
 export default {
   def: {
     layout: "horizontal",
-    buttons: [{ type:'primary', title:'提交' }]
+    buttons: [{ type:'primary', title:'提交' }],
+    formItemColumn: 1
   },
   prompts: `
     例如：
@@ -17,10 +18,21 @@ export default {
             ]
           }
        }
+    问：过滤表单，1行3列布局
+    答：{
+          type:'mybricks.normal-pc.form-container',
+          buttons:[{type:'primary',title:'查询'}],
+          formItemColumn: 3,
+          slots:{
+            content:[
+              {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
+            ]
+          }
+      }
   `,
   '@create' (props) {
     const { def, data } = props
-    // console.log(props)
+    // console.log('def:', def)
     if (def.buttons && def.buttons.length > 0) {
       def.buttons.forEach((item, index) => {
         data.actions.items[index].title = item.title
@@ -29,13 +41,33 @@ export default {
       data.actions.items = data.actions.items.slice(0, def.buttons.length)
     }
 
-    if (def.slots && def.slots.content && def.slots.content.length > 0) {
-      def.slots.content.forEach((item, index) => {
-        data.items[index].label = item.label
-        data.items[index].name = item.name
-      })
-
+    if (typeof def.formItemColumn === 'number') {
+      data.formItemColumn = def.formItemColumn
+      data.actions.span = (24 / data.formItemColumn)
+      setTimeout(() => {
+        data.items.forEach(item => {
+          item.span = (24 / data.formItemColumn);
+        })
+      }, 100)
     }
+
+    setTimeout(() => {
+      if (def.slots && def.slots.content && def.slots.content.length > 0) {
+        def.slots.content.forEach((item, index) => {
+  
+          if (data.items[index]) { // Todo...
+            item.label && (data.items[index].label = item.label)
+            item.name && (data.items[index].name = item.name)
+          }
+          
+        })
+      }
+    }, 100)
+
+    if (typeof def.layout === 'string') {
+      data.config.layout = def.layout
+    }
+    // console.log('data:', data)
   },
   '@focus'({ data }) {
     const { items, config, ...otherData } = data
