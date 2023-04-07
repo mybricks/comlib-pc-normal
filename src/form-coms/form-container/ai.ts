@@ -1,35 +1,42 @@
-// interface FormContainerAiProps {
-//   type: string // addItem, updateItem
-//   namespace: string
-//   config: {
-//     name: string
-//     label: string
-//     description: string
-//     tooltip: string
-//     descriptionStyle: any
-//     labelStyle: any
-//   }
-// }
 export default {
   def: {
     layout: "horizontal",
-    buttons:[{type:'default',title:'提交'}]
+    buttons: [{ type:'primary', title:'提交' }]
   },
   prompts: `
     例如：
     问：过滤表单
-    答：{type:'mybricks.normal-pc.form-container',buttons:[{type:'default',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
+    答：{type:'mybricks.normal-pc.form-container',buttons:[{type:'primary',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
     问：过滤表单，包含一个输入框
     答：{
           type:'mybricks.normal-pc.form-container',
-          buttons:[{type:'default',title:'查询'}],
+          buttons:[{type:'primary',title:'查询'}],
           slots:{
             content:[
-               {type:'mybricks.normal-pc.form-text'}
+               {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
             ]
           }
        }
   `,
+  '@create' (props) {
+    const { def, data } = props
+    // console.log(props)
+    if (def.buttons && def.buttons.length > 0) {
+      def.buttons.forEach((item, index) => {
+        data.actions.items[index].title = item.title
+      })
+
+      data.actions.items = data.actions.items.slice(0, def.buttons.length)
+    }
+
+    if (def.slots && def.slots.content && def.slots.content.length > 0) {
+      def.slots.content.forEach((item, index) => {
+        data.items[index].label = item.label
+        data.items[index].name = item.name
+      })
+
+    }
+  },
   '@focus'({ data }) {
     const { items, config, ...otherData } = data
 
@@ -58,7 +65,7 @@ export default {
     }
   },
   '@update'({ data, newData, slots }) { // 1. 动态添加组件，2. 样式问题  { namespace: mybricks.normal-pc.form-container }
-    console.log(data, newData)
+    // console.log(data, newData)
     try {
       const slot = slots.get('content')
       const newItems: any[] = []
