@@ -8,6 +8,7 @@
   "icon": "./icon.svg",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
+  "ai": "./ai.ts",
   "rtType": "js-autorun",
   "inputs": [
     {
