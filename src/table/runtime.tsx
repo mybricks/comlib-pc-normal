@@ -380,7 +380,6 @@ export default function (props: RuntimeParams<Data>) {
     });
   };
 
-  console.log('runtime slots', slots);
   // hack: fix编辑时数据未及时响应
   useEffect(() => {
     if (env.edit) {
