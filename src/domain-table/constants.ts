@@ -15,10 +15,8 @@ export enum FieldBizType {
 	IMAGE = 'image',
 	/** 附件 */
 	APPEND_FILE = 'appendFile',
-	/** 单选 */
-	RADIO = 'radio',
-	/** 多选 */
-	CHECKBOX = 'checkbox',
+	/** 枚举 */
+	ENUM = 'enum',
 	/** 外键，关联其他表 */
 	RELATION = 'relation',
 	/** 映射其他表 */
@@ -71,8 +69,7 @@ export const DefaultComponentNameMap = {
 	[FieldBizType.EMAIL]: ComponentName.INPUT,
 	[FieldBizType.IMAGE]: ComponentName.IMAGE_UPLOAD,
 	[FieldBizType.APPEND_FILE]: ComponentName.UPLOAD,
-	[FieldBizType.RADIO]: ComponentName.RADIO,
-	[FieldBizType.CHECKBOX]: ComponentName.CHECKBOX,
+	[FieldBizType.ENUM]: ComponentName.RADIO,
 	[FieldBizType.RELATION]: ComponentName.DEBOUNCE_SELECT,
 	[FieldBizType.MAPPING]: ComponentName.DEBOUNCE_SELECT,
 	[FieldBizType.SYS_USER]: ComponentName.DEBOUNCE_SELECT,
