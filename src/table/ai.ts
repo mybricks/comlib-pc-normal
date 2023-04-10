@@ -2,7 +2,18 @@ import { uuid } from '../utils';
 
 export default {
   def: {
-    columns: [{ field: 'name', title: '名称', slots: [] }],
+    columns: [
+      {
+        field: 'name',
+        title: '名称',
+        slots: []
+      }
+    ],
+    headStyle: {
+      color: '#1f1f1f',
+      backgroundColor: '#f5f7f9'
+    },
+    contentStyle: { color: '#434343' },
     usePagination: true
   },
   prompts: `
@@ -11,9 +22,13 @@ export default {
     答：{
           type:'mybricks.normal-pc.table',
           usePagination: true,
+          headStyle: {
+            color: '#1f1f1f',
+            backgroundColor: '#f5f7f9'
+          },
+          contentStyle: { color: '#434343' },
           columns:[
             {field:'name',title:'名称'},
-            ..., // 其他列，此处作为演示已省略
             {
               field:'$handlers',
               title:'操作',
@@ -24,27 +39,49 @@ export default {
                 },
               ]
             }
-          ]
+          ],
         }
   `,
   '@create'(props) {
-    const { def, data } = props;
-    if (Array.isArray(def.columns) && def.columns.length > 0) {
-      data.columns = def.columns.map((item) => ({
+    const { def, data, slots } = props;
+    console.log('props', props);
+
+    if (def.headStyle) {
+      data.headStyle = { ...def.headStyle };
+    }
+    if (def.contentStyle) {
+      data.contentStyle = { ...def.contentStyle };
+    }
+
+    data.columns = def.columns.map((item) => {
+      let slotId;
+      if (Array.isArray(def.columns) && def.columns.length > 0) {
+        if (Array.isArray(item.slots) && item.slots.length > 0) {
+          slotId = uuid();
+          slots.add({ id: slotId, title: '操作', type: 'scope' });
+          item.slots.forEach((s) => {
+            // console.log('slot.get(slotId)', slots.get(slotId));
+            slots.get(slotId).addCom(s.namespace);
+          });
+        }
+      }
+      return {
         _id: uuid(),
         title: item.title,
         dataIndex: item.field,
         key: item.field,
-        contentType: item.buttons ? 'slotItem' : 'text',
+        contentType: slotId ? 'slotItem' : 'text',
         visible: true,
-        width: 140
-      }));
-    }
+        width: 140,
+        slotId,
+        headStyle: def.headStyle ? { ...def.headStyle } : {},
+        contentStyle: def.contentStyle ? { ...def.contentStyle } : {}
+      };
+    });
 
     if (typeof def.usePagination !== 'undefined') {
       data.usePagination = def.usePagination;
     }
-
     // TODO: 如何统计处理slots内组建的创建
   }
 };
