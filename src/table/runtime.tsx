@@ -374,21 +374,23 @@ export default function (props: RuntimeParams<Data>) {
       filterMap,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} />
+          <ColumnRender {...columnRenderProps} slots={props.slots} />
         </ErrorBoundary>
       )
     });
   };
 
+  console.log('runtime slots', slots);
   // hack: fix编辑时数据未及时响应
   useEffect(() => {
     if (env.edit) {
       initFilterMap();
     }
   }, [JSON.stringify(data.columns)]);
-  const renderColumnsWhenEdit = useCallback(() => {
-    return renderColumns();
-  }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
+  // const renderColumnsWhenEdit = useCallback(() => {
+  //   return renderColumns();
+  // }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
+  const renderColumnsWhenEdit = renderColumns;
 
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {
