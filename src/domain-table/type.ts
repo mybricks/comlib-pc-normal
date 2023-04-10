@@ -52,5 +52,6 @@ export interface Field {
 	defaultValueWhenCreate?: DefaultValueWhenCreate;
 	/** 查询数据时格式化类型 */
 	showFormat: string;
+	enumValues?: string[];
 	form: any;
 }

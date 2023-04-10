@@ -77,6 +77,10 @@ export default {
 									    .filter(field => ![FieldBizType.MAPPING].includes(field.bizType) && !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate)
 											.forEach(field => {
 												field.form.formItem = DefaultComponentNameMap[field.bizType] || ComponentName.INPUT
+												
+												if (field.bizType === FieldBizType.ENUM && Array.isArray(field.enumValues)) {
+													field.form.options = field.enumValues.map(v => ({ label: v, value: v }));
+												}
 										  });
 										
 									  data.entity = curEntity;
@@ -113,13 +117,7 @@ export default {
 							  data.formFieldAry = value
 							    .map(id => data.entity.fieldAry.find(entity => entity.id === id))
 							    .filter(Boolean)
-							    .map(field => {
-										const curField = JSON.parse(JSON.stringify(field));
-										!curField.form && (curField.form = {});
-								    curField.form.formItem = DefaultComponentNameMap[field.bizType] || ComponentName.INPUT;
-										
-										return curField;
-							    });
+							    .map(field =>  JSON.parse(JSON.stringify(field)));
 						  }
 					  }
 				  },

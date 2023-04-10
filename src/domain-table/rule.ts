@@ -1,4 +1,4 @@
-import {FieldBizType, FieldDBType} from "./constants";
+import {ComponentName, FieldBizType, FieldDBType} from "./constants";
 import {Field} from "./type";
 import {defaultValidatorExample} from "../form-coms/utils/validator";
 import {runJs} from "../../package/com-utils";
@@ -20,9 +20,14 @@ export const RuleMap = {
 	[RuleKeys.REQUIRED]: (field: Field, rule: RuleItemType) => {
 		return () => ({
 			validator(_, value) {
-				if ((field.dbType === FieldDBType.BIGINT && typeof value === 'number') || !!value) {
+				if (
+					(field.dbType === FieldDBType.BIGINT && typeof value === 'number')
+					|| (field.form.formItem === ComponentName.CHECKBOX && Array.isArray(value) && value.length > 0)
+					|| (field.dbType !== FieldDBType.BIGINT && field.form.formItem !== ComponentName.CHECKBOX && !!value)
+				) {
 					return Promise.resolve();
 				}
+				
 				return Promise.reject(new Error(rule.message));
 			},
 		});
@@ -230,23 +235,7 @@ export const RuleMapByBizType = {
 			validateCode: defaultValidatorExample
 		}
 	],
-	[FieldBizType.RADIO]: [
-		{
-			key: RuleKeys.REQUIRED,
-			status: false,
-			visible: true,
-			title: '必填',
-			message: '内容不能为空',
-		},
-		{
-			key: RuleKeys.CODE_VALIDATOR,
-			status: false,
-			visible: true,
-			title: '代码校验',
-			validateCode: defaultValidatorExample
-		}
-	],
-	[FieldBizType.CHECKBOX]: [
+	[FieldBizType.ENUM]: [
 		{
 			key: RuleKeys.REQUIRED,
 			status: false,
