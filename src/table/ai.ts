@@ -44,7 +44,6 @@ export default {
   `,
   '@create'(props) {
     const { def, data, slots } = props;
-    console.log('props', props);
 
     if (def.headStyle) {
       data.headStyle = { ...def.headStyle };
