@@ -131,11 +131,10 @@ export default function ({ env, data }: RuntimeParams<Data>) {
               !field.defaultValueWhenCreate
           )
           .forEach((field) => {
-            if (
-              field.mapping?.entity ||
-              (field.bizType === FieldBizType.DATETIME && field.showFormat)
-            ) {
+            if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
               value[field.name] = moment(item['_' + field.name] as any);
+            } else if (field.mapping?.entity) {
+	            value[field.name] = item['_' + field.name];
             } else {
               value[field.name] = item[field.name];
             }
@@ -283,7 +282,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         item = <Upload />;
       } else if (field.form.formItem === ComponentName.RADIO) {
         item = <Radio.Group options={field.form?.options ?? []} />;
-      } else if (field.form.formItem === ComponentName.RADIO) {
+      } else if (field.form.formItem === ComponentName.CHECKBOX) {
         item = <Checkbox.Group options={field.form?.options ?? []} />;
       } else if (field.bizType === FieldBizType.APPEND_FILE) {
         item = <Upload />;
