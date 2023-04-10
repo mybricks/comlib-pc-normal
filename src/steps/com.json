@@ -37,7 +37,7 @@
     },
     {
       "id": "getIndex",
-      "title": "获取当前步骤（从0开始）",
+      "title": "获取当前步骤",
       "desc": "步骤从0开始计数",
       "rels": [
         "getIndex"
