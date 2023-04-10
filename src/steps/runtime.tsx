@@ -7,7 +7,15 @@ import css from './index.less';
 
 const { Step } = Steps;
 
-export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  slots,
+  outputs,
+  inputs,
+  logger,
+  onError
+}: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
@@ -30,11 +38,13 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
       inputs['jumpTo']((val: number) => {
         if (typeof val !== 'number') {
-          message.error('【步骤条】跳转步骤必须是数字');
+          onError('【步骤条】跳转步骤必须是数字');
+          logger.error('【步骤条】跳转步骤必须是数字');
           return;
         }
         if (val > stepAry.length - 1 || val < 0) {
-          message.error('【步骤条】跳转步骤超出范围');
+          onError('【步骤条】跳转步骤超出范围');
+          logger.error('【步骤条】跳转步骤超出范围');
           return;
         }
         data.current = val;
@@ -43,6 +53,20 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       inputs['getIndex']((_, relOutputs) => {
         relOutputs['getIndex'](data.current);
       });
+
+      inputs['setHideSteps'] &&
+        inputs['setHideSteps']((val: number[]) => {
+          if (!Array.isArray(val)) {
+            onError('【步骤条】设置隐藏步骤参数必须是数组');
+            logger.error('【步骤条】设置隐藏步骤参数必须是数组');
+            return;
+          }
+          data.stepAry.forEach((item, index) => {
+            if (val.includes(index)) {
+              item.hide = true;
+            }
+          });
+        });
 
       // stepAry.forEach(({ id }, index) => {
       //   //最后一步没有next output
