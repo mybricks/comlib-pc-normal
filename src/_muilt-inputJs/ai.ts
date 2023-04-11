@@ -5,31 +5,17 @@ export default {
   },
   prompts({startPin}){
     return `
-      现在有一个函数模版A,如下所示({outputs,inputs})=>{},
-      函数模版A中,inputs内可能包含了多个字段,第一个字段为inputs.inputValue0,第二个字段为inputs.inputValue1,以此类推,不存在不符合规律的其他字段,
-      outputs可能包含了多个字段,第一个字段为outputs.output0,第二个字段为outputs.output1,以此类推,不存在不符合规律的其他字段,
-      inputs下各字段值以及outputs下各函数的输出严格按照所给的JSON Schema来实现,所有的返回都由outputs下函数处理,若未指定具体的JSON Schema,默认均为{"type":"any"},
-      请以资深前端工程师的角度基于函数模版A以及以下所描述的功能按需使用inputs和outputs编写Javascript代码生成JS计算组件的定义,
-      假设当前inputValue0的JSON Schema为{"type":"string"}
-      问: 生成一个0-100的随机数，如果该随机数大于50从输出项1输出否则从输出项2输出的JS计算定义
-      {
-        type:'mybricks.normal-pc.muilt-inputJs:input',
-        jsCode: '({outputs})=>{const num=Math.floor(Math.random()*100);if(num>50){outputs.output0(num)}else{outputs.output1(num)}}'
-      }
-      假设当前inputValue0的JSON Schema为{"type":"array","items":{"type":"number"}}
-      问: 获取值大于60的结果的JS计算定义
-      {
-        type:'mybricks.normal-pc.muilt-inputJs:input',
-        jsCode: '({outputs,inputs})=>{outputs.output0(inputs.inputValue0.filter(item=>item>60))}'
-      }
-      假设当前inputValue0的JSON Schema为{"type":"object","properties":{"price":"number"}}
-      问: 获取价格的JS计算定义
-      {
-        type:'mybricks.normal-pc.muilt-inputJs:input',
-        jsCode: '({outputs,inputs})=>{outputs.output0(inputs.inputValue0.price)}'
-      }
-
-      假设当前inputValue0的JSON Schema为${JSON.stringify(startPin.schema)}
+      你是一名优秀的前端开发工程师,
+      现在有一个函数模版A“({outputs,inputs})=>{}”,
+      其中inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"patternProperties": {"^inputValue\\d+$": { "type": ["object","string","number","array","boolean","null"]}}},
+      outputs的JSON Schema定义为{"type":"object","additionalProperties":false,"patternProperties": {"^output\\d+$": { "type": ["object","string","number","array","boolean","null"]}}},
+      需求描述中所表达的输入均来自inputs,所有的返回均使用outputs下函数处理,没有要求使用输入的内容的话不强制使用inputs,请根据需求按需正确使用函数入参inputs和outputs编写基于函数模版A的Javascript代码,不需要任何其它的解释或注释
+      问: 将输入的时间戳增加24小时
+      ({outputs,inputs})=>{outputs.output0(inputs.inputValue0+24*60*60*1000)}
+      问: 如果输入的数字大于1从输出项1输出否则从输出项2输出数据非法
+      ({outputs,inputs})=>{if(inputs.inputValue0>1){outputs.output0(inputs.inputValue0)}else{outputs.output1("数据非法")}}
+      问: 将时间戳增加24小时
+      ({outputs,inputs})=>{outputs.output0(new Date().getTime()+24*60*60*1000)}
     `
   },
   '@create'(props) {
