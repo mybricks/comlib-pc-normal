@@ -25,6 +25,8 @@ export default function (props: RuntimeParams<Data>) {
   const { edit } = env;
 
   useFormItemInputs({
+    id: props.id,
+    parentSlot,
     inputs,
     outputs,
     configs: {
