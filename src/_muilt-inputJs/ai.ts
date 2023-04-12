@@ -60,7 +60,6 @@ export default {
       inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"number"}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},
       请回答：将输入的时间戳增加24小时
       ({outputs,inputs})=>{outputs.output0(inputs.inputValue0+24*60*60*1000)}
-      解释：描述中提到使用输入的时间,根据JSON Schema定义,可以将inputs.inputValue0作为输入的时间戳
 
       inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"number"}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},output1函数输出的值的JSON Schema定义为{"type":"number"},
       请回答：如果输入的数字大于1从输出项1输出否则从输出项2输出
