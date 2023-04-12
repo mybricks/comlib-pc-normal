@@ -1,6 +1,6 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
-import { getFormItemPropsSchema } from './editors';
+import { getFormItemPropsSchema } from './schema'
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
@@ -68,12 +68,6 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     data.actions.inlinePadding = [0, 0, 0, 0];
   }
 
-  // /**
-  //   * @description v1.1.10 表单容器增加默认”显示冒号“配置
-  //   */
-  // if (typeof data.colon === 'undefined') {
-  //   data.colon = true;
-  // }
 
   /**
    * @description v1.1.2 , 新增子组件通知校验功能
@@ -148,6 +142,45 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
 
   //=========== v1.1.20 end ===============
+
+  /**
+   * @description v1.2.2 , 支持表单值更新输出
+   */
+  if (!slot?.get('content')._inputs.get(slotInputIds.ON_CHANGE)) {
+    const validateTriggerSchema = {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "组件ID"
+        },
+        "value": {
+          "type": "any",
+          "title": "组件值"
+        }
+      }
+    }
+    slot?.get('content')._inputs.add(slotInputIds.ON_CHANGE, '表单项值变化', validateTriggerSchema)
+  }
+
+  if (!output.get(outputIds.ON_VALUES_CHANGE)) {
+    output.add(outputIds.ON_VALUES_CHANGE, '字段值更新输出', {
+      "type": "object",
+      "properties": {
+        "changedValues": {
+          "type": "object",
+          "properties": {}
+        },
+        "allValues": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    });
+  }
+
+  //=========== v1.2.2 end ===============
+
 
   return true;
 }

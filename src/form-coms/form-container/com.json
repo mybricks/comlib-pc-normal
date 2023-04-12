@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "表单容器",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -102,6 +102,23 @@
       "schema": {
         "type": "object",
         "properties": {}
+      }
+    },
+    {
+      "id": "onValuesChange",
+      "title": "字段值更新输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "changedValues": {
+            "type": "object",
+            "properties": {}
+          },
+          "allValues": {
+            "type": "object",
+            "properties": {}
+          }
+        }
       }
     },
     {
@@ -206,6 +223,23 @@
               "id": {
                 "type": "string",
                 "title": "组件ID"
+              }
+            }
+          }
+        },
+        {
+          "id": "onChange",
+          "title": "表单项值变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              },
+              "value": {
+                "type": "any",
+                "title": "组件值"
               }
             }
           }

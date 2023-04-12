@@ -32,7 +32,7 @@ type FormControlInputType = {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
-  // const formContext = useRef({ store: {} })
+  const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
 
   const childrenInputs = useMemo<{
@@ -40,47 +40,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }>(() => {
     return {};
   }, [env.edit]);
-
-  /**
-   * 设置表单项公共配置
-   * @param formItemsProps 表单项配置对象
-   */
-  const setFormItemsProps = useCallback((formItemsProps: { string: FormItems }) => {
-    if (typeCheck(formItemsProps, ['Object'])) {
-      Object.entries(formItemsProps).map(([name, props]) => {
-        if (!typeCheck(props, ['Object'])) {
-          console.warn(`表单项配置不是对象类型`);
-          return;
-        }
-
-        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
-        if (formItemIndex < 0) {
-          console.warn(`表单项${name}不存在`);
-          return;
-        }
-
-        const formItem = data.items[formItemIndex];
-        const newFormItem = { ...props };
-        const { descriptionStyle, labelStyle } = formItem;
-        if (!newFormItem.descriptionStyle) newFormItem.descriptionStyle = {};
-        if (!newFormItem.labelStyle) newFormItem.labelStyle = {};
-        Object.assign(newFormItem.descriptionStyle, descriptionStyle);
-        Object.assign(newFormItem.labelStyle, labelStyle);
-
-        const temp = {
-          ...formItem,
-          ...props
-        };
-        data.items[formItemIndex] = temp;
-      });
-    }
-  }, []);
-
-  if (env.runtime) {
-    inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
-      setFormItemsProps(val);
-    });
-  }
 
   useLayoutEffect(() => {
     inputs[inputIds.SET_FIELDS_VALUE]((val) => {
@@ -159,18 +118,59 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  // useLayoutEffect(() => {
-  //   slots['content']._inputs['onChange'](({ id, value }) => {
-  //     const item = data.items.find((item) => item.id === id);
-  //     if (item) {
-  //       const fieldsValue = { [item.name || item.label]: value }
-  //       console.log({ ...formContext.current.store, ...fieldsValue });
-  //       formContext.current.store = { ...formContext.current.store, ...fieldsValue }
-  //       // setStore({ ...store, ...fieldsValue })
-  //       outputs['onValuesChange']({ ...formContext.current.store, ...fieldsValue })
-  //     }
-  //   });
-  // }, [])
+  if (env.runtime) {
+    inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
+      setFormItemsProps(val);
+    });
+
+    slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, value }) => {
+      const item = data.items.find((item) => item.id === id);
+      if (item) {
+        const fieldsValue = { [item.name || item.label]: value };
+
+        formContext.current.store = { ...formContext.current.store, ...fieldsValue };
+
+        outputs[outputIds.ON_VALUES_CHANGE]({
+          changedValues: { ...fieldsValue },
+          allValues: { ...formContext.current.store }
+        });
+      }
+    });
+  }
+  /**
+   * 设置表单项公共配置
+   * @param formItemsProps 表单项配置对象
+   */
+  const setFormItemsProps = useCallback((formItemsProps: { string: FormItems }) => {
+    if (typeCheck(formItemsProps, ['Object'])) {
+      Object.entries(formItemsProps).map(([name, props]) => {
+        if (!typeCheck(props, ['Object'])) {
+          console.warn(`表单项配置不是对象类型`);
+          return;
+        }
+
+        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
+        if (formItemIndex < 0) {
+          console.warn(`表单项${name}不存在`);
+          return;
+        }
+
+        const formItem = data.items[formItemIndex];
+        const newFormItem = { ...props };
+        const { descriptionStyle, labelStyle } = formItem;
+        if (!newFormItem.descriptionStyle) newFormItem.descriptionStyle = {};
+        if (!newFormItem.labelStyle) newFormItem.labelStyle = {};
+        Object.assign(newFormItem.descriptionStyle, descriptionStyle);
+        Object.assign(newFormItem.labelStyle, labelStyle);
+
+        const temp = {
+          ...formItem,
+          ...props
+        };
+        data.items[formItemIndex] = temp;
+      });
+    }
+  }, []);
 
   const setFieldsValue = (val) => {
     if (val) {
