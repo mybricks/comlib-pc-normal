@@ -85,4 +85,4 @@ function refreshFormItemPropsSchema({ data, inputs }) {
   inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
 }
 
-export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema }
+export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema, refreshFormItemPropsSchema }
