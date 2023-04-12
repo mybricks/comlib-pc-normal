@@ -69,8 +69,12 @@ export default {
       ${inputsSchemaStr}${outputsSchemaStr}如果提问中没有说明数据来自输入(输入项、inputs)时需要生成符合要求的mock数据,否则需要严格按照inputs以及outputs下各函数的JSON Schema定义,`,
       execute(props) {
         const { data, newData } = props
-        data.fns = newData.toString()
-        console.log('生成的代码: ', data.fns)
+        if (typeof newData === 'function') {
+          data.fns = newData.toString()
+          console.log('生成可执行代码: ', data.fns)
+        } else {
+          console.log('生成代码错误: ', newData)
+        }
       }
     }
 
