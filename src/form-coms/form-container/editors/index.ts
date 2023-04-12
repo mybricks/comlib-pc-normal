@@ -4,7 +4,7 @@ import { FormLayout } from 'antd/es/form/Form'
 import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { inputIds, outputIds } from '../constants'
-import { refreshSchema, refreshParamsSchema } from '../schema'
+import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema'
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
