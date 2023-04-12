@@ -1,5 +1,5 @@
 {
-  "type": "info",
+  "type": "confirm",
   "title": "标题",
   "content": "内容详情",
   "okText": "确定",
