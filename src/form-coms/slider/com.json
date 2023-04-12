@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -85,7 +85,7 @@
     },
     {
       "id": "onChange",
-      "title": "值变化",
+      "title": "值更新",
       "schema": {
         "type": "number"
       }

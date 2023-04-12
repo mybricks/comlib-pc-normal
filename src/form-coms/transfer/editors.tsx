@@ -208,7 +208,7 @@ export default {
             }
           },
           {
-            title: '目标数据改变',
+            title: '目标数据更新',
             type: '_Event',
             options: ({}: EditorResult<Data>) => {
               return {

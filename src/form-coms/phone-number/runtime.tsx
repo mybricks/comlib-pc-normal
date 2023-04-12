@@ -3,6 +3,7 @@ import React, { useCallback, useLayoutEffect } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { validateFormItem } from '../utils/validator';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
   value: string | undefined;
@@ -72,6 +73,7 @@ export default function ({
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
+    onChangeForFc(parentSlot, { id: id, value });
     outputs['onChange'](value);
   }, []);
 

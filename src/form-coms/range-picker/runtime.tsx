@@ -6,6 +6,7 @@ import css from './runtime.less';
 import { OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 const { RangePicker } = DatePicker;
 
@@ -58,7 +59,7 @@ export const formatRangeOptions = (list, env: Env) => {
 };
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, id } = props;
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
@@ -230,6 +231,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         return transCalculation(item, data.contentType, props, index);
       });
     }
+    onChangeForFc(parentSlot, { id: id, value: transValue });
     outputs['onChange'](transValue);
     onValidateTrigger();
   };
