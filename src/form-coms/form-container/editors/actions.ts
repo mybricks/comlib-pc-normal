@@ -93,7 +93,7 @@ export const actionsEditor = (data: Data, output) => {
         ifVisible({ data }: EditorResult<Data>) {
           return data.actions.visible;
         },
-        type: 'Select',
+        type: 'Radio',
         options: [
           { label: '左对齐', value: 'left' },
           { label: '居中对齐', value: 'center' },
