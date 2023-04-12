@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -56,6 +56,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       projectId: projectId || undefined
     };
   }, [data.entity, projectId, data.domainFileId]);
+  const modalWidth = useRef(520);
 
   const handleData = useCallback(
     (query, pageInfo?: Record<string, unknown>) => {
@@ -132,9 +133,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           )
           .forEach((field) => {
             if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
-              value[field.name] = moment(item['_' + field.name] as any);
+              value[field.name] = item[field.name] ? moment(item[field.name] as any) : null;
             } else if (field.mapping?.entity) {
-	            value[field.name] = item['_' + field.name];
+              value[field.name] = (item[field.name] as { id: number })?.id ?? null;
             } else {
               value[field.name] = item[field.name];
             }
@@ -340,7 +341,13 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       );
     }
 
-    return null;
+    return (
+      <div className={styles.operateRow}>
+        <Button data-add-button="1" onClick={openCreateModal}>
+          {data.addBtn?.title ?? '新增'}
+        </Button>
+      </div>
+    );
   };
   const openCreateModal = useCallback(() => {
     setShowModalAction(ModalAction.CREATE);
@@ -444,6 +451,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       .filter((field) => {
         /** 这一行必须要，读取 form 的 disabledForEdit 值才能被收集到依赖，才能对应响应编辑项变化 */
         field.form.disabledForEdit;
+        field.form.hiddenForCreate;
+        field.form.hiddenForEdit;
         /** 创建者、修改者且 window 上用户信息存在则不展示表单项 */
         if (
           showModalAction === ModalAction.CREATE ||
@@ -472,6 +481,27 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 
         return true;
       }) ?? [];
+  /** 真实会显示的表单项，运行态会筛选掉配置隐藏属性的表单项 */
+  const currentShowAllowRenderCreateItem = allowRenderCreateItem.filter((field) => {
+    if (
+      data.showActionModalForEdit === ModalAction.CREATE ||
+      data.showActionModalForEdit === ModalAction.EDIT
+    ) {
+      return true;
+    } else if (showModalAction === ModalAction.CREATE) {
+      return !field.form.hiddenForCreate;
+    } else if (showModalAction === ModalAction.EDIT) {
+      return !field.form.hiddenForEdit;
+    }
+
+    return true;
+  });
+  modalWidth.current =
+    !!showModalAction || (edit && data.showActionModalForEdit)
+      ? currentShowAllowRenderCreateItem.length > 5
+        ? 800
+        : 520
+      : modalWidth.current;
   const renderCreateFormNode = () => {
     if (data.entity) {
       return (
@@ -489,9 +519,31 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             ) {
               defaultValue = field.form?.options?.find((opt) => opt.checked)?.value;
             }
+            const style: CSSProperties = {};
+
+            if (
+              (showModalAction === ModalAction.EDIT && field.form.hiddenForEdit) ||
+              (showModalAction === ModalAction.CREATE && field.form.hiddenForCreate)
+            ) {
+              style.display = 'none';
+            }
+
+            let showTip = false;
+            if (
+              (data.showActionModalForEdit === ModalAction.EDIT && field.form.hiddenForEdit) ||
+              (data.showActionModalForEdit === ModalAction.CREATE && field.form.hiddenForCreate)
+            ) {
+              showTip = true;
+              style.background = 'rgba(0, 0, 0, .1)';
+              style.opacity = '0.4';
+            }
 
             return (
-              <Col span={allowRenderCreateItem.length > 5 ? 12 : 24} key={field.id}>
+              <Col
+                style={style}
+                span={currentShowAllowRenderCreateItem.length > 5 ? 12 : 24}
+                key={field.id}
+              >
                 <div
                   className="ant-form-item-area"
                   style={{ width: '100%' }}
@@ -508,6 +560,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                     {renderFormItemNode(field, {})}
                   </Form.Item>
                 </div>
+                {showTip ? <div className={styles.tipForHidden}>运行时隐藏</div> : null}
               </Col>
             );
           })}
@@ -558,8 +611,6 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         ref={domainContainerRef}
       >
         {renderSearchFormNode()}
-        {/*<div className={styles.operateRow}>*/}
-        {/*</div>*/}
         <Table
           size={data.table?.size || 'middle'}
           loading={loading}
@@ -607,7 +658,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       <div className={styles.container} ref={containerRef}>
         <Modal
           destroyOnClose
-          width={allowRenderCreateItem.length > 5 ? 800 : 520}
+          width={modalWidth.current}
           getContainer={
             (edit || debug
               ? data.showActionModalForEdit && !showModalAction
