@@ -5,6 +5,7 @@ import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import css from './style.less';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function ({
   data,
@@ -89,6 +90,7 @@ export default function ({
   const onChange = (e) => {
     const _value = e.target.value;
     setValue(_value);
+    onChangeForFc(parentSlot, { id: id, value: _value });
     outputs['onChange'](_value);
   };
 

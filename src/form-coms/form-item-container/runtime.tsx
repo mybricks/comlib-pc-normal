@@ -3,6 +3,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { OutputIds } from '../types';
 import { validateFormItem } from '../utils/validator';
 import { SlotIds } from './constants';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 interface Data {
   value: string | undefined;
@@ -18,6 +19,7 @@ export default function (props: RuntimeParams<Data>) {
     inputs['setValue']((val) => {
       data.value = val;
       slots[SlotIds.FormItem].inputs['curValue'](data.value);
+      onChangeForFc(parentSlot, { id: props.id, value: val });
       outputs['onChange'](val);
       onValidateTrigger();
     });

@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-range-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "时间范围选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -123,7 +123,7 @@
     },
     {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
       "schema": {
         "type": "array",
         "items": {

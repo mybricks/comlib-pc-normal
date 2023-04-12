@@ -6,6 +6,7 @@ import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
 import { Option, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function Runtime({
   env,
@@ -154,6 +155,7 @@ export default function Runtime({
       data.value = '';
     }
     data.value = value;
+    onChangeForFc(parentSlot, { id: id, value });
     outputs['onChange'](value);
   }, []);
   const onChange = useCallback((value) => {

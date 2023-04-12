@@ -5,6 +5,7 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
   options: any[];
@@ -161,6 +162,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       transValue = transCalculation(value, data.contentType, props);
     }
     setValue(value);
+    onChangeForFc(parentSlot, { id: props.id, value: transValue });
     outputs['onChange'](transValue);
     onValidateTrigger();
   };
