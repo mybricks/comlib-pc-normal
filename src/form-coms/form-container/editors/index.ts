@@ -2,80 +2,9 @@ import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { FormLayout } from 'antd/es/form/Form'
 import { ButtonType } from 'antd/es/button/button'
-import { deepCopy } from '../../../utils'
 import { actionsEditor } from './actions'
-import { outputIds, inputIds, slotInputIds, formItemPropsSchema } from '../constants'
-
-function getSubmitSchema(data) {
-  const properties = {}
-  data.items.forEach(item => {
-    const { id, label, schema, name } = item
-    properties[name || label] = { ...schema, title: label }
-  })
-
-  const schema = {
-    type: 'object',
-    properties
-  }
-  return schema
-}
-
-export function getFormItemPropsSchema(data: Data) {
-  const { layout } = data.config;
-  const { width, span, ...res } = formItemPropsSchema;
-  const properties = {};
-
-  data.items.forEach(item => {
-    const { id, label, name, widthOption } = item
-    const formItemPropsschema = deepCopy(res);
-
-    // 动态配置项
-    // if (layout !== 'horizontal') {
-    //   formItemPropsschema['inlinePadding'] = inlinePadding;
-    // }
-    if (widthOption === 'px') {
-      formItemPropsschema['width'] = width;
-    }
-    if (widthOption === 'span') {
-      formItemPropsschema['span'] = span;
-    }
-    properties[name || label] = { type: 'object', title: label, properties: { ...formItemPropsschema } }
-  })
-
-  const schema = {
-    type: 'object',
-    properties
-  }
-
-  return schema
-}
-
-function refreshSchema({ data, inputs, outputs, slots }) {
-  const schema = getSubmitSchema(data)
-
-  outputs.get(outputIds.ON_FINISH).setSchema(schema)
-  outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
-  outputs.get(outputIds.RETURN_VALUES).setSchema(schema)
-  refreshParamsSchema(data, outputs)
-  inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
-  inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
-  slots?.get('content').inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
-  refreshFormItemPropsSchema({ data, inputs })
-}
-
-function refreshParamsSchema(data, outputs) {
-  const schema = getSubmitSchema(data)
-  if (data.paramsSchema?.type === 'object') {
-    schema.properties = { ...schema.properties, ...data.paramsSchema.properties }
-  }
-
-  outputs.get(outputIds.ON_MERGE_FINISH).setSchema(schema)
-}
-
-function refreshFormItemPropsSchema({ data, inputs }) {
-  const formItemPropsSchema = getFormItemPropsSchema(data)
-  inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
-}
+import { inputIds, outputIds } from '../constants'
+import { refreshSchema, refreshParamsSchema } from '../schema'
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
@@ -390,23 +319,22 @@ export default {
       //     }
       //   }
       // },
-
       !data.isFormItem && actionsEditor(data, output),
-      // {
-      //   title: '事件',
-      //   items: [
-      //     {
-      //       title: '字段值更新',
-      //       type: '_event',
-      //       options({ data }) {
+      {
+        title: '事件',
+        items: [
+          {
+            title: '字段值更新',
+            type: '_event',
+            options({ data }) {
 
-      //         return {
-      //           outputId: 'onValuesChange',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // }
+              return {
+                outputId: outputIds.ON_VALUES_CHANGE,
+              }
+            }
+          }
+        ]
+      }
       // {
       //   title: '选择表单项',
       //   type: 'comSelector',
