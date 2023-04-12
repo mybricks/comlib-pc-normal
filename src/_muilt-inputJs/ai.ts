@@ -47,7 +47,7 @@ export default {
       prompts: `
       你是一名优秀的前端开发工程师,
       现在有一个函数模版A“${getCodeTemplate({useInputs})}”,
-      需要你根据问题基于函数模版A编写Javascript代码,问题中提到的各种数据如果没有明确表达来自输入时需要你来生成mock相应的数据,否则需要严格参照JSON Schema定义,回答不需要任何其它的解释或注释,以下是例子:
+      需要你根据问题基于函数模版A编写Javascript代码,问题中提到的各种数据如果没有明确表达来自输入时需要你来mock数据,否则需要严格参照JSON Schema定义,回答不需要任何其它的解释或注释,以下是例子:
 
       outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},
       请回答：将时间戳增加24小时
@@ -65,7 +65,7 @@ export default {
       请回答：如果输入的数字大于1从输出项1输出否则从输出项2输出
       ({outputs,inputs})=>{if(inputs.inputValue0>1){outputs.output0(inputs.inputValue0)}else{outputs.output1(inputs.inputValue0)}}
       
-      ${inputsSchemaStr}${outputsSchemaStr}如果提问中没有说明数据来自输入(输入项、inputs)时需要生成符合要求的mock数据,否则需要严格按照inputs以及outputs下各函数的JSON Schema定义,`,
+      ${inputsSchemaStr}${outputsSchemaStr}如果提问中没有说明数据来自输入(输入项、inputs)时需要生成符合要求的mock数据,否则不允许出现mock数据且必须严格按照inputs的JSON Schema以及outputs下各函数的JSON Schema定义来实现,回答代码即可不允许出现任何解释或注释`,
       execute(props) {
         const { data, newData } = props
         if (typeof newData === 'function') {
