@@ -4,6 +4,7 @@ import { validateFormItem } from '../utils/validator';
 import * as Icons from '@ant-design/icons';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
   options: any[];
@@ -21,7 +22,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env } = props;
+  const { data, inputs, outputs, env, parentSlot, id } = props;
   const [value, setValue] = useState<number>(data.config.defaultValue);
 
   useFormItemInputs(
@@ -68,6 +69,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //1、值变化
   const onChange = useCallback((value) => {
     setValue(value);
+    onChangeForFc(parentSlot, { id: id, value });
     outputs['onChange'](value);
   }, []);
 

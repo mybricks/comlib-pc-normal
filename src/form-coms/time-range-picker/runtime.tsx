@@ -6,8 +6,17 @@ import { validateFormItem } from '../utils/validator';
 import { isValidInput, isNumber, isValidRange } from './util';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
-export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
+export default function ({
+  data,
+  inputs,
+  outputs,
+  env,
+  style,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
   const validate = useCallback(
@@ -126,6 +135,7 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
 
   const onChange = (values, formatString: [string, string]) => {
     setValue(values);
+    onChangeForFc(parentSlot, { id: id, value: [values[0].valueOf(), values[1].valueOf()] });
     outputs['onChange']([values[0].valueOf(), values[1].valueOf()]);
   };
   return (

@@ -3,6 +3,7 @@ import { Input } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 export interface Data {
   options: any[];
   rules: any[];
@@ -18,7 +19,7 @@ export interface Data {
 const { Search } = Input;
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, id } = props;
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
 
@@ -78,6 +79,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     setValue(value);
+    onChangeForFc(parentSlot, { id: id, value });
     outputs['onChange'](value);
   }, []);
 

@@ -8,6 +8,7 @@ import { typeCheck } from '../../utils';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function Runtime({
   env,
@@ -77,10 +78,12 @@ export default function Runtime({
   }, []);
   const onChange = useCallback((val) => {
     changeValue(val);
+    onChangeForFc(parentSlot, { id: id, value: val });
     outputs['onChange'](val);
   }, []);
   const onAfterChange = useCallback((val) => {
     changeValue(val);
+    onChangeForFc(parentSlot, { id: id, value: val });
     outputs['onChange'](val);
     onValidateTrigger();
   }, []);
