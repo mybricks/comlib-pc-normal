@@ -72,7 +72,8 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
         color: colors['key']
       },
       valStyle = {
-        color: colors[typeof value === 'string' ? 'string' : 'number']
+        color: colors[typeof value === 'string' ? 'string' : 'number'],
+        wordBreak: 'break-all'
       };
 
     // 根据数据类型计算要显示的valString

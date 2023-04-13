@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "开关选择器",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -85,7 +85,7 @@
     },
     {
       "id": "onChange",
-      "title": "数据发生改变",
+      "title": "值更新",
       "schema": {
         "type": "boolean"
       }

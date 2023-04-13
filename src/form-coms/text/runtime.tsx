@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 import css from './runtime.less';
 
@@ -24,6 +25,8 @@ export default function (props: RuntimeParams<Data>) {
   const { edit } = env;
 
   useFormItemInputs({
+    id: props.id,
+    parentSlot,
     inputs,
     outputs,
     configs: {
@@ -68,6 +71,7 @@ export default function (props: RuntimeParams<Data>) {
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
+    onChangeForFc(parentSlot, { id: props.id, value });
     outputs['onChange'](value);
   }, []);
 

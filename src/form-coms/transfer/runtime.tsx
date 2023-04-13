@@ -5,8 +5,18 @@ import { uuid } from '../../utils';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
-export default function ({ data, inputs, outputs, slots, env, style }: RuntimeParams<Data>) {
+export default function ({
+  data,
+  inputs,
+  outputs,
+  slots,
+  env,
+  style,
+  id,
+  parentSlot
+}: RuntimeParams<Data>) {
   const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
     data;
   const _dataSource = dataSource.map((item) => {
@@ -112,6 +122,7 @@ export default function ({ data, inputs, outputs, slots, env, style }: RuntimePa
 
   const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
     setTargetKeys(targetKeys);
+    onChangeForFc(parentSlot, { id: id, value: targetKeys });
     outputs['onChange'](targetKeys);
   };
 

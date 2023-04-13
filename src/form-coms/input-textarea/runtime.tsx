@@ -2,6 +2,7 @@ import { Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
   value: string | undefined;
@@ -17,7 +18,16 @@ export interface Data {
   maxRows?: number;
 }
 
-export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  _inputs,
+  inputs,
+  _outputs,
+  outputs,
+  parentSlot,
+  id
+}: RuntimeParams<Data>) {
   const { edit } = env;
   useFormItemInputs({
     inputs,
@@ -60,6 +70,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
+    onChangeForFc(parentSlot, { id: id, value });
     outputs['onChange'](value);
   }, []);
 

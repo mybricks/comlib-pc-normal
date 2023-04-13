@@ -6,6 +6,7 @@ import { uuid } from '../../utils';
 import { Option } from '../types';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function Runtime({
   env,
@@ -97,6 +98,7 @@ export default function Runtime({
   const onChange = useCallback((e) => {
     const { value } = e.target;
     data.value = value;
+    onChangeForFc(parentSlot, { id: id, value });
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);

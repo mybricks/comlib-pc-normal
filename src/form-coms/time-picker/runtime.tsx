@@ -4,6 +4,7 @@ import { message, TimePicker } from 'antd';
 import moment, { Moment, isMoment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 import styles from './style.less';
 
@@ -11,7 +12,15 @@ function isNumber(input) {
   return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
 }
 
-export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
+export default function ({
+  data,
+  inputs,
+  outputs,
+  env,
+  style,
+  id,
+  parentSlot
+}: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<Moment>();
   const validate = useCallback(
@@ -104,6 +113,7 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
 
   const onChange = (time, timeString: string) => {
     setValue(time);
+    onChangeForFc(parentSlot, { id: id, value: time.valueOf() });
     outputs['onChange'](time.valueOf());
   };
   return (

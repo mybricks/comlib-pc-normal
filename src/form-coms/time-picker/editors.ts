@@ -108,7 +108,7 @@ export default {
             }
           },
           {
-            title: '值发生改变',
+            title: '值更新',
             type: '_Event',
             options: {
               outputId: 'onChange'

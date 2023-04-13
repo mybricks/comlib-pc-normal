@@ -1,6 +1,8 @@
 import { useLayoutEffect } from 'react';
+import { onChange } from './onChange'
 
 interface FormItemInputsProps {
+  id?: string
   inputs: any
   outputs: any
   configs?: {
@@ -13,6 +15,7 @@ interface FormItemInputsProps {
     setDisabled?: () => void
     setEnabled?: () => void
   }
+  parentSlot?: any
 }
 
 const formItemInputIds = {
@@ -32,7 +35,7 @@ const formItemOutputIds = {
   RETURN_VALIDATE: 'returnValidate'
 }
 
-const useFormItemInputs = ({ inputs, outputs, configs }: FormItemInputsProps, deps?: React.DependencyList) => {
+const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id }: FormItemInputsProps, deps?: React.DependencyList) => {
   
   useLayoutEffect(() => {
     /**
@@ -42,8 +45,13 @@ const useFormItemInputs = ({ inputs, outputs, configs }: FormItemInputsProps, de
       if (configs?.setValue) {
         configs.setValue(val)
       }
+
       // 触发onchange
       outputs[formItemOutputIds.ON_CHANGE](val);
+      
+      if (parentSlot && id) {
+        onChange(parentSlot, { id: id, value: val })
+      }
     });
 
     /**

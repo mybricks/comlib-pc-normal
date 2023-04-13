@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -145,7 +145,7 @@
     },
     {
       "id": "onChange",
-      "title": "目标数据改变",
+      "title": "目标数据更新",
       "schema": {
         "type": "array",
         "items": {

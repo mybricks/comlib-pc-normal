@@ -5,6 +5,7 @@ import { Data } from './types';
 import { Option, OutputIds } from '../types';
 import { uuid } from '../../utils';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function Runtime({
   env,
@@ -126,6 +127,7 @@ export default function Runtime({
   // 全选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
+    onChangeForFc(parentSlot, { id: id, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
