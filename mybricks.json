@@ -121,7 +121,9 @@
       "./src/_copy/com.json",
       "./src/_pick/com.json",
       "./src/_muilt-inputJs/com.json",
-      "./src/_array-merge/com.json"
+      "./src/_array-merge/com.json",
+      "./src/_post-message/com.json",
+      "./src/_receive-message/com.json"
     ],
     "publish": [
       {
@@ -233,7 +235,9 @@
       "./src/_copy/com.json",
       "./src/_pick/com.json",
       "./src/_muilt-inputJs/com.json",
-      "./src/_array-merge/com.json"
+      "./src/_array-merge/com.json",
+      "./src/_post-message/com.json",
+      "./src/_receive-message/com.json"
     ]
   },
   "externals": [
