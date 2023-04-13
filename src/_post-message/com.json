@@ -1,0 +1,25 @@
+{
+  "title": "message发送",
+  "namespace": "mybricks.normal-pc.post-message",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "向父子(iframe)页面发送消息",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "post",
+      "title": "数据传递",
+      "desc": "向子(iframe)或者父页面传递数据",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": []
+}

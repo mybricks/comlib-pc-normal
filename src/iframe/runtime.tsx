@@ -23,7 +23,7 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
   if (!data.url) {
     return (
       <div style={{ height: '100%', width: '100%' }}>
-        <Result status='info' title='暂无链接' />
+        <Result status="info" title="暂无链接" />
       </div>
     );
   }
@@ -49,8 +49,9 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
                 }
               }}
               style={{ border: 'none' }}
-              width='100%'
-              height='100%'
+              width="100%"
+              height="100%"
+              id={data.id}
             />
           </Spin>
         </div>
@@ -66,8 +67,9 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
           }
         }}
         style={{ border: 'none' }}
-        width='100%'
-        height='100%'
+        width="100%"
+        height="100%"
+        id={data.id}
       />
     );
   }
@@ -75,9 +77,17 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
     return (
       <div className={css.wrapper}>
         <Spin {...spinConfig}>
-          <iframe src={data.url} style={{ border: 'none' }} width='100%' height='100%' />
+          <iframe
+            src={data.url}
+            id={data.id}
+            style={{ border: 'none' }}
+            width="100%"
+            height="100%"
+          />
         </Spin>
       </div>
     );
-  return <iframe src={data.url} style={{ border: 'none' }} width='100%' height='100%' />;
+  return (
+    <iframe src={data.url} id={data.id} style={{ border: 'none' }} width="100%" height="100%" />
+  );
 }
