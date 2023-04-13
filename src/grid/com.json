@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
+  "ai": "./ai/index.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
