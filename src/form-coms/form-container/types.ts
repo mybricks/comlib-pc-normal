@@ -41,6 +41,7 @@ export interface FormItems {
   widthOption: LabelWidthType
   width: number
   inlineMargin?: number[]
+  slotAfter?: string
 }
 
 export type LabelWidthType = 'px' | 'span' | 'flexFull'

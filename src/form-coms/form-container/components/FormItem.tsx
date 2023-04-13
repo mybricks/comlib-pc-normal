@@ -9,6 +9,7 @@ interface FormItemProps {
   com: any;
   item: any;
   field: any;
+  slots: any;
 }
 
 const JSXWrapper = (props: FormControlProps) => {
@@ -22,7 +23,7 @@ const JSXWrapper = (props: FormControlProps) => {
 };
 
 const FormItem = (props: FormItemProps) => {
-  const { com, item, field, data } = props;
+  const { com, item, field, data, slots } = props;
   const layout = data.config?.layout || data.layout;
   const formColon = data.config?.colon || data.colon;
 
@@ -62,7 +63,17 @@ const FormItem = (props: FormItemProps) => {
       style={style}
       colon={!!item?.label && colon}
     >
-      <JSXWrapper com={com} field={field} />
+      <div className={css.formItemControl}>
+        <div className={css.formItemSlotContent}>
+          <JSXWrapper com={com} field={field} />
+        </div>
+        {item.slotAfter && (
+          <div className={css.formItemSlotAfter}>
+            {<Form.Item noStyle>{slots[item.slotAfter]?.render()}</Form.Item>}
+          </div>
+        )}
+      </div>
+
       {item.description && (
         <div className={css.formItemDesc}>
           <Form.Item noStyle>
