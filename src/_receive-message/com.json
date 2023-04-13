@@ -1,0 +1,23 @@
+{
+  "title": "message获取",
+  "namespace": "mybricks.normal-pc.receive-message",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "父子(iframe)页面数据获取",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "runtime": "./runtime.tsx",
+  "inputs": [],
+  "outputs": [
+    {
+      "id": "getData",
+      "title": "获取数据",
+      "desc": "获取父或子页面传递过来的数据",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": []
+}
