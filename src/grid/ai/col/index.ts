@@ -1,31 +1,35 @@
 import { actions, ACTION_TYPE } from './actions';
+import { isObject } from '../../../utils/types';
 export default {
   '[data-type-col]'() {
     return {
-      def: {
-        slotStyle: { flexDirection: 'column' }
-      },
       prompts: `
         以下是一些例子（最终回答不需要带上“答：”字）：
-        问：添加文本
-        答：{type: ${JSON.stringify(
-          ACTION_TYPE.ADD_COM
-        )}, data: { namespace: "mybricks.normal-pc.text"}}
+        问：添加文本和按钮
+        答：{${JSON.stringify(ACTION_TYPE.COM)}: ["mybricks.normal-pc.text", "mybricks.normal-pc.button"]}
         问：添加一列
-        答：{type: ${JSON.stringify(ACTION_TYPE.ADD_COL)}, data: {widthOption: 'span', span: 8}}
+        答：{${JSON.stringify(ACTION_TYPE.COL)}: [{widthOption: 'span', span: 8}]}
         问：左对齐
-        答：{type: ${JSON.stringify(ACTION_TYPE.LAYOUT)}, data: {slotStyle: {alignItems: "flex-start"}}}
+        答：{${JSON.stringify(ACTION_TYPE.SLOTSTYLE)}: {alignItems: "flex-start"}}
         问：顶部对齐
-        答：{type: ${JSON.stringify(ACTION_TYPE.LAYOUT)}, data: {slotStyle: {justifyContent: "flex-start"}}}
+        答：{${JSON.stringify(ACTION_TYPE.SLOTSTYLE)}: {justifyContent: "flex-start"}}
         问：水平居中
-        答：{type: ${JSON.stringify(ACTION_TYPE.LAYOUT)}, data: {slotStyle: {alignItems: "center"}}}
+        答：{${JSON.stringify(ACTION_TYPE.SLOTSTYLE)}: {alignItems: "center"}}
         问：内间距12
-        答：{type: ${JSON.stringify(ACTION_TYPE.STYLE)}, data: {colStyle: {padding: 12}}}
+        答：{${JSON.stringify(ACTION_TYPE.COLSTYLE)}: {padding: 12}}
+        问：左对齐，背景红色
+        答：{${JSON.stringify(ACTION_TYPE.SLOTSTYLE)}: {alignItems: "flex-start"}, ${JSON.stringify(ACTION_TYPE.COLSTYLE)}: {backgroundColor: "red"}}
         `,
       execute(props) {
         const { newData } = props;
-        if (newData.type && newData.type in actions) {
-          actions[newData.type](props);
+        if (isObject(newData)) {
+          Object.keys(newData).forEach((key) => {
+            if (key in actions) {
+              actions[key](props);
+            }
+          });
+          //样式兜底
+          actions[ACTION_TYPE.COLSTYLE](props);
         }
       }
     };

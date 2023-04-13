@@ -26,3 +26,11 @@ export function isEmpty(value: unknown): value is undefined | null | '' {
 export function isNumber(value: unknown): value is number {
   return isType('Number')(value)
 }
+
+export function isArray(value: unknown){
+  return isType('Array')(value)
+}
+
+export function isObject(value: unknown){
+  return isType('Object')(value)
+}

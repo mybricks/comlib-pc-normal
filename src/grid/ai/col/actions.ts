@@ -1,30 +1,33 @@
 import { getColItem, getColIndex, setSlotLayout, createColBySpan } from '../../editors/utils';
 enum ACTION_TYPE {
-  ADD_COM = 'addCom',
-  ADD_COL = 'addCol',
-  LAYOUT = 'layout',
-  STYLE = 'style'
+  COM = 'coms',
+  COL = 'cols',
+  SLOTSTYLE = 'slotStyle',
+  COLSTYLE = 'colStyle'
 }
 
-const addCol = (props) => {
+const insertCol = (props) => {
   const { data, newData, focusArea, slots } = props;
   if (!focusArea) return;
   const [rowIndex, colIndex] = getColIndex(data, focusArea);
   const row = data.rows[rowIndex];
-  const column = createColBySpan(newData.data.span || 4);
-  row.columns.splice(colIndex + 1, 0, column);
-  slots.add(column.slot, `col-${newData.data.span}`);
+  const columns = (newData[ACTION_TYPE.COL] || []).map((col) => {
+    const column = createColBySpan(col.span || 4);
+    slots.add(column.slot, `col-${column.span}`);
+    return column;
+  });
+  row.columns.splice(colIndex + 1, 0, ...columns);
 };
 
-const addCom = (props) => {
+const insertCom = (props) => {
   const { data, newData, focusArea, slots } = props;
   if (!focusArea) return;
   const item = getColItem(data, focusArea);
-  if (newData.data.namespace) {
-    const slot = slots.get(item.slot);
-    if (slot) {
-      slot.addCom(newData.data.namespace);
-    }
+  const slot = slots.get(item.slot);
+  if (slot) {
+    newData[ACTION_TYPE.COM].forEach((namespace) => {
+      slot.addCom(namespace);
+    });
   }
 };
 
@@ -32,9 +35,13 @@ const handleStyle = (props) => {
   const { data, newData, focusArea } = props;
   if (!focusArea) return;
   const item = getColItem(data, focusArea);
+  const { coms, cols, slotStyle, ...rest } = newData;
+  const colStyle = Object.keys(rest).reduce((pre, cur) => {
+    return { ...pre, ...rest[cur] };
+  }, {});
   item.colStyle = {
     ...item.colStyle,
-    ...newData.data.colStyle
+    ...colStyle
   };
 };
 
@@ -47,16 +54,16 @@ const handleLayout = (props) => {
   }
   item.slotStyle = {
     ...item.slotStyle,
-    ...newData.data.slotStyle
+    ...newData[ACTION_TYPE.SLOTSTYLE]
   };
   const slotInstance = slots.get(item.slot);
-  setSlotLayout(slotInstance, newData.data.slotStyle);
+  setSlotLayout(slotInstance, newData[ACTION_TYPE.SLOTSTYLE]);
 };
 const actions = {
-  [ACTION_TYPE.ADD_COM]: addCom,
-  [ACTION_TYPE.ADD_COL]: addCol,
-  [ACTION_TYPE.LAYOUT]: handleLayout,
-  [ACTION_TYPE.STYLE]: handleStyle
+  [ACTION_TYPE.COM]: insertCom,
+  [ACTION_TYPE.COL]: insertCol,
+  [ACTION_TYPE.SLOTSTYLE]: handleLayout,
+  [ACTION_TYPE.COLSTYLE]: handleStyle
 };
 
 export { actions, ACTION_TYPE };
