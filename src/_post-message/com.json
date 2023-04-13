@@ -1,5 +1,5 @@
 {
-  "title": "message发送",
+  "title": "postMessage发送",
   "namespace": "mybricks.normal-pc.post-message",
   "version": "1.0.0",
   "rtType": "js",

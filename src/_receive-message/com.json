@@ -1,5 +1,5 @@
 {
-  "title": "message获取",
+  "title": "postMessage获取",
   "namespace": "mybricks.normal-pc.receive-message",
   "version": "1.0.0",
   "rtType": "js-autorun",
