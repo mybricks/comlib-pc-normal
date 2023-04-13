@@ -127,6 +127,22 @@ export default {
             }
           },
           {
+            title: '父子节点勾选联动',
+            type: 'Switch',
+            description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.checkable;
+            },
+            value: {
+              get({ data }: Result) {
+                return !data.checkStrictly;
+              },
+              set({ data }: Result, value: boolean) {
+                data.checkStrictly = !value;
+              }
+            }
+          },
+          {
             title: '禁用',
             type: 'Switch',
             ifVisible({ data }: Result) {
@@ -146,7 +162,7 @@ export default {
             title: '输出父节点信息',
             type: 'Switch',
             ifVisible({ data }: Result) {
-              return data.checkable;
+              return data.checkable && !data.checkStrictly;
             },
             value: {
               get({ data }: Result) {
