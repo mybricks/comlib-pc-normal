@@ -73,7 +73,8 @@ export const InputIds = {
   HideTitle: 'hideTitle'
 };
 export const OutputIds = {
-  Cancel: 'cancel'
+  Cancel: 'cancel',
+  AfterClose: 'afterClose',
 };
 export const SlotIds = {
   Footer: 'footer',
