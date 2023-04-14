@@ -1,7 +1,7 @@
 {
   "title": "对话框",
   "namespace": "mybricks.normal-pc.dialog",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "对话框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
