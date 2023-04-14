@@ -381,11 +381,9 @@ export default {
                   return fieldAry
                     .filter(
                       (field) =>
-                        ![
-                          FieldBizType.MAPPING,
-                          FieldBizType.SYS_USER_CREATOR,
-                          FieldBizType.SYS_USER_UPDATER
-                        ].includes(field.bizType) &&
+                        ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR].includes(
+                          field.bizType
+                        ) &&
                         !field.isPrimaryKey &&
                         !field.isPrivate &&
                         !field.defaultValueWhenCreate
@@ -399,11 +397,9 @@ export default {
                 return fieldAry
                   .filter(
                     (field) =>
-                      ![
-                        FieldBizType.MAPPING,
-                        FieldBizType.SYS_USER_CREATOR,
-                        FieldBizType.SYS_USER_UPDATER
-                      ].includes(field.bizType) &&
+                      ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR].includes(
+                        field.bizType
+                      ) &&
                       !field.isPrimaryKey &&
                       !field.isPrivate &&
                       !field.defaultValueWhenCreate &&
@@ -414,11 +410,9 @@ export default {
               set({ data, output, input }: EditorResult<Data>, value: string[]) {
                 const fields = fieldAry.filter(
                   (field) =>
-                    ![
-                      FieldBizType.MAPPING,
-                      FieldBizType.SYS_USER_CREATOR,
-                      FieldBizType.SYS_USER_UPDATER
-                    ].includes(field.bizType) &&
+                    ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR].includes(
+                      field.bizType
+                    ) &&
                     !field.isPrimaryKey &&
                     !field.isPrivate &&
                     !field.defaultValueWhenCreate

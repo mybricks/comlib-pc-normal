@@ -20,6 +20,7 @@ import { ColumnsType } from 'antd/es/table';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from './components/debouce-select';
+import UserProfile from './components/user-profile';
 import { RuleMap } from './rule';
 import { ajax } from './util';
 import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
@@ -228,11 +229,15 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   }, [handleData, data.formFieldAry, data.pagination?.pageSize]);
 
   const renderFormItemNode = useCallback(
-    (field: Field, option: { placeholder?: string; onPressEnter?(): void }) => {
+    (
+      field: Field,
+      option: { placeholder?: string; onPressEnter?(): void; formItem?: ComponentName }
+    ) => {
       let placeholder = option.placeholder ?? `请输入${field.name}`;
+      const curFormItem = option.formItem || field.form.formItem;
       let item = <Input placeholder={placeholder} onPressEnter={option.onPressEnter} allowClear />;
 
-      if (field.form.formItem === ComponentName.DATE_PICKER) {
+      if (curFormItem === ComponentName.DATE_PICKER) {
         item = (
           <DatePicker
             style={{ width: '100%' }}
@@ -240,7 +245,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             placeholder={option.placeholder ?? `请选择${field.name}`}
           />
         );
-      } else if (field.form.formItem === ComponentName.TEXTAREA) {
+      } else if (curFormItem === ComponentName.USER_PROFILE) {
+        item = <UserProfile />;
+      } else if (curFormItem === ComponentName.TEXTAREA) {
         item = (
           <Input.TextArea
             placeholder={placeholder}
@@ -249,7 +256,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             allowClear
           />
         );
-      } else if (field.form.formItem === ComponentName.INPUT_NUMBER) {
+      } else if (curFormItem === ComponentName.INPUT_NUMBER) {
         item = (
           <InputNumber
             style={{ width: '100%' }}
@@ -257,14 +264,14 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             placeholder={placeholder}
           />
         );
-      } else if (field.form.formItem === ComponentName.SELECT) {
+      } else if (curFormItem === ComponentName.SELECT) {
         item = (
           <Select
             placeholder={option.placeholder ?? `请选择${field.name}`}
             options={field.form?.options ?? []}
           />
         );
-      } else if (field.mapping?.entity && field.form.formItem === ComponentName.DEBOUNCE_SELECT) {
+      } else if (field.mapping?.entity && curFormItem === ComponentName.DEBOUNCE_SELECT) {
         item = (
           <DebounceSelect
             placeholder={option.placeholder ?? '可输入关键词检索'}
@@ -272,18 +279,15 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             fetchParams={baseFetchParams}
           />
         );
-      } else if (
-        field.form.formItem === ComponentName.INPUT &&
-        field.bizType === FieldBizType.PHONE
-      ) {
+      } else if (curFormItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
         item = (
           <Input onPressEnter={option.onPressEnter} addonBefore="+86" placeholder={placeholder} />
         );
-      } else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
+      } else if (curFormItem === ComponentName.IMAGE_UPLOAD) {
         item = <Upload />;
-      } else if (field.form.formItem === ComponentName.RADIO) {
+      } else if (curFormItem === ComponentName.RADIO) {
         item = <Radio.Group options={field.form?.options ?? []} />;
-      } else if (field.form.formItem === ComponentName.CHECKBOX) {
+      } else if (curFormItem === ComponentName.CHECKBOX) {
         item = <Checkbox.Group options={field.form?.options ?? []} />;
       } else if (field.bizType === FieldBizType.APPEND_FILE) {
         item = <Upload />;
@@ -453,27 +457,13 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         field.form.disabledForEdit;
         field.form.hiddenForCreate;
         field.form.hiddenForEdit;
-        /** 创建者、修改者且 window 上用户信息存在则不展示表单项 */
         if (
-          showModalAction === ModalAction.CREATE ||
-          data.showActionModalForEdit === ModalAction.CREATE
-        ) {
-          if (
-            field.bizType === FieldBizType.SYS_USER_CREATOR ||
-            field.bizType === FieldBizType.SYS_USER_UPDATER
-          ) {
-            return !window['LOGIN_USER_INFO'];
-          }
-        } else if (
           showModalAction === ModalAction.EDIT ||
           data.showActionModalForEdit === ModalAction.EDIT
         ) {
           /** 编辑时直接隐藏创建者对应的表单项 */
           if (field.bizType === FieldBizType.SYS_USER_CREATOR) {
             return false;
-            /** 修改者且 window 上用户信息存在则不展示表单项 */
-          } else if (field.bizType === FieldBizType.SYS_USER_UPDATER) {
-            return !window['LOGIN_USER_INFO'];
           }
 
           return !field.form.disabledForEdit;
@@ -508,6 +498,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         <Row gutter={24}>
           {allowRenderCreateItem.map((field) => {
             let defaultValue = undefined;
+            let formItem: ComponentName = field.form.formItem;
             const rules: any[] =
               field.form?.rules?.filter((r) => r.status).map((r) => RuleMap[r.key]?.(field, r)) ||
               [];
@@ -537,6 +528,22 @@ export default function ({ env, data }: RuntimeParams<Data>) {
               style.background = 'rgba(0, 0, 0, .1)';
               style.opacity = '0.4';
             }
+            /**
+             *  1. 创建弹框，创建者、修改者且 window 上用户信息存在
+             *  2. 编辑弹框，修改者且 window 上用户信息存在
+             */
+            if (
+              (showModalAction === ModalAction.CREATE &&
+                (field.bizType === FieldBizType.SYS_USER_CREATOR ||
+                  field.bizType === FieldBizType.SYS_USER_UPDATER) &&
+                window['LOGIN_USER_INFO']) ||
+              (showModalAction === ModalAction.EDIT &&
+                field.bizType === FieldBizType.SYS_USER_UPDATER &&
+                window['LOGIN_USER_INFO'])
+            ) {
+              defaultValue = window['LOGIN_USER_INFO'].id;
+              formItem = ComponentName.USER_PROFILE;
+            }
 
             return (
               <Col
@@ -557,7 +564,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                     label={field.form?.label ?? field.name}
                     rules={rules}
                   >
-                    {renderFormItemNode(field, {})}
+                    {renderFormItemNode(field, { formItem })}
                   </Form.Item>
                 </div>
                 {showTip ? <div className={styles.tipForHidden}>运行时隐藏</div> : null}
