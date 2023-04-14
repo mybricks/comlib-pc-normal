@@ -124,6 +124,11 @@ export default function Dialog({
     close();
   }, []);
 
+  // 对话框完全关闭后的回调
+  const afterClose: () => void = useCallback(() => {
+    outputs[OutputIds.AfterClose]();
+  }, []);
+
   const eventList = {};
   (data.footerBtns || []).forEach((item) => {
     const { id, isConnected } = item;
@@ -172,7 +177,8 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel
+            cancel,
+            afterClose
           }}
           getContainer={() => {
             if (ref) {
@@ -193,7 +199,8 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel
+            cancel,
+            afterClose
           }}
           env={env}
         />
@@ -294,6 +301,7 @@ const RuntimeRender = ({
       onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
+      afterClose={event?.afterClose}
     >
       {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>

@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
 
 const defaultSchema = { type: 'any' };
 
@@ -228,6 +228,19 @@ export default {
             data.centered = value;
           }
         }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '关闭回调',
+            type: '_Event',
+            options: {
+              outputId: OutputIds.AfterClose,
+              slotId: SlotIds.Container
+            }
+          },
+        ]
       },
       {
         title: '工具条',

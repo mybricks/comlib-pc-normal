@@ -63,6 +63,13 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "afterClose",
+      "title": "关闭回调",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "slots": [
