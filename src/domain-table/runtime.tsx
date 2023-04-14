@@ -21,6 +21,7 @@ import { ColumnsType } from 'antd/es/table';
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from './components/debouce-select';
 import UserProfile from './components/user-profile';
+import RenderColumn from './components/render-column';
 import { RuleMap } from './rule';
 import { ajax } from './util';
 import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
@@ -148,18 +149,29 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     [data.entity]
   );
 
+  let scrollXWidth = 0;
+  const columnWidthMap = {};
   const renderColumns: () => ColumnsType<any> = () => {
     return data.fieldAry
       ? data.fieldAry?.map((field) => {
+          /** 提前读取值，防止不响应 */
+          field.tableInfo?.ellipsis;
+
           const title =
-            field.label ||
+            field.tableInfo?.label ||
             (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
+          let parseWidth = parseInt(field.tableInfo?.width || '124px');
+          if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
+            parseWidth = 124;
+          }
+          scrollXWidth += parseWidth;
+
           return field.bizType === FieldBizType.FRONT_CUSTOM
             ? {
-                title: field.label || field.name,
+                title: field.tableInfo?.label || field.name,
                 key: field.id,
-                align: field.align || 'left',
-                width: field.width || '100px',
+                align: field.tableInfo?.align || 'left',
+                width: `${parseWidth}px`,
                 render(_, data) {
                   return (
                     <>
@@ -181,9 +193,21 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                 title: title,
                 dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
                 key: title,
-                align: field.align || 'left',
-                width: field.width || '100px',
-                sorter: field.sort
+                align: field.tableInfo?.align || 'left',
+                width: `${parseWidth}px`,
+                render(value, data) {
+                  return (
+                    <RenderColumn
+                      columnKey={title}
+                      columnWidthMap={columnWidthMap}
+                      value={value}
+                      item={data}
+                      ellipsis={field.tableInfo?.ellipsis}
+                      columnWidth={columnWidthMap[title]}
+                    />
+                  );
+                },
+                sorter: field.tableInfo?.sort
               };
         })
       : [];
@@ -624,6 +648,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           columns={renderColumns()}
           dataSource={dataSource}
           onChange={onTableChange}
+          scroll={{ x: scrollXWidth }}
           pagination={
             data.pagination?.show
               ? {

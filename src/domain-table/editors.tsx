@@ -223,11 +223,13 @@ export default {
                 const fieldAry = value
                   .map((id) => {
                     const ids = id.split('.');
-                    const item = data.entity.fieldAry.find((field) => field.id === ids[0]);
+                    let item = data.entity.fieldAry.find((field) => field.id === ids[0]);
                     if (!item) {
                       return;
                     }
 
+                    item = JSON.parse(JSON.stringify(item));
+                    item.tableInfo = { label: item.name, width: '124px', align: 'left' };
                     if (ids.length > 1) {
                       const mappingField = item.mapping?.entity.fieldAry.find(
                         (field) => field.id === ids[1]
@@ -929,12 +931,15 @@ export default {
         value: {
           get({}: EditorResult<Data>) {
             return (
-              field.label ??
+              field.tableInfo?.label ??
               `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`
             );
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-            field.label = value;
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.label = value;
           }
         }
       },
@@ -943,10 +948,13 @@ export default {
         type: 'Text',
         value: {
           get({}: EditorResult<Data>) {
-            return field.width ?? '100px';
+            return field.tableInfo?.width ?? '124px';
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-            field.width = value;
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.width = value;
           }
         }
       },
@@ -960,10 +968,31 @@ export default {
         ],
         value: {
           get({}: EditorResult<Data>) {
-            return field.align ?? 'left';
+            return field.tableInfo?.align ?? 'left';
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-            field.align = value;
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.align = value;
+          }
+        }
+      },
+      {
+        title: '内容超出省略',
+        type: 'Switch',
+        ifVisible() {
+          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+        },
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.tableInfo?.ellipsis;
+          },
+          set({ data, output, input }: EditorResult<Data>, value: boolean) {
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.ellipsis = value;
           }
         }
       },
@@ -975,10 +1004,13 @@ export default {
         },
         value: {
           get({}: EditorResult<Data>) {
-            return field.sort;
+            return field.tableInfo?.sort;
           },
           set({ data, output, input }: EditorResult<Data>, value: boolean) {
-            field.sort = value;
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.sort = value;
           }
         }
       }
