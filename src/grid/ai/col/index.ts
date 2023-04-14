@@ -21,15 +21,19 @@ export default {
         答：{${JSON.stringify(ACTION_TYPE.SLOTSTYLE)}: {alignItems: "flex-start"}, ${JSON.stringify(ACTION_TYPE.COLSTYLE)}: {backgroundColor: "red"}}
         `,
       execute(props) {
-        const { newData } = props;
-        if (isObject(newData)) {
-          Object.keys(newData).forEach((key) => {
-            if (key in actions) {
-              actions[key](props);
-            }
-          });
-          //样式兜底
-          actions[ACTION_TYPE.COLSTYLE](props);
+        try {
+          const { newData } = props;
+          if (isObject(newData)) {
+            Object.keys(newData).forEach((key) => {
+              if (key in actions) {
+                actions[key](props);
+              }
+            });
+            //样式兜底
+            actions[ACTION_TYPE.COLSTYLE](props);
+          }
+        } catch (error) {
+          throw Error(`【chatGPT回答数据解析失败】：${error}`);
         }
       }
     };

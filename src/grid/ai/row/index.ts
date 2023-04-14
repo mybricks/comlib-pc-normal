@@ -25,13 +25,17 @@ export default {
             )}: [{ key: "column_0", slot: "slot_0", coms: ["mybricks.normal-pc.text", "mybricks.normal-pc.button"]}]}
             `,
       execute(props) {
-        const { newData } = props;
-        if (isObject(newData)) {
-          Object.keys(newData).forEach((key) => {
-            if (key in actions) {
-              actions[key](props);
-            }
-          });
+        try {
+          const { newData } = props;
+          if (isObject(newData)) {
+            Object.keys(newData).forEach((key) => {
+              if (key in actions) {
+                actions[key](props);
+              }
+            });
+          }
+        } catch (error) {
+          throw Error(`【chatGPT回答数据解析失败】：${error}`);
         }
       }
     };
