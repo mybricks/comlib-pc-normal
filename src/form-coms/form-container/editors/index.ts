@@ -5,6 +5,7 @@ import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { inputIds, outputIds } from '../constants'
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema'
+import { uuid } from '../../../utils'
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
@@ -51,49 +52,51 @@ export default {
     }
 
   },
-  '@childAdd'({ data, inputs, outputs, logs, slots }, child) {
-    const { id, inputDefs, outputDefs } = child
-    const item = data.items.find(item => item.id === id)
-    const com = outputDefs.find(item => item.id === 'returnValue')
+  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
+    if (curSlot.id === 'content') {
+      const { id, inputDefs, outputDefs } = child
+      const item = data.items.find(item => item.id === id)
+      const com = outputDefs.find(item => item.id === 'returnValue')
 
-    if (item) {
-      item.schema = com.schema
-    } else {
-      const nowC = data.nameCount++
+      if (item) {
+        item.schema = com.schema
+      } else {
+        const nowC = data.nameCount++
 
-      data.items.push({
-        id,
-        schema: com.schema,
-        name: '',
-        label: `表单项${nowC}`,
-        widthOption: 'span',
-        span: 24 / data.formItemColumn,
-        colon: 'default',
-        labelAlign: 'default',
-        labelAutoWrap: 'default',
-        hiddenLabel: false,
-        descriptionStyle: {
-          whiteSpace: 'pre-wrap',
-          lineHeight: '12px',
-          letterSpacing: '0px',
-          fontSize: '12px',
-          fontWeight: 400,
-          color: 'rgba(0, 0, 0, 0.45)',
-          fontStyle: 'normal',
-        },
-        labelStyle: {
-          lineHeight: '14px',
-          letterSpacing: '0px',
-          fontSize: '14px',
-          fontWeight: 400,
-          color: 'rgba(0, 0, 0, 0.85)',
-          fontStyle: 'normal',
-        },
-        inlineMargin: [0, 16, 24, 0],
-        visible: true,
-      })
+        data.items.push({
+          id,
+          schema: com.schema,
+          name: '',
+          label: `表单项${nowC}`,
+          widthOption: 'span',
+          span: 24 / data.formItemColumn,
+          colon: 'default',
+          labelAlign: 'default',
+          labelAutoWrap: 'default',
+          hiddenLabel: false,
+          descriptionStyle: {
+            whiteSpace: 'pre-wrap',
+            lineHeight: '12px',
+            letterSpacing: '0px',
+            fontSize: '12px',
+            fontWeight: 400,
+            color: 'rgba(0, 0, 0, 0.45)',
+            fontStyle: 'normal',
+          },
+          labelStyle: {
+            lineHeight: '14px',
+            letterSpacing: '0px',
+            fontSize: '14px',
+            fontWeight: 400,
+            color: 'rgba(0, 0, 0, 0.85)',
+            fontStyle: 'normal',
+          },
+          inlineMargin: [0, 16, 24, 0],
+          visible: true,
+        })
+      }
+      refreshSchema({ data, inputs, outputs, slots })
     }
-    refreshSchema({ data, inputs, outputs, slots })
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, { id, title }) {
     // console.log('@childRemove', id, title)
@@ -382,8 +385,15 @@ export default {
           get({ id, data }: EditorResult<Data>) {
             return getFormItemProp({ data, id }, 'label');
           },
-          set({ id, data }: EditorResult<Data>, val) {
-            setFormItemProps({ data, id }, 'label', val);
+          set({ id, data, slot }: EditorResult<Data>, val) {
+            const item = data.items.find(item => item.id === id)
+            if (item) {
+              if (item?.slotAfter) {
+                slot.setTitle(item?.slotAfter, getSlotAfterTitle(val))
+              }
+              item['label'] = val
+              // setFormItemProps({ data, id }, 'label', val);
+            }
           }
         }
       },
@@ -702,20 +712,46 @@ export default {
               }
             }
           },
+          {
+            title: '必填样式',
+            type: 'Switch',
+            value: {
+              get({ id, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id }, 'required');
+              },
+              set({ id, data }: EditorResult<Data>, value) {
+                setFormItemProps({ data, id }, 'required', value);
+              }
+            }
+          }
         ]
       },
       {
-        title: '必填样式',
+        title: '后置插槽',
         type: 'Switch',
         value: {
           get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'required');
+            return getFormItemProp({ data, id }, 'slotAfter');
           },
-          set({ id, data }: EditorResult<Data>, value) {
-            setFormItemProps({ data, id }, 'required', value);
+          set({ id, data, slot }: EditorResult<Data>, value) {
+            const item = data.items.find(item => item.id === id);
+            if (value && item) {
+              const slotId = uuid();
+              item['slotAfter'] = slotId
+              // setFormItemProps({ data, id }, 'slotAfter', slotId);
+              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label)});
+            } else {
+              const slotAfter = getFormItemProp({ data, id }, 'slotAfter');
+
+              if (slot.get(slotAfter)) {
+                slot.remove(slotAfter);
+                setFormItemProps({ data, id }, 'slotAfter', '');
+              }
+            }
+            
           }
         }
-      },
+      }
     ]
   },
   '[data-form-actions]': ({ data, output }: EditorResult<Data>, cate1) => {
@@ -853,4 +889,8 @@ export default {
       },
     ]
   }
+}
+
+const getSlotAfterTitle = (label: string) => {
+  return `${label}后置内容区`
 }

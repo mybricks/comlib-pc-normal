@@ -1,7 +1,7 @@
 {
   "title": "iFrame",
   "namespace": "mybricks.normal-pc.iframe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "iframe容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setUrl",

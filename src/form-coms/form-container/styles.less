@@ -15,3 +15,22 @@
     }
   }
 }
+
+.formItemControl {
+  display: flex;
+  // align-items: flex-start;
+
+  .formItemSlotContent {
+    width: 100%;
+    flex: 1;
+  }
+  .formItemSlotAfter {
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    & > div {
+      // hack slot style
+      height: auto !important;
+    }
+  }
+}

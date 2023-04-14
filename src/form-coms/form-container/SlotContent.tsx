@@ -31,7 +31,7 @@ const SlotContent = (props) => {
       itemWrap(com: { id; jsx }) {
         const item = data.items.find((item) => item.id === com.id);
 
-        return <FormItem data={data} com={com} item={item} field={props?.field} />;
+        return <FormItem data={data} slots={slots} com={com} item={item} field={props?.field} />;
       },
       wrap(comAray: { id; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
@@ -98,7 +98,7 @@ const SlotContent = (props) => {
       inputValues: {}
       // key: props?.field?.name
     });
-  }, [layout]);
+  }, [layout, slots]);
 
   return content;
 };

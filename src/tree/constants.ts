@@ -39,6 +39,7 @@ export interface Data {
   allNodeDeletable: boolean;
   keyFieldName: string;
   useCheckEvent?: boolean;
+  checkStrictly?: boolean;
 }
 
 export interface TreeData {
