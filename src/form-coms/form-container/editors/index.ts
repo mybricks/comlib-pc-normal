@@ -53,6 +53,7 @@ export default {
 
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
+    // console.log(child)
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs } = child
       const item = data.items.find(item => item.id === id)
@@ -99,8 +100,8 @@ export default {
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, { id, title }) {
-    // console.log('@childRemove', id, title)
     data.items = data.items.filter(item => item.id !== id)
+
     refreshSchema({ data, inputs, outputs, slots })
   },
   // '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
@@ -455,6 +456,32 @@ export default {
         },
       },
       {
+        title: '后置插槽',
+        type: 'Switch',
+        value: {
+          get({ id, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id }, 'slotAfter');
+          },
+          set({ id, data, slot }: EditorResult<Data>, value) {
+            const item = data.items.find(item => item.id === id);
+            if (value && item) {
+              const slotId = uuid();
+              item['slotAfter'] = slotId
+              // setFormItemProps({ data, id }, 'slotAfter', slotId);
+              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label)});
+            } else {
+              const slotAfter = getFormItemProp({ data, id }, 'slotAfter');
+
+              if (slot.get(slotAfter)) {
+                slot.remove(slotAfter);
+                setFormItemProps({ data, id }, 'slotAfter', '');
+              }
+            }
+            
+          }
+        }
+      },
+      {
         title: '样式',
         items: [
           {
@@ -725,32 +752,6 @@ export default {
             }
           }
         ]
-      },
-      {
-        title: '后置插槽',
-        type: 'Switch',
-        value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'slotAfter');
-          },
-          set({ id, data, slot }: EditorResult<Data>, value) {
-            const item = data.items.find(item => item.id === id);
-            if (value && item) {
-              const slotId = uuid();
-              item['slotAfter'] = slotId
-              // setFormItemProps({ data, id }, 'slotAfter', slotId);
-              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label)});
-            } else {
-              const slotAfter = getFormItemProp({ data, id }, 'slotAfter');
-
-              if (slot.get(slotAfter)) {
-                slot.remove(slotAfter);
-                setFormItemProps({ data, id }, 'slotAfter', '');
-              }
-            }
-            
-          }
-        }
       }
     ]
   },
