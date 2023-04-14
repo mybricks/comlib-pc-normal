@@ -58,6 +58,7 @@ export enum ComponentName {
 	RADIO = 'Radio',
 	CHECKBOX = 'Checkbox',
 	DEBOUNCE_SELECT = 'DebounceSelect',
+	USER_PROFILE = 'UserProfile',
 }
 
 export const DefaultComponentNameMap = {
