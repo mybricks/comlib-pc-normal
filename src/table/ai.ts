@@ -1,25 +1,12 @@
 import { uuid } from '../utils';
+import { merge } from 'lodash'
 
 export default {
-  def: {
-    columns: [
-      {
-        field: 'name',
-        title: '名称',
-        slots: []
-      }
-    ],
-    headStyle: {
-      color: '#1f1f1f',
-      backgroundColor: '#f5f7f9'
-    },
-    contentStyle: { color: '#434343' },
-    usePagination: true
-  },
   prompts: `
+    下面是数据表格的问答示例，跟样式有关的内容你可以自己修改
     例如：
-    问：带有编辑功能的表格
-    答：{
+    请回答：设计一个表格
+    {
           type:'mybricks.normal-pc.table',
           usePagination: true,
           headStyle: {
@@ -29,16 +16,6 @@ export default {
           contentStyle: { color: '#434343' },
           columns:[
             {field:'name',title:'名称'},
-            {
-              field:'$handlers',
-              title:'操作',
-              slots: [
-                {
-                  namespace: 'mybricks.normal-pc.custom-button',
-                  def: { text: '编辑', },
-                },
-              ]
-            }
           ],
         }
   `,
@@ -54,16 +31,16 @@ export default {
 
     data.columns = def.columns.map((item) => {
       let slotId;
-      if (Array.isArray(def.columns) && def.columns.length > 0) {
-        if (Array.isArray(item.slots) && item.slots.length > 0) {
-          slotId = uuid();
-          slots.add({ id: slotId, title: '操作', type: 'scope' });
-          item.slots.forEach((s) => {
-            // console.log('slot.get(slotId)', slots.get(slotId));
-            slots.get(slotId).addCom(s.namespace);
-          });
-        }
-      }
+      // if (Array.isArray(def.columns) && def.columns.length > 0) {
+      //   if (Array.isArray(item.slots) && item.slots.length > 0) {
+      //     slotId = uuid();
+      //     slots.add({ id: slotId, title: '操作', type: 'scope' });
+      //     item.slots.forEach((s) => {
+      //       // console.log('slot.get(slotId)', slots.get(slotId));
+      //       slots.get(slotId).addCom(s.namespace);
+      //     });
+      //   }
+      // }
       return {
         _id: uuid(),
         title: item.title,
@@ -82,5 +59,49 @@ export default {
       data.usePagination = def.usePagination;
     }
     // TODO: 如何统计处理slots内组建的创建
+  },
+
+  ':root'({ data }) {
+    return {
+      prompts: `
+        你是一个优秀的程序员，当前是一个数据表格组件,你可以修改配置返回我需要的内容，
+        以下是一些例子，其中关于样式部分的配置你可以根据问题进行修改：
+        请回答：修改成一个普通数据表格
+        {
+          type:'mybricks.normal-pc.table',
+          columns:[
+            {field:'name',title:'名称'},
+            {field:'age',title:'年龄'},
+          ],
+        }
+        请回答：修改表格的样式
+        {
+          headStyle: {
+            color: '#1f1f1f',
+            backgroundColor: '#f5f7f9'
+          },
+          contentStyle: { color: '#434343' },
+        }
+      `,
+      execute({ data, newData, slots}) {
+        if (newData.headStyle) {
+          data.headStyle = { ...newData.headStyle };
+        }
+        if (newData.contentStyle) {
+          data.contentStyle = { ...newData.contentStyle };
+        }
+
+        if(newData.columns) {
+          data.columns = merge(data.columns, newData.columns);
+        }
+        data.columns = data.columns.map((item, index) => {
+          return {
+            ...item,
+            headStyle: newData.headStyle ? { ...newData.headStyle } : undefined,
+            contentStyle: newData.contentStyle ? { ...newData.contentStyle } : undefined,
+          }
+        })
+      }
+    }
   }
 };
