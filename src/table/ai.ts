@@ -64,7 +64,7 @@ export default {
   ':root'({ data }) {
     return {
       prompts: `
-        你是一个优秀的程序员，当前是一个数据表格组件,你可以修改配置返回我需要的内容，
+        你是一个优秀的程序员，当前是一个数据表格组件,你可以修改配置返回我需要的内容，当前的配置为${JSON.stringify(data)},
         以下是一些例子，其中关于样式部分的配置你可以根据问题进行修改：
         请回答：修改成一个普通数据表格
         {
@@ -81,7 +81,7 @@ export default {
             backgroundColor: '#f5f7f9'
           },
           contentStyle: { color: '#434343' },
-        }
+        },
       `,
       execute({ data, newData, slots}) {
         if (newData.headStyle) {
@@ -92,7 +92,7 @@ export default {
         }
 
         if(newData.columns) {
-          data.columns = merge(data.columns, newData.columns);
+          data.columns = [...newData.columns];
         }
         data.columns = data.columns.map((item, index) => {
           return {
