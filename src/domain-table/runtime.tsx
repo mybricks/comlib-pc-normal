@@ -151,67 +151,65 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 
   let scrollXWidth = 0;
   const columnWidthMap = {};
-  const renderColumns: () => ColumnsType<any> = () => {
-    return data.fieldAry
-      ? data.fieldAry?.map((field) => {
-          /** 提前读取值，防止不响应 */
-          field.tableInfo?.ellipsis;
+  const renderColumns: ColumnsType<any> = data.fieldAry
+    ? data.fieldAry?.map((field) => {
+        /** 提前读取值，防止不响应 */
+        field.tableInfo?.ellipsis;
 
-          const title =
-            field.tableInfo?.label ||
-            (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
-          let parseWidth = parseInt(field.tableInfo?.width || '124px');
-          if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
-            parseWidth = 124;
-          }
-          scrollXWidth += parseWidth;
+        const title =
+          field.tableInfo?.label ||
+          (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
+        let parseWidth = parseInt(field.tableInfo?.width || '124px');
+        if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
+          parseWidth = 124;
+        }
+        scrollXWidth += parseWidth;
 
-          return field.bizType === FieldBizType.FRONT_CUSTOM
-            ? {
-                title: field.tableInfo?.label || field.name,
-                key: field.id,
-                align: field.tableInfo?.align || 'left',
-                width: `${parseWidth}px`,
-                render(_, data) {
-                  return (
-                    <>
-                      <Button
-                        style={{ marginRight: '12px' }}
-                        size="small"
-                        onClick={() => onEdit(data)}
-                      >
-                        编辑
-                      </Button>
-                      <Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>
-                        删除
-                      </Button>
-                    </>
-                  );
-                }
+        return field.bizType === FieldBizType.FRONT_CUSTOM
+          ? {
+              title: field.tableInfo?.label || field.name,
+              key: field.id,
+              align: field.tableInfo?.align || 'left',
+              width: `${parseWidth}px`,
+              render(_, data) {
+                return (
+                  <>
+                    <Button
+                      style={{ marginRight: '12px' }}
+                      size="small"
+                      onClick={() => onEdit(data)}
+                    >
+                      编辑
+                    </Button>
+                    <Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>
+                      删除
+                    </Button>
+                  </>
+                );
               }
-            : {
-                title: title,
-                dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
-                key: title,
-                align: field.tableInfo?.align || 'left',
-                width: `${parseWidth}px`,
-                render(value, data) {
-                  return (
-                    <RenderColumn
-                      columnKey={title}
-                      columnWidthMap={columnWidthMap}
-                      value={value}
-                      item={data}
-                      ellipsis={field.tableInfo?.ellipsis}
-                      columnWidth={columnWidthMap[title]}
-                    />
-                  );
-                },
-                sorter: field.tableInfo?.sort
-              };
-        })
-      : [];
-  };
+            }
+          : {
+              title: title,
+              dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
+              key: title,
+              align: field.tableInfo?.align || 'left',
+              width: `${parseWidth}px`,
+              render(value, data) {
+                return (
+                  <RenderColumn
+                    columnKey={title}
+                    columnWidthMap={columnWidthMap}
+                    value={value}
+                    item={data}
+                    ellipsis={field.tableInfo?.ellipsis}
+                    columnWidth={columnWidthMap[title]}
+                  />
+                );
+              },
+              sorter: field.tableInfo?.sort
+            };
+      })
+    : [];
 
   useEffect(() => {
     if (!data.entity || !data.fieldAry?.length) {
@@ -643,9 +641,10 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       >
         {renderSearchFormNode()}
         <Table
+          key={env.edit ? String(scrollXWidth) : undefined}
           size={data.table?.size || 'middle'}
           loading={loading}
-          columns={renderColumns()}
+          columns={renderColumns}
           dataSource={dataSource}
           onChange={onTableChange}
           scroll={{ x: scrollXWidth }}
