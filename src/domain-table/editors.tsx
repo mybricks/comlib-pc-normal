@@ -11,6 +11,7 @@ import {
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
+import Refresh from './editors/refresh';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -119,6 +120,169 @@ export default {
                 }
               }
             }
+          },
+          {
+            title: '刷新模型实体信息',
+            type: 'editorRender',
+            options: {
+              render: Refresh
+            },
+            ifVisible({ data }: EditorResult<Data>) {
+              return !!data.entity;
+            },
+            value: {
+              get({ data }) {
+                return { domainFileId: data.domainFileId, entityId: data.entityId };
+              },
+              set({ data, setTitle, title, output }, newEntity: any) {
+                data.formFieldAry = data.formFieldAry
+                  .map((field) => {
+                    let newField = newEntity.fieldAry.find(
+                      (f) => f.id === field.id || f.name === field.name
+                    );
+
+                    if (!newField) {
+                      return;
+                    }
+                    newField = JSON.parse(JSON.stringify(newField));
+                    newField.form = field.form;
+
+                    const newFormItem =
+                      DefaultComponentNameMap[newField.bizType] || ComponentName.INPUT;
+                    const oldFormItem =
+                      DefaultComponentNameMap[field.bizType] || ComponentName.INPUT;
+
+                    if (oldFormItem === field.form.formItem) {
+                      newField.form.formItem = newFormItem;
+                    }
+
+                    if (
+                      newField.bizType === FieldBizType.ENUM &&
+                      Array.isArray(newField.enumValues)
+                    ) {
+                      newField.form.options = newField.enumValues.map((v) => {
+                        const oldOption =
+                          field.bizType === FieldBizType.ENUM
+                            ? field.form.options.find((o) => o.value === v)
+                            : undefined;
+
+                        return oldOption || { label: v, value: v };
+                      });
+                    }
+
+                    return newField;
+                  })
+                  .filter(Boolean);
+
+                const curFieldAry = data.fieldAry
+                  .filter((f) => f.bizType !== FieldBizType.FRONT_CUSTOM)
+                  .map((field) => {
+                    let newField = newEntity.fieldAry.find(
+                      (f) => f.id === field.id || f.name === field.name
+                    );
+
+                    if (!newField) {
+                      return;
+                    }
+                    newField = JSON.parse(JSON.stringify(newField));
+                    newField.tableInfo = field.tableInfo;
+
+                    if (!field.mappingField && newField.mapping?.entity) {
+                      return;
+                    } else if (field.mappingField && newField.mapping?.entity) {
+                      const mappingField = newField.mapping?.entity.fieldAry.find(
+                        (f) => f.id === field.mappingField.id || f.name === field.mappingField.name
+                      );
+
+                      if (mappingField) {
+                        newField.mappingField = {
+                          ...mappingField,
+                          relationEntityId: newField.mapping?.entity.id
+                        };
+                      }
+                    }
+
+                    return newField;
+                  })
+                  .filter(Boolean);
+
+                if (curFieldAry.length > 0) {
+                  curFieldAry.push({
+                    name: '操作',
+                    tableInfo: { label: '操作', width: '124px', align: 'left' },
+                    bizType: FieldBizType.FRONT_CUSTOM,
+                    id: 'operate'
+                  });
+
+                  data.fieldAry = curFieldAry;
+                } else {
+                  data.fieldAry = [];
+                }
+
+                newEntity.fieldAry.forEach((newField) => {
+                  newField.form = {};
+                });
+
+                newEntity.fieldAry
+                  .filter(
+                    (field) =>
+                      !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate
+                  )
+                  .forEach((newField) => {
+                    const field = data.entity?.fieldAry.find(
+                      (f) => f.id === newField.id || f.name === newField.name
+                    );
+
+                    const newFormItem =
+                      DefaultComponentNameMap[newField.bizType] || ComponentName.INPUT;
+                    const initForm: Record<string, unknown> = { formItem: newFormItem };
+                    if (
+                      [FieldBizType.SYS_USER_UPDATER, FieldBizType.SYS_USER_CREATOR].includes(
+                        newField.bizType
+                      )
+                    ) {
+                      initForm.required = true;
+                    }
+
+                    if (field) {
+                      newField.form = field.form || initForm;
+                      const oldFormItem =
+                        DefaultComponentNameMap[field.bizType] || ComponentName.INPUT;
+
+                      /** 老的表单项类型未变更过 */
+                      if (
+                        oldFormItem === field.form.formItem ||
+                        ([FieldBizType.SYS_USER_UPDATER, FieldBizType.SYS_USER_CREATOR].includes(
+                          newField.bizType
+                        ) &&
+                          ![FieldBizType.SYS_USER_UPDATER, FieldBizType.SYS_USER_CREATOR].includes(
+                            field.bizType
+                          ))
+                      ) {
+                        newField.form = { ...newField.form, ...initForm };
+                      }
+                    } else {
+                      newField.form = initForm;
+                    }
+
+                    if (
+                      newField.bizType === FieldBizType.ENUM &&
+                      Array.isArray(newField.enumValues)
+                    ) {
+                      newField.form.options = newField.enumValues.map((v) => {
+                        const oldOption =
+                          field.bizType === FieldBizType.ENUM
+                            ? field.form.options.find((o) => o.value === v)
+                            : undefined;
+
+                        return oldOption || { label: v, value: v };
+                      });
+                    }
+                  });
+
+                data.entity = newEntity;
+              }
+            }
           }
         ]
       },
@@ -148,7 +312,7 @@ export default {
               },
               set({ data, output, input }: EditorResult<Data>, value: string[]) {
                 data.formFieldAry = value
-                  .map((id) => data.entity.fieldAry.find((entity) => entity.id === id))
+                  .map((id) => data.entity.fieldAry.find((field) => field.id === id))
                   .filter(Boolean)
                   .map((field) => JSON.parse(JSON.stringify(field)));
               }
@@ -234,6 +398,7 @@ export default {
                       const mappingField = item.mapping?.entity.fieldAry.find(
                         (field) => field.id === ids[1]
                       );
+                      item.tableInfo.label = `${item.name}.${mappingField?.name}`;
 
                       return mappingField
                         ? {
@@ -253,7 +418,7 @@ export default {
                 if (fieldAry.length > 0) {
                   fieldAry.push({
                     name: '操作',
-                    label: '操作',
+                    tableInfo: { label: '操作', width: '124px', align: 'left' },
                     bizType: FieldBizType.FRONT_CUSTOM,
                     id: 'operate'
                   });
@@ -288,7 +453,7 @@ export default {
                 if (curFields.length > 0) {
                   curFields.push({
                     name: '操作',
-                    label: '操作',
+                    tableInfo: { label: '操作', width: '124px', align: 'left' },
                     bizType: FieldBizType.FRONT_CUSTOM,
                     id: 'operate'
                   });

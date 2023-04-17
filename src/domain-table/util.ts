@@ -1,13 +1,13 @@
 import {message} from "antd";
 
-export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; url?: string } = {}) => {
+export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; url?: string; method?: string } = {}) => {
 	return fetch(option.url ?? (params.projectId ? '/runtime/api/domain/service/run' : '/api/system/domain/run'), {
-		method: 'POST',
+		method: option.method || 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		credentials: undefined,
-		body: JSON.stringify(params)
+		body: option.method === 'get' ? undefined : JSON.stringify(params)
 	} as RequestInit)
 	.then(res => res.json())
 	.then(res => {
