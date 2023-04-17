@@ -90,14 +90,18 @@ export default {
 //       }
 //     }
 //   },
-  // def: {
-  //   layout: "horizontal",
-  //   buttons: [{ type: 'primary', title: '提交' }],
-  //   formItemColumn: 1
-  // },
-  prompts: `根据用户的需求，设计一个合理的后台管理系统的表单，其中包括布局、标题文案、按钮、表单项类型等
-    组件定义: {layout: 'horizontal', buttons: [{type: 'primary', title: '提交'}], buttonsAlign: 'left', formItemColumn: 1}
+  prompts () {
+    const def = {
+      layout: 'horizontal',
+      buttons: [{type: 'primary', title: '提交'}],
+      buttonsAlign: 'left',
+      formItemColumn: 1
+    }
+
+    return `根据用户的需求，设计一个合理的后台管理系统的表单，其中包括布局、标题文案、按钮、表单项类型等
+    组件定义: ${JSON.stringify(def)}
     可添加的表单项type：['form-text', 'select', 'radio', 'password', 'auto-complete', 'cascader', 'checkbox', 'date-picker', 'color', 'input-number', 'form-email', 'input-textarea', 'form-phone-number', 'range-picker', 'rate', 'search', 'slider', 'time-picker', 'time-range-picker', 'transfer', 'upload']
+    布局说明：buttons单独为一列，总列数为表单项数+1
     例如：
     请回答：过滤表单
     {type:'mybricks.normal-pc.form-container',buttons:[{type:'primary',title:'搜索'}],slots:{}} 注意：这里因为在提出的问题中没有对于表单项的描述，所以slots为空。
@@ -113,6 +117,17 @@ export default {
         ]
       }
     }
+    请回答：一行排列表单
+    {
+      type:'mybricks.normal-pc.form-container',
+      buttons:[{type:'primary',title:'查询'}],
+      formItemColumn: 2,
+      slots:{
+        content:[
+          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
+        ]
+      }
+    }
     请回答：过滤表单，1行3列布局
     {
       type:'mybricks.normal-pc.form-container',
@@ -125,7 +140,8 @@ export default {
         ]
       }
     }
-  `,
+  `
+  },
   '@create'(props) {
     const { def, data } = props
     // console.log('def:', def)
@@ -142,7 +158,7 @@ export default {
     }
 
     if (typeof def.formItemColumn === 'number') {
-      data.formItemColumn = def.formItemColumn
+      data.formItemColumn = def.formItemColumn + 1
       data.actions.span = (24 / data.formItemColumn)
       setTimeout(() => {
         data.items.forEach(item => {
