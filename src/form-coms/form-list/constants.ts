@@ -1,31 +1,9 @@
-export const inputIds = {
-  SET_FIELDS_VALUE: 'setFieldsValue',
-  SUBMIT: 'submit',
-  RESET_FIELDS: 'resetFields',
-  SUBMIT_AND_MERGE: 'submitAndMerge',
-  SET_INITIAL_VALUES: 'setInitialValues',
-  SET_FORM_ITEMS_PROPS: 'setFormItemsProps',
-  SET_DISABLED: 'setDisabled',
-  SET_ENABLED: 'setEnabled',
-  GET_FIELDS_VALUE: 'getFieldsValue'
-}
-
-export const outputIds = {
-  ON_FINISH: 'onFinish',
-  ON_RESET_FINISH: 'onResetFinish',
-  ON_CLICK_SUBMIT: 'onClickSubmit',
-  ON_CLICK_CANCEL: 'onClickCancel',
-  ON_MERGE_FINISH: 'onMergeFinish',
-  ON_VALUES_CHANGE: 'onValuesChange',
-  RETURN_VALUES: 'returnValues'
-}
-
 export const SlotIds = {
   FormItems: 'formItems'
 };
 
 export const SlotInputIds = {
-  CurValue: 'curValue',
+  ON_CHANGE: 'onChange',
 };
 
 export const labelWidthTypes = {

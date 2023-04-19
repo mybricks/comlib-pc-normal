@@ -2,8 +2,8 @@ import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
-import { SlotIds, inputIds, outputIds } from '../constants'
-import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema'
+import { SlotIds } from '../constants'
+import { refreshSchema } from '../schema'
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
@@ -44,24 +44,6 @@ function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof 
 }
 
 export default {
-  '@inputConnected'({ data, outputs }, fromPin, toPin) {
-    if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
-      if (fromPin.schema.type === 'object') {
-        data.paramsSchema = fromPin.schema
-      } else {
-        data.paramsSchema = {}
-      }
-      refreshParamsSchema(data, outputs)
-    }
-
-  },
-  '@inputDisConnected'({ data, outputs }, fromPin, toPin) {
-    if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
-      data.paramsSchema = {}
-      refreshParamsSchema(data, outputs)
-    }
-
-  },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
     if (curSlot.id === SlotIds.FormItems) {
       const { id, inputDefs, outputDefs } = child
@@ -201,9 +183,6 @@ export default {
       },
       {
         title: '标题',
-        ifVisible({ data }: EditorResult<Data>) {
-          return (data.config?.layout || data.layout) === 'horizontal'
-        },
         items: [
           {
             title: '宽度类型',
@@ -455,7 +434,6 @@ export default {
               },
               set({ data, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, id }, 'widthOption', value);
-                refreshFormItemPropsSchema({ data, inputs });
               }
             },
           },
@@ -507,9 +485,6 @@ export default {
             title: '边距',
             type: 'inputNumber',
             options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return (data.config?.layout || data.layout) !== 'horizontal'
-            },
             value: {
               get({ id, data }: EditorResult<Data>) {
                 return getFormItemProp({ data, id }, 'inlineMargin');
@@ -522,9 +497,6 @@ export default {
           {
             title: '边距应用其它表单项及操作项',
             type: 'Button',
-            ifVisible({ data }: EditorResult<Data>) {
-              return (data.config?.layout || data.layout) !== 'horizontal'
-            },
             value: {
               set({ id, data }: EditorResult<Data>) {
                 const curItem = data.items.find(item => item.id === id)

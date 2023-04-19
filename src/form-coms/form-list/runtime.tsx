@@ -1,23 +1,13 @@
-import React, {
-  useEffect,
-  useMemo,
-  useCallback,
-  useLayoutEffect,
-  Fragment,
-  useState,
-  useRef
-} from 'react';
-import { Col, Form, Row } from 'antd';
-import { typeCheck } from '../../utils';
-import { Data, FormControlInputId, FormItems } from './types';
+import React, { useMemo, useCallback, useLayoutEffect } from 'react';
+import { Button, Col, Form, Row } from 'antd';
+import { Data, FormControlInputId } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject } from './utils';
+import { isObject } from './utils';
 import { validateTrigger } from '../form-container/models/validate';
 import { OutputIds, ValidateInfo } from '../types';
+import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
-import { SlotIds } from './constants';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import css from './styles.less';
 import { ActionsWrapper, FormListActionsProps } from './components/FormActions';
 
 type FormControlInputRels = {
@@ -35,7 +25,7 @@ type FormControlInputType = {
 };
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, style } = props;
+  const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
   const { edit } = env;
 
   const childrenInputs = useMemo<{
@@ -45,18 +35,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [env.edit]);
 
   useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      data.value = val;
-      slots[SlotIds.FormItems].inputs['curValue'](data.value);
-      onChangeForFc(parentSlot, { id: props.id, value: val });
-      outputs['onChange'](val);
-      onValidateTrigger();
+    inputs['setValue']((value) => {
+      if (typeCheck(value, ['Array', 'Undefined'])) {
+        data.value = value;
+        onChangeForFc(parentSlot, { id, value });
+        outputs[OutputIds.OnChange](value);
+        onValidateTrigger();
+      } else {
+        logger.error(title + '的值是列表类型');
+      }
     });
 
-    inputs['setInitialValue']((val) => {
-      data.value = val;
-      slots[SlotIds.FormItems].inputs['curValue'](data.value);
-      outputs[OutputIds.OnInitial](val);
+    inputs['setInitialValue']((value) => {
+      if (typeCheck(value, ['Array', 'Undefined'])) {
+        data.value = value;
+        onChangeForFc(parentSlot, { id, value });
+        outputs[OutputIds.OnInitial](value);
+        onValidateTrigger();
+      } else {
+        logger.error(title + '的值是列表类型');
+      }
     });
 
     inputs['validate']((val, outputRels) => {

@@ -24,14 +24,9 @@ const JSXWrapper = (props: FormControlProps) => {
 
 const FormItem = (props: FormItemProps) => {
   const { com, item, field, data, slots } = props;
-  const layout = data.config?.layout || data.layout;
   const formColon = data.config?.colon || data.colon;
-
   const style: React.CSSProperties = {
-    margin:
-      layout !== 'horizontal'
-        ? item.inlineMargin?.map(String).map(unitConversion).join(' ')
-        : void 0
+    margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
   };
   const colon = item?.colon === 'default' ? formColon : item.colon;
   const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
@@ -67,11 +62,6 @@ const FormItem = (props: FormItemProps) => {
         <div className={css.formItemSlotContent}>
           <JSXWrapper com={com} field={field} />
         </div>
-        {item.slotAfter && (
-          <div className={css.formItemSlotAfter}>
-            {<Form.Item noStyle>{slots[item.slotAfter]?.render()}</Form.Item>}
-          </div>
-        )}
       </div>
 
       {item.description && (

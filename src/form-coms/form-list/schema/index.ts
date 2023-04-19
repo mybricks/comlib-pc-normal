@@ -1,8 +1,6 @@
-import { outputIds, inputIds, SlotIds,SlotInputIds, formItemPropsSchema } from '../constants'
-import { deepCopy } from '../../../utils'
-import { Data } from '../types'
+import { InputIds, OutputIds } from '../../types'
 
-function getSubmitSchema(data) {
+function getValueSchema(data) {
   const properties = {}
   data.items.forEach(item => {
     const { id, label, schema, name } = item
@@ -10,79 +8,26 @@ function getSubmitSchema(data) {
   })
 
   const schema = {
-    type: 'object',
-    properties
-  }
-  return schema
-}
-
-function getFormItemPropsSchema(data: Data) {
-  const { layout } = data.config;
-  const { width, span, ...res } = formItemPropsSchema;
-  const properties = {};
-
-  data.items.forEach(item => {
-    const { id, label, name, widthOption } = item
-    const formItemPropsschema = deepCopy(res);
-
-    // 动态配置项
-    // if (layout !== 'horizontal') {
-    //   formItemPropsschema['inlinePadding'] = inlinePadding;
-    // }
-    if (widthOption === 'px') {
-      formItemPropsschema['width'] = width;
+    type: 'array',
+    items: {
+      type: 'object',
+      properties
     }
-    if (widthOption === 'span') {
-      formItemPropsschema['span'] = span;
-    }
-    properties[name || label] = { type: 'object', title: label, properties: { ...formItemPropsschema } }
-  })
-
-  const schema = {
-    type: 'object',
-    properties
-  }
-
+  };
   return schema
 }
 
 function refreshSchema({ data, inputs, outputs, slots }) {
-  const schema = getSubmitSchema(data)
+  const schema = getValueSchema(data)
 
-  outputs.get(outputIds.ON_FINISH).setSchema(schema)
-  outputs.get(outputIds.ON_CLICK_SUBMIT).setSchema(schema)
-  outputs.get(outputIds.RETURN_VALUES).setSchema(schema)
-  outputs.get(outputIds.ON_VALUES_CHANGE).setSchema({
-    type: "object",
-    properties: {
-      changedValues: schema, // Todo... 应该只有一项
-      allValues: schema
-    }
-  })
+  outputs.get(OutputIds.OnChange).setSchema(schema)
+  outputs.get(OutputIds.OnInitial).setSchema(schema)
+  outputs.get(OutputIds.ReturnValue).setSchema(schema)
 
-  inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
-  inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
-
-  const contentSlot = slots?.get('content')
-
-  contentSlot.inputs.get(SlotInputIds.CurValue).setSchema(schema)
-
-  refreshParamsSchema(data, outputs)
-  refreshFormItemPropsSchema({ data, inputs })
+  inputs.get(InputIds.SetInitialValue).setSchema(schema)
+  inputs.get(InputIds.SetValue).setSchema(schema)
 }
 
-function refreshParamsSchema(data, outputs) {
-  const schema = getSubmitSchema(data)
-  if (data.paramsSchema?.type === 'object') {
-    schema.properties = { ...schema.properties, ...data.paramsSchema.properties }
-  }
 
-  outputs.get(outputIds.ON_MERGE_FINISH).setSchema(schema)
-}
 
-function refreshFormItemPropsSchema({ data, inputs }) {
-  const formItemPropsSchema = getFormItemPropsSchema(data)
-  inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
-}
-
-export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema, refreshFormItemPropsSchema }
+export { refreshSchema }
