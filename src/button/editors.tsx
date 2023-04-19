@@ -89,17 +89,7 @@ export default {
             { value: 'external', label: '外部传入' }
           ],
           value: {
-            get({ data, output }: EditorResult<Data>) {
-              const click = output.get(OutputIds.Click);
-              const dbClick = output.get(OutputIds.DbClick);
-              if (data.dataType === 'number') {
-                click.setSchema({
-                  type: 'number'
-                });
-                dbClick.setSchema({
-                  type: 'number'
-                });
-              }
+            get({ data }: EditorResult<Data>) {
               return data.dataType;
             },
             set(

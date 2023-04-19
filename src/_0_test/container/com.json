@@ -8,7 +8,27 @@
   "runtime": "./runtime.tsx",
   "slots": [
     {
-      "id": "content"
+      "id": "content",
+      "type": "scope",
+      "_inputs": [
+        {
+          "id": "onChange",
+          "title": "表单项值变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              },
+              "value": {
+                "type": "any",
+                "title": "组件值"
+              }
+            }
+          }
+        }
+      ]
     }
   ]
 }

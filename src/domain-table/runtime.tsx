@@ -131,7 +131,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
               field.bizType !== FieldBizType.MAPPING &&
               !field.isPrimaryKey &&
               !field.isPrivate &&
-              !field.defaultValueWhenCreate
+              !field.form.disabledForEdit
           )
           .forEach((field) => {
             if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
@@ -405,12 +405,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         });
 
         if (showModalAction === ModalAction.EDIT) {
-          const fields = data.entity.fieldAry.filter(
-            (field) =>
-              [FieldBizType.SYS_USER_UPDATER].includes(field.bizType) &&
-              !field.isPrimaryKey &&
-              !field.isPrivate &&
-              !field.defaultValueWhenCreate
+          const fields = data.entity.fieldAry.filter((field) =>
+            [FieldBizType.SYS_USER_UPDATER].includes(field.bizType)
           );
 
           /** 创建者默认读 window 上用户信息 */
@@ -420,14 +416,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 
           curValue.id = currentData.current?.id;
         } else {
-          const fields = data.entity.fieldAry.filter(
-            (field) =>
-              [FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(
-                field.bizType
-              ) &&
-              !field.isPrimaryKey &&
-              !field.isPrivate &&
-              !field.defaultValueWhenCreate
+          const fields = data.entity.fieldAry.filter((field) =>
+            [FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType)
           );
 
           /** 创建者默认读 window 上用户信息 */
@@ -450,7 +440,6 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                       ].includes(field.bizType) &&
                       !field.isPrimaryKey &&
                       !field.isPrivate &&
-                      !field.defaultValueWhenCreate &&
                       !field.form.disabledForEdit
                   ),
             query: curValue,
@@ -468,15 +457,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   const allowRenderCreateItem =
     data.entity?.fieldAry
       .filter(
-        (field) =>
-          field.bizType !== FieldBizType.MAPPING &&
-          !field.isPrimaryKey &&
-          !field.isPrivate &&
-          !field.defaultValueWhenCreate
+        (field) => field.bizType !== FieldBizType.MAPPING && !field.isPrimaryKey && !field.isPrivate
       )
       .filter((field) => {
         /** 这一行必须要，读取 form 的 disabledForEdit 值才能被收集到依赖，才能对应响应编辑项变化 */
         field.form.disabledForEdit;
+        field.form.disabledForCreate;
         field.form.hiddenForCreate;
         field.form.hiddenForEdit;
         if (
@@ -489,6 +475,11 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           }
 
           return !field.form.disabledForEdit;
+        } else if (
+          showModalAction === ModalAction.CREATE ||
+          data.showActionModalForEdit === ModalAction.CREATE
+        ) {
+          return !field.form.disabledForCreate;
         }
 
         return true;
@@ -589,7 +580,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                     {renderFormItemNode(field, { formItem })}
                   </Form.Item>
                 </div>
-                {showTip ? <div className={styles.tipForHidden}>运行时隐藏</div> : null}
+                {showTip ? <div className={styles.tipForHidden}>运行将隐藏</div> : null}
               </Col>
             );
           })}

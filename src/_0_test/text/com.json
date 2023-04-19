@@ -4,7 +4,7 @@
   "author": "MyBricks",
   "author_name": "MyBricks",
   "version": "1.0.0",
-  "description": "表单容器",
+  "description": "schema为*",
   "runtime": "./runtime.tsx",
   "inputs": [
     {
@@ -26,5 +26,8 @@
         "type": "string"
       }
     }
+  ],
+  "schema": [
+    "*"
   ]
 }

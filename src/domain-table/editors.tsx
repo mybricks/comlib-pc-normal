@@ -6,7 +6,8 @@ import {
   FieldDBType,
   ModalAction,
   ComponentName,
-  DefaultOperatorMap
+  DefaultOperatorMap,
+  DefaultValueWhenCreate
 } from './constants';
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
@@ -97,8 +98,7 @@ export default {
                         (field) =>
                           ![FieldBizType.MAPPING].includes(field.bizType) &&
                           !field.isPrimaryKey &&
-                          !field.isPrivate &&
-                          !field.defaultValueWhenCreate
+                          !field.isPrivate
                       )
                       .forEach((field) => {
                         field.form.formItem =
@@ -110,7 +110,8 @@ export default {
                         ) {
                           field.form.options = field.enumValues.map((v) => ({
                             label: v,
-                            value: v
+                            value: v,
+                            checked: v === field.defaultValueWhenCreate
                           }));
                         }
                       });
@@ -160,13 +161,20 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
+                      const hasChecked = field.form.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
                           field.bizType === FieldBizType.ENUM
-                            ? field.form.options.find((o) => o.value === v)
+                            ? field.form.options?.find((o) => o.value === v)
                             : undefined;
 
-                        return oldOption || { label: v, value: v };
+                        return (
+                          oldOption || {
+                            label: v,
+                            value: v,
+                            checked: hasChecked ? false : v === newField.defaultValueWhenCreate
+                          }
+                        );
                       });
                     }
 
@@ -224,10 +232,7 @@ export default {
                 });
 
                 newEntity.fieldAry
-                  .filter(
-                    (field) =>
-                      !field.isPrimaryKey && !field.isPrivate && !field.defaultValueWhenCreate
-                  )
+                  .filter((field) => !field.isPrimaryKey && !field.isPrivate)
                   .forEach((newField) => {
                     const field = data.entity?.fieldAry.find(
                       (f) => f.id === newField.id || f.name === newField.name
@@ -269,13 +274,20 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
+                      const hasChecked = field.form.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
                           field.bizType === FieldBizType.ENUM
-                            ? field.form.options.find((o) => o.value === v)
+                            ? field.form.options?.find((o) => o.value === v)
                             : undefined;
 
-                        return oldOption || { label: v, value: v };
+                        return (
+                          oldOption || {
+                            label: v,
+                            value: v,
+                            checked: hasChecked ? false : v === newField.defaultValueWhenCreate
+                          }
+                        );
                       });
                     }
                   });
@@ -516,6 +528,59 @@ export default {
                 data.showActionModalForEdit = value ? ModalAction.CREATE : '';
               }
             }
+          },
+          {
+            title: '新增表单字段',
+            type: 'Select',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.showActionModalForEdit === ModalAction.CREATE;
+            },
+            options() {
+              return {
+                mode: 'tags',
+                multiple: true,
+                get options() {
+                  return fieldAry
+                    .filter(
+                      (field) =>
+                        ![FieldBizType.MAPPING].includes(field.bizType) &&
+                        !field.isPrimaryKey &&
+                        !field.isPrivate
+                    )
+                    .map((field) => ({ label: field.name, value: field.id }));
+                }
+              };
+            },
+            value: {
+              get() {
+                return fieldAry
+                  .filter(
+                    (field) =>
+                      ![FieldBizType.MAPPING].includes(field.bizType) &&
+                      !field.isPrimaryKey &&
+                      !field.isPrivate &&
+                      !field.form.disabledForCreate
+                  )
+                  .map((field) => field.id);
+              },
+              set({ data, output, input }: EditorResult<Data>, value: string[]) {
+                const fields = fieldAry.filter(
+                  (field) =>
+                    ![FieldBizType.MAPPING].includes(field.bizType) &&
+                    !field.isPrimaryKey &&
+                    !field.isPrivate
+                );
+
+                fields.forEach((field) => {
+                  !field.form && (field.form = {});
+
+                  !field.form.formItem &&
+                    (field.form.formItem =
+                      DefaultComponentNameMap[field.bizType] || ComponentName.INPUT);
+                  field.form.disabledForCreate = !value.includes(field.id);
+                });
+              }
+            }
           }
         ]
       },
@@ -552,8 +617,7 @@ export default {
                           field.bizType
                         ) &&
                         !field.isPrimaryKey &&
-                        !field.isPrivate &&
-                        !field.defaultValueWhenCreate
+                        !field.isPrivate
                     )
                     .map((field) => ({ label: field.name, value: field.id }));
                 }
@@ -569,7 +633,6 @@ export default {
                       ) &&
                       !field.isPrimaryKey &&
                       !field.isPrivate &&
-                      !field.defaultValueWhenCreate &&
                       !field.form.disabledForEdit
                   )
                   .map((field) => field.id);
@@ -581,8 +644,7 @@ export default {
                       field.bizType
                     ) &&
                     !field.isPrimaryKey &&
-                    !field.isPrivate &&
-                    !field.defaultValueWhenCreate
+                    !field.isPrivate
                 );
 
                 fields.forEach((field) => {
@@ -1040,6 +1102,50 @@ export default {
               field.form.hiddenForEdit = value;
             }
           }
+        }
+      },
+      {
+        title: '字段默认值',
+        description: '实体中字段的默认值',
+        type: 'editorRender',
+        ifVisible() {
+          return (
+            field.defaultValueWhenCreate !== undefined && field.defaultValueWhenCreate !== null
+          );
+        },
+        options: {
+          render: () => {
+            let defaultText = field.defaultValueWhenCreate;
+            if (field.bizType === FieldBizType.DATETIME) {
+              if (field.defaultValueWhenCreate === DefaultValueWhenCreate.CURRENT_TIME) {
+                defaultText = '当数据创建时默认填充时间';
+              } else {
+                defaultText =
+                  window.moment?.(field.defaultValueWhenCreate)?.format('yyyy-MM-DD HH:mm:ss') ||
+                  defaultText;
+              }
+            } else if (
+              (field.dbType === 'varchar' || field.dbType === 'mediumtext') &&
+              field.defaultValueWhenCreate === ''
+            ) {
+              defaultText = '空字符串';
+            }
+
+            return (
+              <div>
+                {defaultText}
+                <span style={{ color: '#AAA', fontStyle: 'italic' }}>
+                  （提示：此数据值仅代表数据库中字段默认值）
+                </span>
+              </div>
+            );
+          }
+        },
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.defaultValueWhenCreate;
+          },
+          set() {}
         }
       }
     ].filter(Boolean);
