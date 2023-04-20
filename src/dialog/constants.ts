@@ -58,6 +58,7 @@ export interface Data {
     isConnected?: boolean;
     useBtnLoading?: boolean;
   })[];
+  destroyOnClose?: boolean
   getContainer?: () => any;
 }
 
