@@ -1,4 +1,5 @@
-import { DateType, TimeDateLimitItem } from '../types';
+import { DateType, OutputIds, TimeDateLimitItem } from '../types';
+import { refreshSchema } from './editors';
 import { Data } from './runtime';
 
 export default function ({
@@ -94,6 +95,13 @@ export default function ({
       { title: "本月", type: "month", numList: [0, 0] }
     ];
   };
+
+  /**
+   * @description v1.0.13 fix: refreshSchema
+   */
+  if (output.get(OutputIds.ReturnValue)?.schema?.type !== 'tuple') {
+    refreshSchema({ data, input, output });
+  }
 
   return true;
 }

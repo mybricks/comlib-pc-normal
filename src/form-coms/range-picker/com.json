@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.range-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "日期范围选择框",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -19,10 +19,15 @@
       "title": "设置值",
       "desc": "设置日期范围选择的值，并触发值变化事件输出",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
       }
     },
     {
@@ -30,10 +35,15 @@
       "title": "设置初始值",
       "desc": "设置日期范围选择的初始值，并触发初始化事件输出",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
       }
     },
     {
@@ -86,14 +96,30 @@
       "id": "onInitial",
       "title": "初始化",
       "schema": {
-        "type": "string"
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
       }
     },
     {
       "id": "onChange",
       "title": "值更新",
       "schema": {
-        "type": "string"
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
       }
     },
     {
@@ -117,7 +143,15 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "string"
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
       }
     }
   ],

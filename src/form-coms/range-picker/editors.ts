@@ -1,7 +1,28 @@
 import moment from 'moment';
 import { DisabledDateTimeEditor } from '../../components/editors/DisabledDateTimeEditor';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { DateType } from './runtime';
+import { Data, DateType } from './runtime';
+import { InputIds, OutputIds } from '../types';
+
+export const refreshSchema = ({ data, input, output }: { data: Data, input: any, output: any }) => {
+  const baseType = data.contentType === 'timeStamp' ? 'number' : 'string';
+  const newSchema = {
+    type: 'tuple',
+    items: [
+      {
+        type: baseType,
+      },
+      {
+        type: baseType,
+      },
+    ],
+  };
+  input.get(InputIds.SetInitialValue).setSchema(newSchema);
+  input.get(InputIds.SetValue).setSchema(newSchema);
+  output.get(OutputIds.OnChange).setSchema(newSchema);
+  output.get(OutputIds.OnInitial).setSchema(newSchema);
+  output.get(OutputIds.ReturnValue).setSchema(newSchema);
+};
 
 export default {
   '@resize': {
@@ -270,8 +291,9 @@ export default {
               get({ data }) {
                 return data.contentType;
               },
-              set({ data }, value: string) {
+              set({ data, input, output }: EditorResult<Data>, value: string) {
                 data.contentType = value;
+                refreshSchema({ data, input, output });
               }
             }
           },
