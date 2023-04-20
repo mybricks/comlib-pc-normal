@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Drawer } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds, SlotIds, Location, OutputIds } from './constants';
@@ -31,9 +31,14 @@ export default function ({
     destroyOnClose
   } = data;
 
+  const [inputValue, setInputValue] = useState({});
+
+  const curKey = useRef(1);
+
   const onClose = useCallback(() => {
     setVisible(false);
     // onFooterBtnClick(OutputIds.Cancel);
+    curKey.current++;
   }, []);
 
   const registerOutputsEvent = useCallback((id: string, relOutputs: any, isConnected: boolean) => {
@@ -50,7 +55,8 @@ export default function ({
       });
       inputs[InputIds.Open]((val: any, relOutputs: any) => {
         setVisible(true);
-        slots[SlotIds.Content].inputs[SlotIds.DataSource](val);
+        setInputValue(val);
+        // slots[SlotIds.Content].inputs[SlotIds.DataSource](val);
         data.footerBtns.forEach(({ id, isConnected }) => {
           registerOutputsEvent(id, relOutputs, isConnected);
         });
@@ -88,7 +94,10 @@ export default function ({
       })
     : null;
 
-  const children = slots[SlotIds.Content].render();
+  const children = slots[SlotIds.Content].render({
+    key: curKey.current,
+    inputValues: { [SlotIds.DataSource]: inputValue }
+  });
 
   if (edit || debug) {
     return createPortal(

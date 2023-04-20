@@ -227,6 +227,18 @@ export default {
           set({ data }: EditorResult<Data>, value: boolean) {
             data.centered = value;
           }
+        },
+      },
+      {
+        title: '关闭时销毁',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.destroyOnClose;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.destroyOnClose = val
+          }
         }
       },
       {
