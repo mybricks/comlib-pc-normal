@@ -1,4 +1,4 @@
-import { INTO, LEAVE } from '../constants';
+import { INTO, LEAVE, CLICK } from '../constants';
 
 export const addSlot = (slots, id, title) => {
   slots.add({
@@ -10,6 +10,7 @@ export const addSlot = (slots, id, title) => {
 export const addEventIO = (output, id, title) => {
   output.add(`${id}${INTO}`, `${title}显示`, { type: 'any' });
   output.add(`${id}${LEAVE}`, `${title}隐藏`, { type: 'any' });
+  output.add(`${id}${CLICK}`, `${title}点击时`, { type: 'any' });
 };
 
 export const removeEventIO = (output, id) => {

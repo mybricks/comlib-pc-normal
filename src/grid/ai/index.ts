@@ -7,13 +7,13 @@ import { WidthUnitEnum } from '../constants';
 const prompts = `
   你是一名低代码搭建工程师，当前是一个栅格布局组件，添加栅格时请按照以下格式返回
   {columns: [
-    {key: "column_1", widthOption: 'span', span: 8, slot: "slot_1", content: []}, 
+    {key: "column_1", widthOption: 'span', span: 8, slot: "slot_1", content: ["mybricks.normal-pc.text"]}, 
     {key: "column_2", widthOption: 'auto', flex: 1, slot: "slot_2"}
   ]}
   以下是一些搭建例子：
   问：添加一个两列布局，左边宽度300，右边自适应
   答：{columns: [
-          {key: "column_0", widthOption: 'px', span: 8, width: 300, slot: "slot_0"}, content: ["mybricks.normal-pc.text"]
+          {key: "column_0", widthOption: 'px', span: 8, width: 300, slot: "slot_0"},
           {key: "column_1", widthOption: 'auto', flex: 1, slot: "slot_1"}
       ]
   }
