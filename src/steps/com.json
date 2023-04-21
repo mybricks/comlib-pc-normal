@@ -93,6 +93,13 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "step0_click",
+      "title": "步骤1点击时",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "slots": [

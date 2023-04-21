@@ -1,4 +1,4 @@
-import { Data, INTO, LEAVE } from '../constants';
+import { Data, INTO, LEAVE, CLICK } from '../constants';
 import { removeEventIO } from './util'
 export default {
   '[data-item-type="step"]': {
@@ -49,31 +49,44 @@ export default {
           }
         }
       },
-      // {
-      //   title: '事件',
-      //   items: [
-      //     {
-      //       title: '显示',
-      //       type: '_Event',
-      //       options: ({ data, focusArea }: EditorResult<Data>) => {
-      //         const id = data.stepAry[focusArea.index]?.id
-      //         return {
-      //           outputId: `${id}${INTO}`
-      //         };
-      //       }
-      //     },
-      //     {
-      //       title: '隐藏',
-      //       type: '_Event',
-      //       options: ({ data, focusArea }: EditorResult<Data>) => {
-      //         const id = data.stepAry[focusArea.index]?.id
-      //         return {
-      //           outputId: `${id}${LEAVE}`
-      //         };
-      //       }
-      //     }
-      //   ]
-      // },
+      {
+        title: '事件',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.steps.canClick;
+        },
+        items: [
+          {
+            title: '点击',
+            type: '_Event',
+            options: ({ data }) => {
+              const id = data.stepAry[data.current]?.id;
+              return {
+                outputId: `${id}${CLICK}`
+              };
+            }
+          },
+          // {
+          //   title: '显示',
+          //   type: '_Event',
+          //   options: ({ data, focusArea }: EditorResult<Data>) => {
+          //     const id = data.stepAry[focusArea.index]?.id
+          //     return {
+          //       outputId: `${id}${INTO}`
+          //     };
+          //   }
+          // },
+          // {
+          //   title: '隐藏',
+          //   type: '_Event',
+          //   options: ({ data, focusArea }: EditorResult<Data>) => {
+          //     const id = data.stepAry[focusArea.index]?.id
+          //     return {
+          //       outputId: `${id}${LEAVE}`
+          //     };
+          //   }
+          // }
+        ]
+      },
       {
         title: '删除',
         type: 'Button',
