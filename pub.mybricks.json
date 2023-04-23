@@ -54,7 +54,8 @@
         "./src/form-coms/password/com.json",
         "./src/form-coms/phone-number/com.json",
         "./src/form-coms/time-picker/com.json",
-        "./src/form-coms/time-range-picker/com.json"
+        "./src/form-coms/time-range-picker/com.json",
+        "./src/form-coms/code/com.json"
       ]
     },
     {

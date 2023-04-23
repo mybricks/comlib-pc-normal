@@ -1,0 +1,119 @@
+{
+    "title": "代码编辑器",
+    "namespace": "mybricks.normal-pc.code-editor",
+    "author": "tangxiaoxin",
+    "author_name": "唐小新",
+    "version": "1.0.0",
+    "description": "用于在线编辑代码，支持多种编程语言",
+    "runtime": "./runtime.tsx",
+    "editors": "./editor.ts",
+    "data": "./data.json",
+    "icon": "./icon.svg",
+    "inputs": [
+      {
+        "id": "setValue",
+        "title": "设置值",
+        "schema": {
+          "type": "string"
+        },
+        "desc": "设置代码"
+      },
+      {
+        "id": "setInitialValue",
+        "title": "设置初始值",
+        "schema": {
+          "type": "string"
+        },
+        "desc": "设置代码框初始值"
+      },
+      {
+        "id": "getValue",
+        "title": "获取值",
+        "schema": {
+          "type": "any"
+        },
+        "rels": [
+          "returnValue"
+        ],
+        "desc": "获取代码"
+      },
+      {
+        "id": "resetValue",
+        "title": "重置值",
+        "schema": {
+          "type": "any"
+        },
+        "desc": "重置"
+      },
+      {
+        "id": "validate",
+        "title": "校验",
+        "schema": {
+          "type": "any"
+        },
+        "rels": [
+          "returnValidate"
+        ]
+      },
+      {
+        "id": "setDisabled",
+        "title": "设置禁用",
+        "schema": {
+          "type": "any"
+        },
+        "desc": "代码不可编辑"
+      },
+      {
+        "id": "setEnabled",
+        "title": "设置启用",
+        "schema": {
+          "type": "any"
+        },
+        "desc": "代码可编辑"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "onInitial",
+        "title": "初始化",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "id": "returnValue",
+        "title": "数据输出",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "id": "returnValidate",
+        "title": "校验结果",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "validateStatus": {
+              "title": "校验状态",
+              "type": "string"
+            },
+            "help": {
+              "title": "校验提示",
+              "type": "string"
+            }
+          }
+        }
+      },
+      {
+        "id": "onChange",
+        "title": "值更新",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "schema": [
+      "mybricks.normal-pc.form-container/form-item",
+      "*"
+    ]
+  }
