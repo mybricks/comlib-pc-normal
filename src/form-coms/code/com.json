@@ -77,14 +77,14 @@
         "id": "onInitial",
         "title": "初始化",
         "schema": {
-          "type": "number"
+          "type": "string"
         }
       },
       {
         "id": "returnValue",
         "title": "数据输出",
         "schema": {
-          "type": "number"
+          "type": "string"
         }
       },
       {
