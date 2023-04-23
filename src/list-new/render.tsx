@@ -10,7 +10,7 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
   return (
     <div className={css.flexContainer}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
-        <div key={key} style={{ margin: `0 ${gutter[0]}px ${gutter[1]}px 0` }}>
+        <div key={key} style={{ width: '100%', margin: `0 ${gutter[0]}px ${gutter[1]}px 0` }}>
           {slots['item'].render({
             inputValues: {
               itemData: item,
@@ -31,7 +31,7 @@ const NoAutoRender = (dataSource: any, data: Data, slots) => {
   return (
     <div className={css.noflexContainer}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
-        <div key={key} style={{ margin: `0 ${gutter[0]}px 0 0` }}>
+        <div key={key} style={{ width: '100%', margin: `0 ${gutter[0]}px 0 0` }}>
           {slots['item'].render({
             inputValues: {
               itemData: item,
@@ -52,7 +52,11 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
   return (
     <div className={css.scrollContainer}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
-        <div key={key} className={css.scrollBox} style={{ margin: `0 ${gutter[0]}px 0 0` }}>
+        <div
+          key={key}
+          className={css.scrollBox}
+          style={{ width: '100%', margin: `0 ${gutter[0]}px 0 0` }}
+        >
           {slots['item'].render({
             inputValues: {
               itemData: item,
