@@ -8,10 +8,9 @@ import React, {
   useRef
 } from 'react';
 import { Form } from 'antd';
-import { typeCheck } from '../../utils';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject } from './utils';
+import { getLabelCol, isObject, setFormItemsProps } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
@@ -120,7 +119,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
-      setFormItemsProps(val);
+      setFormItemsProps(val, { data });
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, value }) => {
@@ -141,40 +140,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
   }
-  /**
-   * 设置表单项公共配置
-   * @param formItemsProps 表单项配置对象
-   */
-  const setFormItemsProps = useCallback((formItemsProps: { string: FormItems }) => {
-    if (typeCheck(formItemsProps, ['Object'])) {
-      Object.entries(formItemsProps).map(([name, props]) => {
-        if (!typeCheck(props, ['Object'])) {
-          console.warn(`表单项配置不是对象类型`);
-          return;
-        }
-
-        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
-        if (formItemIndex < 0) {
-          console.warn(`表单项${name}不存在`);
-          return;
-        }
-
-        const formItem = data.items[formItemIndex];
-        const newFormItem = { ...props };
-        const { descriptionStyle, labelStyle } = formItem;
-        if (!newFormItem.descriptionStyle) newFormItem.descriptionStyle = {};
-        if (!newFormItem.labelStyle) newFormItem.labelStyle = {};
-        Object.assign(newFormItem.descriptionStyle, descriptionStyle);
-        Object.assign(newFormItem.labelStyle, labelStyle);
-
-        const temp = {
-          ...formItem,
-          ...props
-        };
-        data.items[formItemIndex] = temp;
-      });
-    }
-  }, []);
 
   const setFieldsValue = (val) => {
     if (val) {
