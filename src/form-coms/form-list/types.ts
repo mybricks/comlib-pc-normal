@@ -59,6 +59,12 @@ export interface Data {
    */
   MaxKey: number
   /**
+   * 列表项初始值
+   */
+  initialValues: {
+    [k: string]: any
+  }
+  /**
    * 校验规则
    */
   rules: any[];

@@ -25,9 +25,9 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         key: data.MaxKey
       });
       if (Array.isArray(data.value)) {
-        data.value.push({});
+        data.value.push(data.initialValues);
       } else {
-        data.value = [{}];
+        data.value = [data.initialValues];
       }
       changeValue({ data, id, outputs, parentSlot });
     }

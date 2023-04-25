@@ -1,8 +1,7 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
-import { Button, Col, Form, Row } from 'antd';
-import { ChildrenInputs, Data, FormControlInputId, FormControlInputType, FormItems } from './types';
+import { ChildrenInputs, Data, FormControlInputType, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { changeValue, updateValue, isObject, onValidateTrigger } from './utils';
+import { changeValue, updateValue, isObject, getValue } from './utils';
 import { OutputIds } from '../types';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
@@ -100,6 +99,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
+  useEffect(() => {
+    // 收集子项初始值
+    getValue({ data, childrenInputs })
+      .then(() => {
+        if (data.value?.[0]) data.initialValues = data.value[0];
+      })
+      .catch((e) => logger.error(e));
+  }, []);
+
   if (env.edit) {
     return (
       <>
@@ -111,24 +119,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       </>
     );
   }
-  useEffect(() => {
-    // if (!data.value) {
-    //   data.value = [];
-    // }
-    // if (data.fieldsLength > data.value?.length) {
-    //   const temp = new Array(data.fieldsLength - data.value.length).fill({});
-    //   data.value.push(...temp);
-    // }
-  }, []);
+
   const FormList = () => {
-    const { fields } = data;
     const defaultActionProps = {
       ...props,
       hiddenRemoveButton: true
     };
     return (
       <>
-        {fields.map((field) => {
+        {data.fields.map((field) => {
           // 更新childrenInputs的index
           const { key, name } = field;
           data.items.forEach((item) => {
@@ -156,7 +155,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             </div>
           );
         })}
-        {fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
+        {data.fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
       </>
     );
   };

@@ -8,7 +8,7 @@ const SlotContent = (
   props: RuntimeParams<Data> & {
     childrenInputs: ChildrenInputs;
     actions: ReactElement;
-    field: FormListFieldData;
+    field?: FormListFieldData;
   }
 ) => {
   const { slots, data, env, actions, field, childrenInputs, outputs, id, parentSlot, logger } =
