@@ -37,7 +37,7 @@ export default function Dialog({
       // 打开对话框
       inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
-        // slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
+        slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
         setVisible(true);
 
         // 监听scope输出
@@ -164,7 +164,6 @@ export default function Dialog({
             }
           }}
           env={env}
-          dataSource={dataSource}
         />
       </div>
     );
@@ -187,7 +186,6 @@ export default function Dialog({
             }
           }}
           env={env}
-          dataSource={dataSource}
         />
       </div>
     );
@@ -205,7 +203,6 @@ export default function Dialog({
             afterClose
           }}
           env={env}
-          dataSource={dataSource}
         />
       </div>
     );
@@ -220,7 +217,6 @@ interface RuntimeRenderProps {
   maskClosable?: boolean;
   getContainer?: any;
   env: Env;
-  dataSource?: Record<string, any>;
 }
 const RuntimeRender = ({
   cfg,
@@ -229,8 +225,7 @@ const RuntimeRender = ({
   visible,
   getContainer,
   env,
-  maskClosable,
-  dataSource
+  maskClosable
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -243,12 +238,8 @@ const RuntimeRender = ({
     cancelText,
     width,
     footerBtns,
-    footerLayout,
-    destroyOnClose
+    footerLayout
   } = cfg;
-
-  const curKey = useRef(1);
-
   const renderFooter = () => {
     return (
       <div
@@ -294,18 +285,6 @@ const RuntimeRender = ({
     );
   };
 
-  const Content =
-    slots[SlotIds.Container] &&
-    slots[SlotIds.Container].render({
-      key: curKey.current,
-      inputValues: { [SlotInputIds.DataSource]: dataSource }
-    });
-
-  const onCancel = () => {
-    curKey.current++;
-    'function' === typeof event?.cancel && event?.cancel();
-  };
-
   return (
     <Modal
       visible={visible}
@@ -319,13 +298,12 @@ const RuntimeRender = ({
       cancelText={env.i18n(cancelText)}
       wrapClassName={css.container}
       footer={useFooter ? renderFooter() : null}
-      onCancel={onCancel}
+      onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
       afterClose={event?.afterClose}
-      destroyOnClose={destroyOnClose}
     >
-      {Content}
+      {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>
   );
 };
