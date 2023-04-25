@@ -117,16 +117,13 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
+    // 对话框关闭后的回调
+    outputs[OutputIds.AfterClose]();
   }, []);
 
   // 【老】关闭对话框
   const cancel: () => void = useCallback(() => {
     close();
-  }, []);
-
-  // 对话框完全关闭后的回调
-  const afterClose: () => void = useCallback(() => {
-    outputs[OutputIds.AfterClose]();
   }, []);
 
   const eventList = {};
@@ -177,8 +174,7 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel,
-            afterClose
+            cancel
           }}
           getContainer={() => {
             if (ref) {
@@ -199,8 +195,7 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel,
-            afterClose
+            cancel
           }}
           env={env}
         />
@@ -301,7 +296,6 @@ const RuntimeRender = ({
       onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
-      afterClose={event?.afterClose}
     >
       {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>
