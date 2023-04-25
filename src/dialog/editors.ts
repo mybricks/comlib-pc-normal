@@ -230,17 +230,29 @@ export default {
         },
       },
       {
-        title: '关闭时销毁',
+        title: '点击蒙层关闭',
         type: 'switch',
         value: {
           get({ data }: EditorResult<Data>) {
-            return !!data.destroyOnClose;
+            return !!data.maskClosable;
           },
           set({ data }: EditorResult<Data>, val: boolean) {
-            data.destroyOnClose = val
+            data.maskClosable = val;
           }
         }
       },
+      // {
+      //   title: '关闭时销毁',
+      //   type: 'switch',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return !!data.destroyOnClose;
+      //     },
+      //     set({ data }: EditorResult<Data>, val: boolean) {
+      //       data.destroyOnClose = val
+      //     }
+      //   }
+      // },
       {
         title: '事件',
         items: [

@@ -37,7 +37,7 @@ export default function Dialog({
       // 打开对话框
       inputs[InputIds.Open]((ds, relOutputs) => {
         setDataSource(ds);
-        // slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
+        slots[SlotIds.Container].inputs[SlotInputIds.DataSource](ds); //推送数据
         setVisible(true);
 
         // 监听scope输出
@@ -117,16 +117,13 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
+    // 对话框关闭后的回调
+    outputs[OutputIds.AfterClose]();
   }, []);
 
   // 【老】关闭对话框
   const cancel: () => void = useCallback(() => {
     close();
-  }, []);
-
-  // 对话框完全关闭后的回调
-  const afterClose: () => void = useCallback(() => {
-    outputs[OutputIds.AfterClose]();
   }, []);
 
   const eventList = {};
@@ -155,7 +152,6 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
-          maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -164,7 +160,6 @@ export default function Dialog({
             }
           }}
           env={env}
-          dataSource={dataSource}
         />
       </div>
     );
@@ -178,8 +173,7 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel,
-            afterClose
+            cancel
           }}
           getContainer={() => {
             if (ref) {
@@ -187,7 +181,6 @@ export default function Dialog({
             }
           }}
           env={env}
-          dataSource={dataSource}
         />
       </div>
     );
@@ -201,11 +194,9 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel,
-            afterClose
+            cancel
           }}
           env={env}
-          dataSource={dataSource}
         />
       </div>
     );
@@ -217,10 +208,8 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
-  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
-  dataSource?: Record<string, any>;
 }
 const RuntimeRender = ({
   cfg,
@@ -228,9 +217,7 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env,
-  maskClosable,
-  dataSource
+  env
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -241,14 +228,11 @@ const RuntimeRender = ({
     centered,
     useFooter,
     cancelText,
+    maskClosable,
     width,
     footerBtns,
-    footerLayout,
-    destroyOnClose
+    footerLayout
   } = cfg;
-
-  const curKey = useRef(1);
-
   const renderFooter = () => {
     return (
       <div
@@ -294,24 +278,12 @@ const RuntimeRender = ({
     );
   };
 
-  const Content =
-    slots[SlotIds.Container] &&
-    slots[SlotIds.Container].render({
-      key: curKey.current,
-      inputValues: { [SlotInputIds.DataSource]: dataSource }
-    });
-
-  const onCancel = () => {
-    curKey.current++;
-    'function' === typeof event?.cancel && event?.cancel();
-  };
-
   return (
     <Modal
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}
@@ -319,13 +291,11 @@ const RuntimeRender = ({
       cancelText={env.i18n(cancelText)}
       wrapClassName={css.container}
       footer={useFooter ? renderFooter() : null}
-      onCancel={onCancel}
+      onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
-      afterClose={event?.afterClose}
-      destroyOnClose={destroyOnClose}
     >
-      {Content}
+      {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>
   );
 };
