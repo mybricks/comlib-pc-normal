@@ -365,14 +365,14 @@ export default {
     title: '表单项',
     items: [
       {
-        title: '隐藏标题',
+        title: '显示标题',
         type: 'Switch',
         value: {
           get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'hiddenLabel');
+            return !getFormItemProp({ data, id }, 'hiddenLabel');
           },
           set({ id, data }: EditorResult<Data>, val) {
-            setFormItemProps({ data, id }, 'hiddenLabel', val);
+            setFormItemProps({ data, id }, 'hiddenLabel', !val);
           }
         }
       },

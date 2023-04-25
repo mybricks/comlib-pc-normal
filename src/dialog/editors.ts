@@ -254,19 +254,6 @@ export default {
       //   }
       // },
       {
-        title: '事件',
-        items: [
-          {
-            title: '关闭回调',
-            type: '_Event',
-            options: {
-              outputId: OutputIds.AfterClose,
-              slotId: SlotIds.Container
-            }
-          },
-        ]
-      },
-      {
         title: '工具条',
         items: [
           {
@@ -297,7 +284,20 @@ export default {
             }
           }
         ]
-      }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '关闭回调',
+            type: '_Event',
+            options: {
+              outputId: OutputIds.AfterClose,
+              slotId: SlotIds.Container
+            }
+          },
+        ]
+      },
     ];
 
     cate2.title = '样式';
