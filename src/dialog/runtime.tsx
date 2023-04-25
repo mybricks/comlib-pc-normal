@@ -152,7 +152,6 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
-          maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -209,7 +208,6 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
-  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
 }
@@ -219,8 +217,7 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env,
-  maskClosable
+  env
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -231,6 +228,7 @@ const RuntimeRender = ({
     centered,
     useFooter,
     cancelText,
+    maskClosable,
     width,
     footerBtns,
     footerLayout
@@ -285,7 +283,7 @@ const RuntimeRender = ({
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}

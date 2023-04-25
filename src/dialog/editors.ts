@@ -229,6 +229,18 @@ export default {
           }
         },
       },
+      {
+        title: '点击蒙层关闭',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.maskClosable;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.maskClosable = val;
+          }
+        }
+      },
       // {
       //   title: '关闭时销毁',
       //   type: 'switch',
