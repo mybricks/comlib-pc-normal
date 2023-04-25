@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
-import { Data, FormControlProps } from '../types';
+import { Data } from '../types';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
 
@@ -12,13 +12,7 @@ interface FormItemProps {
   slots: any;
 }
 
-const JSXWrapper = (props: FormControlProps) => {
-  const { com, value, onChange, field } = props;
-
-  // useLayoutEffect(() => { // 初始化表单项值
-  //   com.inputs?.setValue(value) // 需求区分 表单API行为触发 与 用户行为触发 => inputs or _inputs
-  // }, [value])
-
+const JSXWrapper = ({ com }) => {
   return com.jsx;
 };
 
@@ -40,28 +34,29 @@ const FormItem = (props: FormItemProps) => {
       : 'nowrap';
 
   return (
-    <Form.Item
-      {...field}
-      label={
-        item?.hiddenLabel ? (
-          void 0
-        ) : (
-          <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
-        )
-      }
-      labelAlign={labelAlign}
-      name={field ? [field.name, item?.name] : item?.name}
-      required={item?.required}
-      validateStatus={item?.validateStatus}
-      help={item?.help}
-      tooltip={item?.tooltip}
-      style={style}
-      colon={!!item?.label && colon}
-    >
+    <>
+      <Form.Item
+        {...field}
+        label={
+          item?.hiddenLabel ? (
+            void 0
+          ) : (
+            <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
+          )
+        }
+        {...data.config}
+        name={field ? [field.name, item?.name] : item?.name}
+        required={item?.required}
+        validateStatus={item?.validateStatus}
+        help={item?.help}
+        tooltip={item?.tooltip}
+        style={style}
+        colon={!!item?.label && colon}
+      >
+        <JSXWrapper com={com} />
+      </Form.Item>
       <div className={css.formItemControl}>
-        <div className={css.formItemSlotContent}>
-          <JSXWrapper com={com} field={field} />
-        </div>
+        <div className={css.formItemSlotContent}></div>
       </div>
 
       {item.description && (
@@ -71,7 +66,7 @@ const FormItem = (props: FormItemProps) => {
           </Form.Item>
         </div>
       )}
-    </Form.Item>
+    </>
   );
 };
 

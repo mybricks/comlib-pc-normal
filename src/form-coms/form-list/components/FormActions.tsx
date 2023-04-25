@@ -2,42 +2,54 @@ import React, { useCallback, useMemo } from 'react';
 import { Form, Button, Row, Col, Space, FormListOperation, FormListFieldData } from 'antd';
 import { Action, Data } from '../types';
 import { unitConversion } from '../../../utils';
+import { changeValue } from '../utils';
 
 export interface FormListActionsProps {
-  data: Data;
   operation?: FormListOperation;
   field?: FormListFieldData;
   fieldIndex?: number;
   hiddenRemoveButton?: boolean;
+  childrenInputs?: any;
 }
 
-export interface FormActionsWrapperProps {
-  actionProps: FormListActionsProps;
-  isHorizontalModel?: boolean;
-  isInlineModel?: boolean;
-}
-
-const Actions = (props: FormListActionsProps) => {
-  const { data, operation, field, fieldIndex, hiddenRemoveButton } = props;
-  const { actions } = data;
+const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
+  const { data, id, outputs, parentSlot, field, fieldIndex, hiddenRemoveButton, childrenInputs } =
+    props;
+  const { fields } = data;
 
   const onClick = (item: Action) => {
     if (item.key === 'add') {
-      operation?.add();
+      data.MaxKey = data.MaxKey + 1;
+      fields.push({
+        name: fields.length,
+        key: data.MaxKey
+      });
+      if (Array.isArray(data.value)) {
+        data.value.push({});
+      } else {
+        data.value = [{}];
+      }
+      changeValue({ data, id, outputs, parentSlot });
     }
-    if (item.key === 'remove') {
-      field && operation?.remove(field.name);
+    if (item.key === 'remove' && field) {
+      fields.splice(field.name, 1);
+      // 更新name
+      fields.forEach((field, index) => {
+        field && (field.name = index);
+      });
+      childrenInputs[field.key] = undefined;
+
+      data.value?.[field.name] && data.value.splice(field.name, 1);
+      changeValue({ data, id, outputs, parentSlot });
     }
   };
 
   const hiddenAddButton =
-    typeof fieldIndex === 'number' &&
-    typeof data.fieldsLength === 'number' &&
-    !(fieldIndex === data.fieldsLength - 1);
+    typeof fieldIndex === 'number' && !(fieldIndex === data.fields.length - 1);
 
   return (
     <Space wrap>
-      {actions.items.map((item) => {
+      {data.actions.items.map((item) => {
         if (item.visible === false) {
           return null;
         }
@@ -64,18 +76,14 @@ const Actions = (props: FormListActionsProps) => {
   );
 };
 
-const ActionsWrapper = (props: FormActionsWrapperProps) => {
-  const { isHorizontalModel, isInlineModel, actionProps } = props;
-  const { data } = actionProps;
-  const actions = data.actions;
-
+const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
+  const { actions } = props.data;
   const { align, widthOption, width, span, inlinePadding } = actions;
   const actionStyle: React.CSSProperties = {
     textAlign: align,
-    padding: isHorizontalModel ? void 0 : inlinePadding?.map(String).map(unitConversion).join(' ')
+    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
   };
   const getFlexValue = useCallback(() => {
-    if (isInlineModel) return 1;
     if (widthOption === 'px') {
       return `0 0 ${width || 0}px`;
     } else if (widthOption === 'flexFull') {
@@ -85,20 +93,16 @@ const ActionsWrapper = (props: FormActionsWrapperProps) => {
     return `0 0 ${(span * 100) / 24}%`;
   }, [widthOption, width, span]);
 
-  const formItemProps = isInlineModel
-    ? {
-        style: { marginRight: 0 }
-      }
-    : {
-        label: '',
-        colon: false
-      };
+  const formItemProps = {
+    label: '',
+    colon: false
+  };
 
   if (actions.visible) {
     return (
       <Col data-form-actions flex={getFlexValue()} style={actionStyle}>
         <Form.Item {...formItemProps}>
-          <Actions {...actionProps} />
+          <Actions {...props} />
         </Form.Item>
       </Col>
     );

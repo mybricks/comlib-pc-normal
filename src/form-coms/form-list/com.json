@@ -119,11 +119,59 @@
     {
       "id": "formItems",
       "title": "表单项容器",
-      "type": "scope"
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "curIndex",
+          "title": "当前项索引",
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "id": "curKey",
+          "title": "当前项标识",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "_inputs": [
+        {
+          "id": "validateTrigger",
+          "title": "触发校验",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              }
+            }
+          }
+        },
+        {
+          "id": "onChange",
+          "title": "表单项值变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              },
+              "value": {
+                "type": "any",
+                "title": "组件值"
+              }
+            }
+          }
+        }
+      ]
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-pc.form-container/form-list",
     "*"
   ]
 }

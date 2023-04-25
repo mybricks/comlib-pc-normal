@@ -118,7 +118,6 @@ export default {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true
-      data.actions.visible = false
     } else {
       data.isFormItem = false
     }

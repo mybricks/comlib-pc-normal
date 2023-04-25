@@ -1,5 +1,6 @@
-import { FormProps } from 'antd'
+import { FormListFieldData, FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
+import { ValidateInfo } from '../types'
 export interface Action {
   title: string
   loading?: boolean
@@ -44,10 +45,19 @@ export interface FormItems {
   slotAfter?: string
 }
 
+
 export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
-  value: string | undefined;
+  value: any[] | undefined;
+  /**
+   * 列表数据
+   */
+  fields: FormListFieldData[]
+  /**
+   * 列表当前最大key
+   */
+  MaxKey: number
   /**
    * 校验规则
    */
@@ -68,7 +78,6 @@ export interface Data {
    * 插槽样式
    */
   slotStyle: {}
-  fieldsLength: number
   /**
    * 操作项
    */
@@ -95,16 +104,30 @@ export interface Data {
    */
   config: FormProps
 
-  /**
-   * 合并参数 Schema
-   */
-  paramsSchema: any
-
-  submitHiddenFields: boolean
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
 
-export type LayoutModel = "inline" | "row" | "column";
-
 export type FormItemColonType = true | false | "default";
+
+type FormControlInputRels = {
+  validate: (val?: any) => {
+    returnValidate: (cb: (val: ValidateInfo) => void) => void;
+  };
+  getValue: (val?: any) => {
+    returnValue: (val) => {};
+  };
+  [key: string]: (val?: any) => void;
+};
+
+export type FormControlInputType = {
+  inputs: {
+    [key in FormControlInputId]: FormControlInputRels[key];
+  };
+  index: number;
+};
+export type ChildrenInputs = {
+  [key: number | string]: {
+    [id: string]: FormControlInputType
+  };
+}

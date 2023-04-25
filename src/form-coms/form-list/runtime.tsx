@@ -1,36 +1,19 @@
-import React, { useMemo, useCallback, useLayoutEffect } from 'react';
+import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
 import { Button, Col, Form, Row } from 'antd';
-import { Data, FormControlInputId } from './types';
+import { ChildrenInputs, Data, FormControlInputId, FormControlInputType, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { isObject } from './utils';
-import { validateTrigger } from '../form-container/models/validate';
-import { OutputIds, ValidateInfo } from '../types';
+import { changeValue, updateValue, isObject, onValidateTrigger } from './utils';
+import { OutputIds } from '../types';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
-import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { ActionsWrapper, FormListActionsProps } from './components/FormActions';
-
-type FormControlInputRels = {
-  validate: (val?: any) => {
-    returnValidate: (cb: (val: ValidateInfo) => void) => void;
-  };
-  getValue: (val?: any) => {
-    returnValue: (val) => {};
-  };
-  [key: string]: (val?: any) => void;
-};
-
-type FormControlInputType = {
-  [key in FormControlInputId]: FormControlInputRels[key];
-};
+import { SlotIds, SlotInputIds } from './constants';
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
   const { edit } = env;
 
-  const childrenInputs = useMemo<{
-    [id: string]: FormControlInputType;
-  }>(() => {
+  const childrenInputs = useMemo<ChildrenInputs>(() => {
     return {};
   }, [env.edit]);
 
@@ -38,9 +21,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['setValue']((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
-        onChangeForFc(parentSlot, { id, value });
-        outputs[OutputIds.OnChange](value);
-        onValidateTrigger();
+        // setValuesForInput(
+        //   { childrenInputs, formItems: data.items },
+        //   'setValue',
+        //   value
+        // );
+        changeValue({ data, id, outputs, parentSlot });
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -49,9 +35,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['setInitialValue']((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
-        onChangeForFc(parentSlot, { id, value });
-        outputs[OutputIds.OnInitial](value);
-        onValidateTrigger();
+        setValuesForInput({ childrenInputs, formItems: data.items }, 'setInitialValue', value);
+        changeValue({ data, id, outputs, parentSlot });
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -76,13 +61,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     inputs['resetValue'](() => {
       data.value = void 0;
-      slots[SlotIds.FormItems].inputs['curValue'](data.value);
     });
   }, []);
-
-  const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
-  };
+  if (env.runtime) {
+    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](() => {
+      updateValue({ ...props, childrenInputs });
+    });
+  }
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -115,122 +100,68 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  const getValue = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      /** 隐藏的表单项，不收集数据 **/
-      const formItems = data.submitHiddenFields
-        ? data.items
-        : data.items.filter((item) => item.visible);
-
-      Promise.all(
-        formItems.map((item) => {
-          const id = item.id;
-          const input = childrenInputs[id];
-
-          return new Promise((resolve, reject) => {
-            let count = 0;
-            let value = {};
-            input?.getValue().returnValue((val, key) => {
-              //调用所有表单项的 getValue/returnValue
-              if (typeof data.fieldsLength !== 'undefined') {
-                value[key] = {
-                  name: item.name,
-                  value: val
-                };
-
-                count++;
-
-                if (count == data.fieldsLength) {
-                  resolve(value);
-                }
-              } else {
-                value = {
-                  name: item.name || item.label,
-                  value: val
-                };
-
-                resolve(value);
-              }
-            });
-          });
-        })
-      )
-        .then((values) => {
-          const arr = [];
-          values.forEach((valItem) => {
-            Object.keys(valItem).map((key) => {
-              if (!arr[key]) {
-                arr[key] = {};
-              }
-              arr[key][valItem[key].name] = valItem[key].value;
-            });
-          });
-          resolve(arr);
-        })
-        .catch((e) => reject(e));
-    });
-  }, []);
-
   if (env.edit) {
-    const actionProps: FormListActionsProps = {
-      data
-    };
     return (
       <>
         <SlotContent
-          env={env}
-          slots={slots}
-          data={data}
+          {...props}
           childrenInputs={childrenInputs}
-          outputs={outputs}
-          actions={<ActionsWrapper actionProps={actionProps} />}
+          actions={<ActionsWrapper {...props} />}
         />
       </>
     );
   }
-
-  const FormList = (fields, operation) => {
-    data.fieldsLength = fields.length;
+  useEffect(() => {
+    // if (!data.value) {
+    //   data.value = [];
+    // }
+    // if (data.fieldsLength > data.value?.length) {
+    //   const temp = new Array(data.fieldsLength - data.value.length).fill({});
+    //   data.value.push(...temp);
+    // }
+  }, []);
+  const FormList = () => {
+    const { fields } = data;
     const defaultActionProps = {
-      data,
-      operation,
+      ...props,
       hiddenRemoveButton: true
     };
     return (
       <>
-        {fields.map((field, index) => {
-          const actionProps: FormListActionsProps = {
-            data,
-            operation,
-            fieldIndex: index,
-            field
+        {fields.map((field) => {
+          // 更新childrenInputs的index
+          const { key, name } = field;
+          data.items.forEach((item) => {
+            if (childrenInputs[key]?.[item.id]) {
+              childrenInputs[key][item.id].index = name;
+            }
+          });
+          console.log('-------更新childrenInputs的index---', childrenInputs);
+
+          const actionProps = {
+            ...props,
+            fieldIndex: name,
+            field,
+            childrenInputs
           };
+          const actions = <ActionsWrapper {...actionProps} />;
           return (
             <div key={field.key}>
               <SlotContent
-                env={env}
-                slots={slots}
-                data={data}
+                {...props}
                 childrenInputs={childrenInputs}
-                outputs={outputs}
-                actions={<ActionsWrapper actionProps={actionProps} />}
+                actions={actions}
+                field={field}
               />
             </div>
           );
         })}
-        {fields.length === 0 && <ActionsWrapper actionProps={defaultActionProps} />}
+        {fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
       </>
     );
   };
-  const { isFormItem } = data;
-  if (isFormItem) {
-    return FormList;
-  }
-  return (
-    <Form>
-      <Form.List name="">{FormList}</Form.List>
-    </Form>
-  );
+
+  return <FormList />;
 }
 
 /**
@@ -249,14 +180,39 @@ const validateForInput = (
   });
 };
 
-const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
+// 不通：可能没有childrenInputs
+const setValuesForInput = (
+  {
+    childrenInputs,
+    formItems
+  }: {
+    childrenInputs: ChildrenInputs;
+    formItems: FormItems[];
+  },
+  inputId,
+  values: any[] | undefined
+) => {
+  values?.forEach((value, index) => {
+    Object.keys(value).map((name) => {
+      const item = formItems.find((item) => (item.name || item.label) === name);
+      const childrenInput = childrenInputs;
+      if (item) {
+        const { inputs, index } = childrenInputs[item.id];
+        if (isObject(values[name])) {
+          inputs[inputId] && inputs[inputId]({ ...values[name] });
+        } else {
+          inputs[inputId] && inputs[inputId](values[name]);
+        }
+      }
+    });
+  });
   const item = formItems.find((item) => (item.name || item.label) === name);
   if (item) {
-    const input = childrenInputs[item.id];
+    const { inputs, index } = childrenInputs[item.id];
     if (isObject(values[name])) {
-      input[inputId] && input[inputId]({ ...values[name] });
+      inputs[inputId] && inputs[inputId]({ ...values[name] });
     } else {
-      input[inputId] && input[inputId](values[name]);
+      inputs[inputId] && inputs[inputId](values[name]);
     }
   }
 };

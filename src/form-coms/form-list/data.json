@@ -2,14 +2,20 @@
   "items": [],
   "nameCount": 0,
   "formItemColumn": 1,
-  "fieldsLength": 0,
+  "fields": [
+    {
+      "name": 0,
+      "key": 0
+    }
+  ],
+  "MaxKey": 0,
   "slotStyle": {
     "display": "flex",
     "position": "inherit",
     "flexDirection": "row",
     "alignItems": "flex-start",
     "justifyContent": "flex-start",
-    "flexWrap": "nowrap"
+    "flexWrap": "wrap"
   },
   "actions": {
     "visible": true,
@@ -40,7 +46,9 @@
     ]
   },
   "isFormItem": false,
-  "dataType": "object",
+  "value": [
+    {}
+  ],
   "wrapperCol": 24,
   "labelWidthType": "px",
   "labelWidth": 98,
