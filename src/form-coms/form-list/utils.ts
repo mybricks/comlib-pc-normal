@@ -38,8 +38,6 @@ export function isChildrenInputsValid({ data, childrenStore }: { data: Data, chi
  */
 export function getValue({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
   return new Promise<void>((resolve, reject) => {
-    /** 隐藏的表单项，不收集数据 **/
-    const formItems = data.items.filter((item) => item.visible);
 
     let count = 0;
     const newVal: { [k in string]: any }[] = [];
@@ -48,8 +46,14 @@ export function getValue({ data, childrenStore }: { data: Data, childrenStore: C
       if (!childrenStore[key]) return;
 
       data.items.forEach(({ id, name, label }) => {
+        const { index, inputs, visible } = childrenStore[key][id];
+
+        // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
+        if (!data.submitHiddenFields && !visible) {
+          return;
+        }
+
         const formItemName = name || label;
-        const { index, inputs } = childrenStore[key][id];
         if (!newVal[index]) {
           newVal[index] = {};
         }

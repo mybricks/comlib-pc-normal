@@ -1,4 +1,4 @@
-import { FormListFieldData, FormProps } from 'antd'
+import { FormItemProps, FormListFieldData, FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 import { ValidateInfo } from '../types'
 export interface Action {
@@ -74,6 +74,14 @@ export interface Data {
    */
   items: FormItems[]
   /**
+   * 是否提交隐藏表单项
+   */
+  submitHiddenFields: boolean
+  /**
+   * 是否禁用
+   */
+  disabled: boolean
+  /**
    * 是否作为表单项
    */
   isFormItem: boolean
@@ -107,9 +115,9 @@ export interface Data {
    */
   colon: boolean | undefined
   /**
-   * form.list原生属性
+   * 表单项公共配置
    */
-  config: FormProps
+  formItemConfig: FormItemProps
 
 }
 
@@ -117,7 +125,7 @@ export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetVa
 
 export type FormItemColonType = true | false | "default";
 
-type FormControlInputRels = {
+export type FormControlInputRels = {
   validate: (val?: any) => {
     returnValidate: (cb: (val: ValidateInfo) => void) => void;
   };

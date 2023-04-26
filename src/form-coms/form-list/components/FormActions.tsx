@@ -66,7 +66,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
             loading={item.loading}
             key={item.key}
             onClick={() => onClick(item)}
-            disabled={data.config.disabled}
+            disabled={data.disabled}
           >
             {item.title}
           </Button>

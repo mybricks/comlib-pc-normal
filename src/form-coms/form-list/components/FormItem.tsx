@@ -18,15 +18,16 @@ const JSXWrapper = ({ com }) => {
 
 const FormItem = (props: FormItemProps) => {
   const { com, item, field, data, slots } = props;
-  const formColon = data.config?.colon || data.colon;
+  const formColon = data.colon;
   const style: React.CSSProperties = {
     margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
   };
   const colon = item?.colon === 'default' ? formColon : item.colon;
-  const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
+  const labelAlign =
+    item?.labelAlign === 'default' ? data.formItemConfig.labelAlign : item.labelAlign;
   const whiteSpace =
     item?.labelAutoWrap === 'default'
-      ? data.config?.labelWrap
+      ? data.formItemConfig.labelWrap
         ? 'pre-wrap'
         : 'nowrap'
       : item.labelAutoWrap

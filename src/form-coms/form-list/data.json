@@ -1,4 +1,7 @@
 {
+  "value": [
+    {}
+  ],
   "items": [],
   "nameCount": 0,
   "formItemColumn": 1,
@@ -47,17 +50,14 @@
     ]
   },
   "isFormItem": false,
-  "value": [
-    {}
-  ],
   "wrapperCol": 24,
   "labelWidthType": "px",
   "labelWidth": 98,
   "labelCol": 4,
   "itemWidthType": "flex",
-  "paramsSchema": {},
   "submitHiddenFields": false,
-  "config": {
+  "disabled": false,
+  "formItemConfig": {
     "colon": true,
     "layout": "horizontal",
     "labelWrap": false,

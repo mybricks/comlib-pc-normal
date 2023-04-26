@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
-import { ChildrenStore, Data, FormControlInputType, FormItems } from './types';
+import { ChildrenStore, Data, FormControlInputRels } from './types';
 import SlotContent from './SlotContent';
 import { updateValue, getValue, generateFields } from './utils';
 import { typeCheck } from '../../utils';
@@ -39,21 +39,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
-    // 校验
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
-        })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
     // 获取值
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
@@ -75,15 +60,38 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     //设置禁用
     inputs['setDisabled'](() => {
-      data.config.disabled = true;
+      data.disabled = true;
       data.currentInputId = InputIds.SetDisabled;
     });
 
     //设置启用
     inputs['setEnabled'](() => {
-      data.config.disabled = false;
+      data.disabled = false;
       data.currentInputId = InputIds.SetEnabled;
     }, []);
+
+    // 校验
+    inputs['validate']((val, outputRels) => {
+      // 校验子项
+      validate()
+        .then(() => {
+          // 校验自己
+          validateFormItem({
+            value: data.value,
+            env,
+            rules: data.rules
+          })
+            .then((r) => {
+              outputRels['returnValidate'](r);
+            })
+            .catch((e) => {
+              outputRels['returnValidate'](e);
+            });
+        })
+        .catch((e) => {
+          console.log('校验失败', e);
+        });
+    });
   }, []);
 
   if (env.runtime) {
@@ -96,22 +104,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
-      Promise.all(
-        data.items.map((item) => {
-          if (!data.submitHiddenFields) {
-            // 隐藏的表单项，不再校验
-            if (!item.visible) return { validateStatus: 'success' };
+      const allPromise: (
+        | Promise<any>
+        | {
+            validateStatus: string;
           }
+      )[] = [];
 
-          const id = item.id;
-          const input = childrenStore[id];
-
+      data.fields.map((field) => {
+        const { name, key } = field;
+        const fieldFormItems = childrenStore[key];
+        const fieldPromise = data.items.map((item) => {
+          const { index, inputs, visible } = fieldFormItems[item.id];
+          if (!data.submitHiddenFields && !visible) {
+            // 隐藏的表单项，不再校验
+            return { validateStatus: 'success' };
+          }
           return new Promise((resolve, reject) => {
-            validateForInput({ item, input }, resolve);
+            validateForInput({ item, inputs }, resolve);
           });
-        })
-      )
+        });
+        allPromise.push(...fieldPromise);
+      });
+      Promise.all(allPromise)
         .then((values) => {
+          console.log(values, 'values----------校验');
           let rtn = false;
           values.forEach((item) => {
             if (item.validateStatus !== 'success') {
@@ -186,10 +203,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
  * @description 触发表单项校验，并更新校验结果
  */
 const validateForInput = (
-  { input, item }: { input: FormControlInputType; item: any },
+  { inputs, item }: { inputs: FormControlInputRels; item: any },
   cb?: (val: any) => void
 ): void => {
-  input?.validate({ ...item }).returnValidate((validateInfo) => {
+  inputs?.validate({ ...item }).returnValidate((validateInfo) => {
     item.validateStatus = validateInfo?.validateStatus;
     item.help = validateInfo?.help;
     if (cb) {

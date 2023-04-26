@@ -5,6 +5,7 @@ import { actionsEditor } from './actions'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { InputIds } from '../../../form-coms/types'
+import { RuleKeys, defaultRules } from '../../../form-coms/utils/validator'
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
@@ -237,10 +238,10 @@ export default {
             type: 'Switch',
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.config?.colon || data.colon
+                return data.formItemConfig?.colon || data.colon
               },
               set({ data }: EditorResult<Data>, value: boolean) {
-                data.config.colon = value
+                data.formItemConfig.colon = value
               },
             }
           },
@@ -249,10 +250,10 @@ export default {
             type: 'Switch',
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.config?.labelWrap
+                return data.formItemConfig?.labelWrap
               },
               set({ data }: EditorResult<Data>, value: boolean) {
-                data.config.labelWrap = value
+                data.formItemConfig.labelWrap = value
               },
             }
           },
@@ -265,10 +266,10 @@ export default {
             ],
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.config?.labelAlign
+                return data.formItemConfig?.labelAlign
               },
               set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                data.config.labelAlign = value
+                data.formItemConfig.labelAlign = value
               },
             }
           },
@@ -293,10 +294,10 @@ export default {
       //   description: '开启后，所以表单项和操作项都会被禁用',
       //   value: {
       //     get({ data }: EditorResult<Data>) {
-      //       return data.config.disabled
+      //       return data.disabled
       //     },
       //     set({ data }: EditorResult<Data>, val: boolean) {
-      //       data.config.disabled = val
+      //       data.disabled = val
       //       if (val) {
       //         data.currentInputId = InputIds.SetDisabled;
       //       }
@@ -306,6 +307,60 @@ export default {
       //     }
       //   }
       // },
+      {
+        title: '校验规则',
+        description: '提供快捷校验配置',
+        type: 'ArrayCheckbox',
+        options: {
+          checkField: 'status',
+          visibleField: 'visible',
+          getTitle: ({ title }: any) => {
+            return title;
+          },
+          items: [
+            {
+              title: '提示文字',
+              type: 'Text',
+              value: 'message',
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.REQUIRED;
+              }
+            },
+            {
+              title: '编辑校验规则',
+              type: 'code',
+              options: {
+                language: 'javascript',
+                enableFullscreen: false,
+                title: '编辑校验规则',
+                width: 600,
+                minimap: {
+                  enabled: false
+                },
+                babel: true,
+                eslint: {
+                  parserOptions: {
+                    ecmaVersion: '2020',
+                    sourceType: 'module'
+                  }
+                }
+              },
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.CODE_VALIDATOR;
+              },
+              value: 'validateCode'
+            }
+          ]
+        },
+        value: {
+          get({ data }) {
+            return data.rules?.length > 0 ? data.rules : defaultRules;
+          },
+          set({ data }, value: any) {
+            data.rules = value;
+          }
+        }
+      },
       {
         title: '事件',
         items: [

@@ -64,9 +64,6 @@ export const actionsEditor = (data: Data, output) => {
             value: 'flexFull'
           }
         ],
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.layout !== 'inline'
-        },
         value: {
           get({ data }: EditorResult<Data>) {
             return actions.widthOption;
@@ -88,7 +85,7 @@ export const actionsEditor = (data: Data, output) => {
           },
         ],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption === 'span' && data.config.layout !== 'inline';
+          return data.actions.widthOption === 'span';
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -106,7 +103,7 @@ export const actionsEditor = (data: Data, output) => {
           type: 'number'
         },
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption === 'px' && data.config.layout !== 'inline';
+          return data.actions.widthOption === 'px';
         },
         value: {
           get({ data }: EditorResult<Data>) {
