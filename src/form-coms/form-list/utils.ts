@@ -3,6 +3,7 @@ import { labelWidthTypes } from './constants'
 import { OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { debounce } from 'lodash';
 
 export function getLabelCol(data: Data) {
   const labelCol = data.labelWidthType === labelWidthTypes.SPAN
@@ -16,6 +17,25 @@ export function isObject(val: any) {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
 
+/**
+ * 判断childrenInputs是否收集完成
+ * @param param0 
+ */
+export function isChildrenInputsValid({ data, childrenInputs }: { data: Data, childrenInputs: ChildrenInputs }) {
+  const formItemsCount = data.items.length;
+  const res = data.fields.every(field => {
+    const { key } = field;
+    return childrenInputs[key]
+      && Object.keys(childrenInputs[key]).length === formItemsCount
+  });
+  return res;
+}
+
+/**
+ * 根据childrenInputs收集各field数据，更新到data.value
+ * @param param0 
+ * @returns null
+ */
 export function getValue({ data, childrenInputs }: { data: Data, childrenInputs: ChildrenInputs }) {
   return new Promise<void>((resolve, reject) => {
     /** 隐藏的表单项，不收集数据 **/
@@ -47,10 +67,18 @@ export function getValue({ data, childrenInputs }: { data: Data, childrenInputs:
   });
 };
 
+/**
+ * 触发父容器校验
+ * @param param0 
+ */
 export function onValidateTrigger({ parentSlot, id }) {
   validateTrigger(parentSlot, { id });
 };
 
+/**
+ * 输出最新的value并触发校验
+ * @param param0 
+ */
 export function changeValue({ id, outputs, parentSlot, data }) {
   const { value } = data;
   onChangeForFc(parentSlot, { id, value });
@@ -58,11 +86,61 @@ export function changeValue({ id, outputs, parentSlot, data }) {
   onValidateTrigger({ parentSlot, id });
 }
 
+/** 带防抖的值变化事件 */
+export const debounceChangeValue = debounce(changeValue, 300);
+
+/**
+ * 主动收集表单项值更新，并触发相关事件
+ * @param props 
+ */
 export function updateValue(props: (RuntimeParams<Data> & { childrenInputs: any })) {
   const { data, childrenInputs, id, outputs, parentSlot, logger } = props;
   getValue({ data, childrenInputs })
     .then(() => {
-      changeValue({ data, id, outputs, parentSlot });
+      debounceChangeValue({ data, id, outputs, parentSlot });
     })
     .catch((e) => logger.error(e));
 }
+
+/**
+ * 根据data.value生成fields，用于值从外部传入
+ * @param data 
+ */
+export function generateFields(data: Data) {
+  data.fields = (data.value || []).map((_, index) => {
+    return {
+      key: index,
+      name: index
+    };
+  });
+};
+
+/**
+ * 数据绑定：容器->子项
+ * @param {Data, ChildrenInputs, inputId} 
+ */
+export function setValuesForInput({
+  childrenInputs,
+  data,
+  inputId,
+}: {
+  childrenInputs: ChildrenInputs,
+  data: Data,
+  inputId: string
+}) {
+  const { value: values, items: formItems } = data;
+  values?.forEach((value, valIndex) => {
+    Object.keys(value).map((name) => {
+      const item = formItems.find((item) => (item.name || item.label) === name);
+      if (item) {
+        const { inputs, index } = childrenInputs[valIndex][item.id];
+        if (isObject(value[name])) {
+          inputs[inputId] && inputs[inputId]({ ...value[name] });
+        } else {
+          inputs[inputId] && inputs[inputId](value[name]);
+        }
+      }
+    });
+  });
+  data.currentInputId = '';
+};

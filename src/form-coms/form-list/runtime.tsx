@@ -1,41 +1,45 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
 import { ChildrenInputs, Data, FormControlInputType, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { changeValue, updateValue, isObject, getValue } from './utils';
-import { OutputIds } from '../types';
+import {
+  changeValue,
+  updateValue,
+  isObject,
+  getValue,
+  generateFields,
+  setValuesForInput,
+  isChildrenInputsValid
+} from './utils';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
-import { ActionsWrapper, FormListActionsProps } from './components/FormActions';
+import { ActionsWrapper } from './components/FormActions';
 import { SlotIds, SlotInputIds } from './constants';
+import { InputIds, OutputIds } from '../types';
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
-  const { edit } = env;
 
   const childrenInputs = useMemo<ChildrenInputs>(() => {
     return {};
   }, [env.edit]);
 
   useLayoutEffect(() => {
-    inputs['setValue']((value) => {
+    inputs[InputIds.SetValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
-        // setValuesForInput(
-        //   { childrenInputs, formItems: data.items },
-        //   'setValue',
-        //   value
-        // );
-        changeValue({ data, id, outputs, parentSlot });
+        generateFields(data);
+        data.currentInputId = InputIds.SetValue;
       } else {
         logger.error(title + '的值是列表类型');
       }
     });
 
-    inputs['setInitialValue']((value) => {
+    inputs[InputIds.SetInitialValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
-        setValuesForInput({ childrenInputs, formItems: data.items }, 'setInitialValue', value);
-        changeValue({ data, id, outputs, parentSlot });
+        outputs[OutputIds.OnInitial](data.value);
+        data.currentInputId = InputIds.SetInitialValue;
+        generateFields(data);
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -62,8 +66,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.value = void 0;
     });
   }, []);
+
   if (env.runtime) {
-    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](() => {
+    // 值更新
+    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, value }) => {
+      console.log('-------值更新---', id, value);
       updateValue({ ...props, childrenInputs });
     });
   }
@@ -120,47 +127,43 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   }
 
-  const FormList = () => {
-    const defaultActionProps = {
-      ...props,
-      hiddenRemoveButton: true
-    };
-    return (
-      <>
-        {data.fields.map((field) => {
-          // 更新childrenInputs的index
-          const { key, name } = field;
-          data.items.forEach((item) => {
-            if (childrenInputs[key]?.[item.id]) {
-              childrenInputs[key][item.id].index = name;
-            }
-          });
-          console.log('-------更新childrenInputs的index---', childrenInputs);
-
-          const actionProps = {
-            ...props,
-            fieldIndex: name,
-            field,
-            childrenInputs
-          };
-          const actions = <ActionsWrapper {...actionProps} />;
-          return (
-            <div key={field.key}>
-              <SlotContent
-                {...props}
-                childrenInputs={childrenInputs}
-                actions={actions}
-                field={field}
-              />
-            </div>
-          );
-        })}
-        {data.fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
-      </>
-    );
+  const defaultActionProps = {
+    ...props,
+    hiddenRemoveButton: true
   };
+  return (
+    <>
+      {data.fields.map((field) => {
+        // 更新childrenInputs的index
+        const { key, name } = field;
+        data.items.forEach((item) => {
+          if (childrenInputs[key]?.[item.id]) {
+            childrenInputs[key][item.id].index = name;
+          }
+        });
+        // console.log('-------更新childrenInputs的index---', childrenInputs);
 
-  return <FormList />;
+        const actionProps = {
+          ...props,
+          fieldIndex: name,
+          field,
+          childrenInputs
+        };
+        const actions = <ActionsWrapper {...actionProps} />;
+        return (
+          <div key={field.key}>
+            <SlotContent
+              {...props}
+              childrenInputs={childrenInputs}
+              actions={actions}
+              field={field}
+            />
+          </div>
+        );
+      })}
+      {data.fields.length === 0 && <ActionsWrapper {...defaultActionProps} />}
+    </>
+  );
 }
 
 /**
@@ -177,41 +180,4 @@ const validateForInput = (
       cb(validateInfo);
     }
   });
-};
-
-// 不通：可能没有childrenInputs
-const setValuesForInput = (
-  {
-    childrenInputs,
-    formItems
-  }: {
-    childrenInputs: ChildrenInputs;
-    formItems: FormItems[];
-  },
-  inputId,
-  values: any[] | undefined
-) => {
-  values?.forEach((value, index) => {
-    Object.keys(value).map((name) => {
-      const item = formItems.find((item) => (item.name || item.label) === name);
-      const childrenInput = childrenInputs;
-      if (item) {
-        const { inputs, index } = childrenInputs[item.id];
-        if (isObject(values[name])) {
-          inputs[inputId] && inputs[inputId]({ ...values[name] });
-        } else {
-          inputs[inputId] && inputs[inputId](values[name]);
-        }
-      }
-    });
-  });
-  const item = formItems.find((item) => (item.name || item.label) === name);
-  if (item) {
-    const { inputs, index } = childrenInputs[item.id];
-    if (isObject(values[name])) {
-      inputs[inputId] && inputs[inputId]({ ...values[name] });
-    } else {
-      inputs[inputId] && inputs[inputId](values[name]);
-    }
-  }
 };

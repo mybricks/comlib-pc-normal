@@ -4,6 +4,7 @@ export const SlotIds = {
 
 export const SlotInputIds = {
   ON_CHANGE: 'onChange',
+  CUR_VALUE: 'curValue'
 };
 
 export const labelWidthTypes = {

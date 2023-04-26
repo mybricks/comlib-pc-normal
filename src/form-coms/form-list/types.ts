@@ -50,6 +50,7 @@ export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
   value: any[] | undefined;
+  currentInputId: string;
   /**
    * 列表数据
    */

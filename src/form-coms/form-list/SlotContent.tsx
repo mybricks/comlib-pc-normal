@@ -3,6 +3,8 @@ import { Col, FormListFieldData, Row } from 'antd';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
 import { ChildrenInputs, Data } from './types';
+import { isChildrenInputsValid, setValuesForInput } from './utils';
+import { deepCopy } from '../../utils';
 
 const SlotContent = (
   props: RuntimeParams<Data> & {
@@ -39,7 +41,13 @@ const SlotContent = (
               };
             }
 
-            console.log(childrenInputs, 'wrap-----收集childrenInputs');
+            console.log(deepCopy(childrenInputs), 'wrap-----收集childrenInputs');
+
+            // 收集完成后的处理
+            if (isChildrenInputsValid({ data, childrenInputs }) && data.currentInputId) {
+              console.log('----------收集完成后的处理-----------');
+              setValuesForInput({ data, childrenInputs, inputId: data.currentInputId });
+            }
 
             const { widthOption, span, width } = item;
             const flexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
@@ -73,6 +81,7 @@ const SlotContent = (
         return jsx;
       },
       inputValues: {
+        curValue: field?.name && data.value?.[field.name],
         // curIndex: field?.name,
         curKey: field?.key
       },
@@ -80,18 +89,6 @@ const SlotContent = (
       key: field?.key
     });
   }, [data.slotStyle, data.fields.length]);
-
-  // useEffect(() => {
-  //   if (field?.name === 0) {
-  //     console.log(data.fieldsLength, '--------------here-----SlotContent-----------');
-  //     // 值变化
-  //     getValue({ data, childrenInputs })
-  //       .then(() => {
-  //         changeValue({ data, id, outputs, parentSlot });
-  //       })
-  //       .catch((e) => logger.error(e));
-  //   }
-  // }, [data.fieldsLength]);
 
   return (
     <Row key={field?.key}>
