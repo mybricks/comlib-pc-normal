@@ -24,6 +24,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [env.edit]);
 
   useLayoutEffect(() => {
+    // 设置值
     inputs[InputIds.SetValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
@@ -34,6 +35,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
+    // 设置初始值
     inputs[InputIds.SetInitialValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
@@ -45,6 +47,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
+    // 校验
     inputs['validate']((val, outputRels) => {
       validateFormItem({
         value: data.value,
@@ -58,10 +61,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
           outputRels['returnValidate'](e);
         });
     });
+
+    // 获取值
     inputs['getValue']((val, outputRels) => {
       outputRels['returnValue'](data.value);
     });
 
+    // 重置值
     inputs['resetValue'](() => {
       if (Array.isArray(data.value)) {
         data.fields = [
@@ -74,6 +80,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.currentInputId = InputIds.ResetValue;
       }
     });
+
+    //设置禁用
+    inputs['setDisabled'](() => {
+      data.config.disabled = true;
+      data.currentInputId = InputIds.SetDisabled;
+    });
+
+    //设置启用
+    inputs['setEnabled'](() => {
+      data.config.disabled = false;
+      data.currentInputId = InputIds.SetEnabled;
+    }, []);
   }, []);
 
   if (env.runtime) {

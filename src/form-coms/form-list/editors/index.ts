@@ -4,6 +4,7 @@ import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
+import { InputIds } from '../../../form-coms/types'
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
@@ -286,19 +287,25 @@ export default {
           }
         }
       },
-      {
-        title: '禁用状态',
-        type: 'Switch',
-        description: '开启后，所以表单项和操作项都会被禁用',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.config.disabled
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.config.disabled = val
-          }
-        }
-      },
+      // {
+      //   title: '禁用状态',
+      //   type: 'Switch',
+      //   description: '开启后，所以表单项和操作项都会被禁用',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.config.disabled
+      //     },
+      //     set({ data }: EditorResult<Data>, val: boolean) {
+      //       data.config.disabled = val
+      //       if (val) {
+      //         data.currentInputId = InputIds.SetDisabled;
+      //       }
+      //       else {
+      //         data.currentInputId = InputIds.SetEnabled;
+      //       }
+      //     }
+      //   }
+      // },
       {
         title: '事件',
         items: [

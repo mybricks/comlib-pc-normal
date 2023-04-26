@@ -55,7 +55,7 @@ const SlotContent = (
 
             // 收集完成后的处理
             if (isChildrenInputsValid({ data, childrenInputs }) && data.currentInputId) {
-              console.log('----------收集完成后的处理-----------');
+              console.log('----------收集完成后的处理-----------', data.currentInputId);
               setValuesForInput({ data, childrenInputs });
             }
 
