@@ -7,6 +7,7 @@ import { MaxHeightEditor } from './editors/maxHeightEditor';
 import { FixedEditor } from './editors/fixedEditor';
 
 const setSlotLayout = (slot, val) => {
+  if(!slot) return;
   if (val.position === 'absolute') {
     slot.setLayout(val.position);
   } else if (val.display === 'flex') {
