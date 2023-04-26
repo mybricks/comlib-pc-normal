@@ -2,18 +2,18 @@ import React, { ReactElement, useEffect, useMemo } from 'react';
 import { Col, FormListFieldData, Row } from 'antd';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
-import { ChildrenInputs, Data } from './types';
+import { ChildrenStore, Data } from './types';
 import { isChildrenInputsValid, setValuesForInput } from './utils';
 import { deepCopy } from '../../utils';
 
 const SlotContent = (
   props: RuntimeParams<Data> & {
-    childrenInputs: ChildrenInputs;
+    childrenStore: ChildrenStore;
     actions: ReactElement;
     field: FormListFieldData;
   }
 ) => {
-  const { slots, data, env, actions, field, childrenInputs, outputs, id, parentSlot, logger } =
+  const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
     props;
 
   const content = useMemo(() => {
@@ -42,21 +42,22 @@ const SlotContent = (
             // 收集childrenInputs
             if (field) {
               const { key, name } = field;
-              if (!childrenInputs[key]) {
-                childrenInputs[key] = {};
+              if (!childrenStore[key]) {
+                childrenStore[key] = {};
               }
-              childrenInputs[key][com.id] = {
+              childrenStore[key][com.id] = {
                 inputs: com.inputs,
-                index: name
+                index: name,
+                visible: com.style.display !== 'none'
               };
             }
 
-            console.log(deepCopy(childrenInputs), 'wrap-----收集childrenInputs');
+            console.log(deepCopy(childrenStore), 'wrap-----收集childrenInputs');
 
             // 收集完成后的处理
-            if (isChildrenInputsValid({ data, childrenInputs }) && data.currentInputId) {
+            if (isChildrenInputsValid({ data, childrenStore }) && data.currentInputId) {
               console.log('----------收集完成后的处理-----------', data.currentInputId);
-              setValuesForInput({ data, childrenInputs });
+              setValuesForInput({ data, childrenStore });
             }
 
             const { widthOption, span, width } = item;

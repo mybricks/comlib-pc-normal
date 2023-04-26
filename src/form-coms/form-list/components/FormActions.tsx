@@ -9,11 +9,11 @@ export interface FormListActionsProps {
   field?: FormListFieldData;
   fieldIndex?: number;
   hiddenRemoveButton?: boolean;
-  childrenInputs?: any;
+  childrenStore?: any;
 }
 
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { data, id, outputs, parentSlot, field, fieldIndex, hiddenRemoveButton, childrenInputs } =
+  const { data, id, outputs, parentSlot, field, fieldIndex, hiddenRemoveButton, childrenStore } =
     props;
   const { fields } = data;
 
@@ -37,7 +37,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
       fields.forEach((field, index) => {
         field && (field.name = index);
       });
-      childrenInputs[field.key] = undefined;
+      childrenStore[field.key] = undefined;
 
       data.value?.[field.name] && data.value.splice(field.name, 1);
       changeValue({ data, id, outputs, parentSlot });

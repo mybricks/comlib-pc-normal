@@ -1,4 +1,4 @@
-import { ChildrenInputs, Data } from './types'
+import { ChildrenStore, Data } from './types'
 import { labelWidthTypes } from './constants'
 import { OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
@@ -13,7 +13,7 @@ export function getLabelCol(data: Data) {
   return labelCol
 }
 
-export function isObject(val: any) {
+function isObject(val: any) {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
 
@@ -21,12 +21,12 @@ export function isObject(val: any) {
  * 判断childrenInputs是否收集完成
  * @param param0 
  */
-export function isChildrenInputsValid({ data, childrenInputs }: { data: Data, childrenInputs: ChildrenInputs }) {
+export function isChildrenInputsValid({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
   const formItemsCount = data.items.length;
   const res = data.fields.every(field => {
     const { key } = field;
-    return childrenInputs[key]
-      && Object.keys(childrenInputs[key]).length === formItemsCount
+    return childrenStore[key]
+      && Object.keys(childrenStore[key]).length === formItemsCount
   });
   return res;
 }
@@ -36,20 +36,20 @@ export function isChildrenInputsValid({ data, childrenInputs }: { data: Data, ch
  * @param param0 
  * @returns null
  */
-export function getValue({ data, childrenInputs }: { data: Data, childrenInputs: ChildrenInputs }) {
+export function getValue({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
   return new Promise<void>((resolve, reject) => {
     /** 隐藏的表单项，不收集数据 **/
     const formItems = data.items.filter((item) => item.visible);
 
     let count = 0;
     const newVal: { [k in string]: any }[] = [];
-    console.log(childrenInputs, '------getValue')
-    Object.keys(childrenInputs).forEach((key) => {
-      if (!childrenInputs[key]) return;
+    console.log(childrenStore, '------getValue')
+    Object.keys(childrenStore).forEach((key) => {
+      if (!childrenStore[key]) return;
 
       data.items.forEach(({ id, name, label }) => {
         const formItemName = name || label;
-        const { index, inputs } = childrenInputs[key][id];
+        const { index, inputs } = childrenStore[key][id];
         if (!newVal[index]) {
           newVal[index] = {};
         }
@@ -93,9 +93,9 @@ export const debounceChangeValue = debounce(changeValue, 300);
  * 主动收集表单项值更新，并触发相关事件
  * @param props 
  */
-export function updateValue(props: (RuntimeParams<Data> & { childrenInputs: any })) {
-  const { data, childrenInputs, id, outputs, parentSlot, logger } = props;
-  getValue({ data, childrenInputs })
+export function updateValue(props: (RuntimeParams<Data> & { childrenStore: any })) {
+  const { data, childrenStore, id, outputs, parentSlot, logger } = props;
+  getValue({ data, childrenStore })
     .then(() => {
       debounceChangeValue({ data, id, outputs, parentSlot });
     })
@@ -117,13 +117,13 @@ export function generateFields(data: Data) {
 
 /**
  * 数据绑定：容器->子项
- * @param {Data, ChildrenInputs, inputId} 
+ * @param {Data, ChildrenStore, inputId} 
  */
 export function setValuesForInput({
-  childrenInputs,
+  childrenStore,
   data,
 }: {
-  childrenInputs: ChildrenInputs,
+  childrenStore: ChildrenStore,
   data: Data,
 }) {
   const { value: values, items: formItems } = data;
@@ -132,7 +132,7 @@ export function setValuesForInput({
     Object.keys(value).map((name) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
       if (item) {
-        const { inputs, index } = childrenInputs[valIndex][item.id];
+        const { inputs, index } = childrenStore[valIndex][item.id];
         if (isObject(value[name])) {
           inputs[inputId] && inputs[inputId]({ ...value[name] });
         } else {

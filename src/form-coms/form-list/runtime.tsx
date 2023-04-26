@@ -1,15 +1,7 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
-import { ChildrenInputs, Data, FormControlInputType, FormItems } from './types';
+import { ChildrenStore, Data, FormControlInputType, FormItems } from './types';
 import SlotContent from './SlotContent';
-import {
-  changeValue,
-  updateValue,
-  isObject,
-  getValue,
-  generateFields,
-  setValuesForInput,
-  isChildrenInputsValid
-} from './utils';
+import { updateValue, getValue, generateFields } from './utils';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
 import { ActionsWrapper } from './components/FormActions';
@@ -19,7 +11,7 @@ import { InputIds, OutputIds } from '../types';
 export default function Runtime(props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
 
-  const childrenInputs = useMemo<ChildrenInputs>(() => {
+  const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
   }, [env.edit]);
 
@@ -98,7 +90,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 值更新
     slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, value }) => {
       console.log('-------值更新---', id, value);
-      updateValue({ ...props, childrenInputs });
+      updateValue({ ...props, childrenStore });
     });
   }
 
@@ -112,7 +104,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           }
 
           const id = item.id;
-          const input = childrenInputs[id];
+          const input = childrenStore[id];
 
           return new Promise((resolve, reject) => {
             validateForInput({ item, input }, resolve);
@@ -135,7 +127,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     // 收集子项初始值
-    getValue({ data, childrenInputs })
+    getValue({ data, childrenStore })
       .then(() => {
         if (data.value?.[0]) data.initialValues = data.value[0];
       })
@@ -147,7 +139,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <>
         <SlotContent
           {...props}
-          childrenInputs={childrenInputs}
+          childrenStore={childrenStore}
           actions={<ActionsWrapper {...props} />}
           field={{ name: 0, key: 0 }}
         />
@@ -166,27 +158,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // 更新childrenInputs的index
         const { key, name } = field;
         data.items.forEach((item) => {
-          if (childrenInputs[key]?.[item.id]) {
-            childrenInputs[key][item.id].index = name;
+          if (childrenStore[key]?.[item.id]) {
+            childrenStore[key][item.id].index = name;
           }
         });
-        // console.log('-------更新childrenInputs的index---', childrenInputs);
+        // console.log('-------更新childrenInputs的index---', childrenStore);
 
         const actionProps = {
           ...props,
           fieldIndex: name,
           field,
-          childrenInputs
+          childrenStore
         };
         const actions = <ActionsWrapper {...actionProps} />;
         return (
           <div key={field.key}>
-            <SlotContent
-              {...props}
-              childrenInputs={childrenInputs}
-              actions={actions}
-              field={field}
-            />
+            <SlotContent {...props} childrenStore={childrenStore} actions={actions} field={field} />
           </div>
         );
       })}

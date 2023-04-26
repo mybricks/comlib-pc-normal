@@ -132,8 +132,9 @@ export type FormControlInputType = {
     [key in FormControlInputId]: FormControlInputRels[key];
   };
   index: number;
+  visible: boolean;
 };
-export type ChildrenInputs = {
+export type ChildrenStore = {
   [key: number | string]: {
     [id: string]: FormControlInputType
   };
