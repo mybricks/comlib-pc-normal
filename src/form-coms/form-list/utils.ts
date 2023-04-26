@@ -122,13 +122,12 @@ export function generateFields(data: Data) {
 export function setValuesForInput({
   childrenInputs,
   data,
-  inputId,
 }: {
   childrenInputs: ChildrenInputs,
   data: Data,
-  inputId: string
 }) {
   const { value: values, items: formItems } = data;
+  const inputId = data.currentInputId;
   values?.forEach((value, valIndex) => {
     Object.keys(value).map((name) => {
       const item = formItems.find((item) => (item.name || item.label) === name);

@@ -63,7 +63,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs['resetValue'](() => {
-      data.value = void 0;
+      if (Array.isArray(data.value)) {
+        data.fields = [
+          {
+            key: 0,
+            name: 0
+          }
+        ];
+        data.value = [{}];
+        data.currentInputId = InputIds.ResetValue;
+      }
     });
   }, []);
 
@@ -122,6 +131,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           {...props}
           childrenInputs={childrenInputs}
           actions={<ActionsWrapper {...props} />}
+          field={{ name: 0, key: 0 }}
         />
       </>
     );
@@ -131,6 +141,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     ...props,
     hiddenRemoveButton: true
   };
+  console.log('-------render------', data.fields);
   return (
     <>
       {data.fields.map((field) => {

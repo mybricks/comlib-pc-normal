@@ -10,13 +10,23 @@ const SlotContent = (
   props: RuntimeParams<Data> & {
     childrenInputs: ChildrenInputs;
     actions: ReactElement;
-    field?: FormListFieldData;
+    field: FormListFieldData;
   }
 ) => {
   const { slots, data, env, actions, field, childrenInputs, outputs, id, parentSlot, logger } =
     props;
 
   const content = useMemo(() => {
+    const slotRenderProps = {
+      inputValues: {
+        curValue: data.value?.[field.name],
+        curIndex: field?.name,
+        curKey: field?.key
+      },
+      style: data.slotStyle,
+      key: field?.key
+    };
+    console.log(deepCopy(data.value), slotRenderProps, '-------slotRenderProps-------');
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx }) {
         const item = data.items.find((item) => item.id === com.id);
@@ -46,7 +56,7 @@ const SlotContent = (
             // 收集完成后的处理
             if (isChildrenInputsValid({ data, childrenInputs }) && data.currentInputId) {
               console.log('----------收集完成后的处理-----------');
-              setValuesForInput({ data, childrenInputs, inputId: data.currentInputId });
+              setValuesForInput({ data, childrenInputs });
             }
 
             const { widthOption, span, width } = item;
@@ -80,13 +90,7 @@ const SlotContent = (
         });
         return jsx;
       },
-      inputValues: {
-        curValue: field?.name && data.value?.[field.name],
-        // curIndex: field?.name,
-        curKey: field?.key
-      },
-      style: data.slotStyle,
-      key: field?.key
+      ...slotRenderProps
     });
   }, [data.slotStyle, data.fields.length]);
 

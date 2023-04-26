@@ -64,6 +64,20 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [
