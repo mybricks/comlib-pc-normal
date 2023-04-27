@@ -6,6 +6,7 @@
   "version": "1.0.6",
   "description": "级联选择",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",

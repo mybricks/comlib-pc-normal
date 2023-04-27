@@ -7,6 +7,7 @@
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_rdyy4i.0a226a8a9030181e.png",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.tsx",

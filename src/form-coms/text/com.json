@@ -7,6 +7,7 @@
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_x0zid8.182f138fe94b85f8.png",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
