@@ -96,26 +96,6 @@ export default {
     data.items = data.items.filter(item => item.id !== id)
     refreshSchema({ data, inputs, outputs, slots })
   },
-  // '@_setFormItem'({data, inputs, outputs, children, logs, slots}, {id, schema}) {//As schema
-  //   const item = data.items.find(item => item.id === id)
-  //   // console.log('_setFormItem', id)
-  //   if (item) {
-  //     // console.log('_setFormItem item')
-  //     item.schema = schema
-  //   } else {
-  //     const nowC = data.nameCount++
-
-  //     data.items.push({
-  //       id,
-  //       schema,
-  //       name: `item${nowC}`,
-  //       label: `表单项${nowC}`,
-  //       span: 24,
-  //       visible: true,
-  //     })
-  //   }
-  //   refreshSchema({data, inputs, outputs, slots})
-  // },
   '@parentUpdated'({ id, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
@@ -124,9 +104,6 @@ export default {
       data.isFormItem = false
     }
   },
-  // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
-  //   console.log(slot)
-  // },
   ':root': ({ data, output }: EditorResult<Data>, cate1) => {
     cate1.items = [
       {

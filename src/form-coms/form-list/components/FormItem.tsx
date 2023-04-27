@@ -48,8 +48,8 @@ const FormItem = (props: FormItemProps) => {
         {...data.config}
         name={field ? [field.name, item?.name] : item?.name}
         required={item?.required}
-        validateStatus={item?.validateStatus}
-        help={item?.help}
+        validateStatus={item?.validateStatus?.[field.name]}
+        help={item?.help?.[field.name]}
         tooltip={item?.tooltip}
         style={style}
         colon={!!item?.label && colon}

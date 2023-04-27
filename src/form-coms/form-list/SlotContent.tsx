@@ -24,7 +24,6 @@ const SlotContent = (
       curKey: field.key
     };
 
-    console.log(deepCopy(inputValues), data.value, '------插槽渲染-----');
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx }) {
         const item = data.items.find((item) => item.id === com.id);
@@ -52,20 +51,12 @@ const SlotContent = (
               };
             }
 
-            console.log(deepCopy(childrenStore), 'wrap-----收集childrenInputs');
-
             // 收集完成后的处理
             if (
               field.key === data.MaxKey &&
               isChildrenInputsValid({ data, childrenStore }) &&
               data.currentInputId
             ) {
-              console.log(
-                '----------收集完成后的处理-----------',
-                deepCopy(data.value),
-                data.currentInputId,
-                data.startIndex
-              );
               setValuesForInput({ data, childrenStore });
             }
 

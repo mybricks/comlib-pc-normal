@@ -1,10 +1,9 @@
-import { ChildrenStore, Data } from './types'
+import { ChildrenStore, Data, FormControlInputRels } from './types'
 import { labelWidthTypes } from './constants'
 import { OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { debounce } from 'lodash';
-import { deepCopy } from '../../utils';
 
 export function getLabelCol(data: Data) {
   const labelCol = data.labelWidthType === labelWidthTypes.SPAN
@@ -33,70 +32,96 @@ export function isChildrenInputsValid({ data, childrenStore }: { data: Data, chi
 }
 
 /**
+ * @description 触发表单项校验，并更新校验结果
+ */
+export function validateForInput(
+  { inputs, index, item }: { inputs: FormControlInputRels; index: number; item: any },
+  cb?: (val: any) => void
+): void {
+  inputs?.validate({ ...item }).returnValidate((validateInfo) => {
+    if (!item.validateStatus) {
+      item.validateStatus = {};
+    }
+    if (!item.help) {
+      item.help = {};
+    }
+    item.validateStatus[index] = validateInfo?.validateStatus;
+    item.help[index] = validateInfo?.help;
+    if (cb) {
+      cb(validateInfo);
+    }
+  });
+};
+
+/**
  * 根据childrenInputs收集各field数据，更新到data.value
  * @param param0 
  * @returns null
  */
-export async function getValue({ data, childrenStore, childId, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, value?: any }) {
-  try {
-    const { allValues: allValues_1, changedValue: changedValue_2 } = await new Promise<any>((resolve, reject) => {
-      console.log(childrenStore, '------getValue');
-      let count = 0;
-      const allValues: {
-        [k in string]: any;
-      }[] = [];
-      /** 子表单项值变化 */
-      const changedValue = {
-        index: -1,
-        name: '',
-        value
-      };
-      Object.keys(childrenStore).forEach((key) => {
-        if (!childrenStore[key])
+export function getValue({ data, childrenStore, childId, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, value?: any }) {
+  return new Promise<any>((resolve, reject) => {
+    let count = 0;
+    const allValues: { [k in string]: any }[] = [];
+    /** 子表单项值变化 */
+    const changedValue = {
+      index: -1,
+      name: '',
+      value,
+      inputs: {},
+      item: {}
+    };
+    Object.keys(childrenStore).forEach((key) => {
+      if (!childrenStore[key]) return;
+
+      data.items.forEach(item => {
+        const { id, name, label } = item;
+        const { index, inputs, visible } = childrenStore[key][id];
+
+        // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
+        if (!data.submitHiddenFields && !visible) {
           return;
-
-        data.items.forEach(({ id, name, label }) => {
-          const { index, inputs, visible } = childrenStore[key][id];
-
-          // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
-          if (!data.submitHiddenFields && !visible) {
-            return;
-          }
-
-          const formItemName = name || label;
-          if (!allValues[index]) {
-            allValues[index] = {};
-          }
-          inputs?.getValue().returnValue((val_2) => {
-            allValues[index][formItemName] = val_2;
-            if (id === childId && data.value && data.value[index][formItemName] !== val_2) {
-              changedValue.name = formItemName;
-              changedValue.index = index;
-            }
-          });
-        });
-        count++;
-        if (count == data.fields.length) {
-          resolve({
-            allValues,
-            changedValue
-          });
         }
+
+        const formItemName = name || label;
+        if (!allValues[index]) {
+          allValues[index] = {};
+        }
+        inputs?.getValue().returnValue((val) => {
+          allValues[index][formItemName] = val;
+          if (id === childId && data.value && data.value[index][formItemName] !== val) {
+            changedValue.name = formItemName;
+            changedValue.index = index;
+            changedValue.inputs = inputs;
+            changedValue.item = item;
+          }
+        });
       });
-      resolve({
-        allValues,
-        changedValue
-      });
+      count++;
+      if (count == data.fields.length) {
+        resolve({
+          allValues,
+          changedValue
+        });
+      }
     });
-    if (data.value?.[changedValue_2.index]) {
-      const { index: index_1, name: name_1, value: value_2 } = changedValue_2;
-      data.value[index_1][name_1] = value_2;
+    resolve({
+      allValues,
+      changedValue
+    });
+  }).then(({
+    allValues,
+    changedValue
+  }) => {
+    if (data.value?.[changedValue.index]) {
+      const { index, name, value, item, inputs } = changedValue;
+      data.value[index][name] = value;
+      validateForInput({ item, index, inputs });
     } else {
-      data.value = allValues_1;
+      data.value = allValues;
     }
-  } catch (e) {
+  }).catch(e => {
     console.error('收集值失败，原因：' + e);
-  }
+  });
 };
 
 /**
@@ -129,7 +154,6 @@ export function updateValue(props: (RuntimeParams<Data> & { childrenStore: any, 
   const { data, childrenStore, id, outputs, parentSlot, logger, childId, value } = props;
   getValue({ data, childrenStore, childId, value })
     .then(() => {
-      console.log('before值更新输出')
       changeValue({ data, id, outputs, parentSlot });
     })
     .catch((e) => logger.error(e));
@@ -164,7 +188,6 @@ export function setValuesForInput({
   values?.forEach((value, valIndex) => {
     if (valIndex < data.startIndex) return;
     const key = data.fields.find(field => field.name === valIndex)?.key;
-    console.log(data.currentInputId,data.startIndex, valIndex, key, '---setValuesForInput----')
     Object.keys(value).map((name) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
       if (item && key !== undefined) {

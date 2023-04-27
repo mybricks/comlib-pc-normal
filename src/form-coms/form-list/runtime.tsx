@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
 import { ChildrenStore, Data, FormControlInputRels } from './types';
 import SlotContent from './SlotContent';
-import { updateValue, getValue, generateFields } from './utils';
+import { updateValue, getValue, generateFields, validateForInput } from './utils';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
 import { ActionsWrapper } from './components/FormActions';
@@ -97,7 +97,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   if (env.runtime) {
     // 值更新
     slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, value }) => {
-      console.log('-------值更新---', id, value);
       updateValue({ ...props, childrenStore, childId: id, value });
     });
   }
@@ -121,14 +120,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
             return { validateStatus: 'success' };
           }
           return new Promise((resolve, reject) => {
-            validateForInput({ item, inputs }, resolve);
+            validateForInput({ item, index, inputs }, resolve);
           });
         });
         allPromise.push(...fieldPromise);
       });
       Promise.all(allPromise)
         .then((values) => {
-          console.log(values, 'values----------校验');
           let rtn = false;
           values.forEach((item) => {
             if (item.validateStatus !== 'success') {
@@ -168,7 +166,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     ...props,
     hiddenRemoveButton: true
   };
-  console.log(data.fields, '-------render------');
+
   return (
     <>
       {data.fields.map((field) => {
@@ -177,11 +175,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.items.forEach((item) => {
           if (childrenStore[key]?.[item.id]) {
             childrenStore[key][item.id].index = name;
-            // /**重新设置后面的值 */
-            // childrenStore[key][item.id].inputs['']
           }
         });
-        console.log('-------更新childrenInputs的index---', childrenStore);
 
         const actionProps = {
           ...props,
@@ -200,19 +195,3 @@ export default function Runtime(props: RuntimeParams<Data>) {
     </>
   );
 }
-
-/**
- * @description 触发表单项校验，并更新校验结果
- */
-const validateForInput = (
-  { inputs, item }: { inputs: FormControlInputRels; item: any },
-  cb?: (val: any) => void
-): void => {
-  inputs?.validate({ ...item }).returnValidate((validateInfo) => {
-    item.validateStatus = validateInfo?.validateStatus;
-    item.help = validateInfo?.help;
-    if (cb) {
-      cb(validateInfo);
-    }
-  });
-};
