@@ -1,0 +1,37 @@
+{
+  "title": "excel导出",
+  "namespace": "mybricks.normal-pc.excel",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "数据导出excel",
+  "author": "tangxiaoxin",
+  "author_name": "唐小新",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "icon": "./icon.svg",
+  "inputs": [
+    {
+      "id": "dataSource",
+      "title": "输入数据源",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": []
+}
