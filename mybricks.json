@@ -161,6 +161,7 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-list/com.json",
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
