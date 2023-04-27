@@ -50,7 +50,14 @@ export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
   value: any[] | undefined;
+  /**
+   * 当前触发的输入项id
+   */
   currentInputId: string;
+  /**
+   * 初始化值的起始索引值
+   */
+  startIndex: number;
   /**
    * 列表数据
    */

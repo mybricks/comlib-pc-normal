@@ -98,7 +98,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 值更新
     slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, value }) => {
       console.log('-------值更新---', id, value);
-      updateValue({ ...props, childrenStore });
+      updateValue({ ...props, childrenStore, childId: id, value });
     });
   }
 
@@ -143,7 +143,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   useEffect(() => {
-    // 收集子项初始值
+    // 收集子项初始值 ----待完善：这里只取了首项
     getValue({ data, childrenStore })
       .then(() => {
         if (data.value?.[0]) data.initialValues = data.value[0];
@@ -168,7 +168,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     ...props,
     hiddenRemoveButton: true
   };
-  console.log('-------render------', data.fields);
+  console.log(data.fields, '-------render------');
   return (
     <>
       {data.fields.map((field) => {
@@ -177,9 +177,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.items.forEach((item) => {
           if (childrenStore[key]?.[item.id]) {
             childrenStore[key][item.id].index = name;
+            // /**重新设置后面的值 */
+            // childrenStore[key][item.id].inputs['']
           }
         });
-        // console.log('-------更新childrenInputs的index---', childrenStore);
+        console.log('-------更新childrenInputs的index---', childrenStore);
 
         const actionProps = {
           ...props,

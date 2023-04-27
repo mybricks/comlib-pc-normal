@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { Form, Button, Row, Col, Space, FormListOperation, FormListFieldData } from 'antd';
 import { Action, Data } from '../types';
-import { unitConversion } from '../../../utils';
+import { deepCopy, unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
+import { InputIds } from '../../../form-coms/types';
 
 export interface FormListActionsProps {
   operation?: FormListOperation;
@@ -25,21 +26,25 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         key: data.MaxKey
       });
       if (Array.isArray(data.value)) {
-        data.value.push(data.initialValues);
+        data.value.push(deepCopy(data.initialValues));
       } else {
-        data.value = [data.initialValues];
+        data.value = [deepCopy(data.initialValues)];
       }
       changeValue({ data, id, outputs, parentSlot });
     }
     if (item.key === 'remove' && field) {
+      data.currentInputId = InputIds.SetInitialValue;
+      data.startIndex = field.name;
       fields.splice(field.name, 1);
+      data.value = data.value?.filter((_, index) => {
+        return index !== field.name;
+      });
       // 更新name
       fields.forEach((field, index) => {
         field && (field.name = index);
       });
       childrenStore[field.key] = undefined;
 
-      data.value?.[field.name] && data.value.splice(field.name, 1);
       changeValue({ data, id, outputs, parentSlot });
     }
   };

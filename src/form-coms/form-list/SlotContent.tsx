@@ -17,16 +17,14 @@ const SlotContent = (
     props;
 
   const content = useMemo(() => {
-    const slotRenderProps = {
-      inputValues: {
-        curValue: data.value?.[field.name],
-        curIndex: field?.name,
-        curKey: field?.key
-      },
-      style: data.slotStyle,
-      key: field?.key
+    // 作用域输出
+    const inputValues = {
+      curValue: data.value?.[field.name],
+      curIndex: field.name,
+      curKey: field.key
     };
-    console.log(deepCopy(data.value), slotRenderProps, '-------slotRenderProps-------');
+
+    console.log(deepCopy(inputValues), data.value, '------插槽渲染-----');
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx }) {
         const item = data.items.find((item) => item.id === com.id);
@@ -35,10 +33,12 @@ const SlotContent = (
       },
       wrap(comAray: { id; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
+
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let item = items.find((item) => item.id === com.id);
             if (!item) return;
+            const visible = com.style.display !== 'none';
             // 收集childrenInputs
             if (field) {
               const { key, name } = field;
@@ -48,26 +48,29 @@ const SlotContent = (
               childrenStore[key][com.id] = {
                 inputs: com.inputs,
                 index: name,
-                visible: com.style.display !== 'none'
+                visible
               };
             }
 
             console.log(deepCopy(childrenStore), 'wrap-----收集childrenInputs');
 
             // 收集完成后的处理
-            if (isChildrenInputsValid({ data, childrenStore }) && data.currentInputId) {
-              console.log('----------收集完成后的处理-----------', data.currentInputId);
+            if (
+              field.key === data.MaxKey &&
+              isChildrenInputsValid({ data, childrenStore }) &&
+              data.currentInputId
+            ) {
+              console.log(
+                '----------收集完成后的处理-----------',
+                deepCopy(data.value),
+                data.currentInputId,
+                data.startIndex
+              );
               setValuesForInput({ data, childrenStore });
             }
 
             const { widthOption, span, width } = item;
             const flexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
-
-            if (typeof item?.visible !== 'undefined') {
-              item.visible = com.style.display !== 'none';
-            } else {
-              item['visible'] = true;
-            }
 
             if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
               return (
@@ -78,7 +81,7 @@ const SlotContent = (
             }
 
             return (
-              item?.visible && (
+              visible && (
                 <Col key={com.id} style={{ width: flexBasis }}>
                   {com.jsx}
                 </Col>
@@ -91,12 +94,14 @@ const SlotContent = (
         });
         return jsx;
       },
-      ...slotRenderProps
+      inputValues,
+      style: data.slotStyle,
+      key: field.key
     });
-  }, [data.slotStyle, data.fields.length]);
+  }, [data.slotStyle, data.fields.length, data.value?.[field.name]]);
 
   return (
-    <Row key={field?.key}>
+    <Row key={field.key}>
       {content}
       {actions}
     </Row>
