@@ -109,7 +109,8 @@
     "./src/_copy/com.json",
     "./src/_pick/com.json",
     "./src/_post-message/com.json",
-    "./src/_receive-message/com.json"
+    "./src/_receive-message/com.json",
+    "./src/_excel/com.json"
   ],
   "externals": [
     {
