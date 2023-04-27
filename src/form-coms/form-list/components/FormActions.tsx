@@ -25,15 +25,10 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         name: fields.length,
         key: data.MaxKey
       });
-      if (Array.isArray(data.value)) {
-        data.value.push(deepCopy(data.initialValues));
-      } else {
-        data.value = [deepCopy(data.initialValues)];
-      }
-      changeValue({ data, id, outputs, parentSlot });
+      data.currentAction = 'add';
     }
     if (item.key === 'remove' && field) {
-      data.currentInputId = InputIds.SetInitialValue;
+      data.currentAction = InputIds.SetInitialValue;
       data.startIndex = field.name;
       fields.splice(field.name, 1);
       data.value = data.value?.filter((_, index) => {

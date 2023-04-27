@@ -53,9 +53,9 @@ export interface Data {
   /**
    * 当前触发的输入项id
    */
-  currentInputId: string;
+  currentAction: string;
   /**
-   * 初始化值的起始索引值
+   * 需要初始化的列表项起始索引值
    */
   startIndex: number;
   /**
@@ -66,12 +66,6 @@ export interface Data {
    * 列表当前最大key
    */
   MaxKey: number
-  /**
-   * 列表项初始值
-   */
-  initialValues: {
-    [k: string]: any
-  }
   /**
    * 校验规则
    */

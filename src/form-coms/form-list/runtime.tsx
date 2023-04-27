@@ -21,7 +21,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
         generateFields(data);
-        data.currentInputId = InputIds.SetValue;
+        data.currentAction = InputIds.SetValue;
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -32,7 +32,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
         outputs[OutputIds.OnInitial](data.value);
-        data.currentInputId = InputIds.SetInitialValue;
+        data.currentAction = InputIds.SetInitialValue;
         generateFields(data);
       } else {
         logger.error(title + '的值是列表类型');
@@ -54,20 +54,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
           }
         ];
         data.value = [{}];
-        data.currentInputId = InputIds.ResetValue;
+        data.currentAction = InputIds.ResetValue;
       }
     });
 
     //设置禁用
     inputs['setDisabled'](() => {
       data.disabled = true;
-      data.currentInputId = InputIds.SetDisabled;
+      data.currentAction = InputIds.SetDisabled;
     });
 
     //设置启用
     inputs['setEnabled'](() => {
       data.disabled = false;
-      data.currentInputId = InputIds.SetEnabled;
+      data.currentAction = InputIds.SetEnabled;
     }, []);
 
     // 校验
@@ -140,15 +140,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  useEffect(() => {
-    // 收集子项初始值 ----待完善：这里只取了首项
-    getValue({ data, childrenStore })
-      .then(() => {
-        if (data.value?.[0]) data.initialValues = data.value[0];
-      })
-      .catch((e) => logger.error(e));
-  }, []);
-
   if (env.edit) {
     return (
       <>
@@ -170,7 +161,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return (
     <>
       {data.fields.map((field) => {
-        // 更新childrenInputs的index
+        // 更新childrenStore的index
         const { key, name } = field;
         data.items.forEach((item) => {
           if (childrenStore[key]?.[item.id]) {

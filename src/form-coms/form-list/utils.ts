@@ -18,10 +18,10 @@ function isObject(val: any) {
 }
 
 /**
- * 判断childrenInputs是否收集完成
+ * 判断childrenStore是否收集完成
  * @param param0 
  */
-export function isChildrenInputsValid({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
+export function isChildrenStoreValid({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
   const formItemsCount = data.items.length;
   const res = data.fields.every(field => {
     const { key } = field;
@@ -54,7 +54,7 @@ export function validateForInput(
 };
 
 /**
- * 根据childrenInputs收集各field数据，更新到data.value
+ * 根据childrenStore收集各field数据，更新到data.value
  * @param param0 
  * @returns null
  */
@@ -184,7 +184,7 @@ export function setValuesForInput({
   data: Data,
 }) {
   const { value: values, items: formItems } = data;
-  const inputId = data.currentInputId;
+  const inputId = data.currentAction;
   values?.forEach((value, valIndex) => {
     if (valIndex < data.startIndex) return;
     const key = data.fields.find(field => field.name === valIndex)?.key;
@@ -200,6 +200,6 @@ export function setValuesForInput({
       }
     });
   });
-  data.currentInputId = '';
+  data.currentAction = '';
   data.startIndex = -1;
 };

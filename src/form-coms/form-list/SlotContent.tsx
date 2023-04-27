@@ -3,7 +3,7 @@ import { Col, FormListFieldData, Row } from 'antd';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
 import { ChildrenStore, Data } from './types';
-import { isChildrenInputsValid, setValuesForInput } from './utils';
+import { changeValue, isChildrenStoreValid, setValuesForInput } from './utils';
 import { deepCopy } from '../../utils';
 
 const SlotContent = (
@@ -38,7 +38,7 @@ const SlotContent = (
             let item = items.find((item) => item.id === com.id);
             if (!item) return;
             const visible = com.style.display !== 'none';
-            // 收集childrenInputs
+            // 收集childrenStore
             if (field) {
               const { key, name } = field;
               if (!childrenStore[key]) {
@@ -51,13 +51,51 @@ const SlotContent = (
               };
             }
 
-            // 收集完成后的处理
+            // childrenStore收集完成后的处理
             if (
               field.key === data.MaxKey &&
-              isChildrenInputsValid({ data, childrenStore }) &&
-              data.currentInputId
+              isChildrenStoreValid({ data, childrenStore }) &&
+              data.currentAction
             ) {
-              setValuesForInput({ data, childrenStore });
+              switch (data.currentAction) {
+                case 'add':
+                  // 计算新增项默认值
+                  const initValue = {};
+                  new Promise((resolve, reject) => {
+                    data.items.forEach((item) => {
+                      const { id, name, label } = item;
+                      const { inputs, visible } = childrenStore[field.key][id];
+                      if (!data.submitHiddenFields && !visible) return;
+                      inputs.getValue().returnValue((val) => {
+                        initValue[name || label] = val;
+                      });
+                    });
+                    resolve(initValue);
+                  })
+                    .then((initValue) => {
+                      if (Array.isArray(data.value)) {
+                        data.value.push(initValue);
+                      } else {
+                        data.value = [initValue];
+                      }
+                      changeValue({ data, id, outputs, parentSlot });
+                    })
+                    .catch((e) => {
+                      console.error('计算默认值失败: ' + e);
+                      if (Array.isArray(data.value)) {
+                        data.value.push({});
+                      } else {
+                        data.value = [{}];
+                      }
+                      changeValue({ data, id, outputs, parentSlot });
+                    })
+                    .finally(() => {
+                      data.currentAction = '';
+                    });
+                  break;
+                default:
+                  setValuesForInput({ data, childrenStore });
+              }
             }
 
             const { widthOption, span, width } = item;

@@ -276,10 +276,10 @@ export default {
       //     set({ data }: EditorResult<Data>, val: boolean) {
       //       data.disabled = val
       //       if (val) {
-      //         data.currentInputId = InputIds.SetDisabled;
+      //         data.currentAction = InputIds.SetDisabled;
       //       }
       //       else {
-      //         data.currentInputId = InputIds.SetEnabled;
+      //         data.currentAction = InputIds.SetEnabled;
       //       }
       //     }
       //   }
