@@ -155,6 +155,7 @@ export const updateColStyle = (col: ColumnParams, style: Partial<React.CSSProper
 };
 
 export const setSlotLayout = (slot, val) => {
+  if(!slot) return;
   if (val.position === 'absolute') {
     slot.setLayout(val.position);
   } else if (val.display === 'flex') {

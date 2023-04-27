@@ -13,5 +13,11 @@ export default function ({
       type: 'any'
     })
   }
+  /**
+     * @description v1.1.8 增加maskClosable配置项
+     */
+  if (data.maskClosable === undefined) {
+    data.maskClosable = false;
+  }
   return true;
 }

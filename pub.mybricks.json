@@ -54,7 +54,8 @@
         "./src/form-coms/password/com.json",
         "./src/form-coms/phone-number/com.json",
         "./src/form-coms/time-picker/com.json",
-        "./src/form-coms/time-range-picker/com.json"
+        "./src/form-coms/time-range-picker/com.json",
+        "./src/form-coms/code/com.json"
       ]
     },
     {
@@ -108,7 +109,8 @@
     "./src/_copy/com.json",
     "./src/_pick/com.json",
     "./src/_post-message/com.json",
-    "./src/_receive-message/com.json"
+    "./src/_receive-message/com.json",
+    "./src/_excel/com.json"
   ],
   "externals": [
     {

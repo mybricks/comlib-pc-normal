@@ -8,10 +8,9 @@ import React, {
   useRef
 } from 'react';
 import { Form } from 'antd';
-import { typeCheck } from '../../utils';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject } from './utils';
+import { getLabelCol, isObject, setFormItemsProps } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
@@ -120,7 +119,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
-      setFormItemsProps(val);
+      setFormItemsProps(val, { data });
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, value }) => {
@@ -130,47 +129,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
         formContext.current.store = { ...formContext.current.store, ...fieldsValue };
 
-        outputs[outputIds.ON_VALUES_CHANGE]({
-          changedValues: { ...fieldsValue },
-          allValues: { ...formContext.current.store }
-        });
+        if (outputs[outputIds.ON_VALUES_CHANGE]) {
+          outputs[outputIds.ON_VALUES_CHANGE]?.({
+            changedValues: { ...fieldsValue },
+            allValues: { ...formContext.current.store }
+          });
+        } else {
+          console.warn(`outputId onValuesChange 不存在，请升级至最新版本`);
+        }
       }
     });
   }
-  /**
-   * 设置表单项公共配置
-   * @param formItemsProps 表单项配置对象
-   */
-  const setFormItemsProps = useCallback((formItemsProps: { string: FormItems }) => {
-    if (typeCheck(formItemsProps, ['Object'])) {
-      Object.entries(formItemsProps).map(([name, props]) => {
-        if (!typeCheck(props, ['Object'])) {
-          console.warn(`表单项配置不是对象类型`);
-          return;
-        }
-
-        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
-        if (formItemIndex < 0) {
-          console.warn(`表单项${name}不存在`);
-          return;
-        }
-
-        const formItem = data.items[formItemIndex];
-        const newFormItem = { ...props };
-        const { descriptionStyle, labelStyle } = formItem;
-        if (!newFormItem.descriptionStyle) newFormItem.descriptionStyle = {};
-        if (!newFormItem.labelStyle) newFormItem.labelStyle = {};
-        Object.assign(newFormItem.descriptionStyle, descriptionStyle);
-        Object.assign(newFormItem.labelStyle, labelStyle);
-
-        const temp = {
-          ...formItem,
-          ...props
-        };
-        data.items[formItemIndex] = temp;
-      });
-    }
-  }, []);
 
   const setFieldsValue = (val) => {
     if (val) {
@@ -220,13 +189,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
-      Promise.all(
-        data.items.map((item) => {
-          if (!data.submitHiddenFields) {
-            // 隐藏的表单项，不再校验
-            if (!item.visible) return { validateStatus: 'success' };
-          }
+      const formItems = getFormItems(data, childrenInputs);
 
+      Promise.all(
+        formItems.map((item) => {
           const id = item.id;
           const input = childrenInputs[id];
 
@@ -251,10 +217,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const getValue = useCallback(() => {
     return new Promise((resolve, reject) => {
-      /** 隐藏的表单项，不收集数据 **/
-      const formItems = data.submitHiddenFields
-        ? data.items
-        : data.items.filter((item) => item.visible);
+      const formItems = getFormItems(data, childrenInputs);
 
       Promise.all(
         formItems.map((item) => {
@@ -262,54 +225,48 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const input = childrenInputs[id];
 
           return new Promise((resolve, reject) => {
-            let count = 0;
             let value = {};
+
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
-              if (typeof data.fieldsLength !== 'undefined') {
-                value[key] = {
-                  name: item.name,
-                  value: val
-                };
+              value = {
+                name: item.name || item.label,
+                value: val
+              };
 
-                count++;
-
-                if (count == data.fieldsLength) {
-                  resolve(value);
-                }
-              } else {
-                value = {
-                  name: item.name || item.label,
-                  value: val
-                };
-
-                resolve(value);
-              }
+              resolve(value);
             });
           });
         })
       )
         .then((values) => {
-          if (data.dataType === 'list') {
-            const arr = [];
-            values.forEach((valItem) => {
-              Object.keys(valItem).map((key) => {
-                if (!arr[key]) {
-                  arr[key] = {};
-                }
-                arr[key][valItem[key].name] = valItem[key].value;
-              });
-            });
-            resolve(arr);
-          } else {
-            const rtn = {};
+          const rtn = {};
 
-            values.forEach((item: any) => {
-              rtn[item.name] = item.value;
-            });
+          values.forEach((item: any) => {
+            rtn[item.name] = item.value;
+          });
 
-            resolve({ ...rtn });
-          }
+          resolve({ ...rtn });
+          // if (data.dataType === 'list') {
+          //   const arr = [];
+          //   values.forEach((valItem) => {
+          //     Object.keys(valItem).map((key) => {
+          //       if (!arr[key]) {
+          //         arr[key] = {};
+          //       }
+          //       arr[key][valItem[key].name] = valItem[key].value;
+          //     });
+          //   });
+          //   resolve(arr);
+          // } else {
+          //   const rtn = {};
+
+          //   values.forEach((item: any) => {
+          //     rtn[item.name] = item.value;
+          //   });
+
+          //   resolve({ ...rtn });
+          // }
         })
         .catch((e) => reject(e));
     });
@@ -320,7 +277,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
-    // console.log('提交', formContext.current.store)
     validate()
       .then(() => {
         getValue()
@@ -371,6 +327,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
     </div>
   );
 }
+
+/**
+ * @description 获取表单项列表
+ */
+const getFormItems = (data: Data, childrenInputs) => {
+  let formItems = data.items;
+
+  // hack 脏数据问题，表单项数与实际表单项数不一致
+  if (data.items.length !== Object.keys(childrenInputs).length) {
+    formItems = formItems.filter((item) => childrenInputs[item.id]);
+  }
+
+  // 过滤隐藏表单项
+  if (!data.submitHiddenFields) {
+    formItems = formItems.filter((item) => item.visible);
+  }
+
+  return formItems;
+};
 
 /**
  * @description 触发表单项校验，并更新校验结果

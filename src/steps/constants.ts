@@ -53,4 +53,5 @@ export interface Data {
 }
 
 export const INTO = '_into';
-export const LEAVE = '_leave'
+export const LEAVE = '_leave';
+export const CLICK = '_click';

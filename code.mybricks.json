@@ -42,7 +42,8 @@
         "./src/form-coms/rate/com.json",
         "./src/form-coms/slider/com.json",
         "./src/form-coms/upload/com.json",
-        "./src/form-coms/transfer/com.json"
+        "./src/form-coms/transfer/com.json",
+        "./src/form-coms/code/com.json"
       ]
     }
   ],

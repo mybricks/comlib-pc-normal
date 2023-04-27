@@ -227,21 +227,32 @@ export default {
           set({ data }: EditorResult<Data>, value: boolean) {
             data.centered = value;
           }
-        }
+        },
       },
       {
-        title: '事件',
-        items: [
-          {
-            title: '关闭回调',
-            type: '_Event',
-            options: {
-              outputId: OutputIds.AfterClose,
-              slotId: SlotIds.Container
-            }
+        title: '点击蒙层关闭',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.maskClosable;
           },
-        ]
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.maskClosable = val;
+          }
+        }
       },
+      // {
+      //   title: '关闭时销毁',
+      //   type: 'switch',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return !!data.destroyOnClose;
+      //     },
+      //     set({ data }: EditorResult<Data>, val: boolean) {
+      //       data.destroyOnClose = val
+      //     }
+      //   }
+      // },
       {
         title: '工具条',
         items: [
@@ -273,7 +284,20 @@ export default {
             }
           }
         ]
-      }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '关闭回调',
+            type: '_Event',
+            options: {
+              outputId: OutputIds.AfterClose,
+              slotId: SlotIds.Container
+            }
+          },
+        ]
+      },
     ];
 
     cate2.title = '样式';

@@ -117,16 +117,13 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
+    // 对话框关闭后的回调
+    outputs[OutputIds.AfterClose]();
   }, []);
 
   // 【老】关闭对话框
   const cancel: () => void = useCallback(() => {
     close();
-  }, []);
-
-  // 对话框完全关闭后的回调
-  const afterClose: () => void = useCallback(() => {
-    outputs[OutputIds.AfterClose]();
   }, []);
 
   const eventList = {};
@@ -155,7 +152,6 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
-          maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -177,8 +173,7 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel,
-            afterClose
+            cancel
           }}
           getContainer={() => {
             if (ref) {
@@ -199,8 +194,7 @@ export default function Dialog({
           slots={slots}
           event={{
             ...eventList,
-            cancel,
-            afterClose
+            cancel
           }}
           env={env}
         />
@@ -214,7 +208,6 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
-  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
 }
@@ -224,8 +217,7 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env,
-  maskClosable
+  env
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -236,6 +228,7 @@ const RuntimeRender = ({
     centered,
     useFooter,
     cancelText,
+    maskClosable,
     width,
     footerBtns,
     footerLayout
@@ -290,7 +283,7 @@ const RuntimeRender = ({
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}
@@ -301,7 +294,6 @@ const RuntimeRender = ({
       onCancel={event?.cancel}
       bodyStyle={bodyStyle}
       getContainer={getContainer}
-      afterClose={event?.afterClose}
     >
       {slots[SlotIds.Container] && slots[SlotIds.Container].render()}
     </Modal>

@@ -4,6 +4,7 @@
   "hideTitle": false,
   "closable": true,
   "centered": false,
+  "maskClosable": false,
   "useFooter": true,
   "cancelText": "取消",
   "width": 520,

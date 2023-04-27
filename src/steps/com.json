@@ -1,7 +1,7 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "步骤条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -90,6 +90,13 @@
     {
       "id": "step0_leave",
       "title": "步骤1隐藏",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "step0_click",
+      "title": "步骤1点击时",
       "schema": {
         "type": "any"
       }

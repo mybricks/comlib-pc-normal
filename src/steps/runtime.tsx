@@ -1,7 +1,7 @@
-import { Button, message, Steps } from 'antd';
+import { Button, Steps } from 'antd';
 import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames';
-import { Data, INTO, LEAVE } from './constants';
+import { Data, INTO, LEAVE, CLICK } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
 
@@ -244,7 +244,10 @@ export default function ({
               stepProps['description'] = env.i18n(item.description);
             }
             if (!!data.steps.canClick) {
-              stepProps['onStepClick'] = () => (data.current = index);
+              stepProps['onStepClick'] = () => {
+                data.current = index;
+                outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);
+              };
             }
             return <Step {...stepProps} />;
           })}
