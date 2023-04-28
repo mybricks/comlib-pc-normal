@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateFormItem } from '../utils/validator';
 import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
-import { uuid } from '../utils';
-import { loadPkg } from '../utils/loadPkg';
+import { uuid } from '../../utils';
+import { loadPkg } from '../../utils/loadPkg';
 
 import { Spin } from 'antd';
 
@@ -22,7 +23,7 @@ class Ctx {
   tinymceFSId!: string;
 }
 
-export default function ({ data, outputs, inputs, env, readonly }): JSX.Element {
+export default function ({ data, outputs, inputs, env, readonly, parentSlot, id }): JSX.Element {
   const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
@@ -37,10 +38,6 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
     url: ''
   });
 
-  inputs['submit'](() => {
-    outputs['submit'](valueRef.current);
-  });
-
   const textareaRef = useRef(null);
 
   const Load: () => void = useCallback(async () => {
@@ -50,7 +47,8 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
       target: textareaRef.current,
       height: data.style.height,
       toolbar: data.toolbar?.join(' '),
-      isFS: false
+      isFS: false,
+      placeholder: data.placeholder
     });
   }, []);
 
@@ -60,6 +58,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
     isFS: boolean;
     toolbar: any;
     target: any;
+    placeholder: string;
   }) => void = useCallback(({ selector, height, isFS, target }) => {
     Init({
       readonly,
@@ -68,6 +67,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
       selector,
       height: data.style.height,
       isFS,
+      placeholder: data.placeholder,
       customIconsId,
       setUp: (editor: any) => {
         if (!uploadCb.current) {
@@ -107,11 +107,32 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
         editor.on('blur', () => {
           update(false);
         });
+
+        editor.on('input', (e) => {
+          change(false);
+        });
       },
       initCB: (editor) => {
-        inputs['dataSource']((val: any) => {
-          editor.setContent(val);
-          valueRef.current = val;
+        //1、设置值
+        inputs['setValue']((val) => {
+          if (val !== undefined) {
+            editor.setContent(val);
+            valueRef.current = val;
+            outputs['onChange'](val);
+          }
+        });
+        //2、设置初始值
+        inputs['setInitialValue']((val: any) => {
+          if (val !== undefined) {
+            editor.setContent(val);
+            valueRef.current = val;
+            outputs['onInitial'](val);
+          }
+        });
+        //5. 重置值
+        inputs['resetValue'](() => {
+          editor.setContent('');
+          valueRef.current = '';
         });
         editor.setContent(valueRef.current);
         if (loading) {
@@ -123,6 +144,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
     });
   }, []);
 
+  //失去焦点
   const update = useCallback((bool) => {
     const tinyMCE = getWindowVal('tinyMCE');
     if (!tinyMCE) return;
@@ -133,13 +155,26 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
-    outputs['done'](valueRef.current);
-    outputs.onChange(valueRef.current);
+    outputs['onBlur'](valueRef.current);
+  }, []);
+
+  //值变化
+  const change = useCallback((bool) => {
+    const tinyMCE = getWindowVal('tinyMCE');
+    if (!tinyMCE) return;
+
+    const tinymceInstance =
+      tinymceFSVisble || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
+
+    const content = tinymceInstance?.getContent({ format: 't' });
+
+    valueRef.current = content.trim() || '';
+    onChangeForFc(parentSlot, { id: id, value: valueRef.current });
+    outputs['onChange'](valueRef.current);
   }, []);
 
   useEffect(() => {
     Load();
-
     return () => {
       const tinyMCE = getWindowVal('tinyMCE');
       tinyMCE &&
@@ -147,7 +182,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
           tinyMCE.editors[id]?.remove();
         });
     };
-  }, [data.toolbar.join(' '), data.style]);
+  }, [data.toolbar.join(' '), data.placeholder, data.style]);
 
   useEffect(() => {
     if (readonly) {
@@ -210,21 +245,56 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
                 target: node,
                 height: data.style.height,
                 toolbar: data.toolbar.join(' '),
-                isFS: true
+                isFS: true,
+                placeholder: data.placeholder
               });
             }
           }}
           id={tinymceFSId}
           hidden
           readOnly
+          style={data.style}
         />
       </div>
     ) : null;
   }, [tinymceFSVisble]);
 
+  useEffect(() => {
+    //3.校验
+    inputs['validate']((val, outputRels) => {
+      validateFormItem({
+        value: valueRef.current,
+        env,
+        rules: data.rules
+      })
+        .then((r) => {
+          outputRels['returnValidate'](r);
+        })
+        .catch((e) => {
+          outputRels['returnValidate'](e);
+        });
+    });
+
+    //4. 获取值
+    inputs['getValue']((val, outputRels) => {
+      outputRels['returnValue'](valueRef.current);
+    });
+
+    //6. 设置禁用
+    inputs['setDisabled'](() => {
+      data.disabled = true;
+    });
+    //7. 设置启用
+    inputs['setEnabled'](() => {
+      data.disabled = false;
+    });
+  }, []);
+
   return (
     <div
-      className={`${css['editor-rich-text']} ${readonly ? css['editor-rich-text__readonly'] : ''}`}
+      className={`${css['editor-rich-text']} ${readonly ? css['editor-rich-text__readonly'] : ''} ${
+        data.disabled ? css['editor-rich-text__disabled'] : ''
+      }`}
       style={data.style}
       id={`p${tinymceId}`}
     >
