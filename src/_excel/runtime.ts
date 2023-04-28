@@ -1,5 +1,5 @@
 import { isObject } from 'lodash';
-import { getWindowVal } from '../richtext/utils';
+import { getWindowVal } from '../utils/getWindowVal';
 import { loadPkg } from '../utils/loadPkg';
 import { Data, Sheet } from './types';
 
