@@ -53,7 +53,7 @@ export default {
 
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
-    // console.log(child)
+    // console.log(child, curSlot)
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs } = child
       const item = data.items.find(item => item.id === id)
@@ -134,26 +134,10 @@ export default {
     }
   },
   // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
-  //   console.log(slot)
+  //   console.log('@init', slot.get('content'))
   // },
-  ':root': ({ data, output }: EditorResult<Data>, cate1) => {
+  ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
     cate1.items = [
-      // {
-      //   title: '数据类型',
-      //   type: 'select',
-      //   options: [
-      //     { label: '对象', value: 'object' },
-      //     { label: '列表', value: 'list' }
-      //   ],
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.dataType
-      //     },
-      //     set({ data }: EditorResult<Data>, val) {
-      //       data.dataType = val
-      //     }
-      //   }
-      // },
       {
         title: '布局',
         items: [
@@ -164,6 +148,7 @@ export default {
               { label: '水平', value: 'horizontal' },
               { label: '垂直', value: 'vertical' },
               { label: '内联', value: 'inline' },
+              // { label: '自由', value: 'absolute' },
             ],
             value: {
               get({ data }: EditorResult<Data>) {
@@ -200,6 +185,34 @@ export default {
           //   ]
           // }
         ]
+      },
+      // {
+      //   title: '添加表单项',
+      //   type: 'comSelector',
+      //   options: {
+      //     schema: 'mybricks.normal-pc.form-container/*',
+      //     type: 'add'
+      //   },
+      //   value: {
+      //     set({ data, slot }: EditorResult<Data>, namespace: string) {
+      //       slot
+      //         .get('content')
+      //         .addCom(namespace, false, { deletable: true, movable: true });
+      //     }
+      //   }
+      // },
+      {
+        title: '提交隐藏表单项',
+        type: 'Switch',
+        description: '提交时收集被隐藏的表单项字段并进行校验',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.submitHiddenFields
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.submitHiddenFields = val
+          }
+        }
       },
       {
         title: '标题',
@@ -297,19 +310,6 @@ export default {
           },
         ]
       },
-      {
-        title: '提交隐藏表单项',
-        type: 'Switch',
-        description: '提交时收集被隐藏的表单项字段并进行校验',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.submitHiddenFields
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.submitHiddenFields = val
-          }
-        }
-      },
       // {
       //   title: '禁用状态',
       //   type: 'Switch',
@@ -323,7 +323,6 @@ export default {
       //     }
       //   }
       // },
-      !data.isFormItem && actionsEditor(data, output),
       {
         title: '事件',
         items: [
@@ -339,27 +338,13 @@ export default {
           }
         ]
       }
-      // {
-      //   title: '选择表单项',
-      //   type: 'comSelector',
-      //   options: {
-      //     schema: 'mybricks.normal-pc.form-container/form-item',
-      //     type: 'add'
-      //   },
-      //   value: {
-      //     get () {
-
-      //     },
-      //     set({ data, slot }: EditorResult<Data>, namespace: string) {
-      //       console.log(namespace)
-      //       // data.selectComNameSpace = namespace;
-      //       slot
-      //         .get('content')
-      //         .addCom(namespace, false, { deletable: true, movable: true });
-      //     }
-      //   }
-      // }
     ]
+
+    if (!data.isFormItem) {
+      cate2.title = '操作区'
+      cate2.items =  actionsEditor(data, output).items
+    }
+    
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
@@ -646,7 +631,13 @@ export default {
           {
             title: "标题样式",
             type: "Style",
-            options: ['font'],
+            options: {
+              plugins: ['Font'],
+              fontProps: {
+                fontFamily: false,
+                verticalAlign: false
+              }
+            },
             ifVisible({ id, data }: EditorResult<Data>) {
               return !getFormItemProp({ data, id }, 'hiddenLabel');
             },
@@ -696,7 +687,13 @@ export default {
           {
             title: "提示语样式",
             type: "Style",
-            options: ['font'],
+            options: {
+              plugins: ['Font'],
+              fontProps: {
+                fontFamily: false,
+                verticalAlign: false
+              }
+            },
             description: "表单项提示语的字体样式",
             value: {
               get({ id, data }: EditorResult<Data>) {
