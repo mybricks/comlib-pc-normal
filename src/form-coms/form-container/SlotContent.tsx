@@ -35,15 +35,20 @@ const SlotContent = (props) => {
       },
       wrap(comAray: { id; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
-        // if (data.dataType === 'list') {
-        //   console.log('items', items, comAray, props?.field);
-        // }
 
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let item = items.find((item) => item.id === com.id);
-            if (!item) return;
+
+            if (!item) {
+              if (items.length === comAray.length) {
+                console.warn(`formItem comId ${com.id} formItem not found`);
+              }
+              return;
+            }
+
             const { widthOption, span, width } = item;
+
             childrenInputs[com.id] = com.inputs;
 
             const flexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
