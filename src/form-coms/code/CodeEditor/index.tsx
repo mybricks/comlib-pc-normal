@@ -8,8 +8,8 @@ import React, {
   useMemo
 } from 'react';
 import { Spin } from 'antd';
-import { getWindowVal } from '../../../richtext/utils';
-import { loadPkg } from '../../../utils/loadPkg';
+import { getWindowVal } from '../../../utils/getWindowVal';
+import { loadPkg, loadStylesheet } from '../../../utils/loadPkg';
 import { EditorProps } from './types';
 import { baseUrl } from './assets';
 import css from './index.less';
@@ -41,11 +41,13 @@ const getAssetsCDN = (language: string) => {
   const languageToolsCDN = `${baseUrl}/ace/1.4.12/ext-language_tools.js`;
   const aceLanguageCDN = `${baseUrl}/ace/1.4.12/mode-${language}.js`;
   const extBeautifyCDN = `${baseUrl}/ace/1.4.12/ext-beautify.js`;
+  const styleSheetCDN = `https://cdn.jsdelivr.net/npm/ace-builds@1.4.13/css/ace.min.css`;
   return {
     aceEditorCDN,
     languageToolsCDN,
     aceLanguageCDN,
-    extBeautifyCDN
+    extBeautifyCDN,
+    styleSheetCDN
   };
 };
 
@@ -79,7 +81,7 @@ const CodeEditor = (
     []
   );
 
-  const { aceEditorCDN, languageToolsCDN, aceLanguageCDN, extBeautifyCDN } = useMemo(
+  const { aceEditorCDN, languageToolsCDN, aceLanguageCDN, extBeautifyCDN, styleSheetCDN } = useMemo(
     () => getAssetsCDN(language),
     [language]
   );
@@ -101,8 +103,6 @@ const CodeEditor = (
     const ace = getWindowVal('ace');
     if (!ace) return;
     ace.config.set('basePath', `${baseUrl}/ace/1.4.12`);
-    console.log(config);
-
     editor.current = ace.edit(containerRef.current, {
       placeholder,
       readOnly,
@@ -155,7 +155,9 @@ const CodeEditor = (
   };
 
   const Load = useCallback(async () => {
+    const shadowRoot = document.getElementById('_mybricks-geo-webview_')?.shadowRoot;
     setLoading(true);
+    await loadStylesheet(styleSheetCDN, shadowRoot);
     await loadPkg(aceEditorCDN, 'ace');
     if (language !== 'text') {
       await loadPkg(aceLanguageCDN, 'aceLanguage');
