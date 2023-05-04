@@ -1,7 +1,7 @@
 import { Data, WidthUnitEnum } from '../../constants';
 import { getColItem, updateSlotTitle } from '../utils';
 
-const WidthEditor = [
+const WidthEditor = (item) => [
   {
     title: '宽度填充模式',
     type: 'Select',
@@ -14,12 +14,12 @@ const WidthEditor = [
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        const item = getColItem(data, focusArea);
+        // const item = getColItem(data, focusArea);
         return item.widthOption;
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: WidthUnitEnum) {
         if (!focusArea) return;
-        const item = getColItem(data, focusArea);
+        // const item = getColItem(data, focusArea);
         item.widthOption = value;
         updateSlotTitle(item, slot);
       }
@@ -38,17 +38,17 @@ const WidthEditor = [
     ],
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      const item = getColItem(data, focusArea);
+      // const item = getColItem(data, focusArea);
       return item?.widthOption === WidthUnitEnum.Span;
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        return getColItem(data, focusArea)?.span;
+        return item?.span;
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
         if (!focusArea) return;
-        const item = getColItem(data, focusArea);
+        // const item = getColItem(data, focusArea);
         item.span = value;
         updateSlotTitle(item, slot);
       }
@@ -62,17 +62,17 @@ const WidthEditor = [
     },
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      const item = getColItem(data, focusArea);
+      // const item = getColItem(data, focusArea);
       return item?.widthOption === WidthUnitEnum.Px;
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        return getColItem(data, focusArea)?.width;
+        return item?.width;
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
         if (!focusArea) return;
-        const item = getColItem(data, focusArea);
+        // const item = getColItem(data, focusArea);
         item.width = value;
         updateSlotTitle(item, slot);
       }
@@ -82,7 +82,7 @@ const WidthEditor = [
     title: '断点配置(24栅格)',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      const item = getColItem(data, focusArea);
+      // const item = getColItem(data, focusArea);
       return item?.widthOption === WidthUnitEnum.Media;
     },
     items: [
@@ -95,7 +95,7 @@ const WidthEditor = [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            const item = getColItem(data, focusArea);
+            // const item = getColItem(data, focusArea);
             if (!item.breakPoints) {
               item.breakPoints = {
                 'xs <576px': item.span.toString(),
@@ -110,7 +110,7 @@ const WidthEditor = [
           },
           set({ data, focusArea }: EditorResult<Data>, values: any) {
             if (!focusArea) return;
-            const item = getColItem(data, focusArea);
+            // const item = getColItem(data, focusArea);
             item.breakPoints = Object.assign(item.breakPoints || {}, values);
           }
         }
