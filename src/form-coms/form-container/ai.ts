@@ -113,7 +113,7 @@ export default {
       formItemColumn: 4,
       slots:{
         content:[
-            {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
+          {type:'mybricks.normal-pc.form-text', label: '输入框', name: 'name0'}
         ]
       }
     }

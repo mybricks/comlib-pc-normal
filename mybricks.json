@@ -68,7 +68,8 @@
           "./src/form-coms/time-picker/com.json",
           "./src/form-coms/time-range-picker/com.json",
           "./src/form-coms/color/com.json",
-          "./src/form-coms/code/com.json"
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
@@ -185,7 +186,8 @@
           "./src/form-coms/time-picker/com.json",
           "./src/form-coms/time-range-picker/com.json",
           "./src/form-coms/color/com.json",
-          "./src/form-coms/code/com.json"
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {

@@ -6,6 +6,7 @@
   "author": "ZhuLin",
   "author_name": "朱琳",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_0nxwk5.ce543f08d939685b.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",

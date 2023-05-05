@@ -49,11 +49,11 @@ export function addColumn({ data, focusArea, slot }: EditorResult<Data>) {
   if (!focusArea) return;
   const item = getRowItem(data, focusArea);
   const lastColumn = item.columns[item.columns.length > 0 ? item.columns.length - 1 : 0];
-  const column = createColBySpan(lastColumn.span || 4);
+  const column = createColBySpan(lastColumn?.span || 4);
   item.columns.push(column);
   const title = generateColumnsTitle({
     widthOption: WidthUnitEnum.Span,
-    span: lastColumn.span || 4
+    span: lastColumn?.span || 4
   });
   slot.add(column.slot, title);
 }

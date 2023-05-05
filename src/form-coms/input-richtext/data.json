@@ -1,0 +1,10 @@
+{
+  "style": {
+    "height": "200px"
+  },
+  "displayEditbar": true,
+  "toolbar": ["link"],
+  "disabled": false,
+  "placeholder": "请输入内容",
+  "rules": []
+}

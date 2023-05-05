@@ -1,24 +1,19 @@
 {
-  "title": "单选框",
-  "namespace": "mybricks.normal-pc.radio",
-  "version": "1.0.8",
-  "description": "单选框",
-  "author": "ZhuLin",
-  "author_name": "朱琳",
+  "title": "富文本输入框",
+  "namespace": "mybricks.normal-pc.input-richtext",
+  "version": "1.0.0",
+  "description": "富文本输入框",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
   "icon": "./icon.svg",
-  "preview": "https://f2.eckwai.com/kos/nlav11092/u_0aew3p.5ca4753a2d6dae44.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.ts",
-  "upgrade": "./upgrade.ts",
-  "target": {
-    "toReact": "./toReact.ts"
-  },
+  "editors": "./editors.tsx",
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
-      "desc": "设置单选框的值，并触发值变化事件输出",
+      "desc": "设置富文本输入框的值，并触发值变化事件输出",
       "schema": {
         "type": "string"
       }
@@ -26,7 +21,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置单选框的初始值，并触发初始化事件输出",
+      "desc": "设置富文本输入框的初始值，并触发初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -34,7 +29,7 @@
     {
       "id": "validate",
       "title": "校验",
-      "desc": "触发单选框的校验检查，并输出校验结果",
+      "desc": "触发富文本输入框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -45,7 +40,7 @@
     {
       "id": "getValue",
       "title": "获取值",
-      "desc": "获取单选框的值并输出",
+      "desc": "获取富文本输入框的值并输出",
       "schema": {
         "type": "any"
       },
@@ -56,37 +51,9 @@
     {
       "id": "resetValue",
       "title": "重置值",
-      "desc": "清空单选框的值",
+      "desc": "清空富文本输入框的值",
       "schema": {
         "type": "any"
-      }
-    },
-    {
-      "id": "setOptions",
-      "title": "设置数据源",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "label": {
-              "title": "标签",
-              "type": "string"
-            },
-            "value": {
-              "title": "值",
-              "type": "any"
-            },
-            "disabled": {
-              "title": "禁用",
-              "type": "boolean"
-            },
-            "checked": {
-              "title": "选中",
-              "type": "boolean"
-            }
-          }
-        }
       }
     },
     {
@@ -115,6 +82,13 @@
     {
       "id": "onChange",
       "title": "值更新",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onBlur",
+      "title": "失去焦点",
       "schema": {
         "type": "string"
       }

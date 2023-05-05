@@ -41,3 +41,28 @@ export function loadPkg(src: string, varName: string) {
     document.head.appendChild(script);
   });
 }
+
+const hasStylesheet = (href: string, container?: HTMLElement) => {
+  const links = (container || document).getElementsByTagName('link');
+  return !!Array.from(links).find((link) => link.href === href);
+};
+
+export function loadStylesheet(src: string, container?: any) {
+  return new Promise((resolve, reject) => {
+    if (hasStylesheet(src)) {
+      resolve('');
+      return;
+    }
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.type = 'text/css';
+    stylesheet.href = src;
+    stylesheet.onload = function () {
+      resolve('');
+    };
+    stylesheet.onerror = function (e) {
+      reject(e);
+    };
+    (container || document.head).appendChild(stylesheet);
+  });
+}

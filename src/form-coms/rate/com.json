@@ -6,6 +6,7 @@
   "version": "1.0.5",
   "description": "评分",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_1tias6.65a8bc3682e3ebb4.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",

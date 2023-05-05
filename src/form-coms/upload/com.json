@@ -6,6 +6,7 @@
   "version": "1.0.9",
   "description": "上传",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",

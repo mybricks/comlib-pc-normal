@@ -32,7 +32,6 @@
     ]
   },
   "isFormItem": false,
-  "dataType": "object",
   "wrapperCol": 24,
   "labelWidthType": "px",
   "labelWidth": 98,
