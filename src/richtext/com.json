@@ -1,7 +1,8 @@
 {
   "title": "富文本输入",
   "namespace": "mybricks.normal-pc.richtext",
-  "version": "1.0.1",
+  "visibility": false,
+  "version": "1.0.2",
   "description": "富文本输入",
   "author": "MyBricks",
   "author_name": "MyBricks",
