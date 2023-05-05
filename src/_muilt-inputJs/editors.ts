@@ -71,7 +71,7 @@ export default {
           },
           autoSave: false,
           onBlur: () => {
-            updateOutputSchema(output, data.fns);
+            data.autoOutputSchema && updateOutputSchema(output, data.fns);
           }
         };
         return option;
@@ -83,6 +83,18 @@ export default {
         },
         set({ data }: EditorResult<Data>, fns: any) {
           data.fns = fns;
+        }
+      }
+    },
+    {
+      title: '自动计算输出类型',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.autoOutputSchema ?? true;
+        },
+        set({ data }: EditorResult<Data>, val: boolean) {
+          data.autoOutputSchema = val;
         }
       }
     }
