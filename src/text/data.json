@@ -12,7 +12,8 @@
     "fontStyle": "normal",
     "lineHeight": "14px",
     "letterSpacing": "0px",
-    "color": "#000000"
+    "color": "#000000",
+    "textAlign": "left"
   },
   "useClick": false,
   "useDynamicStyle": false
