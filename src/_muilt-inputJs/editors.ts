@@ -71,7 +71,7 @@ export default {
           },
           autoSave: false,
           onBlur: () => {
-            data.autoOutputSchema && updateOutputSchema(output, data.fns);
+            (data.autoOutputSchema ?? true) && updateOutputSchema(output, data.fns);
           }
         };
         return option;

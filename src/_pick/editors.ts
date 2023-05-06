@@ -72,6 +72,22 @@ export default {
     cate1.title = '取数配置';
     cate1.items = [
       {
+        title: '表达式',
+        type: 'expression',
+        options: {
+          suggestions: data.suggestions
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return undefined;
+          },
+          set({ data, output }: EditorResult<Data>, val: string) {
+            const ex = val
+            console.log(ex)
+          }
+        }
+      },
+      {
         title: '取值列表',
         type: 'array',
         description: `取值表达式约定以“inputValue”开头，如对象取值“inputValue.a”，数组取值“inputValue[0]”，联合取值“{a: inputValue.a, b: inputValue.b}”`,
