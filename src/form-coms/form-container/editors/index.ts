@@ -186,21 +186,21 @@ export default {
           // }
         ]
       },
-      {
-        title: '添加表单项',
-        type: 'comSelector',
-        options: {
-          schema: 'mybricks.normal-pc.form-container/*',
-          type: 'add'
-        },
-        value: {
-          set({ data, slot }: EditorResult<Data>, namespace: string) {
-            slot
-              .get('content')
-              .addCom(namespace, false, { deletable: true, movable: true });
-          }
-        }
-      },
+      // {
+      //   title: '添加表单项',
+      //   type: 'comSelector',
+      //   options: {
+      //     schema: 'mybricks.normal-pc.form-container/*',
+      //     type: 'add'
+      //   },
+      //   value: {
+      //     set({ data, slot }: EditorResult<Data>, namespace: string) {
+      //       slot
+      //         .get('content')
+      //         .addCom(namespace, false, { deletable: true, movable: true });
+      //     }
+      //   }
+      // },
       {
         title: '提交隐藏表单项',
         type: 'Switch',
