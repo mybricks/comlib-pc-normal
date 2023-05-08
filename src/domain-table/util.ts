@@ -1,4 +1,4 @@
-import {message} from "antd";
+import { message } from 'antd';
 
 export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; url?: string; method?: string } = {}) => {
 	return fetch(option.url ?? (params.projectId ? '/runtime/api/domain/service/run' : '/api/system/domain/run'), {
@@ -23,3 +23,21 @@ export const ajax = (params: Record<string, unknown>, option: { successTip?: str
 		return Promise.reject(error);
 	})
 }
+
+/** parse JSON string，同时 catch 错误 */
+export const safeParse = (content: string, defaultValue = {}) => {
+	try {
+		return JSON.parse(content);
+	} catch {
+		return defaultValue;
+	}
+};
+
+/** stringify JSON string，同时 catch 错误 */
+export const safeStringify = (content: any) => {
+	try {
+		return JSON.stringify(content);
+	} catch {
+		return ''
+	}
+};

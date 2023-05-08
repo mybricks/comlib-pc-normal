@@ -23,9 +23,10 @@ import DebounceSelect from './components/debouce-select';
 import UserProfile from './components/user-profile';
 import RenderColumn from './components/render-column';
 import { RuleMap } from './rule';
-import { ajax } from './util';
+import { ajax, safeParse, safeStringify } from './util';
 import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
 import { Field } from './type';
+import UploadImage from './components/upload-image';
 
 import styles from './runtime.less';
 
@@ -136,6 +137,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           .forEach((field) => {
             if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
               value[field.name] = item[field.name] ? moment(item[field.name] as any) : null;
+            } else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
+              value[field.name] = safeParse(String(item[field.name]), []);
             } else if (field.mapping?.entity) {
               value[field.name] = (item[field.name] as { id: number })?.id ?? null;
             } else {
@@ -201,6 +204,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                     columnWidthMap={columnWidthMap}
                     value={value}
                     item={data}
+                    field={field}
                     ellipsis={field.tableInfo?.ellipsis}
                     columnWidth={columnWidthMap[title]}
                   />
@@ -233,6 +237,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           try {
             if (item.isAfter) {
               item.value = item.valueOf();
+            } else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
+              item.value = safeStringify(item.value);
             }
           } catch {}
 
@@ -306,18 +312,28 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           <Input onPressEnter={option.onPressEnter} addonBefore="+86" placeholder={placeholder} />
         );
       } else if (curFormItem === ComponentName.IMAGE_UPLOAD) {
-        item = <Upload />;
+        item = <UploadImage maxCount={field.form?.maxCount} />;
       } else if (curFormItem === ComponentName.RADIO) {
-        item = <Radio.Group options={field.form?.options ?? []} />;
+        item =
+          !field.form?.options.length && !runtime ? (
+            <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
+          ) : (
+            <Radio.Group options={field.form?.options ?? []} />
+          );
       } else if (curFormItem === ComponentName.CHECKBOX) {
-        item = <Checkbox.Group options={field.form?.options ?? []} />;
+        item =
+          !field.form?.options.length && !runtime ? (
+            <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
+          ) : (
+            <Checkbox.Group options={field.form?.options ?? []} />
+          );
       } else if (field.bizType === FieldBizType.APPEND_FILE) {
         item = <Upload />;
       }
 
       return item;
     },
-    []
+    [runtime]
   );
 
   const renderSearchFormNode = () => {
@@ -398,6 +414,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           try {
             if (item.isAfter) {
               item = (item as any).valueOf();
+            } else if (Array.isArray(item)) {
+              item = safeStringify(item);
             }
           } catch {}
 
