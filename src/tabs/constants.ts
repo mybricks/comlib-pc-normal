@@ -12,7 +12,6 @@ export interface TabItem {
   num?: number | string;
   outputContent?: string;
   permissionKey?: string;
-  id: string;
 
   tooltipText?: string;
   //设置tabs中是否需要icon

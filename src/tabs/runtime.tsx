@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, ReactNode } from 'react';
 import classnames from 'classnames';
-import { message, Tabs, Tooltip } from 'antd';
+import { Tabs, Tooltip } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
@@ -14,17 +14,25 @@ const chooseIcon = ({ icon }: { icon: ReactNode }) => {
   return <>{Icon}</>;
 };
 
-export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  slots,
+  inputs,
+  outputs,
+  onError,
+  logger
+}: RuntimeParams<Data>) {
   const [showTabs, setShowTabs] = useState<string[]>(
-    () => data.tabList?.map((item) => item.id) || []
+    () => data.tabList?.map((item) => item.key) || []
   );
   const preKey = usePrevious<string | undefined>(data.defaultActiveKey);
   const findTargetByKey = useCallback(
     (target = data.defaultActiveKey) => {
       return data.tabList.find(
-        ({ id, permissionKey, key }) =>
+        ({ permissionKey, key }) =>
           (!permissionKey || env.hasPermission({ key: permissionKey })) &&
-          showTabs?.includes(id as string) &&
+          showTabs?.includes(key) &&
           key === target
       );
     },
@@ -37,10 +45,14 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         data.defaultActiveKey = data.tabList[0].key;
       }
       // 激活
-      inputs[InputIds.SetActiveTab]((id) => {
-        const activeTab = data.tabList.find((item) => {
-          return item.id === id;
-        });
+      inputs[InputIds.SetActiveTab]((index: number) => {
+        if (index < 0 || index > data.tabList.length - 1) {
+          const errorMessage = '[tabs]：下标值超出范围';
+          onError(errorMessage);
+          logger.error(errorMessage);
+          return;
+        }
+        const activeTab = data.tabList[index];
         if (activeTab) {
           const { permissionKey } = activeTab;
           if (!permissionKey || (permissionKey && env.hasPermission({ key: permissionKey }))) {
@@ -51,7 +63,6 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         }
         data.defaultActiveKey = undefined;
         data.active = false;
-        message.error('标签页不存在');
       });
       // 上一页
       inputs[InputIds.PreviousTab](() => {
@@ -72,7 +83,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         }
       });
       //获取当前激活步骤
-      inputs[InputIds.OutActiveTab]((val, relOutputs) => {
+      inputs[InputIds.OutActiveTab]((_, relOutputs) => {
         const current = findTargetByKey();
         relOutputs[OutputIds.OutActiveTab](current);
       });
@@ -85,16 +96,18 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
               item.num = ds;
             } else {
               item.num = undefined;
-              console.error('只支持类型为string或者number的作为tab的name');
+              const errorMessage = '只支持类型为string或者number的作为tab的name';
+              onError(errorMessage);
+              logger.error(errorMessage);
             }
           });
       });
 
       // 动态设置显示tab
       if (data.useDynamicTab) {
-        inputs[InputIds.SetShowTab]((ds) => {
+        inputs[InputIds.SetShowTab]((ds: number[]) => {
           if (Array.isArray(ds)) {
-            const tempDs = ds.filter((str) => typeof str === 'string');
+            const tempDs = ds.map((index) => data.tabList[index]?.key).filter((key) => !!key);
             setShowTabs(tempDs);
           }
         });
@@ -112,23 +125,21 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   const tabRenderHook = () => {
     const currentTab = findTargetByKey();
     if (currentTab && !currentTab.render) {
-      const slotInputs = slots[currentTab.id].inputs;
-      slotInputs[`${currentTab.id}_render`] && slotInputs[`${currentTab.id}_render`]();
+      const slotInputs = slots[currentTab.key].inputs;
+      slotInputs[`${currentTab.key}_render`] && slotInputs[`${currentTab.key}_render`]();
     }
   };
 
   const tabIntoHook = () => {
-    const currentTab = findTargetByKey();
-    if (currentTab) {
+    if (data.defaultActiveKey) {
       // currentTab.render = true; //标记render状态
-      outputs[`${currentTab.id}_into`]();
+      outputs[`${data.defaultActiveKey}_into`]();
     }
   };
 
   const tabLeaveHook = () => {
     if (preKey === undefined) return Promise.resolve();
-    const preTab = findTargetByKey(preKey);
-    return Promise.all([outputs[`${preTab.id}_leave`]()]);
+    return Promise.all([outputs[`${preKey}_leave`]()]);
   };
 
   const handleClickItem = useCallback((values) => {
@@ -136,8 +147,8 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
       data.defaultActiveKey = values;
     }
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const { id, name } = data.tabList.find((item) => item.key === values) || {};
-      outputs[OutputIds.OnTabClick]({ id, name });
+      const { key, name } = data.tabList.find((item) => item.key === values) || {};
+      outputs[OutputIds.OnTabClick]({ key, name });
     }
   }, []);
 
@@ -174,7 +185,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
           if (
             env.runtime &&
             ((item.permissionKey && !env.hasPermission({ key: item.permissionKey })) ||
-              !showTabs?.includes(item.id))
+              !showTabs?.includes(item.key))
           ) {
             return null;
           }
@@ -193,7 +204,7 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
-                  {slots[item.id]?.render()}
+                  {slots[item.key]?.render()}
                 </div>
               )}
             </TabPane>

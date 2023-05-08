@@ -1,6 +1,7 @@
 import { Data } from '../constants';
+import { updateIO } from './common';
 export default {
-  '.ant-tabs-tab': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+  '.ant-tabs-tab': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -11,30 +12,11 @@ export default {
             const { index } = focusArea;
             return data.tabList[index]?.name;
           },
-          set({ data, focusArea, input }: EditorResult<Data>, title: string) {
+          set({ data, focusArea, input, output }: EditorResult<Data>, title: string) {
             const { index } = focusArea;
             const item = data.tabList[index];
             item.name = title;
-            input.setTitle(item.key, `${title}的通知数`);
-          }
-        }
-      },
-      {
-        title: 'id',
-        type: 'Text',
-        options: {
-          readonly: true
-        },
-        description: '指定后可作为tab页签的唯一标识，控制页签的激活状态',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            return data.tabList[index]?.id;
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            const { index } = focusArea;
-            const item = data.tabList[index];
-            item.id = value;
+            updateIO({ input, output, item });
           }
         }
       },
@@ -45,9 +27,9 @@ export default {
             title: '显示',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
-              const id = data.tabList[focusArea.index]?.id
+              const key = data.tabList[focusArea.index]?.key;
               return {
-                outputId: `${id}_into`
+                outputId: `${key}_into`
               };
             }
           },
@@ -55,9 +37,9 @@ export default {
             title: '隐藏',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
-              const id = data.tabList[focusArea.index]?.id
+              const key = data.tabList[focusArea.index]?.key;
               return {
-                outputId: `${id}_leave`
+                outputId: `${key}_leave`
               };
             }
           }
@@ -105,21 +87,20 @@ export default {
               },
               set({ data, focusArea, slots, output }: EditorResult<Data>) {
                 if (data.tabList.length > 1) {
-                  const id = data.tabList[focusArea.index]?.id
-                  if (id) {
-                    slots.remove(id);
-                    output.remove(`${id}_into`)
-                    output.remove(`${id}_leave`)
+                  const key = data.tabList[focusArea.index]?.key;
+                  if (key) {
+                    slots.remove(key);
+                    output.remove(`${key}_into`);
+                    output.remove(`${key}_leave`);
                   }
                   data.tabList.splice(focusArea.index, 1);
                   data.defaultActiveKey = data.tabList[0].key;
-
                 }
               }
             }
           }
         ]
-      },
+      }
     ];
 
     cate2.title = '样式';

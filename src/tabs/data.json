@@ -2,8 +2,7 @@
   "tabList": [
     {
       "name": "标签页",
-      "key": "tab0",
-      "id": "tab0"     
+      "key": "tab0"
     }
   ],
   "defaultActiveKey": "tab0",

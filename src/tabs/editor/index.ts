@@ -1,21 +1,6 @@
-import { uuid } from '../../utils';
-import { Data, InputIds, OutputIds, SlotIds } from '../constants';
-import TabEditor from './tab'
-
-const DefaultSchema = {
-  type: 'any'
-};
-
-const getId = (data) => {
-  const last = data.tabList.slice().pop();
-  const index = parseInt(last.id.substring(3)) + 1;
-  return `tab${index}`;
-};
-
-const addEventIO = (output, id) => {
-    output.add(`${id}_into`, `${id}显示`, {type: 'any'})
-    output.add(`${id}_leave`, `${id}隐藏`, {type: 'any'})
-}
+import { Data, InputIds, OutputIds, SlotIds, TabItem } from '../constants';
+import TabEditor from './tab';
+import { createItem, addEventIO } from './common';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -26,13 +11,13 @@ export default {
         type: 'Button',
         value: {
           set({ data, slots, output }: EditorResult<Data>) {
-            const key = uuid();
-            const id = getId(data);
+            const newItem = createItem();
             slots.add({
-              id,
-              title: `标签页${data.tabList.length + 1}`
-            })
-            addEventIO(output, id)
+              id: newItem.key,
+              title: newItem.name
+            });
+            addEventIO(output, newItem);
+            data.tabList.push(newItem);
             // slots.add({
             //   id,
             //   title: `标签页${data.tabList.length + 1}`,
@@ -55,11 +40,6 @@ export default {
             //     }
             //   ]
             // });
-            data.tabList.push({
-              id,
-              key,
-              name: '新标签页'
-            });
           }
         }
       },
@@ -127,12 +107,17 @@ export default {
             const hasEvent = input.get(InputIds.SetShowTab);
             if (value) {
               !hasEvent &&
-                input.add(InputIds.SetShowTab, '设置显示tab', {
-                  type: 'array',
-                  items: {
-                    title: '显示tab的Id',
-                    type: 'string'
-                  }
+                input.add({
+                  id: InputIds.SetShowTab,
+                  title: '设置显示tab',
+                  schema: {
+                    type: 'array',
+                    items: {
+                      title: '显示tab的Id',
+                      type: 'number'
+                    }
+                  },
+                  desc: '设置显示的标签页，下标从0开始'
                 });
             } else {
               hasEvent && input.remove(InputIds.SetShowTab);
