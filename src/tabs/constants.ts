@@ -19,7 +19,8 @@ export interface TabItem {
   // 设置tabs中icon
   icon?: string;
   //是否已经render
-  render?: boolean
+  render?: boolean;
+  id?: string;  //已废弃
 }
 /**
  * 数据源

@@ -45,14 +45,29 @@ export default function ({
         data.defaultActiveKey = data.tabList[0].key;
       }
       // 激活
-      inputs[InputIds.SetActiveTab]((index: number) => {
-        if (index < 0 || index > data.tabList.length - 1) {
-          const errorMessage = '[tabs]：下标值超出范围';
-          onError(errorMessage);
-          logger.error(errorMessage);
-          return;
+      inputs[InputIds.SetActiveTab]((index: number | string) => {
+        const val = +index;
+        let activeTab;
+        if (isNaN(val)) {
+          //兼容老数据，传入值是id（如"tab1"），id已摈弃
+          activeTab = data.tabList.find((item) => {
+            return item.id === index;
+          });
+          if (!activeTab) {
+            const errorMessage = '标签页不存在';
+            onError(errorMessage);
+            logger.error(errorMessage);
+            return;
+          }
+        } else {
+          if (val < 0 || val > data.tabList.length - 1) {
+            const errorMessage = '[tabs]：下标值超出范围';
+            onError(errorMessage);
+            logger.error(errorMessage);
+            return;
+          }
+          activeTab = data.tabList[val];
         }
-        const activeTab = data.tabList[index];
         if (activeTab) {
           const { permissionKey } = activeTab;
           if (!permissionKey || (permissionKey && env.hasPermission({ key: permissionKey }))) {
@@ -105,9 +120,19 @@ export default function ({
 
       // 动态设置显示tab
       if (data.useDynamicTab) {
-        inputs[InputIds.SetShowTab]((ds: number[]) => {
+        inputs[InputIds.SetShowTab]((ds: (number | string)[]) => {
           if (Array.isArray(ds)) {
-            const tempDs = ds.map((index) => data.tabList[index]?.key).filter((key) => !!key);
+            const tempDs = ds
+              .map((item) => {
+                const val = +item;
+                if (isNaN(val)) {
+                  //兼容老数据，传入值是id（id已摈弃）
+                  return item as string;
+                } else {
+                  return data.tabList[val]?.key;
+                }
+              })
+              .filter((key) => !!key);
             setShowTabs(tempDs);
           }
         });

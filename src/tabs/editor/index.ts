@@ -1,4 +1,4 @@
-import { Data, InputIds, OutputIds, SlotIds, TabItem } from '../constants';
+import { Data, InputIds, OutputIds, SlotIds } from '../constants';
 import TabEditor from './tab';
 import { createItem, addEventIO } from './common';
 

@@ -1,3 +1,4 @@
+import { Data } from 'src/domain-form/constants';
 import { uuid } from '../../utils';
 import { TabItem } from '../constants';
 export const createItem = (): TabItem => {
@@ -19,4 +20,22 @@ export const updateIO = ({ input, output, item }: { input?: any; output?: any; i
   input.setTitle(key, `${name}的通知数`);
   output.setTitle(`${key}_into`, `${name}显示`);
   output.setTitle(`${key}_leave`, `${name}隐藏`);
+};
+
+export const removeIOAndSlot = (props: EditorResult<Data>, item: TabItem) => {
+  const { input, output, slots } = props;
+  const { key, id } = item;
+  if (!!id) {
+    //兼容老数据
+    slots.remove(id);
+    output.remove(`${id}_into`);
+    output.remove(`${id}_leave`);
+  } else {
+    slots.remove(key);
+    output.remove(`${key}_into`);
+    output.remove(`${key}_leave`);
+    if (input.get(key)) {
+      input.remove(key);
+    }
+  }
 };

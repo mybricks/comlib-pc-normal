@@ -1,5 +1,5 @@
 import { Data } from '../constants';
-import { updateIO } from './common';
+import { updateIO, removeIOAndSlot } from './common';
 export default {
   '.ant-tabs-tab': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
@@ -85,13 +85,12 @@ export default {
               get({ focusArea }: EditorResult<Data>) {
                 return focusArea.index;
               },
-              set({ data, focusArea, slots, output }: EditorResult<Data>) {
+              set(props: EditorResult<Data>) {
+                const { data, focusArea } = props;
                 if (data.tabList.length > 1) {
-                  const key = data.tabList[focusArea.index]?.key;
-                  if (key) {
-                    slots.remove(key);
-                    output.remove(`${key}_into`);
-                    output.remove(`${key}_leave`);
+                  const item = data.tabList[focusArea.index];
+                  if (item) {
+                    removeIOAndSlot(props, item);
                   }
                   data.tabList.splice(focusArea.index, 1);
                   data.defaultActiveKey = data.tabList[0].key;
