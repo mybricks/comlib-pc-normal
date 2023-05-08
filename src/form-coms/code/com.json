@@ -3,12 +3,13 @@
     "namespace": "mybricks.normal-pc.code-editor",
     "author": "tangxiaoxin",
     "author_name": "唐小新",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "用于在线编辑代码，支持多种编程语言",
     "runtime": "./runtime.tsx",
     "editors": "./editor.ts",
     "data": "./data.json",
     "icon": "./icon.svg",
+    "preview": "https://f2.eckwai.com/kos/nlav11092/u_czhc45.53f127905636f996.svg",
     "inputs": [
       {
         "id": "setValue",
