@@ -1,7 +1,7 @@
 {
   "title": "文本排版",
   "namespace": "mybricks.normal-pc.typography",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "展示文本基本格式",
   "author": "MyBricks",
   "author_name": "MyBricks",
