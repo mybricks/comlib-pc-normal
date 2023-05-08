@@ -6,6 +6,7 @@
   "version": "1.0.6",
   "description": "内置中国大陆11位手机号码校验",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_6zcy4m.2d104629fe884457.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",

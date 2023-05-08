@@ -7,6 +7,7 @@
   "description": "密码输入框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_rwmzz5.273d5f58fc0c3d2c.png",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.ts",

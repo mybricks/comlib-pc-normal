@@ -6,6 +6,7 @@
   "version": "1.0.13",
   "description": "日期范围选择框",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_trwmiy.e7e7e1e9c31762da.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",

@@ -6,6 +6,7 @@
   "version": "1.0.4",
   "description": "邮箱",
   "icon": "./icon.svg",
+  "preview": "",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",

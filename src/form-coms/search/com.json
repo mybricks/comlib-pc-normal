@@ -6,6 +6,7 @@
   "version": "1.0.3",
   "description": "搜索框",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_bacj7f.ea2507b099403a42.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",

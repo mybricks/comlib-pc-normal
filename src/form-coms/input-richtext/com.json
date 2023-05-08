@@ -6,6 +6,7 @@
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_3dxwcb.fc6aad3a9dd9faf3.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
