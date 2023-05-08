@@ -8,7 +8,7 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%'
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -81,7 +81,7 @@ export default {
         },
         value: {
           get({ data }) {
-            let showTime: any = data.config.showTime;
+            let showTime: any = data.showTime;
             if (typeof showTime?.defaultValue === 'string') {
               return data.showTime?.defaultValue;
             }
@@ -89,7 +89,8 @@ export default {
               data.showTime = {}
             }
             return undefined;
-          },set({ data }, value: string) {
+          },
+          set({ data }, value: string) {
             data.showTime = {
               defaultValue: moment(value, 'HH:mm:ss').isValid()
                 ? value
@@ -164,7 +165,7 @@ export default {
               { label: '年-月-日', value: 'Y-MM-DD' },
               { label: '年-月', value: 'Y-MM' },
               { label: '年', value: 'Y' },
-              { label: '时间戳', value: 'timeStamp' }, 
+              { label: '时间戳', value: 'timeStamp' },
               { label: '自定义', value: 'custom' }
             ],
             value: {
