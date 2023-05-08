@@ -127,6 +127,44 @@
           "type": "object"
         }
       }
+    },
+    {
+      "id": "onClickAdd",
+      "title": "点击添加",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "title": "当前项索引",
+            "type": "number"
+          },
+          "key": {
+            "title": "当前项标识",
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "onClickRemove",
+      "title": "点击删除",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "当前项数据",
+            "type": "object"
+          },
+          "index": {
+            "title": "当前项索引",
+            "type": "number"
+          },
+          "key": {
+            "title": "当前项标识",
+            "type": "number"
+          }
+        }
+      }
     }
   ],
   "slots": [
@@ -192,7 +230,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-list",
+    "mybricks.normal-pc.form-container/form-item",
     "*"
   ]
 }

@@ -42,9 +42,10 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
 };
 
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { data, field, fieldIndex, hiddenRemoveButton } = props;
+  const { data, env, field, fieldIndex, hiddenRemoveButton } = props;
 
   const onClick = (item: Action) => {
+    if (env.edit) return;
     if (item.key === 'add') {
       addField({ data });
     }
@@ -53,8 +54,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
     }
   };
 
-  const hiddenAddButton =
-    typeof fieldIndex === 'number' && !(fieldIndex === data.fields.length - 1);
+  const notLastField = typeof fieldIndex === 'number' && !(fieldIndex === data.fields.length - 1);
 
   return (
     <Space wrap>
@@ -62,7 +62,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         if (item.visible === false) {
           return null;
         }
-        if (item.key === 'add' && hiddenAddButton) {
+        if (item.key === 'add' && notLastField) {
           return null;
         }
         if (item.key === 'remove' && hiddenRemoveButton) {
@@ -86,8 +86,8 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
 };
 
 const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { actions } = props.data;
-  const { align, widthOption, width, span, inlinePadding } = actions;
+  const { data, fieldIndex } = props;
+  const { align, widthOption, width, span, inlinePadding } = data.actions;
   const actionStyle: React.CSSProperties = {
     textAlign: align,
     padding: inlinePadding?.map(String).map(unitConversion).join(' ')
@@ -107,10 +107,12 @@ const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
     colon: false
   };
 
-  if (actions.visible) {
+  const isLastField = fieldIndex === data.fields.length - 1;
+
+  if (data.actions.visible) {
     return (
       <Col data-form-actions flex={getFlexValue()} style={actionStyle}>
-        <Form.Item {...formItemProps}>
+        <Form.Item {...formItemProps} style={isLastField ? { margin: 0 } : {}}>
           <Actions {...props} />
         </Form.Item>
       </Col>

@@ -59,6 +59,10 @@ export interface Data {
    */
   MaxKey: number
   /**
+   * 表单项数目
+   */
+  nameCount: number
+  /**
    * 校验规则
    */
   rules: any[];

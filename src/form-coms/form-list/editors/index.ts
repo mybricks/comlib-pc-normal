@@ -71,7 +71,7 @@ function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof 
 }
 
 export default {
-  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
+  '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
     if (curSlot.id === SlotIds.FormItems) {
       const { id, inputDefs, outputDefs } = child
       const item = data.items.find(item => item.id === id)
@@ -79,19 +79,18 @@ export default {
       if (item) {
         item.schema = com.schema
       } else {
-        const nowC = data.nameCount++
-
+        data.nameCount++;
         data.items.push({
           id,
           schema: com.schema,
-          name: '',
-          label: `${nowC}`,
+          name: `${data.nameCount}`,
+          label: `${data.nameCount}`,
           widthOption: 'span',
           span: 24 / data.formItemColumn,
           colon: 'default',
           labelAlign: 'default',
           labelAutoWrap: 'default',
-          hiddenLabel: false,
+          hiddenLabel: true,
           descriptionStyle: {
             whiteSpace: 'pre-wrap',
             lineHeight: '12px',
@@ -134,30 +133,30 @@ export default {
       {
         title: '布局',
         items: [
-          {
-            title: '排列方式',
-            type: 'layout',
-            options: [],
-            value: {
-              get({ data, slots }: EditorResult<Data>) {
-                const { slotStyle = {} } = data;
-                const slotInstance = slots.get(SlotIds.FormItems);
-                setSlotLayout(slotInstance, slotStyle);
-                return slotStyle;
-              },
-              set({ data, slots }: EditorResult<Data>, val: any) {
-                if (!data.slotStyle) {
-                  data.slotStyle = {};
-                }
-                data.slotStyle = {
-                  ...data.slotStyle,
-                  ...val
-                };
-                const slotInstance = slots.get(SlotIds.FormItems);
-                setSlotLayout(slotInstance, val);
-              }
-            }
-          },
+          // {
+          //   title: '排列方式',
+          //   type: 'layout',
+          //   options: [],
+          //   value: {
+          //     get({ data, slots }: EditorResult<Data>) {
+          //       const { slotStyle = {} } = data;
+          //       const slotInstance = slots.get(SlotIds.FormItems);
+          //       setSlotLayout(slotInstance, slotStyle);
+          //       return slotStyle;
+          //     },
+          //     set({ data, slots }: EditorResult<Data>, val: any) {
+          //       if (!data.slotStyle) {
+          //         data.slotStyle = {};
+          //       }
+          //       data.slotStyle = {
+          //         ...data.slotStyle,
+          //         ...val
+          //       };
+          //       const slotInstance = slots.get(SlotIds.FormItems);
+          //       setSlotLayout(slotInstance, val);
+          //     }
+          //   }
+          // },
           {
             title: '每行列数',
             type: 'Slider',
@@ -184,99 +183,99 @@ export default {
           // }
         ]
       },
-      {
-        title: '标题',
-        items: [
-          {
-            title: '宽度类型',
-            type: 'Select',
-            options: [
-              { label: '固定像素', value: 'px' },
-              { label: '24 栅格', value: 'span' },
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.labelWidthType
-              },
-              set({ data }: EditorResult<Data>, value: LabelWidthType) {
-                data.labelWidthType = value
-              },
-            }
-          },
-          {
-            title: '标题宽度(px)',
-            type: 'inputNumber',
-            options: [{ min: 1 }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.labelWidthType === 'px'
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return [data.labelWidth]
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.labelWidth = value[0]
-              }
-            }
-          },
-          {
-            title: '标题宽度(栅格)',
-            type: 'Slider',
-            options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.labelWidthType === 'span'
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.labelCol
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.labelCol = value
-              }
-            }
-          },
-          {
-            title: '显示冒号',
-            type: 'Switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemConfig?.colon || data.colon
-              },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.formItemConfig.colon = value
-              },
-            }
-          },
-          {
-            title: '自动换行',
-            type: 'Switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemConfig?.labelWrap
-              },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.formItemConfig.labelWrap = value
-              },
-            }
-          },
-          {
-            title: '对齐方式',
-            type: 'Radio',
-            options: [
-              { label: '左对齐', value: 'left' },
-              { label: '右对齐', value: 'right' }
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemConfig?.labelAlign
-              },
-              set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                data.formItemConfig.labelAlign = value
-              },
-            }
-          },
-        ]
-      },
+      // {
+      //   title: '标题',
+      //   items: [
+      //     {
+      //       title: '宽度类型',
+      //       type: 'Select',
+      //       options: [
+      //         { label: '固定像素', value: 'px' },
+      //         { label: '24 栅格', value: 'span' },
+      //       ],
+      //       value: {
+      //         get({ data }: EditorResult<Data>) {
+      //           return data.labelWidthType
+      //         },
+      //         set({ data }: EditorResult<Data>, value: LabelWidthType) {
+      //           data.labelWidthType = value
+      //         },
+      //       }
+      //     },
+      //     {
+      //       title: '标题宽度(px)',
+      //       type: 'inputNumber',
+      //       options: [{ min: 1 }],
+      //       ifVisible({ data }: EditorResult<Data>) {
+      //         return data.labelWidthType === 'px'
+      //       },
+      //       value: {
+      //         get({ data }: EditorResult<Data>) {
+      //           return [data.labelWidth]
+      //         },
+      //         set({ data }: EditorResult<Data>, value: number) {
+      //           data.labelWidth = value[0]
+      //         }
+      //       }
+      //     },
+      //     {
+      //       title: '标题宽度(栅格)',
+      //       type: 'Slider',
+      //       options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+      //       ifVisible({ data }: EditorResult<Data>) {
+      //         return data.labelWidthType === 'span'
+      //       },
+      //       value: {
+      //         get({ data }: EditorResult<Data>) {
+      //           return data.labelCol
+      //         },
+      //         set({ data }: EditorResult<Data>, value: number) {
+      //           data.labelCol = value
+      //         }
+      //       }
+      //     },
+      //     {
+      //       title: '显示冒号',
+      //       type: 'Switch',
+      //       value: {
+      //         get({ data }: EditorResult<Data>) {
+      //           return data.formItemConfig?.colon || data.colon
+      //         },
+      //         set({ data }: EditorResult<Data>, value: boolean) {
+      //           data.formItemConfig.colon = value
+      //         },
+      //       }
+      //     },
+      //     {
+      //       title: '自动换行',
+      //       type: 'Switch',
+      //       value: {
+      //         get({ data }: EditorResult<Data>) {
+      //           return data.formItemConfig?.labelWrap
+      //         },
+      //         set({ data }: EditorResult<Data>, value: boolean) {
+      //           data.formItemConfig.labelWrap = value
+      //         },
+      //       }
+      //     },
+      //     {
+      //       title: '对齐方式',
+      //       type: 'Radio',
+      //       options: [
+      //         { label: '左对齐', value: 'left' },
+      //         { label: '右对齐', value: 'right' }
+      //       ],
+      //       value: {
+      //         get({ data }: EditorResult<Data>) {
+      //           return data.formItemConfig?.labelAlign
+      //         },
+      //         set({ data }: EditorResult<Data>, value: 'left' | 'right') {
+      //           data.formItemConfig.labelAlign = value
+      //         },
+      //       }
+      //     },
+      //   ]
+      // },
       // {
       //   title: '初始长度',
       //   type: 'Slider',
@@ -861,7 +860,8 @@ export default {
               if (!item) return
 
               return {
-                outputId: item.outputId
+                outputId: item.outputId,
+                slotId: SlotIds.FormItems
               }
             }
           }

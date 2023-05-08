@@ -18,41 +18,37 @@ const JSXWrapper = ({ com }) => {
 
 const FormItem = (props: FormItemProps) => {
   const { com, item, field, data, slots } = props;
-  const formColon = data.colon;
   const style: React.CSSProperties = {
     margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
   };
-  const colon = item?.colon === 'default' ? formColon : item.colon;
-  const labelAlign =
-    item?.labelAlign === 'default' ? data.formItemConfig.labelAlign : item.labelAlign;
-  const whiteSpace =
-    item?.labelAutoWrap === 'default'
-      ? data.formItemConfig.labelWrap
-        ? 'pre-wrap'
-        : 'nowrap'
-      : item.labelAutoWrap
-      ? 'pre-wrap'
-      : 'nowrap';
+  // const formColon = data.colon;
+  // const colon = item?.colon === 'default' ? formColon : item.colon;
+  // const labelAlign =
+  //   item?.labelAlign === 'default' ? data.formItemConfig.labelAlign : item.labelAlign;
+  // const whiteSpace =
+  //   item?.labelAutoWrap === 'default'
+  //     ? data.formItemConfig.labelWrap
+  //       ? 'pre-wrap'
+  //       : 'nowrap'
+  //     : item.labelAutoWrap
+  //     ? 'pre-wrap'
+  //     : 'nowrap';
 
   return (
     <>
       <Form.Item
         {...field}
         label={
-          item?.hiddenLabel ? (
-            void 0
-          ) : (
-            <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
-          )
+          item?.hiddenLabel ? void 0 : <label style={{ ...item?.labelStyle }}>{item?.label}</label>
         }
-        {...data.config}
+        {...data.formItemConfig}
         name={field ? [field.name, item?.name] : item?.name}
         required={item?.required}
         validateStatus={item?.validateStatus?.[field.name]}
         help={item?.help?.[field.name]}
         tooltip={item?.tooltip}
         style={style}
-        colon={!!item?.label && colon}
+        // colon={!!item?.label && colon}
       >
         <JSXWrapper com={com} />
       </Form.Item>
