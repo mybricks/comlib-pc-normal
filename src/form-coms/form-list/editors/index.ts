@@ -8,18 +8,11 @@ import { RuleKeys } from '../../../form-coms/utils/validator'
 
 const defaultRules = [
   {
-    key: RuleKeys.CODE_VALIDATOR,
+    key: RuleKeys.REQUIRED,
     status: false,
     visible: true,
     title: '必填',
-    validateCode: `export default async function (value, context) {
-  if (!Array.isArray(value) || value.length < 1) {
-    context.failed('请至少添加一项');
-  } else {
-    context.successed();
-  }
-}
-    `
+    message: '请至少添加一项'
   },
   {
     key: RuleKeys.CODE_VALIDATOR,
@@ -29,7 +22,7 @@ const defaultRules = [
     validateCode: `export default async function (value, context) {
   if (!value) {
     // 校验失败
-    context.failed('校验失败');
+    context.failed('代码校验失败');
   } else {
     // 校验成功
     context.successed();
