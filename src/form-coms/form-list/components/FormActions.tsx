@@ -1,46 +1,55 @@
 import React, { useCallback, useMemo } from 'react';
 import { Form, Button, Row, Col, Space, FormListOperation, FormListFieldData } from 'antd';
 import { Action, Data } from '../types';
-import { deepCopy, unitConversion } from '../../../utils';
+import { unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
 
 export interface FormListActionsProps {
   operation?: FormListOperation;
-  field?: FormListFieldData;
+  field: FormListFieldData;
   fieldIndex?: number;
   hiddenRemoveButton?: boolean;
   childrenStore?: any;
 }
 
-const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { data, id, outputs, parentSlot, field, fieldIndex, hiddenRemoveButton, childrenStore } =
-    props;
+export const addField = ({ data }: { data: Data }) => {
   const { fields } = data;
+  data.MaxKey = data.MaxKey + 1;
+  fields.push({
+    name: fields.length,
+    key: data.MaxKey
+  });
+  data.currentAction = 'add';
+};
+
+const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
+  const { data, id, outputs, parentSlot, field, childrenStore } = props;
+  const { fields } = data;
+  data.currentAction = InputIds.SetInitialValue;
+  data.startIndex = field.name;
+  fields.splice(field.name, 1);
+  data.value = data.value?.filter((_, index) => {
+    return index !== field.name;
+  });
+  // 更新name
+  fields.forEach((field, index) => {
+    field && (field.name = index);
+  });
+  childrenStore[field.key] = undefined;
+
+  changeValue({ data, id, outputs, parentSlot });
+};
+
+const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
+  const { data, field, fieldIndex, hiddenRemoveButton } = props;
 
   const onClick = (item: Action) => {
     if (item.key === 'add') {
-      data.MaxKey = data.MaxKey + 1;
-      fields.push({
-        name: fields.length,
-        key: data.MaxKey
-      });
-      data.currentAction = 'add';
+      addField({ data });
     }
     if (item.key === 'remove' && field) {
-      data.currentAction = InputIds.SetInitialValue;
-      data.startIndex = field.name;
-      fields.splice(field.name, 1);
-      data.value = data.value?.filter((_, index) => {
-        return index !== field.name;
-      });
-      // 更新name
-      fields.forEach((field, index) => {
-        field && (field.name = index);
-      });
-      childrenStore[field.key] = undefined;
-
-      changeValue({ data, id, outputs, parentSlot });
+      removeField(props);
     }
   };
 

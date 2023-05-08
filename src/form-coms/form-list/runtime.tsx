@@ -1,10 +1,10 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
-import { ChildrenStore, Data, FormControlInputRels } from './types';
+import { ChildrenStore, Data } from './types';
 import SlotContent from './SlotContent';
-import { updateValue, getValue, generateFields, validateForInput } from './utils';
+import { updateValue, generateFields, validateForInput } from './utils';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
-import { ActionsWrapper } from './components/FormActions';
+import { ActionsWrapper, addField } from './components/FormActions';
 import { SlotIds, SlotInputIds } from './constants';
 import { InputIds, OutputIds } from '../types';
 
@@ -140,14 +140,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
+  const field = useMemo(() => {
+    return { name: 0, key: 0 };
+  }, []);
+
   if (env.edit) {
     return (
       <>
         <SlotContent
           {...props}
           childrenStore={childrenStore}
-          actions={<ActionsWrapper {...props} />}
-          field={{ name: 0, key: 0 }}
+          actions={<ActionsWrapper {...props} field={field} />}
+          field={field}
         />
       </>
     );
@@ -155,8 +159,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const defaultActionProps = {
     ...props,
+    field,
     hiddenRemoveButton: true
   };
+
+  useEffect(() => {
+    // 初始化
+    if (env.runtime && data.initLength) {
+      new Array(data.initLength).fill(null).forEach((_, index) => {
+        addField({ data });
+      });
+    }
+  }, []);
 
   return (
     <>

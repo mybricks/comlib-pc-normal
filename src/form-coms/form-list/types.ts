@@ -51,14 +51,6 @@ export type LabelWidthType = 'px' | 'span' | 'flexFull'
 export interface Data {
   value: any[] | undefined;
   /**
-   * 当前触发的输入项id
-   */
-  currentAction: string;
-  /**
-   * 需要初始化的列表项起始索引值
-   */
-  startIndex: number;
-  /**
    * 列表数据
    */
   fields: FormListFieldData[]
@@ -74,6 +66,18 @@ export interface Data {
    * 表单项列表
    */
   items: FormItems[]
+  /**
+   * 列表初始长度
+   */
+  initLength: number
+  /**
+   * 当前触发的输入项id
+   */
+  currentAction: string;
+  /**
+   * 需要初始化的列表项起始索引值
+   */
+  startIndex: number;
   /**
    * 是否提交隐藏表单项
    */
@@ -119,7 +123,6 @@ export interface Data {
    * 表单项公共配置
    */
   formItemConfig: FormItemProps
-
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'

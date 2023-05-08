@@ -4,8 +4,40 @@ import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
-import { InputIds } from '../../../form-coms/types'
-import { RuleKeys, defaultRules } from '../../../form-coms/utils/validator'
+import { RuleKeys } from '../../../form-coms/utils/validator'
+
+const defaultRules = [
+  {
+    key: RuleKeys.CODE_VALIDATOR,
+    status: false,
+    visible: true,
+    title: '必填',
+    validateCode: `export default async function (value, context) {
+  if (!Array.isArray(value) || value.length < 1) {
+    context.failed('请至少添加一项');
+  } else {
+    context.successed();
+  }
+}
+    `
+  },
+  {
+    key: RuleKeys.CODE_VALIDATOR,
+    status: false,
+    visible: true,
+    title: '代码校验',
+    validateCode: `export default async function (value, context) {
+  if (!value) {
+    // 校验失败
+    context.failed('校验失败');
+  } else {
+    // 校验成功
+    context.successed();
+  }
+}        
+    `
+  }
+]
 
 function fieldNameCheck(data: Data, name: string) {
   const fieldNameList = data.items.map(item => item.name)
@@ -252,6 +284,20 @@ export default {
           },
         ]
       },
+      // {
+      //   title: '初始长度',
+      //   type: 'Slider',
+      //   options: [{ min: 0, steps: 1 }],
+      //   description: '动态列表的初始项数',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.initLength;
+      //     },
+      //     set({ data }: EditorResult<Data>, val: number) {
+      //       data.initLength = val;
+      //     }
+      //   }
+      // },
       {
         title: '提交隐藏表单项',
         type: 'Switch',
@@ -286,7 +332,7 @@ export default {
       // },
       {
         title: '校验规则',
-        description: '提供快捷校验配置',
+        description: '提供快捷校验配置，需要配合表单容器使用生效',
         type: 'ArrayCheckbox',
         options: {
           checkField: 'status',

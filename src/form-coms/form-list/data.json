@@ -1,16 +1,10 @@
 {
-  "value": [
-    {}
-  ],
+  "value": [],
+  "initLength": 1,
   "items": [],
   "nameCount": 0,
   "formItemColumn": 1,
-  "fields": [
-    {
-      "name": 0,
-      "key": 0
-    }
-  ],
+  "fields": [],
   "MaxKey": 0,
   "slotStyle": {
     "display": "flex",
