@@ -1,7 +1,7 @@
 {
   "title": "消息提示",
   "namespace": "mybricks.normal-pc.message",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "消息提示",
   "author": "HuangQiuyun",
