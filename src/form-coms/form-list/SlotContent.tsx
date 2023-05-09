@@ -121,7 +121,12 @@ const SlotContent = (
           console.error(com, comAray);
           return <div key={idx}>组件错误</div>;
         });
-        return jsx;
+        return (
+          <>
+            {jsx}
+            {actions}
+          </>
+        );
       },
       inputValues,
       style: data.slotStyle,
@@ -129,12 +134,7 @@ const SlotContent = (
     });
   }, [data.slotStyle, data.fields.length, data.value?.[field.name]]);
 
-  return (
-    <Row key={field.key}>
-      {content}
-      {actions}
-    </Row>
-  );
+  return <>{content}</>;
 };
 
 export default SlotContent;

@@ -87,11 +87,17 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
 
 const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, fieldIndex } = props;
-  const { align, widthOption, width, span, inlinePadding } = data.actions;
+  const { align, widthOption, width, span, inlinePadding = [] } = data.actions;
+  const padding = [...inlinePadding];
+
+  // const isLastField = fieldIndex === data.fields.length - 1;
+  // if (isLastField) padding[2] = 0;
+
   const actionStyle: React.CSSProperties = {
     textAlign: align,
-    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
+    padding: padding.map(String).map(unitConversion).join(' ')
   };
+
   const getFlexValue = useCallback(() => {
     if (widthOption === 'px') {
       return `0 0 ${width || 0}px`;
@@ -107,12 +113,10 @@ const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
     colon: false
   };
 
-  const isLastField = fieldIndex === data.fields.length - 1;
-
   if (data.actions.visible) {
     return (
       <Col data-form-actions flex={getFlexValue()} style={actionStyle}>
-        <Form.Item {...formItemProps} style={isLastField ? { margin: 0 } : {}}>
+        <Form.Item {...formItemProps} style={{ margin: 0 }}>
           <Actions {...props} />
         </Form.Item>
       </Col>

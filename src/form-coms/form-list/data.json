@@ -3,7 +3,7 @@
   "initLength": 1,
   "items": [],
   "nameCount": 0,
-  "formItemColumn": 1,
+  "formItemColumn": 4,
   "fields": [],
   "MaxKey": 0,
   "slotStyle": {
@@ -16,13 +16,14 @@
   },
   "actions": {
     "visible": true,
+    "position": "tail",
     "widthOption": "span",
-    "span": 24,
+    "span": 6,
     "align": "left",
     "inlinePadding": [
       0,
-      0,
-      0,
+      16,
+      24,
       0
     ],
     "items": [

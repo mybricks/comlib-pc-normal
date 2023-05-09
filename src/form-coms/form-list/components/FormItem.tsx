@@ -18,8 +18,13 @@ const JSXWrapper = ({ com }) => {
 
 const FormItem = (props: FormItemProps) => {
   const { com, item, field, data, slots } = props;
+
+  const margin = [...item.inlineMargin];
+  // const isLastField = field.name === data.fields.length - 1;
+  // if (isLastField) margin[2] = 0;
+
   const style: React.CSSProperties = {
-    margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
+    margin: margin.map(String).map(unitConversion).join(' ')
   };
   // const formColon = data.colon;
   // const colon = item?.colon === 'default' ? formColon : item.colon;
