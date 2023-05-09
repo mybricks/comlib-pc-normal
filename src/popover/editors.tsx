@@ -157,14 +157,17 @@ export default {
         options: {
           plugins: ['bgColor', 'border', 'bgImage', 'font'],
           fontProps: {
-            fontFamily: false
+            fontFamily: false,
+            horizontalAlign: false,
+            verticalAlign: false
           }
         },
         value: {
           get({ data }: EditorResult<Data>) {
             return {
               background: data.style?.background || '#fff',
-              borderRadius: data.style?.borderRadius || '4'
+              borderRadius: data.style?.borderRadius || '4',
+              ...data.style
             };
           },
           set({ data }: EditorResult<Data>, value: any) {
