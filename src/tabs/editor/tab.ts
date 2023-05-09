@@ -1,6 +1,7 @@
 import { Data } from '../constants';
+import { updateIO, removeIOAndSlot } from './common';
 export default {
-  '.ant-tabs-tab': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+  '.ant-tabs-tab': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -11,30 +12,11 @@ export default {
             const { index } = focusArea;
             return data.tabList[index]?.name;
           },
-          set({ data, focusArea, input }: EditorResult<Data>, title: string) {
+          set({ data, focusArea, input, output }: EditorResult<Data>, title: string) {
             const { index } = focusArea;
             const item = data.tabList[index];
             item.name = title;
-            input.setTitle(item.key, `${title}的通知数`);
-          }
-        }
-      },
-      {
-        title: 'id',
-        type: 'Text',
-        options: {
-          readonly: true
-        },
-        description: '指定后可作为tab页签的唯一标识，控制页签的激活状态',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            return data.tabList[index]?.id;
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            const { index } = focusArea;
-            const item = data.tabList[index];
-            item.id = value;
+            updateIO({ input, output, item });
           }
         }
       },
@@ -103,13 +85,12 @@ export default {
               get({ focusArea }: EditorResult<Data>) {
                 return focusArea.index;
               },
-              set({ data, focusArea, slots, output }: EditorResult<Data>) {
+              set(props: EditorResult<Data>) {
+                const { data, focusArea } = props;
                 if (data.tabList.length > 1) {
-                  const id = data.tabList[focusArea.index]?.id
-                  if (id) {
-                    slots.remove(id);
-                    output.remove(`${id}_into`)
-                    output.remove(`${id}_leave`)
+                  const item = data.tabList[focusArea.index];
+                  if (item) {
+                    removeIOAndSlot(props, item);
                   }
                   data.tabList.splice(focusArea.index, 1);
                   data.defaultActiveKey = data.tabList[0].key;
