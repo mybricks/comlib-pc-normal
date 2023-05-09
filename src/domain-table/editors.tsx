@@ -90,6 +90,7 @@ export default {
                           field.bizType
                         )
                       ) {
+                        field.form.rules = RuleMapByBizType[field.bizType] || [];
                         field.form.required = true;
                       }
                     });
@@ -126,7 +127,13 @@ export default {
             title: '刷新模型实体信息',
             type: 'editorRender',
             options: {
-              render: Refresh
+              render: Refresh,
+              get domainFileId() {
+                return data.domainFileId;
+              },
+              get entityId() {
+                return data.entityId;
+              }
             },
             ifVisible({ data }: EditorResult<Data>) {
               return !!data.entity;
@@ -246,6 +253,7 @@ export default {
                         newField.bizType
                       )
                     ) {
+                      initForm.rules = RuleMapByBizType[field.bizType] || [];
                       initForm.required = true;
                     }
 
@@ -727,6 +735,22 @@ export default {
         }
       },
       {
+        title: '图片数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.IMAGE_UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
+          }
+        }
+      },
+      {
         title: '下拉选项列表',
         description: '可设置表单项下拉选项',
         type: 'array',
@@ -961,6 +985,22 @@ export default {
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
             field.form.rows = value[0] || 2;
+          }
+        }
+      },
+      {
+        title: '图片数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.IMAGE_UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
           }
         }
       },

@@ -1,40 +1,21 @@
 import { Data } from '../constants';
+import { updateIO, getFocusTab, removeIOAndSlot } from './common';
 export default {
-  '.ant-tabs-tab': ({ }: EditorResult<Data>, cate1, cate2, cate3) => {
+  '.ant-tabs-tab': (props: EditorResult<Data>, cate1, cate2, cate3) => {
+    if (!props.focusArea) return;
+    const item = getFocusTab(props);
     cate1.title = '常规';
     cate1.items = [
       {
         title: '名称',
         type: 'Text',
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            return data.tabList[index]?.name;
+          get({}: EditorResult<Data>) {
+            return item?.name;
           },
-          set({ data, focusArea, input }: EditorResult<Data>, title: string) {
-            const { index } = focusArea;
-            const item = data.tabList[index];
+          set({ input, output }: EditorResult<Data>, title: string) {
             item.name = title;
-            input.setTitle(item.key, `${title}的通知数`);
-          }
-        }
-      },
-      {
-        title: 'id',
-        type: 'Text',
-        options: {
-          readonly: true
-        },
-        description: '指定后可作为tab页签的唯一标识，控制页签的激活状态',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            return data.tabList[index]?.id;
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            const { index } = focusArea;
-            const item = data.tabList[index];
-            item.id = value;
+            updateIO({ input, output, item });
           }
         }
       },
@@ -44,8 +25,8 @@ export default {
           {
             title: '显示',
             type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const id = data.tabList[focusArea.index]?.id
+            options: ({}: EditorResult<Data>) => {
+              const id = item?.id;
               return {
                 outputId: `${id}_into`
               };
@@ -54,8 +35,8 @@ export default {
           {
             title: '隐藏',
             type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const id = data.tabList[focusArea.index]?.id
+            options: ({}: EditorResult<Data>) => {
+              const id = item?.id;
               return {
                 outputId: `${id}_leave`
               };
@@ -103,13 +84,12 @@ export default {
               get({ focusArea }: EditorResult<Data>) {
                 return focusArea.index;
               },
-              set({ data, focusArea, slots, output }: EditorResult<Data>) {
+              set(props: EditorResult<Data>) {
+                const { data, focusArea } = props;
                 if (data.tabList.length > 1) {
-                  const id = data.tabList[focusArea.index]?.id
-                  if (id) {
-                    slots.remove(id);
-                    output.remove(`${id}_into`)
-                    output.remove(`${id}_leave`)
+                  const item = data.tabList[focusArea.index];
+                  if (item) {
+                    removeIOAndSlot(props, item);
                   }
                   data.tabList.splice(focusArea.index, 1);
                   data.defaultActiveKey = data.tabList[0].key;
@@ -128,16 +108,12 @@ export default {
         title: '显示icon',
         type: 'Switch',
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            return data.tabList[index]?.showIcon;
+          get({}: EditorResult<Data>) {
+            return item?.showIcon;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            data.tabList[index].showIcon = value;
-            data.tabList[index].icon = 'BellOutlined';
+          set({}: EditorResult<Data>, value: boolean) {
+            item.showIcon = value;
+            item.icon = 'BellOutlined';
           }
         }
       },
@@ -145,20 +121,17 @@ export default {
         title: '图标自定义',
         type: 'Switch',
         description: '可选择是否需要自定义图标',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const { index } = focusArea;
-          return data.tabList[index].showIcon;
+        ifVisible({}: EditorResult<Data>) {
+          return item.showIcon;
         },
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            return data.tabList[index].isChoose;
+          get({}: EditorResult<Data>) {
+            return item.isChoose;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            const { index } = focusArea;
-            data.tabList[index].isChoose = value;
-            if (!data.tabList[index].isChoose) {
-              data.tabList[index].icon = 'BellOutlined';
+          set({}: EditorResult<Data>, value: boolean) {
+            item.isChoose = value;
+            if (!item.isChoose) {
+              item.icon = 'BellOutlined';
             }
           }
         }
@@ -166,18 +139,15 @@ export default {
       {
         title: '选择图标',
         type: 'icon',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const { index } = focusArea;
-          return data.tabList[index].isChoose;
+        ifVisible({}: EditorResult<Data>) {
+          return !!item.isChoose;
         },
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const { index } = focusArea;
-            return data.tabList[index].icon;
+          get({}: EditorResult<Data>) {
+            return item?.icon;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            const { index } = focusArea;
-            data.tabList[index].icon = value;
+          set({}: EditorResult<Data>, value: string) {
+            item.icon = value;
           }
         }
       },
@@ -188,15 +158,11 @@ export default {
           placeholder: 'tab标题的文字提示，不填写则不显示'
         },
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            return data.tabList[index]?.tooltipText;
+          get({}: EditorResult<Data>) {
+            return item?.tooltipText;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            data.tabList[index].tooltipText = value;
+          set({}: EditorResult<Data>, value: string) {
+            item.tooltipText = value;
           }
         }
       },
@@ -207,15 +173,11 @@ export default {
           return data.type === 'editable-card';
         },
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            return data.tabList[index]?.closable;
+          get({}: EditorResult<Data>) {
+            return item?.closable;
           },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            data.tabList[index].closable = value;
+          set({}: EditorResult<Data>, value: boolean) {
+            item.closable = value;
           }
         }
       }
@@ -227,16 +189,11 @@ export default {
         title: '支持动态通知显示',
         type: 'Switch',
         value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            return !!data.tabList[index]?.dynamic;
+          get({}: EditorResult<Data>) {
+            return !!item?.dynamic;
           },
-          set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
-            if (!focusArea) return;
-            const { index } = focusArea;
-            const item = data.tabList[index];
-            data.tabList[index].dynamic = value;
+          set({ input }: EditorResult<Data>, value: boolean) {
+            item.dynamic = value;
             if (value) {
               input.add(item.key, `${item.name}的通知数`, {
                 type: 'string'
@@ -255,16 +212,10 @@ export default {
             description: '唯一标识的权限key',
             type: 'text',
             value: {
-              get({ data, focusArea }) {
-                if (!focusArea) return;
-                const { index } = focusArea;
-                const item = data.tabList[index];
-                return item.permissionKey;
+              get({}: EditorResult<Data>) {
+                return item?.permissionKey;
               },
-              set({ data, focusArea }, value: string) {
-                if (!focusArea) return;
-                const { index } = focusArea;
-                const item = data.tabList[index];
+              set({}: EditorResult<Data>, value: string) {
                 item.permissionKey = value;
               }
             }

@@ -1,6 +1,6 @@
-import {message} from "antd";
+import { message } from 'antd';
 
-export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; url?: string; method?: string } = {}) => {
+export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; needErrorTip?: boolean; url?: string; method?: string } = {}) => {
 	return fetch(option.url ?? (params.projectId ? '/runtime/api/domain/service/run' : '/api/system/domain/run'), {
 		method: option.method || 'POST',
 		headers: {
@@ -15,11 +15,29 @@ export const ajax = (params: Record<string, unknown>, option: { successTip?: str
 			option.successTip && message.success(option.successTip);
 			return res.data;
 		} else {
-			throw new Error(res.message);
+			throw new Error(res.message || res.msg);
 		}
 	})
 	.catch(error => {
-		option.errorTip && message.error(option.errorTip);
+		(option.needErrorTip || option.errorTip) && message.error(option.errorTip || error.message);
 		return Promise.reject(error);
 	})
 }
+
+/** parse JSON string，同时 catch 错误 */
+export const safeParse = (content: string, defaultValue = {}) => {
+	try {
+		return JSON.parse(content);
+	} catch {
+		return defaultValue;
+	}
+};
+
+/** stringify JSON string，同时 catch 错误 */
+export const safeStringify = (content: any) => {
+	try {
+		return JSON.stringify(content);
+	} catch {
+		return ''
+	}
+};
