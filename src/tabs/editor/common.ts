@@ -33,3 +33,10 @@ export const removeIOAndSlot = (props: EditorResult<Data>, item: TabItem) => {
     input.remove(key);
   }
 };
+
+export const getFocusTab = (props: EditorResult<Data>) => {
+  const { data, focusArea } = props;
+  if (!focusArea) return {};
+  const { index } = focusArea;
+  return data.tabList[index];
+};
