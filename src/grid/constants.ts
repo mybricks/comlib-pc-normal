@@ -58,4 +58,5 @@ export interface Data {
   rows: IRow[];
   style: React.CSSProperties;
   widthUnit?: string;
+  globalColStyle?: React.CSSProperties
 }
