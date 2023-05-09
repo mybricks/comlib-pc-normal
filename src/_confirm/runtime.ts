@@ -19,7 +19,10 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       className: css.modalWrap,
       title: showTitle ? data.title : undefined,
       onCancel,
-      onOk
+      onOk,
+      getContainer() {
+        return env?.canvasElement || document.body
+      },
     });
   };
 
