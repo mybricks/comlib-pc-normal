@@ -2,6 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload, UploadFile } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
+import { ajax } from '../../util';
 
 import styles from './index.less';
 
@@ -64,22 +65,11 @@ const UploadImage: FC<UploadImageProps> = (props) => {
     const formData = new FormData();
     formData.append('file', file.file);
     formData.append('folderPath', `/imgs/${Date.now()}`);
-    (window as any)
-      .axios?.({
-        method: 'post',
-        url: '/paas/api/flow/saveFile',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
+    ajax(formData as any, { url: '/paas/api/flow/saveFile', contentType: 'multipart/form-data' })
       .then((res) => {
-        if (res.data.code === 1) {
-          file.onSuccess(res.data.data);
-        } else {
-          file.onError(new Error(res.data.msg));
-        }
+        file.onSuccess(res);
       })
       .catch((error) => {
-        console.error(error);
         file.onError(error);
       });
   }, []);
