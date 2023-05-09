@@ -27,9 +27,9 @@ export default {
             title: '显示',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
-              const key = data.tabList[focusArea.index]?.key;
+              const id = data.tabList[focusArea.index]?.id
               return {
-                outputId: `${key}_into`
+                outputId: `${id}_into`
               };
             }
           },
@@ -94,12 +94,13 @@ export default {
                   }
                   data.tabList.splice(focusArea.index, 1);
                   data.defaultActiveKey = data.tabList[0].key;
+
                 }
               }
             }
           }
         ]
-      }
+      },
     ];
 
     cate2.title = '样式';
