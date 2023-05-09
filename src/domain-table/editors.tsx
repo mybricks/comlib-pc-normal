@@ -127,7 +127,13 @@ export default {
             title: '刷新模型实体信息',
             type: 'editorRender',
             options: {
-              render: Refresh
+              render: Refresh,
+              get domainFileId() {
+                return data.domainFileId;
+              },
+              get entityId() {
+                return data.entityId;
+              }
             },
             ifVisible({ data }: EditorResult<Data>) {
               return !!data.entity;
