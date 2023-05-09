@@ -68,11 +68,13 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   useLayoutEffect(() => {
     inputs['setValue']((val: UploadFile[]) => {
+      fileListRef.current = val;
       setFileList(val);
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         setFileList(val);
+        fileListRef.current = val;
         outputs[OutputIds.OnInitial](val);
       });
     inputs['validate']((val, outputRels) => {
