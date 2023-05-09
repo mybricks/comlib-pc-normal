@@ -134,6 +134,9 @@ export default function ({
               })
               .filter((id) => !!id);
             setShowTabs(tempDs);
+            if (tempDs.length) {
+              data.defaultActiveKey = data.tabList.find(({ id }) => id === tempDs[0])?.key;
+            }
           }
         });
       }
