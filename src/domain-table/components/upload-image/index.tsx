@@ -14,7 +14,14 @@ interface UploadImageProps {
 const UploadImage: FC<UploadImageProps> = (props) => {
   const { value = [], onChange, maxCount = 1 } = props;
   const [fileList, setFileList] = useState<UploadFile[]>(
-    value.map((url, index) => ({ uid: Date.now() + index, name: 'image.png', status: 'done', url }))
+    Array.isArray(value)
+      ? value.map((url, index) => ({
+          uid: String(Date.now()) + index,
+          name: 'image.png',
+          status: 'done',
+          url
+        }))
+      : []
   );
 
   const handleChange = useCallback(({ fileList: newFileList }) => {

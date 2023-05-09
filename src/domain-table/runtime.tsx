@@ -138,7 +138,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
               value[field.name] = item[field.name] ? moment(item[field.name] as any) : null;
             } else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
-              value[field.name] = safeParse(String(item[field.name]), []);
+              value[field.name] = item[field.name] ? safeParse(String(item[field.name]), []) : [];
             } else if (field.mapping?.entity) {
               value[field.name] = (item[field.name] as { id: number })?.id ?? null;
             } else {
@@ -444,27 +444,32 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           }
         }
 
-        ajax({
-          params: {
-            fields:
-              showModalAction === ModalAction.CREATE
-                ? undefined
-                : data.entity.fieldAry.filter(
-                    (field) =>
-                      ![
-                        FieldBizType.MAPPING,
-                        FieldBizType.SYS_USER_CREATOR,
-                        FieldBizType.SYS_USER_UPDATER
-                      ].includes(field.bizType) &&
-                      !field.isPrimaryKey &&
-                      !field.isPrivate &&
-                      !field.form.disabledForEdit
-                  ),
-            query: curValue,
-            action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE'
+        ajax(
+          {
+            params: {
+              fields:
+                showModalAction === ModalAction.CREATE
+                  ? undefined
+                  : data.entity.fieldAry.filter(
+                      (field) =>
+                        ![
+                          FieldBizType.MAPPING,
+                          FieldBizType.SYS_USER_CREATOR,
+                          FieldBizType.SYS_USER_UPDATER
+                        ].includes(field.bizType) &&
+                        !field.isPrimaryKey &&
+                        !field.isPrivate &&
+                        !field.form.disabledForEdit
+                    ),
+              query: curValue,
+              action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE'
+            },
+            ...baseFetchParams
           },
-          ...baseFetchParams
-        }).then(() => {
+          {
+            needErrorTip: true
+          }
+        ).then(() => {
           setShowModalAction('');
           handleData(searchFormValue.current);
         });
