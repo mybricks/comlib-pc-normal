@@ -24,15 +24,15 @@ export default function ({
   logger
 }: RuntimeParams<Data>) {
   const [showTabs, setShowTabs] = useState<string[]>(
-    () => data.tabList?.map((item) => item.key) || []
+    () => data.tabList?.map((item) => item.id) || []
   );
   const preKey = usePrevious<string | undefined>(data.defaultActiveKey);
   const findTargetByKey = useCallback(
     (target = data.defaultActiveKey) => {
       return data.tabList.find(
-        ({ permissionKey, key }) =>
+        ({ id, permissionKey, key }) =>
           (!permissionKey || env.hasPermission({ key: permissionKey })) &&
-          showTabs?.includes(key) &&
+          showTabs?.includes(id as string) &&
           key === target
       );
     },
@@ -98,7 +98,7 @@ export default function ({
         }
       });
       //获取当前激活步骤
-      inputs[InputIds.OutActiveTab]((_, relOutputs) => {
+      inputs[InputIds.OutActiveTab]((val, relOutputs) => {
         const current = findTargetByKey();
         relOutputs[OutputIds.OutActiveTab](current);
       });
@@ -123,16 +123,16 @@ export default function ({
         inputs[InputIds.SetShowTab]((ds: (number | string)[]) => {
           if (Array.isArray(ds)) {
             const tempDs = ds
-              .map((item) => {
-                const val = +item;
+              .map((id) => {
+                const val = +id;
                 if (isNaN(val)) {
-                  //兼容老数据，传入值是id（id已摈弃）
-                  return item as string;
+                  //兼容老数据，传入值是id
+                  return id as string;
                 } else {
-                  return data.tabList[val]?.key;
+                  return data.tabList[val]?.id;
                 }
               })
-              .filter((key) => !!key);
+              .filter((id) => !!id);
             setShowTabs(tempDs);
           }
         });
@@ -150,21 +150,24 @@ export default function ({
   const tabRenderHook = () => {
     const currentTab = findTargetByKey();
     if (currentTab && !currentTab.render) {
-      const slotInputs = slots[currentTab.key].inputs;
-      slotInputs[`${currentTab.key}_render`] && slotInputs[`${currentTab.key}_render`]();
+      const slotInputs = slots[currentTab.id].inputs;
+      slotInputs[`${currentTab.id}_render`] && slotInputs[`${currentTab.id}_render`]();
     }
   };
 
   const tabIntoHook = () => {
-    if (data.defaultActiveKey) {
+    const currentTab = findTargetByKey();
+    if (currentTab) {
       // currentTab.render = true; //标记render状态
-      outputs[`${data.defaultActiveKey}_into`]();
+      outputs[`${currentTab.id}_into`]();
     }
   };
 
   const tabLeaveHook = () => {
     if (preKey === undefined) return Promise.resolve();
-    return Promise.all([outputs[`${preKey}_leave`]()]);
+    const preTab = findTargetByKey(preKey);
+    if (preTab) return Promise.all([outputs[`${preTab.id}_leave`]()]);
+    return Promise.resolve();
   };
 
   const handleClickItem = useCallback((values) => {
@@ -172,8 +175,8 @@ export default function ({
       data.defaultActiveKey = values;
     }
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const { key, name } = data.tabList.find((item) => item.key === values) || {};
-      outputs[OutputIds.OnTabClick]({ key, name });
+      const { id, name } = data.tabList.find((item) => item.key === values) || {};
+      outputs[OutputIds.OnTabClick]({ id, name });
     }
   }, []);
 
@@ -210,7 +213,7 @@ export default function ({
           if (
             env.runtime &&
             ((item.permissionKey && !env.hasPermission({ key: item.permissionKey })) ||
-              !showTabs?.includes(item.key))
+              !showTabs?.includes(item.id))
           ) {
             return null;
           }
@@ -229,7 +232,7 @@ export default function ({
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
-                  {slots[item.key]?.render()}
+                  {slots[item.id]?.render()}
                 </div>
               )}
             </TabPane>

@@ -37,9 +37,9 @@ export default {
             title: '隐藏',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
-              const key = data.tabList[focusArea.index]?.key;
+              const id = data.tabList[focusArea.index]?.id
               return {
-                outputId: `${key}_leave`
+                outputId: `${id}_leave`
               };
             }
           }

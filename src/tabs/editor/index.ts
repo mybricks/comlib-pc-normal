@@ -11,9 +11,9 @@ export default {
         type: 'Button',
         value: {
           set({ data, slots, output }: EditorResult<Data>) {
-            const newItem = createItem();
+            const newItem = createItem(data);
             slots.add({
-              id: newItem.key,
+              id: newItem.id,
               title: newItem.name
             });
             addEventIO(output, newItem);

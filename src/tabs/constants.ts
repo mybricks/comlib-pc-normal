@@ -12,6 +12,7 @@ export interface TabItem {
   num?: number | string;
   outputContent?: string;
   permissionKey?: string;
+  id: string;
 
   tooltipText?: string;
   //设置tabs中是否需要icon
@@ -19,8 +20,7 @@ export interface TabItem {
   // 设置tabs中icon
   icon?: string;
   //是否已经render
-  render?: boolean;
-  id?: string;  //已废弃
+  render?: boolean
 }
 /**
  * 数据源
