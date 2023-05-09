@@ -7,7 +7,13 @@ export const StyleEditor = [
     items: [
       {
         title: '标签样式',
-        type: 'Character',
+        type: 'Style',
+        options: {
+          plugins: ['Font'],
+          fontProps: {
+            fontFamily: false
+          }
+        },
         value: {
           get({ data, focusArea }) {
             if (!focusArea) return;
@@ -21,7 +27,13 @@ export const StyleEditor = [
       },
       {
         title: '内容样式',
-        type: 'Character',
+        type: 'Style',
+        options: {
+          plugins: ['Font'],
+          fontProps: {
+            fontFamily: false
+          }
+        },
         value: {
           get({ data, focusArea }) {
             if (!focusArea) return;
