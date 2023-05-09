@@ -1,6 +1,7 @@
 import { Data, LabelWidthType } from '../types'
 import { uuid } from '../../../utils'
 import visibleOpt from '../../../components/editorRender/visibleOpt'
+import { getItemSchema } from '../schema'
 
 export const actionsEditor = (data: Data, output) => {
 
@@ -17,14 +18,14 @@ export const actionsEditor = (data: Data, output) => {
           title: '添加一项',
           isDefault: true,
           visible: true,
-          outputId: 'onClickAdd',
+          outputId: 'add',
           key: 'add',
         },
         {
           title: '删除',
           isDefault: true,
           visible: true,
-          outputId: 'onClickRemove',
+          outputId: 'remove',
           key: 'remove',
         },
       ],
@@ -179,7 +180,26 @@ export const actionsEditor = (data: Data, output) => {
               isDefault: false,
               visible: true
             }
-            output.add(outputId, `点击${title}`, { type: 'any' })
+            const itemSchema = getItemSchema(data);
+
+            const actionSchema = {
+              type: 'object',
+              properties: {
+                value: {
+                  title: '当前项数据',
+                  ...itemSchema
+                },
+                index: {
+                  title: '当前项索引',
+                  type: 'number',
+                },
+                key: {
+                  title: '当前项标识',
+                  type: 'number',
+                },
+              },
+            };
+            output.add(outputId, `点击${title}`, actionSchema)
             actions.items.push(item)
             return item;
           }

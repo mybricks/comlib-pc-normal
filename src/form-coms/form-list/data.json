@@ -31,14 +31,14 @@
         "title": "添加一项",
         "isDefault": true,
         "visible": true,
-        "outputId": "onClickAdd",
+        "outputId": "add",
         "key": "add"
       },
       {
         "title": "删除",
         "isDefault": true,
         "visible": true,
-        "outputId": "onClickRemove",
+        "outputId": "remove",
         "key": "remove"
       }
     ]

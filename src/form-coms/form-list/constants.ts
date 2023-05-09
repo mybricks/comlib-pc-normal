@@ -9,8 +9,8 @@ export const SlotInputIds = {
 };
 
 export const OutputIds = {
-  ON_CLICK_REMOVE: 'onClickRemove',
-  ON_CLICK_ADD: 'onClickAdd',
+  ON_CLICK_ADD: 'add',
+  ON_CLICK_REMOVE: 'remove',
 };
 
 export const labelWidthTypes = {

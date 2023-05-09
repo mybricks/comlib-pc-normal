@@ -1,5 +1,6 @@
 import { InputIds, OutputIds } from '../../types'
 import { SlotIds, SlotInputIds } from '../constants'
+import { Data } from '../types'
 
 function getItemSchema(data) {
   const properties = {}
@@ -14,23 +15,49 @@ function getItemSchema(data) {
   }
 }
 
-function refreshSchema({ data, inputs, outputs, slots }) {
+function refreshSchema({ data, inputs, outputs, slots }: EditorResult<Data>) {
   const itemSchema = getItemSchema(data)
-  const schema = {
+
+  const actionSchema = {
+    type: 'object',
+    properties: {
+      value: {
+        title: '当前项数据',
+        ...itemSchema
+      },
+      index: {
+        title: '当前项索引',
+        type: 'number',
+      },
+      key: {
+        title: '当前项标识',
+        type: 'number',
+      },
+    },
+  };
+
+  const valueSchema = {
     type: 'array',
     items: itemSchema
   };
 
-  outputs.get(OutputIds.OnChange).setSchema(schema)
-  outputs.get(OutputIds.OnInitial).setSchema(schema)
-  outputs.get(OutputIds.ReturnValue).setSchema(schema)
+  outputs.get(OutputIds.OnChange).setSchema(valueSchema)
+  outputs.get(OutputIds.OnInitial).setSchema(valueSchema)
+  outputs.get(OutputIds.ReturnValue).setSchema(valueSchema)
 
-  inputs.get(InputIds.SetInitialValue).setSchema(schema)
-  inputs.get(InputIds.SetValue).setSchema(schema)
+  data.actions.items.forEach(action => {
+    const { key } = action;
+    if (key !== 'add') {
+      outputs.get(key).setSchema(actionSchema);
+    }
+  });
+
+  inputs.get(InputIds.SetInitialValue).setSchema(valueSchema)
+  inputs.get(InputIds.SetValue).setSchema(valueSchema)
 
   slots.get(SlotIds.FormItems).inputs.get(SlotInputIds.CUR_VALUE).setSchema(itemSchema)
 }
 
 
 
-export { refreshSchema }
+export { getItemSchema, refreshSchema }

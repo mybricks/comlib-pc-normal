@@ -129,24 +129,24 @@
       }
     },
     {
-      "id": "onClickAdd",
+      "id": "add",
       "title": "点击添加",
       "schema": {
         "type": "object",
         "properties": {
-          "index": {
-            "title": "当前项索引",
+          "nextIndex": {
+            "title": "新增项索引",
             "type": "number"
           },
-          "key": {
-            "title": "当前项标识",
+          "nextKey": {
+            "title": "新增项标识",
             "type": "number"
           }
         }
       }
     },
     {
-      "id": "onClickRemove",
+      "id": "remove",
       "title": "点击删除",
       "schema": {
         "type": "object",

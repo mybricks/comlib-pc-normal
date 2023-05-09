@@ -83,7 +83,7 @@ export default {
         data.items.push({
           id,
           schema: com.schema,
-          name: `${data.nameCount}`,
+          name: `name${data.nameCount}`,
           label: `${data.nameCount}`,
           widthOption: 'span',
           span: 24 / data.formItemColumn,
