@@ -607,7 +607,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             return (
               <Col
                 style={style}
-                span={currentShowAllowRenderCreateItem.length > 5 ? 12 : 24}
+                span={(currentShowAllowRenderCreateItem.length > 5 && formItem !== ComponentName.RICH_TEXT) ? 12 : 24}
                 key={field.id}
               >
                 <div
@@ -617,7 +617,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                 >
                   <Form.Item
                     initialValue={defaultValue}
-                    labelCol={{ span: 6 }}
+                    className={styles.formItemArea}
                     required={field.form?.required}
                     name={field.name}
                     label={field.form?.label ?? field.name}

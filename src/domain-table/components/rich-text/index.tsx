@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { uuid } from '../../../utils';
 import { Spin } from 'antd';
+import { uuid } from '../../../utils';
 import { loadPkg } from '../../../utils/loadPkg';
-import { getWindowVal, Init } from '../../../form-coms/input-richtext/utils';
+import { getWindowVal, Init } from './utils';
 import { Field } from '../../type';
-import {safeDecodeURIComponent, safeEncodeURIComponent} from '../../util';
+import { safeDecodeURIComponent, safeEncodeURIComponent } from '../../util';
 
-import css from "../../../form-coms/input-richtext/richText.less";
+import css from './index.less';
 
 // 自定义icon_id
 const customIconsId: string = '_pcEditor_customIcons_' + uuid();
