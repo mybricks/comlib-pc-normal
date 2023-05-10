@@ -315,14 +315,14 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         item = <UploadImage maxCount={field.form?.maxCount} />;
       } else if (curFormItem === ComponentName.RADIO) {
         item =
-          !field.form?.options.length && !runtime ? (
+          !field.form?.options?.length && !runtime ? (
             <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
           ) : (
             <Radio.Group options={field.form?.options ?? []} />
           );
       } else if (curFormItem === ComponentName.CHECKBOX) {
         item =
-          !field.form?.options.length && !runtime ? (
+          !field.form?.options?.length && !runtime ? (
             <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
           ) : (
             <Checkbox.Group options={field.form?.options ?? []} />
