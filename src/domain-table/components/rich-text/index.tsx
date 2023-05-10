@@ -25,10 +25,15 @@ interface RichTextProps {
 const RichText: FC<RichTextProps> = props => {
 	const { value = '', onChange, disabled: readonly, field, placeholder = '请输入内容' } = props;
 	const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
-	const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
-	const valueRef = useRef(safeDecodeURIComponent(value));
+	const valueRef = useRef(safeDecodeURIComponent(value || ''));
 	const [loading, setLoading] = useState(true);
 	const textareaRef = useRef(null);
+	
+	useEffect(() => {
+		valueRef.current = safeDecodeURIComponent(value || '');
+		const tinyMCE = getWindowVal('tinyMCE');
+		tinyMCE && tinyMCE.editors?.[tinymceId]?.setContent(valueRef.current);
+	}, [value]);
 	
 	const Load: () => void = useCallback(async () => {
 		await loadPkg(tinymceCDN, 'tinyMCE');
@@ -61,7 +66,7 @@ const RichText: FC<RichTextProps> = props => {
 			customIconsId,
 			setUp: (editor: any) => {
 				editor.on('input', () => {
-					change(false);
+					change();
 				});
 			},
 			initCB: (editor) => {
@@ -77,11 +82,11 @@ const RichText: FC<RichTextProps> = props => {
 	}, []);
 	
 	//值变化
-	const change = useCallback((bool) => {
+	const change = useCallback(() => {
 		const tinyMCE = getWindowVal('tinyMCE');
 		if (!tinyMCE) return;
 		
-		const tinymceInstance = bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
+		const tinymceInstance = tinyMCE.editors[tinymceId];
 		
 		const content = tinymceInstance?.getContent({ format: 't' });
 		
@@ -94,17 +99,9 @@ const RichText: FC<RichTextProps> = props => {
 		
 		return () => {
 			const tinyMCE = getWindowVal('tinyMCE');
-			tinyMCE && [tinymceId, tinymceFSId].forEach((id) => tinyMCE.editors[id]?.remove());
+			tinyMCE && tinyMCE.editors[tinymceId]?.remove();
 		};
 	}, [field.form.toolbar?.join(' '), placeholder]);
-	
-	const RenderTextArea: JSX.Element = useMemo(() => {
-		return (
-			<Spin spinning={loading} tip="编辑器加载中...">
-				<textarea ref={textareaRef} id={tinymceId} hidden={!loading} readOnly />
-			</Spin>
-		);
-	}, [loading]);
 	
 	return (
 		<div
@@ -113,7 +110,9 @@ const RichText: FC<RichTextProps> = props => {
 			}`}
 			id={`p${tinymceId}`}
 		>
-			{RenderTextArea}
+			<Spin spinning={loading} tip="编辑器加载中...">
+				<textarea ref={textareaRef} id={tinymceId} hidden={!loading} readOnly />
+			</Spin>
 		</div>
 	);
 };
