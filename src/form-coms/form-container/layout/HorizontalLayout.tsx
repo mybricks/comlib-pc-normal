@@ -33,13 +33,12 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
       {children}
       {data.actions.visible && (
         <Col
-          data-form-actions
           flex={getFlexValue()}
           style={{
             textAlign: data.actions.align
           }}
         >
-          <Form.Item label=" " colon={false}>
+          <Form.Item label=" " colon={false} data-form-actions>
             {actions}
           </Form.Item>
         </Col>
