@@ -949,6 +949,23 @@ export default {
         }
       },
       {
+        title: '禁用状态',
+        type: 'switch',
+        description: '是否禁用状态',
+        value: {
+          get() {
+            return field.form.readonly;
+          },
+          set({ data }, val: boolean) {
+            if (!field.form) {
+              field.form = {};
+            }
+
+            field.form.readonly = val;
+          }
+        }
+      },
+      {
         title: '表单项类型',
         type: 'Select',
         options: [
@@ -994,6 +1011,22 @@ export default {
         options: [{ title: '', min: 1, width: 100 }],
         ifVisible() {
           return field.form.formItem === ComponentName.IMAGE_UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
+          }
+        }
+      },
+      {
+        title: '附件数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.UPLOAD;
         },
         value: {
           get() {
@@ -1187,6 +1220,39 @@ export default {
           },
           set() {}
         }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '值更新',
+            type: '_event',
+            ifVisible() {
+              return [
+                ComponentName.INPUT,
+                ComponentName.TEXTAREA,
+                ComponentName.INPUT_NUMBER,
+                ComponentName.SELECT,
+                ComponentName.DATE_PICKER,
+                ComponentName.UPLOAD,
+                ComponentName.IMAGE_UPLOAD,
+                ComponentName.RADIO,
+                ComponentName.CHECKBOX,
+                ComponentName.DEBOUNCE_SELECT
+              ];
+            },
+            options: {
+              outputId: 'onChange'
+            }
+          },
+          {
+            title: '失去焦点',
+            type: '_event',
+            options: {
+              outputId: 'onBlur'
+            }
+          }
+        ]
       }
     ].filter(Boolean);
 
