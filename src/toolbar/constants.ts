@@ -26,5 +26,8 @@ export const Schemas = {
   },
   String: {
     type: 'string'
+  },
+  Number: {
+    type: 'number'
   }
 };

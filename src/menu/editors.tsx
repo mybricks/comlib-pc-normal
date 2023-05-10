@@ -557,305 +557,67 @@ export default {
       }
     }
   ],
-  '[data-menu-item]': (props: EditorResult<Data>, data, output: EditorResult<Data>, ...cateAry) => {
-    (cateAry[0].title = '菜单项'),
-      (cateAry[0].items = [
-        {
-          title: '标题',
-          type: 'Text',
-          value: {
-            get(props: EditorResult<Data>) {
-              return getMenuItem(props, 'title');
-            },
-            set(props: EditorResult<Data>, value: string) {
-              setMenuItem(props, 'title', value);
-            }
-          }
-        },
-        {
-          title: '唯一标识',
-          type: 'Text',
-          value: {
-            get(props: EditorResult<Data>) {
-              return getMenuItem(props, 'key');
-            },
-            set(props: EditorResult<Data>, value: string) {
-              setMenuItem(props, 'key', value);
-            }
-          }
-        },
-        {
-          title: '默认激活',
-          type: 'Switch',
-          ifVisible(props: EditorResult<Data>) {
-            return getMenuItem(props, 'menuType') === MenuTypeEnum.Menu;
-          },
-          value: {
-            get(props: EditorResult<Data>) {
-              return getMenuItem(props, 'defaultActive');
-            },
-            set(props: EditorResult<Data>, value: boolean) {
-              setMenuItem(props, 'defaultActive', value);
-
-              //默认激活的互斥
-              if (value === true) {
-                let selectedKey = getMenuItem(props, 'key');
-                let newval: any[] = [];
-                //对dataSource整体遍历
-                newval = props.data.dataSource.map((item) => {
-                  if (item.key !== selectedKey) {
-                    item.defaultActive = false;
-                  }
-                  if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
-                    item.children = [...item.children].map((chil) => {
-                      if (chil.menuType === MenuTypeEnum.Menu && chil.key !== selectedKey) {
-                        chil.defaultActive = false;
-                      } else if (
-                        chil.menuType === MenuTypeEnum.Group &&
-                        chil.children !== undefined
-                      ) {
-                        chil.children = [...chil.children].map((groupChil) => {
-                          if (groupChil.key !== selectedKey) {
-                            groupChil.defaultActive = false;
-                          }
-                          return groupChil;
-                        });
-                      }
-                      return chil;
-                    });
-                  }
-                  return item;
-                });
-                props.data.dataSource = newval;
-              }
-            }
-          }
-        },
-        {
-          title: '类型',
-          type: 'Select',
-          options: [
-            { label: '子菜单', value: MenuTypeEnum.Menu },
-            { label: '父菜单', value: MenuTypeEnum.SubMenu }
-          ],
-          value: {
-            get(props: EditorResult<Data>) {
-              return getMenuItem(props, 'menuType');
-            },
-            set(props: EditorResult<Data>, value: MenuTypeEnum) {
-              setMenuItem(props, 'menuType', value);
-              //从子菜单，切换到父菜单，去除默认勾选状态，且去除其选中状态
-              if (getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu) {
-                setMenuItem(props, 'defaultActive', false);
-                props.output.remove(getMenuItem(props).key);
-                //从父菜单，切换到子菜单，去除子项配置
-              } else if (getMenuItem(props, 'menuType') === MenuTypeEnum.Menu) {
-                let removeKeys = [];
-                if (getMenuItem(props, 'children') !== undefined) {
-                  let children = getMenuItem(props, 'children');
-                  for (let i = 0; i < children.length; i++) {
-                    if (children[i].menuType === MenuTypeEnum.Menu) {
-                      removeKeys.push(children[i].key);
-                    } else if (children[i].menuType === MenuTypeEnum.Group) {
-                      let child = children[i].children;
-                      if (child.children !== undefined) {
-                        for (let j = 0; j < child.length; j++) {
-                          removeKeys.push(child[j].key);
-                        }
-                      }
-                    }
-                  }
-                }
-                for (let i = 0; i < removeKeys.length; i++) {
-                  props.output.remove(removeKeys[i]);
-                }
-                setMenuItem(props, 'children', undefined);
-              }
-            }
-          }
-        },
-        {
-          title: '子项配置',
-          type: 'Array',
-          description: '这里可以配置子菜单和分组菜单',
-          ifVisible(props: EditorResult<Data>) {
-            return getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu;
-          },
-          options: {
-            getTitle: (item, index) => {
-              //切换分组，菜单子项的标题暂时不进行改变
-              if (!item.title) {
-                item.title = `子菜单${index + 1}`;
-              }
-              if (!item.key) {
-                item.key = uuid();
-              }
-              if (!item.menuType) {
-                item.menuType = MenuTypeEnum.Menu;
-              }
-              if (item.menuType === MenuTypeEnum.Group && item.title === `子菜单${index + 1}`) {
-                item.title = `分组菜单${index + 1}`;
-              }
-              return item.title;
-            },
-            onAdd: () => {
-              return {};
-            },
-            items: [
-              {
-                title: '类型',
-                type: 'Select',
-                options: [
-                  { label: '子菜单', value: MenuTypeEnum.Menu },
-                  { label: '分组', value: MenuTypeEnum.Group }
-                ],
-                value: 'menuType'
+  '[data-menu-item]': {
+    title: '菜单项',
+    items: (props: EditorResult<Data>, data, output: EditorResult<Data>, ...cateAry) => {
+      (cateAry[0].title = '菜单项'),
+        (cateAry[0].items = [
+          {
+            title: '标题',
+            type: 'Text',
+            value: {
+              get(props: EditorResult<Data>) {
+                return getMenuItem(props, 'title');
               },
-              {
-                title: '标题',
-                type: 'TextArea',
-                value: 'title',
-                options: {
-                  autoSize: { maxRows: 1 }
-                }
-              },
-              {
-                title: '唯一标识',
-                type: 'TextArea',
-                value: 'key',
-                options: {
-                  autoSize: { maxRows: 1 }
-                }
-              },
-              {
-                title: '默认激活',
-                type: 'Switch',
-                ifVisible(item) {
-                  return item.menuType === MenuTypeEnum.Menu;
-                },
-                value: 'defaultActive'
+              set(props: EditorResult<Data>, value: string) {
+                setMenuItem(props, 'title', value);
               }
-            ]
+            }
           },
-          value: {
-            get(props: EditorResult<Data>) {
-              return getMenuItem(props, 'children');
+          {
+            title: '唯一标识',
+            type: 'Text',
+            value: {
+              get(props: EditorResult<Data>) {
+                return getMenuItem(props, 'key');
+              },
+              set(props: EditorResult<Data>, value: string) {
+                setMenuItem(props, 'key', value);
+              }
+            }
+          },
+          {
+            title: '默认激活',
+            type: 'Switch',
+            ifVisible(props: EditorResult<Data>) {
+              return getMenuItem(props, 'menuType') === MenuTypeEnum.Menu;
             },
-            set(props: EditorResult<Data>, value: any[]) {
-              const find = (item) => {
-                return item.map((e) => {
-                  return e.key;
-                });
-              };
-              let afArr = [...value].map((item) => {
-                if (item.menuType === 'group' && item.children !== undefined) {
-                  return find(item.children);
-                } else {
-                  return item.key;
-                }
-              });
-              afArr = flatten(afArr);
-              let beArr;
-              if (getMenuItem(props, 'children') === undefined) {
-                beArr = [];
-              } else {
-                beArr = getMenuItem(props, 'children').map((item) => {
-                  if (item.menuType === 'group' && item.children !== undefined) {
-                    return find(item.children);
-                  } else {
-                    return item.key;
-                  }
-                });
-              }
-              beArr = flatten(beArr);
-              //获取减少的子菜单项内容
-              let list = beArr.filter((items) => {
-                if (!afArr.includes(items)) return items;
-              });
+            value: {
+              get(props: EditorResult<Data>) {
+                return getMenuItem(props, 'defaultActive');
+              },
+              set(props: EditorResult<Data>, value: boolean) {
+                setMenuItem(props, 'defaultActive', value);
 
-              //对默认值进行互斥操作
-              //1.改造value
-              //2.改造data.dataSource
-              let befSelected;
-              let aftSelected;
-              let befAct;
-              let aftAct;
-              let difIndex;
-              let difKey;
-              let newVaules: any[] = [];
-
-              if (getMenuItem(props, 'children') === undefined) {
-                befSelected = [];
-              } else {
-                befSelected = getMenuItem(props, 'children').map((item) => {
-                  return {
-                    key: item.key,
-                    defaultActive: item.defaultActive || false,
-                    menuType: item.menuType
-                  };
-                });
-              }
-
-              aftSelected = [...value].map((item) => {
-                return {
-                  key: item.key,
-                  defaultActive: item.defaultActive || false,
-                  menuType: item.menuType
-                };
-              });
-
-              if (befSelected.length === aftSelected.length) {
-                befAct = befSelected.map((item) => {
-                  return item.defaultActive || false;
-                });
-                aftAct = aftSelected.map((item) => {
-                  return item.defaultActive || false;
-                });
-
-                for (let i = 0; i < befSelected.length; i++) {
-                  if (befAct[i] !== aftAct[i]) {
-                    difIndex = i;
-                  }
-                }
-
-                if (difIndex !== undefined) {
-                  difKey = aftSelected[difIndex].key;
-                }
-
-                if (
-                  aftAct[difIndex] === true &&
-                  befSelected[difIndex].key === aftSelected[difIndex].key
-                ) {
-                  newVaules = [...value].map((item) => {
-                    if (item.key !== aftSelected[difIndex].key) {
-                      item.defaultActive = false;
-                    } else {
-                      item.defaultActive = true;
-                    }
-                    return item;
-                  });
-                  setMenuItem(props, 'children', [...newVaules]);
-                } else {
-                  setMenuItem(props, 'children', [...value]);
-                }
-
-                //对dataSource整体遍历
-                if (difKey !== undefined) {
+                //默认激活的互斥
+                if (value === true) {
+                  let selectedKey = getMenuItem(props, 'key');
                   let newval: any[] = [];
+                  //对dataSource整体遍历
                   newval = props.data.dataSource.map((item) => {
-                    if (item.key !== difKey) {
+                    if (item.key !== selectedKey) {
                       item.defaultActive = false;
                     }
                     if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
                       item.children = [...item.children].map((chil) => {
-                        if (chil.menuType === MenuTypeEnum.Menu && chil.key !== difKey) {
+                        if (chil.menuType === MenuTypeEnum.Menu && chil.key !== selectedKey) {
                           chil.defaultActive = false;
                         } else if (
                           chil.menuType === MenuTypeEnum.Group &&
                           chil.children !== undefined
                         ) {
                           chil.children = [...chil.children].map((groupChil) => {
-                            if (groupChil.key !== difKey) {
+                            if (groupChil.key !== selectedKey) {
                               groupChil.defaultActive = false;
                             }
                             return groupChil;
@@ -868,71 +630,314 @@ export default {
                   });
                   props.data.dataSource = newval;
                 }
-              } else {
-                setMenuItem(props, 'children', [...value]);
-              }
-              //减少父菜单和分组菜单的点击事件
-              const schema = {
-                type: 'any'
-              };
-              for (let i = 0; i < list?.length; i++) {
-                props.output.remove(list[i]);
-              }
-              //增加父菜单和分组菜单的点击事件
-              for (let i = 0; i < [...value].length; i++) {
-                props.output.add([...value][i].key, `点击${[...value][i].title}`, schema);
               }
             }
-          }
-        },
-        ...groupItemEditors(props),
-        ...menuItemsOnClick(props),
-        ...groupItemsOnClick(props),
-        {
-          title: `点击${getMenuItem(props).title}`,
-          type: '_Event',
-          ifVisible(props: EditorResult<Data>) {
-            return getMenuItem(props, 'menuType') === MenuTypeEnum.Menu;
           },
-          options: (props: EditorResult<Data>) => {
-            const menuItem = getMenuItem(props);
-            return {
-              outputId: menuItem.key
-            };
-          }
-        },
-        {
-          title: '位置',
-          items: [
-            {
-              title: '删除',
-              type: 'Button',
-              value: {
-                set(props: EditorResult<Data>) {
-                  //1.删除项为子菜单项的key
+          {
+            title: '类型',
+            type: 'Select',
+            options: [
+              { label: '子菜单', value: MenuTypeEnum.Menu },
+              { label: '父菜单', value: MenuTypeEnum.SubMenu }
+            ],
+            value: {
+              get(props: EditorResult<Data>) {
+                return getMenuItem(props, 'menuType');
+              },
+              set(props: EditorResult<Data>, value: MenuTypeEnum) {
+                setMenuItem(props, 'menuType', value);
+                //从子菜单，切换到父菜单，去除默认勾选状态，且去除其选中状态
+                if (getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu) {
+                  setMenuItem(props, 'defaultActive', false);
                   props.output.remove(getMenuItem(props).key);
-                  //2.删除项为父菜单和分组菜单的key
-                  if (getMenuItem(props).menuType !== 'menu') {
-                    if (getMenuItem(props).children?.length !== 0) {
-                      //1).得出删除子项的所有key
-                      const deletArr: string[] | any = getMenuItem(props).children?.map((item) => {
-                        return item.key;
-                      });
-                      for (let i = 0; i < deletArr?.length; i++) {
-                        //2).删除对应的output
-                        props.output.remove(deletArr[i]);
+                  //从父菜单，切换到子菜单，去除子项配置
+                } else if (getMenuItem(props, 'menuType') === MenuTypeEnum.Menu) {
+                  let removeKeys = [];
+                  if (getMenuItem(props, 'children') !== undefined) {
+                    let children = getMenuItem(props, 'children');
+                    for (let i = 0; i < children.length; i++) {
+                      if (children[i].menuType === MenuTypeEnum.Menu) {
+                        removeKeys.push(children[i].key);
+                      } else if (children[i].menuType === MenuTypeEnum.Group) {
+                        let child = children[i].children;
+                        if (child.children !== undefined) {
+                          for (let j = 0; j < child.length; j++) {
+                            removeKeys.push(child[j].key);
+                          }
+                        }
                       }
                     }
                   }
-                  let newval = props.data.dataSource.filter((item) => {
-                    return item !== getMenuItem(props);
-                  });
-                  props.data.dataSource = newval;
+                  for (let i = 0; i < removeKeys.length; i++) {
+                    props.output.remove(removeKeys[i]);
+                  }
+                  setMenuItem(props, 'children', undefined);
                 }
               }
             }
-          ]
-        }
-      ]);
+          },
+          {
+            title: '子项配置',
+            type: 'Array',
+            description: '这里可以配置子菜单和分组菜单',
+            ifVisible(props: EditorResult<Data>) {
+              return getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu;
+            },
+            options: {
+              getTitle: (item, index) => {
+                //切换分组，菜单子项的标题暂时不进行改变
+                if (!item.title) {
+                  item.title = `子菜单${index + 1}`;
+                }
+                if (!item.key) {
+                  item.key = uuid();
+                }
+                if (!item.menuType) {
+                  item.menuType = MenuTypeEnum.Menu;
+                }
+                if (item.menuType === MenuTypeEnum.Group && item.title === `子菜单${index + 1}`) {
+                  item.title = `分组菜单${index + 1}`;
+                }
+                return item.title;
+              },
+              onAdd: () => {
+                return {};
+              },
+              items: [
+                {
+                  title: '类型',
+                  type: 'Select',
+                  options: [
+                    { label: '子菜单', value: MenuTypeEnum.Menu },
+                    { label: '分组', value: MenuTypeEnum.Group }
+                  ],
+                  value: 'menuType'
+                },
+                {
+                  title: '标题',
+                  type: 'TextArea',
+                  value: 'title',
+                  options: {
+                    autoSize: { maxRows: 1 }
+                  }
+                },
+                {
+                  title: '唯一标识',
+                  type: 'TextArea',
+                  value: 'key',
+                  options: {
+                    autoSize: { maxRows: 1 }
+                  }
+                },
+                {
+                  title: '默认激活',
+                  type: 'Switch',
+                  ifVisible(item) {
+                    return item.menuType === MenuTypeEnum.Menu;
+                  },
+                  value: 'defaultActive'
+                }
+              ]
+            },
+            value: {
+              get(props: EditorResult<Data>) {
+                return getMenuItem(props, 'children');
+              },
+              set(props: EditorResult<Data>, value: any[]) {
+                const find = (item) => {
+                  return item.map((e) => {
+                    return e.key;
+                  });
+                };
+                let afArr = [...value].map((item) => {
+                  if (item.menuType === 'group' && item.children !== undefined) {
+                    return find(item.children);
+                  } else {
+                    return item.key;
+                  }
+                });
+                afArr = flatten(afArr);
+                let beArr;
+                if (getMenuItem(props, 'children') === undefined) {
+                  beArr = [];
+                } else {
+                  beArr = getMenuItem(props, 'children').map((item) => {
+                    if (item.menuType === 'group' && item.children !== undefined) {
+                      return find(item.children);
+                    } else {
+                      return item.key;
+                    }
+                  });
+                }
+                beArr = flatten(beArr);
+                //获取减少的子菜单项内容
+                let list = beArr.filter((items) => {
+                  if (!afArr.includes(items)) return items;
+                });
+
+                //对默认值进行互斥操作
+                //1.改造value
+                //2.改造data.dataSource
+                let befSelected;
+                let aftSelected;
+                let befAct;
+                let aftAct;
+                let difIndex;
+                let difKey;
+                let newVaules: any[] = [];
+
+                if (getMenuItem(props, 'children') === undefined) {
+                  befSelected = [];
+                } else {
+                  befSelected = getMenuItem(props, 'children').map((item) => {
+                    return {
+                      key: item.key,
+                      defaultActive: item.defaultActive || false,
+                      menuType: item.menuType
+                    };
+                  });
+                }
+
+                aftSelected = [...value].map((item) => {
+                  return {
+                    key: item.key,
+                    defaultActive: item.defaultActive || false,
+                    menuType: item.menuType
+                  };
+                });
+
+                if (befSelected.length === aftSelected.length) {
+                  befAct = befSelected.map((item) => {
+                    return item.defaultActive || false;
+                  });
+                  aftAct = aftSelected.map((item) => {
+                    return item.defaultActive || false;
+                  });
+
+                  for (let i = 0; i < befSelected.length; i++) {
+                    if (befAct[i] !== aftAct[i]) {
+                      difIndex = i;
+                    }
+                  }
+
+                  if (difIndex !== undefined) {
+                    difKey = aftSelected[difIndex].key;
+                  }
+
+                  if (
+                    aftAct[difIndex] === true &&
+                    befSelected[difIndex].key === aftSelected[difIndex].key
+                  ) {
+                    newVaules = [...value].map((item) => {
+                      if (item.key !== aftSelected[difIndex].key) {
+                        item.defaultActive = false;
+                      } else {
+                        item.defaultActive = true;
+                      }
+                      return item;
+                    });
+                    setMenuItem(props, 'children', [...newVaules]);
+                  } else {
+                    setMenuItem(props, 'children', [...value]);
+                  }
+
+                  //对dataSource整体遍历
+                  if (difKey !== undefined) {
+                    let newval: any[] = [];
+                    newval = props.data.dataSource.map((item) => {
+                      if (item.key !== difKey) {
+                        item.defaultActive = false;
+                      }
+                      if (item.menuType !== MenuTypeEnum.Menu && item.children !== undefined) {
+                        item.children = [...item.children].map((chil) => {
+                          if (chil.menuType === MenuTypeEnum.Menu && chil.key !== difKey) {
+                            chil.defaultActive = false;
+                          } else if (
+                            chil.menuType === MenuTypeEnum.Group &&
+                            chil.children !== undefined
+                          ) {
+                            chil.children = [...chil.children].map((groupChil) => {
+                              if (groupChil.key !== difKey) {
+                                groupChil.defaultActive = false;
+                              }
+                              return groupChil;
+                            });
+                          }
+                          return chil;
+                        });
+                      }
+                      return item;
+                    });
+                    props.data.dataSource = newval;
+                  }
+                } else {
+                  setMenuItem(props, 'children', [...value]);
+                }
+                //减少父菜单和分组菜单的点击事件
+                const schema = {
+                  type: 'any'
+                };
+                for (let i = 0; i < list?.length; i++) {
+                  props.output.remove(list[i]);
+                }
+                //增加父菜单和分组菜单的点击事件
+                for (let i = 0; i < [...value].length; i++) {
+                  props.output.add([...value][i].key, `点击${[...value][i].title}`, schema);
+                }
+              }
+            }
+          },
+          ...groupItemEditors(props),
+          ...menuItemsOnClick(props),
+          ...groupItemsOnClick(props),
+          {
+            title: `点击${getMenuItem(props).title}`,
+            type: '_Event',
+            ifVisible(props: EditorResult<Data>) {
+              return getMenuItem(props, 'menuType') === MenuTypeEnum.Menu;
+            },
+            options: (props: EditorResult<Data>) => {
+              const menuItem = getMenuItem(props);
+              return {
+                outputId: menuItem.key
+              };
+            }
+          },
+          {
+            title: '位置',
+            items: [
+              {
+                title: '删除',
+                type: 'Button',
+                value: {
+                  set(props: EditorResult<Data>) {
+                    //1.删除项为子菜单项的key
+                    props.output.remove(getMenuItem(props).key);
+                    //2.删除项为父菜单和分组菜单的key
+                    if (getMenuItem(props).menuType !== 'menu') {
+                      if (getMenuItem(props).children?.length !== 0) {
+                        //1).得出删除子项的所有key
+                        const deletArr: string[] | any = getMenuItem(props).children?.map(
+                          (item) => {
+                            return item.key;
+                          }
+                        );
+                        for (let i = 0; i < deletArr?.length; i++) {
+                          //2).删除对应的output
+                          props.output.remove(deletArr[i]);
+                        }
+                      }
+                    }
+                    let newval = props.data.dataSource.filter((item) => {
+                      return item !== getMenuItem(props);
+                    });
+                    props.data.dataSource = newval;
+                  }
+                }
+              }
+            ]
+          }
+        ]);
+    }
   }
 };

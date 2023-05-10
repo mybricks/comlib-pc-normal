@@ -10,19 +10,22 @@ import BaseEditor from './baseEditor';
 import OutputValEditor from './outputValEditor';
 
 const itemEditor = {
-  [`[${BtnItemDataSetKey}]`]: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
-    cate1.title = '常规';
-    cate1.items = [...BaseEditor, ...OutputValEditor, ...EventEditor, ...IndexEditor];
+  [`[${BtnItemDataSetKey}]`]: {
+    title: '按钮',
+    items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
+      cate1.title = '常规';
+      cate1.items = [...BaseEditor, ...OutputValEditor, ...EventEditor, ...IndexEditor];
 
-    cate2.title = '样式';
-    cate2.items = [...StyleEditor, ...IconEditor];
+      cate2.title = '样式';
+      cate2.items = [...StyleEditor, ...IconEditor];
 
-    cate3.title = '高级';
-    cate3.items = [...DynamicEventEditor, ...PermissionEditor];
+      cate3.title = '高级';
+      cate3.items = [...DynamicEventEditor, ...PermissionEditor];
 
-    return {
-      title: '按钮'
-    };
+      return {
+        title: '按钮'
+      };
+    }
   }
 };
 
