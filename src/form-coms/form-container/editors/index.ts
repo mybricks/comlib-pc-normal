@@ -578,7 +578,7 @@ export default {
             options: [
               { label: '是', value: true },
               { label: '否', value: false },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -598,7 +598,7 @@ export default {
             options: [
               { label: '左对齐', value: 'left' },
               { label: '右对齐', value: 'right' },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -619,7 +619,7 @@ export default {
             options: [
               { label: '显示', value: true },
               { label: '隐藏', value: false },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
