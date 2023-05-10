@@ -185,21 +185,27 @@ export function setValuesForInput({
 }) {
   const { value: values, items: formItems } = data;
   const inputId = data.currentAction;
-  values?.forEach((value, valIndex) => {
-    if (valIndex < data.startIndex) return;
-    const key = data.fields.find(field => field.name === valIndex)?.key;
-    Object.keys(value).map((name) => {
-      const item = formItems.find((item) => (item.name || item.label) === name);
-      if (item && key !== undefined) {
-        const { inputs, index } = childrenStore[key][item.id];
-        if (isObject(value[name])) {
-          inputs[inputId] && inputs[inputId]({ ...value[name] });
-        } else {
-          inputs[inputId] && inputs[inputId](value[name]);
+  new Promise((resolve, reject) => {
+    values?.forEach((value, valIndex) => {
+      if (valIndex < data.startIndex) return;
+      const key = data.fields.find(field => field.name === valIndex)?.key;
+      Object.keys(value).map((name) => {
+        const item = formItems.find((item) => (item.name || item.label) === name);
+        if (item && key !== undefined) {
+          const { inputs, index } = childrenStore[key][item.id];
+          if (isObject(value[name])) {
+            inputs[inputId] && inputs[inputId]({ ...value[name] });
+          } else {
+            inputs[inputId] && inputs[inputId](value[name]);
+          }
         }
-      }
+      });
     });
-  });
-  data.currentAction = '';
-  data.startIndex = -1;
+    resolve(1);
+  })
+    .then(v => {
+      data.currentAction = '';
+      data.startIndex = -1;
+    })
+    .catch(e => console.error(e));
 };

@@ -871,7 +871,7 @@ export default {
 
               return {
                 outputId: item.outputId,
-                slotId: SlotIds.FormItems
+                // slotId: SlotIds.FormItems
               }
             }
           }
