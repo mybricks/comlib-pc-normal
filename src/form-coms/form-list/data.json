@@ -5,7 +5,7 @@
   "nameCount": 0,
   "formItemColumn": 4,
   "fields": [],
-  "MaxKey": 0,
+  "MaxKey": -1,
   "slotStyle": {
     "display": "flex",
     "position": "inherit",

@@ -71,6 +71,12 @@ function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof 
 }
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
+  '@init': ({ style }) => {
+    style.width = '100%';
+  },
   '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
     if (curSlot.id === SlotIds.FormItems) {
       const { id, inputDefs, outputDefs } = child
@@ -755,8 +761,12 @@ export default {
       },
     ]
   },
-  '[data-form-actions]': ({ data, output }: EditorResult<Data>, cate1) => {
-    cate1.items = [actionsEditor(data, output)];
+  '[data-form-actions]': {
+    title: '操作区',
+    items: ({ data, output }: EditorResult<Data>, cate1) => {
+      cate1.title = '操作区';
+      cate1.items = actionsEditor(data, output);
+    }
   },
   '[data-form-actions-item]': {
     title: '操作',

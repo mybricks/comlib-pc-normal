@@ -150,7 +150,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         <SlotContent
           {...props}
           childrenStore={childrenStore}
-          actions={<ActionsWrapper {...props} field={field} />}
+          actions={<ActionsWrapper {...props} field={field} fieldIndex={0} />}
           field={field}
         />
       </>
@@ -160,6 +160,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const defaultActionProps = {
     ...props,
     field,
+    fieldIndex: 0,
     hiddenRemoveButton: true
   };
 

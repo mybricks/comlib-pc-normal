@@ -134,7 +134,7 @@ const SlotContent = (
     });
   }, [data.slotStyle, data.fields.length, data.value?.[field.name]]);
 
-  return <>{content}</>;
+  return <Row key={field.key}>{content}</Row>;
 };
 
 export default SlotContent;

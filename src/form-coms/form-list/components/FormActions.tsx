@@ -8,7 +8,7 @@ import { InputIds } from '../../../form-coms/types';
 export interface FormListActionsProps {
   operation?: FormListOperation;
   field: FormListFieldData;
-  fieldIndex?: number;
+  fieldIndex: number;
   hiddenRemoveButton?: boolean;
   childrenStore?: any;
 }
@@ -42,16 +42,28 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
 };
 
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { data, env, field, fieldIndex, hiddenRemoveButton } = props;
+  const { data, env, field, outputs, fieldIndex, hiddenRemoveButton } = props;
 
   const onClick = (item: Action) => {
     if (env.edit) return;
     if (item.key === 'add') {
       addField({ data });
+      outputs[item.key] &&
+        outputs[item.key]({
+          nextIndex: data.fields.length - 1,
+          nextKey: data.MaxKey - 1
+        });
+      return;
     }
     if (item.key === 'remove' && field) {
       removeField(props);
     }
+    outputs[item.key] &&
+      outputs[item.key]({
+        index: fieldIndex,
+        key: field.key,
+        value: data.value?.[fieldIndex]
+      });
   };
 
   const notLastField = typeof fieldIndex === 'number' && !(fieldIndex === data.fields.length - 1);
@@ -59,14 +71,16 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   return (
     <Space wrap>
       {data.actions.items.map((item) => {
-        if (item.visible === false) {
-          return null;
-        }
-        if (item.key === 'add' && notLastField) {
-          return null;
-        }
-        if (item.key === 'remove' && hiddenRemoveButton) {
-          return null;
+        if (!env.edit) {
+          if (item.visible === false) {
+            return null;
+          }
+          if (item.key === 'add' && notLastField) {
+            return null;
+          }
+          if (item.key === 'remove' && hiddenRemoveButton) {
+            return null;
+          }
         }
         return (
           <Button
@@ -86,7 +100,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
 };
 
 const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { data, fieldIndex } = props;
+  const { data } = props;
   const { align, widthOption, width, span, inlinePadding = [] } = data.actions;
   const padding = [...inlinePadding];
 
