@@ -9,12 +9,52 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setFieldsValue",
+      "title": "设置新增/编辑表单值",
+      "desc": "根据传入值，设置新增/编辑表单部分值",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
   "outputs": [
     {
       "id": "onChange",
-      "title": "值更新",
+      "title": "新增/编辑表单值更新",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "propKey": {
+            "type": "string"
+          },
+          "changedValue": {
+            "type": "object",
+            "properties": {}
+          },
+          "allValues": {
+            "type": "object",
+            "properties": {
+              "propKey": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "any"
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   ]

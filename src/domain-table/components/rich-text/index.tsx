@@ -60,10 +60,6 @@ const RichText: FC<RichTextProps> = props => {
 			placeholder: placeholder,
 			customIconsId,
 			setUp: (editor: any) => {
-				editor.on('blur', () => {
-					update(false);
-				});
-				
 				editor.on('input', () => {
 					change(false);
 				});
@@ -92,19 +88,6 @@ const RichText: FC<RichTextProps> = props => {
 		valueRef.current = content.trim() || '';
 		onChange?.(safeEncodeURIComponent(valueRef.current));
 	}, [onChange]);
-	
-	//失去焦点
-	const update = useCallback((bool) => {
-		const tinyMCE = getWindowVal('tinyMCE');
-		if (!tinyMCE) return;
-		
-		const tinymceInstance = bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
-		
-		const content = tinymceInstance?.getContent({ format: 't' });
-		
-		valueRef.current = content.trim() || '';
-	}, []);
-	
 	
 	useEffect(() => {
 		Load();

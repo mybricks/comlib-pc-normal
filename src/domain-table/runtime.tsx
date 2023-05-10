@@ -33,7 +33,7 @@ import RichText from "./components/rich-text";
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
-export default function ({ env, data }: RuntimeParams<Data>) {
+export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const { edit, runtime, projectId } = env;
   const debug = !!(runtime && runtime.debug);
   if (debug || runtime) {
@@ -61,6 +61,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     };
   }, [data.entity, projectId, data.domainFileId]);
   const modalWidth = useRef(520);
+	/** 记录当前下拉搜索框表单项选择的值的 options */
+  const mappingFormItemOptions = useRef({});
 
   const handleData = useCallback(
     (query, pageInfo?: Record<string, unknown>) => {
@@ -123,6 +125,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   );
   const onEdit = useCallback(
     (item: Record<string, unknown>) => {
+	    mappingFormItemOptions.current = {};
       setShowModalAction(ModalAction.EDIT);
       currentData.current = item;
       const value = {};
@@ -263,7 +266,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   const renderFormItemNode = useCallback(
     (
       field: Field,
-      option: { placeholder?: string; onPressEnter?(): void; formItem?: ComponentName }
+      option: {
+				placeholder?: string;
+				onPressEnter?(): void;
+				formItem?: ComponentName;
+	      mappingFormItemOptions?: Record<string, unknown>;
+			}
     ) => {
       let placeholder = option.placeholder ?? `请输入${field.name}`;
       const curFormItem = option.formItem || field.form.formItem;
@@ -321,6 +329,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             placeholder={option.placeholder ?? '可输入关键词检索'}
             field={field}
             fetchParams={baseFetchParams}
+            mappingFormItemOptions={option.mappingFormItemOptions}
           />
         );
       } else if (curFormItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
@@ -415,6 +424,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     );
   };
   const openCreateModal = useCallback(() => {
+	  mappingFormItemOptions.current = {};
     setShowModalAction(ModalAction.CREATE);
     createForm.resetFields();
   }, []);
@@ -433,7 +443,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         const curValue: Record<string, unknown> = {};
 
         Object.keys(value).forEach((key) => {
-          let item = value[key];
+          let item: any = value[key];
           try {
             if (item.isAfter) {
               item = (item as any).valueOf();
@@ -623,7 +633,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                     label={field.form?.label ?? field.name}
                     rules={rules}
                   >
-                    {renderFormItemNode(field, { formItem })}
+                    {renderFormItemNode(field, { formItem, mappingFormItemOptions: mappingFormItemOptions.current })}
                   </Form.Item>
                 </div>
                 {showTip ? <div className={styles.tipForHidden}>运行将隐藏</div> : null}
@@ -668,6 +678,32 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       });
     }
   };
+	
+	const onCreateFormValuesChange = (curValue, allValues) => {
+		const newAllValues = JSON.parse(JSON.stringify(allValues));
+		const propKey = Object.keys(curValue)[0];
+		
+		Object.keys(newAllValues).forEach(key => {
+			const field = allowRenderCreateItem.find(f => f.name === key);
+			
+			if (field && [ComponentName.CHECKBOX, ComponentName.RADIO, ComponentName.DEBOUNCE_SELECT, ComponentName.SELECT].includes(field.form.formItem)) {
+				newAllValues[key] = {
+					value: newAllValues[key],
+					options: mappingFormItemOptions.current[field.name] ?? [],
+				};
+			} else {
+				newAllValues[key] = { value: newAllValues[key] };
+			}
+		});
+		
+		outputs['onChange']({ propKey, changedValue: curValue, allValues: newAllValues });
+	};
+	
+	useEffect(() => {
+		inputs['setFieldsValue']?.((val) => {
+			createForm.setFieldsValue(val);
+		});
+	}, []);
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -753,7 +789,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           confirmLoading={createLoading}
           okButtonProps={{ loading: createLoading }}
         >
-          <Form form={createForm}>{renderCreateFormNode()}</Form>
+          <Form form={createForm} onValuesChange={onCreateFormValuesChange}>{renderCreateFormNode()}</Form>
         </Modal>
       </div>
     </ConfigProvider>

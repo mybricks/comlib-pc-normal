@@ -7,6 +7,7 @@ import { Field } from '../../type';
 interface DebounceSelectProps {
   disabled?: boolean;
   value?: string;
+	mappingFormItemOptions?: Record<string, unknown>;
   onChange?(value: string): void;
   fetchParams: Record<string, unknown>;
   field: Field;
@@ -15,7 +16,7 @@ interface DebounceSelectProps {
 type ValueType = any;
 
 const DebounceSelect: FC<DebounceSelectProps> = (props) => {
-  const { disabled, value, fetchParams, onChange, field, placeholder } = props;
+  const { disabled, value, fetchParams, mappingFormItemOptions, onChange, field, placeholder } = props;
   const [fetching, setFetching] = useState(false);
   const [options, setOptions] = useState<ValueType[]>([]);
   const fetchRef = useRef(0);
@@ -24,7 +25,7 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
     (value: string) => {
       setFetching(true);
       const { form, ...curField } = field;
-      const primaryField = curField.mapping?.entity?.fieldAry.find((field) => field.isPrimaryKey);
+      const primaryField = (curField.mapping?.entity?.fieldAry as Field[]).find(field => field.isPrimaryKey);
 
       return ajax({
         ...fetchParams,
@@ -49,7 +50,7 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
                   }
                 });
             }
-            return { label: label || item.id, value: item.id };
+            return { ...item, label: label || item.id, value: item.id };
           });
         })
         .finally(() => setFetching(false));
@@ -74,6 +75,16 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
 
     return debounce(loadOptions, 500);
   }, [fetchOptions]);
+	
+	const onCurChange = useCallback((value) => {
+		const curOptions = options.filter(option => option.value === value);
+		
+		if (mappingFormItemOptions) {
+			mappingFormItemOptions[field.name] = curOptions;
+		}
+		
+		onChange?.(value);
+	}, [options, onChange, field, mappingFormItemOptions]);
 
   useEffect(() => {
     const promises = [fetchOptions('')];
@@ -108,7 +119,7 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
       notFoundContent={fetching ? <Spin size="small" /> : null}
       options={options}
       value={value as ValueType}
-      onChange={onChange}
+      onChange={onCurChange}
       placeholder={placeholder}
     />
   );
