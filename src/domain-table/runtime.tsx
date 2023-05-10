@@ -29,6 +29,7 @@ import UploadImage from './components/upload-image';
 import UploadFile from './components/upload-file';
 
 import styles from './runtime.less';
+import RichText from "./components/rich-text";
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
@@ -349,6 +350,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           );
       } else if (curFormItem === ComponentName.UPLOAD) {
         item = <UploadFile disabled={field.form.readonly} maxCount={field.form?.maxCount} />;
+      } else if (curFormItem === ComponentName.RICH_TEXT) {
+        item = <RichText disabled={field.form.readonly} field={field} placeholder={placeholder} />;
       }
 
       return item;

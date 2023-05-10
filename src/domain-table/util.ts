@@ -66,3 +66,21 @@ export const safeStringify = (content: any) => {
 		return ''
 	}
 };
+
+/** 编码 */
+export const safeEncodeURIComponent = (content: string) => {
+	try {
+		return encodeURIComponent(content);
+	} catch {
+		return content ?? '';
+	}
+};
+
+/** 解码 */
+export const safeDecodeURIComponent = (content: string) => {
+	try {
+		return decodeURIComponent(content);
+	} catch {
+		return content ?? '';
+	}
+};
