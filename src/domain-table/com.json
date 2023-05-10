@@ -9,5 +9,13 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "outputs": []
+  "outputs": [
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
 }
