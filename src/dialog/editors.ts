@@ -370,116 +370,118 @@ export default {
 
     return { title: '对话框' };
   },
-  '[data-btn-id]': ({ }: EditorResult<Data>, cate1, cate2) => {
-    cate1.title = '常规';
-    cate1.items = [
-      {
-        title: '名称',
-        type: 'Text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return get(data, focusArea, 'btnId', 'title');
-          },
-          set(
-            { data, focusArea, output, input, slot }: EditorResult<Data>,
-            value: string
-          ) {
-            if (typeof value !== 'string' || value.trim() === '') {
-              throw new Error(`请输入正确的按钮标题.`);
-            }
-            const res = get(data, focusArea, 'btnId', 'obj');
-            output.setTitle(res.id, value);
-            output.setTitle(`${res.id}Click`, `点击${value}`);
-            if (res.dynamicDisabled) {
-              input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
-              input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
-            }
-            if (res.dynamicHidden) {
-              input.setTitle(`hidden${res.id}`, `隐藏-${value}按钮`);
-              input.setTitle(`show${res.id}`, `显示-${value}按钮`);
-            }
-            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
-            res.title = value;
-          }
-        }
-      },
-      {
-        title: '基础样式',
-        items: [
-          {
-            title: '风格',
-            type: 'Select',
-            options() {
-              return [
-                { value: 'default', label: '默认' },
-                { value: 'primary', label: '主按钮' },
-                { value: 'dashed', label: '虚线按钮' },
-                { value: 'danger', label: '危险按钮' },
-                { value: 'link', label: '链接按钮' },
-                { value: 'text', label: '文字按钮' }
-              ];
+  '[data-btn-id]': {
+    title: '按钮',
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
+      cate1.title = '常规';
+      cate1.items = [
+        {
+          title: '名称',
+          type: 'Text',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return get(data, focusArea, 'btnId', 'title');
             },
-            value: {
-              get({ data, focusArea }: EditorResult<Data>) {
-                return get(data, focusArea, 'btnId', 'type');
+            set(
+              { data, focusArea, output, input, slot }: EditorResult<Data>,
+              value: string
+            ) {
+              if (typeof value !== 'string' || value.trim() === '') {
+                throw new Error(`请输入正确的按钮标题.`);
+              }
+              const res = get(data, focusArea, 'btnId', 'obj');
+              output.setTitle(res.id, value);
+              output.setTitle(`${res.id}Click`, `点击${value}`);
+              if (res.dynamicDisabled) {
+                input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
+                input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
+              }
+              if (res.dynamicHidden) {
+                input.setTitle(`hidden${res.id}`, `隐藏-${value}按钮`);
+                input.setTitle(`show${res.id}`, `显示-${value}按钮`);
+              }
+              slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
+              res.title = value;
+            }
+          }
+        },
+        {
+          title: '基础样式',
+          items: [
+            {
+              title: '风格',
+              type: 'Select',
+              options() {
+                return [
+                  { value: 'default', label: '默认' },
+                  { value: 'primary', label: '主按钮' },
+                  { value: 'dashed', label: '虚线按钮' },
+                  { value: 'danger', label: '危险按钮' },
+                  { value: 'link', label: '链接按钮' },
+                  { value: 'text', label: '文字按钮' }
+                ];
               },
-              set({ data, focusArea }: EditorResult<Data>, value: string) {
-                const res = get(data, focusArea, 'btnId', 'obj');
-                res.type = value;
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  return get(data, focusArea, 'btnId', 'type');
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: string) {
+                  const res = get(data, focusArea, 'btnId', 'obj');
+                  res.type = value;
+                }
+              }
+            }
+          ]
+        },
+        icon('btnId'),
+        {
+          title: '事件',
+          items: [
+            {
+              title: '单击',
+              type: '_Event',
+
+              options: ({ data, focusArea }: EditorResult<Data>) => {
+                const res = get(data, focusArea, 'btnId', 'id');
+                return {
+                  outputId: `${res}Click`,
+                  slotId: SlotIds.Container
+                };
+              }
+            }
+          ]
+        },
+        {
+          title: '隐藏',
+          type: 'Switch',
+          ifVisible({ data, focusArea }: EditorResult<Data>) {
+            const res = get(data, focusArea, 'btnId', 'obj');
+            return DefaultEvent.includes(res?.id);
+          },
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return !get(data, focusArea, 'btnId', 'visible');
+            },
+            set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+              const res = get(data, focusArea, 'btnId', 'obj');
+              res.visible = !value;
+              if (value) {
+                removeBtn({ data, input, output, slot }, res.id);
+              } else {
+                addBtn({ data, input, output, slot }, res.id);
               }
             }
           }
-        ]
-      },
-      icon('btnId'),
-      {
-        title: '事件',
-        items: [
-          {
-            title: '单击',
-            type: '_Event',
-
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const res = get(data, focusArea, 'btnId', 'id');
-              return {
-                outputId: `${res}Click`,
-                slotId: SlotIds.Container
-              };
-            }
-          }
-        ]
-      },
-      {
-        title: '隐藏',
-        type: 'Switch',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const res = get(data, focusArea, 'btnId', 'obj');
-          return DefaultEvent.includes(res?.id);
         },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return !get(data, focusArea, 'btnId', 'visible');
-          },
-          set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
-            const res = get(data, focusArea, 'btnId', 'obj');
-            res.visible = !value;
-            if (value) {
-              removeBtn({ data, input, output, slot }, res.id);
-            } else {
-              addBtn({ data, input, output, slot }, res.id);
-            }
-          }
-        }
-      },
-      moveDelete('btnId')
-    ];
+        moveDelete('btnId')
+      ];
 
-    cate2.title = '高级';
-    cate2.items = [
-      useDynamic('btnId'),
-    ];
+      cate2.title = '高级';
+      cate2.items = [
+        useDynamic('btnId'),
+      ];
 
-    return { title: '按钮' };
+    }
   },
   '.ant-modal-title': {
     title: '标题',
