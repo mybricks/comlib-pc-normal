@@ -18,14 +18,14 @@
       "id": "btn0",
       "title": "单击按钮0",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     },
     {
       "id": "doubleClick_btn0",
       "title": "双击按钮0",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     }
   ]

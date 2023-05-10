@@ -1,7 +1,8 @@
 import { Data } from './types';
 
 export default function ({ 
-  data
+  data,
+  output
 }: UpgradeParams<Data>): boolean {
   //1.0.2 ->1.0.3，去除 { "id": "extra", "title": "卡片操作容器" }
   data.btnList.forEach((item) => {
@@ -39,5 +40,21 @@ export default function ({
     }
   })
 
+  /**
+   * @description v1.0.5 , fix setSchema问题
+  */
+  const click = output.get('btn0');
+  const dbClick = output.get('doubleClick_btn0');
+  data.btnList.forEach((item)=>{
+    if(typeof item.dataType === 'number'){
+      click.setSchema({
+        type: 'number'
+      });
+      dbClick.setSchema({
+        type: 'number'
+      });
+    }
+  })
+  
   return true;
 }

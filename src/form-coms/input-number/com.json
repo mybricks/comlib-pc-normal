@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-number",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "数字输入框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_964wc2.74b91913b3df146c.png",
@@ -79,7 +79,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "number"
       }
