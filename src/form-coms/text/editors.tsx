@@ -170,7 +170,7 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
