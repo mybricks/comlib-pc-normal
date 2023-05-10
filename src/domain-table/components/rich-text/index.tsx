@@ -40,12 +40,12 @@ const RichText: FC<RichTextProps> = props => {
 		addCustomIcons();
 		TinymceInit({
 			target: textareaRef.current,
-			height: 240,
+			height: field.form.height ? (String(field.form.height).match(/\.*%/) ? field.form.height : parseInt(String(field.form.height))) : 240,
 			toolbar: field.form.toolbar?.join(' '),
 			isFS: false,
 			placeholder: placeholder
 		});
-	}, []);
+	}, [field.form.toolbar?.join(' '), placeholder, field.form.height]);
 	
 	const TinymceInit: (cfg: {
 		selector?: string;
@@ -60,7 +60,7 @@ const RichText: FC<RichTextProps> = props => {
 			target,
 			toolbar: field.form.toolbar?.join(' '),
 			selector,
-			height: 240,
+			height,
 			isFS,
 			placeholder: placeholder,
 			customIconsId,
@@ -101,7 +101,7 @@ const RichText: FC<RichTextProps> = props => {
 			const tinyMCE = getWindowVal('tinyMCE');
 			tinyMCE && tinyMCE.editors[tinymceId]?.remove();
 		};
-	}, [field.form.toolbar?.join(' '), placeholder]);
+	}, [Load]);
 	
 	return (
 		<div

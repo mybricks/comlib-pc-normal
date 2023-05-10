@@ -555,12 +555,15 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
 
     return true;
   });
-  modalWidth.current =
-    !!showModalAction || (edit && data.showActionModalForEdit)
-      ? currentShowAllowRenderCreateItem.length > 5
-        ? 800
-        : 520
-      : modalWidth.current;
+	/** 防止 currentShowAllowRenderCreateItem 变化造成弹框宽度变化抖动 */
+  modalWidth.current = (showModalAction === ModalAction.CREATE || (edit && data.showActionModalForEdit === ModalAction.CREATE) ? data.widthForCreate : data.widthForEdit)
+	  || (
+		  !!showModalAction || (edit && data.showActionModalForEdit)
+			  ? currentShowAllowRenderCreateItem.length > 5
+				  ? 800
+				  : 520
+			  : modalWidth.current
+	  );
   const renderCreateFormNode = () => {
     if (data.entity) {
       return (
@@ -762,7 +765,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       <div className={styles.container} ref={containerRef}>
         <Modal
           destroyOnClose
-          width={modalWidth.current}
+          width={String(modalWidth.current).match(/\.*%/) ? modalWidth.current : parseInt(String(modalWidth.current))}
           getContainer={
             (edit || debug
               ? data.showActionModalForEdit && !showModalAction
