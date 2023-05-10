@@ -12,8 +12,7 @@ import {
   Radio,
   Row,
   Select,
-  Table,
-  Upload
+  Table
 } from 'antd';
 import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
@@ -27,6 +26,7 @@ import { ajax, safeParse, safeStringify } from './util';
 import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
 import { Field } from './type';
 import UploadImage from './components/upload-image';
+import UploadFile from './components/upload-file';
 
 import styles from './runtime.less';
 
@@ -137,7 +137,10 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           .forEach((field) => {
             if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
               value[field.name] = item[field.name] ? moment(item[field.name] as any) : null;
-            } else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
+            } else if (
+              field.form.formItem === ComponentName.IMAGE_UPLOAD ||
+              field.form.formItem === ComponentName.UPLOAD
+            ) {
               value[field.name] = item[field.name] ? safeParse(String(item[field.name]), []) : [];
             } else if (field.mapping?.entity) {
               value[field.name] = (item[field.name] as { id: number })?.id ?? null;
@@ -263,11 +266,19 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     ) => {
       let placeholder = option.placeholder ?? `请输入${field.name}`;
       const curFormItem = option.formItem || field.form.formItem;
-      let item = <Input placeholder={placeholder} onPressEnter={option.onPressEnter} allowClear />;
+      let item = (
+        <Input
+          disabled={field.form.readonly}
+          placeholder={placeholder}
+          onPressEnter={option.onPressEnter}
+          allowClear
+        />
+      );
 
       if (curFormItem === ComponentName.DATE_PICKER) {
         item = (
           <DatePicker
+            disabled={field.form.readonly}
             style={{ width: '100%' }}
             showTime
             placeholder={option.placeholder ?? `请选择${field.name}`}
@@ -278,6 +289,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (curFormItem === ComponentName.TEXTAREA) {
         item = (
           <Input.TextArea
+            disabled={field.form.readonly}
             placeholder={placeholder}
             onPressEnter={option.onPressEnter}
             rows={field.form.rows || 2}
@@ -287,6 +299,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (curFormItem === ComponentName.INPUT_NUMBER) {
         item = (
           <InputNumber
+            disabled={field.form.readonly}
             style={{ width: '100%' }}
             onPressEnter={option.onPressEnter}
             placeholder={placeholder}
@@ -295,6 +308,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (curFormItem === ComponentName.SELECT) {
         item = (
           <Select
+            disabled={field.form.readonly}
             placeholder={option.placeholder ?? `请选择${field.name}`}
             options={field.form?.options ?? []}
           />
@@ -302,6 +316,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (field.mapping?.entity && curFormItem === ComponentName.DEBOUNCE_SELECT) {
         item = (
           <DebounceSelect
+            disabled={field.form.readonly}
             placeholder={option.placeholder ?? '可输入关键词检索'}
             field={field}
             fetchParams={baseFetchParams}
@@ -309,26 +324,31 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         );
       } else if (curFormItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
         item = (
-          <Input onPressEnter={option.onPressEnter} addonBefore="+86" placeholder={placeholder} />
+          <Input
+            disabled={field.form.readonly}
+            onPressEnter={option.onPressEnter}
+            addonBefore="+86"
+            placeholder={placeholder}
+          />
         );
       } else if (curFormItem === ComponentName.IMAGE_UPLOAD) {
-        item = <UploadImage maxCount={field.form?.maxCount} />;
+        item = <UploadImage disabled={field.form.readonly} maxCount={field.form?.maxCount} />;
       } else if (curFormItem === ComponentName.RADIO) {
         item =
           !field.form?.options?.length && !runtime ? (
             <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
           ) : (
-            <Radio.Group options={field.form?.options ?? []} />
+            <Radio.Group disabled={field.form.readonly} options={field.form?.options ?? []} />
           );
       } else if (curFormItem === ComponentName.CHECKBOX) {
         item =
           !field.form?.options?.length && !runtime ? (
             <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
           ) : (
-            <Checkbox.Group options={field.form?.options ?? []} />
+            <Checkbox.Group disabled={field.form.readonly} options={field.form?.options ?? []} />
           );
-      } else if (field.bizType === FieldBizType.APPEND_FILE) {
-        item = <Upload />;
+      } else if (curFormItem === ComponentName.UPLOAD) {
+        item = <UploadFile disabled={field.form.readonly} maxCount={field.form?.maxCount} />;
       }
 
       return item;
