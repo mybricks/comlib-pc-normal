@@ -59,8 +59,9 @@ export default function ({ input, output, slot, data }): boolean {
     input.add('setInitialValue', '设置初始值', valueSchema);
   }
   if (!output.get('onInitial')) {
-    output.add('onInitial', '初始化', valueSchema);
+    output.add('onInitial', '值初始化', valueSchema);
   }
+  output.get('onInitial').setTitle('值初始化');
 
   input.get('setValue').setSchema({
     type: 'array',

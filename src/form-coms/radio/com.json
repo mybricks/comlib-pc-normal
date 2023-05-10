@@ -1,7 +1,7 @@
 {
   "title": "单选框",
   "namespace": "mybricks.normal-pc.radio",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "单选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -26,7 +26,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置单选框的初始值，并触发初始化事件输出",
+      "desc": "设置单选框的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -107,7 +107,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }

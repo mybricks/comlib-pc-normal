@@ -31,8 +31,9 @@ export default function ({
     input.add('setInitialValue', '设置初始值', setValueSchema);
   }
   if (!output.get('onInitial')) {
-    output.add('onInitial', '初始化', valueChangeSchema);
+    output.add('onInitial', '值初始化', valueChangeSchema);
   }
+  output.get('onInitial').setTitle('值初始化');
 
   /**
    * @description v1.0.4 增加禁用日期、时间配置项
