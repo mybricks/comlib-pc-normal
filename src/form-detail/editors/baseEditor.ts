@@ -90,14 +90,14 @@ export const BaseEditor = [
           span: 1,
           labelStyle: {
             fontSize: 14,
-            fontWeight: 'normal',
+            fontWeight: '400',
             lineHeight: 1,
             color: '#8c8c8c',
             letterSpacing: 0
           },
           contentStyle: {
             fontSize: 14,
-            fontWeight: 'normal',
+            fontWeight: '400',
             lineHeight: 1,
             color: '#333333',
             letterSpacing: 0

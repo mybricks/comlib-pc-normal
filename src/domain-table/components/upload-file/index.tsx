@@ -1,19 +1,18 @@
 import React, { FC, useCallback, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Image, Upload, UploadFile } from 'antd';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { UploadOutlined } from '@ant-design/icons';
+import { Button, Upload, UploadFile } from 'antd';
 import { ajax } from '../../util';
 
 import styles from './index.less';
 
-interface UploadImageProps {
+interface UploadFileProps {
   value?: any;
   onChange?(value: any): void;
   maxCount?: number;
   disabled?: boolean;
 }
 
-const UploadImage: FC<UploadImageProps> = (props) => {
+const UploadFile: FC<UploadFileProps> = (props) => {
   const { value = [], onChange, maxCount = 1, disabled } = props;
   const [fileList, setFileList] = useState<UploadFile[]>(
     Array.isArray(value)
@@ -37,35 +36,6 @@ const UploadImage: FC<UploadImageProps> = (props) => {
     );
   }, []);
 
-  const openImgPreview = useCallback((file) => {
-    let divEle = document.getElementById('domain-img-preview');
-    if (!divEle) {
-      divEle = document.createElement('div');
-      divEle.setAttribute('id', 'domain-img-preview');
-      document.body.appendChild(divEle);
-    }
-    const onClose = () => {
-      unmountComponentAtNode(divEle as HTMLElement);
-    };
-
-    render(
-      <Image
-        width={0}
-        height={0}
-        src={file.url || file.response?.url || file.thumbUrl}
-        preview={{
-          src: file.url || file.response?.url || file.thumbUrl,
-          visible: true,
-          onVisibleChange: (visible) => {
-            if (!visible) {
-              onClose();
-            }
-          }
-        }}
-      />,
-      divEle
-    );
-  }, []);
   const uploadRequestFile = useCallback((file) => {
     const formData = new FormData();
     formData.append('file', file.file);
@@ -81,24 +51,21 @@ const UploadImage: FC<UploadImageProps> = (props) => {
 
   return (
     <Upload
+      className={styles.uploadFile}
       customRequest={uploadRequestFile}
-      className={styles.upload}
-      accept="image/*"
-      listType="picture-card"
+      accept="*/*"
       fileList={fileList}
       maxCount={maxCount}
       onChange={handleChange}
-      onPreview={openImgPreview}
       disabled={disabled}
     >
       {fileList.length >= maxCount ? null : (
-        <div>
-          <PlusOutlined />
-          <div style={{ marginTop: 8 }}>上传</div>
-        </div>
+        <Button className={fileList.length ? styles.button : ''} icon={<UploadOutlined />}>
+          上传
+        </Button>
       )}
     </Upload>
   );
 };
 
-export default UploadImage;
+export default UploadFile;

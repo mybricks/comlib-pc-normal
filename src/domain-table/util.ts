@@ -1,27 +1,52 @@
 import { message } from 'antd';
 
-export const ajax = (params: Record<string, unknown>, option: { successTip?: string; errorTip?: string; needErrorTip?: boolean; url?: string; method?: string } = {}) => {
-	return fetch(option.url ?? (params.projectId ? '/runtime/api/domain/service/run' : '/api/system/domain/run'), {
-		method: option.method || 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		credentials: undefined,
-		body: option.method === 'get' ? undefined : JSON.stringify(params)
-	} as RequestInit)
-	.then(res => res.json())
-	.then(res => {
-		if (res.code === 1) {
-			option.successTip && message.success(option.successTip);
-			return res.data;
-		} else {
-			throw new Error(res.message || res.msg);
+export const ajax = (
+	params: Record<string, unknown>,
+	option: {
+		successTip?: string;
+		errorTip?: string;
+		needErrorTip?: boolean;
+		url?: string;
+		method?: string;
+		contentType?: string;
+	} = {}
+): Promise<any> => {
+	return new Promise((resolve, reject) => {
+		const xhr = new XMLHttpRequest();
+		xhr.open(option.method || 'POST', option.url ?? (params.projectId ? '/runtime/api/domain/service/run' : '/api/system/domain/run'), true);
+		option.contentType !== 'multipart/form-data' && xhr.setRequestHeader('Content-type', option.contentType || 'application/json');
+		
+		let data: any = params;
+		if (option.method?.toUpperCase() === 'GET') {
+			data = undefined;
+		} else if (!option.contentType || option.contentType === 'application/json') {
+			data = JSON.stringify(params);
 		}
-	})
-	.catch(error => {
-		(option.needErrorTip || option.errorTip) && message.error(option.errorTip || error.message);
-		return Promise.reject(error);
-	})
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				if (xhr.status == 200 || xhr.status == 201) {
+					const data = safeParse(xhr.responseText, {});
+					
+					if (data.code === 1) {
+						option.successTip && message.success(option.successTip);
+						resolve(data.data);
+					} else {
+						(option.needErrorTip || option.errorTip) && message.error(option.errorTip || data.msg);
+						reject(data.msg);
+					}
+				} else {
+					(option.needErrorTip || option.errorTip) && message.error(option.errorTip || '请求错误');
+					reject(option.errorTip || '请求错误');
+				}
+			}
+		};
+		
+		xhr.onerror = function() {
+			(option.needErrorTip || option.errorTip) && message.error(option.errorTip || '请求错误');
+			reject();
+		};
+		xhr.send(data);
+	});
 }
 
 /** parse JSON string，同时 catch 错误 */
@@ -39,5 +64,23 @@ export const safeStringify = (content: any) => {
 		return JSON.stringify(content);
 	} catch {
 		return ''
+	}
+};
+
+/** 编码 */
+export const safeEncodeURIComponent = (content: string) => {
+	try {
+		return encodeURIComponent(content);
+	} catch {
+		return content ?? '';
+	}
+};
+
+/** 解码 */
+export const safeDecodeURIComponent = (content: string) => {
+	try {
+		return decodeURIComponent(content);
+	} catch {
+		return content ?? '';
 	}
 };

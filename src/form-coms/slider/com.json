@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -26,7 +26,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置滑动输入条的初始值，并触发初始化事件输出",
+      "desc": "设置滑动输入条的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "number"
       }
@@ -79,7 +79,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "number"
       }

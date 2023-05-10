@@ -50,6 +50,7 @@ export enum ModalAction {
 export enum ComponentName {
 	INPUT = 'Input',
 	TEXTAREA = 'Textarea',
+	RICH_TEXT = 'RichText',
 	INPUT_NUMBER = 'InputNumber',
 	SELECT = 'Select',
 	DATE_PICKER = 'DatePicker',

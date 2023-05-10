@@ -1,7 +1,7 @@
 {
   "title": "下拉框",
   "namespace": "mybricks.normal-pc.select",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -27,7 +27,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置下拉框的初始值，并触发初始化事件输出",
+      "desc": "设置下拉框的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -115,7 +115,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }

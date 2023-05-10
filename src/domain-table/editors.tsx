@@ -1,18 +1,19 @@
 import React from 'react';
 import {
-  DefaultComponentNameMap,
-  Data,
-  FieldBizType,
-  FieldDBType,
-  ModalAction,
-  ComponentName,
-  DefaultOperatorMap,
-  DefaultValueWhenCreate
+	ComponentName,
+	Data,
+	DefaultComponentNameMap,
+	DefaultOperatorMap,
+	DefaultValueWhenCreate,
+	FieldBizType,
+	FieldDBType,
+	ModalAction
 } from './constants';
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
 import Refresh from './editors/refresh';
+import Delete from './editors/delete';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -949,6 +950,23 @@ export default {
         }
       },
       {
+        title: '禁用状态',
+        type: 'switch',
+        description: '是否禁用状态',
+        value: {
+          get() {
+            return field.form.readonly;
+          },
+          set({ data }, val: boolean) {
+            if (!field.form) {
+              field.form = {};
+            }
+
+            field.form.readonly = val;
+          }
+        }
+      },
+      {
         title: '表单项类型',
         type: 'Select',
         options: [
@@ -958,9 +976,10 @@ export default {
           { label: '时间选择器', value: ComponentName.DATE_PICKER },
           { label: '文本域', value: ComponentName.TEXTAREA },
           { label: '单选', value: ComponentName.RADIO },
-          { label: '复选框', value: ComponentName.CHECKBOX },
-          { label: '下拉搜索框', value: ComponentName.DEBOUNCE_SELECT },
-          { label: '图片上传', value: ComponentName.IMAGE_UPLOAD },
+	        { label: '复选框', value: ComponentName.CHECKBOX },
+	        { label: '下拉搜索框', value: ComponentName.DEBOUNCE_SELECT },
+	        { label: '富文本', value: ComponentName.RICH_TEXT },
+	        { label: '图片上传', value: ComponentName.IMAGE_UPLOAD },
           { label: '上传', value: ComponentName.UPLOAD }
         ],
         value: {
@@ -969,6 +988,10 @@ export default {
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
             field.form.formItem = value;
+						
+						if (value === ComponentName.RICH_TEXT && !field.form.toolbar?.length) {
+							field.form.toolbar = ['link'];
+						}
           }
         }
       },
@@ -1004,6 +1027,100 @@ export default {
           }
         }
       },
+      {
+        title: '附件数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
+          }
+        }
+      },
+	    {
+		    title: '插件选择',
+		    type: 'select',
+		    ifVisible() {
+			    return field.form.formItem === ComponentName.RICH_TEXT;
+		    },
+		    options() {
+			    return {
+				    options: [
+					    {
+						    label: '超链接',
+						    value: 'link'
+					    },
+					    {
+						    label: '表格',
+						    value: 'table'
+					    },
+					    // {
+					    //   label: '图片上传',
+					    //   value: 'uploadimage',
+					    // },
+					    // {
+					    //   label: '视频上传',
+					    //   value: 'uploadVideo',
+					    // },
+					    {
+						    label: '下划线',
+						    value: 'underline'
+					    },
+					    {
+						    label: '删除线',
+						    value: 'strikethrough'
+					    },
+					    {
+						    label: '加粗',
+						    value: 'bold'
+					    },
+					    {
+						    label: '左对齐',
+						    value: 'alignleft'
+					    },
+					    {
+						    label: '居中',
+						    value: 'aligncenter'
+					    },
+					    {
+						    label: '右对齐',
+						    value: 'alignright'
+					    },
+					    {
+						    label: '字体大小',
+						    value: 'fontsizeselect'
+					    },
+					    {
+						    label: '斜体',
+						    value: 'italic'
+					    },
+					    {
+						    label: '文本颜色',
+						    value: 'forecolor'
+					    },
+					    {
+						    label: '背景色',
+						    value: 'backcolor'
+					    }
+				    ],
+				    mode: 'multiple'
+			    };
+		    },
+		    value: {
+			    get() {
+				    return field.form.toolbar ?? [];
+			    },
+			    set({ data }, val: string[]) {
+				    field.form.toolbar = val;
+			    }
+		    }
+	    },
       {
         title: '下拉选项列表',
         description: '可设置表单项下拉选项',
@@ -1187,7 +1304,58 @@ export default {
           },
           set() {}
         }
-      }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '值更新',
+            type: '_event',
+            ifVisible() {
+              return [
+                ComponentName.INPUT,
+                ComponentName.TEXTAREA,
+                ComponentName.INPUT_NUMBER,
+                ComponentName.SELECT,
+                ComponentName.DATE_PICKER,
+                ComponentName.UPLOAD,
+                ComponentName.IMAGE_UPLOAD,
+                ComponentName.RADIO,
+                ComponentName.CHECKBOX,
+                ComponentName.RICH_TEXT,
+                ComponentName.DEBOUNCE_SELECT
+              ].includes(field.form?.formItem);
+            },
+            options: {
+              outputId: field.id + 'onChange'
+            }
+          }
+        ]
+      },
+	    {
+				title: '',
+		    items: [
+			    {
+						title: '',
+				    type: 'editorRender',
+				    options: {
+					    render: Delete,
+					    get modalAction() {
+								return data.showActionModalForEdit;
+					    }
+				    },
+				    value: {
+					    get({ data }: EditorResult<Data>) {
+						    return data.showActionModalForEdit;
+					    },
+					    set({}: EditorResult<Data>, value: ModalAction) {
+						    console.log(value, value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit');
+						    field.form[value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit'] = true;
+					    }
+				    }
+			    }
+		    ]
+	    }
     ].filter(Boolean);
 
     if (field.form?.formItem === ComponentName.DEBOUNCE_SELECT) {

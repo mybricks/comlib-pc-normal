@@ -55,7 +55,7 @@ export default {
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
     // console.log(child, curSlot)
     if (curSlot.id === 'content') {
-      const { id, inputDefs, outputDefs } = child
+      const { id, inputDefs, outputDefs, name } = child
       const item = data.items.find(item => item.id === id)
       const com = outputDefs.find(item => item.id === 'returnValue')
 
@@ -66,6 +66,7 @@ export default {
 
         data.items.push({
           id,
+          // comName: name,
           schema: com.schema,
           name: '',
           label: `表单项${nowC}`,
@@ -99,7 +100,8 @@ export default {
       refreshSchema({ data, inputs, outputs, slots })
     }
   },
-  '@childRemove'({ data, inputs, outputs, logs, slots }, { id, title }) {
+  '@childRemove'({ data, inputs, outputs, logs, slots }, child) {
+    const { id, name, title } = child
     data.items = data.items.filter(item => item.id !== id)
 
     refreshSchema({ data, inputs, outputs, slots })
@@ -341,8 +343,8 @@ export default {
     ]
 
     if (!data.isFormItem) {
-      cate2.title = '操作区'
-      cate2.items =  actionsEditor(data, output).items
+      cate2.title = actionsEditor(data, output).title
+      cate2.items = actionsEditor(data, output).items
     }
     
   },
@@ -576,7 +578,7 @@ export default {
             options: [
               { label: '是', value: true },
               { label: '否', value: false },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -596,7 +598,7 @@ export default {
             options: [
               { label: '左对齐', value: 'left' },
               { label: '右对齐', value: 'right' },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -617,7 +619,7 @@ export default {
             options: [
               { label: '显示', value: true },
               { label: '隐藏', value: false },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器', value: 'default' },
             ],
             value: {
               get({ id, data }: EditorResult<Data>) {
@@ -752,8 +754,12 @@ export default {
       }
     ]
   },
-  '[data-form-actions]': ({ data, output }: EditorResult<Data>, cate1) => {
-    cate1.items = [actionsEditor(data, output)];
+  '[data-form-actions]': {
+    title: '操作区',
+    items: ({ data, output }: EditorResult<Data>, cate1) => {
+      cate1.title = actionsEditor(data, output).title
+      cate1.items = actionsEditor(data, output).items
+    },
   },
   '[data-form-actions-item]': {
     title: '操作',

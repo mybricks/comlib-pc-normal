@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Descriptions, Tooltip } from 'antd';
 import { uuid } from '../utils';
 import { Data, InputIds, Item, TypeEnum } from './constants';
@@ -179,14 +179,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     );
   };
 
-  useEffect(() => {
-    if (env.runtime) {
-      inputs[InputIds.SetDataSource] && inputs[InputIds.SetDataSource](setDataSource);
-      inputs[InputIds.SetTitle] &&
-        inputs[InputIds.SetTitle]((t: string) => {
-          data.title = t;
-        });
-    }
+  useLayoutEffect(() => {
     if (env.edit && data.items?.length === 0) {
       data.items.push({
         id: uuid(),
@@ -197,14 +190,14 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         span: 1,
         labelStyle: {
           fontSize: 14,
-          fontWeight: 'normal',
+          fontWeight: '400',
           lineHeight: 1,
           color: '#8c8c8c',
           letterSpacing: 0
         },
         contentStyle: {
           fontSize: 14,
-          fontWeight: 'normal',
+          fontWeight: '400',
           lineHeight: 1,
           color: '#333333',
           letterSpacing: 0
@@ -218,6 +211,16 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
           type: 'string'
         }
       });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (env.runtime) {
+      inputs[InputIds.SetDataSource] && inputs[InputIds.SetDataSource](setDataSource);
+      inputs[InputIds.SetTitle] &&
+        inputs[InputIds.SetTitle]((t: string) => {
+          data.title = t;
+        });
     }
   }, [data]);
 
