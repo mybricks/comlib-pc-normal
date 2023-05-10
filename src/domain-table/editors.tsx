@@ -1,18 +1,19 @@
 import React from 'react';
 import {
-  DefaultComponentNameMap,
-  Data,
-  FieldBizType,
-  FieldDBType,
-  ModalAction,
-  ComponentName,
-  DefaultOperatorMap,
-  DefaultValueWhenCreate
+	ComponentName,
+	Data,
+	DefaultComponentNameMap,
+	DefaultOperatorMap,
+	DefaultValueWhenCreate,
+	FieldBizType,
+	FieldDBType,
+	ModalAction
 } from './constants';
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
 import Refresh from './editors/refresh';
+import Delete from './editors/delete';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -1321,22 +1322,40 @@ export default {
                 ComponentName.IMAGE_UPLOAD,
                 ComponentName.RADIO,
                 ComponentName.CHECKBOX,
+                ComponentName.RICH_TEXT,
                 ComponentName.DEBOUNCE_SELECT
-              ];
+              ].includes(field.form?.formItem);
             },
             options: {
-              outputId: 'onChange'
-            }
-          },
-          {
-            title: '失去焦点',
-            type: '_event',
-            options: {
-              outputId: 'onBlur'
+              outputId: field.id + 'onChange'
             }
           }
         ]
-      }
+      },
+	    {
+				title: '',
+		    items: [
+			    {
+						title: '',
+				    type: 'editorRender',
+				    options: {
+					    render: Delete,
+					    get modalAction() {
+								return data.showActionModalForEdit;
+					    }
+				    },
+				    value: {
+					    get({ data }: EditorResult<Data>) {
+						    return data.showActionModalForEdit;
+					    },
+					    set({}: EditorResult<Data>, value: ModalAction) {
+						    console.log(value, value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit');
+						    field.form[value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit'] = true;
+					    }
+				    }
+			    }
+		    ]
+	    }
     ].filter(Boolean);
 
     if (field.form?.formItem === ComponentName.DEBOUNCE_SELECT) {
