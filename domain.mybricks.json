@@ -111,7 +111,8 @@
     "./src/_events/com.json",
     "./src/_service/com.json",
     "./src/_copy/com.json",
-    "./src/_pick/com.json"
+    "./src/_pick/com.json",
+    "./src/_excel/com.json"
   ],
   "externals": [
     {
