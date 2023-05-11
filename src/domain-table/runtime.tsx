@@ -61,7 +61,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     };
   }, [data.entity, projectId, data.domainFileId]);
   const modalWidth = useRef(520);
-	/** 记录当前下拉搜索框表单项选择的值的 options */
+  /** 记录当前下拉搜索框表单项选择的值的 options */
   const mappingFormItemOptions = useRef({});
 
   const handleData = useCallback(
@@ -125,7 +125,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   );
   const onEdit = useCallback(
     (item: Record<string, unknown>) => {
-	    mappingFormItemOptions.current = {};
+      mappingFormItemOptions.current = {};
       setShowModalAction(ModalAction.EDIT);
       currentData.current = item;
       const value = {};
@@ -267,11 +267,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     (
       field: Field,
       option: {
-				placeholder?: string;
-				onPressEnter?(): void;
-				formItem?: ComponentName;
-	      mappingFormItemOptions?: Record<string, unknown>;
-			}
+        placeholder?: string;
+        onPressEnter?(): void;
+        formItem?: ComponentName;
+        mappingFormItemOptions?: Record<string, unknown>;
+      }
     ) => {
       let placeholder = option.placeholder ?? `请输入${field.name}`;
       const curFormItem = option.formItem || field.form.formItem;
@@ -392,7 +392,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             }
 
             return (
-              <div className="ant-form-item-search" data-field-id={field.id}>
+              <div className={`ant-form-item-search ${styles.marginTop}`} data-field-id={field.id}>
                 <Form.Item
                   style={{ minWidth: '280px' }}
                   initialValue={defaultValue}
@@ -405,10 +405,14 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
               </div>
             );
           })}
-          <Button type="primary" onClick={search}>
+          <Button className={styles.marginTop} type="primary" onClick={search}>
             查询
           </Button>
-          <Button data-add-button="1" className={styles.addBtn} onClick={openCreateModal}>
+          <Button
+            data-add-button="1"
+            className={`${styles.addBtn} ${styles.marginTop}`}
+            onClick={openCreateModal}
+          >
             {data.addBtn?.title ?? '新增'}
           </Button>
         </Form>
@@ -424,7 +428,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     );
   };
   const openCreateModal = useCallback(() => {
-	  mappingFormItemOptions.current = {};
+    mappingFormItemOptions.current = {};
     setShowModalAction(ModalAction.CREATE);
     createForm.resetFields();
   }, []);
@@ -555,15 +559,17 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
 
     return true;
   });
-	/** 防止 currentShowAllowRenderCreateItem 变化造成弹框宽度变化抖动 */
-  modalWidth.current = (showModalAction === ModalAction.CREATE || (edit && data.showActionModalForEdit === ModalAction.CREATE) ? data.widthForCreate : data.widthForEdit)
-	  || (
-		  !!showModalAction || (edit && data.showActionModalForEdit)
-			  ? currentShowAllowRenderCreateItem.length > 5
-				  ? 800
-				  : 520
-			  : modalWidth.current
-	  );
+  /** 防止 currentShowAllowRenderCreateItem 变化造成弹框宽度变化抖动 */
+  modalWidth.current =
+    (showModalAction === ModalAction.CREATE ||
+    (edit && data.showActionModalForEdit === ModalAction.CREATE)
+      ? data.widthForCreate
+      : data.widthForEdit) ||
+    (!!showModalAction || (edit && data.showActionModalForEdit)
+      ? currentShowAllowRenderCreateItem.length > 5
+        ? 800
+        : 520
+      : modalWidth.current);
   const renderCreateFormNode = () => {
     if (data.entity) {
       return (
@@ -620,7 +626,12 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             return (
               <Col
                 style={style}
-                span={(currentShowAllowRenderCreateItem.length > 5 && formItem !== ComponentName.RICH_TEXT) ? 12 : 24}
+                span={
+                  currentShowAllowRenderCreateItem.length > 5 &&
+                  formItem !== ComponentName.RICH_TEXT
+                    ? 12
+                    : 24
+                }
                 key={field.id}
               >
                 <div
@@ -636,7 +647,10 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
                     label={field.form?.label ?? field.name}
                     rules={rules}
                   >
-                    {renderFormItemNode(field, { formItem, mappingFormItemOptions: mappingFormItemOptions.current })}
+                    {renderFormItemNode(field, {
+                      formItem,
+                      mappingFormItemOptions: mappingFormItemOptions.current
+                    })}
                   </Form.Item>
                 </div>
                 {showTip ? <div className={styles.tipForHidden}>运行将隐藏</div> : null}
@@ -681,32 +695,40 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       });
     }
   };
-	
-	const onCreateFormValuesChange = (curValue, allValues) => {
-		const newAllValues = JSON.parse(JSON.stringify(allValues));
-		const propKey = Object.keys(curValue)[0];
-		
-		Object.keys(newAllValues).forEach(key => {
-			const field = allowRenderCreateItem.find(f => f.name === key);
-			
-			if (field && [ComponentName.CHECKBOX, ComponentName.RADIO, ComponentName.DEBOUNCE_SELECT, ComponentName.SELECT].includes(field.form.formItem)) {
-				newAllValues[key] = {
-					value: newAllValues[key],
-					options: mappingFormItemOptions.current[field.name] ?? [],
-				};
-			} else {
-				newAllValues[key] = { value: newAllValues[key] };
-			}
-		});
-		
-		outputs['onChange']({ propKey, changedValue: curValue, allValues: newAllValues });
-	};
-	
-	useEffect(() => {
-		inputs['setFieldsValue']?.((val) => {
-			createForm.setFieldsValue(val);
-		});
-	}, []);
+
+  const onCreateFormValuesChange = (curValue, allValues) => {
+    const newAllValues = JSON.parse(JSON.stringify(allValues));
+    const propKey = Object.keys(curValue)[0];
+
+    Object.keys(newAllValues).forEach((key) => {
+      const field = allowRenderCreateItem.find((f) => f.name === key);
+
+      if (
+        field &&
+        [
+          ComponentName.CHECKBOX,
+          ComponentName.RADIO,
+          ComponentName.DEBOUNCE_SELECT,
+          ComponentName.SELECT
+        ].includes(field.form.formItem)
+      ) {
+        newAllValues[key] = {
+          value: newAllValues[key],
+          options: mappingFormItemOptions.current[field.name] ?? []
+        };
+      } else {
+        newAllValues[key] = { value: newAllValues[key] };
+      }
+    });
+
+    outputs['onChange']({ propKey, changedValue: curValue, allValues: newAllValues });
+  };
+
+  useEffect(() => {
+    inputs['setFieldsValue']?.((val) => {
+      createForm.setFieldsValue(val);
+    });
+  }, []);
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -765,7 +787,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       <div className={styles.container} ref={containerRef}>
         <Modal
           destroyOnClose
-          width={String(modalWidth.current).match(/\.*%/) ? modalWidth.current : parseInt(String(modalWidth.current))}
+          width={
+            String(modalWidth.current).match(/\.*%/)
+              ? modalWidth.current
+              : parseInt(String(modalWidth.current))
+          }
           getContainer={
             (edit || debug
               ? data.showActionModalForEdit && !showModalAction
@@ -792,7 +818,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           confirmLoading={createLoading}
           okButtonProps={{ loading: createLoading }}
         >
-          <Form form={createForm} onValuesChange={onCreateFormValuesChange}>{renderCreateFormNode()}</Form>
+          <Form form={createForm} onValuesChange={onCreateFormValuesChange}>
+            {renderCreateFormNode()}
+          </Form>
         </Modal>
       </div>
     </ConfigProvider>

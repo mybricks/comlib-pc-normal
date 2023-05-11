@@ -169,11 +169,11 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
-                      const hasChecked = field.form.options?.find((o) => o.checked);
+                      const hasChecked = field.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
                           field.bizType === FieldBizType.ENUM
-                            ? field.form.options?.find((o) => o.value === v)
+                            ? field.form?.options?.find((o) => o.value === v)
                             : undefined;
 
                         return (
@@ -283,11 +283,11 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
-                      const hasChecked = field.form.options?.find((o) => o.checked);
+                      const hasChecked = field.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
                           field.bizType === FieldBizType.ENUM
-                            ? field.form.options?.find((o) => o.value === v)
+                            ? field.form?.options?.find((o) => o.value === v)
                             : undefined;
 
                         return (
@@ -538,21 +538,21 @@ export default {
               }
             }
           },
-	        {
-		        title: '弹框宽度',
-		        type: 'Text',
-		        options: {
-			        placeholder: '请输入弹框宽度，如：800或800px',
-		        },
-		        value: {
-			        get({}: EditorResult<Data>) {
-				        return data.widthForCreate;
-			        },
-			        set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-				        data.widthForCreate = value;
-			        }
-		        }
-	        },
+          {
+            title: '弹框宽度',
+            type: 'Text',
+            options: {
+              placeholder: '请输入弹框宽度，如：800或800px'
+            },
+            value: {
+              get({}: EditorResult<Data>) {
+                return data.widthForCreate;
+              },
+              set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+                data.widthForCreate = value;
+              }
+            }
+          },
           {
             title: '新增表单字段',
             type: 'Select',
@@ -623,21 +623,21 @@ export default {
               }
             }
           },
-	        {
-		        title: '弹框宽度',
-		        type: 'Text',
-		        options: {
-							placeholder: '请输入弹框宽度，如：800或800px',
-		        },
-		        value: {
-			        get({}: EditorResult<Data>) {
-				        return data.widthForEdit;
-			        },
-			        set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-				        data.widthForEdit = value;
-			        }
-		        }
-	        },
+          {
+            title: '弹框宽度',
+            type: 'Text',
+            options: {
+              placeholder: '请输入弹框宽度，如：800或800px'
+            },
+            value: {
+              get({}: EditorResult<Data>) {
+                return data.widthForEdit;
+              },
+              set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+                data.widthForEdit = value;
+              }
+            }
+          },
           {
             title: '编辑表单字段',
             type: 'Select',
@@ -1151,24 +1151,24 @@ export default {
           }
         }
       },
-	    {
-		    title: '富文本高度',
-		    type: 'Text',
-		    ifVisible() {
-			    return field.form.formItem === ComponentName.RICH_TEXT;
-		    },
-		    options: {
-			    placeholder: '请输入弹框宽度，如：200或200px',
-		    },
-		    value: {
-			    get({}: EditorResult<Data>) {
-				    return field.form.height;
-			    },
-			    set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-				    field.form.height = value;
-			    }
-		    }
-	    },
+      {
+        title: '富文本高度',
+        type: 'Text',
+        ifVisible() {
+          return field.form.formItem === ComponentName.RICH_TEXT;
+        },
+        options: {
+          placeholder: '请输入弹框宽度，如：200或200px'
+        },
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.form.height;
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.height = value;
+          }
+        }
+      },
       {
         title: '下拉选项列表',
         description: '可设置表单项下拉选项',
