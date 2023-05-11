@@ -23,6 +23,7 @@ interface Actions {
 
 export interface FormItems {
   id: string;
+  comName: string
   name: string
   label: string
   span: number

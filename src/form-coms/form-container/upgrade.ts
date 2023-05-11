@@ -2,7 +2,7 @@ import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema } from './schema'
 
-export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -55,9 +55,12 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     if (item.labelAlign === undefined) {
       item.labelAlign = 'default';
     }
+
     if (item.labelAutoWrap === undefined) {
       item.labelAutoWrap = 'default';
     }
+
+
 
   });
 
@@ -181,6 +184,19 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
 
   //=========== v1.2.2 end ===============
 
+
+  /**
+  * @description v1.2.12 , 复制&粘贴修正数据，增加 comName 字段
+  */
+  children['content'].forEach(child => {
+    const item = data.items.find(item => item.id === child.id);
+
+    if (item && !item.comName) {
+      item['comName'] = child.name
+    }
+
+  });
+  //=========== v1.2.12 end ===============
 
   return true;
 }

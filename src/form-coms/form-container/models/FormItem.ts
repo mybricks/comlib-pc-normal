@@ -3,6 +3,7 @@ import { onChange } from './onChange'
 
 interface FormItemInputsProps {
   id?: string
+  name: string
   inputs: any
   outputs: any
   configs?: {
@@ -35,7 +36,7 @@ const formItemOutputIds = {
   RETURN_VALIDATE: 'returnValidate'
 }
 
-const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id }: FormItemInputsProps, deps?: React.DependencyList) => {
+const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: FormItemInputsProps, deps?: React.DependencyList) => {
   
   useLayoutEffect(() => {
     /**
@@ -50,7 +51,7 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id }: FormIte
       outputs[formItemOutputIds.ON_CHANGE](val);
       
       if (parentSlot && id) {
-        onChange(parentSlot, { id: id, value: val })
+        onChange(parentSlot, { id, value: val, name })
       }
     });
 

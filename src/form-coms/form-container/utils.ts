@@ -48,3 +48,15 @@ export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data 
     });
   }
 };
+
+export const getFormItem = (formItems: FormItems[], com) => {
+  const item = formItems.find((item) => {
+    if (item.comName) {
+      return item.comName === com.name
+    }
+
+    return item.id === com.id
+  });
+
+  return item
+}
