@@ -3,6 +3,7 @@
   "config": {
     "disabled": false
   },
+  "layout": "horizontal",
   "enableButtonStyle": false,
   "buttonStyle": "outline"
 }

@@ -15,5 +15,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   output.get('onInitial').setTitle('值初始化');
 
+  /**
+   * @description v1.0.11->1.0.12 增加布局（水平或者垂直）
+   */
+  if (typeof data.layout === "undefined") {
+    data.layout = "horizontal";
+  };
+
   return true;
 }

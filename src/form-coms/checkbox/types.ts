@@ -12,4 +12,5 @@ export interface Data {
     staticOptions: CheckboxOptionType[];
     options: any[];
     renderError?: boolean;
+    layout: 'vertical' | 'horizontal';
 }
