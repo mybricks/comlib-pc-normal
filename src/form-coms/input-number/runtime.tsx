@@ -23,6 +23,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<string | number>();
   useFormItemInputs(
     {
+      id: props.id,
+      name: props.name,
       inputs,
       outputs,
       configs: {
@@ -63,12 +65,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const onChange = (value) => {
     setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, value });
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   };
 

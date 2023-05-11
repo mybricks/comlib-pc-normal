@@ -23,6 +23,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { edit } = env;
 
   useFormItemInputs({
+    id: props.id,
+    name: props.name,
     inputs,
     outputs,
     configs: {
@@ -61,13 +63,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    onChangeForFc(parentSlot, { id: props.id, value });
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   }, []);
 

@@ -19,7 +19,7 @@ export interface Data {
 const { Search } = Input;
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, id } = props;
+  const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
 
@@ -73,13 +73,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     setValue(value);
-    onChangeForFc(parentSlot, { id: id, value });
+    onChangeForFc(parentSlot, { id: id, name: name, value });
     outputs['onChange'](value);
   }, []);
 
