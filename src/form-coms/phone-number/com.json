@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-phone-number",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "内置中国大陆11位手机号码校验",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_6zcy4m.2d104629fe884457.png",

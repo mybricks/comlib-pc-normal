@@ -14,7 +14,8 @@ export default function Runtime({
   inputs,
   outputs,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   useFormItemInputs({
     inputs,
@@ -92,13 +93,13 @@ export default function Runtime({
   }, []);
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
 
   const onChange = useCallback((e) => {
     const { value } = e.target;
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value });
+    onChangeForFc(parentSlot, { id: id, value, name });
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
