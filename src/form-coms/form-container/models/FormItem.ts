@@ -3,6 +3,7 @@ import { onChange } from './onChange'
 
 interface FormItemInputsProps {
   id?: string
+  name?: string
   inputs: any
   outputs: any
   configs?: {
