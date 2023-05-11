@@ -6,6 +6,7 @@ import { Option, OutputIds } from '../types';
 import { uuid } from '../../utils';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import css from './runtime.less';
 
 export default function Runtime({
   env,
@@ -142,10 +143,21 @@ export default function Runtime({
   if (data.renderError) {
     return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
   }
+
+  const checkboxStyle = {
+    paddingBottom: data.layout === 'vertical' ? '8px' : void 0
+  };
+
+  const checkboxGroup = {
+    display: data.layout === 'vertical' ? 'grid' : void 0,
+    gap: data.layout === 'vertical' ? '8px' : void 0
+  };
+
   return (
-    <div>
+    <div className={css.checkbox}>
       {data.checkAll && (
         <Checkbox
+          style={checkboxStyle}
           indeterminate={indeterminate}
           onChange={onCheckAllChange}
           checked={checkAll}
@@ -155,6 +167,7 @@ export default function Runtime({
         </Checkbox>
       )}
       <Checkbox.Group
+        style={checkboxGroup}
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value as any}

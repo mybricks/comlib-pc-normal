@@ -148,6 +148,29 @@ export default {
         }
       },
       {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
+          }
+        }
+      },
+      {
         title: '校验规则',
         description: '提供快捷校验配置',
         type: 'ArrayCheckbox',
