@@ -15,6 +15,7 @@ export default function ({
   env,
   style,
   id,
+  name,
   parentSlot
 }: RuntimeParams<Data>) {
   const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
@@ -59,6 +60,8 @@ export default function ({
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
@@ -94,35 +97,9 @@ export default function ({
     data.dataSource = dataSource;
   });
 
-  // inputs['setValue']((val) => {
-  //   if (!Array.isArray(val)) {
-  //     message.error('穿梭框目标值必须是数组类型');
-  //     return;
-  //   }
-  //   setTargetKeys(val);
-  // });
-
-  // inputs['getValue']((_, outputRels) => {
-  //   outputRels['returnValue'](getTransferValue());
-  // });
-
-  // inputs['resetValue'](() => {
-  //   setTargetKeys([]);
-  // });
-
-  // inputs['validate'](validate);
-
-  // inputs['setEnabled'](() => {
-  //   data.disabled = true;
-  // });
-
-  // inputs['setDisabled'](() => {
-  //   data.disabled = false;
-  // });
-
   const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
     setTargetKeys(targetKeys);
-    onChangeForFc(parentSlot, { id: id, value: targetKeys });
+    onChangeForFc(parentSlot, { id, name, value: targetKeys });
     outputs['onChange'](targetKeys);
   };
 

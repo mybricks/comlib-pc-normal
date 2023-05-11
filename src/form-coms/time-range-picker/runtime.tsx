@@ -15,7 +15,8 @@ export default function ({
   env,
   style,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
@@ -62,6 +63,8 @@ export default function ({
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
@@ -85,49 +88,6 @@ export default function ({
     [value]
   );
 
-  // inputs['setValue']((val: [number, number]) => {
-  //   if (Array.isArray(val) && !val.length) return;
-  //   if (isValidInput(val)) {
-  //     if (val.every((item) => isNumber(item))) {
-  //       if (isValidRange(val, 'number')) {
-  //         setValue([moment(val[0]), moment(val[1])]);
-  //       } else {
-  //         message.error('开始时间必须小于结束时间');
-  //       }
-  //       return;
-  //     }
-  //     //兼容moment
-  //     if (val.every((item) => isMoment(item))) {
-  //       console.log('isMoment array');
-  //       if (isValidRange(val, 'moment')) {
-  //         setValue(val as unknown as [Moment, Moment]);
-  //       } else {
-  //         message.error('开始时间必须小于结束时间');
-  //       }
-  //       return;
-  //     }
-  //   }
-  //   message.error('输入数据是时间戳数组或者moment对象数组，长度为0或2');
-  // });
-
-  // inputs['getValue']((_, outputRels) => {
-  //   outputRels['returnValue'](getValue());
-  // });
-
-  // inputs['resetValue'](() => {
-  //   setValue(void 0);
-  // });
-
-  // inputs['setDisabled'](() => {
-  //   data.disabled = true;
-  // });
-
-  // inputs['setEnabled'](() => {
-  //   data.disabled = false;
-  // });
-
-  // inputs['validate'](validate);
-
   const getValue = useCallback(
     () => (value ? [value[0].valueOf(), value[1].valueOf()] : []),
     [value]
@@ -135,7 +95,7 @@ export default function ({
 
   const onChange = (values, formatString: [string, string]) => {
     setValue(values);
-    onChangeForFc(parentSlot, { id: id, value: [values[0].valueOf(), values[1].valueOf()] });
+    onChangeForFc(parentSlot, { id, name, value: [values[0].valueOf(), values[1].valueOf()] });
     outputs['onChange']([values[0].valueOf(), values[1].valueOf()]);
   };
   return (

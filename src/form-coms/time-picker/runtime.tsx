@@ -19,7 +19,8 @@ export default function ({
   env,
   style,
   id,
-  parentSlot
+  parentSlot,
+  name
 }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<Moment>();
@@ -55,6 +56,8 @@ export default function ({
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
@@ -82,7 +85,7 @@ export default function ({
 
   const onChange = (time, timeString: string) => {
     setValue(time);
-    onChangeForFc(parentSlot, { id: id, value: time.valueOf() });
+    onChangeForFc(parentSlot, { id, name, value: time.valueOf() });
     outputs['onChange'](time.valueOf());
   };
   return (
