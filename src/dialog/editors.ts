@@ -772,7 +772,7 @@ function useDynamic(dataset: string) {
     title: '动态配置',
     items: [
       {
-        title: '禁用',
+        title: '禁用/启用',
         type: 'Switch',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
@@ -795,7 +795,7 @@ function useDynamic(dataset: string) {
         }
       },
       {
-        title: '隐藏',
+        title: '隐藏/显示',
         type: 'Switch',
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
