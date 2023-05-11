@@ -29,7 +29,7 @@ function rgbToHex(rgb) {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, name } = props;
   const [isShow, setIsShow] = useState<boolean>(false);
 
   useLayoutEffect(() => {
@@ -109,11 +109,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //值变化
     switch (data.colorType) {
       case 'rgb':
-        onChangeForFc(parentSlot, { id: props.id, value: data.color });
+        onChangeForFc(parentSlot, { id: props.id, name: name, value: data.color });
         outputs['onChange'](data.color);
         break;
       case 'hex':
-        onChangeForFc(parentSlot, { id: props.id, value: rgbToHex(data.color) });
+        onChangeForFc(parentSlot, { id: props.id, name: name, value: rgbToHex(data.color) });
         outputs['onChange'](rgbToHex(data.color));
         break;
     }

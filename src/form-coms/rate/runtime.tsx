@@ -22,7 +22,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, id } = props;
+  const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<number>(data.config.defaultValue);
 
   useFormItemInputs(
@@ -69,7 +69,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //1、值变化
   const onChange = useCallback((value) => {
     setValue(value);
-    onChangeForFc(parentSlot, { id: id, value });
+    onChangeForFc(parentSlot, { id: id, name: name, value });
     outputs['onChange'](value);
   }, []);
 
