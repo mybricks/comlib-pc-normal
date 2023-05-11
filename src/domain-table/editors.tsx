@@ -169,11 +169,11 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
-                      const hasChecked = field.form?.options?.find((o) => o.checked);
+                      const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
                           field.bizType === FieldBizType.ENUM
-                            ? field.form?.options?.find((o) => o.value === v)
+                            ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
                         return (
@@ -283,11 +283,11 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
-                      const hasChecked = field.form?.options?.find((o) => o.checked);
+                      const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
                           field.bizType === FieldBizType.ENUM
-                            ? field.form?.options?.find((o) => o.value === v)
+                            ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
                         return (
