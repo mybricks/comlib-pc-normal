@@ -35,6 +35,62 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "hiddenok",
+      "title": "隐藏-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "showok",
+      "title": "显示-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "disableok",
+      "title": "禁用-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enableok",
+      "title": "启用-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "hiddencancelBtn",
+      "title": "隐藏-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "showcancelBtn",
+      "title": "显示-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "disablecancelBtn",
+      "title": "禁用-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enablecancelBtn",
+      "title": "启用-取消按钮",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [

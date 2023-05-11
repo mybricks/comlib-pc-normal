@@ -17,6 +17,8 @@
       "icon": "",
       "useIcon": false,
       "showText": true,
+      "dynamicHidden": true,
+      "dynamicDisabled": true,
       "type": "default",
       "visible": true,
       "isConnected": false
@@ -26,6 +28,8 @@
       "title": "确认",
       "type": "primary",
       "icon": "",
+      "dynamicHidden": true,
+      "dynamicDisabled": true,
       "useIcon": false,
       "showText": true,
       "visible": true,
