@@ -42,12 +42,12 @@ export default function ({ data, slots }) {
       type,
       useBtnLoading,
       useIcon,
-      dynamicDisabled,
-      dynamicHidden
+      disabled,
+      hidden
     } = item;
     const props = {
-      hidden: dynamicHidden,
-      disabled: dynamicDisabled,
+      hidden,
+      disabled,
       type,
       loading: useBtnLoading ? true : undefined,
       key: id
