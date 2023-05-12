@@ -81,8 +81,8 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           query,
           fields: [
             { name: 'id' },
-            ...data.fieldAry
-              .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM)
+            ...data.entity.fieldAry
+              .filter((field) => !field.isPrivate)
               .map((f) => ({ name: f.name }))
           ],
           orders: [
