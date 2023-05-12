@@ -161,71 +161,80 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
 
   let scrollXWidth = 0;
   const columnWidthMap = {};
-  const renderColumns: ColumnsType<any> = data.fieldAry
-    ? data.fieldAry?.map((field) => {
-        /** 提前读取值，防止不响应 */
-        field.tableInfo?.ellipsis;
+  const renderColumns: ColumnsType<any> = (
+    data.fieldAry
+      ? data.fieldAry?.map((field) => {
+          /** 提前读取值，防止不响应 */
+          field.tableInfo?.ellipsis;
 
-        const title =
-          field.tableInfo?.label ||
-          (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
-        let parseWidth = parseInt(field.tableInfo?.width || '124px');
-        if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
-          parseWidth = 124;
-        }
-        scrollXWidth += parseWidth;
-        const editTitle = data.operate?.edit?.title;
-        const editDisabled = data.operate?.edit?.disabled;
+          const title =
+            field.tableInfo?.label ||
+            (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
+          let parseWidth = parseInt(field.tableInfo?.width || '124px');
+          if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
+            parseWidth = 124;
+          }
+          scrollXWidth += parseWidth;
+          const editTitle = data.operate?.edit?.title;
+          const editDisabled = data.operate?.edit?.disabled;
 
-        return field.bizType === FieldBizType.FRONT_CUSTOM
-          ? {
-              title: field.tableInfo?.label || field.name,
-              key: field.id,
-              align: field.tableInfo?.align || 'left',
-              width: `${parseWidth}px`,
-              render(_, data) {
-                return (
-                  <>
-                    {editDisabled ? null : (
-                      <Button
-                        data-edit-button="1"
-                        style={{ marginRight: '12px' }}
-                        size="small"
-                        onClick={env.edit ? undefined : () => onEdit(data)}
-                      >
-                        {editTitle || '编辑'}
-                      </Button>
-                    )}
-                    <Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>
-                      删除
-                    </Button>
-                  </>
-                );
-              }
-            }
-          : {
-              title: title,
-              dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
-              key: title,
-              align: field.tableInfo?.align || 'left',
-              width: `${parseWidth}px`,
-              render(value, data) {
-                return (
-                  <RenderColumn
-                    columnKey={title}
-                    columnWidthMap={columnWidthMap}
-                    value={value}
-                    item={data}
-                    field={field}
-                    ellipsis={field.tableInfo?.ellipsis}
-                    columnWidth={columnWidthMap[title]}
-                  />
-                );
-              },
-              sorter: field.tableInfo?.sort
-            };
-      })
-    : [];
+          return field.bizType === FieldBizType.FRONT_CUSTOM
+            ? data.table?.operate?.disabled
+              ? null
+              : {
+                  title: field.tableInfo?.label || field.name,
+                  key: field.id,
+                  align: field.tableInfo?.align || 'left',
+                  width: `${parseWidth}px`,
+                  render(_, data) {
+                    return (
+                      <>
+                        {editDisabled ? null : (
+                          <Button
+                            data-edit-button="1"
+                            style={{ marginRight: '12px' }}
+                            size="small"
+                            onClick={env.edit ? undefined : () => onEdit(data)}
+                          >
+                            {editTitle || '编辑'}
+                          </Button>
+                        )}
+                        <Button
+                          danger
+                          type="primary"
+                          size="small"
+                          onClick={() => onDelete(data.id)}
+                        >
+                          删除
+                        </Button>
+                      </>
+                    );
+                  }
+                }
+            : {
+                title: title,
+                dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
+                key: title,
+                align: field.tableInfo?.align || 'left',
+                width: `${parseWidth}px`,
+                render(value, data) {
+                  return (
+                    <RenderColumn
+                      columnKey={title}
+                      columnWidthMap={columnWidthMap}
+                      value={value}
+                      item={data}
+                      field={field}
+                      ellipsis={field.tableInfo?.ellipsis}
+                      columnWidth={columnWidthMap[title]}
+                    />
+                  );
+                },
+                sorter: field.tableInfo?.sort
+              };
+        })
+      : []
+  ).filter(Boolean);
 
   useEffect(() => {
     if (!data.entity || !data.fieldAry?.length) {

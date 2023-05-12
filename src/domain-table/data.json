@@ -2,7 +2,10 @@
   "formFieldAry": [],
   "fieldAry": [],
   "table": {
-    "size": "middle"
+    "size": "middle",
+    "operate": {
+      "disabled": false
+    }
   },
   "operate": {
     "create": {

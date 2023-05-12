@@ -494,6 +494,24 @@ export default {
                 data.pagination.show = value;
               }
             }
+          },
+          {
+            title: '隐藏操作区',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.table?.operate?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.table) {
+                  data.table = {};
+                }
+                if (!data.table.operate) {
+                  data.table.operate = {};
+                }
+                data.table.operate.disabled = value;
+              }
+            }
           }
         ]
       }
