@@ -24,7 +24,7 @@ export function Init({
 }: InitProps) {
   const tinyMCE = getWindowVal('tinyMCE');
   if (!tinyMCE) return;
-
+	
   const plugins: string[] = [
     'table',
     'link',
@@ -61,7 +61,7 @@ export function Init({
       ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
       : `p {margin: 0px; border:0px ; padding: 0px;}`,
     placeholder
-    });
+	});
 }
 
 export function getWindowVal(key: string) {

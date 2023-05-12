@@ -21,7 +21,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, name } = props;
   const [value, setValue] = useState();
 
   //输出数据变形函数
@@ -150,7 +150,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
   const onChange = (value) => {
@@ -162,7 +162,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       transValue = transCalculation(value, data.contentType, props);
     }
     setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, value: transValue });
+    onChangeForFc(parentSlot, { id: props.id, name: name, value: transValue });
     outputs['onChange'](transValue);
     onValidateTrigger();
   };

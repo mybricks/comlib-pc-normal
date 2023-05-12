@@ -6,7 +6,15 @@ import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
-export default function ({ data, inputs, outputs, env, id, parentSlot }: RuntimeParams<Data>) {
+export default function ({
+  data,
+  inputs,
+  outputs,
+  env,
+  id,
+  parentSlot,
+  name
+}: RuntimeParams<Data>) {
   const [value, setValue] = useState<string>();
   const validate = useCallback(
     (output) => {
@@ -27,6 +35,8 @@ export default function ({ data, inputs, outputs, env, id, parentSlot }: Runtime
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
@@ -52,7 +62,7 @@ export default function ({ data, inputs, outputs, env, id, parentSlot }: Runtime
 
   const onChange = (value: string) => {
     setValue(value);
-    onChangeForFc(parentSlot, { id, value });
+    onChangeForFc(parentSlot, { id, name, value });
     outputs.onChange(value);
   };
 

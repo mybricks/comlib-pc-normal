@@ -21,6 +21,7 @@ interface Env {
 interface RuntimeParams<T> {
   /** 组件ID **/
   id: string
+  name: string
   data: T
   env: Env
   style: any

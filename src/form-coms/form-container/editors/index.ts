@@ -66,7 +66,7 @@ export default {
 
         data.items.push({
           id,
-          // comName: name,
+          comName: name,
           schema: com.schema,
           name: '',
           label: `表单项${nowC}`,
@@ -102,7 +102,14 @@ export default {
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, child) {
     const { id, name, title } = child
-    data.items = data.items.filter(item => item.id !== id)
+
+    data.items = data.items.filter(item => {
+      if (item?.comName) {
+        return item.comName !== name
+      }
+
+      return item.id !== id
+    })
 
     refreshSchema({ data, inputs, outputs, slots })
   },

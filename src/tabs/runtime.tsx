@@ -134,8 +134,12 @@ export default function ({
               })
               .filter((id) => !!id);
             setShowTabs(tempDs);
+            //处理动态设置显示不选中问题
             if (tempDs.length) {
-              data.defaultActiveKey = data.tabList.find(({ id }) => id === tempDs[0])?.key;
+              const showTabs = data.tabList.filter((tab) => tempDs.includes(tab.id));
+              if (!showTabs.find((tab) => tab.key === data.defaultActiveKey)) {
+                data.defaultActiveKey = data.tabList.find(({ id }) => id === tempDs[0])?.key;
+              }
             }
           }
         });

@@ -6,6 +6,7 @@ import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
 import { uuid } from '../../utils';
 import { loadPkg } from '../../utils/loadPkg';
+import { validateTrigger } from '../form-container/models/validate';
 
 import { Spin } from 'antd';
 
@@ -23,7 +24,7 @@ class Ctx {
   tinymceFSId!: string;
 }
 
-export default function ({ data, outputs, inputs, env, readonly, parentSlot, id }): JSX.Element {
+export default function ({ data, outputs, inputs, env, readonly, parentSlot, id, name }): JSX.Element {
   const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
@@ -144,6 +145,9 @@ export default function ({ data, outputs, inputs, env, readonly, parentSlot, id 
     });
   }, []);
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: id, name: name });
+  };
   //失去焦点
   const update = useCallback((bool) => {
     const tinyMCE = getWindowVal('tinyMCE');
@@ -155,6 +159,7 @@ export default function ({ data, outputs, inputs, env, readonly, parentSlot, id 
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
+    onValidateTrigger();
     outputs['onBlur'](valueRef.current);
   }, []);
 
@@ -169,7 +174,7 @@ export default function ({ data, outputs, inputs, env, readonly, parentSlot, id 
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
-    onChangeForFc(parentSlot, { id: id, value: valueRef.current });
+    onChangeForFc(parentSlot, { id: id, name: name, value: valueRef.current });
     outputs['onChange'](valueRef.current);
   }, []);
 

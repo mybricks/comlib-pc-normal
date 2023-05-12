@@ -5,6 +5,7 @@ import FormActions from './components/FormActions';
 import InlineLayout from './layout/InlineLayout';
 import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
+import { getFormItem } from './utils';
 
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env } = props;
@@ -28,17 +29,26 @@ const SlotContent = (props) => {
 
   const content = useMemo(() => {
     return slots['content'].render({
-      itemWrap(com: { id; jsx }) {
-        const item = data.items.find((item) => item.id === com.id);
+      itemWrap(com: { id; jsx; name }) {
+        // todo name
+        const item = getFormItem(data.items, com);
 
-        return <FormItem data={data} slots={slots} com={com} item={item} field={props?.field} />;
+        return (
+          <FormItem
+            data={data}
+            slots={slots}
+            com={com}
+            item={item}
+            // field={props?.field}
+          />
+        );
       },
-      wrap(comAray: { id; jsx; def; inputs; outputs; style }[]) {
+      wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
 
         const jsx = comAray?.map((com, idx) => {
           if (com) {
-            let item = items.find((item) => item.id === com.id);
+            const item = getFormItem(data.items, com);
 
             if (!item) {
               if (items.length === comAray.length) {
@@ -49,7 +59,11 @@ const SlotContent = (props) => {
 
             const { widthOption, span, width } = item;
 
-            childrenInputs[com.id] = com.inputs;
+            if (item.comName) {
+              childrenInputs[com.name] = com.inputs;
+            } else {
+              childrenInputs[com.id] = com.inputs;
+            }
 
             const flexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
 
@@ -99,8 +113,8 @@ const SlotContent = (props) => {
             )}
           </Row>
         );
-      },
-      inputValues: {}
+      }
+      // inputValues: {}
       // key: props?.field?.name
     });
   }, [layout, slots]);

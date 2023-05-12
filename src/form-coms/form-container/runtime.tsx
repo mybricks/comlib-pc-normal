@@ -10,7 +10,7 @@ import React, {
 import { Form } from 'antd';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject, setFormItemsProps } from './utils';
+import { getLabelCol, isObject, setFormItemsProps, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
@@ -108,10 +108,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     /**
      * @description 响应触发对应表单项校验
      */
-    slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER](({ id }) => {
-      const item = data.items.find((item) => item.id === id);
+    slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
+      const { id, name } = params;
+      const item = getFormItem(data.items, { id, name });
+
       if (item) {
-        const input = childrenInputs[item.id];
+        // const input = childrenInputs[item.id];
+        const input = getFromItemInputEvent(item, childrenInputs);
         validateForInput({ item, input });
       }
     });
@@ -122,8 +125,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       setFormItemsProps(val, { data });
     });
 
-    slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, value }) => {
-      const item = data.items.find((item) => item.id === id);
+    slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
+      const item = getFormItem(data.items, { id, name });
+
       if (item) {
         const fieldsValue = { [item.name || item.label]: value };
 
@@ -163,8 +167,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const resetFields = () => {
     data.items.forEach((item) => {
-      const id = item.id;
-      const input = childrenInputs[id];
+      // const id = item.id;
+      // const input = childrenInputs[id];
+      const input = getFromItemInputEvent(item, childrenInputs);
       input?.resetValue();
       item.validateStatus = undefined;
       item.help = undefined;
@@ -193,8 +198,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
       Promise.all(
         formItems.map((item) => {
-          const id = item.id;
-          const input = childrenInputs[id];
+          // const id = item.id;
+          // const input = childrenInputs[id];
+          const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
             validateForInput({ item, input }, resolve);
@@ -221,8 +227,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
       Promise.all(
         formItems.map((item) => {
-          const id = item.id;
-          const input = childrenInputs[id];
+          // const id = item.id;
+          // const input = childrenInputs[id];
+          const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
             let value = {};
@@ -247,26 +254,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
           });
 
           resolve({ ...rtn });
-          // if (data.dataType === 'list') {
-          //   const arr = [];
-          //   values.forEach((valItem) => {
-          //     Object.keys(valItem).map((key) => {
-          //       if (!arr[key]) {
-          //         arr[key] = {};
-          //       }
-          //       arr[key][valItem[key].name] = valItem[key].value;
-          //     });
-          //   });
-          //   resolve(arr);
-          // } else {
-          //   const rtn = {};
-
-          //   values.forEach((item: any) => {
-          //     rtn[item.name] = item.value;
-          //   });
-
-          //   resolve({ ...rtn });
-          // }
         })
         .catch((e) => reject(e));
     });
@@ -335,9 +322,9 @@ const getFormItems = (data: Data, childrenInputs) => {
   let formItems = data.items;
 
   // hack 脏数据问题，表单项数与实际表单项数不一致
-  if (data.items.length !== Object.keys(childrenInputs).length) {
-    formItems = formItems.filter((item) => childrenInputs[item.id]);
-  }
+  // if (data.items.length !== Object.keys(childrenInputs).length) {
+  //   formItems = formItems.filter((item) => childrenInputs[item.id]);
+  // }
 
   // 过滤隐藏表单项
   if (!data.submitHiddenFields) {
@@ -366,11 +353,21 @@ const validateForInput = (
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
   const item = formItems.find((item) => (item.name || item.label) === name);
   if (item) {
-    const input = childrenInputs[item.id];
+    // const input = childrenInputs[item.id];
+    const input = getFromItemInputEvent(item, childrenInputs);
+
     if (isObject(values[name])) {
       input[inputId] && input[inputId]({ ...values[name] });
     } else {
       input[inputId] && input[inputId](values[name]);
     }
   }
+};
+
+const getFromItemInputEvent = (formItem, childrenInputs) => {
+  if (formItem.comName) {
+    return childrenInputs[formItem.comName];
+  }
+
+  return childrenInputs[formItem.id];
 };

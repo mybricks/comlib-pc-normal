@@ -15,7 +15,8 @@ export default function Runtime({
   logger,
   parentSlot,
   id,
-  title
+  title,
+  name
 }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -109,7 +110,7 @@ export default function Runtime({
 
   // 校验触发
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
   // data.value变化事件
   const changeValue = useCallback((checkedValue?: any[]) => {
@@ -127,7 +128,7 @@ export default function Runtime({
   // 全选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id: id, value: checkedValue });
+    onChangeForFc(parentSlot, { id: id, name: name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);

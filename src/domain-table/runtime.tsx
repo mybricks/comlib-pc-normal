@@ -27,13 +27,13 @@ import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } fr
 import { Field } from './type';
 import UploadImage from './components/upload-image';
 import UploadFile from './components/upload-file';
+import RichText from './components/rich-text';
 
 import styles from './runtime.less';
-import RichText from "./components/rich-text";
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
-export default function ({ env, data }: RuntimeParams<Data>) {
+export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const { edit, runtime, projectId } = env;
   const debug = !!(runtime && runtime.debug);
   if (debug || runtime) {
@@ -61,6 +61,8 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     };
   }, [data.entity, projectId, data.domainFileId]);
   const modalWidth = useRef(520);
+  /** 记录当前下拉搜索框表单项选择的值的 options */
+  const mappingFormItemOptions = useRef({});
 
   const handleData = useCallback(
     (query, pageInfo?: Record<string, unknown>) => {
@@ -123,6 +125,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   );
   const onEdit = useCallback(
     (item: Record<string, unknown>) => {
+      mappingFormItemOptions.current = {};
       setShowModalAction(ModalAction.EDIT);
       currentData.current = item;
       const value = {};
@@ -263,7 +266,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   const renderFormItemNode = useCallback(
     (
       field: Field,
-      option: { placeholder?: string; onPressEnter?(): void; formItem?: ComponentName }
+      option: {
+        placeholder?: string;
+        onPressEnter?(): void;
+        formItem?: ComponentName;
+        mappingFormItemOptions?: Record<string, unknown>;
+      }
     ) => {
       let placeholder = option.placeholder ?? `请输入${field.name}`;
       const curFormItem = option.formItem || field.form.formItem;
@@ -321,6 +329,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             placeholder={option.placeholder ?? '可输入关键词检索'}
             field={field}
             fetchParams={baseFetchParams}
+            mappingFormItemOptions={option.mappingFormItemOptions}
           />
         );
       } else if (curFormItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
@@ -383,7 +392,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             }
 
             return (
-              <div className="ant-form-item-search" data-field-id={field.id}>
+              <div className={`ant-form-item-search ${styles.marginTop}`} data-field-id={field.id}>
                 <Form.Item
                   style={{ minWidth: '280px' }}
                   initialValue={defaultValue}
@@ -396,10 +405,14 @@ export default function ({ env, data }: RuntimeParams<Data>) {
               </div>
             );
           })}
-          <Button type="primary" onClick={search}>
+          <Button className={styles.marginTop} type="primary" onClick={search}>
             查询
           </Button>
-          <Button data-add-button="1" className={styles.addBtn} onClick={openCreateModal}>
+          <Button
+            data-add-button="1"
+            className={`${styles.addBtn} ${styles.marginTop}`}
+            onClick={openCreateModal}
+          >
             {data.addBtn?.title ?? '新增'}
           </Button>
         </Form>
@@ -415,6 +428,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     );
   };
   const openCreateModal = useCallback(() => {
+    mappingFormItemOptions.current = {};
     setShowModalAction(ModalAction.CREATE);
     createForm.resetFields();
   }, []);
@@ -433,7 +447,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         const curValue: Record<string, unknown> = {};
 
         Object.keys(value).forEach((key) => {
-          let item = value[key];
+          let item: any = value[key];
           try {
             if (item.isAfter) {
               item = (item as any).valueOf();
@@ -545,12 +559,17 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 
     return true;
   });
+  /** 防止 currentShowAllowRenderCreateItem 变化造成弹框宽度变化抖动 */
   modalWidth.current =
-    !!showModalAction || (edit && data.showActionModalForEdit)
+    (showModalAction === ModalAction.CREATE ||
+    (edit && data.showActionModalForEdit === ModalAction.CREATE)
+      ? data.widthForCreate
+      : data.widthForEdit) ||
+    (!!showModalAction || (edit && data.showActionModalForEdit)
       ? currentShowAllowRenderCreateItem.length > 5
         ? 800
         : 520
-      : modalWidth.current;
+      : modalWidth.current);
   const renderCreateFormNode = () => {
     if (data.entity) {
       return (
@@ -607,7 +626,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             return (
               <Col
                 style={style}
-                span={(currentShowAllowRenderCreateItem.length > 5 && formItem !== ComponentName.RICH_TEXT) ? 12 : 24}
+                span={
+                  currentShowAllowRenderCreateItem.length > 5 &&
+                  formItem !== ComponentName.RICH_TEXT
+                    ? 12
+                    : 24
+                }
                 key={field.id}
               >
                 <div
@@ -623,7 +647,10 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                     label={field.form?.label ?? field.name}
                     rules={rules}
                   >
-                    {renderFormItemNode(field, { formItem })}
+                    {renderFormItemNode(field, {
+                      formItem,
+                      mappingFormItemOptions: mappingFormItemOptions.current
+                    })}
                   </Form.Item>
                 </div>
                 {showTip ? <div className={styles.tipForHidden}>运行将隐藏</div> : null}
@@ -668,6 +695,40 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       });
     }
   };
+
+  const onCreateFormValuesChange = (curValue, allValues) => {
+    const newAllValues = JSON.parse(JSON.stringify(allValues));
+    const propKey = Object.keys(curValue)[0];
+
+    Object.keys(newAllValues).forEach((key) => {
+      const field = allowRenderCreateItem.find((f) => f.name === key);
+
+      if (
+        field &&
+        [
+          ComponentName.CHECKBOX,
+          ComponentName.RADIO,
+          ComponentName.DEBOUNCE_SELECT,
+          ComponentName.SELECT
+        ].includes(field.form.formItem)
+      ) {
+        newAllValues[key] = {
+          value: newAllValues[key],
+          options: mappingFormItemOptions.current[field.name] ?? []
+        };
+      } else {
+        newAllValues[key] = { value: newAllValues[key] };
+      }
+    });
+
+    outputs['onChange']({ propKey, changedValue: curValue, allValues: newAllValues });
+  };
+
+  useEffect(() => {
+    inputs['setFieldsValue']?.((val) => {
+      createForm.setFieldsValue(val);
+    });
+  }, []);
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -726,7 +787,11 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       <div className={styles.container} ref={containerRef}>
         <Modal
           destroyOnClose
-          width={modalWidth.current}
+          width={
+            String(modalWidth.current).match(/\.*%/)
+              ? modalWidth.current
+              : parseInt(String(modalWidth.current))
+          }
           getContainer={
             (edit || debug
               ? data.showActionModalForEdit && !showModalAction
@@ -753,7 +818,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           confirmLoading={createLoading}
           okButtonProps={{ loading: createLoading }}
         >
-          <Form form={createForm}>{renderCreateFormNode()}</Form>
+          <Form form={createForm} onValuesChange={onCreateFormValuesChange}>
+            {renderCreateFormNode()}
+          </Form>
         </Modal>
       </div>
     </ConfigProvider>

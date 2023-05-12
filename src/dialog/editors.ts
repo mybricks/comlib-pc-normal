@@ -38,12 +38,17 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
     id,
     title,
     icon: '',
+    dynamicHidden: true,
+    dynamicDisabled: true,
     useIcon: false,
     showText: true,
     type: 'default',
     isConnected: false
   };
-
+  input.add(`hidden${id}`, `隐藏-${title}按钮`, schema);
+  input.add(`show${id}`, `显示-${title}按钮`, schema);
+  input.add(`disable${id}`, `禁用-${title}按钮`, schema);
+  input.add(`enable${id}`, `启用-${title}按钮`, schema);
   output.add(id, title, schema);
   output.add(`${id}Click`, `点击${title}`, schema);
   // slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'any' });
@@ -771,52 +776,6 @@ function useDynamic(dataset: string) {
   return {
     title: '动态配置',
     items: [
-      {
-        title: '禁用',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return get(data, focusArea, dataset, 'dynamicDisabled');
-          },
-          set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
-            const res = get(data, focusArea, dataset, 'obj');
-            const schema = {
-              type: 'any'
-            };
-            if (value) {
-              input.add(`disable${res.id}`, `禁用-${res.title}按钮`, schema);
-              input.add(`enable${res.id}`, `启用-${res.title}按钮`, schema);
-            } else {
-              input.remove(`disable${res.id}`);
-              input.remove(`enable${res.id}`);
-            }
-            res.dynamicDisabled = value;
-          }
-        }
-      },
-      {
-        title: '隐藏',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return get(data, focusArea, dataset, 'dynamicHidden');
-          },
-          set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
-            const res = get(data, focusArea, dataset, 'obj');
-            const schema = {
-              type: 'any'
-            };
-            if (value) {
-              input.add(`hidden${res.id}`, `隐藏-${res.title}按钮`, schema);
-              input.add(`show${res.id}`, `显示-${res.title}按钮`, schema);
-            } else {
-              input.remove(`hidden${res.id}`);
-              input.remove(`show${res.id}`);
-            }
-            res.dynamicHidden = value;
-          }
-        }
-      },
       {
         title: '加载动画',
         type: 'Switch',

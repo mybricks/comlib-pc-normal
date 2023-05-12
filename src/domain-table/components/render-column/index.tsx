@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Typography, Image, Button } from 'antd';
+import { Typography, Image } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
 import { Field } from '../../type';
 import { FieldBizType } from '../../constants';
@@ -45,14 +45,18 @@ const RenderColumn: FC<RenderColumnProps> = (props) => {
       const list = value ? safeParse(value, []) : [];
       return list.map((item, index) => {
         return (
-          <div key={index}>
-            <Button
-              type="link"
-              onClick={item?.url ? () => window.open(item.url, '_blank') : undefined}
-              icon={<PaperClipOutlined />}
-            >
-              {item?.name}
-            </Button>
+          <div
+            key={index}
+            onClick={item?.url ? () => window.open(item.url, '_blank') : undefined}
+            style={{
+              width,
+              wordBreak: 'break-all',
+              color: '#1890ff',
+              cursor: 'pointer'
+            }}
+          >
+            <PaperClipOutlined style={{ marginRight: '2px' }} />
+            {item?.name}
           </div>
         );
       });
