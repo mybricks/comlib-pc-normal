@@ -25,6 +25,7 @@ interface Actions {
 export interface FormItems {
   id: string;
   name: string
+  schema: {}
   label: string
   span: number
   required?: boolean
@@ -40,7 +41,7 @@ export interface FormItems {
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
-  width: number
+  width?: number
   inlineMargin?: number[]
   slotAfter?: string
 }
@@ -79,9 +80,9 @@ export interface Data {
    */
   currentAction: string;
   /**
-   * 需要初始化的列表项起始索引值
+   * 需要初始化的列表项索引
    */
-  startIndex: number;
+  indexList: number[];
   /**
    * 是否提交隐藏表单项
    */

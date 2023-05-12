@@ -110,7 +110,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           }
       )[] = [];
 
-      data.fields.map((field) => {
+      data.fields.forEach((field) => {
         const { name, key } = field;
         const fieldFormItems = childrenStore[key];
         const fieldPromise = data.items.map((item) => {
@@ -176,13 +176,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return (
     <>
       {data.fields.map((field) => {
-        // 更新childrenStore的index
         const { key, name } = field;
-        data.items.forEach((item) => {
-          if (childrenStore[key]?.[item.id]) {
-            childrenStore[key][item.id].index = name;
-          }
-        });
 
         const actionProps = {
           ...props,

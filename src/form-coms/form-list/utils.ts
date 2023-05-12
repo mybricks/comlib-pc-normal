@@ -1,6 +1,6 @@
 import { ChildrenStore, Data, FormControlInputRels } from './types'
 import { labelWidthTypes } from './constants'
-import { OutputIds } from '../types'
+import { InputIds, OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { debounce } from 'lodash';
@@ -114,7 +114,13 @@ export function getValue({ data, childrenStore, childId, value }: { data: Data, 
   }) => {
     if (data.value?.[changedValue.index]) {
       const { index, name, value, item, inputs } = changedValue;
+      data.value[index] = {
+        ...data.value[index],
+        [name]: value
+      };
       data.value[index][name] = value;
+      // data.currentAction = InputIds.SetInitialValue;
+      // data.indexList = [index];
       validateForInput({ item, index, inputs });
     } else {
       data.value = allValues;
@@ -145,6 +151,8 @@ export function changeValue({ id, outputs, parentSlot, data }) {
 
 /** 带防抖的值变化事件 */
 export const debounceChangeValue = debounce(changeValue, 300);
+/** 带防抖的值变化事件 */
+export const debounceGetValue = debounce(getValue, 300);
 
 /**
  * 主动收集表单项值更新，并触发相关事件
@@ -187,7 +195,7 @@ export function setValuesForInput({
   const inputId = data.currentAction;
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
-      if (valIndex < data.startIndex) return;
+      if (!data.indexList.includes(valIndex)) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
       Object.keys(value).map((name) => {
         const item = formItems.find((item) => (item.name || item.label) === name);
@@ -205,7 +213,7 @@ export function setValuesForInput({
   })
     .then(v => {
       data.currentAction = '';
-      data.startIndex = -1;
+      data.indexList = [];
     })
     .catch(e => console.error(e));
 };

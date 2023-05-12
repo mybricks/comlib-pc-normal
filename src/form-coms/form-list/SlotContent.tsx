@@ -17,13 +17,6 @@ const SlotContent = (
     props;
 
   const content = useMemo(() => {
-    // 作用域输出
-    const inputValues = {
-      curValue: data.value?.[field.name],
-      curIndex: field.name,
-      curKey: field.key
-    };
-
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx }) {
         const item = data.items.find((item) => item.id === com.id);
@@ -128,11 +121,11 @@ const SlotContent = (
           </>
         );
       },
-      inputValues,
+      inputValues: field,
       style: data.slotStyle,
       key: field.key
     });
-  }, [data.slotStyle, data.fields.length, data.value?.[field.name]]);
+  }, [data.slotStyle, data.fields[field.name]]);
 
   return <Row key={field.key}>{content}</Row>;
 };

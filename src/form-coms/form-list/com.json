@@ -174,21 +174,14 @@
       "type": "scope",
       "inputs": [
         {
-          "id": "curValue",
-          "title": "当前项数据",
-          "schema": {
-            "type": "object"
-          }
-        },
-        {
-          "id": "curIndex",
+          "id": "name",
           "title": "当前项索引",
           "schema": {
             "type": "number"
           }
         },
         {
-          "id": "curKey",
+          "id": "key",
           "title": "当前项标识",
           "schema": {
             "type": "number"

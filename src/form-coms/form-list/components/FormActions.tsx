@@ -26,17 +26,21 @@ export const addField = ({ data }: { data: Data }) => {
 const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
   const { fields } = data;
-  data.currentAction = InputIds.SetInitialValue;
-  data.startIndex = field.name;
+
   fields.splice(field.name, 1);
-  data.value = data.value?.filter((_, index) => {
-    return index !== field.name;
-  });
+  data.value?.splice(field.name, 1);
   // 更新name
   fields.forEach((field, index) => {
-    field && (field.name = index);
+    if (field.name !== index) {
+      data.fields[index] = {
+        ...field,
+        name: index
+      };
+    }
   });
   childrenStore[field.key] = undefined;
+  data.currentAction = InputIds.SetInitialValue;
+  data.indexList = data.fields.filter(({ name }) => name >= field.name).map((field) => field.name);
 
   changeValue({ data, id, outputs, parentSlot });
 };
@@ -51,12 +55,9 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
       outputs[item.key] &&
         outputs[item.key]({
           nextIndex: data.fields.length - 1,
-          nextKey: data.MaxKey - 1
+          nextKey: data.MaxKey
         });
       return;
-    }
-    if (item.key === 'remove' && field) {
-      removeField(props);
     }
     outputs[item.key] &&
       outputs[item.key]({
@@ -64,6 +65,9 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         key: field.key,
         value: data.value?.[fieldIndex]
       });
+    if (item.key === 'remove' && field) {
+      removeField(props);
+    }
   };
 
   const notLastField = typeof fieldIndex === 'number' && !(fieldIndex === data.fields.length - 1);

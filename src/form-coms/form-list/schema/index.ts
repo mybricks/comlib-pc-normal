@@ -15,7 +15,7 @@ function getItemSchema(data) {
   }
 }
 
-function refreshSchema({ data, inputs, outputs, slots }: EditorResult<Data>) {
+function refreshSchema({ data, inputs, outputs, slots }: { data: Data, inputs: any, outputs: any, slots: any }) {
   const itemSchema = getItemSchema(data)
 
   const actionSchema = {
@@ -55,7 +55,7 @@ function refreshSchema({ data, inputs, outputs, slots }: EditorResult<Data>) {
   inputs.get(InputIds.SetInitialValue).setSchema(valueSchema)
   inputs.get(InputIds.SetValue).setSchema(valueSchema)
 
-  slots.get(SlotIds.FormItems).inputs.get(SlotInputIds.CUR_VALUE).setSchema(itemSchema)
+  // slots.get(SlotIds.FormItems).inputs.get(SlotInputIds.CUR_VALUE).setSchema(itemSchema)
 }
 
 
