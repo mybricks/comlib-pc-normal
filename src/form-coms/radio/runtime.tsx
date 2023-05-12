@@ -69,6 +69,7 @@ export default function Runtime({
             disabled: false,
             lable: `单选框${index}`,
             value: `${uuid()}`,
+            key: `${uuid()}`,
             ...item
           });
         });
@@ -79,6 +80,7 @@ export default function Runtime({
             disabled: false,
             lable: `单选框`,
             value: `${uuid()}`,
+            key: `${uuid()}`,
             ...(ds || {})
           }
         ];
@@ -121,7 +123,7 @@ export default function Runtime({
             const label = item.label;
             return (
               <Radio
-                key={item.value}
+                key={item.key}
                 value={item.value}
                 disabled={item.disabled}
                 checked={item.checked}
