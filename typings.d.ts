@@ -46,6 +46,7 @@ interface RuntimeParams<T> {
 
 interface EditorResult<T> {
   id: string
+  name: string
   data: T
   focusArea: any
   output: any
