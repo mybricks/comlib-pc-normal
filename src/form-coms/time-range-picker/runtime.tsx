@@ -38,7 +38,10 @@ export default function ({
   );
 
   const setTimestampRange = (val) => {
-    if (Array.isArray(val) && !val.length) return;
+    if (Array.isArray(val) && !val.length) {
+      setValue([]);
+      return;
+    }
     if (isValidInput(val)) {
       if (val.every((item) => isNumber(item))) {
         if (isValidRange(val, 'number')) {

@@ -23,7 +23,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
-  const [value, setValue] = useState<Moment>();
+  const [value, setValue] = useState<Moment | undefined>();
   const validate = useCallback(
     (output) => {
       validateFormItem({
@@ -42,6 +42,10 @@ export default function ({
   );
 
   const setTimestamp = (val) => {
+    if (!val) {
+      setValue(void 0);
+      return;
+    }
     if (isNumber(val)) {
       setValue(moment(val));
       return;
