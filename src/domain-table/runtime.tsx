@@ -174,6 +174,8 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           parseWidth = 124;
         }
         scrollXWidth += parseWidth;
+        const editTitle = data.operate?.edit?.title;
+        const editDisabled = data.operate?.edit?.disabled;
 
         return field.bizType === FieldBizType.FRONT_CUSTOM
           ? {
@@ -184,13 +186,16 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
               render(_, data) {
                 return (
                   <>
-                    <Button
-                      style={{ marginRight: '12px' }}
-                      size="small"
-                      onClick={() => onEdit(data)}
-                    >
-                      编辑
-                    </Button>
+                    {editDisabled ? null : (
+                      <Button
+                        data-edit-button="1"
+                        style={{ marginRight: '12px' }}
+                        size="small"
+                        onClick={env.edit ? undefined : () => onEdit(data)}
+                      >
+                        {editTitle || '编辑'}
+                      </Button>
+                    )}
                     <Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>
                       删除
                     </Button>
@@ -408,30 +413,35 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           <Button className={styles.marginTop} type="primary" onClick={search}>
             查询
           </Button>
-          <Button
-            data-add-button="1"
-            className={`${styles.addBtn} ${styles.marginTop}`}
-            onClick={openCreateModal}
-          >
-            {data.addBtn?.title ?? '新增'}
-          </Button>
+          {data.operate?.create?.disabled ? null : (
+            <Button
+              data-add-button="1"
+              className={`${styles.addBtn} ${styles.marginTop}`}
+              onClick={openCreateModal}
+            >
+              {data.operate?.create?.title ?? '新增'}
+            </Button>
+          )}
         </Form>
       );
     }
 
-    return (
+    return data.operate?.create?.disabled ? null : (
       <div className={styles.operateRow}>
         <Button data-add-button="1" onClick={openCreateModal}>
-          {data.addBtn?.title ?? '新增'}
+          {data.operate?.create?.title ?? '新增'}
         </Button>
       </div>
     );
   };
   const openCreateModal = useCallback(() => {
+    if (env.edit) {
+      return;
+    }
     mappingFormItemOptions.current = {};
     setShowModalAction(ModalAction.CREATE);
     createForm.resetFields();
-  }, []);
+  }, [env.edit]);
   const closeCreateModal = useCallback(() => {
     setShowModalAction('');
     data.showActionModalForEdit = '';
@@ -671,6 +681,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   };
   /** 排序 */
   const onTableChange = (_, __, sorter) => {
+    if (env.edit) {
+      return;
+    }
     const fieldNames = Array.isArray(sorter.field) ? sorter.field : [sorter.field];
     let field = data.fieldAry.find(
       (f) =>
@@ -679,6 +692,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     const orderMap = { ascend: 'ASC', descend: 'DESC' };
 
     if (field) {
+      data.fieldAry.forEach((f) => {
+        f.sorter = undefined;
+      });
       field.sorter = sorter.order
         ? {
             entityId: fieldNames.length > 1 ? field.mappingField.relationEntityId : data.entity.id,

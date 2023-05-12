@@ -4,13 +4,20 @@
   "table": {
     "size": "middle"
   },
+  "operate": {
+    "create": {
+      "disabled": false,
+      "title": "新增"
+    },
+    "edit": {
+      "disabled": false,
+      "title": "编辑"
+    }
+  },
   "domainAry": [],
   "domainFileId": "",
   "entityId": "",
   "showActionModalForEdit": "",
-  "addBtn": {
-    "title": "新增"
-  },
   "pagination": {
     "page": 1,
     "pageSize": 20

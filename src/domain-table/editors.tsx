@@ -524,8 +524,26 @@ export default {
     cate3.title = '高级';
     cate3.items = [
       {
-        title: '新增弹框',
+        title: '新增操作',
         items: [
+          {
+            title: '隐藏新增操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.create?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.create) {
+                  data.operate.create = {};
+                }
+                data.operate.create.disabled = value;
+              }
+            }
+          },
           {
             title: '打开新增弹框',
             type: 'Switch',
@@ -609,8 +627,26 @@ export default {
         ]
       },
       {
-        title: '编辑弹框',
+        title: '编辑操作',
         items: [
+          {
+            title: '隐藏编辑操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.edit?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.edit) {
+                  data.operate.edit = {};
+                }
+                data.operate.edit.disabled = value;
+              }
+            }
+          },
           {
             title: '打开编辑弹框',
             type: 'Switch',
@@ -1397,10 +1433,6 @@ export default {
                 return data.showActionModalForEdit;
               },
               set({}: EditorResult<Data>, value: ModalAction) {
-                console.log(
-                  value,
-                  value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit'
-                );
                 field.form[value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit'] =
                   true;
               }
@@ -1448,7 +1480,7 @@ export default {
       ];
     }
   },
-  'th.ant-table-cell:not(:empty)': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+  'th.ant-table-cell:not(:empty)': ({ data, focusArea, ...args }: EditorResult<Data>, cate1) => {
     if (!data.fieldAry?.length) {
       return;
     }
@@ -1547,7 +1579,7 @@ export default {
       }
     ];
   },
-  '[data-add-button]': ({}: EditorResult<Data>, cate1) => {
+  '[data-add-button]': ({ data }: EditorResult<Data>, cate1) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -1555,16 +1587,101 @@ export default {
         type: 'Text',
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.addBtn?.title ?? '新增';
+            return data.operate?.create?.title ?? '新增';
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-            if (!data.addBtn) {
-              data.addBtn = {};
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.create) {
+              data.operate.create = {};
             }
 
-            data.addBtn.title = value;
+            data.operate.create.title = value;
           }
         }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.create) {
+                  data.operate.create = {};
+                }
+                data.operate.create.disabled = true;
+              }
+            }
+          }
+        ]
+      }
+    ];
+  },
+  '[data-edit-button]': ({ data }: EditorResult<Data>, cate1) => {
+    cate1.title = '常规';
+    cate1.items = [
+      {
+        title: '按钮文案',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.operate?.edit?.title ?? '编辑';
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.edit) {
+              data.operate.edit = {};
+            }
+
+            data.operate.edit.title = value;
+          }
+        }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.edit) {
+                  data.operate.edit = {};
+                }
+                data.operate.edit.disabled = true;
+              }
+            }
+          }
+        ]
       }
     ];
   }
