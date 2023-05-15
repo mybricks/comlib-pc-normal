@@ -31,19 +31,19 @@ export const ajax = (
 						option.successTip && message.success(option.successTip);
 						resolve(data.data);
 					} else {
-						(option.needErrorTip || option.errorTip) && message.error(option.errorTip || data.msg);
-						reject(data.msg);
+						(option.needErrorTip || option.errorTip) && message.error(option.errorTip || data.msg || '请求错误，请稍候再试~');
+						reject(data.msg || '请求错误，请稍候再试~');
 					}
 				} else {
-					(option.needErrorTip || option.errorTip) && message.error(option.errorTip || '请求错误');
-					reject(option.errorTip || '请求错误');
+					(option.needErrorTip || option.errorTip) && message.error(option.errorTip || '请求错误，请稍候再试~');
+					reject(option.errorTip || '请求错误，请稍候再试~');
 				}
 			}
 		};
 		
 		xhr.onerror = function() {
-			(option.needErrorTip || option.errorTip) && message.error(option.errorTip || '请求错误');
-			reject();
+			(option.needErrorTip || option.errorTip) && message.error(option.errorTip || '请求错误，请稍候再试~');
+			reject('请求错误，请稍候再试~');
 		};
 		xhr.send(data);
 	});
