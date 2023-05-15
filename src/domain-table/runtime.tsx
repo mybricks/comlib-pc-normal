@@ -782,31 +782,6 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
           }
         />
       </div>
-      {/*{currentCreatePortal(*/}
-      {/*  <div className={styles.container} ref={containerRef}>*/}
-      {/*    <Modal*/}
-      {/*	    destroyOnClose*/}
-      {/*	    width={800}*/}
-      {/*	    getContainer={containerRef.current && (edit || debug) ? containerRef.current : undefined}*/}
-      {/*	    className={styles.createModal}*/}
-      {/*	    visible={!!showModalAction || (edit && data.showActionModalForEdit)}*/}
-      {/*	    title={showModalAction === ModalAction.EDIT ? '编辑' : '新增'}*/}
-      {/*	    maskClosable*/}
-      {/*	    closable*/}
-      {/*	    onCancel={closeCreateModal}*/}
-      {/*	    onOk={handleCreate}*/}
-      {/*	    centered*/}
-      {/*	    okText="确定"*/}
-      {/*	    cancelText="取消"*/}
-      {/*	    confirmLoading={createLoading}*/}
-      {/*	    okButtonProps={{ loading: createLoading }}*/}
-      {/*    >*/}
-      {/*	    <Form form={createForm}>*/}
-      {/*		    {createFormNode}*/}
-      {/*	    </Form>*/}
-      {/*    </Modal>*/}
-      {/*  </div>*/}
-      {/*)}*/}
       <div className={styles.container} ref={containerRef}>
         <Modal
           destroyOnClose
