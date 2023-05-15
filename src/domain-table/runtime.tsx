@@ -746,7 +746,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       }
     });
 
-    outputs['onChange']({ propKey, changedValue: curValue, allValues: newAllValues });
+    outputs['onChange']?.({ propKey, changedValue: curValue, allValues: newAllValues });
   };
 
   useEffect(() => {
