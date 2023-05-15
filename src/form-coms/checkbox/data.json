@@ -4,5 +4,6 @@
     "disabled": false
   },
   "checkAll": false,
+  "layout": "horizontal",
   "checkAllText": "全选"
 }

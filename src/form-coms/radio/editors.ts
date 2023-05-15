@@ -149,6 +149,29 @@ export default {
         }
       },
       {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
+          }
+        }
+      },
+      {
         title: '使用按钮样式',
         description: '是否使用按钮样式',
         type: 'switch',
