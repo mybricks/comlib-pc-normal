@@ -54,4 +54,5 @@ export interface Field {
 	showFormat: string;
 	enumValues?: string[];
 	form: any;
+	tableInfo: any;
 }

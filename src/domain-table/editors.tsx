@@ -7,13 +7,15 @@ import {
   DefaultValueWhenCreate,
   FieldBizType,
   FieldDBType,
-  ModalAction
+  ModalAction,
+  TableRenderType
 } from './constants';
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
 import Refresh from './editors/refresh';
 import Delete from './editors/delete';
+import { InputIds } from './constants';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -1566,10 +1568,57 @@ export default {
         }
       },
       {
+        title: '渲染方式',
+        type: 'Select',
+        options: [
+          { label: '普通文字', value: TableRenderType.NORMAL },
+          { label: '自定义插槽', value: TableRenderType.SLOT }
+        ],
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.tableInfo?.renderType || TableRenderType.NORMAL;
+          },
+          set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.renderType = value;
+
+            if (value === TableRenderType.SLOT) {
+              const slotId = uuid();
+              field.tableInfo.slotId = slotId;
+              slot.add({
+                id: slotId,
+                title: `自定义${
+                  field.tableInfo?.label ??
+                  `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`
+                }列`,
+                type: 'scope'
+              });
+
+              slot
+                .get(slotId)
+                .inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', { type: 'object' });
+              slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', { type: 'number' });
+            } else {
+              if (field.tableInfo.slotId && slot.get(field.tableInfo.slotId)) {
+                slot.remove(field.tableInfo.slotId);
+                field.tableInfo.slotId = '';
+              }
+            }
+          }
+        }
+      },
+      {
         title: '内容超出省略',
         type: 'Switch',
         ifVisible() {
-          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+          const tableInfo = field.tableInfo;
+
+          return (
+            field.bizType !== FieldBizType.FRONT_CUSTOM &&
+            (!tableInfo?.renderType || tableInfo?.renderType === TableRenderType.NORMAL)
+          );
         },
         value: {
           get({}: EditorResult<Data>) {

@@ -33,7 +33,7 @@ import styles from './runtime.less';
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
-export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
+export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Data>) {
   const { edit, runtime, projectId } = env;
   const debug = !!(runtime && runtime.debug);
   if (debug || runtime) {
@@ -217,7 +217,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
                 key: title,
                 align: field.tableInfo?.align || 'left',
                 width: `${parseWidth}px`,
-                render(value, data) {
+                render(value, data, index) {
                   return (
                     <RenderColumn
                       columnKey={title}
@@ -225,6 +225,8 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
                       value={value}
                       item={data}
                       field={field}
+                      colIndex={index}
+                      slots={slots}
                       ellipsis={field.tableInfo?.ellipsis}
                       columnWidth={columnWidthMap[title]}
                     />

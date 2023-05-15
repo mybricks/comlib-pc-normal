@@ -91,3 +91,16 @@ export const DefaultOperatorMap = {
 	[ComponentName.CHECKBOX]: '=',
 	[ComponentName.DEBOUNCE_SELECT]: '=',
 }
+
+export enum TableRenderType {
+	NORMAL = 'normal',
+	SLOT = 'slot',
+}
+
+export const InputIds = {
+	/** 插槽项数据-当前行数据 */
+	SLOT_ROW_RECORD: 'slotRowRecord',
+	/** 序号 */
+	INDEX: 'index',
+};
+
