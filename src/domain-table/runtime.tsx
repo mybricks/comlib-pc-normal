@@ -28,6 +28,7 @@ import { Field } from './type';
 import UploadImage from './components/upload-image';
 import UploadFile from './components/upload-file';
 import RichText from './components/rich-text';
+import RenderOperate from './components/render-column/render-operate';
 
 import styles from './runtime.less';
 
@@ -188,31 +189,21 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
                   key: field.id,
                   align: field.tableInfo?.align || 'left',
                   width: `${parseWidth}px`,
-                  render(_, data) {
+                  render(_, data, index) {
                     return (
-                      <>
-                        {editDisabled ? null : (
-                          <Button
-                            data-edit-button="1"
-                            style={{ marginRight: '12px' }}
-                            size="small"
-                            onClick={env.edit ? undefined : () => onEdit(data)}
-                          >
-                            {editTitle || '编辑'}
-                          </Button>
-                        )}
-                        {deleteDisabled ? null : (
-                          <Button
-                            danger
-                            data-delete-button="1"
-                            type="primary"
-                            size="small"
-                            onClick={env.edit ? undefined : () => onDelete(data.id)}
-                          >
-                            {deleteTitle || '删除'}
-                          </Button>
-                        )}
-                      </>
+                      <RenderOperate
+                        field={field}
+                        item={data}
+                        editTitle={editTitle}
+                        editDisabled={editDisabled}
+                        deleteTitle={deleteTitle}
+                        deleteDisabled={deleteDisabled}
+                        colIndex={index}
+                        slots={slots}
+                        onEdit={env.edit ? undefined : () => onEdit(data)}
+                        onDelete={env.edit ? undefined : () => onDelete(data)}
+                        isEdit={!!env.edit}
+                      />
                     );
                   }
                 }
