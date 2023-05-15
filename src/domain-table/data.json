@@ -3,6 +3,7 @@
   "fieldAry": [],
   "table": {
     "size": "middle",
+    "renderType": "normal",
     "operate": {
       "disabled": false
     }

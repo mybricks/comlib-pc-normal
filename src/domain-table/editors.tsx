@@ -1514,7 +1514,10 @@ export default {
       ];
     }
   },
-  'th.ant-table-cell:not(:empty)': ({ data, focusArea, ...args }: EditorResult<Data>, cate1) => {
+  '.domain-default-table th.ant-table-cell:not(:empty)': (
+    { data, focusArea, ...args }: EditorResult<Data>,
+    cate1
+  ) => {
     if (!data.fieldAry?.length) {
       return;
     }
