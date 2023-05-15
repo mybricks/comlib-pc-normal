@@ -114,7 +114,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useEffect(() => {
     // 初始化
     if (env.runtime && initLength) {
-      data.fields = [];
       new Array(initLength).fill(null).forEach((_, index) => {
         addField({ data, isInit: true });
       });
