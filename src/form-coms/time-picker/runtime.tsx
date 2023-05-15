@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Data } from './types';
 import { message, TimePicker } from 'antd';
 import moment, { Moment, isMoment } from 'moment';
@@ -22,7 +22,7 @@ export default function ({
   parentSlot,
   name
 }: RuntimeParams<Data>) {
-  const { placeholder, disabled } = data;
+  const { placeholder, disabled, format, customFormat } = data;
   const [value, setValue] = useState<Moment | undefined>();
   const validate = useCallback(
     (output) => {
@@ -92,11 +92,18 @@ export default function ({
     onChangeForFc(parentSlot, { id, name, value: time.valueOf() });
     outputs['onChange'](time.valueOf());
   };
+
+  const _format = useMemo(() => {
+    if (format === 'custom') return customFormat;
+    return format;
+  }, [format, customFormat]);
+
   return (
     <div className={styles.wrap} style={style}>
       <TimePicker
         placeholder={placeholder}
         value={value}
+        format={_format}
         disabled={disabled}
         allowClear
         onChange={onChange}

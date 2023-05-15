@@ -41,6 +41,46 @@ export default {
         ]
       },
       {
+        title: "格式化",
+        items: [
+          {
+            title: '格式化模版',
+            type: 'select',
+            options: {
+              options: [
+                { label: '时:分:秒', value: 'HH:mm:ss' },
+                { label: '时:分', value: 'HH:mm' },
+                { label: '时', value: 'HH' },
+                { label: '自定义', value: 'custom' },
+              ]
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.format || 'HH:mm:ss';
+              },
+              set({ data }: EditorResult<Data>, val: string) {
+                data.format = val
+              }
+            }
+          },
+          {
+            title: '自定义模版',
+            type: 'text',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.format==='custom';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.customFormat || 'HH:mm:ss';
+              },
+              set({ data }: EditorResult<Data>, val: string) {
+                data.customFormat = val
+              }
+            }
+          }
+        ]
+      },
+      {
         title: '校验',
         items: [
           {
