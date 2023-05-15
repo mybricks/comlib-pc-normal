@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
 import { ChildrenStore, Data } from './types';
 import SlotContent from './SlotContent';
-import { updateValue, generateFields, validateForInput } from './utils';
+import { updateValue, generateFields, validateForInput, setValuesForInput } from './utils';
 import { typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
 import { ActionsWrapper, addField } from './components/FormActions';
@@ -14,6 +14,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
   }, [env.edit]);
+  let initLength = useMemo(() => {
+    return data.initLength;
+  }, [data.initLength]);
 
   useLayoutEffect(() => {
     // 设置值
@@ -32,8 +35,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
         outputs[OutputIds.OnInitial](data.value);
-        data.currentAction = InputIds.SetInitialValue;
         generateFields(data);
+        data.currentAction = InputIds.SetInitialValue;
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -46,28 +49,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 重置值
     inputs['resetValue'](() => {
-      if (Array.isArray(data.value)) {
-        data.fields = [
-          {
-            key: 0,
-            name: 0
-          }
-        ];
-        data.value = [{}];
-        data.currentAction = InputIds.ResetValue;
-      }
+      data.value = [{}];
+      generateFields(data);
+      data.currentAction = InputIds.ResetValue;
+      setValuesForInput({ data, childrenStore });
     });
 
     //设置禁用
     inputs['setDisabled'](() => {
       data.disabled = true;
       data.currentAction = InputIds.SetDisabled;
+      setValuesForInput({ data, childrenStore });
     });
 
     //设置启用
     inputs['setEnabled'](() => {
       data.disabled = false;
       data.currentAction = InputIds.SetEnabled;
+      setValuesForInput({ data, childrenStore });
     }, []);
 
     // 校验
@@ -100,6 +99,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
       updateValue({ ...props, childrenStore, childId: id, value });
     });
   }
+
+  useEffect(() => {
+    // 初始化
+    if (env.runtime && initLength) {
+      data.fields = [];
+      new Array(initLength).fill(null).forEach((_, index) => {
+        addField({ data });
+      });
+      initLength = 0;
+    }
+  }, [data.initLength]);
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -163,15 +173,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     fieldIndex: 0,
     hiddenRemoveButton: true
   };
-
-  useEffect(() => {
-    // 初始化
-    if (env.runtime && data.initLength) {
-      new Array(data.initLength).fill(null).forEach((_, index) => {
-        addField({ data });
-      });
-    }
-  }, []);
 
   return (
     <>

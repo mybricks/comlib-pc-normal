@@ -4,6 +4,7 @@ import { InputIds, OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { debounce } from 'lodash';
+import { addField } from './components/FormActions';
 
 export function getLabelCol(data: Data) {
   const labelCol = data.labelWidthType === labelWidthTypes.SPAN
@@ -74,8 +75,8 @@ export function getValue({ data, childrenStore, childId, value }: { data: Data, 
       if (!childrenStore[key]) return;
 
       data.items.forEach(item => {
-        const { id, name, label } = item;
-        const { index, inputs, visible } = childrenStore[key][id];
+        const { id, name, comName, label } = item;
+        const { index, inputs, visible } = childrenStore[key][comName];
 
         // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
         if (!data.submitHiddenFields && !visible) {
@@ -172,12 +173,16 @@ export function updateValue(props: (RuntimeParams<Data> & { childrenStore: any, 
  * @param data 
  */
 export function generateFields(data: Data) {
-  data.fields = (data.value || []).map((_, index) => {
-    return {
-      key: index,
-      name: index
-    };
-  });
+  const newLength = (data.value || []).length;
+  const oldLength = data.fields.length;
+  const changeLength = newLength - oldLength;
+  if (changeLength < 0) {
+    data.fields.splice(newLength, -changeLength);
+  } else {
+    new Array(changeLength).fill(null).map((_, index) => {
+      addField({ data });
+    });
+  }
 };
 
 /**
@@ -195,12 +200,17 @@ export function setValuesForInput({
   const inputId = data.currentAction;
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
-      if (!data.indexList.includes(valIndex)) return;
+      if (data.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
-      Object.keys(value).map((name) => {
+
+      const names = ['add', InputIds.SetInitialValue, InputIds.SetValue].includes(data.currentAction)
+        ? Object.keys(value)
+        : data.items.map(item => item.name);
+
+      names.forEach((name) => {
         const item = formItems.find((item) => (item.name || item.label) === name);
         if (item && key !== undefined) {
-          const { inputs, index } = childrenStore[key][item.id];
+          const { inputs, index } = childrenStore[key][item.comName];
           if (isObject(value[name])) {
             inputs[inputId] && inputs[inputId]({ ...value[name] });
           } else {
@@ -208,12 +218,13 @@ export function setValuesForInput({
           }
         }
       });
+
     });
     resolve(1);
   })
     .then(v => {
       data.currentAction = '';
-      data.indexList = [];
+      data.startIndex = -1;
     })
     .catch(e => console.error(e));
 };

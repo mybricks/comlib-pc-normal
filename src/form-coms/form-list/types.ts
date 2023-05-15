@@ -25,6 +25,7 @@ interface Actions {
 export interface FormItems {
   id: string;
   name: string
+  comName: string
   schema: {}
   label: string
   span: number
@@ -82,7 +83,7 @@ export interface Data {
   /**
    * 需要初始化的列表项索引
    */
-  indexList: number[];
+  startIndex: number;
   /**
    * 是否提交隐藏表单项
    */

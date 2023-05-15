@@ -40,7 +40,7 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   });
   childrenStore[field.key] = undefined;
   data.currentAction = InputIds.SetInitialValue;
-  data.indexList = data.fields.filter(({ name }) => name >= field.name).map((field) => field.name);
+  data.startIndex = field.name;
 
   changeValue({ data, id, outputs, parentSlot });
 };

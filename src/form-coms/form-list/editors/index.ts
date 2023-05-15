@@ -79,9 +79,10 @@ export default {
   },
   '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
     if (curSlot.id === SlotIds.FormItems) {
-      const { id, inputDefs, outputDefs } = child
+      const { id, inputDefs, outputDefs, name } = child
       const item = data.items.find(item => item.id === id)
       const com = outputDefs.find(item => item.id === 'returnValue')
+
       if (item) {
         item.schema = com.schema
       } else {
@@ -89,6 +90,7 @@ export default {
         data.items.push({
           id,
           schema: com.schema,
+          comName: name,
           name: `name${data.nameCount}`,
           label: `${data.nameCount}`,
           widthOption: 'span',
@@ -121,9 +123,9 @@ export default {
       refreshSchema({ data, inputs, outputs, slots })
     }
   },
-  '@childRemove'({ data, inputs, outputs, logs, slots }, { id, title }) {
+  '@childRemove'({ data, inputs, outputs, logs, slots }, { id, name, title }) {
     // console.log('@childRemove', id, title)
-    data.items = data.items.filter(item => item.id !== id)
+    data.items = data.items.filter(item => item?.comName !== name)
     refreshSchema({ data, inputs, outputs, slots })
   },
   '@parentUpdated'({ id, data, parent }, { schema }) {
