@@ -134,6 +134,9 @@ export default {
               },
               get entityId() {
                 return data.entityId;
+              },
+              get entity() {
+                return data.entity;
               }
             },
             ifVisible({ data }: EditorResult<Data>) {

@@ -1,5 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
-import { ajax } from '../../util';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ajax, safeStringify } from '../../util';
+import { FieldBizType } from '../../constants';
 
 import styles from './index.less';
 
@@ -23,7 +24,7 @@ const Refresh: FC = ({ editConfig }: any) => {
         if (!newEntity) {
           setTip({
             type: 'error',
-            message: '对应模型中实体已删除，请前往模型编辑页确认~'
+            message: '对应模型中实体已删除 或 未开放领域服务，请前往模型编辑页确认~'
           });
         }
 
@@ -34,6 +35,49 @@ const Refresh: FC = ({ editConfig }: any) => {
         });
       });
   }, [options.domainFileId, options.entityId]);
+
+  useEffect(() => {
+    options.domainFileId &&
+      ajax(
+        {},
+        { url: `/paas/api/domain/bundle?fileId=${options.domainFileId}`, method: 'get' }
+      ).then((res) => {
+        const newEntity = res.entityAry.find(
+          (entity) => entity.id === options.entity.id && entity.isOpen
+        );
+
+        if (!newEntity) {
+          setTip({
+            type: 'error',
+            message: '对应模型中实体已删除 或 未开放领域服务，请前往模型编辑页确认~'
+          });
+          return;
+        }
+
+        if (newEntity.fieldAry.length !== options.entity.fieldAry.length) {
+          setTip({ type: 'warning', message: '实体信息存在变更，请刷新实体~' });
+          return;
+        }
+
+        for (let idx = 0; idx < newEntity.fieldAry.length; idx++) {
+          const newField = newEntity.fieldAry[idx];
+          const oldField = options.entity.fieldAry[idx];
+
+          if (
+            newField.id !== oldField.id ||
+            newField.name !== oldField.name ||
+            newField.bizType !== oldField.bizType ||
+            newField.dbType !== oldField.dbType ||
+            safeStringify(newField.mapping) !== safeStringify(oldField.mapping) ||
+            (newField.bizType === FieldBizType.ENUM &&
+              safeStringify(newField.enumValues) !== safeStringify(oldField.enumValues))
+          ) {
+            setTip({ type: 'warning', message: '实体信息存在变更，请刷新实体~' });
+            return;
+          }
+        }
+      });
+  }, [options.entity]);
 
   return (
     <div className={styles.refresh}>
