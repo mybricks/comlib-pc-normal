@@ -147,6 +147,9 @@ export default {
                 return { domainFileId: data.domainFileId, entityId: data.entityId };
               },
               set({ data, setTitle, title, output }, newEntity: any) {
+                if (!newEntity) {
+                  return;
+                }
                 data.formFieldAry = data.formFieldAry
                   .map((field) => {
                     let newField = newEntity.fieldAry.find(
