@@ -177,6 +177,8 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
           scrollXWidth += parseWidth;
           const editTitle = data.operate?.edit?.title;
           const editDisabled = data.operate?.edit?.disabled;
+          const deleteTitle = data.operate?.delete?.title;
+          const deleteDisabled = data.operate?.delete?.disabled;
 
           return field.bizType === FieldBizType.FRONT_CUSTOM
             ? data.table?.operate?.disabled
@@ -199,14 +201,17 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
                             {editTitle || '编辑'}
                           </Button>
                         )}
-                        <Button
-                          danger
-                          type="primary"
-                          size="small"
-                          onClick={() => onDelete(data.id)}
-                        >
-                          删除
-                        </Button>
+                        {deleteDisabled ? null : (
+                          <Button
+                            danger
+                            data-delete-button="1"
+                            type="primary"
+                            size="small"
+                            onClick={env.edit ? undefined : () => onDelete(data.id)}
+                          >
+                            {deleteTitle || '删除'}
+                          </Button>
+                        )}
                       </>
                     );
                   }

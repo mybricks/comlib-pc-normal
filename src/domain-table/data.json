@@ -15,6 +15,10 @@
     "edit": {
       "disabled": false,
       "title": "编辑"
+    },
+    "delete": {
+      "disabled": false,
+      "title": "删除"
     }
   },
   "domainAry": [],

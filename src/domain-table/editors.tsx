@@ -760,6 +760,29 @@ export default {
             }
           }
         ]
+      },
+      {
+        title: '删除操作',
+        items: [
+          {
+            title: '隐藏删除操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.delete?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.delete) {
+                  data.operate.delete = {};
+                }
+                data.operate.delete.disabled = value;
+              }
+            }
+          }
+        ]
       }
     ];
   },
@@ -1751,6 +1774,59 @@ export default {
                   data.operate.edit = {};
                 }
                 data.operate.edit.disabled = true;
+              }
+            }
+          }
+        ]
+      }
+    ];
+  },
+  '[data-delete-button]': ({ data }: EditorResult<Data>, cate1) => {
+    cate1.title = '常规';
+    cate1.items = [
+      {
+        title: '按钮文案',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.operate?.delete?.title ?? '删除';
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.delete) {
+              data.operate.delete = {};
+            }
+
+            data.operate.delete.title = value;
+          }
+        }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.delete) {
+                  data.operate.delete = {};
+                }
+                data.operate.delete.disabled = true;
               }
             }
           }
