@@ -79,7 +79,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           if (item.visible === false) {
             return null;
           }
-          if (item.key === 'add' && notLastField) {
+          if (item.key === 'add' && notLastField && data.fields.length !== 0) {
             return null;
           }
           if (item.key === 'remove' && hiddenRemoveButton) {

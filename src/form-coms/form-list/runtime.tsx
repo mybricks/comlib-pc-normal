@@ -134,7 +134,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const { name, key } = field;
         const fieldFormItems = childrenStore[key];
         const fieldPromise = data.items.map((item) => {
-          const { index, inputs, visible } = fieldFormItems[item.id];
+          const { index, inputs, visible } = fieldFormItems[item.comName];
           if (!data.submitHiddenFields && !visible) {
             // 隐藏的表单项，不再校验
             return { validateStatus: 'success' };
