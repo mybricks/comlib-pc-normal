@@ -13,14 +13,14 @@ export interface FormListActionsProps {
   childrenStore?: any;
 }
 
-export const addField = ({ data }: { data: Data }) => {
+export const addField = ({ data, isInit }: { data: Data; isInit?: boolean }) => {
   const { fields } = data;
   data.MaxKey = data.MaxKey + 1;
   fields.push({
     name: fields.length,
     key: data.MaxKey
   });
-  data.currentAction = 'add';
+  if (isInit) data.currentAction = 'add';
 };
 
 const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
@@ -42,7 +42,7 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   data.currentAction = InputIds.SetInitialValue;
   data.startIndex = field.name;
 
-  changeValue({ data, id, outputs, parentSlot });
+  changeValue({ data, id, outputs, parentSlot, name: props.name });
 };
 
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
@@ -51,7 +51,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const onClick = (item: Action) => {
     if (env.edit) return;
     if (item.key === 'add') {
-      addField({ data });
+      addField({ data, isInit: true });
       outputs[item.key] &&
         outputs[item.key]({
           nextIndex: data.fields.length - 1,

@@ -92,7 +92,7 @@ const SlotContent = (
                   } else {
                     data.value = [initValue];
                   }
-                  changeValue({ data, id, outputs, parentSlot });
+                  changeValue({ data, id, outputs, parentSlot, name: props.name });
                 })
                 .catch((e) => {
                   console.error('计算默认值失败: ' + e);
@@ -101,7 +101,7 @@ const SlotContent = (
                   } else {
                     data.value = [{}];
                   }
-                  changeValue({ data, id, outputs, parentSlot });
+                  changeValue({ data, id, outputs, parentSlot, name: props.name });
                 })
                 .finally(() => {
                   data.currentAction = '';

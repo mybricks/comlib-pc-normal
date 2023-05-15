@@ -1,8 +1,14 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
 import { ChildrenStore, Data } from './types';
 import SlotContent from './SlotContent';
-import { updateValue, generateFields, validateForInput, setValuesForInput } from './utils';
-import { typeCheck } from '../../utils';
+import {
+  updateValue,
+  generateFields,
+  validateForInput,
+  setValuesForInput,
+  changeValue
+} from './utils';
+import { deepCopy, typeCheck } from '../../utils';
 import { validateFormItem } from '../utils/validator';
 import { ActionsWrapper, addField } from './components/FormActions';
 import { SlotIds, SlotInputIds } from './constants';
@@ -23,8 +29,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
-        generateFields(data);
+        changeValue({ data, id, outputs, parentSlot, name: props.name });
+        const changeLength = generateFields(data);
         data.currentAction = InputIds.SetValue;
+        changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -34,9 +42,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetInitialValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
-        outputs[OutputIds.OnInitial](data.value);
-        generateFields(data);
+        outputs[OutputIds.OnInitial](deepCopy(data.value));
+        const changeLength = generateFields(data);
         data.currentAction = InputIds.SetInitialValue;
+        changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
         logger.error(title + '的值是列表类型');
       }
@@ -95,8 +104,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     // 值更新
-    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, value }) => {
-      updateValue({ ...props, childrenStore, childId: id, value });
+    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
+      // 只有在用户操作触发时才收集更新值
+      !data.currentAction &&
+        updateValue({ ...props, childrenStore, childId: id, childName: name, value });
     });
   }
 
@@ -105,7 +116,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     if (env.runtime && initLength) {
       data.fields = [];
       new Array(initLength).fill(null).forEach((_, index) => {
-        addField({ data });
+        addField({ data, isInit: true });
       });
       initLength = 0;
     }

@@ -5,6 +5,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { debounce } from 'lodash';
 import { addField } from './components/FormActions';
+import { deepCopy } from '../../utils';
 
 export function getLabelCol(data: Data) {
   const labelCol = data.labelWidthType === labelWidthTypes.SPAN
@@ -59,7 +60,7 @@ export function validateForInput(
  * @param param0 
  * @returns null
  */
-export function getValue({ data, childrenStore, childId, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, value?: any }) {
+export function getValue({ data, childrenStore, childId, childName, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, childName?: string, value?: any }) {
   return new Promise<any>((resolve, reject) => {
     let count = 0;
     const allValues: { [k in string]: any }[] = [];
@@ -135,19 +136,19 @@ export function getValue({ data, childrenStore, childId, value }: { data: Data, 
  * 触发父容器校验
  * @param param0 
  */
-export function onValidateTrigger({ parentSlot, id }) {
-  validateTrigger(parentSlot, { id });
+export function onValidateTrigger({ parentSlot, id, name }) {
+  validateTrigger(parentSlot, { id, name });
 };
 
 /**
  * 输出最新的value并触发校验
  * @param param0 
  */
-export function changeValue({ id, outputs, parentSlot, data }) {
+export function changeValue({ id, outputs, parentSlot, name, data }) {
   const { value } = data;
-  onChangeForFc(parentSlot, { id, value });
-  outputs[OutputIds.OnChange](value);
-  onValidateTrigger({ parentSlot, id });
+  onChangeForFc(parentSlot, { id, value, name });
+  outputs[OutputIds.OnChange](deepCopy(value));
+  onValidateTrigger({ parentSlot, id, name });
 }
 
 /** 带防抖的值变化事件 */
@@ -159,11 +160,11 @@ export const debounceGetValue = debounce(getValue, 300);
  * 主动收集表单项值更新，并触发相关事件
  * @param props 
  */
-export function updateValue(props: (RuntimeParams<Data> & { childrenStore: any, childId: string, value: any })) {
-  const { data, childrenStore, id, outputs, parentSlot, logger, childId, value } = props;
-  getValue({ data, childrenStore, childId, value })
+export function updateValue(props: (RuntimeParams<Data> & { childrenStore: any, childId: string, childName: string, value: any })) {
+  const { data, childrenStore, id, name, outputs, parentSlot, logger, childId, childName, value } = props;
+  getValue({ data, childrenStore, childId, childName, value })
     .then(() => {
-      changeValue({ data, id, outputs, parentSlot });
+      changeValue({ data, id, outputs, parentSlot, name });
     })
     .catch((e) => logger.error(e));
 }
@@ -183,6 +184,7 @@ export function generateFields(data: Data) {
       addField({ data });
     });
   }
+  return changeLength;
 };
 
 /**
@@ -203,7 +205,7 @@ export function setValuesForInput({
       if (data.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
 
-      const names = ['add', InputIds.SetInitialValue, InputIds.SetValue].includes(data.currentAction)
+      const names = data.currentAction === 'add'
         ? Object.keys(value)
         : data.items.map(item => item.name);
 
