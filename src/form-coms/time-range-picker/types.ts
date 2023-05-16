@@ -3,5 +3,7 @@ export interface Data {
   disabled?: boolean
   rules: string[],
   format: string,
-  customFormat: string
+  customFormat: string,
+  outFormat: 'array' | 'string',
+  splitChar: string
 }

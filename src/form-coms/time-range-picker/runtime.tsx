@@ -16,9 +16,10 @@ export default function ({
   style,
   parentSlot,
   id,
-  name
+  name,
+  onError
 }: RuntimeParams<Data>) {
-  const { placeholder, disabled, format, customFormat } = data;
+  const { placeholder, disabled, format, customFormat, outFormat, splitChar } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
   const validate = useCallback(
     (output) => {
@@ -40,6 +41,15 @@ export default function ({
   const setTimestampRange = (val) => {
     if (Array.isArray(val) && !val.length) {
       setValue([]);
+      return;
+    }
+    if (typeof val === 'string') {
+      if (val.includes(splitChar)) {
+        const [start, end] = val.split(splitChar);
+        setValue([moment(Number(start)), moment(Number(end))]);
+      } else {
+        onError('时间数据格式错误');
+      }
       return;
     }
     if (isValidInput(val)) {
@@ -74,7 +84,7 @@ export default function ({
         setValue: setTimestampRange,
         setInitialValue: setTimestampRange,
         returnValue(output) {
-          output(getValue());
+          output(getValue(value));
         },
         resetValue() {
           setValue(void 0);
@@ -92,15 +102,23 @@ export default function ({
   );
 
   const getValue = useCallback(
-    () => (value ? [value[0].valueOf(), value[1].valueOf()] : []),
-    [value]
+    (value) => {
+      const _value = value ? [value[0].valueOf(), value[1].valueOf()] : [];
+      const formatValue = outFormat === 'array' ? _value : _value.join(splitChar);
+      return formatValue;
+    },
+    [outFormat, splitChar]
   );
 
-  const onChange = (values, formatString: [string, string]) => {
-    setValue(values);
-    onChangeForFc(parentSlot, { id, name, value: [values[0].valueOf(), values[1].valueOf()] });
-    outputs['onChange']([values[0].valueOf(), values[1].valueOf()]);
-  };
+  const onChange = useCallback(
+    (values, formatString: [string, string]) => {
+      setValue(values);
+      const formatValue = getValue(values);
+      onChangeForFc(parentSlot, { id, name, value: formatValue });
+      outputs['onChange'](formatValue);
+    },
+    [outFormat, splitChar]
+  );
 
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;
