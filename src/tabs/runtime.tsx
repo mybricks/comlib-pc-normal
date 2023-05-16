@@ -36,7 +36,19 @@ export default function ({
           key === target
       );
     },
-    [showTabs]
+    [showTabs, data.defaultActiveKey]
+  );
+
+  const findIndexByKey = useCallback(
+    (target = data.defaultActiveKey) => {
+      return data.tabList.findIndex(
+        ({ id, permissionKey, key }) =>
+          (!permissionKey || env.hasPermission({ key: permissionKey })) &&
+          showTabs?.includes(id as string) &&
+          key === target
+      );
+    },
+    [showTabs, data.defaultActiveKey]
   );
 
   useEffect(() => {
@@ -81,18 +93,14 @@ export default function ({
       });
       // 上一页
       inputs[InputIds.PreviousTab](() => {
-        const currentIndex = data.tabList.findIndex(({ key }) => {
-          return key === data.defaultActiveKey;
-        });
+        const currentIndex = findIndexByKey();
         if (data.tabList[currentIndex - 1]) {
           data.defaultActiveKey = data.tabList[currentIndex - 1].key;
         }
       });
       // 下一页
       inputs[InputIds.NextTab](() => {
-        const currentIndex = data.tabList.findIndex(({ key }) => {
-          return key === data.defaultActiveKey;
-        });
+        const currentIndex = findIndexByKey();
         if (data.tabList[currentIndex + 1]) {
           data.defaultActiveKey = data.tabList[currentIndex + 1].key;
         }
@@ -100,7 +108,8 @@ export default function ({
       //获取当前激活步骤
       inputs[InputIds.OutActiveTab]((val, relOutputs) => {
         const current = findTargetByKey();
-        relOutputs[OutputIds.OutActiveTab](current);
+        const index = findIndexByKey();
+        relOutputs[OutputIds.OutActiveTab]({ ...current, index });
       });
       //支持动态通知
       data.tabList.forEach((item) => {
@@ -182,8 +191,9 @@ export default function ({
       data.defaultActiveKey = values;
     }
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const { id, name } = data.tabList.find((item) => item.key === values) || {};
-      outputs[OutputIds.OnTabClick]({ id, name });
+      const item = findTargetByKey(values) || {};
+      const index = findIndexByKey(values);
+      outputs[OutputIds.OnTabClick]({ ...item, index });
     }
   }, []);
 

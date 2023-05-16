@@ -102,5 +102,7 @@ export const InputIds = {
 	SLOT_ROW_RECORD: 'slotRowRecord',
 	/** 序号 */
 	INDEX: 'index',
+	/** 当前表格数据 */
+	DATA_SOURCE: 'dataSource',
 };
 

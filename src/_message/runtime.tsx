@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
+import { uuid } from '../utils';
 
 // 运行时执行
 const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
@@ -17,7 +18,7 @@ const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => 
       content: str || ' ',
       duration,
       onClose: onClose,
-      getPopupContainer() {
+      getContainer() {
         return env?.canvasElement || document.body;
       }
     });

@@ -28,7 +28,7 @@ import { Field } from './type';
 import UploadImage from './components/upload-image';
 import UploadFile from './components/upload-file';
 import RichText from './components/rich-text';
-import RenderOperate from './components/render-column/render-operate';
+import RenderTable from './components/render-table';
 
 import styles from './runtime.less';
 
@@ -40,18 +40,17 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
   if (debug || runtime) {
     data.showActionModalForEdit = '';
   }
-  // const currentCreatePortal = edit || debug ? createPortal : (a => a);
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModalAction, setShowModalAction] = useState('');
   const [createLoading, setCreateLoading] = useState(false);
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
-  const currentData = useRef<Record<string, unknown>>({});
+  const currentOperateData = useRef<Record<string, unknown>>({});
   const containerRef = useRef(null);
   const domainContainerRef = useRef(null);
   const searchFormValue = useRef({});
-  const [pageIndex, setPageIndex] = useState(INIT_PAGE);
+  const [pageNum, setPageNum] = useState(INIT_PAGE);
   const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
   const [total, setTotal] = useState(0);
   const baseFetchParams = useMemo(() => {
@@ -68,7 +67,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
   const handleData = useCallback(
     (query, pageInfo?: Record<string, unknown>) => {
       setLoading(true);
-      const pageParams = pageInfo || { pageIndex, pageSize: edit ? 5 : pageSize };
+      const pageParams = pageInfo || { pageIndex: pageNum, pageSize: edit ? 5 : pageSize };
       pageParams.pagination = data.pagination?.show;
       const primaryField = data.entity?.fieldAry.find((field) => field.isPrimaryKey);
       const orderFields = data.fieldAry
@@ -97,15 +96,17 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
       })
         .then((res) => {
           if (data.pagination.show) {
-            setDataSource(res.list || []);
+            setDataSource(res.dataSource || []);
             setTotal(res.total || 0);
+            setPageNum(res.pageNum || INIT_PAGE);
+            setPageSize(res.pageSize || INIT_PAGE_SIZE);
           } else {
             setDataSource(res || []);
           }
         })
         .finally(() => setLoading(false));
     },
-    [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, pageIndex, pageSize]
+    [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, pageNum, pageSize]
   );
 
   const onDelete = useCallback(
@@ -128,7 +129,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
     (item: Record<string, unknown>) => {
       mappingFormItemOptions.current = {};
       setShowModalAction(ModalAction.EDIT);
-      currentData.current = item;
+      currentOperateData.current = item;
       const value = {};
       if (data.entity) {
         data.entity.fieldAry
@@ -154,85 +155,12 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
             }
           });
 
+        console.log('value', value);
         createForm.setFieldsValue(value);
       }
     },
     [data.entity]
   );
-
-  let scrollXWidth = 0;
-  const columnWidthMap = {};
-  const renderColumns: ColumnsType<any> = (
-    data.fieldAry
-      ? data.fieldAry?.map((field) => {
-          /** 提前读取值，防止不响应 */
-          field.tableInfo?.ellipsis;
-
-          const title =
-            field.tableInfo?.label ||
-            (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
-          let parseWidth = parseInt(field.tableInfo?.width || '124px');
-          if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
-            parseWidth = 124;
-          }
-          scrollXWidth += parseWidth;
-          const editTitle = data.operate?.edit?.title;
-          const editDisabled = data.operate?.edit?.disabled;
-          const deleteTitle = data.operate?.delete?.title;
-          const deleteDisabled = data.operate?.delete?.disabled;
-
-          return field.bizType === FieldBizType.FRONT_CUSTOM
-            ? data.table?.operate?.disabled
-              ? null
-              : {
-                  title: field.tableInfo?.label || field.name,
-                  key: field.id,
-                  align: field.tableInfo?.align || 'left',
-                  width: `${parseWidth}px`,
-                  render(_, data, index) {
-                    return (
-                      <RenderOperate
-                        field={field}
-                        item={data}
-                        editTitle={editTitle}
-                        editDisabled={editDisabled}
-                        deleteTitle={deleteTitle}
-                        deleteDisabled={deleteDisabled}
-                        colIndex={index}
-                        slots={slots}
-                        onEdit={env.edit ? undefined : () => onEdit(data)}
-                        onDelete={env.edit ? undefined : () => onDelete(data)}
-                        isEdit={!!env.edit}
-                      />
-                    );
-                  }
-                }
-            : {
-                title: title,
-                dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
-                key: title,
-                align: field.tableInfo?.align || 'left',
-                width: `${parseWidth}px`,
-                render(value, data, index) {
-                  return (
-                    <RenderColumn
-                      columnKey={title}
-                      columnWidthMap={columnWidthMap}
-                      value={value}
-                      item={data}
-                      field={field}
-                      colIndex={index}
-                      slots={slots}
-                      ellipsis={field.tableInfo?.ellipsis}
-                      columnWidth={columnWidthMap[title]}
-                    />
-                  );
-                },
-                sorter: field.tableInfo?.sort
-              };
-        })
-      : []
-  ).filter(Boolean);
 
   useEffect(() => {
     if (!data.entity || !data.fieldAry?.length) {
@@ -264,7 +192,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
           curValue[key] = item;
         });
 
-        setPageIndex(1);
+        setPageNum(1);
         setPageSize(data.pagination?.pageSize || INIT_PAGE_SIZE);
         searchFormValue.current = curValue;
         handleData(curValue, {
@@ -486,7 +414,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
             fields.forEach((field) => (curValue[field.name] = window['LOGIN_USER_INFO'].id));
           }
 
-          curValue.id = currentData.current?.id;
+          curValue.id = currentOperateData.current?.id;
         } else {
           const fields = data.entity.fieldAry.filter((field) =>
             [FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType)
@@ -506,11 +434,9 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
                   ? undefined
                   : data.entity.fieldAry.filter(
                       (field) =>
-                        ![
-                          FieldBizType.MAPPING,
-                          FieldBizType.SYS_USER_CREATOR,
-                          FieldBizType.SYS_USER_UPDATER
-                        ].includes(field.bizType) &&
+                        ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR].includes(
+                          field.bizType
+                        ) &&
                         !field.isPrimaryKey &&
                         !field.isPrivate &&
                         !field.form.disabledForEdit
@@ -681,42 +607,10 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
     return null;
   };
 
-  const onPageChange = (pageIndex: number, size: number) => {
-    setPageIndex(pageIndex);
-    setPageSize(size);
-    handleData(searchFormValue.current, { pageIndex, pageSize: size });
-  };
-  /** 排序 */
-  const onTableChange = (_, __, sorter) => {
-    if (env.edit) {
-      return;
-    }
-    const fieldNames = Array.isArray(sorter.field) ? sorter.field : [sorter.field];
-    let field = data.fieldAry.find(
-      (f) =>
-        f.name === fieldNames[0] && (fieldNames[1] ? f.mappingField.name === fieldNames[1] : true)
-    );
-    const orderMap = { ascend: 'ASC', descend: 'DESC' };
-
-    if (field) {
-      data.fieldAry.forEach((f) => {
-        f.sorter = undefined;
-      });
-      field.sorter = sorter.order
-        ? {
-            entityId: fieldNames.length > 1 ? field.mappingField.relationEntityId : data.entity.id,
-            fieldId: fieldNames.length > 1 ? field.mappingField.id : field.id,
-            order: orderMap[sorter.order]
-          }
-        : undefined;
-
-      setPageIndex(1);
-      setPageSize(data.pagination?.pageSize || INIT_PAGE_SIZE);
-      handleData(searchFormValue.current, {
-        pageIndex: 1,
-        pageSize: data.pagination?.pageSize || INIT_PAGE_SIZE
-      });
-    }
+  const onPageChange = (pageNum: number, pageSize: number) => {
+    setPageNum(pageNum);
+    setPageSize(pageSize);
+    handleData(searchFormValue.current, { pageNum, pageSize });
   };
 
   const onCreateFormValuesChange = (curValue, allValues) => {
@@ -761,25 +655,19 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
         ref={domainContainerRef}
       >
         {renderSearchFormNode()}
-        <Table
-          key={env.edit ? String(scrollXWidth) : undefined}
-          size={data.table?.size || 'middle'}
-          loading={loading}
-          columns={renderColumns}
+        <RenderTable
+          data={data}
           dataSource={dataSource}
-          onChange={onTableChange}
-          scroll={{ x: scrollXWidth }}
-          pagination={
-            data.pagination?.show
-              ? {
-                  showSizeChanger: true,
-                  total,
-                  current: pageIndex,
-                  pageSize,
-                  onChange: onPageChange
-                }
-              : false
-          }
+          slots={slots}
+          env={env}
+          loading={loading}
+          total={total}
+          fetchData={(pageInfo) => handleData(searchFormValue.current, pageInfo)}
+          onPageChange={onPageChange}
+          pageNum={pageNum}
+          pageSize={pageSize}
+          onDelete={onDelete}
+          onEdit={onEdit}
         />
       </div>
       <div className={styles.container} ref={containerRef}>
