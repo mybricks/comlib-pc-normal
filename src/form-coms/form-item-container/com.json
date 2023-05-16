@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-item-container",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "自定义表单项的容器，支持拖入其他任意组件搭建组合表单项",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -24,7 +24,7 @@
       "title": "设置初始值",
       "desc": "设置表单项的初始值，用于校验和提交，并触发初始化事件输出",
       "schema": {
-        "type": "string"
+        "type": "follow"
       }
     },
     {
