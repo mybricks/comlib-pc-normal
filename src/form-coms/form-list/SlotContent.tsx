@@ -67,7 +67,7 @@ const SlotContent = (
 
         // childrenStore收集完成后的处理
         if (
-          field.key === data.MaxKey &&
+          field.name === data.fields.length - 1 &&
           isChildrenStoreValid({ data, childrenStore }) &&
           data.currentAction
         ) {
