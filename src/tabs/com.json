@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "选项卡切换组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -63,6 +63,14 @@
           "name": {
             "title": "标签页标题",
             "type": "string"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number"
           }
         }
       }
@@ -81,9 +89,13 @@
             "title": "标签页标题",
             "type": "string"
           },
-          "permissionKey": {
-            "title": "标签页权限key",
+          "key": {
+            "title": "标签页key",
             "type": "string"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number"
           }
         }
       }
