@@ -195,6 +195,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
       const formItems = getFormItems(data, childrenInputs);
+      console.log(formItems);
 
       Promise.all(
         formItems.map((item) => {
@@ -322,9 +323,15 @@ const getFormItems = (data: Data, childrenInputs) => {
   let formItems = data.items;
 
   // hack 脏数据问题，表单项数与实际表单项数不一致
-  // if (data.items.length !== Object.keys(childrenInputs).length) {
-  //   formItems = formItems.filter((item) => childrenInputs[item.id]);
-  // }
+  if (data.items.length !== Object.keys(childrenInputs).length) {
+    formItems = formItems.filter((item) => {
+      if (item.comName) {
+        return childrenInputs[item.comName];
+      }
+
+      return childrenInputs[item.id];
+    });
+  }
 
   // 过滤隐藏表单项
   if (!data.submitHiddenFields) {
