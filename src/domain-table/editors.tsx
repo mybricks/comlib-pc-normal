@@ -148,7 +148,7 @@ export default {
               get({ data }) {
                 return { domainFileId: data.domainFileId, entityId: data.entityId };
               },
-              set({ data, setTitle, title, output }, newEntity: any) {
+              set({ data, setTitle, title, output, slot }, newEntity: any) {
                 if (!newEntity) {
                   return;
                 }
@@ -231,12 +231,7 @@ export default {
                   .filter(Boolean);
 
                 if (curFieldAry.length > 0) {
-                  curFieldAry.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  curFieldAry.push(handleCustomColumnSlot(data, slot));
 
                   data.fieldAry = curFieldAry;
                 } else {
@@ -412,7 +407,7 @@ export default {
                     ) || []
                 );
               },
-              set({ data, output, input }: EditorResult<Data>, value: string[]) {
+              set({ data, output, input, slot }: EditorResult<Data>, value: string[]) {
                 const fieldAry = value
                   .map((id) => {
                     const ids = id.split('.');
@@ -445,12 +440,7 @@ export default {
                   .filter(Boolean);
 
                 if (fieldAry.length > 0) {
-                  fieldAry.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  fieldAry.push(handleCustomColumnSlot(data, slot));
                 }
                 data.fieldAry = fieldAry;
               }
@@ -480,12 +470,7 @@ export default {
               set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
                 const curFields = val;
                 if (curFields.length > 0) {
-                  curFields.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  curFields.push(handleCustomColumnSlot(data, slot));
                 }
                 data.fieldAry = curFields;
               }
@@ -1597,6 +1582,9 @@ export default {
           { label: '普通文字', value: TableRenderType.NORMAL },
           { label: '自定义插槽', value: TableRenderType.SLOT }
         ],
+        ifVisible() {
+          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+        },
         value: {
           get({}: EditorResult<Data>) {
             return field.tableInfo?.renderType || TableRenderType.NORMAL;
@@ -1607,28 +1595,7 @@ export default {
             }
             field.tableInfo.renderType = value;
 
-            if (value === TableRenderType.SLOT) {
-              const slotId = uuid();
-              field.tableInfo.slotId = slotId;
-              slot.add({
-                id: slotId,
-                title: `自定义${
-                  field.tableInfo?.label ??
-                  `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`
-                }列`,
-                type: 'scope'
-              });
-
-              slot
-                .get(slotId)
-                .inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', { type: 'object' });
-              slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', { type: 'number' });
-            } else {
-              if (field.tableInfo.slotId && slot.get(field.tableInfo.slotId)) {
-                slot.remove(field.tableInfo.slotId);
-                field.tableInfo.slotId = '';
-              }
-            }
+            handleColumnSlot(value, { field, slot });
           }
         }
       },
@@ -1833,5 +1800,50 @@ export default {
         ]
       }
     ];
+  }
+};
+
+const handleCustomColumnSlot = (data, slot) => {
+  let field = data.fieldAry.find((f) => f.bizType === FieldBizType.FRONT_CUSTOM);
+
+  if (!field) {
+    field = {
+      name: '操作',
+      tableInfo: { label: '操作', width: '124px', align: 'left' },
+      bizType: FieldBizType.FRONT_CUSTOM,
+      id: 'operate'
+    };
+
+    handleColumnSlot(TableRenderType.SLOT, { field, slot });
+  } else if (!field.tableInfo.slotId || !slot.get(field.tableInfo.slotId)) {
+    handleColumnSlot(TableRenderType.SLOT, { field, slot });
+  }
+
+  return field;
+};
+
+/** 处理列渲染 */
+const handleColumnSlot = (renderType, params) => {
+  const { field, slot } = params;
+
+  if (renderType === TableRenderType.SLOT) {
+    const slotId = uuid();
+    field.tableInfo.slotId = slotId;
+    slot.add({
+      id: slotId,
+      title: `自定义${
+        field.tableInfo?.label ??
+        `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`
+      }列`,
+      type: 'scope'
+    });
+
+    slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', { type: 'object' });
+    slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', { type: 'number' });
+  } else {
+    if (field.tableInfo.slotId) {
+      slot.get(field.tableInfo.slotId) && slot.remove(field.tableInfo.slotId);
+      field.tableInfo.slotId = '';
+    }
   }
 };
