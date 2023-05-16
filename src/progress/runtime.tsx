@@ -14,6 +14,10 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
       inputs['setColor']((ds: string) => {
         data.strokeColor = ds;
       });
+      //设置状态
+      inputs['setStatus']((ds: 'success' | 'exception' | 'normal' | 'active') => {
+        data.status = ds;
+      });
     }
   });
   let fontSize = Number(data.circleSize.slice(0, -2));

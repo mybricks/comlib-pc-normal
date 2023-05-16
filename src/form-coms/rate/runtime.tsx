@@ -29,6 +29,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     {
       inputs,
       outputs,
+      name,
       configs: {
         setValue(val) {
           setValue(val);
