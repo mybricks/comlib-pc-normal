@@ -23,6 +23,7 @@ export default function Runtime({
   useFormItemInputs({
     inputs,
     outputs,
+    name,
     configs: {
       setValue(val) {
         changeValue(val);

@@ -60,7 +60,7 @@ export default {
       }
     },
     {
-      title: '进度显示',
+      title: '显示进度值',
       description: '是否显示进度数值或状态图标',
       type: 'switch',
       value: {
@@ -146,7 +146,7 @@ export default {
       }
     },
     {
-      title: '开启步数',
+      title: '步骤进度条',
       description: '开启后，可配置步数',
       ifVisible({ data }: EditorResult<Data>) {
         return data.type === 'line';
@@ -162,7 +162,7 @@ export default {
       }
     },
     {
-      title: '步数',
+      title: '总步骤数',
       description: '进度条总共步数',
       ifVisible({ data }: EditorResult<Data>) {
         return data.type === 'line' && data.isSteps;
@@ -197,7 +197,7 @@ export default {
       }
     },
     {
-      title: '颜色开关',
+      title: '自定义颜色',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {

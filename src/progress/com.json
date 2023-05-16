@@ -16,6 +16,13 @@
       "schema": {
         "type": "number"
       }
+    },
+    {
+      "id": "setStatus",
+      "title": "设置状态",
+      "schema": {
+        "type": "string"
+      }
     }
   ]
 }

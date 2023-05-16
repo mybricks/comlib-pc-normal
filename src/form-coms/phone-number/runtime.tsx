@@ -32,6 +32,7 @@ export default function ({
   useFormItemInputs({
     inputs,
     outputs,
+    name,
     configs: {
       setValue(val) {
         data.value = val;
