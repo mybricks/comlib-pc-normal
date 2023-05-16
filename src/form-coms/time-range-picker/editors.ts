@@ -60,10 +60,10 @@ export default {
         ]
       },
       {
-        title: '格式化',
+        title: '输出数据处理',
         items: [
           {
-            title: '格式化模版',
+            title: '时间格式模版',
             type: 'select',
             options: {
               options: [

@@ -17,7 +17,8 @@ export default {
         type: 'Select',
         options: [
           { label: '默认', value: 'default' },
-          { label: '导航类型', value: 'navigation' }
+          { label: '导航类型', value: 'navigation' },
+          { label: '点状类型', value: 'dotted' }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
