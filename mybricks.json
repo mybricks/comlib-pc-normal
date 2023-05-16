@@ -21,7 +21,8 @@
           "./src/breadcrumb/com.json",
           "./src/richtext/com.json",
           "./src/00_test/com.json",
-          "./src/00_schema-test/com.json"
+          "./src/00_schema-test/com.json",
+          "./src/00_test11/com.json"
         ]
       },
       {
@@ -100,7 +101,8 @@
           "./src/icon/com.json",
           "./src/dropdown/com.json",
           "./src/sort-bar/com.json",
-          "./src/video/com.json"
+          "./src/video/com.json",
+          "./src/progress/com.json"
         ]
       },
       "./src/_code-segment/com.json",
