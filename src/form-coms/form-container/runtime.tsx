@@ -195,7 +195,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
       const formItems = getFormItems(data, childrenInputs);
-      console.log(formItems);
 
       Promise.all(
         formItems.map((item) => {
