@@ -136,7 +136,7 @@ export default {
       data.isFormItem = false
     }
   },
-  ':root': ({ data, output }: EditorResult<Data>, cate1) => {
+  ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
     cate1.items = [
       {
         title: '布局',
@@ -418,7 +418,9 @@ export default {
           }
         ]
       }
-    ]
+    ];
+    cate2.title = '操作区';
+    cate2.items = actionsEditor(data, output)
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
