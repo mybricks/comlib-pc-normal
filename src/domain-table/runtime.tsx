@@ -41,7 +41,6 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
   if (debug || runtime) {
     data.showActionModalForEdit = '';
   }
-  // const currentCreatePortal = edit || debug ? createPortal : (a => a);
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModalAction, setShowModalAction] = useState('');
