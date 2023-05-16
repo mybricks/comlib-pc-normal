@@ -354,6 +354,39 @@ export default {
               },
             },
           },
+          {
+            title: '输出格式',
+            type: "Select",
+            description: '输出数据结构，数组和字符串两种格式',
+            options: [
+              { label: "数组", value: "array" },
+              { label: "字符串", value: "string" }
+            ],
+            value: {
+              get({ data }) {
+                return data.dateType;
+              },
+              set({ data }, value: "array" | "string") {
+                data.dateType = value;
+              },
+            }
+          },
+          {
+            title: '分隔符',
+            type: "Text",
+            description: '默认分隔符为-',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.dateType === 'string';
+            },
+            value: {
+              get({ data }) {
+                return data.splitChart;
+              },
+              set({ data }, value: string) {
+                data.splitChart = value;
+              },
+            }
+          }
         ]
       },
       {

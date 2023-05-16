@@ -1,0 +1,21 @@
+{
+  "title": "进度条",
+  "namespace": "mybricks.normal-pc.progress",
+  "version": "1.0.0",
+  "description": "展示操作的当前进度",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setPercent",
+      "title": "设置进度",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ]
+}
