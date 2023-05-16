@@ -4,6 +4,7 @@
   "table": {
     "size": "middle",
     "renderType": "normal",
+    "slotId": "",
     "operate": {
       "disabled": false
     }

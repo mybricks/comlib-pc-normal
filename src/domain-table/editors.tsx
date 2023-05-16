@@ -7,6 +7,7 @@ import {
   DefaultValueWhenCreate,
   FieldBizType,
   FieldDBType,
+  InputIds,
   ModalAction,
   TableRenderType
 } from './constants';
@@ -15,7 +16,6 @@ import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
 import Refresh from './editors/refresh';
 import Delete from './editors/delete';
-import { InputIds } from './constants';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -372,6 +372,7 @@ export default {
         items: [
           {
             title: '渲染方式',
+            description: '渲染方式切换将重置表格渲染逻辑，不支持回退',
             type: 'Select',
             options: [
               { label: '内置表格', value: TableRenderType.NORMAL },
@@ -384,7 +385,30 @@ export default {
               set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
                 data.table.renderType = value;
 
-                // handleColumnSlot(value, { field, slot });
+                if (value === TableRenderType.SLOT) {
+                  const slotId = 'table';
+                  data.table.slotId = slotId;
+                  slot.add({ id: slotId, title: `自定义表格`, type: 'scope' });
+                  slot
+                    .get(slotId)
+                    .inputs.add(InputIds.DATA_SOURCE, '当前表格数据', { type: 'array' });
+
+                  data.fieldAry.forEach((field) => {
+                    handleColumnSlot(TableRenderType.NORMAL, { field, slot });
+                  });
+                } else {
+                  slot.get(data.table.slotId) && slot.remove(data.table.slotId);
+                  data.table.slotId = '';
+
+                  data.fieldAry.forEach((field) => {
+                    if (
+                      field.tableInfo.renderType === TableRenderType.SLOT ||
+                      field.bizType === FieldBizType.FRONT_CUSTOM
+                    ) {
+                      handleColumnSlot(TableRenderType.SLOT, { field, slot });
+                    }
+                  });
+                }
               }
             }
           },

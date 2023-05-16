@@ -14,6 +14,10 @@
   "target": {
     "toReact": "./toReact.ts"
   },
+  "schema": [
+    "mybricks.normal-pc.domain-table/table",
+    "*"
+  ],
   "inputs": [
     {
       "id": "dataSource",

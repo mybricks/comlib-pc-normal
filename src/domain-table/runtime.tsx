@@ -28,10 +28,9 @@ import { Field } from './type';
 import UploadImage from './components/upload-image';
 import UploadFile from './components/upload-file';
 import RichText from './components/rich-text';
-import RenderOperate from './components/render-column/render-operate';
+import RenderTable from './components/render-table';
 
 import styles from './runtime.less';
-import RenderTable from './components/render-table';
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;

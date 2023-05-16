@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { FieldBizType } from '../../constants';
+import { FieldBizType, InputIds, TableRenderType } from '../../constants';
 import RenderOperate from '../render-column/render-operate';
 import RenderColumn from '../render-column';
 
@@ -136,6 +136,20 @@ const RenderTable: FC<RenderTableProps> = (props) => {
       onPageChange(1, data.pagination?.pageSize || INIT_PAGE_SIZE);
     }
   };
+
+  if (data.table.renderType === TableRenderType.SLOT) {
+    const slotId = data.table.slotId;
+    if (!slotId || !slots[slotId]?.render) {
+      return null;
+    } else {
+      return slots[slotId]?.render({
+        inputValues: {
+          [InputIds.DATA_SOURCE]: dataSource
+        },
+        key: `${InputIds.DATA_SOURCE}-${slotId}`
+      });
+    }
+  }
 
   return (
     <Table
