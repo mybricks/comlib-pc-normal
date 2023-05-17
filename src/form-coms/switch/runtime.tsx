@@ -26,13 +26,15 @@ export default function ({
   _outputs,
   outputs,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   const { edit } = env;
 
   useFormItemInputs({
     inputs,
     outputs,
+    name,
     configs: {
       setValue(val) {
         data.config.checked = val;
@@ -70,7 +72,7 @@ export default function ({
 
   const changeValue = useCallback((checked) => {
     data.config.checked = checked;
-    onChangeForFc(parentSlot, { id: id, value: checked });
+    onChangeForFc(parentSlot, { id: id, value: checked, name: name });
     outputs['onChange'](checked);
   }, []);
 

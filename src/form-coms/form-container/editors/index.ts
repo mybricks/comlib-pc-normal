@@ -5,6 +5,7 @@ import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { inputIds, outputIds } from '../constants'
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema'
+import { getFormItem } from '../utils'
 import { uuid } from '../../../utils'
 
 function fieldNameCheck(data: Data, name: string) {
@@ -16,17 +17,19 @@ function fieldNameCheck(data: Data, name: string) {
   }
 }
 
-function getFormItemProp({ data, id }: { data: Data, id: string }, name: keyof FormItems) {
+function getFormItemProp({ data, ...com }: { data: Data, id: string, name: string }, name: keyof FormItems) {
   try {
-    const item = data.items.find(item => item.id === id);
+    const item = getFormItem(data.items, { id: com.id, name: com.name })
+
     return item?.[name];
   } catch (e) {
     console.error(e);
   }
 }
-function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof FormItems, value: any) {
+function setFormItemProps({ data, ...com }: { data: Data, id: string, name: string }, name: keyof FormItems, value: any) {
   try {
-    const item = data.items.find(item => item.id === id) || {};
+    const item = getFormItem(data.items, { id: com.id, name: com.name }) || {}
+
     item[name] = value;
   } catch (e) {
     console.error(e);
@@ -53,7 +56,6 @@ export default {
 
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
-    // console.log(child, curSlot)
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child
       const item = data.items.find(item => item.id === id)
@@ -97,6 +99,7 @@ export default {
           visible: true,
         })
       }
+
       refreshSchema({ data, inputs, outputs, slots })
     }
   },
@@ -362,26 +365,27 @@ export default {
         title: '显示标题',
         type: 'Switch',
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return !getFormItemProp({ data, id }, 'hiddenLabel');
+          get({ id, data, name }: EditorResult<Data>) {
+            return !getFormItemProp({ data, id, name }, 'hiddenLabel');
           },
-          set({ id, data }: EditorResult<Data>, val) {
-            setFormItemProps({ data, id }, 'hiddenLabel', !val);
+          set({ id, data, name }: EditorResult<Data>, val) {
+            setFormItemProps({ data, id, name }, 'hiddenLabel', !val);
           }
         }
       },
       {
         title: '标题',
         type: 'text',
-        ifVisible({ id, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        ifVisible({ id, data, name }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
         },
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'label');
+          get({ id, data, name }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'label');
           },
-          set({ id, data, slot }: EditorResult<Data>, val) {
-            const item = data.items.find(item => item.id === id)
+          set({ id, name, data, slot }: EditorResult<Data>, val) {
+            const item = getFormItem(data.items, { id, name })
+
             if (item) {
               if (item?.slotAfter) {
                 slot.setTitle(item?.slotAfter, getSlotAfterTitle(val))
@@ -396,18 +400,18 @@ export default {
         title: '字段',
         type: 'text',
         value: {
-          get({ id, data, focusArea }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
+          get({ id, data, name }: EditorResult<Data>) {
+            const item = getFormItem(data.items, { id, name })
 
             return item?.name || item?.label
           },
-          set({ id, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
+          set({ id, data, name, input, output, slots }: EditorResult<Data>, val: string) {
             val = val.trim();
             if (!val) {
               return message.warn('字段名不能为空')
             }
 
-            const item = data.items.find(item => item.id === id)
+            const item = getFormItem(data.items, { id, name })
 
             if (item && item.name !== val) {
               if (fieldNameCheck(data, val)) {
@@ -423,16 +427,16 @@ export default {
       {
         title: "标题提示",
         type: "Text",
-        ifVisible({ id, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
         },
         description: "展示在标题后面的悬浮提示内容",
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'tooltip');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'tooltip');
           },
-          set({ id, data }: EditorResult<Data>, value: string) {
-            setFormItemProps({ data, id }, 'tooltip', value);
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'tooltip', value);
           },
         },
       },
@@ -441,11 +445,11 @@ export default {
         type: "Text",
         description: "展示在表单项下方的提示内容",
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'description');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'description');
           },
-          set({ id, data }: EditorResult<Data>, value: string) {
-            setFormItemProps({ data, id }, 'description', value);
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, id, name }, 'description', value);
           },
         },
       },
@@ -453,22 +457,22 @@ export default {
         title: '后置插槽',
         type: 'Switch',
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'slotAfter');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'slotAfter');
           },
-          set({ id, data, slot }: EditorResult<Data>, value) {
-            const item = data.items.find(item => item.id === id);
+          set({ id, name, data, slot }: EditorResult<Data>, value) {
+            const item = getFormItem(data.items, { id, name })
             if (value && item) {
               const slotId = uuid();
               item['slotAfter'] = slotId
               // setFormItemProps({ data, id }, 'slotAfter', slotId);
               slot.add({ id: slotId, title: getSlotAfterTitle(item?.label)});
             } else {
-              const slotAfter = getFormItemProp({ data, id }, 'slotAfter');
+              const slotAfter = getFormItemProp({ data, id, name }, 'slotAfter');
 
               if (slot.get(slotAfter)) {
                 slot.remove(slotAfter);
-                setFormItemProps({ data, id }, 'slotAfter', '');
+                setFormItemProps({ data, id, name }, 'slotAfter', '');
               }
             }
             
@@ -492,11 +496,11 @@ export default {
               }
             ],
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'widthOption');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'widthOption');
               },
-              set({ data, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
-                setFormItemProps({ data, id }, 'widthOption', value);
+              set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, id, name }, 'widthOption', value);
                 refreshFormItemPropsSchema({ data, inputs });
               }
             },
@@ -512,16 +516,17 @@ export default {
                 formatter: '/24',
               },
             ],
-            ifVisible({ data, id }: EditorResult<Data>) {
-              const item = data.items.find(item => item.id === id)
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const item = getFormItem(data.items, { id, name })
+
               return item?.widthOption !== 'px';
             },
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'span');
+              get({ data, id, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'span');
               },
-              set({ data, id }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id }, 'span', value);
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, id, name }, 'span', value);
               }
             },
           },
@@ -531,17 +536,17 @@ export default {
             options: {
               type: 'number'
             },
-            ifVisible({ data, id }: EditorResult<Data>) {
-              const item = data.items.find(item => item.id === id)
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const item = getFormItem(data.items, { id, name })
               return item?.widthOption === 'px';
             },
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'width');
+              get({ data, id, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'width');
 
               },
-              set({ data, id }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id }, 'width', value);
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, id, name }, 'width', value);
               }
             },
           },
@@ -553,11 +558,11 @@ export default {
               return (data.config?.layout || data.layout) !== 'horizontal'
             },
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'inlineMargin');
+              get({ id, data, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'inlineMargin');
               },
-              set({ id, data }: EditorResult<Data>, value: number[]) {
-                setFormItemProps({ data, id }, 'inlineMargin', value);
+              set({ id, data, name }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, id, name }, 'inlineMargin', value);
               }
             }
           },
@@ -568,8 +573,9 @@ export default {
               return (data.config?.layout || data.layout) !== 'horizontal'
             },
             value: {
-              set({ id, data }: EditorResult<Data>) {
-                const curItem = data.items.find(item => item.id === id)
+              set({ id, data, name }: EditorResult<Data>) {
+                const curItem = getFormItem(data.items, { id, name })
+
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
                 data.items.forEach(item => item.inlineMargin = [...margin]);
                 data.actions.inlinePadding = [...margin];
@@ -579,8 +585,8 @@ export default {
           {
             title: '标题自动换行',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             options: [
               { label: '是', value: true },
@@ -588,19 +594,19 @@ export default {
               { label: '跟随容器', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAutoWrap');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'labelAutoWrap');
               },
-              set({ id, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, id }, 'labelAutoWrap', value);
+              set({ id, name, data }: EditorResult<Data>, value: boolean) {
+                setFormItemProps({ data, id, name }, 'labelAutoWrap', value);
               }
             }
           },
           {
             title: '标题对齐方式',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             options: [
               { label: '左对齐', value: 'left' },
@@ -608,19 +614,19 @@ export default {
               { label: '跟随容器', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAlign');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'labelAlign');
               },
-              set({ id, data }: EditorResult<Data>, value: 'left' | 'right') {
-                setFormItemProps({ data, id }, 'labelAlign', value);
+              set({ id, name, data }: EditorResult<Data>, value: 'left' | 'right') {
+                setFormItemProps({ data, id, name }, 'labelAlign', value);
               }
             }
           },
           {
             title: '标题冒号',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id,name }, 'hiddenLabel');
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
@@ -629,11 +635,11 @@ export default {
               { label: '跟随容器', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'colon');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'colon');
               },
-              set({ id, data }: EditorResult<Data>, value: FormItemColonType) {
-                setFormItemProps({ data, id }, 'colon', value);
+              set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
+                setFormItemProps({ data, id, name }, 'colon', value);
               }
             }
           },
@@ -647,15 +653,16 @@ export default {
                 verticalAlign: false
               }
             },
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             description: "表单项标题的字体样式",
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id);
+              get({ id, name, data }: EditorResult<Data>) {
+                const item = getFormItem(data.items, { id, name })
+
                 if (!item?.labelStyle) {
-                  setFormItemProps({ data, id }, 'labelStyle', {
+                  setFormItemProps({ data, id, name }, 'labelStyle', {
                     lineHeight: '14px',
                     letterSpacing: '0px',
                     fontSize: '14px',
@@ -666,21 +673,22 @@ export default {
                 }
                 return item?.labelStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: any) {
+              set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id }, 'labelStyle', style);
+                setFormItemProps({ data, id, name }, 'labelStyle', style);
               },
             },
           },
           {
             title: '标题样式应用所有表单项',
             type: 'Button',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             value: {
-              set({ id, data }: EditorResult<Data>, value: {}) {
-                const item = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>, value: {}) {
+                const item = getFormItem(data.items, { id, name })
+
                 const labelStyle = item?.labelStyle || {
                   lineHeight: '14px',
                   letterSpacing: '0px',
@@ -689,6 +697,7 @@ export default {
                   color: 'rgba(0, 0, 0, 0.85)',
                   fontStyle: 'normal',
                 };
+
                 data.items.forEach(item => item.labelStyle = labelStyle);
               }
             }
@@ -705,10 +714,11 @@ export default {
             },
             description: "表单项提示语的字体样式",
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id);
+              get({ id, name, data }: EditorResult<Data>) {
+                const item = getFormItem(data.items, { id, name })
+
                 if (!item?.descriptionStyle) {
-                  setFormItemProps({ data, id }, 'descriptionStyle', {
+                  setFormItemProps({ data, id, name }, 'descriptionStyle', {
                     whiteSpace: 'pre-wrap',
                     lineHeight: '12px',
                     letterSpacing: '0px',
@@ -720,9 +730,9 @@ export default {
                 }
                 return item?.descriptionStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: any) {
+              set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id }, 'descriptionStyle', style);
+                setFormItemProps({ data, id, name }, 'descriptionStyle', style);
               },
             },
           },
@@ -730,8 +740,9 @@ export default {
             title: '提示语样式应用所有表单项',
             type: 'Button',
             value: {
-              set({ id, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>) {
+                const item = getFormItem(data.items, { id, name })
+
                 const descriptionStyle = item?.descriptionStyle || {
                   whiteSpace: 'pre-wrap',
                   lineHeight: '12px',
@@ -741,6 +752,7 @@ export default {
                   color: 'rgba(0, 0, 0, 0.45)',
                   fontStyle: 'normal',
                 };
+
                 data.items.forEach(item => item.descriptionStyle = descriptionStyle);
               }
             }
@@ -749,11 +761,11 @@ export default {
             title: '必填样式',
             type: 'Switch',
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'required');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'required');
               },
-              set({ id, data }: EditorResult<Data>, value) {
-                setFormItemProps({ data, id }, 'required', value);
+              set({ id, name, data }: EditorResult<Data>, value) {
+                setFormItemProps({ data, id, name }, 'required', value);
               }
             }
           }

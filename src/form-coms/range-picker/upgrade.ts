@@ -104,5 +104,14 @@ export default function ({
     refreshSchema({ data, input, output });
   }
 
+  /**
+   * @description v1.0.16->1.0.17 增加 输出类型 配置项
+   */
+  if (typeof data.dateType === "undefined") {
+    data.dateType = 'array';
+  }
+  if (typeof data.splitChart === "undefined") {
+    data.splitChart = '-';
+  }
   return true;
 }

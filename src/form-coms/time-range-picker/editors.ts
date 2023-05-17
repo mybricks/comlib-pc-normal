@@ -5,7 +5,7 @@ export default {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '配置';
@@ -54,6 +54,79 @@ export default {
               },
               set({ data }: EditorResult<Data>, val: boolean) {
                 data.disabled = val;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '格式化',
+        items: [
+          {
+            title: '格式化模版',
+            type: 'select',
+            options: {
+              options: [
+                { label: '时:分:秒', value: 'HH:mm:ss' },
+                { label: '时:分', value: 'HH:mm' },
+                { label: '时', value: 'HH' },
+                { label: '自定义', value: 'custom' }
+              ]
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.format || 'HH:mm:ss';
+              },
+              set({ data }: EditorResult<Data>, val: string) {
+                data.format = val;
+              }
+            }
+          },
+          {
+            title: '自定义模版',
+            type: 'text',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.format === 'custom';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.customFormat || 'HH:mm:ss';
+              },
+              set({ data }: EditorResult<Data>, val: string) {
+                data.customFormat = val;
+              }
+            }
+          },
+          {
+            title: '输出格式',
+            type: 'select',
+            options: {
+              options: [
+                { label: '数组', value: 'array' },
+                { label: '字符', value: 'string' }
+              ]
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.outFormat || 'array';
+              },
+              set({ data }: EditorResult<Data>, val: 'array' | 'string') {
+                data.outFormat = val;
+              }
+            }
+          },
+          {
+            title: '分隔符',
+            type: 'text',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.outFormat === 'string';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.splitChar || '-';
+              },
+              set({ data }: EditorResult<Data>, val: string) {
+                data.splitChar = val;
               }
             }
           }

@@ -7,7 +7,9 @@ import {
   DefaultValueWhenCreate,
   FieldBizType,
   FieldDBType,
-  ModalAction
+  InputIds,
+  ModalAction,
+  TableRenderType
 } from './constants';
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
@@ -146,7 +148,7 @@ export default {
               get({ data }) {
                 return { domainFileId: data.domainFileId, entityId: data.entityId };
               },
-              set({ data, setTitle, title, output }, newEntity: any) {
+              set({ data, setTitle, title, output, slot }, newEntity: any) {
                 if (!newEntity) {
                   return;
                 }
@@ -229,17 +231,10 @@ export default {
                   .filter(Boolean);
 
                 if (curFieldAry.length > 0) {
-                  curFieldAry.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
-
-                  data.fieldAry = curFieldAry;
-                } else {
-                  data.fieldAry = [];
+                  curFieldAry.push(handleCustomColumnSlot(data, slot));
                 }
+                handleTableColumnChange(curFieldAry, data.fieldAry, slot);
+                data.fieldAry = curFieldAry;
 
                 newEntity.fieldAry.forEach((newField) => {
                   newField.form = {};
@@ -376,6 +371,48 @@ export default {
         },
         items: [
           {
+            title: '渲染方式',
+            description: '渲染方式切换将重置表格渲染逻辑，不支持回退',
+            type: 'Select',
+            options: [
+              { label: '内置表格', value: TableRenderType.NORMAL },
+              { label: '自定义表格', value: TableRenderType.SLOT }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.table?.renderType || TableRenderType.NORMAL;
+              },
+              set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
+                data.table.renderType = value;
+
+                if (value === TableRenderType.SLOT) {
+                  const slotId = 'table';
+                  data.table.slotId = slotId;
+                  slot.add({ id: slotId, title: `自定义表格`, type: 'scope' });
+                  slot
+                    .get(slotId)
+                    .inputs.add(InputIds.DATA_SOURCE, '当前表格数据', { type: 'array' });
+
+                  data.fieldAry.forEach((field) => {
+                    handleColumnSlot(TableRenderType.NORMAL, { field, slot });
+                  });
+                } else {
+                  slot.get(data.table.slotId) && slot.remove(data.table.slotId);
+                  data.table.slotId = '';
+
+                  data.fieldAry.forEach((field) => {
+                    if (
+                      field.tableInfo.renderType === TableRenderType.SLOT ||
+                      field.bizType === FieldBizType.FRONT_CUSTOM
+                    ) {
+                      handleColumnSlot(TableRenderType.SLOT, { field, slot });
+                    }
+                  });
+                }
+              }
+            }
+          },
+          {
             title: '表格列',
             type: 'Select',
             options(props) {
@@ -400,6 +437,9 @@ export default {
                 }
               };
             },
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return (
@@ -410,7 +450,7 @@ export default {
                     ) || []
                 );
               },
-              set({ data, output, input }: EditorResult<Data>, value: string[]) {
+              set({ data, output, input, slot }: EditorResult<Data>, value: string[]) {
                 const fieldAry = value
                   .map((id) => {
                     const ids = id.split('.');
@@ -443,13 +483,10 @@ export default {
                   .filter(Boolean);
 
                 if (fieldAry.length > 0) {
-                  fieldAry.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  fieldAry.push(handleCustomColumnSlot(data, slot));
                 }
+
+                handleTableColumnChange(fieldAry, data.fieldAry, slot);
                 data.fieldAry = fieldAry;
               }
             }
@@ -457,7 +494,7 @@ export default {
           {
             type: 'array',
             ifVisible() {
-              return !!data.fieldAry;
+              return !!data.fieldAry && data.table?.renderType !== TableRenderType.SLOT;
             },
             options: {
               editable: false,
@@ -478,13 +515,9 @@ export default {
               set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
                 const curFields = val;
                 if (curFields.length > 0) {
-                  curFields.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  curFields.push(handleCustomColumnSlot(data, slot));
                 }
+                handleTableColumnChange(curFields, data.fieldAry, slot);
                 data.fieldAry = curFields;
               }
             }
@@ -492,6 +525,9 @@ export default {
           {
             title: '开启分页',
             type: 'Switch',
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.pagination.show;
@@ -504,6 +540,9 @@ export default {
           {
             title: '隐藏操作区',
             type: 'Switch',
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.table?.operate?.disabled;
@@ -754,6 +793,29 @@ export default {
                       DefaultComponentNameMap[field.bizType] || ComponentName.INPUT);
                   field.form.disabledForEdit = !value.includes(field.id);
                 });
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '删除操作',
+        items: [
+          {
+            title: '隐藏删除操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.delete?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.delete) {
+                  data.operate.delete = {};
+                }
+                data.operate.delete.disabled = value;
               }
             }
           }
@@ -1504,7 +1566,10 @@ export default {
       ];
     }
   },
-  'th.ant-table-cell:not(:empty)': ({ data, focusArea, ...args }: EditorResult<Data>, cate1) => {
+  '.domain-default-table th.ant-table-cell:not(:empty)': (
+    { data, focusArea, ...args }: EditorResult<Data>,
+    cate1
+  ) => {
     if (!data.fieldAry?.length) {
       return;
     }
@@ -1566,10 +1631,39 @@ export default {
         }
       },
       {
+        title: '渲染方式',
+        type: 'Select',
+        options: [
+          { label: '普通文字', value: TableRenderType.NORMAL },
+          { label: '自定义插槽', value: TableRenderType.SLOT }
+        ],
+        ifVisible() {
+          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+        },
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.tableInfo?.renderType || TableRenderType.NORMAL;
+          },
+          set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.renderType = value;
+
+            handleColumnSlot(value, { field, slot });
+          }
+        }
+      },
+      {
         title: '内容超出省略',
         type: 'Switch',
         ifVisible() {
-          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+          const tableInfo = field.tableInfo;
+
+          return (
+            field.bizType !== FieldBizType.FRONT_CUSTOM &&
+            (!tableInfo?.renderType || tableInfo?.renderType === TableRenderType.NORMAL)
+          );
         },
         value: {
           get({}: EditorResult<Data>) {
@@ -1708,5 +1802,116 @@ export default {
         ]
       }
     ];
+  },
+  '[data-delete-button]': ({ data }: EditorResult<Data>, cate1) => {
+    cate1.title = '常规';
+    cate1.items = [
+      {
+        title: '按钮文案',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.operate?.delete?.title ?? '删除';
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.delete) {
+              data.operate.delete = {};
+            }
+
+            data.operate.delete.title = value;
+          }
+        }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.delete) {
+                  data.operate.delete = {};
+                }
+                data.operate.delete.disabled = true;
+              }
+            }
+          }
+        ]
+      }
+    ];
+  }
+};
+
+/** 列变更时删除不需要的插槽 */
+const handleTableColumnChange = (newFields, originFields, slot) => {
+  originFields.forEach((f) => {
+    if (
+      !newFields.find((nf) => nf.id === f.id || nf.name === f.name) &&
+      slot.get(f.tableInfo.slotId)
+    ) {
+      slot.remove(f.tableInfo.slotId);
+      f.tableInfo.slotId = '';
+    }
+  });
+};
+
+const handleCustomColumnSlot = (data, slot) => {
+  let field = data.fieldAry.find((f) => f.bizType === FieldBizType.FRONT_CUSTOM);
+
+  if (!field) {
+    field = {
+      name: '操作',
+      tableInfo: { label: '操作', width: '124px', align: 'left' },
+      bizType: FieldBizType.FRONT_CUSTOM,
+      id: 'operate'
+    };
+
+    handleColumnSlot(TableRenderType.SLOT, { field, slot });
+  } else if (!field.tableInfo.slotId || !slot.get(field.tableInfo.slotId)) {
+    handleColumnSlot(TableRenderType.SLOT, { field, slot });
+  }
+
+  return field;
+};
+
+/** 处理列渲染 */
+const handleColumnSlot = (renderType, params) => {
+  const { field, slot } = params;
+
+  if (renderType === TableRenderType.SLOT) {
+    const slotId = uuid();
+    field.tableInfo.slotId = slotId;
+    slot.add({
+      id: slotId,
+      title: `自定义${
+        field.tableInfo?.label ??
+        `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`
+      }列`,
+      type: 'scope'
+    });
+
+    slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', { type: 'object' });
+    slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', { type: 'number' });
+  } else {
+    if (field.tableInfo.slotId) {
+      slot.get(field.tableInfo.slotId) && slot.remove(field.tableInfo.slotId);
+      field.tableInfo.slotId = '';
+    }
   }
 };

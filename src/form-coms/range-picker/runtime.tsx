@@ -27,6 +27,8 @@ export interface Data {
     placeholder: undefined | [string, string];
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
+  dateType: 'array' | 'string';
+  splitChart: string;
 }
 
 export const DateType = {
@@ -172,6 +174,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
             transValue = value.map((item, index) => {
               return transCalculation(item, data.contentType, props, index);
             });
+            if (data.dateType !== 'array') {
+              transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+            }
           }
           outputs[OutputIds.OnInitial](transValue);
         }
@@ -199,6 +204,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         transValue = value.map((item, index) => {
           return transCalculation(item, data.contentType, props, index);
         });
+        if (data.dateType !== 'array') {
+          transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+        }
       }
       outputRels['returnValue'](transValue);
     });
@@ -230,6 +238,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       transValue = value.map((item, index) => {
         return transCalculation(item, data.contentType, props, index);
       });
+      if (data.dateType !== 'array') {
+        transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+      }
     }
     onChangeForFc(parentSlot, { id: id, name: name, value: transValue });
     outputs['onChange'](transValue);

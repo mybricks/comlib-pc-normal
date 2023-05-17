@@ -3,6 +3,8 @@
   "fieldAry": [],
   "table": {
     "size": "middle",
+    "renderType": "normal",
+    "slotId": "",
     "operate": {
       "disabled": false
     }
@@ -15,6 +17,10 @@
     "edit": {
       "disabled": false,
       "title": "编辑"
+    },
+    "delete": {
+      "disabled": false,
+      "title": "删除"
     }
   },
   "domainAry": [],
