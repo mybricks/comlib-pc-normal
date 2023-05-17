@@ -4,6 +4,17 @@ import { InputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
 import { getDefaultDataSchema, Schemas, setCol, setDataSchema } from '../../schema';
 import { getColumnItem, getColumnsSchema } from '../../utils';
+import createDataFormatEditor from '../../../utils/dataFormatter';
+
+const formatCode = `
+/**
+ * 当前列数据： data.value 
+ * 当前序号： data.index
+ * 当前行数据: data.rowRecord
+ **/
+(data) => {
+  return data.value
+}`
 
 const BaseEditor = {
   title: '基础配置',
@@ -136,6 +147,36 @@ const BaseEditor = {
         }
       }
     },
+
+    createDataFormatEditor({
+      title: '格式转化',
+      formatters: [{
+        formatter: 'KEYMAP'
+      }, {
+        formatter: 'TIMETEMPLATE',
+        defaultValue: 'YYYY-MM-DD HH:mm:ss'
+      }, {
+        formatter: 'CUSTOMSCRIPT',
+        defaultValue: formatCode
+      }, {
+        formatter: 'EXPRESSION',
+        description: '表达式输出内容为字符串，在花括号内可以引用变量并进行简单处理',
+        options: {
+          placeholder: '如：当前是第{data.index+1}行，列数据为{data.value}, 行数据为{data.rowRecord}',
+        }
+      }],
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.formatData
+        },
+        set({ data, focusArea }, value) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'formatData', value);
+        }
+      }
+    }),
     {
       title: '列数据类型',
       type: '_schema',
