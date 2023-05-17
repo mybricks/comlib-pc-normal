@@ -1,3 +1,4 @@
+import { TformattersValue } from 'src/utils/dataFormatter/types';
 import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
@@ -75,6 +76,8 @@ export interface IColumn {
 
   keepDataIndex?: boolean;
   dataSchema?: any;
+
+  formatData?: TformattersValue
 }
 
 export enum SizeEnum {

@@ -395,7 +395,7 @@ export default function (props: RuntimeParams<Data>) {
       filterMap,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} slots={props.slots} />
+          <ColumnRender {...columnRenderProps} env={env} slots={props.slots} />
         </ErrorBoundary>
       )
     });
