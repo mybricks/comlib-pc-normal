@@ -5,32 +5,6 @@ import { getItemSchema } from '../schema'
 
 export const actionsEditor = (data: Data, output) => {
 
-  if (!data.actions) {
-    data.actions = {
-      visible: true,
-      widthOption: 'span',
-      span: 24,
-      width: 400,
-      align: 'left',
-      inlinePadding: [0, 0, 0, 0],
-      items: [
-        {
-          title: '添加一项',
-          isDefault: true,
-          visible: true,
-          outputId: 'add',
-          key: 'add',
-        },
-        {
-          title: '删除',
-          isDefault: true,
-          visible: true,
-          outputId: 'remove',
-          key: 'remove',
-        },
-      ],
-    }
-  }
   const { actions } = data;
 
   return [

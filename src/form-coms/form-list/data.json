@@ -28,7 +28,7 @@
     ],
     "items": [
       {
-        "title": "添加一项",
+        "title": "添加",
         "isDefault": true,
         "visible": true,
         "outputId": "add",
