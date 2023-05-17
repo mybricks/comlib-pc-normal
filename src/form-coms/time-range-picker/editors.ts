@@ -70,6 +70,7 @@ export default {
                 { label: '时:分:秒', value: 'HH:mm:ss' },
                 { label: '时:分', value: 'HH:mm' },
                 { label: '时', value: 'HH' },
+                { label: "时间戳", value: "timeStamp" },
                 { label: '自定义', value: 'custom' }
               ]
             },

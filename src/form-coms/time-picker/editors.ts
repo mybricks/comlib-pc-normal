@@ -41,16 +41,17 @@ export default {
         ]
       },
       {
-        title: "格式化",
+        title: "输出数据处理",
         items: [
           {
-            title: '格式化模版',
+            title: '时间格式模版',
             type: 'select',
             options: {
               options: [
                 { label: '时:分:秒', value: 'HH:mm:ss' },
                 { label: '时:分', value: 'HH:mm' },
                 { label: '时', value: 'HH' },
+                { label: "时间戳", value: "timeStamp" },
                 { label: '自定义', value: 'custom' },
               ]
             },

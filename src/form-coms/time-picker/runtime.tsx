@@ -68,7 +68,7 @@ export default function ({
         setValue: setTimestamp,
         setInitialValue: setTimestamp,
         returnValue(output) {
-          output(getValue());
+          output(getValue(value));
         },
         resetValue() {
           setValue(void 0);
@@ -85,16 +85,25 @@ export default function ({
     [value]
   );
 
-  const getValue = useCallback(() => value?.valueOf(), [value]);
+  const getValue = useCallback(
+    (value) => {
+      if (format === 'timeStamp') return value.endOf('second').valueOf();
+      if (format === 'custom') return value.format(customFormat);
+      return value.format(format);
+    },
+    [format, customFormat]
+  );
 
   const onChange = (time, timeString: string) => {
     setValue(time);
-    onChangeForFc(parentSlot, { id, name, value: time.valueOf() });
-    outputs['onChange'](time.valueOf());
+    const value = getValue(time);
+    onChangeForFc(parentSlot, { id, name, value });
+    outputs['onChange'](value);
   };
 
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;
+    if (format === 'timeStamp') return 'HH:mm:ss';
     return format;
   }, [format, customFormat]);
 
