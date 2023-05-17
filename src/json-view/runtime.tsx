@@ -3,7 +3,7 @@ import { Alert, Tooltip, Tree, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import { typeCheck, uuid } from '../utils';
-import { Data, dataSourceTypeMap, InputIds, OutputIds } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, TypeEnum } from './constant';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
@@ -173,6 +173,10 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   return (
     <Tree
       treeData={treeData}
+      rootStyle={{
+        backgroundColor: data.colors[TypeEnum.BackgroundColor]
+      }}
+      className={css.root}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
       defaultExpandedKeys={expandedKeys}
