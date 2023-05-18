@@ -48,5 +48,6 @@ export default function ({
   if (!data.colors[TypeEnum.NodeHoverBackgroundColor]) {
     data.colors[TypeEnum.NodeHoverBackgroundColor] = 'rgba(245,245,245,1)';
   }
+
   return true;
 }

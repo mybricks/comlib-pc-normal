@@ -145,7 +145,12 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
     return treeData;
   };
-
+  useEffect(() => {
+    document.body.style.setProperty(
+      '--json--view--node-hover-bgcolor',
+      data.colors[TypeEnum.NodeHoverBackgroundColor]
+    );
+  }, [data.colors[TypeEnum.NodeHoverBackgroundColor]]);
   const treeData = [
     {
       title: getTitle({
