@@ -7,7 +7,9 @@ export enum TypeEnum {
   Boolean = 'boolean',
   Null = 'null',
   Undefined = 'undefined',
-  Function = 'function'
+  Function = 'function',
+  BackgroundColor = 'backgroundColor',
+  NodeHoverBackgroundColor = 'nodeHoverBackgroundColor',
 }
 
 /**
