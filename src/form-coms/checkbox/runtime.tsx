@@ -52,7 +52,7 @@ export default function Runtime({
         if (val !== undefined && !Array.isArray(val)) {
           logger.error(`多选框的值应为数组格式`);
         } else {
-          data.value = val;
+          changeValue(val);
           outputs[OutputIds.OnInitial](val);
         }
       });

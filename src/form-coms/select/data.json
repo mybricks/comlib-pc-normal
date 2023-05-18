@@ -8,5 +8,6 @@
     "filterOption": true,
     "optionFilterProp": "label"
   },
+  "staticOptions": [],
   "dropdownSearchOption": false
 }
