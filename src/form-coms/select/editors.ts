@@ -40,6 +40,13 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
+  '@parentUpdated'({ id, data, parent }, { schema }) {
+    if (schema === 'mybricks.normal-pc.form-container/form-item') {
+      data.isFormItem = true
+    } else {
+      data.isFormItem = false
+    }
+  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
     catalog[1].title = '高级';
@@ -264,7 +271,11 @@ export default {
             if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
               data.value = initValue;
             } else {
-              data.value = initValue[0];
+              if (data.value) {
+                data.value = initValue.find(item => item !== data.value);
+              } else {
+                data.value = initValue[0];
+              }
               // 临时:使用tempOptions存储配置项的prev
               tempOptions = options;
               const formItemVal: any = data.value;

@@ -13,6 +13,7 @@ export interface Data {
         filterOption: boolean;
         optionFilterProp: string;
     };
+    isFormItem?: boolean;
     rules: any[];
     value?: number | string | number[] | string[];
     staticOptions: Option[];

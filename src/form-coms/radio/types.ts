@@ -5,6 +5,7 @@ export interface Data {
     disabled: boolean;
     options: any[];
   };
+  isFormItem?: boolean;
   rules: any[];
   value: number | string | undefined;
   staticOptions: Option[];

@@ -7,6 +7,7 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
+  isFormItem?: boolean;
   options: any[];
   isChoose: boolean;
   choose: string;

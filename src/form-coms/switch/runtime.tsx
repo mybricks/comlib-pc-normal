@@ -7,6 +7,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 export interface Data {
   value: boolean | undefined;
   rules: any[];
+  isFormItem?: boolean;
   config: {
     allowClear: boolean;
     disabled: boolean;
