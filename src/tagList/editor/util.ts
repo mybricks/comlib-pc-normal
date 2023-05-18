@@ -5,14 +5,14 @@ export const getTagItem = (data, focusArea) => {
   return data.tags[index];
 };
 
-export const createTag = () => {
+export const createTag = (content='新标签') => {
   return {
     key: uuid(),
-    content: '新标签',
+    content,
     color: '#00000005',
     textColor: '#000000e0',
     borderColor: '#d9d9d9'
   };
 };
 
-export { arrayMove };
+export { arrayMove, uuid };

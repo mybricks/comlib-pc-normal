@@ -1,6 +1,36 @@
 import { Data, TagSize } from '../types';
-import TagEditor, { TagSchema } from './tag';
+import TagEditor from './tag';
 import { createTag } from './util';
+
+const TagSchema = {
+  type: 'object',
+  properties: {
+    icon: {
+      title: '图标',
+      type: 'string'
+    },
+    content: {
+      title: '标签内容',
+      type: 'string'
+    },
+    color: {
+      title: '背景颜色',
+      type: 'string'
+    },
+    textColor: {
+      title: '文本颜色',
+      type: 'string'
+    },
+    borderColor: {
+      title: '边框颜色',
+      type: 'string'
+    },
+    closable: {
+      title: '是否可关闭',
+      type: 'boolean'
+    }
+  }
+};
 export default {
   ':root'({ data }: EditorResult<Data>, ...cate) {
     cate[0].title = '配置';
@@ -190,15 +220,85 @@ export default {
         }
       },
       {
-        title: '动态新增',
+        title: '可新增',
         type: 'switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.checkable;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
-            return !!data.canInsert;
+            return !!data.appendAble;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.canInsert = val;
+          set({ data, output }: EditorResult<Data>, val: boolean) {
+            data.appendAble = val;
+            if (val) {
+              output.add('onChange', '标签改变时', {
+                type: 'object',
+                properties: {
+                  changed: TagSchema,
+                  allTag: {
+                    type: 'array',
+                    items: TagSchema
+                  }
+                }
+              });
+            } else if (output.get('onChange')) {
+              output.remove('onChange');
+            }
           }
+        }
+      },
+      {
+        title: '标签改变时',
+        type: '_Event',
+        ifVisible({}: EditorResult<Data>) {
+          return data.appendAble;
+        },
+        options: () => {
+          return {
+            outputId: 'onChange'
+          };
+        }
+      },
+      {
+        title: '可选择',
+        type: 'switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.appendAble;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.checkable;
+          },
+          set({ data, output }: EditorResult<Data>, val: boolean) {
+            data.checkable = val;
+            if (val) {
+              output.add('onCheck', '选中状态改变时', {
+                type: 'object',
+                properties: {
+                  changed: TagSchema,
+                  allTag: {
+                    type: 'array',
+                    items: TagSchema
+                  }
+                }
+              });
+            } else if (output.get('onCheck')) {
+              output.remove('onCheck');
+            }
+          }
+        }
+      },
+      {
+        title: '选中状态改变时',
+        type: '_Event',
+        ifVisible({}: EditorResult<Data>) {
+          return data.checkable;
+        },
+        options: () => {
+          return {
+            outputId: 'onCheck'
+          };
         }
       }
     ];
