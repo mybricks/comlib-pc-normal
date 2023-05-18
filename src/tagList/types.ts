@@ -15,5 +15,11 @@ export interface Tag extends TagProps {
 export interface Data extends SpaceProps {
   tags: Array<Tag>;
   dynamic?: boolean;
+  canInsert?: boolean;
   tagSize: TagSize;
+  tagStyle: Partial<{
+    color: string;
+    borderColor: string;
+    textColor: string;
+  }>;
 }
