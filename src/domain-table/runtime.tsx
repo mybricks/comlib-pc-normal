@@ -11,16 +11,13 @@ import {
   Modal,
   Radio,
   Row,
-  Select,
-  Table
+  Select
 } from 'antd';
 import moment from 'moment';
-import { ColumnsType } from 'antd/es/table';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from './components/debouce-select';
 import UserProfile from './components/user-profile';
-import RenderColumn from './components/render-column';
 import { RuleMap } from './rule';
 import { ajax, safeParse, safeStringify } from './util';
 import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
@@ -67,7 +64,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
   const handleData = useCallback(
     (query, pageInfo?: Record<string, unknown>) => {
       setLoading(true);
-      const pageParams = pageInfo || { pageIndex: pageNum, pageSize: edit ? 5 : pageSize };
+      const pageParams = pageInfo || { pageNum, pageSize: edit ? 5 : pageSize };
       pageParams.pagination = data.pagination?.show;
       const primaryField = data.entity?.fieldAry.find((field) => field.isPrimaryKey);
       const orderFields = data.fieldAry

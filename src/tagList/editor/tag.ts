@@ -1,44 +1,12 @@
 import { Data, Tag } from '../types';
 import { getTagItem, arrayMove } from './util';
-export const TagSchema = {
-  type: 'object',
-  properties: {
-    icon: {
-      title: '图标',
-      type: 'string'
-    },
-    content: {
-      title: '标签内容',
-      type: 'string'
-    },
-    color: {
-      title: '背景颜色',
-      type: 'string'
-    },
-    textColor: {
-      title: '文本颜色',
-      type: 'string'
-    },
-    borderColor: {
-      title: '边框颜色',
-      type: 'string'
-    },
-    checkable: {
-      title: '是否可选',
-      type: 'boolean'
-    },
-    closable: {
-      title: '是否可关闭',
-      type: 'boolean'
-    }
-  }
-};
 
 export default {
   '.ant-space-item': {
     title: "标签",
     items: ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2) => {
       if (!focusArea) return;
+      if(data.appendAble && focusArea.index===data.tags.length) return;
       const tag: Tag = getTagItem(data, focusArea);
       cate1.title = '基础配置';
       cate1.items = [
@@ -119,9 +87,6 @@ export default {
               title: '向前移动',
               type: 'button',
               value: {
-                get({ focusArea }: EditorResult<Data>) {
-                  return focusArea.index;
-                },
                 set({ data, focusArea }: EditorResult<Data>) {
                   const { index } = focusArea;
                   if (index === 0) return;
@@ -133,9 +98,6 @@ export default {
               title: '向后移动',
               type: 'button',
               value: {
-                get({ focusArea }: EditorResult<Data>) {
-                  return focusArea.index;
-                },
                 set({ data }: EditorResult<Data>) {
                   const { index } = focusArea;
                   if (index === data.tags.length - 1) return;
@@ -150,9 +112,6 @@ export default {
                 return data.tags.length > 1;
               },
               value: {
-                get({ focusArea }: EditorResult<Data>) {
-                  return focusArea.index;
-                },
                 set({ data, focusArea }: EditorResult<Data>, val: string) {
                   const { index } = focusArea;
                   data.tags.splice(index, 1);
@@ -160,75 +119,6 @@ export default {
               }
             }
           ]
-        }
-      ];
-      cate2.title = '高级配置';
-      cate2.items = [
-        {
-          title: '可选择',
-          type: 'switch',
-          description: '标签选择功能与关闭功能互斥',
-          ifVisible({}: EditorResult<Data>) {
-            return !tag.closable;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return !!tag.checkable;
-            },
-            set({ output }: EditorResult<Data>, val: boolean) {
-              tag.checkable = val;
-              if (val) {
-                output.add('onChange', '选中状态改变时', { type: 'boolean' });
-              } else if (output.get('onChange')) {
-                output.remove('onChange');
-              }
-            }
-          }
-        },
-        {
-          title: '选中状态改变',
-          type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
-            return tag.checkable;
-          },
-          options: () => {
-            return {
-              outputId: 'onChange'
-            };
-          }
-        },
-        {
-          title: '可关闭',
-          type: 'switch',
-          description: '标签关闭功能与选择功能互斥',
-          ifVisible({}: EditorResult<Data>) {
-            return !tag.checkable;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return !!tag.closable;
-            },
-            set({ output }: EditorResult<Data>, val: boolean) {
-              tag.closable = val;
-              if (val) {
-                output.add('onClose', '标签关闭时', TagSchema);
-              } else if (output.get('onClose')) {
-                output.remove('onClose');
-              }
-            }
-          }
-        },
-        {
-          title: '标签关闭时',
-          type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
-            return tag.closable;
-          },
-          options: () => {
-            return {
-              outputId: 'onClose'
-            };
-          }
         }
       ];
     }

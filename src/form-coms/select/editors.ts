@@ -40,13 +40,6 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      data.isFormItem = true
-    } else {
-      data.isFormItem = false
-    }
-  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
     catalog[1].title = '高级';
@@ -62,6 +55,19 @@ export default {
           },
           set({ data }, value: string) {
             data.config.placeholder = value;
+          }
+        }
+      },
+      {
+        title: '选择框最大高度',
+        type: 'Text',
+        description: '选择框的最大高度，超出后垂直滚动。不设置或设置为0，表示适应内容高度。默认单位为像素（px）',
+        value: {
+          get({ data }) {
+            return data.maxHeight;
+          },
+          set({ data }, value: string) {
+            data.maxHeight = value;
           }
         }
       },
