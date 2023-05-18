@@ -10,9 +10,6 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
-  "target": {
-    "toReact": "./toReact.ts"
-  },
   "inputs": [
     {
       "id": "setValue",
@@ -172,6 +169,7 @@
     {
       "id": "formItems",
       "title": "列表项",
+      "schema": "mybricks.normal-pc.form-container/form-item",
       "type": "scope",
       "inputs": [
         {
