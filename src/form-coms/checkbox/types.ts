@@ -5,6 +5,7 @@ export interface Data {
         options: CheckboxOptionType[];
         disabled: boolean;
     };
+    isFormItem?: boolean;
     rules: any[];
     value?: any[];
     checkAll: boolean;

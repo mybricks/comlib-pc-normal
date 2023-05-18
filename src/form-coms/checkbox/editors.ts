@@ -35,6 +35,13 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
+  '@parentUpdated'({ id, data, parent }, { schema }) {
+    if (schema === 'mybricks.normal-pc.form-container/form-item') {
+      data.isFormItem = true
+    } else {
+      data.isFormItem = false
+    }
+  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
