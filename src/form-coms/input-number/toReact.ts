@@ -6,18 +6,18 @@ export default function ({ data }) {
     }
   })
 
-  let str = `<div>
-              <InputNumber ${configStr} />
-            </div>`
+  let str = `<InputNumber 
+                style={{ width: '100%' }}
+              ${configStr} />`
 
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['InputNumber']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],

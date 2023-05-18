@@ -117,6 +117,8 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
+    // 对话框关闭后的回调
+    outputs[OutputIds.AfterClose]();
   }, []);
 
   // 【老】关闭对话框
@@ -150,7 +152,6 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
-          maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -207,7 +208,6 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
-  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
 }
@@ -217,8 +217,7 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env,
-  maskClosable
+  env
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -229,6 +228,7 @@ const RuntimeRender = ({
     centered,
     useFooter,
     cancelText,
+    maskClosable,
     width,
     footerBtns,
     footerLayout
@@ -248,12 +248,12 @@ const RuntimeRender = ({
             showText,
             icon,
             useIcon,
-            disabled,
-            hidden,
             visible = true,
-            location,
-            dynamicHidden,
             dynamicDisabled,
+            dynamicHidden,
+            location,
+            hidden,
+            disabled,
             isConnected,
             loading,
             useBtnLoading,
@@ -285,7 +285,7 @@ const RuntimeRender = ({
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}

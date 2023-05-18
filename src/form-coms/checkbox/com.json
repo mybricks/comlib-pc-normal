@@ -1,15 +1,19 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.0.4",
+  "version": "1.0.12",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_bntrt5.c5fcf109dc97a785.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -103,14 +107,14 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "array"
       }
     },
     {
       "id": "onChange",
-      "title": "值变化",
+      "title": "值更新",
       "schema": {
         "type": "array"
       }

@@ -7,7 +7,10 @@ export const InputIds = {
   SetHidden: 'setHidden',
   SetVisible: 'setVisible',
 
-  SetBtnText: 'setBtnText'
+  SetBtnText: 'setBtnText',
+
+  SetBtnOpenLoading: 'setBtnOpenLoading',
+  SetBtnCloseLoading: 'setBtnCloseLoading',
 };
 
 export const OutputIds = {
@@ -23,5 +26,8 @@ export const Schemas = {
   },
   String: {
     type: 'string'
+  },
+  Number: {
+    type: 'number'
   }
 };

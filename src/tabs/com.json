@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "选项卡切换组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,27 +9,33 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editor/index.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "previous",
       "title": "上一页",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "标签页上一页"
     },
     {
       "id": "next",
       "title": "下一页",
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "标签页下一页"
     },
     {
       "id": "active",
       "title": "激活tab项",
       "schema": {
-        "type": "string"
-      }
+        "type": "number"
+      },
+      "desc": "标签页下标，从0开始计数"
     },
     {
       "id": "outActiveTab",
@@ -39,7 +45,8 @@
       ],
       "schema": {
         "type": "any"
-      }
+      },
+      "desc": "获取当前显示的标签页信息"
     }
   ],
   "outputs": [
@@ -56,6 +63,14 @@
           "name": {
             "title": "标签页标题",
             "type": "string"
+          },
+          "key": {
+            "title": "标签页key",
+            "type": "string"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number"
           }
         }
       }
@@ -74,23 +89,27 @@
             "title": "标签页标题",
             "type": "string"
           },
-          "permissionKey": {
-            "title": "标签页权限key",
+          "key": {
+            "title": "标签页key",
             "type": "string"
+          },
+          "index": {
+            "title": "下标",
+            "type": "number"
           }
         }
       }
     },
     {
       "id": "tab0_into",
-      "title": "tab0显示",
+      "title": "标签页1显示",
       "schema": {
         "type": "any"
       }
     },
     {
       "id": "tab0_leave",
-      "title": "tab0隐藏",
+      "title": "标签页1隐藏",
       "schema": {
         "type": "any"
       }

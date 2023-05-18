@@ -1,7 +1,7 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "步骤条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,10 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editor",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "nextStep",
@@ -33,12 +37,24 @@
     },
     {
       "id": "getIndex",
-      "title": "获取当前步骤（从0开始）",
+      "title": "获取当前步骤",
+      "desc": "步骤从0开始计数",
       "rels": [
         "getIndex"
       ],
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "setHideSteps",
+      "title": "设置隐藏步骤",
+      "desc": "步骤从0开始计数",
+      "schema": {
+        "type": "array",
+        "items": { 
+          "type": "number"
+        }
       }
     }
   ],
@@ -74,6 +90,13 @@
     {
       "id": "step0_leave",
       "title": "步骤1隐藏",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "step0_click",
+      "title": "步骤1点击时",
       "schema": {
         "type": "any"
       }

@@ -58,7 +58,7 @@ export default {
       },
       // 选项配置
       {
-        title: "静态选项配置",
+        title: '静态选项配置',
         type: 'array',
         options: {
           getTitle: ({ label, checked }) => {
@@ -99,7 +99,7 @@ export default {
               options: ['text', 'number', 'boolean'],
               description: '选项的唯一标识，可以修改为有意义的值',
               value: 'value'
-            },
+            }
           ]
         },
         value: {
@@ -108,32 +108,104 @@ export default {
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
-            tempOptions.forEach(oldOption => {
-              const newOption = options.find(option => option._id === oldOption._id);
-              const currentOption = data.staticOptions.find(option => option._id === oldOption._id);
+            let otherChanged = true;
+            tempOptions.forEach((oldOption) => {
+              const newOption = options.find((option) => option._id === oldOption._id);
+              const currentOption = data.staticOptions.find(
+                (option) => option._id === oldOption._id
+              );
               if (newOption?.checked === currentOption?.checked) return;
-              // 设置了选项的默认选中
+              // 1. 设置了选项的默认选中
               if (newOption?.checked && !oldOption?.checked) {
+                otherChanged = false;
                 data.value = newOption.value;
               }
-              // 取消了选项的默认选中
+              // 2. 取消了选项的默认选中
               if (!newOption?.checked && oldOption?.checked) {
+                otherChanged = false;
                 data.value = undefined;
               }
             });
+            // 3. 非默认选中引起的set
+            if (otherChanged) {
+              options.forEach((option) => {
+                if (option.checked) data.value = option.value;
+              });
+            }
             // 临时:使用tempOptions存储配置项的prev
             tempOptions = options;
             const formItemVal = data.value;
             // 更新选项
-            options = options.map(option => {
+            options = options.map((option) => {
               const checked = formItemVal !== undefined && option.value === formItemVal;
               return {
                 ...option,
                 checked
-              }
+              };
             });
             data.staticOptions = options;
             data.config.options = options;
+          }
+        }
+      },
+      {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
+          }
+        }
+      },
+      {
+        title: '使用按钮样式',
+        description: '是否使用按钮样式',
+        type: 'switch',
+        value: {
+          get({ data }) {
+            return data.enableButtonStyle;
+          },
+          set({ data }, value: boolean) {
+            data.enableButtonStyle = value;
+          }
+        }
+      },
+      {
+        title: '按钮选中后样式',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableButtonStyle;
+        },
+        options: [
+          {
+            value: 'outline',
+            label: '描边'
+          },
+          {
+            value: 'solid',
+            label: '填色'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.buttonStyle || 'outline';
+          },
+          set({ data }, value: string) {
+            data.buttonStyle = value;
           }
         }
       },
@@ -206,21 +278,21 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
             }
           },
           {
-            title: '值发生改变',
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'
             }
-          },
+          }
         ]
       }
     ];
   }
-}
+};

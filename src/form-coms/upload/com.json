@@ -3,13 +3,17 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.3",
+  "version": "1.0.11",
   "description": "上传",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -42,7 +46,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置上传表单项的初始值，并触发初始化事件输出",
+      "desc": "设置上传表单项的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -131,12 +135,27 @@
           }
         }
       }
+    },
+    {
+      "id": "remove",
+      "title": "删除文件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "array",
         "items": {
@@ -211,6 +230,39 @@
       "schema": {
         "type": "object"
       }
+    },
+    {
+      "id": "remove",
+      "title": "删除文件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
     }
   ],
   "schema": [

@@ -1,9 +1,21 @@
-.titleWrapper {
-  .count {
-    color: rgb(165, 159, 133);
-    font-style: italic;
-    font-family: monospace;
-    margin: 0px 0px 0px 6px;
-    cursor: default;
+.root {
+  .titleWrapper {
+    .count {
+      color: rgb(165, 159, 133);
+      font-style: italic;
+      font-family: monospace;
+      margin: 0px 0px 0px 6px;
+      cursor: default;
+    }
+  }
+
+  :global {
+    .ant-tree-switcher {
+      background-color: transparent;
+    }
+
+    .ant-tree-node-content-wrapper:hover {
+      background-color: var(--json--view--node-hover-bgcolor, '#f5f5f5');
+    }
   }
 }

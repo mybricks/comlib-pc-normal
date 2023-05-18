@@ -2,7 +2,7 @@ import React from 'react';
 import { Data } from '../types';
 import styles from './index.less';
 export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }, ref) => {
-  const { src, controls, autoplay, poster, loop } = data;
+  const { src, controls, autoplay, poster, loop, fit, muted, style } = data;
   const handleClick = () => {
     if (controls) return;
     if (ref.current.paused) {
@@ -21,8 +21,10 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
       src={src}
       ref={ref}
       loop={loop}
+      style={{ ...style, objectFit: fit }}
       preload="auto"
       crossOrigin="anonymous"
+      muted={!!muted}
       onClick={handleClick}
     />
   );

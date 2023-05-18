@@ -3,13 +3,17 @@
   "namespace": "mybricks.normal-pc.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "开关选择器",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_8969hz.276cbe33b62e0f79.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -22,7 +26,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置开关的初始值，并触发初始化事件输出",
+      "desc": "设置开关的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "boolean"
       }
@@ -75,14 +79,14 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "boolean"
       }
     },
     {
       "id": "onChange",
-      "title": "数据发生改变",
+      "title": "值更新",
       "schema": {
         "type": "boolean"
       }

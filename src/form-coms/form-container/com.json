@@ -3,13 +3,15 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.1.10",
+  "version": "1.2.14",
   "description": "表单容器",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
@@ -44,6 +46,17 @@
       "desc": "触发表单进行校验并且提交数据"
     },
     {
+      "id": "getFieldsValue",
+      "title": "获取表单数据",
+      "rels": [
+        "returnValues"
+      ],
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取表单数据（不会触发校验）"
+    },
+    {
       "id": "submitAndMerge",
       "title": "提交表单(合并输入项)",
       "rels": [
@@ -64,6 +77,15 @@
         "type": "any"
       },
       "desc": "触发表单所有字段进行重置"
+    },
+    {
+      "id": "setFormItemsProps",
+      "title": "设置表单项配置",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "desc": "动态配置表单项标题、提示语、必填样式等"
     }
   ],
   "outputs": [
@@ -84,6 +106,23 @@
       }
     },
     {
+      "id": "onValuesChange",
+      "title": "字段值更新输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "changedValues": {
+            "type": "object",
+            "properties": {}
+          },
+          "allValues": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      }
+    },
+    {
       "id": "onResetFinish",
       "title": "重置完成",
       "schema": {
@@ -100,6 +139,14 @@
     {
       "id": "returnValue",
       "title": "值输出",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "returnValues",
+      "title": "表单数据输出",
       "schema": {
         "type": "object",
         "properties": {}
@@ -177,6 +224,23 @@
               "id": {
                 "type": "string",
                 "title": "组件ID"
+              }
+            }
+          }
+        },
+        {
+          "id": "onChange",
+          "title": "表单项值变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "组件ID"
+              },
+              "value": {
+                "type": "any",
+                "title": "组件值"
               }
             }
           }

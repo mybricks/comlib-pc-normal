@@ -1,25 +1,43 @@
-export default function ({ data }) {
-  let configStr = ''
-  Object.keys(data.config).forEach(key => {
-    if (typeof data.config[key] !== 'undefined' && data.config[key] !== '') {
-      configStr +=  typeof data.config[key] === 'boolean' || typeof data.config[key] === 'number' ? `${key}={${data.config[key]}}` : `${key}="${data.config[key]}"` + ' '
-    }
-  })
+import { InputProps } from "antd";
+import { getPropsFromObject } from "../../utils/toReact";
+import { Data } from "./runtime";
 
-  let str = `<Input type="text" ${configStr} />`
+export default function ({ data }: { data: Data }) {
+  const { value } = data;
+  const defaultInputProps: InputProps = {
+    type: 'text',
+    bordered: true,
+    disabled: false,
+    showCount: false,
+    maxLength: -1,
+    value: '',
+    addonBefore: '',
+    addonAfter: ''
+  };
+  const inputProps: InputProps = {
+    type: "text",
+    ...data.config,
+    value,
+    // onChange:changeValue,
+    // onBlur,
+    // onPressEnter,
+  };
+
+
+  let str = `<Input ${getPropsFromObject(inputProps, defaultInputProps)} />`
 
   return {
     imports: [
       {
-        form: 'antd',
+        from: 'antd',
         coms: ['Input']
       },
       {
-        form: 'antd/dist/antd.css',
+        from: 'antd/dist/antd.css',
         coms: []
       }
     ],
-  	jsx: str,
+    jsx: str,
     style: '',
     js: ''
   }

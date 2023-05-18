@@ -1,5 +1,6 @@
 import { Data, LabelWidthType } from '../types'
 import { uuid } from '../../../utils'
+import visibleOpt from '../../../components/editorRender/visibleOpt'
 
 export const actionsEditor = (data: Data, output) => {
   return {
@@ -18,24 +19,6 @@ export const actionsEditor = (data: Data, output) => {
         }
       },
       {
-        title: '显示提交按钮',
-        type: 'Switch',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.visible;
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.actions.items.find(item => item.key === 'submit')?.visible
-          },
-          set({ data }: EditorResult<Data>, val) {
-            const submitItem = data.actions.items.find(item => item.key === 'submit')
-            if (submitItem) {
-              submitItem.visible = val
-            }
-          }
-        }
-      },
-      {
         title: '宽度模式',
         type: 'Select',
         options: [
@@ -46,8 +29,15 @@ export const actionsEditor = (data: Data, output) => {
           {
             label: '固定宽度(px)',
             value: 'px'
+          },
+          {
+            label: '填充剩余宽度',
+            value: 'flexFull'
           }
         ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.layout !== 'inline'
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.actions.widthOption;
@@ -69,7 +59,7 @@ export const actionsEditor = (data: Data, output) => {
           },
         ],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption !== 'px';
+          return data.actions.widthOption === 'span' && data.config.layout !== 'inline';
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -87,7 +77,7 @@ export const actionsEditor = (data: Data, output) => {
           type: 'number'
         },
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption === 'px';
+          return data.actions.widthOption === 'px' && data.config.layout !== 'inline';
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -103,7 +93,7 @@ export const actionsEditor = (data: Data, output) => {
         ifVisible({ data }: EditorResult<Data>) {
           return data.actions.visible;
         },
-        type: 'Select',
+        type: 'Radio',
         options: [
           { label: '左对齐', value: 'left' },
           { label: '居中对齐', value: 'center' },
@@ -123,7 +113,7 @@ export const actionsEditor = (data: Data, output) => {
         type: 'inputNumber',
         options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout !== 'horizontal'
+          return (data.config?.layout || data.layout) !== 'horizontal'
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -138,7 +128,7 @@ export const actionsEditor = (data: Data, output) => {
         title: '边距应用所有表单项',
         type: 'Button',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.layout !== 'horizontal'
+          return (data.config?.layout || data.layout) !== 'horizontal'
         },
         value: {
           set({ data }: EditorResult<Data>) {
@@ -155,6 +145,7 @@ export const actionsEditor = (data: Data, output) => {
           addText: '添加操作',
           deletable: false,
           editable: false,
+          customOptRender: visibleOpt,
           getTitle: (item) => {
             return item?.title;
           },
@@ -166,6 +157,7 @@ export const actionsEditor = (data: Data, output) => {
               key: outputId,
               outputId,
               isDefault: false,
+              visible: true
             }
             output.add(outputId, `点击${title}`, { type: 'any' })
             data.actions.items.push(item)

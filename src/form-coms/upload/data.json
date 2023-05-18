@@ -9,5 +9,8 @@
     "fileSize": 0,
     "fileCount": 0,
     "uploadStyle": {}
-  }
+  },
+  "isShowUploadList": true,
+  "isCustom": false,
+  "imageSize": [0, 0]
 }

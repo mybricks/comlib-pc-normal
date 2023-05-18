@@ -75,6 +75,19 @@ export default {
             data.loadingTip = val;
           }
         }
+      },
+      {
+        title: '列表项数据唯一标识',
+        type: 'text',
+        description: '可不填，填写之后作为列表项数据的唯一标识',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.rowKey;
+          },
+          set({ data }: EditorResult<Data>, val: string) {
+            data.rowKey = val;
+          }
+        }
       }
     ];
   }

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, ReactNode } from 'react';
 import classnames from 'classnames';
-import { message, Tabs, Tooltip } from 'antd';
+import { Tabs, Tooltip } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
@@ -14,7 +14,15 @@ const chooseIcon = ({ icon }: { icon: ReactNode }) => {
   return <>{Icon}</>;
 };
 
-export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  slots,
+  inputs,
+  outputs,
+  onError,
+  logger
+}: RuntimeParams<Data>) {
   const [showTabs, setShowTabs] = useState<string[]>(
     () => data.tabList?.map((item) => item.id) || []
   );
@@ -28,7 +36,19 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
           key === target
       );
     },
-    [showTabs]
+    [showTabs, data.defaultActiveKey]
+  );
+
+  const findIndexByKey = useCallback(
+    (target = data.defaultActiveKey) => {
+      return data.tabList.findIndex(
+        ({ id, permissionKey, key }) =>
+          (!permissionKey || env.hasPermission({ key: permissionKey })) &&
+          showTabs?.includes(id as string) &&
+          key === target
+      );
+    },
+    [showTabs, data.defaultActiveKey]
   );
 
   useEffect(() => {
@@ -37,10 +57,29 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         data.defaultActiveKey = data.tabList[0].key;
       }
       // 激活
-      inputs[InputIds.SetActiveTab]((id) => {
-        const activeTab = data.tabList.find((item) => {
-          return item.id === id;
-        });
+      inputs[InputIds.SetActiveTab]((index: number | string) => {
+        const val = +index;
+        let activeTab;
+        if (isNaN(val)) {
+          //兼容老数据，传入值是id（如"tab1"），id已摈弃
+          activeTab = data.tabList.find((item) => {
+            return item.id === index;
+          });
+          if (!activeTab) {
+            const errorMessage = '标签页不存在';
+            onError(errorMessage);
+            logger.error(errorMessage);
+            return;
+          }
+        } else {
+          if (val < 0 || val > data.tabList.length - 1) {
+            const errorMessage = '[tabs]：下标值超出范围';
+            onError(errorMessage);
+            logger.error(errorMessage);
+            return;
+          }
+          activeTab = data.tabList[val];
+        }
         if (activeTab) {
           const { permissionKey } = activeTab;
           if (!permissionKey || (permissionKey && env.hasPermission({ key: permissionKey }))) {
@@ -51,22 +90,17 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
         }
         data.defaultActiveKey = undefined;
         data.active = false;
-        message.error('标签页不存在');
       });
       // 上一页
       inputs[InputIds.PreviousTab](() => {
-        const currentIndex = data.tabList.findIndex(({ key }) => {
-          return key === data.defaultActiveKey;
-        });
+        const currentIndex = findIndexByKey();
         if (data.tabList[currentIndex - 1]) {
           data.defaultActiveKey = data.tabList[currentIndex - 1].key;
         }
       });
       // 下一页
       inputs[InputIds.NextTab](() => {
-        const currentIndex = data.tabList.findIndex(({ key }) => {
-          return key === data.defaultActiveKey;
-        });
+        const currentIndex = findIndexByKey();
         if (data.tabList[currentIndex + 1]) {
           data.defaultActiveKey = data.tabList[currentIndex + 1].key;
         }
@@ -74,7 +108,8 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
       //获取当前激活步骤
       inputs[InputIds.OutActiveTab]((val, relOutputs) => {
         const current = findTargetByKey();
-        relOutputs[OutputIds.OutActiveTab](current);
+        const index = findIndexByKey();
+        relOutputs[OutputIds.OutActiveTab]({ ...current, index });
       });
       //支持动态通知
       data.tabList.forEach((item) => {
@@ -85,17 +120,36 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
               item.num = ds;
             } else {
               item.num = undefined;
-              console.error('只支持类型为string或者number的作为tab的name');
+              const errorMessage = '只支持类型为string或者number的作为tab的name';
+              onError(errorMessage);
+              logger.error(errorMessage);
             }
           });
       });
 
       // 动态设置显示tab
       if (data.useDynamicTab) {
-        inputs[InputIds.SetShowTab]((ds) => {
+        inputs[InputIds.SetShowTab]((ds: (number | string)[]) => {
           if (Array.isArray(ds)) {
-            const tempDs = ds.filter((str) => typeof str === 'string');
+            const tempDs = ds
+              .map((id) => {
+                const val = +id;
+                if (isNaN(val)) {
+                  //兼容老数据，传入值是id
+                  return id as string;
+                } else {
+                  return data.tabList[val]?.id;
+                }
+              })
+              .filter((id) => !!id);
             setShowTabs(tempDs);
+            //处理动态设置显示不选中问题
+            if (tempDs.length) {
+              const showTabs = data.tabList.filter((tab) => tempDs.includes(tab.id));
+              if (!showTabs.find((tab) => tab.key === data.defaultActiveKey)) {
+                data.defaultActiveKey = data.tabList.find(({ id }) => id === tempDs[0])?.key;
+              }
+            }
           }
         });
       }
@@ -128,7 +182,8 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
   const tabLeaveHook = () => {
     if (preKey === undefined) return Promise.resolve();
     const preTab = findTargetByKey(preKey);
-    return Promise.all([outputs[`${preTab.id}_leave`]()]);
+    if (preTab) return Promise.all([outputs[`${preTab.id}_leave`]()]);
+    return Promise.resolve();
   };
 
   const handleClickItem = useCallback((values) => {
@@ -136,8 +191,9 @@ export default function ({ env, data, slots, inputs, outputs }: RuntimeParams<Da
       data.defaultActiveKey = values;
     }
     if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const { id, name } = data.tabList.find((item) => item.key === values) || {};
-      outputs[OutputIds.OnTabClick]({ id, name });
+      const item = findTargetByKey(values) || {};
+      const index = findIndexByKey(values);
+      outputs[OutputIds.OnTabClick]({ ...item, index });
     }
   }, []);
 

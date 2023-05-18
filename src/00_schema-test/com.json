@@ -1,0 +1,46 @@
+{
+  "title": "schema test",
+  "namespace": "mybricks.normal-pc.schemaTest",
+  "version": "1.0.0",
+  "description": "schema测试",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "runtime": "./runtime.tsx",
+  "inputs": [
+    {
+      "id": "title0",
+      "title": "输入0",
+      "desc": "输入结构为对象->对象",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "title1",
+      "title": "输入1",
+      "desc": "输入结构为数组->对象",
+      "schema": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+        }
+      }
+    }
+  ],
+  "outputs": []
+}

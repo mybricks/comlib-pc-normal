@@ -19,7 +19,9 @@
           "./src/toolbar/com.json",
           "./src/button/com.json",
           "./src/breadcrumb/com.json",
-          "./src/richtext/com.json"
+          "./src/richtext/com.json",
+          "./src/00_test/com.json",
+          "./src/00_schema-test/com.json"
         ]
       },
       {
@@ -41,6 +43,7 @@
         "title": "数据录入",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/domain-form/com.json",
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
@@ -63,13 +66,16 @@
           "./src/form-coms/phone-number/com.json",
           "./src/form-coms/time-picker/com.json",
           "./src/form-coms/time-range-picker/com.json",
-          "./src/form-coms/color/com.json"
+          "./src/form-coms/color/com.json",
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
         "title": "数据展示",
         "comAry": [
           "./src/table/com.json",
+          "./src/domain-table/com.json",
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
@@ -94,7 +100,8 @@
           "./src/icon/com.json",
           "./src/dropdown/com.json",
           "./src/sort-bar/com.json",
-          "./src/video/com.json"
+          "./src/video/com.json",
+          "./src/progress/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -104,6 +111,8 @@
       "./src/_global-loading/com.json",
       "./src/_timer-delay/com.json",
       "./src/_timer-loop/com.json",
+      "./src/_timer-debounce/com.json",
+      "./src/_timer-throttle/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
@@ -111,7 +120,13 @@
       "./src/_query/com.json",
       "./src/_events/com.json",
       "./src/_service/com.json",
-      "./src/_cookie/com.json"
+      "./src/_cookie/com.json",
+      "./src/_copy/com.json",
+      "./src/_pick/com.json",
+      "./src/_muilt-inputJs/com.json",
+      "./src/_array-merge/com.json",
+      "./src/_post-message/com.json",
+      "./src/_receive-message/com.json"
     ],
     "publish": [
       {
@@ -169,7 +184,9 @@
           "./src/form-coms/phone-number/com.json",
           "./src/form-coms/time-picker/com.json",
           "./src/form-coms/time-range-picker/com.json",
-          "./src/form-coms/color/com.json"
+          "./src/form-coms/color/com.json",
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
@@ -210,6 +227,8 @@
       "./src/_global-loading/com.json",
       "./src/_timer-delay/com.json",
       "./src/_timer-loop/com.json",
+      "./src/_timer-debounce/com.json",
+      "./src/_timer-throttle/com.json",
       "./src/_merge/com.json",
       "./src/_download/com.json",
       "./src/_object-merge/com.json",
@@ -217,7 +236,13 @@
       "./src/_query/com.json",
       "./src/_events/com.json",
       "./src/_service/com.json",
-      "./src/_cookie/com.json"
+      "./src/_cookie/com.json",
+      "./src/_copy/com.json",
+      "./src/_pick/com.json",
+      "./src/_muilt-inputJs/com.json",
+      "./src/_array-merge/com.json",
+      "./src/_post-message/com.json",
+      "./src/_receive-message/com.json"
     ]
   },
   "externals": [

@@ -58,7 +58,8 @@ export interface IColumn {
   titleBgColor?: string;
   /** 表头字体色 */
   titleColor?: string;
-
+  headStyle: any;
+  contentStyle: any;
   hasTip?: boolean;
   tip?: string;
 
@@ -165,4 +166,11 @@ export interface Data {
 
   // 动态设置显示列
   useDynamicColumn?: boolean;
+
+  //动态设置显示表格标题和字段
+  useDynamicTitle?: boolean;
+
+  titleBgColor: string;
+  headStyle: any;
+  contentStyle;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'antd';
+import { Form } from 'antd';
 import { Data, FormControlProps } from '../types';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
@@ -8,7 +8,8 @@ interface FormItemProps {
   data: Data;
   com: any;
   item: any;
-  field: any;
+  // field: any;
+  slots: any;
 }
 
 const JSXWrapper = (props: FormControlProps) => {
@@ -22,20 +23,39 @@ const JSXWrapper = (props: FormControlProps) => {
 };
 
 const FormItem = (props: FormItemProps) => {
-  const { com, item, field, data } = props;
+  const { com, item, data, slots } = props;
+  const layout = data.config?.layout || data.layout;
+  const formColon = data.config?.colon || data.colon;
+
   const style: React.CSSProperties = {
     margin:
-      data.layout !== 'horizontal'
+      layout !== 'horizontal'
         ? item.inlineMargin?.map(String).map(unitConversion).join(' ')
         : void 0
   };
-  const colon = item?.colon === 'default' ? data.colon : item.colon;
+  const colon = item?.colon === 'default' ? formColon : item.colon;
+  const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
+  const whiteSpace =
+    item?.labelAutoWrap === 'default'
+      ? data.config?.labelWrap
+        ? 'pre-wrap'
+        : 'nowrap'
+      : item.labelAutoWrap
+      ? 'pre-wrap'
+      : 'nowrap';
 
   return (
     <Form.Item
-      {...field}
-      label={<label style={item?.labelStyle}>{item?.label}</label>}
-      name={field ? [field.name, item?.name] : item?.name}
+      // {...field}
+      label={
+        item?.hiddenLabel ? (
+          void 0
+        ) : (
+          <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
+        )
+      }
+      labelAlign={labelAlign}
+      name={item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}
@@ -43,7 +63,17 @@ const FormItem = (props: FormItemProps) => {
       style={style}
       colon={!!item?.label && colon}
     >
-      <JSXWrapper com={com} field={field} />
+      <div className={css.formItemControl}>
+        <div className={css.formItemSlotContent}>
+          <JSXWrapper com={com} />
+        </div>
+        {item.slotAfter && (
+          <div className={css.formItemSlotAfter}>
+            {<Form.Item noStyle>{slots[item.slotAfter]?.render()}</Form.Item>}
+          </div>
+        )}
+      </div>
+
       {item.description && (
         <div className={css.formItemDesc}>
           <Form.Item noStyle>

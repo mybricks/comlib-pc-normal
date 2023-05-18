@@ -183,14 +183,88 @@ export default {
             }
           },
           {
-            title: '开启图片预览',
+            title: '自定义内容',
+            type: 'Switch',
+            description:
+              '当上传列表类型为文字列表或者图片列表时, 开启自定义后, 可自定义添加需要组件',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.listType === 'text' || data.config.listType === 'picture';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.isCustom;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.isCustom = value;
+              }
+            }
+          },
+          {
+            title: '展示文件列表',
+            type: 'Switch',
+            description: '当上传列表类型为文字列表或者图片列表时, 默认展示文件列表',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.listType !== 'picture-card';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.isShowUploadList;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.isShowUploadList = value;
+              }
+            }
+          },
+          {
+            title: '开启自定义删除',
             type: 'Switch',
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.config.usePreview;
+                return data.config.useCustomRemove;
               },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.config.usePreview = value;
+              set({ data, input, output }: EditorResult<Data>, value: boolean) {
+                data.config.useCustomRemove = value;
+                if (value) {
+                  !output.get('remove') &&
+                    output.add('remove', '删除文件', {
+                      type: 'object',
+                      properties: {
+                        name: {
+                          type: 'string'
+                        },
+                        uid: {
+                          type: 'string'
+                        },
+                        url: {
+                          type: 'string'
+                        },
+                        status: {
+                          type: 'string'
+                        },
+                        percent: {
+                          type: 'number'
+                        },
+                        response: {
+                          type: 'string'
+                        }
+                      }
+                    });
+                  !input.get('remove') &&
+                    input.add('remove', '删除文件', {
+                      type: 'object',
+                      properties: {
+                        name: {
+                          type: 'string'
+                        },
+                        uid: {
+                          type: 'string'
+                        }
+                      }
+                    });
+                } else {
+                  output.get('remove') && output.remove('remove');
+                  input.get('remove') && input.remove('remove');
+                }
               }
             }
           },
@@ -203,6 +277,40 @@ export default {
               },
               set({ data }: EditorResult<Data>, value: boolean) {
                 data.config.multiple = value;
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '图片配置',
+        items: [
+          {
+            title: '开启预览',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.config.usePreview;
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.config.usePreview = value;
+              }
+            }
+          },
+          {
+            title: '尺寸校验',
+            type: 'InputNumber',
+            description: '允许上传的图片尺寸, 0 表示宽高不限制',
+            options: [
+              { title: '宽(px)', min: 0, max: 2000, width: 100 },
+              { title: '高(px)', min: 0, max: 2000, width: 100 }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.imageSize;
+              },
+              set({ data }: EditorResult<Data>, value: number[]) {
+                data.imageSize = value;
               }
             }
           }
@@ -256,7 +364,7 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
@@ -267,6 +375,16 @@ export default {
             type: '_event',
             options: {
               outputId: 'upload'
+            }
+          },
+          {
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.useCustomRemove;
+            },
+            title: '文件删除',
+            type: '_event',
+            options: {
+              outputId: 'remove'
             }
           }
         ]

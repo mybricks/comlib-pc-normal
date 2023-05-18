@@ -3,13 +3,17 @@
   "namespace": "mybricks.normal-pc.form-phone-number",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.2",
+  "version": "1.0.10",
   "description": "内置中国大陆11位手机号码校验",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_6zcy4m.2d104629fe884457.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -22,7 +26,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置手机号输入框的初始值，并触发初始化事件输出",
+      "desc": "设置手机号输入框的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -75,14 +79,14 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }
     },
     {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
       "schema": {
         "type": "string"
       }
@@ -90,6 +94,13 @@
     {
       "id": "onBlur",
       "title": "失去焦点",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "string"
       }

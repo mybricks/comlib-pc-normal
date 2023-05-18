@@ -4,7 +4,7 @@
   "formItemColumn": 1,
   "actions": {
     "visible": true,
-    "widthOption": "span",
+    "widthOption": "flexFull",
     "span": 24,
     "align": "left",
     "inlinePadding": [
@@ -25,14 +25,13 @@
       {
         "title": "取消",
         "isDefault": false,
+        "visible": true,
         "outputId": "onClickCancel",
         "key": "cancel"
       }
     ]
   },
   "isFormItem": false,
-  "dataType": "object",
-  "layout": "horizontal",
   "wrapperCol": 24,
   "labelWidthType": "px",
   "labelWidth": 98,
@@ -40,5 +39,11 @@
   "itemWidthType": "flex",
   "paramsSchema": {},
   "submitHiddenFields": false,
-  "colon": true
+  "config": {
+    "colon": true,
+    "layout": "horizontal",
+    "labelWrap": false,
+    "labelAlign": "right",
+    "disabled": false
+  }
 }

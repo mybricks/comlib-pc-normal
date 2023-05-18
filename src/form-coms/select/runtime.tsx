@@ -6,6 +6,7 @@ import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
 import { Option, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function Runtime({
   env,
@@ -14,7 +15,8 @@ export default function Runtime({
   outputs,
   logger,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
@@ -150,13 +152,14 @@ export default function Runtime({
   }, []);
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((value) => {
     if (value === undefined) {
       data.value = '';
     }
     data.value = value;
+    onChangeForFc(parentSlot, { id: id, value, name });
     outputs['onChange'](value);
   }, []);
   const onChange = useCallback((value) => {

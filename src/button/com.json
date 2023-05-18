@@ -1,7 +1,7 @@
 {
   "title": "按钮",
   "namespace": "mybricks.normal-pc.custom-button",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "按钮",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,22 +9,33 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
+  "inputs": [
+    {
+      "id": "dynamicTitle",
+      "title": "设置标题",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
   "outputs": [
     {
       "id": "click",
       "title": "单击",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     },
     {
       "id": "dbClick",
       "title": "双击",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     }
   ]

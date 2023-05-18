@@ -1,4 +1,6 @@
 {
   "autoplay": true,
-  "controls": true
+  "muted": true,
+  "controls": true,
+  "fit": "contain"
 }

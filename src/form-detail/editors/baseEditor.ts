@@ -1,6 +1,7 @@
 import { uuid } from '../../utils';
 import { Data, InputIds, TypeEnum } from '../constants';
 import { updateIOSchema } from './utils';
+import { updateScopeIOSchema } from './item/baseEditor';
 
 export const BaseEditor = [
   {
@@ -57,11 +58,28 @@ export const BaseEditor = [
       }
     }
   },
+  //内容做对齐需求
+  {
+    title: '标签宽度',
+    type: 'inputNumber',
+    options: [{ min: 0, width: 120 }],
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return [data?.globalLabelStyle?.width || 'auto'];
+      },
+      set({ data }: EditorResult<Data>, val: number[]) {
+        if (!data.globalLabelStyle) {
+          data.globalLabelStyle = {};
+        }
+        data.globalLabelStyle.width = val[0];
+      }
+    }
+  },
   {
     title: '增加描述项',
     type: 'Button',
     value: {
-      set({ data, input, output }: EditorResult<Data>) {
+      set({ data, input, output, slots }: EditorResult<Data>) {
         const id = uuid();
         data.items.push({
           id: id,
@@ -72,14 +90,14 @@ export const BaseEditor = [
           span: 1,
           labelStyle: {
             fontSize: 14,
-            fontWeight: 'normal',
+            fontWeight: '400',
             lineHeight: 1,
             color: '#8c8c8c',
             letterSpacing: 0
           },
           contentStyle: {
             fontSize: 14,
-            fontWeight: 'normal',
+            fontWeight: '400',
             lineHeight: 1,
             color: '#333333',
             letterSpacing: 0
@@ -87,10 +105,18 @@ export const BaseEditor = [
           type: TypeEnum.Text,
           direction: 'horizontal',
           useSuffix: false,
-          suffixBtnText: '查看更多'
+          suffixBtnText: '查看更多',
+          schema: {
+            type: 'string'
+          }
         });
         updateIOSchema({ data, input, output });
+        data.items.map((item)=>{
+          if(item.type !== TypeEnum.Text){
+            updateScopeIOSchema({ data, item, slots, input });
+          }
+        })
       }
     }
-  },
+  }
 ];

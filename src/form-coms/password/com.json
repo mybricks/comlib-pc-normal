@@ -3,14 +3,18 @@
   "namespace": "mybricks.normal-pc.password",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.1",
+  "version": "1.0.8",
   "description": "密码输入框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_rwmzz5.273d5f58fc0c3d2c.png",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -23,7 +27,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置密码框初始值，并触发初始化事件输出",
+      "desc": "设置密码框初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -77,7 +81,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }
@@ -108,7 +112,14 @@
     },
     {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "string"
       }

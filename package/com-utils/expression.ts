@@ -1,5 +1,12 @@
 const getCodeFromTemplate = (template: string) => {
-  const code = template.match(/(?<=\{)(.+?)(?=\})/g)
+  // const code = template.match(/(?<=\{)(.+?)(?=\})/g)
+  
+  // Safari 不支持正则表达式中的 lookbehind，可以改为使用捕获组来提取大括号内的内容：
+  // 该代码在 Chrome 和 Safari 中都能够执行，并返回大括号内的内容列表。
+  const code = template.match(/\{(.+?)\}/g)?.map(function (match) {
+    return match.slice(1, -1);
+  });
+
   return code ? code[0] : "";
 };
 

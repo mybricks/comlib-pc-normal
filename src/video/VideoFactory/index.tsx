@@ -69,7 +69,7 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   };
 
   return (
-    <div className={styles['video-wrap']} style={style}>
+    <div className={styles['video-wrap']} style={!env.runtime ? style : {}}>
       {env.runtime ? renderVideo(src)() : <img src={empty} width={'35%'} height={'35%'} />}
     </div>
   );

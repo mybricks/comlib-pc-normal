@@ -8,6 +8,7 @@ import { typeCheck } from '../../utils';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export default function Runtime({
   env,
@@ -16,11 +17,13 @@ export default function Runtime({
   outputs,
   logger,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   useFormItemInputs({
     inputs,
     outputs,
+    name,
     configs: {
       setValue(val) {
         changeValue(val);
@@ -64,7 +67,7 @@ export default function Runtime({
 
   /**监听事件和格式化函数 */
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((val) => {
     data.value = val;
@@ -77,10 +80,12 @@ export default function Runtime({
   }, []);
   const onChange = useCallback((val) => {
     changeValue(val);
+    onChangeForFc(parentSlot, { id: id, value: val, name });
     outputs['onChange'](val);
   }, []);
   const onAfterChange = useCallback((val) => {
     changeValue(val);
+    onChangeForFc(parentSlot, { id: id, value: val, name });
     outputs['onChange'](val);
     onValidateTrigger();
   }, []);

@@ -1,7 +1,7 @@
 {
   "title": "工具条",
   "namespace": "mybricks.normal-pc.toolbar",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "工具条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -18,14 +18,14 @@
       "id": "btn0",
       "title": "单击按钮0",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     },
     {
       "id": "doubleClick_btn0",
       "title": "双击按钮0",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     }
   ]

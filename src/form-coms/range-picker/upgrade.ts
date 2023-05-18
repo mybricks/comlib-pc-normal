@@ -1,4 +1,5 @@
-import { DateType, TimeDateLimitItem } from '../types';
+import { DateType, OutputIds, TimeDateLimitItem } from '../types';
+import { refreshSchema } from './editors';
 import { Data } from './runtime';
 
 export default function ({
@@ -30,8 +31,9 @@ export default function ({
     input.add('setInitialValue', '设置初始值', setValueSchema);
   }
   if (!output.get('onInitial')) {
-    output.add('onInitial', '初始化', valueChangeSchema);
+    output.add('onInitial', '值初始化', valueChangeSchema);
   }
+  output.get('onInitial').setTitle('值初始化');
 
   /**
    * @description v1.0.4 增加禁用日期、时间配置项
@@ -71,5 +73,45 @@ export default function ({
   if (!data.staticDisabledDate) data.staticDisabledDate = initDateRules;
   if (!data.staticDisabledTime) data.staticDisabledTime = initTimeRules;
 
+  /**
+   * @description v1.0.10 增加 默认时间处理 配置项
+   */
+  if (!data.timeTemplate) {
+    data.timeTemplate = ['current', 'current'];
+  }
+
+  /**
+   * @description v1.0.11 增加 预设时间范围快捷选择 配置项
+   */
+  if (typeof data.useRanges === "undefined") {
+    data.useRanges = false;
+  };
+  if (typeof data.ranges === "undefined") {
+    data.ranges = [
+      { title: "今天", type: "day", numList: [0, 0] },
+      { title: "昨天", type: "day", numList: [1, -1] },
+      { title: "明天", type: "day", numList: [-1, 1] },
+      { title: "前后七天", type: "day", numList: [7, 7] },
+      { title: "本周", type: "week", numList: [0, 0] },
+      { title: "本月", type: "month", numList: [0, 0] }
+    ];
+  };
+
+  /**
+   * @description v1.0.13 fix: refreshSchema
+   */
+  if (output.get(OutputIds.ReturnValue)?.schema?.type !== 'tuple') {
+    refreshSchema({ data, input, output });
+  }
+
+  /**
+   * @description v1.0.16->1.0.17 增加 输出类型 配置项
+   */
+  if (typeof data.dateType === "undefined") {
+    data.dateType = 'array';
+  }
+  if (typeof data.splitChart === "undefined") {
+    data.splitChart = '-';
+  }
   return true;
 }

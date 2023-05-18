@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { Data } from './types';
 
 export default {
@@ -6,7 +7,8 @@ export default {
     style.width = '100%';
     style.height = 300;
     data.style = {
-      background: '#000'
+      background: 'rgba(0, 0, 0, 0.8)',
+      borderRadius: "8px 8px 8px 8px",
     };
   },
   '@resize': {
@@ -62,6 +64,7 @@ export default {
               },
               set({ data }: RuntimeParams<Data>, val: boolean) {
                 data.autoplay = val;
+                data.muted = val;
               }
             }
           },
@@ -132,7 +135,26 @@ export default {
                 return data.style;
               },
               set: ({ data }: EditorResult<Data>, value) => {
+                console.log(value)
                 data.style = value;
+              }
+            }
+          },
+          {
+            title: '比例',
+            type: 'select',
+            options:{
+              options: [
+                {label: "保持比例", value: "contain"},
+                {label: "充满", value: "fill"}
+              ]
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.fit || 'contain';
+              },
+              set({ data }: EditorResult<Data>, val: CSSProperties['objectFit']) {
+                  data.fit = val
               }
             }
           }

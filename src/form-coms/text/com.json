@@ -3,13 +3,15 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.2.1",
+  "version": "1.2.8",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_x0zid8.182f138fe94b85f8.png",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
@@ -25,7 +27,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置文本框的初始值，并触发初始化事件输出",
+      "desc": "设置文本框的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -78,14 +80,14 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }
     },
     {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
       "schema": {
         "type": "string"
       }

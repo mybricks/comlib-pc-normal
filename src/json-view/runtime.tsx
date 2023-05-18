@@ -3,7 +3,7 @@ import { Alert, Tooltip, Tree, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import { typeCheck, uuid } from '../utils';
-import { Data, dataSourceTypeMap, InputIds, OutputIds } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, TypeEnum } from './constant';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
@@ -72,7 +72,8 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
         color: colors['key']
       },
       valStyle = {
-        color: colors[typeof value === 'string' ? 'string' : 'number']
+        color: colors[typeof value === 'string' ? 'string' : 'number'],
+        wordBreak: 'break-all'
       };
 
     // 根据数据类型计算要显示的valString
@@ -144,7 +145,12 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
     return treeData;
   };
-
+  useEffect(() => {
+    document.body.style.setProperty(
+      '--json--view--node-hover-bgcolor',
+      data.colors[TypeEnum.NodeHoverBackgroundColor]
+    );
+  }, [data.colors[TypeEnum.NodeHoverBackgroundColor]]);
   const treeData = [
     {
       title: getTitle({
@@ -172,6 +178,10 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   return (
     <Tree
       treeData={treeData}
+      rootStyle={{
+        backgroundColor: data.colors[TypeEnum.BackgroundColor]
+      }}
+      className={css.root}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
       defaultExpandedKeys={expandedKeys}

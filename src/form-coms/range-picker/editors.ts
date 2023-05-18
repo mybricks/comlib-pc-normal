@@ -1,6 +1,28 @@
 import moment from 'moment';
 import { DisabledDateTimeEditor } from '../../components/editors/DisabledDateTimeEditor';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { Data, DateType } from './runtime';
+import { InputIds, OutputIds } from '../types';
+
+export const refreshSchema = ({ data, input, output }: { data: Data, input: any, output: any }) => {
+  const baseType = data.contentType === 'timeStamp' ? 'number' : 'string';
+  const newSchema = {
+    type: 'tuple',
+    items: [
+      {
+        type: baseType,
+      },
+      {
+        type: baseType,
+      },
+    ],
+  };
+  input.get(InputIds.SetInitialValue).setSchema(newSchema);
+  input.get(InputIds.SetValue).setSchema(newSchema);
+  output.get(OutputIds.OnChange).setSchema(newSchema);
+  output.get(OutputIds.OnInitial).setSchema(newSchema);
+  output.get(OutputIds.ReturnValue).setSchema(newSchema);
+};
 
 export default {
   '@resize': {
@@ -82,6 +104,86 @@ export default {
             data.showTime = value;
           },
         }
+      },
+      {
+        title: "预设时间范围快捷选择",
+        type: "Switch",
+        value: {
+          get({ data }) {
+            return data.useRanges;
+          },
+          set({ data }, value: boolean) {
+            data.useRanges = value
+          },
+        },
+      },
+      {
+        // title: '预设时间范围',
+        ifVisible({ data }) {
+          return !!data.useRanges;
+        },
+        items: [
+          {
+            type: "Array",
+            options: {
+              getTitle: (item, index: number) => {
+                if (!item.title) {
+                  item.title = `预设范围${index + 1}`;
+                }
+                return item.title;
+              },
+              onAdd: (_id: string) => {
+                const actionItem = {
+                  title: "",
+                  type: DateType.Day,
+                  numList: [0, 0],
+                };
+                return actionItem;
+              },
+              items: [
+                {
+                  title: "名称",
+                  type: "Textarea",
+                  options: {
+                    autoSize: { maxRows: 1 },
+                  },
+                  value: "title",
+                },
+                {
+                  title: "区间类型",
+                  type: "Select",
+                  value: "type",
+                  options: [
+                    { label: "年", value: DateType.Year },
+                    { label: "月", value: DateType.Month },
+                    { label: "周", value: DateType.Week },
+                    { label: "天", value: DateType.Day },
+                    { label: "时", value: DateType.Hour },
+                    { label: "分", value: DateType.Minute },
+                    { label: "秒", value: DateType.Second },
+                  ],
+                },
+                {
+                  title: "区间",
+                  type: "InputNumber",
+                  value: "numList",
+                  options: [
+                    { title: "前", min: -1000, max: 1000, width: 100 },
+                    { title: "后", min: -1000, max: 1000, width: 100 },
+                  ],
+                },
+              ],
+            },
+            value: {
+              get({ data }) {
+                return data.ranges;
+              },
+              set({ data }, value: any[]) {
+                data.ranges = value;
+              }
+            },
+          },
+        ],
       },
       {
         title: '默认时间',
@@ -189,8 +291,9 @@ export default {
               get({ data }) {
                 return data.contentType;
               },
-              set({ data }, value: string) {
+              set({ data, input, output }: EditorResult<Data>, value: string) {
                 data.contentType = value;
+                refreshSchema({ data, input, output });
               }
             }
           },
@@ -210,6 +313,79 @@ export default {
                 data.formatter = value;
               }
             }
+          },
+          {
+            title: "开始时间",
+            type: "Radio",
+            options: [
+              { label: `00:00:00`, value: "start" },
+              { label: "当前时间", value: "current" },
+              { label: `23:59:59`, value: "end" },
+            ],
+            ifVisible({ data }) {
+              return !data.showTime && data.config.picker === 'date';
+            },
+            value: {
+              get({ data }) {
+                return data.timeTemplate[0];
+              },
+              set({ data }, value: "current" | "start" | "end") {
+                data.timeTemplate[0] = value;
+              },
+            },
+          },
+          {
+            title: "结束时间",
+            type: "Radio",
+            options: [
+              { label: `00:00:00`, value: "start" },
+              { label: "当前时间", value: "current" },
+              { label: `23:59:59`, value: "end" },
+            ],
+            ifVisible({ data }) {
+              return !data.showTime && data.config.picker === 'date';
+            },
+            value: {
+              get({ data }) {
+                return data.timeTemplate[1];
+              },
+              set({ data }, value: "default" | "start" | "end") {
+                data.timeTemplate[1] = value;
+              },
+            },
+          },
+          {
+            title: '输出格式',
+            type: "Select",
+            description: '输出数据结构，数组和字符串两种格式',
+            options: [
+              { label: "数组", value: "array" },
+              { label: "字符串", value: "string" }
+            ],
+            value: {
+              get({ data }) {
+                return data.dateType;
+              },
+              set({ data }, value: "array" | "string") {
+                data.dateType = value;
+              },
+            }
+          },
+          {
+            title: '分隔符',
+            type: "Text",
+            description: '默认分隔符为-',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.dateType === 'string';
+            },
+            value: {
+              get({ data }) {
+                return data.splitChart;
+              },
+              set({ data }, value: string) {
+                data.splitChart = value;
+              },
+            }
           }
         ]
       },
@@ -217,14 +393,14 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
             }
           },
           {
-            title: '值发生改变',
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'

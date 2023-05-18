@@ -17,8 +17,9 @@ export interface Data {
   hoverable?: boolean;
   cursor?: boolean;
   useClick?: boolean;
-  outputContent?: string;
+  outputContent?: any;
   dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
+  borderStyle?: Object; 
 }
 
 export const OutputIds = {

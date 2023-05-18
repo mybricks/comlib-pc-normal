@@ -1,3 +1,4 @@
+import React from 'react';
 import { uuid } from '../../../utils';
 import { WidthUnitEnum, Data, ColumnParams } from '../../constants';
 export const createColByWidth = (width: number = 280) => {
@@ -16,7 +17,7 @@ export const createColByWidth = (width: number = 280) => {
     slotStyle: {
       display: 'flex',
       position: 'inherit',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       flexWrap: 'nowrap'
@@ -40,7 +41,7 @@ export const createAutoCol = (flex: number = 1) => {
     slotStyle: {
       display: 'flex',
       position: 'inherit',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       flexWrap: 'nowrap'
@@ -64,7 +65,7 @@ export const createColBySpan = (span: number = 4) => {
     slotStyle: {
       display: 'flex',
       position: 'inherit',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       flexWrap: 'nowrap'
@@ -142,3 +143,26 @@ export function updateSlotTitle(col: ColumnParams, slot: any) {
   });
   slot.setTitle(col.slot, title);
 }
+
+export const updateColStyle = (col: ColumnParams, style: Partial<React.CSSProperties>) => {
+  if (!col.colStyle) {
+    col.colStyle = {};
+  }
+  col.colStyle = {
+    ...col.colStyle,
+    ...style
+  };
+};
+
+export const setSlotLayout = (slot, val) => {
+  if(!slot) return;
+  if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};

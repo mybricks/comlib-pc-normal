@@ -21,6 +21,7 @@ interface UploadConfig {
   uploadStyle: React.CSSProperties;
   uploadIcon?: string;
   disabled: boolean;
+  useCustomRemove: boolean;
 }
 interface UploadFileList {
   uid?: string;
@@ -33,12 +34,23 @@ interface UploadFileList {
 export interface Data {
   rules: any[];
   config: UploadConfig;
+  isShowUploadList: boolean;
+  isCustom: boolean;
+  imageSize: number[];
 }
 
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+interface Window {
+  Image: {
+    prototype: HTMLImageElement;
+    new (): HTMLImageElement;
+  };
+}
+
+export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
-  fileListRef.current = fileList;
+  const removeFileRef = useRef<UploadFile>();
+  // fileListRef.current = fileList;
   const uploadRef = useRef();
   const {
     fileKey,
@@ -56,11 +68,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     inputs['setValue']((val: UploadFile[]) => {
+      fileListRef.current = val;
       setFileList(val);
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         setFileList(val);
+        fileListRef.current = val;
         outputs[OutputIds.OnInitial](val);
       });
     inputs['validate']((val, outputRels) => {
@@ -95,6 +109,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     inputs['uploadDone']((file: any) => {
       onUploadComplete(file);
     });
+    inputs['remove']((file: any) => {
+      onRemoveFile(typeof file === 'object' ? file : removeFileRef.current || {});
+    });
+  }, []);
+
+  const onRemoveFile = useCallback((file) => {
+    setFileList((list) => list.filter((item) => item.uid !== file.uid));
   }, []);
 
   const formatCompleteFile = (res: UploadFileList, tempList: UploadFileList[]) => {
@@ -164,15 +185,41 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     fileList.forEach((file) => {
       formData.append(fileKey, file);
     });
+    fileListRef.current = onFormatFileList(fileList);
     outputs.upload(formData);
-
-    const newFileList: UploadFile[] = onFormatFileList(fileList);
-    setFileList([...newFileList]);
   };
+
+  //上传图片尺寸限制
+  //参数分别是上传的file，想要限制的宽，想要限制的高
+  const checkWH = (file, width, height) => {
+    return new Promise(function (resolve, reject) {
+      let filereader = new FileReader();
+      filereader.onload = (e: any) => {
+        let src: any = e.target.result;
+        const image = new window.Image();
+        image.onload = function () {
+          if (width && image.width != width) {
+            message.error(`请上传宽为${width}(px)的图片`);
+            //reject('error');
+          } else if (height && image.height != width) {
+            message.error(`请上传宽高为${height}}(px)的图片`);
+            // reject('error');
+          } else {
+            resolve('success');
+          }
+        };
+        image.onerror = reject;
+        image.src = src;
+      };
+      filereader.readAsDataURL(file);
+    });
+  };
+
   // 文件合法校验
   const beforeUpload = useCallback((file: File, fileList: File[]) => {
     const acceptTypesList = fileType || [];
     const isNotAccept = fileList.some((file) => {
+      let isImage = file.type.slice(0, 5) === 'image';
       let isAcceptFileType = true;
       if (acceptTypesList.length) {
         isAcceptFileType = acceptTypesList.some((element) => {
@@ -196,8 +243,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       if (!isAcceptFileSize) {
         message.error(`上传文件大小不能超过${acceptFileSize}MB!`);
       }
-
-      return !(isAcceptFileType && isAcceptFileSize);
+      return !(
+        isAcceptFileType &&
+        isAcceptFileSize &&
+        (JSON.stringify(data.imageSize) === JSON.stringify([0, 0]) || !isImage
+          ? true
+          : !checkWH(file, data.imageSize[0], data.imageSize[1]))
+      );
     });
 
     if (!isNotAccept) {
@@ -207,7 +259,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   }, []);
 
   const onRemove = (file) => {
-    setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
+    if (!data.config.useCustomRemove) {
+      setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
+      return true;
+    }
+    removeFileRef.current = file;
+    outputs.remove(file);
+    return false;
   };
 
   const ImgPreview = (props: any) => {
@@ -329,6 +387,18 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       classnames.push(css.emptyDragger);
     }
   }
+  if (
+    (data.config.listType === 'text' && data.isCustom === true && env.edit) ||
+    (data.config.listType === 'picture' && data.isCustom === true && env.edit)
+  ) {
+    classnames.push(css.custom);
+  }
+
+  //编辑态，自定义内容时不可编辑
+  let condition =
+    env.edit &&
+    data.isCustom === true &&
+    (data.config.listType === 'text' || data.config.listType === 'picture');
 
   return (
     <div ref={uploadRef} className={classnames.join(' ')}>
@@ -345,14 +415,22 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
             onpenImgPreview(file.url);
           }
         }}
-        disabled={disabled}
+        disabled={condition ? true : disabled}
         multiple={multiple}
         maxCount={fileCount}
-        showUploadList={{
-          showPreviewIcon: usePreview
-        }}
+        showUploadList={
+          data.isShowUploadList === false && data.config.listType !== 'picture-card'
+            ? false
+            : { showPreviewIcon: usePreview }
+        }
       >
-        {renderUploadText()}
+        {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
+        {(data.isCustom === true && data.config.listType === 'text') ||
+        (data.isCustom === true && data.config.listType === 'picture') ? (
+          <div>{slots['carrier'] && slots['carrier'].render()}</div>
+        ) : (
+          renderUploadText()
+        )}
       </UploadNode>
     </div>
   );

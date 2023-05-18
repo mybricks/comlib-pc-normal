@@ -26,14 +26,14 @@ const OutputValEditor = [
             const click = output.get(item.key);
             //双击的事件
             const dbClick = output.get(`${OutputIds.DoubleClick}_${item.key}`);
-              if(item.dataType === 'number'){
-                click.setSchema({
-                  type: 'number'
-                });
-                dbClick.setSchema({
-                  type: 'number'
-                });
-              }
+            // if(item.dataType === 'number'){
+            //   click.setSchema({
+            //     type: 'number'
+            //   });
+            //   dbClick.setSchema({
+            //     type: 'number'
+            //   });
+            // }
             return item.dataType || 'number';
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external') {

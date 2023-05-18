@@ -2,6 +2,7 @@ import { Switch } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
   value: boolean | undefined;
@@ -17,12 +18,23 @@ export interface Data {
   };
 }
 
-export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  _inputs,
+  inputs,
+  _outputs,
+  outputs,
+  parentSlot,
+  id,
+  name
+}: RuntimeParams<Data>) {
   const { edit } = env;
 
   useFormItemInputs({
     inputs,
     outputs,
+    name,
     configs: {
       setValue(val) {
         data.config.checked = val;
@@ -60,6 +72,7 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
 
   const changeValue = useCallback((checked) => {
     data.config.checked = checked;
+    onChangeForFc(parentSlot, { id: id, value: checked, name: name });
     outputs['onChange'](checked);
   }, []);
 

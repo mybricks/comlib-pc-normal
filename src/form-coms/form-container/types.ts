@@ -1,3 +1,4 @@
+import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 interface Action {
   title: string
@@ -7,6 +8,7 @@ interface Action {
   type?: ButtonType
   key: string
   visible?: boolean
+  danger?: boolean
 }
 
 interface Actions {
@@ -19,8 +21,9 @@ interface Actions {
   inlinePadding?: number[]
 }
 
-interface FormItems {
+export interface FormItems {
   id: string;
+  comName: string
   name: string
   label: string
   span: number
@@ -31,13 +34,18 @@ interface FormItems {
   help?: string
   tooltip?: string
   labelStyle?: {}
+  labelAlign?: 'left' | 'right' | 'default'
+  labelAutoWrap?: boolean | 'default'
+  hiddenLabel?: boolean
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
+  width: number
   inlineMargin?: number[]
+  slotAfter?: string
 }
 
-export type LabelWidthType = 'px' | 'span'
+export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
   /**
@@ -59,7 +67,7 @@ export interface Data {
   /**
    * 布局类型
    */
-  layout: 'horizontal' | 'vertical' | 'inline'
+  layout?: 'horizontal' | 'vertical' | 'inline'
   fieldsLength?: number
   /**
    * 操作项
@@ -81,13 +89,20 @@ export interface Data {
   /**
    * 标题是否展示冒号
    */
-  colon: FormItemColonType
+  colon: boolean | undefined
+  /**
+   * 表单原生属性
+   */
+  config: FormProps
 
   /**
    * 合并参数 Schema
    */
   paramsSchema: any
 
+  /**
+   *  提交隐藏表单项 （隐藏表单项依旧参与校验与提交）
+   */
   submitHiddenFields: boolean
 }
 
@@ -98,7 +113,7 @@ export interface FormControlProps {
   field?: any
 }
 
-export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue'
+export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
 
 export type LayoutModel = "inline" | "row" | "column";
 

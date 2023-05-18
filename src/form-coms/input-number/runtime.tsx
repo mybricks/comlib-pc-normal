@@ -4,6 +4,7 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 export interface Data {
   options: any[];
   rules: any[];
@@ -22,6 +23,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<string | number>();
   useFormItemInputs(
     {
+      id: props.id,
+      name: props.name,
       inputs,
       outputs,
       configs: {
@@ -62,11 +65,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const onChange = (value) => {
     setValue(value);
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   };
 
@@ -86,11 +90,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
     [value]
   );
 
+  //数字输入框实时校验位数, 多的小数位禁止输入
+  const NumberProps = {
+    formatter: (value: any) => {
+      let reStr = '\\d'.repeat(data.config.precision);
+      let reg;
+      if (data.config.precision === 0) {
+        reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+      } else {
+        reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+      }
+      return reg;
+    }
+  };
+
   return (
     <div className={css.inputNumber}>
       <InputNumber<string | number>
         value={value}
         {...data.config}
+        {...NumberProps}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}

@@ -262,7 +262,9 @@ export default {
         options: {
           plugins: ['Font'],
           fontProps: {
-            fontFamily: false
+            fontFamily: false,
+            horizontalAlign: false,
+            verticalAlign: false
           }
         },
         value: {

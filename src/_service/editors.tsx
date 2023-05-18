@@ -24,7 +24,19 @@ export default {
         outputSchema: connector.outputSchema
       };
 
-      updateIO({ input, output }, connector);
+      if (data.hasUpdatedOutputSchema) {
+        const callInt = input.get('call');
+        if (callInt) {
+          if (isValidSchema(connector.inputSchema)) {
+            callInt.setSchema(connector.inputSchema);
+          } else {
+            callInt.setSchema(defaultSchema);
+          }
+        }
+      } else {
+        data.outputSchema = connector.outputSchema;
+        updateIO({ input, output }, connector);
+      }
 
       setDesc(`已选择：${data.connector.title}`);
     }
@@ -42,6 +54,7 @@ export default {
 
       const thenOut = output.get('then');
       thenOut.setSchema(defaultSchema);
+      data.outputSchema = defaultSchema;
 
       setDesc(`${connector.title} 已失效`);
     }
@@ -56,6 +69,7 @@ export default {
         },
         set({ data, input, output, setDesc }, connector) {
           data.connector = connector;
+          data.outputSchema = data.connector.outputSchema;
           updateIO({ input, output }, connector);
 
           setDesc(`已选择：${data.connector.title}`);
@@ -65,9 +79,9 @@ export default {
     {
       title: '配置服务地址',
       type: 'switch',
-      // ifVisible({ data }) {
-      //   return !data.immediate;
-      // },
+      ifVisible({ data }) {
+        return !data.immediate;
+      },
       value: {
         get({ input }) {
           return input.get(INPUT_ID.SET_URL) !== void 0;
@@ -79,16 +93,39 @@ export default {
             if (!callPin) {
               input.add('call', '调用', { type: 'object' });
             }
-            data.immediate = false;
             data.useExternalUrl = true;
           } else {
             input.remove(INPUT_ID.SET_URL);
-            if (callPin) {
-              input.remove('call');
-            }
-            data.immediate = true;
             data.useExternalUrl = false;
           }
+        }
+      }
+    },
+    {
+      title: '数据模拟（调试时）',
+      type: 'switch',
+      value: {
+        get({ data }) {
+          return data.mock;
+        },
+        set({ data }, use: boolean) {
+          data.mock = use;
+        }
+      }
+    },
+    {
+      title: '响应数据结构',
+      type: '_schema',
+      value: {
+        get({ data }) {
+          return data.outputSchema;
+        },
+        set({ data, output }, outputSchema) {
+          data.outputSchema = outputSchema;
+          data.hasUpdatedOutputSchema = true;
+
+          const thenOut = output.get('then');
+          thenOut.setSchema(data.outputSchema);
         }
       }
     }

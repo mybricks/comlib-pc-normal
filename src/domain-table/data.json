@@ -1,0 +1,34 @@
+{
+  "formFieldAry": [],
+  "fieldAry": [],
+  "table": {
+    "size": "middle",
+    "renderType": "normal",
+    "slotId": "",
+    "operate": {
+      "disabled": false
+    }
+  },
+  "operate": {
+    "create": {
+      "disabled": false,
+      "title": "新增"
+    },
+    "edit": {
+      "disabled": false,
+      "title": "编辑"
+    },
+    "delete": {
+      "disabled": false,
+      "title": "删除"
+    }
+  },
+  "domainAry": [],
+  "domainFileId": "",
+  "entityId": "",
+  "showActionModalForEdit": "",
+  "pagination": {
+    "page": 1,
+    "pageSize": 20
+  }
+}

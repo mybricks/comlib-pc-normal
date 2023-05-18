@@ -2,7 +2,7 @@ import { Data, WidthUnitEnum } from '../constants';
 
 const StyleEditor = [
   {
-    title: '样式',
+    title: '容器样式',
     type: 'style',
     options: ['BgColor', 'Border', 'BgImage'],
     value: {
@@ -11,6 +11,29 @@ const StyleEditor = [
       },
       set({ data }: EditorResult<Data>, value: any) {
         data.style = {
+          ...value
+        };
+      }
+    }
+  },
+  {
+    title: '单元格样式',
+    type: 'style',
+    options: ['padding'],
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.globalColStyle;
+      },
+      set({ data }: EditorResult<Data>, value: any) {
+        data.rows.forEach((row) => {
+          row.columns.forEach((col) => {
+            col.colStyle = {
+              ...col.colStyle,
+              ...value
+            };
+          });
+        });
+        data.globalColStyle = {
           ...value
         };
       }

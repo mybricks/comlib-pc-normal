@@ -1,7 +1,7 @@
 {
   "title": "对话框",
   "namespace": "mybricks.normal-pc.dialog",
-  "version": "1.1.0",
+  "version": "1.1.11",
   "description": "对话框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -9,6 +9,11 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "open",
@@ -29,6 +34,62 @@
       "title": "修改标题",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "hiddenok",
+      "title": "隐藏-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "showok",
+      "title": "显示-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "disableok",
+      "title": "禁用-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enableok",
+      "title": "启用-确认按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "hiddencancelBtn",
+      "title": "隐藏-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "showcancelBtn",
+      "title": "显示-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "disablecancelBtn",
+      "title": "禁用-取消按钮",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "enablecancelBtn",
+      "title": "启用-取消按钮",
+      "schema": {
+        "type": "any"
       }
     }
   ],
@@ -57,6 +118,13 @@
     {
       "id": "cancelBtnClick",
       "title": "点击取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "afterClose",
+      "title": "关闭回调",
       "schema": {
         "type": "any"
       }

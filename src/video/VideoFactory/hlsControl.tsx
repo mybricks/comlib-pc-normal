@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Data } from '../types';
 import styles from './index.less';
 export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }, ref) => {
-  const { src, controls, poster, autoplay, loop } = data;
+  const { src, controls, poster, autoplay, loop, fit, muted, style } = data;
   useEffect(() => {
     let hls;
     import('hls.js').then((res) => {
@@ -62,6 +62,8 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
       onClick={handleClick}
       ref={ref}
       crossOrigin="anonymous"
+      muted={!!muted}
+      style={{ ...style, objectFit: fit }}
     />
   );
 });

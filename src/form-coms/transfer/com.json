@@ -3,14 +3,18 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_rdyy4i.0a226a8a9030181e.png",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setSource",
@@ -51,7 +55,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置穿梭框始值，并触发初始化事件输出",
+      "desc": "设置穿梭框始值，并触发值初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -108,7 +112,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "array",
         "items": {
@@ -142,7 +146,7 @@
     },
     {
       "id": "onChange",
-      "title": "目标数据改变",
+      "title": "目标数据更新",
       "schema": {
         "type": "array",
         "items": {

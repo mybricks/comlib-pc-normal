@@ -17,7 +17,7 @@ export const BaseEditor = [
           data.items[getEleIdx({ data, focusArea })]?.type || TypeEnum.Text
         );
       },
-      set({ data, focusArea, slots }: EditorResult<Data>, value: TypeEnum) {
+      set({ data, focusArea, slots, input}: EditorResult<Data>, value: TypeEnum) {
         if (!focusArea) return;
         const item = data.items[getEleIdx({ data, focusArea })];
         item.type = value;
@@ -27,6 +27,7 @@ export const BaseEditor = [
           item.slotId = slotId;
           item.value = void 0;
           addScopeSlotInputs({ data, item, slots });
+          updateScopeIOSchema({ data, item, slots, input });
         } else {
           item.showLable = true;
         }
@@ -89,9 +90,11 @@ export const BaseEditor = [
         const item = data.items[getEleIdx({ data, focusArea })];
         item.key = value;
         updateIOSchema({ data, input, output });
-        if (item.type !== TypeEnum.Text) {
-          updateScopeIOSchema({ data, item, slots, input });
-        }
+        data.items.map((item)=>{
+          if(item.type !== TypeEnum.Text){
+            updateScopeIOSchema({ data, item, slots, input });
+          }
+        })
       }
     }
   },
@@ -108,6 +111,27 @@ export const BaseEditor = [
         data.items[getEleIdx({ data, focusArea })].value = value;
       }
     }
+  },
+  {
+    title: '数据类型',
+    type: '_schema',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return data.items[getEleIdx({ data, focusArea })]?.schema;
+      },
+      set({ data, focusArea, input, output, slots,  }: EditorResult<Data>, value: string) {
+        if (!focusArea) return;
+        const item = data.items[getEleIdx({ data, focusArea })];
+        item.schema = value;
+        updateIOSchema({ data, input, output });
+        data.items.map((item)=>{
+          if(item.type !== TypeEnum.Text){
+            updateScopeIOSchema({ data, item, slots, input });
+          }
+        })
+      }
+    }
   }
 ];
 
@@ -120,7 +144,7 @@ function addScopeSlotInputs({ data, item, slots }) {
       {
         id: InputIds.CurDs,
         title: '当前数据',
-        schema: data.inputSchema ? data.inputSchema.properties[item.key] : { type: 'string' }
+        schema: data.inputSchema ? item.schema : { type: 'string' }
       },
       {
         id: InputIds.DataSource,
@@ -137,11 +161,11 @@ function removeScopeSlotInputs({ item, slots }) {
   }
 }
 
-function updateScopeIOSchema({ data, slots, item, input }) {
+export function updateScopeIOSchema({ data, slots, item, input }) {
   const slot = slots.get(item.slotId);
   slot.inputs
     .get(InputIds.CurDs)
-    .setSchema((data.inputSchema && data.inputSchema.properties[item.key]) || { type: 'string' });
+    .setSchema(item.schema || { type: 'string' });
   
   slot.inputs
     .get(InputIds.DataSource)

@@ -14,12 +14,14 @@ interface Env {
   vars?: {
     getQuery: () => any;
     getCookies: () => any;
+    getRouter: () => Record<string, Function>
   }
   [x: string]: any
 }
 interface RuntimeParams<T> {
   /** 组件ID **/
   id: string
+  name: string
   data: T
   env: Env
   style: any
@@ -44,10 +46,13 @@ interface RuntimeParams<T> {
 
 interface EditorResult<T> {
   id: string
+  name: string
   data: T
   focusArea: any
   output: any
   input: any
+  inputs: any
+  outputs: any
   slot: any,
   diagram: any
   style: any

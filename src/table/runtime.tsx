@@ -128,6 +128,13 @@ export default function (props: RuntimeParams<Data>) {
           });
         });
       }
+
+      // 动态设置表头
+      if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
+        inputs[InputIds.SET_SHOW_TitleS]((val) => {
+          data.columns = val;
+        });
+      }
     }
   }, []);
 
@@ -297,6 +304,9 @@ export default function (props: RuntimeParams<Data>) {
         if (typeof ds?.pageSize === 'number' && ds?.pageSize > 0) {
           data.paginationConfig.pageSize = ds?.pageSize;
         }
+        if (typeof ds?.pageNum === 'number') {
+          data.paginationConfig.current = ds?.pageNum;
+        }
       } else {
         console.error('[数据表格]：未传入列表数据', ds);
       }
@@ -364,7 +374,7 @@ export default function (props: RuntimeParams<Data>) {
       filterMap,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} />
+          <ColumnRender {...columnRenderProps} slots={props.slots} />
         </ErrorBoundary>
       )
     });
@@ -376,9 +386,10 @@ export default function (props: RuntimeParams<Data>) {
       initFilterMap();
     }
   }, [JSON.stringify(data.columns)]);
-  const renderColumnsWhenEdit = useCallback(() => {
-    return renderColumns();
-  }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
+  // const renderColumnsWhenEdit = useCallback(() => {
+  //   return renderColumns();
+  // }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
+  const renderColumnsWhenEdit = renderColumns;
 
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {

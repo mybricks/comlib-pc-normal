@@ -4,8 +4,19 @@ import { Input } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import css from './style.less';
+import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
-export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Data>) {
+export default function ({
+  data,
+  inputs,
+  outputs,
+  env,
+  style,
+  parentSlot,
+  id,
+  name
+}: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
   const validate = useCallback(
@@ -27,6 +38,8 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
@@ -50,35 +63,24 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
     [value]
   );
 
-  // inputs['setValue']((val: string) => {
-  //   setValue(val);
-  // });
-
-  // inputs['getValue']((_, outputRels) => {
-  //   outputRels['returnValue'](getValue());
-  // });
-
-  // inputs['resetValue'](() => {
-  //   setValue(void 0);
-  // });
-
-  // inputs['setDisabled'](() => {
-  //   data.disabled = true;
-  // });
-
-  // inputs['setEnabled'](() => {
-  //   data.disabled = false;
-  // });
-
-  // inputs['validate'](validate);
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name });
+  };
 
   const getValue = useCallback(() => value, [value]);
 
   const onChange = (e) => {
     const _value = e.target.value;
     setValue(_value);
+    onChangeForFc(parentSlot, { id, name, value: _value });
     outputs['onChange'](_value);
   };
+
+  const onPressEnter = useCallback((e) => {
+    const value = e.target.value;
+    onValidateTrigger();
+    outputs['onPressEnter'](value);
+  }, []);
 
   return (
     <div style={style}>
@@ -88,6 +90,7 @@ export default function ({ data, inputs, outputs, env, style }: RuntimeParams<Da
         value={value}
         disabled={disabled}
         onChange={onChange}
+        onPressEnter={onPressEnter}
       />
     </div>
   );

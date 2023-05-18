@@ -4,6 +4,7 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Option {
   value: string;
@@ -27,6 +28,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
 
   useFormItemInputs({
+    id: props.id,
+    name: props.name,
     inputs,
     outputs,
     configs: {
@@ -69,11 +72,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const onChange = (value) => {
     data.value = value;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   };
 

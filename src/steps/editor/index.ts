@@ -17,7 +17,8 @@ export default {
         type: 'Select',
         options: [
           { label: '默认', value: 'default' },
-          { label: '导航类型', value: 'navigation' }
+          { label: '导航类型', value: 'navigation' },
+          { label: '点状类型', value: 'dotted' }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
@@ -69,6 +70,18 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.steps.showDesc = value;
+          }
+        }
+      },
+      {
+        title: '点击切换',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.steps.canClick;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.steps.canClick = val
           }
         }
       },

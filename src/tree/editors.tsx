@@ -127,6 +127,22 @@ export default {
             }
           },
           {
+            title: '父子节点勾选联动',
+            type: 'Switch',
+            description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.checkable;
+            },
+            value: {
+              get({ data }: Result) {
+                return !data.checkStrictly;
+              },
+              set({ data }: Result, value: boolean) {
+                data.checkStrictly = !value;
+              }
+            }
+          },
+          {
             title: '禁用',
             type: 'Switch',
             ifVisible({ data }: Result) {
@@ -146,7 +162,7 @@ export default {
             title: '输出父节点信息',
             type: 'Switch',
             ifVisible({ data }: Result) {
-              return data.checkable;
+              return data.checkable && !data.checkStrictly;
             },
             value: {
               get({ data }: Result) {
@@ -182,7 +198,7 @@ export default {
             }
           },
           {
-            title: '选中事件',
+            title: '勾选事件',
             type: 'Switch',
             value: {
               get({ data }: EditorResult<Data>) {
@@ -190,8 +206,8 @@ export default {
               },
               set({ data, output }: EditorResult<Data>, val) {
                 if (val) {
-                  output.add('check', '选中事件', {
-                    title: '选中项数据',
+                  output.add('check', '勾选事件', {
+                    title: '勾选项数据',
                     type: 'array',
                     items: {
                       type: 'string'
@@ -205,7 +221,7 @@ export default {
             }
           },
           {
-            title: '选中事件',
+            title: '勾选事件',
             type: '_Event',
             ifVisible({ data }: EditorResult<Data>) {
               return data.useCheckEvent;

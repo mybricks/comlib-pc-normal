@@ -102,17 +102,24 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
             }
           },
           {
-            title: '值发生改变',
+            title: '值更新',
             type: '_Event',
             options: {
               outputId: 'onChange'
+            }
+          },
+          {
+            title: '按下回车',
+            type: '_event',
+            options: {
+              outputId: 'onPressEnter'
             }
           }
         ]

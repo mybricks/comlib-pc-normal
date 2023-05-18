@@ -36,6 +36,9 @@ export interface Item {
   suffixBtnText?: string;
   itemStyle?: any;
   isHidden?: boolean;
+
+  //每一项的schema
+  schema?: any;
 }
 
 /** 数据来源 */
@@ -75,6 +78,7 @@ export interface Data {
   useSlotProps?: boolean;
   rawData: any;
   inputSchema: any;
+  globalLabelStyle: React.CSSProperties
 }
 
 export const InputIds = {

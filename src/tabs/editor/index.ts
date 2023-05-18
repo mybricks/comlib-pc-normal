@@ -1,21 +1,6 @@
-import { uuid } from '../../utils';
 import { Data, InputIds, OutputIds, SlotIds } from '../constants';
-import TabEditor from './tab'
-
-const DefaultSchema = {
-  type: 'any'
-};
-
-const getId = (data) => {
-  const last = data.tabList.slice().pop();
-  const index = parseInt(last.id.substring(3)) + 1;
-  return `tab${index}`;
-};
-
-const addEventIO = (output, id) => {
-    output.add(`${id}_into`, `${id}显示`, {type: 'any'})
-    output.add(`${id}_leave`, `${id}隐藏`, {type: 'any'})
-}
+import TabEditor from './tab';
+import { createItem, addEventIO } from './common';
 
 export default {
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
@@ -26,13 +11,13 @@ export default {
         type: 'Button',
         value: {
           set({ data, slots, output }: EditorResult<Data>) {
-            const key = uuid();
-            const id = getId(data);
+            const newItem = createItem(data);
             slots.add({
-              id,
-              title: `标签页${data.tabList.length + 1}`
-            })
-            addEventIO(output, id)
+              id: newItem.id,
+              title: newItem.name
+            });
+            addEventIO(output, newItem);
+            data.tabList.push(newItem);
             // slots.add({
             //   id,
             //   title: `标签页${data.tabList.length + 1}`,
@@ -55,81 +40,9 @@ export default {
             //     }
             //   ]
             // });
-            data.tabList.push({
-              id,
-              key,
-              name: '新标签页'
-            });
           }
         }
       },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '标签页点击',
-            type: '_Event',
-            options: () => {
-              return {
-                outputId: OutputIds.OnTabClick
-              };
-            }
-          }
-        ]
-      }
-    ];
-    cate2.title = '样式';
-    cate2.items = [
-      {
-        title: '外观',
-        type: 'Select',
-        options: [
-          { value: 'card', label: '卡片' },
-          { value: 'line', label: '简约' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.type;
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.type = value;
-          }
-        }
-      },
-      {
-        title: '页签位置',
-        type: 'Select',
-        options: [
-          { label: '上', value: 'top' },
-          { label: '左', value: 'left' },
-          { label: '右', value: 'right' },
-          { label: '下', value: 'bottom' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.tabPosition || 'top';
-          },
-          set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
-            data.tabPosition = value;
-          }
-        }
-      },
-      {
-        title: '标签居中',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.centered;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.centered = value;
-          }
-        }
-      }
-    ];
-
-    cate3.title = '高级';
-    cate3.items = [
       {
         title: '额外内容',
         items: [
@@ -194,12 +107,17 @@ export default {
             const hasEvent = input.get(InputIds.SetShowTab);
             if (value) {
               !hasEvent &&
-                input.add(InputIds.SetShowTab, '设置显示tab', {
-                  type: 'array',
-                  items: {
-                    title: '显示tab的Id',
-                    type: 'string'
-                  }
+                input.add({
+                  id: InputIds.SetShowTab,
+                  title: '设置显示tab',
+                  schema: {
+                    type: 'array',
+                    items: {
+                      title: '显示tab的Id',
+                      type: 'number'
+                    }
+                  },
+                  desc: '设置显示的标签页，下标从0开始'
                 });
             } else {
               hasEvent && input.remove(InputIds.SetShowTab);
@@ -217,6 +135,69 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.hideSlots = value;
+          }
+        }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '标签页点击',
+            type: '_Event',
+            options: () => {
+              return {
+                outputId: OutputIds.OnTabClick
+              };
+            }
+          }
+        ]
+      }
+    ];
+    cate2.title = '样式';
+    cate2.items = [
+      {
+        title: '外观',
+        type: 'Select',
+        options: [
+          { value: 'card', label: '卡片' },
+          { value: 'line', label: '简约' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.type;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.type = value;
+          }
+        }
+      },
+      {
+        title: '页签位置',
+        type: 'Select',
+        options: [
+          { label: '上', value: 'top' },
+          { label: '左', value: 'left' },
+          { label: '右', value: 'right' },
+          { label: '下', value: 'bottom' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.tabPosition || 'top';
+          },
+          set({ data }: EditorResult<Data>, value: 'left' | 'top' | 'bottom' | 'right') {
+            data.tabPosition = value;
+          }
+        }
+      },
+      {
+        title: '标签居中',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.centered;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.centered = value;
           }
         }
       }

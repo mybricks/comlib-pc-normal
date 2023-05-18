@@ -34,18 +34,18 @@ export default {
         }
       }
     },
-    {
-      title: '是否合并',
-      type: 'switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return !!data.isMerge;
-        },
-        set({ data, input, output }: EditorResult<Data>, val: boolean) {
-          data.isMerge = val;
-          output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
-        }
-      }
-    }
+    // {
+    //   title: '是否合并',
+    //   type: 'switch',
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return !!data.isMerge;
+    //     },
+    //     set({ data, input, output }: EditorResult<Data>, val: boolean) {
+    //       data.isMerge = val;
+    //       output.get(OutputIds.Output).setSchema(getOutputSchema(data, input));
+    //     }
+    //   }
+    // }
   ]
 };

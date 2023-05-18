@@ -40,7 +40,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   return (
     <div
       style={{
-        textAlign: data.align || AlignTypeEnum.Left,
+        // textAlign: data.align || AlignTypeEnum.Left,
         lineHeight: 1
       }}
       onMouseOver={() => {

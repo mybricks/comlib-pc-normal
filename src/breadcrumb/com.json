@@ -7,6 +7,9 @@
   "description": "面包屑",
   "icon": "./icon.svg",
   "data": "./data.json",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "outputs": []

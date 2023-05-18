@@ -1,7 +1,8 @@
 import { Data } from './types';
 
 export default function ({ 
-  data
+  data,
+  output
 }: UpgradeParams<Data>): boolean {
   //1.0.2 ->1.0.3，去除 { "id": "extra", "title": "卡片操作容器" }
   data.btnList.forEach((item) => {
@@ -16,8 +17,7 @@ export default function ({
     }
   })
 
-  //外网1.0.0->1.0.1
-  //内网1.0.3->1.0.4, isCustom，自定义; src, 图片上传地址; contentSize, 图片尺寸
+  //1.0.0->1.0.1
   data.btnList.forEach(function(item){
     if(typeof item.isCustom === 'undefined'){
       item.isCustom = false;
@@ -29,5 +29,32 @@ export default function ({
       item.contentSize = [14, 14];
     }
   })
+
+  //1.0.5->1.0.6, 增加动态设置loading开关
+  data.btnList.forEach((item)=>{
+    if(typeof item.loading === 'undefined'){
+      item.loading = false
+    }
+    if(typeof item.useDynamicLoading === 'undefined'){
+      item.useDynamicLoading = false
+    }
+  })
+
+  /**
+   * @description v1.0.5 , fix setSchema问题
+  */
+  const click = output.get('btn0');
+  const dbClick = output.get('doubleClick_btn0');
+  data.btnList.forEach((item)=>{
+    if(typeof item.dataType === 'number'){
+      click.setSchema({
+        type: 'number'
+      });
+      dbClick.setSchema({
+        type: 'number'
+      });
+    }
+  })
+  
   return true;
 }

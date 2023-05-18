@@ -1,8 +1,9 @@
 import { message } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
+import { uuid } from '../utils';
 
 // 运行时执行
-const runtimeExecute = ({ data, inputs, outputs }: RuntimeParams<Data>) => {
+const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
   const { type, content, duration } = data;
   //结束提示
   const onClose = () => {
@@ -16,7 +17,10 @@ const runtimeExecute = ({ data, inputs, outputs }: RuntimeParams<Data>) => {
     message[type]({
       content: str || ' ',
       duration,
-      onClose: onClose
+      onClose: onClose,
+      getContainer() {
+        return env?.canvasElement || document.body;
+      }
     });
   };
 

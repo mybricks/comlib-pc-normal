@@ -134,12 +134,39 @@ export default {
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
             const values: any[] = [];
+            let renderError = false;
             options.forEach(({ checked, value }) => {
               if (checked) values.push(value);
+              if (value === undefined) renderError = true;
             });
+
+            data.renderError = renderError;
             data.value = values as any;
             data.staticOptions = options;
             data.config.options = options;
+          }
+        }
+      },
+      {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
           }
         }
       },
@@ -212,14 +239,14 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
             }
           },
           {
-            title: '值发生改变',
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'

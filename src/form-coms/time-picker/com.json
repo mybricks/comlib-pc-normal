@@ -3,14 +3,18 @@
   "namespace": "mybricks.normal-pc.time-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.1",
+  "version": "1.0.10",
   "description": "时间选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_jesr5m.5979400761c62cb9.png",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.ts",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -77,7 +81,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "number"
       }
@@ -108,7 +112,7 @@
     },
     {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
       "schema": {
         "type": "number"
       }

@@ -115,6 +115,9 @@ function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
         },
         pageSize: {
           type: 'number'
+        },
+        pageNum: {
+          type: 'number'
         }
       }
     });
@@ -341,6 +344,23 @@ export const Schemas = {
     type: 'array',
     items: {
       type: 'string'
+    }
+  },
+  SET_SHOW_TitleS: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string'
+        },
+        dataIndex: {
+          type: 'string'
+        },
+        width: {
+          type: 'number'
+        }
+      }
     }
   }
 };

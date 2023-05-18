@@ -242,19 +242,20 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   }, []);
 
   useEffect(() => {
-    const resultKeys = data.outParentKeys
-      ? checkedKeys
-      : excludeParentKeys(data.treeData, checkedKeys);
+    const resultKeys =
+      data.outParentKeys || data.checkStrictly
+        ? checkedKeys
+        : excludeParentKeys(data.treeData, checkedKeys);
     inputs['submit']((val, relOutputs) => {
       relOutputs['submit'](outputNodeValues(data.treeData, resultKeys));
     });
   }, [checkedKeys]);
 
-  useEffect(() => {
-    inputs['outSelectedValues']((val, relOutputs) => {
-      relOutputs['outSelectedValues'](outputNodeValues(data.treeData, selectedKeys));
-    });
-  }, [selectedKeys]);
+  // useEffect(() => {
+  //   inputs['outSelectedValues']((val, relOutputs) => {
+  //     relOutputs['outSelectedValues'](outputNodeValues(data.treeData, selectedKeys));
+  //   });
+  // }, [selectedKeys]);
 
   const onCheck = useCallback((checkedKeys: React.Key[], info) => {
     // if (env.runtime) {
@@ -265,12 +266,14 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     //     outputs["check"](checkedKeys);
     //   }
     // }
-    data.checkedKeys = [...checkedKeys];
-    setCheckedKeys([...checkedKeys]);
+    const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
+    data.checkedKeys = [...checked];
+    setCheckedKeys([...checked]);
     if (data.useCheckEvent) {
-      const resultKeys = data.outParentKeys
-        ? checkedKeys
-        : excludeParentKeys(data.treeData, checkedKeys);
+      const resultKeys =
+        data.outParentKeys || data.checkStrictly
+          ? checked
+          : excludeParentKeys(data.treeData, checked);
       outputs['check'](outputNodeValues(data.treeData, resultKeys));
     }
   }, []);
@@ -469,6 +472,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       ) : (
         <Tree
           checkable={data.checkable}
+          checkStrictly={data.checkStrictly}
           onExpand={onExpand}
           expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
           autoExpandParent={autoExpandParent}

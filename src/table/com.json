@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.0.3",
+  "version": "1.0.19",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,9 +9,15 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
+  "ai": "./ai.ts",
+  "upgrade": "./upgrade.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
+  "schema": [
+    "mybricks.normal-pc.domain-table/table",
+    "*"
+  ],
   "inputs": [
     {
       "id": "dataSource",

@@ -1,34 +1,50 @@
 import { SelectProps } from 'antd';
-import { getObjectDistrbuteStr, getObjectStr } from '../../utils/toReact';
+import { getPropsFromObject } from '../../utils/toReact';
 import { Data } from './types';
 
 export default function ({ data, slots }: RuntimeParams<Data>) {
     const selectCls = {
     };
-    const selectCfg: SelectProps = {
+
+    const defaultSelectProps = {
+        allowClear: false,
+        loading: false,
+        disabled: false,
+        mode: 'default',
+        labelInValue: false,
+        showSearch: data.config.mode === "default",
+        filterOption: true,
+        optionFilterProp: 'value',
+    };
+    const selectProps: SelectProps = {
         ...data.config,
-        options: data.config.options,
-        value: data.value,
+        options: data.config.options?.map(opt => {
+            const { label, value } = opt;
+            return {
+                label,
+                value
+            }
+        }),
+        defaultValue: data.value,
+        mode: data.config.mode === 'default' ? void 0 : data.config.mode,
         // onChange,
         // onBlur,
         // onSearch,
         // notFoundContent
     };
 
-    const str = `<div style={${getObjectStr(selectCls)}}>
-                   <Select
-                    ${getObjectDistrbuteStr(selectCfg)}
-                   />
-                 </div>`
+    const str = `<Select
+                    ${getPropsFromObject(selectProps, defaultSelectProps)}
+                />`
 
     return {
         imports: [
             {
-                form: 'antd',
+                from: 'antd',
                 coms: ['Select']
             },
             {
-                form: 'antd/dist/antd.css',
+                from: 'antd/dist/antd.css',
                 coms: []
             }
         ],

@@ -58,6 +58,8 @@ export interface Data {
     isConnected?: boolean;
     useBtnLoading?: boolean;
   })[];
+  destroyOnClose?: boolean;
+  maskClosable?: boolean;
   getContainer?: () => any;
 }
 
@@ -73,7 +75,8 @@ export const InputIds = {
   HideTitle: 'hideTitle'
 };
 export const OutputIds = {
-  Cancel: 'cancel'
+  Cancel: 'cancel',
+  AfterClose: 'afterClose',
 };
 export const SlotIds = {
   Footer: 'footer',

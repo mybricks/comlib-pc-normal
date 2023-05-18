@@ -3,13 +3,17 @@
   "namespace": "mybricks.normal-pc.form-email",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "description": "邮箱",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-aff3c239-e76c-492b-959e-98ab33d5e889.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
@@ -75,14 +79,14 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }
     },
     {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
       "schema": {
         "type": "string"
       }

@@ -8,6 +8,7 @@ export interface StepItem {
   hide?: boolean;
   content?: any;
   render?: boolean
+  useCustomDesc?: boolean
 }
 
 export type Btn = 'previous' | 'next' | 'submit'
@@ -35,6 +36,7 @@ interface Steps {
   type: "default" | "navigation" | "dotted";
   showDesc: boolean;
   direction?: 'horizontal' | 'vertical',
+  canClick?: boolean
 }
 
 
@@ -52,4 +54,5 @@ export interface Data {
 }
 
 export const INTO = '_into';
-export const LEAVE = '_leave'
+export const LEAVE = '_leave';
+export const CLICK = '_click';

@@ -60,10 +60,14 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           onHeaderCell={(): any => {
             return {
               'data-table-th-idx': cItem.key,
-              style: {
-                color: cItem.titleColor,
-                backgroundColor: cItem.titleBgColor
-              }
+              style: cItem.headStyle
+                ? {
+                    ...cItem.headStyle
+                  }
+                : {
+                    color: cItem.titleColor,
+                    backgroundColor: cItem.titleBgColor
+                  }
             };
           }}
         >
@@ -146,18 +150,26 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
         onFilter={onFilter}
         onCell={() => {
           return {
-            style: {
-              color: cItem.contentColor
-            }
+            style: cItem.contentStyle
+              ? {
+                  ...cItem.contentStyle
+                }
+              : {
+                  color: cItem.contentColor
+                }
           };
         }}
         onHeaderCell={(): any => {
           return {
             'data-table-th-idx': cItem.key,
-            style: {
-              color: cItem.titleColor,
-              backgroundColor: cItem.titleBgColor
-            }
+            style: cItem.headStyle
+              ? {
+                  ...cItem.headStyle
+                }
+              : {
+                  color: cItem.titleColor,
+                  backgroundColor: cItem.titleBgColor
+                }
           };
         }}
       />
