@@ -40,7 +40,7 @@ export default function ({
 
   const setTimestampRange = (val) => {
     if (Array.isArray(val) && !val.length) {
-      setValue([]);
+      setValue([] as unknown as [Moment, Moment]);
       return;
     }
     if (typeof val === 'string') {
@@ -103,11 +103,15 @@ export default function ({
 
   const getValue = useCallback(
     (value) => {
-      const _value = value ? [value[0].valueOf(), value[1].valueOf()] : [];
+      const _value = (value || []).map((val) => {
+        if (format === 'timeStamp') return val.endOf('second').valueOf();
+        if (format === 'custom') return val.format(customFormat);
+        return val.format(format);
+      });
       const formatValue = outFormat === 'array' ? _value : _value.join(splitChar);
       return formatValue;
     },
-    [outFormat, splitChar]
+    [outFormat, splitChar, format, customFormat]
   );
 
   const onChange = useCallback(
@@ -122,6 +126,7 @@ export default function ({
 
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;
+    if (format === 'timeStamp') return 'HH:mm:ss';
     return format;
   }, [format, customFormat]);
 
