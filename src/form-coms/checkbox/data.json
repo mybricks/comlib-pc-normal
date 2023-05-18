@@ -3,6 +3,15 @@
     "options": [],
     "disabled": false
   },
+  "staticOptions": [
+    {
+      "label": "选项1",
+      "value": "选项1",
+      "type": "default",
+      "checked": false,
+      "key": "option1"
+    }
+  ],
   "checkAll": false,
   "checkAllText": "全选"
 }
