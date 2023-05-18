@@ -24,7 +24,16 @@ class Ctx {
   tinymceFSId!: string;
 }
 
-export default function ({ data, outputs, inputs, env, readonly, parentSlot, id, name }): JSX.Element {
+export default function ({
+  data,
+  outputs,
+  inputs,
+  env,
+  readonly,
+  parentSlot,
+  id,
+  name
+}): JSX.Element {
   const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
