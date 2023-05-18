@@ -6,7 +6,6 @@ export interface Tag extends TagProps {
   key: string;
   icon?: string;
   content: React.ReactElement | string;
-  checkable?: boolean;
   checked?: boolean;
   textColor?: string;
   borderColor?: string;
@@ -15,5 +14,12 @@ export interface Tag extends TagProps {
 export interface Data extends SpaceProps {
   tags: Array<Tag>;
   dynamic?: boolean;
+  appendAble?: boolean;
+  checkable?: boolean;
   tagSize: TagSize;
+  tagStyle: Partial<{
+    color: string;
+    borderColor: string;
+    textColor: string;
+  }>;
 }
