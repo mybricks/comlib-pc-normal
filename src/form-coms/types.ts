@@ -16,7 +16,10 @@ export interface Option {
 
 export const InputIds = {
   SetValue: 'setValue',
-  SetInitialValue: 'setInitialValue'
+  SetInitialValue: 'setInitialValue',
+  ResetValue: 'resetValue',
+  SetDisabled: 'setDisabled',
+  SetEnabled: 'setEnabled'
 }
 
 export const OutputIds = {
