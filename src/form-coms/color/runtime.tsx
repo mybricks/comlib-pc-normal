@@ -5,7 +5,6 @@ import ColorPicker from './color-picker';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
-  isFormItem?: boolean;
   color: string;
   rules: any[];
   disabled: boolean;
