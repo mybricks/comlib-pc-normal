@@ -70,6 +70,9 @@ export default function Runtime({
         if (!typeCheck(val, typeMap.type)) {
           logger.error(typeMap.message);
         } else {
+          if (val === undefined) {
+            data.value = '';
+          }
           data.value = val;
           outputs[OutputIds.OnInitial](val);
         }
