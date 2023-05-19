@@ -1,5 +1,6 @@
 import { Data, OutputIds } from './constants';
 import { message } from 'antd';
+import IconEditor from './iconEditor';
 
 export default {
   '@init'({ style }) {
@@ -60,6 +61,7 @@ export default {
         }
       ]
     },
+    ...IconEditor,
     {
       title: '单击',
       type: '_Event',

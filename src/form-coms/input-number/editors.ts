@@ -4,6 +4,9 @@ export default {
   '@resize': {
     options: ['width']
   },
+  '@init': ({ style }) => {
+    style.width = '100%'
+  },
   ':root' ({data}: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -90,6 +93,54 @@ export default {
           set({ data }, value: string) {
             const num = parseInt(value, 10);
             data.config.step = isNaN(num) || num <= 0 ? undefined : num;
+          }
+        }
+      },
+      {
+        title: '格式化展示',
+        type: 'Switch',
+        description: '开启开关后，格式化数字，以展示具有具体含义的数据',
+        value: {
+          get({ data }) {
+            return data.isFormatter;
+          },
+          set({ data }, value: boolean) {
+            data.isFormatter = value;
+          }
+        }
+      },
+      {
+        title: '字符位置',
+        type: 'Select',
+        ifVisible({ data }) {
+          return data.isFormatter;
+        },
+        options: [
+          { label: '前缀', value: 'prefix' },
+          { label: '后缀', value: 'suffix' },
+        ],
+        value: {
+          get({ data }) {
+            return data.charPostion;
+          },
+          set({ data }, value: string) {
+            data.charPostion = value
+          },
+        }
+      },
+      {
+        title: '格式化字符',
+        type: 'Text',
+        description: '默认为%, 可自定义',
+        ifVisible({ data }) {
+          return data.isFormatter;
+        },
+        value: {
+          get({ data }) {
+            return data.character;
+          },
+          set({ data }, value: string) {
+            data.character = value;
           }
         }
       },

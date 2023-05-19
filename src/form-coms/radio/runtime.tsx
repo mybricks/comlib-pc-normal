@@ -115,32 +115,63 @@ export default function Runtime({
     onValidateTrigger();
   }, []);
 
-  return (
-    <div className={css.radio}>
+  const renderRadio = () => {
+    return (
+      <div className={css.radio}>
+        <Radio.Group
+          optionType={data.enableButtonStyle ? 'button' : 'default'}
+          buttonStyle={data.buttonStyle}
+          disabled={data.config.disabled}
+          value={data.value}
+          onChange={onChange}
+        >
+          <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+              const label = item.label;
+              return (
+                <Radio
+                  key={item.key}
+                  value={item.value}
+                  disabled={item.disabled}
+                  checked={item.checked}
+                  style={{ marginRight: 8 }}
+                >
+                  {label}
+                </Radio>
+              );
+            })}
+          </Space>
+        </Radio.Group>
+      </div>
+    );
+  };
+
+  return data.enableButtonStyle ? (
+    <div>
       <Radio.Group
         optionType={data.enableButtonStyle ? 'button' : 'default'}
         buttonStyle={data.buttonStyle}
-        disabled={data.config.disabled}
+        {...data.config}
         value={data.value}
         onChange={onChange}
       >
-        <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
-          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-            const label = item.label;
-            return (
-              <Radio
-                key={item.key}
-                value={item.value}
-                disabled={item.disabled}
-                checked={item.checked}
-                style={{ marginRight: 8 }}
-              >
-                {label}
-              </Radio>
-            );
-          })}
-        </Space>
+        {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+          const label = item.label;
+          return (
+            <Radio
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              checked={item.checked}
+              style={{ marginRight: 8 }}
+            >
+              {label}
+            </Radio>
+          );
+        })}
       </Radio.Group>
     </div>
+  ) : (
+    renderRadio()
   );
 }

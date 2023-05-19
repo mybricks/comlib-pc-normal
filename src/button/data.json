@@ -14,5 +14,13 @@
   "text": "按钮",
   "dataType": "number",
   "outVal": 0,
-  "inVal": ""
+  "inVal": "",
+  "useIcon": false,
+  "isCustom": false,
+  "icon": "HomeOutlined",
+  "src": "",
+  "showText": true,
+  "iconLocation": "front",
+  "iconDistance": 8,
+  "contentSize": [14,14]
 }

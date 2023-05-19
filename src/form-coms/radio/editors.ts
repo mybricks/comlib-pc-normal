@@ -152,6 +152,9 @@ export default {
         title: '布局',
         description: '水平排列和垂直排列',
         type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.enableButtonStyle;
+        },
         options: [
           {
             label: '水平',

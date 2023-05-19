@@ -24,5 +24,34 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
       type: 'number'
     });
   }
+
+  /**
+   * @description v1.0.5->1.0.6 , 增加图标
+  */
+  if (typeof data.useIcon === "undefined") {
+    data.useIcon = false;
+  };
+  if (typeof data.isCustom === "undefined") {
+    data.isCustom = false;
+  };
+  if (typeof data.icon === "undefined") {
+    data.icon = 'HomeOutlined';
+  };
+  if (typeof data.src === "undefined") {
+    data.src = "";
+  };
+  if (typeof data.showText === "undefined") {
+    data.showText = true;
+  };
+  if (typeof data.iconDistance === "undefined") {
+    data.iconDistance = 8;
+  };
+  if (typeof data.iconLocation === "undefined"){
+    data.iconLocation = "front"
+  }
+  if (typeof data.contentSize === "undefined") {
+    data.contentSize = [14,14];
+  };
+
   return true;
 }
