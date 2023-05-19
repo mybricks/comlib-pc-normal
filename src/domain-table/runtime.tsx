@@ -65,7 +65,9 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
     (query, pageInfo?: Record<string, unknown>) => {
       setLoading(true);
       const pageParams = pageInfo || { pageNum, pageSize: edit ? 5 : pageSize };
-      pageParams.pagination = data.pagination?.show;
+      if (!data.pagination?.show) {
+        delete pageParams.pageNum;
+      }
       const primaryField = data.entity?.fieldAry.find((field) => field.isPrimaryKey);
       const orderFields = data.fieldAry
         .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM && field.sorter)
