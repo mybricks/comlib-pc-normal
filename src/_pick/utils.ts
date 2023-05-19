@@ -1,5 +1,5 @@
 import { SuggestionType } from './types';
-import Sandbox from './sandbox';
+import { ExpressionSandbox } from '../../package/com-utils';
 import { mock } from 'mock-json-schema';
 import toJsonSchema from 'to-json-schema';
 export const getCodeFromTemplate = (template: string) => {
@@ -8,9 +8,11 @@ export const getCodeFromTemplate = (template: string) => {
   //   return code[0];
 };
 
+const PREFIX = 'inputValue';
+
 const defaultWrapSuggestion = {
-  label: Sandbox.CONTEXT,
-  insertText: Sandbox.CONTEXT,
+  label: PREFIX,
+  insertText: PREFIX,
   detail: '输入数据'
 };
 
@@ -48,8 +50,8 @@ export const getOutputSchema = (expression: string, inputSchema: any) => {
   if (!expression) return inputSchema;
   try {
     const mockInputValue = mock(inputSchema);
-    const sandbox = new Sandbox();
-    const ret = sandbox.run({ context: mockInputValue, expression });
+    const sandbox = new ExpressionSandbox({ context: mockInputValue, prefix: PREFIX });
+    const ret = sandbox.execute(expression);
     const mockSchema = toJsonSchema(ret);
     const outputSchema = legacySchema(mockSchema);
     return outputSchema;
@@ -65,7 +67,7 @@ const legacySchema = (schema: Record<string, any>) => {
 };
 
 export const isSimplePick = (expression: string) => {
-  return expression.startsWith(Sandbox.CONTEXT);
+  return expression.startsWith(PREFIX);
 };
 
 export const isCombinationPick = (expression: string) => {
