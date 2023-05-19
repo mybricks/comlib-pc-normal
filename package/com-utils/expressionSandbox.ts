@@ -1,8 +1,8 @@
 type Str = string | undefined;
 
 type Options = Partial<{
-  prefix: Str;
-  context: Record<string, any> | undefined;
+  prefix: string;
+  context: Record<string, any>;
 }>;
 
 export default class Sandbox {
@@ -40,7 +40,7 @@ export default class Sandbox {
   }
   execute(expression: Str) {
     const fn = this.scopeCompileCode(expression);
-    const _context = this.options.context ?? window;
+    const _context = this.options.context ?? {};
     return fn.call(this, _context);
   }
 }
