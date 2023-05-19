@@ -34,4 +34,4 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
 }
 
 export { utils };
-export { runExpression } from './expression';
+export { default as ExpressionSandbox } from './expressionSandbox';
