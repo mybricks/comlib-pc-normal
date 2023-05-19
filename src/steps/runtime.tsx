@@ -241,10 +241,11 @@ export default function ({
           direction={data.steps.direction || 'horizontal'}
         >
           {stepAry.map((item: any, index) => {
+            const emptyNode = <div style={{ lineHeight: 32 }} />;
             const stepProps = {
               key: item.id,
-              title: env.i18n(item.title),
-              subTitle: env.i18n(item.subTitle),
+              title: !!item.title ? env.i18n(item.title) : emptyNode,
+              subTitle: !!item.subTitle ? env.i18n(item.subTitle) : emptyNode,
               'data-item-type': 'step'
             };
             if (data.steps.showDesc) {
