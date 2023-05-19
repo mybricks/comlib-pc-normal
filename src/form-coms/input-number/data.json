@@ -9,5 +9,8 @@
     "addonAfter": "",
     "precision": 0,
     "step": 1
-  }
+  },
+  "isFormatter": false,
+  "charPostion": "prefix",
+  "character": "¥"
 }

@@ -16,6 +16,9 @@ export interface Data {
     precision: number;
     step: number;
   };
+  isFormatter: boolean;
+  charPostion: 'prefix' | 'suffix';
+  character: string;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -100,7 +103,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
       } else {
         reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
       }
+      if (data.isFormatter && data.charPostion === 'suffix') {
+        reg = `${reg}${data.character}`;
+      }
+      if (data.isFormatter && data.charPostion === 'prefix') {
+        reg = `${data.character}${reg}`;
+      }
       return reg;
+    }
+  };
+
+  //转换回数字的方式
+  const ParserProps = {
+    parser: (value: any) => {
+      if (data.isFormatter) {
+        let parser = value.replace(`${data.character}`, '');
+        return parser;
+      } else {
+        return value;
+      }
     }
   };
 
@@ -110,6 +131,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={value}
         {...data.config}
         {...NumberProps}
+        {...ParserProps}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
