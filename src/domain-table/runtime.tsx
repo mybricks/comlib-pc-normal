@@ -72,19 +72,26 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
         .map((field) => field.sorter);
       /** 已有按主键排序 */
       const hasPrimaryFieldOrder = orderFields.find((f) => f.fieldId === primaryField);
+      const needFields = data.entity.fieldAry
+        .filter((field) => !field.isPrivate)
+        .map((f) => ({ name: f.name }));
+      data.entity.fieldAry
+        .filter((field) => !!field.mapping?.entity?.fieldAry?.length)
+        .forEach((field) => {
+          field.mapping.entity.fieldAry.forEach((f) => {
+            needFields.push({ name: [field.name, f.name].join('.') });
+          });
+        });
 
       ajax({
         params: {
           query,
-          fields: [
-            { name: 'id' },
-            ...data.entity.fieldAry
-              .filter((field) => !field.isPrivate)
-              .map((f) => ({ name: f.name }))
-          ],
+          fields: needFields,
           orders: [
             ...orderFields,
-            hasPrimaryFieldOrder ? undefined : { fieldId: primaryField.id, order: 'DESC' }
+            hasPrimaryFieldOrder
+              ? undefined
+              : { fieldId: primaryField.id, fieldName: 'id', order: 'DESC' }
           ].filter(Boolean),
           page: pageParams,
           action: 'SELECT'

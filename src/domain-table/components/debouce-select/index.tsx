@@ -35,7 +35,9 @@ const DebounceSelect: FC<DebounceSelectProps> = (props) => {
         params: {
           action: 'SEARCH_BY_FIELD',
           field: curField,
-          orders: primaryField ? [{ fieldId: primaryField.id, order: 'DESC' }] : undefined,
+          orders: primaryField
+            ? [{ fieldId: primaryField.id, fieldName: 'id', order: 'DESC' }]
+            : undefined,
           query: { keyword: value }
         }
       })
