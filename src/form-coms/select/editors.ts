@@ -59,6 +59,19 @@ export default {
         }
       },
       {
+        title: '选择框最大高度',
+        type: 'Text',
+        description: '选择框的最大高度，超出后垂直滚动。不设置或设置为0，表示适应内容高度。默认单位为像素（px）',
+        value: {
+          get({ data }) {
+            return data.maxHeight;
+          },
+          set({ data }, value: string) {
+            data.maxHeight = value;
+          }
+        }
+      },
+      {
         title: '下拉框模式',
         type: 'select',
         description: '可设置下拉框的模式为多选或标签',
@@ -264,7 +277,11 @@ export default {
             if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
               data.value = initValue;
             } else {
-              data.value = initValue[0];
+              if (data.value) {
+                data.value = initValue.find(item => item !== data.value);
+              } else {
+                data.value = initValue[0];
+              }
               // 临时:使用tempOptions存储配置项的prev
               tempOptions = options;
               const formItemVal: any = data.value;

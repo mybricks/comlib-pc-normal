@@ -127,6 +127,7 @@ const RenderTable: FC<RenderTableProps> = (props) => {
       });
       field.sorter = sorter.order
         ? {
+            fieldName: fieldNames.join('.'),
             entityId: fieldNames.length > 1 ? field.mappingField.relationEntityId : data.entity.id,
             fieldId: fieldNames.length > 1 ? field.mappingField.id : field.id,
             order: orderMap[sorter.order]

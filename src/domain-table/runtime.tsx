@@ -65,26 +65,35 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
     (query, pageInfo?: Record<string, unknown>) => {
       setLoading(true);
       const pageParams = pageInfo || { pageNum, pageSize: edit ? 5 : pageSize };
-      pageParams.pagination = data.pagination?.show;
+      if (!data.pagination?.show) {
+        delete pageParams.pageNum;
+      }
       const primaryField = data.entity?.fieldAry.find((field) => field.isPrimaryKey);
       const orderFields = data.fieldAry
         .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM && field.sorter)
         .map((field) => field.sorter);
       /** 已有按主键排序 */
       const hasPrimaryFieldOrder = orderFields.find((f) => f.fieldId === primaryField);
+      const needFields = data.entity.fieldAry
+        .filter((field) => !field.isPrivate)
+        .map((f) => ({ name: f.name }));
+      data.entity.fieldAry
+        .filter((field) => !!field.mapping?.entity?.fieldAry?.length)
+        .forEach((field) => {
+          field.mapping.entity.fieldAry.forEach((f) => {
+            needFields.push({ name: [field.name, f.name].join('.') });
+          });
+        });
 
       ajax({
         params: {
           query,
-          fields: [
-            { name: 'id' },
-            ...data.entity.fieldAry
-              .filter((field) => !field.isPrivate)
-              .map((f) => ({ name: f.name }))
-          ],
+          fields: needFields,
           orders: [
             ...orderFields,
-            hasPrimaryFieldOrder ? undefined : { fieldId: primaryField.id, order: 'DESC' }
+            hasPrimaryFieldOrder
+              ? undefined
+              : { fieldId: primaryField.id, fieldName: 'id', order: 'DESC' }
           ].filter(Boolean),
           page: pageParams,
           action: 'SELECT'
@@ -92,7 +101,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
         ...baseFetchParams
       })
         .then((res) => {
-          if (data.pagination.show) {
+          if (!Array.isArray(res)) {
             setDataSource(res.dataSource || []);
             setTotal(res.total || 0);
             setPageNum(res.pageNum || INIT_PAGE);

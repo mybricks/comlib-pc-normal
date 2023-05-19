@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Select, Spin } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -72,6 +72,9 @@ export default function Runtime({
         if (!typeCheck(val, typeMap.type)) {
           logger.error(typeMap.message);
         } else {
+          if (val === undefined) {
+            data.value = '';
+          }
           data.value = val;
           outputs[OutputIds.OnInitial](val);
         }
@@ -147,6 +150,18 @@ export default function Runtime({
       data.config.disabled = false;
     });
   }, []);
+
+  useEffect(() => {
+    const isNumberString = new RegExp(/^\d*$/);
+    if (isNumberString.test(data.maxHeight)) {
+      document.body.style.setProperty(
+        '--select--selection-overflow-max-height',
+        data.maxHeight + 'px'
+      );
+    } else {
+      document.body.style.setProperty('--select--selection-overflow-max-height', data.maxHeight);
+    }
+  }, [data.maxHeight]);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });

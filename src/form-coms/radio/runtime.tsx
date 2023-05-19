@@ -25,9 +25,15 @@ export default function Runtime({
     outputs,
     configs: {
       setValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
         data.value = val;
       },
       setInitialValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
         data.value = val;
       },
       returnValue(output) {
