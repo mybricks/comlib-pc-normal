@@ -101,7 +101,7 @@ export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Da
         ...baseFetchParams
       })
         .then((res) => {
-          if (data.pagination.show) {
+          if (!Array.isArray(res)) {
             setDataSource(res.dataSource || []);
             setTotal(res.total || 0);
             setPageNum(res.pageNum || INIT_PAGE);
