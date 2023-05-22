@@ -1,5 +1,6 @@
-import { Data, ShapeEnum, SizeEnum, TypeEnum } from '../../types';
+import { Data, FzCSSProperties, ShapeEnum, SizeEnum, TypeEnum } from '../../types';
 import { getBtnItemInfo } from '../../utils';
+import { SizeHeightMap } from '../../constants';
 
 const StyleEditor = [
   {
@@ -12,7 +13,7 @@ const StyleEditor = [
           return [
             { value: SizeEnum.Large, label: '大' },
             { value: SizeEnum.Middle, label: '中等' },
-            { value: SizeEnum.Small, label: '小' }
+            { value: SizeEnum.Small, label: '小' },
           ];
         },
         value: {
@@ -25,6 +26,27 @@ const StyleEditor = [
             if (!focusArea) return;
             const { item } = getBtnItemInfo(data, focusArea);
             item.size = value;
+            item.style = {
+              ...item.style,
+              height: SizeHeightMap[item.size]
+            };
+          }
+        }
+      },
+      {
+        type: 'Style',
+        options: ['size'],
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            return { ...item.style, styleEditorUnfold: true };
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: FzCSSProperties) {
+            if (!focusArea) return;
+            const { item } = getBtnItemInfo(data, focusArea);
+            const { styleEditorUnfold, ...style } = value;
+            item.style = style;
           }
         }
       },

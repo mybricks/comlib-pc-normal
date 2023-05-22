@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export enum LocationEnum {
   FRONT = 'front',
   BACK = 'back'
@@ -29,6 +31,9 @@ export enum TypeEnum {
   ALink = 'a'
 }
 
+export type FzCSSProperties = CSSProperties & {
+  styleEditorUnfold: boolean
+}
 export interface BtnItem {
   // 唯一标识
   key: string;
@@ -41,6 +46,8 @@ export interface BtnItem {
   shape?: ShapeEnum;
   // 大小
   size?: SizeEnum;
+  // 样式
+  style: CSSProperties;
   // 按钮类型
   type?: TypeEnum;
 
