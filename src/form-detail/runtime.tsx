@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Descriptions, Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { uuid } from '../utils';
 import { Data, InputIds, Item, TypeEnum } from './constants';
 import css from './runtime.less';
@@ -13,7 +14,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     column,
     bordered,
     colon,
-    globalLabelStyle = {}
+    globalLabelStyle = {},
+    autoWidth
   } = data || {};
   const [rawData, setData] = useState({});
   const rawDataRef = useRef({});
@@ -113,7 +115,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     return null;
   };
   const RenderItems = () => {
-    if (!data.items?.length) return;
+    if (!data.items?.length) return null;
 
     return (
       <Descriptions
@@ -124,7 +126,10 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         bordered={bordered}
         colon={colon}
         className={css.des}
-        labelStyle={globalLabelStyle}
+        labelStyle={{
+          ...globalLabelStyle,
+          width: autoWidth ? 'unset' : globalLabelStyle.width ?? 65
+        }}
       >
         {getDataSource().map((item) => {
           const {
@@ -140,7 +145,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             lineLimit,
             widthLimit,
             limit,
-            showLable = true
+            showLable = true,
+            labelDesc
           } = item || {};
           const SlotItem =
             type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
@@ -159,9 +165,25 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
               </Descriptions.Item>
             );
           }
+
+          let labelNode = env.i18n(label);
+          if (showLable) {
+            if (!!labelDesc) {
+              labelNode = (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span style={{ marginRight: 5 }}>{labelNode}</span>
+                  <Tooltip title={labelDesc}>
+                    <InfoCircleOutlined />
+                  </Tooltip>
+                </div>
+              );
+            }
+          } else {
+            labelNode = null;
+          }
           return (
             <Descriptions.Item
-              label={showLable ? env.i18n(label) : ''}
+              label={labelNode}
               key={id}
               span={span}
               labelStyle={labelStyle}
@@ -209,7 +231,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         suffixBtnText: '查看更多',
         schema: {
           type: 'string'
-        }
+        },
+        labelDesc: ''
       });
     }
   }, [data]);

@@ -61,20 +61,41 @@ export const BaseEditor = [
   //内容做对齐需求
   {
     title: '标签宽度',
-    type: 'inputNumber',
-    options: [{ min: 0, width: 120 }],
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return [data?.globalLabelStyle?.width || 'auto'];
-      },
-      set({ data }: EditorResult<Data>, val: number[]) {
-        if (!data.globalLabelStyle) {
-          data.globalLabelStyle = {};
+    items: [
+      {
+        title: '自动',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.autoWidth;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.autoWidth = val
+          }
         }
-        data.globalLabelStyle.width = val[0];
-      }
-    }
+      },
+      {
+        title: '固定宽度',
+        type: 'inputNumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.autoWidth;
+        },
+        options: [{ min: 0, width: 120, addonAfter: 'px' }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data?.globalLabelStyle?.width??65];
+          },
+          set({ data }: EditorResult<Data>, val: number[]) {
+            if (!data.globalLabelStyle) {
+              data.globalLabelStyle = {};
+            }
+            data.globalLabelStyle.width = val[0];
+          }
+        }
+      },
+    ]
   },
+  
   {
     title: '增加描述项',
     type: 'Button',
@@ -108,7 +129,8 @@ export const BaseEditor = [
           suffixBtnText: '查看更多',
           schema: {
             type: 'string'
-          }
+          },
+          labelDesc: ''
         });
         updateIOSchema({ data, input, output });
         data.items.map((item)=>{
