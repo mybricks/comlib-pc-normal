@@ -36,6 +36,7 @@ export interface Item {
   suffixBtnText?: string;
   itemStyle?: any;
   isHidden?: boolean;
+  labelDesc?: string
 
   //每一项的schema
   schema?: any;
@@ -78,6 +79,7 @@ export interface Data {
   useSlotProps?: boolean;
   rawData: any;
   inputSchema: any;
+  autoWidth?: boolean
   globalLabelStyle: React.CSSProperties
 }
 
