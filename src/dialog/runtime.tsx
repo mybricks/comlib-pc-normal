@@ -43,13 +43,11 @@ export default function Dialog({
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
           const { id, visible, isConnected } = item;
-          if (DefaultEvent.includes(id) && !visible) return;
+          if (visible === false) return;
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
-              if (DefaultEvent.includes(id)) {
-                item.loading = false;
-                isConnected && close();
-              }
+              item.loading = false;
+              isConnected && close();
               relOutputs[id](val);
             });
           }
