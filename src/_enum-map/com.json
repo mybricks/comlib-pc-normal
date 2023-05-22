@@ -1,0 +1,15 @@
+{
+    "title": "枚举映射",
+    "namespace": "mybricks.normal-pc.enum-map",
+    "version": "1.0.0",
+    "rtType": "js",
+    "description": "枚举映射",
+    "author": "tangxiaoxin",
+    "author_name": "唐小新",
+    "data": "./data.json",
+    "runtime": "./runtime.ts",
+    "editors": "./editor.ts",
+    "icon": "./icon.svg",
+    "inputs": [],
+    "outputs": []
+}

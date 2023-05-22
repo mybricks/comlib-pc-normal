@@ -127,7 +127,8 @@
       "./src/_muilt-inputJs/com.json",
       "./src/_array-merge/com.json",
       "./src/_post-message/com.json",
-      "./src/_receive-message/com.json"
+      "./src/_receive-message/com.json",
+      "./src/_enum-map/com.json"
     ],
     "publish": [
       {
@@ -244,7 +245,8 @@
       "./src/_muilt-inputJs/com.json",
       "./src/_array-merge/com.json",
       "./src/_post-message/com.json",
-      "./src/_receive-message/com.json"
+      "./src/_receive-message/com.json",
+      "./src/_enum-map/com.json"
     ]
   },
   "externals": [
