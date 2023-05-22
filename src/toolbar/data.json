@@ -8,11 +8,18 @@
       "outVal": 0,
       "inVal": "",
       "isCustom": false,
-      "contentSize": [14, 14],
+      "contentSize": [
+        14,
+        14
+      ],
       "iconDistance": 8,
       "src": "",
       "loading": false,
-      "useDynamicLoading": false
+      "useDynamicLoading": false,
+      "style": {
+        "height": "32px",
+        "width": "auto"
+      }
     }
   ],
   "layout": "flex-start",
