@@ -12,6 +12,7 @@
   "target": {
     "toReact": "./toReact.ts"
   },
+  "upgrade": "./upgrade.ts",
   "outputs": [
     {
       "id": "click",
