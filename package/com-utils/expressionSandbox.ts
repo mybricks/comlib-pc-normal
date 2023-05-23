@@ -43,4 +43,16 @@ export default class Sandbox {
     const _context = this.options.context ?? {};
     return fn.call(this, _context);
   }
+  executeWithTemplate(expression: string) {
+    const reg = /\{(.+)\}/g;
+    const retStr = expression.replace(reg, (...args) => {
+      const ret = this.execute(args[1]);
+      return JSON.stringify(ret);
+    });
+    try {
+      return JSON.parse(retStr)
+    } catch (error) {
+      return retStr
+    }
+  }
 }
