@@ -7,6 +7,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const { dataSource, mode } = data;
   const [menuData, setMenuData] = useState<MenuItem[]>([...dataSource]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [isSet, setIsSet] = useState<boolean>(false);
 
   const formatDataSource = (ds: MenuItem[], toJson?: boolean): MenuItem[] => {
     return ds.map((item) => {
@@ -113,6 +114,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         if (Array.isArray(dataSource)) {
           const tempData = formatDataSource(dataSource);
           setMenuData(tempData);
+          setIsSet(true);
           const keys = findKeys(tempData);
           if (keys.indexOf(defaultActive) !== -1) {
             setSelectedKeys([defaultActive]);
@@ -125,7 +127,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const onClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
     setSelectedKeys([e.key]);
-    if (env.runtime) {
+    if (env.runtime && !isSet) {
       outputs[OutputIds.ClickMenu](clickItem);
     }
   };
@@ -139,7 +141,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //子菜单的点击事件
   const menuOnClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
-    if (env.runtime) {
+    if (env.runtime && !isSet) {
       outputs[e.key](clickItem);
     }
   };
