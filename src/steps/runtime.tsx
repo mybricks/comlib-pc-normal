@@ -253,7 +253,7 @@ export default function ({
                 ? env.i18n(item.description)
                 : slots[`${item.id}_customDescSlot`].render();
             }
-            if (!!data.steps.canClick) {
+            if (env.edit || !!data.steps.canClick) {
               stepProps['onStepClick'] = () => {
                 data.current = index;
                 outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);
