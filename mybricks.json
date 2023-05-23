@@ -21,7 +21,8 @@
           "./src/breadcrumb/com.json",
           "./src/richtext/com.json",
           "./src/00_test/com.json",
-          "./src/00_schema-test/com.json"
+          "./src/00_schema-test/com.json",
+          "./src/_0_test/ex-temp/com.json"
         ]
       },
       {
