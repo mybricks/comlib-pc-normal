@@ -1,0 +1,13 @@
+{
+    "title": "测试--表达式模版规范",
+    "namespace": "test.ex.template",
+    "author": "MyBricks",
+    "author_name": "MyBricks",
+    "version": "1.0.0",
+    "rtType": "js-autorun",
+    "description": "表达式模版规范",
+    "runtime": "./runtime.ts",
+    "editors": "./editor.ts",
+    "data": "./data.json"
+  }
+  
