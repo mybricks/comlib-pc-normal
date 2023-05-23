@@ -27,6 +27,7 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
     : item.src === 1
     ? env.i18n(`${item.content}`)
     : '';
+  if (!itemContent) return null;
   switch (item.type) {
     case 'Text':
       return (
@@ -155,14 +156,8 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
     data.itemList.forEach((item) => {
       inputs[item.key]((ds: any) => {
         item.src = 1;
-        if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
+        if (typeCheck(ds, ['string', 'number'])) {
           item.content = ds;
-        } else if (typeCheck(ds, 'object')) {
-          const { value, color } = ds;
-          item.content = value;
-          if (item.style) {
-            item.style.color = color;
-          } else item.style = { color };
         } else {
           item.content = '';
         }
@@ -171,10 +166,22 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         item.src = 1;
         if (typeCheck(ds, 'object')) {
           const { value, color } = ds;
-          item.content = value;
-          if (item.style) {
-            item.style.color = color;
-          } else item.style = { color };
+          if (typeCheck(value, ['string', 'number'])) {
+            item.content = value;
+          } else {
+            item.content = '';
+          }
+          switch (item.type) {
+            case 'Tag':
+              item.color = color;
+              break;
+            default:
+              if (item.style) {
+                item.style.color = color;
+              } else {
+                item.style = { color };
+              }
+          }
         } else {
           item.content = '';
         }
@@ -182,7 +189,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
 
       inputs[`${item.key}-append`]((ds: any) => {
         item.src = 1;
-        if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
+        if (typeCheck(ds, ['string', 'number'])) {
           item.content = item.content === '[外部获取]' ? `${ds}` : `${item.content || ''}${ds}`;
         }
       });
