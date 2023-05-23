@@ -322,7 +322,10 @@ export default function (props: RuntimeParams<Data>) {
       order
     };
     data.sortParams = order ? sortParams : undefined;
-    outputs[OutputIds.SORTER](data.sortParams);
+    outputs[OutputIds.SORTER]({
+      ...sortParams,
+      order: order || 'none'
+    });
   }, []);
 
   const filterChange = useCallback((filter: any) => {
