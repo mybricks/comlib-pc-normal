@@ -1,9 +1,11 @@
+import { CSSProperties } from 'react';
 import { OutputIds, SizeHeightMap } from './constants';
 import { Data, SizeEnum } from './types';
 
 export default function ({
   data,
-  output
+  output,
+  setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   data.btnList.forEach((item) => {
     //1.0.0->1.0.1
@@ -58,6 +60,26 @@ export default function ({
         height: SizeHeightMap[item.size || SizeEnum.Middle],
         width: 'auto'
       }
+    }
+
+    /**
+    * @description v1.0.9 style编辑器改造
+    */
+    if (item.style) {
+      // 注：padding需要根据size动态生成
+      const initStyle: CSSProperties = {
+        ...item.style,
+        width: '100%',
+        textAlign: 'center',
+        fontWeight: 400,
+        boxShadow: '0 2px 0 rgba(0,0,0,.015)',
+        paddingTop: '4px',
+        paddingBottom: '4px',
+        paddingLeft: '15px',
+        paddingRight: '15px',
+        borderRadius: '2px',
+      }
+      setDeclaredStyle(`div[data-btn-idx="${item.key}"] > button`, initStyle)
     }
 
   })
