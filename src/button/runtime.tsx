@@ -97,8 +97,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
 
   return (
     <div
-      className={classnames(css.button, data.asMapArea && env.edit && css.asMapArea)}
-      style={!data.asMapArea ? { ...data.style } : null}
+      className={`${classnames(css.button, data.asMapArea && env.edit && css.asMapArea)} button`}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
     >
