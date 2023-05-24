@@ -24,9 +24,7 @@ const InlineLayout = (props: InlineLayoutProps) => {
       {children}
       {data.actions.visible && (
         <Col flex={1} style={actionStyle}>
-          <Form.Item data-form-actions style={{ marginRight: 0 }}>
-            {actions}
-          </Form.Item>
+          <Form.Item style={{ marginRight: 0 }}>{actions}</Form.Item>
         </Col>
       )}
     </div>
