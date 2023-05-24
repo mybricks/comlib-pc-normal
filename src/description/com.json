@@ -1,0 +1,39 @@
+{
+    "title": "描述列表",
+    "namespace": "mybricks.normal-pc.description",
+    "version": "1.0.0",
+    "description": "描述列表",
+    "author": "MyBricks",
+    "author_name": "MyBricks",
+    "icon": "./icon.svg",
+    "data": "./data.json",
+    "runtime": "./runtime.tsx",
+    "editors": "./editors.tsx",
+    "target": {
+      "toReact": "./toReact.ts"
+    },
+    "inputs": [
+      {
+        "id": "setTitle",
+        "title": "设置标题",
+        "desc": "设置描述列表的标题",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "id": "setDataSource",
+        "title": "设置数据源",
+        "desc": "设置描述列表的数据源",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "field1": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ],
+    "slots": []
+  }
