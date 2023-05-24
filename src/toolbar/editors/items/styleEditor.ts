@@ -34,23 +34,6 @@ const StyleEditor = [
         }
       },
       {
-        type: 'Style',
-        options: ['size'],
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { item } = getBtnItemInfo(data, focusArea);
-            return { ...item.style, styleEditorUnfold: true };
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: FzCSSProperties) {
-            if (!focusArea) return;
-            const { item } = getBtnItemInfo(data, focusArea);
-            const { styleEditorUnfold, ...style } = value;
-            item.style = style;
-          }
-        }
-      },
-      {
         title: '风格',
         type: 'Select',
         options() {

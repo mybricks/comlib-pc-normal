@@ -15,8 +15,9 @@ const itemEditor = {
     style: [
       {
         title: '按钮样式',
+        options: ['size'],
         target({ focusArea }) {
-          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
+          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"]`;
         }
         // initValue: {
         //   width: '100%',

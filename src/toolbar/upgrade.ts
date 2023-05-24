@@ -67,19 +67,27 @@ export default function ({
     */
     if (item.style) {
       // 注：padding需要根据size动态生成
+      // let padding = ['4px', '4px', '15px', '15px'];
+      // if (item.size === 'large') {
+      //   padding = ['6.4px', '6.4px', '15px', '15px'];
+      // }
+      // if (item.size === 'small') {
+      //   padding = ['0', '0', '7px', '7px'];
+      // }
+
       const initStyle: CSSProperties = {
         ...item.style,
-        width: '100%',
-        textAlign: 'center',
-        fontWeight: 400,
-        boxShadow: '0 2px 0 rgba(0,0,0,.015)',
-        paddingTop: '4px',
-        paddingBottom: '4px',
-        paddingLeft: '15px',
-        paddingRight: '15px',
-        borderRadius: '2px',
+        // textAlign: 'center',
+        // fontSize: item.size === 'large' ? '16px' : '14px',
+        // fontWeight: 400,
+        // boxShadow: '0 2px 0 rgba(0,0,0,.015)',
+        // paddingTop: padding[0],
+        // paddingBottom: padding[1],
+        // paddingLeft: padding[2],
+        // paddingRight: padding[3],
+        // borderRadius: '2px',
       }
-      setDeclaredStyle(`div[data-btn-idx="${item.key}"] > button`, initStyle)
+      setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, initStyle)
     }
 
   })
