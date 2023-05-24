@@ -12,6 +12,26 @@ import OutputValEditor from './outputValEditor';
 const itemEditor = {
   [`[${BtnItemDataSetKey}]`]: {
     title: '按钮',
+    style: [
+      {
+        title: '按钮样式',
+        target({ focusArea }) {
+          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
+        }
+        // initValue: {
+        //   width: '100%',
+        //   height: "32px",
+        //   textAlign: 'center',
+        //   fontWeight: 400,
+        //   boxShadow: '0 2px 0 rgba(0,0,0,.015)',
+        //   paddingTop: '4px',
+        //   paddingBottom: '4px',
+        //   paddingLeft: '15px',
+        //   paddingRight: '15px',
+        //   borderRadius: '2px',
+        // }
+      }
+    ],
     items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
       cate1.title = '常规';
       cate1.items = [...BaseEditor, ...OutputValEditor, ...EventEditor, ...IndexEditor];
