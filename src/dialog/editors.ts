@@ -111,7 +111,7 @@ function get(
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     if (!data.isNew && pin.id === InputIds.Open) {
-      console.log('inputUpdated', pin)
+      // console.log('inputUpdated', pin)
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
     }
   },
@@ -123,7 +123,7 @@ export default {
     output.get(pin.id)?.setSchema(pin.schema);
   },
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
-    console.log('slotOutputUpdated', slotId, pin)
+    // console.log('slotOutputUpdated', slotId, pin)
     if (data.isNew
       && slotId === SlotIds.Container
       && pin.id === SlotInputIds.DataSource) {
@@ -140,10 +140,10 @@ export default {
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
   '@slotOuputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotOuputConnected', fromPin, toPin)
+    // console.log('slotOuputConnected', fromPin, toPin)
   },
   '@slotOuputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotOuputDisConnected', fromPin, slotId, toPin)
+    // console.log('slotOuputDisConnected', fromPin, slotId, toPin)
     if (data.isNew
       && slotId === SlotIds.Container
       && fromPin.id === SlotInputIds.DataSource) {
@@ -160,7 +160,7 @@ export default {
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputDisConnected')
+    // console.log('inputDisConnected')
     if (!data.isNew && toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
@@ -169,7 +169,7 @@ export default {
   //   console.log('outputConnected', 'toPin', fromPin, toPin);
   // },
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputConnected', fromPin, toPin)
+    // console.log('inputConnected', fromPin, toPin)
     if (!data.isNew && toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
