@@ -125,9 +125,29 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
   setDefaultDataSource(columns);
   return [mockData];
 };
+
+const convertEntity2Schema = (entity) => {
+  const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate && !item.isPrimaryKey);
+  return {
+    items: {
+      type: 'object',
+      properties: publicFields.reduce((res, item) => {
+        res[item.name] = {
+          type: item?.bizType
+        }
+        return res
+      }, {}),
+    },
+    type: 'array'
+  }
+}
+
 // 获取列schema - 给编辑器使用
 export const getColumnsSchema = (data: Data) => {
-  const schema = data[`input${InputIds.SET_DATA_SOURCE}Schema`] || {};
+  let schema = (data?.domainData?.entity
+    ? convertEntity2Schema(data?.domainData?.entity)
+    : data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+
   let columnsSchema = {};
   if (schema.type === 'array') {
     columnsSchema = schema;

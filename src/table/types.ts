@@ -173,4 +173,7 @@ export interface Data {
   titleBgColor: string;
   headStyle: any;
   contentStyle;
+  domainData?: {
+    entity: any
+  }
 }
