@@ -18,22 +18,22 @@ const StyleEditor = [
       }
     }
   },
-  {
-    title: '背景颜色',
-    type: 'ColorPicker',
-    value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getRowItem(data, focusArea);
-        return item?.backgroundColor;
-      },
-      set({ data, focusArea }: EditorResult<Data>, value: string) {
-        if (!focusArea) return;
-        const item = getRowItem(data, focusArea);
-        item.backgroundColor = value || '';
-      }
-    }
-  },
+  // {
+  //   title: '背景颜色',
+  //   type: 'ColorPicker',
+  //   value: {
+  //     get({ data, focusArea }: EditorResult<Data>) {
+  //       if (!focusArea) return;
+  //       const item = getRowItem(data, focusArea);
+  //       return item?.backgroundColor;
+  //     },
+  //     set({ data, focusArea }: EditorResult<Data>, value: string) {
+  //       if (!focusArea) return;
+  //       const item = getRowItem(data, focusArea);
+  //       item.backgroundColor = value || '';
+  //     }
+  //   }
+  // },
   {
     title: '间隔配置',
     items: [

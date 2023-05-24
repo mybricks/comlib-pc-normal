@@ -72,6 +72,7 @@ interface UpgradeParams<T> {
   style: any
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
+  setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
 }
 
 type AnyMap = {
