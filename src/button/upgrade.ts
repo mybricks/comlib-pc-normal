@@ -1,6 +1,7 @@
+import { CSSProperties } from 'react';
 import { Data, OutputIds } from './constants';
 
-export default function ({ input, output, data }: UpgradeParams<Data>): boolean {
+export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
    * @description v1.0.3 , 新增按钮动态标题
   */
@@ -46,12 +47,34 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
   if (typeof data.iconDistance === "undefined") {
     data.iconDistance = 8;
   };
-  if (typeof data.iconLocation === "undefined"){
+  if (typeof data.iconLocation === "undefined") {
     data.iconLocation = "front"
   }
   if (typeof data.contentSize === "undefined") {
-    data.contentSize = [14,14];
+    data.contentSize = [14, 14];
   };
+
+  /**
+    * @description v1.0.7 style编辑器改造
+    */
+  if (data.style) {
+    if (typeof data.style.fontSize === 'number') data.style.fontSize = data.style.fontSize + 'px';
+    const initStyle: CSSProperties = {
+      ...{
+        color: '#FFF',
+        fontWeight: 400,
+        fontStyle: 'normal',
+        fontSize: '14px',
+        lineHeight: 1.5715,
+        background: '#1890ff',
+        borderColor: '#1890ff',
+        borderWidth: '1px',
+        borderStyle: 'solid',
+      },
+      ...data.style,
+    }
+    setDeclaredStyle(`.button`, initStyle)
+  }
 
   return true;
 }
