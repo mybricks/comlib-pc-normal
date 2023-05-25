@@ -45,5 +45,6 @@
     "labelWrap": false,
     "labelAlign": "right",
     "disabled": false
-  }
+  },
+  "domainModel": {}
 }

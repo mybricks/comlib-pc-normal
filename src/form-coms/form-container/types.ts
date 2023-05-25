@@ -104,6 +104,13 @@ export interface Data {
    *  提交隐藏表单项 （隐藏表单项依旧参与校验与提交）
    */
   submitHiddenFields: boolean
+
+  domainModel: DomainModel
+}
+
+interface DomainModel {
+  // formValues: any
+  entity?: any
 }
 
 export interface FormControlProps {
