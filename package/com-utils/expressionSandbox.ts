@@ -66,7 +66,6 @@ export default class Sandbox {
       const { match, ret, input } = cur;
       return pre.replace(match, ret);
     }, expression)
-    console.log(retStr, retGroup)
     try {
       return JSON.parse(retStr);
     } catch (error) {
