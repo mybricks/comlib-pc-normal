@@ -180,7 +180,7 @@ export default {
                       const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
-                          field.bizType === FieldBizType.ENUM
+                          field?.bizType === FieldBizType.ENUM
                             ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
@@ -287,7 +287,7 @@ export default {
                       const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
-                          field.bizType === FieldBizType.ENUM
+                          field?.bizType === FieldBizType.ENUM
                             ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
