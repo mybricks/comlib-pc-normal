@@ -539,6 +539,7 @@ export default function (props: RuntimeParams<Data>) {
       )}
       <TableFooter
         env={env}
+        parentSlot={props.parentSlot}
         data={data}
         slots={slots}
         inputs={inputs}
