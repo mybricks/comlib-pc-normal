@@ -88,6 +88,11 @@ const BaseEditor = {
           if (!`${valArr}`.startsWith('u_') && !item.keepDataIndex) {
             setCol({ data, focusArea }, 'keepDataIndex', true);
           }
+          if (data?.domainData?.entity && valArr) {
+            // 在领域模型容器，选择字段自动修改列标题
+            //@ts-ignore
+            setCol({ data, focusArea }, 'title', valArr);
+          }
           setCol({ data, focusArea }, 'dataIndex', valArr);
           setDataSchema({ data, focusArea, output, input, ...res });
         }
