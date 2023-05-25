@@ -155,7 +155,7 @@ export default function (props: RuntimeParams<Data>) {
       data.usePagination = true;
     }
   }, [data?.domainModel?.entity, outputs, inputs, slots]);
-  console.log('data?.domainModel in table', data?.domainModel);
+
   useEffect(() => {
     if (env.runtime) {
       // 输出表格数据
