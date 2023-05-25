@@ -123,8 +123,10 @@ const groupItemEditors = (props) => {
             return item.title;
           },
           onAdd: () => {
+            const key = uuid();
             return {
-              key: uuid(),
+              key,
+              _key: key,
               menuType: MenuTypeEnum.Menu
             };
           },
@@ -140,7 +142,7 @@ const groupItemEditors = (props) => {
             {
               title: '唯一标识',
               type: 'TextArea',
-              value: 'key',
+              value: '_key',
               options: {
                 autoSize: { maxRows: 1 }
               }
@@ -290,6 +292,7 @@ export default {
         title: '菜单1',
         defaultActive: true,
         key: uuid(),
+        _key: 'menu1',
         menuType: MenuTypeEnum.Menu
       }
     ];
@@ -316,8 +319,10 @@ export default {
           return item.title;
         },
         onAdd: () => {
+          const key = uuid();
           return {
-            key: uuid(),
+            key,
+            _key: key,
             menuType: MenuTypeEnum.Menu
           };
         },
@@ -333,7 +338,7 @@ export default {
           {
             title: '唯一标识',
             type: 'TextArea',
-            value: 'key',
+            value: '_key',
             options: {
               autoSize: { maxRows: 1 }
             }
@@ -579,10 +584,10 @@ export default {
             type: 'Text',
             value: {
               get(props: EditorResult<Data>) {
-                return getMenuItem(props, 'key');
+                return getMenuItem(props, '_key');
               },
               set(props: EditorResult<Data>, value: string) {
-                setMenuItem(props, 'key', value);
+                setMenuItem(props, '_key', value);
               }
             }
           },
@@ -724,7 +729,7 @@ export default {
                 {
                   title: '唯一标识',
                   type: 'TextArea',
-                  value: 'key',
+                  value: '_key',
                   options: {
                     autoSize: { maxRows: 1 }
                   }

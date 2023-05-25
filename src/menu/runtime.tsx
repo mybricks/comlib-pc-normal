@@ -112,6 +112,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       inputs[InputIds.SetMenuData]((ds) => {
         const { dataSource, defaultActive } = ds || {};
         if (Array.isArray(dataSource)) {
+          dataSource.forEach((item) => {
+            const key = item.key || uuid();
+            item.key = key;
+            item._key = key;
+          });
           const tempData = formatDataSource(dataSource);
           setMenuData(tempData);
           setIsSet(true);
@@ -127,8 +132,12 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const onClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
     setSelectedKeys([e.key]);
+    const { key, _key, ...res } = clickItem;
     if (env.runtime && !isSet) {
-      outputs[OutputIds.ClickMenu](clickItem);
+      outputs[OutputIds.ClickMenu]({
+        ...res,
+        key: _key
+      });
     }
   };
 
@@ -141,8 +150,12 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //子菜单的点击事件
   const menuOnClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
+    const { key, _key, ...res } = clickItem;
     if (env.runtime && !isSet) {
-      outputs[e.key](clickItem);
+      outputs[e.key]({
+        ...res,
+        key: _key
+      });
     }
   };
 
