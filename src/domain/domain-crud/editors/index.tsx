@@ -1,6 +1,7 @@
 import { ajax } from '../util';
 import { Data } from '../type';
 import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
+import Refresh from './refresh';
 
 const fileId =
   location.search
@@ -63,7 +64,6 @@ export default {
               return {
                 get options() {
                   const entityList: Array<{ label: string; value: string }> = [];
-                  console.log(props.data.domainAry);
                   props.data.domainAry?.forEach((domain) => {
                     domain.entityList
                       .filter((entity) => !entity.isSystem && entity.isOpen)
@@ -107,8 +107,40 @@ export default {
                     );
 
                     data.entity = curEntity;
+                    console.log(curEntity);
                   }
                 }
+              }
+            }
+          },
+          {
+            title: '刷新模型实体信息',
+            type: 'editorRender',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !!data.entity;
+            },
+            options: {
+              render: Refresh,
+              get domainFileId() {
+                return data.domainFileId;
+              },
+              get entityId() {
+                return data.entityId;
+              },
+              get entity() {
+                return data.entity;
+              }
+            },
+            value: {
+              get({ data }) {
+                return { domainFileId: data.domainFileId, entityId: data.entityId };
+              },
+              set({ data, setTitle, title, output, slot }, newEntity: any) {
+                if (!newEntity) {
+                  return;
+                }
+
+                data.entity = newEntity;
               }
             }
           }
