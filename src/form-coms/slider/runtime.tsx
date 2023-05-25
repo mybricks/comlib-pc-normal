@@ -99,7 +99,9 @@ export default function Runtime({
     onChange: changeValue,
     onAfterChange,
     tipFormatter: formatter,
-    disabled: data.config.disabled
+    disabled: data.config.disabled,
+    min: data.config.min,
+    max: data.config.max
   };
   const inputNumberProps: InputNumberProps = {
     value: data.singleValue,
