@@ -2,21 +2,22 @@ import { ajax } from '../util';
 import { Data } from '../type';
 import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
 
-export default {
-  '@init'({ data }) {
-    const id =
-      location.search
-        .split('?')
-        .pop()
-        ?.split('&')
-        .find((key) => key.startsWith('id='))
-        ?.replace('id=', '') ?? '';
+const fileId =
+  location.search
+    .split('?')
+    .pop()
+    ?.split('&')
+    .find((key) => key.startsWith('id='))
+    ?.replace('id=', '') ?? '';
 
-    id &&
-      ajax({ fileId: id }, { url: '/api/system/domain/entity/list' }).then(
-        (res) => (data.domainAry = res || [])
-      );
-  },
+export default {
+  // '@init'({ data }) {
+  //   if (fileId) {
+  //     ajax({ fileId }, { url: '/api/system/domain/entity/list' }).then(
+  //       (res) => (data.domainAry = res || [])
+  //     );
+  //   }
+  // },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
     const { data: childData } = child;
 
@@ -44,6 +45,12 @@ export default {
     console.log(toPin, slotId);
   },
   ':root': ({ data }: EditorResult<Data>, cate1) => {
+    if (fileId) {
+      ajax({ fileId }, { url: '/api/system/domain/entity/list' }).then((r) => {
+        data.domainAry = r || [];
+      });
+    }
+
     cate1.title = '常规';
     cate1.items = [
       {
