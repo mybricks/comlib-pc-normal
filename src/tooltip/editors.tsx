@@ -100,7 +100,7 @@ export default {
         title: '',
         type: 'Style',
         options: {
-          plugins: ['bgColor', 'font'],
+          plugins: ['bgColor', 'font', 'size'],
           fontProps: {
             fontFamily: false,
             horizontalAlign: false,
