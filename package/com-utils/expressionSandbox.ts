@@ -44,15 +44,33 @@ export default class Sandbox {
     return fn.call(this, _context);
   }
   executeWithTemplate(expression: string) {
-    const reg = /\{(.+)\}/g;
-    const retStr = expression.replace(reg, (...args) => {
-      const ret = this.execute(args[1]);
-      return JSON.stringify(ret);
+    const reg = /\{([^\{\}]*?|.+)\}/g;
+    const matchIterator = expression.matchAll(reg);
+    const iteratorArray = Array.from(matchIterator);
+    if (!iteratorArray.length) return expression;
+    const retGroup = iteratorArray.map((it) => {
+      const match = it[0];
+      const input = it.input;
+      let ret = it[1];
+      if (!!it[1].trim()) {
+        ret = this.execute(ret);
+        ret = JSON.stringify(ret)
+      }
+      return {
+        match,
+        ret,
+        input
+      };
     });
+    const retStr = retGroup.reduce((pre, cur) => {
+      const { match, ret, input } = cur;
+      return pre.replace(match, ret);
+    }, expression)
+    console.log(retStr, retGroup)
     try {
-      return JSON.parse(retStr)
+      return JSON.parse(retStr);
     } catch (error) {
-      return retStr
+      return retStr;
     }
   }
 }
