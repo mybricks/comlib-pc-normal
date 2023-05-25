@@ -127,7 +127,7 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
 };
 
 const convertEntity2Schema = (entity) => {
-  const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate && !item.isPrimaryKey);
+  const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate);
   return {
     items: {
       type: 'object',
@@ -144,8 +144,8 @@ const convertEntity2Schema = (entity) => {
 
 // 获取列schema - 给编辑器使用
 export const getColumnsSchema = (data: Data) => {
-  let schema = (data?.domainData?.entity
-    ? convertEntity2Schema(data?.domainData?.entity)
+  let schema = (data?.domainModel?.entity
+    ? convertEntity2Schema(data?.domainModel?.entity)
     : data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
 
   let columnsSchema = {};

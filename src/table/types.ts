@@ -173,7 +173,7 @@ export interface Data {
   titleBgColor: string;
   headStyle: any;
   contentStyle;
-  domainData?: {
+  domainModel?: {
     entity: any
   }
 }

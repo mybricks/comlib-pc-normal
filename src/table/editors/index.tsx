@@ -15,7 +15,7 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 
-function getColumnsFromSchema(schema: any) {
+export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {

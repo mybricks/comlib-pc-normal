@@ -4,7 +4,12 @@ import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
-import { formatColumnItemDataIndex, formatDataSource, getDefaultDataSource } from './utils';
+import {
+  formatColumnItemDataIndex,
+  formatDataSource,
+  getColumnsSchema,
+  getDefaultDataSource
+} from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import {
   ContentTypeEnum,
@@ -22,6 +27,8 @@ import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
+import { getColumnsFromSchema } from './editors';
+import { setDataSchema } from './schema';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots } = props;
@@ -138,6 +145,17 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
+  useEffect(() => {
+    // 添加到领域模型时触发
+    if (env.edit && data?.domainModel?.entity && data.columns?.length === 0) {
+      const schema = getColumnsSchema(data);
+      data.columns = getColumnsFromSchema(schema);
+      //@ts-ignore
+      // setDataSchema({ data, output: outputs, input: inputs, slot: slots });
+      data.usePagination = true;
+    }
+  }, [data?.domainModel?.entity, outputs, inputs, slots]);
+  console.log('data?.domainModel in table', data?.domainModel);
   useEffect(() => {
     if (env.runtime) {
       // 输出表格数据

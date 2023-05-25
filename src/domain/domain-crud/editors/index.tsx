@@ -34,7 +34,7 @@ export default {
     }
 
     if (curSlot.id === 'tableContent') {
-      childData.domainData = data;
+      childData.domainModel.entity = data.entity;
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, child) {},
