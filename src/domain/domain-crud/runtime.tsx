@@ -30,7 +30,7 @@ export default function (props: RuntimeParams<Data>) {
   const [pageSize, setPageSize] = useState<number>(10);
   // const [curRecordId, setCurRecordId] = useState()
 
-  console.log(data);
+  // console.log(data.entity);
 
   if (env.runtime) {
     // slots['queryContent']._inputs['onSubmit'](({ name, values }) => {
@@ -239,7 +239,7 @@ export default function (props: RuntimeParams<Data>) {
     });
   };
 
-  console.log(env.canvasElement);
+  // console.log(env.canvasElement);
 
   return (
     <div className={styles.domainContainer}>
