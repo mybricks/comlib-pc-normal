@@ -1,0 +1,25 @@
+{
+  "entity": [],
+  "createModalOpen": false,
+  "editModalOpen": false,
+  "domainAry": [],
+  "domainFileId": "",
+  "entityId": "",
+  "editModalActions": {
+    "onOk": {
+      "isConnected": false
+    },
+    "onCancel": {
+      "isConnected": false
+    }
+  },
+  "createModalActions": {
+    "onOk": {
+      "isConnected": false
+    },
+    "onCancel": {
+      "isConnected": false
+    }
+  },
+  "queryParams": {}
+}
