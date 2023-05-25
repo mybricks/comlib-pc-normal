@@ -155,7 +155,7 @@ export default {
         title: '',
         type: 'Style',
         options: {
-          plugins: ['bgColor', 'border', 'bgImage', 'font'],
+          plugins: ['bgColor', 'border', 'bgImage', 'font', 'size'],
           fontProps: {
             fontFamily: false,
             horizontalAlign: false,
