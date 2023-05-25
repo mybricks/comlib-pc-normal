@@ -1,4 +1,4 @@
-import { Data } from './constants';
+import { Data, MenuItem } from './constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -7,54 +7,67 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   const setMenuData = input.get('setMenuData');
   const dataSchema = {
-    id: "setMenuData",
-    title: "设置数据",
-    desc: "设置初始数据和选中项",
-    schema: {
-      title: "菜单数据",
-      type: "object",
-      properties: {
-        dataSource: {
-          title: "菜单数据",
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              title: {
-                title: "标题",
-                type: "string"
-              },
-              key: {
-                title: "唯一标识",
-                type: "string"
-              },
-              menuType: {
-                title: "类型",
-                type: "string"
-              },
-              children: {
-                title: "子菜单数据",
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {}
-                }
-              },
-              value: {
-                title: "其他数据",
-                type: "string"
+    title: "菜单数据",
+    type: "object",
+    properties: {
+      dataSource: {
+        title: "菜单数据",
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            title: {
+              title: "标题",
+              type: "string"
+            },
+            key: {
+              title: "唯一标识",
+              type: "string"
+            },
+            menuType: {
+              title: "类型",
+              type: "string"
+            },
+            children: {
+              title: "子菜单数据",
+              type: "array",
+              items: {
+                type: "object",
+                properties: {}
               }
+            },
+            value: {
+              title: "其他数据",
+              type: "string"
             }
           }
-        },
-        defaultActive: {
-          title: "默认选中项",
-          type: "string"
         }
+      },
+      defaultActive: {
+        title: "默认选中项",
+        type: "string"
       }
     }
   };
   setMenuData.setSchema(dataSchema);
+
+  /**
+   * @description v1.0.7 为每一项增加_key属性，作为点击输出的key; 输出项不存在时，增加输出项
+   */
+  const addKey = (ds: MenuItem[]) => {
+    ds.forEach(item => {
+      if (item.key && !item._key) {
+        item._key = item.key;
+      }
+      if (!output.get(item.key)) {
+        output.add(item.key, `点击${item.title}`, { type: 'any' });
+      }
+      if (Array.isArray(item.children)) {
+        addKey(item.children);
+      }
+    })
+  }
+  addKey(data.dataSource);
 
   return true;
 }
