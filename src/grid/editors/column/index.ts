@@ -51,10 +51,10 @@ export default {
     },
     style: {
       options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
-      target({focusArea}) {
-        console.log(focusArea.dataset.colCoordinate, typeof focusArea.dataset.colCoordinate, JSON.stringify(focusArea.dataset.colCoordinate))
-        return `.ant-row > div[data-col-coordinate=${JSON.stringify(focusArea.dataset.colCoordinate)}]`
-      }
+      // target({focusArea}) {
+      //   console.log(focusArea.dataset.colCoordinate, typeof focusArea.dataset.colCoordinate, JSON.stringify(focusArea.dataset.colCoordinate))
+      //   return `.ant-row > div[data-col-coordinate=${JSON.stringify(focusArea.dataset.colCoordinate)}]`
+      // }
     }
   },
 };

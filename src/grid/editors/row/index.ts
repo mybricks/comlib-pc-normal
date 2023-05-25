@@ -15,9 +15,9 @@ export default {
     },
     style: {
       options: ['BgColor'],
-      target({focusArea}) {
-        return `div[data-row-index=${JSON.stringify(focusArea.dataset.rowIndex)}]`
-      }
+      // target({focusArea}) {
+      //   return `div[data-row-index=${JSON.stringify(focusArea.dataset.rowIndex)}]`
+      // }
     }
   }
 };
