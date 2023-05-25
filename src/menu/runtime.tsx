@@ -151,8 +151,8 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const menuOnClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
     const { key, _key, ...res } = clickItem;
-    if (env.runtime && !isSet) {
-      outputs[e.key]({
+    if (env.runtime && key && !isSet) {
+      outputs[key]({
         ...res,
         key: _key
       });
