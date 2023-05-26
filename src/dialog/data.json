@@ -21,6 +21,7 @@
       "dynamicDisabled": true,
       "type": "default",
       "visible": true,
+      "autoClose": true,
       "isConnected": false
     },
     {
@@ -33,6 +34,7 @@
       "useIcon": false,
       "showText": true,
       "visible": true,
+      "autoClose": true,
       "isConnected": false
     }
   ]
