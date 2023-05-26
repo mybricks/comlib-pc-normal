@@ -7,6 +7,13 @@ export interface Data {
 	entity: any
 	createModalOpen: boolean
 	editModalOpen: boolean
+	fieldAry: any[]
+	childNames: {
+		queryContent: string[]
+    tableContent: string[]
+    createModalContent: string[]
+    editModalContent: string[]
+	}
 }
 
 

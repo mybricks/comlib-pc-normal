@@ -20,25 +20,54 @@ export default {
   //   }
   // },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
-    const { data: childData } = child;
+    const { data: childData, name } = child;
 
     if (curSlot.id === 'queryContent') {
       childData.domainModel.entity = data.entity;
+      data?.childNames.queryContent.push(name);
     }
 
     if (curSlot.id === 'createModalContent') {
       childData.domainModel.entity = data.entity;
+      data?.childNames.createModalContent.push(name);
     }
 
     if (curSlot.id === 'editModalContent') {
       childData.domainModel.entity = data.entity;
+      data?.childNames.editModalContent.push(name);
     }
 
     if (curSlot.id === 'tableContent') {
       childData.domainModel.entity = data.entity;
+      data?.childNames.tableContent.push(name);
     }
   },
-  '@childRemove'({ data, inputs, outputs, logs, slots }, child) {},
+  '@childRemove'({ data, inputs, outputs, logs, slots }, child, curSlot) {
+    const { name } = child;
+
+    if (curSlot.id === 'queryContent') {
+      data.childNames.queryContent = data.childNames.queryContent.filter(
+        (comName) => comName !== name
+      );
+    }
+    if (curSlot.id === 'createModalContent') {
+      data.childNames.createModalContent = data.childNames.createModalContent.filter(
+        (comName) => comName !== name
+      );
+    }
+
+    if (curSlot.id === 'editModalContent') {
+      data.childNames.editModalContent = data.childNames.editModalContent.filter(
+        (comName) => comName !== name
+      );
+    }
+
+    if (curSlot.id === 'tableContent') {
+      data.childNames.tableContent = data.childNames.tableContent.filter(
+        (comName) => comName !== name
+      );
+    }
+  },
   '@slotInputConnected'({ data, inputs, outputs, slots }, fromPin, slotId, toPin) {
     console.log(toPin, slotId);
   },
@@ -76,19 +105,18 @@ export default {
                   });
 
                   return entityList;
-                }
+                },
+                placeholder: '请选择实体'
               };
             },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.domainFileId ? `${data.domainFileId}.${data.entityId}` : undefined;
               },
-              set({ data, output, input }: EditorResult<Data>, value: string = '') {
+              set({ data, output, input, getChildByName }: EditorResult<Data>, value: string = '') {
                 const [domainFileId, entityId] = value.split('.');
 
                 if (data.domainFileId !== Number(domainFileId) || data.entityId !== entityId) {
-                  // data.fieldAry = [];
-                  // data.formFieldAry = [];
                   data.domainFileId = Number(domainFileId);
                   data.entityId = entityId;
 
@@ -106,8 +134,9 @@ export default {
                         !field.isPrivate
                     );
 
+                    refreshChildComModel(data.childNames, getChildByName, curEntity);
+
                     data.entity = curEntity;
-                    console.log(curEntity);
                   }
                 }
               }
@@ -135,17 +164,119 @@ export default {
               get({ data }) {
                 return { domainFileId: data.domainFileId, entityId: data.entityId };
               },
-              set({ data, setTitle, title, output, slot }, newEntity: any) {
+              set({ data, setTitle, title, output, slot, getChildByName }, newEntity: any) {
                 if (!newEntity) {
                   return;
                 }
 
+                refreshChildComModel(data.childNames, getChildByName, newEntity);
                 data.entity = newEntity;
               }
             }
           }
         ]
       },
+      // {
+      //   title: '返回字段',
+      //   type: 'Select',
+      //   options(props) {
+      //     return {
+      //       mode: 'tags',
+      //       multiple: true,
+      //       get options() {
+      //         const options: Array<{ label: string; value: string }> = [];
+      //         props.data.entity?.fieldAry?.forEach((field) => {
+      //           if (field.mapping?.entity) {
+      //             field.mapping?.entity.fieldAry.forEach((f) => {
+      //               options.push({
+      //                 label: `${field.name}.${f.name}`,
+      //                 value: `${field.id}.${f.id}`
+      //               });
+      //             });
+      //           } else if (!field.isPrivate) {
+      //             options.push({ label: field.name, value: field.id });
+      //           }
+      //         });
+      //         return options;
+      //       }
+      //     };
+      //   },
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       // return (
+      //       //   data.fieldAry
+      //       //     .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM)
+      //       //     ?.map((field) =>
+      //       //       field.mappingField ? `${field.id}.${field.mappingField.id}` : field.id
+      //       //     ) || []
+      //       // );
+      //       return []
+      //     },
+      //     set({ data, output, input, slot }: EditorResult<Data>, value: string[]) {
+      //       const fieldAry = value
+      //             .map((id) => {
+      //               const ids = id.split('.');
+      //               let item = data.entity.fieldAry.find((field) => field.id === ids[0]);
+      //               if (!item) {
+      //                 return;
+      //               }
+
+      //               item = JSON.parse(JSON.stringify(item));
+
+      //               if (ids.length > 1) {
+      //                 const mappingField = item.mapping?.entity.fieldAry.find(
+      //                   (field) => field.id === ids[1]
+      //                 );
+
+      //                 return mappingField
+      //                   ? {
+      //                       ...item,
+      //                       mappingField: {
+      //                         ...mappingField,
+      //                         relationEntityId: item.mapping?.entity.id
+      //                       }
+      //                     }
+      //                   : undefined;
+      //               } else {
+      //                 return item;
+      //               }
+      //             })
+      //             .filter(Boolean);
+      //       console.log(value, fieldAry);
+      //     }
+      //   }
+      // },
+      // {
+      //   type: 'array',
+      //   // ifVisible() {
+      //   //   return !!data.fieldAry && data.table?.renderType !== TableRenderType.SLOT;
+      //   // },
+      //   options: {
+      //     editable: false,
+      //     addable: false,
+      //     getTitle: ({ name, mappingField }) => {
+      //       return `${name}${mappingField ? '.' + mappingField.name : ''}`;
+      //     },
+      //     onRemove: (index: number) => {
+      //       // data.fieldAry.splice(index, 1);
+      //     }
+      //   },
+      //   value: {
+      //     get({}: EditorResult<Data>) {
+      //       // return (
+      //       //   data.fieldAry.filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM) ?? []
+      //       // );
+      //     },
+      //     set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
+      //       // const curFields = val;
+      //       // if (curFields.length > 0) {
+      //       //   curFields.push(handleCustomColumnSlot(data, slot));
+      //       // }
+      //       // handleTableColumnChange(curFields, data.fieldAry, slot);
+      //       // data.fieldAry = curFields;
+      //     }
+      //   }
+      // },
       {
         title: '显示新增弹窗',
         type: 'Switch',
@@ -217,4 +348,38 @@ export default {
       }
     ];
   }
+};
+
+const refreshChildComModel = (childNames, getChildByName, curEntity) => {
+  childNames.queryContent.forEach((comName) => {
+    const child = getChildByName(comName);
+
+    if (child.def.namespace === 'mybricks.normal-pc.form-container') {
+      child.data.domainModel.entity = curEntity;
+    }
+  });
+
+  childNames.createModalContent.forEach((comName) => {
+    const child = getChildByName(comName);
+
+    if (child.def.namespace === 'mybricks.normal-pc.form-container') {
+      child.data.domainModel.entity = curEntity;
+    }
+  });
+
+  childNames.editModalContent.forEach((comName) => {
+    const child = getChildByName(comName);
+
+    if (child.def.namespace === 'mybricks.normal-pc.form-container') {
+      child.data.domainModel.entity = curEntity;
+    }
+  });
+
+  childNames.tableContent.forEach((comName) => {
+    const child = getChildByName(comName);
+
+    if (child.def.namespace === 'mybricks.normal-pc.table') {
+      child.data.domainModel.entity = curEntity;
+    }
+  });
 };

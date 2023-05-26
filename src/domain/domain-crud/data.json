@@ -21,5 +21,12 @@
       "isConnected": false
     }
   },
-  "queryParams": {}
+  "queryParams": {},
+  "fieldAry": [],
+  "childNames": {
+    "queryContent": [],
+    "tableContent": [],
+    "createModalContent": [],
+    "editModalContent": []
+  }
 }
