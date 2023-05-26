@@ -3,27 +3,27 @@ import { Data, OverflowEnum, WidthUnitEnum } from '../../constants';
 import { getColItem, updateColStyle } from '../utils';
 
 const StyleEditor = (item) => [
-  {
-    title: '样式',
-    type: 'style',
-    options: ['BgColor', 'Border', 'BgImage', 'Padding'],
-    value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
-        return {
-          ...item?.colStyle
-        };
-      },
-      set({ data, focusArea }: EditorResult<Data>, value: any) {
-        if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
-        item.colStyle = {
-          ...value
-        };
-      }
-    }
-  },
+  // {
+  //   title: '样式',
+  //   type: 'style',
+  //   options: ['BgColor', 'Border', 'BgImage', 'Padding'],
+  //   value: {
+  //     get({ data, focusArea }: EditorResult<Data>) {
+  //       if (!focusArea) return;
+  //       // const item = getColItem(data, focusArea);
+  //       return {
+  //         ...item?.colStyle
+  //       };
+  //     },
+  //     set({ data, focusArea }: EditorResult<Data>, value: any) {
+  //       if (!focusArea) return;
+  //       // const item = getColItem(data, focusArea);
+  //       item.colStyle = {
+  //         ...value
+  //       };
+  //     }
+  //   }
+  // },
   {
     title: '自定义高度',
     type: 'Text',
