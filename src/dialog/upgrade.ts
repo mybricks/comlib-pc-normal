@@ -11,23 +11,24 @@ export default function ({
   };
 
   /**
-     * @description v1.1.4 增加关闭回调事件
-     */
+   * @description v1.1.4 增加关闭回调事件
+   */
   if (!output.get(OutputIds.AfterClose)) {
     output.add(OutputIds.AfterClose, '关闭回调', schema)
   }
+
   /**
-     * @description v1.1.8 增加maskClosable配置项
-     */
+   * @description v1.1.8 增加maskClosable配置项
+   */
   if (data.maskClosable === undefined) {
     data.maskClosable = false;
   }
-  /**
-     * @description v1.1.11 操作项默认开启动态显隐、禁用启用
-     */
-  data.footerBtns.forEach(btn => {
-    const { dynamicHidden, dynamicDisabled } = btn;
 
+  data.footerBtns.forEach(btn => {
+    /**
+    * @description v1.1.11 操作项默认开启动态显隐、禁用启用
+    */
+    const { dynamicHidden, dynamicDisabled, autoClose } = btn;
     if (!dynamicHidden) {
       btn.dynamicDisabled = true;
       input.add(`hidden${btn.id}`, `隐藏-${btn.title}按钮`, schema);
@@ -39,7 +40,14 @@ export default function ({
       input.add(`enable${btn.id}`, `启用-${btn.title}按钮`, schema);
     }
 
-  })
+    /**
+     * @description v1.1.12 底部按钮增加“自动关闭”配置项
+     */
+    if (autoClose === undefined) {
+      btn.autoClose = true;
+    }
+
+  });
 
   return true;
 }
