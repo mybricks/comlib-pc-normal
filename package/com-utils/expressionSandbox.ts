@@ -1,5 +1,3 @@
-type Str = string | undefined;
-
 type Options = Partial<{
   prefix: string;
   context: Record<string, any>;
@@ -10,7 +8,7 @@ export default class Sandbox {
   constructor(options: Options) {
     this.options = options;
   }
-  private unscopeCompileCode(prefix: Str = 'context', expression: Str) {
+  private unscopeCompileCode(prefix: string = 'context', expression: string) {
     return new Function(
       prefix,
       `with(${prefix}){
@@ -18,7 +16,7 @@ export default class Sandbox {
         }`
     );
   }
-  private scopeCompileCode(expression: Str) {
+  private scopeCompileCode(expression: string) {
     const fn = this.unscopeCompileCode(this.options.prefix, expression);
     return (sandbox) => {
       const _target = this.options.prefix ? { [this.options.prefix]: sandbox } : sandbox;
@@ -38,9 +36,38 @@ export default class Sandbox {
       return fn(proxy);
     };
   }
-  execute(expression: Str) {
+  execute(expression: string) {
     const fn = this.scopeCompileCode(expression);
     const _context = this.options.context ?? {};
     return fn.call(this, _context);
+  }
+  executeWithTemplate(expression: string) {
+    const reg = /\{([^\{\}]*?|.+)\}/g;
+    const matchIterator = expression.matchAll(reg);
+    const iteratorArray = Array.from(matchIterator);
+    if (!iteratorArray.length) return expression;
+    const retGroup = iteratorArray.map((it) => {
+      const match = it[0];
+      const input = it.input;
+      let ret = it[1];
+      if (!!it[1].trim()) {
+        ret = this.execute(ret);
+        ret = JSON.stringify(ret)
+      }
+      return {
+        match,
+        ret,
+        input
+      };
+    });
+    const retStr = retGroup.reduce((pre, cur) => {
+      const { match, ret, input } = cur;
+      return pre.replace(match, ret);
+    }, expression)
+    try {
+      return JSON.parse(retStr);
+    } catch (error) {
+      return retStr;
+    }
   }
 }

@@ -2,6 +2,12 @@ import { Modal } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
 import css from './runtime.less';
 
+const createFakeDom = (root) => {
+  const div = document.createElement('div');
+  root?.appendChild(div);
+  return div
+}
+
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
 
@@ -21,7 +27,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       onCancel,
       onOk,
       getContainer() {
-        return env?.canvasElement || document.body
+        return createFakeDom(env?.canvasElement || document.body)
       },
     });
   };
