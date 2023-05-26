@@ -1,5 +1,5 @@
 import { ajax } from '../util';
-import { Data } from '../type';
+import { Data, Entity } from '../type';
 import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
 import Refresh from './refresh';
 
@@ -138,6 +138,9 @@ export default {
 
                     data.entity = curEntity;
                   }
+
+                  // 清空当前已选的返回字段
+                  data.fieldAry = [];
                 }
               }
             }
@@ -183,66 +186,22 @@ export default {
       //     return {
       //       mode: 'tags',
       //       multiple: true,
+      //       filterOption: (inputValue, opiton) => {
+      //         console.log('options', opiton)
+      //         return opiton.includes(inputValue)
+      //       },
       //       get options() {
-      //         const options: Array<{ label: string; value: string }> = [];
-      //         props.data.entity?.fieldAry?.forEach((field) => {
-      //           if (field.mapping?.entity) {
-      //             field.mapping?.entity.fieldAry.forEach((f) => {
-      //               options.push({
-      //                 label: `${field.name}.${f.name}`,
-      //                 value: `${field.id}.${f.id}`
-      //               });
-      //             });
-      //           } else if (!field.isPrivate) {
-      //             options.push({ label: field.name, value: field.id });
-      //           }
-      //         });
-      //         return options;
+      //         const options = flatterEntityField(props?.data.entity)
+      //         return options
       //       }
       //     };
       //   },
       //   value: {
       //     get({ data }: EditorResult<Data>) {
-      //       // return (
-      //       //   data.fieldAry
-      //       //     .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM)
-      //       //     ?.map((field) =>
-      //       //       field.mappingField ? `${field.id}.${field.mappingField.id}` : field.id
-      //       //     ) || []
-      //       // );
-      //       return []
+      //       return data.fieldAry || []
       //     },
       //     set({ data, output, input, slot }: EditorResult<Data>, value: string[]) {
-      //       const fieldAry = value
-      //             .map((id) => {
-      //               const ids = id.split('.');
-      //               let item = data.entity.fieldAry.find((field) => field.id === ids[0]);
-      //               if (!item) {
-      //                 return;
-      //               }
-
-      //               item = JSON.parse(JSON.stringify(item));
-
-      //               if (ids.length > 1) {
-      //                 const mappingField = item.mapping?.entity.fieldAry.find(
-      //                   (field) => field.id === ids[1]
-      //                 );
-
-      //                 return mappingField
-      //                   ? {
-      //                       ...item,
-      //                       mappingField: {
-      //                         ...mappingField,
-      //                         relationEntityId: item.mapping?.entity.id
-      //                       }
-      //                     }
-      //                   : undefined;
-      //               } else {
-      //                 return item;
-      //               }
-      //             })
-      //             .filter(Boolean);
-      //       console.log(value, fieldAry);
+      //       data.fieldAry = value
       //     }
       //   }
       // },
@@ -382,4 +341,32 @@ const refreshChildComModel = (childNames, getChildByName, curEntity) => {
       child.data.domainModel.entity = curEntity;
     }
   });
+};
+
+/**
+ * 扁平化实体数据，抽取字段名
+ * @param entity
+ */
+export const flatterEntityField = (entity: Entity, parentField: string = '') => {
+  if (!Array.isArray(entity?.fieldAry)) {
+    return [];
+  }
+  const fieldRecord: { label: string; value: string }[] = [];
+
+  entity.fieldAry
+    .filter((item) => !item.isPrivate)
+    .forEach((field) => {
+      if (field.bizType !== 'relation') {
+        fieldRecord.push({
+          value: field.id,
+          label: parentField ? `${parentField}.${field.name}` : field.name
+        });
+      } else {
+        //@ts-ignore
+        const relationField = flatterEntityField(field.mapping?.entity, field.name);
+        fieldRecord.push(...relationField);
+      }
+    });
+
+  return fieldRecord;
 };

@@ -7,6 +7,7 @@ import queryData from './api/query';
 import updateData from './api/update';
 import createData from './api/create';
 import deleteData from './api/delete';
+import { flatterEntityField } from './editors';
 
 interface OrderParams {
   fieldName: string;
@@ -217,7 +218,10 @@ export default function (props: RuntimeParams<Data>) {
     queryData(
       {
         serviceId: data.entity?.id,
-        fileId: data.domainFileId
+        fileId: data.domainFileId,
+        fields: flatterEntityField(data.entity).map((item) => ({
+          name: item.label
+        }))
       },
       {
         query,

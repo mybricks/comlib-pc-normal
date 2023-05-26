@@ -126,15 +126,34 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
   return [mockData];
 };
 
+const convertEntityField2SchemaType = (field) => {
+  switch (field.bizType) {
+    case 'string':
+    case 'enum':
+      return { type: 'string' }
+    case 'number':
+    case 'datetime':
+      return { type: 'number' }
+    case 'relation':
+      return {
+        type: 'object',
+        properties: field?.mapping?.entity?.fieldAry.reduce((res, item) => {
+          res[item.name] = convertEntityField2SchemaType(item);
+          return res;
+        }, {}) || {}
+      }
+    default:
+      return { type: 'string' }
+  }
+}
+
 const convertEntity2Schema = (entity) => {
   const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate);
   return {
     items: {
       type: 'object',
       properties: publicFields.reduce((res, item) => {
-        res[item.name] = {
-          type: item?.bizType
-        }
+        res[item.name] = convertEntityField2SchemaType(item)
         return res
       }, {}),
     },
