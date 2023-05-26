@@ -42,12 +42,12 @@ export default function Dialog({
 
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
-          const { id, visible, isConnected } = item;
+          const { id, visible, isConnected, autoClose } = item;
           if (visible === false) return;
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
               item.loading = false;
-              isConnected && close();
+              isConnected && autoClose && close();
               relOutputs[id](val);
             });
           }
@@ -132,7 +132,7 @@ export default function Dialog({
       if (isConnected) {
         item.loading = true;
       } else {
-        close();
+        item.autoClose && close();
       }
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
@@ -255,6 +255,7 @@ const RuntimeRender = ({
             isConnected,
             loading,
             useBtnLoading,
+            autoClose,
             ...res
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
