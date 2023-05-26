@@ -356,10 +356,42 @@ export default {
       cate2.title = actionsEditor(data, output).title
       cate2.items = actionsEditor(data, output).items
     }
-    
+
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
+    style: {
+      title: '测试',
+      options: ['font'],
+      // target({ id }) {
+      //   // 需要子组件的id
+      //   console.log(id, 'id')
+      //   return `#${id}`;
+      // }
+    },
+    // style: [
+    //   // #u_ogZau > div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label
+    //   // #u_ogZau > .ant-form-item > .ant-form-item-label > label > label
+    //   {
+    //     title: '标题样式',
+    //     options: ['font'],
+    //     target({ id }) {
+    //       // 需要子组件的id
+    //       console.log(id,'id')
+    //       return `#${id}`;
+    //     }
+    //   },
+    //   // #u_FkSGJ > div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc-b1809 > span
+    //   {
+    //     title: '提示语样式',
+    //     options: ['font'],
+    //     target({ id }) {
+    //       // 需要子组件的id
+    //       return `#${id} > .ant-form-item > .ant-form-item-control formItemDesc > span`;
+    //     }
+    //   },
+    // ],
+
     items: [
       {
         title: '显示标题',
@@ -466,7 +498,7 @@ export default {
               const slotId = uuid();
               item['slotAfter'] = slotId
               // setFormItemProps({ data, id }, 'slotAfter', slotId);
-              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label)});
+              slot.add({ id: slotId, title: getSlotAfterTitle(item?.label) });
             } else {
               const slotAfter = getFormItemProp({ data, id, name }, 'slotAfter');
 
@@ -475,7 +507,7 @@ export default {
                 setFormItemProps({ data, id, name }, 'slotAfter', '');
               }
             }
-            
+
           }
         }
       },
@@ -626,7 +658,7 @@ export default {
             title: '标题冒号',
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id,name }, 'hiddenLabel');
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [

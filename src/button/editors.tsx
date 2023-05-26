@@ -27,6 +27,18 @@ export default {
           borderStyle: 'solid'
         },
         target: '.button'
+      },
+      {
+        title: '测试',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.asMapArea;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.asMapArea = value;
+          }
+        }
       }
     ],
     items: [
