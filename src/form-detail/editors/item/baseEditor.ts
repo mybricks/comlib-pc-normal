@@ -78,6 +78,21 @@ export const BaseEditor = [
     }
   },
   {
+    title: '标签说明',
+    type: 'text',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return data.items[getEleIdx({ data, focusArea })]?.labelDesc;
+      },
+      set({ data, focusArea }: EditorResult<Data>, val: string) {
+        if (!focusArea) return;
+        const item = data.items[getEleIdx({ data, focusArea })];
+        item.labelDesc = val;
+      }
+    }
+  },
+  {
     title: '字段名',
     type: 'Text',
     value: {

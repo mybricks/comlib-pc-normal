@@ -3,7 +3,7 @@ import { Data, InputIds } from '../constants';
 
 export function getEleIdx({ data, focusArea }: any): number {
   focusArea.ele.myEle = true;
-  if (!focusArea.ele.parentNode) return 0;
+  if (!focusArea.ele?.parentNode) return 0;
   const tableEle = focusArea.ele.parentNode.parentNode;
   if (!tableEle) return 0;
   const tableRows = tableEle.children;
@@ -30,9 +30,9 @@ export function getEleIdx({ data, focusArea }: any): number {
 export function getSpanCount({ data, focusArea }: any): number {
   focusArea.ele.myFlag = true;
   let focusAreaEle = focusArea.ele;
-  const tableEle = focusAreaEle.parentNode.parentNode;
+  const tableEle = focusAreaEle.parentNode?.parentNode;
   const tableRows: any[] = Array.from(
-    tableEle.getElementsByClassName('ant-descriptions-row')
+    tableEle?.getElementsByClassName('ant-descriptions-row') || []
   );
   let spanCount = 0;
   outer: for (let i = 0; i < tableRows.length; i++) {
@@ -152,7 +152,7 @@ export function setExchange({ data, focusArea }: any, type: 'up' | 'down') {
 export const getDataSourceSchema = (data: Data) => {
   const properties = {};
   data.items.forEach((item) => {
-   const subSchema = item.schema;
+    const subSchema = item.schema;
     properties[item.key] = subSchema || { type: 'string' };
   });
   return properties;

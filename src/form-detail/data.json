@@ -7,5 +7,6 @@
   "bordered": false,
   "column": 3,
   "items": [],
-  "colon": true
+  "colon": true,
+  "autoWidth": true
 }
