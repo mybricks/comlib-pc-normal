@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, DialogButtonProps, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
 
 const defaultSchema = { type: 'any' };
 
@@ -34,12 +34,14 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
     type: 'any'
   };
 
-  const defaultBtn: any = {
+  const defaultBtn: DialogButtonProps = {
     id,
     title,
     icon: '',
     dynamicHidden: true,
     dynamicDisabled: true,
+    visible: true,
+    autoClose: true,
     useIcon: false,
     showText: true,
     type: 'default',
@@ -92,7 +94,7 @@ function get(
   data: Data,
   focusArea: any,
   dataset: string,
-  val = 'obj',
+  val: keyof DialogButtonProps | 'obj',
   cb?: any
 ) {
   if (!focusArea) return;
@@ -442,6 +444,20 @@ export default {
         {
           title: '事件',
           items: [
+            {
+              title: '点击自动关闭对话框',
+              description: '开启时, 单击按钮会自动关闭对话框。特殊处理：当需要向外输出数据时, 对话框在数据输出后关闭。',
+              type: 'switch',
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  return get(data, focusArea, 'btnId', 'autoClose');
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                  const res = get(data, focusArea, 'btnId', 'obj');
+                  res.autoClose = value;
+                }
+              }
+            },
             {
               title: '单击',
               type: '_Event',
