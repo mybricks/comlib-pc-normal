@@ -654,6 +654,11 @@ export default {
                 //从子菜单，切换到父菜单，去除默认勾选状态，且去除其选中状态
                 if (getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu) {
                   setMenuItem(props, 'defaultActive', false);
+                  const childKey = uuid();
+                  setMenuItem(props, 'children', [
+                    { title: '子菜单1', key: childKey, _key: childKey, menuType: MenuTypeEnum.Menu }
+                  ]);
+                  props.output.add(childKey, `点击子菜单1`, { type: 'any' });
                   props.output.remove(getMenuItem(props).key);
                   //从父菜单，切换到子菜单，去除子项配置
                 } else if (getMenuItem(props, 'menuType') === MenuTypeEnum.Menu) {
@@ -706,7 +711,12 @@ export default {
                 return item.title;
               },
               onAdd: () => {
-                return {};
+                const key = uuid();
+                return {
+                  key: key,
+                  _key: key,
+                  menuType: MenuTypeEnum.Menu
+                };
               },
               items: [
                 {
