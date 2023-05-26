@@ -13,19 +13,8 @@ const itemEditor = {
   [`[${BtnItemDataSetKey}]`]: {
     title: '按钮',
     style: [
-      {
-        title: '测试',
-        type: 'Text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            console.log('get', focusArea, data);
-            return 'get';
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            console.log('set');
-          }
-        }
-      },
+      ...StyleEditor,
+      ...IconEditor,
       {
         title: '按钮样式',
         options: ['size'],
@@ -33,7 +22,6 @@ const itemEditor = {
           return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
         }
       }
-      // ...StyleEditor,
     ],
     items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
       cate1.title = '常规';
@@ -41,8 +29,8 @@ const itemEditor = {
         ...BaseEditor,
         ...OutputValEditor,
         ...EventEditor,
-        ...IndexEditor,
-        ...IconEditor
+        ...IndexEditor
+        // ...IconEditor,
       ];
 
       cate2.title = '高级';
