@@ -9,11 +9,9 @@ import createDataFormatEditor from '../../../utils/dataFormatter';
 const formatCode = `
 /**
  * 输入参数：
- *  - 当前列数据： data.value 
- *  - 当前序号： data.index
- *  - 当前行数据: data.rowRecord
- *  
- * 输出类型：数字或字符串
+ *  - 当前列数据： value 
+ *  - 当前行号：   index
+ *  - 当前行数据:  rowRecord
  **/
 ({ value, index, rowRecord }) => {
   return value
