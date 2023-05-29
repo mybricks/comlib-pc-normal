@@ -17,7 +17,7 @@ function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
         .callConnector(data.connector, curParams, { openMock: data.mock, mockSchema: data.outputSchema, ...connectorConfig })
         .then((val) => {
 	        if (curParams.showToplLog && typeof val === 'object' && val !== null && val.__ORIGIN_RESPONSE__) {
-						window?.postMessage?.(JSON.stringify({ type: 'DOMAIN_LOGS', logStack: val.__ORIGIN_RESPONSE__?.logStack || [] }), '*');
+						window?.postMessage?.(JSON.stringify({ type: 'DOMAIN_LOGS', title: data.connector.title, logStack: val.__ORIGIN_RESPONSE__?.logStack || [] }), '*');
 		        outputs['then'](val.outputData);
 	        } else {
 		        outputs['then'](val);
