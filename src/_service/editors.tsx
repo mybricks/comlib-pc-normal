@@ -128,6 +128,22 @@ export default {
           thenOut.setSchema(data.outputSchema);
         }
       }
+    },
+    {
+      title: '运行日志（调试时）',
+      description: '在调试时获取接口运行日志，可根据日志分析接口运行情况',
+      type: 'switch',
+      ifVisible({ data }) {
+        return data.connector.type === 'http-sql';
+      },
+      value: {
+        get({ data }) {
+          return data.showToplLog;
+        },
+        set({ data }, use: boolean) {
+          data.showToplLog = use;
+        }
+      }
     }
   ]
 };
