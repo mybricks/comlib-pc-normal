@@ -16,22 +16,22 @@ const itemEditor = {
       ...StyleEditor,
       ...IconEditor,
       {
-        title: '按钮样式',
         options: ['size'],
         target({ focusArea }) {
-          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
+          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"]`;
         }
       }
+      // {
+      //   title: '按钮样式',
+      //   options: ['bgcolor', 'font', 'border'],
+      //   target({ focusArea }) {
+      //     return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
+      //   }
+      // }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
       cate1.title = '常规';
-      cate1.items = [
-        ...BaseEditor,
-        ...OutputValEditor,
-        ...EventEditor,
-        ...IndexEditor
-        // ...IconEditor,
-      ];
+      cate1.items = [...BaseEditor, ...OutputValEditor, ...EventEditor, ...IndexEditor];
 
       cate2.title = '高级';
       cate2.items = [...DynamicEventEditor, ...PermissionEditor];

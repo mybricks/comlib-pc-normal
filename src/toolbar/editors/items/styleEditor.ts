@@ -115,12 +115,6 @@ const StyleEditor = [
         };
       }
     },
-    // binding: {
-    //   with: 'data.content',
-    //   schema: {
-    //     type: 'string'
-    //   }
-    // }
   },
   {
     title: '风格',
@@ -147,12 +141,6 @@ const StyleEditor = [
         item.type = value;
       }
     },
-    // binding: {
-    //   with: 'data.content',
-    //   schema: {
-    //     type: 'string'
-    //   }
-    // }
   },
   {
     title: '形状',
@@ -176,12 +164,6 @@ const StyleEditor = [
         item.shape = value;
       }
     },
-    // binding: {
-    //   with: 'data.content',
-    //   schema: {
-    //     type: 'string'
-    //   }
-    // }
   }
 ];
 
