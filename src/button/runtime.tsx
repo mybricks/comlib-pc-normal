@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { Data, OutputIds, LocationEnum } from './constants';
 import css from './runtime.less';
+import init from './init.less';
 import * as Icons from '@ant-design/icons';
 import { Space, Image } from 'antd';
 
@@ -97,7 +98,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
 
   return (
     <div
-      className={`${classnames(css.button, data.asMapArea && env.edit && css.asMapArea)} button`}
+      className={`${classnames(
+        css.button,
+        data.asMapArea && env.edit && css.asMapArea,
+        init['primary-btn']
+      )} button`}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
     >

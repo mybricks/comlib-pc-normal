@@ -15,30 +15,18 @@ export default {
       {
         title: '按钮',
         options: ['border', 'font', 'bgcolor', 'bgimage'],
-        initValue: {
-          color: '#FFF',
-          fontWeight: 400,
-          fontStyle: 'normal',
-          fontSize: '14px',
-          lineHeight: 1.5715,
-          background: '#1890ff',
-          borderColor: '#1890ff',
-          borderWidth: '1px',
-          borderStyle: 'solid'
-        },
+        // initValue: {
+        //   color: '#FFF',
+        //   fontWeight: 400,
+        //   fontStyle: 'normal',
+        //   fontSize: '14px',
+        //   lineHeight: 1.5715,
+        //   background: '#1890ff',
+        //   borderColor: '#1890ff',
+        //   borderWidth: '1px',
+        //   borderStyle: 'solid'
+        // },
         target: '.button'
-      },
-      {
-        title: '测试',
-        type: 'switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.asMapArea;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.asMapArea = value;
-          }
-        }
       }
     ],
     items: [
