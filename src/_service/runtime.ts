@@ -1,12 +1,27 @@
 import { INPUT_ID, PARAMS_READY, READY, URL_READY } from './const';
 
 function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
+	const { runtime } = env;
+	/** 调试 */
+	const debug = !!(runtime && runtime.debug);
   if (data.connector) {
     try {
+			const isObjectParams = typeof params === 'object' && params !== null;
+	    const curParams: Record<string, unknown> = isObjectParams ? { ...params } : params;
+			
+			/** 展示运行日志 */
+			if (debug && isObjectParams && data.showToplLog) {
+				curParams.showToplLog = data.showToplLog;
+			}
       env
-        .callConnector(data.connector, params, { openMock: data.mock, mockSchema: data.outputSchema, ...connectorConfig })
+        .callConnector(data.connector, curParams, { openMock: data.mock, mockSchema: data.outputSchema, ...connectorConfig })
         .then((val) => {
-          outputs['then'](val);
+	        if (curParams.showToplLog && typeof val === 'object' && val !== null && val.__ORIGIN_RESPONSE__) {
+						window?.postMessage?.(JSON.stringify({ type: 'DOMAIN_LOGS', logStack: val.__ORIGIN_RESPONSE__?.logStack || [] }), '*');
+		        outputs['then'](val.outputData);
+	        } else {
+		        outputs['then'](val);
+	        }
         })
         .catch((err) => {
           outputs['catch'](err);
