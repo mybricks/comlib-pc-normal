@@ -134,7 +134,7 @@ export default {
       description: '在调试时获取接口运行日志，可根据日志分析接口运行情况',
       type: 'switch',
       ifVisible({ data }) {
-        return data.connector.type === 'http-sql';
+        return data.connector?.type === 'http-sql';
       },
       value: {
         get({ data }) {
