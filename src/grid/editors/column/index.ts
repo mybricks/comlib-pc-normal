@@ -43,18 +43,11 @@ export default {
         ...IndexEditor(item)
       ];
 
-      cate2.title = '其余样式';
-      cate2.items = [...StyleEditor(item)];
-
-      cate3.title = '事件';
-      cate3.items = [...EventEditor(item)];
+      cate2.title = '高级';
+      cate2.items = [...StyleEditor(item), ...EventEditor(item)];
     },
     style: {
       options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
-      // target({focusArea}) {
-      //   console.log(focusArea.dataset.colCoordinate, typeof focusArea.dataset.colCoordinate, JSON.stringify(focusArea.dataset.colCoordinate))
-      //   return `.ant-row > div[data-col-coordinate=${JSON.stringify(focusArea.dataset.colCoordinate)}]`
-      // }
     }
   },
 };

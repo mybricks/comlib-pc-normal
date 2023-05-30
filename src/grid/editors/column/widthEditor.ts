@@ -14,12 +14,10 @@ const WidthEditor = (item) => [
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
         return item.widthOption;
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: WidthUnitEnum) {
         if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
         item.widthOption = value;
         updateSlotTitle(item, slot);
       }
@@ -38,7 +36,6 @@ const WidthEditor = (item) => [
     ],
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      // const item = getColItem(data, focusArea);
       return item?.widthOption === WidthUnitEnum.Span;
     },
     value: {
@@ -48,7 +45,6 @@ const WidthEditor = (item) => [
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
         if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
         item.span = value;
         updateSlotTitle(item, slot);
       }
@@ -62,7 +58,6 @@ const WidthEditor = (item) => [
     },
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      // const item = getColItem(data, focusArea);
       return item?.widthOption === WidthUnitEnum.Px;
     },
     value: {
@@ -72,7 +67,6 @@ const WidthEditor = (item) => [
       },
       set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
         if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
         item.width = value;
         updateSlotTitle(item, slot);
       }
@@ -82,7 +76,6 @@ const WidthEditor = (item) => [
     title: '断点配置(24栅格)',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      // const item = getColItem(data, focusArea);
       return item?.widthOption === WidthUnitEnum.Media;
     },
     items: [
@@ -95,7 +88,6 @@ const WidthEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             if (!item.breakPoints) {
               item.breakPoints = {
                 'xs <576px': item.span.toString(),
@@ -110,7 +102,6 @@ const WidthEditor = (item) => [
           },
           set({ data, focusArea }: EditorResult<Data>, values: any) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             item.breakPoints = Object.assign(item.breakPoints || {}, values);
           }
         }
