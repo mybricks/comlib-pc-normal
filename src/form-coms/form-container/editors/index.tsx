@@ -436,12 +436,12 @@ export default {
         title: '领域模型字段',
         type: 'EditorRender',
         ifVisible({ id, name, data }: EditorResult<Data>) {
-          return data.domainModel?.entity?.fieldAry.length > 0;
+          return data.domainModel?.entity?.fieldAry?.length > 0;
         },
         options: ({ data }: EditorResult<Data>) => {
           return {
             render: DomainFieldEditor,
-            entity: data.domainModel.entity || { fieldAry: [] }
+            entity: data.domainModel?.entity || { fieldAry: [] }
           };
         },
         value: {
@@ -462,6 +462,12 @@ export default {
               if (fieldNameCheck(data, val)) {
                 return message.warn('字段名不能重复');
               }
+              const oldRules = data.domainModel.queryFieldRules[item.name || item.label];
+
+              if (oldRules) {
+                data.domainModel.queryFieldRules[val] = oldRules;
+                delete data.domainModel.queryFieldRules[item.name || item.label];
+              }
 
               item.name = val;
               item['label'] = val;
@@ -474,6 +480,9 @@ export default {
       {
         title: '检索规则',
         type: 'Select',
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return data.domainModel?.entity?.fieldAry?.length > 0;
+        },
         options() {
           return {
             options: [
@@ -489,10 +498,23 @@ export default {
         },
         value: {
           get({ id, name, data }: EditorResult<Data>) {
-            // return getFormItemProp({ data, id, name }, 'tooltip');
+            const item = data.domainModel?.queryFieldRules?.[name];
+
+            return item?.operator;
           },
           set({ id, name, data }: EditorResult<Data>, value: string) {
-            // setFormItemProps({ data, id, name }, 'tooltip', value);
+            const item = getFormItem(data.items, { id, name });
+
+            if (item) {
+              if (!data.domainModel.queryFieldRules) {
+                data.domainModel.queryFieldRules = {};
+              }
+
+              data.domainModel.queryFieldRules[item?.name || item.label] = {
+                operator: value
+              };
+            }
+            // console.log(data.domainModel.queryFieldRules)
           }
         }
       },

@@ -196,15 +196,15 @@ export default function (props: RuntimeParams<Data>) {
   const getListData = (params, pageParams) => {
     tableInputs.current['startLoading']();
 
-    const query = {};
+    const query = params;
     const ordersParams = ordersParamsRef.current;
 
-    Object.keys(params).map((key) => {
-      query[key] = {
-        operator: 'LIKE', // LIKE、NOT LIKE、IN、NOT IN、=、<>
-        value: params[key] ? params[key] : undefined
-      };
-    });
+    // Object.keys(params).map((key) => {
+    //   query[key] = {
+    //     operator: 'LIKE', // LIKE、NOT LIKE、IN、NOT IN、=、<>
+    //     value: params[key] ? params[key] : undefined
+    //   };
+    // });
     // if (tableInputs.current?.getPageInfo) { // Todo 动态添加的 io ，无法感知到
 
     //   tableInputs.current?.getPageInfo().getPageInfo(v => {

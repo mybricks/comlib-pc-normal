@@ -46,5 +46,8 @@
     "labelAlign": "right",
     "disabled": false
   },
-  "domainModel": {}
+  "domainModel": {
+    "entity": {},
+    "queryFieldRules": {}
+  }
 }

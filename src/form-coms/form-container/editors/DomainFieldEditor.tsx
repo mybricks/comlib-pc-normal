@@ -5,7 +5,7 @@ export default function DomainFieldEditor({ editConfig }) {
   const { value, options } = editConfig;
   const { entity } = options;
   // const [fieldOptions, setFieldOptions] = useState([])
-  console.log(entity?.fieldAry);
+  // console.log(entity?.fieldAry);
   const getFieldOptions = () => {
     const systemFileds: any = {
       label: '系统字段',
@@ -17,7 +17,7 @@ export default function DomainFieldEditor({ editConfig }) {
       options: []
     };
 
-    entity.fieldAry.forEach((item) => {
+    entity?.fieldAry?.forEach((item) => {
       if (!item.isPrivate) {
         normalFileds.options.push({
           label: item.name,

@@ -268,7 +268,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .then(() => {
         getValue()
           .then((values: any) => {
-            const res = { ...values, ...params };
+            let res = { ...values, ...params };
+            // console.log(res, data.domainModel.queryFieldRules);
+
+            if (data.domainModel.entity.fieldAry?.length > 0) {
+              const domainValue = {};
+              Object.keys(res).forEach((key) => {
+                domainValue[key] = {
+                  operator: data.domainModel.queryFieldRules[key]?.operator,
+                  value: res[key]
+                };
+              });
+
+              res = domainValue;
+            }
+
             if (outputRels) {
               outputRels[outputId](res);
             } else {

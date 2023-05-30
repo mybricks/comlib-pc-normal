@@ -111,6 +111,13 @@ export interface Data {
 interface DomainModel {
   // formValues: any
   entity?: any
+  queryFieldRules: QueryFieldRules
+}
+
+interface QueryFieldRules {
+  [field: string]: {
+    operator: string
+  }
 }
 
 export interface FormControlProps {
