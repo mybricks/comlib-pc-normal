@@ -8,7 +8,7 @@ export default function queryData(domainConfig, { query, pageParams, ordersParam
   // 额外添加子实体的名称，如"角色.名称"中的”角色“
   fields.forEach(item => {
     const names = item?.name?.split('.') || []
-    if (names.length > 0) {
+    if (names.length > 1) {
       subEntitis.add(names[names.length - 2])
     }
   })
