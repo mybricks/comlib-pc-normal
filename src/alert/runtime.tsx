@@ -1,6 +1,16 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, { useEffect, ReactNode, useMemo } from 'react';
 import { Alert } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  ExclamationCircleOutlined,
+  InfoCircleFilled,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  ExclamationCircleFilled
+} from '@ant-design/icons';
 import * as Icons from '@ant-design/icons';
 import { Data, InputIds, SlotIds } from './constants';
 import css from './runtime.less';
@@ -29,10 +39,38 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
+  let iconMap;
+
+  //m-ui和antd图标区别
+  if (data.pubType === 'external') {
+    iconMap = {
+      info: <InfoCircleOutlined />,
+      success: <CheckCircleOutlined />,
+      error: <CloseCircleOutlined />,
+      warning: <ExclamationCircleOutlined />
+    };
+  } else {
+    iconMap = {
+      info: <InfoCircleFilled />,
+      success: <CheckCircleFilled />,
+      error: <CloseCircleFilled />,
+      warning: <ExclamationCircleFilled />
+    };
+  }
+
   //选择图标样式
   const chooseIcon = ({ icon }: { icon: ReactNode }) => {
     const Icon = Icons && Icons[icon as string]?.render();
-    return <>{Icon}</>;
+    return (
+      <div
+        style={{
+          fontSize: data.isCustom ? data.titleStyle.fontSize : '16px',
+          marginRight: '0px'
+        }}
+      >
+        {data.isChoose ? Icon : iconMap[data.type]}
+      </div>
+    );
   };
 
   //改变选择图标的颜色
@@ -48,18 +86,41 @@ export default function (props: RuntimeParams<Data>) {
     style.display = 'none';
   };
 
+  let descriptionStyle = useMemo(() => {
+    return {
+      color: data.showInfo && data.isCustom ? data.descriptionStyle.color : '#434343',
+      fontSize: data.showInfo && data.isCustom ? data.descriptionStyle.fontSize : '14px',
+      lineHeight: data.showInfo && data.isCustom ? data.descriptionStyle.lineHeight : '22px',
+      fontWeight: data.showInfo && data.isCustom ? data.descriptionStyle.fontWeight : 400,
+      fontStyle: data.showInfo && data.isCustom ? data.descriptionStyle.fontStyle : 'normal',
+      textDecoration:
+        data.showInfo && data.isCustom ? data.descriptionStyle.textDecoration : 'normal'
+    };
+  }, [data.descriptionStyle, data.isCustom]);
+
+  //辅助介绍
   const description = (
     <>
-      <div
-        style={{
-          color: data.showInfo && data.isColor ? data.textColor : '#434343'
-        }}
-      >
+      <div style={descriptionStyle}>
         {data.showInfo && env.i18n(decodeURIComponent(data.content))}
         {data.useContentSlot && slots[SlotIds.DescSlot].render()}
       </div>
     </>
   );
+
+  let messageStyle = useMemo(() => {
+    return {
+      color: data.isCustom ? data.titleStyle.color : 'rgba(0,0,0,0.85))',
+      fontSize: data.isCustom ? data.titleStyle.fontSize : '16px',
+      lineHeight: data.isCustom ? data.titleStyle.lineHeight : '25.144px',
+      fontWeight: data.isCustom ? data.titleStyle.fontWeight : 400,
+      fontStyle: data.isCustom ? data.titleStyle.fontStyle : 'normal',
+      textDecoration: data.isCustom ? data.titleStyle.textDecoration : 'normal'
+    };
+  }, [data.titleStyle, data.isCustom]);
+
+  //标题
+  const message = <div style={messageStyle}>{env.i18n(decodeURIComponent(data.message))}</div>;
 
   return (
     <div
@@ -72,20 +133,13 @@ export default function (props: RuntimeParams<Data>) {
         style={{
           color: colorObj[data.type]
         }}
-        message={env.i18n(decodeURIComponent(data.message))}
+        message={message}
         type={data.type}
         showIcon={data.showIcon}
         //void 0表示去除掉该配置项
-        icon={
-          data.isChoose && data.showIcon
-            ? chooseIcon({ icon: data.icon })
-            : void 0
-        }
+        icon={data.showIcon ? chooseIcon({ icon: data.icon }) : void 0}
         action={
-          <span
-            style={{ display: data.closable ? '' : 'none' }}
-            onClick={onClose}
-          >
+          <span style={{ display: data.closable ? '' : 'none' }} onClick={onClose}>
             <CloseOutlined />
           </span>
         }

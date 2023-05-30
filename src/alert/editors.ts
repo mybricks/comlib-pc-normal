@@ -40,16 +40,6 @@ export default {
           }
         }
       }),
-      Editor<Data>('颜色自定义', EditorType.Switch, 'isColor', {
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.showInfo;
-        }
-      }),
-      Editor<Data>('文案颜色', EditorType.ColorPicker, 'textColor', {
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.showInfo && data.isColor;
-        }
-      }),
       Editor<Data>('图标自定义', EditorType.Switch, 'isChoose'),
       Editor<Data>('选择图标', EditorType.Icon, 'icon', {
         ifVisible({ data }: EditorResult<Data>) {
@@ -70,7 +60,69 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.openWidth;
         }
-      })
+      }),
+      {
+        title: '字体配置',
+        type: 'switch',
+        description: "开启开关后，配置对应文本内容的颜色",
+        value: {
+          get: ({ data }: EditorResult<Data>) => {
+            return data.isCustom;
+          },
+          set: ({ data }: EditorResult<Data>, value) => {
+            data.isCustom = value;
+          }
+        }
+      },
+      {
+        title: '标题样式',
+        type: 'style',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isCustom;
+        },
+        options: {
+          plugins: ['font'],
+          fontProps: {
+            fontFamily: false,
+            verticalAlign: false,
+            horizontalAlign: false,
+          }
+        },
+        value: {
+          get: ({ data }: EditorResult<Data>) => {
+            return data.titleStyle;
+          },
+          set: ({ data }: EditorResult<Data>, value) => {
+            let lineHeight = Number(value.fontSize.slice(0, -2)) * 1.5715 + 'px';
+            data.titleStyle = {...value, lineHeight: lineHeight};
+          }
+        }
+      },
+      {
+        title: '辅助介绍文案样式',
+        type: 'style',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isCustom && data.showInfo;
+        },
+        options: {
+          plugins: ['font'],
+          fontProps: {
+            fontFamily: false,
+            verticalAlign: false,
+            horizontalAlign: false,
+            color: false
+          }
+        },
+        value: {
+          get: ({ data }: EditorResult<Data>) => {
+            return data.descriptionStyle;
+          },
+          set: ({ data }: EditorResult<Data>, value) => {
+            let lineHeight = Number(value.fontSize.slice(0, -2)) * 1.5715 + 'px';
+            data.descriptionStyle = {...value, lineHeight: lineHeight};
+          }
+        }
+      },
     ];
 
     cate3.title = '高级';

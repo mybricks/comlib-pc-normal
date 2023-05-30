@@ -11,6 +11,10 @@
  * @param width      警告栏宽度
  * @param openWidth  是否开启固定宽度
  * @param percentWidth 百分比宽度
+ * @param titleStyle 标题样式
+ * @param descriptionStyle 辅助介绍样式
+ * @param isCustom 自定义字体样式
+ * @param pubType 发布于内外网
  */
 export interface Data {
   type: any;
@@ -30,6 +34,19 @@ export interface Data {
   percentWidth: number;
   openWidth: boolean;
   useContentSlot?: boolean;
+  titleStyle: Style;
+  descriptionStyle: Style;
+  isCustom: boolean;
+  pubType: "external" | "internal"
+}
+
+export interface Style {
+  fontSize: string;
+  fontStyle: string;
+  fontWeight: number;
+  lineHeight: string;
+  color: string | undefined;
+  textDecoration: string
 }
 
 export const InputIds = {
