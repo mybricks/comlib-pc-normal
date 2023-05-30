@@ -48,6 +48,11 @@ export default {
     },
     style: {
       options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
+      target({ focusArea }) {
+        return `.ant-row > div[data-col-coordinate=${JSON.stringify(
+          focusArea.dataset.colCoordinate
+        )}]`;
+      }
     }
-  },
+  }
 };
