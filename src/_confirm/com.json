@@ -1,7 +1,7 @@
 {
   "title": "确认提示",
   "namespace": "mybricks.normal-pc.tips",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "rtType": "js",
   "description": "确认提示对话框",
   "author": "MyBricks",
