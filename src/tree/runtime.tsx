@@ -357,7 +357,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   };
 
   const renderTitle = (item) => {
-    item.title = env.i18n(item.title);
+    item.title = env.i18n(item.title || '');
     // 搜索
     const index = item.title.indexOf(data.searchValue);
     const beforeStr = item.title.substr(0, index);
