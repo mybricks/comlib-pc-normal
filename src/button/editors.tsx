@@ -11,24 +11,22 @@ export default {
     options: ['width', 'height']
   },
   ':root': {
-    style: [
-      {
-        title: '按钮',
-        options: ['border', 'font', 'bgcolor', 'bgimage'],
-        // initValue: {
-        //   color: '#FFF',
-        //   fontWeight: 400,
-        //   fontStyle: 'normal',
-        //   fontSize: '14px',
-        //   lineHeight: 1.5715,
-        //   background: '#1890ff',
-        //   borderColor: '#1890ff',
-        //   borderWidth: '1px',
-        //   borderStyle: 'solid'
-        // },
-        target: '.button'
-      }
-    ],
+    style: {
+      title: '按钮',
+      options: ['border', 'font', 'bgcolor', 'bgimage']
+      // initValue: {
+      //   color: '#FFF',
+      //   fontWeight: 400,
+      //   fontStyle: 'normal',
+      //   fontSize: '14px',
+      //   lineHeight: 1.5715,
+      //   background: '#1890ff',
+      //   borderColor: '#1890ff',
+      //   borderWidth: '1px',
+      //   borderStyle: 'solid'
+      // },
+      // target: '.button'
+    },
     items: [
       {
         title: '作为热区使用',
