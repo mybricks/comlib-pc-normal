@@ -347,23 +347,32 @@ const refreshChildComModel = (childNames, getChildByName, curEntity) => {
  * 扁平化实体数据，抽取字段名
  * @param entity
  */
-export const flatterEntityField = (entity: Entity, parentField: string = '') => {
-  if (!Array.isArray(entity?.fieldAry)) {
+export const flatterEntityField = (
+  entity: Entity,
+  parentField: string = '',
+  parsedEntityIds: string[] = []
+) => {
+  if (!Array.isArray(entity?.fieldAry) || parsedEntityIds.includes(entity.id)) {
     return [];
   }
+  parsedEntityIds.push(entity.id);
   const fieldRecord: { label: string; value: string }[] = [];
 
   entity.fieldAry
     .filter((item) => !item.isPrivate)
     .forEach((field) => {
-      if (field.bizType !== 'relation') {
+      if (!['relation', 'mapping'].includes(field.bizType)) {
         fieldRecord.push({
           value: field.id,
           label: parentField ? `${parentField}.${field.name}` : field.name
         });
       } else {
         //@ts-ignore
-        const relationField = flatterEntityField(field.mapping?.entity, field.name);
+        const relationField = flatterEntityField(
+          field.mapping?.entity,
+          field.name,
+          parsedEntityIds
+        );
         fieldRecord.push(...relationField);
       }
     });

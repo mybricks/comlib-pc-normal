@@ -2,6 +2,7 @@ import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
 import { ContentTypeEnum, Data, IColumn } from '../types';
 import { InputIds, DefaultRowKey } from '../constants';
+import { Entity } from '../../domain-form/type';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -126,7 +127,7 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
   return [mockData];
 };
 
-const convertEntityField2SchemaType = (field) => {
+const convertEntityField2SchemaType = (field, paredEntityIds: string[] = []) => {
   switch (field.bizType) {
     case 'string':
     case 'enum':
@@ -135,10 +136,16 @@ const convertEntityField2SchemaType = (field) => {
     case 'datetime':
       return { type: 'number' }
     case 'relation':
+    case 'mapping':
       return {
         type: 'object',
         properties: field?.mapping?.entity?.fieldAry.reduce((res, item) => {
-          res[item.name] = convertEntityField2SchemaType(item);
+          if (!item.relationEntityId || !paredEntityIds.includes(field.relationEntityId)) {
+            res[item.name] = convertEntityField2SchemaType(item);
+          }
+          if (!paredEntityIds.includes(field.relationEntityId)) {
+            paredEntityIds.push(field.relationEntityId)
+          }
           return res;
         }, {}) || {}
       }
@@ -147,13 +154,14 @@ const convertEntityField2SchemaType = (field) => {
   }
 }
 
-const convertEntity2Schema = (entity) => {
+const convertEntity2Schema = (entity: Entity) => {
   const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate);
+  const parsedEntityIds = [entity.id]
   return {
     items: {
       type: 'object',
       properties: publicFields.reduce((res, item) => {
-        res[item.name] = convertEntityField2SchemaType(item)
+        res[item.name] = convertEntityField2SchemaType(item, parsedEntityIds)
         return res
       }, {}),
     },
