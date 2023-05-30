@@ -9,15 +9,9 @@ export default {
     items: ({ }: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [...LayoutEditor, ...StyleEditor, ...IndexEditor];
-  
-      // cate2.title = '样式';
-      // cate2.items = [...StyleEditor];
     },
     style: {
       options: ['BgColor'],
-      // target({focusArea}) {
-      //   return `div[data-row-index=${JSON.stringify(focusArea.dataset.rowIndex)}]`
-      // }
     }
   }
 };
