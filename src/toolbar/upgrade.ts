@@ -1,7 +1,5 @@
-import { CSSProperties } from 'react';
 import { OutputIds, SizeHeightMap } from './constants';
 import { Data, SizeEnum } from './types';
-import { omit } from 'lodash';
 
 export default function ({
   data,

@@ -27,9 +27,8 @@ const IconEditor = [
     }
   },
   {
-    title: '动态显示的配置项',
+    title: '图标配置',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
-      console.log('----配置项-ifVisible----', focusArea)
       if (!focusArea) return;
       const { item } = getBtnItemInfo(data, focusArea);
       return !!item.useIcon;
@@ -51,7 +50,7 @@ const IconEditor = [
           }
         }
       },
-      {
+      { 
         title: '图标库',
         type: 'Icon',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
