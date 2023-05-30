@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
 import { Data, OutputIds } from './constants';
+import { omit } from 'lodash';
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
@@ -59,21 +60,8 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     */
   if (data.style) {
     if (typeof data.style.fontSize === 'number') data.style.fontSize = data.style.fontSize + 'px';
-    const initStyle: CSSProperties = {
-      ...{
-        color: '#FFF',
-        fontWeight: 400,
-        fontStyle: 'normal',
-        fontSize: '14px',
-        lineHeight: 1.5715,
-        background: '#1890ff',
-        borderColor: '#1890ff',
-        borderWidth: '1px',
-        borderStyle: 'solid',
-      },
-      ...data.style,
-    }
-    setDeclaredStyle(`.button`, initStyle)
+    setDeclaredStyle(`.button`, data.style);
+    omit(data, 'style');
   }
 
   return true;
