@@ -47,7 +47,7 @@ export interface BtnItem {
   // 大小
   size?: SizeEnum;
   // 样式
-  style: CSSProperties;
+  style: CSSProperties | false;
   // 按钮类型
   type?: TypeEnum;
 

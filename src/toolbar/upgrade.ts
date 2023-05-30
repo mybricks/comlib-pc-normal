@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
 import { OutputIds, SizeHeightMap } from './constants';
 import { Data, SizeEnum } from './types';
+import { omit } from 'lodash';
 
 export default function ({
   data,
@@ -55,41 +56,23 @@ export default function ({
     /**
     * @description v1.0.8 增加宽高配置
     */
-    if (!item.style) {
+    if (item.style === undefined) {
       item.style = {
-        height: SizeHeightMap[item.size || SizeEnum.Middle],
+        height: 'auto',
         width: 'auto'
-      }
+      };
     }
 
     /**
     * @description v1.0.9 style编辑器改造
     */
     if (item.style) {
-      // 注：padding需要根据size动态生成
-      // let padding = ['4px', '4px', '15px', '15px'];
-      // if (item.size === 'large') {
-      //   padding = ['6.4px', '6.4px', '15px', '15px'];
-      // }
-      // if (item.size === 'small') {
-      //   padding = ['0', '0', '7px', '7px'];
-      // }
-
-      const initStyle: CSSProperties = {
-        ...item.style,
-        // textAlign: 'center',
-        // fontSize: item.size === 'large' ? '16px' : '14px',
-        // fontWeight: 400,
-        // boxShadow: '0 2px 0 rgba(0,0,0,.015)',
-        // paddingTop: padding[0],
-        // paddingBottom: padding[1],
-        // paddingLeft: padding[2],
-        // paddingRight: padding[3],
-        // borderRadius: '2px',
+      if (SizeHeightMap[item.size || SizeEnum.Middle] === item.style.height) {
+        item.style.height = 'auto';
       }
-      setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, initStyle)
+      setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, item.style);
+      item.style = false;
     }
-
   })
 
   return true;
