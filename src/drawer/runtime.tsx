@@ -3,6 +3,7 @@ import { Button, Drawer } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds, SlotIds, Location, OutputIds } from './constants';
 import * as Icons from '@ant-design/icons';
+import { uuid } from '../utils';
 import css from './runtime.less';
 
 export default function ({
@@ -33,12 +34,18 @@ export default function ({
 
   const [inputValue, setInputValue] = useState({});
 
-  const curKey = useRef(1);
+  const curKey = useRef(uuid());
+
+  useEffect(() => {
+    curKey.current = uuid();
+    return () => {
+      curKey.current = uuid();
+    };
+  }, [visible]);
 
   const onClose = useCallback(() => {
     setVisible(false);
     // onFooterBtnClick(OutputIds.Cancel);
-    curKey.current++;
   }, []);
 
   const registerOutputsEvent = useCallback((id: string, relOutputs: any, isConnected: boolean) => {
