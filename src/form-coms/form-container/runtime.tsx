@@ -269,14 +269,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
         getValue()
           .then((values: any) => {
             let res = { ...values, ...params };
-            // console.log(res, data.domainModel.queryFieldRules);
 
             if (data.domainModel.entity.fieldAry?.length > 0) {
+              // 领域模型数据处理
               const domainValue = {};
               Object.keys(res).forEach((key) => {
+                let value = res[key];
+
+                if (typeof value === 'string') {
+                  value = value.trim();
+                  value = value ? value : undefined;
+                }
                 domainValue[key] = {
-                  operator: data.domainModel.queryFieldRules[key]?.operator,
-                  value: res[key]
+                  operator: data.domainModel.queryFieldRules[key]?.operator || 'LIKE',
+                  value
                 };
               });
 
