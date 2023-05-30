@@ -136,18 +136,31 @@ const convertEntityField2SchemaType = (field, paredEntityIds: string[] = []) => 
     case 'datetime':
       return { type: 'number' }
     case 'relation':
-    case 'mapping':
       return {
         type: 'object',
         properties: field?.mapping?.entity?.fieldAry.reduce((res, item) => {
-          if (!item.relationEntityId || !paredEntityIds.includes(field.relationEntityId)) {
-            res[item.name] = convertEntityField2SchemaType(item);
-          }
           if (!paredEntityIds.includes(field.relationEntityId)) {
             paredEntityIds.push(field.relationEntityId)
           }
+          res[item.name] = convertEntityField2SchemaType(item);
           return res;
         }, {}) || {}
+      }
+    case 'mapping':
+      return {
+        type: 'array',
+        items: {
+          properties: field?.mapping?.entity?.fieldAry.reduce((res, item) => {
+            if (!item.relationEntityId || !paredEntityIds.includes(field.relationEntityId)) {
+              res[item.name] = convertEntityField2SchemaType(item);
+            }
+            if (!paredEntityIds.includes(field.relationEntityId)) {
+              paredEntityIds.push(field.relationEntityId)
+            }
+            return res;
+          }, {}) || {},
+          type: 'object'
+        }
       }
     default:
       return { type: 'string' }
