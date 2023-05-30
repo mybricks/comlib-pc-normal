@@ -60,30 +60,30 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     return keys;
   };
 
-  //找出所有可以defaultActive为true的key
-  const findKeys = (ds: MenuItem[]) => {
-    let keys = [];
+  //找出所有可以defaultActive为true的item
+  const findItems = (ds: MenuItem[]): MenuItem[] => {
+    let items: MenuItem[] = [];
     for (let i = 0; i < ds.length; i++) {
       if (ds[i].menuType === MenuTypeEnum.Menu) {
-        keys.push(ds[i].key);
+        items.push(ds[i]);
       } else if (ds[i].menuType === MenuTypeEnum.SubMenu && ds[i].children !== undefined) {
         for (let j = 0; j < ds[i].children?.length; j++) {
           let item = ds[i].children[j];
           //（1）子菜单
           if (item.menuType === MenuTypeEnum.Menu) {
-            keys.push(item.key);
+            items.push(item);
             //（1）分组菜单
           } else if (item.menuType === MenuTypeEnum.Group && item.children !== undefined) {
             for (let t = 0; t < item.children.length; t++) {
               if (item.children[t].menuType === MenuTypeEnum.Menu) {
-                keys.push(item.children[t].key);
+                items.push(item.children[t]);
               }
             }
           }
         }
       }
     }
-    return keys;
+    return items;
   };
 
   useEffect(() => {
@@ -101,21 +101,33 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     if (env.runtime) {
       //设置选中项
       inputs[InputIds.SetActiveItem]((val) => {
-        const tempData = formatDataSource(dataSource);
-        const keys = findKeys(tempData);
+        const items = findItems(menuData);
+        const keys = items.map((item) => {
+          return {
+            key: item.key,
+            _key: item._key
+          };
+        });
+        const selectItem = keys.find((k) => k._key === val);
         //有输入时的key
-        if (keys.indexOf(val) !== -1) {
-          setSelectedKeys([val]);
+        if (selectItem) {
+          setSelectedKeys([selectItem.key]);
         }
       });
       //设置数据
       inputs[InputIds.SetMenuData]((ds) => {
         const { dataSource, defaultActive } = ds || {};
         if (Array.isArray(dataSource)) {
+          dataSource.forEach((item) => {
+            const key = item.key || uuid();
+            item.key = key;
+            item._key = key;
+          });
           const tempData = formatDataSource(dataSource);
           setMenuData(tempData);
           setIsSet(true);
-          const keys = findKeys(tempData);
+          const items = findItems(tempData);
+          const keys = items.map((item) => item.key);
           if (keys.indexOf(defaultActive) !== -1) {
             setSelectedKeys([defaultActive]);
           }
@@ -127,22 +139,34 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const onClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
     setSelectedKeys([e.key]);
-    if (env.runtime && !isSet) {
-      outputs[OutputIds.ClickMenu](clickItem);
+    const { key, _key, ...res } = clickItem;
+    if (env.runtime) {
+      outputs[OutputIds.ClickMenu]({
+        ...res,
+        key: _key
+      });
     }
   };
 
   //获取选中值
   inputs[InputIds.GetActiveItem]((val, relOutputs) => {
     const temp = findMenuItem(menuData, selectedKeys[0]);
-    relOutputs[OutputIds.GetActiveItem](temp);
+    const { key, _key, ...res } = temp || {};
+    relOutputs[OutputIds.GetActiveItem]({
+      ...res,
+      key: _key
+    });
   });
 
   //子菜单的点击事件
   const menuOnClick = (e) => {
     const clickItem = findMenuItem(menuData, e.key);
-    if (env.runtime && !isSet) {
-      outputs[e.key](clickItem);
+    const { key, _key, ...res } = clickItem;
+    if (env.runtime && key && !isSet) {
+      outputs[key]({
+        ...res,
+        key: _key
+      });
     }
   };
 

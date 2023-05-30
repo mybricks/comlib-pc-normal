@@ -5,7 +5,7 @@ import { InputIds, OutputIds } from '../types';
 export default {
   '@init'({ style }) {
     style.width = '100%';
-    style.height = '100%';
+    // style.height = '100%';
   },
   '@resize': {
     options: ['width']

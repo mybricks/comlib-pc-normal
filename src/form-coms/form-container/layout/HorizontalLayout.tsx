@@ -38,7 +38,7 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
             textAlign: data.actions.align
           }}
         >
-          <Form.Item label=" " colon={false} data-form-actions>
+          <Form.Item label=" " colon={false}>
             {actions}
           </Form.Item>
         </Col>

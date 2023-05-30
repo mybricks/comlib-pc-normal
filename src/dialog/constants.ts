@@ -33,6 +33,21 @@ export enum Location {
   FRONT = 'front',
   BACK = 'back'
 }
+
+export type DialogButtonProps = ButtonProps & {
+  id: string;
+  useIcon?: boolean;
+  showText?: boolean;
+  location?: Location;
+  dynamicDisabled?: boolean;
+  dynamicHidden?: boolean;
+  hidden?: boolean;
+  visible: boolean;
+  isConnected?: boolean;
+  useBtnLoading?: boolean;
+  autoClose?: boolean;
+}
+
 export interface Data {
   visible?: boolean;
   title: string;
@@ -46,18 +61,7 @@ export interface Data {
   isNew?: boolean;
   bodyStyle?: React.CSSProperties;
   footerLayout: AlignEnum;
-  footerBtns: (ButtonProps & {
-    id: string;
-    useIcon?: boolean;
-    showText?: boolean;
-    location?: Location;
-    dynamicDisabled?: boolean;
-    dynamicHidden?: boolean;
-    hidden?: boolean;
-    visible: boolean;
-    isConnected?: boolean;
-    useBtnLoading?: boolean;
-  })[];
+  footerBtns: DialogButtonProps[];
   destroyOnClose?: boolean;
   maskClosable?: boolean;
   getContainer?: () => any;

@@ -123,8 +123,10 @@ const groupItemEditors = (props) => {
             return item.title;
           },
           onAdd: () => {
+            const key = uuid();
             return {
-              key: uuid(),
+              key,
+              _key: key,
               menuType: MenuTypeEnum.Menu
             };
           },
@@ -140,7 +142,7 @@ const groupItemEditors = (props) => {
             {
               title: '唯一标识',
               type: 'TextArea',
-              value: 'key',
+              value: '_key',
               options: {
                 autoSize: { maxRows: 1 }
               }
@@ -290,6 +292,7 @@ export default {
         title: '菜单1',
         defaultActive: true,
         key: uuid(),
+        _key: 'menu1',
         menuType: MenuTypeEnum.Menu
       }
     ];
@@ -316,8 +319,10 @@ export default {
           return item.title;
         },
         onAdd: () => {
+          const key = uuid();
           return {
-            key: uuid(),
+            key,
+            _key: key,
             menuType: MenuTypeEnum.Menu
           };
         },
@@ -333,7 +338,7 @@ export default {
           {
             title: '唯一标识',
             type: 'TextArea',
-            value: 'key',
+            value: '_key',
             options: {
               autoSize: { maxRows: 1 }
             }
@@ -579,10 +584,10 @@ export default {
             type: 'Text',
             value: {
               get(props: EditorResult<Data>) {
-                return getMenuItem(props, 'key');
+                return getMenuItem(props, '_key');
               },
               set(props: EditorResult<Data>, value: string) {
-                setMenuItem(props, 'key', value);
+                setMenuItem(props, '_key', value);
               }
             }
           },
@@ -649,6 +654,11 @@ export default {
                 //从子菜单，切换到父菜单，去除默认勾选状态，且去除其选中状态
                 if (getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu) {
                   setMenuItem(props, 'defaultActive', false);
+                  const childKey = uuid();
+                  setMenuItem(props, 'children', [
+                    { title: '子菜单1', key: childKey, _key: childKey, menuType: MenuTypeEnum.Menu }
+                  ]);
+                  props.output.add(childKey, `点击子菜单1`, { type: 'any' });
                   props.output.remove(getMenuItem(props).key);
                   //从父菜单，切换到子菜单，去除子项配置
                 } else if (getMenuItem(props, 'menuType') === MenuTypeEnum.Menu) {
@@ -701,7 +711,12 @@ export default {
                 return item.title;
               },
               onAdd: () => {
-                return {};
+                const key = uuid();
+                return {
+                  key: key,
+                  _key: key,
+                  menuType: MenuTypeEnum.Menu
+                };
               },
               items: [
                 {
@@ -724,7 +739,7 @@ export default {
                 {
                   title: '唯一标识',
                   type: 'TextArea',
-                  value: 'key',
+                  value: '_key',
                   options: {
                     autoSize: { maxRows: 1 }
                   }

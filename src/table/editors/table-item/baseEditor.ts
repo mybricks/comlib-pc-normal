@@ -2,10 +2,22 @@ import Tree from '../../../components/editorRender/fieldSelect';
 import { uuid } from '../../../utils';
 import { InputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
-import { getDefaultDataSchema, Schemas, setCol, setDataSchema } from '../../schema';
+import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } from '../../schema';
 import { getColumnItem, getColumnsSchema } from '../../utils';
+import createDataFormatEditor from '../../../utils/dataFormatter';
 
-const BaseEditor = {
+const formatCode = `
+/**
+ * 输入参数：
+ *  - 当前列数据： value 
+ *  - 当前行号：   index
+ *  - 当前行数据:  rowRecord
+ **/
+({ value, index, rowRecord }) => {
+  return value
+}`
+
+const createBaseEditor = ({ data }) => ({
   title: '基础配置',
   items: [
     {
@@ -136,6 +148,57 @@ const BaseEditor = {
         }
       }
     },
+
+    createDataFormatEditor({
+      title: '格式转化',
+      formatters: [{
+        formatter: 'KEYMAP'
+      }, {
+        formatter: 'EXPRESSION',
+        description: '表达式输出内容为字符串，在花括号内可以引用变量并进行简单处理',
+        options: {
+          placeholder: '如：当前是第{index+1}行，列数据为{value}, 行数据为{rowRecord}',
+          suggestions: [
+            {
+              label: 'value',
+              detail: '当前列数据',
+            },
+            {
+              label: 'rowRecord',
+              detail: '当前行数据',
+              properties: getSuggestionFromSchema({
+                type: 'object',
+                properties: getTableSchema({ data })
+              })
+            },
+            {
+              label: 'index',
+              detail: '当前行序号',
+            }
+          ]
+        }
+      }, {
+        formatter: 'TIMETEMPLATE',
+        defaultValue: 'YYYY-MM-DD HH:mm:ss'
+      }, {
+        formatter: 'CUSTOMTIME',
+        defaultValue: 'YYYY-MM-DD HH:mm:ss'
+      }, {
+        formatter: 'CUSTOMSCRIPT',
+        defaultValue: formatCode
+      }],
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.formatData
+        },
+        set({ data, focusArea }, value) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'formatData', value);
+        }
+      }
+    }),
     {
       title: '列数据类型',
       type: '_schema',
@@ -161,6 +224,26 @@ const BaseEditor = {
       }
     }
   ]
+})
+
+function getSuggestionFromSchema(schema) {
+  if (schema?.type?.toLowerCase() === 'object') {
+    const res = Object.keys(schema.properties || {}).map((key) => {
+      const suggestion = {
+        label: key,
+      };
+      if (!!schema.properties[key].properties) {
+        //@ts-ignore
+        suggestion.properties = getSuggestionFromSchema(schema.properties[key]);
+      }
+      return suggestion
+    });
+    return res
+  }
+  if (schema?.type?.toLowerCase() === 'array') {
+    return getSuggestionFromSchema(schema?.items);
+  }
+  return [];
 };
 
-export default BaseEditor;
+export default createBaseEditor;
