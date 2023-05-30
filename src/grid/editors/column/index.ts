@@ -43,11 +43,14 @@ export default {
         ...IndexEditor(item)
       ];
 
-      cate2.title = '高级';
-      cate2.items = [...StyleEditor(item), ...EventEditor(item)];
+      cate3.title = '事件';
+      cate3.items = [...EventEditor(item)];
     },
     style: {
       options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
+      target({focusArea}) {
+        return `.ant-row > div[data-col-coordinate=${JSON.stringify(focusArea.dataset.colCoordinate)}]`
+      }
     }
   },
 };
