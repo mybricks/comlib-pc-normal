@@ -50,8 +50,7 @@ export interface IRow {
   align: AlignTypeEnum;
   wrap?: boolean;
   backgroundColor?: string;
-  useGutter?: boolean;
-  gutter: number | object | [];
+  gutter: number | object | [number, number];
 }
 
 export interface Data {
