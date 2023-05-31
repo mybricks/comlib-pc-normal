@@ -53,14 +53,16 @@ export default function ({
     /**
     * @description v1.0.8 增加宽高配置
     */
-    if (!item.style) {
+    if (item.style === undefined) {
       item.style = {
-        height: SizeHeightMap[item.size || SizeEnum.Middle],
+        height: 'auto',
         width: 'auto'
-      }
+      };
     }
-
-  })
+    if (SizeHeightMap[item.size || SizeEnum.Middle] === item.style.height) {
+      item.style.height = 'auto';
+    }
+  });
 
   return true;
 }
