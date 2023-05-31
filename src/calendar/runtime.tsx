@@ -144,7 +144,8 @@ export default (props: RuntimeParams<Data>) => {
         inputValues: {
           [InputIds.CurrentDate]: formatDate(date),
           [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]
-        }
+        },
+        key: formatDate(date)
       });
     }
     return (Array.isArray(ds) ? ds : [ds]).map(CellRender);
