@@ -46,6 +46,9 @@ function setFormItemProps(
 }
 
 export default {
+  // '@init' ({ data, inputs, outputs, slots }) {
+  //   console.log(data.domainModel, slots)
+  // },
   '@inputConnected'({ data, outputs }, fromPin, toPin) {
     if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
       if (fromPin.schema.type === 'object') {

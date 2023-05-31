@@ -145,6 +145,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }
 
+  // useEffect(() => {
+  //   if (env.edit) {
+  //     if (data.domainModel.entity && data.items.length === 0) {
+  //       const fieldAry = data.domainModel.entity.fieldAry
+
+  //       fieldAry?.forEach(item => {
+  //         if (!item.isPrivate) {
+  //           slots['content'].addCom('mybricks.normal-pc.form-text')
+  //         }
+  //       })
+
+  //       console.log(fieldAry, slots)
+  //     }
+  //   }
+  // }, [data.domainModel.entity, slots])
+
   const setFieldsValue = (val) => {
     if (val) {
       Object.keys(val).forEach((key) => {
@@ -272,21 +288,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
             if (data.domainModel.entity.fieldAry?.length > 0) {
               // 领域模型数据处理
-              const domainValue = {};
-              Object.keys(res).forEach((key) => {
-                let value = res[key];
+              // const domainValue = {};
+              // Object.keys(res).forEach((key) => {
+              //   let value = res[key];
 
-                if (typeof value === 'string') {
-                  value = value.trim();
-                  value = value ? value : undefined;
-                }
-                domainValue[key] = {
-                  operator: data.domainModel.queryFieldRules[key]?.operator || 'LIKE',
-                  value
-                };
-              });
+              //   if (typeof value === 'string') {
+              //     value = value.trim();
+              //     value = value ? value : undefined;
+              //   }
+              //   domainValue[key] = {
+              //     operator: data.domainModel.queryFieldRules[key]?.operator || 'LIKE',
+              //     value
+              //   };
+              // });
 
-              res = domainValue;
+              res = {
+                values: { ...res },
+                fieldsRules: { ...data.domainModel.queryFieldRules }
+              };
             }
 
             if (outputRels) {
