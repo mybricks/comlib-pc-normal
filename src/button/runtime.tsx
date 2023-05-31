@@ -94,14 +94,20 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       return renderTextAndIcon(item);
     }
   };
-
+  if (data.asMapArea) {
+    return (
+      <div
+        className={`${classnames(css.wrapper, env.edit && css.asMapArea)}`}
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
+      ></div>
+    );
+  }
   return (
-    <div
-      className={`${classnames(css.button, data.asMapArea && env.edit && css.asMapArea)}`}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-    >
-      {!data.asMapArea ? renderBtnContext(data) : null}
+    <div className={css.wrapper}>
+      <div className={`${css.button} button`} onClick={onClick} onDoubleClick={onDoubleClick}>
+        {renderBtnContext(data)}
+      </div>
     </div>
   );
 }

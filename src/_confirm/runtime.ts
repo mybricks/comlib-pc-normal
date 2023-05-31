@@ -27,7 +27,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       onCancel,
       onOk,
       getContainer() {
-        return createFakeDom(env?.canvasElement || document.body)
+        return createFakeDom(env?.canvasElement?.parentElement || document.body)
       },
     });
   };

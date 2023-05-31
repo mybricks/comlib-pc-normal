@@ -98,7 +98,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
             key={row.key}
             justify={row.justify}
             align={row.align}
-            gutter={row.useGutter ? [row.gutter?.[0] || 0, 0] : [0, 0]}
+            gutter={row.gutter ?? [0, 0]}
             wrap={row.wrap}
           >
             {row.columns.map((item, colIndex) => {

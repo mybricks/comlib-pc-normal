@@ -47,7 +47,7 @@ export default {
       cate2.items = [...StyleEditor(item), ...EventEditor(item)];
     },
     style: {
-      options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
+      options: ['BgColor', 'Border', 'BgImage', 'Padding'],
       target({ focusArea }) {
         return `.ant-row > div[data-col-coordinate=${JSON.stringify(
           focusArea.dataset.colCoordinate

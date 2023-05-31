@@ -153,9 +153,9 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     }
     return btnList.map((item) => {
       if (!hasPermission(item.permissionKey) || item.hidden) return;
-      const { type, size, shape, disabled, isCustom, loading } = item;
+      const { type, size, shape, disabled, isCustom, style, loading } = item;
       return (
-        <div key={item.key} data-btn-idx={item.key} className={css.button}>
+        <div key={item.key} data-btn-idx={item.key} className={css.button} style={style}>
           <Button
             type={type as any}
             size={size}
