@@ -140,12 +140,17 @@ export default (props: RuntimeParams<Data>) => {
     const ds = dataSource[formatDate(date, isMonth ? 'YYYY-MM' : 'YYYY-MM-DD')] || [];
     // 日期单元格插槽渲染
     if (!isMonth && useCustomDateCell && slots[SlotIds.DateCell]) {
-      return slots[SlotIds.DateCell].render({
-        inputValues: {
-          [InputIds.CurrentDate]: formatDate(date),
-          [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]
-        }
-      });
+      if (env.edit && formatDate(date) !== formatDate(moment())) {
+        return null;
+      } else {
+        return slots[SlotIds.DateCell].render({
+          inputValues: {
+            [InputIds.CurrentDate]: formatDate(date),
+            [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]
+          },
+          key: formatDate(date)
+        });
+      }
     }
     return (Array.isArray(ds) ? ds : [ds]).map(CellRender);
   };
