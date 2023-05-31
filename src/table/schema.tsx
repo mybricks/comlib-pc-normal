@@ -368,5 +368,16 @@ export const Schemas = {
         }
       }
     }
+  },
+  ROW_CLICK: {
+    type: 'object',
+    properties: {
+      index: {
+        type: 'number'
+      },
+      record: {
+        type: 'object'
+      }
+    }
   }
 };
