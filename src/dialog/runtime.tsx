@@ -47,7 +47,7 @@ export default function Dialog({
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
               item.loading = false;
-              isConnected && autoClose && close();
+              isConnected && autoClose === true && close();
               relOutputs[id](val);
             });
           }
@@ -132,7 +132,7 @@ export default function Dialog({
       if (isConnected) {
         item.loading = true;
       } else {
-        item.autoClose && close();
+        item.autoClose === true && close();
       }
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
