@@ -62,6 +62,8 @@ interface EditorResult<T> {
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDesc: (desc?: string) => void
+  /** 获取子组件data，引擎 v1.2.69 **/
+  getChildByName: (name: string) => any
 }
 
 interface UpgradeParams<T> {
