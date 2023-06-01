@@ -67,9 +67,25 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['query']((val) => {
         console.log('触发查询', val);
-        queryParamsRef.current = val;
+        const { values, fieldsRules } = val;
+        const query = {};
 
-        getListData(val, { pageNum: 1, pageSize });
+        Object.keys(values).forEach((key) => {
+          let value = values[key];
+
+          if (typeof value === 'string') {
+            value = value.trim();
+            value = value ? value : undefined;
+          }
+          query[key] = {
+            operator: fieldsRules[key]?.operator || 'LIKE',
+            value
+          };
+        });
+
+        queryParamsRef.current = query;
+
+        getListData(query, { pageNum: 1, pageSize });
       });
 
       inputs['pageChange']((val) => {
@@ -116,12 +132,13 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['create']((val) => {
         console.log('新建', val);
+        const { values } = val;
         createData(
           {
             serviceId: data.entity?.id,
             fileId: data.domainFileId
           },
-          { ...val }
+          { ...values }
         ).then((r) => {
           message.success('创建成功');
           setPageNum(1);
@@ -133,12 +150,13 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['editById']((val) => {
         console.log('编辑', val);
+        const { values } = val;
         updateData(
           {
             serviceId: data.entity?.id,
             fileId: data.domainFileId
           },
-          { ...val }
+          { ...values }
         ).then((r) => {
           message.success('更新成功');
           setPageNum(1);
@@ -149,12 +167,14 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['deleteById']((val) => {
+        const { values } = val;
+
         deleteData(
           {
             serviceId: data.entity?.id,
             fileId: data.domainFileId
           },
-          val.id
+          values.id
         ).then((r) => {
           message.success('删除成功');
           setPageNum(1);
