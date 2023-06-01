@@ -25,6 +25,12 @@ export default {
     if (curSlot.id === 'queryContent') {
       childData.domainModel.entity = data.entity;
       childData.domainModel.isQuery = true;
+      childData.config.layout = 'inline';
+      childData.formItemColumn = 3;
+      childData.actions.span = 8;
+      childData.items.forEach((item) => {
+        item.span = 8;
+      });
       data?.childNames.queryContent.push(name);
     }
 
