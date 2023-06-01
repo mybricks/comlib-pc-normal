@@ -5,6 +5,7 @@
   "domainAry": [],
   "domainFileId": "",
   "entityId": "",
+  "isImmediate": true,
   "editModalActions": {
     "onOk": {
       "isConnected": false

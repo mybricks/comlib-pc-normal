@@ -24,16 +24,19 @@ export default {
 
     if (curSlot.id === 'queryContent') {
       childData.domainModel.entity = data.entity;
+      childData.domainModel.isQuery = true;
       data?.childNames.queryContent.push(name);
     }
 
     if (curSlot.id === 'createModalContent') {
       childData.domainModel.entity = data.entity;
+      childData.domainModel.isQuery = false;
       data?.childNames.createModalContent.push(name);
     }
 
     if (curSlot.id === 'editModalContent') {
       childData.domainModel.entity = data.entity;
+      childData.domainModel.isQuery = false;
       data?.childNames.editModalContent.push(name);
     }
 
@@ -106,6 +109,7 @@ export default {
 
                   return entityList;
                 },
+                disabled: !!props.data.domainFileId,
                 placeholder: '请选择实体'
               };
             },
@@ -148,8 +152,8 @@ export default {
           {
             title: '刷新模型实体信息',
             type: 'editorRender',
-            ifVisible({ data }: EditorResult<Data>) {
-              return !!data.entity;
+            ifVisible(props: EditorResult<Data>) {
+              return !!props.data.domainFileId;
             },
             options: {
               render: Refresh,
@@ -178,6 +182,19 @@ export default {
             }
           }
         ]
+      },
+      {
+        title: '立刻请求数据',
+        description: '页面初始化时自动请求一次数据',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isImmediate;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.isImmediate = value;
+          }
+        }
       },
       // {
       //   title: '返回字段',

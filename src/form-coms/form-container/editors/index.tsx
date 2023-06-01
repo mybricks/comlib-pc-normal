@@ -484,7 +484,7 @@ export default {
         title: '检索规则',
         type: 'Select',
         ifVisible({ id, name, data }: EditorResult<Data>) {
-          return data.domainModel?.entity?.fieldAry?.length > 0;
+          return data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery;
         },
         options() {
           return {

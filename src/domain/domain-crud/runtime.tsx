@@ -1,5 +1,5 @@
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './runtime.less';
 import { Data } from './type';
@@ -29,7 +29,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const [pageNum, setPageNum] = useState(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  // const [curRecordId, setCurRecordId] = useState()
+  const [curRecordId, setCurRecordId] = useState();
 
   // console.log(data.entity);
 
@@ -56,12 +56,16 @@ export default function (props: RuntimeParams<Data>) {
         console.log(val);
         setIsEdit(true);
         setVisible(true);
+
+        setCurRecordId(val.id);
+
         slots['editModalContent'].inputs['dataSource'](val);
       });
 
       inputs['openCreateModal']((val) => {
         setIsEdit(false);
         setVisible(true);
+
         slots['createModalContent'].inputs['dataSource'](val);
       });
 
@@ -132,13 +136,13 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['create']((val) => {
         console.log('新建', val);
-        const { values } = val;
+
         createData(
           {
             serviceId: data.entity?.id,
             fileId: data.domainFileId
           },
-          { ...values }
+          { ...val }
         ).then((r) => {
           message.success('创建成功');
           setPageNum(1);
@@ -150,13 +154,13 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['editById']((val) => {
         console.log('编辑', val);
-        const { values } = val;
+
         updateData(
           {
             serviceId: data.entity?.id,
             fileId: data.domainFileId
           },
-          { ...values }
+          { id: curRecordId, ...val }
         ).then((r) => {
           message.success('更新成功');
           setPageNum(1);
@@ -167,14 +171,12 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['deleteById']((val) => {
-        const { values } = val;
-
         deleteData(
           {
             serviceId: data.entity?.id,
             fileId: data.domainFileId
           },
-          values.id
+          val.id
         ).then((r) => {
           message.success('删除成功');
           setPageNum(1);
@@ -182,7 +184,19 @@ export default function (props: RuntimeParams<Data>) {
         });
       });
     }
-  }, [pageNum, pageSize]);
+  }, [pageNum, pageSize, curRecordId]);
+
+  useEffect(() => {
+    if (env.runtime) {
+      if (!data.domainFileId) {
+        return;
+      }
+
+      if (data.isImmediate) {
+        getListData({}, { pageNum: 1, pageSize });
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (env.edit) {
@@ -267,36 +281,41 @@ export default function (props: RuntimeParams<Data>) {
 
   return (
     <div className={styles.domainContainer}>
-      <div className={styles.queryContent}>
-        {slots['queryContent']?.render({
-          wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-            const jsx = comAray?.map((com, idx) => {
-              formInputs.current = com.inputs;
+      {data.domainFileId ? (
+        <>
+          <div className={styles.queryContent}>
+            {slots['queryContent']?.render({
+              wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+                const jsx = comAray?.map((com, idx) => {
+                  formInputs.current = com.inputs;
 
-              return com.jsx;
-            });
+                  return com.jsx;
+                });
 
-            return jsx;
-          }
-        })}
-      </div>
-      <div className={styles.actionsContent}>
-        {slots['actionsContent']?.render()}
-        {/* <Button type="primary" icon={<PlusOutlined />} onClick={() => openCreateModal()}>新建</Button> */}
-      </div>
-      <div className={styles.tableContent}>
-        {slots['tableContent']?.render({
-          wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-            const jsx = comAray?.map((com, idx) => {
-              tableInputs.current = com.inputs;
+                return jsx;
+              }
+            })}
+          </div>
+          <div className={styles.actionsContent}>{slots['actionsContent']?.render()}</div>
+          <div className={styles.tableContent}>
+            {slots['tableContent']?.render({
+              wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+                const jsx = comAray?.map((com, idx) => {
+                  tableInputs.current = com.inputs;
 
-              return com.jsx;
-            });
+                  return com.jsx;
+                });
 
-            return jsx;
-          }
-        })}
-      </div>
+                return jsx;
+              }
+            })}
+          </div>
+        </>
+      ) : (
+        <div className={styles.empty}>
+          <Empty description="请选择一个领域模型实体" />
+        </div>
+      )}
 
       <Modal
         title={isEdit ? '编辑' : '新建'}

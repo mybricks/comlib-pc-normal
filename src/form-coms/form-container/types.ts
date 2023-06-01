@@ -112,6 +112,7 @@ interface DomainModel {
   // formValues: any
   entity?: any
   queryFieldRules: QueryFieldRules
+  isQuery?: boolean
 }
 
 interface QueryFieldRules {

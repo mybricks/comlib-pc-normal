@@ -286,22 +286,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           .then((values: any) => {
             let res = { ...values, ...params };
 
-            if (data.domainModel.entity.fieldAry?.length > 0) {
+            if (data.domainModel.entity.fieldAry?.length > 0 && data.domainModel?.isQuery) {
               // 领域模型数据处理
-              // const domainValue = {};
-              // Object.keys(res).forEach((key) => {
-              //   let value = res[key];
-
-              //   if (typeof value === 'string') {
-              //     value = value.trim();
-              //     value = value ? value : undefined;
-              //   }
-              //   domainValue[key] = {
-              //     operator: data.domainModel.queryFieldRules[key]?.operator || 'LIKE',
-              //     value
-              //   };
-              // });
-
               res = {
                 values: { ...res },
                 fieldsRules: { ...data.domainModel.queryFieldRules }
