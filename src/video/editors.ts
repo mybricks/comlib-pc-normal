@@ -18,31 +18,9 @@ export default {
           title: '属性',
           items: [
             {
-              title: '动态视频链接',
-              type: 'switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return !!data.dynamicSrc;
-                },
-                set({ data, input }: EditorResult<Data>, val: boolean) {
-                  data.dynamicSrc = val;
-                  if (val) {
-                    input.add('link', '设置视频链接', {
-                      type: 'string'
-                    });
-                  } else if (input.get('link')) {
-                    input.remove('link');
-                  }
-                }
-              }
-            },
-            {
               title: '视频链接',
               description: '目前只支持mp4，mov，hls，flv视频（流）格式',
               type: 'text',
-              ifVisible({ data }: EditorResult<Data>) {
-                return !data.dynamicSrc;
-              },
               value: {
                 get({ data }: RuntimeParams<Data>) {
                   return data.src;
@@ -90,23 +68,8 @@ export default {
               }
             },
             {
-              title: '自定义封面',
-              type: 'Switch',
-              value: {
-                get({ data }: RuntimeParams<Data>) {
-                  return data.usePoster;
-                },
-                set({ data }: RuntimeParams<Data>, val: boolean) {
-                  data.usePoster = val;
-                }
-              }
-            },
-            {
               title: '封面',
               type: 'imageSelector',
-              ifVisible({ data }: RuntimeParams<Data>) {
-                return data.usePoster;
-              },
               value: {
                 get({ data }: RuntimeParams<Data>) {
                   return data.poster;

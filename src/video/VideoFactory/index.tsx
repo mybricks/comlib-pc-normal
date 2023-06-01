@@ -21,7 +21,7 @@ const Wrap = ({ children }) => {
 
 const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   const { data, inputs, env } = props;
-  const { src, dynamicSrc } = data;
+  const { src } = data;
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const videoStrategy = {
@@ -32,10 +32,9 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   };
 
   useEffect(() => {
-    dynamicSrc &&
-      inputs['link']((value: string) => {
-        data.src = value;
-      });
+    inputs['link']((value: string) => {
+      data.src = value;
+    });
     inputs['screenshot'](screenshot);
   }, []);
 
