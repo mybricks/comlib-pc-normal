@@ -49,9 +49,7 @@ export default {
     style: {
       options: ['BgColor', 'Border', 'BgImage', 'Padding'],
       target({ focusArea }) {
-        return `.ant-row > div[data-col-coordinate=${JSON.stringify(
-          focusArea.dataset.colCoordinate
-        )}]`;
+        return `.ant-row > div[data-col-coordinate="${focusArea.dataset.colCoordinate}"]`;
       }
     }
   }

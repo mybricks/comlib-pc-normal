@@ -58,10 +58,10 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           span={column.widthOption === WidthUnitEnum.Span ? column.span : undefined}
           flex={flex}
           {...breakPointConfig}
-          data-col-coordinate={JSON.stringify([rowIndex, column.key])}
+          data-col-coordinate={`${rowIndex},${column.key}`}
           data-type-col={`col-${column.key}`}
           style={{
-            // ...column.colStyle,
+            height: column.colStyle.height,
             ...getMinMaxWidth(column),
             width,
             cursor: column.useClick ? 'pointer' : 'unset'
