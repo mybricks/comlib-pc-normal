@@ -2,7 +2,7 @@ import { Data, WidthUnitEnum } from '../constants';
 
 const StyleEditor = [
   {
-    title: '容器样式',
+    title: '容器',
     type: 'style',
     options: ['BgColor', 'Border', 'BgImage'],
     value: {
@@ -17,9 +17,9 @@ const StyleEditor = [
     }
   },
   {
-    title: '单元格样式',
+    title: '单元格',
     type: 'style',
-    options: ['padding'],
+    options: ['BgColor', 'Border', 'BgImage', 'Padding'],
     value: {
       get({ data }: EditorResult<Data>) {
         return data.globalColStyle;
