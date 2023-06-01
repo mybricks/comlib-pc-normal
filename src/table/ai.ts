@@ -2,8 +2,8 @@ import { uuid } from '../utils';
 import { merge } from 'lodash'
 
 export default {
-  prompts: `
-    下面是数据表格的问答示例
+  prompts() {
+    return `下面是数据表格的问答示例
     例如：
     请回答：设计一个表格
     {
@@ -18,7 +18,8 @@ export default {
             {field:'name',title:'名称'},
           ],
         }
-  `,
+  `
+  },
   '@create'(props) {
     const { def, data, slots } = props;
 
@@ -83,7 +84,7 @@ export default {
           contentStyle: { color: '#434343' },
         },
       `,
-      execute({ data, newData, slots}) {
+      execute({ data, newData, slots }) {
         if (newData.headStyle) {
           data.headStyle = { ...newData.headStyle };
         }
@@ -91,7 +92,7 @@ export default {
           data.contentStyle = { ...newData.contentStyle };
         }
 
-        if(newData.columns) {
+        if (newData.columns) {
           data.columns = [...newData.columns];
         }
         data.columns = data.columns.map((item, index) => {
