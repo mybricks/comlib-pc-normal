@@ -10,7 +10,7 @@ export default function ({ data, setDeclaredStyle }: UpgradeParams<Data>): boole
 
   //兼容之前颜色自定义情况
   if(data.isColor){
-    setDeclaredStyle(`.ant-alert-description`, data.textColor);
+    setDeclaredStyle(`.ant-alert-description`, { color: data.textColor});
   }
   
   return true;
