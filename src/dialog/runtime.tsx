@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import React, { useEffect, useCallback, useState, useRef, useMemo } from 'react';
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
 import {
@@ -14,7 +14,7 @@ import {
   AlignEnum
 } from './constants';
 import css from './runtime.less';
-
+import { uuid } from '../utils';
 export default function Dialog({
   env,
   data,
@@ -247,8 +247,6 @@ const RuntimeRender = ({
     destroyOnClose
   } = cfg;
 
-  const curKey = useRef(1);
-
   const renderFooter = () => {
     return (
       <div
@@ -294,17 +292,17 @@ const RuntimeRender = ({
     );
   };
 
-  const Content =
-    slots[SlotIds.Container] &&
-    slots[SlotIds.Container].render({
-      key: curKey.current,
-      inputValues: { [SlotInputIds.DataSource]: dataSource }
-    });
-
   const onCancel = () => {
-    curKey.current++;
     'function' === typeof event?.cancel && event?.cancel();
   };
+
+  const SlotContent = useMemo(() => {
+    const key = uuid();
+    return slots[SlotIds.Container].render({
+      key,
+      inputValues: { [SlotInputIds.DataSource]: dataSource }
+    });
+  }, [visible, dataSource]);
 
   return (
     <Modal
@@ -325,7 +323,7 @@ const RuntimeRender = ({
       afterClose={event?.afterClose}
       destroyOnClose={destroyOnClose}
     >
-      {Content}
+      {SlotContent}
     </Modal>
   );
 };

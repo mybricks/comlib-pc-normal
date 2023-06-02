@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Button, Drawer } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds, SlotIds, Location, OutputIds } from './constants';
@@ -33,15 +33,6 @@ export default function ({
   } = data;
 
   const [inputValue, setInputValue] = useState({});
-
-  const curKey = useRef(uuid());
-
-  useEffect(() => {
-    curKey.current = uuid();
-    return () => {
-      curKey.current = uuid();
-    };
-  }, [visible]);
 
   const onClose = useCallback(() => {
     setVisible(false);
@@ -101,10 +92,13 @@ export default function ({
       })
     : null;
 
-  const children = slots[SlotIds.Content].render({
-    key: curKey.current,
-    inputValues: { [SlotIds.DataSource]: inputValue }
-  });
+  const children = useMemo(() => {
+    const key = uuid();
+    return slots[SlotIds.Content].render({
+      key,
+      inputValues: { [SlotIds.DataSource]: inputValue }
+    });
+  }, [visible, inputValue]);
 
   if (edit || debug) {
     return createPortal(
