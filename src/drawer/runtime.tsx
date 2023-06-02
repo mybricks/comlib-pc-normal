@@ -94,6 +94,7 @@ export default function ({
 
   const children = useMemo(() => {
     const key = uuid();
+    console.log('---------key-------', key);
     return slots[SlotIds.Content].render({
       key,
       inputValues: { [SlotIds.DataSource]: inputValue }

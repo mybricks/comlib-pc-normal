@@ -298,6 +298,7 @@ const RuntimeRender = ({
 
   const SlotContent = useMemo(() => {
     const key = uuid();
+    console.log('--------dialog key---------', key);
     return slots[SlotIds.Container].render({
       key,
       inputValues: { [SlotInputIds.DataSource]: dataSource }
