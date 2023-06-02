@@ -1,6 +1,6 @@
 import { INPUT_ID, PARAMS_READY, READY, URL_READY } from './const';
 
-function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
+function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = {}) {
 	const { runtime } = env;
 	/** 调试 */
 	const debug = !!(runtime && runtime.debug);
@@ -17,8 +17,15 @@ function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
         .callConnector(data.connector, curParams, { openMock: data.mock, mockSchema: data.outputSchema, ...connectorConfig })
         .then((val) => {
 	        if (curParams.showToplLog && typeof val === 'object' && val !== null && val.__ORIGIN_RESPONSE__) {
-						window?.postMessage?.(JSON.stringify({ type: 'DOMAIN_LOGS', title: data.connector.title, logStack: val.__ORIGIN_RESPONSE__?.logStack || [] }), '*');
-		        outputs['then'](val.outputData);
+		        (val.__ORIGIN_RESPONSE__?.logStack || []).map(log => {
+              let value: any = log.value;
+
+              if (Array.isArray(value) || (typeof value === 'object' && value !== null) || typeof value === 'boolean') {
+                value = JSON.stringify(value);
+              }
+              logger.info(` [${log.typeLabel}]  ${log.nodeType === 'com' ? '组件' : (log.nodeType === 'frame' ? '服务卡片' : 'Fx卡片')}${log.type !== 'sql' ? `：${log.title || log.id} | ${log.pinTitle || log.pinId}` : ''}  当前值：${value}`, data.connector.title);
+            });
+            outputs['then'](val.outputData);
 	        } else {
 		        outputs['then'](val);
 	        }
@@ -37,30 +44,30 @@ function callCon({ env, data, outputs }, params = {}, connectorConfig = {}) {
   }
 }
 
-function call({ env, data, outputs, params }) {
+function call({ env, data, outputs, params, logger }) {
   if (data.callReady === READY) {
     data.callReady = PARAMS_READY;
-    callCon({ env, data, outputs }, params, data.connectorConfig);
+    callCon({ env, data, outputs, logger }, params, data.connectorConfig);
   }
 }
 
-export default function ({ env, data, inputs, outputs }) {
+export default function ({ env, data, inputs, outputs, logger }) {
   let curParams;
   if (env.runtime) {
     if (data.immediate) {
-      callCon({ env, data, outputs });
+      callCon({ env, data, outputs, logger });
     } else {
       inputs['call']((params) => {
         data.callReady |= data.useExternalUrl ? PARAMS_READY : READY;
         curParams = params;
-        call({ env, data, params: typeof params === 'object' ? params : {}, outputs });
+        call({ env, data, logger, params: typeof params === 'object' ? params : {}, outputs });
       });
       inputs[INPUT_ID.SET_URL]((url: string) => {
         if (url && typeof url === 'string') {
           data.connectorConfig.url = url;
         }
         data.callReady |= URL_READY;
-        call({ env, data, outputs, params: curParams });
+        call({ env, data, logger, outputs, params: curParams });
       });
     }
   }
