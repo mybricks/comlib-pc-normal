@@ -31,6 +31,7 @@ export default function (props: RuntimeParams<Data>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
+  const [focusRowIndex, setFocusRowIndex] = useState(null);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
 
@@ -375,6 +376,7 @@ export default function (props: RuntimeParams<Data>) {
     return ColumnsTitleRender({
       ...props,
       filterMap,
+      focusRowIndex,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
           <ColumnRender {...columnRenderProps} env={env} slots={props.slots} />
@@ -446,6 +448,22 @@ export default function (props: RuntimeParams<Data>) {
     return getDefaultDataSource(data.columns);
   }, [data.columns]);
 
+  const onRow = useCallback(
+    (record, index) => {
+      return {
+        onClick: () => {
+          if (data.enableRowClick) {
+            outputs[OutputIds.ROW_CLICK]({ record, index });
+          }
+          if (data.enableRowFocus) {
+            setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+        }
+      };
+    },
+    [focusRowIndex]
+  );
+
   // 获取表格显示列宽度和
   const getUseWidth = () => {
     let hasAuto, width;
@@ -493,6 +511,7 @@ export default function (props: RuntimeParams<Data>) {
             tip: data.loadingTip,
             spinning: loading
           }}
+          onRow={onRow}
           rowKey={rowKey}
           size={data.size as any}
           bordered={data.bordered}

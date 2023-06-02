@@ -26,10 +26,6 @@ const StyleEditor = [
             if (!focusArea) return;
             const { item } = getBtnItemInfo(data, focusArea);
             item.size = value;
-            item.style = {
-              ...item.style,
-              height: SizeHeightMap[item.size]
-            };
           }
         }
       },
