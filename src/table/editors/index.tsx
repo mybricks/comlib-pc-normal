@@ -16,7 +16,7 @@ import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
 
-function getColumnsFromSchema(schema: any) {
+export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {
@@ -53,6 +53,23 @@ function getColumnsFromSchema(schema: any) {
 }
 
 export default {
+  '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
+    if (schema === 'mybricks.domain-pc.crud/table') {
+      if (data?.domainModel?.entity && data.columns?.length === 0) {
+        const schema = getColumnsSchema(data);
+        data.columns = getColumnsFromSchema(schema);
+      }
+      if (!data.usePagination) {
+        data.usePagination = true;
+        inputs.add(PaginatorInputIds.SetTotal, '设置数据总数', { type: 'number' });
+        inputs.add(PaginatorInputIds.SetPageNum, '设置当前页码', { type: 'number' });
+        inputs.add(PaginatorInputIds.GetPageInfo, '获取分页数据', { type: 'any' });
+        outputs.add(PaginatorOutputIds.GetPageInfo, '分页数据', PageSchema);
+        inputs.get(PaginatorInputIds.GetPageInfo).setRels([PaginatorOutputIds.GetPageInfo]);
+        outputs.add(PaginatorOutputIds.PageChange, '点击分页', PageSchema);
+      }
+    }
+  },
   '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
       if (data.columns.length === 0) {

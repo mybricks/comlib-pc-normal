@@ -145,6 +145,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }
 
+  // useEffect(() => {
+  //   if (env.edit) {
+  //     if (data.domainModel.entity && data.items.length === 0) {
+  //       const fieldAry = data.domainModel.entity.fieldAry
+
+  //       fieldAry?.forEach(item => {
+  //         if (!item.isPrivate) {
+  //           slots['content'].addCom('mybricks.normal-pc.form-text')
+  //         }
+  //       })
+
+  //       console.log(fieldAry, slots)
+  //     }
+  //   }
+  // }, [data.domainModel.entity, slots])
+
   const setFieldsValue = (val) => {
     if (val) {
       Object.keys(val).forEach((key) => {
@@ -268,7 +284,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .then(() => {
         getValue()
           .then((values: any) => {
-            const res = { ...values, ...params };
+            let res = { ...values, ...params };
+
+            if (data.domainModel.entity.fieldAry?.length > 0 && data.domainModel?.isQuery) {
+              // 领域模型数据处理
+              res = {
+                values: { ...res },
+                fieldsRules: { ...data.domainModel.queryFieldRules }
+              };
+            }
+
             if (outputRels) {
               outputRels[outputId](res);
             } else {

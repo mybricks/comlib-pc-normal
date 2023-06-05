@@ -198,5 +198,17 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   });
   //=========== v1.2.12 end ===============
 
+  /**
+  * @description v1.3.0 , 支持潜入领域模型容器
+  */
+
+  if (typeof data.domainModel === 'undefined') {
+    data.domainModel = {
+      entity: {},
+      queryFieldRules: {}
+    }
+  }
+  //=========== v1.3.0 end ===============
+
   return true;
 }

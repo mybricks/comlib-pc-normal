@@ -4,6 +4,12 @@
   "comAry": {
     "test": [
       {
+        "title": "领域模型",
+        "comAry": [
+          "./src/domain/domain-crud/com.json"
+        ]
+      },
+      {
         "title": "常规",
         "comAry": [
           "./src/_0_test/container/com.json",

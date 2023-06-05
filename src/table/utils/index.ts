@@ -2,6 +2,7 @@ import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
 import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
 import { InputIds, DefaultRowKey } from '../constants';
+import { Entity } from '../../domain-form/type';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -129,9 +130,68 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
   setDefaultDataSource(columns);
   return [mockData];
 };
+
+const convertEntityField2SchemaType = (field, paredEntityIds: string[] = []) => {
+  switch (field.bizType) {
+    case 'string':
+    case 'enum':
+      return { type: 'string' }
+    case 'number':
+    case 'datetime':
+      return { type: 'number' }
+    case 'relation':
+      return {
+        type: 'object',
+        properties: field?.mapping?.entity?.fieldAry.reduce((res, item) => {
+          if (!paredEntityIds.includes(field.relationEntityId)) {
+            paredEntityIds.push(field.relationEntityId)
+          }
+          res[item.name] = convertEntityField2SchemaType(item);
+          return res;
+        }, {}) || {}
+      }
+    case 'mapping':
+      return {
+        type: 'array',
+        items: {
+          properties: field?.mapping?.entity?.fieldAry.reduce((res, item) => {
+            if (!item.relationEntityId || !paredEntityIds.includes(field.relationEntityId)) {
+              res[item.name] = convertEntityField2SchemaType(item);
+            }
+            if (!paredEntityIds.includes(field.relationEntityId)) {
+              paredEntityIds.push(field.relationEntityId)
+            }
+            return res;
+          }, {}) || {},
+          type: 'object'
+        }
+      }
+    default:
+      return { type: 'string' }
+  }
+}
+
+const convertEntity2Schema = (entity: Entity) => {
+  const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate);
+  const parsedEntityIds = [entity.id]
+  return {
+    items: {
+      type: 'object',
+      properties: publicFields.reduce((res, item) => {
+        res[item.name] = convertEntityField2SchemaType(item, parsedEntityIds)
+        return res
+      }, {}),
+    },
+    type: 'array'
+  }
+}
+
 // 获取列schema - 给编辑器使用
 export const getColumnsSchema = (data: Data) => {
-  const schema = data[`input${InputIds.SET_DATA_SOURCE}Schema`] || {};
+  let schema = (data?.domainModel?.entity
+    ? convertEntity2Schema(data?.domainModel?.entity)
+    : data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+
   let columnsSchema = {};
   if (schema.type === 'array') {
     columnsSchema = schema;
