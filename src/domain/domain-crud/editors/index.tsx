@@ -190,6 +190,19 @@ export default {
         ]
       },
       {
+        title: '分页大小',
+        type: 'inputNumber',
+        options: [{ min: 0, max: 1000, width: 100 }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.pageSize];
+          },
+          set({ data, getChildByName }: EditorResult<Data>, value: boolean) {
+            data.pageSize = value[0];
+          }
+        }
+      },
+      {
         title: '立刻请求数据',
         description: '页面初始化时自动请求一次数据',
         type: 'Switch',

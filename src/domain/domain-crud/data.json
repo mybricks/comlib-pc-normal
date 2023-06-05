@@ -29,5 +29,6 @@
     "tableContent": [],
     "createModalContent": [],
     "editModalContent": []
-  }
+  },
+  "pageSize": 10
 }

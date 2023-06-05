@@ -28,7 +28,6 @@ export default function (props: RuntimeParams<Data>) {
   const ordersParamsRef = useRef<OrderParams[]>([]);
 
   const [pageNum, setPageNum] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(10);
   const [curRecordId, setCurRecordId] = useState();
 
   // console.log(data.entity);
@@ -87,13 +86,12 @@ export default function (props: RuntimeParams<Data>) {
 
         queryParamsRef.current = query;
 
-        getListData(query, { pageNum: 1, pageSize });
+        getListData(query, { pageNum: 1, pageSize: data.pageSize });
       });
 
       inputs['pageChange']((val) => {
         setPageNum(val.pageNum);
-        setPageSize(val.pageSize);
-        getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: val.pageSize });
+        getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: data.pageSize });
       });
 
       inputs['sorterChange']((val) => {
@@ -143,7 +141,7 @@ export default function (props: RuntimeParams<Data>) {
         ).then((r) => {
           message.success('创建成功');
           setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize });
+          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
           setVisible(false);
         });
@@ -160,7 +158,7 @@ export default function (props: RuntimeParams<Data>) {
         ).then((r) => {
           message.success('更新成功');
           setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize });
+          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
           setVisible(false);
         });
@@ -177,11 +175,11 @@ export default function (props: RuntimeParams<Data>) {
         ).then((r) => {
           message.success('删除成功');
           setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize });
+          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
         });
       });
     }
-  }, [pageNum, pageSize, curRecordId, projectId]);
+  }, [pageNum, curRecordId, projectId]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -190,7 +188,7 @@ export default function (props: RuntimeParams<Data>) {
       }
 
       if (data.isImmediate) {
-        getListData({}, { pageNum: 1, pageSize });
+        getListData({}, { pageNum: 1, pageSize: data.pageSize });
       }
     }
   }, []);
@@ -255,7 +253,8 @@ export default function (props: RuntimeParams<Data>) {
 
       tableInputs.current['dataSource']({
         dataSource: r.dataSource,
-        total: r.total
+        total: r.total,
+        pageSize: r.pageSize
       });
 
       tableInputs.current['endLoading']();
