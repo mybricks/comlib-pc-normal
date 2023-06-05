@@ -204,6 +204,14 @@ export function setValuesForInput({
 }) {
   const { value: values, items: formItems } = data;
   const inputId = data.currentAction;
+
+  // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
+  let extraAction = '';
+  if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(inputId)
+    && data.disabled) {
+    extraAction = InputIds.SetDisabled;
+  }
+
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
       if (data.startIndex > valIndex) return;
@@ -222,6 +230,9 @@ export function setValuesForInput({
           } else {
             inputs[inputId] && inputs[inputId](value[name]);
           }
+          extraAction
+            && inputs[extraAction]
+            && inputs[extraAction]();
         }
       });
 
