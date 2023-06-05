@@ -23,8 +23,16 @@ export default {
     const { data: childData, name } = child;
 
     if (curSlot.id === 'queryContent') {
-      childData.domainModel.entity = data.entity;
-      childData.domainModel.isQuery = true;
+      if (childData.domainModel) {
+        childData.domainModel.entity = data.entity;
+        childData.domainModel.isQuery = true;
+      } else {
+        childData.domainModel = {
+          entity: data.entity,
+          isQuery: true
+        };
+      }
+
       childData.config.layout = 'inline';
       childData.formItemColumn = 3;
       childData.actions.span = 8;
@@ -35,15 +43,30 @@ export default {
     }
 
     if (curSlot.id === 'createModalContent') {
-      childData.domainModel.entity = data.entity;
-      childData.domainModel.isQuery = false;
+      if (childData.domainModel) {
+        childData.domainModel.entity = data.entity;
+        childData.domainModel.isQuery = true;
+      } else {
+        childData.domainModel = {
+          entity: data.entity,
+          isQuery: true
+        };
+      }
+
       childData.actions.visible = false;
       data?.childNames.createModalContent.push(name);
     }
 
     if (curSlot.id === 'editModalContent') {
-      childData.domainModel.entity = data.entity;
-      childData.domainModel.isQuery = false;
+      if (childData.domainModel) {
+        childData.domainModel.entity = data.entity;
+        childData.domainModel.isQuery = true;
+      } else {
+        childData.domainModel = {
+          entity: data.entity,
+          isQuery: true
+        };
+      }
       childData.actions.visible = false;
       data?.childNames.editModalContent.push(name);
     }
