@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef, ReactNode, useState } from 'react';
 import * as Icons from '@ant-design/icons';
 import { route } from '../utils/history';
 import { Data, InputIds } from './constants';
@@ -7,6 +7,7 @@ import css from './runtime.less';
 export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   const { style, useHoverStyle, hoverStyle, routeType } = data;
   const ref = useRef(null);
+  const [moveStatus, setMoveStatus] = useState('leave');
 
   useEffect(() => {
     inputs[InputIds.SetContent]((value: string) => {
@@ -20,24 +21,26 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   }, []);
 
   const onMouseOver = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = hoverStyle[key];
-      });
-    }
+    setMoveStatus('over');
+    // const ele = ref.current as HTMLElement;
+    // if (useHoverStyle && ele) {
+    //   Object.keys(hoverStyle || {}).forEach((key) => {
+    //     ele.style[key] = hoverStyle[key];
+    //   });
+    // }
   };
 
   const onMouseLeave = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = '';
-      });
-      Object.keys(style || {}).forEach((key) => {
-        ele.style[key] = style[key];
-      });
-    }
+    setMoveStatus('leave');
+    // const ele = ref.current as HTMLElement;
+    // if (useHoverStyle && ele) {
+    //   Object.keys(hoverStyle || {}).forEach((key) => {
+    //     ele.style[key] = '';
+    //   });
+    //   Object.keys(style || {}).forEach((key) => {
+    //     ele.style[key] = style[key];
+    //   });
+    // }
   };
 
   const onClick = () => {
@@ -59,11 +62,13 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
     const Icon = Icons && Icons[icon as string]?.render();
     return <>{Icon}</>;
   };
+
   return (
     <div
       ref={ref}
-      className={css.linkWrapper}
-      style={style}
+      className={`${css.linkWrapper} linkWrapper ${
+        data.useHoverStyle ? css.linkWrapperHover : void 0
+      } ${data.useHoverStyle ? 'linkWrapperHover' : void 0}`}
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
       onClick={env.runtime ? onClick : void 0}
