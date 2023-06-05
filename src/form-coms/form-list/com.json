@@ -81,7 +81,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "array",
         "items": {
