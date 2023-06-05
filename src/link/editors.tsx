@@ -25,10 +25,11 @@ export default {
       {
         title: '激活',
         options: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
-        // ifVisible({ data }: EditorResult<Data>) {
-        //   return data.useHoverStyle;
-        // },
-        target: '.linkWrapperHover:hover'
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useHoverStyle;
+        },
+        target: '.linkWrapperHover:hover',
+        initValue: { color: '#40a9ff' }
       }
     ],
     items: ({}: EditorResult<Data>, cate1) => {

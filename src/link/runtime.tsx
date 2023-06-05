@@ -7,7 +7,6 @@ import css from './runtime.less';
 export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   const { style, useHoverStyle, hoverStyle, routeType } = data;
   const ref = useRef(null);
-  const [moveStatus, setMoveStatus] = useState('leave');
 
   useEffect(() => {
     inputs[InputIds.SetContent]((value: string) => {
@@ -19,29 +18,6 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
       data.url = value;
     });
   }, []);
-
-  const onMouseOver = () => {
-    setMoveStatus('over');
-    // const ele = ref.current as HTMLElement;
-    // if (useHoverStyle && ele) {
-    //   Object.keys(hoverStyle || {}).forEach((key) => {
-    //     ele.style[key] = hoverStyle[key];
-    //   });
-    // }
-  };
-
-  const onMouseLeave = () => {
-    setMoveStatus('leave');
-    // const ele = ref.current as HTMLElement;
-    // if (useHoverStyle && ele) {
-    //   Object.keys(hoverStyle || {}).forEach((key) => {
-    //     ele.style[key] = '';
-    //   });
-    //   Object.keys(style || {}).forEach((key) => {
-    //     ele.style[key] = style[key];
-    //   });
-    // }
-  };
 
   const onClick = () => {
     if (routeType === 'customEvent') {
@@ -66,11 +42,10 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   return (
     <div
       ref={ref}
-      className={`${css.linkWrapper} linkWrapper ${
-        data.useHoverStyle ? css.linkWrapperHover : void 0
-      } ${data.useHoverStyle ? 'linkWrapperHover' : void 0}`}
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
+      className={`${css.linkWrapper} linkWrapper 
+      ${data.useHoverStyle ? css.linkWrapperHover : void 0} ${
+        data.useHoverStyle ? 'linkWrapperHover' : void 0
+      }`}
       onClick={env.runtime ? onClick : void 0}
     >
       <span className={css.iconLocation1}>
