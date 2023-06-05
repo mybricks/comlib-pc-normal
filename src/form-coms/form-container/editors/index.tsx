@@ -465,7 +465,7 @@ export default {
               if (fieldNameCheck(data, val)) {
                 return message.warn('字段名不能重复');
               }
-              const oldRules = data.domainModel.queryFieldRules[item.name || item.label];
+              const oldRules = data.domainModel?.queryFieldRules?.[item.name || item.label];
 
               if (oldRules) {
                 data.domainModel.queryFieldRules[val] = oldRules;
