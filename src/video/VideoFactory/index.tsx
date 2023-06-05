@@ -32,14 +32,16 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   };
 
   useEffect(() => {
-    inputs['link']((value: string) => {
-      data.src = value;
-    });
-    inputs['screenshot'](screenshot);
+    inputs.link &&
+      inputs.link((value: string) => {
+        data.src = value;
+      });
+    inputs.screenshot && inputs.screenshot(screenshot);
   }, []);
 
-  const screenshot = (filename?) => {
+  const screenshot = (filename?: string) => {
     const canvas = document.createElement('canvas');
+    if (!videoRef.current) return;
     const { width, height } = videoRef.current?.getBoundingClientRect();
     canvas.width = width;
     canvas.height = height;

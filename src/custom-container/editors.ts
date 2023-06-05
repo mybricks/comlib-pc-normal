@@ -31,7 +31,7 @@ export default {
       cate1.title = '布局';
       cate1.items = [
         {
-          title: '自动布局',
+          title: '布局',
           type: 'layout',
           options: [],
           value: {
