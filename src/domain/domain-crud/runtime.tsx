@@ -253,8 +253,7 @@ export default function (props: RuntimeParams<Data>) {
 
       tableInputs.current['dataSource']({
         dataSource: r.dataSource,
-        total: r.total,
-        pageSize: r.pageSize
+        total: r.total
       });
 
       tableInputs.current['endLoading']();

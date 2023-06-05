@@ -49,6 +49,10 @@ export default {
     if (curSlot.id === 'tableContent') {
       childData.domainModel.entity = data.entity;
       data?.childNames.tableContent.push(name);
+      if (!childData.paginationConfig) {
+        childData.paginationConfig = {};
+      }
+      childData.paginationConfig.pageSize = data.pageSize;
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, child, curSlot) {
@@ -199,6 +203,15 @@ export default {
           },
           set({ data, getChildByName }: EditorResult<Data>, value: boolean) {
             data.pageSize = value[0];
+            data.childNames?.tableContent?.forEach((name) => {
+              const child = getChildByName(name);
+              if (child.def.namespace === 'mybricks.normal-pc.table') {
+                if (!child.data.paginationConfig) {
+                  child.data.paginationConfig = {};
+                }
+                child.data.paginationConfig.pageSize = data.pageSize;
+              }
+            });
           }
         }
       },
