@@ -73,7 +73,7 @@ export default {
         target: ':root'
       },
       {
-        title: 'hover',
+        title: 'Hover',
         options: ['padding', 'border', 'bgcolor', 'bgimage'],
         target: '[data-root="root"]:hover'
       }
