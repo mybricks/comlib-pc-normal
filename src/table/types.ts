@@ -176,4 +176,7 @@ export interface Data {
   titleBgColor: string;
   headStyle: any;
   contentStyle;
+  enableRowClick?: boolean;
+  enableRowFocus: boolean,
+  focusRowStyle: any
 }

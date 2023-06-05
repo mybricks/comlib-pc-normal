@@ -22,10 +22,10 @@ export default function ({
       item.dataType = "number";
     };
     if (typeof item.outVal === "undefined") {
-      item.outVal = 0;
+      item.outVal = "";
     };
     if (typeof item.inVal === "undefined") {
-      item.outVal = "";
+      item.inVal = ""
     }
 
     //1.0.5->1.0.6, 增加动态设置loading开关
@@ -62,7 +62,7 @@ export default function ({
     if (SizeHeightMap[item.size || SizeEnum.Middle] === item.style.height) {
       item.style.height = 'auto';
     }
-  })
+  });
 
   return true;
 }
