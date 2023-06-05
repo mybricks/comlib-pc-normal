@@ -20,6 +20,15 @@ export interface Data {
   outputContent?: any;
   dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
   borderStyle?: Object; 
+  isAction: boolean;
+  items: [Item];
+  padding: string;
+  inVal: any;
+}
+
+export interface Item {
+  key: string;
+  name: string;
 }
 
 export const OutputIds = {

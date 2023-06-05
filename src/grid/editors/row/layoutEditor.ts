@@ -1,7 +1,6 @@
-import { Data, JustifyTypeEnum, AlignTypeEnum } from '../../constants';
-import { getRowItem } from '../utils';
+import { Data, JustifyTypeEnum, AlignTypeEnum, IRow } from '../../constants';
 
-const LayoutEditor = [
+const LayoutEditor = (row: IRow) => [
   {
     title: '水平排列方式',
     type: 'Select',
@@ -13,15 +12,11 @@ const LayoutEditor = [
       { value: JustifyTypeEnum.SpaceBetween, label: '两端对齐' }
     ],
     value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getRowItem(data, focusArea);
-        return item?.justify;
+      get({}: EditorResult<Data>) {
+        return row?.justify;
       },
-      set({ data, focusArea }: EditorResult<Data>, value: JustifyTypeEnum) {
-        if (!focusArea) return;
-        const item = getRowItem(data, focusArea);
-        item.justify = value;
+      set({}: EditorResult<Data>, value: JustifyTypeEnum) {
+        row.justify = value;
       }
     }
   },
@@ -35,15 +30,11 @@ const LayoutEditor = [
       { value: AlignTypeEnum.Bottom, label: '置底排列' }
     ],
     value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getRowItem(data, focusArea);
-        return item?.align;
+      get({}: EditorResult<Data>) {
+        return row?.align;
       },
-      set({ data, focusArea }: EditorResult<Data>, value: AlignTypeEnum) {
-        if (!focusArea) return;
-        const item = getRowItem(data, focusArea);
-        item.align = value;
+      set({}: EditorResult<Data>, value: AlignTypeEnum) {
+        row.align = value;
       }
     }
   }

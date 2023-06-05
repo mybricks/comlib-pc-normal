@@ -3,7 +3,7 @@ import { Data, SizeEnum } from './types';
 
 export default function ({
   data,
-  output
+  output,
 }: UpgradeParams<Data>): boolean {
   data.btnList.forEach((item) => {
     //1.0.0->1.0.1

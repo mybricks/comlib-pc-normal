@@ -2,7 +2,8 @@ import { Data, SlotIds } from './constants';
 
 export default function ({
     data,
-    slot
+    slot,
+    setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
     /**
      * @description v1.0.1 slotStyle兼容
@@ -21,5 +22,8 @@ export default function ({
             justifyContent
         };
     }
+    //style
+  setDeclaredStyle(':root', { ...data.style });
+  setDeclaredStyle('[data-root="root"]:hover', { ...data.hoverStyle });
     return true;
 }

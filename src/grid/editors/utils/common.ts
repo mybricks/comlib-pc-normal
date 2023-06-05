@@ -1,7 +1,7 @@
 import React from 'react';
 import { uuid } from '../../../utils';
 import { WidthUnitEnum, Data, ColumnParams } from '../../constants';
-export const createColByWidth = (width: number = 280) => {
+export const createColByWidth = (width: number = 280): ColumnParams => {
   const id = uuid();
   return {
     key: id,
@@ -25,7 +25,7 @@ export const createColByWidth = (width: number = 280) => {
   };
 };
 
-export const createAutoCol = (flex: number = 1) => {
+export const createAutoCol = (flex: number = 1): ColumnParams => {
   const id = uuid();
   return {
     key: id,
@@ -49,7 +49,7 @@ export const createAutoCol = (flex: number = 1) => {
   };
 };
 
-export const createColBySpan = (span: number = 4) => {
+export const createColBySpan = (span: number = 4): ColumnParams => {
   const id = uuid();
   return {
     key: id,
@@ -84,7 +84,7 @@ export function getRowItem(data: Data, focusArea: any) {
 }
 
 export function getColIndex(data, focusArea: any) {
-  const [rowKey, colKey]: number[] = JSON.parse(focusArea.dataset.colCoordinate);
+  const [rowKey, colKey]: string[] = focusArea.dataset.colCoordinate.split(',');
   const rowIndex = data.rows.findIndex(({ key }) => key === rowKey);
   const colIndex = data.rows[rowIndex].columns.findIndex(({ key }) => key === colKey);
   return [rowIndex, colIndex];

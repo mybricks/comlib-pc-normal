@@ -4,27 +4,6 @@ import { getColItem, updateColStyle } from '../utils';
 
 const StyleEditor = (item) => [
   {
-    title: '样式',
-    type: 'style',
-    options: ['BgColor', 'Border', 'BgImage', 'Padding'],
-    value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
-        return {
-          ...item?.colStyle
-        };
-      },
-      set({ data, focusArea }: EditorResult<Data>, value: any) {
-        if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
-        item.colStyle = {
-          ...value
-        };
-      }
-    }
-  },
-  {
     title: '自定义高度',
     type: 'Text',
     options: {
@@ -33,18 +12,16 @@ const StyleEditor = (item) => [
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
         return item.colStyle.height;
       },
       set({ data, focusArea }: EditorResult<Data>, value: string) {
         if (!focusArea) return;
-        // const item = getColItem(data, focusArea);
         updateColStyle(item, { height: unitConversion(value) });
       }
     }
   },
   {
-    title: '最小/最大宽度配置',
+    title: '最小/最大宽度',
     items: [
       {
         title: '单位',
@@ -57,12 +34,10 @@ const StyleEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             return item.minMaxWidthOption || WidthUnitEnum.Auto;
           },
           set({ data, focusArea }: EditorResult<Data>, value: WidthUnitEnum) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             item.minMaxWidthOption = value;
           }
         }
@@ -71,7 +46,6 @@ const StyleEditor = (item) => [
         type: 'InputNumber',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
-          // const item = getColItem(data, focusArea);
           return (
             item?.minMaxWidthOption === WidthUnitEnum.Px ||
             item?.minMaxWidthOption === WidthUnitEnum.Percent
@@ -84,12 +58,10 @@ const StyleEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             return [item.minWidth, item.maxWidth || 100];
           },
           set({ data, focusArea }: EditorResult<Data>, value: number[]) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             item.minWidth = value[0];
             item.maxWidth = value[0];
           }
@@ -106,12 +78,10 @@ const StyleEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             return item?.colStyle?.overflowY === OverflowEnum.Auto;
           },
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             updateColStyle(item, { overflowY: value ? OverflowEnum.Auto : OverflowEnum.None });
           }
         }
@@ -122,12 +92,10 @@ const StyleEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             return item?.colStyle?.overflowX === OverflowEnum.Auto;
           },
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             updateColStyle(item, { overflowX: value ? OverflowEnum.Auto : OverflowEnum.None });
           }
         }
