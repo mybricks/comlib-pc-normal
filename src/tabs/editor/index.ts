@@ -204,17 +204,23 @@ export default {
     style: [
       {
         title: '默认',
-        options: ['font'],
-        target: '.ant-tabs .ant-tabs-tab '
+        options: ['font', 'bgColor'],
+        initValue: {
+          color: 'rgba(0, 0, 0, 0.85)'
+        },
+        target: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab .ant-tabs-tab-btn'
       },
       {
         title: '选中',
-        options: ['font'],
-        target: '.ant-tabs .ant-tabs-tab-active'
+        options: ['font', 'bgColor'],
+        initValue: {
+          color: '#1890ff'
+        },
+        target: '.ant-tabs .ant-tabs-tab-active, .ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn'
       },
       {
         title: '选中条',
-        options: ['size', 'border'],
+        options: ['size', 'border', 'bgColor'],
         target: '.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar'
       }
     ]
