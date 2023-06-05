@@ -1,7 +1,7 @@
 import { ajax } from '../util'
 
 export default function queryData(domainConfig, { query, pageParams, ordersParams }) {
-  console.log('domainConfig', domainConfig)
+  // console.log('domainConfig', domainConfig)
   const { fields = [] } = domainConfig
   let subEntitis = new Set()
   // 额外添加子实体的名称，如"角色.名称"中的”角色“
@@ -30,8 +30,8 @@ export default function queryData(domainConfig, { query, pageParams, ordersParam
         action: 'SELECT'
       },
       serviceId: domainConfig.serviceId,
-      fileId: domainConfig.fileId
-      // projectId: projectId || undefined
+      fileId: domainConfig.fileId,
+      projectId: domainConfig.projectId
     }).then(r => {
 
       resolve({

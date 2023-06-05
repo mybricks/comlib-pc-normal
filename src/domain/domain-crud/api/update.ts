@@ -1,8 +1,6 @@
 import { ajax } from '../util'
-import { message } from 'antd'
 
 export default function updateData(domainConfig, params) {
-  console.log(domainConfig)
   return new Promise((resolve, reject) => {
     ajax({
       params: {
@@ -10,8 +8,8 @@ export default function updateData(domainConfig, params) {
         action: 'UPDATE'
       },
       serviceId: domainConfig.serviceId,
-      fileId: domainConfig.fileId
-      // projectId: projectId || undefined
+      fileId: domainConfig.fileId,
+      projectId: domainConfig.projectId
     }).then(r => {
       resolve(r)
     })

@@ -1,6 +1,5 @@
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Modal, Button, message, Empty } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import styles from './runtime.less';
 import { Data } from './type';
 import queryData from './api/query';
@@ -16,6 +15,7 @@ interface OrderParams {
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, outputs, inputs, slots, createPortal } = props;
+  const { projectId } = env;
 
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -33,27 +33,26 @@ export default function (props: RuntimeParams<Data>) {
 
   // console.log(data.entity);
 
-  if (env.runtime) {
-    // slots['queryContent']._inputs['onSubmit'](({ name, values }) => {
-    //   console.log('表单提交', values, data)
-    //   getListData(values)
-    // })
+  // if (env.runtime) {
+  //   // slots['queryContent']._inputs['onSubmit'](({ name, values }) => {
+  //   //   console.log('表单提交', values, data)
+  //   //   getListData(values)
+  //   // })
 
-    slots['tableContent']._inputs['onPageChange'](({ name, value }) => {
-      const { pageNum, pageSize } = value;
-      // console.log(pageNum, pageSize)
-    });
+  //   slots['tableContent']._inputs['onPageChange'](({ name, value }) => {
+  //     const { pageNum, pageSize } = value;
+  //     console.log(pageNum, pageSize)
+  //   });
 
-    slots['tableContent']._inputs['onSorterChange'](({ name, value }) => {
-      const { id, order } = value;
-      // console.log(value)
-    });
-  }
+  //   slots['tableContent']._inputs['onSorterChange'](({ name, value }) => {
+  //     const { id, order } = value;
+  //     console.log(value)
+  //   });
+  // }
 
   useEffect(() => {
     if (env.runtime) {
       inputs['openEditModal']((val) => {
-        console.log(val);
         setIsEdit(true);
         setVisible(true);
 
@@ -70,7 +69,6 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['query']((val) => {
-        console.log('触发查询', val);
         const { values, fieldsRules } = val;
         const query = {};
 
@@ -135,12 +133,11 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['create']((val) => {
-        console.log('新建', val);
-
         createData(
           {
             serviceId: data.entity?.id,
-            fileId: data.domainFileId
+            fileId: data.domainFileId,
+            projectId
           },
           { ...val }
         ).then((r) => {
@@ -153,12 +150,11 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['editById']((val) => {
-        console.log('编辑', val);
-
         updateData(
           {
             serviceId: data.entity?.id,
-            fileId: data.domainFileId
+            fileId: data.domainFileId,
+            projectId
           },
           { id: curRecordId, ...val }
         ).then((r) => {
@@ -174,7 +170,8 @@ export default function (props: RuntimeParams<Data>) {
         deleteData(
           {
             serviceId: data.entity?.id,
-            fileId: data.domainFileId
+            fileId: data.domainFileId,
+            projectId
           },
           val.id
         ).then((r) => {
@@ -184,7 +181,7 @@ export default function (props: RuntimeParams<Data>) {
         });
       });
     }
-  }, [pageNum, pageSize, curRecordId]);
+  }, [pageNum, pageSize, curRecordId, projectId]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -233,19 +230,6 @@ export default function (props: RuntimeParams<Data>) {
     const query = params;
     const ordersParams = ordersParamsRef.current;
 
-    // Object.keys(params).map((key) => {
-    //   query[key] = {
-    //     operator: 'LIKE', // LIKE、NOT LIKE、IN、NOT IN、=、<>
-    //     value: params[key] ? params[key] : undefined
-    //   };
-    // });
-    // if (tableInputs.current?.getPageInfo) { // Todo 动态添加的 io ，无法感知到
-
-    //   tableInputs.current?.getPageInfo().getPageInfo(v => {
-    //     console.log(v)
-    //   })
-    // }
-
     console.log('pageParams', pageParams);
     console.log('ordersParams', ordersParams);
 
@@ -255,7 +239,8 @@ export default function (props: RuntimeParams<Data>) {
         fileId: data.domainFileId,
         fields: flatterEntityField(data.entity).map((item) => ({
           name: item.label
-        }))
+        })),
+        projectId
       },
       {
         query,

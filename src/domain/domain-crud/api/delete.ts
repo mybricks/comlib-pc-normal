@@ -11,8 +11,8 @@ export default function deleteData(domainConfig, id) {
         action: 'DELETE'
       },
       serviceId: domainConfig.serviceId,
-      fileId: domainConfig.fileId
-      // projectId: projectId || undefined
+      fileId: domainConfig.fileId,
+      projectId: domainConfig.projectId
     }).then(r => {
       resolve(r)
     })

@@ -8,8 +8,8 @@ export default function createData(domainConfig, params) {
         action: 'INSERT'
       },
       serviceId: domainConfig.serviceId,
-      fileId: domainConfig.fileId
-      // projectId: projectId || undefined
+      fileId: domainConfig.fileId,
+      projectId: domainConfig.projectId
     }).then(r => {
       resolve(r)
     })
