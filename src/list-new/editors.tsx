@@ -67,6 +67,9 @@ export default {
       {
         title: '加载中文案',
         type: 'text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useLoading;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.loadingTip;
