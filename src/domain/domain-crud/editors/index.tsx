@@ -37,12 +37,14 @@ export default {
     if (curSlot.id === 'createModalContent') {
       childData.domainModel.entity = data.entity;
       childData.domainModel.isQuery = false;
+      childData.actions.visible = false;
       data?.childNames.createModalContent.push(name);
     }
 
     if (curSlot.id === 'editModalContent') {
       childData.domainModel.entity = data.entity;
       childData.domainModel.isQuery = false;
+      childData.actions.visible = false;
       data?.childNames.editModalContent.push(name);
     }
 
@@ -286,7 +288,7 @@ export default {
       //   }
       // },
       {
-        title: '显示新增弹窗',
+        title: '显示新建对话窗',
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
@@ -294,11 +296,12 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.createModalOpen = value;
+            data.editModalOpen = false;
           }
         }
       },
       {
-        title: '显示编辑弹窗',
+        title: '显示编辑对话窗',
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
@@ -306,14 +309,15 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.editModalOpen = value;
+            data.createModalOpen = false;
           }
         }
       },
       {
-        title: '事件',
+        title: '新建对话框事件',
         items: [
           {
-            title: '新建对话框确认输出',
+            title: '确认输出',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
               return {
@@ -323,7 +327,7 @@ export default {
             }
           },
           {
-            title: '新建对话框取消输出',
+            title: '取消输出',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
               return {
@@ -331,9 +335,14 @@ export default {
                 slotId: 'createModalContent'
               };
             }
-          },
+          }
+        ]
+      },
+      {
+        title: '编辑对话框事件',
+        items: [
           {
-            title: '编辑对话框确认输出',
+            title: '确认输出',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
               return {
@@ -343,7 +352,7 @@ export default {
             }
           },
           {
-            title: '编辑对话框取消输出',
+            title: '取消输出',
             type: '_Event',
             options: ({ data, focusArea }: EditorResult<Data>) => {
               return {
@@ -356,6 +365,22 @@ export default {
       }
     ];
   }
+  // '[data-actions-id]': {
+  //   title: '对话框操作',
+  //   items: [
+  //     {
+  //       title: '确认输出',
+  //       type: '_Event',
+  //       options: ({ data, focusArea }: EditorResult<Data>) => {
+  //         console.log(focusArea)
+  //         return {
+  //           outputId: 'onCreateConfirm',
+  //           slotId: 'createModalContent'
+  //         };
+  //       }
+  //     },
+  //   ]
+  // }
 };
 
 const refreshChildComModel = (childNames, getChildByName, curEntity) => {

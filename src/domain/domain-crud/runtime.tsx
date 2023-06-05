@@ -206,20 +206,24 @@ export default function (props: RuntimeParams<Data>) {
   }, [data.createModalOpen, data.editModalOpen]);
 
   const onOkMethod = useCallback(() => {
-    if (isEdit) {
-      outputs['onEditConfirm']();
-    } else {
-      outputs['onCreateConfirm']();
+    if (env.runtime) {
+      if (isEdit) {
+        outputs['onEditConfirm']();
+      } else {
+        outputs['onCreateConfirm']();
+      }
     }
   }, [isEdit]);
 
   const onCancelMethod = useCallback(() => {
-    if (isEdit) {
-      outputs['onCancelForEditModal']();
-    } else {
-      outputs['onCancelForCreateModal']();
+    if (env.runtime) {
+      if (isEdit) {
+        outputs['onCancelForEditModal']();
+      } else {
+        outputs['onCancelForCreateModal']();
+      }
+      setVisible(false);
     }
-    setVisible(false);
   }, [isEdit]);
 
   const getListData = (params, pageParams) => {
@@ -308,6 +312,23 @@ export default function (props: RuntimeParams<Data>) {
         cancelText="取消"
         onOk={onOkMethod}
         onCancel={onCancelMethod}
+        footer={[
+          <Button
+            data-actions-id={isEdit ? 'onCancelForEdit' : 'onCancelForCreate'}
+            key="cancel"
+            onClick={onCancelMethod}
+          >
+            取消
+          </Button>,
+          <Button
+            data-actions-id={isEdit ? 'onOkForEdit' : 'onOkForCreate'}
+            key="ok"
+            type="primary"
+            onClick={onOkMethod}
+          >
+            确认
+          </Button>
+        ]}
       >
         {isEdit ? (
           <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
