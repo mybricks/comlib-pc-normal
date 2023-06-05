@@ -115,6 +115,15 @@ export default {
   ],
   '[data-breadcrumb]': {
     title: '面包屑操作',
+    style: [
+      {
+        title: '文本',
+        options: ['font'],
+        target({ data, focusArea }) {
+          return `.${findConfig({ data, focusArea }).key}`;
+        }
+      }
+    ],
     items: [
       {
         title: '名称',
@@ -125,25 +134,6 @@ export default {
           },
           set({ data, focusArea }: EditorResult<Data>, value: string) {
             findConfig({ data, focusArea }).label = value;
-          }
-        }
-      },
-      {
-        title: '文本样式',
-        type: 'Style',
-        options: {
-          defaultOpen: true,
-          plugins: ['font'],
-          fontProps: {
-            fontFamily: false
-          }
-        },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return findConfig({ data, focusArea }, 'style');
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: any) {
-            findConfig({ data, focusArea }).style = value;
           }
         }
       },
