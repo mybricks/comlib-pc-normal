@@ -146,7 +146,11 @@ export function onValidateTrigger({ parentSlot, id, name }) {
  */
 export function changeValue({ id, outputs, parentSlot, name, data }) {
   const { value } = data;
-  outputs[OutputIds.OnChange](deepCopy(value));
+  if (data.currentAction === 'init') {
+    outputs[OutputIds.OnInitial](deepCopy(value));
+  } else {
+    outputs[OutputIds.OnChange](deepCopy(value));
+  }
   onChangeForFc(parentSlot, { id, value, name });
   onValidateTrigger({ parentSlot, id, name });
 }

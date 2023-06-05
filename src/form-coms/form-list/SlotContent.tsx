@@ -73,6 +73,7 @@ const SlotContent = (
         ) {
           switch (data.currentAction) {
             case 'add':
+            case 'init':
               // 计算新增项默认值
               const initValue = {};
               new Promise((resolve, reject) => {

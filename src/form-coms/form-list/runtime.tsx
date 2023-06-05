@@ -32,6 +32,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         changeValue({ data, id, outputs, parentSlot, name: props.name });
         const changeLength = generateFields(data);
         data.currentAction = InputIds.SetValue;
+        // changeLength < 0时，不会触发已有的列表项刷新
         changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
         logger.error(title + '的值是列表类型');
@@ -45,6 +46,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         const changeLength = generateFields(data);
         data.currentAction = InputIds.SetInitialValue;
+        // changeLength < 0时，不会触发已有的列表项刷新
         changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
         logger.error(title + '的值是列表类型');
@@ -115,8 +117,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 初始化
     if (env.runtime && initLength) {
       new Array(initLength).fill(null).forEach((_, index) => {
-        addField({ data, isInit: true });
+        addField({ data });
       });
+      data.currentAction = 'init';
       initLength = 0;
     }
   }, [data.initLength]);
