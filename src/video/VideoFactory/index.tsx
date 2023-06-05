@@ -15,9 +15,13 @@ const getVideoTypeBySrc = (src) => {
   return extname?.toLowerCase();
 };
 
+const Wrap = ({ children }) => {
+  return <div className={styles.empty}>{children}</div>;
+};
+
 const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   const { data, inputs, env } = props;
-  const { src, dynamicSrc, style } = data;
+  const { src } = data;
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const videoStrategy = {
@@ -28,10 +32,9 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   };
 
   useEffect(() => {
-    dynamicSrc &&
-      inputs['link']((value: string) => {
-        data.src = value;
-      });
+    inputs['link']((value: string) => {
+      data.src = value;
+    });
     inputs['screenshot'](screenshot);
   }, []);
 
@@ -53,15 +56,23 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   const renderVideo = (src) => {
     const type = getVideoTypeBySrc(src);
     const noMatch = () => (
-      <div style={style} className={styles.empty}>
-        视频格式不支持
-      </div>
+      <Wrap>
+        <span>视频格式不支持</span>
+      </Wrap>
     );
     const noSrc = () => (
-      <div style={style} className={styles.empty}>
+      <Wrap>
         <span>请输入视频链接</span>
-      </div>
+      </Wrap>
     );
+    const edit = () => (
+      <Wrap>
+        <img src={empty} width={'35%'} height={'35%'} />
+      </Wrap>
+    );
+    if (env.edit) {
+      return edit;
+    }
     if (!src) {
       return noSrc;
     }
@@ -69,8 +80,8 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   };
 
   return (
-    <div className={styles['video-wrap']} style={!env.runtime ? style : {}}>
-      {env.runtime ? renderVideo(src)() : <img src={empty} width={'35%'} height={'35%'} />}
+    <div data-root="root" className={styles['video-wrap']}>
+      {renderVideo(src)()}
     </div>
   );
 };

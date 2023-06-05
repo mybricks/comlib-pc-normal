@@ -1,6 +1,6 @@
 import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
-import { ContentTypeEnum, Data, IColumn } from '../types';
+import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
 import { InputIds, DefaultRowKey } from '../constants';
 import { Entity } from '../../domain-form/type';
 
@@ -48,7 +48,11 @@ export const getNewColumn = (data?: Data) => {
     width: 140,
     key: uuid(),
     contentType: ContentTypeEnum.Text,
-    visible: true
+    visible: true,
+    sorter: {
+      enable: false,
+      type: SorterTypeEnum.Size
+    },
   };
   return obj;
 };

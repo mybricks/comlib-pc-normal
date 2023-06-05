@@ -58,10 +58,10 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           span={column.widthOption === WidthUnitEnum.Span ? column.span : undefined}
           flex={flex}
           {...breakPointConfig}
-          data-col-coordinate={JSON.stringify([rowIndex, column.key])}
+          data-col-coordinate={`${rowIndex},${column.key}`}
           data-type-col={`col-${column.key}`}
           style={{
-            ...column.colStyle,
+            height: column.colStyle.height,
             ...getMinMaxWidth(column),
             width,
             cursor: column.useClick ? 'pointer' : 'unset'
@@ -81,7 +81,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
   );
 
   return (
-    <div className={css.gridWrapper} style={{ ...data.style }}>
+    <div className={css.gridWrapper}>
       {noRows}
       {data.rows.map((row, rowIndex) => {
         return (
@@ -98,7 +98,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
             key={row.key}
             justify={row.justify}
             align={row.align}
-            gutter={row.useGutter ? [row.gutter?.[0] || 0, 0] : [0, 0]}
+            gutter={row.gutter ?? [0, 0]}
             wrap={row.wrap}
           >
             {row.columns.map((item, colIndex) => {

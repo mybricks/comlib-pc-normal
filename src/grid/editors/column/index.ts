@@ -23,15 +23,12 @@ export default {
           value: {
             get({ data, focusArea, slot }: EditorResult<Data>) {
               if (!focusArea) return;
-              // const item = getColItem(data, focusArea);
-              // const slotInstance = slot.get(item.slot);
               setSlotLayout(slotInstance, item.slotStyle);
               const { slotStyle = {} } = item;
               return slotStyle;
             },
             set({ data, focusArea, slot }: EditorResult<Data>, val: React.CSSProperties) {
               if (!focusArea) return;
-              // const item = getColItem(data, focusArea);
               if (!item.slotStyle) {
                 item.slotStyle = {};
               }
@@ -39,7 +36,6 @@ export default {
                 ...item.slotStyle,
                 ...val
               };
-              // const slotInstance = slot.get(item.slot);
               setSlotLayout(slotInstance, val);
             }
           }
@@ -47,11 +43,14 @@ export default {
         ...IndexEditor(item)
       ];
 
-      cate2.title = '样式';
-      cate2.items = [...StyleEditor(item)];
-
-      cate3.title = '事件';
-      cate3.items = [...EventEditor(item)];
+      cate2.title = '高级';
+      cate2.items = [...StyleEditor(item), ...EventEditor(item)];
+    },
+    style: {
+      options: ['BgColor', 'Border', 'BgImage', 'Padding'],
+      target({ focusArea }) {
+        return `.ant-row > div[data-col-coordinate="${focusArea.dataset.colCoordinate}"]`;
+      }
     }
   }
 };

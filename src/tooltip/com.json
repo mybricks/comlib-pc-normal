@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./index.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "content",

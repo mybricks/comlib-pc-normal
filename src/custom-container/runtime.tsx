@@ -9,29 +9,24 @@ export default function (props: RuntimeParams<Data>) {
     behavior,
     block,
     inline,
-
     overflowY,
     overflowX,
     useOverflowUnset,
-
-    style,
-    hoverStyle,
-    useHoverStyle,
     useClick,
     useFixed
   } = data;
-  const ref = useRef<any>();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (useFixed && (ref.current as HTMLElement)?.parentElement?.style) {
-      (ref.current as HTMLElement).parentElement.style.zIndex = '1001';
+    if (useFixed && ref.current?.parentElement?.style) {
+      ref.current.parentElement.style.zIndex = '1001';
     }
 
     if (env.runtime) {
       if (useSrcollIntoView && inputs[InputIds.ScrollIntoView]) {
         inputs[InputIds.ScrollIntoView](() => {
-          if ((ref.current as HTMLElement)?.scrollIntoView) {
-            (ref.current as HTMLElement)?.scrollIntoView({
+          if (ref.current?.scrollIntoView) {
+            ref.current.scrollIntoView({
               behavior,
               block,
               inline
@@ -41,27 +36,6 @@ export default function (props: RuntimeParams<Data>) {
       }
     }
   }, []);
-
-  const onMouseOver = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = hoverStyle?.[key];
-      });
-    }
-  };
-
-  const onMouseLeave = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = '';
-      });
-      Object.keys(style || {}).forEach((key) => {
-        ele.style[key] = style?.[key];
-      });
-    }
-  };
 
   const getOverflowStyle = () => {
     const res = {
@@ -79,20 +53,19 @@ export default function (props: RuntimeParams<Data>) {
     <div
       id={data?.id}
       ref={ref}
+      data-root="root"
       className={css.container}
       style={{
-        ...style,
         ...getOverflowStyle(),
-        position: useFixed ? 'fixed' : undefined,
-        cursor: useClick || useHoverStyle ? 'pointer' : ''
+        transition: 'all 0.2s',
+        position: useFixed ? 'fixed' : 'static',
+        cursor: useClick ? 'pointer' : ''
       }}
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {
           outputs[OutputIds.Click]();
         }
       }}
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
     >
       {slots[SlotIds.Content].render({ style: data.slotStyle })}
     </div>

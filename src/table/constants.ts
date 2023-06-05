@@ -77,7 +77,9 @@ export const OutputIds = {
   // 筛选事件触发
   FILTER: 'filter',
   // 排序事件触发
-  SORTER: 'sorter'
+  SORTER: 'sorter',
+  // 点击行触发
+  ROW_CLICK: 'rowClick',
 };
 
 export const DefaultRowKey = '_uuid';

@@ -3,7 +3,7 @@ import { Data, SizeEnum } from './types';
 
 export default function ({
   data,
-  output
+  output,
 }: UpgradeParams<Data>): boolean {
   data.btnList.forEach((item) => {
     //1.0.0->1.0.1
@@ -22,10 +22,10 @@ export default function ({
       item.dataType = "number";
     };
     if (typeof item.outVal === "undefined") {
-      item.outVal = 0;
+      item.outVal = "";
     };
     if (typeof item.inVal === "undefined") {
-      item.outVal = "";
+      item.inVal = ""
     }
 
     //1.0.5->1.0.6, 增加动态设置loading开关
@@ -53,14 +53,16 @@ export default function ({
     /**
     * @description v1.0.8 增加宽高配置
     */
-    if (!item.style) {
+    if (item.style === undefined) {
       item.style = {
-        height: SizeHeightMap[item.size || SizeEnum.Middle],
+        height: 'auto',
         width: 'auto'
-      }
+      };
     }
-
-  })
+    if (SizeHeightMap[item.size || SizeEnum.Middle] === item.style.height) {
+      item.style.height = 'auto';
+    }
+  });
 
   return true;
 }

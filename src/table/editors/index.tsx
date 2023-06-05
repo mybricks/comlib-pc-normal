@@ -14,12 +14,7 @@ import UsePaginatorEditor from './table/paginator';
 import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
-import {
-  InputIds as PaginatorInputIds,
-  OutputIds as PaginatorOutputIds
-} from '../components/Paginator/constants';
-import { PageSchema } from './table/paginator';
-import { getColumnsSchema } from '../utils';
+import rowOperationEditor from './table/rowOperation';
 
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
@@ -127,6 +122,7 @@ export default {
       ...EventEditor,
       HeaderEditor,
       ...ExpandEditor,
+      rowOperationEditor,
       ...DynamicColumnEditor,
       ...DynamicTitleEditor,
       ...getRowSelectionEditor(props)

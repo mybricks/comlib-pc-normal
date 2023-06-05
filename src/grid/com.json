@@ -1,7 +1,7 @@
 {
   "title": "栅格布局",
   "namespace": "mybricks.normal-pc.grid",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "24 栅格系统",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
+  "upgrade": "./upgrade.ts",
   "ai": "./ai/index.ts",
   "target": {
     "toReact": "./toReact.ts"

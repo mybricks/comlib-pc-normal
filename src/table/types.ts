@@ -176,7 +176,7 @@ export interface Data {
   titleBgColor: string;
   headStyle: any;
   contentStyle;
-  domainModel?: {
-    entity: any
-  }
+  enableRowClick?: boolean;
+  enableRowFocus: boolean,
+  focusRowStyle: any
 }
