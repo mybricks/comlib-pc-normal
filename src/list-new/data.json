@@ -1,5 +1,5 @@
 {
-  "useLoading": true,
+  "useLoading": false,
   "loadingTip": "Loading...",
 
   "grid": {
