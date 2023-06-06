@@ -226,7 +226,7 @@ export default {
         ]
       },
       {
-        title: '分页大小',
+        title: '每页显示条数',
         type: 'inputNumber',
         options: [{ min: 0, max: 1000, width: 100 }],
         value: {

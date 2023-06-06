@@ -15,7 +15,12 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
-
+import { getColumnsSchema } from '../utils';
+import {
+  OutputIds as PaginatorOutputIds,
+  InputIds as PaginatorInputIds
+} from '../components/Paginator/constants';
+import { PageSchema } from './table/paginator';
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
