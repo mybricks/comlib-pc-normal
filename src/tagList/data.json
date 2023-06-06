@@ -2,20 +2,18 @@
   "align": "start",
   "direction": "horizontal",
   "wrap": true,
+  "type": "default",
   "tags": [
     {
       "key": "tag1",
       "content": "tag",
-      "color": "#00000005",
-      "textColor": "#000000e0",
-      "borderColor": "#d9d9d9"
+      "color": "default"
     }
   ],
   "tagSize": "small-tag",
   "dynamic": false,
-  "tagStyle": {
-    "color": "#00000005",
-    "textColor": "#000000e0",
-    "borderColor": "#d9d9d9"
+  "appendBtn": {
+    "text": "新增",
+    "icon": "PlusOutlined"
   }
 }

@@ -2,6 +2,9 @@ import React from 'react';
 import { SpaceProps, TagProps } from 'antd';
 
 export type TagSize = 'small-tag' | 'middle-tag' | 'large-tag';
+
+export type Preset = 'default' | 'processing' | 'error' | 'warning' | 'success';
+
 export interface Tag extends TagProps {
   key: string;
   icon?: string;
@@ -11,7 +14,12 @@ export interface Tag extends TagProps {
   borderColor?: string;
 }
 
+interface AppendBtn extends TagProps {
+  text: string
+}
+
 export interface Data extends SpaceProps {
+  type: Preset;
   tags: Array<Tag>;
   dynamic?: boolean;
   appendAble?: boolean;
@@ -22,4 +30,5 @@ export interface Data extends SpaceProps {
     borderColor: string;
     textColor: string;
   }>;
+  appendBtn: AppendBtn
 }
