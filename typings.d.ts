@@ -55,7 +55,7 @@ interface EditorResult<T> {
   outputs: any
   slot: any,
   diagram: any
-  style: any
+  style: React.CSSProperties
   catelog: any
   slots?: any
   env: Env
