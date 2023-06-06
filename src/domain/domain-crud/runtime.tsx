@@ -289,11 +289,19 @@ export default function (props: RuntimeParams<Data>) {
               wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
                 const jsx = comAray?.map((com, idx) => {
                   tableInputs.current = com.inputs;
-
                   return com.jsx;
                 });
 
                 return jsx;
+              },
+              outputs: {
+                pageChange(val) {
+                  setPageNum(val.pageNum);
+                  getListData(queryParamsRef.current, {
+                    pageNum: val.pageNum,
+                    pageSize: data.pageSize
+                  });
+                }
               }
             })}
           </div>
