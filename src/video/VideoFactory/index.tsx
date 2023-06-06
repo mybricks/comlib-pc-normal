@@ -39,7 +39,7 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
     inputs?.screenshot && inputs.screenshot(screenshot);
   }, []);
 
-  const screenshot = (filename?) => {
+  const screenshot = (filename?: string) => {
     const canvas = document.createElement('canvas');
     if (!videoRef.current) return;
     const { width, height } = videoRef.current?.getBoundingClientRect();

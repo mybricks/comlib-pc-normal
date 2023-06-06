@@ -22,6 +22,83 @@ export default {
           }
         },
         {
+          title: '显示icon',
+          type: 'Switch',
+          value: {
+            get({}: EditorResult<Data>) {
+              return item?.showIcon;
+            },
+            set({}: EditorResult<Data>, value: boolean) {
+              item.showIcon = value;
+              item.icon = 'BellOutlined';
+            }
+          }
+        },
+        {
+          title: '图标自定义',
+          type: 'Switch',
+          description: '可选择是否需要自定义图标',
+          ifVisible({}: EditorResult<Data>) {
+            return item.showIcon;
+          },
+          value: {
+            get({}: EditorResult<Data>) {
+              return item.isChoose;
+            },
+            set({}: EditorResult<Data>, value: boolean) {
+              item.isChoose = value;
+              if (!item.isChoose) {
+                item.icon = 'BellOutlined';
+              }
+            }
+          }
+        },
+        {
+          title: '选择图标',
+          type: 'icon',
+          ifVisible({}: EditorResult<Data>) {
+            return !!item.isChoose;
+          },
+          value: {
+            get({}: EditorResult<Data>) {
+              return item?.icon;
+            },
+            set({}: EditorResult<Data>, value: string) {
+              item.icon = value;
+            }
+          }
+        },
+        {
+          title: '文字提示',
+          type: 'TextArea',
+          options: {
+            placeholder: 'tab标题的文字提示，不填写则不显示'
+          },
+          value: {
+            get({}: EditorResult<Data>) {
+              return item?.tooltipText;
+            },
+            set({}: EditorResult<Data>, value: string) {
+              item.tooltipText = value;
+            }
+          }
+        },
+        {
+          title: '支持关闭',
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.type === 'editable-card';
+          },
+          value: {
+            get({}: EditorResult<Data>) {
+              return item?.closable;
+            },
+            set({}: EditorResult<Data>, value: boolean) {
+              item.closable = value;
+            }
+          }
+        },
+        {
           title: '事件',
           items: [
             {
@@ -104,89 +181,8 @@ export default {
         },
       ];
   
-      cate2.title = '样式';
+      cate2.title = '高级';
       cate2.items = [
-        {
-          title: '显示icon',
-          type: 'Switch',
-          value: {
-            get({}: EditorResult<Data>) {
-              return item?.showIcon;
-            },
-            set({}: EditorResult<Data>, value: boolean) {
-              item.showIcon = value;
-              item.icon = 'BellOutlined';
-            }
-          }
-        },
-        {
-          title: '图标自定义',
-          type: 'Switch',
-          description: '可选择是否需要自定义图标',
-          ifVisible({}: EditorResult<Data>) {
-            return item.showIcon;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return item.isChoose;
-            },
-            set({}: EditorResult<Data>, value: boolean) {
-              item.isChoose = value;
-              if (!item.isChoose) {
-                item.icon = 'BellOutlined';
-              }
-            }
-          }
-        },
-        {
-          title: '选择图标',
-          type: 'icon',
-          ifVisible({}: EditorResult<Data>) {
-            return !!item.isChoose;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return item?.icon;
-            },
-            set({}: EditorResult<Data>, value: string) {
-              item.icon = value;
-            }
-          }
-        },
-        {
-          title: '文字提示',
-          type: 'TextArea',
-          options: {
-            placeholder: 'tab标题的文字提示，不填写则不显示'
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return item?.tooltipText;
-            },
-            set({}: EditorResult<Data>, value: string) {
-              item.tooltipText = value;
-            }
-          }
-        },
-        {
-          title: '支持关闭',
-          type: 'Switch',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'editable-card';
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return item?.closable;
-            },
-            set({}: EditorResult<Data>, value: boolean) {
-              item.closable = value;
-            }
-          }
-        }
-      ];
-  
-      cate3.title = '高级';
-      cate3.items = [
         {
           title: '支持动态通知显示',
           type: 'Switch',
