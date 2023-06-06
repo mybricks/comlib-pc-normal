@@ -27,7 +27,7 @@ interface RuntimeParams<T> {
   style: any
   slots: {
     [key: string]: {
-      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties }) => React.ReactNode
+      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties, outputs?: { [key: string]: Function } }) => React.ReactNode
       inputs: any
       [key: string]: any
     }
