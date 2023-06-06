@@ -113,6 +113,7 @@ interface DomainModel {
   entity?: any
   queryFieldRules: QueryFieldRules
   isQuery?: boolean
+  type?: string
 }
 
 interface QueryFieldRules {

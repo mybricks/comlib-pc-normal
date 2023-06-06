@@ -286,7 +286,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
           .then((values: any) => {
             let res = { ...values, ...params };
 
-            if (data.domainModel.entity.fieldAry?.length > 0 && data.domainModel?.isQuery) {
+            if (
+              data.domainModel.entity.fieldAry?.length > 0 &&
+              data.domainModel?.isQuery &&
+              data.domainModel?.type === 'domain'
+            ) {
               // 领域模型数据处理
               res = {
                 values: { ...res },

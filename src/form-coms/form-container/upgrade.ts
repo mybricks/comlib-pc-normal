@@ -205,7 +205,8 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   if (typeof data.domainModel === 'undefined') {
     data.domainModel = {
       entity: {},
-      queryFieldRules: {}
+      queryFieldRules: {},
+      type: ''
     }
   }
   //=========== v1.3.0 end ===============
