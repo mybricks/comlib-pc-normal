@@ -15,12 +15,12 @@ export default {
     },
     style: [
       {
-        title: '容器样式',
+        title: '容器',
         options: ['BgColor', 'Border', 'BgImage', 'size'],
         target: ':root'
       },
       {
-        title: '单元格样式',
+        title: '单元格',
         options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
         target: `.ant-row .ant-col`
       }

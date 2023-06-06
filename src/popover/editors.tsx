@@ -2,7 +2,7 @@ import { Data, Placement, Trigger } from './constants';
 
 export default {
   '@init': ({ data, style }: EditorResult<Data>) => {
-    style.width = '100%';
+    style.width = 'fit-content';
   },
   '@resize': {
     options: ['width']

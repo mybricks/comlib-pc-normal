@@ -1,7 +1,7 @@
 import { Data, Trigger, Placement } from './types';
 export default {
   '@init': ({ data, style }: EditorResult<Data>) => {
-    style.width = '100%';
+    style.width = 'fit-content';
   },
   '@resize': {
     options: ['width']
