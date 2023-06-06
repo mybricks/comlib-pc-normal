@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.video",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "播放器",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",

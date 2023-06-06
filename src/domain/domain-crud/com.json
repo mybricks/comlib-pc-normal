@@ -1,0 +1,265 @@
+{
+  "title": "领域模型CRUD",
+  "namespace": "mybricks.domain-pc.crud",
+  "version": "1.0.0",
+  "description": "领域模型CRUD",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors/index.tsx",
+  "inputs": [
+    {
+      "id": "query",
+      "title": "查询记录",
+      "desc": "根据输入条件查询记录",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "pageChange",
+      "title": "分页变化",
+      "desc": "触发分页变化",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "title": "页码",
+            "type": "number"
+          },
+          "pageSize": {
+            "title": "每页条数",
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "sorterChange",
+      "title": "排序变化",
+      "desc": "触发排序变化",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "create",
+      "title": "新建记录",
+      "desc": "新建一条记录",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "editById",
+      "title": "编辑记录",
+      "desc": "根据 ID 编辑当前行记录",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "deleteById",
+      "title": "删除记录",
+      "desc": "根据 ID 删除当前行记录",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "openEditModal",
+      "title": "打开编辑对话框",
+      "desc": "打开编辑对话框，并接收编辑回显数据",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "openCreateModal",
+      "title": "打开新建对话框",
+      "desc": "打开新建对话框",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onCreateConfirm",
+      "title": "新建确认输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "onEditConfirm",
+      "title": "编辑确认输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "onCancelForCreateModal",
+      "title": "新建取消输出",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "onCancelForEditModal",
+      "title": "编辑取消输出",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "queryContent",
+      "title": "查询区",
+      "schema": "mybricks.domain-pc.crud/query",
+      "capacity": 1,
+      "type": "scope",
+      "_inputs": [
+        {
+          "id": "onSubmit",
+          "title": "查询",
+          "schema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "actionsContent",
+      "title": "操作区"
+    },
+    {
+      "id": "tableContent",
+      "title": "列表展示区",
+      "schema": "mybricks.domain-pc.crud/table",
+      "capacity": 1,
+      "type": "scope",
+      "_inputs": [
+        {
+          "id": "onPageChange",
+          "title": "触发分页变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "pageNum": {
+                "title": "页码",
+                "type": "number"
+              },
+              "pageSize": {
+                "title": "每页条数",
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "id": "onSorterChange",
+          "title": "触发排序变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "title": "排序字段",
+                "type": "string"
+              },
+              "sorter": {
+                "title": "排序方式",
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "createModalContent",
+      "title": "新建对话框",
+      "schema": "mybricks.domain-pc.crud/createModal",
+      "capacity": 1,
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "dataSource",
+          "title": "输入数据",
+          "schema": {
+            "type": "follow"
+          },
+          "editable": true
+        }
+      ],
+      "outputs": [
+        {
+          "id": "onOk",
+          "title": "确认",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "onCancel",
+          "title": "取消",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ]
+    },
+    {
+      "id": "editModalContent",
+      "title": "编辑对话框",
+      "schema": "mybricks.domain-pc.crud/editModal",
+      "capacity": 1,
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "dataSource",
+          "title": "输入数据",
+          "schema": {
+            "type": "follow"
+          },
+          "editable": true
+        }
+      ],
+      "outputs": [
+        {
+          "id": "onOk",
+          "title": "确认",
+          "schema": {
+            "type": "follow"
+          }
+        },
+        {
+          "id": "onCancel",
+          "title": "取消",
+          "schema": {
+            "type": "follow"
+          }
+        }
+      ]
+    }
+  ]
+}
