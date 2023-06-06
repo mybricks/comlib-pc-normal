@@ -49,5 +49,6 @@
     "showQuickJumper": false,
     "hideOnSinglePage": false,
     "useDynamicTitle": false
-  }
+  },
+  "domainModel": {}
 }

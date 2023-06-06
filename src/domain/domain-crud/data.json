@@ -1,0 +1,34 @@
+{
+  "entity": [],
+  "createModalOpen": false,
+  "editModalOpen": false,
+  "domainAry": [],
+  "domainFileId": "",
+  "entityId": "",
+  "isImmediate": true,
+  "editModalActions": {
+    "onOk": {
+      "isConnected": false
+    },
+    "onCancel": {
+      "isConnected": false
+    }
+  },
+  "createModalActions": {
+    "onOk": {
+      "isConnected": false
+    },
+    "onCancel": {
+      "isConnected": false
+    }
+  },
+  "queryParams": {},
+  "fieldAry": [],
+  "childNames": {
+    "queryContent": [],
+    "tableContent": [],
+    "createModalContent": [],
+    "editModalContent": []
+  },
+  "pageSize": 10
+}

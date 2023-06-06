@@ -43,6 +43,7 @@ export function schema2Options(schema: any = {}, parentKey = '', config: any = {
 }
 
 const isUseSelect = (options, val) => {
+  if (val === '') return true;
   if (Array.isArray(options) && options.length) {
     return options.some((item) => {
       if (item.value === val) {
