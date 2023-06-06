@@ -72,7 +72,14 @@ export default {
     }
 
     if (curSlot.id === 'tableContent') {
-      childData.domainModel.entity = data.entity;
+      if (childData.domainModel) {
+        childData.domainModel.entity = data.entity;
+      } else {
+        childData.domainModel = {
+          entity: data.entity
+        };
+      }
+
       data?.childNames.tableContent.push(name);
       if (!childData.paginationConfig) {
         childData.paginationConfig = {};
