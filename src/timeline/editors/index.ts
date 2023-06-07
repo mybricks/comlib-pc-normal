@@ -53,18 +53,18 @@ export default {
     },
     style: [
       createStyleForDot({
-        selector: 'ul.ant-timeline > li.ant-timeline-item > div.ant-timeline-item-head'
+        target: 'ul.ant-timeline > li.ant-timeline-item > div.ant-timeline-item-head'
       }),
       createStyleForTitle({
-        selector:
+        target:
           'ul.ant-timeline > li.ant-timeline-item > div.ant-timeline-item-content span[data-type="title"]'
       }),
       createStyleForSubtitle({
-        selector:
+        target:
           'ul.ant-timeline > li.ant-timeline-item > div.ant-timeline-item-content span[data-type="subTitle"]'
       }),
       createStyleForDesc({
-        selector:
+        target:
           'ul.ant-timeline > li.ant-timeline-item > div.ant-timeline-item-content div[data-type="desc"]'
       })
     ]

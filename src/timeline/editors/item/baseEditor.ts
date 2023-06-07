@@ -56,23 +56,6 @@ const BaseEditor = [
           }
         }
       },
-      ,
-      {
-        title: '节点颜色',
-        type: 'ColorPicker',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            if (!focusArea) return;
-            const { item } = getTimelineItem(data, focusArea);
-            return item.color;
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            if (!focusArea) return;
-            const { item } = getTimelineItem(data, focusArea);
-            item.color = value;
-          }
-        }
-      }
     ]
   }
 ];

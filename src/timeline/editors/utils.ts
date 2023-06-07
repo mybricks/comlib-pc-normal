@@ -3,7 +3,7 @@ import { Data, Item, InputIds, SlotIds } from '../constants';
 import { DefaultSourceSchema } from './baseEditor';
 import { isEqual } from 'lodash';
 
-type Selector = { selector: string };
+type TargetType = { target: string | ((props: EditorResult<Data>) => string) | undefined };
 
 export const getTimelineItem = (
   data: Data,
@@ -51,26 +51,26 @@ export const isEqualSchema = (sourceSchema) => {
   return isEqual(sourceSchema, DefaultSourceSchema);
 };
 
-export const createStyleForDot = ({ selector }: Selector) => ({
+export const createStyleForDot = ({ target }: TargetType) => ({
   title: '时间轴点',
   options: ['border'],
-  target: selector
+  target
 });
 
-export const createStyleForTitle = ({ selector }: Selector) => ({
+export const createStyleForTitle = ({ target }: TargetType) => ({
   title: '标题',
   options: ['font'],
-  target: selector
+  target
 });
 
-export const createStyleForSubtitle = ({ selector }: Selector) => ({
+export const createStyleForSubtitle = ({ target }: TargetType) => ({
   title: '副标题',
   options: ['font'],
-  target: selector
+  target
 });
 
-export const createStyleForDesc = ({ selector }: Selector) => ({
+export const createStyleForDesc = ({ target }: TargetType) => ({
   title: '描述',
   options: ['font'],
-  target: selector
+  target
 });
