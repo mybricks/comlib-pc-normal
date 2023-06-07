@@ -17,8 +17,8 @@ export interface Item {
   key: string;
   value: any;
   span: number; //范围是 1 到该行剩余column数
-  labelStyle?: Record<string, string | number>;
-  contentStyle?: Record<string, string | number>;
+  labelStyle: Record<string, string | number>;
+  contentStyle: Record<string, string | number>;
   stylePadding?: [number, number];
   type?: TypeEnum;
   direction?: 'horizontal' | 'vertical';

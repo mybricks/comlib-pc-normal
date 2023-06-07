@@ -22,7 +22,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   rawDataRef.current = rawData;
 
   const contentMap = {
-    text: (value, lineLimit, widthLimit, limit) => {
+    text: (value, lineLimit, widthLimit, limit, id) => {
       const multiLine = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -42,9 +42,12 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       };
       const customStyle = lineLimit === 1 ? singleLine : multiLine;
       return limit ? (
-        <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} />
+        <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} id={id} />
       ) : (
-        <div className={css.pre} style={widthLimit ? { width: widthLimit } : {}}>
+        <div
+          className={`${id}-content ${css.pre} pre`}
+          style={{ width: widthLimit === 'undefinedpx' ? '100%' : widthLimit }}
+        >
           {env.i18n(value)}
         </div>
       );
@@ -124,12 +127,8 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
         layout={layout}
         column={column}
         bordered={bordered}
-        colon={colon}
+        colon={false}
         className={css.des}
-        labelStyle={{
-          ...globalLabelStyle,
-          width: autoWidth ? 'unset' : globalLabelStyle.width ?? 65
-        }}
       >
         {getDataSource().map((item) => {
           const {
@@ -166,12 +165,19 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             );
           }
 
-          let labelNode = env.i18n(label);
+          let labelNode;
+          labelNode = (
+            <span className={`${id}-label ${css.label} label`}>
+              {env.i18n(label + (data.colon ? ':' : ''))}
+            </span>
+          );
           if (showLable) {
             if (!!labelDesc) {
               labelNode = (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span style={{ marginRight: 5 }}>{labelNode}</span>
+                  <span style={{ marginRight: 5 }} className={`${id}-label ${css.label} label`}>
+                    {env.i18n(label + (data.colon ? ':' : ''))}
+                  </span>
                   <Tooltip title={labelDesc}>
                     <InfoCircleOutlined />
                   </Tooltip>
@@ -179,20 +185,21 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
               );
             }
           } else {
-            labelNode = null;
+            if (label === '') {
+              labelNode = null;
+            } else {
+              labelNode = (
+                <span className={`${id}-label label`}>
+                  {env.i18n(label + (data.colon ? ':' : ''))}
+                </span>
+              );
+            }
           }
           return (
-            <Descriptions.Item
-              label={labelNode}
-              key={id}
-              span={span}
-              labelStyle={labelStyle}
-              contentStyle={contentStyle}
-              style={itemStyle}
-            >
+            <Descriptions.Item label={labelNode} key={id} span={span} style={itemStyle}>
               {type === TypeEnum.PartSlot
                 ? SlotItem
-                : contentMap[type](value, lineLimit, `${widthLimit}px`, limit)}
+                : contentMap[type](value, lineLimit, `${widthLimit}px`, limit, id)}
               {SuffixRender(item)}
             </Descriptions.Item>
           );
@@ -253,16 +260,16 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     </div>
   );
 }
-function MassiveValue({ value, customStyle, limit }) {
+function MassiveValue({ value, customStyle, limit, id }) {
   const parentEle = useRef<HTMLDivElement>(null);
   return (
     <div ref={parentEle} style={customStyle}>
       {limit ? (
         <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color="#fff">
-          <div className={css.pre}>{value}</div>
+          <div className={`${id}-content ${css.pre} pre`}>{value}</div>
         </Tooltip>
       ) : (
-        <div className={css.pre}>{value}</div>
+        <div className={`${id}-content ${css.pre} pre`}>{value}</div>
       )}
     </div>
   );

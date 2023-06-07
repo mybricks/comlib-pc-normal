@@ -44,11 +44,8 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           }}
         >
           <Text
-            style={{
-              ...style,
-              whiteSpace: 'pre-wrap',
-              cursor: item.click ? 'pointer' : 'unset'
-            }}
+            style={{ cursor: item.click ? 'pointer' : 'unset' }}
+            className={`${item.key} ${css.text} text`}
             type={item.textType}
             onClick={() => {
               if (item.click) {
@@ -114,14 +111,7 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           data-text-id={item.key}
           style={{ height: 'fit-content' }}
         >
-          <Text
-            style={{
-              fontSize: item.fontSize,
-              fontWeight: item.fontStyle,
-              whiteSpace: 'pre-wrap'
-            }}
-            type={item.textType}
-          >
+          <Text className={`${item.key} ${css.text} text`} type={item.textType}>
             {itemContent}
           </Text>
         </span>
@@ -138,7 +128,7 @@ const EditRender = (props: RuntimeParams<Data>) => {
     return <>{data.items.map((item) => itemRender({ ...props, data: item }))}</>;
   };
   return (
-    <div className={css.container} style={data.style || {}}>
+    <div className={`${css.container} container`} style={{ textAlign: data.style.textAlign }}>
       {renderItems()}
     </div>
   );
@@ -216,7 +206,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   };
 
   return (
-    <div className={css.container} style={data.style || {}}>
+    <div className={`${css.container} container`} style={{ textAlign: data.style.textAlign }}>
       {renderItems()}
     </div>
   );
