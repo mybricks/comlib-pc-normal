@@ -17,7 +17,6 @@ export default function ({
   inputs,
   outputs,
   env,
-  style,
   id,
   parentSlot,
   name
