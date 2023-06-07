@@ -136,7 +136,7 @@ export default {
         {
           title: '格式化字符',
           type: 'Text',
-          description: '默认为%, 可自定义',
+          description: '默认为¥, 可自定义',
           ifVisible({ data }) {
             return data.isFormatter;
           },
