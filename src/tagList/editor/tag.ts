@@ -1,5 +1,5 @@
 import { Data, Tag, Preset } from '../types';
-import { getTagItem, arrayMove } from './util';
+import { getTagItem, arrayMove, getTagIndex } from './util';
 
 export default {
   '[data-item-tag="tag"]': {
@@ -63,26 +63,30 @@ export default {
           title: '操作',
           items: [
             {
-              title: '向前移动',
+              title: '前移',
               type: 'button',
-              ifVisible({}: EditorResult<Data>) {
-                return index > 0;
+              ifVisible({ data, focusArea }: EditorResult<Data>) {
+                const [tag, index]: [Tag, number] = getTagItem(data, focusArea)
+                return index > 0 && tag.key!=data.tags[0].key;
               },
               value: {
-                set({ data }: EditorResult<Data>) {
+                set({ data, focusArea }: EditorResult<Data>) {
+                  const index = getTagIndex({ focusArea });
                   if (index === 0) return;
                   data.tags = arrayMove<Tag>(data.tags, index, index - 1);
                 }
               }
             },
             {
-              title: '向后移动',
+              title: '后移',
               type: 'button',
-              ifVisible({ data }: EditorResult<Data>) {
+              ifVisible({ data, focusArea }: EditorResult<Data>) {
+                const index = getTagIndex({ focusArea });
                 return index < data.tags.length - 1;
               },
               value: {
-                set({ data }: EditorResult<Data>) {
+                set({ data, focusArea }: EditorResult<Data>) {
+                  const index = getTagIndex({ focusArea });
                   if (index === data.tags.length - 1) return;
                   data.tags = arrayMove<Tag>(data.tags, index, index + 1);
                 }
@@ -95,7 +99,8 @@ export default {
                 return data.tags.length > 1;
               },
               value: {
-                set({ data }: EditorResult<Data>, val: string) {
+                set({ data, focusArea }: EditorResult<Data>, val: string) {
+                  const index = getTagIndex({ focusArea });
                   data.tags.splice(index, 1);
                 }
               }
