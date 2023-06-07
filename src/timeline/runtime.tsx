@@ -62,10 +62,21 @@ export default function (props: RuntimeParams<Data>) {
     return (
       <>
         <div>
-          <span className={css.title}>{title}</span>
-          {subTitle && <span className={css.subTitle}> {subTitle}</span>}
+          <span data-type="title" className={css.title}>
+            {title}
+          </span>
+          {subTitle && (
+            <span data-type="subTitle" className={css.subTitle}>
+              {' '}
+              {subTitle}
+            </span>
+          )}
         </div>
-        {description && <div className={css.desc}>{description}</div>}
+        {description && (
+          <div data-type="desc" className={css.desc}>
+            {description}
+          </div>
+        )}
       </>
     );
   };
@@ -99,12 +110,7 @@ export default function (props: RuntimeParams<Data>) {
         {timelines.map((item: Item, index: number) => {
           const { color, id, _id } = item || {};
           return (
-            <Timeline.Item
-              color={color}
-              className={css['timeline-item']}
-              data-timeline-id={id}
-              key={_id || id}
-            >
+            <Timeline.Item className={css['timeline-item']} data-timeline-id={id} key={_id || id}>
               <div
                 onClick={() => {
                   outputs[OutputIds.ItemClick](item);
