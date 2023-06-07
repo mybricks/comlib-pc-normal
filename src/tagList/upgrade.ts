@@ -5,9 +5,9 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   data.tags.forEach(({ borderColor, color, textColor }, index) => {
     const selector = `div[data-root] span[data-index="${index}"]`;
     const style = {
-      background: color || tagStyle.color,
-      color: textColor || tagStyle.textColor,
-      borderColor: borderColor || tagStyle.borderColor
+      background: color || tagStyle?.color,
+      color: textColor || tagStyle?.textColor,
+      borderColor: borderColor || tagStyle?.borderColor
     };
     setDeclaredStyle(selector, style);
   });

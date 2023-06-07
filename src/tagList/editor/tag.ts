@@ -1,5 +1,5 @@
 import { Data, Tag, Preset } from '../types';
-import { getTagItem, arrayMove, getTagIndex } from './util';
+import { getTagItem, arrayMove, getTagIndex, createStyle } from './util';
 
 export default {
   '[data-item-tag="tag"]': {
@@ -66,8 +66,8 @@ export default {
               title: '前移',
               type: 'button',
               ifVisible({ data, focusArea }: EditorResult<Data>) {
-                const [tag, index]: [Tag, number] = getTagItem(data, focusArea)
-                return index > 0 && tag.key!=data.tags[0].key;
+                const [tag, index]: [Tag, number] = getTagItem(data, focusArea);
+                return index > 0 && tag.key != data.tags[0].key;
               },
               value: {
                 set({ data, focusArea }: EditorResult<Data>) {
@@ -109,12 +109,11 @@ export default {
         }
       ];
     },
-    style: {
-      options: ['font', 'border', 'bgColor'],
+    style: createStyle({
       target({ focusArea }: EditorResult<Data>) {
         const { index } = focusArea.dataset;
         return `div[data-root] span[data-index="${index}"]`;
       }
-    }
+    })
   }
 };

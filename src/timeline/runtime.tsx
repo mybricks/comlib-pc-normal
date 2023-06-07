@@ -101,7 +101,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   return (
-    <div className={css.wrap}>
+    <div className={css.wrap} style={env.edit ? { minHeight: 56 } : {}}>
       <Timeline
         mode={data.mode}
         reverse={data.reverse}
