@@ -1,7 +1,8 @@
-import { ajax } from '../util'
+// import { ajax } from '../util'
 
-export default function queryData(domainConfig, { query, pageParams, ordersParams }) {
-  // console.log('domainConfig', domainConfig)
+export default function queryData(callDomainModel, domainModel, domainConfig, { query, pageParams, ordersParams }) {
+  console.log('domain', domainModel)
+  
   const { fields = [] } = domainConfig
   let subEntitis = new Set()
   // 额外添加子实体的名称，如"角色.名称"中的”角色“
@@ -18,31 +19,28 @@ export default function queryData(domainConfig, { query, pageParams, ordersParam
   })
 
   return new Promise((resolve, reject) => {
-    ajax({
-      params: {
-        query,
-        fields,
-        orders: ordersParams,
-        page: {
-          pageNum: pageParams.pageNum,
-          pageSize: pageParams.pageSize
-        },
-        action: 'SELECT'
+    callDomainModel(domainModel, 'SELECT', {
+      query,
+      fields,
+      orders: ordersParams,
+      page: {
+        pageNum: pageParams.pageNum,
+        pageSize: pageParams.pageSize
       },
-      serviceId: domainConfig.serviceId,
-      fileId: domainConfig.fileId,
-      projectId: domainConfig.projectId
     }).then(r => {
-
-      resolve({
-        dataSource: r.dataSource,
-        pageNum: r.pageNum,
-        pageSize: r.pageSize,
-        total: r.total
-      })
-
+      if (r.code === 1) {
+        resolve({
+          dataSource: r.data.dataSource,
+          pageNum: r.data.pageNum,
+          pageSize: r.data.pageSize,
+          total: r.data.total
+        })
+      } else {
+        reject(r.msg || '请求错误，请稍候再试~')
+      }
     }).catch(e => {
-      reject(e)
+      console.error(e)
+      reject('请求错误，请稍候再试~')
     })
   })
 

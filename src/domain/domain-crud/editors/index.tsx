@@ -23,15 +23,18 @@ export default {
     const { data: childData, name } = child;
 
     if (curSlot.id === 'queryContent') {
-      if (childData.domainModel) {
-        childData.domainModel.entity = data.entity;
-        childData.domainModel.isQuery = true;
-      } else {
-        childData.domainModel = {
-          entity: data.entity,
-          isQuery: true
-        };
-      }
+      // if (childData.domainModel) {
+      //   childData.domainModel.entity = data.entity;
+      //   childData.domainModel.isQuery = true;
+      //   childData.domainModel.type = '';
+      // } else {
+      //   childData.domainModel = {
+      //     entity: data.entity,
+      //     isQuery: true
+      //   };
+      // }
+
+      setFormDomainModel(data.domainModel, childData, true);
 
       childData.config.layout = 'inline';
       childData.formItemColumn = 3;
@@ -43,30 +46,15 @@ export default {
     }
 
     if (curSlot.id === 'createModalContent') {
-      if (childData.domainModel) {
-        childData.domainModel.entity = data.entity;
-        childData.domainModel.isQuery = true;
-      } else {
-        childData.domainModel = {
-          entity: data.entity,
-          isQuery: true
-        };
-      }
+      setFormDomainModel(data.domainModel, childData, false);
 
       childData.actions.visible = false;
       data?.childNames.createModalContent.push(name);
     }
 
     if (curSlot.id === 'editModalContent') {
-      if (childData.domainModel) {
-        childData.domainModel.entity = data.entity;
-        childData.domainModel.isQuery = true;
-      } else {
-        childData.domainModel = {
-          entity: data.entity,
-          isQuery: true
-        };
-      }
+      setFormDomainModel(data.domainModel, childData, false);
+
       childData.actions.visible = false;
       data?.childNames.editModalContent.push(name);
     }
@@ -120,11 +108,11 @@ export default {
     console.log(toPin, slotId);
   },
   ':root': ({ data }: EditorResult<Data>, cate1) => {
-    if (fileId) {
-      ajax({ fileId }, { url: '/api/system/domain/entity/list' }).then((r) => {
-        data.domainAry = r || [];
-      });
-    }
+    // if (fileId) {
+    //   ajax({ fileId }, { url: '/api/system/domain/entity/list' }).then((r) => {
+    //     data.domainAry = r || [];
+    //   });
+    // }
 
     cate1.title = '常规';
     cate1.items = [
@@ -132,97 +120,112 @@ export default {
         title: '模型选择',
         items: [
           {
-            title: '实体',
-            type: 'Select',
-            options(props) {
-              return {
-                get options() {
-                  const entityList: Array<{ label: string; value: string }> = [];
-                  props.data.domainAry?.forEach((domain) => {
-                    domain.entityList
-                      .filter((entity) => !entity.isSystem && entity.isOpen)
-                      .forEach((entity) => {
-                        entityList.push({
-                          label: `${domain.fileName}.${entity.name}`,
-                          value: `${domain.fileId}.${entity.id}`
-                        });
-                      });
-                  });
-
-                  return entityList;
-                },
-                disabled: !!props.data.domainFileId,
-                placeholder: '请选择实体'
-              };
-            },
+            title: '测试领域模型',
+            type: '_domainModelSelect',
             value: {
               get({ data }: EditorResult<Data>) {
-                return data.domainFileId ? `${data.domainFileId}.${data.entityId}` : undefined;
+                // console.log(data.domainModel)
+                // return data.domainModel;
               },
-              set({ data, output, input, getChildByName }: EditorResult<Data>, value: string = '') {
-                const [domainFileId, entityId] = value.split('.');
-
-                if (data.domainFileId !== Number(domainFileId) || data.entityId !== entityId) {
-                  data.domainFileId = Number(domainFileId);
-                  data.entityId = entityId;
-
-                  const entity = data.domainAry
-                    .find((d) => d.fileId === Number(domainFileId))
-                    ?.entityList.find((entity) => entity.id === entityId);
-
-                  const curEntity = JSON.parse(JSON.stringify(entity || null));
-
-                  if (curEntity) {
-                    curEntity.fieldAry.filter(
-                      (field) =>
-                        ![FieldBizType.MAPPING].includes(field.bizType) &&
-                        !field.isPrimaryKey &&
-                        !field.isPrivate
-                    );
-
-                    refreshChildComModel(data.childNames, getChildByName, curEntity);
-
-                    data.entity = curEntity;
-                  }
-
-                  // 清空当前已选的返回字段
-                  data.fieldAry = [];
-                }
-              }
-            }
-          },
-          {
-            title: '刷新模型实体信息',
-            type: 'editorRender',
-            ifVisible(props: EditorResult<Data>) {
-              return !!props.data.domainFileId;
-            },
-            options: {
-              render: Refresh,
-              get domainFileId() {
-                return data.domainFileId;
-              },
-              get entityId() {
-                return data.entityId;
-              },
-              get entity() {
-                return data.entity;
-              }
-            },
-            value: {
-              get({ data }) {
-                return { domainFileId: data.domainFileId, entityId: data.entityId };
-              },
-              set({ data, setTitle, title, output, slot, getChildByName }, newEntity: any) {
-                if (!newEntity) {
-                  return;
-                }
-
-                refreshChildComModel(data.childNames, getChildByName, newEntity);
-                data.entity = newEntity;
+              set({ data, getChildByName }: EditorResult<Data>, value) {
+                data.domainModel = value;
+                refreshChildComModel(data.childNames, getChildByName, data.domainModel);
+                // console.log(value)
               }
             }
           }
+          // {
+          //   title: '实体',
+          //   type: 'Select',
+          //   options(props) {
+          //     return {
+          //       get options() {
+          //         const entityList: Array<{ label: string; value: string }> = [];
+          //         props.data.domainAry?.forEach((domain) => {
+          //           domain.entityList
+          //             .filter((entity) => !entity.isSystem && entity.isOpen)
+          //             .forEach((entity) => {
+          //               entityList.push({
+          //                 label: `${domain.fileName}.${entity.name}`,
+          //                 value: `${domain.fileId}.${entity.id}`
+          //               });
+          //             });
+          //         });
+
+          //         return entityList;
+          //       },
+          //       disabled: !!props.data.domainFileId,
+          //       placeholder: '请选择实体'
+          //     };
+          //   },
+          //   value: {
+          //     get({ data }: EditorResult<Data>) {
+          //       return data.domainFileId ? `${data.domainFileId}.${data.entityId}` : undefined;
+          //     },
+          //     set({ data, output, input, getChildByName }: EditorResult<Data>, value: string = '') {
+          //       const [domainFileId, entityId] = value.split('.');
+
+          //       if (data.domainFileId !== Number(domainFileId) || data.entityId !== entityId) {
+          //         data.domainFileId = Number(domainFileId);
+          //         data.entityId = entityId;
+
+          //         const entity = data.domainAry
+          //           .find((d) => d.fileId === Number(domainFileId))
+          //           ?.entityList.find((entity) => entity.id === entityId);
+
+          //         const curEntity = JSON.parse(JSON.stringify(entity || null));
+
+          //         if (curEntity) {
+          //           curEntity.fieldAry.filter(
+          //             (field) =>
+          //               ![FieldBizType.MAPPING].includes(field.bizType) &&
+          //               !field.isPrimaryKey &&
+          //               !field.isPrivate
+          //           );
+
+          //           refreshChildComModel(data.childNames, getChildByName, curEntity);
+
+          //           data.entity = curEntity;
+          //         }
+
+          //         // 清空当前已选的返回字段
+          //         data.fieldAry = [];
+          //       }
+          //     }
+          //   }
+          // },
+          // {
+          //   title: '刷新模型实体信息',
+          //   type: 'editorRender',
+          //   ifVisible(props: EditorResult<Data>) {
+          //     return !!props.data.domainFileId;
+          //   },
+          //   options: {
+          //     render: Refresh,
+          //     get domainFileId() {
+          //       return data.domainFileId;
+          //     },
+          //     get entityId() {
+          //       return data.entityId;
+          //     },
+          //     get entity() {
+          //       return data.entity;
+          //     }
+          //   },
+          //   value: {
+          //     get({ data }) {
+          //       return { domainFileId: data.domainFileId, entityId: data.entityId };
+          //     },
+          //     set({ data, setTitle, title, output, slot, getChildByName }, newEntity: any) {
+          //       if (!newEntity) {
+          //         return;
+          //       }
+
+          //       refreshChildComModel(data.childNames, getChildByName, newEntity);
+          //       data.entity = newEntity;
+          //     }
+          //   }
+          // }
         ]
       },
       {
@@ -413,12 +416,15 @@ export default {
   // }
 };
 
-const refreshChildComModel = (childNames, getChildByName, curEntity) => {
+const refreshChildComModel = (childNames, getChildByName, domainModel) => {
+  const curEntity = JSON.parse(JSON.stringify(domainModel.query.entity || null));
+
   childNames.queryContent.forEach((comName) => {
     const child = getChildByName(comName);
 
     if (child.def.namespace === 'mybricks.normal-pc.form-container') {
       child.data.domainModel.entity = curEntity;
+      child.data.domainModel.type = domainModel.type;
     }
   });
 
@@ -427,6 +433,7 @@ const refreshChildComModel = (childNames, getChildByName, curEntity) => {
 
     if (child.def.namespace === 'mybricks.normal-pc.form-container') {
       child.data.domainModel.entity = curEntity;
+      child.data.domainModel.type = domainModel.type;
     }
   });
 
@@ -435,6 +442,7 @@ const refreshChildComModel = (childNames, getChildByName, curEntity) => {
 
     if (child.def.namespace === 'mybricks.normal-pc.form-container') {
       child.data.domainModel.entity = curEntity;
+      child.data.domainModel.type = domainModel.type;
     }
   });
 
@@ -482,4 +490,20 @@ export const flatterEntityField = (
     });
 
   return fieldRecord;
+};
+
+const setFormDomainModel = (domainModel, childData, isQuery) => {
+  if (domainModel) {
+    if (childData.domainModel) {
+      childData.domainModel.entity = domainModel.query.entity;
+      childData.domainModel.isQuery = isQuery;
+      childData.domainModel.type = domainModel.type;
+    } else {
+      childData.domainModel = {
+        entity: domainModel.query.entity,
+        isQuery: isQuery,
+        type: domainModel.type
+      };
+    }
+  }
 };
