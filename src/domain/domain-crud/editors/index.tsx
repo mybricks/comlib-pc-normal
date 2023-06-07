@@ -124,13 +124,11 @@ export default {
             type: '_domainModelSelect',
             value: {
               get({ data }: EditorResult<Data>) {
-                // console.log(data.domainModel)
-                // return data.domainModel;
+                return data.domainModel;
               },
               set({ data, getChildByName }: EditorResult<Data>, value) {
                 data.domainModel = value;
                 refreshChildComModel(data.childNames, getChildByName, data.domainModel);
-                // console.log(value)
               }
             }
           }
@@ -323,6 +321,9 @@ export default {
       {
         title: '显示新建对话窗',
         type: 'Switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.domainModel?.query?.abilitySet?.includes('INSERT');
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.createModalOpen;
@@ -336,6 +337,9 @@ export default {
       {
         title: '显示编辑对话窗',
         type: 'Switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.domainModel?.query?.abilitySet?.includes('UPDATE');
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.editModalOpen;
