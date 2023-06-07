@@ -45,47 +45,6 @@ export default {
           }
         },
         {
-          title: '额外内容',
-          items: [
-            {
-              title: '左侧',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.useLeftExtra;
-                },
-                set({ data, slot }: EditorResult<Data>, value: boolean) {
-                  data.useLeftExtra = value;
-                  const hasSlot = slot.get(SlotIds.LeftExtra);
-                  if (value) {
-                    !hasSlot && slot.add(SlotIds.LeftExtra, '左侧内容');
-                  } else {
-                    hasSlot && slot.remove(SlotIds.LeftExtra);
-                  }
-                }
-              }
-            },
-            {
-              title: '右侧',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.useRigthExtra;
-                },
-                set({ data, slot }: EditorResult<Data>, value: boolean) {
-                  data.useRigthExtra = value;
-                  const hasSlot = slot.get(SlotIds.RigthExtra);
-                  if (value) {
-                    !hasSlot && slot.add(SlotIds.RigthExtra, '右侧内容');
-                  } else {
-                    hasSlot && slot.remove(SlotIds.RigthExtra);
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
           title: '外观',
           type: 'Select',
           options: [
@@ -184,6 +143,47 @@ export default {
               data.hideSlots = value;
             }
           }
+        },
+        {
+          title: '额外内容',
+          items: [
+            {
+              title: '左侧',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useLeftExtra;
+                },
+                set({ data, slot }: EditorResult<Data>, value: boolean) {
+                  data.useLeftExtra = value;
+                  const hasSlot = slot.get(SlotIds.LeftExtra);
+                  if (value) {
+                    !hasSlot && slot.add(SlotIds.LeftExtra, '左侧内容');
+                  } else {
+                    hasSlot && slot.remove(SlotIds.LeftExtra);
+                  }
+                }
+              }
+            },
+            {
+              title: '右侧',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useRigthExtra;
+                },
+                set({ data, slot }: EditorResult<Data>, value: boolean) {
+                  data.useRigthExtra = value;
+                  const hasSlot = slot.get(SlotIds.RigthExtra);
+                  if (value) {
+                    !hasSlot && slot.add(SlotIds.RigthExtra, '右侧内容');
+                  } else {
+                    hasSlot && slot.remove(SlotIds.RigthExtra);
+                  }
+                }
+              }
+            }
+          ]
         },
         {
           title: '事件',
