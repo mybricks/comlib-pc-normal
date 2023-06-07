@@ -120,9 +120,7 @@ export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[
   if (fromIndex < 0) throw Error('parameter fromIndex must be greater than 0')
   if (toIndex >= array.length) throw Error(`parameter toIndex must be less than ${array.length}`)
   if (!array.length) return array
-  const copy = array.slice()
-  const temp = copy[toIndex]
-  copy[toIndex] = copy[fromIndex]
-  copy[fromIndex] = temp
-  return copy
+  const item = array.splice(fromIndex, 1)[0]
+  array.splice(toIndex, 0, item)
+  return array
 }
