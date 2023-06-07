@@ -8,6 +8,7 @@ interface Props {
   data: Data;
   inputs: any;
   outputs: any;
+  parentSlot: any;
 }
 export default (props: Props) => {
   const { data, inputs, outputs, env } = props;
@@ -74,6 +75,7 @@ export default (props: Props) => {
       setPageSize(pageSize);
       setPageNum(pageNum);
       outputs[OutputIds.PageChange](data.currentPage);
+      // props.parentSlot?._inputs['onPageChange']?.({ value: data.currentPage });
     }
   };
 

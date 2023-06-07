@@ -32,11 +32,11 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
   };
 
   useEffect(() => {
-    inputs.link &&
+    inputs?.link &&
       inputs.link((value: string) => {
         data.src = value;
       });
-    inputs.screenshot && inputs.screenshot(screenshot);
+    inputs?.screenshot && inputs.screenshot(screenshot);
   }, []);
 
   const screenshot = (filename?: string) => {

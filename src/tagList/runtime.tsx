@@ -5,8 +5,6 @@ import { Data, Tag as TagType } from './types';
 import { uuid, createTag } from './editor/util';
 import styles from './style.less';
 
-const preset = ['success', 'processing', 'error', 'warning', 'default'];
-
 export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const { checkable } = data;
 
@@ -39,7 +37,7 @@ const DefaultTag = ({
   outputs,
   env
 }: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'env'>) => {
-  const { direction, align, wrap, size, tags, tagSize, appendAble } = data;
+  const { direction, align, wrap, size, tags, tagSize, appendAble, appendBtn } = data;
   const [inputVisible, setInputVisible] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const onTagClose = (index: number, tag: TagType) => {
@@ -72,10 +70,16 @@ const DefaultTag = ({
     setInputVisible(false);
   };
   return (
-    <Space className={styles.wrap} direction={direction} align={align} wrap={wrap} size={size}>
+    <Space
+      data-root="root"
+      className={styles.wrap}
+      direction={direction}
+      align={align}
+      wrap={wrap}
+      size={size}
+    >
       {tags.map((tag, index) => {
-        const { key, content, color, textColor, borderColor, icon } = tag;
-        const isPreset = preset.includes(color as string);
+        const { key, content, color, icon } = tag;
         return (
           <Tag
             key={key}
@@ -86,7 +90,6 @@ const DefaultTag = ({
             closable={!env.edit && appendAble}
             onClose={appendAble ? () => onTagClose(index, tag) : void 0}
             icon={Icons && Icons[icon as string]?.render()}
-            style={!isPreset ? { color: textColor, borderColor } : {}}
           >
             {content}
           </Tag>
@@ -103,9 +106,14 @@ const DefaultTag = ({
             onPressEnter={handleInputConfirm}
           />
         ) : (
-          <Tag color="default" style={{ borderStyle: 'dashed' }} onClick={showInput}>
-            <Icons.PlusOutlined />
-            <span style={{ marginLeft: 3 }}>新增</span>
+          <Tag
+            data-item-tag="append"
+            color="default"
+            icon={Icons && Icons[appendBtn.icon as string]?.render()}
+            className={styles.appendBtn}
+            onClick={showInput}
+          >
+            {appendBtn.text}
           </Tag>
         ))}
     </Space>
@@ -120,10 +128,16 @@ const CheckTag = ({ data, outputs }: Pick<RuntimeParams<Data>, 'data' | 'outputs
     outputs['onCheck']({ changed: { ...data.tags[index], index }, allTag: data.tags });
   };
   return (
-    <Space className={styles.wrap} direction={direction} align={align} wrap={wrap} size={size}>
+    <Space
+      data-root="root"
+      className={styles.wrap}
+      direction={direction}
+      align={align}
+      wrap={wrap}
+      size={size}
+    >
       {tags.map((tag, index) => {
-        const { key, checked, content, color, textColor, borderColor } = tag;
-        const isPreset = preset.includes(color as string);
+        const { key, checked, content } = tag;
         return (
           <Tag.CheckableTag
             key={key}
@@ -131,7 +145,6 @@ const CheckTag = ({ data, outputs }: Pick<RuntimeParams<Data>, 'data' | 'outputs
             data-index={index}
             data-item-tag="tag"
             checked={checked as boolean}
-            style={!isPreset ? { color: textColor, borderColor } : {}}
             onChange={() => onTagChange(index)}
           >
             {content}

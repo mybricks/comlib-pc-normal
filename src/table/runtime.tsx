@@ -4,7 +4,13 @@ import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
-import { formatColumnItemDataIndex, formatDataSource, getDefaultDataSource } from './utils';
+
+import {
+  formatColumnItemDataIndex,
+  formatDataSource,
+  getColumnsSchema,
+  getDefaultDataSource
+} from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import {
   ContentTypeEnum,
@@ -22,9 +28,11 @@ import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
+import { getColumnsFromSchema } from './editors';
+import { setDataSchema } from './schema';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, slots } = props;
+  const { env, data, inputs, outputs, slots, input, output } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -558,6 +566,7 @@ export default function (props: RuntimeParams<Data>) {
       )}
       <TableFooter
         env={env}
+        parentSlot={props.parentSlot}
         data={data}
         slots={slots}
         inputs={inputs}

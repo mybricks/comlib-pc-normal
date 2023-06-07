@@ -10,11 +10,10 @@ export interface Data {
   style: CSSProperties;
 }
 
-export default function ({ env, data, outputs }: RuntimeParams<Data>) {
-  return (
-    <div
-      className={css.html}
-      dangerouslySetInnerHTML={{ __html: data.content || '' }}
-    ></div>
-  );
+export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+  inputs.content &&
+    inputs.content((val: string) => {
+      data.content = val;
+    });
+  return <div className={css.html} dangerouslySetInnerHTML={{ __html: data.content || '' }}></div>;
 }

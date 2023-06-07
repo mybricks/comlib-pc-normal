@@ -27,7 +27,7 @@ interface RuntimeParams<T> {
   style: any
   slots: {
     [key: string]: {
-      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties }) => React.ReactNode
+      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties, outputs?: { [key: string]: Function } }) => React.ReactNode
       inputs: any
       [key: string]: any
     }
@@ -55,13 +55,15 @@ interface EditorResult<T> {
   outputs: any
   slot: any,
   diagram: any
-  style: any
+  style: React.CSSProperties
   catelog: any
   slots?: any
   env: Env
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDesc: (desc?: string) => void
+  /** 获取子组件data，引擎 v1.2.69 **/
+  getChildByName: (name: string) => any
 }
 
 interface UpgradeParams<T> {

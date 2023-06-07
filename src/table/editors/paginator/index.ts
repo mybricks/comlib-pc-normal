@@ -79,6 +79,9 @@ export default {
           title: '默认每页显示条数',
           type: 'inputNumber',
           options: [{ min: 1, max: 1000, width: 100 }],
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.domainModel;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return [data.paginationConfig.defaultPageSize];
@@ -114,6 +117,9 @@ export default {
           title: '前端分页',
           type: 'Switch',
           description: '开启后，会自动根据当前页码/条目数分页展示',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.domainModel;
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.paginationConfig.useFrontPage;
@@ -187,7 +193,7 @@ export default {
           type: 'Switch',
           description: '打开该功能后，不再支持页数为1时隐藏功能',
           ifVisible({ data }: EditorResult<Data>) {
-            return data.paginationConfig.size !== SizeTypeEnum.Simple;
+            return !data.domainModel && data.paginationConfig.size !== SizeTypeEnum.Simple;
           },
           value: {
             get({ data }: EditorResult<Data>) {
