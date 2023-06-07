@@ -27,26 +27,37 @@ export default function (props: RuntimeParams<Data>) {
   const queryParamsRef = useRef({});
   const ordersParamsRef = useRef<OrderParams[]>([]);
 
-  const [pageNum, setPageNum] = useState(1);
+  // const [pageNum, setPageNum] = useState(1);
   const [curRecordId, setCurRecordId] = useState();
+  const abilitySet = data.domainModel?.query?.abilitySet;
+
+  // console.log(abilitySet);
 
   useEffect(() => {
     if (env.runtime) {
       inputs['openEditModal']((val) => {
-        setIsEdit(true);
-        setVisible(true);
+        if (checkDomainModel(abilitySet, 'UPDATE')) {
+          setIsEdit(true);
+          setVisible(true);
 
-        setCurRecordId(val.id);
-        // console.log(slots['editModalContent'].inputs['dataSource'].getConnections())
+          setCurRecordId(val.id);
+          // console.log(slots['editModalContent'].inputs['dataSource'].getConnections())
 
-        slots['editModalContent'].inputs['dataSource'](val);
+          slots['editModalContent'].inputs['dataSource'](val);
+        } else {
+          message.warn('未支持编辑操作');
+        }
       });
 
       inputs['openCreateModal']((val) => {
-        setIsEdit(false);
-        setVisible(true);
+        if (checkDomainModel(abilitySet, 'INSERT')) {
+          setIsEdit(false);
+          setVisible(true);
 
-        slots['createModalContent'].inputs['dataSource'](val);
+          slots['createModalContent'].inputs['dataSource'](val);
+        } else {
+          message.warn('未支持新建操作');
+        }
       });
 
       inputs['query']((val) => {
@@ -59,7 +70,7 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['pageChange']((val) => {
-        setPageNum(val.pageNum);
+        // setPageNum(val.pageNum);
         getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: data.pageSize });
       });
 
@@ -100,34 +111,48 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['create']((val) => {
-        createData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
-          message.success('创建成功');
-          setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+        if (checkDomainModel(abilitySet, 'INSERT')) {
+          createData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
+            message.success('创建成功');
+            // setPageNum(1);
+            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
-          setVisible(false);
-        });
+            setVisible(false);
+          });
+        } else {
+          message.warn('未支持新建操作');
+        }
       });
 
       inputs['editById']((val) => {
-        updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val }).then((r) => {
-          message.success('更新成功');
-          setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+        if (checkDomainModel(abilitySet, 'UPDATE')) {
+          updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val }).then(
+            (r) => {
+              message.success('更新成功');
+              // setPageNum(1);
+              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
-          setVisible(false);
-        });
+              setVisible(false);
+            }
+          );
+        } else {
+          message.warn('未支持编辑操作');
+        }
       });
 
       inputs['deleteById']((val) => {
-        deleteData(env.callDomainModel, data.domainModel, val.id).then((r) => {
-          message.success('删除成功');
-          setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
-        });
+        if (checkDomainModel(abilitySet, 'DELETE')) {
+          deleteData(env.callDomainModel, data.domainModel, val.id).then((r) => {
+            message.success('删除成功');
+            // setPageNum(1);
+            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+          });
+        } else {
+          message.warn('未支持删除操作');
+        }
       });
     }
-  }, [pageNum, curRecordId, projectId]);
+  }, [curRecordId, projectId]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -246,8 +271,6 @@ export default function (props: RuntimeParams<Data>) {
       }
     )
       .then((r) => {
-        console.log(r.dataSource);
-
         tableInputs?.current['dataSource']?.({
           dataSource: r.dataSource,
           total: r.total
@@ -300,7 +323,7 @@ export default function (props: RuntimeParams<Data>) {
               },
               outputs: {
                 pageChange(val) {
-                  setPageNum(val.pageNum);
+                  // setPageNum(val.pageNum);
                   getListData(queryParamsRef.current, {
                     pageNum: val.pageNum,
                     pageSize: data.pageSize
@@ -342,11 +365,13 @@ export default function (props: RuntimeParams<Data>) {
           </Button>
         ]}
       >
-        {isEdit ? (
-          <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
-        ) : (
-          <CreateModalContent slots={slots} createModalFormInputs={createModalFormInputs} />
-        )}
+        {isEdit
+          ? checkDomainModel('abilitySet', 'UPDATE') && (
+              <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
+            )
+          : checkDomainModel('abilitySet', 'INSERT') && (
+              <CreateModalContent slots={slots} createModalFormInputs={createModalFormInputs} />
+            )}
       </Modal>
     </div>
   );
@@ -410,4 +435,8 @@ function getQueryParamsForDomain(val) {
   });
 
   return query;
+}
+
+function checkDomainModel(abilitySet, type) {
+  return abilitySet.includes(type);
 }
