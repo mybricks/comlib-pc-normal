@@ -141,12 +141,12 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
     return treeData;
   };
-  useEffect(() => {
-    document.body.style.setProperty(
-      '--json--view--node-hover-bgcolor',
-      data.colors[TypeEnum.NodeHoverBackgroundColor]
-    );
-  }, [data.colors[TypeEnum.NodeHoverBackgroundColor]]);
+  const rootStyle = useMemo(() => {
+    return {
+      backgroundColor: data.colors[TypeEnum.BackgroundColor],
+      '--json--view--node-hover-bgcolor': data.colors[TypeEnum.NodeHoverBackgroundColor]
+    };
+  }, [data.colors[TypeEnum.NodeHoverBackgroundColor], data.colors[TypeEnum.BackgroundColor]]);
   const treeData = [
     {
       title: getTitle({
@@ -170,9 +170,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   return (
     <Tree
       treeData={treeData}
-      rootStyle={{
-        backgroundColor: data.colors[TypeEnum.BackgroundColor]
-      }}
+      rootStyle={rootStyle}
       className={css.root}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
