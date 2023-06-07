@@ -1,10 +1,11 @@
 import { DefaultValueWhenCreate, FieldBizType, FieldDBType } from './constants';
 
 export interface Data {
-  domainFileId: number;
-  entityId: string;
-  domainAry: any[]; // TODO 不应该存到 data
-  entity: any
+  domainModel: any,
+  // domainFileId: number;
+  // entityId: string;
+  // domainAry: any[]; // TODO 不应该存到 data
+  // entity: any
   /** 是否立即查询 **/
   isImmediate: boolean
   createModalOpen: boolean

@@ -1,18 +1,31 @@
-import { ajax } from '../util'
+// import { ajax } from '../util'
 
-export default function createData(domainConfig, params) {
+export default function createData(callDomainModel, domainModel, params) {
   return new Promise((resolve, reject) => {
-    ajax({
-      params: {
-        query: { ...params },
-        action: 'INSERT'
-      },
-      serviceId: domainConfig.serviceId,
-      fileId: domainConfig.fileId,
-      projectId: domainConfig.projectId
+
+    callDomainModel(domainModel, 'INSERT', {
+      query: params
     }).then(r => {
-      resolve(r)
+      if (r.code === 1) {
+        resolve(r.data)
+      } else {
+        reject(r.msg || '请求错误，请稍候再试~')
+      }
+    }).catch(e => {
+      console.error(e)
+      reject('请求错误，请稍候再试~')
     })
+    // ajax({
+    //   params: {
+    //     query: { ...params },
+    //     action: 'INSERT'
+    //   },
+    //   // serviceId: domainConfig.serviceId,
+    //   // fileId: domainConfig.fileId,
+    //   // projectId: domainConfig.projectId
+    // }).then(r => {
+    //   resolve(r)
+    // })
   })
 
 }

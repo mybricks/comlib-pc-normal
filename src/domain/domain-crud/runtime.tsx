@@ -30,25 +30,6 @@ export default function (props: RuntimeParams<Data>) {
   const [pageNum, setPageNum] = useState(1);
   const [curRecordId, setCurRecordId] = useState();
 
-  // console.log(data.entity);
-
-  // if (env.runtime) {
-  //   // slots['queryContent']._inputs['onSubmit'](({ name, values }) => {
-  //   //   console.log('表单提交', values, data)
-  //   //   getListData(values)
-  //   // })
-
-  //   slots['tableContent']._inputs['onPageChange'](({ name, value }) => {
-  //     const { pageNum, pageSize } = value;
-  //     console.log(pageNum, pageSize)
-  //   });
-
-  //   slots['tableContent']._inputs['onSorterChange'](({ name, value }) => {
-  //     const { id, order } = value;
-  //     console.log(value)
-  //   });
-  // }
-
   useEffect(() => {
     if (env.runtime) {
       inputs['openEditModal']((val) => {
@@ -56,6 +37,7 @@ export default function (props: RuntimeParams<Data>) {
         setVisible(true);
 
         setCurRecordId(val.id);
+        // console.log(slots['editModalContent'].inputs['dataSource'].getConnections())
 
         slots['editModalContent'].inputs['dataSource'](val);
       });
@@ -68,25 +50,12 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['query']((val) => {
-        const { values, fieldsRules } = val;
-        const query = {};
+        // const { values, fieldsRules } = val;
+        // const query = getQueryParams({ values, fieldsRules });
 
-        Object.keys(values).forEach((key) => {
-          let value = values[key];
+        // queryParamsRef.current = query;
 
-          if (typeof value === 'string') {
-            value = value.trim();
-            value = value ? value : undefined;
-          }
-          query[key] = {
-            operator: fieldsRules[key]?.operator || 'LIKE',
-            value
-          };
-        });
-
-        queryParamsRef.current = query;
-
-        getListData(query, { pageNum: 1, pageSize: data.pageSize });
+        getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
       });
 
       inputs['pageChange']((val) => {
@@ -131,14 +100,7 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['create']((val) => {
-        createData(
-          {
-            serviceId: data.entity?.id,
-            fileId: data.domainFileId,
-            projectId
-          },
-          { ...val }
-        ).then((r) => {
+        createData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
           message.success('创建成功');
           setPageNum(1);
           getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
@@ -148,14 +110,7 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['editById']((val) => {
-        updateData(
-          {
-            serviceId: data.entity?.id,
-            fileId: data.domainFileId,
-            projectId
-          },
-          { id: curRecordId, ...val }
-        ).then((r) => {
+        updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val }).then((r) => {
           message.success('更新成功');
           setPageNum(1);
           getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
@@ -165,14 +120,7 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['deleteById']((val) => {
-        deleteData(
-          {
-            serviceId: data.entity?.id,
-            fileId: data.domainFileId,
-            projectId
-          },
-          val.id
-        ).then((r) => {
+        deleteData(env.callDomainModel, data.domainModel, val.id).then((r) => {
           message.success('删除成功');
           setPageNum(1);
           getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
@@ -183,12 +131,14 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (env.runtime) {
-      if (!data.domainFileId) {
+      if (!data.domainModel) {
         return;
       }
 
       if (data.isImmediate) {
-        getListData({}, { pageNum: 1, pageSize: data.pageSize });
+        formInputs.current.submit().onFinish((val) => {
+          getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
+        });
       }
     }
   }, []);
@@ -208,9 +158,42 @@ export default function (props: RuntimeParams<Data>) {
   const onOkMethod = useCallback(() => {
     if (env.runtime) {
       if (isEdit) {
-        outputs['onEditConfirm']();
+        if (outputs['onEditConfirm'].getConnections().length === 0) {
+          editModalFormInputs.current.submit().onFinish((val) => {
+            updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val })
+              .then((r) => {
+                message.success('更新成功');
+                setPageNum(1);
+                getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+
+                setVisible(false);
+              })
+              .catch((e) => {
+                message.error(e);
+              });
+          });
+        } else {
+          outputs['onEditConfirm']();
+        }
       } else {
-        outputs['onCreateConfirm']();
+        if (outputs['onCreateConfirm'].getConnections().length === 0) {
+          createModalFormInputs.current.submit().onFinish((val) => {
+            createData(env.callDomainModel, data.domainModel, { ...val })
+              .then((r) => {
+                message.success('创建成功');
+                setPageNum(1);
+                getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+                createModalFormInputs.current.resetFields().onResetFinish(() => {});
+
+                setVisible(false);
+              })
+              .catch((e) => {
+                message.error(e);
+              });
+          });
+        } else {
+          outputs['onCreateConfirm']();
+        }
       }
     }
   }, [isEdit]);
@@ -226,23 +209,32 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [isEdit]);
 
-  const getListData = (params, pageParams) => {
-    tableInputs.current['startLoading']();
+  const getListData = (params, pageParams, isSubmit?: boolean) => {
+    tableInputs?.current['startLoading']?.();
 
-    const query = params;
+    let query = params;
     const ordersParams = ordersParamsRef.current;
 
+    if (data.domainModel.type === 'domain' && isSubmit) {
+      query = getQueryParamsForDomain(params);
+    }
+
+    queryParamsRef.current = query;
+
+    console.log('queryParams', query);
     console.log('pageParams', pageParams);
     console.log('ordersParams', ordersParams);
 
     queryData(
+      env.callDomainModel,
+      data.domainModel,
       {
-        serviceId: data.entity?.id,
-        fileId: data.domainFileId,
-        fields: flatterEntityField(data.entity).map((item) => ({
+        // serviceId: data.entity?.id,
+        // fileId: data.domainFileId,
+        fields: flatterEntityField(data.domainModel?.query?.entity).map((item) => ({
           name: item.label
-        })),
-        projectId
+        }))
+        // projectId
       },
       {
         query,
@@ -252,23 +244,27 @@ export default function (props: RuntimeParams<Data>) {
         },
         ordersParams
       }
-    ).then((r) => {
-      console.log(r.dataSource);
+    )
+      .then((r) => {
+        console.log(r.dataSource);
 
-      tableInputs.current['dataSource']({
-        dataSource: r.dataSource,
-        total: r.total
+        tableInputs?.current['dataSource']?.({
+          dataSource: r.dataSource,
+          total: r.total
+        });
+
+        tableInputs?.current['endLoading']?.();
+      })
+      .catch((e) => {
+        message.error(e);
       });
-
-      tableInputs.current['endLoading']();
-    });
   };
 
   // console.log(env.canvasElement);
 
   return (
     <div className={styles.domainContainer}>
-      {data.domainFileId ? (
+      {data.domainModel ? (
         <>
           <div className={styles.queryContent}>
             {slots['queryContent']?.render({
@@ -280,6 +276,14 @@ export default function (props: RuntimeParams<Data>) {
                 });
 
                 return jsx;
+              },
+              outputs: {
+                onFinish(v) {
+                  console.log('拦截查询', v);
+                },
+                onClickSubmit(v) {
+                  getListData(v, { pageNum: 1, pageSize: data.pageSize });
+                }
               }
             })}
           </div>
@@ -387,3 +391,23 @@ const CreateModalContent = (props) => {
     </div>
   );
 };
+
+function getQueryParamsForDomain(val) {
+  const { values, fieldsRules } = val;
+  const query = {};
+
+  Object.keys(values).forEach((key) => {
+    let value = values[key];
+
+    if (typeof value === 'string') {
+      value = value.trim();
+      value = value ? value : undefined;
+    }
+    query[key] = {
+      operator: fieldsRules[key]?.operator || 'LIKE',
+      value
+    };
+  });
+
+  return query;
+}

@@ -2,9 +2,6 @@
   "entity": [],
   "createModalOpen": false,
   "editModalOpen": false,
-  "domainAry": [],
-  "domainFileId": "",
-  "entityId": "",
   "isImmediate": true,
   "editModalActions": {
     "onOk": {
