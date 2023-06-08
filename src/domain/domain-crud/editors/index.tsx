@@ -61,10 +61,10 @@ export default {
 
     if (curSlot.id === 'tableContent') {
       if (childData.domainModel) {
-        childData.domainModel.entity = data.entity;
+        childData.domainModel.entity = data.domainModel.query.entity;
       } else {
         childData.domainModel = {
-          entity: data.entity
+          entity: data.domainModel.query.entity
         };
       }
 
