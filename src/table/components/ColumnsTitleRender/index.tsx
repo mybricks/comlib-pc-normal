@@ -150,31 +150,13 @@ export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Prop
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
-          const normalStyle = cItem.contentStyle
-            ? {
-                ...cItem.contentStyle
-              }
-            : {
-                color: cItem.contentColor
-              };
           return {
-            style:
-              data.enableRowFocus && focusRowIndex === rowIndex
-                ? { ...normalStyle, ...data.focusRowStyle }
-                : normalStyle
+            style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {}
           };
         }}
         onHeaderCell={(): any => {
           return {
-            'data-table-th-idx': cItem.key,
-            style: cItem.headStyle
-              ? {
-                  ...cItem.headStyle
-                }
-              : {
-                  color: cItem.titleColor,
-                  backgroundColor: cItem.titleBgColor
-                }
+            'data-table-th-idx': cItem.key
           };
         }}
       />

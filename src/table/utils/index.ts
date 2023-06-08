@@ -229,3 +229,15 @@ export function getColumnItemDataIndex(item: IColumn) {
   const idx = Array.isArray(colDataIndex) ? colDataIndex.join('.') : colDataIndex;
   return idx;
 }
+
+export const createStyleForHead = ({ target }: StyleTargetType<Data> = {}) => ({
+  title: '表头',
+  options: ['font', 'bgColor', 'border'],
+  target
+});
+
+export const createStyleForContent = ({ target }: StyleTargetType<Data>) => ({
+  title: '内容',
+  options: ['font', 'bgColor', 'border'],
+  target
+});

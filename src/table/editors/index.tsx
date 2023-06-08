@@ -15,7 +15,7 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
-import { getColumnsSchema } from '../utils';
+import { getColumnsSchema, createStyleForHead, createStyleForContent } from '../utils';
 import {
   OutputIds as PaginatorOutputIds,
   InputIds as PaginatorInputIds
@@ -115,23 +115,34 @@ export default {
       setDataSchema({ data, output, input, ...res });
     }
   },
-  ':root': (props: EditorResult<Data>, ...cateAry) => {
-    cateAry[0].title = '常规';
-    cateAry[0].items = [getAddColumnEditor(props), ...UsePaginatorEditor];
+  ':root': {
+    items: (props: EditorResult<Data>, ...cateAry) => {
+      cateAry[0].title = '常规';
+      cateAry[0].items = [
+        getAddColumnEditor(props),
+        ...UsePaginatorEditor,
+        ...LoadingEditor,
+        TableStyleEditor
+      ];
 
-    cateAry[1].title = '样式';
-    cateAry[1].items = [...LoadingEditor, TableStyleEditor];
+      // cateAry[1].title = '样式';
+      // cateAry[1].items = [...LoadingEditor, TableStyleEditor];
 
-    cateAry[2].title = '高级';
-    cateAry[2].items = [
-      ...EventEditor,
-      HeaderEditor,
-      ...ExpandEditor,
-      rowOperationEditor,
-      ...DynamicColumnEditor,
-      ...DynamicTitleEditor,
-      ...getRowSelectionEditor(props)
-    ];
+      cateAry[1].title = '高级';
+      cateAry[1].items = [
+        ...EventEditor,
+        HeaderEditor,
+        ...ExpandEditor,
+        rowOperationEditor,
+        ...DynamicColumnEditor,
+        ...DynamicTitleEditor,
+        ...getRowSelectionEditor(props)
+      ];
+    },
+    style: [
+      createStyleForHead({ target: 'table thead tr > th' }),
+      createStyleForContent({ target: 'table tbody tr > td' })
+    ]
   },
   ...columnEditor,
   ...PaginatorEditor

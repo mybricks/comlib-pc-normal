@@ -83,4 +83,4 @@ type AnyMap = {
 
 interface Env { preview?: {}, edit?: {}, runtime?: any, mock?: {} }
 
-type StyleTargetType<T> = { target: string | ((props: EditorResult<T>) => string) | undefined };
+type StyleTargetType<T> = Partial<{ target: string | ((props: EditorResult<T>) => string) | undefined }>;
