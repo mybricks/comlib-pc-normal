@@ -41,10 +41,15 @@ export default function (props: RuntimeParams<Data>) {
         if (checkDomainModel(abilitySet, 'UPDATE')) {
           setIsEdit(true);
           setVisible(true);
-
           setCurRecordId(val.id);
           // console.log('getConnections', slots['editModalContent'].inputs['dataSource'].getConnections())
-          editModalFormInputs.current?.setInitialValues(val);
+
+          // if (slots['editModalContent'].inputs['dataSource'].getConnections().length === 0) {
+          //   console.log(editModalFormInputs.current)
+          //   editModalFormInputs.current?.setInitialValues(val);
+          // } else {
+          //   slots['editModalContent'].inputs['dataSource'](val);
+          // }
           slots['editModalContent'].inputs['dataSource'](val);
         } else {
           message.warn('未支持编辑操作');
@@ -163,9 +168,14 @@ export default function (props: RuntimeParams<Data>) {
       }
 
       if (data.isImmediate) {
-        formInputs.current?.submit().onFinish((val) => {
-          getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
-        });
+        if (formInputs.current) {
+          // 存在没有表单的情况
+          formInputs.current?.submit().onFinish((val) => {
+            getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
+          });
+        } else {
+          getListData({}, { pageNum: 1, pageSize: data.pageSize }, true);
+        }
       }
     }
   }, []);
@@ -252,10 +262,6 @@ export default function (props: RuntimeParams<Data>) {
 
     queryParamsRef.current = query;
 
-    console.log('queryParams', query);
-    console.log('pageParams', pageParams);
-    console.log('ordersParams', ordersParams);
-
     queryData(
       env.callDomainModel,
       data.domainModel,
@@ -303,31 +309,35 @@ export default function (props: RuntimeParams<Data>) {
     <div className={styles.domainContainer} ref={domainContainerRef}>
       {data.domainModel ? (
         <>
-          <div className={styles.queryContent}>
-            {slots['queryContent'].size === 0 && env.edit ? (
+          {slots['queryContent'].size === 0 && env.edit ? (
+            <div style={{ position: 'relative' }}>
               <EmptySlot slot={slots['queryContent']?.render()} description="请拖拽组件到查询区" />
-            ) : (
-              slots['queryContent']?.render({
-                wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-                  const jsx = comAray?.map((com, idx) => {
-                    formInputs.current = com.inputs;
+            </div>
+          ) : (
+            slots['queryContent'].size !== 0 && (
+              <div className={styles.queryContent}>
+                {slots['queryContent']?.render({
+                  wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+                    const jsx = comAray?.map((com, idx) => {
+                      formInputs.current = com.inputs;
 
-                    return com.jsx;
-                  });
+                      return com.jsx;
+                    });
 
-                  return jsx;
-                },
-                outputs: {
-                  onFinish(v) {
-                    console.log('拦截查询', v);
+                    return jsx;
                   },
-                  onClickSubmit(v) {
-                    getListData(v, { pageNum: 1, pageSize: data.pageSize });
+                  outputs: {
+                    // onFinish(v) {
+                    //   console.log('拦截查询', v);
+                    // },
+                    onClickSubmit(v) {
+                      getListData(v, { pageNum: 1, pageSize: data.pageSize });
+                    }
                   }
-                }
-              })
-            )}
-          </div>
+                })}
+              </div>
+            )
+          )}
           <div className={styles.actionsContent}>
             {data.actions.useSlot ? (
               slots['actionsContent'].size === 0 && env.edit ? (
@@ -422,6 +432,39 @@ export default function (props: RuntimeParams<Data>) {
               <CreateModalContent slots={slots} createModalFormInputs={createModalFormInputs} />
             )}
       </Modal>
+
+      {/* <Modal
+        title={isEdit ? '编辑' : '新建'}
+        visible={env.edit ? data.createModalOpen || data.editModalOpen : visible}
+        getContainer={env.edit ? domainContainerRef.current : env.canvasElement}
+        okText="确认"
+        cancelText="取消"
+        onOk={onOkMethod}
+        onCancel={onCancelMethod}
+        footer={[
+          <Button
+            data-actions-id={isEdit ? 'onCancelForEdit' : 'onCancelForCreate'}
+            key="cancel"
+            onClick={onCancelMethod}
+          >
+            取消
+          </Button>,
+          <Button
+            data-actions-id={isEdit ? 'onOkForEdit' : 'onOkForCreate'}
+            key="ok"
+            type="primary"
+            onClick={onOkMethod}
+          >
+            确认
+          </Button>
+        ]}
+      >
+        {
+          checkDomainModel(abilitySet, 'UPDATE') && (
+            <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
+          )
+        }
+      </Modal> */}
     </div>
   );
 }
@@ -470,18 +513,20 @@ function getQueryParamsForDomain(val) {
   const { values, fieldsRules } = val;
   const query = {};
 
-  Object.keys(values).forEach((key) => {
-    let value = values[key];
+  if (values) {
+    Object.keys(values).forEach((key) => {
+      let value = values[key];
 
-    if (typeof value === 'string') {
-      value = value.trim();
-      value = value ? value : undefined;
-    }
-    query[key] = {
-      operator: fieldsRules[key]?.operator || 'LIKE',
-      value
-    };
-  });
+      if (typeof value === 'string') {
+        value = value.trim();
+        value = value ? value : undefined;
+      }
+      query[key] = {
+        operator: fieldsRules[key]?.operator || 'LIKE',
+        value
+      };
+    });
+  }
 
   return query;
 }

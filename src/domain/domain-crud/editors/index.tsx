@@ -23,17 +23,6 @@ export default {
     const { data: childData, name } = child;
 
     if (curSlot.id === 'queryContent') {
-      // if (childData.domainModel) {
-      //   childData.domainModel.entity = data.entity;
-      //   childData.domainModel.isQuery = true;
-      //   childData.domainModel.type = '';
-      // } else {
-      //   childData.domainModel = {
-      //     entity: data.entity,
-      //     isQuery: true
-      //   };
-      // }
-
       setFormDomainModel(data.domainModel, childData, true);
 
       childData.config.layout = 'inline';
@@ -128,6 +117,7 @@ export default {
     const { data, getChildByName } = params;
     // console.log(params, value)
     if (value.domainModel.id === data.domainModel.id) {
+      // Todo 需要重置
       data.domainModel = undefined;
       // refreshChildComModel(data.childNames, getChildByName, data.domainModel);
     }
