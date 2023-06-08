@@ -35,6 +35,8 @@ export default function (props: RuntimeParams<Data>) {
   const [curRecordId, setCurRecordId] = useState();
   const abilitySet = data.domainModel?.query?.abilitySet;
 
+  // console.log(data.domainModel)
+
   useEffect(() => {
     if (env.runtime) {
       inputs['openEditModal']((val) => {
@@ -275,16 +277,17 @@ export default function (props: RuntimeParams<Data>) {
         let dataSource = usePagination
           ? {
               dataSource: r.dataSource,
-              total: r.total
+              total: r.total,
+              pageNum: pageParams.pageNum
             }
           : r.dataSource;
-        tableInputs?.current['dataSource']?.(dataSource);
+        tableInputs?.current?.['dataSource']?.(dataSource);
       })
       .catch((e) => {
         message.error(e);
       })
       .finally(() => {
-        tableInputs?.current['endLoading']?.();
+        tableInputs?.current?.['endLoading']?.();
       });
   };
 
