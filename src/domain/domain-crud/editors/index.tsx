@@ -64,7 +64,7 @@ export default {
       childData.actions.visible = false;
       data?.childNames.editModalContent.push(name);
     }
-    console.log(data.domainModel);
+
     if (curSlot.id === 'tableContent') {
       if (childData.domainModel) {
         childData.domainModel.entity = data.domainModel.query.entity;
