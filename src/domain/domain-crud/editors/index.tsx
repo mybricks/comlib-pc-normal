@@ -401,23 +401,48 @@ export default {
         ]
       }
     ];
+  },
+  '[data-actions-id]': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+    const dataSet = focusArea.dataset;
+    const actionsId = dataSet.actionsId;
+
+    const resultMap = {
+      onOkForCreate: {
+        title: '确认输出',
+        outputId: 'onCreateConfirm',
+        slotId: 'createModalContent'
+      },
+      onCancelForCreate: {
+        title: '取消输出',
+        outputId: 'onCancelForCreateModal',
+        slotId: 'createModalContent'
+      },
+      onCancelForEdit: {
+        title: '取消输出',
+        outputId: 'onCancelForEditModal',
+        slotId: 'editModalContent'
+      },
+      onOkForEdit: {
+        title: '确认输出',
+        outputId: 'onEditConfirm',
+        slotId: 'editModalContent'
+      }
+    };
+
+    cate1.title = '对话框操作';
+    cate1.items = [
+      {
+        title: resultMap[actionsId].title,
+        type: '_Event',
+        options: ({ data, focusArea }: EditorResult<Data>) => {
+          return {
+            outputId: resultMap[actionsId].outputId,
+            slotId: resultMap[actionsId].slotId
+          };
+        }
+      }
+    ];
   }
-  // '[data-actions-id]': {
-  //   title: '对话框操作',
-  //   items: [
-  //     {
-  //       title: '确认输出',
-  //       type: '_Event',
-  //       options: ({ data, focusArea }: EditorResult<Data>) => {
-  //         console.log(focusArea)
-  //         return {
-  //           outputId: 'onCreateConfirm',
-  //           slotId: 'createModalContent'
-  //         };
-  //       }
-  //     },
-  //   ]
-  // }
 };
 
 const refreshChildComModel = (childNames, getChildByName, domainModel) => {
