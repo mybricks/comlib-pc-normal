@@ -395,10 +395,14 @@ export default function (props: RuntimeParams<Data>) {
       >
         {isEdit
           ? checkDomainModel(abilitySet, 'UPDATE') && (
-              <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
+              <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} env={env} />
             )
           : checkDomainModel(abilitySet, 'INSERT') && (
-              <CreateModalContent slots={slots} createModalFormInputs={createModalFormInputs} />
+              <CreateModalContent
+                slots={slots}
+                createModalFormInputs={createModalFormInputs}
+                env={env}
+              />
             )}
       </Modal>
 
@@ -463,41 +467,55 @@ const ActionsContent = (props) => {
 };
 
 const EditModalContent = (props) => {
-  const { slots, editModalFormInputs } = props;
+  const { slots, editModalFormInputs, env } = props;
 
   return (
-    <div>
-      {slots['editModalContent'].render({
-        wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-          const jsx = comAray?.map((com, idx) => {
-            editModalFormInputs.current = com.inputs;
+    <div style={{ position: 'relative' }}>
+      {slots['editModalContent'].size === 0 && env.edit ? (
+        <EmptySlot
+          slot={slots['editModalContent']?.render()}
+          description="请拖拽组件到编辑对话框内"
+        />
+      ) : (
+        slots['editModalContent'].render({
+          wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+            const jsx = comAray?.map((com, idx) => {
+              editModalFormInputs.current = com.inputs;
 
-            return com.jsx;
-          });
+              return com.jsx;
+            });
 
-          return jsx;
-        }
-      })}
+            return jsx;
+          }
+        })
+      )}
     </div>
   );
 };
 
 const CreateModalContent = (props) => {
-  const { slots, createModalFormInputs } = props;
+  const { slots, createModalFormInputs, env } = props;
 
   return (
-    <div>
-      {slots['createModalContent'].render({
-        wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-          const jsx = comAray?.map((com, idx) => {
-            createModalFormInputs.current = com.inputs;
+    <div style={{ position: 'relative' }}>
+      {slots['createModalContent'].size === 0 && env.edit ? (
+        <EmptySlot
+          slot={slots['createModalContent']?.render()}
+          description="请拖拽组件到新建对话框内"
+        />
+      ) : (
+        slots['createModalContent'].render({
+          wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+            const jsx = comAray?.map((com, idx) => {
+              createModalFormInputs.current = com.inputs;
 
-            return com.jsx;
-          });
+              return com.jsx;
+            });
 
-          return jsx;
-        }
-      })}
+            return jsx;
+          }
+        })
+      )}
     </div>
   );
 };
