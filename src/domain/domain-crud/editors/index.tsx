@@ -111,7 +111,7 @@ export default {
     const { data, getChildByName } = params;
     // console.log(params, value)
     data.domainModel = value.domainModel;
-    refreshChildComModel(data.childNames, getChildByName, data.domainModel);
+    // refreshChildComModel(data.childNames, getChildByName, data.domainModel);
   },
   '@domainModelRemoved'(params, value) {
     const { data, getChildByName } = params;
