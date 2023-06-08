@@ -17,6 +17,8 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, outputs, inputs, slots, createPortal } = props;
   const { projectId } = env;
 
+  const domainContainerRef = useRef(null);
+
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const tableInputs = useRef<{ [x: string]: any }>({});
@@ -31,8 +33,6 @@ export default function (props: RuntimeParams<Data>) {
   const [curRecordId, setCurRecordId] = useState();
   const abilitySet = data.domainModel?.query?.abilitySet;
 
-  // console.log(abilitySet);
-
   useEffect(() => {
     if (env.runtime) {
       inputs['openEditModal']((val) => {
@@ -41,7 +41,7 @@ export default function (props: RuntimeParams<Data>) {
           setVisible(true);
 
           setCurRecordId(val.id);
-          // console.log(slots['editModalContent'].inputs['dataSource'].getConnections())
+          // console.log('getConnections', slots['editModalContent'].inputs['dataSource'].getConnections())
 
           slots['editModalContent'].inputs['dataSource'](val);
         } else {
@@ -188,7 +188,7 @@ export default function (props: RuntimeParams<Data>) {
             updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val })
               .then((r) => {
                 message.success('更新成功');
-                setPageNum(1);
+                // setPageNum(1);
                 getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
                 setVisible(false);
@@ -206,7 +206,7 @@ export default function (props: RuntimeParams<Data>) {
             createData(env.callDomainModel, data.domainModel, { ...val })
               .then((r) => {
                 message.success('创建成功');
-                setPageNum(1);
+                // setPageNum(1);
                 getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
                 createModalFormInputs.current.resetFields().onResetFinish(() => {});
 
@@ -286,7 +286,7 @@ export default function (props: RuntimeParams<Data>) {
   // console.log(env.canvasElement);
 
   return (
-    <div className={styles.domainContainer}>
+    <div className={styles.domainContainer} ref={domainContainerRef}>
       {data.domainModel ? (
         <>
           <div className={styles.queryContent}>
@@ -342,7 +342,7 @@ export default function (props: RuntimeParams<Data>) {
       <Modal
         title={isEdit ? '编辑' : '新建'}
         visible={env.edit ? data.createModalOpen || data.editModalOpen : visible}
-        getContainer={env.canvasElement}
+        getContainer={env.edit ? domainContainerRef.current : env.canvasElement}
         okText="确认"
         cancelText="取消"
         onOk={onOkMethod}
@@ -366,10 +366,10 @@ export default function (props: RuntimeParams<Data>) {
         ]}
       >
         {isEdit
-          ? checkDomainModel('abilitySet', 'UPDATE') && (
+          ? checkDomainModel(abilitySet, 'UPDATE') && (
               <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
             )
-          : checkDomainModel('abilitySet', 'INSERT') && (
+          : checkDomainModel(abilitySet, 'INSERT') && (
               <CreateModalContent slots={slots} createModalFormInputs={createModalFormInputs} />
             )}
       </Modal>
@@ -438,5 +438,5 @@ function getQueryParamsForDomain(val) {
 }
 
 function checkDomainModel(abilitySet, type) {
-  return abilitySet.includes(type);
+  return abilitySet?.includes(type);
 }
