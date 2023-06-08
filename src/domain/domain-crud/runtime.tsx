@@ -318,7 +318,7 @@ export default function (props: RuntimeParams<Data>) {
                     //   console.log('拦截查询', v);
                     // },
                     onClickSubmit(v) {
-                      getListData(v, { pageNum: 1, pageSize: data.pageSize });
+                      getListData(v, { pageNum: 1, pageSize: data.pageSize }, true);
                     }
                   }
                 })}
