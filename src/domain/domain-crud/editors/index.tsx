@@ -1,15 +1,15 @@
 import { ajax } from '../util';
 import { Data, Entity } from '../type';
-import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
-import Refresh from './refresh';
+// import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
+// import Refresh from './refresh';
 
-const fileId =
-  location.search
-    .split('?')
-    .pop()
-    ?.split('&')
-    .find((key) => key.startsWith('id='))
-    ?.replace('id=', '') ?? '';
+// const fileId =
+//   location.search
+//     .split('?')
+//     .pop()
+//     ?.split('&')
+//     .find((key) => key.startsWith('id='))
+//     ?.replace('id=', '') ?? '';
 
 export default {
   // '@init'({ data }) {
@@ -116,6 +116,20 @@ export default {
       data.childNames.tableContent = data.childNames.tableContent.filter(
         (comName) => comName !== name
       );
+    }
+  },
+  '@domainModelUpdated'(params, value) {
+    const { data, getChildByName } = params;
+    // console.log(params, value)
+    data.domainModel = value.domainModel;
+    refreshChildComModel(data.childNames, getChildByName, data.domainModel);
+  },
+  '@domainModelRemoved'(params, value) {
+    const { data, getChildByName } = params;
+    // console.log(params, value)
+    if (value.domainModel.id === data.domainModel.id) {
+      data.domainModel = undefined;
+      // refreshChildComModel(data.childNames, getChildByName, data.domainModel);
     }
   },
   '@slotInputConnected'({ data, inputs, outputs, slots }, fromPin, slotId, toPin) {
@@ -291,63 +305,6 @@ export default {
           }
         }
       },
-      // {
-      //   title: '返回字段',
-      //   type: 'Select',
-      //   options(props) {
-      //     return {
-      //       mode: 'tags',
-      //       multiple: true,
-      //       filterOption: (inputValue, opiton) => {
-      //         console.log('options', opiton)
-      //         return opiton.includes(inputValue)
-      //       },
-      //       get options() {
-      //         const options = flatterEntityField(props?.data.entity)
-      //         return options
-      //       }
-      //     };
-      //   },
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.fieldAry || []
-      //     },
-      //     set({ data, output, input, slot }: EditorResult<Data>, value: string[]) {
-      //       data.fieldAry = value
-      //     }
-      //   }
-      // },
-      // {
-      //   type: 'array',
-      //   // ifVisible() {
-      //   //   return !!data.fieldAry && data.table?.renderType !== TableRenderType.SLOT;
-      //   // },
-      //   options: {
-      //     editable: false,
-      //     addable: false,
-      //     getTitle: ({ name, mappingField }) => {
-      //       return `${name}${mappingField ? '.' + mappingField.name : ''}`;
-      //     },
-      //     onRemove: (index: number) => {
-      //       // data.fieldAry.splice(index, 1);
-      //     }
-      //   },
-      //   value: {
-      //     get({}: EditorResult<Data>) {
-      //       // return (
-      //       //   data.fieldAry.filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM) ?? []
-      //       // );
-      //     },
-      //     set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
-      //       // const curFields = val;
-      //       // if (curFields.length > 0) {
-      //       //   curFields.push(handleCustomColumnSlot(data, slot));
-      //       // }
-      //       // handleTableColumnChange(curFields, data.fieldAry, slot);
-      //       // data.fieldAry = curFields;
-      //     }
-      //   }
-      // },
       {
         title: '显示新建对话窗',
         type: 'Switch',
