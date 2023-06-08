@@ -155,7 +155,11 @@ export default {
       data.isFormItem = false;
     }
 
-    if (schema !== 'mybricks.domain-pc.crud/query') {
+    if (
+      schema !== 'mybricks.domain-pc.crud/query' &&
+      schema !== 'mybricks.domain-pc.crud/createModal' &&
+      schema !== 'mybricks.domain-pc.crud/editModal'
+    ) {
       if (data.domainModel.entity) {
         data.domainModel = {
           entity: undefined,
