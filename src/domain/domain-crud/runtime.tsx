@@ -252,6 +252,7 @@ export default function (props: RuntimeParams<Data>) {
 
     queryParamsRef.current = query;
     const usePagination = !!data.domainModel?.query?.abilitySet?.includes('PAGE');
+
     queryData(
       env.callDomainModel,
       data.domainModel,
