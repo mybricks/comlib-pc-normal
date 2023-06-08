@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Select } from 'antd';
+import { AutoComplete, Select } from 'antd';
 
 export default function DomainFieldEditor({ editConfig }) {
   const { value, options } = editConfig;
-  const { entity } = options;
-  // const [fieldOptions, setFieldOptions] = useState([])
-  // console.log(entity?.fieldAry);
+  const { domainModel } = options;
+
+  const entity = domainModel?.entity || { fieldAry: [] };
+
   const getFieldOptions = () => {
     const systemFileds: any = {
       label: '系统字段',
@@ -42,14 +43,25 @@ export default function DomainFieldEditor({ editConfig }) {
 
   return (
     <div className="fangzhou-theme">
-      <Select
-        value={value.get()}
-        size="small"
-        style={{ width: '100%' }}
-        placeholder="请选择领域模型字段"
-        onChange={handleChange}
-        options={getFieldOptions()}
-      />
+      {domainModel.type === 'aggregation-model' ? (
+        <AutoComplete
+          value={value.get()}
+          size="small"
+          style={{ width: '100%' }}
+          placeholder="请选择或者输入查询字段"
+          onChange={handleChange}
+          options={getFieldOptions()}
+        />
+      ) : (
+        <Select
+          value={value.get()}
+          size="small"
+          style={{ width: '100%' }}
+          placeholder="请选择领域模型查询字段"
+          onChange={handleChange}
+          options={getFieldOptions()}
+        />
+      )}
     </div>
   );
 }
