@@ -1,7 +1,7 @@
 // import { ajax } from '../util'
 
 export default function queryData(callDomainModel, domainModel, domainConfig, { query, pageParams, ordersParams }) {
-  console.log('domain', domainModel)
+  // console.log('domain', domainModel)
   
   const { fields = [] } = domainConfig
   let subEntitis = new Set()

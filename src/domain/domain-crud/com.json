@@ -210,22 +210,6 @@
           },
           "editable": true
         }
-      ],
-      "outputs": [
-        {
-          "id": "onOk",
-          "title": "确认",
-          "schema": {
-            "type": "follow"
-          }
-        },
-        {
-          "id": "onCancel",
-          "title": "取消",
-          "schema": {
-            "type": "follow"
-          }
-        }
       ]
     },
     {
@@ -242,22 +226,6 @@
             "type": "follow"
           },
           "editable": true
-        }
-      ],
-      "outputs": [
-        {
-          "id": "onOk",
-          "title": "确认",
-          "schema": {
-            "type": "follow"
-          }
-        },
-        {
-          "id": "onCancel",
-          "title": "取消",
-          "schema": {
-            "type": "follow"
-          }
         }
       ]
     }

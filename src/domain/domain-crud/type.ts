@@ -17,7 +17,8 @@ export interface Data {
     createModalContent: string[]
     editModalContent: string[]
   },
-  pageSize: number,
+  pageSize: number
+  actions: any
 }
 
 
