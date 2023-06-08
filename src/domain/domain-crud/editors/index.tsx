@@ -66,6 +66,8 @@ export default {
     }
 
     if (curSlot.id === 'tableContent') {
+      console.log(name);
+
       if (childData.domainModel) {
         childData.domainModel.entity = data.domainModel.query.entity;
       } else {
@@ -113,7 +115,7 @@ export default {
     const { data, getChildByName } = params;
     // console.log(params, value)
     data.domainModel = value.domainModel;
-    // refreshChildComModel(data.childNames, getChildByName, data.domainModel);
+    refreshChildComModel(data.childNames, getChildByName, data.domainModel);
   },
   '@domainModelRemoved'(params, value) {
     const { data, getChildByName } = params;
@@ -121,7 +123,7 @@ export default {
     if (value.domainModel.id === data.domainModel.id) {
       // Todo 需要重置
       data.domainModel = undefined;
-      // refreshChildComModel(data.childNames, getChildByName, data.domainModel);
+      refreshChildComModel(data.childNames, getChildByName, data.domainModel);
     }
   },
   '@slotInputConnected'({ data, inputs, outputs, slots }, fromPin, slotId, toPin) {
