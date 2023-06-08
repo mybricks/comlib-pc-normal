@@ -6,7 +6,7 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
 	const debug = !!(runtime && runtime.debug);
   if (data.connector) {
     try {
-			const isObjectParams = typeof params === 'object' && params !== null;
+			const isObjectParams = typeof params === 'object' && Object.prototype.toString.call(params) !== '[object FormData]' && params !== null;
 	    const curParams: Record<string, unknown> = isObjectParams ? { ...params } : params;
 			
 			/** 展示运行日志 */
