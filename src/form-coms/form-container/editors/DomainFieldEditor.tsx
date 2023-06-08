@@ -43,7 +43,7 @@ export default function DomainFieldEditor({ editConfig }) {
 
   return (
     <div className="fangzhou-theme">
-      {domainModel.type === 'aggregation-model' ? (
+      {domainModel?.type === 'aggregation-model' ? (
         <AutoComplete
           value={value.get()}
           size="small"
