@@ -39,6 +39,23 @@ export default {
       childData.config.layout = 'inline';
       childData.formItemColumn = 3;
       childData.actions.span = 8;
+      childData.actions.items = [
+        {
+          title: '查询',
+          type: 'primary',
+          isDefault: true,
+          visible: true,
+          outputId: 'onClickSubmit',
+          key: 'submit'
+        },
+        {
+          title: '取消',
+          isDefault: false,
+          visible: false,
+          outputId: 'onClickCancel',
+          key: 'cancel'
+        }
+      ];
       childData.items.forEach((item) => {
         item.span = 8;
       });
@@ -58,7 +75,7 @@ export default {
       childData.actions.visible = false;
       data?.childNames.editModalContent.push(name);
     }
-
+    console.log(data.domainModel);
     if (curSlot.id === 'tableContent') {
       if (childData.domainModel) {
         childData.domainModel.entity = data.domainModel.query.entity;
@@ -227,6 +244,19 @@ export default {
         ]
       },
       {
+        title: '自定义操作区',
+        description: '默认操作不满足则可以开启操作区插槽，可拖入任意组件',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actions.useSlot;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.actions.useSlot = value;
+          }
+        }
+      },
+      {
         title: '每页显示条数',
         type: 'inputNumber',
         options: [{ min: 0, max: 1000, width: 100 }],
@@ -249,7 +279,7 @@ export default {
         }
       },
       {
-        title: '立刻请求数据',
+        title: '立即请求数据',
         description: '页面初始化时自动请求一次数据',
         type: 'Switch',
         value: {
