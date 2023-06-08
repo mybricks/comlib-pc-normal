@@ -70,7 +70,7 @@ export default {
         title: '默认样式',
         options: ['border'],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.listType === 'picker-card';
+          return data.config.listType === 'picture-card';
         },
         target: '.ant-upload-select-picture-card'
       },
@@ -102,7 +102,7 @@ export default {
         title: '激活样式',
         options: ['border'],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.listType === 'picker-card';
+          return data.config.listType === 'picture-card';
         },
         target: '.ant-upload-select-picture-card:hover',
         initValue: {
