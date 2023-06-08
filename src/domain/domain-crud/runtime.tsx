@@ -251,7 +251,7 @@ export default function (props: RuntimeParams<Data>) {
     }
 
     queryParamsRef.current = query;
-
+    const usePagination = !!data.domainModel?.query?.abilitySet?.includes('PAGE');
     queryData(
       env.callDomainModel,
       data.domainModel,
@@ -264,21 +264,26 @@ export default function (props: RuntimeParams<Data>) {
         query,
         pageParams: {
           pageNum: pageParams.pageNum,
-          pageSize: pageParams.pageSize
+          pageSize: pageParams.pageSize,
+          usePagination
         },
         ordersParams
       }
     )
       .then((r) => {
-        tableInputs?.current?.dataSource?.({
-          dataSource: r.dataSource,
-          total: r.total
-        });
-
-        tableInputs?.current?.endLoading?.();
+        let dataSource = usePagination
+          ? {
+              dataSource: r.dataSource,
+              total: r.total
+            }
+          : r.dataSource;
+        tableInputs?.current['dataSource']?.(dataSource);
       })
       .catch((e) => {
         message.error(e);
+      })
+      .finally(() => {
+        tableInputs?.current['endLoading']?.();
       });
   };
 

@@ -74,6 +74,8 @@ export default {
         };
       }
 
+      childData.usePagination = !!data.domainModel?.query?.abilitySet?.includes('PAGE');
+
       data?.childNames.tableContent.push(name);
       if (!childData.paginationConfig) {
         childData.paginationConfig = {};
@@ -264,6 +266,9 @@ export default {
         title: '每页显示条数',
         type: 'inputNumber',
         options: [{ min: 0, max: 1000, width: 100 }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.domainModel?.query?.abilitySet?.includes('PAGE');
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return [data.pageSize];

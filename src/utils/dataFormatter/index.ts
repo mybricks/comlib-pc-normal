@@ -28,7 +28,7 @@ const convertFormatter2Editor = (formatterConfig, accessor: Params['value']) => 
     description: description ?? undefined,
     ifVisible(info) {
       const data = accessor.get(info)
-      return data.formatterName === name;
+      return data?.formatterName === name;
     },
     value: {
       get(info) {
@@ -97,7 +97,7 @@ const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params[
           }
           accessor.set(info, data)
         }
-        return data.formatterName || noneFormatter.name
+        return data?.formatterName || noneFormatter.name
       },
       set(info, v) {
         const data = accessor?.get(info) || {}

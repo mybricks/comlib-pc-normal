@@ -2,7 +2,7 @@
 
 export default function queryData(callDomainModel, domainModel, domainConfig, { query, pageParams, ordersParams }) {
   // console.log('domain', domainModel)
-  
+
   const { fields = [] } = domainConfig
   let subEntitis = new Set()
   // 额外添加子实体的名称，如"角色.名称"中的”角色“
@@ -23,10 +23,10 @@ export default function queryData(callDomainModel, domainModel, domainConfig, { 
       query,
       fields,
       orders: ordersParams,
-      page: {
+      page: pageParams.usePagination ? {
         pageNum: pageParams.pageNum,
         pageSize: pageParams.pageSize
-      },
+      } : undefined,
     }).then(r => {
       if (r.code === 1) {
         resolve({
