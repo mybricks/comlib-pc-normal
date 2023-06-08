@@ -178,5 +178,8 @@ export interface Data {
   contentStyle;
   enableRowClick?: boolean;
   enableRowFocus: boolean,
-  focusRowStyle: any
+  focusRowStyle: any,
+  domainModel: {
+    entity: any
+  }
 }
