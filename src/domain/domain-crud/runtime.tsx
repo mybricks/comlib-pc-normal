@@ -17,7 +17,7 @@ interface OrderParams {
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, outputs, inputs, slots, createPortal } = props;
-  const { projectId } = env;
+  // const { projectId } = env;
 
   const domainContainerRef = useRef(null);
 
@@ -68,16 +68,10 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['query']((val) => {
-        // const { values, fieldsRules } = val;
-        // const query = getQueryParams({ values, fieldsRules });
-
-        // queryParamsRef.current = query;
-
         getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
       });
 
       inputs['pageChange']((val) => {
-        // setPageNum(val.pageNum);
         getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: data.pageSize });
       });
 
@@ -121,7 +115,6 @@ export default function (props: RuntimeParams<Data>) {
         if (checkDomainModel(abilitySet, 'INSERT')) {
           createData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
             message.success('创建成功');
-            // setPageNum(1);
             getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
             setVisible(false);
@@ -136,7 +129,6 @@ export default function (props: RuntimeParams<Data>) {
           updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val }).then(
             (r) => {
               message.success('更新成功');
-              // setPageNum(1);
               getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
               setVisible(false);
@@ -151,7 +143,6 @@ export default function (props: RuntimeParams<Data>) {
         if (checkDomainModel(abilitySet, 'DELETE')) {
           deleteData(env.callDomainModel, data.domainModel, val.id).then((r) => {
             message.success('删除成功');
-            // setPageNum(1);
             getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
           });
         } else {
@@ -159,7 +150,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       });
     }
-  }, [curRecordId, projectId]);
+  }, [curRecordId]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -200,7 +191,6 @@ export default function (props: RuntimeParams<Data>) {
             updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val })
               .then((r) => {
                 message.success('更新成功');
-                // setPageNum(1);
                 getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
                 setVisible(false);
@@ -266,12 +256,9 @@ export default function (props: RuntimeParams<Data>) {
       env.callDomainModel,
       data.domainModel,
       {
-        // serviceId: data.entity?.id,
-        // fileId: data.domainFileId,
         fields: flatterEntityField(data.domainModel?.query?.entity).map((item) => ({
           name: item.label
         }))
-        // projectId
       },
       {
         query,
@@ -338,31 +325,13 @@ export default function (props: RuntimeParams<Data>) {
               </div>
             )
           )}
-          <div className={styles.actionsContent}>
-            {data.actions.useSlot ? (
-              slots['actionsContent'].size === 0 && env.edit ? (
-                <EmptySlot
-                  slot={slots['actionsContent']?.render()}
-                  description="请拖拽组件到操作区"
-                />
-              ) : (
-                slots['actionsContent']?.render()
-              )
-            ) : (
-              data.actions.items.map((item) => {
-                return (
-                  <Button
-                    key={item.key}
-                    type={item.type}
-                    icon={<PlusOutlined />}
-                    onClick={onCreate}
-                  >
-                    {item.title}
-                  </Button>
-                );
-              })
-            )}
-          </div>
+          {env.edit ? (
+            <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+          ) : (
+            checkDomainModel(abilitySet, 'INSERT') && (
+              <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+            )
+          )}
           <div className={styles.tableContent}>
             {slots['tableContent'].size === 0 && env.edit ? (
               <EmptySlot
@@ -468,6 +437,30 @@ export default function (props: RuntimeParams<Data>) {
     </div>
   );
 }
+
+const ActionsContent = (props) => {
+  const { env, actions, slots, onCreate } = props;
+
+  return (
+    <div className={styles.actionsContent}>
+      {actions.useSlot ? (
+        slots['actionsContent'].size === 0 && env.edit ? (
+          <EmptySlot slot={slots['actionsContent']?.render()} description="请拖拽组件到操作区" />
+        ) : (
+          slots['actionsContent']?.render()
+        )
+      ) : (
+        actions.items.map((item) => {
+          return (
+            <Button key={item.key} type={item.type} icon={<PlusOutlined />} onClick={onCreate}>
+              {item.title}
+            </Button>
+          );
+        })
+      )}
+    </div>
+  );
+};
 
 const EditModalContent = (props) => {
   const { slots, editModalFormInputs } = props;
