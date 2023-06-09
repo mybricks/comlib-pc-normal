@@ -71,6 +71,9 @@ export default {
       outputs.add(PaginatorOutputIds.GetPageInfo, '分页数据', PageSchema);
       inputs.get(PaginatorInputIds.GetPageInfo).setRels([PaginatorOutputIds.GetPageInfo]);
       outputs.add(PaginatorOutputIds.PageChange, '点击分页', PageSchema);
+    } else {
+      // 不在领域模型内时，清空domain信息
+      data.domainModel = {};
     }
   },
   '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
