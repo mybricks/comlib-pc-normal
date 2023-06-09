@@ -26,9 +26,9 @@ export default {
       {
         title: '辅助介绍字体',
         options: ['font'],
-        // ifVisible({ data }: EditorResult<Data>) {
-        //   return data.showInfo;
-        // },
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.showInfo;
+        },
         target: '.ant-alert-description'
       },
       {

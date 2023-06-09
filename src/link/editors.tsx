@@ -1,5 +1,6 @@
 import { Actions } from '../utils/history';
 import { Data } from './constants';
+import css from './runtime.less';
 
 export default {
   ':root': {
@@ -20,7 +21,8 @@ export default {
       {
         title: '默认',
         options: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
-        target: '.linkWrapper'
+        target: '.linkWrapper',
+        initValue: { color: '#1890ff' }
       },
       {
         title: '激活',
