@@ -464,6 +464,7 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
 
     if (child.def.namespace === 'mybricks.normal-pc.table') {
       child.data.domainModel.entity = curEntity;
+      child.data.usePagination = domainModel?.query?.abilitySet?.includes('PAGE');
     }
   });
 };
