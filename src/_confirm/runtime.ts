@@ -10,7 +10,6 @@ const createFakeDom = (root) => {
 
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
-  let parendDom: HTMLElement
   const onOk = () => {
     outputs[OutputIds.Ok](data.outputValue);
   };
@@ -27,8 +26,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       onCancel,
       onOk,
       getContainer() {
-        const parendDom = createFakeDom(env?.canvasElement?.parentElement || document.body)
-        return parendDom
+        return createFakeDom(env?.canvasElement?.parentElement || document.body)
       },
     });
   };
@@ -44,8 +42,4 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       open();
     });
   }
-
-  // if (env.edit && parendDom) {
-  //   parendDom?.parentElement?.removeChild(parendDom)
-  // }
 }
