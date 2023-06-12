@@ -66,8 +66,6 @@ export default {
     }
 
     if (curSlot.id === 'tableContent') {
-      console.log(name);
-
       if (childData.domainModel) {
         childData.domainModel.entity = data.domainModel.query.entity;
       } else {
@@ -336,6 +334,9 @@ export default {
       },
       {
         title: '新建对话框事件',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.domainModel?.query?.abilitySet?.includes('INSERT');
+        },
         items: [
           {
             title: '确认输出',
@@ -361,6 +362,9 @@ export default {
       },
       {
         title: '编辑对话框事件',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.domainModel?.query?.abilitySet?.includes('UPDATE');
+        },
         items: [
           {
             title: '确认输出',
