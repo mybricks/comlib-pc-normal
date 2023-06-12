@@ -9,6 +9,7 @@ import updateData from './api/update';
 import createData from './api/create';
 import deleteData from './api/delete';
 import { flatterEntityField } from './editors';
+import { createOutputCbIfNoConnect } from '../../utils/io';
 
 interface OrderParams {
   fieldName: string;
@@ -26,6 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   const tableInputs = useRef<{ [x: string]: any }>();
   const tableOutputs = useRef<{ [x: string]: any }>();
   const formInputs = useRef<{ [x: string]: any }>();
+  const formOutputs = useRef<{ [x: string]: any }>();
   const editModalFormInputs = useRef<{ [x: string]: any }>();
   const createModalFormInputs = useRef<{ [x: string]: any }>();
 
@@ -317,6 +319,7 @@ export default function (props: RuntimeParams<Data>) {
                   wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
                     const jsx = comAray?.map((com, idx) => {
                       formInputs.current = com.inputs;
+                      formOutputs.current = com.outputs;
 
                       return com.jsx;
                     });
@@ -324,12 +327,13 @@ export default function (props: RuntimeParams<Data>) {
                     return jsx;
                   },
                   outputs: {
-                    // onFinish(v) {
-                    //   console.log('拦截查询', v);
-                    // },
-                    onClickSubmit(v) {
-                      getListData(v, { pageNum: 1, pageSize: data.pageSize }, true);
-                    }
+                    onClickSubmit: createOutputCbIfNoConnect({
+                      eventName: 'onClickSubmit',
+                      getOutputs: () => formOutputs.current,
+                      cb: (val) => {
+                        getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
+                      }
+                    })
                   }
                 })}
               </div>
@@ -372,17 +376,16 @@ export default function (props: RuntimeParams<Data>) {
                   return jsx;
                 },
                 outputs: {
-                  pageChange(val) {
-                    // setPageNum(val.pageNum);
-                    console.log(
-                      'pageChange',
-                      tableOutputs.current?.['pageChange']?.getConnections()
-                    );
-                    getListData(queryParamsRef.current, {
-                      pageNum: val.pageNum,
-                      pageSize: data.pageSize
-                    });
-                  }
+                  pageChange: createOutputCbIfNoConnect({
+                    eventName: 'pageChange',
+                    getOutputs: () => tableOutputs.current,
+                    cb: (val) => {
+                      getListData(queryParamsRef.current, {
+                        pageNum: val.pageNum,
+                        pageSize: data.pageSize
+                      });
+                    }
+                  })
                 }
               })
             )}
