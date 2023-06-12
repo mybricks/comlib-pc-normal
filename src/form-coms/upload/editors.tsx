@@ -2,7 +2,7 @@ import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
 
 const uploadEditors = {
-  title: '上传样式',
+  title: '上传按钮尺寸',
   items: [
     {
       title: '宽度',
@@ -57,14 +57,33 @@ export default {
   },
   ':root': {
     style: [
+      {
+        title: '上传列表类型',
+        type: 'Select',
+        description: '上传列表的内建样式',
+        options: [
+          { label: '文字列表', value: 'text' },
+          { label: '图片列表', value: 'picture' },
+          { label: '图片卡片列表', value: 'picture-card' },
+          { label: '拖拽上传', value: 'dragger' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.listType;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.config.listType = value;
+          }
+        }
+      },
       uploadEditors,
       {
         title: '默认样式',
-        options: ['border'],
+        options: ['border', 'font'],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.listType === 'text';
+          return ['text', 'picture', undefined].includes(data.config.listType);
         },
-        target: '.ant-btn'
+        target: '.ant-upload-select .ant-btn'
       },
       {
         title: '默认样式',
@@ -84,17 +103,17 @@ export default {
       },
       {
         title: '激活样式',
-        options: ['border'],
+        options: ['border', 'font'],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.listType === 'text';
+          return ['text', 'picture', undefined].includes(data.config.listType);
         },
-        target: '.ant-btn:hover',
+        target: '.ant-upload-select .ant-btn:hover',
         initValue: {
-          color: '#40a9ff',
-          borderColor: '#40a9ff',
+          color: '#5c8fff',
+          borderColor: '#5c8fff',
           borderWidth: '1px',
           borderStyle: 'solid',
-          borderRadius: '2px',
+          borderRadius: '4px',
           background: '#fff'
         }
       },
@@ -106,10 +125,10 @@ export default {
         },
         target: '.ant-upload-select-picture-card:hover',
         initValue: {
-          borderColor: '#1890ff',
+          borderColor: '#326bfb',
           borderWidth: '1px',
           borderStyle: 'solid',
-          borderRadius: '2px'
+          borderRadius: '4px'
         }
       },
       {
@@ -120,10 +139,10 @@ export default {
         },
         target: '.ant-upload-drag:hover',
         initValue: {
-          borderColor: '#40a9ff',
+          borderColor: '#5c8fff',
           borderWidth: '1px',
           borderStyle: 'solid',
-          borderRadius: '2px'
+          borderRadius: '4px'
         }
       }
     ],
@@ -155,25 +174,6 @@ export default {
                 },
                 set({ data }: EditorResult<Data>, value: string) {
                   data.config.buttonText = value;
-                }
-              }
-            },
-            {
-              title: '上传列表类型',
-              type: 'Select',
-              description: '上传列表的内建样式',
-              options: [
-                { label: '文字列表', value: 'text' },
-                { label: '图片列表', value: 'picture' },
-                { label: '图片卡片列表', value: 'picture-card' },
-                { label: '拖拽上传', value: 'dragger' }
-              ],
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config.listType;
-                },
-                set({ data }: EditorResult<Data>, value: string) {
-                  data.config.listType = value;
                 }
               }
             },
