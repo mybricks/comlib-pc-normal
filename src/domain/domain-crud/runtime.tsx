@@ -336,10 +336,22 @@ export default function (props: RuntimeParams<Data>) {
             )
           )}
           {env.edit ? (
-            <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+            <ActionsContent
+              env={env}
+              actions={data.actions}
+              slots={slots}
+              abilitySet={abilitySet}
+              onCreate={onCreate}
+            />
           ) : (
             checkDomainModel(abilitySet, 'INSERT') && (
-              <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+              <ActionsContent
+                env={env}
+                actions={data.actions}
+                slots={slots}
+                abilitySet={abilitySet}
+                onCreate={onCreate}
+              />
             )
           )}
           <div className={styles.tableContent}>
@@ -420,45 +432,12 @@ export default function (props: RuntimeParams<Data>) {
               />
             )}
       </Modal>
-
-      {/* <Modal
-        title={isEdit ? '编辑' : '新建'}
-        visible={env.edit ? data.createModalOpen || data.editModalOpen : visible}
-        getContainer={env.edit ? domainContainerRef.current : env.canvasElement}
-        okText="确认"
-        cancelText="取消"
-        onOk={onOkMethod}
-        onCancel={onCancelMethod}
-        footer={[
-          <Button
-            data-actions-id={isEdit ? 'onCancelForEdit' : 'onCancelForCreate'}
-            key="cancel"
-            onClick={onCancelMethod}
-          >
-            取消
-          </Button>,
-          <Button
-            data-actions-id={isEdit ? 'onOkForEdit' : 'onOkForCreate'}
-            key="ok"
-            type="primary"
-            onClick={onOkMethod}
-          >
-            确认
-          </Button>
-        ]}
-      >
-        {
-          checkDomainModel(abilitySet, 'UPDATE') && (
-            <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
-          )
-        }
-      </Modal> */}
     </div>
   );
 }
 
 const ActionsContent = (props) => {
-  const { env, actions, slots, onCreate } = props;
+  const { env, actions, slots, abilitySet, onCreate } = props;
 
   return (
     <div className={styles.actionsContent}>
@@ -469,6 +448,7 @@ const ActionsContent = (props) => {
           slots['actionsContent']?.render()
         )
       ) : (
+        checkDomainModel(abilitySet, 'INSERT') &&
         actions.items.map((item) => {
           return (
             <Button key={item.key} type={item.type} icon={<PlusOutlined />} onClick={onCreate}>
