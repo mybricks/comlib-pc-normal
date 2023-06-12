@@ -2,9 +2,6 @@
   "entity": [],
   "createModalOpen": false,
   "editModalOpen": false,
-  "domainAry": [],
-  "domainFileId": "",
-  "entityId": "",
   "isImmediate": true,
   "editModalActions": {
     "onOk": {
@@ -30,5 +27,15 @@
     "createModalContent": [],
     "editModalContent": []
   },
-  "pageSize": 10
+  "pageSize": 10,
+  "actions": {
+    "useSlot": false,
+    "items": [
+      {
+        "title": "新建",
+        "type": "primary",
+        "key": "create"
+      }
+    ]
+  }
 }

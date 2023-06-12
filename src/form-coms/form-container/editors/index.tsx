@@ -154,6 +154,20 @@ export default {
     } else {
       data.isFormItem = false;
     }
+
+    if (
+      schema !== 'mybricks.domain-pc.crud/query' &&
+      schema !== 'mybricks.domain-pc.crud/createModal' &&
+      schema !== 'mybricks.domain-pc.crud/editModal'
+    ) {
+      if (data.domainModel.entity) {
+        data.domainModel = {
+          entity: undefined,
+          type: '',
+          queryFieldRules: undefined
+        };
+      }
+    }
   },
   // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
   //   console.log('@init', slot.get('content'))
@@ -444,7 +458,7 @@ export default {
         options: ({ data }: EditorResult<Data>) => {
           return {
             render: DomainFieldEditor,
-            entity: data.domainModel?.entity || { fieldAry: [] }
+            domainModel: data.domainModel
           };
         },
         value: {

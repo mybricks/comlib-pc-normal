@@ -95,7 +95,7 @@ const SlotContent = (props) => {
         });
 
         return (
-          <Row>
+          <Row style={{ width: '100%' }}>
             {isInlineModel && (
               <InlineLayout data={data} actions={<FormActionsWrapper />}>
                 {jsx}

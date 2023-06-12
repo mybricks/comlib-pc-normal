@@ -10,7 +10,6 @@ const createFakeDom = (root) => {
 
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
-
   const onOk = () => {
     outputs[OutputIds.Ok](data.outputValue);
   };
@@ -27,7 +26,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       onCancel,
       onOk,
       getContainer() {
-        return createFakeDom(env?.canvasElement?.parentElement || document.body)
+        return createFakeDom(env?.canvasElement || document.body)
       },
     });
   };

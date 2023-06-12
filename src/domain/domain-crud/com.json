@@ -86,8 +86,7 @@
       "title": "打开编辑对话框",
       "desc": "打开编辑对话框，并接收编辑回显数据",
       "schema": {
-        "type": "object",
-        "properties": {}
+        "type": "any"
       }
     },
     {
@@ -95,8 +94,7 @@
       "title": "打开新建对话框",
       "desc": "打开新建对话框",
       "schema": {
-        "type": "object",
-        "properties": {}
+        "type": "any"
       }
     }
   ],
@@ -210,22 +208,6 @@
           },
           "editable": true
         }
-      ],
-      "outputs": [
-        {
-          "id": "onOk",
-          "title": "确认",
-          "schema": {
-            "type": "follow"
-          }
-        },
-        {
-          "id": "onCancel",
-          "title": "取消",
-          "schema": {
-            "type": "follow"
-          }
-        }
       ]
     },
     {
@@ -242,22 +224,6 @@
             "type": "follow"
           },
           "editable": true
-        }
-      ],
-      "outputs": [
-        {
-          "id": "onOk",
-          "title": "确认",
-          "schema": {
-            "type": "follow"
-          }
-        },
-        {
-          "id": "onCancel",
-          "title": "取消",
-          "schema": {
-            "type": "follow"
-          }
         }
       ]
     }

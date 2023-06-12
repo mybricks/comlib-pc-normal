@@ -1,5 +1,7 @@
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Modal, Button, message, Empty } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import EmptySlot from './components/EmptySlot';
 import styles from './runtime.less';
 import { Data } from './type';
 import queryData from './api/query';
@@ -15,82 +17,64 @@ interface OrderParams {
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, outputs, inputs, slots, createPortal } = props;
-  const { projectId } = env;
+  // const { projectId } = env;
+
+  const domainContainerRef = useRef(null);
 
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const tableInputs = useRef<{ [x: string]: any }>({});
-  const formInputs = useRef<{ [x: string]: any }>({});
-  const editModalFormInputs = useRef<{ [x: string]: any }>({});
-  const createModalFormInputs = useRef<{ [x: string]: any }>({});
+  const tableInputs = useRef<{ [x: string]: any }>();
+  const tableOutputs = useRef<{ [x: string]: any }>();
+  const formInputs = useRef<{ [x: string]: any }>();
+  const editModalFormInputs = useRef<{ [x: string]: any }>();
+  const createModalFormInputs = useRef<{ [x: string]: any }>();
 
   const queryParamsRef = useRef({});
   const ordersParamsRef = useRef<OrderParams[]>([]);
 
-  const [pageNum, setPageNum] = useState(1);
+  // const [pageNum, setPageNum] = useState(1);
   const [curRecordId, setCurRecordId] = useState();
+  const abilitySet = data.domainModel?.query?.abilitySet;
 
-  // console.log(data.entity);
-
-  // if (env.runtime) {
-  //   // slots['queryContent']._inputs['onSubmit'](({ name, values }) => {
-  //   //   console.log('表单提交', values, data)
-  //   //   getListData(values)
-  //   // })
-
-  //   slots['tableContent']._inputs['onPageChange'](({ name, value }) => {
-  //     const { pageNum, pageSize } = value;
-  //     console.log(pageNum, pageSize)
-  //   });
-
-  //   slots['tableContent']._inputs['onSorterChange'](({ name, value }) => {
-  //     const { id, order } = value;
-  //     console.log(value)
-  //   });
-  // }
+  // console.log(data.domainModel)
 
   useEffect(() => {
     if (env.runtime) {
       inputs['openEditModal']((val) => {
-        setIsEdit(true);
-        setVisible(true);
+        if (checkDomainModel(abilitySet, 'UPDATE')) {
+          setIsEdit(true);
+          setVisible(true);
+          setCurRecordId(val.id);
+          // console.log('getConnections', slots['editModalContent'].inputs['dataSource'].getConnections())
 
-        setCurRecordId(val.id);
-
-        slots['editModalContent'].inputs['dataSource'](val);
+          // if (slots['editModalContent'].inputs['dataSource'].getConnections().length === 0) {
+          //   console.log(editModalFormInputs.current)
+          //   editModalFormInputs.current?.setInitialValues(val);
+          // } else {
+          //   slots['editModalContent'].inputs['dataSource'](val);
+          // }
+          slots['editModalContent'].inputs['dataSource'](val);
+        } else {
+          message.warn('未支持编辑操作');
+        }
       });
 
       inputs['openCreateModal']((val) => {
-        setIsEdit(false);
-        setVisible(true);
+        if (checkDomainModel(abilitySet, 'INSERT')) {
+          setIsEdit(false);
+          setVisible(true);
 
-        slots['createModalContent'].inputs['dataSource'](val);
+          slots['createModalContent'].inputs['dataSource'](val);
+        } else {
+          message.warn('未支持新建操作');
+        }
       });
 
       inputs['query']((val) => {
-        const { values, fieldsRules } = val;
-        const query = {};
-
-        Object.keys(values).forEach((key) => {
-          let value = values[key];
-
-          if (typeof value === 'string') {
-            value = value.trim();
-            value = value ? value : undefined;
-          }
-          query[key] = {
-            operator: fieldsRules[key]?.operator || 'LIKE',
-            value
-          };
-        });
-
-        queryParamsRef.current = query;
-
-        getListData(query, { pageNum: 1, pageSize: data.pageSize });
+        getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
       });
 
       inputs['pageChange']((val) => {
-        setPageNum(val.pageNum);
         getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: data.pageSize });
       });
 
@@ -131,64 +115,61 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['create']((val) => {
-        createData(
-          {
-            serviceId: data.entity?.id,
-            fileId: data.domainFileId,
-            projectId
-          },
-          { ...val }
-        ).then((r) => {
-          message.success('创建成功');
-          setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+        if (checkDomainModel(abilitySet, 'INSERT')) {
+          createData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
+            message.success('创建成功');
+            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
-          setVisible(false);
-        });
+            setVisible(false);
+          });
+        } else {
+          message.warn('未支持新建操作');
+        }
       });
 
       inputs['editById']((val) => {
-        updateData(
-          {
-            serviceId: data.entity?.id,
-            fileId: data.domainFileId,
-            projectId
-          },
-          { id: curRecordId, ...val }
-        ).then((r) => {
-          message.success('更新成功');
-          setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+        if (checkDomainModel(abilitySet, 'UPDATE')) {
+          updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val }).then(
+            (r) => {
+              message.success('更新成功');
+              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
 
-          setVisible(false);
-        });
+              setVisible(false);
+            }
+          );
+        } else {
+          message.warn('未支持编辑操作');
+        }
       });
 
       inputs['deleteById']((val) => {
-        deleteData(
-          {
-            serviceId: data.entity?.id,
-            fileId: data.domainFileId,
-            projectId
-          },
-          val.id
-        ).then((r) => {
-          message.success('删除成功');
-          setPageNum(1);
-          getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
-        });
+        if (checkDomainModel(abilitySet, 'DELETE')) {
+          deleteData(env.callDomainModel, data.domainModel, val.id).then((r) => {
+            message.success('删除成功');
+            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+          });
+        } else {
+          message.warn('未支持删除操作');
+        }
       });
     }
-  }, [pageNum, curRecordId, projectId]);
+  }, [curRecordId]);
 
   useEffect(() => {
     if (env.runtime) {
-      if (!data.domainFileId) {
+      if (!data.domainModel) {
         return;
       }
 
       if (data.isImmediate) {
-        getListData({}, { pageNum: 1, pageSize: data.pageSize });
+        if (formInputs.current) {
+          // 存在没有表单的情况
+          formInputs.current?.submit().onFinish((val) => {
+            getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
+          });
+        } else {
+          getListData({}, { pageNum: 1, pageSize: data.pageSize }, true);
+        }
       }
     }
   }, []);
@@ -208,9 +189,41 @@ export default function (props: RuntimeParams<Data>) {
   const onOkMethod = useCallback(() => {
     if (env.runtime) {
       if (isEdit) {
-        outputs['onEditConfirm']();
+        if (outputs['onEditConfirm'].getConnections().length === 0) {
+          editModalFormInputs.current?.submit().onFinish((val) => {
+            updateData(env.callDomainModel, data.domainModel, { id: curRecordId, ...val })
+              .then((r) => {
+                message.success('更新成功');
+                getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+
+                setVisible(false);
+              })
+              .catch((e) => {
+                message.error(e);
+              });
+          });
+        } else {
+          outputs['onEditConfirm']();
+        }
       } else {
-        outputs['onCreateConfirm']();
+        if (outputs['onCreateConfirm'].getConnections().length === 0) {
+          createModalFormInputs.current?.submit().onFinish((val) => {
+            createData(env.callDomainModel, data.domainModel, { ...val })
+              .then((r) => {
+                message.success('创建成功');
+                // setPageNum(1);
+                getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+                createModalFormInputs.current?.resetFields().onResetFinish(() => {});
+
+                setVisible(false);
+              })
+              .catch((e) => {
+                message.error(e);
+              });
+          });
+        } else {
+          outputs['onCreateConfirm']();
+        }
       }
     }
   }, [isEdit]);
@@ -220,90 +233,147 @@ export default function (props: RuntimeParams<Data>) {
       if (isEdit) {
         outputs['onCancelForEditModal']();
       } else {
-        outputs['onCancelForCreateModal']();
+        if (outputs['onCancelForCreateModal'].getConnections().length === 0) {
+          createModalFormInputs.current?.resetFields().onResetFinish(() => {});
+        } else {
+          outputs['onCancelForCreateModal']();
+        }
       }
       setVisible(false);
     }
   }, [isEdit]);
 
-  const getListData = (params, pageParams) => {
-    tableInputs.current['startLoading']();
+  const getListData = (params, pageParams, isSubmit?: boolean) => {
+    tableInputs?.current?.startLoading?.();
 
-    const query = params;
+    let query = params;
     const ordersParams = ordersParamsRef.current;
 
-    console.log('pageParams', pageParams);
-    console.log('ordersParams', ordersParams);
+    if (data.domainModel.type === 'domain' && isSubmit) {
+      query = getQueryParamsForDomain(params);
+    }
+
+    queryParamsRef.current = query;
+    const usePagination = !!data.domainModel?.query?.abilitySet?.includes('PAGE');
 
     queryData(
+      env.callDomainModel,
+      data.domainModel,
       {
-        serviceId: data.entity?.id,
-        fileId: data.domainFileId,
-        fields: flatterEntityField(data.entity).map((item) => ({
+        fields: flatterEntityField(data.domainModel?.query?.entity).map((item) => ({
           name: item.label
-        })),
-        projectId
+        }))
       },
       {
         query,
         pageParams: {
           pageNum: pageParams.pageNum,
-          pageSize: pageParams.pageSize
+          pageSize: pageParams.pageSize,
+          usePagination
         },
         ordersParams
       }
-    ).then((r) => {
-      console.log(r.dataSource);
-
-      tableInputs.current['dataSource']({
-        dataSource: r.dataSource,
-        total: r.total
+    )
+      .then((r) => {
+        let dataSource = usePagination
+          ? {
+              dataSource: r.dataSource,
+              total: r.total,
+              pageNum: pageParams.pageNum
+            }
+          : r.dataSource;
+        tableInputs?.current?.['dataSource']?.(dataSource);
+      })
+      .catch((e) => {
+        message.error(e);
+      })
+      .finally(() => {
+        tableInputs?.current?.['endLoading']?.();
       });
-
-      tableInputs.current['endLoading']();
-    });
   };
 
-  // console.log(env.canvasElement);
+  const onCreate = () => {
+    if (checkDomainModel(abilitySet, 'INSERT')) {
+      setIsEdit(false);
+      setVisible(true);
+      // slots['createModalContent'].inputs['dataSource']();
+    } else {
+      message.warn('未支持新建操作');
+    }
+  };
 
   return (
-    <div className={styles.domainContainer}>
-      {data.domainFileId ? (
+    <div className={styles.domainContainer} ref={domainContainerRef}>
+      {data.domainModel ? (
         <>
-          <div className={styles.queryContent}>
-            {slots['queryContent']?.render({
-              wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-                const jsx = comAray?.map((com, idx) => {
-                  formInputs.current = com.inputs;
+          {slots['queryContent'].size === 0 && env.edit ? (
+            <div style={{ position: 'relative' }}>
+              <EmptySlot slot={slots['queryContent']?.render()} description="请拖拽组件到查询区" />
+            </div>
+          ) : (
+            slots['queryContent'].size !== 0 && (
+              <div className={styles.queryContent}>
+                {slots['queryContent']?.render({
+                  wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+                    const jsx = comAray?.map((com, idx) => {
+                      formInputs.current = com.inputs;
 
-                  return com.jsx;
-                });
+                      return com.jsx;
+                    });
 
-                return jsx;
-              }
-            })}
-          </div>
-          <div className={styles.actionsContent}>{slots['actionsContent']?.render()}</div>
+                    return jsx;
+                  },
+                  outputs: {
+                    // onFinish(v) {
+                    //   console.log('拦截查询', v);
+                    // },
+                    onClickSubmit(v) {
+                      getListData(v, { pageNum: 1, pageSize: data.pageSize }, true);
+                    }
+                  }
+                })}
+              </div>
+            )
+          )}
+          {env.edit ? (
+            <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+          ) : (
+            checkDomainModel(abilitySet, 'INSERT') && (
+              <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+            )
+          )}
           <div className={styles.tableContent}>
-            {slots['tableContent']?.render({
-              wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-                const jsx = comAray?.map((com, idx) => {
-                  tableInputs.current = com.inputs;
-                  return com.jsx;
-                });
-
-                return jsx;
-              },
-              outputs: {
-                pageChange(val) {
-                  setPageNum(val.pageNum);
-                  getListData(queryParamsRef.current, {
-                    pageNum: val.pageNum,
-                    pageSize: data.pageSize
+            {slots['tableContent'].size === 0 && env.edit ? (
+              <EmptySlot
+                slot={slots['tableContent']?.render()}
+                description="请拖拽组件到列表展示区"
+              />
+            ) : (
+              slots['tableContent']?.render({
+                wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+                  const jsx = comAray?.map((com, idx) => {
+                    tableInputs.current = com.inputs;
+                    tableOutputs.current = com.outputs;
+                    return com.jsx;
                   });
+
+                  return jsx;
+                },
+                outputs: {
+                  pageChange(val) {
+                    // setPageNum(val.pageNum);
+                    console.log(
+                      'pageChange',
+                      tableOutputs.current?.['pageChange']?.getConnections()
+                    );
+                    getListData(queryParamsRef.current, {
+                      pageNum: val.pageNum,
+                      pageSize: data.pageSize
+                    });
+                  }
                 }
-              }
-            })}
+              })
+            )}
           </div>
         </>
       ) : (
@@ -315,7 +385,7 @@ export default function (props: RuntimeParams<Data>) {
       <Modal
         title={isEdit ? '编辑' : '新建'}
         visible={env.edit ? data.createModalOpen || data.editModalOpen : visible}
-        getContainer={env.canvasElement}
+        getContainer={env.edit ? domainContainerRef.current : env.canvasElement}
         okText="确认"
         cancelText="取消"
         onOk={onOkMethod}
@@ -338,52 +408,155 @@ export default function (props: RuntimeParams<Data>) {
           </Button>
         ]}
       >
-        {isEdit ? (
-          <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
-        ) : (
-          <CreateModalContent slots={slots} createModalFormInputs={createModalFormInputs} />
-        )}
+        {isEdit
+          ? checkDomainModel(abilitySet, 'UPDATE') && (
+              <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} env={env} />
+            )
+          : checkDomainModel(abilitySet, 'INSERT') && (
+              <CreateModalContent
+                slots={slots}
+                createModalFormInputs={createModalFormInputs}
+                env={env}
+              />
+            )}
       </Modal>
+
+      {/* <Modal
+        title={isEdit ? '编辑' : '新建'}
+        visible={env.edit ? data.createModalOpen || data.editModalOpen : visible}
+        getContainer={env.edit ? domainContainerRef.current : env.canvasElement}
+        okText="确认"
+        cancelText="取消"
+        onOk={onOkMethod}
+        onCancel={onCancelMethod}
+        footer={[
+          <Button
+            data-actions-id={isEdit ? 'onCancelForEdit' : 'onCancelForCreate'}
+            key="cancel"
+            onClick={onCancelMethod}
+          >
+            取消
+          </Button>,
+          <Button
+            data-actions-id={isEdit ? 'onOkForEdit' : 'onOkForCreate'}
+            key="ok"
+            type="primary"
+            onClick={onOkMethod}
+          >
+            确认
+          </Button>
+        ]}
+      >
+        {
+          checkDomainModel(abilitySet, 'UPDATE') && (
+            <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
+          )
+        }
+      </Modal> */}
     </div>
   );
 }
 
-const EditModalContent = (props) => {
-  const { slots, editModalFormInputs } = props;
+const ActionsContent = (props) => {
+  const { env, actions, slots, onCreate } = props;
 
   return (
-    <div>
-      {slots['editModalContent'].render({
-        wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-          const jsx = comAray?.map((com, idx) => {
-            editModalFormInputs.current = com.inputs;
+    <div className={styles.actionsContent}>
+      {actions.useSlot ? (
+        slots['actionsContent'].size === 0 && env.edit ? (
+          <EmptySlot slot={slots['actionsContent']?.render()} description="请拖拽组件到操作区" />
+        ) : (
+          slots['actionsContent']?.render()
+        )
+      ) : (
+        actions.items.map((item) => {
+          return (
+            <Button key={item.key} type={item.type} icon={<PlusOutlined />} onClick={onCreate}>
+              {item.title}
+            </Button>
+          );
+        })
+      )}
+    </div>
+  );
+};
 
-            return com.jsx;
-          });
+const EditModalContent = (props) => {
+  const { slots, editModalFormInputs, env } = props;
 
-          return jsx;
-        }
-      })}
+  return (
+    <div style={{ position: 'relative' }}>
+      {slots['editModalContent'].size === 0 && env.edit ? (
+        <EmptySlot
+          slot={slots['editModalContent']?.render()}
+          description="请拖拽组件到编辑对话框内"
+        />
+      ) : (
+        slots['editModalContent'].render({
+          wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+            const jsx = comAray?.map((com, idx) => {
+              editModalFormInputs.current = com.inputs;
+
+              return com.jsx;
+            });
+
+            return jsx;
+          }
+        })
+      )}
     </div>
   );
 };
 
 const CreateModalContent = (props) => {
-  const { slots, createModalFormInputs } = props;
+  const { slots, createModalFormInputs, env } = props;
 
   return (
-    <div>
-      {slots['createModalContent'].render({
-        wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
-          const jsx = comAray?.map((com, idx) => {
-            createModalFormInputs.current = com.inputs;
+    <div style={{ position: 'relative' }}>
+      {slots['createModalContent'].size === 0 && env.edit ? (
+        <EmptySlot
+          slot={slots['createModalContent']?.render()}
+          description="请拖拽组件到新建对话框内"
+        />
+      ) : (
+        slots['createModalContent'].render({
+          wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
+            const jsx = comAray?.map((com, idx) => {
+              createModalFormInputs.current = com.inputs;
 
-            return com.jsx;
-          });
+              return com.jsx;
+            });
 
-          return jsx;
-        }
-      })}
+            return jsx;
+          }
+        })
+      )}
     </div>
   );
 };
+
+function getQueryParamsForDomain(val) {
+  const { values, fieldsRules } = val;
+  const query = {};
+
+  if (values) {
+    Object.keys(values).forEach((key) => {
+      let value = values[key];
+
+      if (typeof value === 'string') {
+        value = value.trim();
+        value = value ? value : undefined;
+      }
+      query[key] = {
+        operator: fieldsRules[key]?.operator || 'LIKE',
+        value
+      };
+    });
+  }
+
+  return query;
+}
+
+function checkDomainModel(abilitySet, type) {
+  return abilitySet?.includes(type);
+}

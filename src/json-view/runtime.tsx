@@ -53,10 +53,6 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     keyToData = new Map(),
     expandedKeys: React.Key[] = [];
 
-  if (isError && env.edit) {
-    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
-  }
-
   if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
   if (collapsed !== 0) expandedKeys.push(rootKey);
 
@@ -145,12 +141,12 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
     return treeData;
   };
-  useEffect(() => {
-    document.body.style.setProperty(
-      '--json--view--node-hover-bgcolor',
-      data.colors[TypeEnum.NodeHoverBackgroundColor]
-    );
-  }, [data.colors[TypeEnum.NodeHoverBackgroundColor]]);
+  const rootStyle = useMemo(() => {
+    return {
+      backgroundColor: data.colors[TypeEnum.BackgroundColor],
+      '--json--view--node-hover-bgcolor': data.colors[TypeEnum.NodeHoverBackgroundColor]
+    };
+  }, [data.colors[TypeEnum.NodeHoverBackgroundColor], data.colors[TypeEnum.BackgroundColor]]);
   const treeData = [
     {
       title: getTitle({
@@ -161,15 +157,11 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       children: getTreeData(data.jsonObj, 1)
     }
   ];
-  const defaultTreeData = [
-    {
-      title: getTitle({
-        key: rootKey,
-        value: []
-      }),
-      key: rootKey
-    }
-  ];
+
+  if (isError && env.edit) {
+    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
+  }
+
   const editConfig = env.edit
     ? {
         expandedKeys
@@ -178,9 +170,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   return (
     <Tree
       treeData={treeData}
-      rootStyle={{
-        backgroundColor: data.colors[TypeEnum.BackgroundColor]
-      }}
+      rootStyle={rootStyle}
       className={css.root}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}

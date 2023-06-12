@@ -28,7 +28,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
         edit || debug ? triggerNode : document.body
       }
     >
-      {slots.carrier?.render()}
+      <div>{slots.carrier?.render()}</div>
     </Tooltip>
   );
 }
