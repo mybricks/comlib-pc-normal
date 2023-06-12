@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
 import { Menu } from 'antd';
 import { Data, InputIds, MenuItem, OutputIds, findMenuItem, uuid, MenuTypeEnum } from './constants';
+import * as Icons from '@ant-design/icons';
+
 import css from './style.less';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
@@ -170,9 +172,15 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     }
   };
 
+  //选择图标样式
+  const chooseIcon = ({ icon }: { icon: ReactNode }) => {
+    const Icon = Icons && Icons[icon as string]?.render();
+    return <>{Icon}</>;
+  };
+
   const renderMenuItems = (ds: MenuItem[]) => {
     return (ds || []).map((item) => {
-      const { key, children, menuType, title } = item || {};
+      const { key, children, menuType, title, icon, showIcon } = item || {};
       //分组菜单
       if (menuType === MenuTypeEnum.Group) {
         return (
@@ -186,14 +194,24 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       //父菜单
       if (menuType === MenuTypeEnum.SubMenu) {
         return (
-          <Menu.SubMenu title={title} key={key} data-menu-item={key}>
+          <Menu.SubMenu
+            title={title}
+            key={key}
+            data-menu-item={key}
+            icon={showIcon ? chooseIcon({ icon: icon }) : null}
+          >
             {renderMenuItems(children)}
           </Menu.SubMenu>
         );
       }
       //最后的子菜单
       return (
-        <Menu.Item onClick={menuOnClick} key={key} data-menu-item={key}>
+        <Menu.Item
+          onClick={menuOnClick}
+          key={key}
+          data-menu-item={key}
+          icon={showIcon ? chooseIcon({ icon: icon }) : null}
+        >
           {title}
         </Menu.Item>
       );

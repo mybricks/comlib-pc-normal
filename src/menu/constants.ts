@@ -17,6 +17,12 @@ export interface MenuItem {
   children?: MenuItem[];
   defaultActive?: boolean;
   [key: string]: any;
+  // 新增图标配置
+  showIcon: boolean;
+  // 设置菜单中icon
+  icon: string;
+  // 图标自定义
+  isChoose: boolean
 }
 /**
  * 数据源

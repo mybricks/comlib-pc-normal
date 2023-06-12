@@ -293,7 +293,10 @@ export default {
         defaultActive: true,
         key: uuid(),
         _key: 'menu1',
-        menuType: MenuTypeEnum.Menu
+        menuType: MenuTypeEnum.Menu,
+        showIcon: false,
+        isChoose: false,
+        icon: 'AppstoreOutlined'
       }
     ];
     const schema = {
@@ -323,7 +326,8 @@ export default {
           return {
             key,
             _key: key,
-            menuType: MenuTypeEnum.Menu
+            menuType: MenuTypeEnum.Menu,
+            isIcon: false
           };
         },
         items: [
@@ -588,6 +592,53 @@ export default {
               },
               set(props: EditorResult<Data>, value: string) {
                 setMenuItem(props, '_key', value);
+              }
+            }
+          },
+          {
+            title: '显示icon',
+            type: 'Switch',
+            value: {
+              get(props: EditorResult<Data>) {
+                return getMenuItem(props, 'showIcon');
+              },
+              set(props: EditorResult<Data>, value: boolean) {
+                setMenuItem(props, 'showIcon', value);
+                setMenuItem(props, 'icon', 'AppstoreOutlined');
+              }
+            }
+          },
+          {
+            title: '图标自定义',
+            type: 'Switch',
+            description: '可选择是否需要自定义图标',
+            ifVisible({}: EditorResult<Data>) {
+              return getMenuItem(props, 'showIcon');
+            },
+            value: {
+              get({}: EditorResult<Data>) {
+                return getMenuItem(props, 'isChoose');
+              },
+              set({}: EditorResult<Data>, value: boolean) {
+                setMenuItem(props, 'isChoose', value);
+                if (!getMenuItem(props, 'isChoose')) {
+                  setMenuItem(props, 'icon', 'AppstoreOutlined');
+                }
+              }
+            }
+          },
+          {
+            title: '选择图标',
+            type: 'icon',
+            ifVisible({}: EditorResult<Data>) {
+              return !!getMenuItem(props, 'isChoose');
+            },
+            value: {
+              get({}: EditorResult<Data>) {
+                return getMenuItem(props, 'icon');
+              },
+              set({}: EditorResult<Data>, value: string) {
+                setMenuItem(props, 'icon', value);
               }
             }
           },
