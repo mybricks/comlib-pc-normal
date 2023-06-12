@@ -10,7 +10,6 @@ const createFakeDom = (root) => {
 
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
-
   const onOk = () => {
     outputs[OutputIds.Ok](data.outputValue);
   };

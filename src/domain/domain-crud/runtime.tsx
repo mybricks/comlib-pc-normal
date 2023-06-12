@@ -24,6 +24,7 @@ export default function (props: RuntimeParams<Data>) {
   const [visible, setVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const tableInputs = useRef<{ [x: string]: any }>();
+  const tableOutputs = useRef<{ [x: string]: any }>();
   const formInputs = useRef<{ [x: string]: any }>();
   const editModalFormInputs = useRef<{ [x: string]: any }>();
   const createModalFormInputs = useRef<{ [x: string]: any }>();
@@ -352,6 +353,7 @@ export default function (props: RuntimeParams<Data>) {
                 wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
                   const jsx = comAray?.map((com, idx) => {
                     tableInputs.current = com.inputs;
+                    tableOutputs.current = com.outputs;
                     return com.jsx;
                   });
 
@@ -360,6 +362,10 @@ export default function (props: RuntimeParams<Data>) {
                 outputs: {
                   pageChange(val) {
                     // setPageNum(val.pageNum);
+                    console.log(
+                      'pageChange',
+                      tableOutputs.current?.['pageChange']?.getConnections()
+                    );
                     getListData(queryParamsRef.current, {
                       pageNum: val.pageNum,
                       pageSize: data.pageSize
