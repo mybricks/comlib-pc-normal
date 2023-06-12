@@ -29,6 +29,12 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
         if (Array.isArray(v)) {
+          //兼容输入为构造函数，空数组的情况
+          for (let i = 0; i < v.length; i++) {
+            if (v[i] === undefined) {
+              v[i] = undefined;
+            }
+          }
           const ds = v.map((item, index) => ({
             item,
             [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid(),
