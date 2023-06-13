@@ -30,24 +30,7 @@ export default {
             },
             set({}: EditorResult<Data>, value: boolean) {
               item.showIcon = value;
-              item.icon = 'BellOutlined';
-            }
-          }
-        },
-        {
-          title: '图标自定义',
-          type: 'Switch',
-          description: '可选择是否需要自定义图标',
-          ifVisible({}: EditorResult<Data>) {
-            return item.showIcon;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return item.isChoose;
-            },
-            set({}: EditorResult<Data>, value: boolean) {
-              item.isChoose = value;
-              if (!item.isChoose) {
+              if(!item.icon){
                 item.icon = 'BellOutlined';
               }
             }
@@ -57,7 +40,7 @@ export default {
           title: '选择图标',
           type: 'icon',
           ifVisible({}: EditorResult<Data>) {
-            return !!item.isChoose;
+            return !!item.showIcon;
           },
           value: {
             get({}: EditorResult<Data>) {
