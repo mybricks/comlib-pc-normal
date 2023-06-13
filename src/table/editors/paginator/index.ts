@@ -80,7 +80,7 @@ export default {
           type: 'inputNumber',
           options: [{ min: 1, max: 1000, width: 100 }],
           ifVisible({ data }: EditorResult<Data>) {
-            return !data.domainModel;
+            return !data.domainModel?.entity;
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -97,6 +97,9 @@ export default {
         },
         {
           title: '事件',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.domainModel?.entity;
+          },
           items: [
             {
               title: '点击分页',
@@ -118,7 +121,7 @@ export default {
           type: 'Switch',
           description: '开启后，会自动根据当前页码/条目数分页展示',
           ifVisible({ data }: EditorResult<Data>) {
-            return !data.domainModel;
+            return !data.domainModel?.entity;
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -193,7 +196,7 @@ export default {
           type: 'Switch',
           description: '打开该功能后，不再支持页数为1时隐藏功能',
           ifVisible({ data }: EditorResult<Data>) {
-            return !data.domainModel && data.paginationConfig.size !== SizeTypeEnum.Simple;
+            return !data.domainModel?.entity && data.paginationConfig.size !== SizeTypeEnum.Simple;
           },
           value: {
             get({ data }: EditorResult<Data>) {
