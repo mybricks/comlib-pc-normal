@@ -198,7 +198,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             title={title}
             key={key}
             data-menu-item={key}
-            icon={showIcon ? chooseIcon({ icon: icon }) : null}
+            icon={showIcon ? chooseIcon({ icon: icon }) : void 0}
           >
             {renderMenuItems(children)}
           </Menu.SubMenu>
@@ -210,7 +210,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           onClick={menuOnClick}
           key={key}
           data-menu-item={key}
-          icon={showIcon ? chooseIcon({ icon: icon }) : null}
+          icon={showIcon ? chooseIcon({ icon: icon }) : void 0}
         >
           {title}
         </Menu.Item>

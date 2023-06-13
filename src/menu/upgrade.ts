@@ -69,5 +69,17 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   addKey(data.dataSource);
 
+  /**
+   * @description v1.0.8->v1.0.9 为每一项增加showIcon（是否显示图标）和icon（图标）
+   */
+  data.dataSource.forEach(item => {
+    if(!item.showIcon){
+      item.showIcon = false;
+    }
+    if(!item.icon){
+      item.icon = 'AppstoreOutlined';
+    }
+  })
+
   return true;
 }

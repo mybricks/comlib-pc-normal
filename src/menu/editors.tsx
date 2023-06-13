@@ -295,7 +295,6 @@ export default {
         _key: 'menu1',
         menuType: MenuTypeEnum.Menu,
         showIcon: false,
-        isChoose: false,
         icon: 'AppstoreOutlined'
       }
     ];
@@ -604,24 +603,7 @@ export default {
               },
               set(props: EditorResult<Data>, value: boolean) {
                 setMenuItem(props, 'showIcon', value);
-                setMenuItem(props, 'icon', 'AppstoreOutlined');
-              }
-            }
-          },
-          {
-            title: '图标自定义',
-            type: 'Switch',
-            description: '可选择是否需要自定义图标',
-            ifVisible({}: EditorResult<Data>) {
-              return getMenuItem(props, 'showIcon');
-            },
-            value: {
-              get({}: EditorResult<Data>) {
-                return getMenuItem(props, 'isChoose');
-              },
-              set({}: EditorResult<Data>, value: boolean) {
-                setMenuItem(props, 'isChoose', value);
-                if (!getMenuItem(props, 'isChoose')) {
+                if (!getMenuItem(props, 'icon')) {
                   setMenuItem(props, 'icon', 'AppstoreOutlined');
                 }
               }
@@ -631,7 +613,7 @@ export default {
             title: '选择图标',
             type: 'icon',
             ifVisible({}: EditorResult<Data>) {
-              return !!getMenuItem(props, 'isChoose');
+              return !!getMenuItem(props, 'showIcon');
             },
             value: {
               get({}: EditorResult<Data>) {

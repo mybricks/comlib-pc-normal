@@ -21,8 +21,6 @@ export interface MenuItem {
   showIcon: boolean;
   // 设置菜单中icon
   icon: string;
-  // 图标自定义
-  isChoose: boolean
 }
 /**
  * 数据源
