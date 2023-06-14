@@ -98,7 +98,8 @@ export default {
     },
     style: {
       options: ['font', 'size', { type: 'background', config: { disableBackgroundImage: true } }],
-      target: '.ant-tooltip-arrow-content, .ant-tooltip-inner'
+      target: '.ant-tooltip .ant-tooltip-arrow-content,.ant-tooltip .ant-tooltip-inner',
+      targetDom: '.ant-tooltip .ant-tooltip-inner'
     }
   }
 };

@@ -27,12 +27,26 @@ export default {
       },
       {
         title: '默认',
-        options: ['font'],
+        options: [
+          {
+            type: 'font',
+            config: {
+              disableTextAlign: false
+            }
+          }
+        ],
         target: '.text'
       },
       {
-        title: '激活',
-        options: ['font'],
+        title: 'Hover',
+        options: [
+          {
+            type: 'font',
+            config: {
+              disableTextAlign: false
+            }
+          }
+        ],
         target: '.textHover:hover'
       }
     ],
