@@ -49,13 +49,7 @@ export default {
     style: [
       {
         title: '文本排版',
-        options: ['border'],
-        //暂时不支持
-        fontProps: {
-          fontFamily: false,
-          horizontalAlign: false,
-          verticalAlign: false
-        },
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }],
         target: `.container`
       }
     ],

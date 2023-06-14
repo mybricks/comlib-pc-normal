@@ -155,12 +155,13 @@ export default {
       {
         title: '标题',
         options: ['background', 'border', 'font', 'size'],
-        target: '.ant-popover-inner .ant-popover-title'
+        target: '.ant-popover .ant-popover-inner .ant-popover-title'
       },
       {
         title: '内容',
         options: ['background', 'border', 'font', 'size'],
-        target: '.ant-popover-arrow-content, .ant-popover-inner .ant-popover-inner-content'
+        target:
+          '.ant-popover .ant-popover-arrow-content,.ant-popover .ant-popover-inner .ant-popover-inner-content'
       }
     ]
   }
