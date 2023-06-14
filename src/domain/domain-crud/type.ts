@@ -8,17 +8,28 @@ export interface Data {
   // entity: any
   /** 是否立即查询 **/
   isImmediate: boolean
-  createModalOpen: boolean
-  editModalOpen: boolean
+  // createModalOpen: boolean
+  // editModalOpen: boolean
   fieldAry: any[]
   childNames: {
     queryContent: string[]
     tableContent: string[]
-    createModalContent: string[]
-    editModalContent: string[]
+    // createModalContent: string[]
+    // editModalContent: string[]
   },
   pageSize: number
   actions: any
+  queryContent: {
+    visible: boolean
+    slotId: string
+  },
+  queryActions: {
+    items: {
+      title: string,
+      type: string,
+      key: string
+    }[]
+  }
 }
 
 

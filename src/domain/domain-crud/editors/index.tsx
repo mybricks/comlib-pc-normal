@@ -1,23 +1,9 @@
-import { ajax } from '../util';
 import { Data, Entity } from '../type';
 // import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
 // import Refresh from './refresh';
 
-// const fileId =
-//   location.search
-//     .split('?')
-//     .pop()
-//     ?.split('&')
-//     .find((key) => key.startsWith('id='))
-//     ?.replace('id=', '') ?? '';
-
 export default {
   // '@init'({ data }) {
-  //   if (fileId) {
-  //     ajax({ fileId }, { url: '/api/system/domain/entity/list' }).then(
-  //       (res) => (data.domainAry = res || [])
-  //     );
-  //   }
   // },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
     const { data: childData, name } = child;
@@ -27,6 +13,7 @@ export default {
 
       childData.config.layout = 'inline';
       childData.formItemColumn = 3;
+      childData.actions.visible = false;
       childData.actions.span = 8;
       childData.actions.items = [
         {
@@ -51,19 +38,19 @@ export default {
       data?.childNames.queryContent.push(name);
     }
 
-    if (curSlot.id === 'createModalContent') {
-      setFormDomainModel(data.domainModel, childData, false);
+    // if (curSlot.id === 'createModalContent') {
+    //   setFormDomainModel(data.domainModel, childData, false);
 
-      childData.actions.visible = false;
-      data?.childNames.createModalContent.push(name);
-    }
+    //   childData.actions.visible = false;
+    //   data?.childNames.createModalContent.push(name);
+    // }
 
-    if (curSlot.id === 'editModalContent') {
-      setFormDomainModel(data.domainModel, childData, false);
+    // if (curSlot.id === 'editModalContent') {
+    //   setFormDomainModel(data.domainModel, childData, false);
 
-      childData.actions.visible = false;
-      data?.childNames.editModalContent.push(name);
-    }
+    //   childData.actions.visible = false;
+    //   data?.childNames.editModalContent.push(name);
+    // }
 
     if (curSlot.id === 'tableContent') {
       if (childData.domainModel) {
@@ -91,17 +78,17 @@ export default {
         (comName) => comName !== name
       );
     }
-    if (curSlot.id === 'createModalContent') {
-      data.childNames.createModalContent = data.childNames.createModalContent.filter(
-        (comName) => comName !== name
-      );
-    }
+    // if (curSlot.id === 'createModalContent') {
+    //   data.childNames.createModalContent = data.childNames.createModalContent.filter(
+    //     (comName) => comName !== name
+    //   );
+    // }
 
-    if (curSlot.id === 'editModalContent') {
-      data.childNames.editModalContent = data.childNames.editModalContent.filter(
-        (comName) => comName !== name
-      );
-    }
+    // if (curSlot.id === 'editModalContent') {
+    //   data.childNames.editModalContent = data.childNames.editModalContent.filter(
+    //     (comName) => comName !== name
+    //   );
+    // }
 
     if (curSlot.id === 'tableContent') {
       data.childNames.tableContent = data.childNames.tableContent.filter(
@@ -109,13 +96,19 @@ export default {
       );
     }
   },
-  '@domainModelUpdated'(params, value) {
-    const { data, getChildByName } = params;
-    // console.log(params, value)
+  '@domainModelUpdated'(params: EditorResult<Data>, value) {
+    const { data, getChildByName, inputs } = params;
     data.domainModel = value.domainModel;
+    const abilitySet = data.domainModel?.query?.abilitySet;
+
+    refreshIO({
+      abilitySet,
+      inputs
+    });
+
     refreshChildComModel(data.childNames, getChildByName, data.domainModel);
   },
-  '@domainModelRemoved'(params, value) {
+  '@domainModelRemoved'(params: EditorResult<Data>, value) {
     const { data, getChildByName } = params;
     // console.log(params, value)
     if (value.domainModel.id === data.domainModel.id) {
@@ -131,12 +124,6 @@ export default {
     console.log(toPin, slotId);
   },
   ':root': ({ data }: EditorResult<Data>, cate1) => {
-    // if (fileId) {
-    //   ajax({ fileId }, { url: '/api/system/domain/entity/list' }).then((r) => {
-    //     data.domainAry = r || [];
-    //   });
-    // }
-
     cate1.title = '常规';
     cate1.items = [
       {
@@ -149,8 +136,15 @@ export default {
               get({ data }: EditorResult<Data>) {
                 return data.domainModel;
               },
-              set({ data, getChildByName }: EditorResult<Data>, value) {
+              set({ data, getChildByName, inputs, outputs }: EditorResult<Data>, value) {
                 data.domainModel = value;
+                const abilitySet = data.domainModel?.query?.abilitySet;
+
+                refreshIO({
+                  abilitySet,
+                  inputs
+                });
+
                 refreshChildComModel(data.childNames, getChildByName, data.domainModel);
               }
             }
@@ -250,9 +244,46 @@ export default {
         ]
       },
       {
+        title: '查询区',
+        description: '可拖入表单容器组件，配置字段进行查询',
+        type: 'Switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.domainModel?.query?.abilitySet?.includes('SELECT');
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return typeof data?.queryContent?.visible === 'undefined'
+              ? true
+              : data.queryContent.visible;
+          },
+          set({ data, slots }: EditorResult<Data>, value: boolean) {
+            if (typeof data.queryContent === 'undefined') {
+              data.queryContent = {
+                visible: true,
+                slotId: 'queryContent'
+              };
+            }
+
+            if (value) {
+              const slotId = 'queryContent';
+              slots.add({ id: slotId, title: '查询区', type: 'scope' });
+            } else {
+              if (slots.get(data.queryContent.slotId)) {
+                slots.remove(data.queryContent.slotId);
+              }
+            }
+
+            data.queryContent.visible = value;
+          }
+        }
+      },
+      {
         title: '自定义操作区',
         description: '默认操作不满足则可以开启操作区插槽，可拖入任意组件',
         type: 'Switch',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.domainModel;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.actions.useSlot;
@@ -299,138 +330,168 @@ export default {
             data.isImmediate = value;
           }
         }
-      },
-      {
-        title: '显示新建对话窗',
-        type: 'Switch',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.domainModel?.query?.abilitySet?.includes('INSERT');
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.createModalOpen;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.createModalOpen = value;
-            data.editModalOpen = false;
-          }
-        }
-      },
-      {
-        title: '显示编辑对话窗',
-        type: 'Switch',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.domainModel?.query?.abilitySet?.includes('UPDATE');
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.editModalOpen;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.editModalOpen = value;
-            data.createModalOpen = false;
-          }
-        }
-      },
-      {
-        title: '新建对话框事件',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.domainModel?.query?.abilitySet?.includes('INSERT');
-        },
-        items: [
-          {
-            title: '确认输出',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              return {
-                outputId: 'onCreateConfirm',
-                slotId: 'createModalContent'
-              };
-            }
-          },
-          {
-            title: '取消输出',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              return {
-                outputId: 'onCancelForCreateModal',
-                slotId: 'createModalContent'
-              };
-            }
-          }
-        ]
-      },
-      {
-        title: '编辑对话框事件',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.domainModel?.query?.abilitySet?.includes('UPDATE');
-        },
-        items: [
-          {
-            title: '确认输出',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              return {
-                outputId: 'onEditConfirm',
-                slotId: 'editModalContent'
-              };
-            }
-          },
-          {
-            title: '取消输出',
-            type: '_Event',
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              return {
-                outputId: 'onCancelForEditModal',
-                slotId: 'editModalContent'
-              };
-            }
-          }
-        ]
       }
+      // {
+      //   title: '显示新建对话窗',
+      //   type: 'Switch',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return data.domainModel?.query?.abilitySet?.includes('INSERT');
+      //   },
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.createModalOpen;
+      //     },
+      //     set({ data }: EditorResult<Data>, value: boolean) {
+      //       data.createModalOpen = value;
+      //       data.editModalOpen = false;
+      //     }
+      //   }
+      // },
+      // {
+      //   title: '显示编辑对话窗',
+      //   type: 'Switch',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return data.domainModel?.query?.abilitySet?.includes('UPDATE');
+      //   },
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.editModalOpen;
+      //     },
+      //     set({ data }: EditorResult<Data>, value: boolean) {
+      //       data.editModalOpen = value;
+      //       data.createModalOpen = false;
+      //     }
+      //   }
+      // },
+      // {
+      //   title: '新建对话框事件',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return data.domainModel?.query?.abilitySet?.includes('INSERT');
+      //   },
+      //   items: [
+      //     {
+      //       title: '确认输出',
+      //       type: '_Event',
+      //       options: ({ data, focusArea }: EditorResult<Data>) => {
+      //         return {
+      //           outputId: 'onCreateConfirm',
+      //           slotId: 'createModalContent'
+      //         };
+      //       }
+      //     },
+      //     {
+      //       title: '取消输出',
+      //       type: '_Event',
+      //       options: ({ data, focusArea }: EditorResult<Data>) => {
+      //         return {
+      //           outputId: 'onCancelForCreateModal',
+      //           slotId: 'createModalContent'
+      //         };
+      //       }
+      //     }
+      //   ]
+      // },
+      // {
+      //   title: '编辑对话框事件',
+      //   ifVisible({ data }: EditorResult<Data>) {
+      //     return data.domainModel?.query?.abilitySet?.includes('UPDATE');
+      //   },
+      //   items: [
+      //     {
+      //       title: '确认输出',
+      //       type: '_Event',
+      //       options: ({ data, focusArea }: EditorResult<Data>) => {
+      //         return {
+      //           outputId: 'onEditConfirm',
+      //           slotId: 'editModalContent'
+      //         };
+      //       }
+      //     },
+      //     {
+      //       title: '取消输出',
+      //       type: '_Event',
+      //       options: ({ data, focusArea }: EditorResult<Data>) => {
+      //         return {
+      //           outputId: 'onCancelForEditModal',
+      //           slotId: 'editModalContent'
+      //         };
+      //       }
+      //     }
+      //   ]
+      // }
     ];
   },
-  '[data-actions-id]': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+  '[data-query-action]': ({ data, focusArea }: EditorResult<Data>, cate1) => {
     const dataSet = focusArea.dataset;
-    const actionsId = dataSet.actionsId;
+    const actionsId = dataSet.queryAction;
 
-    const resultMap = {
-      onOkForCreate: {
-        title: '确认输出',
-        outputId: 'onCreateConfirm',
-        slotId: 'createModalContent'
-      },
-      onCancelForCreate: {
-        title: '取消输出',
-        outputId: 'onCancelForCreateModal',
-        slotId: 'createModalContent'
-      },
-      onCancelForEdit: {
-        title: '取消输出',
-        outputId: 'onCancelForEditModal',
-        slotId: 'editModalContent'
-      },
-      onOkForEdit: {
-        title: '确认输出',
-        outputId: 'onEditConfirm',
-        slotId: 'editModalContent'
-      }
-    };
+    const item = data.queryActions.items.find((item) => item.key === actionsId);
 
-    cate1.title = '对话框操作';
+    cate1.title = '查询操作';
     cate1.items = [
       {
-        title: resultMap[actionsId].title,
-        type: '_Event',
-        options: ({ data, focusArea }: EditorResult<Data>) => {
-          return {
-            outputId: resultMap[actionsId].outputId,
-            slotId: resultMap[actionsId].slotId
-          };
+        title: '名称',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return item?.title;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (item) {
+              item.title = value;
+            } else {
+              console.warn(`没有找到对应的查询操作: ${actionsId}`);
+            }
+          }
         }
       }
     ];
+
+    return {
+      title: '按钮'
+    };
   }
+  // '[data-actions-id]': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+  //   const dataSet = focusArea.dataset;
+  //   const actionsId = dataSet.actionsId;
+
+  //   const resultMap = {
+  //     onOkForCreate: {
+  //       title: '确认输出',
+  //       outputId: 'onCreateConfirm',
+  //       slotId: 'createModalContent'
+  //     },
+  //     onCancelForCreate: {
+  //       title: '取消输出',
+  //       outputId: 'onCancelForCreateModal',
+  //       slotId: 'createModalContent'
+  //     },
+  //     onCancelForEdit: {
+  //       title: '取消输出',
+  //       outputId: 'onCancelForEditModal',
+  //       slotId: 'editModalContent'
+  //     },
+  //     onOkForEdit: {
+  //       title: '确认输出',
+  //       outputId: 'onEditConfirm',
+  //       slotId: 'editModalContent'
+  //     }
+  //   };
+
+  //   cate1.title = '对话框操作';
+  //   cate1.items = [
+  //     {
+  //       title: resultMap[actionsId].title,
+  //       type: '_Event',
+  //       options: ({ data, focusArea }: EditorResult<Data>) => {
+  //         return {
+  //           outputId: resultMap[actionsId].outputId,
+  //           slotId: resultMap[actionsId].slotId
+  //         };
+  //       }
+  //     }
+  //   ];
+  // }
 };
 
 const refreshChildComModel = (childNames, getChildByName, domainModel) => {
@@ -445,23 +506,23 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
     }
   });
 
-  childNames.createModalContent.forEach((comName) => {
-    const child = getChildByName(comName);
+  // childNames.createModalContent.forEach((comName) => {
+  //   const child = getChildByName(comName);
 
-    if (child.def.namespace === 'mybricks.normal-pc.form-container') {
-      child.data.domainModel.entity = curEntity;
-      child.data.domainModel.type = domainModel.type;
-    }
-  });
+  //   if (child.def.namespace === 'mybricks.normal-pc.form-container') {
+  //     child.data.domainModel.entity = curEntity;
+  //     child.data.domainModel.type = domainModel.type;
+  //   }
+  // });
 
-  childNames.editModalContent.forEach((comName) => {
-    const child = getChildByName(comName);
+  // childNames.editModalContent.forEach((comName) => {
+  //   const child = getChildByName(comName);
 
-    if (child.def.namespace === 'mybricks.normal-pc.form-container') {
-      child.data.domainModel.entity = curEntity;
-      child.data.domainModel.type = domainModel.type;
-    }
-  });
+  //   if (child.def.namespace === 'mybricks.normal-pc.form-container') {
+  //     child.data.domainModel.entity = curEntity;
+  //     child.data.domainModel.type = domainModel.type;
+  //   }
+  // });
 
   childNames.tableContent.forEach((comName) => {
     const child = getChildByName(comName);
@@ -471,6 +532,103 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
       child.data.usePagination = domainModel?.query?.abilitySet?.includes('PAGE');
     }
   });
+};
+
+const refreshIO = (params) => {
+  const { inputs, abilitySet } = params;
+
+  const insertPin = inputs.get('create');
+  const editPin = inputs.get('editById');
+  const delectPin = inputs.get('deleteById');
+  const pageChangePin = inputs.get('pageChange');
+
+  if (abilitySet.includes('INSERT')) {
+    // 'create', '新建记录', { type: 'object', properties: {} }
+    if (!insertPin) {
+      inputs.add({
+        id: 'create',
+        title: '新增记录',
+        schema: { type: 'object', properties: {} },
+        desc: '新建一条记录'
+      });
+    }
+  } else {
+    if (insertPin) {
+      inputs.remove('create');
+    }
+  }
+
+  if (abilitySet.includes('UPDATE')) {
+    if (!editPin) {
+      // inputs.add('editById', '编辑记录', { type: 'object', properties: {} });
+      inputs.add({
+        id: 'editById',
+        title: '编辑记录',
+        schema: { type: 'object', properties: {} },
+        desc: '根据 ID（主键） 编辑当前行记录'
+      });
+    }
+  } else {
+    if (editPin) {
+      inputs.remove('editById');
+    }
+  }
+
+  if (abilitySet.includes('DELETE')) {
+    if (!delectPin) {
+      // inputs.add('deleteById', '删除记录', { type: 'object', properties: {} });
+      inputs.add({
+        id: 'deleteById',
+        title: '删除记录',
+        schema: { type: 'object', properties: {} },
+        desc: '根据 ID（主键） 删除当前行记录'
+      });
+    }
+  } else {
+    if (delectPin) {
+      inputs.remove('deleteById');
+    }
+  }
+
+  if (abilitySet.includes('PAGE')) {
+    if (!pageChangePin) {
+      // inputs.add('pageChange', '分页变化', {
+      //   type: 'object',
+      //   properties: {
+      //     pageNum: {
+      //       title: '页码',
+      //       type: 'number'
+      //     },
+      //     pageSize: {
+      //       title: '每页条数',
+      //       type: 'number'
+      //     }
+      //   }
+      // });
+      inputs.add({
+        id: 'pageChange',
+        title: '分页变化',
+        schema: {
+          type: 'object',
+          properties: {
+            pageNum: {
+              title: '页码',
+              type: 'number'
+            },
+            pageSize: {
+              title: '每页条数',
+              type: 'number'
+            }
+          }
+        },
+        desc: '触发分页变化'
+      });
+    }
+  } else {
+    if (!pageChangePin) {
+      inputs.remove('pageChange');
+    }
+  }
 };
 
 /**

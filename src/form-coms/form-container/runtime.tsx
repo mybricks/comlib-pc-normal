@@ -287,7 +287,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             let res = { ...values, ...params };
 
             if (
-              data.domainModel.entity.fieldAry?.length > 0 &&
+              data.domainModel?.entity?.fieldAry?.length > 0 &&
               data.domainModel?.isQuery &&
               data.domainModel?.type === 'domain'
             ) {
