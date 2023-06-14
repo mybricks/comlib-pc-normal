@@ -57,18 +57,39 @@ export const createStyleForDot = ({ target }: StyleTargetType<Data>) => ({
 
 export const createStyleForTitle = ({ target }: StyleTargetType<Data>) => ({
   title: '标题',
-  options: ['font'],
+  options: [
+    {
+      type: 'font',
+      config: {
+        disableTextAlign: true
+      }
+    }
+  ],
   target
 });
 
 export const createStyleForSubtitle = ({ target }: StyleTargetType<Data>) => ({
   title: '副标题',
-  options: ['font'],
+  options: [
+    {
+      type: 'font',
+      config: {
+        disableTextAlign: true
+      }
+    }
+  ],
   target
 });
 
 export const createStyleForDesc = ({ target }: StyleTargetType<Data>) => ({
   title: '描述',
-  options: ['font'],
+  options: [
+    {
+      type: 'font',
+      config: {
+        disableTextAlign: true
+      }
+    }
+  ],
   target
 });
