@@ -9,5 +9,8 @@
     "disabled": false,
     "placeholder": "请输入搜索内容",
     "addonBefore": ""
-  }
+  },
+  "isSelect": false,
+  "staticOptions": [],
+  "selectWidth": "150px"
 }

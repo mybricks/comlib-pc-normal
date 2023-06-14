@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Input } from 'antd';
+import { Input, Select } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
@@ -15,6 +15,17 @@ export interface Data {
     placeholder: string;
     addonBefore: string;
   };
+  isSelect: boolean;
+  selectWidth: string;
+  staticOptions: Options[];
+  initValue: string;
+}
+
+export interface Options {
+  label: string;
+  value: string;
+  checked: boolean;
+  disabled: boolean;
 }
 const { Search } = Input;
 
@@ -95,7 +106,32 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onBlur'](value);
   }, []);
 
-  return (
+  const renderSelectSearch = () => {
+    return (
+      <div>
+        <Input.Group compact>
+          <Select
+            style={{ width: data.selectWidth }}
+            value={data.initValue}
+            options={data.staticOptions}
+          ></Select>
+          <Search
+            style={{
+              width: `calc(100% - ${data.selectWidth})`
+            }}
+            onChange={changeValue}
+            onSearch={onSearch}
+            onBlur={onBlur}
+            value={value}
+            enterButton={data.isenterButton ? context : void 0}
+            {...data.config}
+          ></Search>
+        </Input.Group>
+      </div>
+    );
+  };
+
+  return !data.isSelect ? (
     <div>
       <Search
         onChange={changeValue}
@@ -106,5 +142,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {...data.config}
       ></Search>
     </div>
+  ) : (
+    renderSelectSearch()
   );
 }
