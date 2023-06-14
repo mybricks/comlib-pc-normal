@@ -107,15 +107,15 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return ['text', 'picture', undefined].includes(data.config.listType);
         },
-        target: '.ant-upload-select .ant-btn:hover',
-        initValue: {
-          color: '#5c8fff',
-          borderColor: '#5c8fff',
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderRadius: '4px',
-          background: '#fff'
-        }
+        target: '.ant-upload-select .ant-btn:hover'
+        // initValue: {
+        //   color: '#5c8fff',
+        //   borderColor: '#5c8fff',
+        //   borderWidth: '1px',
+        //   borderStyle: 'solid',
+        //   borderRadius: '4px',
+        //   background: '#fff'
+        // }
       },
       {
         title: '激活样式',
@@ -123,13 +123,13 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.listType === 'picture-card';
         },
-        target: '.ant-upload-select-picture-card:hover',
-        initValue: {
-          borderColor: '#326bfb',
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderRadius: '4px'
-        }
+        target: '.ant-upload-select-picture-card:hover'
+        // initValue: {
+        //   borderColor: '#326bfb',
+        //   borderWidth: '1px',
+        //   borderStyle: 'solid',
+        //   borderRadius: '4px'
+        // }
       },
       {
         title: '激活样式',
@@ -137,13 +137,13 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.listType === 'dragger';
         },
-        target: '.ant-upload-drag:hover',
-        initValue: {
-          borderColor: '#5c8fff',
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderRadius: '4px'
-        }
+        target: '.ant-upload-drag:hover'
+        // initValue: {
+        //   borderColor: '#5c8fff',
+        //   borderWidth: '1px',
+        //   borderStyle: 'solid',
+        //   borderRadius: '4px'
+        // }
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
