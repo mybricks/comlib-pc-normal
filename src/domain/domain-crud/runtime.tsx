@@ -79,41 +79,41 @@ export default function (props: RuntimeParams<Data>) {
         getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: data.pageSize });
       });
 
-      inputs['sorterChange']((val) => {
-        // todo
-        const orderMap = {
-          ascend: 'ASC',
-          descend: 'DESC'
-        };
+      // inputs['sorterChange']((val) => {
+      //   // todo
+      //   const orderMap = {
+      //     ascend: 'ASC',
+      //     descend: 'DESC'
+      //   };
 
-        const curOrder = orderMap[val.order];
+      //   const curOrder = orderMap[val.order];
 
-        let newOrder: OrderParams[] = ordersParamsRef.current;
+      //   let newOrder: OrderParams[] = ordersParamsRef.current;
 
-        if (curOrder) {
-          const item = newOrder.find((item) => item.fieldName === val.id);
+      //   if (curOrder) {
+      //     const item = newOrder.find((item) => item.fieldName === val.id);
 
-          if (!item) {
-            newOrder.push({
-              fieldName: val.id,
-              order: orderMap[val.order]
-            });
-          } else {
-            newOrder = newOrder.map((item) => {
-              if (item.fieldName === val.id) {
-                item.order = orderMap[val.order];
-              }
-              return item;
-            });
-          }
-        } else {
-          newOrder = newOrder.filter((item) => item.fieldName !== val.id);
-        }
+      //     if (!item) {
+      //       newOrder.push({
+      //         fieldName: val.id,
+      //         order: orderMap[val.order]
+      //       });
+      //     } else {
+      //       newOrder = newOrder.map((item) => {
+      //         if (item.fieldName === val.id) {
+      //           item.order = orderMap[val.order];
+      //         }
+      //         return item;
+      //       });
+      //     }
+      //   } else {
+      //     newOrder = newOrder.filter((item) => item.fieldName !== val.id);
+      //   }
 
-        ordersParamsRef.current = [...newOrder];
+      //   ordersParamsRef.current = [...newOrder];
 
-        getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: val.pageSize });
-      });
+      //   getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: val.pageSize });
+      // });
 
       inputs['create']((val) => {
         if (checkDomainModel(abilitySet, 'INSERT')) {

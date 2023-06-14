@@ -18,15 +18,6 @@
         "type": "object",
         "properties": {}
       }
-    },
-    {
-      "id": "sorterChange",
-      "title": "排序变化",
-      "desc": "触发排序变化",
-      "schema": {
-        "type": "object",
-        "properties": {}
-      }
     }
   ],
   "outputs": [],
