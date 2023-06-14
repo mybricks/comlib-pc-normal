@@ -8,10 +8,18 @@ export default {
     style.width = '100%';
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-input-affix-wrapper'
-    },
+    style: [
+      {
+        title: '默认样式',
+        options: ['border'],
+        target: '.ant-input-affix-wrapper'
+      },
+      {
+        title: '激活样式',
+        options: ['border'],
+        target: '.ant-input-affix-wrapper:hover'
+      }
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
