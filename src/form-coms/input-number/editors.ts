@@ -8,10 +8,18 @@ export default {
     style.width = '100%'
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-input-number'
-    },
+    style: [
+      {
+        title: '默认样式',
+        options: ['border'],
+        target: '.ant-input-number'
+      },
+      {
+        title: '激活样式',
+        options: ['border'],
+        target: '.ant-input-number:hover'
+      }
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
