@@ -154,12 +154,12 @@ export default {
     style: [
       {
         title: '标题',
-        options: ['bgColor', 'border', 'bgImage', 'font', 'size'],
+        options: ['background', 'border', 'font', 'size'],
         target: '.ant-popover-inner .ant-popover-title'
       },
       {
         title: '内容',
-        options: ['bgColor', 'border', 'bgImage', 'font', 'size'],
+        options: ['background', 'border', 'font', 'size'],
         target: '.ant-popover-arrow-content, .ant-popover-inner .ant-popover-inner-content'
       }
     ]

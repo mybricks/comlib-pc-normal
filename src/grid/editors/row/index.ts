@@ -14,7 +14,7 @@ export default {
       cate1.items = [...LayoutEditor(row), ...StyleEditor(row), ...IndexEditor];
     },
     style: {
-      options: ['BgColor']
+      options: [{ type: 'background', config: { disableBackgroundImage: true } }]
     }
   }
 };

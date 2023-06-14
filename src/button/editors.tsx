@@ -29,7 +29,7 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },
-        options: ['border', 'font', 'bgcolor', 'bgimage'],
+        options: ['border', 'font', 'background'],
         target: '.button'
       }
     ],

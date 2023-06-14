@@ -12,7 +12,7 @@ export default {
     style: [
       {
         title: '基本',
-        options: ['border', 'bgcolor'],
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-image-img'
       }
     ],

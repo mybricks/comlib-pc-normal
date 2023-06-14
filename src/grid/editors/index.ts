@@ -16,12 +16,12 @@ export default {
     style: [
       {
         title: '容器',
-        options: ['BgColor', 'Border', 'BgImage', 'size'],
+        options: ['background', 'Border', 'size'],
         target: ':root'
       },
       {
         title: '单元格',
-        options: ['BgColor', 'Border', 'BgImage', 'Padding', 'size'],
+        options: ['background', 'Border', 'Padding', 'size'],
         target: `.ant-row .ant-col`
       }
     ]
