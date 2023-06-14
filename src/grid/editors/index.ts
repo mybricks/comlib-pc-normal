@@ -3,6 +3,7 @@ import AddRowEditor from './addRowEditor';
 import StyleEditor from './styleEditor';
 import RowItemEditor from './row';
 import ColumnItemEditor from './column';
+import { createStyleForGrid, createStyleForCol } from './utils';
 
 export default {
   ':root': {
@@ -14,16 +15,8 @@ export default {
       };
     },
     style: [
-      {
-        title: '容器',
-        options: ['background', 'Border', 'size'],
-        target: ':root'
-      },
-      {
-        title: '单元格',
-        options: ['background', 'Border', 'Padding', 'size'],
-        target: `.ant-row .ant-col`
-      }
+      createStyleForGrid({ target: ':root' }),
+      createStyleForCol({ target: '.ant-row .ant-col' })
     ]
   },
   ...RowItemEditor,

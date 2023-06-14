@@ -19,7 +19,8 @@
           "flex": 1,
           "colStyle": {
             "overflowX": "hidden",
-            "overflowY": "hidden"
+            "overflowY": "hidden",
+            "backgroundColor": "#000"
           },
           "slotStyle": {
             "display": "flex",

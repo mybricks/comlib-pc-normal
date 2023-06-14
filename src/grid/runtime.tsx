@@ -61,7 +61,6 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           data-col-coordinate={`${rowIndex},${column.key}`}
           data-type-col={`col-${column.key}`}
           style={{
-            height: column.colStyle.height,
             ...getMinMaxWidth(column),
             width,
             cursor: column.useClick ? 'pointer' : 'unset'

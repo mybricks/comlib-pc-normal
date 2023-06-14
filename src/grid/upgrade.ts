@@ -6,8 +6,8 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     const { columns, key, backgroundColor } = row;
     setDeclaredStyle(`div[data-row-index=${JSON.stringify(key)}]`, { backgroundColor });
     columns.forEach((col) => {
-      const param = `${key},${col.key}`;
-      const selector = `.ant-row > div[data-col-coordinate="${param}"]`;
+      const param = `col-${col.key}`;
+      const selector = `.ant-row > div[data-type-col="${param}"]`;
       setDeclaredStyle(selector, {
         ...data.globalColStyle,
         ...col.colStyle

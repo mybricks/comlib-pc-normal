@@ -3,7 +3,7 @@ import IndexEditor from './indexEditor';
 import StyleEditor from './styleEditor';
 import WidthEditor from './widthEditor';
 import EventEditor from './eventEditor';
-import { getColItem, setSlotLayout } from '../utils';
+import { getColItem, setSlotLayout, createStyleForCol } from '../utils';
 import React from 'react';
 
 export default {
@@ -46,11 +46,10 @@ export default {
       cate2.title = '高级';
       cate2.items = [...StyleEditor(item), ...EventEditor(item)];
     },
-    style: {
-      options: ['background', 'Border',  'Padding'],
+    style: createStyleForCol({
       target({ focusArea }) {
-        return `.ant-row > div[data-col-coordinate="${focusArea.dataset.colCoordinate}"]`;
+        return `.ant-row > div[data-type-col="${focusArea.dataset.typeCol}"]`;
       }
-    }
+    })
   }
 };
