@@ -90,21 +90,28 @@ export default (props: Props) => {
         justifyContent: align
       }}
     >
-      <Pagination
-        total={total}
-        showTotal={totalText}
-        current={current}
-        pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
-        // defaultPageSize={defaultPageSize}
-        size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-        simple={size === SizeTypeEnum.Simple}
-        showQuickJumper={showQuickJumper}
-        showSizeChanger={showSizeChanger}
-        pageSizeOptions={pageSizeOptions}
-        hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
-        onChange={onChange}
-        disabled={disabled}
-      />
+      <div
+        data-table-pagination="pagination"
+        style={{
+          display: 'inline-block'
+        }}
+      >
+        <Pagination
+          total={total}
+          showTotal={totalText}
+          current={current}
+          pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
+          // defaultPageSize={defaultPageSize}
+          size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
+          simple={size === SizeTypeEnum.Simple}
+          showQuickJumper={showQuickJumper}
+          showSizeChanger={showSizeChanger}
+          pageSizeOptions={pageSizeOptions}
+          hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      </div>
     </div>
   );
 };
