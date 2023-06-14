@@ -41,10 +41,18 @@ export default {
     style.width = '100%';
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-select-selector'
-    },
+    style: [
+      {
+        title: '默认样式',
+        options: ['border'],
+        target: '.ant-select-selector'
+      },
+      {
+        title: '激活样式',
+        options: ['border'],
+        target: '.ant-select:not(.ant-select-disabled):hover .ant-select-selector'
+      },
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[1].title = '高级';
