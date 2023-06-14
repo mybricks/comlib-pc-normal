@@ -9,6 +9,7 @@ import updateData from './api/update';
 import createData from './api/create';
 import deleteData from './api/delete';
 import { flatterEntityField } from './editors';
+import { createOutputCbIfNoConnect } from '../../utils/io';
 
 interface OrderParams {
   fieldName: string;
@@ -26,6 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   const tableInputs = useRef<{ [x: string]: any }>();
   const tableOutputs = useRef<{ [x: string]: any }>();
   const formInputs = useRef<{ [x: string]: any }>();
+  const formOutputs = useRef<{ [x: string]: any }>();
   const editModalFormInputs = useRef<{ [x: string]: any }>();
   const createModalFormInputs = useRef<{ [x: string]: any }>();
 
@@ -317,6 +319,7 @@ export default function (props: RuntimeParams<Data>) {
                   wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
                     const jsx = comAray?.map((com, idx) => {
                       formInputs.current = com.inputs;
+                      formOutputs.current = com.outputs;
 
                       return com.jsx;
                     });
@@ -324,22 +327,35 @@ export default function (props: RuntimeParams<Data>) {
                     return jsx;
                   },
                   outputs: {
-                    // onFinish(v) {
-                    //   console.log('拦截查询', v);
-                    // },
-                    onClickSubmit(v) {
-                      getListData(v, { pageNum: 1, pageSize: data.pageSize }, true);
-                    }
+                    onClickSubmit: createOutputCbIfNoConnect({
+                      eventName: 'onClickSubmit',
+                      getOutputs: () => formOutputs.current,
+                      cb: (val) => {
+                        getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
+                      }
+                    })
                   }
                 })}
               </div>
             )
           )}
           {env.edit ? (
-            <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+            <ActionsContent
+              env={env}
+              actions={data.actions}
+              slots={slots}
+              abilitySet={abilitySet}
+              onCreate={onCreate}
+            />
           ) : (
             checkDomainModel(abilitySet, 'INSERT') && (
-              <ActionsContent env={env} actions={data.actions} slots={slots} onCreate={onCreate} />
+              <ActionsContent
+                env={env}
+                actions={data.actions}
+                slots={slots}
+                abilitySet={abilitySet}
+                onCreate={onCreate}
+              />
             )
           )}
           <div className={styles.tableContent}>
@@ -360,17 +376,16 @@ export default function (props: RuntimeParams<Data>) {
                   return jsx;
                 },
                 outputs: {
-                  pageChange(val) {
-                    // setPageNum(val.pageNum);
-                    console.log(
-                      'pageChange',
-                      tableOutputs.current?.['pageChange']?.getConnections()
-                    );
-                    getListData(queryParamsRef.current, {
-                      pageNum: val.pageNum,
-                      pageSize: data.pageSize
-                    });
-                  }
+                  pageChange: createOutputCbIfNoConnect({
+                    eventName: 'pageChange',
+                    getOutputs: () => tableOutputs.current,
+                    cb: (val) => {
+                      getListData(queryParamsRef.current, {
+                        pageNum: val.pageNum,
+                        pageSize: data.pageSize
+                      });
+                    }
+                  })
                 }
               })
             )}
@@ -420,45 +435,12 @@ export default function (props: RuntimeParams<Data>) {
               />
             )}
       </Modal>
-
-      {/* <Modal
-        title={isEdit ? '编辑' : '新建'}
-        visible={env.edit ? data.createModalOpen || data.editModalOpen : visible}
-        getContainer={env.edit ? domainContainerRef.current : env.canvasElement}
-        okText="确认"
-        cancelText="取消"
-        onOk={onOkMethod}
-        onCancel={onCancelMethod}
-        footer={[
-          <Button
-            data-actions-id={isEdit ? 'onCancelForEdit' : 'onCancelForCreate'}
-            key="cancel"
-            onClick={onCancelMethod}
-          >
-            取消
-          </Button>,
-          <Button
-            data-actions-id={isEdit ? 'onOkForEdit' : 'onOkForCreate'}
-            key="ok"
-            type="primary"
-            onClick={onOkMethod}
-          >
-            确认
-          </Button>
-        ]}
-      >
-        {
-          checkDomainModel(abilitySet, 'UPDATE') && (
-            <EditModalContent slots={slots} editModalFormInputs={editModalFormInputs} />
-          )
-        }
-      </Modal> */}
     </div>
   );
 }
 
 const ActionsContent = (props) => {
-  const { env, actions, slots, onCreate } = props;
+  const { env, actions, slots, abilitySet, onCreate } = props;
 
   return (
     <div className={styles.actionsContent}>
@@ -469,6 +451,7 @@ const ActionsContent = (props) => {
           slots['actionsContent']?.render()
         )
       ) : (
+        checkDomainModel(abilitySet, 'INSERT') &&
         actions.items.map((item) => {
           return (
             <Button key={item.key} type={item.type} icon={<PlusOutlined />} onClick={onCreate}>
