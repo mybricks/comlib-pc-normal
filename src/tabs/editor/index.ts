@@ -205,17 +205,12 @@ export default {
       {
         title: '默认',
         options: ['font', 'bgColor'],
-        initValue: {
-          color: 'rgba(0, 0, 0, 0.85)'
-        },
-        target: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab .ant-tabs-tab-btn'
+        target: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab',
+        targetDom: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab'
       },
       {
         title: '选中',
         options: ['font', 'bgColor'],
-        initValue: {
-          color: '#1890ff'
-        },
         target: '.ant-tabs .ant-tabs-tab-active, .ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn'
       },
       {
