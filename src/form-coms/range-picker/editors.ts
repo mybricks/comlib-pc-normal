@@ -32,10 +32,18 @@ export default {
     style.width = '100%'
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-picker'
-    },
+    style: [
+      {
+        title: '默认样式',
+        options: ['border'],
+        target: '.ant-picker'
+      },
+      {
+        title: '激活样式',
+        options: ['border'],
+        target: '.ant-picker:hover'
+      },
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
