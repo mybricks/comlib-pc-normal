@@ -434,8 +434,14 @@ const refreshIO = (params) => {
   const pageChangePin = inputs.get('pageChange');
 
   if (abilitySet.includes('INSERT')) {
+    // 'create', '新建记录', { type: 'object', properties: {} }
     if (!insertPin) {
-      inputs.add('create', '新建记录', { type: 'object', properties: {} });
+      inputs.add({
+        id: 'create',
+        title: '新增记录',
+        schema: { type: 'object', properties: {} },
+        desc: '新建一条记录'
+      });
     }
   } else {
     if (insertPin) {
@@ -445,7 +451,13 @@ const refreshIO = (params) => {
 
   if (abilitySet.includes('UPDATE')) {
     if (!editPin) {
-      inputs.add('editById', '编辑记录', { type: 'object', properties: {} });
+      // inputs.add('editById', '编辑记录', { type: 'object', properties: {} });
+      inputs.add({
+        id: 'editById',
+        title: '编辑记录',
+        schema: { type: 'object', properties: {} },
+        desc: '根据 ID（主键） 编辑当前行记录'
+      });
     }
   } else {
     if (editPin) {
@@ -455,7 +467,13 @@ const refreshIO = (params) => {
 
   if (abilitySet.includes('DELETE')) {
     if (!delectPin) {
-      inputs.add('deleteById', '删除记录', { type: 'object', properties: {} });
+      // inputs.add('deleteById', '删除记录', { type: 'object', properties: {} });
+      inputs.add({
+        id: 'deleteById',
+        title: '删除记录',
+        schema: { type: 'object', properties: {} },
+        desc: '根据 ID（主键） 删除当前行记录'
+      });
     }
   } else {
     if (delectPin) {
@@ -465,18 +483,36 @@ const refreshIO = (params) => {
 
   if (abilitySet.includes('PAGE')) {
     if (!pageChangePin) {
-      inputs.add('pageChange', '分页变化', {
-        type: 'object',
-        properties: {
-          pageNum: {
-            title: '页码',
-            type: 'number'
-          },
-          pageSize: {
-            title: '每页条数',
-            type: 'number'
+      // inputs.add('pageChange', '分页变化', {
+      //   type: 'object',
+      //   properties: {
+      //     pageNum: {
+      //       title: '页码',
+      //       type: 'number'
+      //     },
+      //     pageSize: {
+      //       title: '每页条数',
+      //       type: 'number'
+      //     }
+      //   }
+      // });
+      inputs.add({
+        id: 'pageChange',
+        title: '分页变化',
+        schema: {
+          type: 'object',
+          properties: {
+            pageNum: {
+              title: '页码',
+              type: 'number'
+            },
+            pageSize: {
+              title: '每页条数',
+              type: 'number'
+            }
           }
-        }
+        },
+        desc: '触发分页变化'
       });
     }
   } else {
