@@ -673,7 +673,13 @@ export default {
               { min: 0, title: '左' }
             ],
             ifVisible({ data }: EditorResult<Data>) {
-              return (data.config?.layout || data.layout) !== 'horizontal';
+              /**
+               * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+               */
+              return (
+                (data.config?.layout || data.layout) !== 'horizontal' &&
+                !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery)
+              );
             },
             value: {
               get({ id, data, name }: EditorResult<Data>) {
