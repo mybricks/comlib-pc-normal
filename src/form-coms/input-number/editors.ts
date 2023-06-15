@@ -14,11 +14,11 @@ export default {
         options: ['border'],
         target: '.ant-input-number'
       },
-      {
-        title: '激活样式',
-        options: ['border'],
-        target: '.ant-input-number:hover'
-      }
+      // {
+      //   title: '激活样式',
+      //   options: ['border'],
+      //   target: '.ant-input-number:hover'
+      // }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
