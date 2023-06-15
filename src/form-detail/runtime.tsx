@@ -196,7 +196,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             }
           }
           return (
-            <Descriptions.Item label={labelNode} key={id} span={span} style={itemStyle}>
+            <Descriptions.Item label={labelNode} key={id} span={span} className={`${id}-item`}>
               {type === TypeEnum.PartSlot
                 ? SlotItem
                 : contentMap[type](value, lineLimit, `${widthLimit}px`, limit, id)}

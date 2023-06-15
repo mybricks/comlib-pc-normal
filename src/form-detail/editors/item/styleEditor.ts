@@ -3,30 +3,6 @@ import { getEleIdx, getSpanCount, setNextSpan } from '../utils';
 
 export const StyleEditor = [
   {
-    title: '间距',
-    type: 'Inputnumber',
-    options: [
-      { title: '左', min: 0, max: 50, width: 50 },
-      { title: '右', min: 0, max: 50, width: 50 },
-      { title: '上', min: 0, max: 50, width: 50 },
-      { title: '下', min: 0, max: 50, width: 50 }
-    ],
-    value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        return (
-          data.items[getEleIdx({ data, focusArea })].padding || [
-            0, 0, 0, 16
-          ]
-        );
-      },
-      set({ data, focusArea }: EditorResult<Data>, value: number[]) {
-        if (!focusArea) return;
-        data.items[getEleIdx({ data, focusArea })].padding = value;
-      }
-    }
-  },
-  {
     title: '最大宽度',
     type: 'text',
     value: {

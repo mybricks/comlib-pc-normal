@@ -23,6 +23,12 @@ export const ItemsEditors = {
           return `.${data.items[getEleIdx({ data, focusArea })].id}-content`
         }
       },
+      {
+        options: ['padding'],
+        target({ focusArea, data }) {
+          return `.${data.items[getEleIdx({ data, focusArea })].id}-item`
+        }
+      },
       ...StyleEditor
     ],
     items: ({ }: EditorResult<Data>, cate1) => {
