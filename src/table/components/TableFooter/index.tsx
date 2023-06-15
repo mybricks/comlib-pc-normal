@@ -34,7 +34,6 @@ export default (props: Props): JSX.Element => {
       {useBottomRowSelection && RenderBatchBtns(props)}
       {data.usePagination && (
         <div
-          data-table-pagination="pagination"
           className={classnames(css.pagination)}
           style={{
             width: useBottomRowSelection ? '' : '100%',
