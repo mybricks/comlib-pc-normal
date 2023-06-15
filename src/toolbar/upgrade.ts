@@ -4,6 +4,7 @@ import { Data, SizeEnum } from './types';
 export default function ({
   data,
   output,
+  setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   data.btnList.forEach((item) => {
     //1.0.0->1.0.1
@@ -59,8 +60,16 @@ export default function ({
         width: 'auto'
       };
     }
-    if (SizeHeightMap[item.size || SizeEnum.Middle] === item.style.height) {
-      item.style.height = 'auto';
+
+    /**
+    * @description v1.0.9 style编辑器改造
+    */
+    if (item.style) {
+      if (SizeHeightMap[item.size || SizeEnum.Middle] === item.style.height) {
+        item.style.height = 'auto';
+      }
+      setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, item.style);
+      item.style = false;
     }
   });
 
