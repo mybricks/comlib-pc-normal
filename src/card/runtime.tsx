@@ -67,7 +67,7 @@ export default (props: RuntimeParams<Data>) => {
             overflowY: props.style.height !== 'auto' ? 'auto' : void 0,
             overflowX: props.style.width !== 'auto' ? 'auto' : void 0
           }}
-          className={css.container}
+          className={css.containerCard}
         >
           {slots[SlotIds.Body]?.render()}
         </div>
