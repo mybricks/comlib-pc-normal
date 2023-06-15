@@ -14,11 +14,11 @@ export default {
         options: ['border'],
         target: '.ant-picker'
       },
-      {
-        title: '激活样式',
-        options: ['border'],
-        target: '.ant-picker:hover'
-      },
+      // {
+      //   title: '激活样式',
+      //   options: ['border'],
+      //   target: '.ant-picker:hover'
+      // },
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '配置';
