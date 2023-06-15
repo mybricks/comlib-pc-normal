@@ -99,7 +99,7 @@ export default {
     style: {
       options: ['font', 'size', { type: 'background', config: { disableBackgroundImage: true } }],
       target: '.ant-tooltip .ant-tooltip-inner',
-      targetDom: '.ant-tooltip .ant-tooltip-inner'
+      domTarget: '.ant-tooltip .ant-tooltip-inner'
     }
   }
 };
