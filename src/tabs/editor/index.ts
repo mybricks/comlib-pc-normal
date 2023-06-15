@@ -204,21 +204,34 @@ export default {
     style: [
       {
         title: '默认',
-        options: ['font', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab',
-        targetDom: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab'
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        initValue: {
+          color: 'rgba(0,0,0,.85)'
+        },
+        target:
+          '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn',
+        domTarget: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab'
       },
       {
         title: '选中',
-        options: ['font', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-tabs .ant-tabs-tab-active, .ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn'
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        initValue: {
+          color: '#1890ff'
+        },
+        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active .ant-tabs-tab-btn'
       },
       {
         title: '选中条',
         options: [
-          'size',
           'border',
-          { type: 'background', config: { disableBackgroundImage: true } }
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'size', config: { disableWidth: true } }
         ],
         target: '.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar'
       }
