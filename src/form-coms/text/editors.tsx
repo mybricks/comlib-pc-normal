@@ -13,12 +13,12 @@ export default {
         title: '默认样式',
         options: ['border'],
         target: '.ant-input-affix-wrapper'
-      },
-      {
-        title: '激活样式',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper:hover'
       }
+      // {
+      //   title: '激活样式',
+      //   options: ['border'],
+      //   target: '.ant-input-affix-wrapper:hover'
+      // }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

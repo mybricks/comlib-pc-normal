@@ -47,11 +47,11 @@ export default {
         options: ['border'],
         target: '.ant-select-selector'
       },
-      {
-        title: '激活样式',
-        options: ['border'],
-        target: '.ant-select:not(.ant-select-disabled):hover .ant-select-selector'
-      },
+      // {
+      //   title: '激活样式',
+      //   options: ['border'],
+      //   target: '.ant-select:not(.ant-select-disabled):hover .ant-select-selector'
+      // },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

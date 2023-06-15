@@ -1,6 +1,7 @@
 import { Data, OutputIds } from './constants';
 import { message } from 'antd';
 import IconEditor from './iconEditor';
+import css from './runtime.less';
 
 export default {
   '@init'({ style }) {
@@ -29,8 +30,8 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },
-        options: ['border', 'font', 'background'],
-        target: '.button'
+        options: ['border', 'font', 'bgcolor', 'bgimage'],
+        target: `.${css.button}`
       }
     ],
     items: [

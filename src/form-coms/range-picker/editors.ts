@@ -38,11 +38,11 @@ export default {
         options: ['border'],
         target: '.ant-picker'
       },
-      {
-        title: '激活样式',
-        options: ['border'],
-        target: '.ant-picker:hover'
-      },
+      // {
+      //   title: '激活样式',
+      //   options: ['border'],
+      //   target: '.ant-picker:hover'
+      // },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

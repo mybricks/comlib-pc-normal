@@ -76,7 +76,8 @@ export default {
           }
         }
       },
-      uploadEditors,
+      uploadEditors
+      /**
       {
         title: '默认样式',
         options: ['border', 'font'],
@@ -145,8 +146,9 @@ export default {
         //   borderRadius: '4px'
         // }
       }
+       */
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data }: EditorResult<Data>, ...catalog) => {
       catalog[0].title = '常规';
 
       catalog[0].items = [
