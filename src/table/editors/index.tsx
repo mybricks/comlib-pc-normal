@@ -15,7 +15,13 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
-import { getColumnsSchema, createStyleForHead, createStyleForContent } from '../utils';
+import {
+  getColumnsSchema,
+  createStyleForHead,
+  createStyleForContent,
+  getNewColumn,
+  setColumns
+} from '../utils';
 import {
   OutputIds as PaginatorOutputIds,
   InputIds as PaginatorInputIds
@@ -58,6 +64,12 @@ export function getColumnsFromSchema(schema: any) {
 }
 
 export default {
+  //解决样式初始无法回显问题，默认给一个初始列
+  '@init': ({ data, output, input, slot, ...res }: EditorResult<Data>) => {
+    const column = getNewColumn(data);
+    setColumns({ data, slot }, [column]);
+    setDataSchema({ data, output, input, slot, ...res });
+  },
   '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
     if (schema === 'mybricks.domain-pc.crud/table') {
       if (data?.domainModel?.entity && data.columns?.length === 0) {
