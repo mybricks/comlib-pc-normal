@@ -209,7 +209,8 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         initValue: {
-          color: 'rgba(0,0,0,.85)'
+          color: 'rgba(0,0,0,.85)',
+          backgroundColor: '#fafafa'
         },
         target:
           '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn',
