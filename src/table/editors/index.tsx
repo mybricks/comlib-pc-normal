@@ -64,12 +64,6 @@ export function getColumnsFromSchema(schema: any) {
 }
 
 export default {
-  //解决样式初始无法回显问题，默认给一个初始列
-  '@init': ({ data, output, input, slot, ...res }: EditorResult<Data>) => {
-    const column = getNewColumn(data);
-    setColumns({ data, slot }, [column]);
-    setDataSchema({ data, output, input, slot, ...res });
-  },
   '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
     if (schema === 'mybricks.domain-pc.crud/table') {
       if (data?.domainModel?.entity && data.columns?.length === 0) {
@@ -152,10 +146,15 @@ export default {
         ...getRowSelectionEditor(props)
       ];
     },
-    style: [
-      createStyleForHead({ target: 'table thead tr > th' }),
-      createStyleForContent({ target: 'table tbody tr > td' })
-    ]
+    style: {
+      ifVisible({ data }: EditorResult<Data>) {
+        return !!data.columns.length;
+      },
+      items: [
+        createStyleForHead({ target: 'table thead tr > th' }),
+        createStyleForContent({ target: 'table tbody tr > td' })
+      ]
+    }
   },
   ...columnEditor,
   ...PaginatorEditor
