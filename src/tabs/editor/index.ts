@@ -203,10 +203,10 @@ export default {
     },
     style: [
       {
-        title: '默认',
+        title: '默认标签',
         options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
+          { type: 'font', config: { disableTextAlign: true } }
+          // { type: 'background', config: { disableBackgroundImage: true } }
         ],
         initValue: {
           color: 'rgba(0,0,0,.85)',
@@ -217,10 +217,10 @@ export default {
         domTarget: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab'
       },
       {
-        title: '选中',
+        title: '选中标签',
         options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
+          { type: 'font', config: { disableTextAlign: true } }
+          // { type: 'background', config: { disableBackgroundImage: true } }
         ],
         initValue: {
           color: '#1890ff'
@@ -229,6 +229,9 @@ export default {
       },
       {
         title: '选中条',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.type === 'line';
+        },
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
