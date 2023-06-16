@@ -167,7 +167,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
 
           let labelNode;
           labelNode = (
-            <span className={`${id}-label ${css.label} label`}>
+            <span className={`${id}-label ${css.label}`}>
               {env.i18n(label + (data.colon ? ':' : ''))}
             </span>
           );
@@ -175,7 +175,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
             if (!!labelDesc) {
               labelNode = (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span style={{ marginRight: 5 }} className={`${id}-label ${css.label} label`}>
+                  <span style={{ marginRight: 5 }} className={`${id}-label ${css.label}`}>
                     {env.i18n(label + (data.colon ? ':' : ''))}
                   </span>
                   <Tooltip title={labelDesc}>
@@ -189,7 +189,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
               labelNode = null;
             } else {
               labelNode = (
-                <span className={`${id}-label label`}>
+                <span className={`${id}-label ${css.label}`}>
                   {env.i18n(label + (data.colon ? ':' : ''))}
                 </span>
               );

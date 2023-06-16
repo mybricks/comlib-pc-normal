@@ -36,9 +36,7 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
     if(typeof item.contentStyle.lineHeight === 'number' && typeof item.contentStyle.fontSize === 'number'){
       setDeclaredStyle(`.${item.id}-content`, {...item.contentStyle, fontSize: item.contentStyle.fontSize + 'px' , lineHeight: item.contentStyle.fontSize * item.contentStyle.lineHeight +'px'});
     }
-    if(item.contentStyle.padding){
-      setDeclaredStyle(`.${item.id}-item`, {paddingTop: item.padding?.[2], paddingBottom: item.padding?.[3], paddingLeft: item.padding?.[0], paddingRight: item.padding?.[1]});
-    }
+    setDeclaredStyle(`.${item.id}-item`, {paddingTop: item.padding?.[2] + 'px', paddingBottom: item.padding?.[3]+ 'px', paddingLeft: item.padding?.[0]+ 'px', paddingRight: item.padding?.[1]+ 'px'});
   })
 
   return true;
