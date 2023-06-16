@@ -110,8 +110,17 @@ export default {
           get({ data }) {
             return data.isSelect;
           },
-          set({ data }, value: boolean) {
+          set({ data, output }, value: boolean) {
             data.isSelect = value;
+            if(data.isSelect){
+              output.get('onChange').setSchema({ type: 'array', items: { type: 'string'} });
+              output.get('onSearch').setSchema({ type: 'array', items: { type: 'string'} });
+              output.get('onBlur').setSchema({ type: 'array', items: { type: 'string'} });
+            }else{
+              output.get('onChange').setSchema({ type: 'string' });
+              output.get('onSearch').setSchema({ type: 'string' });
+              output.get('onBlur').setSchema({ type: 'string' });
+            }
           }
         }
       },

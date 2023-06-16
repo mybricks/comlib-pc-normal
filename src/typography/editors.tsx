@@ -50,7 +50,7 @@ export default {
       {
         title: '文本排版',
         options: ['border', { type: 'font', config: { disableTextAlign: true } }],
-        target: `.container`
+        target: `:root`
       }
     ],
     items: [
@@ -142,13 +142,7 @@ export default {
     style: [
       {
         title: '文本样式',
-        options: ['font'],
-        //暂时不支持
-        fontProps: {
-          fontFamily: false,
-          horizontalAlign: false,
-          verticalAlign: false
-        },
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
         target({ data, focusArea }) {
           return `.${findEle({ data, focusArea }, 'textId').key}`;
         }

@@ -88,22 +88,51 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
+  //值更新
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     setValue(value);
-    onChangeForFc(parentSlot, { id: id, name: name, value });
-    outputs['onChange'](value);
+    if (data.isSelect) {
+      onChangeForFc(parentSlot, { id: id, name: name, value: [data.initValue, value] });
+      outputs['onChange']([data.initValue, value]);
+    } else {
+      onChangeForFc(parentSlot, { id: id, name: name, value });
+      outputs['onChange'](value);
+    }
   }, []);
 
+  const onChange = (val) => {
+    changeSelectValue(val);
+  };
+
+  const changeSelectValue = (val) => {
+    if (val === undefined) {
+      data.initValue = '';
+    }
+    data.initValue = val;
+    onChangeForFc(parentSlot, { id: id, value: [val, value], name });
+    outputs['onChange']([val, value]);
+  };
+
+  //搜索
   const onSearch = useCallback((value) => {
     onValidateTrigger();
-    outputs['onSearch'](value);
+    if (data.isSelect) {
+      outputs['onSearch']([data.initValue, value]);
+    } else {
+      outputs['onSearch'](value);
+    }
   }, []);
 
+  //失去焦点
   const onBlur = useCallback((e) => {
     const value = e.target.value;
     onValidateTrigger();
-    outputs['onBlur'](value);
+    if (data.isSelect) {
+      outputs['onBlur']([data.initValue, value]);
+    } else {
+      outputs['onBlur'](value);
+    }
   }, []);
 
   const renderSelectSearch = () => {
@@ -114,6 +143,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             style={{ width: data.selectWidth }}
             value={data.initValue}
             options={data.staticOptions}
+            onChange={onChange}
           ></Select>
           <Search
             style={{

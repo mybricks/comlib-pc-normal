@@ -206,7 +206,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   };
 
   return (
-    <div className={`${css.container} container`} style={{ textAlign: data.style.textAlign }}>
+    <div className={css.container} style={{ textAlign: data.style.textAlign }} data-root="root">
       {renderItems()}
     </div>
   );
