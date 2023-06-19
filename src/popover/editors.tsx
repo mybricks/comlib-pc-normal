@@ -153,15 +153,45 @@ export default {
     },
     style: [
       {
+        options: [
+          {
+            type: 'background',
+            config: {
+              disableBackgroundImage: true
+            }
+          },
+          'border',
+          'size'
+        ],
+        target: '.ant-popover .ant-popover-inner',
+        domTarget: '.ant-popover .ant-popover-inner'
+      },
+      {
         title: '标题',
-        options: ['background', 'border', 'font', 'size'],
-        target: '.ant-popover .ant-popover-inner .ant-popover-title'
+        options: ['font', 'padding'],
+        target: '.ant-popover .ant-popover-inner .ant-popover-title',
+        domTarget: '.ant-popover .ant-popover-inner .ant-popover-title'
       },
       {
         title: '内容',
-        options: ['background', 'border', 'font', 'size'],
-        target:
-          '.ant-popover .ant-popover-arrow-content,.ant-popover .ant-popover-inner .ant-popover-inner-content'
+        options: ['font', 'padding'],
+        target: '.ant-popover .ant-popover-inner .ant-popover-inner-content',
+        domTarget: '.ant-popover .ant-popover-inner .ant-popover-inner-content'
+      },
+      {
+        title: '箭头',
+        options: [
+          {
+            type: 'background',
+            config: {
+              disableBackgroundImage: true,
+              keyMap: {
+                backgroundColor: '--antd-arrow-background-color'
+              }
+            }
+          }
+        ],
+        target: '.ant-popover .ant-popover-arrow .ant-popover-arrow-content'
       }
     ]
   }

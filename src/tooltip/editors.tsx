@@ -96,10 +96,32 @@ export default {
         }
       ];
     },
-    style: {
-      options: ['font', 'size', { type: 'background', config: { disableBackgroundImage: true } }],
-      target: '.ant-tooltip .ant-tooltip-inner',
-      domTarget: '.ant-tooltip .ant-tooltip-inner'
-    }
+    style: [
+      {
+        options: [
+          'font',
+          'size',
+          'padding',
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        target: '.ant-tooltip .ant-tooltip-inner',
+        domTarget: '.ant-tooltip .ant-tooltip-inner'
+      },
+      {
+        title: '箭头',
+        options: [
+          {
+            type: 'background',
+            config: {
+              disableBackgroundImage: true,
+              keyMap: {
+                backgroundColor: '--antd-arrow-background-color'
+              }
+            }
+          }
+        ],
+        target: '.ant-tooltip .ant-tooltip-arrow .ant-tooltip-arrow-content'
+      }
+    ]
   }
 };

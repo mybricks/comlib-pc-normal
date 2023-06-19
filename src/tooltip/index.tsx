@@ -16,6 +16,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
   });
   return (
     <Tooltip
+      defaultVisible={!!edit}
       placement={placement}
       title={() => (
         <div
