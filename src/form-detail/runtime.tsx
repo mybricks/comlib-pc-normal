@@ -1,104 +1,21 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Descriptions, Tooltip } from 'antd';
+import React, { useEffect } from 'react';
+import { Descriptions, Tooltip, Typography } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { uuid } from '../utils';
-import { Data, InputIds, Item, TypeEnum } from './constants';
+import { Data, InputIds, TypeEnum } from './constants';
 import css from './runtime.less';
+import { isObject } from 'lodash';
 
-export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
-  const {
-    size,
-    title,
-    showTitle,
-    layout,
-    column,
-    bordered,
-    colon,
-    globalLabelStyle = {},
-    autoWidth
-  } = data || {};
-  const [rawData, setData] = useState({});
-  const rawDataRef = useRef({});
-  rawDataRef.current = rawData;
+const { Text } = Typography;
 
-  const contentMap = {
-    text: (value, lineLimit, widthLimit, limit, id) => {
-      const multiLine = {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        width: widthLimit,
-        display: '-webkit-box',
-        WebkitLineClamp: lineLimit,
-        WebkitBoxOrient: 'vertical',
-        wordWrap: 'break-word',
-        wordBreak: 'normal'
-      };
-      const singleLine = {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        width: widthLimit,
-        border: 'none'
-      };
-      const customStyle = lineLimit === 1 ? singleLine : multiLine;
-      return limit ? (
-        <MassiveValue value={env.i18n(value)} customStyle={customStyle} limit={limit} id={id} />
-      ) : (
-        <div
-          className={`${id}-content ${css.pre} pre`}
-          style={{ width: widthLimit === 'undefinedpx' ? '100%' : widthLimit }}
-        >
-          {env.i18n(value)}
-        </div>
-      );
-    }
-  };
-  const getDataSource = useCallback(() => {
-    const res: Item[] = [];
-    let ds = rawDataRef.current || {};
-    (data.items || []).forEach((item) => {
-      const labelStyle = {
-        ...item.labelStyle,
-        marginLeft: item.stylePadding ? item.stylePadding[0] : 0
-      };
-      const contentStyle = {
-        ...item.contentStyle,
-        color: item.color || item.contentStyle?.color,
-        marginTop: item.stylePadding ? item.stylePadding[1] : 0
-      };
-      const itemStyle = {
-        paddingLeft: Array.isArray(item.padding) ? item.padding[0] : 0,
-        paddingRight: Array.isArray(item.padding) ? item.padding[1] : 0,
-        paddingTop: Array.isArray(item.padding) ? item.padding[2] : 0,
-        paddingBottom: Array.isArray(item.padding) ? item.padding[3] : 16
-      };
-
-      res.push({
-        ...item,
-        value: ds[item.key] === void 0 ? item.value : ds[item.key],
-        labelStyle,
-        contentStyle,
-        itemStyle
-      });
-    });
-    return res;
-  }, []);
-
-  const setDataSource = useCallback((ds: any) => {
-    setData(ds);
-  }, []);
+export default function ({ env, data, inputs, slots, outputs, onError }: RuntimeParams<Data>) {
+  const { size, title, showTitle, layout, column, bordered, colon } = data || {};
 
   // 后置操作渲染
   const SuffixRender = (props) => {
     const { type, id, value, useSuffix, suffixBtnText = '查看更多' } = props;
     const outputId = `${id}-suffixClick`;
     if (useSuffix && type === TypeEnum.Text) {
-      const record = {
-        ...rawDataRef.current
-      };
-      getDataSource().forEach((item) => {
-        record[item.key] = item.value;
-      });
+      const record = data.items.reduce((pre, cur) => ({ ...pre, [cur.key]: cur.value }), {});
       return (
         <a
           className={css.suffixBtn}
@@ -117,136 +34,92 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
     }
     return null;
   };
-  const RenderItems = () => {
-    if (!data.items?.length) return null;
 
-    return (
-      <Descriptions
-        title={showTitle ? env.i18n(title) : undefined}
-        size={size}
-        layout={layout}
-        column={column}
-        bordered={bordered}
-        colon={false}
-        className={css.des}
-      >
-        {getDataSource().map((item) => {
-          const {
-            id,
-            value,
-            type,
-            span,
-            label,
-            labelStyle,
-            contentStyle,
-            itemStyle,
-            slotId = '',
-            lineLimit,
-            widthLimit,
-            limit,
-            showLable = true,
-            labelDesc
-          } = item || {};
-          const SlotItem =
-            type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
-              ? slots[slotId]?.render({
-                  inputValues: {
-                    [InputIds.CurDs]: value,
-                    [InputIds.DataSource]: rawDataRef.current
-                  },
-                  key: slotId
-                })
-              : null;
-          if (type === TypeEnum.AllSlot) {
-            return (
-              <Descriptions.Item label={''} key={id} span={span}>
-                {SlotItem}
-              </Descriptions.Item>
-            );
-          }
+  const renderItems = () => {
+    return (data.items || []).map((item) => {
+      const {
+        id,
+        value,
+        type = TypeEnum.Text,
+        span,
+        label,
+        slotId = '',
+        rows = 1,
+        ellipsis,
+        showLabel = true,
+        labelDesc
+      } = item || {};
+      const SlotItem =
+        type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
+          ? slots[slotId]?.render({
+              inputValues: {
+                [InputIds.CurDs]: value,
+                [InputIds.DataSource]: data.items.reduce(
+                  (pre, cur) => ({ ...pre, [cur.key]: cur.value }),
+                  {}
+                )
+              },
+              key: slotId
+            })
+          : null;
+      if (type === TypeEnum.AllSlot) {
+        return (
+          <Descriptions.Item label={null} key={id} span={span} className={`${id}-item`}>
+            {SlotItem}
+          </Descriptions.Item>
+        );
+      }
 
-          let labelNode;
+      let labelNode = env.i18n(label);
+
+      if (showLabel) {
+        if (!!labelDesc) {
           labelNode = (
-            <span className={`${id}-label ${css.label}`}>
-              {env.i18n(label + (data.colon ? ':' : ''))}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ marginRight: 5 }}>{labelNode}</span>
+              <Tooltip title={labelDesc}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </div>
           );
-          if (showLable) {
-            if (!!labelDesc) {
-              labelNode = (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span style={{ marginRight: 5 }} className={`${id}-label ${css.label}`}>
-                    {env.i18n(label + (data.colon ? ':' : ''))}
-                  </span>
-                  <Tooltip title={labelDesc}>
-                    <InfoCircleOutlined />
-                  </Tooltip>
-                </div>
-              );
-            }
-          } else {
-            if (label === '') {
-              labelNode = null;
-            } else {
-              labelNode = (
-                <span className={`${id}-label ${css.label}`}>
-                  {env.i18n(label + (data.colon ? ':' : ''))}
-                </span>
-              );
-            }
-          }
-          return (
-            <Descriptions.Item label={labelNode} key={id} span={span} className={`${id}-item`}>
-              {type === TypeEnum.PartSlot
-                ? SlotItem
-                : contentMap[type](value, lineLimit, `${widthLimit}px`, limit, id)}
-              {SuffixRender(item)}
-            </Descriptions.Item>
-          );
-        })}
-      </Descriptions>
-    );
+        }
+        if (!label) labelNode = null;
+      } else {
+        labelNode = null;
+      }
+      return (
+        <Descriptions.Item label={labelNode} key={id} span={span} className={`${id}-item`}>
+          {type === TypeEnum.PartSlot ? (
+            SlotItem
+          ) : (
+            <Text
+              style={{ color: 'inherit' }}
+              ellipsis={ellipsis ? { rows, tooltip: true } : false}
+            >
+              {env.i18n(value)}
+            </Text>
+          )}
+          {SuffixRender(item)}
+        </Descriptions.Item>
+      );
+    });
   };
-
-  useLayoutEffect(() => {
-    if (env.edit && data.items?.length === 0) {
-      data.items.push({
-        id: uuid(),
-        label: '描述项1',
-        showLable: true,
-        key: 'field1',
-        value: 'field1',
-        span: 1,
-        labelStyle: {
-          fontSize: 14,
-          fontWeight: '400',
-          lineHeight: 1,
-          color: '#8c8c8c',
-          letterSpacing: 0
-        },
-        contentStyle: {
-          fontSize: 14,
-          fontWeight: '400',
-          lineHeight: 1,
-          color: '#333333',
-          letterSpacing: 0
-        },
-        padding: [0, 0],
-        type: TypeEnum.Text,
-        direction: 'horizontal',
-        useSuffix: false,
-        suffixBtnText: '查看更多',
-        schema: {
-          type: 'string'
-        },
-        labelDesc: ''
-      });
-    }
-  }, [data]);
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetDataSource] && inputs[InputIds.SetDataSource](setDataSource);
+      inputs[InputIds.SetDataSource] &&
+        inputs[InputIds.SetDataSource]((ds: Record<string, any>) => {
+          if (!isObject(ds)) {
+            onError('参数必须是json');
+            return;
+          }
+          for (const [key, value] of Object.entries(ds)) {
+            const item = data.items.find(({ key: itemKey }) => key === itemKey);
+            if (item && !!value) {
+              item.value = value;
+            }
+          }
+        });
       inputs[InputIds.SetTitle] &&
         inputs[InputIds.SetTitle]((t: string) => {
           data.title = t;
@@ -255,22 +128,16 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   }, [data]);
 
   return (
-    <div>
-      <RenderItems />
-    </div>
-  );
-}
-function MassiveValue({ value, customStyle, limit, id }) {
-  const parentEle = useRef<HTMLDivElement>(null);
-  return (
-    <div ref={parentEle} style={customStyle}>
-      {limit ? (
-        <Tooltip title={value} overlayClassName={css.ellipsisTooltip} color="#fff">
-          <div className={`${id}-content ${css.pre} pre`}>{value}</div>
-        </Tooltip>
-      ) : (
-        <div className={`${id}-content ${css.pre} pre`}>{value}</div>
-      )}
-    </div>
+    <Descriptions
+      title={showTitle ? env.i18n(title) : undefined}
+      size={size}
+      layout={layout}
+      column={column}
+      bordered={bordered}
+      colon={colon}
+      className={css.des}
+    >
+      {renderItems()}
+    </Descriptions>
   );
 }

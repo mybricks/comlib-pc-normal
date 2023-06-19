@@ -2,38 +2,45 @@ import { Data } from '../../constants';
 import { StyleEditor } from './styleEditor';
 import { BaseEditor } from './baseEditor';
 import { IndexEditor } from './indexEditor';
-import { getEleIdx, getSpanCount, setNextSpan } from '../utils';
+import {
+  getEleIdx,
+  getSpanCount,
+  setNextSpan,
+  createStyleForItem,
+  createStyleForLabel,
+  createStyleForContent
+} from '../utils';
 
 const itemKey = '.ant-descriptions-item';
 export const ItemsEditors = {
   [itemKey]: {
     title: '描述项',
     style: [
-      {
-        title: '标签',
-        options: ['font'],
+      createStyleForItem({
         target({ focusArea, data }) {
-          return `.${data.items[getEleIdx({ data, focusArea })].id}-label`
+          return `.${data.items[getEleIdx({ data, focusArea })].id}-item`;
         }
-      },
-      {
-        title: '内容',
-        options: ['font'],
-        target({ focusArea, data }){
-          return `.${data.items[getEleIdx({ data, focusArea })].id}-content`
-        }
-      },
-      {
-        options: ['padding'],
+      }),
+      createStyleForLabel({
         target({ focusArea, data }) {
-          return `.${data.items[getEleIdx({ data, focusArea })].id}-item`
+          const selector = `.${
+            data.items[getEleIdx({ data, focusArea })].id
+          }-item .ant-descriptions-item-label`;
+          return selector;
         }
-      },
-      ...StyleEditor
+      }),
+      createStyleForContent({
+        target({ focusArea, data }) {
+          const selector = `.${
+            data.items[getEleIdx({ data, focusArea })].id
+          }-item .ant-descriptions-item-content`;
+          return selector;
+        }
+      })
     ],
-    items: ({ }: EditorResult<Data>, cate1) => {
+    items: ({}: EditorResult<Data>, cate1) => {
       cate1.title = '常规';
-      cate1.items = [...BaseEditor, ...IndexEditor];
+      cate1.items = [...BaseEditor, ...StyleEditor, ...IndexEditor];
     }
   }
 };

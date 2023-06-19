@@ -12,51 +12,27 @@
       font-weight: 600;
     }
     .ant-descriptions-item-label {
+      display: inline-block;
       flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 14px;
+      color: #8c8c8c;
+      letter-spacing: 0;
     }
     .ant-descriptions-item-content {
       flex: 1;
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 14px;
+      color: #333333;
+      letter-spacing: 0;
       overflow: hidden;
-      display: flex;
-      align-items: center;
     }
   }
-}
-
-.ellipsisTooltip {
-  max-width: 400px;
-  max-height: 480px;
-  :global {
-    .ant-tooltip-inner {
-      color: unset;
-      overflow: auto;
-      max-height: 480px;
-      display: flex;
-      flex-wrap: wrap;
-      padding: 12px;
-      word-break: break-word;
-      white-space: pre-wrap;
-    }
+  .suffixBtn {
+    margin: 0 10px;
+    flex-shrink: 0;
   }
-}
-.suffixBtn {
-  margin: 0 10px;
-  flex-shrink: 0;
-}
-
-.pre {
-  white-space: pre-wrap;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1;
-  color: #333333;
-  letter-spacing: 0;
-}
-
-.label {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1;
-  color: #8c8c8c;
-  letter-spacing: 0;
 }
