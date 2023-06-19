@@ -39,6 +39,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
 
   return (
     <Popover
+      defaultVisible={!!edit}
       placement={placement}
       title={useTitleSlot ? slots['title']?.render() : renderWrapText(title as string)}
       content={useContentSlot ? slots['content']?.render() : renderWrapText(content as string)}

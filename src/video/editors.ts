@@ -103,7 +103,7 @@ export default {
     },
     style: {
       options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-      target: '[data-root="root"] > div,[data-root="root"] > video'
+      target: ['[data-root="root"] > div', '[data-root="root"] > video']
     }
   }
 };
