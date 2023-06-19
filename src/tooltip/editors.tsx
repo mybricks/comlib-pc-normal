@@ -97,8 +97,9 @@ export default {
       ];
     },
     style: {
-      options: ['bgColor', 'font', 'size'],
-      target: '.ant-tooltip-arrow-content, .ant-tooltip-inner'
+      options: ['font', 'size', { type: 'background', config: { disableBackgroundImage: true } }],
+      target: '.ant-tooltip .ant-tooltip-inner',
+      domTarget: '.ant-tooltip .ant-tooltip-inner'
     }
   }
 };

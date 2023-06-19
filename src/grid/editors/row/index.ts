@@ -2,7 +2,7 @@ import { Data } from '../../constants';
 import IndexEditor from './indexEditor';
 import LayoutEditor from './layoutEditor';
 import StyleEditor from './styleEditor';
-import { getRowItem } from '../utils';
+import { getRowItem, createStyleForRow } from '../utils';
 
 export default {
   '[data-type-row]': {
@@ -13,8 +13,6 @@ export default {
       cate1.title = '常规';
       cate1.items = [...LayoutEditor(row), ...StyleEditor(row), ...IndexEditor];
     },
-    style: {
-      options: ['BgColor']
-    }
+    style: createStyleForRow()
   }
 };

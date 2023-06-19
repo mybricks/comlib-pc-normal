@@ -82,10 +82,10 @@ export default {
             {
               title: '比例',
               type: 'select',
-              options:{
+              options: {
                 options: [
-                  {label: "保持比例", value: "contain"},
-                  {label: "充满", value: "fill"}
+                  { label: '保持比例', value: 'contain' },
+                  { label: '充满', value: 'fill' }
                 ]
               },
               value: {
@@ -93,7 +93,7 @@ export default {
                   return data.fit || 'contain';
                 },
                 set({ data }: EditorResult<Data>, val: CSSProperties['objectFit']) {
-                    data.fit = val
+                  data.fit = val;
                 }
               }
             }
@@ -102,7 +102,7 @@ export default {
       ];
     },
     style: {
-      options: ['border', 'bgcolor'],
+      options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
       target: '[data-root="root"] > div,[data-root="root"] > video'
     }
   }

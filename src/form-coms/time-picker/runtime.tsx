@@ -17,7 +17,6 @@ export default function ({
   inputs,
   outputs,
   env,
-  style,
   id,
   parentSlot,
   name
@@ -108,7 +107,7 @@ export default function ({
   }, [format, customFormat]);
 
   return (
-    <div className={styles.wrap} style={style}>
+    <div className={styles.wrap}>
       <TimePicker
         placeholder={placeholder}
         value={value}

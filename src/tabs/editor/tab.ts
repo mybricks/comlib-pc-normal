@@ -127,7 +127,7 @@ export default {
           title: '操作',
           items: [
             {
-              title: '向前移动',
+              title: '前移',
               type: 'Button',
               value: {
                 get({ focusArea }: EditorResult<Data>) {
@@ -142,7 +142,7 @@ export default {
               }
             },
             {
-              title: '向后移动',
+              title: '后移',
               type: 'Button',
               value: {
                 get({ focusArea }: EditorResult<Data>) {

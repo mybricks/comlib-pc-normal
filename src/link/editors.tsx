@@ -1,33 +1,19 @@
 import { Actions } from '../utils/history';
 import { Data } from './constants';
+import css from './runtime.less';
 
 export default {
   ':root': {
     style: [
       {
-        title: '激活样式',
-        description: '开启后，可以为链接分别配置默认样式和鼠标悬浮时的样式',
-        type: 'Switch',
-        value: {
-          get: ({ data }: EditorResult<Data>) => {
-            return data.useHoverStyle;
-          },
-          set: ({ data }: EditorResult<Data>, value: boolean) => {
-            data.useHoverStyle = value;
-          }
-        }
-      },
-      {
         title: '默认',
-        options: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
-        target: '.linkWrapper'
+        options: ['padding', 'border', 'background', 'font'],
+        target: '.linkWrapper',
+        initValue: { color: '#1890ff' }
       },
       {
         title: '激活',
-        options: ['padding', 'border', 'bgcolor', 'bgimage', 'font'],
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.useHoverStyle;
-        },
+        options: ['padding', 'border', 'background', 'font'],
         target: '.linkWrapperHover:hover',
         initValue: { color: '#40a9ff' }
       }

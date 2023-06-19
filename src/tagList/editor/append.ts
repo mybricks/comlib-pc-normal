@@ -1,4 +1,5 @@
 import { Data } from '../types';
+import { createStyle } from './util';
 export default {
   '[data-item-tag="append"]': {
     title: '新增按钮',
@@ -31,9 +32,8 @@ export default {
         }
       ];
     },
-    style: {
-      options: ['font', 'border', 'bgColor'],
+    style: createStyle({
       target: 'div[data-root="root"] span[data-item-tag="append"]'
-    }
+    })
   }
 };

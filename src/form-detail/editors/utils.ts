@@ -1,5 +1,6 @@
 import { message } from 'antd';
-import { Data, InputIds } from '../constants';
+import { Data, Item, InputIds, TypeEnum } from '../constants';
+import { uuid } from '../../utils';
 
 export function getEleIdx({ data, focusArea }: any): number {
   focusArea.ele.myEle = true;
@@ -228,3 +229,41 @@ export const Schemas = {
     };
   }
 };
+
+export const createItem = ({ data }: Pick<EditorResult<Data>, 'data'>): Item => {
+  const id = !!data.items.length ? uuid() : 'field1';  //兼容init设置i/o schema不生效问题
+  return {
+    id,
+    label: `描述项${data.items.length + 1}`,
+    key: id,
+    showLabel: true,
+    value: `field${data.items.length + 1}`,
+    span: 1,
+    type: TypeEnum.Text,
+    direction: 'horizontal',
+    useSuffix: false,
+    suffixBtnText: '查看更多',
+    schema: {
+      type: 'string'
+    },
+    labelDesc: ''
+  };
+};
+
+export const createStyleForItem = ({ target }: StyleTargetType<Data>) => ({
+  title: '描述项',
+  options: ['padding'],
+  target
+});
+
+export const createStyleForLabel = ({ target }: StyleTargetType<Data>) => ({
+  title: '标签',
+  options: ['font', 'size'],
+  target
+});
+
+export const createStyleForContent = ({ target }: StyleTargetType<Data>) => ({
+  title: '内容',
+  options: ['font', 'size'],
+  target
+});

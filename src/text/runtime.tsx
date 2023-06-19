@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from 'antd';
+import css from './runtime.less';
+
 import {
   AlignTypeEnum,
   CursorTypeEnum,
@@ -13,6 +15,7 @@ const { Text, Paragraph } = Typography;
 
 export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   const [isHover, setIsHover] = useState(false);
+  const [dynamicStyle, setDynamicStyle] = useState({});
 
   const onClick = () => {
     if (data.useClick && outputs[OutputIds.Click]) {
@@ -31,9 +34,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
     inputs[InputIds.SetStyle] &&
       inputs[InputIds.SetStyle]((value: any) => {
         const { color, fontSize, fontWeight } = value || {};
-        data.style.color = color || data.style.color;
-        data.style.fontSize = fontSize || data.style.fontSize;
-        data.style.fontWeight = fontWeight || data.style.fontWeight;
+        setDynamicStyle({ color: color, fontSize: fontSize, fontWeight: fontWeight });
       });
   }, []);
 
@@ -44,12 +45,12 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         lineHeight: 1
       }}
       onMouseOver={() => {
-        if (data.useHoverStyle && data.hoverStyle) {
+        if (data.useHoverStyle) {
           setIsHover(true);
         }
       }}
       onMouseLeave={() => {
-        if (data.useHoverStyle && data.hoverStyle) {
+        if (data.useHoverStyle) {
           setIsHover(false);
         }
       }}
@@ -57,11 +58,14 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
       {data.isEllipsis && data.ellipsis?.rows > 1 ? (
         <Paragraph
           style={{
-            ...(isHover ? data.hoverStyle : data.style),
+            ...(inputs[InputIds.SetStyle] && !isHover ? dynamicStyle : void 0),
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
+          className={`${css.text} text ${data.useHoverStyle ? 'textHover' : void 0} ${
+            data.useHoverStyle ? css.textHover : void 0
+          }`}
           onClick={onClick}
           ellipsis={data.ellipsis || {}}
         >
@@ -70,11 +74,14 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
       ) : (
         <Text
           style={{
-            ...(isHover ? data.hoverStyle : data.style),
+            ...(inputs[InputIds.SetStyle] && !isHover ? dynamicStyle : void 0),
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
+          className={`${css.text} text ${data.useHoverStyle ? css.textHover : void 0} ${
+            data.useHoverStyle ? 'textHover' : void 0
+          }`}
           onClick={onClick}
           ellipsis={data.ellipsis || {}}
         >

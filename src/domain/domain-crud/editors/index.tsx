@@ -15,6 +15,23 @@ export default {
       childData.formItemColumn = 3;
       childData.actions.visible = false;
       childData.actions.span = 8;
+      childData.actions.items = [
+        {
+          title: '查询',
+          type: 'primary',
+          isDefault: true,
+          visible: true,
+          outputId: 'onClickSubmit',
+          key: 'submit'
+        },
+        {
+          title: '取消',
+          isDefault: false,
+          visible: false,
+          outputId: 'onClickCancel',
+          key: 'cancel'
+        }
+      ];
       childData.items.forEach((item) => {
         item.span = 8;
       });
@@ -132,6 +149,98 @@ export default {
               }
             }
           }
+          // {
+          //   title: '实体',
+          //   type: 'Select',
+          //   options(props) {
+          //     return {
+          //       get options() {
+          //         const entityList: Array<{ label: string; value: string }> = [];
+          //         props.data.domainAry?.forEach((domain) => {
+          //           domain.entityList
+          //             .filter((entity) => !entity.isSystem && entity.isOpen)
+          //             .forEach((entity) => {
+          //               entityList.push({
+          //                 label: `${domain.fileName}.${entity.name}`,
+          //                 value: `${domain.fileId}.${entity.id}`
+          //               });
+          //             });
+          //         });
+
+          //         return entityList;
+          //       },
+          //       disabled: !!props.data.domainFileId,
+          //       placeholder: '请选择实体'
+          //     };
+          //   },
+          //   value: {
+          //     get({ data }: EditorResult<Data>) {
+          //       return data.domainFileId ? `${data.domainFileId}.${data.entityId}` : undefined;
+          //     },
+          //     set({ data, output, input, getChildByName }: EditorResult<Data>, value: string = '') {
+          //       const [domainFileId, entityId] = value.split('.');
+
+          //       if (data.domainFileId !== Number(domainFileId) || data.entityId !== entityId) {
+          //         data.domainFileId = Number(domainFileId);
+          //         data.entityId = entityId;
+
+          //         const entity = data.domainAry
+          //           .find((d) => d.fileId === Number(domainFileId))
+          //           ?.entityList.find((entity) => entity.id === entityId);
+
+          //         const curEntity = JSON.parse(JSON.stringify(entity || null));
+
+          //         if (curEntity) {
+          //           curEntity.fieldAry.filter(
+          //             (field) =>
+          //               ![FieldBizType.MAPPING].includes(field.bizType) &&
+          //               !field.isPrimaryKey &&
+          //               !field.isPrivate
+          //           );
+
+          //           refreshChildComModel(data.childNames, getChildByName, curEntity);
+
+          //           data.entity = curEntity;
+          //         }
+
+          //         // 清空当前已选的返回字段
+          //         data.fieldAry = [];
+          //       }
+          //     }
+          //   }
+          // },
+          // {
+          //   title: '刷新模型实体信息',
+          //   type: 'editorRender',
+          //   ifVisible(props: EditorResult<Data>) {
+          //     return !!props.data.domainFileId;
+          //   },
+          //   options: {
+          //     render: Refresh,
+          //     get domainFileId() {
+          //       return data.domainFileId;
+          //     },
+          //     get entityId() {
+          //       return data.entityId;
+          //     },
+          //     get entity() {
+          //       return data.entity;
+          //     }
+          //   },
+          //   value: {
+          //     get({ data }) {
+          //       return { domainFileId: data.domainFileId, entityId: data.entityId };
+          //     },
+          //     set({ data, setTitle, title, output, slot, getChildByName }, newEntity: any) {
+          //       if (!newEntity) {
+          //         return;
+          //       }
+
+          //       refreshChildComModel(data.childNames, getChildByName, newEntity);
+          //       data.entity = newEntity;
+          //     }
+          //   }
+          // }
         ]
       },
       {

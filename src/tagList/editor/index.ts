@@ -1,7 +1,7 @@
 import { Data, TagSize, Preset } from '../types';
 import TagEditor from './tag';
-import AppendEditor from './append'
-import { createTag } from './util';
+import AppendEditor from './append';
+import { createTag, createStyle } from './util';
 
 const TagSchema = {
   type: 'object',
@@ -75,11 +75,11 @@ export default {
               type: 'select',
               options: {
                 options: [
-                  {label: '默认', value: 'default'},
-                  {label: '成功', value: 'success'},
-                  {label: '进行中', value: 'processing'},
-                  {label: '警告', value: 'warning'},
-                  {label: '失败', value: 'error'},
+                  { label: '默认', value: 'default' },
+                  { label: '成功', value: 'success' },
+                  { label: '进行中', value: 'processing' },
+                  { label: '警告', value: 'warning' },
+                  { label: '失败', value: 'error' }
                 ]
               },
               value: {
@@ -87,10 +87,10 @@ export default {
                   return data.type;
                 },
                 set({ data }: EditorResult<Data>, val: Preset) {
-                  data.type = val
+                  data.type = val;
                   data.tags.forEach((tag) => {
-                    tag.color = val
-                  })
+                    tag.color = val;
+                  });
                 }
               }
             },
@@ -108,7 +108,7 @@ export default {
               }
             }
           ]
-        },
+        }
       ];
       cate[1].title = '高级';
       cate[1].items = [
@@ -216,10 +216,7 @@ export default {
         }
       ];
     },
-    style: {
-      options: ['font', 'border', 'bgColor'],
-      target: 'div[data-root="root"] span[data-item-tag="tag"]'
-    }
+    style: createStyle({ target: 'div[data-root="root"] span[data-item-tag="tag"]' })
   },
   ...TagEditor,
   ...AppendEditor

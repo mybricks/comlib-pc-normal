@@ -105,7 +105,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   }
   return (
     <div className={css.wrapper}>
-      <div className={`${css.button} button`} onClick={onClick} onDoubleClick={onDoubleClick}>
+      <div className={`${css.button}`} onClick={onClick} onDoubleClick={onDoubleClick}>
         {renderBtnContext(data)}
       </div>
     </div>

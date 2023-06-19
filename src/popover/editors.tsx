@@ -154,13 +154,14 @@ export default {
     style: [
       {
         title: '标题',
-        options: ['bgColor', 'border', 'bgImage', 'font', 'size'],
-        target: '.ant-popover-inner .ant-popover-title'
+        options: ['background', 'border', 'font', 'size'],
+        target: '.ant-popover .ant-popover-inner .ant-popover-title'
       },
       {
         title: '内容',
-        options: ['bgColor', 'border', 'bgImage', 'font', 'size'],
-        target: '.ant-popover-arrow-content, .ant-popover-inner .ant-popover-inner-content'
+        options: ['background', 'border', 'font', 'size'],
+        target:
+          '.ant-popover .ant-popover-arrow-content,.ant-popover .ant-popover-inner .ant-popover-inner-content'
       }
     ]
   }

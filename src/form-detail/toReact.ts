@@ -145,10 +145,10 @@ const getDescriptionsItemStr = (item: Item, slots) => {
         contentStyle,
         itemStyle,
         slotId = '',
-        lineLimit,
-        widthLimit,
-        limit,
-        showLable = true
+        rows,
+        maxWidth,
+        ellipsis,
+        showLabel = true
     } = item || {};
 
     const SlotItem = type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
@@ -158,9 +158,9 @@ const getDescriptionsItemStr = (item: Item, slots) => {
         const multiLine = {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            width: widthLimit,
+            width: maxWidth,
             display: '-webkit-box',
-            WebkitLineClamp: lineLimit,
+            WebkitLineClamp: rows,
             WebkitBoxOrient: 'vertical',
             wordWrap: 'break-word',
             wordBreak: 'normal'
@@ -169,20 +169,20 @@ const getDescriptionsItemStr = (item: Item, slots) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            width: widthLimit,
+            width: maxWidth,
             border: 'none'
         };
-        const customStyle = lineLimit === 1 ? singleLine : multiLine;
+        const customStyle = rows === 1 ? singleLine : multiLine;
         const divProps = {
-            style: { ...getClsStyle(allCls, [css.pre]), width: widthLimit ? widthLimit + 'px' : void 0 }
+            style: { ...getClsStyle(allCls, [css.pre]), width: maxWidth ? maxWidth + 'px' : void 0 }
         }
-        return limit ? getMassiveValue({ value, customStyle, limit }) :
+        return ellipsis ? getMassiveValue({ value, customStyle, ellipsis }) :
             `<div ${getPropsFromObject(divProps)}>
                 ${value}
             < /div>`
     }
     const desItemProps = {
-        label: showLable ? label : void 0,
+        label: showLabel ? label : void 0,
         span,
         labelStyle,
         contentStyle,
@@ -228,7 +228,7 @@ const getDescriptionsItemStr = (item: Item, slots) => {
 }
 
 // 超出内容省略
-const getMassiveValue = ({ value, customStyle, limit }) => {
+const getMassiveValue = ({ value, customStyle, ellipsis }) => {
     const outerDivProps = {
         style: customStyle
     }

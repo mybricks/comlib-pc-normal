@@ -45,47 +45,6 @@ export default {
           }
         },
         {
-          title: '额外内容',
-          items: [
-            {
-              title: '左侧',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.useLeftExtra;
-                },
-                set({ data, slot }: EditorResult<Data>, value: boolean) {
-                  data.useLeftExtra = value;
-                  const hasSlot = slot.get(SlotIds.LeftExtra);
-                  if (value) {
-                    !hasSlot && slot.add(SlotIds.LeftExtra, '左侧内容');
-                  } else {
-                    hasSlot && slot.remove(SlotIds.LeftExtra);
-                  }
-                }
-              }
-            },
-            {
-              title: '右侧',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.useRigthExtra;
-                },
-                set({ data, slot }: EditorResult<Data>, value: boolean) {
-                  data.useRigthExtra = value;
-                  const hasSlot = slot.get(SlotIds.RigthExtra);
-                  if (value) {
-                    !hasSlot && slot.add(SlotIds.RigthExtra, '右侧内容');
-                  } else {
-                    hasSlot && slot.remove(SlotIds.RigthExtra);
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
           title: '外观',
           type: 'Select',
           options: [
@@ -186,6 +145,47 @@ export default {
           }
         },
         {
+          title: '额外内容',
+          items: [
+            {
+              title: '左侧',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useLeftExtra;
+                },
+                set({ data, slot }: EditorResult<Data>, value: boolean) {
+                  data.useLeftExtra = value;
+                  const hasSlot = slot.get(SlotIds.LeftExtra);
+                  if (value) {
+                    !hasSlot && slot.add(SlotIds.LeftExtra, '左侧内容');
+                  } else {
+                    hasSlot && slot.remove(SlotIds.LeftExtra);
+                  }
+                }
+              }
+            },
+            {
+              title: '右侧',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useRigthExtra;
+                },
+                set({ data, slot }: EditorResult<Data>, value: boolean) {
+                  data.useRigthExtra = value;
+                  const hasSlot = slot.get(SlotIds.RigthExtra);
+                  if (value) {
+                    !hasSlot && slot.add(SlotIds.RigthExtra, '右侧内容');
+                  } else {
+                    hasSlot && slot.remove(SlotIds.RigthExtra);
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '事件',
           items: [
             {
@@ -203,24 +203,40 @@ export default {
     },
     style: [
       {
-        title: '默认',
-        options: ['font', 'bgColor'],
+        title: '默认标签',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }
+          // { type: 'background', config: { disableBackgroundImage: true } }
+        ],
         initValue: {
-          color: 'rgba(0, 0, 0, 0.85)'
+          color: 'rgba(0,0,0,.85)',
+          backgroundColor: '#fafafa'
         },
-        target: '.ant-tabs .ant-tabs-tab, .ant-tabs .ant-tabs-tab .ant-tabs-tab-btn'
+        target:
+          '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn',
+        domTarget: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab'
       },
       {
-        title: '选中',
-        options: ['font', 'bgColor'],
+        title: '选中标签',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }
+          // { type: 'background', config: { disableBackgroundImage: true } }
+        ],
         initValue: {
           color: '#1890ff'
         },
-        target: '.ant-tabs .ant-tabs-tab-active, .ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn'
+        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active .ant-tabs-tab-btn'
       },
       {
         title: '选中条',
-        options: ['size', 'border', 'bgColor'],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.type === 'line';
+        },
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'size', config: { disableWidth: true } }
+        ],
         target: '.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar'
       }
     ]

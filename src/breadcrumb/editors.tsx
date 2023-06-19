@@ -118,7 +118,14 @@ export default {
     style: [
       {
         title: '文本',
-        options: ['font'],
+        options: [
+          {
+            type: 'font',
+            config: {
+              disableTextAlign: true
+            }
+          }
+        ],
         target({ data, focusArea }) {
           return `.${findConfig({ data, focusArea }).key}`;
         }

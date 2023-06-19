@@ -13,7 +13,6 @@ export default function ({
   inputs,
   outputs,
   env,
-  style,
   parentSlot,
   id,
   name,
@@ -131,7 +130,7 @@ export default function ({
   }, [format, customFormat]);
 
   return (
-    <div className={styles.wrap} style={style}>
+    <div className={styles.wrap}>
       <TimePicker.RangePicker
         placeholder={placeholder}
         value={value}

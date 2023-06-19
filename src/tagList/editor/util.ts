@@ -1,5 +1,5 @@
 import { uuid, arrayMove } from '../../utils';
-import { Tag } from '../types';
+import { Tag, Data } from '../types';
 
 const getTagItem = (data, focusArea): [Tag, number] => {
   const { index } = focusArea.dataset;
@@ -19,4 +19,10 @@ const createTag = (content = '新标签') => {
   };
 };
 
-export { getTagItem, getTagIndex, createTag, arrayMove, uuid };
+const createStyle = ({ target }: StyleTargetType<Data>) => ({
+  title: '描述',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  target
+});
+
+export { getTagItem, getTagIndex, createTag, createStyle, arrayMove, uuid };

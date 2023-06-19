@@ -48,3 +48,48 @@ export const updateSlotSchema = (slots, schema) => {
 export const isEqualSchema = (sourceSchema) => {
   return isEqual(sourceSchema, DefaultSourceSchema);
 };
+
+export const createStyleForDot = ({ target }: StyleTargetType<Data>) => ({
+  title: '时间轴点',
+  options: ['border'],
+  target
+});
+
+export const createStyleForTitle = ({ target }: StyleTargetType<Data>) => ({
+  title: '标题',
+  options: [
+    {
+      type: 'font',
+      config: {
+        disableTextAlign: true
+      }
+    }
+  ],
+  target
+});
+
+export const createStyleForSubtitle = ({ target }: StyleTargetType<Data>) => ({
+  title: '副标题',
+  options: [
+    {
+      type: 'font',
+      config: {
+        disableTextAlign: true
+      }
+    }
+  ],
+  target
+});
+
+export const createStyleForDesc = ({ target }: StyleTargetType<Data>) => ({
+  title: '描述',
+  options: [
+    {
+      type: 'font',
+      config: {
+        disableTextAlign: true
+      }
+    }
+  ],
+  target
+});

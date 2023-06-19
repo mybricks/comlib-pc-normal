@@ -16,5 +16,6 @@
     "textAlign": "left"
   },
   "useClick": false,
-  "useDynamicStyle": false
+  "useDynamicStyle": false,
+  "useHoverStyle": true
 }

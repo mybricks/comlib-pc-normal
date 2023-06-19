@@ -69,12 +69,12 @@ export default {
     style: [
       {
         title: '默认',
-        options: ['padding', 'border', 'bgcolor', 'bgimage'],
+        options: ['padding', 'border', 'background'],
         target: ':root'
       },
       {
         title: 'Hover',
-        options: ['padding', 'border', 'bgcolor', 'bgimage'],
+        options: ['padding', 'border', 'background'],
         target: '[data-root="root"]:hover'
       }
     ]
