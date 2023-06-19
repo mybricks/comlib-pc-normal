@@ -1,5 +1,6 @@
 {
   "title": "JS计算",
+  "visibility": false,
   "namespace": "mybricks.normal-pc.muilt-inputJs",
   "version": "1.0.2",
   "description": "JS计算",
