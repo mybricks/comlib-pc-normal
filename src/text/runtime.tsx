@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { CSSProperties, useEffect, useMemo, useState } from 'react';
 import { Typography } from 'antd';
 import css from './runtime.less';
 
@@ -14,6 +14,7 @@ import {
 const { Text, Paragraph } = Typography;
 
 export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
+  const [dynamicStyle, setDynamicStyle] = useState<CSSProperties>({});
   useEffect(() => {
     inputs[InputIds.SetContent]((value: string) => {
       let res = value;
@@ -23,12 +24,10 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
       data.content = res;
     });
     inputs[InputIds.SetStyle] &&
-      inputs[InputIds.SetStyle]((value: React.CSSProperties) => {
-        data.style = value;
+      inputs[InputIds.SetStyle]((value: CSSProperties) => {
+        setDynamicStyle(value);
       });
   }, []);
-
-  const dynamicStyle = useMemo(() => ({ ...(data.style || {}) }), [data.style]);
 
   const onClick = () => {
     if (data.useClick && outputs[OutputIds.Click]) {
@@ -36,12 +35,20 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
     }
   };
 
+  const legacyConfigStyle = useMemo(() => {
+    if (!data.legacyConfigStyle) {
+      return data.style;
+    }
+    return data.legacyConfigStyle;
+  }, [data.style, data.legacyConfigStyle]);
+
   return (
     <div style={{ lineHeight: 1 }}>
       {data.isEllipsis && data.ellipsis?.rows > 1 ? (
         <Paragraph
           style={{
             ...dynamicStyle,
+            ...legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
@@ -57,6 +64,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         <Text
           style={{
             ...dynamicStyle,
+            ...data.legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default

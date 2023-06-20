@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 import css from './style.less';
 
@@ -37,6 +37,13 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
+  const legacyConfigStyle = useMemo(() => {
+    if (!data.legacyConfigStyle) {
+      return data.style;
+    }
+    return data.legacyConfigStyle;
+  }, [data.style, data.legacyConfigStyle]);
+
   const getOverflowStyle = () => {
     const res = {
       overflowY: overflowY || OverflowEnum.Hidden,
@@ -60,7 +67,7 @@ export default function (props: RuntimeParams<Data>) {
         transition: 'all 0.2s',
         position: useFixed ? 'fixed' : 'static',
         cursor: useClick ? 'pointer' : '',
-        ...data.style
+        ...legacyConfigStyle
       }}
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {

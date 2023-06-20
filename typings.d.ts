@@ -75,6 +75,20 @@ interface UpgradeParams<T> {
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
+  config: {
+    get: (id: string) => ConfigInstance;
+  }
+}
+
+type ConfigInstance = {
+  id: string;
+  title: string;
+  schema: Record<string, any>;
+  connectionCount: number;
+  setBinding: (binding: string) => void;
+  setSchema: (schema: Record<string, any>) => void;
+  setTitle: (title: string) => void;
+  remove: () => void
 }
 
 type AnyMap = {

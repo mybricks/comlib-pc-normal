@@ -9,5 +9,6 @@
   "style": {},
   "useClick": false,
   "useDynamicStyle": false,
-  "useHoverStyle": true
+  "useHoverStyle": true,
+  "legacyConfigStyle": {}
 }
