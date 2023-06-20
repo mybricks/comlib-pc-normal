@@ -5,10 +5,10 @@ export default function ({ data, setDeclaredStyle }: UpgradeParams<Data>): boole
      * @description v1.0.1 -> v1.0.2, 兼容之前默认和激活态颜色自定义
   */
   if(data.style){
-    setDeclaredStyle(`.text`, data.style);
+    setDeclaredStyle(`[data-item-type="root"]`, data.style);
   }
   if(data.hoverStyle){
-    setDeclaredStyle(`.textHover:hover`, data.hoverStyle);
+    setDeclaredStyle(`[data-item-type="root"]:hover`, data.hoverStyle);
   }
   
   return true;

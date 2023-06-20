@@ -146,15 +146,10 @@ export default {
         ...getRowSelectionEditor(props)
       ];
     },
-    style: {
-      ifVisible({ data }: EditorResult<Data>) {
-        return !!data.columns.length;
-      },
-      items: [
-        createStyleForHead({ target: 'table thead tr > th' }),
-        createStyleForContent({ target: 'table tbody tr > td' })
-      ]
-    }
+    style: [
+      createStyleForHead({ target: 'table thead tr > th' }),
+      createStyleForContent({ target: 'table tbody tr > td' })
+    ]
   },
   ...columnEditor,
   ...PaginatorEditor

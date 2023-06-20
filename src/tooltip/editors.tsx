@@ -120,6 +120,9 @@ export default {
             }
           }
         ],
+        initValue: {
+          '--antd-arrow-background-color': '#000000bf'
+        },
         target: '.ant-tooltip .ant-tooltip-arrow .ant-tooltip-arrow-content'
       }
     ]

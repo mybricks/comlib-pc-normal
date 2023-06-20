@@ -236,11 +236,17 @@ export function getColumnItemDataIndex(item: IColumn) {
 export const createStyleForHead = ({ target }: StyleTargetType<Data> = {}) => ({
   title: '表头',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  ifVisible({ data }: EditorResult<Data>) {
+    return !!data.columns.length;
+  },
   target
 });
 
 export const createStyleForContent = ({ target }: StyleTargetType<Data>) => ({
   title: '内容',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  ifVisible({ data }: EditorResult<Data>) {
+    return !!data.columns.length;
+  },
   target
 });

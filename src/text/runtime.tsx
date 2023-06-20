@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Typography } from 'antd';
 import css from './runtime.less';
 
@@ -14,15 +14,6 @@ import {
 const { Text, Paragraph } = Typography;
 
 export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
-  const [isHover, setIsHover] = useState(false);
-  const [dynamicStyle, setDynamicStyle] = useState({});
-
-  const onClick = () => {
-    if (data.useClick && outputs[OutputIds.Click]) {
-      outputs[OutputIds.Click](data.outputContent || data.content || '');
-    }
-  };
-
   useEffect(() => {
     inputs[InputIds.SetContent]((value: string) => {
       let res = value;
@@ -32,58 +23,48 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
       data.content = res;
     });
     inputs[InputIds.SetStyle] &&
-      inputs[InputIds.SetStyle]((value: any) => {
-        const { color, fontSize, fontWeight } = value || {};
-        setDynamicStyle({ color: color, fontSize: fontSize, fontWeight: fontWeight });
+      inputs[InputIds.SetStyle]((value: React.CSSProperties) => {
+        data.style = value;
       });
   }, []);
 
+  const dynamicStyle = useMemo(() => ({ ...(data.style || {}) }), [data.style]);
+
+  const onClick = () => {
+    if (data.useClick && outputs[OutputIds.Click]) {
+      outputs[OutputIds.Click](data.outputContent || data.content || '');
+    }
+  };
+
   return (
-    <div
-      style={{
-        // textAlign: data.align || AlignTypeEnum.Left,
-        lineHeight: 1
-      }}
-      onMouseOver={() => {
-        if (data.useHoverStyle) {
-          setIsHover(true);
-        }
-      }}
-      onMouseLeave={() => {
-        if (data.useHoverStyle) {
-          setIsHover(false);
-        }
-      }}
-    >
+    <div style={{ lineHeight: 1 }}>
       {data.isEllipsis && data.ellipsis?.rows > 1 ? (
         <Paragraph
           style={{
-            ...(inputs[InputIds.SetStyle] && !isHover ? dynamicStyle : void 0),
+            ...dynamicStyle,
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
-          className={`${css.text} text ${data.useHoverStyle ? 'textHover' : void 0} ${
-            data.useHoverStyle ? css.textHover : void 0
-          }`}
+          className={css.text}
           onClick={onClick}
           ellipsis={data.ellipsis || {}}
+          data-item-type="root"
         >
           {data.content || ''}
         </Paragraph>
       ) : (
         <Text
           style={{
-            ...(inputs[InputIds.SetStyle] && !isHover ? dynamicStyle : void 0),
+            ...dynamicStyle,
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
           }}
-          className={`${css.text} text ${data.useHoverStyle ? css.textHover : void 0} ${
-            data.useHoverStyle ? 'textHover' : void 0
-          }`}
+          className={css.text}
           onClick={onClick}
           ellipsis={data.ellipsis || {}}
+          data-item-type="root"
         >
           {data.content || ''}
         </Text>
