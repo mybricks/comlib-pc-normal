@@ -35,7 +35,7 @@ export default {
             }
           }
         ],
-        target: '.text'
+        target: '[data-item-type="root"]'
       },
       {
         title: 'Hover',
@@ -47,7 +47,17 @@ export default {
             }
           }
         ],
-        target: '.textHover:hover'
+        initValue: {
+          fontFamily: 'inherit',
+          fontWeight: '400',
+          fontSize: '14px',
+          fontStyle: 'normal',
+          lineHeight: '14px',
+          letterSpacing: '0px',
+          color: '#000000',
+          textAlign: 'left'
+        },
+        target: '[data-item-type="root"]:hover'
       }
     ],
     items: ({}: EditorResult<Data>, cate1) => {

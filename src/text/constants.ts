@@ -15,7 +15,7 @@ export enum WhiteSpaceEnum {
 export interface Data {
   content: string;
   align?: AlignTypeEnum;
-  style: Record<string, any>;
+  style: React.CSSProperties;
   useClick?: boolean;
   outputContent?: string;
   isEllipsis: boolean;
