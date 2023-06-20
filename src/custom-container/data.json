@@ -7,5 +7,6 @@
     "alignItems": "flex-start",
     "justifyContent": "flex-start",
     "flexWrap": "nowrap"
-  }
+  },
+  "legacyConfigStyle": {}
 }

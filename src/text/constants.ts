@@ -26,6 +26,7 @@ export interface Data {
   useHoverStyle?: boolean;
   styleCatelog?: string;
   hoverStyle?: Record<string, any>;
+  legacyConfigStyle: React.CSSProperties;
 }
 
 export const InputIds = {

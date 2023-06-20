@@ -47,4 +47,5 @@ export interface Data {
 
   id?: string;
   useFixed?: boolean;
+  legacyConfigStyle?: CSSProperties
 }

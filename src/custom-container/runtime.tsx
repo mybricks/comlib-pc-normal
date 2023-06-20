@@ -60,7 +60,7 @@ export default function (props: RuntimeParams<Data>) {
         transition: 'all 0.2s',
         position: useFixed ? 'fixed' : 'static',
         cursor: useClick ? 'pointer' : '',
-        ...data.style
+        ...data.legacyConfigStyle
       }}
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {

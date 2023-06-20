@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import css from './runtime.less';
 
@@ -14,6 +14,7 @@ import {
 const { Text, Paragraph } = Typography;
 
 export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
+  const [dynamicStyle, setDynamicStyle] = useState<CSSProperties>({});
   useEffect(() => {
     inputs[InputIds.SetContent]((value: string) => {
       let res = value;
@@ -23,12 +24,10 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
       data.content = res;
     });
     inputs[InputIds.SetStyle] &&
-      inputs[InputIds.SetStyle]((value: React.CSSProperties) => {
-        data.style = value;
+      inputs[InputIds.SetStyle]((value: CSSProperties) => {
+        setDynamicStyle(value);
       });
   }, []);
-
-  const dynamicStyle = useMemo(() => ({ ...(data.style || {}) }), [data.style]);
 
   const onClick = () => {
     if (data.useClick && outputs[OutputIds.Click]) {
@@ -42,6 +41,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         <Paragraph
           style={{
             ...dynamicStyle,
+            ...data.legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
@@ -57,6 +57,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
         <Text
           style={{
             ...dynamicStyle,
+            ...data.legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
