@@ -31,7 +31,7 @@ export default {
           return !data.asMapArea;
         },
         options: ['border', 'font', 'background'],
-        target: `.${css.button}`
+        target: `.button`
       }
     ],
     items: [
