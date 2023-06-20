@@ -297,5 +297,15 @@ export default {
         ]
       }
     ];
+  },
+  '.ant-radio-button-wrapper': {
+    title: '单选按钮',
+    style: {
+      options: ['border'],
+      target({ focusArea }: EditorResult<Data>) {
+        const { index } = focusArea;
+        return `.ant-radio-group .ant-radio-button-wrapper:nth-child(${index + 1})`;
+      }
+    }
   }
 };
