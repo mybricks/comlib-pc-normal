@@ -191,6 +191,9 @@ export default {
             }
           }
         ],
+        initValue: {
+          '--antd-arrow-background-color': '#ffffff'
+        },
         target: '.ant-popover .ant-popover-arrow .ant-popover-arrow-content'
       }
     ]
