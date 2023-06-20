@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useMemo, useState } from 'react';
 import { Typography } from 'antd';
 import css from './runtime.less';
 
@@ -35,13 +35,20 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
     }
   };
 
+  const legacyConfigStyle = useMemo(() => {
+    if (!data.legacyConfigStyle) {
+      return data.style;
+    }
+    return data.legacyConfigStyle;
+  }, [data.style, data.legacyConfigStyle]);
+
   return (
     <div style={{ lineHeight: 1 }}>
       {data.isEllipsis && data.ellipsis?.rows > 1 ? (
         <Paragraph
           style={{
             ...dynamicStyle,
-            ...data.legacyConfigStyle,
+            ...legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
             cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
