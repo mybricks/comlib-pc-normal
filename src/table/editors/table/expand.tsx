@@ -39,6 +39,22 @@ const expandEditor = [
         }
       },
       {
+        title: '默认展开',
+        type: 'switch',
+        description: '开启后，默认展开每一行数据',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useExpand;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.defaultExpandAllRows;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.defaultExpandAllRows = value;
+          }
+        }
+      },
+      {
         title: '展开字段',
         type: 'editorRender',
         description: '[非必填]与后端返回数据字段对应',

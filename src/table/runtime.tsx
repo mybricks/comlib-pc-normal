@@ -40,6 +40,7 @@ export default function (props: RuntimeParams<Data>) {
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
 
@@ -500,6 +501,16 @@ export default function (props: RuntimeParams<Data>) {
 
   // 显示数据
   const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
+
+  // 当数据发生变化时，重新设置所有行展开
+  useEffect(() => {
+    if (env.runtime) {
+      data.useExpand && data.defaultExpandAllRows
+        ? setExpandedRowKeys(realShowDataSource.map((item) => item[rowKey]))
+        : setExpandedRowKeys([]);
+    }
+  }, [realShowDataSource, env.runtime, rowKey]);
+
   return (
     <div className={css.table}>
       <TableHeader
@@ -533,7 +544,6 @@ export default function (props: RuntimeParams<Data>) {
           expandable={
             data.useExpand && slots[SlotIds.EXPAND_CONTENT]
               ? {
-                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : undefined, //增加动态设置
                   expandedRowRender: (record, index) => {
                     const inputValues = {
                       [InputIds.EXP_COL_VALUES]: {
@@ -548,6 +558,17 @@ export default function (props: RuntimeParams<Data>) {
                       inputValues,
                       key: `${InputIds.EXP_COL_VALUES}-${index}`
                     });
+                  },
+                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                  onExpand: (expanded, record) => {
+                    if (!env.runtime) return;
+                    const key = record[rowKey];
+                    if (expanded && !expandedRowKeys.includes(key)) {
+                      setExpandedRowKeys([...expandedRowKeys, key]);
+                    } else if (!expanded && expandedRowKeys.includes(key)) {
+                      expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                      setExpandedRowKeys([...expandedRowKeys]);
+                    }
                   }
                 }
               : undefined
