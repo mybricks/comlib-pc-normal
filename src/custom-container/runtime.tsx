@@ -57,8 +57,7 @@ export default function (props: RuntimeParams<Data>) {
     <div
       id={data?.id}
       ref={ref}
-      data-root="root"
-      className={css.container}
+      className={`${css.container} root`}
       style={{
         ...getOverflowStyle(),
         transition: 'all 0.2s',

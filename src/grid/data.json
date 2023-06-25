@@ -4,6 +4,7 @@
       "key": "row_0",
       "justify": "start",
       "align": "stretch",
+      "backgroundColor": "red",
       "gutter": [
         0,
         0

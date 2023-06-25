@@ -86,7 +86,6 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
         return (
           <Row
             style={{
-              backgroundColor: row.backgroundColor,
               minHeight:
                 edit && row.columns.every((column) => slots[column.slot]?.size === 0)
                   ? '50px'

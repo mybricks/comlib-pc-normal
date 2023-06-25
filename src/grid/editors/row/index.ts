@@ -13,6 +13,11 @@ export default {
       cate1.title = '常规';
       cate1.items = [...LayoutEditor(row), ...StyleEditor(row), ...IndexEditor];
     },
-    style: createStyleForRow()
+    style: createStyleForRow({
+      target({ focusArea }: EditorResult<Data>) {
+        const { index } = focusArea;
+        return `.root > .ant-row:nth-child(${index + 1})`;
+      }
+    })
   }
 };
