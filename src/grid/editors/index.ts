@@ -15,7 +15,7 @@ export default {
       };
     },
     style: [
-      createStyleForGrid({ target: ':root' }),
+      createStyleForGrid({ target: '.root' }),
       createStyleForCol({ target: '.ant-row .ant-col' })
     ]
   },

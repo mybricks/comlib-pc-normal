@@ -1,7 +1,7 @@
 import { Data } from './constants';
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
-  setDeclaredStyle(':root', { ...data.style });
+  setDeclaredStyle('.root', { ...data.style });
   data.rows.forEach((row) => {
     const { columns, key, backgroundColor } = row;
     setDeclaredStyle(`div[data-row-index=${JSON.stringify(key)}]`, { backgroundColor });

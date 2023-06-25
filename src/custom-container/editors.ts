@@ -69,8 +69,7 @@ export default {
     style: [
       {
         title: '默认',
-        options: ['padding', 'border', 'background'],
-        target: ':root'
+        options: ['padding', 'border', 'background']
       },
       {
         title: 'Hover',

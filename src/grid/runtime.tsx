@@ -80,7 +80,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
   );
 
   return (
-    <div className={css.gridWrapper}>
+    <div className={`${css.gridWrapper} root`}>
       {noRows}
       {data.rows.map((row, rowIndex) => {
         return (
