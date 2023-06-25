@@ -23,7 +23,7 @@ export default function ({ data, slot, config, setDeclaredStyle }: UpgradeParams
     };
   }
   //style
-  setDeclaredStyle(':root', { ...data.style });
-  setDeclaredStyle('[data-root="root"]:hover', { ...data.hoverStyle });
+  setDeclaredStyle('div[data-root="root"]', { ...data.style });
+  setDeclaredStyle('div[data-root="root"]:hover', { ...data.hoverStyle });
   return true;
 }
