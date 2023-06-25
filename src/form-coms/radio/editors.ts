@@ -300,12 +300,26 @@ export default {
   },
   '.ant-radio-button-wrapper': {
     title: '单选按钮',
-    style: {
-      options: ['border'],
-      target({ focusArea }: EditorResult<Data>) {
-        const { index } = focusArea;
-        return `.ant-radio-group .ant-radio-button-wrapper:nth-child(${index + 1})`;
+    style: [
+      {
+        title: '默认',
+        options: ['border'],
+        initValue: {
+          borderColor: '#d9d9d9'
+        },
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.ant-radio-group .ant-radio-button-wrapper:nth-child(${index + 1})`;
+        }
+      },
+      {
+        title: '选中',
+        options: ['border'],
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.ant-radio-group .ant-radio-button-wrapper-checked:nth-child(${index + 1})`;
+        }
       }
-    }
+    ]
   }
 };
