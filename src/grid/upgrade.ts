@@ -9,7 +9,6 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
       const selector = `.root > .ant-row:nth-child(${rowIndex + 1}) > .ant-col:nth-child(${
         colIndex + 1
       })`;
-      console.log(selector, col.colStyle);
       setDeclaredStyle(selector, {
         ...data.globalColStyle,
         ...col.colStyle
