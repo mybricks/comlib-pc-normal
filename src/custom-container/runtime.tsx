@@ -39,7 +39,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const legacyConfigStyle = useMemo(() => {
     return data.legacyConfigStyle ?? {};
-  }, [data.style, data.legacyConfigStyle]);
+  }, [data.legacyConfigStyle]);
 
   const getOverflowStyle = () => {
     const res = {
