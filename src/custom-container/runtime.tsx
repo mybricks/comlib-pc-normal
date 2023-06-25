@@ -38,10 +38,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   const legacyConfigStyle = useMemo(() => {
-    if (!data.legacyConfigStyle) {
-      return data.style;
-    }
-    return data.legacyConfigStyle;
+    return data.legacyConfigStyle ?? {};
   }, [data.style, data.legacyConfigStyle]);
 
   const getOverflowStyle = () => {

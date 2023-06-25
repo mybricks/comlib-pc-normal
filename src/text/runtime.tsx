@@ -36,11 +36,8 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
   };
 
   const legacyConfigStyle = useMemo(() => {
-    if (!data.legacyConfigStyle) {
-      return data.style;
-    }
-    return data.legacyConfigStyle;
-  }, [data.style, data.legacyConfigStyle]);
+    return data.legacyConfigStyle ?? {};
+  }, [data.legacyConfigStyle]);
 
   return (
     <div style={{ lineHeight: 1 }}>
