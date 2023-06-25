@@ -7,7 +7,7 @@
     }
   ],
   "defaultActiveKey": "tab0",
-  "type": "card",
+  "type": "line",
   "centered": false,
   "tabPosition": "top",
   "prohibitClick": false

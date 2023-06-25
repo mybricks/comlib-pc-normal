@@ -250,19 +250,19 @@ export const createItem = ({ data }: Pick<EditorResult<Data>, 'data'>): Item => 
   };
 };
 
-export const createStyleForItem = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForItem = ({ target }: StyleModeType<Data>) => ({
   title: '描述项',
   options: ['padding'],
   target
 });
 
-export const createStyleForLabel = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForLabel = ({ target }: StyleModeType<Data>) => ({
   title: '标签',
   options: ['font', 'size'],
   target
 });
 
-export const createStyleForContent = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
   title: '内容',
   options: ['font', 'size'],
   target

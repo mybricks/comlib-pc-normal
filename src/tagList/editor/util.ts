@@ -19,7 +19,7 @@ const createTag = (content = '新标签') => {
   };
 };
 
-const createStyle = ({ target }: StyleTargetType<Data>) => ({
+const createStyle = ({ target }: StyleModeType<Data>) => ({
   title: '描述',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   target

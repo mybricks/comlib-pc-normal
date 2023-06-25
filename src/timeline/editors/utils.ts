@@ -49,13 +49,13 @@ export const isEqualSchema = (sourceSchema) => {
   return isEqual(sourceSchema, DefaultSourceSchema);
 };
 
-export const createStyleForDot = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForDot = ({ target }: StyleModeType<Data>) => ({
   title: '时间轴点',
   options: ['border'],
   target
 });
 
-export const createStyleForTitle = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForTitle = ({ target }: StyleModeType<Data>) => ({
   title: '标题',
   options: [
     {
@@ -68,7 +68,7 @@ export const createStyleForTitle = ({ target }: StyleTargetType<Data>) => ({
   target
 });
 
-export const createStyleForSubtitle = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForSubtitle = ({ target }: StyleModeType<Data>) => ({
   title: '副标题',
   options: [
     {
@@ -81,7 +81,7 @@ export const createStyleForSubtitle = ({ target }: StyleTargetType<Data>) => ({
   target
 });
 
-export const createStyleForDesc = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForDesc = ({ target }: StyleModeType<Data>) => ({
   title: '描述',
   options: [
     {

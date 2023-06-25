@@ -233,7 +233,7 @@ export function getColumnItemDataIndex(item: IColumn) {
   return idx;
 }
 
-export const createStyleForHead = ({ target }: StyleTargetType<Data> = {}) => ({
+export const createStyleForHead = ({ target }: StyleModeType<Data> = {}) => ({
   title: '表头',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   ifVisible({ data }: EditorResult<Data>) {
@@ -242,7 +242,7 @@ export const createStyleForHead = ({ target }: StyleTargetType<Data> = {}) => ({
   target
 });
 
-export const createStyleForContent = ({ target }: StyleTargetType<Data>) => ({
+export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
   title: '内容',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   ifVisible({ data }: EditorResult<Data>) {
