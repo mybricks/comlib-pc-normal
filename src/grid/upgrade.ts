@@ -9,9 +9,12 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
       const selector = `.root > .ant-row:nth-child(${rowIndex + 1}) > .ant-col:nth-child(${
         colIndex + 1
       })`;
+      const { backgroundColor, ...colStyle } = col.colStyle;
       setDeclaredStyle(selector, {
         ...data.globalColStyle,
-        ...col.colStyle
+        //去掉bg测试脏数据
+        backgroundColor: backgroundColor === '#000' ? 'inherit' : backgroundColor,
+        ...colStyle
       });
     });
   });
