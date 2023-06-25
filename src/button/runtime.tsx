@@ -43,6 +43,10 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     }
   }, []);
 
+  const renderText = (text: string) => {
+    return <span>{env.i18n(text)}</span>;
+  };
+
   const renderTextAndIcon = (item: Data) => {
     const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
     const Icon = Icons && Icons[icon as string]?.render();
@@ -51,7 +55,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
           <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
         ) : null}
-        {!useIcon || showText ? <span>{env.i18n(text)}</span> : null}
+        {!useIcon || showText ? renderText(text) : null}
         {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
           <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
         ) : null}
@@ -72,7 +76,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             alt={' '}
           ></Image>
         ) : null}
-        {!useIcon || showText ? <span>{env.i18n(text)}</span> : null}
+        {!useIcon || showText ? renderText(text) : null}
         {useIcon && src && iconLocation === LocationEnum.BACK ? (
           <Image
             width={contentSize[1]}
@@ -87,7 +91,10 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   };
 
   const renderBtnContext = (item: Data) => {
-    const { isCustom } = item;
+    const { isCustom, text, useIcon } = item;
+    if (!useIcon) {
+      return renderText(text);
+    }
     if (isCustom === true) {
       return renderTextAndCustom(item);
     } else {

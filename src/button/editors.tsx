@@ -1,7 +1,6 @@
 import { Data, OutputIds } from './constants';
 import { message } from 'antd';
 import IconEditor from './iconEditor';
-import css from './runtime.less';
 
 export default {
   '@init'({ style }) {
@@ -26,12 +25,20 @@ export default {
         }
       },
       {
-        title: '按钮',
+        title: '默认样式',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },
-        options: ['border', 'font', 'background'],
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
         target: `.button`
+      },
+      {
+        title: '激活样式',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.asMapArea;
+        },
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target: `.button:hover`
       }
     ],
     items: [
