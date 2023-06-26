@@ -25,7 +25,7 @@ export default {
         }
       },
       {
-        title: '默认样式',
+        title: '默认',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },
@@ -33,12 +33,13 @@ export default {
         target: `.button`
       },
       {
-        title: '激活样式',
+        title: 'Hover',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },
         options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target: `.button:hover`
+        target: `.button:hover`,
+        domTarget: '.button'
       }
     ],
     items: [

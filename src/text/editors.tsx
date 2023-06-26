@@ -33,7 +33,8 @@ export default {
       {
         title: 'Hover',
         options: ['font'],
-        target: '[data-item-type="root"]:hover'
+        target: '[data-item-type="root"]:hover',
+        domTarget: '[data-item-type="root"]'
       }
     ],
     items: ({}: EditorResult<Data>, cate1) => {
