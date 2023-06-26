@@ -23,6 +23,18 @@ export const refreshSchema = ({ data, input, output }: { data: Data, input: any,
   output.get(OutputIds.OnInitial).setSchema(newSchema);
   output.get(OutputIds.ReturnValue).setSchema(newSchema);
 };
+const emptyRules = [
+  { 
+    status: true,
+    visible: true,
+    title: '开始'
+  },
+  {
+    status: true,
+    visible: true,
+    title: '结束',
+  }
+]
 
 export default {
   '@resize': {
@@ -231,6 +243,24 @@ export default {
           }
         },
         ...DisabledDateTimeEditor('RangePicker'),
+        {
+          title: '始末日期必填',
+          description: '通过开关，起始和结束项可部分为空，即不填',
+          type: 'ArrayCheckbox',
+          options: {
+            checkField: 'status',
+            visibleField: 'visible',
+            getTitle
+          },
+          value: {
+            get({ data }) {
+              return data.emptyRules.length > 0 ? data.emptyRules : emptyRules;
+            },
+            set({ data }, value: any) {
+              data.emptyRules = value;
+            }
+          }
+        },
         {
           title: '校验规则',
           description: '提供快捷校验配置',

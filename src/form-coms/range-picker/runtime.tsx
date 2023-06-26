@@ -29,6 +29,7 @@ export interface Data {
   };
   dateType: 'array' | 'string';
   splitChart: string;
+  emptyRules: any[];
 }
 
 export const DateType = {
@@ -269,6 +270,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
+  const emptyArr: [boolean, boolean] =
+    data.emptyRules?.length > 0
+      ? [!data.emptyRules[0].status, !data.emptyRules[1].status]
+      : [false, false];
+
   return (
     <div className={css.rangePicker}>
       <RangePicker
@@ -279,6 +285,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         onCalendarChange={(dates) => setDates(dates)}
         onOpenChange={onOpenChange}
+        allowEmpty={emptyArr}
         {...disabledDateTime}
       />
     </div>
