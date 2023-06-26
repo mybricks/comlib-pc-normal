@@ -1,6 +1,14 @@
 {
   "config": {
-    "options": [],
+    "options": [
+      {
+        "label": "选项1",
+        "value": "选项1",
+        "type": "default",
+        "checked": false,
+        "key": "option1"
+      }
+    ],
     "disabled": false
   },
   "staticOptions": [
