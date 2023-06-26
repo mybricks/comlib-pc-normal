@@ -1,12 +1,10 @@
 // import { ajax } from '../util'
 
-export default function deleteData(callDomainModel, domainModel, id) {
+export default function deleteData(callDomainModel, domainModel, params) {
 
   return new Promise((resolve, reject) => {
     callDomainModel(domainModel, 'DELETE', {
-      query: {
-        id
-      }
+      query: params
     }).then(r => {
       if (r.code === 1) {
         resolve(r.data)
