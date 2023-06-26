@@ -1,10 +1,12 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { StatusEnum } from './const';
+import { Data } from './runtime';
 
 export default {
   // '@resize': {
   //   // options: ['width']
   // },
-  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<Data>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -13,10 +15,10 @@ export default {
         type: 'switch',
         description: '是否禁用状态',
         value: {
-          get({ data }) {
+          get({ data }: EditorResult<Data>) {
             return data.config.disabled;
           },
-          set({ data }, value: boolean) {
+          set({ data }: EditorResult<Data>, value: boolean) {
             data.config.disabled = value;
           }
         }
@@ -35,11 +37,37 @@ export default {
           }
         ],
         value: {
-          get({ data }) {
+          get({ data }: EditorResult<Data>) {
             return data.config.checked;
           },
-          set({ data }, value: boolean) {
+          set({ data }: EditorResult<Data>, value: boolean) {
             data.config.checked = value;
+          }
+        }
+      },
+      {
+        title: '文案',
+        type: 'Map',
+        options: {
+          notaddel: true,
+          noteditkey: true
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return (
+              data.textMap || {
+                [StatusEnum.check]: '',
+                [StatusEnum.unCheck]: ''
+              }
+            );
+          },
+          set({ data }: EditorResult<Data>, value: any) {
+            data.textMap = value;
+            data.config = {
+              ...data.config,
+              checkedChildren: value[StatusEnum.check],
+              unCheckedChildren: value[StatusEnum.unCheck]
+            };
           }
         }
       },
@@ -98,10 +126,10 @@ export default {
           ]
         },
         value: {
-          get({ data }) {
+          get({ data }: EditorResult<Data>) {
             return data.rules.length > 0 ? data.rules : defaultRules;
           },
-          set({ data }, value: any) {
+          set({ data }: EditorResult<Data>, value: any) {
             data.rules = value;
           }
         }
