@@ -21,7 +21,13 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetJsonData]((val) => {
-        data.json = val;
+        if (typeof val === 'string') {
+          data.json = encodeURIComponent(val);
+        } else if (typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
+          data.json = val;
+        } else {
+          console.error(`${title}:输入的JSON数据不合法`);
+        }
       });
       inputs[InputIds.GetJsonData]((_, outputRels) => {
         outputRels[OutputIds.JsonData](data.jsonObj);
@@ -147,6 +153,8 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       '--json--view--node-hover-bgcolor': data.colors[TypeEnum.NodeHoverBackgroundColor]
     };
   }, [data.colors[TypeEnum.NodeHoverBackgroundColor], data.colors[TypeEnum.BackgroundColor]]);
+
+  /**TODO：支持不展示根节点 */
   const treeData = [
     {
       title: getTitle({
