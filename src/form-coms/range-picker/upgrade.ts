@@ -113,5 +113,13 @@ export default function ({
   if (typeof data.splitChart === "undefined") {
     data.splitChart = '-';
   }
+
+  /**
+   * @description v1.0.18->1.0.19 增加 allowEmpty, 允许起始项部分为空
+  */
+  if (typeof data.emptyRules === "undefined") {
+    data.emptyRules = [];
+  }
+
   return true;
 }
