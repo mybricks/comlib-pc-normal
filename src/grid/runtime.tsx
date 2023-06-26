@@ -63,7 +63,8 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           style={{
             ...getMinMaxWidth(column),
             width,
-            cursor: column.useClick ? 'pointer' : 'unset'
+            cursor: column.useClick ? 'pointer' : 'unset',
+            ...column.legacyStyle
           }}
           onClick={() => {
             if (column.useClick && outputs[column.key]) {

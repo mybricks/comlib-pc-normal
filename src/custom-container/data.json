@@ -8,5 +8,6 @@
     "justifyContent": "flex-start",
     "flexWrap": "nowrap"
   },
-  "legacyConfigStyle": {}
+  "legacyConfigStyle": {},
+  "legacyStyle": {}
 }

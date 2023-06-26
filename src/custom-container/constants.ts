@@ -47,5 +47,8 @@ export interface Data {
 
   id?: string;
   useFixed?: boolean;
-  legacyConfigStyle?: CSSProperties
+  //configs style
+  legacyConfigStyle: CSSProperties;
+  //style editor暂不支持的style
+  legacyStyle: CSSProperties;
 }

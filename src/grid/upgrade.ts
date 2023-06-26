@@ -9,7 +9,7 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
       const selector = `.root > .ant-row:nth-child(${rowIndex + 1}) > .ant-col:nth-child(${
         colIndex + 1
       })`;
-      const { backgroundColor, ...colStyle } = col.colStyle;
+      const { backgroundColor, ...colStyle } = col.colStyle || {};
       setDeclaredStyle(selector, {
         ...data.globalColStyle,
         //去掉bg测试脏数据
