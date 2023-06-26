@@ -14,10 +14,13 @@ export const MaxHeightEditor = [
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.style?.minWidth;
+            return data.legacyStyle?.minWidth;
           },
           set({ data }: EditorResult<Data>, value: string) {
-            data.style.minWidth = unitConversion(value) || '';
+            data.legacyStyle = {
+              ...data.legacyStyle,
+              minWidth: unitConversion(value) || ''
+            }
           }
         }
       },
@@ -30,10 +33,13 @@ export const MaxHeightEditor = [
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.style?.minHeight;
+            return data.legacyStyle?.minHeight;
           },
           set({ data }: EditorResult<Data>, value: string) {
-            data.style.minHeight = unitConversion(value) || '';
+            data.legacyStyle = {
+              ...data.legacyStyle,
+              minHeight: unitConversion(value) || ''
+            }
           }
         }
       },
@@ -46,10 +52,13 @@ export const MaxHeightEditor = [
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.style?.maxWidth;
+            return data.legacyStyle?.maxWidth;
           },
           set({ data }: EditorResult<Data>, value: string) {
-            data.style.maxWidth = unitConversion(value) || '';
+            data.legacyStyle = {
+              ...data.legacyStyle,
+              maxWidth: unitConversion(value) || ''
+            }
           }
         }
       },
@@ -62,10 +71,13 @@ export const MaxHeightEditor = [
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.style?.maxHeight;
+            return data.legacyStyle?.maxHeight;
           },
           set({ data }: EditorResult<Data>, value: string) {
-            data.style.maxHeight = unitConversion(value) || '';
+            data.legacyStyle = {
+              ...data.legacyStyle,
+              maxHeight: unitConversion(value) || ''
+            }
           }
         }
       }

@@ -3,23 +3,6 @@ import { Data, OverflowEnum, WidthUnitEnum } from '../../constants';
 import { getColItem, updateColStyle } from '../utils';
 
 const StyleEditor = (item) => [
-  // {
-  //   title: '自定义高度',
-  //   type: 'Text',
-  //   options: {
-  //     placeholder: '不填，默认自适应高度'
-  //   },
-  //   value: {
-  //     get({ data, focusArea }: EditorResult<Data>) {
-  //       if (!focusArea) return;
-  //       return item.colStyle.height;
-  //     },
-  //     set({ data, focusArea }: EditorResult<Data>, value: string) {
-  //       if (!focusArea) return;
-  //       updateColStyle(item, { height: unitConversion(value) });
-  //     }
-  //   }
-  // },
   {
     title: '最小/最大宽度',
     items: [
@@ -78,7 +61,7 @@ const StyleEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            return item?.colStyle?.overflowY === OverflowEnum.Auto;
+            return item?.legacyStyle?.overflowY === OverflowEnum.Auto;
           },
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;
@@ -92,7 +75,7 @@ const StyleEditor = (item) => [
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            return item?.colStyle?.overflowX === OverflowEnum.Auto;
+            return item?.legacyStyle?.overflowX === OverflowEnum.Auto;
           },
           set({ data, focusArea }: EditorResult<Data>, value: boolean) {
             if (!focusArea) return;

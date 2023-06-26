@@ -37,9 +37,9 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
-  const legacyConfigStyle = useMemo(() => {
-    return data.legacyConfigStyle ?? {};
-  }, [data.legacyConfigStyle]);
+  const legacyStyle = useMemo(() => {
+    return { ...data.legacyStyle, ...data.legacyConfigStyle };
+  }, [data.legacyConfigStyle, data.legacyStyle]);
 
   const getOverflowStyle = () => {
     const res = {
@@ -63,7 +63,7 @@ export default function (props: RuntimeParams<Data>) {
         transition: 'all 0.2s',
         position: useFixed ? 'fixed' : 'static',
         cursor: useClick ? 'pointer' : '',
-        ...legacyConfigStyle
+        ...legacyStyle
       }}
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {

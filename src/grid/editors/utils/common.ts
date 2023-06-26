@@ -9,7 +9,7 @@ export const createColByWidth = (width: number = 280): ColumnParams => {
     widthOption: WidthUnitEnum.Px,
     width,
     span: 4,
-    colStyle: {
+    legacyStyle: {
       overflowX: 'hidden',
       overflowY: 'hidden'
     },
@@ -33,7 +33,7 @@ export const createAutoCol = (flex: number = 1): ColumnParams => {
     widthOption: WidthUnitEnum.Auto,
     width: 300,
     span: 4,
-    colStyle: {
+    legacyStyle: {
       overflowX: 'hidden',
       overflowY: 'hidden'
     },
@@ -57,7 +57,7 @@ export const createColBySpan = (span: number = 4): ColumnParams => {
     widthOption: WidthUnitEnum.Span,
     width: 300,
     span,
-    colStyle: {
+    legacyStyle: {
       overflowX: 'hidden',
       overflowY: 'hidden'
     },
@@ -145,11 +145,11 @@ export function updateSlotTitle(col: ColumnParams, slot: any) {
 }
 
 export const updateColStyle = (col: ColumnParams, style: Partial<React.CSSProperties>) => {
-  if (!col.colStyle) {
-    col.colStyle = {};
+  if (!col.legacyStyle) {
+    col.legacyStyle = {};
   }
-  col.colStyle = {
-    ...col.colStyle,
+  col.legacyStyle = {
+    ...col.legacyStyle,
     ...style
   };
 };
