@@ -89,15 +89,30 @@ export default function ({
     outputs['onBlur'](value);
   }, []);
 
+  const sizeConfig = useMemo(() => {
+    if (env.edit) {
+      return {
+        rows: data.minRows
+      };
+    }
+
+    return {
+      autoSize: {
+        minRows: data.minRows,
+        maxRows: data.maxRows
+      }
+    };
+  }, [env.edit, data.minRows, data.maxRows]);
+
   return (
     <div>
       <Input.TextArea
         {...data.config}
         value={data.value}
         readOnly={!!edit}
+        {...sizeConfig}
         onChange={changeValue}
         onBlur={onBlur}
-        autoSize={{ minRows: data.minRows, maxRows: data.maxRows }}
       />
     </div>
   );
