@@ -173,10 +173,8 @@ export default function (props: RuntimeParams<Data>) {
               newSelectedRowKeys.push(targetRowKeyVal);
             }
           });
-          if (newSelectedRowKeys.length > 0) {
-            setSelectedRowKeys(newSelectedRowKeys);
-            setSelectedRows(newSelectedRows);
-          }
+          setSelectedRowKeys(newSelectedRowKeys);
+          setSelectedRows(newSelectedRows);
         });
       }
     }
