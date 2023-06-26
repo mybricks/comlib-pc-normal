@@ -15,8 +15,8 @@ export default {
       };
     },
     style: [
-      createStyleForGrid({ target: ':root' }),
-      createStyleForCol({ target: '.ant-row .ant-col' })
+      createStyleForGrid({ target: '.root' }),
+      createStyleForCol({ target: '.root > .ant-row > .ant-col' })
     ]
   },
   ...RowItemEditor,

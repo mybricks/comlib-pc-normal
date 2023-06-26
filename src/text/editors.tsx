@@ -27,36 +27,12 @@ export default {
       },
       {
         title: '默认',
-        options: [
-          {
-            type: 'font',
-            config: {
-              disableTextAlign: false
-            }
-          }
-        ],
+        options: ['font'],
         target: '[data-item-type="root"]'
       },
       {
         title: 'Hover',
-        options: [
-          {
-            type: 'font',
-            config: {
-              disableTextAlign: false
-            }
-          }
-        ],
-        initValue: {
-          fontFamily: 'inherit',
-          fontWeight: '400',
-          fontSize: '14px',
-          fontStyle: 'normal',
-          lineHeight: '14px',
-          letterSpacing: '0px',
-          color: '#000000',
-          textAlign: 'left'
-        },
+        options: ['font'],
         target: '[data-item-type="root"]:hover'
       }
     ],

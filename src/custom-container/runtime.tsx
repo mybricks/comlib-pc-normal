@@ -38,11 +38,8 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   const legacyConfigStyle = useMemo(() => {
-    if (!data.legacyConfigStyle) {
-      return data.style;
-    }
-    return data.legacyConfigStyle;
-  }, [data.style, data.legacyConfigStyle]);
+    return data.legacyConfigStyle ?? {};
+  }, [data.legacyConfigStyle]);
 
   const getOverflowStyle = () => {
     const res = {
@@ -60,8 +57,7 @@ export default function (props: RuntimeParams<Data>) {
     <div
       id={data?.id}
       ref={ref}
-      data-root="root"
-      className={css.container}
+      className={`${css.container} root`}
       style={{
         ...getOverflowStyle(),
         transition: 'all 0.2s',

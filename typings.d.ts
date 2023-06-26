@@ -95,6 +95,10 @@ type AnyMap = {
   [key in string | number]: any
 }
 
-interface Env { preview?: {}, edit?: {}, runtime?: any, mock?: {} }
-
-type StyleTargetType<T> = Partial<{ target: string | ((props: EditorResult<T>) => string) | undefined }>;
+type StyleModeType<T> = Partial<{
+  title: string;
+  initValue: CSSProperties;
+  target: string | ((props: EditorResult<T>) => string) | undefined;
+  domTarget: string;
+  options: Array<string | { type: string; config: Record<string, any> }>;
+}>;

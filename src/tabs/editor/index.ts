@@ -1,6 +1,7 @@
 import { Data, InputIds, OutputIds, SlotIds } from '../constants';
 import TabEditor from './tab';
 import { createItem, addEventIO } from './common';
+import { createStyleForDefault, createStyleForActive, createStyleForBar } from './utils';
 
 export default {
   ':root': {
@@ -202,43 +203,19 @@ export default {
       ];
     },
     style: [
-      {
-        title: '默认标签',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } }
-          // { type: 'background', config: { disableBackgroundImage: true } }
-        ],
+      createStyleForDefault({
         initValue: {
-          color: 'rgba(0,0,0,.85)',
-          backgroundColor: '#fafafa'
+          color: 'rgba(0,0,0,.85)'
         },
-        target:
-          '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn',
-        domTarget: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab'
-      },
-      {
-        title: '选中标签',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } }
-          // { type: 'background', config: { disableBackgroundImage: true } }
-        ],
+        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)'
+      }),
+      createStyleForActive({
         initValue: {
           color: '#1890ff'
         },
-        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active .ant-tabs-tab-btn'
-      },
-      {
-        title: '选中条',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.type === 'line';
-        },
-        options: [
-          'border',
-          { type: 'background', config: { disableBackgroundImage: true } },
-          { type: 'size', config: { disableWidth: true } }
-        ],
-        target: '.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar'
-      }
+        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active'
+      }),
+      createStyleForBar()
     ]
   },
   ...TabEditor

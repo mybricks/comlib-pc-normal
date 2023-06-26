@@ -80,13 +80,12 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
   );
 
   return (
-    <div className={css.gridWrapper}>
+    <div className={`${css.gridWrapper} root`}>
       {noRows}
       {data.rows.map((row, rowIndex) => {
         return (
           <Row
             style={{
-              backgroundColor: row.backgroundColor,
               minHeight:
                 edit && row.columns.every((column) => slots[column.slot]?.size === 0)
                   ? '50px'
