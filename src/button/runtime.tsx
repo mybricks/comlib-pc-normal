@@ -51,7 +51,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
     const Icon = Icons && Icons[icon as string]?.render();
     return (
-      <Space size={iconDistance}>
+      <Space size={text !== '' ? iconDistance : 0}>
         {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
           <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
         ) : null}
@@ -66,7 +66,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const renderTextAndCustom = (item: Data) => {
     const { useIcon, iconLocation, iconDistance, text, showText, src, contentSize } = item;
     return (
-      <Space size={iconDistance} className={css.space}>
+      <Space size={text !== '' ? iconDistance : 0} className={css.space}>
         {useIcon && src && iconLocation === LocationEnum.FRONT ? (
           <Image
             width={contentSize[1]}
