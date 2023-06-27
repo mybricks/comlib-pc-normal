@@ -18,9 +18,11 @@ export default function DomainFieldEditor({ editConfig }) {
       options: []
     };
 
+    const options: any = [];
+
     entity?.fieldAry?.forEach((item) => {
       if (!item.isPrivate) {
-        normalFileds.options.push({
+        options.push({
           label: item.name,
           value: item.name
         });
@@ -34,7 +36,7 @@ export default function DomainFieldEditor({ editConfig }) {
       // }
     });
 
-    return [normalFileds];
+    return options;
   };
 
   const handleChange = (val) => {

@@ -450,10 +450,10 @@ export default {
         }
       },
       {
-        title: '领域模型字段',
+        title: '字段',
         type: 'EditorRender',
         ifVisible({ id, name, data }: EditorResult<Data>) {
-          return data.domainModel?.entity?.fieldAry?.length > 0;
+          return !!data.domainModel?.entity?.fieldAry;
         },
         options: ({ data }: EditorResult<Data>) => {
           return {
