@@ -117,10 +117,14 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['create']((val) => {
         if (checkDomainModel(abilitySet, 'INSERT')) {
-          createData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
-            message.success('创建成功');
-            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
-          });
+          createData(env.callDomainModel, data.domainModel, { ...val })
+            .then((r) => {
+              message.success('创建成功');
+              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+            })
+            .catch((msg) => {
+              message.error(msg);
+            });
         } else {
           message.warn('未支持新建操作');
         }
@@ -128,10 +132,14 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['editById']((val) => {
         if (checkDomainModel(abilitySet, 'UPDATE')) {
-          updateData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
-            message.success('更新成功');
-            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
-          });
+          updateData(env.callDomainModel, data.domainModel, { ...val })
+            .then((r) => {
+              message.success('更新成功');
+              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+            })
+            .catch((msg) => {
+              message.error(msg);
+            });
         } else {
           message.warn('未支持编辑操作');
         }
@@ -139,10 +147,14 @@ export default function (props: RuntimeParams<Data>) {
 
       inputs['deleteById']((val) => {
         if (checkDomainModel(abilitySet, 'DELETE')) {
-          deleteData(env.callDomainModel, data.domainModel, { ...val }).then((r) => {
-            message.success('删除成功');
-            getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
-          });
+          deleteData(env.callDomainModel, data.domainModel, { ...val })
+            .then((r) => {
+              message.success('删除成功');
+              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+            })
+            .catch((msg) => {
+              message.error(msg);
+            });
         } else {
           message.warn('未支持删除操作');
         }
