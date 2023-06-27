@@ -20,9 +20,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
   }, [env.edit]);
-  let initLength = useMemo(() => {
-    return data.initLength;
-  }, [data.initLength]);
+  // let initLength = useMemo(() => {
+  //   return data.initLength;
+  // }, [data.initLength]);
 
   useLayoutEffect(() => {
     // 设置值
@@ -113,16 +113,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }
 
-  useEffect(() => {
-    // 初始化
-    if (env.runtime && initLength) {
-      new Array(initLength).fill(null).forEach((_, index) => {
-        addField({ data });
-      });
-      data.currentAction = 'init';
-      initLength = 0;
-    }
-  }, [data.initLength]);
+  // useEffect(() => {
+  //   // 初始化
+  //   if (env.runtime && initLength) {
+  //     new Array(initLength).fill(null).forEach((_, index) => {
+  //       addField({ data });
+  //     });
+  //     data.currentAction = 'init';
+  //     initLength = 0;
+  //   }
+  // }, [data.initLength]);
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
