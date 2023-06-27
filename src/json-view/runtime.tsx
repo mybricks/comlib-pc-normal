@@ -23,7 +23,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       inputs[InputIds.SetJsonData]((val) => {
         if (typeof val === 'string') {
           data.json = encodeURIComponent(val);
-        } else if (typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
+        } else if (typeCheck(val, ['ARRAY', 'OBJECT'])) {
           data.json = val;
         } else {
           console.error(`${title}:输入的JSON数据不合法`);
