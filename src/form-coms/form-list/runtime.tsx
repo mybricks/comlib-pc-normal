@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useLayoutEffect, useEffect, useState } from 'react';
+import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
 import { ChildrenStore, Data } from './types';
 import SlotContent from './SlotContent';
 import {
@@ -20,12 +20,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
   }, [env.edit]);
-  const [initLength, setInitLength] = useState(data.initLength);
+  let initLength = useMemo(() => {
+    return data.initLength;
+  }, [data.initLength]);
 
   useLayoutEffect(() => {
     // 设置值
     inputs[InputIds.SetValue]((value) => {
-      setInitLength(0);
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
         changeValue({ data, id, outputs, parentSlot, name: props.name });
@@ -40,7 +41,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 设置初始值
     inputs[InputIds.SetInitialValue]((value) => {
-      setInitLength(0);
       if (typeCheck(value, ['Array', 'Undefined'])) {
         data.value = value;
         outputs[OutputIds.OnInitial](deepCopy(data.value));
@@ -116,13 +116,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useEffect(() => {
     // 初始化
     if (env.runtime && initLength) {
-      setInitLength(0);
       new Array(initLength).fill(null).forEach((_, index) => {
         addField({ data });
       });
       data.currentAction = 'init';
+      initLength = 0;
     }
-  }, [initLength]);
+  }, [data.initLength]);
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
