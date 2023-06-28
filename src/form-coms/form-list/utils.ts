@@ -204,6 +204,7 @@ export function setValuesForInput({
 }) {
   const { value: values, items: formItems } = data;
   const inputId = data.currentAction;
+  data.currentAction = '';
 
   // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
   let extraAction = '';
@@ -217,7 +218,7 @@ export function setValuesForInput({
       if (data.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
 
-      const names = data.currentAction === 'add'
+      const names = inputId === 'add'
         ? Object.keys(value)
         : data.items.map(item => item.name);
 
@@ -240,7 +241,6 @@ export function setValuesForInput({
     resolve(1);
   })
     .then(v => {
-      data.currentAction = '';
       data.startIndex = -1;
     })
     .catch(e => console.error(e));
