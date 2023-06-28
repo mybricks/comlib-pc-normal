@@ -1,7 +1,7 @@
 {
   "title": "领域模型CRUD",
   "namespace": "mybricks.domain-pc.crud",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "领域模型CRUD",
   "author": "MyBricks",
   "author_name": "MyBricks",
