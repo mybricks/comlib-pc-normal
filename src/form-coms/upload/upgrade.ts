@@ -164,8 +164,13 @@ export default function ({ input, output, slot, data }): boolean {
    * @description v1.0.8 , 新增尺寸校验
   */
   if (typeof data.imageSize === "undefined") {
-    data.imageSize = [0,0];
+    data.imageSize = [0, 0];
   };
-  
+
+  // 早期版本。默认都使用自定义上传
+  if (typeof data.customUpload === "undefined") {
+    data.customUpload = true;
+  };
+
   return true;
 }

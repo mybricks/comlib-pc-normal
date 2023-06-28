@@ -12,5 +12,9 @@
   },
   "isShowUploadList": true,
   "isCustom": false,
-  "imageSize": [0, 0]
+  "imageSize": [
+    0,
+    0
+  ],
+  "customUpload": false
 }
