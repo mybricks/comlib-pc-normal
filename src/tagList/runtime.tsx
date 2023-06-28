@@ -37,7 +37,19 @@ const DefaultTag = ({
   outputs,
   env
 }: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'env'>) => {
-  const { direction, align, wrap, size, tags, tagSize, appendAble, appendBtn } = data;
+  const {
+    direction,
+    align,
+    wrap,
+    size,
+    tags,
+    tagSize,
+    appendAble,
+    appendBtn = {
+      text: '新增',
+      icon: 'PlusOutlined'
+    }
+  } = data;
   const [inputVisible, setInputVisible] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const onTagClose = (index: number, tag: TagType) => {
