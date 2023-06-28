@@ -287,6 +287,25 @@ export default {
               }
             },
             {
+              title: '开启自定义上传',
+              type: 'switch',
+              ifVisible({ data, env }: EditorResult<Data>) {
+                return typeof env.uploadFile === 'function';
+              },
+              value: {
+                get({ data, env }: EditorResult<Data>) {
+                  // 兼容没有设置env.uploadFile的情况
+                  if (!data.customUpload && typeof env.uploadFile !== 'function') {
+                    data.customUpload = true
+                  }
+                  return data.customUpload;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.customUpload = value;
+                }
+              }
+            },
+            {
               title: '开启自定义删除',
               type: 'Switch',
               value: {
@@ -442,13 +461,6 @@ export default {
               }
             },
             {
-              title: '文件上传',
-              type: '_event',
-              options: {
-                outputId: 'upload'
-              }
-            },
-            {
               ifVisible({ data }: EditorResult<Data>) {
                 return data.config.useCustomRemove;
               },
@@ -457,10 +469,20 @@ export default {
               options: {
                 outputId: 'remove'
               }
+            },
+            {
+              title: '自定义上传接口',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.customUpload;
+              },
+              options: {
+                outputId: 'upload'
+              }
             }
           ]
         }
-      ];
+      ]
     }
   }
 };
