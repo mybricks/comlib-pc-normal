@@ -4,9 +4,7 @@ import { InputIds, Option, OutputIds } from '../types';
 import { Data } from './types';
 
 let tempOptions: Option[] = [],
-  optionsLength,
-  addOption,
-  delOption;
+  optionsLength;
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
@@ -16,12 +14,6 @@ const initParams = (data: Data) => {
     tempOptions = data.staticOptions || [];
   }
   optionsLength = (data.staticOptions || []).length;
-  addOption = (option) => {
-    data.staticOptions.push(option);
-  };
-  delOption = (index: number) => {
-    data.staticOptions.splice(index, 1);
-  };
 };
 
 const updateValueSchema = ({ input, output, schema }) => {
@@ -240,16 +232,13 @@ export default {
             getTitle: ({ label, checked }) => {
               return `${label}${checked ? ': 默认值' : ''}`;
             },
-            onRemove: (index: number) => {
-              delOption(index);
-            },
             onAdd: () => {
+              const value = uuid('_', 2);
               const defaultOption = {
-                label: `选项${optionsLength + 1}`,
-                value: `选项${optionsLength + 1}`,
+                label: `选项${value}`,
+                value: `选项${value}`,
                 key: uuid()
               };
-              addOption(defaultOption);
               return defaultOption;
             },
             items: [
