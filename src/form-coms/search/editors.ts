@@ -154,9 +154,6 @@ export default {
           getTitle: ({ label, checked }) => {
             return `${label}${checked ? ': 默认值' : ''}`;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
             const defaultOption = {
               label: `选项${optionsLength + 1}`,

@@ -117,9 +117,6 @@ export default {
           getTitle: ({ label }) => {
             return label;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
             const defaultOption = {
               label: `选项${tempOptions.length + 1}`,
