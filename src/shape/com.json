@@ -1,0 +1,12 @@
+{
+  "title": "形状",
+  "namespace": "mybricks.normal-pc.shape",
+  "version": "1.0.0",
+  "description": "形状",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx"
+}
