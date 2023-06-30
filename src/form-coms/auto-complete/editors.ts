@@ -93,9 +93,6 @@ export default {
           getTitle: ({ value }) => {
             return value;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
             const defaultOption = {
               value: `选项${optionsLength + 1}`
