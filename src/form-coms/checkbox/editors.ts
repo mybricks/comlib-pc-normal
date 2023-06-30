@@ -3,31 +3,6 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let optionsLength = 0,
-  addOption,
-  delOption;
-
-const initParams = (data: Data) => {
-  if (!data.staticOptions) {
-    const defaultOption = {
-      label: `选项1`,
-      value: `选项1`,
-      type: 'default',
-      checked: false,
-      key: uuid()
-    };
-    data.staticOptions = [defaultOption];
-    data.config.options = data.staticOptions;
-  }
-  optionsLength = (data.staticOptions || []).length;
-  addOption = (option) => {
-    data.staticOptions.push(option);
-  };
-  delOption = (index: number) => {
-    data.staticOptions.splice(index, 1);
-  };
-};
-
 export default {
   '@resize': {
     options: ['width']
@@ -89,17 +64,14 @@ export default {
           getTitle: ({ label, checked }) => {
             return `${label}${checked ? ': 默认值' : ''}`;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
+            const value = uuid('_', 2);
             const defaultOption = {
-              label: `选项${optionsLength + 1}`,
-              value: `选项${optionsLength + 1}`,
+              label: `选项${value}`,
+              value: `选项${value}`,
               type: 'default',
               key: uuid()
             };
-            addOption(defaultOption);
             return defaultOption;
           },
           items: [
@@ -129,7 +101,6 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
-            initParams(data);
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
