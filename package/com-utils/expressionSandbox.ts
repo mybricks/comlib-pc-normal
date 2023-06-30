@@ -50,9 +50,8 @@ export default class Sandbox {
       const match = it[0];
       const input = it.input;
       let ret = it[1];
-      if (!!it[1].trim()) {
+      if (!!ret.trim()) {
         ret = this.execute(ret);
-        ret = JSON.stringify(ret)
       }
       return {
         match,
@@ -61,9 +60,12 @@ export default class Sandbox {
       };
     });
     const retStr = retGroup.reduce((pre, cur) => {
-      const { match, ret, input } = cur;
+      const { match, ret } = cur;
+      if (match === expression && ret===undefined) {
+        return ret;
+      }
       return pre.replace(match, ret);
-    }, expression)
+    }, expression);
     try {
       return JSON.parse(retStr);
     } catch (error) {

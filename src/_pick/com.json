@@ -1,13 +1,14 @@
 {
   "title": "对象取值",
   "namespace": "mybricks.normal-pc.pick",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "对象取值",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "rtType": "js",
   "inputs": [
     {
