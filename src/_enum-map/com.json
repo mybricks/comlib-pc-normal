@@ -14,10 +14,14 @@
   "inputs": [
     {
       "id": "input",
-      "title": "输入值",
-      "schema": {
-        "type": "follow"
-      }
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "val",
+          "title": "输入值",
+          "type": "follow"
+        }
+      ]
     }
   ],
   "outputs": [
@@ -25,7 +29,7 @@
       "id": "output",
       "title": "输出值",
       "schema": {
-        "type": "any"
+        "type": "string"
       }
     }
   ]

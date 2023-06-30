@@ -1,7 +1,7 @@
 import { Data } from './types';
 import { ExpressionSandbox } from '../../package/com-utils';
 export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>) {
-  let sandbox;
+  let sandbox: ExpressionSandbox;
   inputs['inputContext']((context) => {
     if (!sandbox) {
       sandbox = new ExpressionSandbox({ context, prefix: 'inputValue' });
@@ -12,7 +12,7 @@ export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>
         return;
       }
       try {
-        const ret = sandbox.execute(expression);
+        const ret = sandbox.executeWithTemplate(expression);
         outputs[key](ret);
       } catch (error: any) {
         onError?.(`[${title}(${key})]: ${error}`);

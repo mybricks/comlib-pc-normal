@@ -51,7 +51,7 @@ export const getOutputSchema = (expression: string, inputSchema: any) => {
   try {
     const mockInputValue = mock(inputSchema);
     const sandbox = new ExpressionSandbox({ context: mockInputValue, prefix: PREFIX });
-    const ret = sandbox.execute(expression);
+    const ret = sandbox.executeWithTemplate(expression);
     const mockSchema = toJsonSchema(ret);
     const outputSchema = legacySchema(mockSchema);
     return outputSchema;
