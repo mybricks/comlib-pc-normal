@@ -29,31 +29,17 @@ export default {
     {
       title: '动态数据',
       type: 'switch',
-      ifVisible({ data }: EditorResult<Data>) {
-        return false;
-      },
       value: {
         get({ data }: EditorResult<Data>) {
           return !!data.dynamicMap;
         },
         set({ data, inputs }: EditorResult<Data>, val: boolean) {
           data.dynamicMap = val;
-          const _inputIO = inputs.get('input');
-          const defaultSchema = [
-            {
-              name: 'val',
-              title: '输入值',
-              type: 'follow'
-            }
-          ];
           if (val) {
-            defaultSchema.push({
-              name: 'goalMap',
-              title: '目标对象',
-              type: 'follow'
-            });
+            inputs.add('input.goalMap', '目标对象', { type: 'follow' }, true);
+          } else {
+            inputs.remove('input.goalMap');
           }
-          _inputIO?.setSchema(defaultSchema);
         }
       }
     }
