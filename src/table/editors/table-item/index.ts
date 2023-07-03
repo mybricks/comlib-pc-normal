@@ -34,20 +34,14 @@ const column = {
       createStyleForHead({
         target({ data, focusArea }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
-          const index = (data.columns || []).findIndex(({ key }) => key === tableThIdx);
-          const selector = `thead tr th:nth-child(${
-            index + 1
-          }):not(.ant-table-selection-column):not(.ant-table-cell-scrollbar):not(.ant-table-row-expand-icon-cell):not(.column-draggle)`;
+          const selector = `thead tr th[data-table-th-idx="${tableThIdx}"]`;
           return selector;
         }
       }),
       createStyleForContent({
         target({ data, focusArea }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
-          const index = (data.columns || []).findIndex(({ key }) => key === tableThIdx);
-          const selector = `tbody tr td:nth-child(${
-            index + 1
-          }):not(.ant-table-selection-column):not(.ant-table-cell-scrollbar):not(.ant-table-row-expand-icon-cell):not(.column-draggle)`;
+          const selector = `tbody tr td[data-table-column-id="${tableThIdx}"]`;
           return selector;
         }
       })
