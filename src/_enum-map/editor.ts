@@ -16,7 +16,7 @@ export default {
     {
       title: '值取键',
       type: 'switch',
-      description: '默认根据输入键名获取键值',
+      description: '默认根据输入键值获取键名',
       value: {
         get({ data }: EditorResult<Data>) {
           return !!data.valueToKey;
