@@ -1,6 +1,7 @@
 import { Data, OutputIds, SizeOptions, SlotIds, Item } from './constants';
 import { Editor, EditorType } from '../utils/editor';
 import { uuid } from '../utils';
+import { getFilterSelector } from '../utils/cssSelector';
 
 let ItemsLength, addItem, delItem;
 
@@ -31,13 +32,13 @@ export default {
       {
         title: '标题',
         options: ['font'],
-        target:
-          '> .card > .ant-card > .ant-card-head > .ant-card-head-wrapper > .ant-card-head-title'
+        target: ({ id }: EditorResult<Data>) =>
+          `.card  .ant-card-head-title${getFilterSelector(id)}`
       },
       {
         title: '卡片边框',
         options: ['border'],
-        target: '> .card > .ant-card'
+        target: ({ id }: EditorResult<Data>) => `.card > .ant-card${getFilterSelector(id)}`
       },
       Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
       Editor<Data>('尺寸', EditorType.Select, 'size', {

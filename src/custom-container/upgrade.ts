@@ -1,6 +1,7 @@
 import { Data, SlotIds } from './constants';
+import { getFilterSelector } from '../utils/cssSelector'
 
-export default function ({ data, slot, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({ id, data, slot, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const styleConfig = config.get('style');
   if (styleConfig) {
     styleConfig.setBinding('data.legacyConfigStyle');
@@ -23,7 +24,7 @@ export default function ({ data, slot, config, setDeclaredStyle }: UpgradeParams
     };
   }
   //style
-  setDeclaredStyle('> .root', { ...data.style });
-  setDeclaredStyle('> .root:hover', { ...data.hoverStyle });
+  setDeclaredStyle(`.root${getFilterSelector(id)}`, { ...data.style });
+  setDeclaredStyle(`.root:hover${getFilterSelector(id)}`, { ...data.hoverStyle });
   return true;
 }

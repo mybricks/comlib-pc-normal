@@ -3,6 +3,7 @@ import IndexEditor from './indexEditor';
 import LayoutEditor from './layoutEditor';
 import StyleEditor from './styleEditor';
 import { getRowItem, createStyleForRow } from '../utils';
+import { getFilterSelector } from '../../../utils/cssSelector';
 
 export default {
   '[data-type-row]': {
@@ -14,9 +15,9 @@ export default {
       cate1.items = [...LayoutEditor(row), ...StyleEditor(row), ...IndexEditor];
     },
     style: createStyleForRow({
-      target({ focusArea }: EditorResult<Data>) {
+      target({ id, focusArea }: EditorResult<Data>) {
         const { index } = focusArea;
-        return `> .root > .ant-row:nth-child(${index + 1})`;
+        return `.root > .ant-row:nth-child(${index + 1})${getFilterSelector(id)}`;
       }
     })
   }

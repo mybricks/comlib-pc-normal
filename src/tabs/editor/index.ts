@@ -2,6 +2,7 @@ import { Data, InputIds, OutputIds, SlotIds } from '../constants';
 import TabEditor from './tab';
 import { createItem, addEventIO } from './common';
 import { createStyleForDefault, createStyleForActive, createStyleForBar } from './utils';
+import { getFilterSelector } from '../../utils/cssSelector';
 
 export default {
   ':root': {
@@ -207,15 +208,17 @@ export default {
         initValue: {
           color: 'rgba(0,0,0,.85)'
         },
-        target:
-          '> .root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab:not(.ant-tabs-tab-active)'
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(
+            id
+          )}`
       }),
       createStyleForActive({
         initValue: {
           color: '#1890ff'
         },
-        target:
-          '> .root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab-active'
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)}`
       }),
       createStyleForBar()
     ]

@@ -1,6 +1,8 @@
 import { Data } from './constants';
+import { getFilterSelector } from '../utils/cssSelector'
 
 export default function ({ 
+  id,
   data,
   slot,
   setDeclaredStyle
@@ -46,7 +48,7 @@ export default function ({
 
   //兼容之前卡片边框的颜色
   if(data.bordered){
-    setDeclaredStyle(`> .card > .ant-card`, data.borderStyle);
+    setDeclaredStyle(`.card > .ant-card${getFilterSelector(id)}`, data.borderStyle);
   }
   
   return true;
