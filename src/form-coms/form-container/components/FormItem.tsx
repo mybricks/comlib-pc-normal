@@ -51,7 +51,7 @@ const FormItem = (props: FormItemProps) => {
         item?.hiddenLabel ? (
           void 0
         ) : (
-          <label style={{ whiteSpace }} id="label">
+          <label style={{ ...item.labelStyle, whiteSpace }} id="label">
             {item?.label}
           </label>
         )
@@ -77,9 +77,11 @@ const FormItem = (props: FormItemProps) => {
       </div>
 
       {item.description && (
-        <div className={css.formItemDesc}>
+        <div className={`${css.formItemDesc} formItemDesc`}>
           <Form.Item noStyle>
-            <span style={item.descriptionStyle}>{item.description}</span>
+            <span id="description" style={item.descriptionStyle}>
+              {item.description}
+            </span>
           </Form.Item>
         </div>
       )}

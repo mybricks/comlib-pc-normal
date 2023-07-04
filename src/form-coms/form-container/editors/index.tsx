@@ -88,23 +88,6 @@ export default {
           labelAlign: 'default',
           labelAutoWrap: 'default',
           hiddenLabel: false,
-          descriptionStyle: {
-            whiteSpace: 'pre-wrap',
-            lineHeight: '12px',
-            letterSpacing: '0px',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.45)',
-            fontStyle: 'normal'
-          },
-          labelStyle: {
-            lineHeight: '14px',
-            letterSpacing: '0px',
-            fontSize: '14px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.85)',
-            fontStyle: 'normal'
-          },
           inlineMargin: [0, 16, 24, 0],
           visible: true
         });
@@ -562,6 +545,13 @@ export default {
         }
       },
       {
+        title: '提示语样式',
+        options: ['font'],
+        target: ({ comId, comName, ...arg }) => {
+          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc > span#description`;
+        }
+      },
+      {
         title: '必填样式',
         type: 'Switch',
         value: {
@@ -809,40 +799,6 @@ export default {
                 };
 
                 data.items.forEach((item) => (item.labelStyle = labelStyle));
-              }
-            }
-          },
-          {
-            title: '提示语样式',
-            type: 'Style',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false,
-                verticalAlign: false
-              }
-            },
-            description: '表单项提示语的字体样式',
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                const item = getFormItem(data.items, { id, name });
-
-                if (!item?.descriptionStyle) {
-                  setFormItemProps({ data, id, name }, 'descriptionStyle', {
-                    whiteSpace: 'pre-wrap',
-                    lineHeight: '12px',
-                    letterSpacing: '0px',
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    color: 'rgba(0, 0, 0, 0.45)',
-                    fontStyle: 'normal'
-                  });
-                }
-                return item?.descriptionStyle;
-              },
-              set({ id, name, data }: EditorResult<Data>, value: any) {
-                const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id, name }, 'descriptionStyle', style);
               }
             }
           },
