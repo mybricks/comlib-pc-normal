@@ -383,11 +383,194 @@ export default {
     title: '表单项',
     style: [
       {
+        title: '宽度模式',
+        type: 'Select',
+        options: [
+          {
+            label: '24栅格',
+            value: 'span'
+          },
+          {
+            label: '固定宽度(px)',
+            value: 'px'
+          }
+        ],
+        value: {
+          get({ data, name, id }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'widthOption');
+          },
+          set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
+            setFormItemProps({ data, id, name }, 'widthOption', value);
+            refreshFormItemPropsSchema({ data, inputs });
+          }
+        }
+      },
+      {
+        title: '宽度配置(共24格)',
+        type: 'Slider',
+        options: [
+          {
+            max: 24,
+            min: 1,
+            step: 1,
+            formatter: '/24'
+          }
+        ],
+        ifVisible({ data, id, name }: EditorResult<Data>) {
+          const item = getFormItem(data.items, { id, name });
+
+          return item?.widthOption !== 'px';
+        },
+        value: {
+          get({ data, id, name }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'span');
+          },
+          set({ data, id, name }: EditorResult<Data>, value: number) {
+            setFormItemProps({ data, id, name }, 'span', value);
+          }
+        }
+      },
+      {
+        title: '宽度配置(px)',
+        type: 'text',
+        options: {
+          type: 'number'
+        },
+        ifVisible({ data, id, name }: EditorResult<Data>) {
+          const item = getFormItem(data.items, { id, name });
+          return item?.widthOption === 'px';
+        },
+        value: {
+          get({ data, id, name }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'width');
+          },
+          set({ data, id, name }: EditorResult<Data>, value: number) {
+            setFormItemProps({ data, id, name }, 'width', value);
+          }
+        }
+      },
+      {
+        title: '边距',
+        type: 'inputNumber',
+        options: [
+          { min: 0, title: '上' },
+          { min: 0, title: '右' },
+          { min: 0, title: '下' },
+          { min: 0, title: '左' }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          /**
+           * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+           */
+          return (
+            (data.config?.layout || data.layout) !== 'horizontal' &&
+            !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery)
+          );
+        },
+        value: {
+          get({ id, data, name }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'inlineMargin');
+          },
+          set({ id, data, name }: EditorResult<Data>, value: number[]) {
+            setFormItemProps({ data, id, name }, 'inlineMargin', value);
+          }
+        }
+      },
+      {
+        title: '边距应用其它表单项及操作项',
+        type: 'Button',
+        ifVisible({ data }: EditorResult<Data>) {
+          return (data.config?.layout || data.layout) !== 'horizontal';
+        },
+        value: {
+          set({ id, data, name }: EditorResult<Data>) {
+            const curItem = getFormItem(data.items, { id, name });
+
+            const margin = curItem?.inlineMargin || [0, 16, 24, 0];
+            data.items.forEach((item) => (item.inlineMargin = [...margin]));
+            data.actions.inlinePadding = [...margin];
+          }
+        }
+      },
+      {
+        title: '标题自动换行',
+        type: 'Radio',
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        options: [
+          { label: '是', value: true },
+          { label: '否', value: false },
+          { label: '跟随容器', value: 'default' }
+        ],
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'labelAutoWrap');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: boolean) {
+            setFormItemProps({ data, id, name }, 'labelAutoWrap', value);
+          }
+        }
+      },
+      {
+        title: '标题对齐方式',
+        type: 'Radio',
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        options: [
+          { label: '左对齐', value: 'left' },
+          { label: '右对齐', value: 'right' },
+          { label: '跟随容器', value: 'default' }
+        ],
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'labelAlign');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: 'left' | 'right') {
+            setFormItemProps({ data, id, name }, 'labelAlign', value);
+          }
+        }
+      },
+      {
+        title: '标题冒号',
+        type: 'Radio',
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+        },
+        description: '当标题配置为空时，始终不展示冒号',
+        options: [
+          { label: '显示', value: true },
+          { label: '隐藏', value: false },
+          { label: '跟随容器', value: 'default' }
+        ],
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'colon');
+          },
+          set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
+            setFormItemProps({ data, id, name }, 'colon', value);
+          }
+        }
+      },
+      {
         title: '标题样式',
         options: ['font'],
         target: ({ comId, comName, ...arg }) => {
           // const selector = `#${comId} > div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
-          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label  > label`;
+          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > #label`;
+        }
+      },
+      {
+        title: '必填样式',
+        type: 'Switch',
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'required');
+          },
+          set({ id, name, data }: EditorResult<Data>, value) {
+            setFormItemProps({ data, id, name }, 'required', value);
+          }
         }
       }
     ],
@@ -607,213 +790,6 @@ export default {
         title: '样式',
         items: [
           {
-            title: '宽度模式',
-            type: 'Select',
-            options: [
-              {
-                label: '24栅格',
-                value: 'span'
-              },
-              {
-                label: '固定宽度(px)',
-                value: 'px'
-              }
-            ],
-            value: {
-              get({ data, name, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'widthOption');
-              },
-              set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
-                setFormItemProps({ data, id, name }, 'widthOption', value);
-                refreshFormItemPropsSchema({ data, inputs });
-              }
-            }
-          },
-          {
-            title: '宽度配置(共24格)',
-            type: 'Slider',
-            options: [
-              {
-                max: 24,
-                min: 1,
-                step: 1,
-                formatter: '/24'
-              }
-            ],
-            ifVisible({ data, id, name }: EditorResult<Data>) {
-              const item = getFormItem(data.items, { id, name });
-
-              return item?.widthOption !== 'px';
-            },
-            value: {
-              get({ data, id, name }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'span');
-              },
-              set({ data, id, name }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id, name }, 'span', value);
-              }
-            }
-          },
-          {
-            title: '宽度配置(px)',
-            type: 'text',
-            options: {
-              type: 'number'
-            },
-            ifVisible({ data, id, name }: EditorResult<Data>) {
-              const item = getFormItem(data.items, { id, name });
-              return item?.widthOption === 'px';
-            },
-            value: {
-              get({ data, id, name }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'width');
-              },
-              set({ data, id, name }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id, name }, 'width', value);
-              }
-            }
-          },
-          {
-            title: '边距',
-            type: 'inputNumber',
-            options: [
-              { min: 0, title: '上' },
-              { min: 0, title: '右' },
-              { min: 0, title: '下' },
-              { min: 0, title: '左' }
-            ],
-            ifVisible({ data }: EditorResult<Data>) {
-              /**
-               * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
-               */
-              return (
-                (data.config?.layout || data.layout) !== 'horizontal' &&
-                !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery)
-              );
-            },
-            value: {
-              get({ id, data, name }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'inlineMargin');
-              },
-              set({ id, data, name }: EditorResult<Data>, value: number[]) {
-                setFormItemProps({ data, id, name }, 'inlineMargin', value);
-              }
-            }
-          },
-          {
-            title: '边距应用其它表单项及操作项',
-            type: 'Button',
-            ifVisible({ data }: EditorResult<Data>) {
-              return (data.config?.layout || data.layout) !== 'horizontal';
-            },
-            value: {
-              set({ id, data, name }: EditorResult<Data>) {
-                const curItem = getFormItem(data.items, { id, name });
-
-                const margin = curItem?.inlineMargin || [0, 16, 24, 0];
-                data.items.forEach((item) => (item.inlineMargin = [...margin]));
-                data.actions.inlinePadding = [...margin];
-              }
-            }
-          },
-          {
-            title: '标题自动换行',
-            type: 'Radio',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            options: [
-              { label: '是', value: true },
-              { label: '否', value: false },
-              { label: '跟随容器', value: 'default' }
-            ],
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'labelAutoWrap');
-              },
-              set({ id, name, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, id, name }, 'labelAutoWrap', value);
-              }
-            }
-          },
-          {
-            title: '标题对齐方式',
-            type: 'Radio',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            options: [
-              { label: '左对齐', value: 'left' },
-              { label: '右对齐', value: 'right' },
-              { label: '跟随容器', value: 'default' }
-            ],
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'labelAlign');
-              },
-              set({ id, name, data }: EditorResult<Data>, value: 'left' | 'right') {
-                setFormItemProps({ data, id, name }, 'labelAlign', value);
-              }
-            }
-          },
-          {
-            title: '标题冒号',
-            type: 'Radio',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            description: '当标题配置为空时，始终不展示冒号',
-            options: [
-              { label: '显示', value: true },
-              { label: '隐藏', value: false },
-              { label: '跟随容器', value: 'default' }
-            ],
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'colon');
-              },
-              set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
-                setFormItemProps({ data, id, name }, 'colon', value);
-              }
-            }
-          },
-          {
-            title: '标题样式',
-            type: 'Style',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false,
-                verticalAlign: false
-              }
-            },
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            description: '表单项标题的字体样式',
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                const item = getFormItem(data.items, { id, name });
-
-                if (!item?.labelStyle) {
-                  setFormItemProps({ data, id, name }, 'labelStyle', {
-                    lineHeight: '14px',
-                    letterSpacing: '0px',
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    color: 'rgba(0, 0, 0, 0.85)',
-                    fontStyle: 'normal'
-                  });
-                }
-                return item?.labelStyle;
-              },
-              set({ id, name, data }: EditorResult<Data>, value: any) {
-                const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id, name }, 'labelStyle', style);
-              }
-            }
-          },
-          {
             title: '标题样式应用所有表单项',
             type: 'Button',
             ifVisible({ id, name, data }: EditorResult<Data>) {
@@ -888,18 +864,6 @@ export default {
                 };
 
                 data.items.forEach((item) => (item.descriptionStyle = descriptionStyle));
-              }
-            }
-          },
-          {
-            title: '必填样式',
-            type: 'Switch',
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'required');
-              },
-              set({ id, name, data }: EditorResult<Data>, value) {
-                setFormItemProps({ data, id, name }, 'required', value);
               }
             }
           }
