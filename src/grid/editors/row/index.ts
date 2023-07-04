@@ -16,7 +16,7 @@ export default {
     style: createStyleForRow({
       target({ focusArea }: EditorResult<Data>) {
         const { index } = focusArea;
-        return `.root > .ant-row:nth-child(${index + 1})`;
+        return `> .root > .ant-row:nth-child(${index + 1})`;
       }
     })
   }
