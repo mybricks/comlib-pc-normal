@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 
 import { Modal, Spin, Input } from 'antd';
 // import { uploadFilesToCDN } from '../../utils/uploadFilesToCDN';
+import { EnvContext } from '../context';
 
 import css from '../richText.less';
 
@@ -59,9 +60,10 @@ const renderPreview = ({ type, url }) => {
   }
 };
 export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel }: Props) {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { env } = useContext(EnvContext);
 
   return (
     <div ref={ref}>
@@ -75,10 +77,10 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
           const file: any = (evt.target && evt.target.files && evt.target.files[0]) || null;
           if (file) {
             setUploading(true);
-            // upload(file, (url) => {
-            // setUploading(false);
-            // modalCtx.modal.url = url;
-            // });
+            uploadFile([file], env).then((urlList) => {
+              uploadModel.url = urlList[0];
+              setUploading(false);
+            });
           }
         }}
       />
@@ -102,7 +104,7 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
           </div>
         ]}
         onCancel={onClose}
-        getContainer={() => ref.current}
+        getContainer={() => ref.current as HTMLDivElement}
         zIndex={1002}
       >
         <div
@@ -124,11 +126,10 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
           {uploadModel.url ? null : (
             <textarea
               onPaste={(e) => {
-                // modalCtx.modal.uploading = true;
-                // paste(e, (url) => {
-                //   modalCtx.modal.uploading = false;
-                //   modalCtx.modal.url = url;
-                // });
+                paste(e, env).then((urlList) => {
+                  uploadModel.url = urlList[0];
+                  setUploading(false);
+                });
               }}
               className={css['editor-rich-text__modal-text']}
               ref={(e) => {
@@ -157,38 +158,50 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
   );
 }
 
-// function paste(e: any, set: (url: string) => void) {
-//   const cbd = e.clipboardData;
+async function paste(e: any, env: RuntimeParams<any>['env']) {
+  const cbd = e.clipboardData;
 
-//   if (!(e.clipboardData && e.clipboardData.items)) return;
-//   if (
-//     cbd.items &&
-//     cbd.items.length === 2 &&
-//     cbd.items[0].kind === 'string' &&
-//     cbd.items[1].kind === 'file' &&
-//     cbd.types &&
-//     cbd.types.length === 2 &&
-//     cbd.types[0] === 'text/plain' &&
-//     cbd.types[1] === 'Files'
-//   )
-//     return;
+  if (!(e.clipboardData && e.clipboardData.items)) return;
+  if (
+    cbd.items &&
+    cbd.items.length === 2 &&
+    cbd.items[0].kind === 'string' &&
+    cbd.items[1].kind === 'file' &&
+    cbd.types &&
+    cbd.types.length === 2 &&
+    cbd.types[0] === 'text/plain' &&
+    cbd.types[1] === 'Files'
+  )
+    return;
 
-//   for (let i = 0; i < cbd.items.length; i++) {
-//     const item = cbd.items[i];
+  const files: Array<File> = [];
 
-//     if (item.kind == 'file') {
-//       const file = item.getAsFile();
-//       file.uploadName = `${Date.now()}-${file.name}`;
-//       if (file?.size === 0) return;
-//       upload(file, set);
-//       e.target.value = '';
-//     }
-//   }
-// }
+  for (let i = 0; i < cbd.items.length; i++) {
+    const item = cbd.items[i];
+
+    if (item.kind == 'file') {
+      const file = item.getAsFile();
+      file.uploadName = `${Date.now()}-${file.name}`;
+      if (file?.size === 0) return;
+      files.push(file);
+    }
+  }
+  const ret = await uploadFile(files, env);
+  e.target.value = ret[0];
+  return ret;
+}
 
 function resetTextArea(e: any) {
   e.value = '';
 }
+
+const uploadFile = async (files: Array<File>, env: RuntimeParams<any>['env']) => {
+  const res = await env.uploadFile(files).catch((error) => {
+    console.error(error);
+    return [];
+  });
+  return res.map(({ url }) => url);
+};
 
 // function upload(file: any, set: (url: string) => void) {
 //   uploadFilesToCDN([file]).then((res: any) => {
