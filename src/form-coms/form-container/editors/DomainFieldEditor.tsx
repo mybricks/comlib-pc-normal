@@ -40,7 +40,12 @@ export default function DomainFieldEditor({ editConfig }) {
   };
 
   const handleChange = (val) => {
-    value.set(val);
+    const item = entity?.fieldAry.find((item) => item.name === val);
+
+    value.set({
+      name: val,
+      bizType: item.bizType
+    });
   };
 
   return (

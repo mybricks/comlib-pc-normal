@@ -8,16 +8,9 @@ import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '
 import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
 
-import DomainFieldEditor from './DomainFieldEditor';
+import { FieldBizType } from '../../../domain/domain-crud/constants';
 
-function fieldNameCheck(data: Data, name: string) {
-  const fieldNameList = data.items.map((item) => item.name);
-  if (fieldNameList.includes(name)) {
-    return true;
-  } else {
-    return false;
-  }
-}
+import DomainFieldEditor from './DomainFieldEditor';
 
 function getFormItemProp(
   { data, ...com }: { data: Data; id: string; name: string },
@@ -146,7 +139,9 @@ export default {
   //   }
   //   refreshSchema({data, inputs, outputs, slots})
   // },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
+  '@parentUpdated'(curEditor, { schema }) {
+    const { id, data, parent, slot } = curEditor;
+
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true;
@@ -154,6 +149,12 @@ export default {
     } else {
       data.isFormItem = false;
     }
+    // console.log(curEditor, data.domainModel.entity.fieldAry)
+    // if (schema === 'mybricks.domain-pc.crud/query') {
+    //   if (data.items.length === 0) {
+    //     slot.get('content').addCom('mybricks.normal-pc.form-text', false, { deletable: true, movable: true });
+    //   }
+    // }
 
     if (
       schema !== 'mybricks.domain-pc.crud/query' &&
@@ -431,21 +432,28 @@ export default {
             return item?.name || item?.label;
           },
           set({ id, data, name, input, output, slots }: EditorResult<Data>, val: string) {
-            val = val.trim();
-            if (!val) {
-              return message.warn('字段名不能为空');
-            }
-
             const item = getFormItem(data.items, { id, name });
+            const fieldName = setFieldName(item, data, val);
 
-            if (item && item.name !== val) {
-              if (fieldNameCheck(data, val)) {
-                return message.warn('字段名不能重复');
-              }
-              item.name = val;
-
+            if (fieldName) {
               refreshSchema({ data, inputs: input, outputs: output, slots });
             }
+
+            // val = val.trim();
+            // if (!val) {
+            //   return message.warn('字段名不能为空');
+            // }
+
+            // const item = getFormItem(data.items, { id, name });
+
+            // if (item && item.name !== val) {
+            //   if (fieldNameCheck(data, val)) {
+            //     return message.warn('字段名不能重复');
+            //   }
+            //   item.name = val;
+
+            //   refreshSchema({ data, inputs: input, outputs: output, slots });
+            // }
           }
         }
       },
@@ -467,30 +475,71 @@ export default {
 
             return item?.name ? item?.name : undefined;
           },
-          set({ id, data, name, input, output, slots }: EditorResult<Data>, val: string) {
-            val = val.trim();
-            if (!val) {
-              return message.warn('字段名不能为空');
-            }
-
+          set(
+            { id, data, name, input, output, slots }: EditorResult<Data>,
+            params: { name: string; bizType: string }
+          ) {
             const item = getFormItem(data.items, { id, name });
 
-            if (item && item.name !== val) {
-              if (fieldNameCheck(data, val)) {
-                return message.warn('字段名不能重复');
-              }
+            const fieldName = setFieldName(item, data, params.name);
+
+            if (item && fieldName) {
               const oldRules = data.domainModel?.queryFieldRules?.[item.name || item.label];
 
+              item['label'] = params.name;
+
               if (oldRules) {
-                data.domainModel.queryFieldRules[val] = oldRules;
+                data.domainModel.queryFieldRules[params.name] = oldRules;
                 delete data.domainModel.queryFieldRules[item.name || item.label];
               }
 
-              item.name = val;
-              item['label'] = val;
+              if (data.domainModel?.type === 'domain') {
+                let operator = '=';
+
+                if ([FieldBizType.STRING, FieldBizType.PHONE].includes(params.bizType)) {
+                  operator = 'LIKE';
+                }
+
+                setQueryFieldRule(data.domainModel, item, operator);
+              }
 
               refreshSchema({ data, inputs: input, outputs: output, slots });
             }
+
+            // params.name = params.name.trim();
+
+            // if (!params.name) {
+            //   return message.warn('字段名不能为空');
+            // }
+
+            // const item = getFormItem(data.items, { id, name });
+
+            // if (item && item.name !== params.name) {
+            //   if (fieldNameCheck(data, params.name)) {
+            //     return message.warn('字段名不能重复');
+            //   }
+            //   const oldRules = data.domainModel?.queryFieldRules?.[item.name || item.label];
+
+            //   if (oldRules) {
+            //     data.domainModel.queryFieldRules[params.name] = oldRules;
+            //     delete data.domainModel.queryFieldRules[item.name || item.label];
+            //   }
+
+            //   item.name = params.name;
+            //   item['label'] = params.name;
+
+            //   if (data.domainModel?.type === 'domain') {
+            //     let operator = '='
+
+            //     if ([FieldBizType.STRING, FieldBizType.PHONE].includes(params.bizType)) {
+            //       operator = 'LIKE'
+            //     }
+
+            //     setQueryFieldRule(data.domainModel, item, operator)
+            //   }
+
+            //   refreshSchema({ data, inputs: input, outputs: output, slots });
+            // }
           }
         }
       },
@@ -519,23 +568,18 @@ export default {
         },
         value: {
           get({ id, name, data }: EditorResult<Data>) {
-            const item = data.domainModel?.queryFieldRules?.[name];
+            const item = getFormItem(data.items, { id, name });
+            if (!item) return;
+            const queryField = data.domainModel?.queryFieldRules?.[item.name];
 
-            return item?.operator;
+            return queryField?.operator;
           },
           set({ id, name, data }: EditorResult<Data>, value: string) {
             const item = getFormItem(data.items, { id, name });
 
             if (item) {
-              if (!data.domainModel.queryFieldRules) {
-                data.domainModel.queryFieldRules = {};
-              }
-
-              data.domainModel.queryFieldRules[item?.name || item.label] = {
-                operator: value
-              };
+              setQueryFieldRule(data.domainModel, item, value);
             }
-            // console.log(data.domainModel.queryFieldRules)
           }
         }
       },
@@ -1040,3 +1084,42 @@ export default {
 const getSlotAfterTitle = (label: string) => {
   return `${label}后置内容区`;
 };
+
+const setQueryFieldRule = (domainModel, item, value) => {
+  if (!domainModel.queryFieldRules) {
+    domainModel.queryFieldRules = {};
+  }
+
+  domainModel.queryFieldRules[item?.name || item.label] = {
+    operator: value
+  };
+};
+
+const setFieldName = (item, data, value) => {
+  if (!value) {
+    message.warn('字段名不能为空');
+    return null;
+  }
+
+  const name = value.trim();
+
+  if (item && item.name !== name) {
+    if (fieldNameCheck(data, name)) {
+      message.warn('字段名不能重复');
+      return null;
+    }
+
+    item.name = name;
+
+    return name;
+  }
+};
+
+function fieldNameCheck(data: Data, name: string) {
+  const fieldNameList = data.items.map((item) => item.name);
+  if (fieldNameList.includes(name)) {
+    return true;
+  } else {
+    return false;
+  }
+}
