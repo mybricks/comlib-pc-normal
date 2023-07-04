@@ -357,7 +357,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   };
 
   const renderTitle = (item) => {
-    item.title = env.i18n(item.title);
+    item.title = env.i18n(item.title || '');
     // 搜索
     const index = item.title.indexOf(data.searchValue);
     const beforeStr = item.title.substr(0, index);
@@ -426,7 +426,8 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const renderTreeNode = (treeData: TreeData[], depth = 0, parent = { key: '0' }) => {
     const { TreeNode } = Tree;
     const hasAddNode = data.addable && (!data.maxDepth || depth < data.maxDepth);
-    const addNodeKey = `${parent.key}-${treeData.length}`;
+    const lastTreeNode = treeData[treeData.length - 1];
+    const addNodeKey = `${parent.key}-${lastTreeNode?.key}`;
     return (
       <>
         {treeData.map((item, inx) => {

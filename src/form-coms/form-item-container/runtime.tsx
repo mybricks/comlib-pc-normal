@@ -12,14 +12,15 @@ interface Data {
 }
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, style } = props;
+  const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, name, style } =
+    props;
   const { edit } = env;
 
   useLayoutEffect(() => {
     inputs['setValue']((val) => {
       data.value = val;
       slots[SlotIds.FormItem].inputs['curValue'](data.value);
-      onChangeForFc(parentSlot, { id: props.id, value: val });
+      onChangeForFc(parentSlot, { id: props.id, value: val, name });
       outputs['onChange'](val);
       onValidateTrigger();
     });
@@ -54,7 +55,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
 
   return <div>{slots[SlotIds.FormItem] && slots[SlotIds.FormItem].render()}</div>;

@@ -14,7 +14,8 @@ export default function ({
   env,
   style,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
@@ -37,6 +38,8 @@ export default function ({
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
@@ -60,29 +63,8 @@ export default function ({
     [value]
   );
 
-  // inputs['setValue']((val: string) => {
-  //   setValue(val);
-  // });
-
-  // inputs['getValue']((_, outputRels) => {
-  //   outputRels['returnValue'](getValue());
-  // });
-
-  // inputs['resetValue'](() => {
-  //   setValue(void 0);
-  // });
-
-  // inputs['setDisabled'](() => {
-  //   data.disabled = true;
-  // });
-
-  // inputs['setEnabled'](() => {
-  //   data.disabled = false;
-  // });
-
-  // inputs['validate'](validate);
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: id });
+    validateTrigger(parentSlot, { id, name });
   };
 
   const getValue = useCallback(() => value, [value]);
@@ -90,7 +72,7 @@ export default function ({
   const onChange = (e) => {
     const _value = e.target.value;
     setValue(_value);
-    onChangeForFc(parentSlot, { id: id, value: _value });
+    onChangeForFc(parentSlot, { id, name, value: _value });
     outputs['onChange'](_value);
   };
 

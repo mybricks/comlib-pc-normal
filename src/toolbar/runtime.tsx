@@ -164,6 +164,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             onClick={() => onClick(item)}
             onDoubleClick={() => onDoubleClick(item)}
             loading={loading}
+            block={true}
           >
             {renderBtnContext(item)}
           </Button>

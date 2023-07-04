@@ -23,6 +23,7 @@ interface Actions {
 
 export interface FormItems {
   id: string;
+  comName: string
   name: string
   label: string
   span: number
@@ -103,6 +104,22 @@ export interface Data {
    *  提交隐藏表单项 （隐藏表单项依旧参与校验与提交）
    */
   submitHiddenFields: boolean
+
+  domainModel: DomainModel
+}
+
+interface DomainModel {
+  // formValues: any
+  entity?: any
+  queryFieldRules: QueryFieldRules
+  isQuery?: boolean
+  type?: string
+}
+
+interface QueryFieldRules {
+  [field: string]: {
+    operator: string
+  }
 }
 
 export interface FormControlProps {

@@ -6,6 +6,7 @@ import { Option, OutputIds } from '../types';
 import { uuid } from '../../utils';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import css from './runtime.less';
 
 export default function Runtime({
   env,
@@ -15,7 +16,8 @@ export default function Runtime({
   logger,
   parentSlot,
   id,
-  title
+  title,
+  name
 }: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -50,7 +52,7 @@ export default function Runtime({
         if (val !== undefined && !Array.isArray(val)) {
           logger.error(`多选框的值应为数组格式`);
         } else {
-          data.value = val;
+          changeValue(val);
           outputs[OutputIds.OnInitial](val);
         }
       });
@@ -109,7 +111,7 @@ export default function Runtime({
 
   // 校验触发
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
   // data.value变化事件
   const changeValue = useCallback((checkedValue?: any[]) => {
@@ -127,7 +129,7 @@ export default function Runtime({
   // 全选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id: id, value: checkedValue });
+    onChangeForFc(parentSlot, { id: id, name: name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
@@ -141,10 +143,21 @@ export default function Runtime({
   if (data.renderError) {
     return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
   }
+
+  const checkboxStyle = {
+    paddingBottom: data.layout === 'vertical' ? '8px' : void 0
+  };
+
+  const checkboxGroup = {
+    display: data.layout === 'vertical' ? 'grid' : void 0,
+    gap: data.layout === 'vertical' ? '8px' : void 0
+  };
+
   return (
-    <div>
+    <div className={css.checkbox}>
       {data.checkAll && (
         <Checkbox
+          style={checkboxStyle}
           indeterminate={indeterminate}
           onChange={onCheckAllChange}
           checked={checkAll}
@@ -154,6 +167,7 @@ export default function Runtime({
         </Checkbox>
       )}
       <Checkbox.Group
+        style={checkboxGroup}
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value as any}

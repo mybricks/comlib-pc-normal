@@ -9,8 +9,7 @@ const CursorType = {
 };
 export default (props: RuntimeParams<Data>) => {
   const { data, slots, inputs, env, outputs } = props;
-  const { title, useExtra, bordered, size, style, bodyStyle, hoverable, useClick, outputContent } =
-    data;
+  const { title, useExtra, bordered, size, style, hoverable, useClick, isAction } = data;
 
   useEffect(() => {
     if (env.runtime) {
@@ -36,31 +35,39 @@ export default (props: RuntimeParams<Data>) => {
     }
   }, []);
 
-  let borderSty = bordered ? data.borderStyle : {};
+  const RenderAction = () => {
+    let itemsArr = data.items.map((item) => {
+      return slots[item.key]?.render();
+    });
+    return itemsArr;
+  };
 
   return (
     <div className={css.card}>
       <Card
         title={env.i18n(title)}
         size={size}
-        bodyStyle={bodyStyle}
+        bodyStyle={{
+          padding: data.padding,
+          height: title !== '' ? `calc(100% - ${data.padding}*2)` : '100%'
+        }}
         bordered={bordered}
         style={{
           ...style,
           cursor: data.cursor ? CursorType.Pointer : CursorType.Default,
-          height: '100%',
-          ...borderSty
+          height: '100%'
         }}
         extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
         hoverable={hoverable}
         onClick={onClick}
+        actions={isAction ? RenderAction() : void 0}
       >
         <div
           style={{
             overflowY: props.style.height !== 'auto' ? 'auto' : void 0,
             overflowX: props.style.width !== 'auto' ? 'auto' : void 0
           }}
-          className={data.title === '' ? css.noTitleContainer : css.container}
+          className={css.containerCard}
         >
           {slots[SlotIds.Body]?.render()}
         </div>

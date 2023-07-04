@@ -22,8 +22,9 @@ interface Props {
   slots: any;
   filterMap: any;
   renderCell: any;
+  focusRowIndex: number | null;
 }
-export default ({ env, data, slots, filterMap, renderCell }: Props) => {
+export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Props) => {
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -148,28 +149,15 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
         }))}
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
-        onCell={() => {
+        onCell={(record, rowIndex) => {
           return {
-            style: cItem.contentStyle
-              ? {
-                  ...cItem.contentStyle
-                }
-              : {
-                  color: cItem.contentColor
-                }
+            style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
+            'data-table-column-id': cItem.key
           };
         }}
         onHeaderCell={(): any => {
           return {
-            'data-table-th-idx': cItem.key,
-            style: cItem.headStyle
-              ? {
-                  ...cItem.headStyle
-                }
-              : {
-                  color: cItem.titleColor,
-                  backgroundColor: cItem.titleBgColor
-                }
+            'data-table-th-idx': cItem.key
           };
         }}
       />

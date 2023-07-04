@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Radio } from 'antd';
+import { Radio, Space } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { uuid } from '../../utils';
@@ -7,6 +7,7 @@ import { Option } from '../types';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import css from './runtime.less';
 
 export default function Runtime({
   env,
@@ -14,16 +15,25 @@ export default function Runtime({
   inputs,
   outputs,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   useFormItemInputs({
+    name,
+    id,
     inputs,
     outputs,
     configs: {
       setValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
         data.value = val;
       },
       setInitialValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
         data.value = val;
       },
       returnValue(output) {
@@ -65,6 +75,7 @@ export default function Runtime({
             disabled: false,
             lable: `单选框${index}`,
             value: `${uuid()}`,
+            key: `${uuid()}`,
             ...item
           });
         });
@@ -75,6 +86,7 @@ export default function Runtime({
             disabled: false,
             lable: `单选框`,
             value: `${uuid()}`,
+            key: `${uuid()}`,
             ...(ds || {})
           }
         ];
@@ -92,18 +104,49 @@ export default function Runtime({
   }, []);
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
 
   const onChange = useCallback((e) => {
     const { value } = e.target;
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value });
+    onChangeForFc(parentSlot, { id: id, value, name });
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
 
-  return (
+  const renderRadio = () => {
+    return (
+      <div className={css.radio}>
+        <Radio.Group
+          optionType={data.enableButtonStyle ? 'button' : 'default'}
+          buttonStyle={data.buttonStyle}
+          disabled={data.config.disabled}
+          value={data.value}
+          onChange={onChange}
+        >
+          <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+              const label = item.label;
+              return (
+                <Radio
+                  key={item.key}
+                  value={item.value}
+                  disabled={item.disabled}
+                  checked={item.checked}
+                  style={{ marginRight: 8 }}
+                >
+                  {label}
+                </Radio>
+              );
+            })}
+          </Space>
+        </Radio.Group>
+      </div>
+    );
+  };
+
+  return data.enableButtonStyle ? (
     <div>
       <Radio.Group
         optionType={data.enableButtonStyle ? 'button' : 'default'}
@@ -128,5 +171,7 @@ export default function Runtime({
         })}
       </Radio.Group>
     </div>
+  ) : (
+    renderRadio()
   );
 }

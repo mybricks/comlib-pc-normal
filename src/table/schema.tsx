@@ -281,6 +281,12 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }:
   });
 }
 
+export function getTableSchema({ data }) {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data } as any);
+  return dataSchema;
+}
+
 export function setDataSchema({ data, output, input, slot }: EditorResult<Data>) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
@@ -360,6 +366,17 @@ export const Schemas = {
         width: {
           type: 'number'
         }
+      }
+    }
+  },
+  ROW_CLICK: {
+    type: 'object',
+    properties: {
+      index: {
+        type: 'number'
+      },
+      record: {
+        type: 'object'
       }
     }
   }

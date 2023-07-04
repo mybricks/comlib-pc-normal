@@ -7,6 +7,7 @@ import css from './style.less';
 
 interface Props {
   env: Env;
+  parentSlot: any;
   data: Data;
   slots: any;
   inputs: any;
@@ -33,14 +34,19 @@ export default (props: Props): JSX.Element => {
       {useBottomRowSelection && RenderBatchBtns(props)}
       {data.usePagination && (
         <div
-          data-table-pagination="pagination"
           className={classnames(css.pagination)}
           style={{
             width: useBottomRowSelection ? '' : '100%',
             justifyContent: data.paginationConfig.align
           }}
         >
-          <Pagination env={env} data={data.paginationConfig} inputs={inputs} outputs={outputs} />
+          <Pagination
+            env={env}
+            parentSlot={props.parentSlot}
+            data={data.paginationConfig}
+            inputs={inputs}
+            outputs={outputs}
+          />
         </div>
       )}
     </div>

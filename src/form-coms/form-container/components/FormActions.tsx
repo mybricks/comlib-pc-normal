@@ -32,7 +32,7 @@ const FormActions = (props: Props) => {
   // }, [layout])
 
   return (
-    <Space wrap>
+    <Space wrap data-form-actions>
       {actions.items.map((item) => {
         if (typeof item.visible !== 'undefined' && !item.visible) {
           return null;

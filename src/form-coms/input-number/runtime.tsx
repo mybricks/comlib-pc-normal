@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { InputNumber } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -16,6 +16,9 @@ export interface Data {
     precision: number;
     step: number;
   };
+  isFormatter: boolean;
+  charPostion: 'prefix' | 'suffix';
+  character: string;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -23,6 +26,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<string | number>();
   useFormItemInputs(
     {
+      id: props.id,
+      name: props.name,
       inputs,
       outputs,
       configs: {
@@ -63,12 +68,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const onChange = (value) => {
     setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, value });
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   };
 
@@ -89,18 +94,42 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   //数字输入框实时校验位数, 多的小数位禁止输入
-  const NumberProps = {
-    formatter: (value: any) => {
-      let reStr = '\\d'.repeat(data.config.precision);
-      let reg;
-      if (data.config.precision === 0) {
-        reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
-      } else {
-        reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+  const NumberProps = useMemo(() => {
+    return {
+      formatter: (value: any) => {
+        let reStr = '\\d'.repeat(data.config.precision);
+        let reg;
+        if (data.config.precision === 0) {
+          reg = `${value}`.replace(/^(\-)*(\d+)\.().*$/, '$1$2');
+        } else {
+          reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
+        }
+        if (reg !== '') {
+          if (data.isFormatter && data.charPostion === 'suffix') {
+            reg = `${reg}${data.character}`;
+          }
+          if (data.isFormatter && data.charPostion === 'prefix') {
+            reg = `${data.character}${reg}`;
+          }
+        }
+        return reg;
       }
-      return reg;
-    }
-  };
+    };
+  }, [value, data.character, data.isFormatter]);
+
+  //转换回数字的方式
+  const ParserProps = useMemo(() => {
+    return {
+      parser: (value: any) => {
+        if (data.isFormatter) {
+          let parser = value.replace(`${data.character}`, '');
+          return parser;
+        } else {
+          return value;
+        }
+      }
+    };
+  }, [value, data.character, data.isFormatter]);
 
   return (
     <div className={css.inputNumber}>
@@ -108,6 +137,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={value}
         {...data.config}
         {...NumberProps}
+        {...ParserProps}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}

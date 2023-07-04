@@ -17,11 +17,13 @@ export default function Runtime({
   outputs,
   logger,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   useFormItemInputs({
     inputs,
     outputs,
+    name,
     configs: {
       setValue(val) {
         changeValue(val);
@@ -65,7 +67,7 @@ export default function Runtime({
 
   /**监听事件和格式化函数 */
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((val) => {
     data.value = val;
@@ -78,12 +80,12 @@ export default function Runtime({
   }, []);
   const onChange = useCallback((val) => {
     changeValue(val);
-    onChangeForFc(parentSlot, { id: id, value: val });
+    onChangeForFc(parentSlot, { id: id, value: val, name });
     outputs['onChange'](val);
   }, []);
   const onAfterChange = useCallback((val) => {
     changeValue(val);
-    onChangeForFc(parentSlot, { id: id, value: val });
+    onChangeForFc(parentSlot, { id: id, value: val, name });
     outputs['onChange'](val);
     onValidateTrigger();
   }, []);
@@ -97,7 +99,9 @@ export default function Runtime({
     onChange: changeValue,
     onAfterChange,
     tipFormatter: formatter,
-    disabled: data.config.disabled
+    disabled: data.config.disabled,
+    min: data.config.min,
+    max: data.config.max
   };
   const inputNumberProps: InputNumberProps = {
     value: data.singleValue,

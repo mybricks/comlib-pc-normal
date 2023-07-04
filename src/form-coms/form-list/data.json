@@ -1,0 +1,61 @@
+{
+  "value": [],
+  "initLength": 1,
+  "items": [],
+  "nameCount": 0,
+  "formItemColumn": 4,
+  "fields": [],
+  "MaxKey": -1,
+  "slotStyle": {
+    "display": "flex",
+    "position": "inherit",
+    "flexDirection": "row",
+    "alignItems": "flex-start",
+    "justifyContent": "flex-start",
+    "flexWrap": "wrap"
+  },
+  "actions": {
+    "visible": true,
+    "position": "tail",
+    "widthOption": "span",
+    "span": 6,
+    "align": "left",
+    "inlinePadding": [
+      0,
+      16,
+      24,
+      0
+    ],
+    "items": [
+      {
+        "title": "添加",
+        "isDefault": true,
+        "visible": true,
+        "outputId": "add",
+        "key": "add"
+      },
+      {
+        "title": "删除",
+        "isDefault": true,
+        "visible": true,
+        "outputId": "remove",
+        "key": "remove"
+      }
+    ]
+  },
+  "isFormItem": false,
+  "wrapperCol": 24,
+  "labelWidthType": "px",
+  "labelWidth": 98,
+  "labelCol": 4,
+  "itemWidthType": "flex",
+  "submitHiddenFields": false,
+  "disabled": false,
+  "formItemConfig": {
+    "colon": true,
+    "layout": "horizontal",
+    "labelWrap": false,
+    "labelAlign": "right",
+    "disabled": false
+  }
+}

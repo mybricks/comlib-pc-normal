@@ -13,7 +13,13 @@ export const getNewBtn = (): BtnItem => {
     isCustom: false,
     src: '',
     contentSize: [14, 14],
-    iconDistance: 8
+    iconDistance: 8,
+    loading: false,
+    useDynamicLoading: false,
+    style: {
+      height: 'auto',
+      width: 'auto'
+    }
   };
 };
 

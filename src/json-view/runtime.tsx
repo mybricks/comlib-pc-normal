@@ -3,7 +3,7 @@ import { Alert, Tooltip, Tree, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import { typeCheck, uuid } from '../utils';
-import { Data, dataSourceTypeMap, InputIds, OutputIds } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, TypeEnum } from './constant';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
@@ -21,7 +21,13 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetJsonData]((val) => {
-        data.json = val;
+        if (typeof val === 'string') {
+          data.json = encodeURIComponent(val);
+        } else if (typeCheck(val, ['ARRAY', 'OBJECT'])) {
+          data.json = val;
+        } else {
+          console.error(`${title}:输入的JSON数据不合法`);
+        }
       });
       inputs[InputIds.GetJsonData]((_, outputRels) => {
         outputRels[OutputIds.JsonData](data.jsonObj);
@@ -52,10 +58,6 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }, []),
     keyToData = new Map(),
     expandedKeys: React.Key[] = [];
-
-  if (isError && env.edit) {
-    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
-  }
 
   if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
   if (collapsed !== 0) expandedKeys.push(rootKey);
@@ -145,7 +147,14 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
     return treeData;
   };
+  const rootStyle = useMemo(() => {
+    return {
+      backgroundColor: data.colors[TypeEnum.BackgroundColor],
+      '--json--view--node-hover-bgcolor': data.colors[TypeEnum.NodeHoverBackgroundColor]
+    };
+  }, [data.colors[TypeEnum.NodeHoverBackgroundColor], data.colors[TypeEnum.BackgroundColor]]);
 
+  /**TODO：支持不展示根节点 */
   const treeData = [
     {
       title: getTitle({
@@ -156,15 +165,11 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       children: getTreeData(data.jsonObj, 1)
     }
   ];
-  const defaultTreeData = [
-    {
-      title: getTitle({
-        key: rootKey,
-        value: []
-      }),
-      key: rootKey
-    }
-  ];
+
+  if (isError && env.edit) {
+    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
+  }
+
   const editConfig = env.edit
     ? {
         expandedKeys
@@ -173,6 +178,8 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   return (
     <Tree
       treeData={treeData}
+      rootStyle={rootStyle}
+      className={css.root}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
       defaultExpandedKeys={expandedKeys}

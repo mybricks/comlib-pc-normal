@@ -2,6 +2,7 @@ import { Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
+import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
@@ -26,10 +27,13 @@ export default function ({
   _outputs,
   outputs,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   const { edit } = env;
   useFormItemInputs({
+    id: id,
+    name: name,
     inputs,
     outputs,
     configs: {
@@ -67,18 +71,38 @@ export default function ({
     }
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: id, name: name });
+  };
+
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value });
+    onChangeForFc(parentSlot, { id: id, name: name, value });
     outputs['onChange'](value);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
+    onValidateTrigger();
     data.value = value;
     outputs['onBlur'](value);
   }, []);
+
+  const sizeConfig = useMemo(() => {
+    if (env.edit) {
+      return {
+        rows: data.minRows
+      };
+    }
+
+    return {
+      autoSize: {
+        minRows: data.minRows,
+        maxRows: data.maxRows
+      }
+    };
+  }, [env.edit, data.minRows, data.maxRows]);
 
   return (
     <div>
@@ -86,9 +110,9 @@ export default function ({
         {...data.config}
         value={data.value}
         readOnly={!!edit}
+        {...sizeConfig}
         onChange={changeValue}
         onBlur={onBlur}
-        autoSize={{ minRows: data.minRows, maxRows: data.maxRows }}
       />
     </div>
   );

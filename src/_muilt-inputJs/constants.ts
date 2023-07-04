@@ -36,4 +36,5 @@ export interface Data {
   fnBody: string;
   fns: any;
   runImmediate: boolean;
+  autoOutputSchema: boolean
 }

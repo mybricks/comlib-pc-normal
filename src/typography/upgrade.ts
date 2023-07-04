@@ -4,6 +4,7 @@ export default function ({
   data,
   input,
   output,
+  setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   data.items.forEach(item => {
 
@@ -21,6 +22,14 @@ export default function ({
     }
 
   });
+
+  //1.0.3 -> 1.0.4 style升级，文本排版的边框和内容文字的颜色
+  if(data.style){
+    setDeclaredStyle('.container', data.style);
+  }
+  data.items.forEach((item) => {
+    setDeclaredStyle(`.${item.key}`, item.style);
+  })
 
   return true;
 }

@@ -26,6 +26,7 @@ export default function (props: RuntimeParams<Data>) {
 
   useFormItemInputs({
     id: props.id,
+    name: props.name,
     parentSlot,
     inputs,
     outputs,
@@ -65,13 +66,13 @@ export default function (props: RuntimeParams<Data>) {
   });
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    onChangeForFc(parentSlot, { id: props.id, value });
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   }, []);
 

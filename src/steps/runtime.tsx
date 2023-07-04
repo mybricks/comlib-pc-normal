@@ -1,5 +1,5 @@
 import { Button, Steps } from 'antd';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import { Data, INTO, LEAVE, CLICK } from './constants';
 import { usePrevious } from '../utils/hooks';
@@ -224,26 +224,36 @@ export default function ({
     ) : null;
   };
 
+  const { type, progressDot } = useMemo(() => {
+    const type = data.steps.type as 'default' | 'navigation';
+    const progressDot = data.steps.type === 'dotted';
+    return { type, progressDot };
+  }, [data.steps.type]);
+
   return (
     <div className={css.stepbox}>
       <div className={classnames(data.steps.direction === 'vertical' && css.verticalWrap)}>
         <Steps
           current={data.current}
           size={data.steps.size}
-          type={data.steps.type}
+          type={type}
+          progressDot={progressDot}
           direction={data.steps.direction || 'horizontal'}
         >
           {stepAry.map((item: any, index) => {
+            const emptyNode = <div style={{ lineHeight: 32 }} />;
             const stepProps = {
               key: item.id,
-              title: env.i18n(item.title),
-              subTitle: env.i18n(item.subTitle),
+              title: !!item.title ? env.i18n(item.title) : emptyNode,
+              subTitle: !!item.subTitle ? env.i18n(item.subTitle) : emptyNode,
               'data-item-type': 'step'
             };
             if (data.steps.showDesc) {
-              stepProps['description'] = env.i18n(item.description);
+              stepProps['description'] = !item.useCustomDesc
+                ? env.i18n(item.description)
+                : slots[`${item.id}_customDescSlot`].render();
             }
-            if (!!data.steps.canClick) {
+            if (env.edit || !!data.steps.canClick) {
               stepProps['onStepClick'] = () => {
                 data.current = index;
                 outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);

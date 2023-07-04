@@ -27,6 +27,7 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
     : item.src === 1
     ? env.i18n(`${item.content}`)
     : '';
+  if (!itemContent) return null;
   switch (item.type) {
     case 'Text':
       return (
@@ -43,11 +44,8 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           }}
         >
           <Text
-            style={{
-              ...style,
-              whiteSpace: 'pre-wrap',
-              cursor: item.click ? 'pointer' : 'unset'
-            }}
+            style={{ cursor: item.click ? 'pointer' : 'unset' }}
+            className={`${item.key} ${css.text} text`}
             type={item.textType}
             onClick={() => {
               if (item.click) {
@@ -113,14 +111,7 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           data-text-id={item.key}
           style={{ height: 'fit-content' }}
         >
-          <Text
-            style={{
-              fontSize: item.fontSize,
-              fontWeight: item.fontStyle,
-              whiteSpace: 'pre-wrap'
-            }}
-            type={item.textType}
-          >
+          <Text className={`${item.key} ${css.text} text`} type={item.textType}>
             {itemContent}
           </Text>
         </span>
@@ -137,7 +128,7 @@ const EditRender = (props: RuntimeParams<Data>) => {
     return <>{data.items.map((item) => itemRender({ ...props, data: item }))}</>;
   };
   return (
-    <div className={css.container} style={data.style || {}}>
+    <div className={`${css.container} container`} style={{ textAlign: data.style.textAlign }}>
       {renderItems()}
     </div>
   );
@@ -155,14 +146,8 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
     data.itemList.forEach((item) => {
       inputs[item.key]((ds: any) => {
         item.src = 1;
-        if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
+        if (typeCheck(ds, ['string', 'number'])) {
           item.content = ds;
-        } else if (typeCheck(ds, 'object')) {
-          const { value, color } = ds;
-          item.content = value;
-          if (item.style) {
-            item.style.color = color;
-          } else item.style = { color };
         } else {
           item.content = '';
         }
@@ -171,10 +156,22 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
         item.src = 1;
         if (typeCheck(ds, 'object')) {
           const { value, color } = ds;
-          item.content = value;
-          if (item.style) {
-            item.style.color = color;
-          } else item.style = { color };
+          if (typeCheck(value, ['string', 'number'])) {
+            item.content = value;
+          } else {
+            item.content = '';
+          }
+          switch (item.type) {
+            case 'Tag':
+              item.color = color;
+              break;
+            default:
+              if (item.style) {
+                item.style.color = color;
+              } else {
+                item.style = { color };
+              }
+          }
         } else {
           item.content = '';
         }
@@ -182,7 +179,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
 
       inputs[`${item.key}-append`]((ds: any) => {
         item.src = 1;
-        if (typeCheck(ds, 'string') || typeCheck(ds, 'number')) {
+        if (typeCheck(ds, ['string', 'number'])) {
           item.content = item.content === '[外部获取]' ? `${ds}` : `${item.content || ''}${ds}`;
         }
       });
@@ -209,7 +206,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   };
 
   return (
-    <div className={css.container} style={data.style || {}}>
+    <div className={css.container} style={{ textAlign: data.style.textAlign }} data-root="root">
       {renderItems()}
     </div>
   );

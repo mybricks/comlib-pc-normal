@@ -23,20 +23,20 @@ export default {
         inputSchema: connector.inputSchema,
         outputSchema: connector.outputSchema
       };
-	
-			if (data.hasUpdatedOutputSchema) {
-				const callInt = input.get('call');
-				if (callInt) {
-					if (isValidSchema(connector.inputSchema)) {
-						callInt.setSchema(connector.inputSchema);
-					} else {
-						callInt.setSchema(defaultSchema);
-					}
-				}
-			} else {
-				data.outputSchema = connector.outputSchema;
-				updateIO({ input, output }, connector);
-			}
+
+      if (data.hasUpdatedOutputSchema) {
+        const callInt = input.get('call');
+        if (callInt) {
+          if (isValidSchema(connector.inputSchema)) {
+            callInt.setSchema(connector.inputSchema);
+          } else {
+            callInt.setSchema(defaultSchema);
+          }
+        }
+      } else {
+        data.outputSchema = connector.outputSchema;
+        updateIO({ input, output }, connector);
+      }
 
       setDesc(`已选择：${data.connector.title}`);
     }
@@ -54,7 +54,7 @@ export default {
 
       const thenOut = output.get('then');
       thenOut.setSchema(defaultSchema);
-			data.outputSchema = defaultSchema;
+      data.outputSchema = defaultSchema;
 
       setDesc(`${connector.title} 已失效`);
     }
@@ -69,7 +69,7 @@ export default {
         },
         set({ data, input, output, setDesc }, connector) {
           data.connector = connector;
-					data.outputSchema = data.connector.outputSchema;
+          data.outputSchema = data.connector.outputSchema;
           updateIO({ input, output }, connector);
 
           setDesc(`已选择：${data.connector.title}`);
@@ -109,26 +109,42 @@ export default {
           return data.mock;
         },
         set({ data }, use: boolean) {
-	        data.mock = use;
+          data.mock = use;
         }
       }
     },
-	  {
-		  title: '响应数据结构',
-		  type: '_schema',
-		  value: {
-			  get({ data }) {
-				  return data.outputSchema;
-			  },
-			  set({ data, output }, outputSchema) {
-				  data.outputSchema = outputSchema;
-					data.hasUpdatedOutputSchema = true;
-					
-				  const thenOut = output.get('then');
-				  thenOut.setSchema(data.outputSchema);
-			  }
-		  }
-	  }
+    {
+      title: '响应数据结构',
+      type: '_schema',
+      value: {
+        get({ data }) {
+          return data.outputSchema;
+        },
+        set({ data, output }, outputSchema) {
+          data.outputSchema = outputSchema;
+          data.hasUpdatedOutputSchema = true;
+
+          const thenOut = output.get('then');
+          thenOut.setSchema(data.outputSchema);
+        }
+      }
+    },
+    {
+      title: '运行日志（调试时）',
+      description: '在调试时获取接口运行日志，可根据日志分析接口运行情况',
+      type: 'switch',
+      ifVisible({ data }) {
+        return data.connector?.type === 'http-sql';
+      },
+      value: {
+        get({ data }) {
+          return data.showToplLog;
+        },
+        set({ data }, use: boolean) {
+          data.showToplLog = use;
+        }
+      }
+    }
   ]
 };
 

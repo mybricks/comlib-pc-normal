@@ -2,9 +2,14 @@ import { Modal } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
 import css from './runtime.less';
 
+const createFakeDom = (root) => {
+  const div = document.createElement('div');
+  root?.appendChild(div);
+  return div
+}
+
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
-
   const onOk = () => {
     outputs[OutputIds.Ok](data.outputValue);
   };
@@ -19,7 +24,10 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       className: css.modalWrap,
       title: showTitle ? data.title : undefined,
       onCancel,
-      onOk
+      onOk,
+      getContainer() {
+        return createFakeDom(env?.canvasElement || document.body)
+      },
     });
   };
 

@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, DialogButtonProps, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
 
 const defaultSchema = { type: 'any' };
 
@@ -34,16 +34,23 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
     type: 'any'
   };
 
-  const defaultBtn: any = {
+  const defaultBtn: DialogButtonProps = {
     id,
     title,
     icon: '',
+    dynamicHidden: true,
+    dynamicDisabled: true,
+    visible: true,
+    autoClose: true,
     useIcon: false,
     showText: true,
     type: 'default',
     isConnected: false
   };
-
+  input.add(`hidden${id}`, `隐藏-${title}按钮`, schema);
+  input.add(`show${id}`, `显示-${title}按钮`, schema);
+  input.add(`disable${id}`, `禁用-${title}按钮`, schema);
+  input.add(`enable${id}`, `启用-${title}按钮`, schema);
   output.add(id, title, schema);
   output.add(`${id}Click`, `点击${title}`, schema);
   // slot.get(SlotIds.Container).inputs.add(id, `${title}`, { type: 'any' });
@@ -87,7 +94,7 @@ function get(
   data: Data,
   focusArea: any,
   dataset: string,
-  val = 'obj',
+  val: keyof DialogButtonProps | 'obj',
   cb?: any
 ) {
   if (!focusArea) return;
@@ -104,7 +111,7 @@ function get(
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     if (!data.isNew && pin.id === InputIds.Open) {
-      console.log('inputUpdated', pin)
+      // console.log('inputUpdated', pin)
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
     }
   },
@@ -116,7 +123,7 @@ export default {
     output.get(pin.id)?.setSchema(pin.schema);
   },
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
-    console.log('slotOutputUpdated', slotId, pin)
+    // console.log('slotOutputUpdated', slotId, pin)
     if (data.isNew
       && slotId === SlotIds.Container
       && pin.id === SlotInputIds.DataSource) {
@@ -133,10 +140,10 @@ export default {
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
   '@slotOuputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotOuputConnected', fromPin, toPin)
+    // console.log('slotOuputConnected', fromPin, toPin)
   },
   '@slotOuputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotOuputDisConnected', fromPin, slotId, toPin)
+    // console.log('slotOuputDisConnected', fromPin, slotId, toPin)
     if (data.isNew
       && slotId === SlotIds.Container
       && fromPin.id === SlotInputIds.DataSource) {
@@ -153,7 +160,7 @@ export default {
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputDisConnected')
+    // console.log('inputDisConnected')
     if (!data.isNew && toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
@@ -162,7 +169,7 @@ export default {
   //   console.log('outputConnected', 'toPin', fromPin, toPin);
   // },
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputConnected', fromPin, toPin)
+    // console.log('inputConnected', fromPin, toPin)
     if (!data.isNew && toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
@@ -370,116 +377,132 @@ export default {
 
     return { title: '对话框' };
   },
-  '[data-btn-id]': ({ }: EditorResult<Data>, cate1, cate2) => {
-    cate1.title = '常规';
-    cate1.items = [
-      {
-        title: '名称',
-        type: 'Text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return get(data, focusArea, 'btnId', 'title');
-          },
-          set(
-            { data, focusArea, output, input, slot }: EditorResult<Data>,
-            value: string
-          ) {
-            if (typeof value !== 'string' || value.trim() === '') {
-              throw new Error(`请输入正确的按钮标题.`);
-            }
-            const res = get(data, focusArea, 'btnId', 'obj');
-            output.setTitle(res.id, value);
-            output.setTitle(`${res.id}Click`, `点击${value}`);
-            if (res.dynamicDisabled) {
-              input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
-              input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
-            }
-            if (res.dynamicHidden) {
-              input.setTitle(`hidden${res.id}`, `隐藏-${value}按钮`);
-              input.setTitle(`show${res.id}`, `显示-${value}按钮`);
-            }
-            slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
-            res.title = value;
-          }
-        }
-      },
-      {
-        title: '基础样式',
-        items: [
-          {
-            title: '风格',
-            type: 'Select',
-            options() {
-              return [
-                { value: 'default', label: '默认' },
-                { value: 'primary', label: '主按钮' },
-                { value: 'dashed', label: '虚线按钮' },
-                { value: 'danger', label: '危险按钮' },
-                { value: 'link', label: '链接按钮' },
-                { value: 'text', label: '文字按钮' }
-              ];
+  '[data-btn-id]': {
+    title: '按钮',
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
+      cate1.title = '常规';
+      cate1.items = [
+        {
+          title: '名称',
+          type: 'Text',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return get(data, focusArea, 'btnId', 'title');
             },
-            value: {
-              get({ data, focusArea }: EditorResult<Data>) {
-                return get(data, focusArea, 'btnId', 'type');
+            set(
+              { data, focusArea, output, input, slot }: EditorResult<Data>,
+              value: string
+            ) {
+              if (typeof value !== 'string' || value.trim() === '') {
+                throw new Error(`请输入正确的按钮标题.`);
+              }
+              const res = get(data, focusArea, 'btnId', 'obj');
+              output.setTitle(res.id, value);
+              output.setTitle(`${res.id}Click`, `点击${value}`);
+              if (res.dynamicDisabled) {
+                input.setTitle(`disable${res.id}`, `禁用-${value}按钮`);
+                input.setTitle(`enable${res.id}`, `启用-${value}按钮`);
+              }
+              if (res.dynamicHidden) {
+                input.setTitle(`hidden${res.id}`, `隐藏-${value}按钮`);
+                input.setTitle(`show${res.id}`, `显示-${value}按钮`);
+              }
+              slot.get(SlotIds.Container).outputs.setTitle(res.id, `${value}`);
+              res.title = value;
+            }
+          }
+        },
+        {
+          title: '基础样式',
+          items: [
+            {
+              title: '风格',
+              type: 'Select',
+              options() {
+                return [
+                  { value: 'default', label: '默认' },
+                  { value: 'primary', label: '主按钮' },
+                  { value: 'dashed', label: '虚线按钮' },
+                  { value: 'danger', label: '危险按钮' },
+                  { value: 'link', label: '链接按钮' },
+                  { value: 'text', label: '文字按钮' }
+                ];
               },
-              set({ data, focusArea }: EditorResult<Data>, value: string) {
-                const res = get(data, focusArea, 'btnId', 'obj');
-                res.type = value;
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  return get(data, focusArea, 'btnId', 'type');
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: string) {
+                  const res = get(data, focusArea, 'btnId', 'obj');
+                  res.type = value;
+                }
+              }
+            }
+          ]
+        },
+        icon('btnId'),
+        {
+          title: '事件',
+          items: [
+            {
+              title: '点击自动关闭对话框',
+              description: '开启时, 单击按钮会自动关闭对话框。特殊处理：当需要向外输出数据时, 对话框在数据输出后关闭。',
+              type: 'switch',
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  return get(data, focusArea, 'btnId', 'autoClose');
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                  const res = get(data, focusArea, 'btnId', 'obj');
+                  res.autoClose = value;
+                }
+              }
+            },
+            {
+              title: '单击',
+              type: '_Event',
+
+              options: ({ data, focusArea }: EditorResult<Data>) => {
+                const res = get(data, focusArea, 'btnId', 'id');
+                return {
+                  outputId: `${res}Click`,
+                  slotId: SlotIds.Container
+                };
+              }
+            }
+          ]
+        },
+        {
+          title: '隐藏',
+          type: 'Switch',
+          ifVisible({ data, focusArea }: EditorResult<Data>) {
+            const res = get(data, focusArea, 'btnId', 'obj');
+            return DefaultEvent.includes(res?.id);
+          },
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return !get(data, focusArea, 'btnId', 'visible');
+            },
+            set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
+              const res = get(data, focusArea, 'btnId', 'obj');
+              res.visible = !value;
+              if (value) {
+                removeBtn({ data, input, output, slot }, res.id);
+              } else {
+                addBtn({ data, input, output, slot }, res.id);
               }
             }
           }
-        ]
-      },
-      icon('btnId'),
-      {
-        title: '事件',
-        items: [
-          {
-            title: '单击',
-            type: '_Event',
-
-            options: ({ data, focusArea }: EditorResult<Data>) => {
-              const res = get(data, focusArea, 'btnId', 'id');
-              return {
-                outputId: `${res}Click`,
-                slotId: SlotIds.Container
-              };
-            }
-          }
-        ]
-      },
-      {
-        title: '隐藏',
-        type: 'Switch',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const res = get(data, focusArea, 'btnId', 'obj');
-          return DefaultEvent.includes(res?.id);
         },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return !get(data, focusArea, 'btnId', 'visible');
-          },
-          set({ data, focusArea, input, output, slot }: EditorResult<Data>, value: boolean) {
-            const res = get(data, focusArea, 'btnId', 'obj');
-            res.visible = !value;
-            if (value) {
-              removeBtn({ data, input, output, slot }, res.id);
-            } else {
-              addBtn({ data, input, output, slot }, res.id);
-            }
-          }
-        }
-      },
-      moveDelete('btnId')
-    ];
+        moveDelete('btnId')
+      ];
 
-    cate2.title = '高级';
-    cate2.items = [
-      useDynamic('btnId'),
-    ];
+      cate2.title = '高级';
+      cate2.items = [
+        useDynamic('btnId'),
+      ];
 
-    return { title: '按钮' };
+    }
   },
   '.ant-modal-title': {
     title: '标题',
@@ -769,52 +792,6 @@ function useDynamic(dataset: string) {
   return {
     title: '动态配置',
     items: [
-      {
-        title: '禁用',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return get(data, focusArea, dataset, 'dynamicDisabled');
-          },
-          set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
-            const res = get(data, focusArea, dataset, 'obj');
-            const schema = {
-              type: 'any'
-            };
-            if (value) {
-              input.add(`disable${res.id}`, `禁用-${res.title}按钮`, schema);
-              input.add(`enable${res.id}`, `启用-${res.title}按钮`, schema);
-            } else {
-              input.remove(`disable${res.id}`);
-              input.remove(`enable${res.id}`);
-            }
-            res.dynamicDisabled = value;
-          }
-        }
-      },
-      {
-        title: '隐藏',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return get(data, focusArea, dataset, 'dynamicHidden');
-          },
-          set({ data, input, focusArea }: EditorResult<Data>, value: boolean) {
-            const res = get(data, focusArea, dataset, 'obj');
-            const schema = {
-              type: 'any'
-            };
-            if (value) {
-              input.add(`hidden${res.id}`, `隐藏-${res.title}按钮`, schema);
-              input.add(`show${res.id}`, `显示-${res.title}按钮`, schema);
-            } else {
-              input.remove(`hidden${res.id}`);
-              input.remove(`show${res.id}`);
-            }
-            res.dynamicHidden = value;
-          }
-        }
-      },
       {
         title: '加载动画',
         type: 'Switch',

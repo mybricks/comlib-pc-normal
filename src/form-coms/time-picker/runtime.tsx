@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Data } from './types';
 import { message, TimePicker } from 'antd';
 import moment, { Moment, isMoment } from 'moment';
@@ -17,12 +17,12 @@ export default function ({
   inputs,
   outputs,
   env,
-  style,
   id,
-  parentSlot
+  parentSlot,
+  name
 }: RuntimeParams<Data>) {
-  const { placeholder, disabled } = data;
-  const [value, setValue] = useState<Moment>();
+  const { placeholder, disabled, format, customFormat } = data;
+  const [value, setValue] = useState<Moment | undefined>();
   const validate = useCallback(
     (output) => {
       validateFormItem({
@@ -41,6 +41,10 @@ export default function ({
   );
 
   const setTimestamp = (val) => {
+    if (!val) {
+      setValue(void 0);
+      return;
+    }
     if (isNumber(val)) {
       setValue(moment(val));
       return;
@@ -55,13 +59,15 @@ export default function ({
 
   useFormItemInputs(
     {
+      id,
+      name,
       inputs,
       outputs,
       configs: {
         setValue: setTimestamp,
         setInitialValue: setTimestamp,
         returnValue(output) {
-          output(getValue());
+          output(getValue(value));
         },
         resetValue() {
           setValue(void 0);
@@ -78,18 +84,34 @@ export default function ({
     [value]
   );
 
-  const getValue = useCallback(() => value?.valueOf(), [value]);
+  const getValue = useCallback(
+    (value) => {
+      if (format === 'timeStamp') return value.endOf('second').valueOf();
+      if (format === 'custom') return value.format(customFormat);
+      return value.format(format);
+    },
+    [format, customFormat]
+  );
 
   const onChange = (time, timeString: string) => {
     setValue(time);
-    onChangeForFc(parentSlot, { id: id, value: time.valueOf() });
-    outputs['onChange'](time.valueOf());
+    const value = getValue(time);
+    onChangeForFc(parentSlot, { id, name, value });
+    outputs['onChange'](value);
   };
+
+  const _format = useMemo(() => {
+    if (format === 'custom') return customFormat;
+    if (format === 'timeStamp') return 'HH:mm:ss';
+    return format;
+  }, [format, customFormat]);
+
   return (
-    <div className={styles.wrap} style={style}>
+    <div className={styles.wrap}>
       <TimePicker
         placeholder={placeholder}
         value={value}
+        format={_format}
         disabled={disabled}
         allowClear
         onChange={onChange}

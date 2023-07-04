@@ -38,7 +38,7 @@ export interface Item {
   layout?: 'horizontal' | 'vertical';
   column?: number;
   stylePadding?: number[];
-  style?: {
+  style: {
     [prop: string]: string | number;
   };
   click?: boolean;

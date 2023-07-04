@@ -1,7 +1,7 @@
 import { Data, WidthUnitEnum } from '../../constants';
 import { getColIndex, getColItem, updateCol, addColumnByPosition, canSplit, splitColumn, canMerge, mergeCol } from '../utils';
 
-const IndexEditor = [
+const IndexEditor = (item) => [
   {
     title: '操作',
     items: [
@@ -95,7 +95,6 @@ const IndexEditor = [
         value: {
           set({ data, slot, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            const item = getColItem(data, focusArea);
             const [rowIndex, colIndex] = getColIndex(data, focusArea);
             slot.remove(item?.slot);
             data.rows[rowIndex].columns.splice(colIndex, 1);

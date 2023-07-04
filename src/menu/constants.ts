@@ -9,7 +9,8 @@ export enum MenuModeEnum {
   Inline = 'inline'
 }
 export interface MenuItem {
-  key?: string;
+  _key: string;
+  key: string;
   title: string;
   value?: any;
   menuType?: MenuTypeEnum;

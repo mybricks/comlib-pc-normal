@@ -1,0 +1,36 @@
+{
+  "title": "枚举映射",
+  "namespace": "mybricks.normal-pc.enumMap",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "枚举映射",
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "docs": "",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "val",
+          "title": "输入值",
+          "type": "follow"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出值",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

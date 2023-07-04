@@ -3,10 +3,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let tempOptions: Option[] = [],
-  optionsLength = 0,
-  addOption,
-  delOption;
+let tempOptions: Option[] = [];
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
@@ -23,13 +20,6 @@ const initParams = (data: Data) => {
   if (tempOptions.length !== data.staticOptions?.length) {
     tempOptions = data.staticOptions || [];
   }
-  optionsLength = (data.staticOptions || []).length;
-  addOption = (option) => {
-    data.staticOptions.push(option);
-  };
-  delOption = (index: number) => {
-    data.staticOptions.splice(index, 1);
-  };
 };
 
 export default {
@@ -64,17 +54,14 @@ export default {
           getTitle: ({ label, checked }) => {
             return `${label}${checked ? ': 默认值' : ''}`;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
+            const value = uuid('_', 2);
             const defaultOption = {
-              label: `选项${optionsLength + 1}`,
-              value: `选项${optionsLength + 1}`,
+              label: `选项${value}`,
+              value: `选项${value}`,
               type: 'default',
               key: uuid()
             };
-            addOption(defaultOption);
             return defaultOption;
           },
           items: [
@@ -145,6 +132,32 @@ export default {
             });
             data.staticOptions = options;
             data.config.options = options;
+          }
+        }
+      },
+      {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.enableButtonStyle;
+        },
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
           }
         }
       },
@@ -255,7 +268,7 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'
@@ -271,5 +284,29 @@ export default {
         ]
       }
     ];
+  },
+  '.ant-radio-button-wrapper': {
+    title: '单选按钮',
+    style: [
+      {
+        title: '默认',
+        options: ['border'],
+        initValue: {
+          borderColor: '#d9d9d9'
+        },
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.ant-radio-group .ant-radio-button-wrapper:nth-child(${index + 1})`;
+        }
+      },
+      {
+        title: '选中',
+        options: ['border'],
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.ant-radio-group .ant-radio-button-wrapper-checked:nth-child(${index + 1})`;
+        }
+      }
+    ]
   }
 };

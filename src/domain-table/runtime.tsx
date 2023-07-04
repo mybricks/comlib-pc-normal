@@ -11,44 +11,43 @@ import {
   Modal,
   Radio,
   Row,
-  Select,
-  Table,
-  Upload
+  Select
 } from 'antd';
 import moment from 'moment';
-import { ColumnsType } from 'antd/es/table';
 /** 设计器中 shadow dom 导致全局 config 失效，且由于 antd 组件的默认文案是英文，所以需要修改为中文 */
 import zhCN from 'antd/es/locale/zh_CN';
 import DebounceSelect from './components/debouce-select';
 import UserProfile from './components/user-profile';
-import RenderColumn from './components/render-column';
 import { RuleMap } from './rule';
-import { ajax } from './util';
+import { ajax, safeParse, safeStringify } from './util';
 import { ComponentName, Data, DefaultOperatorMap, FieldBizType, ModalAction } from './constants';
 import { Field } from './type';
+import UploadImage from './components/upload-image';
+import UploadFile from './components/upload-file';
+import RichText from './components/rich-text';
+import RenderTable from './components/render-table';
 
 import styles from './runtime.less';
 
 const INIT_PAGE = 1;
 const INIT_PAGE_SIZE = 20;
-export default function ({ env, data }: RuntimeParams<Data>) {
+export default function ({ env, data, outputs, inputs, slots }: RuntimeParams<Data>) {
   const { edit, runtime, projectId } = env;
   const debug = !!(runtime && runtime.debug);
   if (debug || runtime) {
     data.showActionModalForEdit = '';
   }
-  // const currentCreatePortal = edit || debug ? createPortal : (a => a);
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModalAction, setShowModalAction] = useState('');
   const [createLoading, setCreateLoading] = useState(false);
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
-  const currentData = useRef<Record<string, unknown>>({});
+  const currentOperateData = useRef<Record<string, unknown>>({});
   const containerRef = useRef(null);
   const domainContainerRef = useRef(null);
   const searchFormValue = useRef({});
-  const [pageIndex, setPageIndex] = useState(INIT_PAGE);
+  const [pageNum, setPageNum] = useState(INIT_PAGE);
   const [pageSize, setPageSize] = useState<number>(data.pagination?.pageSize || INIT_PAGE_SIZE);
   const [total, setTotal] = useState(0);
   const baseFetchParams = useMemo(() => {
@@ -59,31 +58,42 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     };
   }, [data.entity, projectId, data.domainFileId]);
   const modalWidth = useRef(520);
+  /** 记录当前下拉搜索框表单项选择的值的 options */
+  const mappingFormItemOptions = useRef({});
 
   const handleData = useCallback(
     (query, pageInfo?: Record<string, unknown>) => {
       setLoading(true);
-      const pageParams = pageInfo || { pageIndex, pageSize: edit ? 5 : pageSize };
-      pageParams.pagination = data.pagination?.show;
+      const pageParams = pageInfo || { pageNum, pageSize: edit ? 5 : pageSize };
+      if (!data.pagination?.show) {
+        delete pageParams.pageNum;
+      }
       const primaryField = data.entity?.fieldAry.find((field) => field.isPrimaryKey);
       const orderFields = data.fieldAry
         .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM && field.sorter)
         .map((field) => field.sorter);
       /** 已有按主键排序 */
       const hasPrimaryFieldOrder = orderFields.find((f) => f.fieldId === primaryField);
+      const needFields = data.entity.fieldAry
+        .filter((field) => !field.isPrivate)
+        .map((f) => ({ name: f.name }));
+      data.entity.fieldAry
+        .filter((field) => !!field.mapping?.entity?.fieldAry?.length)
+        .forEach((field) => {
+          field.mapping.entity.fieldAry.forEach((f) => {
+            needFields.push({ name: [field.name, f.name].join('.') });
+          });
+        });
 
       ajax({
         params: {
           query,
-          fields: [
-            { name: 'id' },
-            ...data.fieldAry
-              .filter((field) => field.bizType !== FieldBizType.FRONT_CUSTOM)
-              .map((f) => ({ name: f.name }))
-          ],
+          fields: needFields,
           orders: [
             ...orderFields,
-            hasPrimaryFieldOrder ? undefined : { fieldId: primaryField.id, order: 'DESC' }
+            hasPrimaryFieldOrder
+              ? undefined
+              : { fieldId: primaryField.id, fieldName: 'id', order: 'DESC' }
           ].filter(Boolean),
           page: pageParams,
           action: 'SELECT'
@@ -91,16 +101,18 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         ...baseFetchParams
       })
         .then((res) => {
-          if (data.pagination.show) {
-            setDataSource(res.list || []);
+          if (!Array.isArray(res)) {
+            setDataSource(res.dataSource || []);
             setTotal(res.total || 0);
+            setPageNum(res.pageNum || INIT_PAGE);
+            setPageSize(res.pageSize || INIT_PAGE_SIZE);
           } else {
             setDataSource(res || []);
           }
         })
         .finally(() => setLoading(false));
     },
-    [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, pageIndex, pageSize]
+    [data.fieldAry, data.pagination.show, data.entity, baseFetchParams, edit, pageNum, pageSize]
   );
 
   const onDelete = useCallback(
@@ -121,8 +133,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   );
   const onEdit = useCallback(
     (item: Record<string, unknown>) => {
+      mappingFormItemOptions.current = {};
       setShowModalAction(ModalAction.EDIT);
-      currentData.current = item;
+      currentOperateData.current = item;
       const value = {};
       if (data.entity) {
         data.entity.fieldAry
@@ -136,6 +149,11 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           .forEach((field) => {
             if (field.bizType === FieldBizType.DATETIME && field.showFormat) {
               value[field.name] = item[field.name] ? moment(item[field.name] as any) : null;
+            } else if (
+              field.form.formItem === ComponentName.IMAGE_UPLOAD ||
+              field.form.formItem === ComponentName.UPLOAD
+            ) {
+              value[field.name] = item[field.name] ? safeParse(String(item[field.name]), []) : [];
             } else if (field.mapping?.entity) {
               value[field.name] = (item[field.name] as { id: number })?.id ?? null;
             } else {
@@ -143,73 +161,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             }
           });
 
+        console.log('value', value);
         createForm.setFieldsValue(value);
       }
     },
     [data.entity]
   );
-
-  let scrollXWidth = 0;
-  const columnWidthMap = {};
-  const renderColumns: ColumnsType<any> = data.fieldAry
-    ? data.fieldAry?.map((field) => {
-        /** 提前读取值，防止不响应 */
-        field.tableInfo?.ellipsis;
-
-        const title =
-          field.tableInfo?.label ||
-          (field.mappingField ? `${field.name}.${field.mappingField.name}` : field.name);
-        let parseWidth = parseInt(field.tableInfo?.width || '124px');
-        if (Object.is(parseWidth, NaN) || parseWidth <= 0) {
-          parseWidth = 124;
-        }
-        scrollXWidth += parseWidth;
-
-        return field.bizType === FieldBizType.FRONT_CUSTOM
-          ? {
-              title: field.tableInfo?.label || field.name,
-              key: field.id,
-              align: field.tableInfo?.align || 'left',
-              width: `${parseWidth}px`,
-              render(_, data) {
-                return (
-                  <>
-                    <Button
-                      style={{ marginRight: '12px' }}
-                      size="small"
-                      onClick={() => onEdit(data)}
-                    >
-                      编辑
-                    </Button>
-                    <Button danger type="primary" size="small" onClick={() => onDelete(data.id)}>
-                      删除
-                    </Button>
-                  </>
-                );
-              }
-            }
-          : {
-              title: title,
-              dataIndex: field.mappingField ? [field.name, field.mappingField.name] : field.name,
-              key: title,
-              align: field.tableInfo?.align || 'left',
-              width: `${parseWidth}px`,
-              render(value, data) {
-                return (
-                  <RenderColumn
-                    columnKey={title}
-                    columnWidthMap={columnWidthMap}
-                    value={value}
-                    item={data}
-                    ellipsis={field.tableInfo?.ellipsis}
-                    columnWidth={columnWidthMap[title]}
-                  />
-                );
-              },
-              sorter: field.tableInfo?.sort
-            };
-      })
-    : [];
 
   useEffect(() => {
     if (!data.entity || !data.fieldAry?.length) {
@@ -233,13 +190,15 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           try {
             if (item.isAfter) {
               item.value = item.valueOf();
+            } else if (field.form.formItem === ComponentName.IMAGE_UPLOAD) {
+              item.value = safeStringify(item.value);
             }
           } catch {}
 
           curValue[key] = item;
         });
 
-        setPageIndex(1);
+        setPageNum(1);
         setPageSize(data.pagination?.pageSize || INIT_PAGE_SIZE);
         searchFormValue.current = curValue;
         handleData(curValue, {
@@ -253,15 +212,28 @@ export default function ({ env, data }: RuntimeParams<Data>) {
   const renderFormItemNode = useCallback(
     (
       field: Field,
-      option: { placeholder?: string; onPressEnter?(): void; formItem?: ComponentName }
+      option: {
+        placeholder?: string;
+        onPressEnter?(): void;
+        formItem?: ComponentName;
+        mappingFormItemOptions?: Record<string, unknown>;
+      }
     ) => {
       let placeholder = option.placeholder ?? `请输入${field.name}`;
       const curFormItem = option.formItem || field.form.formItem;
-      let item = <Input placeholder={placeholder} onPressEnter={option.onPressEnter} allowClear />;
+      let item = (
+        <Input
+          disabled={field.form.readonly}
+          placeholder={placeholder}
+          onPressEnter={option.onPressEnter}
+          allowClear
+        />
+      );
 
       if (curFormItem === ComponentName.DATE_PICKER) {
         item = (
           <DatePicker
+            disabled={field.form.readonly}
             style={{ width: '100%' }}
             showTime
             placeholder={option.placeholder ?? `请选择${field.name}`}
@@ -272,6 +244,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (curFormItem === ComponentName.TEXTAREA) {
         item = (
           <Input.TextArea
+            disabled={field.form.readonly}
             placeholder={placeholder}
             onPressEnter={option.onPressEnter}
             rows={field.form.rows || 2}
@@ -281,6 +254,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (curFormItem === ComponentName.INPUT_NUMBER) {
         item = (
           <InputNumber
+            disabled={field.form.readonly}
             style={{ width: '100%' }}
             onPressEnter={option.onPressEnter}
             placeholder={placeholder}
@@ -289,6 +263,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (curFormItem === ComponentName.SELECT) {
         item = (
           <Select
+            disabled={field.form.readonly}
             placeholder={option.placeholder ?? `请选择${field.name}`}
             options={field.form?.options ?? []}
           />
@@ -296,28 +271,47 @@ export default function ({ env, data }: RuntimeParams<Data>) {
       } else if (field.mapping?.entity && curFormItem === ComponentName.DEBOUNCE_SELECT) {
         item = (
           <DebounceSelect
+            disabled={field.form.readonly}
             placeholder={option.placeholder ?? '可输入关键词检索'}
             field={field}
             fetchParams={baseFetchParams}
+            mappingFormItemOptions={option.mappingFormItemOptions}
           />
         );
       } else if (curFormItem === ComponentName.INPUT && field.bizType === FieldBizType.PHONE) {
         item = (
-          <Input onPressEnter={option.onPressEnter} addonBefore="+86" placeholder={placeholder} />
+          <Input
+            disabled={field.form.readonly}
+            onPressEnter={option.onPressEnter}
+            addonBefore="+86"
+            placeholder={placeholder}
+          />
         );
       } else if (curFormItem === ComponentName.IMAGE_UPLOAD) {
-        item = <Upload />;
+        item = <UploadImage disabled={field.form.readonly} maxCount={field.form?.maxCount} />;
       } else if (curFormItem === ComponentName.RADIO) {
-        item = <Radio.Group options={field.form?.options ?? []} />;
+        item =
+          !field.form?.options?.length && !runtime ? (
+            <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
+          ) : (
+            <Radio.Group disabled={field.form.readonly} options={field.form?.options ?? []} />
+          );
       } else if (curFormItem === ComponentName.CHECKBOX) {
-        item = <Checkbox.Group options={field.form?.options ?? []} />;
-      } else if (field.bizType === FieldBizType.APPEND_FILE) {
-        item = <Upload />;
+        item =
+          !field.form?.options?.length && !runtime ? (
+            <span className={styles.itemTip}>请在右侧编辑器添加选项</span>
+          ) : (
+            <Checkbox.Group disabled={field.form.readonly} options={field.form?.options ?? []} />
+          );
+      } else if (curFormItem === ComponentName.UPLOAD) {
+        item = <UploadFile disabled={field.form.readonly} maxCount={field.form?.maxCount} />;
+      } else if (curFormItem === ComponentName.RICH_TEXT) {
+        item = <RichText disabled={field.form.readonly} field={field} placeholder={placeholder} />;
       }
 
       return item;
     },
-    []
+    [runtime]
   );
 
   const renderSearchFormNode = () => {
@@ -344,7 +338,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             }
 
             return (
-              <div className="ant-form-item-search" data-field-id={field.id}>
+              <div className={`ant-form-item-search ${styles.marginTop}`} data-field-id={field.id}>
                 <Form.Item
                   style={{ minWidth: '280px' }}
                   initialValue={defaultValue}
@@ -357,28 +351,38 @@ export default function ({ env, data }: RuntimeParams<Data>) {
               </div>
             );
           })}
-          <Button type="primary" onClick={search}>
+          <Button className={styles.marginTop} type="primary" onClick={search}>
             查询
           </Button>
-          <Button data-add-button="1" className={styles.addBtn} onClick={openCreateModal}>
-            {data.addBtn?.title ?? '新增'}
-          </Button>
+          {data.operate?.create?.disabled ? null : (
+            <Button
+              data-add-button="1"
+              className={`${styles.addBtn} ${styles.marginTop}`}
+              onClick={openCreateModal}
+            >
+              {data.operate?.create?.title ?? '新增'}
+            </Button>
+          )}
         </Form>
       );
     }
 
-    return (
+    return data.operate?.create?.disabled ? null : (
       <div className={styles.operateRow}>
         <Button data-add-button="1" onClick={openCreateModal}>
-          {data.addBtn?.title ?? '新增'}
+          {data.operate?.create?.title ?? '新增'}
         </Button>
       </div>
     );
   };
   const openCreateModal = useCallback(() => {
+    if (env.edit) {
+      return;
+    }
+    mappingFormItemOptions.current = {};
     setShowModalAction(ModalAction.CREATE);
     createForm.resetFields();
-  }, []);
+  }, [env.edit]);
   const closeCreateModal = useCallback(() => {
     setShowModalAction('');
     data.showActionModalForEdit = '';
@@ -394,10 +398,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         const curValue: Record<string, unknown> = {};
 
         Object.keys(value).forEach((key) => {
-          let item = value[key];
+          let item: any = value[key];
           try {
             if (item.isAfter) {
               item = (item as any).valueOf();
+            } else if (Array.isArray(item)) {
+              item = safeStringify(item);
             }
           } catch {}
 
@@ -414,7 +420,7 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             fields.forEach((field) => (curValue[field.name] = window['LOGIN_USER_INFO'].id));
           }
 
-          curValue.id = currentData.current?.id;
+          curValue.id = currentOperateData.current?.id;
         } else {
           const fields = data.entity.fieldAry.filter((field) =>
             [FieldBizType.SYS_USER_CREATOR, FieldBizType.SYS_USER_UPDATER].includes(field.bizType)
@@ -426,27 +432,30 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           }
         }
 
-        ajax({
-          params: {
-            fields:
-              showModalAction === ModalAction.CREATE
-                ? undefined
-                : data.entity.fieldAry.filter(
-                    (field) =>
-                      ![
-                        FieldBizType.MAPPING,
-                        FieldBizType.SYS_USER_CREATOR,
-                        FieldBizType.SYS_USER_UPDATER
-                      ].includes(field.bizType) &&
-                      !field.isPrimaryKey &&
-                      !field.isPrivate &&
-                      !field.form.disabledForEdit
-                  ),
-            query: curValue,
-            action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE'
+        ajax(
+          {
+            params: {
+              fields:
+                showModalAction === ModalAction.CREATE
+                  ? undefined
+                  : data.entity.fieldAry.filter(
+                      (field) =>
+                        ![FieldBizType.MAPPING, FieldBizType.SYS_USER_CREATOR].includes(
+                          field.bizType
+                        ) &&
+                        !field.isPrimaryKey &&
+                        !field.isPrivate &&
+                        !field.form.disabledForEdit
+                    ),
+              query: curValue,
+              action: showModalAction === ModalAction.CREATE ? 'INSERT' : 'UPDATE'
+            },
+            ...baseFetchParams
           },
-          ...baseFetchParams
-        }).then(() => {
+          {
+            needErrorTip: true
+          }
+        ).then(() => {
           setShowModalAction('');
           handleData(searchFormValue.current);
         });
@@ -499,12 +508,17 @@ export default function ({ env, data }: RuntimeParams<Data>) {
 
     return true;
   });
+  /** 防止 currentShowAllowRenderCreateItem 变化造成弹框宽度变化抖动 */
   modalWidth.current =
-    !!showModalAction || (edit && data.showActionModalForEdit)
+    (showModalAction === ModalAction.CREATE ||
+    (edit && data.showActionModalForEdit === ModalAction.CREATE)
+      ? data.widthForCreate
+      : data.widthForEdit) ||
+    (!!showModalAction || (edit && data.showActionModalForEdit)
       ? currentShowAllowRenderCreateItem.length > 5
         ? 800
         : 520
-      : modalWidth.current;
+      : modalWidth.current);
   const renderCreateFormNode = () => {
     if (data.entity) {
       return (
@@ -561,7 +575,12 @@ export default function ({ env, data }: RuntimeParams<Data>) {
             return (
               <Col
                 style={style}
-                span={currentShowAllowRenderCreateItem.length > 5 ? 12 : 24}
+                span={
+                  currentShowAllowRenderCreateItem.length > 5 &&
+                  formItem !== ComponentName.RICH_TEXT
+                    ? 12
+                    : 24
+                }
                 key={field.id}
               >
                 <div
@@ -571,13 +590,16 @@ export default function ({ env, data }: RuntimeParams<Data>) {
                 >
                   <Form.Item
                     initialValue={defaultValue}
-                    labelCol={{ span: 6 }}
+                    className={styles.formItemArea}
                     required={field.form?.required}
                     name={field.name}
                     label={field.form?.label ?? field.name}
                     rules={rules}
                   >
-                    {renderFormItemNode(field, { formItem })}
+                    {renderFormItemNode(field, {
+                      formItem,
+                      mappingFormItemOptions: mappingFormItemOptions.current
+                    })}
                   </Form.Item>
                 </div>
                 {showTip ? <div className={styles.tipForHidden}>运行将隐藏</div> : null}
@@ -591,37 +613,45 @@ export default function ({ env, data }: RuntimeParams<Data>) {
     return null;
   };
 
-  const onPageChange = (pageIndex: number, size: number) => {
-    setPageIndex(pageIndex);
-    setPageSize(size);
-    handleData(searchFormValue.current, { pageIndex, pageSize: size });
+  const onPageChange = (pageNum: number, pageSize: number) => {
+    setPageNum(pageNum);
+    setPageSize(pageSize);
+    handleData(searchFormValue.current, { pageNum, pageSize });
   };
-  /** 排序 */
-  const onTableChange = (_, __, sorter) => {
-    const fieldNames = Array.isArray(sorter.field) ? sorter.field : [sorter.field];
-    let field = data.fieldAry.find(
-      (f) =>
-        f.name === fieldNames[0] && (fieldNames[1] ? f.mappingField.name === fieldNames[1] : true)
-    );
-    const orderMap = { ascend: 'ASC', descend: 'DESC' };
 
-    if (field) {
-      field.sorter = sorter.order
-        ? {
-            entityId: fieldNames.length > 1 ? field.mappingField.relationEntityId : data.entity.id,
-            fieldId: fieldNames.length > 1 ? field.mappingField.id : field.id,
-            order: orderMap[sorter.order]
-          }
-        : undefined;
+  const onCreateFormValuesChange = (curValue, allValues) => {
+    const newAllValues = JSON.parse(JSON.stringify(allValues));
+    const propKey = Object.keys(curValue)[0];
 
-      setPageIndex(1);
-      setPageSize(data.pagination?.pageSize || INIT_PAGE_SIZE);
-      handleData(searchFormValue.current, {
-        pageIndex: 1,
-        pageSize: data.pagination?.pageSize || INIT_PAGE_SIZE
-      });
-    }
+    Object.keys(newAllValues).forEach((key) => {
+      const field = allowRenderCreateItem.find((f) => f.name === key);
+
+      if (
+        field &&
+        [
+          ComponentName.CHECKBOX,
+          ComponentName.RADIO,
+          ComponentName.DEBOUNCE_SELECT,
+          ComponentName.SELECT
+        ].includes(field.form.formItem)
+      ) {
+        newAllValues[key] = {
+          value: newAllValues[key],
+          options: mappingFormItemOptions.current[field.name] ?? []
+        };
+      } else {
+        newAllValues[key] = { value: newAllValues[key] };
+      }
+    });
+
+    outputs['onChange']?.({ propKey, changedValue: curValue, allValues: newAllValues });
   };
+
+  useEffect(() => {
+    inputs['setFieldsValue']?.((val) => {
+      createForm.setFieldsValue(val);
+    });
+  }, []);
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -631,56 +661,29 @@ export default function ({ env, data }: RuntimeParams<Data>) {
         ref={domainContainerRef}
       >
         {renderSearchFormNode()}
-        <Table
-          key={env.edit ? String(scrollXWidth) : undefined}
-          size={data.table?.size || 'middle'}
-          loading={loading}
-          columns={renderColumns}
+        <RenderTable
+          data={data}
           dataSource={dataSource}
-          onChange={onTableChange}
-          scroll={{ x: scrollXWidth }}
-          pagination={
-            data.pagination?.show
-              ? {
-                  showSizeChanger: true,
-                  total,
-                  current: pageIndex,
-                  pageSize,
-                  onChange: onPageChange
-                }
-              : false
-          }
+          slots={slots}
+          env={env}
+          loading={loading}
+          total={total}
+          fetchData={(pageInfo) => handleData(searchFormValue.current, pageInfo)}
+          onPageChange={onPageChange}
+          pageNum={pageNum}
+          pageSize={pageSize}
+          onDelete={onDelete}
+          onEdit={onEdit}
         />
       </div>
-      {/*{currentCreatePortal(*/}
-      {/*  <div className={styles.container} ref={containerRef}>*/}
-      {/*    <Modal*/}
-      {/*	    destroyOnClose*/}
-      {/*	    width={800}*/}
-      {/*	    getContainer={containerRef.current && (edit || debug) ? containerRef.current : undefined}*/}
-      {/*	    className={styles.createModal}*/}
-      {/*	    visible={!!showModalAction || (edit && data.showActionModalForEdit)}*/}
-      {/*	    title={showModalAction === ModalAction.EDIT ? '编辑' : '新增'}*/}
-      {/*	    maskClosable*/}
-      {/*	    closable*/}
-      {/*	    onCancel={closeCreateModal}*/}
-      {/*	    onOk={handleCreate}*/}
-      {/*	    centered*/}
-      {/*	    okText="确定"*/}
-      {/*	    cancelText="取消"*/}
-      {/*	    confirmLoading={createLoading}*/}
-      {/*	    okButtonProps={{ loading: createLoading }}*/}
-      {/*    >*/}
-      {/*	    <Form form={createForm}>*/}
-      {/*		    {createFormNode}*/}
-      {/*	    </Form>*/}
-      {/*    </Modal>*/}
-      {/*  </div>*/}
-      {/*)}*/}
       <div className={styles.container} ref={containerRef}>
         <Modal
           destroyOnClose
-          width={modalWidth.current}
+          width={
+            String(modalWidth.current).match(/\.*%/)
+              ? modalWidth.current
+              : parseInt(String(modalWidth.current))
+          }
           getContainer={
             (edit || debug
               ? data.showActionModalForEdit && !showModalAction
@@ -707,7 +710,9 @@ export default function ({ env, data }: RuntimeParams<Data>) {
           confirmLoading={createLoading}
           okButtonProps={{ loading: createLoading }}
         >
-          <Form form={createForm}>{renderCreateFormNode()}</Form>
+          <Form form={createForm} onValuesChange={onCreateFormValuesChange}>
+            {renderCreateFormNode()}
+          </Form>
         </Modal>
       </div>
     </ConfigProvider>

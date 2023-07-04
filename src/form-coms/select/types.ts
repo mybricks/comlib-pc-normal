@@ -13,6 +13,7 @@ export interface Data {
         filterOption: boolean;
         optionFilterProp: string;
     };
+    maxHeight: string;
     rules: any[];
     value?: number | string | number[] | string[];
     staticOptions: Option[];

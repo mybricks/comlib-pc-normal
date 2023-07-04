@@ -8,6 +8,7 @@ interface Props {
   data: Data;
   inputs: any;
   outputs: any;
+  parentSlot: any;
 }
 export default (props: Props) => {
   const { data, inputs, outputs, env } = props;
@@ -74,6 +75,7 @@ export default (props: Props) => {
       setPageSize(pageSize);
       setPageNum(pageNum);
       outputs[OutputIds.PageChange](data.currentPage);
+      // props.parentSlot?._inputs['onPageChange']?.({ value: data.currentPage });
     }
   };
 
@@ -88,21 +90,28 @@ export default (props: Props) => {
         justifyContent: align
       }}
     >
-      <Pagination
-        total={total}
-        showTotal={totalText}
-        current={current}
-        pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
-        // defaultPageSize={defaultPageSize}
-        size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-        simple={size === SizeTypeEnum.Simple}
-        showQuickJumper={showQuickJumper}
-        showSizeChanger={showSizeChanger}
-        pageSizeOptions={pageSizeOptions}
-        hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
-        onChange={onChange}
-        disabled={disabled}
-      />
+      <div
+        data-table-pagination="pagination"
+        style={{
+          display: 'inline-block'
+        }}
+      >
+        <Pagination
+          total={total}
+          showTotal={totalText}
+          current={current}
+          pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
+          // defaultPageSize={defaultPageSize}
+          size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
+          simple={size === SizeTypeEnum.Simple}
+          showQuickJumper={showQuickJumper}
+          showSizeChanger={showSizeChanger}
+          pageSizeOptions={pageSizeOptions}
+          hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      </div>
     </div>
   );
 };

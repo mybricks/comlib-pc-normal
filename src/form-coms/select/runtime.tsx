@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useCallback, useRef, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Select, Spin } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -15,10 +15,13 @@ export default function Runtime({
   outputs,
   logger,
   parentSlot,
-  id
+  id,
+  name
 }: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
   const typeMap = useMemo(() => {
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
@@ -71,6 +74,9 @@ export default function Runtime({
         if (!typeCheck(val, typeMap.type)) {
           logger.error(typeMap.message);
         } else {
+          if (val === undefined) {
+            data.value = '';
+          }
           data.value = val;
           outputs[OutputIds.OnInitial](val);
         }
@@ -147,15 +153,27 @@ export default function Runtime({
     });
   }, []);
 
+  useEffect(() => {
+    const isNumberString = new RegExp(/^\d*$/);
+    if (isNumberString.test(data.maxHeight)) {
+      ref.current?.style.setProperty(
+        '--select--selection-overflow-max-height',
+        data.maxHeight + 'px'
+      );
+    } else {
+      ref.current?.style.setProperty('--select--selection-overflow-max-height', data.maxHeight);
+    }
+  }, [data.maxHeight]);
+
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id });
+    validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((value) => {
     if (value === undefined) {
       data.value = '';
     }
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value });
+    onChangeForFc(parentSlot, { id: id, value, name });
     outputs['onChange'](value);
   }, []);
   const onChange = useCallback((value) => {
@@ -181,7 +199,7 @@ export default function Runtime({
   };
 
   return (
-    <div className={css.select}>
+    <div className={css.select} ref={ref}>
       <Select
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}

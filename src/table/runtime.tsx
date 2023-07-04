@@ -4,7 +4,13 @@ import { Table, Empty } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
-import { formatColumnItemDataIndex, formatDataSource, getDefaultDataSource } from './utils';
+
+import {
+  formatColumnItemDataIndex,
+  formatDataSource,
+  getColumnsSchema,
+  getDefaultDataSource
+} from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import {
   ContentTypeEnum,
@@ -22,15 +28,19 @@ import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
+import { getColumnsFromSchema } from './editors';
+import { setDataSchema } from './schema';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, slots } = props;
+  const { env, data, inputs, outputs, slots, input, output } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
+  const [focusRowIndex, setFocusRowIndex] = useState(null);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
 
@@ -163,10 +173,8 @@ export default function (props: RuntimeParams<Data>) {
               newSelectedRowKeys.push(targetRowKeyVal);
             }
           });
-          if (newSelectedRowKeys.length > 0) {
-            setSelectedRowKeys(newSelectedRowKeys);
-            setSelectedRows(newSelectedRows);
-          }
+          setSelectedRowKeys(newSelectedRowKeys);
+          setSelectedRows(newSelectedRows);
         });
       }
     }
@@ -322,7 +330,10 @@ export default function (props: RuntimeParams<Data>) {
       order
     };
     data.sortParams = order ? sortParams : undefined;
-    outputs[OutputIds.SORTER](data.sortParams);
+    outputs[OutputIds.SORTER]({
+      ...sortParams,
+      order: order || 'none'
+    });
   }, []);
 
   const filterChange = useCallback((filter: any) => {
@@ -372,9 +383,10 @@ export default function (props: RuntimeParams<Data>) {
     return ColumnsTitleRender({
       ...props,
       filterMap,
+      focusRowIndex,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} slots={props.slots} />
+          <ColumnRender {...columnRenderProps} env={env} slots={props.slots} />
         </ErrorBoundary>
       )
     });
@@ -443,6 +455,22 @@ export default function (props: RuntimeParams<Data>) {
     return getDefaultDataSource(data.columns);
   }, [data.columns]);
 
+  const onRow = useCallback(
+    (record, index) => {
+      return {
+        onClick: () => {
+          if (data.enableRowClick) {
+            outputs[OutputIds.ROW_CLICK]({ record, index });
+          }
+          if (data.enableRowFocus) {
+            setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+        }
+      };
+    },
+    [focusRowIndex]
+  );
+
   // 获取表格显示列宽度和
   const getUseWidth = () => {
     let hasAuto, width;
@@ -471,6 +499,16 @@ export default function (props: RuntimeParams<Data>) {
 
   // 显示数据
   const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
+
+  // 当数据发生变化时，重新设置所有行展开
+  useEffect(() => {
+    if (env.runtime) {
+      data.useExpand && data.defaultExpandAllRows
+        ? setExpandedRowKeys(realShowDataSource.map((item) => item[rowKey]))
+        : setExpandedRowKeys([]);
+    }
+  }, [realShowDataSource, env.runtime, rowKey]);
+
   return (
     <div className={css.table}>
       <TableHeader
@@ -490,6 +528,7 @@ export default function (props: RuntimeParams<Data>) {
             tip: data.loadingTip,
             spinning: loading
           }}
+          onRow={onRow}
           rowKey={rowKey}
           size={data.size as any}
           bordered={data.bordered}
@@ -503,7 +542,6 @@ export default function (props: RuntimeParams<Data>) {
           expandable={
             data.useExpand && slots[SlotIds.EXPAND_CONTENT]
               ? {
-                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : undefined, //增加动态设置
                   expandedRowRender: (record, index) => {
                     const inputValues = {
                       [InputIds.EXP_COL_VALUES]: {
@@ -518,6 +556,17 @@ export default function (props: RuntimeParams<Data>) {
                       inputValues,
                       key: `${InputIds.EXP_COL_VALUES}-${index}`
                     });
+                  },
+                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                  onExpand: (expanded, record) => {
+                    if (!env.runtime) return;
+                    const key = record[rowKey];
+                    if (expanded && !expandedRowKeys.includes(key)) {
+                      setExpandedRowKeys([...expandedRowKeys, key]);
+                    } else if (!expanded && expandedRowKeys.includes(key)) {
+                      expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                      setExpandedRowKeys([...expandedRowKeys]);
+                    }
                   }
                 }
               : undefined
@@ -536,6 +585,7 @@ export default function (props: RuntimeParams<Data>) {
       )}
       <TableFooter
         env={env}
+        parentSlot={props.parentSlot}
         data={data}
         slots={slots}
         inputs={inputs}

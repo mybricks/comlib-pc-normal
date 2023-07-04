@@ -32,7 +32,6 @@
     ]
   },
   "isFormItem": false,
-  "dataType": "object",
   "wrapperCol": 24,
   "labelWidthType": "px",
   "labelWidth": 98,
@@ -46,5 +45,10 @@
     "labelWrap": false,
     "labelAlign": "right",
     "disabled": false
+  },
+  "domainModel": {
+    "entity": {},
+    "type": "",
+    "queryFieldRules": {}
   }
 }

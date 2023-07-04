@@ -3,12 +3,14 @@
   "namespace": "mybricks.normal-pc.search",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.3",
+  "version": "1.0.9",
   "description": "搜索框",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_bacj7f.ea2507b099403a42.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
@@ -24,7 +26,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置搜索框的初始值，并触发初始化事件输出",
+      "desc": "设置搜索框的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -77,7 +79,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }

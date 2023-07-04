@@ -107,58 +107,58 @@ const tableStyleEditor = {
     //     }
     //   }
     // },
-    {
-      title: '表头样式',
-      type: 'Style',
-      options: {
-        plugins: ['bgcolor', 'Font'],
-        fontProps: {
-          fontFamily: false,
-          lineHeight: false
-        }
-      },
-      value: {
-        get({ data, id }: EditorResult<Data>) {
-          return data.headStyle || { ...DefaultHeadStyle };
-        },
-        set({ data, id }: EditorResult<Data>, value) {
-          delete value.lineHeight;
-          delete value.display;
-          delete value.letterSpacing;
-          data.columns = data.columns.map((item) => {
-            item.headStyle = { ...value };
-            return item;
-          });
-          data.headStyle = value;
-        }
-      }
-    },
-    {
-      title: '内容样式',
-      type: 'Style',
-      options: {
-        plugins: ['bgColor', 'Font'],
-        fontProps: {
-          fontFamily: false,
-          lineHeight: false
-        }
-      },
-      value: {
-        get({ data, id }: EditorResult<Data>) {
-          return data.contentStyle || { ...DefaultContentStyle };
-        },
-        set({ data, id }: EditorResult<Data>, value) {
-          delete value.lineHeight;
-          delete value.display;
-          delete value.letterSpacing;
-          data.columns = data.columns.map((item) => {
-            item.contentStyle = { ...value };
-            return item;
-          });
-          data.contentStyle = value;
-        }
-      }
-    }
+    // {
+    //   title: '表头样式',
+    //   type: 'Style',
+    //   options: {
+    //     plugins: ['bgcolor', 'Font'],
+    //     fontProps: {
+    //       fontFamily: false,
+    //       lineHeight: false
+    //     }
+    //   },
+    //   value: {
+    //     get({ data, id }: EditorResult<Data>) {
+    //       return data.headStyle || { ...DefaultHeadStyle };
+    //     },
+    //     set({ data, id }: EditorResult<Data>, value) {
+    //       delete value.lineHeight;
+    //       delete value.display;
+    //       delete value.letterSpacing;
+    //       data.columns = data.columns.map((item) => {
+    //         item.headStyle = { ...value };
+    //         return item;
+    //       });
+    //       data.headStyle = value;
+    //     }
+    //   }
+    // },
+    // {
+    //   title: '内容样式',
+    //   type: 'Style',
+    //   options: {
+    //     plugins: ['bgColor', 'Font'],
+    //     fontProps: {
+    //       fontFamily: false,
+    //       lineHeight: false
+    //     }
+    //   },
+    //   value: {
+    //     get({ data, id }: EditorResult<Data>) {
+    //       return data.contentStyle || { ...DefaultContentStyle };
+    //     },
+    //     set({ data, id }: EditorResult<Data>, value) {
+    //       delete value.lineHeight;
+    //       delete value.display;
+    //       delete value.letterSpacing;
+    //       data.columns = data.columns.map((item) => {
+    //         item.contentStyle = { ...value };
+    //         return item;
+    //       });
+    //       data.contentStyle = value;
+    //     }
+    //   }
+    // }
   ]
 };
 

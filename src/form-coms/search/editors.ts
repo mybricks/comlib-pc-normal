@@ -1,4 +1,27 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { Data, Options } from './runtime';
+import { uuid } from '../../utils';
+
+let tempOptions: Options[] = [],
+  optionsLength,
+  addOption,
+  delOption;
+
+const initParams = (data: Data) => {
+  if (!data.staticOptions) {
+    data.staticOptions = [];
+  }
+  if (optionsLength === undefined) {
+    tempOptions = data.staticOptions || [];
+  }
+  optionsLength = (data.staticOptions || []).length;
+  addOption = (option) => {
+    data.staticOptions.push(option);
+  };
+  delOption = (index: number) => {
+    data.staticOptions.splice(index, 1);
+  };
+};
 
 export default {
   '@resize': {
@@ -80,6 +103,122 @@ export default {
         }
       },
       {
+        title: '前置下拉框',
+        type: 'Switch',
+        description: '下拉框和搜索框组合',
+        value: {
+          get({ data }) {
+            return data.isSelect;
+          },
+          set({ data, output }, value: boolean) {
+            data.isSelect = value;
+            if(data.isSelect){
+              output.get('onChange').setSchema({ type: 'array', items: { type: 'string'} });
+              output.get('onSearch').setSchema({ type: 'array', items: { type: 'string'} });
+              output.get('onBlur').setSchema({ type: 'array', items: { type: 'string'} });
+            }else{
+              output.get('onChange').setSchema({ type: 'string' });
+              output.get('onSearch').setSchema({ type: 'string' });
+              output.get('onBlur').setSchema({ type: 'string' });
+            }
+          }
+        }
+      },
+      {
+        title: '下拉框宽度',
+        type: 'text',
+        description: '图标尺寸,支持百分比和定宽',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isSelect;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return String(data.selectWidth);
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (/^\d+$/.test(value)) {
+              data.selectWidth = `${value}px`;
+            } else {
+              data.selectWidth = value;
+            }
+          }
+        }
+      },
+      {
+        title: '前置选择',
+        type: 'array',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isSelect;
+        },
+        options: {
+          getTitle: ({ label, checked }) => {
+            return `${label}${checked ? ': 默认值' : ''}`;
+          },
+          onAdd: () => {
+            const defaultOption = {
+              label: `选项${optionsLength + 1}`,
+              value: `选项${optionsLength + 1}`,
+              key: uuid()
+            };
+            addOption(defaultOption);
+            return defaultOption;
+          },
+          items: [
+            {
+              title: '默认选中',
+              type: 'switch',
+              value: 'checked'
+            },
+            {
+              title: '禁用',
+              type: 'switch',
+              value: 'disabled'
+            },
+            {
+              title: '选项标签',
+              type: 'textarea',
+              value: 'label'
+            },
+            {
+              title: '选项值',
+              type: 'valueSelect',
+              options: ['text', 'number', 'boolean'],
+              description: '选项的唯一标识，可以修改为有意义的值',
+              value: 'value'
+            }
+          ]
+        },
+        value: {
+          get({ data }) {
+            initParams(data);
+            return data.staticOptions;
+          },
+          set({ data }, options: Options[]) {
+            const initValue: any = [];
+            options.forEach(({ checked, value }) => {
+              if (checked) initValue.push(value);
+            });
+            if (data.initValue) {
+              data.initValue = initValue.find(item => item !== data.initValue);
+            } else {
+              data.initValue = initValue[0];
+            }
+            // 临时:使用tempOptions存储配置项的prev
+            tempOptions = options;
+            const formItemVal: any = data.initValue;
+            // 更新选项
+            options = options.map(option => {
+              const checked = formItemVal !== undefined && option.value === formItemVal;
+              return {
+                ...option,
+                checked
+              }
+            });
+            data.staticOptions = options;
+          }
+        }
+      },
+      {
         title: '禁用状态',
         type: 'switch',
         description: '是否禁用状态',
@@ -149,7 +288,7 @@ export default {
         title: '事件',
         items: [
           {
-            title: '初始化',
+            title: '值初始化',
             type: '_event',
             options: {
               outputId: 'onInitial'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'antd';
+import { Form } from 'antd';
 import { Data, FormControlProps } from '../types';
 import { unitConversion } from '../../../utils';
 import css from '../styles.less';
@@ -8,7 +8,7 @@ interface FormItemProps {
   data: Data;
   com: any;
   item: any;
-  field: any;
+  // field: any;
   slots: any;
 }
 
@@ -23,7 +23,7 @@ const JSXWrapper = (props: FormControlProps) => {
 };
 
 const FormItem = (props: FormItemProps) => {
-  const { com, item, field, data, slots } = props;
+  const { com, item, data, slots } = props;
   const layout = data.config?.layout || data.layout;
   const formColon = data.config?.colon || data.colon;
 
@@ -46,7 +46,7 @@ const FormItem = (props: FormItemProps) => {
 
   return (
     <Form.Item
-      {...field}
+      // {...field}
       label={
         item?.hiddenLabel ? (
           void 0
@@ -55,7 +55,7 @@ const FormItem = (props: FormItemProps) => {
         )
       }
       labelAlign={labelAlign}
-      name={field ? [field.name, item?.name] : item?.name}
+      name={item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}
@@ -65,7 +65,7 @@ const FormItem = (props: FormItemProps) => {
     >
       <div className={css.formItemControl}>
         <div className={css.formItemSlotContent}>
-          <JSXWrapper com={com} field={field} />
+          <JSXWrapper com={com} />
         </div>
         {item.slotAfter && (
           <div className={css.formItemSlotAfter}>

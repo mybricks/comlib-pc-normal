@@ -31,8 +31,9 @@ export default function ({
     input.add('setInitialValue', '设置初始值', setValueSchema);
   }
   if (!output.get('onInitial')) {
-    output.add('onInitial', '初始化', valueChangeSchema);
+    output.add('onInitial', '值初始化', valueChangeSchema);
   }
+  output.get('onInitial').setTitle('值初始化');
 
   /**
    * @description v1.0.4 增加禁用日期、时间配置项
@@ -101,6 +102,23 @@ export default function ({
    */
   if (output.get(OutputIds.ReturnValue)?.schema?.type !== 'tuple') {
     refreshSchema({ data, input, output });
+  }
+
+  /**
+   * @description v1.0.16->1.0.17 增加 输出类型 配置项
+   */
+  if (typeof data.dateType === "undefined") {
+    data.dateType = 'array';
+  }
+  if (typeof data.splitChart === "undefined") {
+    data.splitChart = '-';
+  }
+
+  /**
+   * @description v1.0.18->1.0.19 增加 allowEmpty, 允许起始项部分为空
+  */
+  if (typeof data.emptyRules === "undefined") {
+    data.emptyRules = [];
   }
 
   return true;

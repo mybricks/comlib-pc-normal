@@ -33,7 +33,7 @@ const VerticalLayout = (props: VerticalLayoutProps) => {
     <>
       {children}
       {data.actions.visible && (
-        <Col data-form-actions flex={getFlexValue()} style={actionStyle}>
+        <Col flex={getFlexValue()} style={actionStyle}>
           <Form.Item label=" " colon={false}>
             {actions}
           </Form.Item>

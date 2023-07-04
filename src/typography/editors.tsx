@@ -45,107 +45,125 @@ export default {
       style: { ...defaultStyle }
     });
   },
-  ':root': [
-    {
-      title: '水平对齐方式',
-      type: 'Select',
-      options: [
-        { label: '左对齐', value: 'left' },
-        { label: '居中对齐', value: 'center' },
-        { label: '右对齐', value: 'right' }
-      ],
-      value: {
-        get({ data }) {
-          return data.style?.textAlign || 'left';
-        },
-        set({ data }, value) {
-          data.style = {
-            ...data.style,
-            textAlign: value
-          };
-        }
+  ':root': {
+    style: [
+      {
+        title: '文本排版',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }],
+        target: `:root`
       }
-    },
-    {
-      title: '样式',
-      type: 'style',
-      options: ['BORDER'],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.style;
-        },
-        set({ data }: EditorResult<Data>, value: any) {
-          if (typeof data.style == 'undefined') {
-            data.style = {};
+    ],
+    items: [
+      {
+        title: '水平对齐方式',
+        type: 'Select',
+        options: [
+          { label: '左对齐', value: 'left' },
+          { label: '居中对齐', value: 'center' },
+          { label: '右对齐', value: 'right' }
+        ],
+        value: {
+          get({ data }) {
+            return data.style?.textAlign || 'left';
+          },
+          set({ data }, value) {
+            data.style = {
+              ...data.style,
+              textAlign: value
+            };
           }
-          data.style = value;
-        }
-      }
-    },
-    {
-      title: '元素列表',
-      description: '可拖拽改变各元素的位置',
-      type: 'array',
-      options: {
-        deletable: false,
-        addable: false,
-        editable: false,
-        getTitle: (item) => {
-          return (
-            <Text style={{ width: '332px' }} ellipsis={{ tooltip: item?.content }}>
-              {item?.content}
-            </Text>
-          );
         }
       },
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.items || [];
+      {
+        title: '元素列表',
+        description: '可拖拽改变各元素的位置',
+        type: 'array',
+        options: {
+          deletable: false,
+          addable: false,
+          editable: false,
+          getTitle: (item) => {
+            return (
+              <Text style={{ width: '332px' }} ellipsis={{ tooltip: item?.content }}>
+                {item?.content}
+              </Text>
+            );
+          }
         },
-        set({ data }: EditorResult<Data>, val: any[]) {
-          data.items = val;
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.items || [];
+          },
+          set({ data }: EditorResult<Data>, val: any[]) {
+            data.items = val;
+          }
+        }
+      },
+      {
+        title: '增加文本',
+        type: 'Button',
+        value: {
+          set({ data }) {
+            data.items.push({
+              src: 1,
+              key: uuid(),
+              type: 'Text',
+              content: '文本',
+              oldcontent: '文本',
+              textType: '',
+              stylePadding: [0, 0],
+              style: { ...defaultStyle }
+            });
+          }
+        }
+      },
+      {
+        title: '增加标签',
+        type: 'Button',
+        value: {
+          set({ data }) {
+            data.items.push({
+              src: 1,
+              key: uuid(),
+              type: 'Tag',
+              content: '标签',
+              oldcontent: '标签',
+              color: 'success',
+              stylePadding: [0, 0],
+              style: {}
+            });
+          }
         }
       }
-    },
-    {
-      title: '增加文本',
-      type: 'Button',
-      value: {
-        set({ data }) {
-          data.items.push({
-            src: 1,
-            key: uuid(),
-            type: 'Text',
-            content: '文本',
-            oldcontent: '文本',
-            textType: '',
-            stylePadding: [0, 0],
-            style: { ...defaultStyle }
-          });
-        }
-      }
-    },
-    {
-      title: '增加标签',
-      type: 'Button',
-      value: {
-        set({ data }) {
-          data.items.push({
-            src: 1,
-            key: uuid(),
-            type: 'Tag',
-            content: '标签',
-            oldcontent: '标签',
-            color: 'success',
-            stylePadding: [0, 0],
-            style: {}
-          });
-        }
-      }
-    }
-  ],
+    ]
+  },
   '[data-item-type="text"]': {
     title: '文本',
+    style: [
+      {
+        title: '文本样式',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target({ data, focusArea }) {
+          return `.${findEle({ data, focusArea }, 'textId').key}`;
+        }
+      },
+      {
+        title: '间距',
+        type: 'Inputnumber',
+        options: [
+          { title: '左', min: 0, max: 50, width: 50 },
+          { title: '右', min: 0, max: 50, width: 50 }
+        ],
+        value: {
+          get({ data, focusArea }) {
+            return findEle({ data, focusArea }, 'textId').stylePadding;
+          },
+          set({ data, focusArea }, value) {
+            findEle({ data, focusArea }, 'textId').stylePadding = value;
+          }
+        }
+      }
+    ],
     items: [
       {
         title: '动态设置文本',
@@ -253,40 +271,6 @@ export default {
           set({ data, focusArea }, value) {
             if (!focusArea) return;
             findEle({ data, focusArea }, 'textId').outputContent = value;
-          }
-        }
-      },
-      {
-        title: '文本样式',
-        type: 'Style',
-        options: {
-          plugins: ['Font'],
-          fontProps: {
-            fontFamily: false
-          }
-        },
-        value: {
-          get({ data, focusArea }) {
-            return findEle({ data, focusArea }, 'textId').style;
-          },
-          set({ data, focusArea }, value) {
-            findEle({ data, focusArea }, 'textId').style = value;
-          }
-        }
-      },
-      {
-        title: '间距',
-        type: 'Inputnumber',
-        options: [
-          { title: '左', min: 0, max: 50, width: 50 },
-          { title: '右', min: 0, max: 50, width: 50 }
-        ],
-        value: {
-          get({ data, focusArea }) {
-            return findEle({ data, focusArea }, 'textId').stylePadding;
-          },
-          set({ data, focusArea }, value) {
-            findEle({ data, focusArea }, 'textId').stylePadding = value;
           }
         }
       },

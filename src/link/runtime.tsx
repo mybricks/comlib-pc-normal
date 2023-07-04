@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef, ReactNode, useState } from 'react';
 import * as Icons from '@ant-design/icons';
 import { route } from '../utils/history';
 import { Data, InputIds } from './constants';
@@ -19,27 +19,6 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
     });
   }, []);
 
-  const onMouseOver = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = hoverStyle[key];
-      });
-    }
-  };
-
-  const onMouseLeave = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = '';
-      });
-      Object.keys(style || {}).forEach((key) => {
-        ele.style[key] = style[key];
-      });
-    }
-  };
-
   const onClick = () => {
     if (routeType === 'customEvent') {
       outputs['click'] && outputs['click'](data.url);
@@ -59,13 +38,14 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
     const Icon = Icons && Icons[icon as string]?.render();
     return <>{Icon}</>;
   };
+
   return (
     <div
       ref={ref}
-      className={css.linkWrapper}
-      style={style}
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
+      className={`${css.linkWrapper} linkWrapper 
+      ${data.useHoverStyle ? css.linkWrapperHover : void 0} ${
+        data.useHoverStyle ? 'linkWrapperHover' : void 0
+      }`}
       onClick={env.runtime ? onClick : void 0}
     >
       <span className={css.iconLocation1}>

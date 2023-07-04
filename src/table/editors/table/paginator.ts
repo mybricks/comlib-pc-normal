@@ -2,7 +2,7 @@ import { OutputIds, InputIds } from '../../components/Paginator/constants';
 import { Data } from '../../types';
 import { setDataSchema } from '../../schema';
 
-const PageSchema = {
+export const PageSchema = {
   type: 'object',
   properties: {
     pageNum: {
@@ -17,8 +17,11 @@ export default [
   {
     title: '分页模式',
     type: 'Switch',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !data?.domainModel?.entity;
+    },
     value: {
-      get({ data }: EditorResult<Data>) {
+      get({ data, input, output }: EditorResult<Data>) {
         return data.usePagination;
       },
       set({ data, input, output, ...res }: EditorResult<Data>, value: boolean) {

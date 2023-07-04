@@ -37,12 +37,13 @@ export interface Data {
   isShowUploadList: boolean;
   isCustom: boolean;
   imageSize: number[];
+  customUpload: boolean;
 }
 
 interface Window {
   Image: {
     prototype: HTMLImageElement;
-    new (): HTMLImageElement;
+    new(): HTMLImageElement;
   };
 }
 
@@ -68,11 +69,13 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   useLayoutEffect(() => {
     inputs['setValue']((val: UploadFile[]) => {
+      fileListRef.current = val;
       setFileList(val);
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         setFileList(val);
+        fileListRef.current = val;
         outputs[OutputIds.OnInitial](val);
       });
     inputs['validate']((val, outputRels) => {
@@ -179,12 +182,23 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   };
   // 文件上传输出
   const onCustomRequest = (fileList: UploadFile[]) => {
-    const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append(fileKey, file);
-    });
-    fileListRef.current = onFormatFileList(fileList);
-    outputs.upload(formData);
+    if (!data.customUpload) {
+      if (typeof env.uploadFile !== 'function') {
+        message.error(`应用的env中没有uploadFile方法`);
+        return
+      }
+      env.uploadFile(fileList).then(res => {
+        console.log('上传成功', res)
+        onUploadComplete(res)
+      })
+    } else {
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        formData.append(fileKey, file);
+      });
+      fileListRef.current = onFormatFileList(fileList);
+      outputs.upload(formData);
+    }
   };
 
   //上传图片尺寸限制
@@ -405,7 +419,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         listType={listType}
         fileList={Array.isArray(fileList) ? fileList : void 0}
         accept={fileType.join()}
-        customRequest={() => {}}
+        customRequest={() => { }}
         beforeUpload={beforeUpload}
         onRemove={onRemove}
         onPreview={(file: UploadFile) => {
@@ -424,7 +438,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       >
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
-        (data.isCustom === true && data.config.listType === 'picture') ? (
+          (data.isCustom === true && data.config.listType === 'picture') ? (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
         ) : (
           renderUploadText()

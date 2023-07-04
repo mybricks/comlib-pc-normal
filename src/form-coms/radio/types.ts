@@ -10,4 +10,5 @@ export interface Data {
   staticOptions: Option[];
   enableButtonStyle: boolean;
   buttonStyle: 'outline' | 'solid';
+  layout: 'vertical' | 'horizontal';
 }

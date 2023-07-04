@@ -10,23 +10,9 @@ export interface Data {
   toolbar: string[];
 }
 
-export default function ({
-  env,
-  data,
-  inputs,
-  outputs,
-}: RuntimeParams<Data>) {
-
+export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const EditContent = useMemo(() => {
-    return (
-      <RichText
-        readonly={false}
-        data={data}
-        outputs={outputs}
-        inputs={inputs}
-        env={env}
-      />
-    );
+    return <RichText readonly={false} data={data} outputs={outputs} inputs={inputs} env={env} />;
   }, []);
 
   if (data.displayEditbar) {
@@ -35,13 +21,5 @@ export default function ({
 
   data.toolbar = [];
 
-  return (
-    <RichText
-      readonly
-      data={data}
-      outputs={outputs}
-      inputs={inputs}
-      env={env}
-    />
-  );
+  return <RichText readonly={false} data={data} outputs={outputs} inputs={inputs} env={env} />;
 }

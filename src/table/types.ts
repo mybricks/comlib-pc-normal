@@ -1,3 +1,4 @@
+import { TformattersValue } from 'src/utils/dataFormatter/types';
 import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
@@ -75,6 +76,8 @@ export interface IColumn {
 
   keepDataIndex?: boolean;
   dataSchema?: any;
+
+  formatData?: TformattersValue
 }
 
 export enum SizeEnum {
@@ -173,4 +176,12 @@ export interface Data {
   titleBgColor: string;
   headStyle: any;
   contentStyle;
+  enableRowClick?: boolean;
+  enableRowFocus: boolean,
+  focusRowStyle: any,
+  domainModel: {
+    entity: any
+  },
+  // 是否默认展开所有行
+  defaultExpandAllRows: boolean
 }

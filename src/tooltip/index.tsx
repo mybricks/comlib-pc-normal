@@ -4,7 +4,9 @@ import { isString } from '../utils';
 import { Data } from './types';
 
 export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
-  const { title, placement, trigger, style } = data;
+  const { title, placement, trigger } = data;
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
   inputs['content']((val) => {
     if (isString(val)) {
       data.title = val;
@@ -14,6 +16,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
   });
   return (
     <Tooltip
+      defaultVisible={!!edit}
       placement={placement}
       title={() => (
         <div
@@ -22,10 +25,11 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
         />
       )}
       trigger={trigger}
-      color={style?.background as string}
-      overlayInnerStyle={style}
+      getPopupContainer={(triggerNode: HTMLElement) =>
+        edit || debug ? triggerNode : document.body
+      }
     >
-      <div>{slots['carrier'] && slots['carrier'].render()}</div>
+      <div>{slots.carrier?.render()}</div>
     </Tooltip>
   );
 }

@@ -4,10 +4,8 @@ export interface Data {
   autoplay?: boolean;
   controls?: boolean;
   poster?: string;
-  usePoster?: boolean;
   style?: CSSProperties;
   loop?: boolean;
-  dynamicSrc?: boolean;
   fit?: CSSProperties['objectFit']
   muted?: boolean
 }

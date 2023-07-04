@@ -22,5 +22,18 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add('onPressEnter', '按下回车', valueSchema);
   }
 
+ /**
+   * @description v1.0.10->1.0.11, 新增格式化展示
+   */
+  if (typeof data.isFormatter === "undefined") {
+    data.isFormatter = false;
+  }
+  if (typeof data.charPostion === "undefined") {
+    data.charPostion = "prefix"
+  }
+  if (typeof data.character === "undefined") {
+    data.character = "¥"
+  }
+
   return true;
 }

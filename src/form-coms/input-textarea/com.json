@@ -3,9 +3,10 @@
   "namespace": "mybricks.normal-pc.input-textarea",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "文本域",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_44zp5y.91531f9e6ba88161.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
@@ -78,7 +79,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "string"
       }
@@ -116,6 +117,7 @@
     },
     {
       "id": "returnValue",
+      "title": "值输出",
       "schema": {
         "type": "string"
       }

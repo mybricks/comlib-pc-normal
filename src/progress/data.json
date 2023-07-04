@@ -1,0 +1,12 @@
+{
+  "percent": 50,
+  "type": "line",
+  "isShow": true,
+  "status": "normal",
+  "strokeColor": "#1890ff",
+  "isSteps": false,
+  "steps": 3,
+  "isColor": false,
+  "size": "default",
+  "circleSize": "120px"
+}

@@ -14,8 +14,20 @@ import UsePaginatorEditor from './table/paginator';
 import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
-
-function getColumnsFromSchema(schema: any) {
+import rowOperationEditor from './table/rowOperation';
+import {
+  getColumnsSchema,
+  createStyleForHead,
+  createStyleForContent,
+  getNewColumn,
+  setColumns
+} from '../utils';
+import {
+  OutputIds as PaginatorOutputIds,
+  InputIds as PaginatorInputIds
+} from '../components/Paginator/constants';
+import { PageSchema } from './table/paginator';
+export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
     Object.keys(properties).forEach((key) => {
@@ -52,6 +64,24 @@ function getColumnsFromSchema(schema: any) {
 }
 
 export default {
+  '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
+    if (schema === 'mybricks.domain-pc.crud/table') {
+      if (data?.domainModel?.entity && data.columns?.length === 0) {
+        const schema = getColumnsSchema(data);
+        data.columns = getColumnsFromSchema(schema);
+      }
+
+      inputs.add(PaginatorInputIds.SetTotal, '设置数据总数', { type: 'number' });
+      inputs.add(PaginatorInputIds.SetPageNum, '设置当前页码', { type: 'number' });
+      inputs.add(PaginatorInputIds.GetPageInfo, '获取分页数据', { type: 'any' });
+      outputs.add(PaginatorOutputIds.GetPageInfo, '分页数据', PageSchema);
+      inputs.get(PaginatorInputIds.GetPageInfo).setRels([PaginatorOutputIds.GetPageInfo]);
+      outputs.add(PaginatorOutputIds.PageChange, '点击分页', PageSchema);
+    } else {
+      // 不在领域模型内时，清空domain信息
+      data.domainModel = {};
+    }
+  },
   '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
     if (toPin.id === InputIds.SET_DATA_SOURCE) {
       if (data.columns.length === 0) {
@@ -92,22 +122,34 @@ export default {
       setDataSchema({ data, output, input, ...res });
     }
   },
-  ':root': (props: EditorResult<Data>, ...cateAry) => {
-    cateAry[0].title = '常规';
-    cateAry[0].items = [getAddColumnEditor(props), ...UsePaginatorEditor];
+  ':root': {
+    items: (props: EditorResult<Data>, ...cateAry) => {
+      cateAry[0].title = '常规';
+      cateAry[0].items = [
+        getAddColumnEditor(props),
+        ...UsePaginatorEditor,
+        ...LoadingEditor,
+        TableStyleEditor
+      ];
 
-    cateAry[1].title = '样式';
-    cateAry[1].items = [...LoadingEditor, TableStyleEditor];
+      // cateAry[1].title = '样式';
+      // cateAry[1].items = [...LoadingEditor, TableStyleEditor];
 
-    cateAry[2].title = '高级';
-    cateAry[2].items = [
-      ...EventEditor,
-      HeaderEditor,
-      ...ExpandEditor,
-      ...DynamicColumnEditor,
-      ...DynamicTitleEditor,
-      ...getRowSelectionEditor(props)
-    ];
+      cateAry[1].title = '高级';
+      cateAry[1].items = [
+        ...EventEditor,
+        HeaderEditor,
+        ...ExpandEditor,
+        rowOperationEditor,
+        ...DynamicColumnEditor,
+        ...DynamicTitleEditor,
+        ...getRowSelectionEditor(props)
+      ];
+    },
+    style: [
+      createStyleForHead({ target: 'table thead tr > th' }),
+      createStyleForContent({ target: 'table tbody tr > td' })
+    ]
   },
   ...columnEditor,
   ...PaginatorEditor

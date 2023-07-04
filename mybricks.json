@@ -4,6 +4,12 @@
   "comAry": {
     "test": [
       {
+        "title": "领域模型",
+        "comAry": [
+          "./src/domain/domain-crud/com.json"
+        ]
+      },
+      {
         "title": "常规",
         "comAry": [
           "./src/_0_test/container/com.json",
@@ -43,6 +49,7 @@
         "title": "数据录入",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-list/com.json",
           "./src/domain-form/com.json",
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
@@ -67,7 +74,8 @@
           "./src/form-coms/time-picker/com.json",
           "./src/form-coms/time-range-picker/com.json",
           "./src/form-coms/color/com.json",
-          "./src/form-coms/code/com.json"
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
@@ -99,7 +107,8 @@
           "./src/icon/com.json",
           "./src/dropdown/com.json",
           "./src/sort-bar/com.json",
-          "./src/video/com.json"
+          "./src/video/com.json",
+          "./src/progress/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -107,24 +116,16 @@
       "./src/_message/com.json",
       "./src/_page-router/com.json",
       "./src/_global-loading/com.json",
-      "./src/_timer-delay/com.json",
-      "./src/_timer-loop/com.json",
-      "./src/_timer-debounce/com.json",
-      "./src/_timer-throttle/com.json",
-      "./src/_merge/com.json",
-      "./src/_download/com.json",
-      "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json",
       "./src/_query/com.json",
       "./src/_events/com.json",
       "./src/_service/com.json",
       "./src/_cookie/com.json",
-      "./src/_copy/com.json",
       "./src/_pick/com.json",
       "./src/_muilt-inputJs/com.json",
       "./src/_array-merge/com.json",
       "./src/_post-message/com.json",
-      "./src/_receive-message/com.json"
+      "./src/_receive-message/com.json",
+      "./src/_enum-map/com.json"
     ],
     "publish": [
       {
@@ -160,6 +161,7 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-list/com.json",
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
@@ -183,7 +185,8 @@
           "./src/form-coms/time-picker/com.json",
           "./src/form-coms/time-range-picker/com.json",
           "./src/form-coms/color/com.json",
-          "./src/form-coms/code/com.json"
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
@@ -222,24 +225,16 @@
       "./src/_message/com.json",
       "./src/_page-router/com.json",
       "./src/_global-loading/com.json",
-      "./src/_timer-delay/com.json",
-      "./src/_timer-loop/com.json",
-      "./src/_timer-debounce/com.json",
-      "./src/_timer-throttle/com.json",
-      "./src/_merge/com.json",
-      "./src/_download/com.json",
-      "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json",
       "./src/_query/com.json",
       "./src/_events/com.json",
       "./src/_service/com.json",
       "./src/_cookie/com.json",
-      "./src/_copy/com.json",
       "./src/_pick/com.json",
       "./src/_muilt-inputJs/com.json",
       "./src/_array-merge/com.json",
       "./src/_post-message/com.json",
-      "./src/_receive-message/com.json"
+      "./src/_receive-message/com.json",
+      "./src/_enum-map/com.json"
     ]
   },
   "externals": [

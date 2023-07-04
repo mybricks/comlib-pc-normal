@@ -27,7 +27,7 @@ export interface ColumnParams {
   key: string;
   slot: string;
   span: number;
-  colStyle: React.CSSProperties;
+  colStyle?: React.CSSProperties;
 
   widthOption: WidthUnitEnum;
   width: number;
@@ -41,6 +41,8 @@ export interface ColumnParams {
   flex: number;
   useClick?: boolean;
   slotStyle?: React.CSSProperties;
+   //style editor暂不支持的style
+  legacyStyle: React.CSSProperties;
 }
 
 export interface IRow {
@@ -50,12 +52,12 @@ export interface IRow {
   align: AlignTypeEnum;
   wrap?: boolean;
   backgroundColor?: string;
-  useGutter?: boolean;
-  gutter: number | object | [];
+  gutter: number | object | [number, number];
 }
 
 export interface Data {
   rows: IRow[];
   style: React.CSSProperties;
   widthUnit?: string;
+  globalColStyle?: React.CSSProperties
 }

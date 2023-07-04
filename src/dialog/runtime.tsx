@@ -42,14 +42,12 @@ export default function Dialog({
 
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
-          const { id, visible, isConnected } = item;
-          if (DefaultEvent.includes(id) && !visible) return;
+          const { id, visible, isConnected, autoClose } = item;
+          if (visible === false) return;
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
-              if (DefaultEvent.includes(id)) {
-                item.loading = false;
-                isConnected && close();
-              }
+              item.loading = false;
+              isConnected && autoClose !== false && close();
               relOutputs[id](val);
             });
           }
@@ -134,7 +132,7 @@ export default function Dialog({
       if (isConnected) {
         item.loading = true;
       } else {
-        close();
+        item.autoClose !== false && close();
       }
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
@@ -249,20 +247,23 @@ const RuntimeRender = ({
             icon,
             useIcon,
             visible = true,
-            location,
-            dynamicHidden,
             dynamicDisabled,
+            dynamicHidden,
+            location,
+            hidden,
+            disabled,
             isConnected,
             loading,
             useBtnLoading,
+            autoClose,
             ...res
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
           return (
             <Button
               {...res}
-              hidden={!visible || dynamicHidden}
-              disabled={dynamicDisabled}
+              hidden={!visible || hidden}
+              disabled={disabled}
               onClick={event?.[id]}
               data-btn-id={id}
               loading={useBtnLoading && loading}

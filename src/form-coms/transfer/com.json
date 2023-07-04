@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -55,7 +55,7 @@
     {
       "id": "setInitialValue",
       "title": "设置初始值",
-      "desc": "设置穿梭框始值，并触发初始化事件输出",
+      "desc": "设置穿梭框始值，并触发值初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -112,7 +112,7 @@
   "outputs": [
     {
       "id": "onInitial",
-      "title": "初始化",
+      "title": "值初始化",
       "schema": {
         "type": "array",
         "items": {

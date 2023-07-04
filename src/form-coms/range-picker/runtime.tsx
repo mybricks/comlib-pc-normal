@@ -27,6 +27,9 @@ export interface Data {
     placeholder: undefined | [string, string];
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
+  dateType: 'array' | 'string';
+  splitChart: string;
+  emptyRules: any[];
 }
 
 export const DateType = {
@@ -59,7 +62,7 @@ export const formatRangeOptions = (list, env: Env) => {
 };
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, id } = props;
+  const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
@@ -172,6 +175,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
             transValue = value.map((item, index) => {
               return transCalculation(item, data.contentType, props, index);
             });
+            if (data.dateType !== 'array') {
+              transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+            }
           }
           outputs[OutputIds.OnInitial](transValue);
         }
@@ -199,6 +205,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         transValue = value.map((item, index) => {
           return transCalculation(item, data.contentType, props, index);
         });
+        if (data.dateType !== 'array') {
+          transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+        }
       }
       outputRels['returnValue'](transValue);
     });
@@ -218,7 +227,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
 
   const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id });
+    validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
   const onChange = (value) => {
@@ -230,8 +239,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       transValue = value.map((item, index) => {
         return transCalculation(item, data.contentType, props, index);
       });
+      if (data.dateType !== 'array') {
+        transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+      }
     }
-    onChangeForFc(parentSlot, { id: id, value: transValue });
+    onChangeForFc(parentSlot, { id: id, name: name, value: transValue });
     outputs['onChange'](transValue);
     onValidateTrigger();
   };
@@ -258,6 +270,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
+  const emptyArr: [boolean, boolean] =
+    data.emptyRules?.length > 0
+      ? [!data.emptyRules[0].status, !data.emptyRules[1].status]
+      : [false, false];
+
   return (
     <div className={css.rangePicker}>
       <RangePicker
@@ -268,6 +285,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         onCalendarChange={(dates) => setDates(dates)}
         onOpenChange={onOpenChange}
+        allowEmpty={emptyArr}
         {...disabledDateTime}
       />
     </div>

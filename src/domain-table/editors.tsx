@@ -1,18 +1,21 @@
 import React from 'react';
 import {
-  DefaultComponentNameMap,
+  ComponentName,
   Data,
+  DefaultComponentNameMap,
+  DefaultOperatorMap,
+  DefaultValueWhenCreate,
   FieldBizType,
   FieldDBType,
+  InputIds,
   ModalAction,
-  ComponentName,
-  DefaultOperatorMap,
-  DefaultValueWhenCreate
+  TableRenderType
 } from './constants';
 import { uuid } from '../utils';
 import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
 import Refresh from './editors/refresh';
+import Delete from './editors/delete';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -90,6 +93,7 @@ export default {
                           field.bizType
                         )
                       ) {
+                        field.form.rules = RuleMapByBizType[field.bizType] || [];
                         field.form.required = true;
                       }
                     });
@@ -126,7 +130,16 @@ export default {
             title: '刷新模型实体信息',
             type: 'editorRender',
             options: {
-              render: Refresh
+              render: Refresh,
+              get domainFileId() {
+                return data.domainFileId;
+              },
+              get entityId() {
+                return data.entityId;
+              },
+              get entity() {
+                return data.entity;
+              }
             },
             ifVisible({ data }: EditorResult<Data>) {
               return !!data.entity;
@@ -135,7 +148,10 @@ export default {
               get({ data }) {
                 return { domainFileId: data.domainFileId, entityId: data.entityId };
               },
-              set({ data, setTitle, title, output }, newEntity: any) {
+              set({ data, setTitle, title, output, slot }, newEntity: any) {
+                if (!newEntity) {
+                  return;
+                }
                 data.formFieldAry = data.formFieldAry
                   .map((field) => {
                     let newField = newEntity.fieldAry.find(
@@ -161,11 +177,11 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
-                      const hasChecked = field.form.options?.find((o) => o.checked);
+                      const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
-                          field.bizType === FieldBizType.ENUM
-                            ? field.form.options?.find((o) => o.value === v)
+                          field?.bizType === FieldBizType.ENUM
+                            ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
                         return (
@@ -215,17 +231,10 @@ export default {
                   .filter(Boolean);
 
                 if (curFieldAry.length > 0) {
-                  curFieldAry.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
-
-                  data.fieldAry = curFieldAry;
-                } else {
-                  data.fieldAry = [];
+                  curFieldAry.push(handleCustomColumnSlot(data, slot));
                 }
+                handleTableColumnChange(curFieldAry, data.fieldAry, slot);
+                data.fieldAry = curFieldAry;
 
                 newEntity.fieldAry.forEach((newField) => {
                   newField.form = {};
@@ -246,6 +255,7 @@ export default {
                         newField.bizType
                       )
                     ) {
+                      initForm.rules = RuleMapByBizType[field.bizType] || [];
                       initForm.required = true;
                     }
 
@@ -274,11 +284,11 @@ export default {
                       newField.bizType === FieldBizType.ENUM &&
                       Array.isArray(newField.enumValues)
                     ) {
-                      const hasChecked = field.form.options?.find((o) => o.checked);
+                      const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
-                          field.bizType === FieldBizType.ENUM
-                            ? field.form.options?.find((o) => o.value === v)
+                          field?.bizType === FieldBizType.ENUM
+                            ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
                         return (
@@ -361,6 +371,48 @@ export default {
         },
         items: [
           {
+            title: '渲染方式',
+            description: '渲染方式切换将重置表格渲染逻辑，不支持回退',
+            type: 'Select',
+            options: [
+              { label: '内置表格', value: TableRenderType.NORMAL },
+              { label: '自定义表格', value: TableRenderType.SLOT }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.table?.renderType || TableRenderType.NORMAL;
+              },
+              set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
+                data.table.renderType = value;
+
+                if (value === TableRenderType.SLOT) {
+                  const slotId = 'table';
+                  data.table.slotId = slotId;
+                  slot.add({ id: slotId, title: `自定义表格`, type: 'scope' });
+                  slot
+                    .get(slotId)
+                    .inputs.add(InputIds.DATA_SOURCE, '当前表格数据', { type: 'array' });
+
+                  data.fieldAry.forEach((field) => {
+                    handleColumnSlot(TableRenderType.NORMAL, { field, slot });
+                  });
+                } else {
+                  slot.get(data.table.slotId) && slot.remove(data.table.slotId);
+                  data.table.slotId = '';
+
+                  data.fieldAry.forEach((field) => {
+                    if (
+                      field.tableInfo.renderType === TableRenderType.SLOT ||
+                      field.bizType === FieldBizType.FRONT_CUSTOM
+                    ) {
+                      handleColumnSlot(TableRenderType.SLOT, { field, slot });
+                    }
+                  });
+                }
+              }
+            }
+          },
+          {
             title: '表格列',
             type: 'Select',
             options(props) {
@@ -385,6 +437,9 @@ export default {
                 }
               };
             },
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return (
@@ -395,7 +450,7 @@ export default {
                     ) || []
                 );
               },
-              set({ data, output, input }: EditorResult<Data>, value: string[]) {
+              set({ data, output, input, slot }: EditorResult<Data>, value: string[]) {
                 const fieldAry = value
                   .map((id) => {
                     const ids = id.split('.');
@@ -428,13 +483,10 @@ export default {
                   .filter(Boolean);
 
                 if (fieldAry.length > 0) {
-                  fieldAry.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  fieldAry.push(handleCustomColumnSlot(data, slot));
                 }
+
+                handleTableColumnChange(fieldAry, data.fieldAry, slot);
                 data.fieldAry = fieldAry;
               }
             }
@@ -442,7 +494,7 @@ export default {
           {
             type: 'array',
             ifVisible() {
-              return !!data.fieldAry;
+              return !!data.fieldAry && data.table?.renderType !== TableRenderType.SLOT;
             },
             options: {
               editable: false,
@@ -463,13 +515,9 @@ export default {
               set({ data, output, input, slot, ...res }: EditorResult<Data>, val: any[]) {
                 const curFields = val;
                 if (curFields.length > 0) {
-                  curFields.push({
-                    name: '操作',
-                    tableInfo: { label: '操作', width: '124px', align: 'left' },
-                    bizType: FieldBizType.FRONT_CUSTOM,
-                    id: 'operate'
-                  });
+                  curFields.push(handleCustomColumnSlot(data, slot));
                 }
+                handleTableColumnChange(curFields, data.fieldAry, slot);
                 data.fieldAry = curFields;
               }
             }
@@ -477,12 +525,36 @@ export default {
           {
             title: '开启分页',
             type: 'Switch',
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.pagination.show;
               },
               set({ data, output, input }: EditorResult<Data>, value: boolean) {
                 data.pagination.show = value;
+              }
+            }
+          },
+          {
+            title: '隐藏操作区',
+            type: 'Switch',
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.table?.operate?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.table) {
+                  data.table = {};
+                }
+                if (!data.table.operate) {
+                  data.table.operate = {};
+                }
+                data.table.operate.disabled = value;
               }
             }
           }
@@ -515,8 +587,26 @@ export default {
     cate3.title = '高级';
     cate3.items = [
       {
-        title: '新增弹框',
+        title: '新增操作',
         items: [
+          {
+            title: '隐藏新增操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.create?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.create) {
+                  data.operate.create = {};
+                }
+                data.operate.create.disabled = value;
+              }
+            }
+          },
           {
             title: '打开新增弹框',
             type: 'Switch',
@@ -526,6 +616,21 @@ export default {
               },
               set({ data, output, input }: EditorResult<Data>, value: boolean) {
                 data.showActionModalForEdit = value ? ModalAction.CREATE : '';
+              }
+            }
+          },
+          {
+            title: '弹框宽度',
+            type: 'Text',
+            options: {
+              placeholder: '请输入弹框宽度，如：800或800px'
+            },
+            value: {
+              get({}: EditorResult<Data>) {
+                return data.widthForCreate;
+              },
+              set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+                data.widthForCreate = value;
               }
             }
           },
@@ -585,8 +690,26 @@ export default {
         ]
       },
       {
-        title: '编辑弹框',
+        title: '编辑操作',
         items: [
+          {
+            title: '隐藏编辑操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.edit?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.edit) {
+                  data.operate.edit = {};
+                }
+                data.operate.edit.disabled = value;
+              }
+            }
+          },
           {
             title: '打开编辑弹框',
             type: 'Switch',
@@ -596,6 +719,21 @@ export default {
               },
               set({ data, output, input }: EditorResult<Data>, value: boolean) {
                 data.showActionModalForEdit = value ? ModalAction.EDIT : '';
+              }
+            }
+          },
+          {
+            title: '弹框宽度',
+            type: 'Text',
+            options: {
+              placeholder: '请输入弹框宽度，如：800或800px'
+            },
+            value: {
+              get({}: EditorResult<Data>) {
+                return data.widthForEdit;
+              },
+              set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+                data.widthForEdit = value;
               }
             }
           },
@@ -655,6 +793,29 @@ export default {
                       DefaultComponentNameMap[field.bizType] || ComponentName.INPUT);
                   field.form.disabledForEdit = !value.includes(field.id);
                 });
+              }
+            }
+          }
+        ]
+      },
+      {
+        title: '删除操作',
+        items: [
+          {
+            title: '隐藏删除操作',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.operate?.delete?.disabled;
+              },
+              set({ data, output, input }: EditorResult<Data>, value: boolean) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.delete) {
+                  data.operate.delete = {};
+                }
+                data.operate.delete.disabled = value;
               }
             }
           }
@@ -723,6 +884,22 @@ export default {
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
             field.form.rows = value[0] || 2;
+          }
+        }
+      },
+      {
+        title: '图片数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.IMAGE_UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
           }
         }
       },
@@ -925,6 +1102,23 @@ export default {
         }
       },
       {
+        title: '禁用状态',
+        type: 'switch',
+        description: '是否禁用状态',
+        value: {
+          get() {
+            return field.form.readonly;
+          },
+          set({ data }, val: boolean) {
+            if (!field.form) {
+              field.form = {};
+            }
+
+            field.form.readonly = val;
+          }
+        }
+      },
+      {
         title: '表单项类型',
         type: 'Select',
         options: [
@@ -936,6 +1130,7 @@ export default {
           { label: '单选', value: ComponentName.RADIO },
           { label: '复选框', value: ComponentName.CHECKBOX },
           { label: '下拉搜索框', value: ComponentName.DEBOUNCE_SELECT },
+          { label: '富文本', value: ComponentName.RICH_TEXT },
           { label: '图片上传', value: ComponentName.IMAGE_UPLOAD },
           { label: '上传', value: ComponentName.UPLOAD }
         ],
@@ -945,6 +1140,10 @@ export default {
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
             field.form.formItem = value;
+
+            if (value === ComponentName.RICH_TEXT && !field.form.toolbar?.length) {
+              field.form.toolbar = ['link'];
+            }
           }
         }
       },
@@ -961,6 +1160,134 @@ export default {
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
             field.form.rows = value[0] || 2;
+          }
+        }
+      },
+      {
+        title: '图片数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.IMAGE_UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
+          }
+        }
+      },
+      {
+        title: '附件数量',
+        type: 'InputNumber',
+        options: [{ title: '', min: 1, width: 100 }],
+        ifVisible() {
+          return field.form.formItem === ComponentName.UPLOAD;
+        },
+        value: {
+          get() {
+            return [field.form?.maxCount || 1];
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.maxCount = value[0] || 1;
+          }
+        }
+      },
+      {
+        title: '插件选择',
+        type: 'select',
+        ifVisible() {
+          return field.form.formItem === ComponentName.RICH_TEXT;
+        },
+        options() {
+          return {
+            options: [
+              {
+                label: '超链接',
+                value: 'link'
+              },
+              {
+                label: '表格',
+                value: 'table'
+              },
+              // {
+              //   label: '图片上传',
+              //   value: 'uploadimage',
+              // },
+              // {
+              //   label: '视频上传',
+              //   value: 'uploadVideo',
+              // },
+              {
+                label: '下划线',
+                value: 'underline'
+              },
+              {
+                label: '删除线',
+                value: 'strikethrough'
+              },
+              {
+                label: '加粗',
+                value: 'bold'
+              },
+              {
+                label: '左对齐',
+                value: 'alignleft'
+              },
+              {
+                label: '居中',
+                value: 'aligncenter'
+              },
+              {
+                label: '右对齐',
+                value: 'alignright'
+              },
+              {
+                label: '字体大小',
+                value: 'fontsizeselect'
+              },
+              {
+                label: '斜体',
+                value: 'italic'
+              },
+              {
+                label: '文本颜色',
+                value: 'forecolor'
+              },
+              {
+                label: '背景色',
+                value: 'backcolor'
+              }
+            ],
+            mode: 'multiple'
+          };
+        },
+        value: {
+          get() {
+            return field.form.toolbar ?? [];
+          },
+          set({ data }, val: string[]) {
+            field.form.toolbar = val;
+          }
+        }
+      },
+      {
+        title: '富文本高度',
+        type: 'Text',
+        ifVisible() {
+          return field.form.formItem === ComponentName.RICH_TEXT;
+        },
+        options: {
+          placeholder: '请输入弹框宽度，如：200或200px'
+        },
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.form.height;
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            field.form.height = value;
           }
         }
       },
@@ -1147,6 +1474,57 @@ export default {
           },
           set() {}
         }
+      },
+      {
+        title: '事件',
+        items: [
+          {
+            title: '值更新',
+            type: '_event',
+            ifVisible() {
+              return [
+                ComponentName.INPUT,
+                ComponentName.TEXTAREA,
+                ComponentName.INPUT_NUMBER,
+                ComponentName.SELECT,
+                ComponentName.DATE_PICKER,
+                ComponentName.UPLOAD,
+                ComponentName.IMAGE_UPLOAD,
+                ComponentName.RADIO,
+                ComponentName.CHECKBOX,
+                ComponentName.RICH_TEXT,
+                ComponentName.DEBOUNCE_SELECT
+              ].includes(field.form?.formItem);
+            },
+            options: {
+              outputId: 'onChange'
+            }
+          }
+        ]
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.showActionModalForEdit;
+              },
+              set({}: EditorResult<Data>, value: ModalAction) {
+                field.form[value === ModalAction.CREATE ? 'disabledForCreate' : 'disabledForEdit'] =
+                  true;
+              }
+            }
+          }
+        ]
       }
     ].filter(Boolean);
 
@@ -1188,7 +1566,10 @@ export default {
       ];
     }
   },
-  'th.ant-table-cell:not(:empty)': ({ data, focusArea }: EditorResult<Data>, cate1) => {
+  '.domain-default-table th.ant-table-cell:not(:empty)': (
+    { data, focusArea, ...args }: EditorResult<Data>,
+    cate1
+  ) => {
     if (!data.fieldAry?.length) {
       return;
     }
@@ -1250,10 +1631,39 @@ export default {
         }
       },
       {
+        title: '渲染方式',
+        type: 'Select',
+        options: [
+          { label: '普通文字', value: TableRenderType.NORMAL },
+          { label: '自定义插槽', value: TableRenderType.SLOT }
+        ],
+        ifVisible() {
+          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+        },
+        value: {
+          get({}: EditorResult<Data>) {
+            return field.tableInfo?.renderType || TableRenderType.NORMAL;
+          },
+          set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
+            if (!field.tableInfo) {
+              field.tableInfo = {};
+            }
+            field.tableInfo.renderType = value;
+
+            handleColumnSlot(value, { field, slot });
+          }
+        }
+      },
+      {
         title: '内容超出省略',
         type: 'Switch',
         ifVisible() {
-          return field.bizType !== FieldBizType.FRONT_CUSTOM;
+          const tableInfo = field.tableInfo;
+
+          return (
+            field.bizType !== FieldBizType.FRONT_CUSTOM &&
+            (!tableInfo?.renderType || tableInfo?.renderType === TableRenderType.NORMAL)
+          );
         },
         value: {
           get({}: EditorResult<Data>) {
@@ -1287,7 +1697,7 @@ export default {
       }
     ];
   },
-  '[data-add-button]': ({}: EditorResult<Data>, cate1) => {
+  '[data-add-button]': ({ data }: EditorResult<Data>, cate1) => {
     cate1.title = '常规';
     cate1.items = [
       {
@@ -1295,17 +1705,213 @@ export default {
         type: 'Text',
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.addBtn?.title ?? '新增';
+            return data.operate?.create?.title ?? '新增';
           },
           set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
-            if (!data.addBtn) {
-              data.addBtn = {};
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.create) {
+              data.operate.create = {};
             }
 
-            data.addBtn.title = value;
+            data.operate.create.title = value;
           }
         }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.create) {
+                  data.operate.create = {};
+                }
+                data.operate.create.disabled = true;
+              }
+            }
+          }
+        ]
       }
     ];
+  },
+  '[data-edit-button]': ({ data }: EditorResult<Data>, cate1) => {
+    cate1.title = '常规';
+    cate1.items = [
+      {
+        title: '按钮文案',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.operate?.edit?.title ?? '编辑';
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.edit) {
+              data.operate.edit = {};
+            }
+
+            data.operate.edit.title = value;
+          }
+        }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.edit) {
+                  data.operate.edit = {};
+                }
+                data.operate.edit.disabled = true;
+              }
+            }
+          }
+        ]
+      }
+    ];
+  },
+  '[data-delete-button]': ({ data }: EditorResult<Data>, cate1) => {
+    cate1.title = '常规';
+    cate1.items = [
+      {
+        title: '按钮文案',
+        type: 'Text',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.operate?.delete?.title ?? '删除';
+          },
+          set({ data, focusArea, input, output }: EditorResult<Data>, value: string) {
+            if (!data.operate) {
+              data.operate = {};
+            }
+            if (!data.operate.delete) {
+              data.operate.delete = {};
+            }
+
+            data.operate.delete.title = value;
+          }
+        }
+      },
+      {
+        title: '',
+        items: [
+          {
+            title: '',
+            type: 'editorRender',
+            options: {
+              render: Delete,
+              get modalAction() {
+                return data.showActionModalForEdit;
+              }
+            },
+            value: {
+              get() {
+                return null;
+              },
+              set({ data }: EditorResult<Data>) {
+                if (!data.operate) {
+                  data.operate = {};
+                }
+                if (!data.operate.delete) {
+                  data.operate.delete = {};
+                }
+                data.operate.delete.disabled = true;
+              }
+            }
+          }
+        ]
+      }
+    ];
+  }
+};
+
+/** 列变更时删除不需要的插槽 */
+const handleTableColumnChange = (newFields, originFields, slot) => {
+  originFields.forEach((f) => {
+    if (
+      !newFields.find((nf) => nf.id === f.id || nf.name === f.name) &&
+      slot.get(f.tableInfo.slotId)
+    ) {
+      slot.remove(f.tableInfo.slotId);
+      f.tableInfo.slotId = '';
+    }
+  });
+};
+
+const handleCustomColumnSlot = (data, slot) => {
+  let field = data.fieldAry.find((f) => f.bizType === FieldBizType.FRONT_CUSTOM);
+
+  if (!field) {
+    field = {
+      name: '操作',
+      tableInfo: { label: '操作', width: '124px', align: 'left' },
+      bizType: FieldBizType.FRONT_CUSTOM,
+      id: 'operate'
+    };
+
+    handleColumnSlot(TableRenderType.SLOT, { field, slot });
+  } else if (!field.tableInfo.slotId || !slot.get(field.tableInfo.slotId)) {
+    handleColumnSlot(TableRenderType.SLOT, { field, slot });
+  }
+
+  return field;
+};
+
+/** 处理列渲染 */
+const handleColumnSlot = (renderType, params) => {
+  const { field, slot } = params;
+
+  if (renderType === TableRenderType.SLOT) {
+    const slotId = uuid();
+    field.tableInfo.slotId = slotId;
+    slot.add({
+      id: slotId,
+      title: `自定义${
+        field.tableInfo?.label ??
+        `${field.name}${field.mappingField ? `.${field.mappingField.name}` : ''}`
+      }列`,
+      type: 'scope'
+    });
+
+    slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', { type: 'object' });
+    slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', { type: 'number' });
+  } else {
+    if (field.tableInfo.slotId) {
+      slot.get(field.tableInfo.slotId) && slot.remove(field.tableInfo.slotId);
+      field.tableInfo.slotId = '';
+    }
   }
 };

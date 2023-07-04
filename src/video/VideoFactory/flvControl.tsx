@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Data } from '../types';
 import styles from './index.less';
 export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }, ref) => {
-  const { src, controls, autoplay, poster, loop, fit, muted, style } = data;
+  const { src, controls, autoplay, poster, loop, fit, muted } = data;
   //测试地址 https://sf1-hscdn-tos.pstatp.com/obj/media-fe/xgplayer_doc_video/flv/xgplayer-demo-360p.flv
   useEffect(() => {
     let flvPlayer;
@@ -53,7 +53,7 @@ export default React.forwardRef<HTMLVideoElement, RuntimeParams<Data>>(({ data }
       crossOrigin="anonymous"
       muted={!!muted}
       onClick={handleClick}
-      style={{ ...style, objectFit: fit }}
+      style={{ objectFit: fit }}
     />
   );
 });

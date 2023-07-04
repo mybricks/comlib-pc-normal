@@ -23,7 +23,7 @@ const InlineLayout = (props: InlineLayoutProps) => {
     <div className={styles.slotInlineWrapper}>
       {children}
       {data.actions.visible && (
-        <Col data-form-actions flex={1} style={actionStyle}>
+        <Col flex={1} style={actionStyle}>
           <Form.Item style={{ marginRight: 0 }}>{actions}</Form.Item>
         </Col>
       )}
