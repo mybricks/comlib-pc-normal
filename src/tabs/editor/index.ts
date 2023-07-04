@@ -207,13 +207,15 @@ export default {
         initValue: {
           color: 'rgba(0,0,0,.85)'
         },
-        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)'
+        target:
+          '> .root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab:not(.ant-tabs-tab-active)'
       }),
       createStyleForActive({
         initValue: {
           color: '#1890ff'
         },
-        target: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active'
+        target:
+          '> .root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab-active'
       }),
       createStyleForBar()
     ]
