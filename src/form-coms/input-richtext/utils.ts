@@ -27,12 +27,12 @@ export function Init({
 
   const plugins: string[] = [
     'table',
-    'uploadimage',
+    // 'uploadimage',
     'link',
     'paste',
     'fullpage',
-    'customfullscreen',
-    'customfullscreenexit',
+    // 'customfullscreen',
+    // 'customfullscreenexit',
     'nonbreaking',
     'lists',
     'wordcount'
