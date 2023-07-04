@@ -87,7 +87,7 @@ export default function ({
       placeholder: data.placeholder,
       customIconsId,
       setUp: (editor: any) => {
-        if (!uploadCb.current) {
+        if (!uploadCb.current && data.toolbar.includes('uploadimage')) {
           uploadCb.current = uploadimage({
             click: (type: string) => {
               switch (type) {
