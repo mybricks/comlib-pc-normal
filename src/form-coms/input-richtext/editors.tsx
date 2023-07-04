@@ -63,10 +63,10 @@ export default {
                 label: '表格',
                 value: 'table'
               },
-              // {
-              //   label: '图片上传',
-              //   value: 'uploadimage',
-              // },
+              {
+                label: '图片上传',
+                value: 'uploadimage'
+              },
               // {
               //   label: '视频上传',
               //   value: 'uploadVideo',
