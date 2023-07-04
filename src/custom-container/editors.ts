@@ -70,13 +70,13 @@ export default {
       {
         title: '默认',
         options: ['padding', 'border', 'background'],
-        target: '.root'
+        target: '> .root'
       },
       {
         title: 'Hover',
         options: ['padding', 'border', 'background'],
         target: '.root:hover',
-        domTarget: '.root'
+        domTarget: '> .root'
       }
     ]
   }
