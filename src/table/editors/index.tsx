@@ -147,8 +147,9 @@ export default {
       ];
     },
     style: [
-      createStyleForHead({ target: 'table thead tr > th' }),
-      createStyleForContent({ target: 'table tbody tr > td' })
+      // 在目标元素上加上:not(#${id} .slot *)
+      createStyleForHead({ target: ({ id }) => `table thead tr th:not(#${id} .slot *)` }),
+      createStyleForContent({ target: ({ id }) => `table tbody tr td:not(#${id} .slot *)` })
     ]
   },
   ...columnEditor,

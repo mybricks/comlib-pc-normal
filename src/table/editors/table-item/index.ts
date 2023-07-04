@@ -32,16 +32,16 @@ const column = {
     },
     style: [
       createStyleForHead({
-        target({ data, focusArea }: EditorResult<Data>) {
+        target({ data, focusArea, id }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
-          const selector = `thead tr th[data-table-th-idx="${tableThIdx}"]`;
+          const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]:not(#${id} .slot *)`;
           return selector;
         }
       }),
       createStyleForContent({
-        target({ data, focusArea }: EditorResult<Data>) {
+        target({ data, focusArea, id }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
-          const selector = `tbody tr td[data-table-column-id="${tableThIdx}"]`;
+          const selector = `table tbody tr td[data-table-column-id="${tableThIdx}"]:not(#${id} .slot *)`;
           return selector;
         }
       })
