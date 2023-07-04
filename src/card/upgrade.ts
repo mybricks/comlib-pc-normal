@@ -46,7 +46,7 @@ export default function ({
 
   //兼容之前卡片边框的颜色
   if(data.bordered){
-    setDeclaredStyle(`.ant-card-bordered`, data.borderStyle);
+    setDeclaredStyle(`> .card > .ant-card`, data.borderStyle);
   }
   
   return true;

@@ -31,12 +31,13 @@ export default {
       {
         title: '标题',
         options: ['font'],
-        target: '.ant-card-head-title'
+        target:
+          '> .card > .ant-card > .ant-card-head > .ant-card-head-wrapper > .ant-card-head-title'
       },
       {
         title: '卡片边框',
         options: ['border'],
-        target: '.ant-card-bordered'
+        target: '> .card > .ant-card'
       },
       Editor<Data>('鼠标移过时可浮起', EditorType.Switch, 'hoverable'),
       Editor<Data>('尺寸', EditorType.Select, 'size', {
