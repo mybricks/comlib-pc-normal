@@ -126,5 +126,5 @@ export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[
 }
 
 export const isEmptyObject = (obj: any) => {
-  return !Object.keys(obj??{}).length;
+  return !Object.keys(obj ?? {}).length;
 }
