@@ -1,10 +1,11 @@
+import React from 'react';
 import { Data } from '../../constants';
 import IndexEditor from './indexEditor';
 import StyleEditor from './styleEditor';
 import WidthEditor from './widthEditor';
 import EventEditor from './eventEditor';
 import { getColItem, setSlotLayout, createStyleForCol } from '../utils';
-import React from 'react';
+import { getFilterSelector } from '../../../utils/cssSelector'
 
 export default {
   '[data-type-col]': {
@@ -47,8 +48,8 @@ export default {
       cate2.items = [...StyleEditor(item), ...EventEditor(item)];
     },
     style: createStyleForCol({
-      target({ focusArea }) {
-        return `.ant-row > div[data-type-col="${focusArea.dataset.typeCol}"]`;
+      target({ id, focusArea }: EditorResult<Data>) {
+        return `.ant-row > div[data-type-col="${focusArea.dataset.typeCol}"]${getFilterSelector(id)}`;
       }
     })
   }

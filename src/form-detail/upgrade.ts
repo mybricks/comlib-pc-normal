@@ -1,4 +1,5 @@
 import { Data } from './constants';
+import { isEmptyObject } from '../utils';
 
 export default function ({ data, input, output, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
@@ -30,14 +31,23 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
    * @description v1.0.7 标签和内容字体style改造
    */
   data.items.map((item) => {
-    setDeclaredStyle(`.${item.id}-item .ant-descriptions-item-label`, { ...item.labelStyle });
-    setDeclaredStyle(`.${item.id}-item .ant-descriptions-item-content`, { ...item.contentStyle });
-    setDeclaredStyle(`.${item.id}-item`, {
-      paddingLeft: item.padding?.[0],
-      paddingRight: item.padding?.[1],
-      paddingTop: item.padding?.[2],
-      paddingBottom: item.padding?.[3]
-    });
+    if (!isEmptyObject(item.labelStyle)) {
+      setDeclaredStyle(`.${item.id}-item .ant-descriptions-item-label`, { ...item.labelStyle });
+      item.labelStyle = {};
+    }
+    if (!isEmptyObject(item.contentStyle)) {
+      setDeclaredStyle(`.${item.id}-item .ant-descriptions-item-content`, { ...item.contentStyle });
+      item.contentStyle = {};
+    }
+    if (!isEmptyObject(item.padding)) {
+      setDeclaredStyle(`.${item.id}-item`, {
+        paddingLeft: item.padding?.[0],
+        paddingRight: item.padding?.[1],
+        paddingTop: item.padding?.[2],
+        paddingBottom: item.padding?.[3]
+      });
+      item.padding = [];
+    }
   });
 
   return true;

@@ -4,6 +4,7 @@ import StyleEditor from './styleEditor';
 import RowItemEditor from './row';
 import ColumnItemEditor from './column';
 import { createStyleForGrid, createStyleForCol } from './utils';
+import { getFilterSelector } from '../../utils/cssSelector';
 
 export default {
   ':root': {
@@ -15,8 +16,13 @@ export default {
       };
     },
     style: [
-      createStyleForGrid({ target: '.root' }),
-      createStyleForCol({ target: '.root > .ant-row > .ant-col' })
+      createStyleForGrid({
+        target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
+      }),
+      createStyleForCol({
+        target: ({ id }: EditorResult<Data>) =>
+          `.root > .ant-row > .ant-col${getFilterSelector(id)}`
+      })
     ]
   },
   ...RowItemEditor,

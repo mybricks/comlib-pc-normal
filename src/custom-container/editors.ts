@@ -5,6 +5,7 @@ import { StyleEditor } from './editors/styleEditor';
 import { ClickEditor } from './editors/clickEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
 import { FixedEditor } from './editors/fixedEditor';
+import { getFilterSelector } from '../utils/cssSelector';
 
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
@@ -70,13 +71,13 @@ export default {
       {
         title: '默认',
         options: ['padding', 'border', 'background'],
-        target: '.root'
+        target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
       },
       {
         title: 'Hover',
         options: ['padding', 'border', 'background'],
-        target: '.root:hover',
-        domTarget: '.root'
+        target: ({ id }: EditorResult<Data>) => `.root:hover${getFilterSelector(id)}`,
+        domTarget: '> .root'
       }
     ]
   }
