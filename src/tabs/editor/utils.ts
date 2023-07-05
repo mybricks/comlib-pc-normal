@@ -9,7 +9,7 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
   ],
   target,
   domTarget:
-    '> .root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab'
+    '.root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab'
 });
 
 export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
