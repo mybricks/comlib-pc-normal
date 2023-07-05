@@ -77,7 +77,7 @@ export default {
         title: 'Hover',
         options: ['padding', 'border', 'background'],
         target: ({ id }: EditorResult<Data>) => `.root:hover${getFilterSelector(id)}`,
-        domTarget: '> .root'
+        domTarget: '.root'
       }
     ]
   }
