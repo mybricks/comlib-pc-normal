@@ -1,5 +1,5 @@
 import { uuid } from '../../utils';
-import { Data } from '../constants';
+import { Data, Btn } from '../constants';
 import StepEditor from './step';
 import ActionEditor from './action';
 import { addSlot, addEventIO } from './util'
@@ -12,6 +12,27 @@ export default {
   ':root': ({ }, cate1, cate2) => {
     cate1.title = "常规"
     cate1.items = [
+      {
+        title: '添加步骤',
+        type: 'Button',
+        value: {
+          set({ data, slots, output, input }: EditorResult<Data>) {
+            const id = uuid();
+            data.stepAry.push({
+              id,
+              title: '新步骤',
+              description: '新添加的步骤',
+              index: data.stepAry.length
+            });
+            addSlot(slots, id, `步骤${data.stepAry.length}`)
+            output.add(id, `步骤${data.stepAry.length}下一步`, DefaultSchema);
+            //添加事件i/0
+            addEventIO(output, id, `步骤${data.stepAry.length}`)
+            //设置跳转title
+            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
+          }
+        }
+      },
       {
         title: '类型',
         type: 'Select',
@@ -97,6 +118,38 @@ export default {
           }
         }
       },
+      {
+        title: '按钮组',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.toolbar.showActions;
+        },
+        options: {
+          options: [
+            {
+              label: "上一步",
+              value: "previous"
+            },
+            {
+              label: "下一步",
+              value: "next"
+            },
+            {
+              label: "提交",
+              value: "submit"
+            },
+          ],
+          mode: "multiple"
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.toolbar.btns || [];
+          },
+          set({ data }: EditorResult<Data>, val: Array<Btn>) {
+            data.toolbar.btns = val
+          }
+        }
+      },
       // {
       //   title: '添加操作',
       //   type: 'button',
@@ -118,27 +171,7 @@ export default {
       //     }
       //   }
       // },
-      {
-        title: '添加步骤',
-        type: 'Button',
-        value: {
-          set({ data, slots, output, input }: EditorResult<Data>) {
-            const id = uuid();
-            data.stepAry.push({
-              id,
-              title: '新步骤',
-              description: '新添加的步骤',
-              index: data.stepAry.length
-            });
-            addSlot(slots, id, `步骤${data.stepAry.length}`)
-            output.add(id, `步骤${data.stepAry.length}下一步`, DefaultSchema);
-            //添加事件i/0
-            addEventIO(output, id, `步骤${data.stepAry.length}`)
-            //设置跳转title
-            input.setTitle('jumpTo', `跳转（0～${data.stepAry.length - 1}）`)
-          }
-        }
-      }
+      
     ]
     cate2.title = "高级"
     cate2.items = [
