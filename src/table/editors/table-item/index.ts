@@ -1,4 +1,5 @@
 import { COLUMN_EDITORS_CLASS_KEY } from '../../constants';
+import { getFilterSelector } from '../../../utils/cssSelector';
 import { Data } from '../../types';
 import GroupEditor from './item/group';
 import IndexEditor from './indexEditor';
@@ -34,14 +35,14 @@ const column = {
       createStyleForHead({
         target({ data, focusArea, id }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
-          const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]:not(#${id} .slot *)`;
+          const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(id)}`;
           return selector;
         }
       }),
       createStyleForContent({
         target({ data, focusArea, id }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
-          const selector = `table tbody tr td[data-table-column-id="${tableThIdx}"]:not(#${id} .slot *)`;
+          const selector = `table tbody tr td[data-table-column-id="${tableThIdx}"]${getFilterSelector(id)}`;
           return selector;
         }
       })

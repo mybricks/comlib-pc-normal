@@ -1,3 +1,6 @@
+import { getFilterSelector } from '../utils/cssSelector';
+import { isEmptyObject } from '../utils';
+
 import { Data } from './types';
 
 export default function ({ data, setDeclaredStyle, id }: UpgradeParams<Data>): boolean {
@@ -20,18 +23,30 @@ export default function ({ data, setDeclaredStyle, id }: UpgradeParams<Data>): b
   /**
  * style升级
  */
-  data.columns.forEach(({ titleColor, titleBgColor, headStyle, contentStyle, contentColor }, index) => {
-    const headSelector = `table thead tr th:not(#${id} .slot *)`;
-    const bodySelector = `table tbody tr td:not(#${id} .slot *)`;
-    setDeclaredStyle(headSelector, {
-      color: titleColor,
-      backgroundColor: titleBgColor,
-      ...headStyle
-    });
-    setDeclaredStyle(bodySelector, {
-      color: contentColor,
-      ...contentStyle
-    });
+  data.columns.forEach((item, index) => {
+    const { titleColor, titleBgColor, headStyle, contentStyle, contentColor } = item
+    const headSelector = `table thead tr th${getFilterSelector(id)}`;
+    const bodySelector = `table tbody tr td${getFilterSelector(id)}`;
+
+    if (titleColor || titleBgColor || !isEmptyObject(headStyle)) {
+      setDeclaredStyle(headSelector, {
+        color: titleColor,
+        backgroundColor: titleBgColor,
+        ...headStyle
+      });
+      item.titleColor = ''
+      item.titleBgColor = ''
+      item.headStyle = {}
+    }
+
+    if (contentColor || !isEmptyObject(contentStyle)) {
+      setDeclaredStyle(bodySelector, {
+        color: contentColor,
+        ...contentStyle
+      });
+      item.contentColor = ''
+      item.contentStyle = {}
+    }
   });
 
   return true;

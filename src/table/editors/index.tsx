@@ -15,6 +15,8 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
+import { getFilterSelector } from '../../utils/cssSelector';
+
 import {
   getColumnsSchema,
   createStyleForHead,
@@ -148,8 +150,8 @@ export default {
     },
     style: [
       // 在目标元素上加上:not(#${id} .slot *)
-      createStyleForHead({ target: ({ id }) => `table thead tr th:not(#${id} .slot *)` }),
-      createStyleForContent({ target: ({ id }) => `table tbody tr td:not(#${id} .slot *)` })
+      createStyleForHead({ target: ({ id }) => `table thead tr th${getFilterSelector(id)}` }),
+      createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` })
     ]
   },
   ...columnEditor,
