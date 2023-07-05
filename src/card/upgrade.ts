@@ -1,5 +1,6 @@
 import { Data } from './constants';
 import { getFilterSelector } from '../utils/cssSelector'
+import { isEmptyObject } from '../utils'
 
 export default function ({ 
   id,
@@ -47,9 +48,9 @@ export default function ({
   }
 
   //兼容之前卡片边框的颜色
-  if(data.bordered){
+  if(data.bordered && !isEmptyObject(data.borderStyle)){
     setDeclaredStyle(`.card > .ant-card${getFilterSelector(id)}`, data.borderStyle);
+    data.borderStyle = {}
   }
-  
   return true;
 }
