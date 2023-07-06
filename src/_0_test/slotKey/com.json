@@ -1,0 +1,32 @@
+{
+  "title": "slot渲染规律",
+  "namespace": "test.slotKey",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "slots": [
+    {
+      "id": "noKey_noInput",
+      "title": "无key_无参数",
+      "type": "scope",
+    },
+    {
+      "id": "noKey_input",
+      "title": "无key_参数",
+      "type": "scope",
+    },
+    {
+      "id": "key_noInput",
+      "title": "key_无参数",
+      "type": "scope",
+    },
+    {
+      "id": "key_input",
+      "title": "key_参数",
+      "type": "scope",
+    },
+  ]
+}
