@@ -36,8 +36,7 @@
     {
       "title": "领域模型",
       "comAry": [
-        "./src/domain/domain-crud/com.json",
-        "./src/domain-table/com.json"
+        "./src/domain/domain-crud/com.json"
       ]
     },
     {
