@@ -93,9 +93,6 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   }
   //1、 自动换行
   if (data.isAuto === true && data.isCustom === false) {
-    console.log('渲染了吗？');
-    console.log('dataSource', dataSource);
-    console.log('data', data);
     return loading ? (
       <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
         {AutoRender(dataSource, data, slots)}
