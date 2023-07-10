@@ -1,11 +1,8 @@
 import { Data } from './types';
 import { ExpressionSandbox } from '../../package/com-utils';
 export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>) {
-  let sandbox: ExpressionSandbox;
   inputs['inputContext']((context) => {
-    if (!sandbox) {
-      sandbox = new ExpressionSandbox({ context, prefix: 'inputValue' });
-    }
+    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'inputValue' });
     data.picks.map(({ key, expression, title }) => {
       if (!expression) {
         outputs[key](context);
