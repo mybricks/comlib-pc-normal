@@ -7,26 +7,56 @@
   "description": "",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setDataSource",
+      "title": "更新数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  ],
   "slots": [
     {
       "id": "noKey_noInput",
       "title": "无key_无参数",
-      "type": "scope",
+      "type": "scope"
     },
     {
       "id": "noKey_input",
       "title": "无key_参数",
       "type": "scope",
+      "inputs": [
+        {
+          "id": "index",
+          "title": "索引",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
     },
     {
       "id": "key_noInput",
       "title": "key_无参数",
-      "type": "scope",
+      "type": "scope"
     },
     {
       "id": "key_input",
       "title": "key_参数",
       "type": "scope",
-    },
+      "inputs": [
+        {
+          "id": "index",
+          "title": "数据",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
+    }
   ]
 }

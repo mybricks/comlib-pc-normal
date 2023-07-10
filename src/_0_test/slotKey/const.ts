@@ -4,3 +4,6 @@ export enum slotKeys {
     key_无参数 = 'key_noInput',
     key_参数 = 'key_input'
 }
+export const inputIds = {
+    更新数据: 'setDataSource'
+}
