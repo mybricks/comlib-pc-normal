@@ -131,6 +131,7 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       inputs['editById']((val) => {
+        // todo 需要感知主键的存在
         if (checkDomainModel(abilitySet, 'UPDATE')) {
           updateData(env.callDomainModel, data.domainModel, { ...val })
             .then((r) => {
@@ -257,12 +258,6 @@ export default function (props: RuntimeParams<Data>) {
           getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
         });
       }
-    }
-  }, []);
-
-  const onActionContentClick = useCallback((item) => {
-    if (env.runtime) {
-      console.log(item);
     }
   }, []);
 
