@@ -67,6 +67,7 @@ interface EditorResult<T> {
 }
 
 interface UpgradeParams<T> {
+  id: string
   data: T
   output: any
   input: any

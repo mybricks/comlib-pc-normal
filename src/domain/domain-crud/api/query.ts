@@ -19,29 +19,33 @@ export default function queryData(callDomainModel, domainModel, domainConfig, { 
   })
 
   return new Promise((resolve, reject) => {
-    callDomainModel(domainModel, 'SELECT', {
-      query,
-      fields,
-      orders: ordersParams,
-      page: pageParams.usePagination ? {
-        pageNum: pageParams.pageNum,
-        pageSize: pageParams.pageSize
-      } : undefined,
-    }).then(r => {
-      if (r.code === 1) {
-        resolve({
-          dataSource: r.data.dataSource,
-          pageNum: r.data.pageNum,
-          pageSize: r.data.pageSize,
-          total: r.data.total
-        })
-      } else {
-        reject(r.msg || '请求错误，请稍候再试~')
-      }
-    }).catch(e => {
-      console.error(e)
-      reject('请求错误，请稍候再试~')
-    })
+    if (callDomainModel) {
+      callDomainModel(domainModel, 'SELECT', {
+        query,
+        fields,
+        orders: ordersParams,
+        page: pageParams.usePagination ? {
+          pageNum: pageParams.pageNum,
+          pageSize: pageParams.pageSize
+        } : undefined,
+      }).then(r => {
+        if (r.code === 1) {
+          resolve({
+            dataSource: r.data.dataSource,
+            pageNum: r.data.pageNum,
+            pageSize: r.data.pageSize,
+            total: r.data.total
+          })
+        } else {
+          reject(r.msg || '请求错误，请稍候再试~')
+        }
+      }).catch(e => {
+        console.error(e)
+        reject('请求错误，请稍候再试~')
+      })
+    } else {
+      reject('env.callDomainModel 未实现')
+    }
   })
 
 }

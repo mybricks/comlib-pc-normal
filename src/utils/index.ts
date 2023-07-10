@@ -124,3 +124,7 @@ export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[
   array.splice(toIndex, 0, item)
   return array
 }
+
+export const isEmptyObject = (obj: any) => {
+  return !Object.keys(obj ?? {}).length;
+}

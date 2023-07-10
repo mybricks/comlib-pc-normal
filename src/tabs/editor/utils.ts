@@ -1,4 +1,5 @@
 import { Data } from '../constants';
+import { getFilterSelector } from '../../utils/cssSelector';
 export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>) => ({
   title: '默认标签',
   initValue,
@@ -7,7 +8,8 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
     { type: 'background', config: { disableBackgroundImage: true } }
   ],
   target,
-  domTarget: '.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab'
+  domTarget:
+    '.root > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > .ant-tabs-tab'
 });
 
 export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
@@ -30,5 +32,6 @@ export const createStyleForBar = ({}: StyleModeType<Data> = {}) => ({
     { type: 'background', config: { disableBackgroundImage: true } },
     { type: 'size', config: { disableWidth: true } }
   ],
-  target: '.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar'
+  target: ({ id }: EditorResult<Data>) =>
+    `.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar${getFilterSelector(id)}`
 });

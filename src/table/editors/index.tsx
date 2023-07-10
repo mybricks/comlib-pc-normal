@@ -15,6 +15,8 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
+import { getFilterSelector } from '../../utils/cssSelector';
+
 import {
   getColumnsSchema,
   createStyleForHead,
@@ -125,12 +127,7 @@ export default {
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
-      cateAry[0].items = [
-        getAddColumnEditor(props),
-        ...UsePaginatorEditor,
-        ...LoadingEditor,
-        TableStyleEditor
-      ];
+      cateAry[0].items = [getAddColumnEditor(props), ...UsePaginatorEditor, ...LoadingEditor];
 
       // cateAry[1].title = '样式';
       // cateAry[1].items = [...LoadingEditor, TableStyleEditor];
@@ -147,8 +144,9 @@ export default {
       ];
     },
     style: [
-      createStyleForHead({ target: 'table thead tr > th' }),
-      createStyleForContent({ target: 'table tbody tr > td' })
+      ...TableStyleEditor.items,
+      createStyleForHead({ target: ({ id }) => `table thead tr th${getFilterSelector(id)}` }),
+      createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` })
     ]
   },
   ...columnEditor,

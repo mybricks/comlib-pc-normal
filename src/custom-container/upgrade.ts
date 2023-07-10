@@ -1,6 +1,8 @@
 import { Data, SlotIds } from './constants';
+import { getFilterSelector } from '../utils/cssSelector'
+import { isEmptyObject } from '../utils'
 
-export default function ({ data, slot, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({ id, data, slot, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   const styleConfig = config.get('style');
   if (styleConfig) {
     styleConfig.setBinding('data.legacyConfigStyle');
@@ -22,8 +24,14 @@ export default function ({ data, slot, config, setDeclaredStyle }: UpgradeParams
       justifyContent
     };
   }
-  //style
-  setDeclaredStyle('.root', { ...data.style });
-  setDeclaredStyle('.root:hover', { ...data.hoverStyle });
+  //style upgrade
+  if(!isEmptyObject(data.style)){
+    setDeclaredStyle(`.root${getFilterSelector(id)}`, { ...data.style });
+    data.style = {}
+  }
+  if(!isEmptyObject(data.hoverStyle)){
+    setDeclaredStyle(`.root:hover${getFilterSelector(id)}`, { ...data.hoverStyle });
+    data.hoverStyle = {}
+  }
   return true;
 }

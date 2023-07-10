@@ -260,7 +260,7 @@ export default function ({
   };
 
   return (
-    <div className={css.tabbox}>
+    <div className={`${css.tabbox} root`}>
       <Tabs
         activeKey={data.defaultActiveKey}
         type={data.type}

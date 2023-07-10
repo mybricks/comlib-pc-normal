@@ -1,21 +1,44 @@
 import { Data } from './constants';
+import { getFilterSelector } from '../utils/cssSelector';
+import { isEmptyObject } from '../utils';
 
-export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
-  setDeclaredStyle('.root', { ...data.style });
+export default function ({
+  id,
+  input,
+  output,
+  data,
+  setDeclaredStyle
+}: UpgradeParams<Data>): boolean {
+  if (!isEmptyObject(data.style)) {
+    setDeclaredStyle(`.root${getFilterSelector(id)}`, { ...data.style });
+    data.style = {};
+  }
   data.rows.forEach((row, rowIndex) => {
     const { columns, backgroundColor } = row;
-    setDeclaredStyle(`.root > .ant-row:nth-child(${rowIndex + 1})`, { backgroundColor });
+    if (!!backgroundColor) {
+      setDeclaredStyle(`.root > .ant-row:nth-child(${rowIndex + 1})${getFilterSelector(id)}`, {
+        backgroundColor
+      });
+      row.backgroundColor = '';
+    }
     columns.forEach((col, colIndex) => {
       const selector = `.root > .ant-row:nth-child(${rowIndex + 1}) > .ant-col:nth-child(${
         colIndex + 1
-      })`;
+      })${getFilterSelector(id)}`;
       const { backgroundColor, ...colStyle } = col.colStyle || {};
-      setDeclaredStyle(selector, {
+      const dataStyle = {
         ...data.globalColStyle,
-        //去掉bg测试脏数据
-        backgroundColor: backgroundColor === '#000' ? 'inherit' : backgroundColor,
         ...colStyle
-      });
+      };
+      if (!isEmptyObject(dataStyle)) {
+        //去掉bg测试脏数据
+        setDeclaredStyle(selector, {
+          ...dataStyle,
+          backgroundColor: backgroundColor === '#000' ? 'inherit' : backgroundColor
+        });
+        data.globalColStyle = {};
+        col.colStyle = {}
+      }
     });
   });
   return true;

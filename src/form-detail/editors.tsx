@@ -8,6 +8,7 @@ import {
   createItem,
   updateIOSchema
 } from './editors/utils';
+import { getFilterSelector } from '../utils/cssSelector';
 
 export default {
   '@init': ({ data, input, output }: EditorResult<Data>) => {
@@ -22,15 +23,20 @@ export default {
     },
     style: [
       createStyleForItem({
-        target: '.ant-descriptions .ant-descriptions-view .ant-descriptions-item'
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-descriptions .ant-descriptions-view .ant-descriptions-item${getFilterSelector(id)}`
       }),
       createStyleForLabel({
-        target:
-          '.ant-descriptions .ant-descriptions-view .ant-descriptions-item .ant-descriptions-item-label'
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-descriptions .ant-descriptions-view .ant-descriptions-item .ant-descriptions-item-label${getFilterSelector(
+            id
+          )}`
       }),
       createStyleForContent({
-        target:
-          '.ant-descriptions .ant-descriptions-view .ant-descriptions-item .ant-descriptions-item-content'
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-descriptions .ant-descriptions-view .ant-descriptions-item .ant-descriptions-item-content${getFilterSelector(
+            id
+          )}`
       })
     ]
   },

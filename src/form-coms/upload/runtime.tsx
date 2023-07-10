@@ -190,7 +190,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       env.uploadFile(fileList).then(res => {
         console.log('上传成功', res)
         onUploadComplete(res)
-      })
+      }).catch(() => { setFileList([]) })
     } else {
       const formData = new FormData();
       fileList.forEach((file) => {

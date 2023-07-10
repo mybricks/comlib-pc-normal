@@ -43,7 +43,7 @@ export default (props: RuntimeParams<Data>) => {
   };
 
   return (
-    <div className={css.card}>
+    <div className={`${css.card} card`}>
       <Card
         title={env.i18n(title)}
         size={size}

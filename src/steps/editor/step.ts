@@ -124,7 +124,6 @@ export default {
                 const preStep = data.stepAry[focusArea.index - 1]
                 //兼容最后一步没有下一步事件i/o，删掉最后一步时，同时删除上一步的“下一步”event
                 const { id, title, schema } = output.get(preStep.id)
-                console.log(id, title)
                 output.remove(preStep.id);
                 output.add(id, title, schema);
               }

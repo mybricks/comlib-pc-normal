@@ -151,7 +151,8 @@ export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Prop
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
           return {
-            style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {}
+            style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
+            'data-table-column-id': cItem.key
           };
         }}
         onHeaderCell={(): any => {
