@@ -38,7 +38,8 @@
       "id": "submit",
       "title": "提交表单",
       "rels": [
-        "onFinish"
+        "onFinish",
+        "onSubmitError"
       ],
       "schema": {
         "type": "any"
@@ -60,7 +61,8 @@
       "id": "submitAndMerge",
       "title": "提交表单(合并输入项)",
       "rels": [
-        "onMergeFinish"
+        "onMergeFinish",
+        "onSubmitError"
       ],
       "schema": {
         "type": "object"
@@ -95,6 +97,23 @@
       "schema": {
         "type": "object",
         "properties": {}
+      }
+    },
+    {
+      "id": "onSubmitError",
+      "title": "校验失败输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "字段名",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验信息",
+            "type": "string"
+          }
+        }
       }
     },
     {
@@ -250,7 +269,7 @@
   ],
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
-    "mybricks.domain-pc.crud/query",    
+    "mybricks.domain-pc.crud/query",
     "*"
   ]
 }

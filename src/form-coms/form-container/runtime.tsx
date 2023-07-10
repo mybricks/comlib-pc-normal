@@ -309,6 +309,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           });
       })
       .catch((e) => {
+        const { validateStatus, ...other } = e;
+        outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
       });
   };
@@ -380,7 +382,10 @@ const validateForInput = (
     item.validateStatus = validateInfo?.validateStatus;
     item.help = validateInfo?.help;
     if (cb) {
-      cb(validateInfo);
+      cb({
+        ...validateInfo,
+        name: item.name || item.label
+      });
     }
   });
 };
