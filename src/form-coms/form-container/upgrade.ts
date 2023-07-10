@@ -72,16 +72,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       color: 'rgba(0, 0, 0, 0.85)',
       fontStyle: 'normal'
     };
-    const defaultDescriptionStyle = {
-      whiteSpace: 'pre-wrap',
-      lineHeight: '12px',
-      letterSpacing: '0px',
-      fontSize: '12px',
-      fontWeight: 400,
-      color: 'rgba(0, 0, 0, 0.45)',
-      fontStyle: 'normal'
-    };
-    if (item.labelStyle && Object.keys(item.labelStyle).length) {
+    if (item.labelStyle) {
       const selector = `#${item.id} label > label`;
 
       const uniqueStyle = {};
@@ -93,22 +84,13 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         }
       });
       hasUnique && setDeclaredStyle(selector, { ...uniqueStyle });
-      item.labelStyle = {};
+      omit(item, 'labelStyle');
     }
-    if (item.descriptionStyle && Object.keys(item.descriptionStyle).length) {
-      const selector = `#${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc > span`;
+    if (item.descriptionStyle) {
+    }
 
-      const uniqueStyle = {};
-      let hasUnique = false;
-      Object.entries(item.descriptionStyle).map(([key, value]) => {
-        if (value !== defaultDescriptionStyle[key]) {
-          uniqueStyle[key] = value;
-          hasUnique = true;
-        }
-      });
-      hasUnique && setDeclaredStyle(selector, { ...uniqueStyle });
-      item.descriptionStyle = {};
-    }
+
+
   });
 
   /**
