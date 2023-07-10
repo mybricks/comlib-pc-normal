@@ -12,6 +12,7 @@ export const inputIds = {
 
 export const outputIds = {
   ON_FINISH: 'onFinish',
+  ON_SUBMIT_ERROR: 'onSubmitError',
   ON_RESET_FINISH: 'onResetFinish',
   ON_CLICK_SUBMIT: 'onClickSubmit',
   ON_CLICK_CANCEL: 'onClickCancel',
