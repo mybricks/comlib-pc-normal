@@ -258,5 +258,27 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
   //=========== v1.3.0 end ===============
 
+  /**
+ * @description v1.3.4 , 支持校验失败输出
+ */
+  if (!output.get(outputIds.ON_SUBMIT_ERROR)) {
+    output.add(outputIds.ON_SUBMIT_ERROR, '校验失败输出', {
+      type: 'object',
+      properties: {
+        name: {
+          title: '字段名',
+          type: 'string',
+        },
+        help: {
+          title: '校验信息',
+          type: 'string',
+        },
+      },
+    });
+    input.get(inputIds.SUBMIT).setRels([outputIds.ON_FINISH, outputIds.ON_SUBMIT_ERROR]);
+    input.get(inputIds.SUBMIT_AND_MERGE).setRels([outputIds.ON_MERGE_FINISH, outputIds.ON_SUBMIT_ERROR]);
+  }
+  //=========== v1.3.4 end ===============
+
   return true;
 }
