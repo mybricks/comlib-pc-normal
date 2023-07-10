@@ -387,8 +387,10 @@ export default {
         title: '标题样式',
         options: ['font'],
         target: ({ comId, comName, ...arg }) => {
-          // const selector = `#${comId} > div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
-          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label  > label`;
+          const selector = `#${comId} > div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
+          console.log(selector, 'selector');
+          return selector;
+          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
         }
       }
     ],

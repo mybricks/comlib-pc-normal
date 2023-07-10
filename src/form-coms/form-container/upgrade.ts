@@ -2,7 +2,7 @@ import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema } from './schema'
 
-export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -58,26 +58,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
     if (item.labelAutoWrap === undefined) {
       item.labelAutoWrap = 'default';
-    }
-
-    /**
-     * @description v1.1.3 表单项style配置改造
-     */
-    if (item.labelStyle) {
-      const whiteSpace =
-        item?.labelAutoWrap === 'default'
-          ? data.config?.labelWrap
-            ? 'pre-wrap'
-            : 'nowrap'
-          : item.labelAutoWrap
-            ? 'pre-wrap'
-            : 'nowrap';
-      const selector = `#${item.id} > div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label`;
-      console.log(selector, item.labelStyle);
-      setDeclaredStyle(selector, { ...item.labelStyle, whiteSpace });
-    }
-
-    if (item.descriptionStyle) {
     }
 
 
