@@ -190,7 +190,8 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
       className={css.toolbar}
       style={{
         justifyContent: data.layout,
-        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
+        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
+        height: '100%'
       }}
     >
       {(data.btnList || []).length > 0 || env.runtime ? (
