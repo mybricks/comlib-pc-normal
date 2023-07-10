@@ -127,12 +127,7 @@ export default {
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
-      cateAry[0].items = [
-        getAddColumnEditor(props),
-        ...UsePaginatorEditor,
-        ...LoadingEditor,
-        TableStyleEditor
-      ];
+      cateAry[0].items = [getAddColumnEditor(props), ...UsePaginatorEditor, ...LoadingEditor];
 
       // cateAry[1].title = '样式';
       // cateAry[1].items = [...LoadingEditor, TableStyleEditor];
@@ -149,7 +144,7 @@ export default {
       ];
     },
     style: [
-      // 在目标元素上加上:not(#${id} .slot *)
+      ...TableStyleEditor.items,
       createStyleForHead({ target: ({ id }) => `table thead tr th${getFilterSelector(id)}` }),
       createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` })
     ]
