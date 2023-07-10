@@ -1,7 +1,6 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema } from './schema'
-import { omit } from 'lodash';
 
 export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
@@ -64,28 +63,20 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     /**
      * @description v1.1.3 表单项style配置改造
      */
-    const defaultLabelStyle = {
-      lineHeight: '14px',
-      letterSpacing: '0px',
-      fontSize: '14px',
-      fontWeight: 400,
-      color: 'rgba(0, 0, 0, 0.85)',
-      fontStyle: 'normal'
-    };
     if (item.labelStyle) {
-      const selector = `#${item.id} label > label`;
-
-      const uniqueStyle = {};
-      let hasUnique = false;
-      Object.entries(item.labelStyle).map(([key, value]) => {
-        if (value !== defaultLabelStyle[key]) {
-          uniqueStyle[key] = value;
-          hasUnique = true;
-        }
-      });
-      hasUnique && setDeclaredStyle(selector, { ...uniqueStyle });
-      omit(item, 'labelStyle');
+      const whiteSpace =
+        item?.labelAutoWrap === 'default'
+          ? data.config?.labelWrap
+            ? 'pre-wrap'
+            : 'nowrap'
+          : item.labelAutoWrap
+            ? 'pre-wrap'
+            : 'nowrap';
+      const selector = `#${item.id} > div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label`;
+      console.log(selector, item.labelStyle);
+      setDeclaredStyle(selector, { ...item.labelStyle, whiteSpace });
     }
+
     if (item.descriptionStyle) {
     }
 

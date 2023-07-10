@@ -35,27 +35,11 @@ const FormItem = (props: FormItemProps) => {
   };
   const colon = item?.colon === 'default' ? formColon : item.colon;
   const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
-  const whiteSpace =
-    item?.labelAutoWrap === 'default'
-      ? data.config?.labelWrap
-        ? 'pre-wrap'
-        : 'nowrap'
-      : item.labelAutoWrap
-      ? 'pre-wrap'
-      : 'nowrap';
 
   return (
     <Form.Item
       // {...field}
-      label={
-        item?.hiddenLabel ? (
-          void 0
-        ) : (
-          <label style={{ whiteSpace }} id="label">
-            {item?.label}
-          </label>
-        )
-      }
+      label={item?.hiddenLabel ? void 0 : item?.label}
       labelAlign={labelAlign}
       name={item?.name}
       required={item?.required}
