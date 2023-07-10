@@ -28,7 +28,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         data.text = val;
       });
     }
-  });
+  }, []);
   const onClick = useCallback(() => {
     if (env.runtime) {
       const outputVal: string | number = data.dataType === 'external' ? data.inVal : data.outVal;

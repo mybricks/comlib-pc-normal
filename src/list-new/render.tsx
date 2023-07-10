@@ -9,8 +9,17 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
     <div className={css.flexContainer}>
-      {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
-        <div key={key} style={{ width: '100%', margin: `0 ${gutter[0]}px ${gutter[1]}px 0` }}>
+      {dataSource.map(({ [rowKey]: key, index: index, item: item }, number) => (
+        <div
+          key={key}
+          style={{
+            width: '100%',
+            margin:
+              number !== dataSource.length - 1
+                ? `0 ${gutter[0]}px ${gutter[1]}px 0`
+                : `0 ${gutter[0]}px 0 0`
+          }}
+        >
           {slots['item'].render({
             inputValues: {
               itemData: item,
