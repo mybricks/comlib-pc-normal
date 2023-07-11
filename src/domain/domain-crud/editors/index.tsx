@@ -533,7 +533,7 @@ const refreshIO = (params) => {
       });
     }
   } else {
-    if (!pageChangePin) {
+    if (pageChangePin) {
       inputs.remove('pageChange');
     }
   }
