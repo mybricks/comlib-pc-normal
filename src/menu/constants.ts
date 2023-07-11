@@ -14,9 +14,11 @@ export interface MenuItem {
   title: string;
   value?: any;
   menuType?: MenuTypeEnum;
-  children?: MenuItem[];
+  children: MenuItem[];
   defaultActive?: boolean;
   [key: string]: any;
+  useIcon?: boolean;
+  icon?: string;
 }
 /**
  * 数据源
@@ -49,10 +51,10 @@ export const uuid = (pre = 'u_', len = 6) => {
 
 export const findMenuItem = (
   ds: MenuItem[],
-  key: string,
+  key?: string,
   oriItem?: boolean
-): MenuItem => {
-  let menuItem: MenuItem;
+) => {
+  let menuItem;
   for (let item of ds) {
     if (item.key === key || item.title === key) {
       menuItem = item;
