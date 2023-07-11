@@ -322,6 +322,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <Fragment>
         {!data.isFormItem ? (
           <Form
+            className={slots['content'].size === 0 && env.edit ? css.empty : undefined}
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined

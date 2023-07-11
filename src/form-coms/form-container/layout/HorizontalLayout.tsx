@@ -1,16 +1,17 @@
-import React, { useCallback, useMemo } from 'react';
-import { Form, Button, Row, Col, Space } from 'antd';
+import React, { useCallback } from 'react';
+import { Form, Col } from 'antd';
 import { Data } from '../types';
-import { getLabelCol } from '../utils';
+import css from '../styles.less';
 
 interface HorizontalLayoutProps {
   data: Data;
   children?: React.ReactNode;
   actions?: React.ReactNode;
+  isEmpty: boolean;
 }
 
 const HorizontalLayout = (props: HorizontalLayoutProps) => {
-  const { children, actions, data } = props;
+  const { children, actions, data, isEmpty } = props;
 
   // const actionFlexBasis =
   //   data.actions.widthOption === 'px'
@@ -33,6 +34,7 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
       {children}
       {data.actions.visible && (
         <Col
+          className={isEmpty ? css.emptyHorActions : undefined}
           flex={getFlexValue()}
           style={{
             textAlign: data.actions.align

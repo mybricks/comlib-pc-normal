@@ -11,6 +11,8 @@ const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env } = props;
   const layout = data.config?.layout || data.layout;
 
+  const isEmpty = slots['content'].size === 0 && env.edit;
+
   const isInlineModel = useMemo(() => {
     return layout === 'inline';
   }, [layout]);
@@ -97,17 +99,17 @@ const SlotContent = (props) => {
         return (
           <Row style={{ width: '100%' }}>
             {isInlineModel && (
-              <InlineLayout data={data} actions={<FormActionsWrapper />}>
+              <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                 {jsx}
               </InlineLayout>
             )}
             {isHorizontalModel && (
-              <HorizontalLayout data={data} actions={<FormActionsWrapper />}>
+              <HorizontalLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                 {jsx}
               </HorizontalLayout>
             )}
             {isVerticalModel && (
-              <VerticalLayout data={data} actions={<FormActionsWrapper />}>
+              <VerticalLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
                 {jsx}
               </VerticalLayout>
             )}
