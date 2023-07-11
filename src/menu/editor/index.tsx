@@ -266,7 +266,6 @@ export default {
       ...subItemArr(props),
       ...groupItemArr(props),
       {
-        title: '位置',
         items: [
           {
             title: '删除',
