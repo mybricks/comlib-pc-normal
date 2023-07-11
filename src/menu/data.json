@@ -1,4 +1,12 @@
 {
-  "dataSource": [],
+  "dataSource": [
+    {
+      "defaultActive": true,
+      "key": "menu1",
+      "_key": "menu1",
+      "menuType": "menu",
+      "title": "菜单1"
+    }
+  ],
   "mode": "horizontal"
 }
