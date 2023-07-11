@@ -106,3 +106,25 @@ export const InputIds = {
 	DATA_SOURCE: 'dataSource',
 };
 
+export const OutputIds = {
+	QUERY: {
+		THEN: 'queryThen',
+		CATCH: 'queryCatch',
+	},
+	INSERT: {
+		THEN: 'createThen',
+		CATCH: 'createCatch',
+	},
+	EDIT: {
+		THEN: 'editByIdThen',
+		CATCH: 'editByIdCatch',
+	},
+	DELETE: {
+		THEN: 'deleteByIdThen',
+		CATCH: 'deleteByIdCatch',
+	},
+	PAGE_CHANGE: {
+		THEN: 'pageChangeThen',
+		CATCH: 'pageChangeCatch'
+	}
+}

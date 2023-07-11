@@ -10,6 +10,7 @@ import createData from './api/create';
 import deleteData from './api/delete';
 import { flatterEntityField } from './editors';
 import { createOutputCbIfNoConnect } from '../../utils/io';
+import { OutputIds } from './constants';
 
 interface OrderParams {
   fieldName: string;
@@ -71,12 +72,17 @@ export default function (props: RuntimeParams<Data>) {
       //   }
       // });
 
-      inputs['query']((val) => {
-        getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
+      inputs['query']((val, relOutputs) => {
+        getListData(val, { pageNum: 1, pageSize: data.pageSize }, true, relOutputs);
       });
 
-      inputs['pageChange']((val) => {
-        getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: data.pageSize });
+      inputs['pageChange']((val, relOutputs) => {
+        getListData(
+          queryParamsRef.current,
+          { pageNum: val.pageNum, pageSize: data.pageSize },
+          false,
+          relOutputs
+        );
       });
 
       // inputs['sorterChange']((val) => {
@@ -261,7 +267,7 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
-  const getListData = (params, pageParams, isSubmit?: boolean) => {
+  const getListData = (params, pageParams, isSubmit?: boolean, relOutputs?) => {
     return new Promise((resolve, reject) => {
       tableInputs?.current?.startLoading?.();
 
@@ -304,10 +310,18 @@ export default function (props: RuntimeParams<Data>) {
             : r.dataSource;
 
           tableInputs?.current?.['dataSource']?.(dataSource);
+          relOutputs &&
+            (isSubmit
+              ? relOutputs[OutputIds.QUERY.THEN](dataSource)
+              : relOutputs[OutputIds.PAGE_CHANGE.THEN](dataSource));
           resolve(dataSource);
         })
         .catch((e) => {
           message.error(e);
+          relOutputs &&
+            (isSubmit
+              ? relOutputs[OutputIds.QUERY.CATCH](e)
+              : relOutputs[OutputIds.PAGE_CHANGE.CATCH](e));
           reject(e);
         })
         .finally(() => {

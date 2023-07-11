@@ -1,3 +1,4 @@
+import { OutputIds } from '../constants';
 import { Data, Entity } from '../type';
 // import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
 // import Refresh from './refresh';
@@ -97,13 +98,15 @@ export default {
     }
   },
   '@domainModelUpdated'(params: EditorResult<Data>, value) {
-    const { data, getChildByName, inputs } = params;
+    const { data, getChildByName, inputs, outputs } = params;
     data.domainModel = value.domainModel;
     const abilitySet = data.domainModel?.query?.abilitySet;
 
     refreshIO({
+      data,
       abilitySet,
-      inputs
+      inputs,
+      outputs
     });
 
     refreshChildComModel(data.childNames, getChildByName, data.domainModel);
@@ -139,10 +142,11 @@ export default {
               set({ data, getChildByName, inputs, outputs }: EditorResult<Data>, value) {
                 data.domainModel = value;
                 const abilitySet = data.domainModel?.query?.abilitySet;
-
                 refreshIO({
+                  data,
                   abilitySet,
-                  inputs
+                  inputs,
+                  outputs
                 });
 
                 refreshChildComModel(data.childNames, getChildByName, data.domainModel);
@@ -442,16 +446,83 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
   });
 };
 
+/**
+ * 计算io的schema
+ * @param data
+ * @param type io类型
+ * @returns
+ */
+const getSchema = (data: Data, type, externalProperties?) => {
+  switch (type) {
+    case 'catch':
+      return {
+        title: '错误提示信息',
+        type: 'string'
+      };
+    case OutputIds.QUERY.THEN:
+      const fields = data.domainModel?.query?.entity?.fieldAry.filter((item) => !item.isPrivate);
+      const properties = {};
+      fields.forEach((field) => {
+        const { name, bizType } = field;
+        properties[name] = {
+          type: bizType
+        };
+      });
+      return {
+        type: 'object',
+        properties: {
+          dataSource: {
+            title: '表格数据',
+            type: 'array',
+            items: {
+              type: 'object',
+              properties
+            }
+          },
+          ...externalProperties
+        }
+      };
+    default:
+      return {
+        type: 'any'
+      };
+  }
+};
+
 const refreshIO = (params) => {
-  const { inputs, abilitySet } = params;
+  const { data, inputs, outputs, abilitySet } = params;
 
   const insertPin = inputs.get('create');
   const editPin = inputs.get('editById');
   const delectPin = inputs.get('deleteById');
   const pageChangePin = inputs.get('pageChange');
 
+  const queryThenPin = outputs.get(OutputIds.QUERY.THEN);
+  const insertThenPin = outputs.get(OutputIds.INSERT.THEN);
+  const editThenPin = outputs.get(OutputIds.EDIT.THEN);
+  const deleteThenPin = outputs.get(OutputIds.DELETE.THEN);
+  const pageChangeThenPin = outputs.get(OutputIds.PAGE_CHANGE.THEN);
+  const insertCatchPin = outputs.get(OutputIds.INSERT.CATCH);
+  const editCatchPin = outputs.get(OutputIds.EDIT.CATCH);
+  const deleteCatchPin = outputs.get(OutputIds.DELETE.CATCH);
+  const pageChangeCatchPin = outputs.get(OutputIds.PAGE_CHANGE.CATCH);
+
   if (abilitySet.includes('INSERT')) {
     // 'create', '新建记录', { type: 'object', properties: {} }
+    if (!insertThenPin) {
+      outputs.add({
+        id: OutputIds.INSERT.THEN,
+        title: '新增记录成功',
+        schema: { type: 'object', properties: {} }
+      });
+    }
+    if (!insertCatchPin) {
+      outputs.add({
+        id: OutputIds.INSERT.CATCH,
+        title: '新增记录失败',
+        schema: getSchema(data, 'catch')
+      });
+    }
     if (!insertPin) {
       inputs.add({
         id: 'create',
@@ -460,9 +531,16 @@ const refreshIO = (params) => {
         desc: '新建一条记录'
       });
     }
+    inputs.get('create').setRels([OutputIds.INSERT.THEN, OutputIds.INSERT.CATCH]);
   } else {
     if (insertPin) {
       inputs.remove('create');
+    }
+    if (insertThenPin) {
+      outputs.remove(OutputIds.INSERT.THEN);
+    }
+    if (insertCatchPin) {
+      outputs.remove(OutputIds.INSERT.CATCH);
     }
   }
 
@@ -499,6 +577,41 @@ const refreshIO = (params) => {
   }
 
   if (abilitySet.includes('PAGE')) {
+    queryThenPin.setSchema(
+      getSchema(data, OutputIds.QUERY.THEN, {
+        pageNum: {
+          title: '页码',
+          type: 'number'
+        },
+        total: {
+          title: '数据总数',
+          type: 'number'
+        }
+      })
+    );
+    if (!pageChangeThenPin) {
+      outputs.add({
+        id: OutputIds.PAGE_CHANGE.THEN,
+        title: '分页查询成功',
+        schema: getSchema(data, OutputIds.QUERY.THEN, {
+          pageNum: {
+            title: '页码',
+            type: 'number'
+          },
+          total: {
+            title: '数据总数',
+            type: 'number'
+          }
+        })
+      });
+    }
+    if (!pageChangeCatchPin) {
+      outputs.add({
+        id: OutputIds.PAGE_CHANGE.CATCH,
+        title: '分页查询失败',
+        schema: getSchema(data, 'catch')
+      });
+    }
     if (!pageChangePin) {
       // inputs.add('pageChange', '分页变化', {
       //   type: 'object',
@@ -532,9 +645,17 @@ const refreshIO = (params) => {
         desc: '触发分页变化'
       });
     }
+    inputs.get('pageChange').setRels([OutputIds.PAGE_CHANGE.THEN, OutputIds.PAGE_CHANGE.CATCH]);
   } else {
+    queryThenPin.setSchema(getSchema(data, OutputIds.QUERY.THEN));
     if (pageChangePin) {
       inputs.remove('pageChange');
+    }
+    if (pageChangeThenPin) {
+      outputs.remove(OutputIds.PAGE_CHANGE.THEN);
+    }
+    if (pageChangeCatchPin) {
+      outputs.remove(OutputIds.PAGE_CHANGE.CATCH);
     }
   }
 };

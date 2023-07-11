@@ -14,13 +14,47 @@
       "id": "query",
       "title": "查询记录",
       "desc": "根据输入条件查询记录",
+      "rels": [
+        "queryThen",
+        "queryCatch"
+      ],
       "schema": {
         "type": "object",
         "properties": {}
       }
     }
   ],
-  "outputs": [],
+  "outputs": [
+    {
+      "id": "queryThen",
+      "title": "查询成功",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "title": "表格数据",
+            "type": "array"
+          },
+          "total": {
+            "title": "数据总数",
+            "type": "number"
+          },
+          "pageNum": {
+            "title": "页码",
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "queryCatch",
+      "title": "查询失败",
+      "schema": {
+        "title": "错误提示信息",
+        "type": "string"
+      }
+    }
+  ],
   "slots": [
     {
       "id": "queryContent",
