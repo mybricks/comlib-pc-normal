@@ -127,10 +127,10 @@ export default {
     cate1.title = '常规';
     cate1.items = [
       {
-        title: '模型选择',
+        title: '领域模型',
         items: [
           {
-            title: '测试领域模型',
+            title: '模型选择',
             type: '_domainModelSelect',
             value: {
               get({ data }: EditorResult<Data>) {
