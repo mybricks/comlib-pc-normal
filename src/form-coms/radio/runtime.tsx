@@ -98,7 +98,9 @@ export default function Runtime({
           newVal = value;
         }
       });
-      data.value = newVal;
+      if (typeof newVal !== 'undefined') {
+        data.value = newVal;
+      }
       data.config.options = tempDs;
     });
   }, []);
