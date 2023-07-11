@@ -121,14 +121,16 @@ export default function (props: RuntimeParams<Data>) {
       //   getListData(queryParamsRef.current, { pageNum: val.pageNum, pageSize: val.pageSize });
       // });
 
-      inputs['create']((val) => {
+      inputs['create']((val, relOutputs) => {
         if (checkDomainModel(abilitySet, 'INSERT')) {
           createData(env.callDomainModel, data.domainModel, { ...val })
             .then((r) => {
+              relOutputs[OutputIds.INSERT.THEN](r?.response);
               message.success('创建成功');
               getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
             })
             .catch((msg) => {
+              relOutputs[OutputIds.INSERT.CATCH](msg);
               message.error(msg);
             });
         } else {
