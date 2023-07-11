@@ -90,7 +90,7 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
         }
         inputs?.getValue().returnValue((val) => {
           allValues[index][formItemName] = val;
-          if (id === childId && data.value && data.value[index][formItemName] !== val) {
+          if (id === childId && data.value && JSON.stringify(data.value[index][formItemName]) !== JSON.stringify(val)) {
             changedValue.name = formItemName;
             changedValue.index = index;
             changedValue.inputs = inputs;
