@@ -21,26 +21,11 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   const [loading, setLoading] = useState(false);
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
 
-  //编辑态，默认初始值
-  useEffect(() => {
-    if (env.edit && typeof data.grid.column === 'number' && data.isCustom) {
-      let editArr: any = [];
-      for (let i = 0; i < data.grid.column; i++) {
-        editArr.push({ id: i + 1, [rowKey]: uuid() });
-      }
-      setDataSource(editArr);
-    }
-    if (env.edit && typeof data.grid.column === 'number' && !data.isCustom) {
-      let editArr: any = [];
-      for (let i = 0; i < 3; i++) {
-        editArr.push({ id: i + 1, [rowKey]: uuid() });
-      }
-      setDataSource(editArr);
-    }
-  }, [data.grid.column, data.isCustom]);
-
   //设置数据源输入及loading状态设置
   useEffect(() => {
+    if (env.edit) {
+      setDataSource([{ id: 1, [rowKey]: uuid() }]);
+    }
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
         if (Array.isArray(v)) {
