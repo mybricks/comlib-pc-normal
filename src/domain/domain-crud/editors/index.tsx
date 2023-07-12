@@ -452,7 +452,7 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
  * @param type io类型
  * @returns
  */
-const getSchema = (data: Data, type, externalProperties?) => {
+const getSchema = (data: Data, type?, externalProperties?) => {
   switch (type) {
     case 'catch':
       return {
@@ -484,7 +484,9 @@ const getSchema = (data: Data, type, externalProperties?) => {
       };
     default:
       return {
-        type: 'any'
+        title: '数据响应值',
+        type: 'object',
+        properties: {}
       };
   }
 };
@@ -512,14 +514,14 @@ const refreshIO = (params) => {
     if (!insertThenPin) {
       outputs.add({
         id: OutputIds.INSERT.THEN,
-        title: '新增记录成功',
-        schema: { type: 'object', properties: {} }
+        title: '成功',
+        schema: getSchema(data)
       });
     }
     if (!insertCatchPin) {
       outputs.add({
         id: OutputIds.INSERT.CATCH,
-        title: '新增记录失败',
+        title: '失败',
         schema: getSchema(data, 'catch')
       });
     }
@@ -548,14 +550,14 @@ const refreshIO = (params) => {
     if (!editThenPin) {
       outputs.add({
         id: OutputIds.EDIT.THEN,
-        title: '编辑记录成功',
-        schema: { type: 'object', properties: {} }
+        title: '成功',
+        schema: getSchema(data)
       });
     }
     if (!editCatchPin) {
       outputs.add({
         id: OutputIds.EDIT.CATCH,
-        title: '编辑记录失败',
+        title: '失败',
         schema: getSchema(data, 'catch')
       });
     }
@@ -585,14 +587,14 @@ const refreshIO = (params) => {
     if (!deleteThenPin) {
       outputs.add({
         id: OutputIds.DELETE.THEN,
-        title: '删除记录成功',
-        schema: { type: 'object', properties: {} }
+        title: '成功',
+        schema: getSchema(data)
       });
     }
     if (!deleteCatchPin) {
       outputs.add({
         id: OutputIds.DELETE.CATCH,
-        title: '删除记录失败',
+        title: '失败',
         schema: getSchema(data, 'catch')
       });
     }
@@ -634,7 +636,7 @@ const refreshIO = (params) => {
     if (!pageChangeThenPin) {
       outputs.add({
         id: OutputIds.PAGE_CHANGE.THEN,
-        title: '分页查询成功',
+        title: '成功',
         schema: getSchema(data, OutputIds.QUERY.THEN, {
           pageNum: {
             title: '页码',
@@ -650,7 +652,7 @@ const refreshIO = (params) => {
     if (!pageChangeCatchPin) {
       outputs.add({
         id: OutputIds.PAGE_CHANGE.CATCH,
-        title: '分页查询失败',
+        title: '失败',
         schema: getSchema(data, 'catch')
       });
     }

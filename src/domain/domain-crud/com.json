@@ -27,7 +27,7 @@
   "outputs": [
     {
       "id": "queryThen",
-      "title": "查询成功",
+      "title": "成功",
       "schema": {
         "type": "object",
         "properties": {
@@ -48,7 +48,7 @@
     },
     {
       "id": "queryCatch",
-      "title": "查询失败",
+      "title": "失败",
       "schema": {
         "title": "错误提示信息",
         "type": "string"
