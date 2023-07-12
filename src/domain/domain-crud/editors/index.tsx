@@ -1,6 +1,6 @@
-import { OutputIds } from '../constants';
+import { OutputIds, QueryMap } from '../constants';
 import { Data, Entity } from '../type';
-import { getSchema } from '../util';
+import { getSchema, refreshSchema } from '../util';
 // import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
 // import Refresh from './refresh';
 
@@ -109,7 +109,11 @@ export default {
       inputs,
       outputs
     });
-
+    refreshSchema({
+      data,
+      abilitySet,
+      outputs
+    });
     refreshChildComModel(data.childNames, getChildByName, data.domainModel);
   },
   '@domainModelRemoved'(params: EditorResult<Data>, value) {
@@ -149,8 +153,13 @@ export default {
                   inputs,
                   outputs
                 });
-
+                refreshSchema({
+                  data,
+                  abilitySet,
+                  outputs
+                });
                 refreshChildComModel(data.childNames, getChildByName, data.domainModel);
+                console.log(data, 'data');
               }
             }
           }
@@ -460,6 +469,7 @@ const refreshIO = (params) => {
   const editThenPin = outputs.get(OutputIds.EDIT.THEN);
   const deleteThenPin = outputs.get(OutputIds.DELETE.THEN);
   const pageChangeThenPin = outputs.get(OutputIds.PAGE_CHANGE.THEN);
+
   const insertCatchPin = outputs.get(OutputIds.INSERT.CATCH);
   const editCatchPin = outputs.get(OutputIds.EDIT.CATCH);
   const deleteCatchPin = outputs.get(OutputIds.DELETE.CATCH);
@@ -471,14 +481,14 @@ const refreshIO = (params) => {
       outputs.add({
         id: OutputIds.INSERT.THEN,
         title: '成功',
-        schema: getSchema(data)
+        schema: getSchema(data, [QueryMap.INSERT, QueryMap.THEN])
       });
     }
     if (!insertCatchPin) {
       outputs.add({
         id: OutputIds.INSERT.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.INSERT, QueryMap.CATCH])
       });
     }
     if (!insertPin) {
@@ -507,14 +517,14 @@ const refreshIO = (params) => {
       outputs.add({
         id: OutputIds.EDIT.THEN,
         title: '成功',
-        schema: getSchema(data)
+        schema: getSchema(data, [QueryMap.EDIT, QueryMap.THEN])
       });
     }
     if (!editCatchPin) {
       outputs.add({
         id: OutputIds.EDIT.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.EDIT, QueryMap.CATCH])
       });
     }
     if (!editPin) {
@@ -544,14 +554,14 @@ const refreshIO = (params) => {
       outputs.add({
         id: OutputIds.DELETE.THEN,
         title: '成功',
-        schema: getSchema(data)
+        schema: getSchema(data, [QueryMap.DELETE, QueryMap.THEN])
       });
     }
     if (!deleteCatchPin) {
       outputs.add({
         id: OutputIds.DELETE.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.DELETE, QueryMap.CATCH])
       });
     }
     if (!deletePin) {
@@ -578,7 +588,7 @@ const refreshIO = (params) => {
 
   if (abilitySet.includes('PAGE')) {
     queryThenPin.setSchema(
-      getSchema(data, OutputIds.QUERY.THEN, {
+      getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
         pageNum: {
           title: '页码',
           type: 'number'
@@ -593,7 +603,7 @@ const refreshIO = (params) => {
       outputs.add({
         id: OutputIds.PAGE_CHANGE.THEN,
         title: '成功',
-        schema: getSchema(data, OutputIds.QUERY.THEN, {
+        schema: getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
           pageNum: {
             title: '页码',
             type: 'number'
@@ -609,7 +619,7 @@ const refreshIO = (params) => {
       outputs.add({
         id: OutputIds.PAGE_CHANGE.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.QUERY, QueryMap.CATCH])
       });
     }
     if (!pageChangePin) {
@@ -647,7 +657,7 @@ const refreshIO = (params) => {
     }
     inputs.get('pageChange').setRels([OutputIds.PAGE_CHANGE.THEN, OutputIds.PAGE_CHANGE.CATCH]);
   } else {
-    queryThenPin.setSchema(getSchema(data, OutputIds.QUERY.THEN));
+    queryThenPin.setSchema(getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN]));
     if (pageChangePin) {
       inputs.remove('pageChange');
     }

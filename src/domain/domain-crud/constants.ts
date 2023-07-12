@@ -128,3 +128,12 @@ export const OutputIds = {
 		CATCH: 'pageChangeCatch'
 	}
 }
+
+export const QueryMap = {
+	QUERY: 'SELECT',
+	INSERT: 'INSERT',
+	EDIT: 'UPDATE',
+	DELETE: 'DELETE',
+	THEN: 'data',
+	CATCH: 'msg'
+}

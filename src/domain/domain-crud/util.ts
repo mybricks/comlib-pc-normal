@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { Data } from './type';
-import { OutputIds } from './constants';
+import { OutputIds, QueryMap } from './constants';
 
 export const ajax = (
 	params: Record<string, unknown>,
@@ -88,19 +88,87 @@ export const safeDecodeURIComponent = (content: string) => {
 };
 
 /**
+ * 更新io的schema
+ * @param params 
+ */
+export const refreshSchema = (params) => {
+	const { data, outputs, abilitySet } = params;
+
+	const queryThenPin = outputs.get(OutputIds.QUERY.THEN);
+	const insertThenPin = outputs.get(OutputIds.INSERT.THEN);
+	const editThenPin = outputs.get(OutputIds.EDIT.THEN);
+	const deleteThenPin = outputs.get(OutputIds.DELETE.THEN);
+	const pageChangeThenPin = outputs.get(OutputIds.PAGE_CHANGE.THEN);
+
+	const queryCatchPin = outputs.get(OutputIds.QUERY.CATCH);
+	const insertCatchPin = outputs.get(OutputIds.INSERT.CATCH);
+	const editCatchPin = outputs.get(OutputIds.EDIT.CATCH);
+	const deleteCatchPin = outputs.get(OutputIds.DELETE.CATCH);
+	const pageChangeCatchPin = outputs.get(OutputIds.PAGE_CHANGE.CATCH);
+
+	try {
+		queryThenPin.setSchema(getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN]));
+		queryCatchPin.setSchema(getSchema(data, [QueryMap.QUERY, QueryMap.CATCH]));
+
+		if (abilitySet.includes('INSERT')) {
+			insertThenPin.setSchema(getSchema(data, [QueryMap.INSERT, QueryMap.THEN]));
+			insertCatchPin.setSchema(getSchema(data, [QueryMap.INSERT, QueryMap.CATCH]));
+		}
+
+		if (abilitySet.includes('UPDATE')) {
+			editThenPin.setSchema(getSchema(data, [QueryMap.EDIT, QueryMap.THEN]))
+			editCatchPin.setSchema(getSchema(data, [QueryMap.EDIT, QueryMap.CATCH]))
+		}
+
+		if (abilitySet.includes('DELETE')) {
+			deleteThenPin.setSchema(getSchema(data, [QueryMap.DELETE, QueryMap.THEN]));
+			deleteCatchPin.setSchema(getSchema(data, [QueryMap.DELETE, QueryMap.CATCH]));
+		}
+
+		if (abilitySet.includes('PAGE')) {
+			queryThenPin.setSchema(
+				getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
+					pageNum: {
+						title: '页码',
+						type: 'number'
+					},
+					total: {
+						title: '数据总数',
+						type: 'number'
+					}
+				})
+			);
+			pageChangeThenPin.setSchema(
+				getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
+					pageNum: {
+						title: '页码',
+						type: 'number'
+					},
+					total: {
+						title: '数据总数',
+						type: 'number'
+					}
+				})
+			);
+			pageChangeCatchPin.setSchema(getSchema(data, [QueryMap.QUERY, QueryMap.CATCH]));
+		}
+	} catch (e) {
+		console.error(e);
+	}
+};
+
+/**
  * 计算io的schema
  * @param data
  * @param type io类型
  * @param externalProperties 额外属性
  * @returns
  */
-export const getSchema = (data: Data, type?, externalProperties?) => {
-	switch (type) {
-		case 'catch':
-			return {
-				title: '错误提示信息',
-				type: 'string'
-			};
+export const getSchema = (data: Data, type: [string, string], externalProperties?) => {
+	const [operation, subType] = type;
+	const outputSchema = data?.domainModel?.query?.[operation]?.outputSchema;
+	const errorSchema = data?.domainModel?.query?.[operation]?.errorSchema;
+	switch (subType) {
 		case OutputIds.QUERY.THEN:
 			const fields = data.domainModel?.query?.entity?.fieldAry.filter((item) => !item.isPrivate);
 			const properties = {};
@@ -124,11 +192,17 @@ export const getSchema = (data: Data, type?, externalProperties?) => {
 					...externalProperties
 				}
 			};
-		default:
-			return {
+		case QueryMap.THEN:
+			return outputSchema?.properties?.[subType] || {
 				title: '数据响应值',
 				type: 'object',
 				properties: {}
-			};
+			};;
+		case QueryMap.CATCH:
+			return errorSchema?.properties?.[subType] || {
+				title: '错误提示信息',
+				type: 'string'
+			};;
+
 	}
 };

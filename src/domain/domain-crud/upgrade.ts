@@ -1,4 +1,4 @@
-import { OutputIds } from './constants';
+import { OutputIds, QueryMap } from './constants';
 import { getSchema } from './util';
 import { Data } from './type';
 
@@ -24,14 +24,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add({
       id: OutputIds.QUERY.THEN,
       title: '成功',
-      schema: getSchema(data, OutputIds.QUERY.THEN)
+      schema: getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN])
     });
   }
   if (!queryCatchPin) {
     output.add({
       id: OutputIds.QUERY.CATCH,
       title: '失败',
-      schema: getSchema(data, 'catch')
+      schema: getSchema(data, [QueryMap.QUERY, QueryMap.CATCH])
     });
   }
   try {
@@ -45,14 +45,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       output.add({
         id: OutputIds.INSERT.THEN,
         title: '成功',
-        schema: getSchema(data)
+        schema: getSchema(data, [QueryMap.INSERT, QueryMap.THEN])
       });
     }
     if (!insertCatchPin) {
       output.add({
         id: OutputIds.INSERT.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.INSERT, QueryMap.CATCH])
       });
     }
     try {
@@ -67,14 +67,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       output.add({
         id: OutputIds.EDIT.THEN,
         title: '成功',
-        schema: getSchema(data)
+        schema: getSchema(data, [QueryMap.EDIT, QueryMap.THEN])
       });
     }
     if (!editCatchPin) {
       output.add({
         id: OutputIds.EDIT.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.EDIT, QueryMap.CATCH])
       });
     }
     try {
@@ -89,14 +89,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       output.add({
         id: OutputIds.DELETE.THEN,
         title: '成功',
-        schema: getSchema(data)
+        schema: getSchema(data, [QueryMap.DELETE, QueryMap.THEN])
       });
     }
     if (!deleteCatchPin) {
       output.add({
         id: OutputIds.DELETE.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.DELETE, QueryMap.CATCH])
       });
     }
     try {
@@ -108,7 +108,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   if (abilitySet.includes('PAGE')) {
     queryThenPin.setSchema(
-      getSchema(data, OutputIds.QUERY.THEN, {
+      getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
         pageNum: {
           title: '页码',
           type: 'number'
@@ -123,7 +123,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       output.add({
         id: OutputIds.PAGE_CHANGE.THEN,
         title: '成功',
-        schema: getSchema(data, OutputIds.QUERY.THEN, {
+        schema: getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
           pageNum: {
             title: '页码',
             type: 'number'
@@ -139,7 +139,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       output.add({
         id: OutputIds.PAGE_CHANGE.CATCH,
         title: '失败',
-        schema: getSchema(data, 'catch')
+        schema: getSchema(data, [QueryMap.QUERY, QueryMap.CATCH])
       });
     }
     try {
