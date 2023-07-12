@@ -169,24 +169,17 @@ export const getSchema = (data: Data, type: [string, string], externalProperties
 	const errorSchema = data?.domainModel?.query?.[operation]?.errorSchema;
 	switch (subType) {
 		case OutputIds.QUERY.THEN:
-			const fields = data.domainModel?.query?.entity?.fieldAry.filter((item) => !item.isPrivate);
-			const properties = {};
-			fields.forEach((field) => {
-				const { name, bizType } = field;
-				properties[name] = {
-					type: bizType
-				};
-			});
 			return {
 				type: 'object',
 				properties: {
 					dataSource: {
 						title: '表格数据',
-						type: 'array',
-						items: {
-							type: 'object',
-							properties
-						}
+						...(outputSchema?.properties?.[subType]?.properties?.dataSource || {
+							type: 'array',
+							items: {
+								type: 'object',
+							}
+						})
 					},
 					...externalProperties
 				}
