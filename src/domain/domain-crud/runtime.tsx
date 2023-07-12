@@ -138,15 +138,17 @@ export default function (props: RuntimeParams<Data>) {
         }
       });
 
-      inputs['editById']((val) => {
+      inputs['editById']((val, relOutputs) => {
         // todo 需要感知主键的存在
         if (checkDomainModel(abilitySet, 'UPDATE')) {
           updateData(env.callDomainModel, data.domainModel, { ...val })
             .then((r) => {
               message.success('更新成功');
+              relOutputs[OutputIds.EDIT.THEN](r?.response);
               getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
             })
             .catch((msg) => {
+              relOutputs[OutputIds.EDIT.CATCH](msg);
               message.error(msg);
             });
         } else {
@@ -154,14 +156,16 @@ export default function (props: RuntimeParams<Data>) {
         }
       });
 
-      inputs['deleteById']((val) => {
+      inputs['deleteById']((val, relOutputs) => {
         if (checkDomainModel(abilitySet, 'DELETE')) {
           deleteData(env.callDomainModel, data.domainModel, { ...val })
             .then((r) => {
               message.success('删除成功');
+              relOutputs[OutputIds.DELETE.THEN](r?.response);
               getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
             })
             .catch((msg) => {
+              relOutputs[OutputIds.DELETE.CATCH](msg);
               message.error(msg);
             });
         } else {

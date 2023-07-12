@@ -494,7 +494,7 @@ const refreshIO = (params) => {
 
   const insertPin = inputs.get('create');
   const editPin = inputs.get('editById');
-  const delectPin = inputs.get('deleteById');
+  const deletePin = inputs.get('deleteById');
   const pageChangePin = inputs.get('pageChange');
 
   const queryThenPin = outputs.get(OutputIds.QUERY.THEN);
@@ -545,6 +545,20 @@ const refreshIO = (params) => {
   }
 
   if (abilitySet.includes('UPDATE')) {
+    if (!editThenPin) {
+      outputs.add({
+        id: OutputIds.EDIT.THEN,
+        title: '编辑记录成功',
+        schema: { type: 'object', properties: {} }
+      });
+    }
+    if (!editCatchPin) {
+      outputs.add({
+        id: OutputIds.EDIT.CATCH,
+        title: '编辑记录失败',
+        schema: getSchema(data, 'catch')
+      });
+    }
     if (!editPin) {
       // inputs.add('editById', '编辑记录', { type: 'object', properties: {} });
       inputs.add({
@@ -554,14 +568,35 @@ const refreshIO = (params) => {
         desc: '根据 ID（主键） 编辑当前行记录'
       });
     }
+    inputs.get('editById').setRels([OutputIds.EDIT.THEN, OutputIds.EDIT.CATCH]);
   } else {
     if (editPin) {
       inputs.remove('editById');
     }
+    if (editThenPin) {
+      outputs.remove(OutputIds.EDIT.THEN);
+    }
+    if (editCatchPin) {
+      outputs.remove(OutputIds.EDIT.CATCH);
+    }
   }
 
   if (abilitySet.includes('DELETE')) {
-    if (!delectPin) {
+    if (!deleteThenPin) {
+      outputs.add({
+        id: OutputIds.DELETE.THEN,
+        title: '删除记录成功',
+        schema: { type: 'object', properties: {} }
+      });
+    }
+    if (!deleteCatchPin) {
+      outputs.add({
+        id: OutputIds.DELETE.CATCH,
+        title: '删除记录失败',
+        schema: getSchema(data, 'catch')
+      });
+    }
+    if (!deletePin) {
       // inputs.add('deleteById', '删除记录', { type: 'object', properties: {} });
       inputs.add({
         id: 'deleteById',
@@ -570,9 +605,16 @@ const refreshIO = (params) => {
         desc: '根据 ID（主键） 删除当前行记录'
       });
     }
+    inputs.get('deleteById').setRels([OutputIds.DELETE.THEN, OutputIds.DELETE.CATCH]);
   } else {
-    if (delectPin) {
+    if (deletePin) {
       inputs.remove('deleteById');
+    }
+    if (deleteThenPin) {
+      outputs.remove(OutputIds.DELETE.THEN);
+    }
+    if (deleteCatchPin) {
+      outputs.remove(OutputIds.DELETE.CATCH);
     }
   }
 
