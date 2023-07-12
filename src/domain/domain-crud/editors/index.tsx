@@ -464,7 +464,6 @@ const refreshIO = (params) => {
   const deletePin = inputs.get('deleteById');
   const pageChangePin = inputs.get('pageChange');
 
-  const queryThenPin = outputs.get(OutputIds.QUERY.THEN);
   const insertThenPin = outputs.get(OutputIds.INSERT.THEN);
   const editThenPin = outputs.get(OutputIds.EDIT.THEN);
   const deleteThenPin = outputs.get(OutputIds.DELETE.THEN);
@@ -587,18 +586,6 @@ const refreshIO = (params) => {
   }
 
   if (abilitySet.includes('PAGE')) {
-    queryThenPin.setSchema(
-      getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
-        pageNum: {
-          title: '页码',
-          type: 'number'
-        },
-        total: {
-          title: '数据总数',
-          type: 'number'
-        }
-      })
-    );
     if (!pageChangeThenPin) {
       outputs.add({
         id: OutputIds.PAGE_CHANGE.THEN,
@@ -657,7 +644,6 @@ const refreshIO = (params) => {
     }
     inputs.get('pageChange').setRels([OutputIds.PAGE_CHANGE.THEN, OutputIds.PAGE_CHANGE.CATCH]);
   } else {
-    queryThenPin.setSchema(getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN]));
     if (pageChangePin) {
       inputs.remove('pageChange');
     }

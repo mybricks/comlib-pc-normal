@@ -24,7 +24,18 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add({
       id: OutputIds.QUERY.THEN,
       title: '成功',
-      schema: getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN])
+      schema: getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], abilitySet.includes('PAGE')
+        ? {
+          pageNum: {
+            title: '页码',
+            type: 'number'
+          },
+          total: {
+            title: '数据总数',
+            type: 'number'
+          }
+        }
+        : {})
     });
   }
   if (!queryCatchPin) {
@@ -107,18 +118,6 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   if (abilitySet.includes('PAGE')) {
-    queryThenPin.setSchema(
-      getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
-        pageNum: {
-          title: '页码',
-          type: 'number'
-        },
-        total: {
-          title: '数据总数',
-          type: 'number'
-        }
-      })
-    );
     if (!pageChangeThenPin) {
       output.add({
         id: OutputIds.PAGE_CHANGE.THEN,

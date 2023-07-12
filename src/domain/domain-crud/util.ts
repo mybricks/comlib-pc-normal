@@ -107,7 +107,18 @@ export const refreshSchema = (params) => {
 	const pageChangeCatchPin = outputs.get(OutputIds.PAGE_CHANGE.CATCH);
 
 	try {
-		queryThenPin.setSchema(getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN]));
+		queryThenPin.setSchema(getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN]), abilitySet.includes('PAGE')
+			? {
+				pageNum: {
+					title: '页码',
+					type: 'number'
+				},
+				total: {
+					title: '数据总数',
+					type: 'number'
+				}
+			}
+			: {});
 		queryCatchPin.setSchema(getSchema(data, [QueryMap.QUERY, QueryMap.CATCH]));
 
 		if (abilitySet.includes('INSERT')) {
@@ -126,18 +137,6 @@ export const refreshSchema = (params) => {
 		}
 
 		if (abilitySet.includes('PAGE')) {
-			queryThenPin.setSchema(
-				getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
-					pageNum: {
-						title: '页码',
-						type: 'number'
-					},
-					total: {
-						title: '数据总数',
-						type: 'number'
-					}
-				})
-			);
 			pageChangeThenPin.setSchema(
 				getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
 					pageNum: {
