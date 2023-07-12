@@ -1,5 +1,6 @@
 import { OutputIds } from '../constants';
 import { Data, Entity } from '../type';
+import { getSchema } from '../util';
 // import { FieldBizType, DefaultComponentNameMap, ComponentName } from '../constants';
 // import Refresh from './refresh';
 
@@ -444,51 +445,6 @@ const refreshChildComModel = (childNames, getChildByName, domainModel) => {
       child.data.usePagination = domainModel?.query?.abilitySet?.includes('PAGE');
     }
   });
-};
-
-/**
- * 计算io的schema
- * @param data
- * @param type io类型
- * @returns
- */
-const getSchema = (data: Data, type?, externalProperties?) => {
-  switch (type) {
-    case 'catch':
-      return {
-        title: '错误提示信息',
-        type: 'string'
-      };
-    case OutputIds.QUERY.THEN:
-      const fields = data.domainModel?.query?.entity?.fieldAry.filter((item) => !item.isPrivate);
-      const properties = {};
-      fields.forEach((field) => {
-        const { name, bizType } = field;
-        properties[name] = {
-          type: bizType
-        };
-      });
-      return {
-        type: 'object',
-        properties: {
-          dataSource: {
-            title: '表格数据',
-            type: 'array',
-            items: {
-              type: 'object',
-              properties
-            }
-          },
-          ...externalProperties
-        }
-      };
-    default:
-      return {
-        title: '数据响应值',
-        type: 'object',
-        properties: {}
-      };
-  }
 };
 
 const refreshIO = (params) => {
