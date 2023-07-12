@@ -6,11 +6,14 @@ import EllipsisEditor from './ellipsisEditor';
 
 export default {
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
-  ':root': ({}: EditorResult<Data>, cate1, cate2) => {
+  '@init': ({ style }) => {
+    style.height = 'auto';
+  },
+  ':root': ({ }: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
-    cate1.items = [...AddEditor, ...StyleEditor,...EllipsisEditor];
+    cate1.items = [...AddEditor, ...StyleEditor, ...EllipsisEditor];
     return {
       title: '工具条'
     };

@@ -14,7 +14,6 @@ const itemEditor = {
     title: '按钮',
     style: [
       ...StyleEditor,
-      ...IconEditor,
       {
         options: ['size'],
         target({ focusArea }) {
@@ -31,7 +30,8 @@ const itemEditor = {
         target({ focusArea }) {
           return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
         }
-      }
+      },
+      ...IconEditor
     ],
     items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
       cate1.title = '常规';
