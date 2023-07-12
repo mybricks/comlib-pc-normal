@@ -38,18 +38,25 @@
 .empty {
   position: relative;
   padding-bottom: 68px;
+
+  :global {
+    div[data-isslot='1'] {
+      overflow: initial;
+    }
+  }
+
   .emptyHorActions {
     position: absolute;
     width: 100%;
-    margin-top: 68px;
+    margin-top: 48px;
   }
 
   .emptyVerActions {
     position: absolute;
     width: 100%;
-    margin-top: 44px;
+    margin-top: 24px;
     &.onlyone {
-      margin-top: 74px;
+      margin-top: 54px;
     }
   }
 }
