@@ -106,20 +106,23 @@ export const refreshSchema = (params) => {
 	const deleteCatchPin = outputs.get(OutputIds.DELETE.CATCH);
 	const pageChangeCatchPin = outputs.get(OutputIds.PAGE_CHANGE.CATCH);
 
-	try {
-		queryThenPin.setSchema(getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN]), abilitySet.includes('PAGE')
-			? {
-				pageNum: {
-					title: '页码',
-					type: 'number'
-				},
-				total: {
-					title: '数据总数',
-					type: 'number'
-				}
+	const queryThenSchema = getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], abilitySet.includes('PAGE')
+		? {
+			pageNum: {
+				title: '页码',
+				type: 'number'
+			},
+			total: {
+				title: '数据总数',
+				type: 'number'
 			}
-			: {});
-		queryCatchPin.setSchema(getSchema(data, [QueryMap.QUERY, QueryMap.CATCH]));
+		}
+		: {});
+	const queryCatchSchema = getSchema(data, [QueryMap.QUERY, QueryMap.CATCH]);
+
+	try {
+		queryThenPin.setSchema(queryThenSchema);
+		queryCatchPin.setSchema(queryCatchSchema);
 
 		if (abilitySet.includes('INSERT')) {
 			insertThenPin.setSchema(getSchema(data, [QueryMap.INSERT, QueryMap.THEN]));
@@ -137,19 +140,8 @@ export const refreshSchema = (params) => {
 		}
 
 		if (abilitySet.includes('PAGE')) {
-			pageChangeThenPin.setSchema(
-				getSchema(data, [QueryMap.QUERY, OutputIds.QUERY.THEN], {
-					pageNum: {
-						title: '页码',
-						type: 'number'
-					},
-					total: {
-						title: '数据总数',
-						type: 'number'
-					}
-				})
-			);
-			pageChangeCatchPin.setSchema(getSchema(data, [QueryMap.QUERY, QueryMap.CATCH]));
+			pageChangeThenPin.setSchema(queryThenSchema);
+			pageChangeCatchPin.setSchema(queryCatchSchema);
 		}
 	} catch (e) {
 		console.error(e);
@@ -174,7 +166,7 @@ export const getSchema = (data: Data, type: [string, string], externalProperties
 				properties: {
 					dataSource: {
 						title: '表格数据',
-						...(outputSchema?.properties?.[subType]?.properties?.dataSource || {
+						...(outputSchema?.properties?.[QueryMap.THEN]?.properties?.dataSource || {
 							type: 'array',
 							items: {
 								type: 'object',
@@ -187,8 +179,7 @@ export const getSchema = (data: Data, type: [string, string], externalProperties
 		case QueryMap.THEN:
 			return outputSchema?.properties?.[subType] || {
 				title: '数据响应值',
-				type: 'object',
-				properties: {}
+				type: 'any'
 			};;
 		case QueryMap.CATCH:
 			return errorSchema?.properties?.[subType] || {
