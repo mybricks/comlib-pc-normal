@@ -11,5 +11,6 @@
   "isScroll": false,
   "space": [0, 16],
 
-  "rowKey": ""
+  "rowKey": "",
+  "layout": "vertical"
 }
