@@ -34,4 +34,7 @@ export interface Data {
 
   //自定义rowKey
   rowKey: string;
+
+  //自动换行时，方向
+  layout: 'horizontal'|'vertical'
 }

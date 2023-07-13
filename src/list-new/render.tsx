@@ -13,7 +13,7 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
         <div
           key={key}
           style={{
-            width: '100%',
+            width: data.layout == 'vertical' ? '100%' : void 0,
             margin:
               number !== dataSource.length - 1
                 ? `0 ${gutter[0]}px ${gutter[1]}px 0`
