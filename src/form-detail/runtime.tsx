@@ -4,12 +4,13 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Data, InputIds, TypeEnum } from './constants';
 import css from './runtime.less';
 import { isObject } from 'lodash';
+import { checkIfMobile } from '../utils';
 
 const { Text } = Typography;
 
 export default function ({ env, data, inputs, slots, outputs, onError }: RuntimeParams<Data>) {
   const { size, title, showTitle, layout, column, bordered, colon } = data || {};
-
+  const isMobile = checkIfMobile(env);
   // 后置操作渲染
   const SuffixRender = (props) => {
     const { type, id, value, useSuffix, suffixBtnText = '查看更多' } = props;
@@ -130,9 +131,9 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
   return (
     <Descriptions
       title={showTitle ? env.i18n(title) : undefined}
-      size={size}
+      size={isMobile ? 'small' : size}
       layout={layout}
-      column={column}
+      column={isMobile ? 1 : column}
       bordered={bordered}
       colon={colon}
       className={css.des}
