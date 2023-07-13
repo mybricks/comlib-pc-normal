@@ -1,7 +1,7 @@
 {
   "title": "CRUD",
   "namespace": "mybricks.domain-pc.crud",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "领域模型CRUD",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,18 +9,53 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "query",
       "title": "查询记录",
       "desc": "根据输入条件查询记录",
+      "rels": [
+        "queryThen",
+        "queryCatch"
+      ],
       "schema": {
         "type": "object",
         "properties": {}
       }
     }
   ],
-  "outputs": [],
+  "outputs": [
+    {
+      "id": "queryThen",
+      "title": "成功",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "title": "表格数据",
+            "type": "array"
+          },
+          "total": {
+            "title": "数据总数",
+            "type": "number"
+          },
+          "pageNum": {
+            "title": "页码",
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "queryCatch",
+      "title": "失败",
+      "schema": {
+        "title": "错误提示信息",
+        "type": "string"
+      }
+    }
+  ],
   "slots": [
     {
       "id": "queryContent",

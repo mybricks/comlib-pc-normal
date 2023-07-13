@@ -106,3 +106,62 @@ export const InputIds = {
 	DATA_SOURCE: 'dataSource',
 };
 
+export const DomainModelType = {
+	/** 聚合模型 */
+	AGGREGATION: 'aggregation-model',
+	/** 领域模型 */
+	DOMAIN: 'domain'
+}
+
+export const OutputIds = {
+	/** 查询 */
+	QUERY: {
+		/** 查询成功 */
+		THEN: 'queryThen',
+		/** 查询失败 */
+		CATCH: 'queryCatch',
+	},
+	/** 新增 */
+	INSERT: {
+		/** 新增成功 */
+		THEN: 'createThen',
+		/** 新增失败 */
+		CATCH: 'createCatch',
+	},
+	/** 更新 */
+	EDIT: {
+		/** 更新成功 */
+		THEN: 'editByIdThen',
+		/** 更新失败 */
+		CATCH: 'editByIdCatch',
+	},
+	/** 删除 */
+	DELETE: {
+		/** 删除成功 */
+		THEN: 'deleteByIdThen',
+		/** 删除失败 */
+		CATCH: 'deleteByIdCatch',
+	},
+	/** 分页变化 */
+	PAGE_CHANGE: {
+		/** 分页查询成功 */
+		THEN: 'pageChangeThen',
+		/** 分页查询失败 */
+		CATCH: 'pageChangeCatch'
+	}
+}
+
+export const QueryMap = {
+	/** 查询字段 */
+	QUERY: 'SELECT',
+	/** 新增字段 */
+	INSERT: 'INSERT',
+	/** 更新字段 */
+	EDIT: 'UPDATE',
+	/** 删除字段 */
+	DELETE: 'DELETE',
+	/** 数据相应信息字段 */
+	THEN: 'data',
+	/** 错误提示信息字段 */
+	CATCH: 'msg'
+}
