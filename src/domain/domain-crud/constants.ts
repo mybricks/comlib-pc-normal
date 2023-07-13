@@ -152,10 +152,16 @@ export const OutputIds = {
 }
 
 export const QueryMap = {
+	/** 查询字段 */
 	QUERY: 'SELECT',
+	/** 新增字段 */
 	INSERT: 'INSERT',
+	/** 更新字段 */
 	EDIT: 'UPDATE',
+	/** 删除字段 */
 	DELETE: 'DELETE',
+	/** 数据相应信息字段 */
 	THEN: 'data',
+	/** 错误提示信息字段 */
 	CATCH: 'msg'
 }
