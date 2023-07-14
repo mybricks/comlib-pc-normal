@@ -146,13 +146,14 @@ const createBaseEditor = ({ data }) => ({
               type: 'object',
                 properties: {
                   index: {
-                  type: 'number'
-                },
-                value: {
-                  type: 'any'
+                    type: 'number'
+                  },
+                  value: {
+                    type: 'any'
+                  }
                 }
               }
-            });
+            );
           } else {
             if (slot.get(column.slotId)) {
               slot.remove(column.slotId);
