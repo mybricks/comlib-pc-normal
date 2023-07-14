@@ -1,6 +1,6 @@
 import Tree from '../../../components/editorRender/fieldSelect';
 import { uuid } from '../../../utils';
-import { InputIds } from '../../constants';
+import { InputIds, OutputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } from '../../schema';
 import { getColumnItem, getColumnsSchema } from '../../utils';
@@ -142,6 +142,18 @@ const createBaseEditor = ({ data }) => ({
             }
             slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
             slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
+            slot.get(slotId).outputs.add(OutputIds.Edit_Table_Data, '更新行数据', {
+              type: 'object',
+                properties: {
+                  index: {
+                    type: 'number'
+                  },
+                  value: {
+                    type: 'any'
+                  }
+                }
+              }
+            );
           } else {
             if (slot.get(column.slotId)) {
               slot.remove(column.slotId);

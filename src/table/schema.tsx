@@ -277,9 +277,34 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }:
           type: 'string',
           ...(schemaObj[key] || {})
         });
+      slot
+        ?.get(col.slotId)
+        ?.outputs?.get(OutputIds.Edit_Table_Data)
+        ?.setSchema({
+          type: 'object',
+          properties: {
+            index: {
+              type: 'number'
+            },
+            value: {
+              type: 'object',
+              properties: dataSchema
+            }
+          }
+        });
     }
   });
 }
+
+/**
+ * upgrade时候更新列插槽作用域schema
+ * @param
+ */
+export const upgradeSchema = ({ data, output, input, slot }) => {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
+  setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
+};
 
 export function getTableSchema({ data }) {
   const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
