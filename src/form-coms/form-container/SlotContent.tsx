@@ -121,7 +121,12 @@ const SlotContent = (props) => {
               </HorizontalLayout>
             )}
             {isVerticalModel && (
-              <VerticalLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
+              <VerticalLayout
+                data={data}
+                isEmpty={isEmpty}
+                isMobile={isMobile}
+                actions={<FormActionsWrapper />}
+              >
                 {jsx}
               </VerticalLayout>
             )}

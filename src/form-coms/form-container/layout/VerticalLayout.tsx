@@ -9,10 +9,11 @@ interface VerticalLayoutProps {
   children?: React.ReactNode;
   actions?: React.ReactNode;
   isEmpty: boolean;
+  isMobile?: boolean;
 }
 
 const VerticalLayout = (props: VerticalLayoutProps) => {
-  const { children, actions, data, isEmpty } = props;
+  const { children, actions, data, isEmpty, isMobile } = props;
   const { align, widthOption, width, span, inlinePadding } = data.actions;
 
   const actionStyle: React.CSSProperties = {
@@ -46,7 +47,7 @@ const VerticalLayout = (props: VerticalLayoutProps) => {
           style={actionStyle}
           flex={getFlexValue()}
         >
-          <Form.Item label={data.formItemColumn === 1 ? undefined : ' '} colon={false}>
+          <Form.Item label={isMobile || data.formItemColumn === 1 ? undefined : ' '} colon={false}>
             {actions}
           </Form.Item>
         </Col>

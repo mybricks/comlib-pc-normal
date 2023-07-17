@@ -319,7 +319,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { labelWrap, ...formCfg } = data.config;
 
   return (
-    <div className={`${css.wrapper} ${isMobile ? css.mobileForm : ''}`}>
+    <div className={css.wrapper}>
       <Fragment>
         {!data.isFormItem ? (
           <Form
