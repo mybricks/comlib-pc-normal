@@ -69,7 +69,24 @@ export default {
     },
     style: [
       {
+        title: '测试分组',
+        items: [
+          {
+            title: '配置项1',
+            type: 'text',
+            value: {
+              get() {
+                return '测试';
+              },
+              set() {
+
+              }
+            }
+          }
+        ]
+      },
       ...MaxHeightEditor,
+      {
         title: '默认',
         options: ['padding', 'border', 'background'],
         target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
