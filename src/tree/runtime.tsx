@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Tree, Input } from 'antd';
 import { Data, TreeData } from './constants';
 import { pretreatTreeData, setCheckboxStatus } from './utils';
 import ActionBtns from './ActionBtn';
 import { MODIFY_BTN_ID } from './constants';
-import { deepCopy, typeCheck } from '../utils';
+import { deepCopy, typeCheck, uuid } from '../utils';
 /**
  * 数组扁平化
  * @param arr 数组
@@ -152,6 +152,10 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const treeKeys = useRef<any>(null);
 
   const keyFieldName = data.keyFieldName || 'key';
+
+  const rootKey = useMemo(() => {
+    return uuid();
+  }, []);
 
   useEffect(() => {
     treeKeys.current = [];
@@ -416,14 +420,16 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     }
     return (
       <div style={wrapperStyle}>
-        <span style={titleStyle}>{item.title}</span>
+        <span style={titleStyle} className="title">
+          {item.title}
+        </span>
         {editInput}
         {actionBtns}
       </div>
     );
   };
 
-  const renderTreeNode = (treeData: TreeData[], depth = 0, parent = { key: '0' }) => {
+  const renderTreeNode = (treeData: TreeData[], depth = 0, parent = { key: rootKey }) => {
     const { TreeNode } = Tree;
     const hasAddNode = data.addable && (!data.maxDepth || depth < data.maxDepth);
     const lastTreeNode = treeData[treeData.length - 1];
@@ -432,16 +438,14 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       <>
         {treeData.map((item, inx) => {
           return (
-            <>
-              <TreeNode
-                key={item.key}
-                data-tree-node-id={item.key}
-                title={renderTitle(item)}
-                disableCheckbox={item.disableCheckbox}
-              >
-                {renderTreeNode(item.children || [], depth + 1, item)}
-              </TreeNode>
-            </>
+            <TreeNode
+              key={item.key}
+              data-tree-node-id={item.key}
+              title={renderTitle(item)}
+              disableCheckbox={item.disableCheckbox}
+            >
+              {renderTreeNode(item.children || [], depth + 1, item)}
+            </TreeNode>
           );
         })}
         {/* 添加节点 */}
