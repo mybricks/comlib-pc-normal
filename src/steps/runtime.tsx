@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Data, INTO, LEAVE, CLICK } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
+import { checkIfMobile } from '../utils';
 
 const { Step } = Steps;
 
@@ -19,6 +20,7 @@ export default function ({
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
+  const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (runtime) {
       data.current = 0;
@@ -235,7 +237,7 @@ export default function ({
       <div className={classnames(data.steps.direction === 'vertical' && css.verticalWrap)}>
         <Steps
           current={data.current}
-          size={data.steps.size}
+          size={isMobile ? 'small' : data.steps.size}
           type={type}
           progressDot={progressDot}
           direction={data.steps.direction || 'horizontal'}
