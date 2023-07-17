@@ -2,11 +2,13 @@ import React, { useMemo } from 'react';
 import { Form, Button, Row, Col, Space } from 'antd';
 import { Data } from '../types';
 import { outputIds } from '../constants';
+import style from './formActions.less';
 
 interface Props {
   data: Data;
   submit: (outputId: string, outputRels?: any) => void;
   outputs: any;
+  isMobile: boolean;
 }
 
 const FormActions = (props: Props) => {
@@ -32,7 +34,7 @@ const FormActions = (props: Props) => {
   // }, [layout])
 
   return (
-    <Space wrap data-form-actions>
+    <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
         if (typeof item.visible !== 'undefined' && !item.visible) {
           return null;

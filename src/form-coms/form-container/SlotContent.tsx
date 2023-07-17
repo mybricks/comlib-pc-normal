@@ -6,12 +6,14 @@ import InlineLayout from './layout/InlineLayout';
 import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
 import { getFormItem } from './utils';
+import { checkIfMobile } from '../../utils';
 
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env } = props;
   const layout = data.config?.layout || data.layout;
 
   const isEmpty = slots['content'].size === 0 && env.edit;
+  const isMobile = checkIfMobile(env);
 
   const isInlineModel = useMemo(() => {
     return layout === 'inline';
@@ -26,7 +28,7 @@ const SlotContent = (props) => {
   }, [layout]);
 
   const FormActionsWrapper = () => {
-    return <FormActions data={data} outputs={outputs} submit={submit} />;
+    return <FormActions data={data} outputs={outputs} submit={submit} isMobile={isMobile} />;
   };
 
   const content = useMemo(() => {
@@ -41,6 +43,7 @@ const SlotContent = (props) => {
             slots={slots}
             com={com}
             item={item}
+            isMobile={isMobile}
             // field={props?.field}
           />
         );
@@ -67,7 +70,11 @@ const SlotContent = (props) => {
               childrenInputs[com.id] = com.inputs;
             }
 
-            const flexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
+            const flexBasis = isMobile
+              ? '100%'
+              : widthOption === 'px'
+              ? `${width}px`
+              : `${(span * 100) / 24}%`;
 
             if (typeof item?.visible !== 'undefined') {
               item.visible = com.style.display !== 'none';
@@ -104,7 +111,12 @@ const SlotContent = (props) => {
               </InlineLayout>
             )}
             {isHorizontalModel && (
-              <HorizontalLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
+              <HorizontalLayout
+                data={data}
+                isEmpty={isEmpty}
+                isMobile={isMobile}
+                actions={<FormActionsWrapper />}
+              >
                 {jsx}
               </HorizontalLayout>
             )}
@@ -119,7 +131,7 @@ const SlotContent = (props) => {
       // inputValues: {}
       // key: props?.field?.name
     });
-  }, [layout, slots]);
+  }, [layout, slots, isMobile]);
 
   return content;
 };

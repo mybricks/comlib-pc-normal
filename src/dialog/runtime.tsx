@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
+
 import {
   Data,
   FOOTER_CONTENT_TYPE,
@@ -278,11 +279,10 @@ const RuntimeRender = ({
       </div>
     );
   };
-
   return (
     <Modal
       visible={visible}
-      width={width}
+      width={isMobile ? '100%' : width}
       keyboard={false}
       maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
