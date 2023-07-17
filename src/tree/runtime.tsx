@@ -420,7 +420,9 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     }
     return (
       <div style={wrapperStyle}>
-        <span style={titleStyle}>{item.title}</span>
+        <span style={titleStyle} className="title">
+          {item.title}
+        </span>
         {editInput}
         {actionBtns}
       </div>

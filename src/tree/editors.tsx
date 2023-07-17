@@ -78,260 +78,295 @@ export default {
     pretreatTreeData({ treeData: data.treeData, data, defaultExpandAll: true });
     setCheckboxStatus({ treeData: data.treeData, value: false });
   },
-  ':root'({ data }, ...cate) {
-    cate[0].title = '常规';
-    cate[1].title = '高级';
-    cate[0].items = [
+  ':root': {
+    title: '树组件',
+    style: [
       {
-        title: '配置',
-        items: [
+        title: '树节点公共样式',
+        options: [
           {
-            title: '节点标识字段',
-            type: 'text',
-            description:
-              '不填时会根据节点位置生成唯一标识，存储在key属性中。所有节点的标识字段值在整个树范围内不能重复。',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                if (!data.keyFieldName) {
-                  data.keyFieldName = 'key';
+            type: 'font',
+            config: {
+              disableTextAlign: true
+            }
+          }
+        ],
+        target:
+          'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title '
+      }
+    ],
+    items: ({ data }, ...cate) => {
+      cate[0].title = '常规';
+      cate[1].title = '高级';
+      cate[0].items = [
+        {
+          title: '配置',
+          items: [
+            {
+              title: '节点标识字段',
+              type: 'text',
+              description:
+                '不填时会根据节点位置生成唯一标识，存储在key属性中。所有节点的标识字段值在整个树范围内不能重复。',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  if (!data.keyFieldName) {
+                    data.keyFieldName = 'key';
+                  }
+                  return data.keyFieldName;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.keyFieldName = value;
                 }
-                return data.keyFieldName;
-              },
-              set({ data }: EditorResult<Data>, value: string) {
-                data.keyFieldName = value;
               }
-            }
-          },
-          {
-            title: '默认展开',
-            type: 'switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.defaultExpandAll;
-              },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.defaultExpandAll = value;
+            },
+            {
+              title: '默认展开',
+              type: 'switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.defaultExpandAll;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.defaultExpandAll = value;
+                }
               }
-            }
-          },
-          {
-            title: '勾选',
-            type: 'Switch',
-            value: {
-              get({ data }: Result) {
+            },
+            {
+              title: '勾选',
+              type: 'Switch',
+              value: {
+                get({ data }: Result) {
+                  return data.checkable;
+                },
+                set({ data }: Result, value: boolean) {
+                  data.checkable = value;
+                }
+              }
+            },
+            {
+              title: '父子节点勾选联动',
+              type: 'Switch',
+              description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',
+              ifVisible({ data }: EditorResult<Data>) {
                 return data.checkable;
               },
-              set({ data }: Result, value: boolean) {
-                data.checkable = value;
+              value: {
+                get({ data }: Result) {
+                  return !data.checkStrictly;
+                },
+                set({ data }: Result, value: boolean) {
+                  data.checkStrictly = !value;
+                }
+              }
+            },
+            {
+              title: '禁用',
+              type: 'Switch',
+              ifVisible({ data }: Result) {
+                return data.checkable;
+              },
+              value: {
+                get({ data }: Result) {
+                  return data.disableCheckbox;
+                },
+                set({ data }: Result, value: boolean) {
+                  setCheckboxStatus({ treeData: data.treeData, value });
+                  data.disableCheckbox = value;
+                }
+              }
+            },
+            {
+              title: '输出父节点信息',
+              type: 'Switch',
+              ifVisible({ data }: Result) {
+                return data.checkable && !data.checkStrictly;
+              },
+              value: {
+                get({ data }: Result) {
+                  return data.outParentKeys;
+                },
+                set({ data }: Result, value: boolean) {
+                  data.outParentKeys = value;
+                }
               }
             }
-          },
-          {
-            title: '父子节点勾选联动',
-            type: 'Switch',
-            description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.checkable;
-            },
-            value: {
-              get({ data }: Result) {
-                return !data.checkStrictly;
-              },
-              set({ data }: Result, value: boolean) {
-                data.checkStrictly = !value;
-              }
-            }
-          },
-          {
-            title: '禁用',
-            type: 'Switch',
-            ifVisible({ data }: Result) {
-              return data.checkable;
-            },
-            value: {
-              get({ data }: Result) {
-                return data.disableCheckbox;
-              },
-              set({ data }: Result, value: boolean) {
-                setCheckboxStatus({ treeData: data.treeData, value });
-                data.disableCheckbox = value;
-              }
-            }
-          },
-          {
-            title: '输出父节点信息',
-            type: 'Switch',
-            ifVisible({ data }: Result) {
-              return data.checkable && !data.checkStrictly;
-            },
-            value: {
-              get({ data }: Result) {
-                return data.outParentKeys;
-              },
-              set({ data }: Result, value: boolean) {
-                data.outParentKeys = value;
-              }
+          ]
+        },
+        {
+          title: '添加节点',
+          type: 'button',
+          value: {
+            set({ data }: EditorResult<Data>) {
+              const newChildNode = buildNewNode(uuid());
+              data.treeData.push(newChildNode);
             }
           }
-        ]
-      },
-      {
-        title: '添加节点',
-        type: 'button',
-        value: {
-          set({ data }: EditorResult<Data>) {
-            const newChildNode = buildNewNode(uuid());
-            data.treeData.push(newChildNode);
-          }
-        }
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '节点点击',
-            type: '_Event',
-            options: () => {
-              return {
-                outputId: 'click'
-              };
-            }
-          },
-          {
-            title: '勾选事件',
-            type: 'Switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '节点点击',
+              type: '_Event',
+              options: () => {
+                return {
+                  outputId: 'click'
+                };
+              }
+            },
+            {
+              title: '勾选事件',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useCheckEvent;
+                },
+                set({ data, output }: EditorResult<Data>, val) {
+                  if (val) {
+                    output.add('check', '勾选事件', {
+                      title: '勾选项数据',
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    });
+                  } else {
+                    output.remove('check');
+                  }
+                  data.useCheckEvent = val;
+                }
+              }
+            },
+            {
+              title: '勾选事件',
+              type: '_Event',
+              ifVisible({ data }: EditorResult<Data>) {
                 return data.useCheckEvent;
               },
-              set({ data, output }: EditorResult<Data>, val) {
-                if (val) {
-                  output.add('check', '勾选事件', {
-                    title: '勾选项数据',
-                    type: 'array',
-                    items: {
-                      type: 'string'
-                    }
-                  });
-                } else {
-                  output.remove('check');
-                }
-                data.useCheckEvent = val;
+              options: () => {
+                return {
+                  outputId: 'check'
+                };
               }
             }
-          },
-          {
-            title: '勾选事件',
-            type: '_Event',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.useCheckEvent;
+          ]
+        }
+      ];
+      cate[1].items = [
+        {
+          title: '节点点击展开收起',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.clickExpandable;
             },
-            options: () => {
-              return {
-                outputId: 'check'
-              };
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.clickExpandable = value;
             }
           }
-        ]
-      }
-    ];
-    cate[1].items = [
-      {
-        title: '节点点击展开收起',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.clickExpandable;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.clickExpandable = value;
-          }
-        }
-      },
-      {
-        title: '操作项',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.useActions;
-          },
-          set({ data, output }: EditorResult<Data>, value: boolean) {
-            data.useActions = value;
-            if (value && !data?.actionBtns?.length) {
-              data.actionBtns = [
-                {
-                  type: 'link',
-                  title: '修改',
-                  size: 'middle',
-                  id: 'modify'
-                },
-                {
-                  type: 'link',
-                  title: '删除',
-                  size: 'middle',
-                  id: 'delete'
-                }
-              ];
-              const schema = {
-                type: 'object',
-                properties: {
-                  title: {
-                    type: 'string'
+        },
+        {
+          title: '操作项',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useActions;
+            },
+            set({ data, output }: EditorResult<Data>, value: boolean) {
+              data.useActions = value;
+              if (value && !data?.actionBtns?.length) {
+                data.actionBtns = [
+                  {
+                    type: 'link',
+                    title: '修改',
+                    size: 'middle',
+                    id: 'modify'
                   },
-                  depth: {
-                    type: 'number'
+                  {
+                    type: 'link',
+                    title: '删除',
+                    size: 'middle',
+                    id: 'delete'
                   }
-                }
-              };
-              !output.get(MODIFY_BTN_ID) && output.add(MODIFY_BTN_ID, '修改', schema);
-              !output.get(DELETE_BTN_ID) && output.add(DELETE_BTN_ID, '删除', schema);
+                ];
+                const schema = {
+                  type: 'object',
+                  properties: {
+                    title: {
+                      type: 'string'
+                    },
+                    depth: {
+                      type: 'number'
+                    }
+                  }
+                };
+                !output.get(MODIFY_BTN_ID) && output.add(MODIFY_BTN_ID, '修改', schema);
+                !output.get(DELETE_BTN_ID) && output.add(DELETE_BTN_ID, '删除', schema);
+              }
             }
           }
-        }
-      },
-      {
-        title: '添加节点',
-        description: '开启后，树组件支持添加节点功能',
-        type: 'Switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
+        },
+        {
+          title: '添加节点',
+          description: '开启后，树组件支持添加节点功能',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.addable;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.addable = value;
+            }
+          }
+        },
+        {
+          title: '支持添加节点的最大深度',
+          type: 'InputNumber',
+          description: '设置允许添加节点的最大深度，0表示不限制',
+          options: [{ min: 0, width: 100 }],
+          ifVisible({ data }: EditorResult<Data>) {
             return data.addable;
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.addable = value;
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return [data.maxDepth];
+            },
+            set({ data }: EditorResult<Data>, value: number[]) {
+              data.maxDepth = value[0];
+            }
           }
-        }
-      },
-      {
-        title: '支持添加节点的最大深度',
-        type: 'InputNumber',
-        description: '设置允许添加节点的最大深度，0表示不限制',
-        options: [{ min: 0, width: 100 }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.addable;
         },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return [data.maxDepth];
-          },
-          set({ data }: EditorResult<Data>, value: number[]) {
-            data.maxDepth = value[0];
+        {
+          title: '添加完成',
+          type: '_Event',
+          options: () => {
+            return {
+              outputId: 'addNodeDone'
+            };
           }
         }
-      },
-      {
-        title: '添加完成',
-        type: '_Event',
-        options: () => {
-          return {
-            outputId: 'addNodeDone'
-          };
-        }
-      }
-    ];
+      ];
+    }
   },
   '[data-tree-node-id]': {
     title: '树节点配置项',
+    style: [
+      {
+        title: '当前节点样式',
+        options: [
+          {
+            type: 'font',
+            config: {
+              disableTextAlign: true
+            }
+          }
+        ],
+        target: ({ focusArea, data }: EditorResult<Data>) => {
+          if (!focusArea) return;
+          return `div.ant-tree-treenode[data-tree-node-id="${focusArea.dataset.treeNodeId}"] > span.ant-tree-node-content-wrapper > .ant-tree-title .title `;
+        }
+      }
+    ],
     items: [
       {
         title: '标题',
