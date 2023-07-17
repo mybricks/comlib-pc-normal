@@ -1,7 +1,7 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "步骤条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -52,7 +52,7 @@
       "desc": "步骤从0开始计数",
       "schema": {
         "type": "array",
-        "items": { 
+        "items": {
           "type": "number"
         }
       }
