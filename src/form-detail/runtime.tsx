@@ -9,8 +9,9 @@ import { checkIfMobile } from '../utils';
 const { Text } = Typography;
 
 export default function ({ env, data, inputs, slots, outputs, onError }: RuntimeParams<Data>) {
-  const { size, title, showTitle, layout, column, bordered, colon } = data || {};
+  const { size, title, showTitle, layout, bordered, colon } = data || {};
   const isMobile = checkIfMobile(env);
+  const column = isMobile ? data.mobileColumn : data.column;
   // 后置操作渲染
   const SuffixRender = (props) => {
     const { type, id, value, useSuffix, suffixBtnText = '查看更多' } = props;
@@ -133,7 +134,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
       title={showTitle ? env.i18n(title) : undefined}
       size={isMobile ? 'small' : size}
       layout={layout}
-      column={isMobile ? 1 : column}
+      column={column}
       bordered={bordered}
       colon={colon}
       className={css.des}

@@ -50,5 +50,10 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
     }
   });
 
+  // 1.0.11 添加移动端列数
+  if (typeof data.mobileColumn === 'undefined') {
+    data.mobileColumn = 1
+  }
+
   return true;
 }
