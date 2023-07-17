@@ -55,7 +55,7 @@ export default {
             }
           }
         },
-        ...MaxHeightEditor,
+        // ...MaxHeightEditor,
         ...OverflowEditor,
         ...FixedEditor
       ];
@@ -69,6 +69,7 @@ export default {
     },
     style: [
       {
+      ...MaxHeightEditor,
         title: '默认',
         options: ['padding', 'border', 'background'],
         target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
