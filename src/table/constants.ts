@@ -80,6 +80,7 @@ export const OutputIds = {
   SORTER: 'sorter',
   // 点击行触发
   ROW_CLICK: 'rowClick',
+  Edit_Table_Data: 'editTableData'
 };
 
 export const DefaultRowKey = '_uuid';

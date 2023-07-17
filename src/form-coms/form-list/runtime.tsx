@@ -60,10 +60,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 重置值
     inputs['resetValue'](() => {
-      data.value = [{}];
-      generateFields(data);
-      data.currentAction = InputIds.ResetValue;
-      setValuesForInput({ data, childrenStore });
+      data.value = [];
+      data.fields = [];
+      data.MaxKey = -1;
     });
 
     //设置禁用
