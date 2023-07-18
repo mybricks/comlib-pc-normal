@@ -1,6 +1,7 @@
 import { Modal } from 'antd';
 import { Data, InputIds, OutputIds } from './constants';
 import css from './runtime.less';
+import { checkIfMobile } from '../utils';
 
 const createFakeDom = (root) => {
   const div = document.createElement('div');
@@ -10,6 +11,7 @@ const createFakeDom = (root) => {
 
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
+  const isMobile = checkIfMobile(env)
   const onOk = () => {
     outputs[OutputIds.Ok](data.outputValue);
   };
@@ -21,7 +23,8 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const open = () => {
     Modal[type]({
       ...data,
-      className: css.modalWrap,
+      width: isMobile ? '100%' : '520px',
+      className: isMobile ? css.mobileWrap : css.modalWrap,
       title: showTitle ? data.title : undefined,
       onCancel,
       onOk,

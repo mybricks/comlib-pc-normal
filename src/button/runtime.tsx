@@ -4,10 +4,7 @@ import { Data, OutputIds, LocationEnum } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { Space, Image } from 'antd';
-import useMediaStyle from './useMediaStyle';
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
-  useMediaStyle({ env });
-
   //如果data.dataType是'external'的
   useEffect(() => {
     if (env.runtime) {
