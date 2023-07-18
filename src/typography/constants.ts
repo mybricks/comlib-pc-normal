@@ -57,4 +57,6 @@ export interface Data {
     [prop: string]: string;
   };
   itemList: Item[];
+  
+  isUnity: boolean;
 }

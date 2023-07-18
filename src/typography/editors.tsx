@@ -48,8 +48,26 @@ export default {
   ':root': {
     style: [
       {
-        title: '文本排版',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }],
+        options: ['border'],
+        target: `:root`
+      },
+      {
+        title: '统一字体样式',
+        type: 'Switch',
+        value: {
+          get({ data }) {
+            return data.isUnity || false;
+          },
+          set({ data }, value) {
+            data.isUnity = value;
+          }
+        }
+      },
+      {
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isUnity;
+        },
         target: `:root`
       }
     ],
@@ -100,6 +118,13 @@ export default {
         }
       },
       {
+        title: '单击',
+        type: '_Event',
+        options: {
+          outputId: 'click'
+        }
+      },
+      {
         title: '增加文本',
         type: 'Button',
         value: {
@@ -143,6 +168,9 @@ export default {
       {
         title: '文本样式',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.isUnity;
+        },
         target({ data, focusArea }) {
           return `.${findEle({ data, focusArea }, 'textId').key}`;
         }

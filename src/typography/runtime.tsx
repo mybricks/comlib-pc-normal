@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Typography, Tag } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import { Data, Item } from './constants';
@@ -17,7 +17,7 @@ const defaultStyle: {
   color: '#000000'
 };
 
-const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
+const itemRender = ({ data: item, outputs, env, isSet, isUnity }) => {
   let style = defaultStyle;
   if (item.style) {
     style = item.style;
@@ -44,12 +44,19 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           }}
         >
           <Text
-            style={{ cursor: item.click ? 'pointer' : 'unset' }}
-            className={`${item.key} ${css.text} text`}
+            style={{ cursor: item.click ? 'pointer' : 'unset', color: isUnity ? 'unset' : void 0 }}
+            className={!isUnity ? `${item.key} ${css.text} text` : void 0}
             type={item.textType}
             onClick={() => {
-              if (item.click) {
+              if (item.click && !isSet && env.runtime) {
                 outputs[item.key](item.outputContent || item.content || '');
+              }
+              if (env.runtime) {
+                outputs['click']({
+                  key: item.key,
+                  content: item.content || '',
+                  type: item.type
+                });
               }
             }}
           >
@@ -71,8 +78,15 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
         >
           <Tag
             onClick={() => {
-              if (item.click) {
+              if (item.click && !isSet && env.runtime) {
                 outputs[item.key](item.outputContent || '');
+              }
+              if (env.runtime) {
+                outputs['click']({
+                  key: item.key,
+                  content: item.content || '',
+                  type: item.type
+                });
               }
             }}
             color={item.color}
@@ -96,7 +110,17 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           <Link
             style={{ fontSize: item.fontSize, fontWeight: item.fontStyle }}
             onClick={() => {
-              outputs[item.key](item.link);
+              if (!isSet && item.key) {
+                outputs[item.key](item.link);
+              }
+              if (env.runtime) {
+                outputs['click']({
+                  key: item.key,
+                  content: item.content || '',
+                  type: item.type,
+                  link: item.link || ''
+                });
+              }
             }}
           >
             {itemContent}
@@ -125,21 +149,53 @@ const EditRender = (props: RuntimeParams<Data>) => {
     if (!data.items || data.items.length === 0) {
       return <p className={css.suggestion}>在编辑栏中点击"添加文本"</p>;
     }
-    return <>{data.items.map((item) => itemRender({ ...props, data: item }))}</>;
+    return (
+      <>
+        {data.items.map((item) =>
+          itemRender({ ...props, data: item, isSet: false, isUnity: data.isUnity })
+        )}
+      </>
+    );
   };
   return (
-    <div className={`${css.container} container`} style={{ textAlign: data.style.textAlign }}>
+    <div
+      className={`${css.container} container`}
+      style={{ textAlign: data.style.textAlign, fontSize: !data.isUnity ? 'unset' : void 0 }}
+    >
       {renderItems()}
     </div>
   );
 };
 
 const RuntimeRender = (props: RuntimeParams<Data>) => {
-  const { inputs, data } = props;
+  const { inputs, data, env } = props;
+  const [isSet, setIsSet] = useState<boolean>(false);
 
   useMemo(() => {
     // TODO remove cloneDeep?
     data.itemList = cloneDeep(data.items);
+  }, []);
+
+  useEffect(() => {
+    if (env.runtime && inputs['setData']) {
+      inputs['setData']((val) => {
+        if (Array.isArray(val)) {
+          let newVal = val.map((item) => {
+            let newItem = { ...item, src: 1 };
+            if (!item.key) {
+              newItem = { ...newItem, key: uuid() };
+            }
+            if (!item.type) {
+              newItem = { ...newItem, type: 'Text' };
+            }
+            return newItem;
+          });
+
+          setIsSet(true);
+          data.itemList = newVal;
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -202,11 +258,21 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   }, []);
 
   const renderItems = () => {
-    return <>{data.itemList.map((item) => itemRender({ ...props, data: item }))}</>;
+    return (
+      <>
+        {data.itemList.map((item) =>
+          itemRender({ ...props, data: item, isSet: isSet, isUnity: data.isUnity })
+        )}
+      </>
+    );
   };
 
   return (
-    <div className={css.container} style={{ textAlign: data.style.textAlign }} data-root="root">
+    <div
+      className={css.container}
+      style={{ textAlign: data.style.textAlign, fontSize: !data.isUnity ? 'unset' : void 0 }}
+      data-root="root"
+    >
       {renderItems()}
     </div>
   );

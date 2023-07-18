@@ -16,5 +16,6 @@
     "color": "#000000"
   },
   "flexStyleHorizontalKey": "horizontallyauto",
-  "flexStyleVerticalKey": "verticallyauto"
+  "flexStyleVerticalKey": "verticallyauto",
+  "isUnity": false
 }
