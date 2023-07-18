@@ -3,7 +3,7 @@ export default function uploadimage(props) {
   const global = (window).tinyMCE.util.Tools.resolve('tinymce.PluginManager');
 
   function selectLocalImages(editor) {		
-      click('uploadimage')
+    click('uploadimage')
   }
 
   function selectLocalFullScreen(editor) {
