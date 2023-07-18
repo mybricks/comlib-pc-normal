@@ -5,6 +5,7 @@ import { Badge, Calendar } from 'antd';
 import { CalendarMode } from 'antd/lib/calendar/generateCalendar';
 import { Data, OutputIds, SlotIds, InputIds, ModeEnum } from './constants';
 import css from './style.less';
+import { checkIfMobile } from '../utils';
 
 // 格式化日期
 const formatDate = (date?: moment.Moment, format?: string) => {
@@ -31,7 +32,7 @@ export default (props: RuntimeParams<Data>) => {
   // 编辑态是否渲染作用域
   let showOneSlot = env.edit && true;
   const HeadSlotRef = useRef<any>({});
-
+  const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.edit) {
       const nowDate = formatDate();
@@ -196,6 +197,7 @@ export default (props: RuntimeParams<Data>) => {
   return (
     <Calendar
       mode={data.mode}
+      fullscreen={!isMobile}
       className={classnames(
         css.calendar,
         !useModeSwitch && css.hideModeSwitch,

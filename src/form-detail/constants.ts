@@ -76,6 +76,7 @@ export interface Data {
   size: SizeEnum;
   layout: LayoutEnum;
   column: number;
+  mobileColumn: number;
   bordered: boolean;
   colon: boolean;
   items: Item[];

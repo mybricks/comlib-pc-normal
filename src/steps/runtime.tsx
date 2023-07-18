@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Data, INTO, LEAVE, CLICK } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
+import { checkIfMobile } from '../utils';
 
 const { Step } = Steps;
 
@@ -19,6 +20,9 @@ export default function ({
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
+  const isMobile = checkIfMobile(env);
+
+  const direction = isMobile ? 'vertical' : data.steps.direction || 'horizontal';
   useEffect(() => {
     if (runtime) {
       data.current = 0;
@@ -167,7 +171,7 @@ export default function ({
   const renderPreviousBtn = () => {
     return data.toolbar.btns.includes('previous') && data.current > 0 ? (
       <Button
-        style={{ margin: '0 8px' }}
+        style={isMobile ? { margin: '5px 0' } : { margin: '0 8px' }}
         onClick={() => prev(getCurrentStep(-1))}
         data-item-type="pre"
       >
@@ -208,7 +212,7 @@ export default function ({
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
-        className={css.stepsAction}
+        className={`${css.stepsAction} ${isMobile ? css.mobilebtns : ''}`}
         data-item-type="stepActions"
         style={{
           justifyContent: data.toolbar.actionAlign,
@@ -232,13 +236,17 @@ export default function ({
 
   return (
     <div className={css.stepbox}>
-      <div className={classnames(data.steps.direction === 'vertical' && css.verticalWrap)}>
+      <div
+        className={`${direction === 'vertical' && css.verticalWrap} ${
+          isMobile ? css.mobileWrap : ''
+        }`}
+      >
         <Steps
           current={data.current}
-          size={data.steps.size}
+          size={isMobile ? 'small' : data.steps.size}
           type={type}
           progressDot={progressDot}
-          direction={data.steps.direction || 'horizontal'}
+          direction={direction}
         >
           {stepAry.map((item: any, index) => {
             const emptyNode = <div style={{ lineHeight: 32 }} />;

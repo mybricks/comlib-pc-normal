@@ -52,6 +52,9 @@ const basicUploadDoneSchema = {
 };
 
 export default {
+  '@init': (props: EditorResult<Data>) => {
+    console.log('props', props.env);
+  },
   '@resize': {
     options: ['width']
   },
@@ -468,7 +471,7 @@ export default {
             get({ data, env }: EditorResult<Data>) {
               // 兼容没有设置env.uploadFile的情况
               if (!data.customUpload && typeof env.uploadFile !== 'function') {
-                data.customUpload = true;
+                return false;
               }
               return data.customUpload;
             },

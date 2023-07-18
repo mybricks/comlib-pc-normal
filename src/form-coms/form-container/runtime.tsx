@@ -14,6 +14,7 @@ import { getLabelCol, isObject, setFormItemsProps, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
+import { checkIfMobile } from '../../utils';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -33,7 +34,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
-
+  const isMobile = checkIfMobile(env);
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
   }>(() => {

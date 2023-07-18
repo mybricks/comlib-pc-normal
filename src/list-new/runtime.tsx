@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { List, Spin } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds } from './constants';
-import { uuid } from '../utils';
+import { checkIfMobile, uuid } from '../utils';
 import css from './style.less';
 import { SortableList, SortableItem } from './sort';
 import { AutoRender, NoAutoRender, NoAutoScrollRender } from './render';
@@ -16,10 +16,13 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
 
 const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
-  const { grid, useLoading, useGetDataSource } = data;
+  let { grid, useLoading, useGetDataSource } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
+  const isMobile = checkIfMobile(env);
+
+  grid = isMobile ? { ...grid, column: grid.mobileColumn } : { ...grid };
 
   //设置数据源输入及loading状态设置
   useEffect(() => {

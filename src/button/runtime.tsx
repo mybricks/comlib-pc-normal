@@ -4,7 +4,6 @@ import { Data, OutputIds, LocationEnum } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { Space, Image } from 'antd';
-
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //如果data.dataType是'external'的
   useEffect(() => {

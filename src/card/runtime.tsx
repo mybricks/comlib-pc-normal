@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Card } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 import css from './runtime.less';
+import { checkIfMobile } from '../utils';
 
 const CursorType = {
   Pointer: 'pointer',
@@ -10,6 +11,8 @@ const CursorType = {
 export default (props: RuntimeParams<Data>) => {
   const { data, slots, inputs, env, outputs } = props;
   const { title, useExtra, bordered, size, style, hoverable, useClick, isAction } = data;
+
+  const isMobile = checkIfMobile(env);
 
   useEffect(() => {
     if (env.runtime) {
@@ -46,9 +49,9 @@ export default (props: RuntimeParams<Data>) => {
     <div className={`${css.card} card`}>
       <Card
         title={env.i18n(title)}
-        size={size}
+        size={isMobile ? 'small' : size}
         bodyStyle={{
-          padding: data.padding,
+          padding: isMobile ? '12px' : data.padding,
           height: title !== '' ? `calc(100% - ${data.padding}*2)` : '100%'
         }}
         bordered={bordered}

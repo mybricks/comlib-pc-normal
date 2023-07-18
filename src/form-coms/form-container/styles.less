@@ -60,3 +60,55 @@
     }
   }
 }
+
+.mobileForm {
+  :global {
+    .ant-form-item .ant-form-item-label {
+      padding: 0 0 8px;
+      line-height: 1.5715;
+      white-space: normal;
+      text-align: left;
+    }
+
+    .ant-form-item .ant-form-item-label > label {
+      margin: 0;
+    }
+
+    .ant-form-item .ant-form-item-label > label:after {
+      display: none;
+    }
+
+    .ant-form-rtl.ant-form-item .ant-form-item-label {
+      text-align: right;
+    }
+
+    .ant-form .ant-form-item {
+      flex-wrap: wrap;
+    }
+
+    .ant-form .ant-form-item .ant-form-item-control,
+    .ant-form .ant-form-item .ant-form-item-label {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .ant-col-xs-24.ant-form-item-label {
+      padding: 0 0 8px;
+      line-height: 1.5715;
+      white-space: normal;
+      text-align: left;
+    }
+
+    .ant-col-xs-24.ant-form-item-label > label {
+      margin: 0;
+    }
+
+    .ant-col-xs-24.ant-form-item-label > label:after {
+      display: none;
+    }
+
+    .ant-form-rtl.ant-col-xs-24.ant-form-item-label {
+      text-align: right;
+    }
+  }
+}

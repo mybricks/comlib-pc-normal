@@ -11,10 +11,10 @@ export const LayoutEditor = [
         type: 'switch',
         description: '默认自动换行，关闭后不换行, 接着可配置是否需要横向滚动',
         value: {
-          get({ data }: EditorResult<Data>){
+          get({ data }: EditorResult<Data>) {
             return data.isAuto;
           },
-          set({ data }: EditorResult<Data>, val: boolean){
+          set({ data }: EditorResult<Data>, val: boolean) {
             data.isAuto = val;
           }
         }
@@ -46,11 +46,11 @@ export const LayoutEditor = [
         ifVisible({ data }: EditorResult<Data>) {
           return !data.isAuto;
         },
-        value:{
-          get({ data }: EditorResult<Data>){
+        value: {
+          get({ data }: EditorResult<Data>) {
             return data.isScroll || false;
           },
-          set({ data }: EditorResult<Data>, val: boolean){
+          set({ data }: EditorResult<Data>, val: boolean) {
             data.isScroll = val;
           }
         }
@@ -62,11 +62,11 @@ export const LayoutEditor = [
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.isAuto;
         },
-        value:{
-          get({ data }: EditorResult<Data>){
+        value: {
+          get({ data }: EditorResult<Data>) {
             return data.isCustom || false;
           },
-          set({ data }: EditorResult<Data>, val: boolean){
+          set({ data }: EditorResult<Data>, val: boolean) {
             data.isCustom = val;
           }
         }
@@ -75,8 +75,8 @@ export const LayoutEditor = [
         title: '列数',
         type: 'InputNumber',
         ifVisible({ data }: EditorResult<Data>) {
-            return !!data.isAuto && !!data.isCustom;
-          },
+          return !!data.isAuto && !!data.isCustom;
+        },
         options: [{ min: 1, max: 1000, width: 100 }],
         value: {
           get({ data }: EditorResult<Data>) {
@@ -88,11 +88,27 @@ export const LayoutEditor = [
         }
       },
       {
+        title: '移动端列数',
+        type: 'InputNumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.isAuto && !!data.isCustom;
+        },
+        options: [{ min: 1, max: 1000, width: 100 }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.grid.mobileColumn];
+          },
+          set({ data }: EditorResult<Data>, val) {
+            data.grid.mobileColumn = val[0];
+          }
+        }
+      },
+      {
         title: '可拖拽排序',
         type: 'switch',
         ifVisible({ data }: EditorResult<Data>) {
           const canSort = !!(data.isAuto && data.isCustom && data.grid.column === 1)
-          if(!canSort){
+          if (!canSort) {
             data.canSort = canSort
           }
           return canSort;

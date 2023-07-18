@@ -1,7 +1,6 @@
 .stepbox {
   .verticalWrap {
     display: flex;
-
     :global {
       .ant-steps {
         width: fit-content;
@@ -65,4 +64,17 @@
 .preview {
   background-color: rgba(253, 247, 166, 0.2);
   outline: 1px dashed #d7d7d7;
+}
+
+.mobilebtns.mobilebtns {
+  display: flex;
+  flex-direction: column;
+  & > button {
+    margin: 5px 0;
+    width: 100% !important;
+  }
+}
+
+.mobileWrap.mobileWrap {
+  flex-direction: column;
 }

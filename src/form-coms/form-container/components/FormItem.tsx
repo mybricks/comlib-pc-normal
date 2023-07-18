@@ -10,6 +10,7 @@ interface FormItemProps {
   item: any;
   // field: any;
   slots: any;
+  isMobile: boolean;
 }
 
 const JSXWrapper = (props: FormControlProps) => {
@@ -23,7 +24,7 @@ const JSXWrapper = (props: FormControlProps) => {
 };
 
 const FormItem = (props: FormItemProps) => {
-  const { com, item, data, slots } = props;
+  const { com, item, data, slots, isMobile } = props;
   const layout = data.config?.layout || data.layout;
   const formColon = data.config?.colon || data.colon;
 
@@ -48,7 +49,7 @@ const FormItem = (props: FormItemProps) => {
     <Form.Item
       // {...field}
       label={
-        item?.hiddenLabel ? (
+        item?.hiddenLabel || (isMobile && item?.label?.trim()?.length === 0) ? (
           void 0
         ) : (
           <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>

@@ -58,14 +58,27 @@ export const BaseEditor = [
     }
   },
   {
+    title: '移动端列数',
+    type: 'Slider',
+    options: [{ max: 12, min: 1, steps: 1, formatter: '/12' }],
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.mobileColumn;
+      },
+      set({ data }: EditorResult<Data>, value: number) {
+        data.mobileColumn = value;
+      }
+    }
+  },
+  {
     title: '增加描述项',
     type: 'Button',
     value: {
       set({ data, input, output, slots }: EditorResult<Data>) {
-        data.items.push(createItem({data}));
+        data.items.push(createItem({ data }));
         updateIOSchema({ data, input, output });
-        data.items.map((item)=>{
-          if(item.type !== TypeEnum.Text){
+        data.items.map((item) => {
+          if (item.type !== TypeEnum.Text) {
             updateScopeIOSchema({ data, item, slots, input });
           }
         })

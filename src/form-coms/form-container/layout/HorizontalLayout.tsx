@@ -8,10 +8,11 @@ interface HorizontalLayoutProps {
   children?: React.ReactNode;
   actions?: React.ReactNode;
   isEmpty: boolean;
+  isMobile?: boolean;
 }
 
 const HorizontalLayout = (props: HorizontalLayoutProps) => {
-  const { children, actions, data, isEmpty } = props;
+  const { children, actions, data, isEmpty, isMobile } = props;
 
   // const actionFlexBasis =
   //   data.actions.widthOption === 'px'
@@ -20,6 +21,7 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
   const { widthOption, width, span } = data.actions;
 
   const getFlexValue = useCallback(() => {
+    if (isMobile) return 1;
     if (widthOption === 'px') {
       return `0 0 ${width || 0}px`;
     } else if (widthOption === 'flexFull') {
@@ -27,7 +29,7 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
     }
 
     return `0 0 ${(span * 100) / 24}%`;
-  }, [widthOption, width, span]);
+  }, [widthOption, width, span, isMobile]);
 
   return (
     <>
@@ -40,7 +42,7 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
             textAlign: data.actions.align
           }}
         >
-          <Form.Item label=" " colon={false}>
+          <Form.Item label={isMobile ? '' : ' '} colon={false}>
             {actions}
           </Form.Item>
         </Col>

@@ -128,3 +128,7 @@ export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[
 export const isEmptyObject = (obj: any) => {
   return !Object.keys(obj ?? {}).length;
 }
+
+export const checkIfMobile = (env) => {
+  return env?.canvas?.type === 'mobile'
+}

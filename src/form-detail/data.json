@@ -6,6 +6,7 @@
   "layout": "horizontal",
   "bordered": false,
   "column": 3,
+  "mobileColumn": 3,
   "items": [],
   "colon": true,
   "autoWidth": true

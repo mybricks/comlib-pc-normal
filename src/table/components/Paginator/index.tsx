@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { Pagination } from 'antd';
 import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
+import { checkIfMobile } from '../../../utils';
 
 interface Props {
   env: Env;
@@ -27,6 +28,7 @@ export default (props: Props) => {
     hideOnSinglePage
   } = data;
 
+  const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
     if (typeof pageNum === 'number') {
       data.current = pageNum;
@@ -87,7 +89,7 @@ export default (props: Props) => {
     <div
       style={{
         display: 'flex',
-        justifyContent: align
+        justifyContent: isMobile ? 'center' : align
       }}
     >
       <div
@@ -98,12 +100,12 @@ export default (props: Props) => {
       >
         <Pagination
           total={total}
-          showTotal={totalText}
+          showTotal={isMobile ? () => null : totalText}
           current={current}
           pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
           // defaultPageSize={defaultPageSize}
           size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-          simple={size === SizeTypeEnum.Simple}
+          simple={isMobile || size === SizeTypeEnum.Simple}
           showQuickJumper={showQuickJumper}
           showSizeChanger={showSizeChanger}
           pageSizeOptions={pageSizeOptions}
