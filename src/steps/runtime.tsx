@@ -169,7 +169,7 @@ export default function ({
   const renderPreviousBtn = () => {
     return data.toolbar.btns.includes('previous') && data.current > 0 ? (
       <Button
-        style={{ margin: '0 8px' }}
+        style={isMobile ? { margin: '5px 0' } : { margin: '0 8px' }}
         onClick={() => prev(getCurrentStep(-1))}
         data-item-type="pre"
       >
@@ -210,7 +210,7 @@ export default function ({
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
-        className={css.stepsAction}
+        className={`${css.stepsAction} ${isMobile ? css.mobilebtns : ''}`}
         data-item-type="stepActions"
         style={{
           justifyContent: data.toolbar.actionAlign,
