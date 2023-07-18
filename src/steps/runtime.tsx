@@ -21,6 +21,8 @@ export default function ({
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
   const isMobile = checkIfMobile(env);
+
+  const direction = isMobile ? 'vertical' : data.steps.direction || 'horizontal';
   useEffect(() => {
     if (runtime) {
       data.current = 0;
@@ -234,13 +236,17 @@ export default function ({
 
   return (
     <div className={css.stepbox}>
-      <div className={classnames(data.steps.direction === 'vertical' && css.verticalWrap)}>
+      <div
+        className={`${direction === 'vertical' && css.verticalWrap} ${
+          isMobile ? css.mobileWrap : ''
+        }`}
+      >
         <Steps
           current={data.current}
           size={isMobile ? 'small' : data.steps.size}
           type={type}
           progressDot={progressDot}
-          direction={data.steps.direction || 'horizontal'}
+          direction={direction}
         >
           {stepAry.map((item: any, index) => {
             const emptyNode = <div style={{ lineHeight: 32 }} />;
