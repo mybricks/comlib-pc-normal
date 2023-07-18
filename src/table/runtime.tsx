@@ -32,7 +32,7 @@ import { getColumnsFromSchema } from './editors';
 import { setDataSchema } from './schema';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, slots, input, output } = props;
+  const { env, data, inputs, outputs, slots } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -151,21 +151,8 @@ export default function (props: RuntimeParams<Data>) {
         Object.keys(slots).forEach((slot) => {
           const slotOutput = slots[slot]?.outputs[OutputIds.Edit_Table_Data];
           if (slotOutput) {
-            slotOutput((val: { value: any; index: number }) => {
-              // 找到修改的列字段
-              const findDataIndex = (columns: IColumn[]) => {
-                for (let column of columns) {
-                  if (column.slotId === slot) {
-                    return column.dataIndex;
-                  }
-                  // 当修改的是分组中的情况 需遍历其children
-                  if (column.children) {
-                    return findDataIndex(column.children);
-                  }
-                }
-              };
-              let dataIndex: string | string[] = findDataIndex(data.columns) || '';
-              editTableData(val, dataIndex);
+            slotOutput((val: { value: object; index: number }) => {
+              editTableData(val);
             });
           }
         });
@@ -178,24 +165,14 @@ export default function (props: RuntimeParams<Data>) {
     /**
      *
      * @param param0 { value, index } value 目标值 index 行号
-     * @param dataIndex 列的字段
      */
-    ({ value, index }, dataIndex: string | string[]) => {
+    ({ value, index }) => {
       index = Number(index);
-      if (value && dataIndex && index >= 0) {
+      if (value && index >= 0) {
         setDataSource((prevDataSource) => {
-          const temp = [...prevDataSource];
           if (index > prevDataSource.length) return prevDataSource;
-          // 当前列键值只有一个
-          if (typeof dataIndex === 'string') {
-            temp[index][dataIndex] = value;
-          }
-          // 当前列键值有多个
-          else if (Array.isArray(dataIndex)) {
-            dataIndex.forEach((item) => {
-              temp[index][item] = value[item];
-            });
-          }
+          const temp = [...prevDataSource];
+          temp[index] = value;
           return temp;
         });
       }
