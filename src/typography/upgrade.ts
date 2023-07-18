@@ -25,12 +25,12 @@ export default function ({
   });
 
   //1.0.3 -> 1.0.4 style升级，文本排版的边框和内容文字的颜色
-  if(!isEmptyObject(data.style)){
+  if(isEmptyObject(data.style)){
     setDeclaredStyle('.container', {...data.style});
     data.style = {}
   }
   data.items.forEach((item) => {
-    if(!isEmptyObject(item.style)){
+    if(isEmptyObject(item.style)){
       setDeclaredStyle(`.${item.key}`, {...item.style});
       item.style = {}
     }
