@@ -52,8 +52,9 @@ export default {
         target: `:root`
       },
       {
-        title: '统一字体样式',
+        title: '统一文字样式',
         type: 'Switch',
+        description: '开启后，可统一配置文本子项的样式',
         value: {
           get({ data }) {
             return data.isUnity || false;
@@ -64,11 +65,40 @@ export default {
         }
       },
       {
+        title: '默认',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         ifVisible({ data }: EditorResult<Data>) {
           return data.isUnity;
         },
         target: `:root`
+      },
+      {
+        title: 'Hover',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isUnity;
+        },
+        target: `.container>span:hover`,
+        domTarget: '.container>span'
+      },
+      {
+        title: '间距',
+        type: 'Inputnumber',
+        options: [
+          { min: 0, max: 100, width: 100, title: '左' },
+          { min: 0, max: 100, width: 100, title: '右' }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isUnity;
+        },
+        value: {
+          get({ data }) {
+            return data.padding;
+          },
+          set({ data }, value) {
+            data.padding = value;
+          }
+        }
       }
     ],
     items: [
@@ -114,6 +144,19 @@ export default {
           },
           set({ data }: EditorResult<Data>, val: any[]) {
             data.items = val;
+          }
+        }
+      },
+      {
+        title: '动态数据唯一标识',
+        type: 'text',
+        description: '动态渲染数据时，作为列表项数据的唯一标识，可不填',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.rowKey;
+          },
+          set({ data }: EditorResult<Data>, val: string) {
+            data.rowKey = val;
           }
         }
       },
@@ -166,12 +209,38 @@ export default {
     title: '文本',
     style: [
       {
-        title: '文本样式',
+        title: '统一文字样式',
+        type: 'Switch',
+        description: '开启后，可统一配置文本子项的样式',
+        value: {
+          get({ data }) {
+            return data.isUnity || false;
+          },
+          set({ data }, value) {
+            data.isUnity = value;
+          }
+        }
+      },
+      {
+        title: '默认',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         ifVisible({ data }: EditorResult<Data>) {
           return !data.isUnity;
         },
         target({ data, focusArea }) {
+          return `.${findEle({ data, focusArea }, 'textId').key}`;
+        }
+      },
+      {
+        title: 'Hover',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.isUnity;
+        },
+        target({ data, focusArea }) {
+          return `.${findEle({ data, focusArea }, 'textId').key}:hover`;
+        },
+        domTarget({ data, focusArea }) {
           return `.${findEle({ data, focusArea }, 'textId').key}`;
         }
       },
@@ -182,6 +251,9 @@ export default {
           { title: '左', min: 0, max: 50, width: 50 },
           { title: '右', min: 0, max: 50, width: 50 }
         ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.isUnity;
+        },
         value: {
           get({ data, focusArea }) {
             return findEle({ data, focusArea }, 'textId').stylePadding;

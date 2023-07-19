@@ -17,5 +17,7 @@
   },
   "flexStyleHorizontalKey": "horizontallyauto",
   "flexStyleVerticalKey": "verticallyauto",
-  "isUnity": false
+  "isUnity": false,
+  "padding": [0, 16],
+  "rowKey": ""
 }
