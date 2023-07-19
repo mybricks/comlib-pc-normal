@@ -36,39 +36,65 @@ export default function ({
     }
   })
 
-  //1.0.4 -> 1.0.5 动态输入数据，单击获取子项内容
+  //1.0.4 -> 1.0.5 动态输入数据，单击获取子项内容,
+  //1）统一处理样式
   if(typeof data.isUnity === 'undefined'){
     data.isUnity = false
   }
+
+  //2）间距
+  if(typeof data.padding === 'undefined'){
+    data.padding = [0, 16]
+  }
+
+  //3）唯一标识
+  if(typeof data.rowKey === 'undefined'){
+    data.rowKey = ""
+  }
+
   const dataSchema = {
-    "title": "文本数据",
-    "type": "array",
-    "items": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "title": "内容",
-          "type": "string"
-        },
-        "key": {
-          "title": "唯一标识",
-          "type": "string"
-        },
-        "type": {
-          "title": "类型",
-          "type": "string"
-        },
-        "stylePadding":{
-          "type":"array",
-          "items": {
-            "type": "number"
+    "type": "object",
+    "properties": {
+      "textList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "title": "内容",
+              "type": "string"
+            },
+            "type": {
+              "title": "类型",
+              "type": "string"
+            },
+            "stylePadding":{
+              "type":"array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "link": {
+              "title": "链接",
+              "type": "string"
+            }
           }
-        },
-        "link": {
-          "title": "链接",
-          "type": "string"
         }
-      }
+      },
+      "style": {
+        "type": "object",
+          "properties": {
+            "color": {
+              "type": "string"
+            },
+            "fontSize": {
+              "type": "string"
+            },
+            "fontWeight":{
+              "type": "number"
+            }
+          }
+      } 
     }
   }
   if (!input.get('setData')) {
