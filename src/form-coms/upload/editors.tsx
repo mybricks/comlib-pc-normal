@@ -52,9 +52,6 @@ const basicUploadDoneSchema = {
 };
 
 export default {
-  '@init': (props: EditorResult<Data>) => {
-    console.log('props', props.env);
-  },
   '@resize': {
     options: ['width']
   },

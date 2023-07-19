@@ -282,7 +282,7 @@ const RuntimeRender = ({
   return (
     <Modal
       visible={visible}
-      width={isMobile ? '100%' : width}
+      width={width}
       keyboard={false}
       maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
