@@ -125,7 +125,8 @@
       "./src/_array-merge/com.json",
       "./src/_post-message/com.json",
       "./src/_receive-message/com.json",
-      "./src/_enum-map/com.json"
+      "./src/_enum-map/com.json",
+      "./src/_props/com.json"
     ],
     "publish": [
       {
@@ -234,7 +235,8 @@
       "./src/_array-merge/com.json",
       "./src/_post-message/com.json",
       "./src/_receive-message/com.json",
-      "./src/_enum-map/com.json"
+      "./src/_enum-map/com.json",
+      "./src/_props/com.json"
     ]
   },
   "externals": [
