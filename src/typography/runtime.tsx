@@ -17,7 +17,7 @@ const defaultStyle: {
   color: '#000000'
 };
 
-const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding }) => {
+const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey }) => {
   let style = defaultStyle;
   if (item.style) {
     style = item.style;
@@ -35,7 +35,7 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding }) => {
     if (env.runtime) {
       outputs['click']({
         values: {
-          key: item.key,
+          key: rowKey !== '' ? item.key : void 0,
           content: item.content || '',
           type: item.type,
           link: item.link || ''
@@ -179,7 +179,8 @@ const EditRender = (props: RuntimeParams<Data>) => {
             data: item,
             isSet: false,
             isUnity: data.isUnity,
-            padding: data.padding
+            padding: data.padding,
+            rowKey: data.rowKey
           })
         )}
       </>
@@ -309,7 +310,8 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
             data: item,
             isSet: isSet,
             isUnity: data.isUnity,
-            padding: data.padding
+            padding: data.padding,
+            rowKey: data.rowKey
           })
         )}
       </>
