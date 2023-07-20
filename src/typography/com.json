@@ -10,5 +10,85 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
-  "inputs": []
+  "inputs": [
+    {
+      "id": "setData",
+      "title": "设置数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "title": "内容",
+              "type": "string"
+            },
+            "type": {
+              "title": "类型",
+              "type": "string"
+            },
+            "link": {
+              "title": "链接",
+              "type": "string"
+            },
+            "style":{
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "string"
+                },
+                "fontWeight":{
+                  "type": "number"
+                },
+                "stylePadding":{
+                  "type":"array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "单击",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "values":{
+            "type": "object",
+            "properties": {
+              "content": {
+                "title": "内容",
+                "type": "string"
+              },
+              "key": {
+                "title": "唯一标识",
+                "type": "string"
+              },
+              "type": {
+                "title": "类型",
+                "type": "string"
+              },
+              "link": {
+                "title": "链接",
+                "type": "string"
+              }
+            }
+          },
+          "index":{
+            "type": "number"
+          }
+        }
+      }
+    }
+  ]
 }

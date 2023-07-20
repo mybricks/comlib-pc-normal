@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState, CSSProperties } from 'react';
 import { Typography, Tag } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import { Data, Item } from './constants';
@@ -17,7 +17,7 @@ const defaultStyle: {
   color: '#000000'
 };
 
-const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
+const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey }) => {
   let style = defaultStyle;
   if (item.style) {
     style = item.style;
@@ -27,6 +27,54 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
     : item.src === 1
     ? env.i18n(`${item.content}`)
     : '';
+  //文本、链接等点击事件
+  const textClick = () => {
+    if (item.click && !isSet && env.runtime) {
+      outputs[item.key](item.outputContent || item.content || '');
+    }
+    if (env.runtime) {
+      outputs['click']({
+        values: {
+          key: rowKey !== '' ? item.key : void 0,
+          content: item.content || '',
+          type: item.type,
+          link: item.link || ''
+        },
+        index: item.index
+      });
+    }
+  };
+  const paddingStyle = {
+    paddingLeft:
+      !isUnity || (isSet && item.stylePadding?.[0]) ? item.stylePadding?.[0] || 0 : padding[0],
+    paddingRight:
+      !isUnity || (isSet && item.stylePadding?.[1]) ? item.stylePadding?.[1] || 0 : padding[1]
+  };
+  //1、统一处理时样式，颜色从根节点（container）注入，所以去除子节点颜色配置
+  //2、动态设置颜色且该子项被激活时，设置动态颜色
+  const fontStyle = {
+    color: isUnity
+      ? isSet && item.style.color
+        ? item.style.color
+        : 'unset'
+      : isSet && item.style.color
+      ? item.style.color
+      : void 0,
+    fontSize: isUnity
+      ? isSet && item.style.fontSize
+        ? item.style.fontSize
+        : 'unset'
+      : isSet && item.style.fontSize
+      ? item.style.fontSize
+      : void 0,
+    fontWeight: isUnity
+      ? isSet && item.style.fontWeight
+        ? item.style.fontWeight
+        : 'unset'
+      : isSet && item.style.fontWeight
+      ? item.style.fontWeight
+      : void 0
+  };
   if (!itemContent) return null;
   switch (item.type) {
     case 'Text':
@@ -39,19 +87,14 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
             // display: 'inline-block',
             height: 'fit-content',
             maxWidth: '100%',
-            paddingLeft: item.stylePadding?.[0] || 0,
-            paddingRight: item.stylePadding?.[1] || 0
+            ...paddingStyle
           }}
         >
           <Text
-            style={{ cursor: item.click ? 'pointer' : 'unset' }}
-            className={`${item.key} ${css.text} text`}
+            style={{ cursor: item.click || isSet ? 'pointer' : 'unset', ...fontStyle }}
+            className={!isUnity ? `${item.key} ${css.text} text` : void 0}
             type={item.textType}
-            onClick={() => {
-              if (item.click) {
-                outputs[item.key](item.outputContent || item.content || '');
-              }
-            }}
+            onClick={textClick}
           >
             {itemContent}
           </Text>
@@ -65,16 +108,11 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           data-tag-id={item.key}
           style={{
             height: 'fit-content',
-            paddingLeft: item.stylePadding?.[0] || 0,
-            paddingRight: item.stylePadding?.[1] || 0
+            ...paddingStyle
           }}
         >
           <Tag
-            onClick={() => {
-              if (item.click) {
-                outputs[item.key](item.outputContent || '');
-              }
-            }}
+            onClick={textClick}
             color={item.color}
             style={{
               margin: 0,
@@ -91,13 +129,21 @@ const itemRender = ({ data: item, outputs, env }: RuntimeParams<Item>) => {
           key={item.key}
           data-item-type="link"
           data-link-id={item.key}
-          style={{ height: 'fit-content' }}
+          style={{
+            // display: 'inline-block',
+            height: 'fit-content',
+            maxWidth: '100%',
+            ...paddingStyle
+          }}
         >
           <Link
-            style={{ fontSize: item.fontSize, fontWeight: item.fontStyle }}
-            onClick={() => {
-              outputs[item.key](item.link);
+            style={{
+              // fontSize: item.fontSize,
+              // fontWeight: item.fontStyle,
+              ...fontStyle,
+              color: isSet && item.style.color ? item.style.color : void 0
             }}
+            onClick={textClick}
           >
             {itemContent}
           </Link>
@@ -125,21 +171,75 @@ const EditRender = (props: RuntimeParams<Data>) => {
     if (!data.items || data.items.length === 0) {
       return <p className={css.suggestion}>在编辑栏中点击"添加文本"</p>;
     }
-    return <>{data.items.map((item) => itemRender({ ...props, data: item }))}</>;
+    return (
+      <>
+        {data.items.map((item) =>
+          itemRender({
+            ...props,
+            data: item,
+            isSet: false,
+            isUnity: data.isUnity,
+            padding: data.padding,
+            rowKey: data.rowKey
+          })
+        )}
+      </>
+    );
   };
   return (
-    <div className={`${css.container} container`} style={{ textAlign: data.style.textAlign }}>
+    <div
+      className={`${css.container} container`}
+      style={{
+        textAlign: data.style.textAlign,
+        fontSize: !data.isUnity ? 'unset' : void 0,
+        lineHeight: !data.isUnity ? 'unset' : void 0
+      }}
+    >
       {renderItems()}
     </div>
   );
 };
 
 const RuntimeRender = (props: RuntimeParams<Data>) => {
-  const { inputs, data } = props;
+  const { inputs, data, env } = props;
+  const [isSet, setIsSet] = useState<boolean>(false);
+  const [dynamicStyle, setDynamicStyle] = useState<CSSProperties>({});
 
   useMemo(() => {
     // TODO remove cloneDeep?
     data.itemList = cloneDeep(data.items);
+  }, []);
+
+  useEffect(() => {
+    if (env.runtime && inputs['setData']) {
+      inputs['setData']((val) => {
+        if (Array.isArray(val)) {
+          const rowKey = 'key';
+          let newVal = val.map((item, index) => {
+            let newItem = {
+              ...item,
+              src: 1,
+              [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid(),
+              index: index
+            };
+            if (!item.type) {
+              newItem = { ...newItem, type: 'Text' };
+            }
+            if (item.style && item.style.stylePadding) {
+              if (Array.isArray(item.style.stylePadding)) {
+                newItem = {
+                  ...newItem,
+                  stylePadding: item.style.stylePadding
+                };
+              }
+            }
+            return newItem;
+          });
+          setIsSet(true);
+          data.itemList = newVal;
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -202,11 +302,32 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   }, []);
 
   const renderItems = () => {
-    return <>{data.itemList.map((item) => itemRender({ ...props, data: item }))}</>;
+    return (
+      <>
+        {data.itemList.map((item) =>
+          itemRender({
+            ...props,
+            data: item,
+            isSet: isSet,
+            isUnity: data.isUnity,
+            padding: data.padding,
+            rowKey: data.rowKey
+          })
+        )}
+      </>
+    );
   };
 
   return (
-    <div className={css.container} style={{ textAlign: data.style.textAlign }} data-root="root">
+    <div
+      className={`${css.container} container`}
+      style={{
+        textAlign: data.style.textAlign,
+        fontSize: !data.isUnity ? 'unset' : void 0,
+        lineHeight: !data.isUnity ? 'unset' : void 0
+      }}
+      data-root="root"
+    >
       {renderItems()}
     </div>
   );

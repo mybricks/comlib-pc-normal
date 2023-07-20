@@ -46,6 +46,7 @@ export interface Item {
   link?: string;
   useAppend?: boolean;
   align?: 'left' | 'center' | 'right';
+  active?: boolean;
 }
 // 数据源
 export interface Data {
@@ -57,4 +58,11 @@ export interface Data {
     [prop: string]: string;
   };
   itemList: Item[];
+
+  //是否统一样式
+  isUnity: boolean;
+  //统一间距
+  padding: [number,number];
+  //唯一标识
+  rowKey: string
 }
