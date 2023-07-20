@@ -41,8 +41,8 @@ export default {
       content: '文本',
       oldcontent: '文本',
       textType: '',
-      stylePadding: [0, 0],
-      style: { ...defaultStyle }
+      stylePadding: [0, 0]
+      //style: { ...defaultStyle }
     });
   },
   ':root': {
@@ -52,7 +52,7 @@ export default {
         target: `:root`
       },
       {
-        title: '统一文字样式',
+        title: '全局样式',
         type: 'Switch',
         description: '开启后，可统一配置文本子项的样式',
         value: {
@@ -209,7 +209,7 @@ export default {
     title: '文本',
     style: [
       {
-        title: '统一文字样式',
+        title: '全局样式',
         type: 'Switch',
         description: '开启后，可统一配置文本子项的样式',
         value: {

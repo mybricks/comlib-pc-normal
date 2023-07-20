@@ -15,36 +15,24 @@
       "id": "setData",
       "title": "设置数据",
       "schema": {
-        "type": "object",
-        "properties": {
-          "textList": {
-            "type": "array",
-            "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "title": "内容",
+              "type": "string"
+            },
+            "type": {
+              "title": "类型",
+              "type": "string"
+            },
+            "link": {
+              "title": "链接",
+              "type": "string"
+            },
+            "style":{
               "type": "object",
-              "properties": {
-                "content": {
-                  "title": "内容",
-                  "type": "string"
-                },
-                "type": {
-                  "title": "类型",
-                  "type": "string"
-                },
-                "stylePadding":{
-                  "type":"array",
-                  "items": {
-                    "type": "number"
-                  }
-                },
-                "link": {
-                  "title": "链接",
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "style": {
-            "type": "object",
               "properties": {
                 "color": {
                   "type": "string"
@@ -54,9 +42,16 @@
                 },
                 "fontWeight":{
                   "type": "number"
+                },
+                "stylePadding":{
+                  "type":"array",
+                  "items": {
+                    "type": "number"
+                  }
                 }
               }
-          } 
+            }
+          }
         }
       }
     }
@@ -68,21 +63,29 @@
       "schema": {
         "type": "object",
         "properties": {
-          "content": {
-            "title": "内容",
-            "type": "string"
+          "values":{
+            "type": "object",
+            "properties": {
+              "content": {
+                "title": "内容",
+                "type": "string"
+              },
+              "key": {
+                "title": "唯一标识",
+                "type": "string"
+              },
+              "type": {
+                "title": "类型",
+                "type": "string"
+              },
+              "link": {
+                "title": "链接",
+                "type": "string"
+              }
+            }
           },
-          "key": {
-            "title": "唯一标识",
-            "type": "string"
-          },
-          "type": {
-            "title": "类型",
-            "type": "string"
-          },
-          "link": {
-            "title": "链接",
-            "type": "string"
+          "index":{
+            "type": "number"
           }
         }
       }

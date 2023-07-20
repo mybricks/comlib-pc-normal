@@ -17,16 +17,7 @@ const defaultStyle: {
   color: '#000000'
 };
 
-const itemRender = ({
-  data: item,
-  outputs,
-  env,
-  isSet,
-  isUnity,
-  padding,
-  allData,
-  dynamicStyle
-}) => {
+const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding }) => {
   let style = defaultStyle;
   if (item.style) {
     style = item.style;
@@ -43,28 +34,14 @@ const itemRender = ({
     }
     if (env.runtime) {
       outputs['click']({
-        key: item.key,
-        content: item.content || '',
-        type: item.type,
-        link: item.link || ''
+        values: {
+          key: item.key,
+          content: item.content || '',
+          type: item.type,
+          link: item.link || ''
+        },
+        index: item.index
       });
-      if (isSet) {
-        let newData = [...allData.itemList];
-        allData.itemList = newData.map((item) => {
-          if (item.active) {
-            item.active = false;
-          }
-          return item;
-        });
-        item.active = true;
-      }
-    }
-  };
-  const doubleClick = () => {
-    if (env.runtime) {
-      if (isSet) {
-        item.active = false;
-      }
     }
   };
   const paddingStyle = {
@@ -77,25 +54,25 @@ const itemRender = ({
   //2、动态设置颜色且该子项被激活时，设置动态颜色
   const fontStyle = {
     color: isUnity
-      ? isSet && dynamicStyle.color && item.active
-        ? dynamicStyle.color
+      ? isSet && item.style.color
+        ? item.style.color
         : 'unset'
-      : isSet && dynamicStyle.color && item.active
-      ? dynamicStyle.color
+      : isSet && item.style.color
+      ? item.style.color
       : void 0,
     fontSize: isUnity
-      ? isSet && dynamicStyle.fontSize && item.active
-        ? dynamicStyle.fontSize
+      ? isSet && item.style.fontSize
+        ? item.style.fontSize
         : 'unset'
-      : isSet && dynamicStyle.fontSize && item.active
-      ? dynamicStyle.fontSize
+      : isSet && item.style.fontSize
+      ? item.style.fontSize
       : void 0,
     fontWeight: isUnity
-      ? isSet && dynamicStyle.fontWeight && item.active
-        ? dynamicStyle.fontWeight
+      ? isSet && item.style.fontWeight
+        ? item.style.fontWeight
         : 'unset'
-      : isSet && dynamicStyle.fontWeight && item.active
-      ? dynamicStyle.fontWeight
+      : isSet && item.style.fontWeight
+      ? item.style.fontWeight
       : void 0
   };
   if (!itemContent) return null;
@@ -112,7 +89,6 @@ const itemRender = ({
             maxWidth: '100%',
             ...paddingStyle
           }}
-          onDoubleClick={doubleClick}
         >
           <Text
             style={{ cursor: item.click || isSet ? 'pointer' : 'unset', ...fontStyle }}
@@ -137,7 +113,6 @@ const itemRender = ({
         >
           <Tag
             onClick={textClick}
-            onDoubleClick={doubleClick}
             color={item.color}
             style={{
               margin: 0,
@@ -166,10 +141,9 @@ const itemRender = ({
               // fontSize: item.fontSize,
               // fontWeight: item.fontStyle,
               ...fontStyle,
-              color: isSet && dynamicStyle.color && item.active ? dynamicStyle.color : void 0
+              color: isSet && item.style.color ? item.style.color : void 0
             }}
             onClick={textClick}
-            onDoubleClick={doubleClick}
           >
             {itemContent}
           </Link>
@@ -205,9 +179,7 @@ const EditRender = (props: RuntimeParams<Data>) => {
             data: item,
             isSet: false,
             isUnity: data.isUnity,
-            padding: data.padding,
-            allData: data,
-            dynamicStyle: {}
+            padding: data.padding
           })
         )}
       </>
@@ -240,25 +212,30 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
   useEffect(() => {
     if (env.runtime && inputs['setData']) {
       inputs['setData']((val) => {
-        if (Array.isArray(val.textList) && val.textList) {
+        if (Array.isArray(val)) {
           const rowKey = 'key';
-          let newVal = val.textList.map((item) => {
+          let newVal = val.map((item, index) => {
             let newItem = {
               ...item,
               src: 1,
-              [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid()
+              [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid(),
+              index: index
             };
             if (!item.type) {
               newItem = { ...newItem, type: 'Text' };
+            }
+            if (item.style && item.style.stylePadding) {
+              if (Array.isArray(item.style.stylePadding)) {
+                newItem = {
+                  ...newItem,
+                  stylePadding: item.style.stylePadding
+                };
+              }
             }
             return newItem;
           });
           setIsSet(true);
           data.itemList = newVal;
-        }
-        //用户自定义样式
-        if (val.style) {
-          setDynamicStyle(val.style);
         }
       });
     }
@@ -332,9 +309,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
             data: item,
             isSet: isSet,
             isUnity: data.isUnity,
-            padding: data.padding,
-            allData: data,
-            dynamicStyle: dynamicStyle
+            padding: data.padding
           })
         )}
       </>

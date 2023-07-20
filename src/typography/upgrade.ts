@@ -25,9 +25,9 @@ export default function ({
   });
 
   //1.0.3 -> 1.0.4 style升级，文本排版的边框和内容文字的颜色
-  if(isEmptyObject(data.style)){
+  if(data.style?.fontSize){
     setDeclaredStyle('.container', {...data.style});
-    data.style = {}
+    data.style = {textAlign: data.style?.textAlign}
   }
   data.items.forEach((item) => {
     if(isEmptyObject(item.style)){
@@ -53,36 +53,24 @@ export default function ({
   }
 
   const dataSchema = {
-    "type": "object",
-    "properties": {
-      "textList": {
-        "type": "array",
-        "items": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "title": "内容",
+          "type": "string"
+        },
+        "type": {
+          "title": "类型",
+          "type": "string"
+        },
+        "link": {
+          "title": "链接",
+          "type": "string"
+        },
+        "style":{
           "type": "object",
-          "properties": {
-            "content": {
-              "title": "内容",
-              "type": "string"
-            },
-            "type": {
-              "title": "类型",
-              "type": "string"
-            },
-            "stylePadding":{
-              "type":"array",
-              "items": {
-                "type": "number"
-              }
-            },
-            "link": {
-              "title": "链接",
-              "type": "string"
-            }
-          }
-        }
-      },
-      "style": {
-        "type": "object",
           "properties": {
             "color": {
               "type": "string"
@@ -92,9 +80,16 @@ export default function ({
             },
             "fontWeight":{
               "type": "number"
+            },
+            "stylePadding":{
+              "type":"array",
+              "items": {
+                "type": "number"
+              }
             }
           }
-      } 
+        }
+      }
     }
   }
   if (!input.get('setData')) {
@@ -104,21 +99,29 @@ export default function ({
   const clickSchema = {
     "type": "object",
     "properties": {
-      "content": {
-        "title": "内容",
-        "type": "string"
+      "values":{
+        "type": "object",
+        "properties": {
+          "content": {
+            "title": "内容",
+            "type": "string"
+          },
+          "key": {
+            "title": "唯一标识",
+            "type": "string"
+          },
+          "type": {
+            "title": "类型",
+            "type": "string"
+          },
+          "link": {
+            "title": "链接",
+            "type": "string"
+          }
+        }
       },
-      "key": {
-        "title": "唯一标识",
-        "type": "string"
-      },
-      "type": {
-        "title": "类型",
-        "type": "string"
-      },
-      "link": {
-        "title": "链接",
-        "type": "string"
+      "index":{
+        "type": "number"
       }
     }
   }
