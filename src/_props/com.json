@@ -1,5 +1,5 @@
 {
-  "title": "获取主应用参数"
+  "title": "主应用参数",
   "namespace": "mybricks.normal-pc.props",
   "version": "1.0.0",
   "rtType": "js-autorun",
