@@ -48,7 +48,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
             ...legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: WhiteSpaceEnum.PreWrap,
-            cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
+            cursor: data.useClick ? CursorTypeEnum.Pointer : void 0
           }}
           className={css.text}
           onClick={onClick}
@@ -64,7 +64,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
             ...data.legacyConfigStyle,
             wordBreak: 'break-all',
             whiteSpace: data.isEllipsis ? WhiteSpaceEnum.NoWrap : WhiteSpaceEnum.PreWrap,
-            cursor: data.useClick ? CursorTypeEnum.Pointer : CursorTypeEnum.Default
+            cursor: data.useClick ? CursorTypeEnum.Pointer : void 0
           }}
           className={css.text}
           onClick={onClick}
