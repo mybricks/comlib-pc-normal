@@ -64,7 +64,7 @@ export default class Sandbox {
       if (match === expression && ret === undefined) {
         return ret;
       }
-      return pre.replace(match, JSON.stringify(ret));
+      return pre.replace(match, typeof ret === 'string' ? ret : JSON.stringify(ret));
     }, expression);
     try {
       return JSON.parse(retStr);
