@@ -1,14 +1,32 @@
+import { isEmptyObject, differObject } from '../utils';
 import { Data } from './constants';
 
 export default function ({ data, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
-     * @description v1.0.1 -> v1.0.2, 兼容之前默认和激活态颜色自定义
+    * @description v1.0.7 -> v1.0.8, 兼容之前默认和激活态颜色自定义
   */
-  if(data.style){
-    setDeclaredStyle(`[data-item-type="root"]`, data.style);
+  const defaultStyle = {
+    fontWeight: 400,
+    fontSize: '14px',
+    fontStyle: 'normal',
+    lineHeight: '14px',
+    letterSpacing: '0px',
+    color: '#000000',
+    textAlign: 'left',
+  };
+  if (!isEmptyObject(data.hoverStyle)) {
+    const obj = differObject(data.hoverStyle, data.style);
+    if (!isEmptyObject(obj)) {
+      setDeclaredStyle(`[data-item-type="root"]:hover`, obj);
+    }
+    data.hoverStyle = {};
   }
-  if(data.hoverStyle){
-    setDeclaredStyle(`[data-item-type="root"]:hover`, data.hoverStyle);
+  if (!isEmptyObject(data.style)) {
+    const obj = differObject(data.style, defaultStyle);
+    if (!isEmptyObject(obj)) {
+      setDeclaredStyle(`[data-item-type="root"]`, obj);
+    }
+    data.style = {};
   }
 
   /**

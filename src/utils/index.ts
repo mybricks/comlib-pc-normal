@@ -132,3 +132,15 @@ export const isEmptyObject = (obj: any) => {
 export const checkIfMobile = (env) => {
   return env?.canvas?.type === 'mobile'
 }
+
+export const differObject = (obj, baseObj) => {
+  const difference = {};
+  Object.keys(obj).map(key => {
+    const value1 = obj[key];
+    const value2 = baseObj[key];
+    if (value1 !== value2) {
+      difference[key] = value1;
+    }
+  });
+  return difference;
+}
