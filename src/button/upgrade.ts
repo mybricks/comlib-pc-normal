@@ -1,6 +1,5 @@
-import { CSSProperties } from 'react';
 import { Data, OutputIds } from './constants';
-import { omit } from 'lodash';
+import { isEmptyObject } from '../utils';
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
@@ -58,10 +57,10 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   /**
     * @description v1.0.7 style编辑器改造
     */
-  if (data.style) {
+  if (!isEmptyObject(data.style)) {
     if (typeof data.style.fontSize === 'number') data.style.fontSize = data.style.fontSize + 'px';
     setDeclaredStyle(`.button`, data.style);
-    omit(data, 'style');
+    data.style = {};
   }
 
   return true;
