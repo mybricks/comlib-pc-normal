@@ -1,4 +1,5 @@
 import { Data, InputIds } from './constants';
+import { isEmptyObject } from '../utils'
 
 export default function ({
     data,
@@ -9,8 +10,9 @@ export default function ({
         input.add(InputIds.SetPreviewImgSrc, '预览图片地址', { type: 'string' });
     }
     //1.0.3 -> 1.0.4, 兼容图片边框
-    if(data.customStyle){
+    if(data.customStyle && !isEmptyObject(data.customStyle)){
       setDeclaredStyle(`.ant-image-img`, data.customStyle);
+      data.customStyle = {}
     }
     return true;
 }

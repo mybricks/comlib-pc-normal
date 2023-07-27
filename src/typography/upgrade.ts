@@ -1,5 +1,5 @@
 import { Data } from "./constants";
-import { isEmptyObject } from '../utils'
+import { differObject, isEmptyObject } from '../utils'
 
 export default function ({
   data,
@@ -29,9 +29,20 @@ export default function ({
     setDeclaredStyle('.container', {...data.style});
     data.style = {textAlign: data.style?.textAlign}
   }
+
+  const defaultItemStyle = {
+    fontWeight: 'normal',
+    fontSize: '12px',
+    lineHeight: '12px',
+    letterSpacing: '0px',
+    color: '#000000'
+  }
   data.items.forEach((item) => {
-    if(isEmptyObject(item.style)){
-      setDeclaredStyle(`.${item.key}`, {...item.style});
+    if(item.style && !isEmptyObject(item.style)){
+      const obj = differObject(item.style, defaultItemStyle)
+      if(!isEmptyObject(obj)){
+        setDeclaredStyle(`.${item.key}`, obj);
+      }
       item.style = {}
     }
   })
