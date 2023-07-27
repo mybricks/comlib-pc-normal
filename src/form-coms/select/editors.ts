@@ -39,6 +39,14 @@ export default {
         options: ['border'],
         target: '.ant-select-selector'
       },
+      {
+        title: '标签',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.mode !== 'default';
+        },
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-select-multiple .ant-select-selection-item'
+      }
       // {
       //   title: '激活样式',
       //   options: ['border'],
