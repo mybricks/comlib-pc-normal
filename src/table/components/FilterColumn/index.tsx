@@ -4,30 +4,36 @@ import { SettingOutlined } from '@ant-design/icons';
 
 export default function FilterColumnRender({ data, env }) {
   //表格筛选栏渲染
-  let [newColoumns, setNewColoumns] = useState([]);
   //let [type, setType] = useState(Array(data.columns.length).fill(true)); 这里的useState里的data.columns.length一直为 4
   //到100列都可以适用
   let [check, setCheck] = useState(Array(100).fill(true));
   let [checkAll, setCheckAll] = useState(true);
   const [indeterminate, setIndeterminate] = useState(false);
 
-  for (let i = 0; i < data.columns.length; i++) {
-    const onchange = function () {
-      return function () {
-        //设置单独每一项check值
-        check[i] = !check[i];
-        data.columns[i].visible = check[i];
-        data.columns = data.columns;
-        setCheck(check);
-      };
+  const onchange = function (i) {
+    return function () {
+      //设置单独每一项check值
+      check[i] = !check[i];
+      data.columns[i].visible = check[i];
+      data.columns = [...data.columns];
+      setCheck(check);
     };
-    newColoumns[i] = {
-      ...data.columns[i],
+  };
+
+  let coloumns = [...data.columns].map((item, index) => {
+    return {
+      ...item,
       defaultChecked: true,
-      fun: onchange(),
-      checkFun: check[i]
+      fun: onchange(index),
+      checkFun: check[index]
     };
-  }
+  });
+
+  useEffect(() => {
+    if (env.runtime) {
+      data.columns = coloumns;
+    }
+  }, []);
 
   //全选按钮与单个按钮的关系
   useEffect(() => {
@@ -44,18 +50,18 @@ export default function FilterColumnRender({ data, env }) {
       setCheckAll(true);
       setCheck(Array(100).fill(true));
       setIndeterminate(false);
-      newColoumns.map((e) => {
+      coloumns.map((e) => {
         e.visible = true;
       });
-      data.columns = data.columns;
+      data.columns = [...coloumns];
     } else {
       setCheckAll(false);
       setCheck(Array(100).fill(false));
       setIndeterminate(false);
-      newColoumns.map((e) => {
+      coloumns.map((e) => {
         e.visible = false;
       });
-      data.columns = data.columns;
+      data.columns = [...coloumns];
     }
   };
 
@@ -71,12 +77,6 @@ export default function FilterColumnRender({ data, env }) {
       setIndeterminate(true);
     } else {
       setIndeterminate(false);
-    }
-  });
-
-  useEffect(() => {
-    if (env.runtime) {
-      data.columns = newColoumns;
     }
   });
 
@@ -113,7 +113,7 @@ export default function FilterColumnRender({ data, env }) {
           </Checkbox>
         </Menu.Item>
         <Menu.Divider />
-        {genElements(newColoumns)}
+        {genElements(coloumns)}
       </Menu>
     );
   };
