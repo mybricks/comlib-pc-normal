@@ -9,8 +9,11 @@ export default function ({ data, setDeclaredStyle }: UpgradeParams<Data>): boole
   };
 
   //兼容之前颜色自定义情况
-  if(data.isColor){
-    setDeclaredStyle(`.ant-alert-description`, { color: data.textColor});
+  if(data.isColor && data.textColor !== ''){
+    if(data.textColor !== '#434343'){
+      setDeclaredStyle(`.ant-alert-description`, { color: data.textColor});
+    }
+    data.textColor = '';
   }
   
   return true;

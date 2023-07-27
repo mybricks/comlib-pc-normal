@@ -14,7 +14,8 @@ export default {
       {
         title: '激活',
         options: ['padding', 'border', 'background', 'font'],
-        target: '.linkWrapperHover:hover',
+        target: '.linkWrapper:hover',
+        domTarget: '.linkWrapper',
         initValue: { color: '#40a9ff' }
       }
     ],

@@ -42,10 +42,7 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   return (
     <div
       ref={ref}
-      className={`${css.linkWrapper} linkWrapper 
-      ${data.useHoverStyle ? css.linkWrapperHover : void 0} ${
-        data.useHoverStyle ? 'linkWrapperHover' : void 0
-      }`}
+      className={`${css.linkWrapper} linkWrapper`}
       onClick={env.runtime ? onClick : void 0}
     >
       <span className={css.iconLocation1}>

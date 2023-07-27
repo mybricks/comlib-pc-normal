@@ -8,7 +8,7 @@
   "icon": "HomeOutlined",
   "color": "#0075ff",
   "isColor": false,
-  "textColor": "#434343",
+  "textColor": "",
   "showInfo": false,
   "banner": false,
   "isClose": true,
