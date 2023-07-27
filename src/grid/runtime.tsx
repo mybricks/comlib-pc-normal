@@ -72,7 +72,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
             }
           }}
         >
-          {slots[column.slot]?.render({ style: column.slotStyle })}
+          {slots[column.slot]?.render({ key: column.slot, style: column.slotStyle })}
           {/* {renderTips()} */}
         </Col>
       );
