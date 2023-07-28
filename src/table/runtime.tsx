@@ -536,9 +536,9 @@ export default function (props: RuntimeParams<Data>) {
   // 当数据发生变化时，重新设置所有行展开
   useEffect(() => {
     if (env.runtime) {
-      data.useExpand && data.defaultExpandAllRows
-        ? setExpandedRowKeys(realShowDataSource.map((item) => item[rowKey]))
-        : setExpandedRowKeys([]);
+      data.useExpand &&
+        data.defaultExpandAllRows &&
+        setExpandedRowKeys(realShowDataSource.map((item) => item[rowKey]));
     }
   }, [realShowDataSource, env.runtime, rowKey]);
 

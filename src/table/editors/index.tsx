@@ -11,6 +11,7 @@ import EventEditor from './table/event';
 import LoadingEditor from './table/loading';
 import { getRowSelectionEditor } from './table/rowSelection';
 import UsePaginatorEditor from './table/paginator';
+import RowKeyEditor from './table/rowKey';
 import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
@@ -127,7 +128,12 @@ export default {
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
-      cateAry[0].items = [getAddColumnEditor(props), ...UsePaginatorEditor, ...LoadingEditor];
+      cateAry[0].items = [
+        getAddColumnEditor(props),
+        ...UsePaginatorEditor,
+        ...RowKeyEditor,
+        ...LoadingEditor
+      ];
 
       // cateAry[1].title = '样式';
       // cateAry[1].items = [...LoadingEditor, TableStyleEditor];
