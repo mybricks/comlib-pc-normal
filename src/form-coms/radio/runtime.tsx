@@ -101,8 +101,8 @@ export default function Runtime({
       if (typeof newVal !== 'undefined') {
         data.value = newVal;
       }
-      if (!tempDs.some(item => item.value === data.value)) {
-        data.value = undefined
+      if (!tempDs.some((item) => item.value === data.value)) {
+        data.value = undefined;
       }
       data.config.options = tempDs;
     });
