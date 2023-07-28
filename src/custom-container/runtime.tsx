@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 import css from './style.less';
 
@@ -9,24 +9,24 @@ export default function (props: RuntimeParams<Data>) {
     behavior,
     block,
     inline,
-
     overflowY,
     overflowX,
     useOverflowUnset,
-
-    style,
-    hoverStyle,
-    useHoverStyle,
-    useClick
+    useClick,
+    useFixed
   } = data;
-  const ref = useRef<any>();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (useFixed && ref.current?.parentElement?.style) {
+      ref.current.parentElement.style.zIndex = '1001';
+    }
+
     if (env.runtime) {
       if (useSrcollIntoView && inputs[InputIds.ScrollIntoView]) {
         inputs[InputIds.ScrollIntoView](() => {
-          if ((ref.current as HTMLElement)?.scrollIntoView) {
-            (ref.current as HTMLElement)?.scrollIntoView({
+          if (ref.current?.scrollIntoView) {
+            ref.current.scrollIntoView({
               behavior,
               block,
               inline
@@ -37,26 +37,9 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
-  const onMouseOver = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = hoverStyle?.[key];
-      });
-    }
-  };
-
-  const onMouseLeave = () => {
-    const ele = ref.current as HTMLElement;
-    if (useHoverStyle && ele) {
-      Object.keys(hoverStyle || {}).forEach((key) => {
-        ele.style[key] = '';
-      });
-      Object.keys(style || {}).forEach((key) => {
-        ele.style[key] = style?.[key];
-      });
-    }
-  };
+  const legacyStyle = useMemo(() => {
+    return { ...data.legacyStyle, ...data.legacyConfigStyle };
+  }, [data.legacyConfigStyle, data.legacyStyle]);
 
   const getOverflowStyle = () => {
     const res = {
@@ -72,22 +55,23 @@ export default function (props: RuntimeParams<Data>) {
 
   return (
     <div
+      id={data?.id}
       ref={ref}
-      className={css.container}
+      className={`${css.container} root`}
       style={{
-        ...style,
         ...getOverflowStyle(),
-        cursor: useClick || useHoverStyle ? 'pointer' : ''
+        transition: 'all 0.2s',
+        position: useFixed ? 'fixed' : 'static',
+        cursor: useClick ? 'pointer' : '',
+        ...legacyStyle
       }}
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {
           outputs[OutputIds.Click]();
         }
       }}
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
     >
-      {slots[SlotIds.Content].render()}
+      {slots[SlotIds.Content].render({ style: data.slotStyle })}
     </div>
   );
 }

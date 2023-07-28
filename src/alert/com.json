@@ -1,7 +1,7 @@
 {
   "title": "警告提示",
   "namespace": "mybricks.normal-pc.alert",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "警告提示",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "inputInfo",

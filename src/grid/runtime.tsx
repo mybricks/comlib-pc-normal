@@ -1,6 +1,7 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Tooltip } from 'antd';
 import React, { useMemo, useCallback } from 'react';
 import { ColumnParams, Data, WidthUnitEnum } from './constants';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import css from './runtime.less';
 
 export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
@@ -26,6 +27,14 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
     return { minWidth, maxWidth };
   };
 
+  const renderTips = () => {
+    return edit ? (
+      <Tooltip title="列内容区域默认隐藏滚动，可通过滚动设置打开滚动">
+        <InfoCircleOutlined style={{ position: 'absolute', right: 8, top: 8, zIndex: 2 }} />
+      </Tooltip>
+    ) : null;
+  };
+
   const column = useCallback(
     (column: ColumnParams, rowIndex: number | string, colIndex: number) => {
       let flex = '';
@@ -49,13 +58,13 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
           span={column.widthOption === WidthUnitEnum.Span ? column.span : undefined}
           flex={flex}
           {...breakPointConfig}
-          data-col-coordinate={JSON.stringify([rowIndex, column.key])}
+          data-col-coordinate={`${rowIndex},${column.key}`}
           data-type-col={`col-${column.key}`}
           style={{
-            ...column.colStyle,
             ...getMinMaxWidth(column),
             width,
-            cursor: column.useClick ? 'pointer' : 'unset'
+            cursor: column.useClick ? 'pointer' : 'unset',
+            ...column.legacyStyle
           }}
           onClick={() => {
             if (column.useClick && outputs[column.key]) {
@@ -63,7 +72,8 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
             }
           }}
         >
-          {slots[column.slot]?.render()}
+          {slots[column.slot]?.render({ key: column.slot, style: column.slotStyle })}
+          {/* {renderTips()} */}
         </Col>
       );
     },
@@ -71,13 +81,12 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
   );
 
   return (
-    <div className={css.gridWrapper} style={{ ...data.style }}>
+    <div className={`${css.gridWrapper} root`}>
       {noRows}
       {data.rows.map((row, rowIndex) => {
         return (
           <Row
             style={{
-              backgroundColor: row.backgroundColor,
               minHeight:
                 edit && row.columns.every((column) => slots[column.slot]?.size === 0)
                   ? '50px'
@@ -88,7 +97,7 @@ export default function ({ env, data, slots, outputs }: RuntimeParams<Data>) {
             key={row.key}
             justify={row.justify}
             align={row.align}
-            gutter={row.useGutter ? [row.gutter?.[0] || 0, 0] : [0, 0]}
+            gutter={row.gutter ?? [0, 0]}
             wrap={row.wrap}
           >
             {row.columns.map((item, colIndex) => {

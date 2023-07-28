@@ -26,12 +26,28 @@ export interface Event {
  * @param cancelText 取消按钮内容
  * @param width      弹窗宽度
  * @param hideTitle  隐藏标题
+ * @param isNew      是否为改造后的对话框
  */
 
 export enum Location {
   FRONT = 'front',
   BACK = 'back'
 }
+
+export type DialogButtonProps = ButtonProps & {
+  id: string;
+  useIcon?: boolean;
+  showText?: boolean;
+  location?: Location;
+  dynamicDisabled?: boolean;
+  dynamicHidden?: boolean;
+  hidden?: boolean;
+  visible: boolean;
+  isConnected?: boolean;
+  useBtnLoading?: boolean;
+  autoClose?: boolean;
+}
+
 export interface Data {
   visible?: boolean;
   title: string;
@@ -42,19 +58,12 @@ export interface Data {
   cancelText: string;
   width?: number;
   hideTitle: boolean;
+  isNew?: boolean;
   bodyStyle?: React.CSSProperties;
   footerLayout: AlignEnum;
-  footerBtns: (ButtonProps & {
-    id: string;
-    useIcon?: boolean;
-    showText?: boolean;
-    location?: Location;
-    dynamicDisabled?: boolean;
-    dynamicHidden?: boolean;
-    hidden?: boolean;
-    visible: boolean;
-    isConnected?: boolean;
-  })[];
+  footerBtns: DialogButtonProps[];
+  destroyOnClose?: boolean;
+  maskClosable?: boolean;
   getContainer?: () => any;
 }
 
@@ -70,7 +79,8 @@ export const InputIds = {
   HideTitle: 'hideTitle'
 };
 export const OutputIds = {
-  Cancel: 'cancel'
+  Cancel: 'cancel',
+  AfterClose: 'afterClose',
 };
 export const SlotIds = {
   Footer: 'footer',

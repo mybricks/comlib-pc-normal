@@ -1,0 +1,18 @@
+{
+  "title": "测试-schema",
+  "namespace": "test.schema",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "schema为*的组件可以拖入有schema限制的插槽",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容",
+      "type": "scope",
+      "schema": "mybricks.normal-pc.form-container"
+    }
+  ]
+}

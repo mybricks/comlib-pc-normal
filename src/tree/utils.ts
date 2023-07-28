@@ -7,7 +7,7 @@ export const setCheckboxStatus = ({
   treeData: TreeData[];
   value: boolean;
 }) => {
-  if (!treeData || treeData.length === 0) return;
+  if (!treeData || treeData.length === 0) return [];
   treeData.forEach((item) => {
     item.disableCheckbox = value;
     if (item.children) {
@@ -29,7 +29,7 @@ export const pretreatTreeData = ({
   parentKey = '0'
 }: {
   treeData: TreeData[];
-  data?: Data;
+  data: Data;
   defaultExpandAll?: boolean;
   parentKey?: string;
 }) => {
@@ -64,8 +64,8 @@ export const traverseTree = ({
   targetKey: string;
   isParent?: boolean;
 }) => {
-  if (!treeData && treeData.length === 0) return null;
-  const searchTree = (treeNode: TreeData, parent: TreeData) => {
+  if (!treeData || treeData.length === 0) return null;
+  const searchTree = (treeNode: TreeData, parent?: TreeData) => {
     if (treeNode.key === targetKey) {
       return isParent && parent ? parent : treeNode;
     } else if (treeNode.children) {
@@ -78,7 +78,7 @@ export const traverseTree = ({
   };
 
   for (let i = 0; i < treeData.length; i++) {
-    const result = searchTree(treeData[i], null);
+    const result = searchTree(treeData[i]);
     if (result) return result;
   }
   return null;

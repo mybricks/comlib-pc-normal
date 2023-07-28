@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import { Button, Dropdown, Menu, Space } from 'antd';
+import { Button, Dropdown, Menu, Space, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { InputIds, OutputIds } from './constants';
 import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
+import { checkIfMobile } from '../utils';
 
 export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
+  const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
@@ -27,6 +29,12 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
         });
         inputs[`${InputIds.SetVisible}_${key}`]?.(() => {
           item.hidden = false;
+        });
+        inputs[`${InputIds.SetBtnOpenLoading}_${key}`]?.(() => {
+          item.loading = true;
+        });
+        inputs[`${InputIds.SetBtnCloseLoading}_${key}`]?.(() => {
+          item.loading = false;
         });
       });
     }
@@ -67,15 +75,55 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
   }, []);
 
   const renderTextAndIcon = (item: BtnItem) => {
-    const { useIcon, icon, iconLocation, iconDistance, text, showText } = item;
+    const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
     const Icon = Icons && Icons[icon as string]?.render();
     return (
       <Space size={iconDistance}>
-        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? <span>{Icon}</span> : null}
+        {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
+          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
+        ) : null}
         {!useIcon || showText ? <span>{text}</span> : null}
-        {useIcon && Icon && iconLocation === LocationEnum.BACK ? <span>{Icon}</span> : null}
+        {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
+          <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
+        ) : null}
       </Space>
     );
+  };
+
+  const renderTextAndCustom = (item: BtnItem) => {
+    const { useIcon, iconLocation, iconDistance, text, showText, src, contentSize } = item;
+    return (
+      <Space size={iconDistance} className={css.space}>
+        {useIcon && src && iconLocation === LocationEnum.FRONT ? (
+          <Image
+            width={contentSize[1]}
+            height={contentSize[0]}
+            src={src}
+            preview={false}
+            alt={' '}
+          ></Image>
+        ) : null}
+        {!useIcon || showText ? <span>{text}</span> : null}
+        {useIcon && src && iconLocation === LocationEnum.BACK ? (
+          <Image
+            width={contentSize[1]}
+            height={contentSize[0]}
+            src={src}
+            preview={false}
+            alt={' '}
+          ></Image>
+        ) : null}
+      </Space>
+    );
+  };
+
+  const renderBtnContext = (item: BtnItem) => {
+    const { isCustom } = item;
+    if (isCustom === true) {
+      return renderTextAndCustom(item);
+    } else {
+      return renderTextAndIcon(item);
+    }
   };
 
   const renderEllipsisList = (btnList: BtnItem[]) => {
@@ -107,9 +155,9 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     }
     return btnList.map((item) => {
       if (!hasPermission(item.permissionKey) || item.hidden) return;
-      const { type, size, shape, disabled } = item;
+      const { type, size, shape, disabled, isCustom, loading } = item;
       return (
-        <div key={item.key} data-btn-idx={item.key}>
+        <div key={item.key} data-btn-idx={item.key} className={css.button}>
           <Button
             type={type as any}
             size={size}
@@ -117,8 +165,10 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             disabled={disabled}
             onClick={() => onClick(item)}
             onDoubleClick={() => onDoubleClick(item)}
+            loading={loading}
+            block={true}
           >
-            {renderTextAndIcon(item)}
+            {renderBtnContext(item)}
           </Button>
         </div>
       );
@@ -139,10 +189,11 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
 
   return (
     <div
-      className={css.toolbar}
+      className={`${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
       style={{
         justifyContent: data.layout,
-        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
+        gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
+        height: '100%'
       }}
     >
       {(data.btnList || []).length > 0 || env.runtime ? (

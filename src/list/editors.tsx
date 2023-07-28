@@ -7,10 +7,14 @@ export default {
       let itemSchema = {};
       if (fromPin.schema.type === 'array') {
         itemSchema = fromPin.schema.items;
+        input.get('dataSource').setSchema(fromPin.schema);
         slots.get('item').inputs.get('itemData').setSchema(itemSchema);
       }
     }
   },
+  // '@inputUpdated'({ data }, fromPin, toPin) {
+  //   console.log(fromPin, toPin)
+  // },
   ':root': ({}: EditorResult<Data>, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [...LayoutEditor];

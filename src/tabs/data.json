@@ -1,13 +1,13 @@
 {
   "tabList": [
     {
-      "name": "标签页",
+      "name": "标签页1",
       "key": "tab0",
       "id": "tab0"     
     }
   ],
   "defaultActiveKey": "tab0",
-  "type": "card",
+  "type": "line",
   "centered": false,
   "tabPosition": "top",
   "prohibitClick": false

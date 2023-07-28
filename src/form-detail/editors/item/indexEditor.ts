@@ -1,5 +1,6 @@
-import { Data } from '../../constants';
+import { Data, TypeEnum } from '../../constants';
 import { getEleIdx, setDelete, setExchange, updateIOSchema } from '../utils';
+import { updateScopeIOSchema } from './baseEditor';
 
 export const IndexEditor = [
   {
@@ -32,10 +33,15 @@ export const IndexEditor = [
     title: '删除',
     type: 'Button',
     value: {
-      set({ data, focusArea, input, output }: EditorResult<Data>) {
+      set({ data, focusArea, input, output, slots }: EditorResult<Data>) {
         if (!focusArea || data.items.length <= 1) return;
-        setDelete({ data, focusArea });
+        setDelete({ data, focusArea, slots });
         updateIOSchema({ data, input, output });
+        data.items.map((item)=>{
+          if(item.type !== TypeEnum.Text){
+            updateScopeIOSchema({ data, item, slots, input });
+          }
+        })
       }
     }
   }

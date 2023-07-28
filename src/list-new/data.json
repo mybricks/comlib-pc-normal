@@ -1,0 +1,21 @@
+{
+  "useLoading": false,
+  "loadingTip": "Loading...",
+  "grid": {
+    "column": 3,
+    "mobileColumn": 1,
+    "gutter": [
+      0,
+      16
+    ]
+  },
+  "isAuto": true,
+  "isCustom": false,
+  "isScroll": false,
+  "space": [
+    0,
+    16
+  ],
+  "rowKey": "",
+  "layout": "vertical"
+}

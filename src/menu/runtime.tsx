@@ -2,91 +2,94 @@ import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import { Data, InputIds, MenuItem, OutputIds, findMenuItem, uuid, MenuTypeEnum } from './constants';
 import css from './style.less';
+import * as Icons from '@ant-design/icons';
+
+import { findSelectkeys } from './utils';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const { dataSource, mode } = data;
-  const [menuData, setMenuData] = useState<MenuItem[]>([]);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedKey, setSelectedKey] = useState<string[]>([]);
+  const [isSet, setIsSet] = useState<boolean>(false);
 
-  const formatDataSource = (ds: MenuItem[], toJson?: boolean): MenuItem[] => {
-    return ds.map((item) => {
-      const { title, key, children, value } = item || {};
-      const menuKey = key || uuid();
-      let val = value;
-      if (toJson && value) {
-        try {
-          val = JSON.parse(decodeURIComponent(value));
-        } catch (e) {}
-      }
-      return {
-        ...item,
-        title: env.i18n(title),
-        value: val,
-        key: menuKey,
-        children: Array.isArray(children) ? formatDataSource(children) : undefined
-      };
-    });
-  };
-  const setSelectedKeysByData = (ds: MenuItem[], val: string) => {
-    if (val && typeof val === 'string') {
-      const temp = findMenuItem(ds, val);
-      if (temp?.key) {
-        setSelectedKeys([temp.key]);
-      } else {
-        setSelectedKeys([val]);
-      }
-    }
-  };
-
+  //激活项处理
   useEffect(() => {
-    const tempData = formatDataSource(dataSource, true);
-    setMenuData(tempData);
-    const defaultActiveItem = tempData.find((item) => item.defaultActive);
-    if (defaultActiveItem?.key) {
-      setSelectedKeys([defaultActiveItem.key]);
+    if (dataSource.length !== 0 && !isSet) {
+      setSelectedKey([findSelectkeys(dataSource)]);
     }
   }, [dataSource]);
+
   useEffect(() => {
     if (env.runtime) {
       //设置选中项
       inputs[InputIds.SetActiveItem]((val) => {
-        setSelectedKeysByData(menuData, val);
+        setSelectedKey([val]);
       });
-      //设置数据
-      inputs[InputIds.SetMenuData]((ds) => {
-        const { dataSource, defaultActive } = ds || {};
+
+      inputs[InputIds.SetMenuData]((val) => {
+        const { dataSource, defaultActive } = val || {};
         if (Array.isArray(dataSource)) {
-          const tempData = formatDataSource(dataSource);
-          setMenuData(tempData);
-          setSelectedKeysByData(tempData, defaultActive);
+          dataSource.forEach((item) => {
+            const key = item.key || uuid();
+            item.key = key;
+            item._key = key;
+          });
+          data.dataSource = dataSource;
+          setSelectedKey([defaultActive]);
+          setIsSet(true);
         }
       });
-      //获取选中值
-      inputs[InputIds.GetActiveItem]((val, relOutputs) => {
-        const temp = findMenuItem(menuData, selectedKeys[0]);
-        relOutputs[OutputIds.GetActiveItem](temp);
+    }
+  }, [dataSource, selectedKey]);
+  //获取选中值
+  inputs[InputIds.GetActiveItem]((val, relOutputs) => {
+    if (selectedKey && env.runtime) {
+      const temp = findMenuItem(dataSource, selectedKey[0]);
+      const { key, _key, title, menuType, value } = temp || {};
+      relOutputs[OutputIds.GetActiveItem]({
+        title: title,
+        key: _key,
+        menuType: menuType,
+        value: value ? value : void 0
       });
     }
-  }, [menuData, selectedKeys]);
+  });
 
+  //菜单点击事件
   const onClick = (e) => {
-    const clickItem = findMenuItem(menuData, e.key);
-    setSelectedKeys([e.key]);
+    const clickItem = findMenuItem(dataSource, e.key);
+    setSelectedKey([e.key]);
+    const { key, _key, menuType, title, value } = clickItem;
     if (env.runtime) {
-      outputs[OutputIds.ClickMenu](clickItem);
+      outputs[OutputIds.ClickMenu]({
+        title: title,
+        key: key,
+        menuType: menuType,
+        value: value ? value : void 0
+      });
     }
   };
 
+  //子菜单的点击事件
+  const menuOnClick = (e) => {
+    const clickItem = findMenuItem(dataSource, e.key);
+    const { key, _key, ...res } = clickItem;
+    if (env.runtime && key && !isSet) {
+      outputs[_key]({
+        ...res,
+        key: key
+      });
+    }
+  };
+
+  //选择图标样式
+  const chooseIcon = ({ icon }) => {
+    const Icon = Icons && Icons[icon as string]?.render();
+    return <>{Icon}</>;
+  };
+
   const renderMenuItems = (ds: MenuItem[]) => {
-    //子菜单的点击事件
-    const menuOnClick = (e) => {
-      const clickItem = findMenuItem(menuData, e.key);
-      if (env.runtime) {
-        outputs[e.key](clickItem);
-      }
-    };
     return (ds || []).map((item) => {
-      const { key, children, menuType, title } = item || {};
+      const { key, children, menuType, title, useIcon, icon } = item || {};
       //分组菜单
       if (menuType === MenuTypeEnum.Group) {
         return (
@@ -100,26 +103,55 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       //父菜单
       if (menuType === MenuTypeEnum.SubMenu) {
         return (
-          <Menu.SubMenu title={title} key={key} data-menu-item={key}>
+          <Menu.SubMenu
+            title={title}
+            key={key}
+            data-menu-item={key}
+            icon={useIcon ? chooseIcon({ icon: icon }) : void 0}
+            style={{ opacity: 1, height: 'unset', overflowY: 'unset', position: 'relative' }}
+          >
             {renderMenuItems(children)}
           </Menu.SubMenu>
         );
       }
       //最后的子菜单
       return (
-        <Menu.Item onClick={menuOnClick} key={key} data-menu-item={key}>
+        <Menu.Item
+          onClick={menuOnClick}
+          icon={useIcon ? chooseIcon({ icon: icon }) : void 0}
+          key={key}
+          data-menu-item={key}
+          style={{ opacity: 1, height: 'unset', overflowY: 'unset', position: 'relative' }}
+        >
           {title}
         </Menu.Item>
       );
     });
   };
 
-  if (!menuData.length && env.edit) {
+  if (!dataSource.length && env.edit) {
     return <div className={css.suggestion}>无静态数据</div>;
   }
+  if (env.edit) {
+    return (
+      <div>
+        <Menu
+          onClick={onClick}
+          mode={mode}
+          selectedKeys={selectedKey}
+          size="small"
+          className={css.overflow}
+        >
+          {renderMenuItems(dataSource)}
+        </Menu>
+      </div>
+    );
+  }
   return (
-    <Menu onClick={onClick} mode={mode} size="small" selectedKeys={selectedKeys}>
-      {renderMenuItems(menuData)}
-    </Menu>
+    <div>
+      <Menu onClick={onClick} mode={mode} selectedKeys={selectedKey} size="small">
+        {renderMenuItems(dataSource)}
+      </Menu>
+    </div>
   );
 }

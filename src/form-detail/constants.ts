@@ -1,6 +1,9 @@
 // export interface SlotConfig {
 //   outputId?: string;
 // }
+
+import React from "react";
+
 /** 类型 */
 export enum TypeEnum {
   /** 文本 */
@@ -17,8 +20,8 @@ export interface Item {
   key: string;
   value: any;
   span: number; //范围是 1 到该行剩余column数
-  labelStyle?: Record<string, string | number>;
-  contentStyle?: Record<string, string | number>;
+  labelStyle?: React.CSSProperties;
+  contentStyle?: React.CSSProperties;
   stylePadding?: [number, number];
   type?: TypeEnum;
   direction?: 'horizontal' | 'vertical';
@@ -27,15 +30,19 @@ export interface Item {
   itemType?: string;
   // slotConfig?: SlotConfig;
   slotId?: string;
-  lineLimit?: number;
-  widthLimit?: number;
-  limit?: boolean;
+  rows?: number;
+  maxWidth?: React.CSSProperties['maxWidth'];
+  ellipsis?: boolean;
   padding?: number[];
-
+  showLabel: boolean;
   useSuffix?: boolean;
   suffixBtnText?: string;
   itemStyle?: any;
   isHidden?: boolean;
+  labelDesc?: string
+
+  //每一项的schema
+  schema?: any;
 }
 
 /** 数据来源 */
@@ -69,11 +76,15 @@ export interface Data {
   size: SizeEnum;
   layout: LayoutEnum;
   column: number;
+  mobileColumn: number;
   bordered: boolean;
   colon: boolean;
   items: Item[];
-
   useSlotProps?: boolean;
+  rawData: any;
+  inputSchema: any;
+  autoWidth?: boolean
+  globalLabelStyle: React.CSSProperties
 }
 
 export const InputIds = {

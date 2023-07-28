@@ -1,16 +1,13 @@
 import { message } from 'antd';
-import { Data, InputIds } from '../constants';
+import { Data, Item, InputIds, TypeEnum } from '../constants';
+import { uuid } from '../../utils';
 
 export function getEleIdx({ data, focusArea }: any): number {
-  // console.log(focusArea, 11);
   focusArea.ele.myEle = true;
-  if (!focusArea.ele.parentNode) return 0;
+  if (!focusArea.ele?.parentNode) return 0;
   const tableEle = focusArea.ele.parentNode.parentNode;
   if (!tableEle) return 0;
-  //console.log('tableEle',tableEle)
-  // const tableRows = tableEle.getElementsByClassName('ant-descriptions-row');
   const tableRows = tableEle.children;
-  // console.log(tableRows1, 22);
   let dataItemIdx = -1;
   const tableRowsArr: any[] = Array.from(tableRows);
   first: for (let i = 0; i < tableRowsArr.length; i++) {
@@ -23,13 +20,10 @@ export function getEleIdx({ data, focusArea }: any): number {
       }
     }
   }
-  // console.log(rowIdx, eleIdx, 33);
   if (dataItemIdx === -1) {
     message.error('出错了:(');
     throw new Error('dataItemIdx not found.');
   }
-  //const dataItemIdx = (rowIdx) * parseFloat(data.column.toString()) + eleIdx;
-  // console.log(dataItemIdx, 44);
   delete focusArea.ele.myEle;
   return dataItemIdx;
 }
@@ -37,14 +31,13 @@ export function getEleIdx({ data, focusArea }: any): number {
 export function getSpanCount({ data, focusArea }: any): number {
   focusArea.ele.myFlag = true;
   let focusAreaEle = focusArea.ele;
-  const tableEle = focusAreaEle.parentNode.parentNode;
+  const tableEle = focusAreaEle.parentNode?.parentNode;
   const tableRows: any[] = Array.from(
-    tableEle.getElementsByClassName('ant-descriptions-row')
+    tableEle?.getElementsByClassName('ant-descriptions-row') || []
   );
   let spanCount = 0;
   outer: for (let i = 0; i < tableRows.length; i++) {
     spanCount = 0;
-    //console.log("tableRow: ", i)
     const itemChildren = Array.from(tableRows[i].children);
     for (let j = 0; j < itemChildren.length; j++) {
       const item: any = itemChildren[j];
@@ -115,7 +108,7 @@ export function setNextSpan({ data, focusArea }: any, toSetSpan: number) {
   delete focusArea.ele.myFlag;
 }
 
-export function setDelete({ data, focusArea }: any) {
+export function setDelete({ data, focusArea, slots }: any) {
   const deleteItemIdx = getEleIdx({ data, focusArea });
   const itemRowIdx = focusArea.index;
   const rowStart = deleteItemIdx - itemRowIdx;
@@ -134,7 +127,11 @@ export function setDelete({ data, focusArea }: any) {
       break;
     }
   }
-  data.items.splice(getEleIdx({ data, focusArea }), 1);
+  const item = data.items[deleteItemIdx];
+  if (item?.slotId) {
+    slots.remove(item.slotId);
+  }
+  data.items.splice(deleteItemIdx, 1);
 }
 
 export function setExchange({ data, focusArea }: any, type: 'up' | 'down') {
@@ -156,7 +153,8 @@ export function setExchange({ data, focusArea }: any, type: 'up' | 'down') {
 export const getDataSourceSchema = (data: Data) => {
   const properties = {};
   data.items.forEach((item) => {
-    properties[item.key] = { type: 'string' };
+    const subSchema = item.schema;
+    properties[item.key] = subSchema || { type: 'string' };
   });
   return properties;
 };
@@ -231,3 +229,41 @@ export const Schemas = {
     };
   }
 };
+
+export const createItem = ({ data }: Pick<EditorResult<Data>, 'data'>): Item => {
+  const id = !!data.items.length ? uuid() : 'field1';  //兼容init设置i/o schema不生效问题
+  return {
+    id,
+    label: `描述项${data.items.length + 1}`,
+    key: id,
+    showLabel: true,
+    value: `field${data.items.length + 1}`,
+    span: 1,
+    type: TypeEnum.Text,
+    direction: 'horizontal',
+    useSuffix: false,
+    suffixBtnText: '查看更多',
+    schema: {
+      type: 'string'
+    },
+    labelDesc: ''
+  };
+};
+
+export const createStyleForItem = ({ target }: StyleModeType<Data>) => ({
+  title: '描述项',
+  options: ['padding'],
+  target
+});
+
+export const createStyleForLabel = ({ target }: StyleModeType<Data>) => ({
+  title: '标签',
+  options: ['font', 'size'],
+  target
+});
+
+export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
+  title: '内容',
+  options: ['font', 'size'],
+  target
+});

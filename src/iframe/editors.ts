@@ -31,6 +31,18 @@ export default {
           data.useSrcDoc = value;
         }
       }
+    },
+    {
+      title: 'ID',
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.id;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.id = value;
+        }
+      }
     }
   ]
 };

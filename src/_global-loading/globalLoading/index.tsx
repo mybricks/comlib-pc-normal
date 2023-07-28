@@ -17,6 +17,9 @@ export const GlobalLoading = {
    *  @returns 关闭全局loading回调
    */
   open: (ladingText?: string, spinProps?: SpinProps) => {
+    if (divEle) {
+      return;
+    }
     const { wrapperClassName, ...resProps } = spinProps || {};
     divEle = document.createElement('div');
     divEle.setAttribute('id', divEleID);

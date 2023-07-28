@@ -59,9 +59,9 @@ const renderPreview = ({ type, url }) => {
   }
 };
 export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel }: Props) {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div ref={ref}>
@@ -102,7 +102,7 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
           </div>
         ]}
         onCancel={onClose}
-        getContainer={() => ref.current}
+        getContainer={() => ref.current as HTMLDivElement}
         zIndex={1002}
       >
         <div

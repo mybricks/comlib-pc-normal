@@ -44,6 +44,7 @@ export const InputIds = {
   /** 区块输入项 */
   // 展开行数据
   EXP_COL_VALUES: 'expColValues',
+  EXP_ROW_VALUES: 'expRowValues',
   // 插槽项数据-当前列数据
   SLOT_ROW_VALUE: 'slotRowValue',
   // 插槽项数据-当前行数据
@@ -53,7 +54,13 @@ export const InputIds = {
   // 勾选数据
   ROW_SELECTION_SELECTED_ROWS: 'rowSelectionSelectedRows',
   // 序号
-  INDEX: 'index'
+  INDEX: 'index',
+
+  // 动态设置显示列
+  SET_SHOW_COLUMNS: 'showColumns',
+
+  //动态设置显示表头
+  SET_SHOW_TitleS: 'showTitles'
 };
 export const OutputIds = {
   // 输出勾选项
@@ -70,7 +77,13 @@ export const OutputIds = {
   // 筛选事件触发
   FILTER: 'filter',
   // 排序事件触发
-  SORTER: 'sorter'
+  SORTER: 'sorter',
+  // 点击行触发
+  ROW_CLICK: 'rowClick',
+  Edit_Table_Data: 'editTableData'
 };
 
-export const DefaultRowKey = '_uuid'
+export const DefaultRowKey = '_uuid';
+
+export const DefaultHeadStyle = { color: '#1f1f1f', background: '#f5f7f9' };
+export const DefaultContentStyle = { color: '#434343' };

@@ -6,14 +6,9 @@
   "ellipsis": {
     "rows": 3
   },
-  "style": {
-    "fontWeight": 400,
-    "fontSize": "14px",
-    "fontStyle": "normal",
-    "lineHeight": "14px",
-    "letterSpacing": "0px",
-    "color": "#000000"
-  },
+  "style": {},
   "useClick": false,
-  "useDynamicStyle": false
+  "useDynamicStyle": false,
+  "useHoverStyle": true,
+  "legacyConfigStyle": {}
 }

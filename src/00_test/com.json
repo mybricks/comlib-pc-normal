@@ -1,0 +1,12 @@
+{
+  "title": "下拉框+list",
+  "namespace": "mybricks.normal-pc.demo0",
+  "version": "1.0.0",
+  "description": "下拉框+list",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "runtime": "./runtime.tsx",
+  "inputs": [
+  ],
+  "outputs": []
+}

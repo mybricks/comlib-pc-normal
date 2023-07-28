@@ -1,0 +1,7 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <line fill="none" stroke="#000" x1="0" y1="283" x2="214" y2="285" id="svg_1" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="20"/>
+  <text transform="matrix(2.18754 0 0 2.18281 -19.7613 -91.4561)" stroke="#000" fill="#000000" stroke-width="0" x="40.71237" y="107.91096" id="svg_3" font-size="48" font-family="Noto Sans JP" text-anchor="start" xml:space="preserve" font-weight="bold">86</text>
+  <text transform="matrix(2.23135 0 0 2.3646 -21.3647 -71.2121)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="48" id="svg_2" y="87.93476" x="10.52462" stroke-width="3" fill="#000000">+</text>
+ </g>
+</svg>

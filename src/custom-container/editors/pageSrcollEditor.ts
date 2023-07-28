@@ -23,6 +23,24 @@ export const PageScrollEditor = [
         }
       },
       {
+        title: '锚点ID',
+        type: 'Text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useSrcollIntoView;
+        },
+        options: {
+          placeholder: '例如：id1'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data?.id ?? '';
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.id = value;
+          }
+        }
+      },
+      {
         title: '动画',
         type: 'select',
         options: [

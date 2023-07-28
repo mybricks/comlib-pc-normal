@@ -4,11 +4,19 @@
   "comAry": {
     "test": [
       {
+        "title": "领域模型",
+        "comAry": [
+          "./src/domain/domain-crud/com.json"
+        ]
+      },
+      {
         "title": "常规",
         "comAry": [
           "./src/_0_test/container/com.json",
           "./src/_0_test/text/com.json",
           "./src/_0_test/list/com.json",
+          "./src/_0_test/slotRender/com.json",
+          "./src/_0_test/test/com.json",
           "./src/text/com.json",
           "./src/link/com.json",
           "./src/typography/com.json",
@@ -17,7 +25,9 @@
           "./src/toolbar/com.json",
           "./src/button/com.json",
           "./src/breadcrumb/com.json",
-          "./src/richtext/com.json"
+          "./src/richtext/com.json",
+          "./src/00_test/com.json",
+          "./src/00_schema-test/com.json"
         ]
       },
       {
@@ -29,36 +39,56 @@
           "./src/tabs/com.json",
           "./src/steps/com.json",
           "./src/list/com.json",
+          "./src/list-new/com.json",
           "./src/drawer/com.json",
           "./src/collapse/com.json",
           "./src/custom-container/com.json"
         ]
       },
       {
-        "title": "表单",
+        "title": "数据录入",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-list/com.json",
+          "./src/domain-form/com.json",
+          "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
+          "./src/form-coms/auto-complete/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/date-picker/com.json",
           "./src/form-coms/range-picker/com.json",
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/input-textarea/com.json",
+          "./src/form-coms/search/com.json",
           "./src/form-coms/radio/com.json",
           "./src/form-coms/checkbox/com.json",
           "./src/form-coms/switch/com.json",
-          "./src/form-coms/treeSelect/com.json"
+          "./src/form-coms/treeSelect/com.json",
+          "./src/form-coms/transfer/com.json",
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json",
+          "./src/form-coms/rate/com.json",
+          "./src/form-coms/email/com.json",
+          "./src/form-coms/password/com.json",
+          "./src/form-coms/phone-number/com.json",
+          "./src/form-coms/time-picker/com.json",
+          "./src/form-coms/time-range-picker/com.json",
+          "./src/form-coms/color/com.json",
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
-        "title": "数据",
+        "title": "数据展示",
         "comAry": [
           "./src/table/com.json",
+          "./src/domain-table/com.json",
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/json-view/com.json"
+          "./src/json-view/com.json",
+          "./src/tree/com.json"
         ]
       },
       {
@@ -77,7 +107,9 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/video/com.json",
+          "./src/progress/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -85,12 +117,19 @@
       "./src/_message/com.json",
       "./src/_page-router/com.json",
       "./src/_global-loading/com.json",
-      "./src/_timer-delay/com.json",
-      "./src/_timer-loop/com.json",
-      "./src/_merge/com.json",
-      "./src/_download/com.json",
-      "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json"
+      "./src/_query/com.json",
+      "./src/_events/com.json",
+      "./src/_service/com.json",
+      "./src/_cookie/com.json",
+      "./src/_pick/com.json",
+      "./src/_muilt-inputJs/com.json",
+      "./src/_array-merge/com.json",
+      "./src/_post-message/com.json",
+      "./src/_receive-message/com.json",
+      "./src/_enum-map/com.json",
+      "./src/_props/com.json",
+      "../comlib-basic/src/popup/com.json",
+      "../comlib-basic/src/_muilt-inputJs/com.json"
     ],
     "publish": [
       {
@@ -116,6 +155,7 @@
           "./src/tabs/com.json",
           "./src/steps/com.json",
           "./src/list/com.json",
+          "./src/list-new/com.json",
           "./src/drawer/com.json",
           "./src/collapse/com.json",
           "./src/custom-container/com.json"
@@ -125,16 +165,32 @@
         "title": "表单",
         "comAry": [
           "./src/form-coms/form-container/com.json",
+          "./src/form-coms/form-list/com.json",
+          "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",
           "./src/form-coms/select/com.json",
+          "./src/form-coms/auto-complete/com.json",
           "./src/form-coms/cascader/com.json",
           "./src/form-coms/date-picker/com.json",
           "./src/form-coms/range-picker/com.json",
           "./src/form-coms/input-number/com.json",
           "./src/form-coms/input-textarea/com.json",
+          "./src/form-coms/search/com.json",
           "./src/form-coms/radio/com.json",
           "./src/form-coms/checkbox/com.json",
-          "./src/form-coms/switch/com.json"
+          "./src/form-coms/switch/com.json",
+          "./src/form-coms/transfer/com.json",
+          "./src/form-coms/upload/com.json",
+          "./src/form-coms/slider/com.json",
+          "./src/form-coms/rate/com.json",
+          "./src/form-coms/email/com.json",
+          "./src/form-coms/password/com.json",
+          "./src/form-coms/phone-number/com.json",
+          "./src/form-coms/time-picker/com.json",
+          "./src/form-coms/time-range-picker/com.json",
+          "./src/form-coms/color/com.json",
+          "./src/form-coms/code/com.json",
+          "./src/form-coms/input-richtext/com.json"
         ]
       },
       {
@@ -144,7 +200,8 @@
           "./src/paginator/com.json",
           "./src/timeline/com.json",
           "./src/form-detail/com.json",
-          "./src/json-view/com.json"
+          "./src/json-view/com.json",
+          "./src/tree/com.json"
         ]
       },
       {
@@ -163,7 +220,8 @@
           "./src/menu/com.json",
           "./src/icon/com.json",
           "./src/dropdown/com.json",
-          "./src/sort-bar/com.json"
+          "./src/sort-bar/com.json",
+          "./src/video/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -171,12 +229,35 @@
       "./src/_message/com.json",
       "./src/_page-router/com.json",
       "./src/_global-loading/com.json",
-      "./src/_timer-delay/com.json",
-      "./src/_timer-loop/com.json",
-      "./src/_merge/com.json",
-      "./src/_download/com.json",
-      "./src/_object-merge/com.json",
-      "./src/_schema-simulator/com.json"
+      "./src/_query/com.json",
+      "./src/_events/com.json",
+      "./src/_service/com.json",
+      "./src/_cookie/com.json",
+      "./src/_pick/com.json",
+      "./src/_muilt-inputJs/com.json",
+      "./src/_array-merge/com.json",
+      "./src/_post-message/com.json",
+      "./src/_receive-message/com.json",
+      "./src/_enum-map/com.json",
+      "./src/_props/com.json"
     ]
-  }
+  },
+  "externals": [
+    {
+      "name": "@ant-design/icons",
+      "library": "icons",
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
+    },
+    {
+      "name": "antd",
+      "library": "antd",
+      "urls": [
+        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.css",
+        "https://assets.mybricks.world/pkg/moment-2.9.1/moment.min.js",
+        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.js"
+      ]
+    }
+  ]
 }

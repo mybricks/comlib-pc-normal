@@ -1,0 +1,272 @@
+{
+  "title": "上传",
+  "namespace": "mybricks.normal-pc.upload",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.14",
+  "description": "上传",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置上传表单项的值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置上传表单项的初始值，并触发值初始化事件输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "uploadDone",
+      "title": "上传完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "remove",
+      "title": "删除文件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "upload",
+      "title": "开始上传",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "remove",
+      "title": "删除文件",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "carrier",
+      "title": "添加组件"
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

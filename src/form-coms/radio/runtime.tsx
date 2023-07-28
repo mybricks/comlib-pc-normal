@@ -1,39 +1,71 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Radio } from 'antd';
+import { Radio, Space } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { uuid } from '../../utils';
 import { Option } from '../types';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import css from './runtime.less';
 
-export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Data>) {
-  useLayoutEffect(() => {
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  parentSlot,
+  id,
+  name
+}: RuntimeParams<Data>) {
+  useFormItemInputs({
+    name,
+    id,
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
+        data.value = val;
+      },
+      setInitialValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
+        data.value = val;
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        data.value = '';
+        data.value = void 0;
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
+  });
 
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
-
-    inputs['setValue']((val) => {
-      data.value = val;
-      outputs['onChange'](val);
-    });
-
-    inputs['resetValue'](() => {
-      data.value = void 0;
-    });
-
+  useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
       let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
@@ -43,6 +75,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
             disabled: false,
             lable: `单选框${index}`,
             value: `${uuid()}`,
+            key: `${uuid()}`,
             ...item
           });
         });
@@ -53,6 +86,7 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
             disabled: false,
             lable: `单选框`,
             value: `${uuid()}`,
+            key: `${uuid()}`,
             ...(ds || {})
           }
         ];
@@ -64,54 +98,85 @@ export default function Runtime({ env, data, inputs, outputs }: RuntimeParams<Da
           newVal = value;
         }
       });
-      data.value = newVal;
+      if (typeof newVal !== 'undefined') {
+        data.value = newVal;
+      }
+      if (!tempDs.some((item) => item.value === data.value)) {
+        data.value = undefined;
+      }
       data.config.options = tempDs;
     });
-
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
-    //设置禁用
-    inputs['setDisabled'](() => {
-      data.config.disabled = true;
-    });
-    //设置启用
-    inputs['setEnabled'](() => {
-      data.config.disabled = false;
-    });
   }, []);
+
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name });
+  };
 
   const onChange = useCallback((e) => {
     const { value } = e.target;
     data.value = value;
+    onChangeForFc(parentSlot, { id: id, value, name });
     outputs['onChange'](value);
+    onValidateTrigger();
   }, []);
 
-  return (
-    data.visible && (
-      <div>
-        <Radio.Group {...data.config} value={data.value} onChange={onChange}>
-          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-            const label = item.label;
-            return (
-              <Radio
-                key={item.value}
-                value={item.value}
-                disabled={item.disabled}
-                checked={item.checked}
-                style={{ marginRight: 8 }}
-              >
-                {label}
-              </Radio>
-            );
-          })}
+  const renderRadio = () => {
+    return (
+      <div className={css.radio}>
+        <Radio.Group
+          optionType={data.enableButtonStyle ? 'button' : 'default'}
+          buttonStyle={data.buttonStyle}
+          disabled={data.config.disabled}
+          value={data.value}
+          onChange={onChange}
+        >
+          <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+              const label = item.label;
+              return (
+                <Radio
+                  key={item.key}
+                  value={item.value}
+                  disabled={item.disabled}
+                  checked={item.checked}
+                  style={{ marginRight: 8 }}
+                >
+                  {label}
+                </Radio>
+              );
+            })}
+          </Space>
         </Radio.Group>
       </div>
-    )
+    );
+  };
+
+  return data.enableButtonStyle ? (
+    <div>
+      <Radio.Group
+        optionType={data.enableButtonStyle ? 'button' : 'default'}
+        buttonStyle={data.buttonStyle}
+        {...data.config}
+        value={data.value}
+        onChange={onChange}
+      >
+        {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+          const label = item.label;
+          return (
+            <Radio
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              checked={item.checked}
+              style={{ marginRight: 8 }}
+            >
+              {label}
+            </Radio>
+          );
+        })}
+      </Radio.Group>
+    </div>
+  ) : (
+    renderRadio()
   );
 }

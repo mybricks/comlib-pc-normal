@@ -3,46 +3,12 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let optionsLength = 0,
-  addOption,
-  delOption;
-
-const initParams = (data: Data) => {
-  if (!data.staticOptions) {
-    const defaultOption = {
-      label: `选项1`,
-      value: `选项1`,
-      type: 'default',
-      checked: false,
-      key: uuid()
-    };
-    data.staticOptions = [defaultOption];
-    data.config.options = data.staticOptions;
-  }
-  optionsLength = (data.staticOptions || []).length;
-  addOption = (option) => {
-    data.staticOptions.push(option);
-  };
-  delOption = (index: number) => {
-    data.staticOptions.splice(index, 1);
-  };
-};
-
 export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'array' } })
-    }
-    // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-    //   data.type = 'data'
-    //
-    //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
-    // } else {
-    //   data.type = 'normal'
-    // }
+  '@init': ({ style }) => {
+    style.width = '100%';
   },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
@@ -61,6 +27,35 @@ export default {
           }
         }
       },
+      {
+        title: '全选框',
+        type: 'switch',
+        description: '是否使用全选框',
+        value: {
+          get({ data }) {
+            return data.checkAll;
+          },
+          set({ data }, value: boolean) {
+            data.checkAll = value;
+          }
+        }
+      },
+      {
+        title: '全选框标签',
+        type: 'text',
+        description: '修改全选框的文案',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.checkAll;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.checkAllText;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.checkAllText = value;
+          }
+        }
+      },
       // 选项配置
       {
         title: "静态选项配置",
@@ -69,17 +64,14 @@ export default {
           getTitle: ({ label, checked }) => {
             return `${label}${checked ? ': 默认值' : ''}`;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
+            const value = uuid('_', 2);
             const defaultOption = {
-              label: `选项${optionsLength + 1}`,
-              value: `选项${optionsLength + 1}`,
+              label: `选项${value}`,
+              value: `选项${value}`,
               type: 'default',
               key: uuid()
             };
-            addOption(defaultOption);
             return defaultOption;
           },
           items: [
@@ -109,17 +101,43 @@ export default {
         },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
-            initParams(data);
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
             const values: any[] = [];
+            let renderError = false;
             options.forEach(({ checked, value }) => {
               if (checked) values.push(value);
+              if (value === undefined) renderError = true;
             });
+
+            data.renderError = renderError;
             data.value = values as any;
             data.staticOptions = options;
             data.config.options = options;
+          }
+        }
+      },
+      {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
           }
         }
       },
@@ -192,7 +210,14 @@ export default {
         title: '事件',
         items: [
           {
-            title: '值发生改变',
+            title: '值初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
+          {
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'

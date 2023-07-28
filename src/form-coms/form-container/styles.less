@@ -1,5 +1,114 @@
-.slotInlineWrapper {
+.wrapper {
+  .slotInlineWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .formItemDesc {
+    margin-top: 6px;
+  }
+
+  :global {
+    .ant-form-item-label-wrap {
+      overflow: hidden;
+    }
+  }
+}
+
+.formItemControl {
   display: flex;
-  flex-wrap: wrap;
-  width: 100%;
+  // align-items: flex-start;
+
+  .formItemSlotContent {
+    width: 100%;
+    flex: 1;
+  }
+  .formItemSlotAfter {
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    & > div {
+      // hack slot style
+      height: auto !important;
+    }
+  }
+}
+
+.empty {
+  position: relative;
+  padding-bottom: 68px;
+
+  :global {
+    div[data-isslot='1'] {
+      overflow: initial;
+    }
+  }
+
+  .emptyHorActions {
+    position: absolute;
+    width: 100%;
+    margin-top: 48px;
+  }
+
+  .emptyVerActions {
+    position: absolute;
+    width: 100%;
+    margin-top: 24px;
+    &.onlyone {
+      margin-top: 54px;
+    }
+  }
+}
+
+.mobileForm {
+  :global {
+    .ant-form-item .ant-form-item-label {
+      padding: 0 0 8px;
+      line-height: 1.5715;
+      white-space: normal;
+      text-align: left;
+    }
+
+    .ant-form-item .ant-form-item-label > label {
+      margin: 0;
+    }
+
+    .ant-form-item .ant-form-item-label > label:after {
+      display: none;
+    }
+
+    .ant-form-rtl.ant-form-item .ant-form-item-label {
+      text-align: right;
+    }
+
+    .ant-form .ant-form-item {
+      flex-wrap: wrap;
+    }
+
+    .ant-form .ant-form-item .ant-form-item-control,
+    .ant-form .ant-form-item .ant-form-item-label {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .ant-col-xs-24.ant-form-item-label {
+      padding: 0 0 8px;
+      line-height: 1.5715;
+      white-space: normal;
+      text-align: left;
+    }
+
+    .ant-col-xs-24.ant-form-item-label > label {
+      margin: 0;
+    }
+
+    .ant-col-xs-24.ant-form-item-label > label:after {
+      display: none;
+    }
+
+    .ant-form-rtl.ant-col-xs-24.ant-form-item-label {
+      text-align: right;
+    }
+  }
 }

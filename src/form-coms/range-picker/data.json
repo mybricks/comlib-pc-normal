@@ -2,9 +2,64 @@
   "rules": [],
   "visible": true,
   "showTime": false,
+  "contentType": "timeStamp",
+  "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
+  "useDisabledDate": "default",
+  "useDisabledTime": "default",
+  "timeTemplate": [
+    "start",
+    "end"
+  ],
+  "staticDisabledDate": [
+    {
+      "title": "起始日期禁用",
+      "checked": true,
+      "type": "days",
+      "offset": 0,
+      "direction": "before"
+    },
+    {
+      "title": "结束日期禁用",
+      "checked": true,
+      "type": "custom",
+      "offset": 0,
+      "direction": "before"
+    }
+  ],
+  "staticDisabledTime": [
+    {
+      "title": "起始时间禁用",
+      "checked": true,
+      "type": "seconds",
+      "offset": 0,
+      "direction": "before"
+    },
+    {
+      "title": "结束时间禁用",
+      "checked": true,
+      "type": "custom",
+      "offset": 0,
+      "direction": "before"
+    }
+  ],
+  "useRanges": false,
+  "ranges": [
+    { "title": "今天", "type": "day", "numList": [0, 0] },
+    { "title": "昨天", "type": "day", "numList": [1, -1] },
+    { "title": "明天", "type": "day", "numList": [-1, 1] },
+    { "title": "前后七天", "type": "day", "numList": [7, 7] },
+    { "title": "本周", "type": "week", "numList": [0, 0] },
+    { "title": "本月", "type": "month", "numList": [0, 0] }
+  ],
   "config": {
     "disabled": false,
     "picker": "date",
-    "placeholder": ["开始日期", "结束日期"]
-  }
+    "placeholder": [
+      "开始日期",
+      "结束日期"
+    ]
+  },
+  "dateType": "array",
+  "splitChart": "-",
+  "emptyRules": []
 }

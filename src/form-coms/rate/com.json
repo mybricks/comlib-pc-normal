@@ -1,0 +1,123 @@
+{
+  "title": "评分",
+  "namespace": "mybricks.normal-pc.rate",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.0.8",
+  "description": "评分",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_1tias6.65a8bc3682e3ebb4.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置评分的值，并触发值变化事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置评分的初始值，并触发值初始化事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发评分的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取评分的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空评分的值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置只读",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

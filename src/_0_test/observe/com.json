@@ -1,0 +1,11 @@
+{
+  "title": "测试--observe",
+  "namespace": "test.observe",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "observe",
+  "runtime": "./runtime.tsx",
+  "inputs": [],
+  "outputs": []
+}

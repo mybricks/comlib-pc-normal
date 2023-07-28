@@ -16,3 +16,30 @@
   padding: 5px;
   color: #aaa;
 }
+
+.button {
+  width: auto;
+  :global {
+    .ant-btn {
+      height: 100%;
+    }
+  }
+}
+
+.space {
+  :global {
+    .ant-space-item {
+      display: flex;
+      /*实现垂直居中*/
+      align-items: center;
+      /*实现水平居中*/
+      justify-content: center;
+    }
+  }
+}
+
+.mobileToolbar {
+  & > div {
+    width: 100% !important;
+  }
+}

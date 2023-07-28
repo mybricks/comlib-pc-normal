@@ -5,14 +5,15 @@
   "isChoose": false,
   "closable": false,
   "showIcon": true,
-  "icon": "NormalHomeLine",
+  "icon": "HomeOutlined",
   "color": "#0075ff",
   "isColor": false,
-  "textColor": "#434343",
+  "textColor": "",
   "showInfo": false,
   "banner": false,
   "isClose": true,
   "openWidth": false,
   "percentWidth": 100,
-  "width": 500
+  "width": 500,
+  "size": "16px"
 }

@@ -3,16 +3,33 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "description": "级联选择",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置级联选择的值，并触发值变化事件输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置级联选择的初始值，并触发初始化事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -23,6 +40,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发级联选择的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -33,6 +51,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取级联选择的值并输出",
       "schema": {
         "type": "any"
       },
@@ -43,6 +62,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空级联选择的值",
       "schema": {
         "type": "any"
       }
@@ -78,6 +98,10 @@
               "title": "名称",
               "type": "string"
             },
+            "disabled": {
+              "title": "禁用",
+              "type": "boolean"
+            },
             "children": {
               "title": "子项",
               "type": "array",
@@ -93,8 +117,15 @@
   ],
   "outputs": [
     {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "onChange",
-      "title": "值变化",
+      "title": "值更新",
       "schema": {
         "type": "string"
       }

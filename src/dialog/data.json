@@ -4,10 +4,12 @@
   "hideTitle": false,
   "closable": true,
   "centered": false,
+  "maskClosable": false,
   "useFooter": true,
   "cancelText": "取消",
   "width": 520,
   "footerLayout": "flex-end",
+  "isNew": true,
   "footerBtns": [
     {
       "id": "cancelBtn",
@@ -15,8 +17,11 @@
       "icon": "",
       "useIcon": false,
       "showText": true,
+      "dynamicHidden": true,
+      "dynamicDisabled": true,
       "type": "default",
       "visible": true,
+      "autoClose": true,
       "isConnected": false
     },
     {
@@ -24,9 +29,12 @@
       "title": "确认",
       "type": "primary",
       "icon": "",
+      "dynamicHidden": true,
+      "dynamicDisabled": true,
       "useIcon": false,
       "showText": true,
       "visible": true,
+      "autoClose": true,
       "isConnected": false
     }
   ]

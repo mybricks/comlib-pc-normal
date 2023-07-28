@@ -3,10 +3,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { Option } from '../types';
 import { Data } from './types';
 
-let tempOptions: Option[] = [],
-  optionsLength = 0,
-  addOption,
-  delOption;
+let tempOptions: Option[] = [];
 
 const initParams = (data: Data) => {
   if (!data.staticOptions) {
@@ -23,30 +20,14 @@ const initParams = (data: Data) => {
   if (tempOptions.length !== data.staticOptions?.length) {
     tempOptions = data.staticOptions || [];
   }
-  optionsLength = (data.staticOptions || []).length;
-  addOption = (option) => {
-    data.staticOptions.push(option);
-  };
-  delOption = (index: number) => {
-    data.staticOptions.splice(index, 1);
-  };
 };
 
 export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, name: data.name, schema: { type: 'any' } })
-    }
-    // if (schema === 'mybricks.normal-pc.form-container/form-item') {//in form container
-    //   data.type = 'data'
-    //
-    //   parent['@_setFormItem']({id, name: data.name, schema: {type: 'string'}})//use parents API
-    // } else {
-    //   data.type = 'normal'
-    // }
+  '@init': ({ style }) => {
+    style.width = '100%';
   },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
@@ -67,23 +48,20 @@ export default {
       },
       // 选项配置
       {
-        title: "静态选项配置",
+        title: '静态选项配置',
         type: 'array',
         options: {
           getTitle: ({ label, checked }) => {
             return `${label}${checked ? ': 默认值' : ''}`;
           },
-          onRemove: (index: number) => {
-            delOption(index);
-          },
           onAdd: () => {
+            const value = uuid('_', 2);
             const defaultOption = {
-              label: `选项${optionsLength + 1}`,
-              value: `选项${optionsLength + 1}`,
+              label: `选项${value}`,
+              value: `选项${value}`,
               type: 'default',
               key: uuid()
             };
-            addOption(defaultOption);
             return defaultOption;
           },
           items: [
@@ -108,7 +86,7 @@ export default {
               options: ['text', 'number', 'boolean'],
               description: '选项的唯一标识，可以修改为有意义的值',
               value: 'value'
-            },
+            }
           ]
         },
         value: {
@@ -117,32 +95,107 @@ export default {
             return data.staticOptions;
           },
           set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
-            tempOptions.forEach(oldOption => {
-              const newOption = options.find(option => option._id === oldOption._id);
-              const currentOption = data.staticOptions.find(option => option._id === oldOption._id);
+            let otherChanged = true;
+            tempOptions.forEach((oldOption) => {
+              const newOption = options.find((option) => option._id === oldOption._id);
+              const currentOption = data.staticOptions.find(
+                (option) => option._id === oldOption._id
+              );
               if (newOption?.checked === currentOption?.checked) return;
-              // 设置了选项的默认选中
+              // 1. 设置了选项的默认选中
               if (newOption?.checked && !oldOption?.checked) {
+                otherChanged = false;
                 data.value = newOption.value;
               }
-              // 取消了选项的默认选中
+              // 2. 取消了选项的默认选中
               if (!newOption?.checked && oldOption?.checked) {
+                otherChanged = false;
                 data.value = undefined;
               }
             });
+            // 3. 非默认选中引起的set
+            if (otherChanged) {
+              options.forEach((option) => {
+                if (option.checked) data.value = option.value;
+              });
+            }
             // 临时:使用tempOptions存储配置项的prev
             tempOptions = options;
             const formItemVal = data.value;
             // 更新选项
-            options = options.map(option => {
+            options = options.map((option) => {
               const checked = formItemVal !== undefined && option.value === formItemVal;
               return {
                 ...option,
                 checked
-              }
+              };
             });
             data.staticOptions = options;
             data.config.options = options;
+          }
+        }
+      },
+      {
+        title: '布局',
+        description: '水平排列和垂直排列',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.enableButtonStyle;
+        },
+        options: [
+          {
+            label: '水平',
+            value: 'horizontal'
+          },
+          {
+            label: '垂直',
+            value: 'vertical'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.layout;
+          },
+          set({ data }, value: boolean) {
+            data.layout = value;
+          }
+        }
+      },
+      {
+        title: '使用按钮样式',
+        description: '是否使用按钮样式',
+        type: 'switch',
+        value: {
+          get({ data }) {
+            return data.enableButtonStyle;
+          },
+          set({ data }, value: boolean) {
+            data.enableButtonStyle = value;
+          }
+        }
+      },
+      {
+        title: '按钮选中后样式',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableButtonStyle;
+        },
+        options: [
+          {
+            value: 'outline',
+            label: '描边'
+          },
+          {
+            value: 'solid',
+            label: '填色'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.buttonStyle || 'outline';
+          },
+          set({ data }, value: string) {
+            data.buttonStyle = value;
           }
         }
       },
@@ -215,14 +268,45 @@ export default {
         title: '事件',
         items: [
           {
-            title: '值发生改变',
+            title: '值初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
+          {
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'
             }
-          },
+          }
         ]
       }
     ];
+  },
+  '.ant-radio-button-wrapper': {
+    title: '单选按钮',
+    style: [
+      {
+        title: '默认',
+        options: ['border'],
+        initValue: {
+          borderColor: '#d9d9d9'
+        },
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.ant-radio-group .ant-radio-button-wrapper:nth-child(${index + 1})`;
+        }
+      },
+      {
+        title: '选中',
+        options: ['border'],
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.ant-radio-group .ant-radio-button-wrapper-checked:nth-child(${index + 1})`;
+        }
+      }
+    ]
   }
-}
+};

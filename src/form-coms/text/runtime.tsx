@@ -1,12 +1,14 @@
 import { Form, Input } from 'antd';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback } from 'react';
 import { validateFormItem } from '../utils/validator';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 import css from './runtime.less';
 
-interface Data {
+export interface Data {
   value: string | undefined;
-  visible: boolean;
   rules: any[];
   config: {
     allowClear: boolean;
@@ -18,64 +20,72 @@ interface Data {
   };
 }
 
-export default function ({ env, data, _inputs, inputs, _outputs, outputs }: RuntimeParams<Data>) {
+export default function (props: RuntimeParams<Data>) {
+  const { env, data, _inputs, inputs, _outputs, outputs, parentSlot, style } = props;
   const { edit } = env;
 
-  useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      data.value = val;
-      outputs['onChange'](data.value);
-    });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    id: props.id,
+    name: props.name,
+    parentSlot,
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        data.value = val;
+      },
+      setInitialValue(val) {
+        data.value = val;
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        data.value = void 0;
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
+  });
 
-    inputs['resetValue'](() => {
-      data.value = void 0;
-    });
-
-    // //设置显示
-    // inputs['setVisible'](() => {
-    //   data.visible = true;
-    // });
-    // //设置隐藏
-    // inputs['setInvisible'](() => {
-    //   data.visible = false;
-    // });
-    //设置禁用
-    inputs['setDisabled'](() => {
-      data.config.disabled = true;
-    });
-    //设置启用
-    inputs['setEnabled'](() => {
-      data.config.disabled = false;
-    });
-  }, []);
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
+  };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
-    data.value = value;
+    onValidateTrigger();
     outputs['onBlur'](value);
+  }, []);
+
+  const onPressEnter = useCallback((e) => {
+    const value = e.target.value;
+    onValidateTrigger();
+    outputs['onPressEnter'](value);
   }, []);
 
   let jsx = (
@@ -86,8 +96,9 @@ export default function ({ env, data, _inputs, inputs, _outputs, outputs }: Runt
       readOnly={!!edit}
       onChange={changeValue}
       onBlur={onBlur}
+      onPressEnter={onPressEnter}
     />
   );
 
-  return data.visible && <div className={css.fiText}>{jsx}</div>;
+  return <div className={css.fiText}>{jsx}</div>;
 }

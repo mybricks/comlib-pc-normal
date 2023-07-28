@@ -1,25 +1,40 @@
 {
   "title": "单选框",
   "namespace": "mybricks.normal-pc.radio",
-  "version": "1.0.0",
+  "version": "1.0.18",
   "description": "单选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_9en9i2.6e0f524f237f3fa5.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置单选框的值，并触发值变化事件输出",
       "schema": {
-        "type": "any"
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置单选框的初始值，并触发值初始化事件输出",
+      "schema": {
+        "type": "string"
       }
     },
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发单选框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -30,6 +45,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取单选框的值并输出",
       "schema": {
         "type": "any"
       },
@@ -40,6 +56,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空单选框的值",
       "schema": {
         "type": "any"
       }
@@ -89,10 +106,17 @@
   ],
   "outputs": [
     {
-      "id": "onChange",
-      "title": "值变化",
+      "id": "onInitial",
+      "title": "值初始化",
       "schema": {
-        "type": "any"
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "schema": {
+        "type": "string"
       }
     },
     {
@@ -116,7 +140,7 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "any"
+        "type": "string"
       }
     }
   ],

@@ -3,7 +3,7 @@ import { Alert, Tooltip, Tree, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'copy-to-clipboard';
 import { typeCheck, uuid } from '../utils';
-import { Data, InputIds, OutputIds } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, TypeEnum } from './constant';
 import css from './runtime.less';
 
 export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
@@ -13,15 +13,24 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     collapseStringsAfterLength,
     displayObjectSize,
     enableClipboard,
+    copyValueWithLabel,
     enableOutput
   } = data;
   const [isError, setIsError] = useState(false);
-  const [jsonObj, setJsonObj] = useState<any>([]);
 
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetJsonData]((val) => {
-        data.json = val;
+        if (typeof val === 'string') {
+          data.json = encodeURIComponent(val);
+        } else if (typeCheck(val, ['ARRAY', 'OBJECT'])) {
+          data.json = val;
+        } else {
+          console.error(`${title}:输入的JSON数据不合法`);
+        }
+      });
+      inputs[InputIds.GetJsonData]((_, outputRels) => {
+        outputRels[OutputIds.JsonData](data.jsonObj);
       });
     }
   }, []);
@@ -29,32 +38,30 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
   useEffect(() => {
     if (typeof data.json === 'string') {
       try {
-        setJsonObj(JSON.parse(decodeURIComponent(data.json)));
+        data.jsonObj = JSON.parse(decodeURIComponent(data.json));
         setIsError(false);
       } catch (e) {
         setIsError(true);
         console.warn(`${title}:输入的JSON数据不合法`);
-        setJsonObj([]);
+        data.jsonObj = dataSourceTypeMap[data.dataSourceType];
       }
     } else if (data.json && typeCheck(data.json, ['ARRAY', 'OBJECT'])) {
-      setJsonObj(data.json);
+      data.jsonObj = data.json;
     } else {
-      setJsonObj([]);
+      data.jsonObj = dataSourceTypeMap[data.dataSourceType];
       setIsError(false);
     }
   }, [data.json]);
-
-  if (isError && env.edit) {
-    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
-  }
 
   const rootKey: React.Key = useMemo(() => {
       return uuid();
     }, []),
     keyToData = new Map(),
     expandedKeys: React.Key[] = [];
-  if (enableClipboard || enableOutput) keyToData.set(rootKey, jsonObj);
+
+  if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
   if (collapsed !== 0) expandedKeys.push(rootKey);
+
   /**
    * 树节点的title渲染
    * @param props 组件属性
@@ -67,7 +74,8 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
         color: colors['key']
       },
       valStyle = {
-        color: colors[typeof value === 'string' ? 'string' : 'number']
+        color: colors[typeof value === 'string' ? 'string' : 'number'],
+        wordBreak: 'break-all'
       };
 
     // 根据数据类型计算要显示的valString
@@ -125,6 +133,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
             value
           }),
           key: nodeKey,
+          label: key,
           children: null
         };
       if (typeCheck(value, ['ARRAY', 'OBJECT'])) {
@@ -138,41 +147,53 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     }
     return treeData;
   };
+  const rootStyle = useMemo(() => {
+    return {
+      backgroundColor: data.colors[TypeEnum.BackgroundColor],
+      '--json--view--node-hover-bgcolor': data.colors[TypeEnum.NodeHoverBackgroundColor]
+    };
+  }, [data.colors[TypeEnum.NodeHoverBackgroundColor], data.colors[TypeEnum.BackgroundColor]]);
 
+  /**TODO：支持不展示根节点 */
   const treeData = [
     {
       title: getTitle({
         key: rootKey,
-        value: jsonObj
+        value: data.jsonObj
       }),
       key: rootKey,
-      children: getTreeData(jsonObj, 1)
-    }
-  ];
-  const defaultTreeData = [
-    {
-      title: getTitle({
-        key: rootKey,
-        value: []
-      }),
-      key: rootKey
+      children: getTreeData(data.jsonObj, 1)
     }
   ];
 
+  if (isError && env.edit) {
+    return <Alert message={`${title}:输入的JSON数据不合法`} type="error" />;
+  }
+
+  const editConfig = env.edit
+    ? {
+        expandedKeys
+      }
+    : {};
   return (
     <Tree
       treeData={treeData}
+      rootStyle={rootStyle}
+      className={css.root}
       showLine={{ showLeafIcon: false }}
       switcherIcon={<DownOutlined />}
       defaultExpandedKeys={expandedKeys}
-      expandedKeys={env.edit ? expandedKeys : undefined}
+      {...editConfig}
       key={expandedKeys.toString()}
       onSelect={(keys: any[], { node }) => {
         const nodeData = keyToData.get(node.key);
         if (enableClipboard) {
           //* 复制到剪贴板
           try {
-            copy(JSON.stringify(nodeData));
+            const nodeDataStr = JSON.stringify(
+              copyValueWithLabel && node.label !== undefined ? { [node.label]: nodeData } : nodeData
+            );
+            copy(nodeDataStr);
             message.success('节点数据已成功复制到剪贴板');
           } catch (e) {
             message.error('复制失败');

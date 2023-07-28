@@ -3,16 +3,30 @@
   "namespace": "mybricks.normal-pc.input-number",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "数字输入框",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_964wc2.74b91913b3df146c.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置数字输入框的值，并触发值变化事件输出",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置数字输入框的初始值，并触发初始化事件输出",
       "schema": {
         "type": "number"
       }
@@ -20,6 +34,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发数字输入框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -30,6 +45,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取数字输入框的值并输出",
       "schema": {
         "type": "any"
       },
@@ -40,6 +56,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空数字输入框的值",
       "schema": {
         "type": "any"
       }
@@ -61,8 +78,29 @@
   ],
   "outputs": [
     {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
       "id": "onChange",
-      "title": "值变化",
+      "title": "值更新",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onBlur",
+      "title": "失去焦点",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "number"
       }

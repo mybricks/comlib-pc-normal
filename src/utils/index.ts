@@ -111,14 +111,36 @@ export const isObject = (obj: any) => {
   return Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1] === 'Object';
 }
 
+export const isString = (obj: any) => {
+  return typeof obj === "string" || Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1] === 'String';
+}
+
 export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[] => {
   if (!Array.isArray(array)) throw Error('parameter array must be typeof Array')
   if (fromIndex < 0) throw Error('parameter fromIndex must be greater than 0')
   if (toIndex >= array.length) throw Error(`parameter toIndex must be less than ${array.length}`)
   if (!array.length) return array
-  const copy = array.slice()
-  const temp = copy[toIndex]
-  copy[toIndex] = copy[fromIndex]
-  copy[fromIndex] = temp
-  return copy
+  const item = array.splice(fromIndex, 1)[0]
+  array.splice(toIndex, 0, item)
+  return array
+}
+
+export const isEmptyObject = (obj: any) => {
+  return !Object.keys(obj ?? {}).length;
+}
+
+export const checkIfMobile = (env) => {
+  return env?.canvas?.type === 'mobile'
+}
+
+export const differObject = (obj, baseObj) => {
+  const difference = {};
+  Object.keys(obj).map(key => {
+    const value1 = obj[key];
+    const value2 = baseObj[key];
+    if (value1 !== value2) {
+      difference[key] = value1;
+    }
+  });
+  return difference;
 }

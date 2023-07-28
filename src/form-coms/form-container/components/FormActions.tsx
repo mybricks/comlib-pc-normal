@@ -2,15 +2,17 @@ import React, { useMemo } from 'react';
 import { Form, Button, Row, Col, Space } from 'antd';
 import { Data } from '../types';
 import { outputIds } from '../constants';
+import style from './formActions.less';
 
 interface Props {
   data: Data;
   submit: (outputId: string, outputRels?: any) => void;
   outputs: any;
+  isMobile: boolean;
 }
 
 const FormActions = (props: Props) => {
-  const { actions, layout, formItemColumn } = props.data;
+  const { actions, layout, formItemColumn, config } = props.data;
 
   const onClick = (item) => {
     if (item.outputId === outputIds.ON_CLICK_SUBMIT) {
@@ -32,7 +34,7 @@ const FormActions = (props: Props) => {
   // }, [layout])
 
   return (
-    <Space wrap>
+    <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
         if (typeof item.visible !== 'undefined' && !item.visible) {
           return null;
@@ -44,7 +46,9 @@ const FormActions = (props: Props) => {
             type={item.type}
             loading={item.loading}
             key={item.key}
+            danger={item?.danger}
             onClick={() => onClick(item)}
+            // disabled={config.disabled}
           >
             {item.title}
           </Button>

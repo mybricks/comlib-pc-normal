@@ -1,22 +1,44 @@
-import { Data, InputIds } from './constants';
+import { Data } from './constants';
 import { BaseEditor } from './editors/baseEditor';
 import { ItemsEditors } from './editors/item';
-import { StyleEditor } from './editors/styleEditor';
-import { Schemas } from './editors/utils';
+import {
+  createStyleForItem,
+  createStyleForLabel,
+  createStyleForContent,
+  createItem,
+  updateIOSchema
+} from './editors/utils';
+import { getFilterSelector } from '../utils/cssSelector';
 
 export default {
-  '@init'({ data, input }: EditorResult<Data>) {
-    input.add(InputIds.SetDataSource, '设置数据源', Schemas.SetDataSource(data));
-    input.add(InputIds.SetTitle, '设置标题', { type: 'string' });
+  '@init': ({ data, input, output }: EditorResult<Data>) => {
+    data.items.push(createItem({ data }));
+    updateIOSchema({ data, input, output });
   },
-  ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
-    cate1.title = '常规';
-    cate1.items = [...BaseEditor];
-
-    cate2.title = '样式';
-    cate2.items = [...StyleEditor];
-
-    return { title: '描述列表' };
+  ':root': {
+    items({}: EditorResult<Data>, cate1) {
+      cate1.title = '常规';
+      cate1.items = [...BaseEditor];
+      return { title: '描述列表' };
+    },
+    style: [
+      createStyleForItem({
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-descriptions .ant-descriptions-view .ant-descriptions-item${getFilterSelector(id)}`
+      }),
+      createStyleForLabel({
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-descriptions .ant-descriptions-view .ant-descriptions-item .ant-descriptions-item-label${getFilterSelector(
+            id
+          )}`
+      }),
+      createStyleForContent({
+        target: ({ id }: EditorResult<Data>) =>
+          `.ant-descriptions .ant-descriptions-view .ant-descriptions-item .ant-descriptions-item-content${getFilterSelector(
+            id
+          )}`
+      })
+    ]
   },
   ...ItemsEditors
 };

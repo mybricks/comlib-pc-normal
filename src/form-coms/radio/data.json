@@ -1,6 +1,18 @@
 {
   "visible": true,
+  "staticOptions": [
+    {
+      "label": "选项1",
+      "value": "选项1",
+      "type": "default",
+      "checked": false,
+      "key": "option1"
+    }
+  ],
   "config": {
     "disabled": false
-  }
+  },
+  "layout": "horizontal",
+  "enableButtonStyle": false,
+  "buttonStyle": "outline"
 }

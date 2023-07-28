@@ -1,15 +1,19 @@
 {
-  "json": "[]",
+  "json": "{}",
+  "jsonObj": {},
   "dataSourceType": "object",
   "colors": {
     "number": "blue",
     "string": "green",
     "key": "red",
-    "bracket": "gray"
+    "bracket": "gray",
+    "backgroundColor": "#fff",
+    "nodeHoverbackgroundColor": "#f5f5f5"
   },
   "collapsed": 1,
   "collapseStringsAfterLength": 0,
   "displayObjectSize": false,
   "enableClipboard": false,
-  "enableOutput": false
+  "enableOutput": false,
+  "copyValueWithLabel": false
 }

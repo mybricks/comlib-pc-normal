@@ -43,6 +43,7 @@ export function schema2Options(schema: any = {}, parentKey = '', config: any = {
 }
 
 const isUseSelect = (options, val) => {
+  if (val === '') return true;
   if (Array.isArray(options) && options.length) {
     return options.some((item) => {
       if (item.value === val) {
@@ -55,14 +56,13 @@ const isUseSelect = (options, val) => {
   }
 };
 export default function Tree({ editConfig }: any) {
-  const { value } = editConfig;
-  const { field, schema = {}, placeholder, disabled } = value.get() || {};
+  const { value, schema = {}, placeholder, disabled } = editConfig.value.get() || {};
   const options = schema2Options(schema, '', { isRoot: true, useArray: false });
-  const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, field));
+  const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, value));
 
   const onChange = useCallback((val) => {
-    if (field !== val) {
-      value.set(val);
+    if (value !== val) {
+      editConfig.value.set(val);
     }
   }, []);
 
@@ -70,7 +70,7 @@ export default function Tree({ editConfig }: any) {
     <div className={classnames(css.wrap, 'fangzhou-theme')}>
       {useTreeSelect && !!options?.length ? (
         <TreeSelect
-          defaultValue={field}
+          defaultValue={value}
           className={css.treeSelect}
           treeData={options}
           onChange={onChange}
@@ -82,7 +82,7 @@ export default function Tree({ editConfig }: any) {
       ) : (
         <Input
           className={css.input}
-          defaultValue={field}
+          defaultValue={value}
           onBlur={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}

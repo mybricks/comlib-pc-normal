@@ -42,4 +42,13 @@ export interface Data {
   useOverflowUnset?: boolean;
 
   useClick?: boolean;
+
+  slotStyle?: CSSProperties;
+
+  id?: string;
+  useFixed?: boolean;
+  //configs style
+  legacyConfigStyle: CSSProperties;
+  //style editor暂不支持的style
+  legacyStyle: CSSProperties;
 }

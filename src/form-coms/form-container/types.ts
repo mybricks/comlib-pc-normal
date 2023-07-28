@@ -1,3 +1,4 @@
+import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 interface Action {
   title: string
@@ -7,24 +8,44 @@ interface Action {
   type?: ButtonType
   key: string
   visible?: boolean
+  danger?: boolean
 }
 
 interface Actions {
   items: Action[];
+  widthOption: LabelWidthType;
+  width: number;
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
+  inlinePadding?: number[]
 }
 
-interface FormItems {
+export interface FormItems {
   id: string;
+  comName: string
   name: string
   label: string
   span: number
   required?: boolean
+  colon?: FormItemColonType
+  visible: boolean
+  validateStatus?: string
+  help?: string
+  tooltip?: string
+  labelStyle?: {}
+  labelAlign?: 'left' | 'right' | 'default'
+  labelAutoWrap?: boolean | 'default'
+  hiddenLabel?: boolean
+  description?: string
+  descriptionStyle?: {}
+  widthOption: LabelWidthType
+  width: number
+  inlineMargin?: number[]
+  slotAfter?: string
 }
 
-export type LabelWidthType = 'px' | 'span'
+export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
   /**
@@ -46,7 +67,7 @@ export interface Data {
   /**
    * 布局类型
    */
-  layout: 'horizontal' | 'vertical' | 'inline'
+  layout?: 'horizontal' | 'vertical' | 'inline'
   fieldsLength?: number
   /**
    * 操作项
@@ -65,11 +86,40 @@ export interface Data {
    */
   labelCol: number
   wrapperCol: number
+  /**
+   * 标题是否展示冒号
+   */
+  colon: boolean | undefined
+  /**
+   * 表单原生属性
+   */
+  config: FormProps
 
   /**
    * 合并参数 Schema
    */
   paramsSchema: any
+
+  /**
+   *  提交隐藏表单项 （隐藏表单项依旧参与校验与提交）
+   */
+  submitHiddenFields: boolean
+
+  domainModel: DomainModel
+}
+
+interface DomainModel {
+  // formValues: any
+  entity?: any
+  queryFieldRules: QueryFieldRules
+  isQuery?: boolean
+  type?: string
+}
+
+interface QueryFieldRules {
+  [field: string]: {
+    operator: string
+  }
 }
 
 export interface FormControlProps {
@@ -79,7 +129,8 @@ export interface FormControlProps {
   field?: any
 }
 
-export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue'
-
+export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
 
 export type LayoutModel = "inline" | "row" | "column";
+
+export type FormItemColonType = true | false | "default";

@@ -22,8 +22,9 @@ interface Props {
   slots: any;
   filterMap: any;
   renderCell: any;
+  focusRowIndex: number | null;
 }
-export default ({ env, data, slots, filterMap, renderCell }: Props) => {
+export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Props) => {
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -59,7 +60,15 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           align={cItem.align || AlignEnum.Left}
           onHeaderCell={(): any => {
             return {
-              'data-table-th-idx': cItem.key
+              'data-table-th-idx': cItem.key,
+              style: cItem.headStyle
+                ? {
+                    ...cItem.headStyle
+                  }
+                : {
+                    color: cItem.titleColor,
+                    backgroundColor: cItem.titleBgColor
+                  }
             };
           }}
         >
@@ -75,7 +84,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           sorter = (a, b) => {
             const aVal = get(a, cItem.dataIndex);
             const bVal = get(b, cItem.dataIndex);
-            if (!aVal || !bVal) {
+            if (typeof aVal !== 'string' || typeof bVal !== 'string') {
               return 0;
             }
             return aVal.length - bVal.length;
@@ -85,7 +94,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
           sorter = (a, b) => {
             const aVal = get(a, cItem.dataIndex);
             const bVal = get(b, cItem.dataIndex);
-            if (!aVal || !bVal) {
+            if (typeof aVal !== 'number' || typeof bVal !== 'number') {
               return 0;
             }
             return aVal - bVal;
@@ -116,6 +125,7 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
     return (
       <Column
         {...(cItem as any)}
+        ellipsis={false}
         width={cItem.width === WidthTypeEnum.Auto ? undefined : cItem.width}
         title={renderTtl(cItem)}
         key={cItem.dataIndex}
@@ -139,6 +149,12 @@ export default ({ env, data, slots, filterMap, renderCell }: Props) => {
         }))}
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
+        onCell={(record, rowIndex) => {
+          return {
+            style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
+            'data-table-column-id': cItem.key
+          };
+        }}
         onHeaderCell={(): any => {
           return {
             'data-table-th-idx': cItem.key

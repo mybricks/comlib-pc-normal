@@ -1,6 +1,7 @@
+import React from 'react';
 import { uuid } from '../../../utils';
 import { WidthUnitEnum, Data, ColumnParams } from '../../constants';
-export const createColByWidth = (width: number = 280) => {
+export const createColByWidth = (width: number = 280): ColumnParams => {
   const id = uuid();
   return {
     key: id,
@@ -8,12 +9,23 @@ export const createColByWidth = (width: number = 280) => {
     widthOption: WidthUnitEnum.Px,
     width,
     span: 4,
-    colStyle: {},
-    flex: 1
+    legacyStyle: {
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    },
+    flex: 1,
+    slotStyle: {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap'
+    }
   };
 };
 
-export const createAutoCol = (flex: number = 1) => {
+export const createAutoCol = (flex: number = 1): ColumnParams => {
   const id = uuid();
   return {
     key: id,
@@ -21,12 +33,23 @@ export const createAutoCol = (flex: number = 1) => {
     widthOption: WidthUnitEnum.Auto,
     width: 300,
     span: 4,
-    colStyle: {},
-    flex
+    legacyStyle: {
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    },
+    flex,
+    slotStyle: {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap'
+    }
   };
 };
 
-export const createColBySpan = (span: number = 4) => {
+export const createColBySpan = (span: number = 4): ColumnParams => {
   const id = uuid();
   return {
     key: id,
@@ -34,8 +57,19 @@ export const createColBySpan = (span: number = 4) => {
     widthOption: WidthUnitEnum.Span,
     width: 300,
     span,
-    colStyle: {},
-    flex: 1
+    legacyStyle: {
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    },
+    flex: 1,
+    slotStyle: {
+      display: 'flex',
+      position: 'inherit',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap'
+    }
   };
 };
 
@@ -50,7 +84,7 @@ export function getRowItem(data: Data, focusArea: any) {
 }
 
 export function getColIndex(data, focusArea: any) {
-  const [rowKey, colKey]: number[] = JSON.parse(focusArea.dataset.colCoordinate);
+  const [rowKey, colKey]: string[] = focusArea.dataset.colCoordinate.split(',');
   const rowIndex = data.rows.findIndex(({ key }) => key === rowKey);
   const colIndex = data.rows[rowIndex].columns.findIndex(({ key }) => key === colKey);
   return [rowIndex, colIndex];
@@ -109,3 +143,26 @@ export function updateSlotTitle(col: ColumnParams, slot: any) {
   });
   slot.setTitle(col.slot, title);
 }
+
+export const updateColStyle = (col: ColumnParams, style: Partial<React.CSSProperties>) => {
+  if (!col.legacyStyle) {
+    col.legacyStyle = {};
+  }
+  col.legacyStyle = {
+    ...col.legacyStyle,
+    ...style
+  };
+};
+
+export const setSlotLayout = (slot, val) => {
+  if(!slot) return;
+  if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};

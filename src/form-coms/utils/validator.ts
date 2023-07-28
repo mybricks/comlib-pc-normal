@@ -7,7 +7,9 @@ export enum RuleKeys {
   MIN_LENGTH = 'minLength',
   MAX_LENGTH = 'maxLength',
   REG_EXP = 'regExp',
-  CODE_VALIDATOR = 'codeValidator'
+  CODE_VALIDATOR = 'codeValidator',
+  Email_VALIDATOR = 'emailValidator',
+  PHONE_NUMBER_VALIDATOR = 'phoneNumberValidator'
 }
 
 export const defaultValidatorExample = `export default async function (value, context) {
@@ -100,6 +102,20 @@ export const ruleFnMap = {
   [RuleKeys.CODE_VALIDATOR]: ({ validateCode, args, env }) => {
     return runJs(validateCode, args, { env });
   },
+  [RuleKeys.Email_VALIDATOR]: ({ value, message, failed, successed }) => {
+    let reg = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$");
+    if (!reg.test(value)) {
+      return failed(message)
+    }
+    return successed()
+  },
+  [RuleKeys.PHONE_NUMBER_VALIDATOR]: ({ value, message, failed, successed }) => {
+    let reg = new RegExp("^1\\d{10}$");
+    if (!reg.test(value)) {
+      return failed(message)
+    }
+    return successed()
+  },
 };
 
 export function validateFormItem({ value, env, rules }) {
@@ -140,3 +156,8 @@ export function validateFormItem({ value, env, rules }) {
     })
   })
 }
+
+export const getTitle = (item: any, index: number) => {
+  const { key, title, numericalLimit, regExr } = item;
+  return title;
+};

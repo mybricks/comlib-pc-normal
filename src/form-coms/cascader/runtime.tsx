@@ -2,10 +2,12 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Cascader } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
-interface Data {
+export interface Data {
   options: any[];
-  visible: boolean;
   placeholder: string;
   isMultiple: boolean;
   maxTagCountType?: string;
@@ -22,75 +24,73 @@ interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env } = props;
+  const { data, inputs, outputs, env, parentSlot } = props;
   const [options, setOptions] = useState();
 
-  useLayoutEffect(() => {
-    inputs['setValue']((val) => {
-      data.value = val;
-      onChange(val);
-    });
-
-    inputs['validate']((val, outputRels) => {
-      validateFormItem({
-        value: data.value,
-        env,
-        rules: data.rules
-      })
-        .then((r) => {
-          outputRels['returnValidate'](r);
+  useFormItemInputs({
+    id: props.id,
+    name: props.name,
+    inputs,
+    outputs,
+    configs: {
+      setValue(val) {
+        data.value = val;
+      },
+      setInitialValue(val) {
+        data.value = val;
+      },
+      returnValue(output) {
+        output(data.value);
+      },
+      resetValue() {
+        data.value = [];
+      },
+      setDisabled() {
+        data.config.disabled = true;
+      },
+      setEnabled() {
+        data.config.disabled = false;
+      },
+      validate(output) {
+        validateFormItem({
+          value: data.value,
+          env,
+          rules: data.rules
         })
-        .catch((e) => {
-          outputRels['returnValidate'](e);
-        });
-    });
-
-    inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
-    });
-  }, [data.value]);
-
-  //重置，
-  inputs['resetValue'](() => {
-    data.value = [];
-  });
-  // //设置显示
-  // inputs['setVisible'](() => {
-  //   data.visible = true;
-  // });
-  // //设置隐藏
-  // inputs['setInvisible'](() => {
-  //   data.visible = false;
-  // });
-  //设置禁用
-  inputs['setDisabled'](() => {
-    data.config.disabled = true;
-  });
-  //设置启用
-  inputs['setEnabled'](() => {
-    data.config.disabled = false;
+          .then((r) => {
+            output(r);
+          })
+          .catch((e) => {
+            output(e);
+          });
+      }
+    }
   });
   //输入数据源
   inputs['setOptions']((value) => {
     setOptions(value);
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
+  };
+
   const onChange = (value) => {
     data.value = value;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
+    onValidateTrigger();
   };
 
   return (
-    data.visible && (
-      <div className={css.cascader}>
-        <Cascader
-          value={data.value}
-          options={options}
-          {...data.config}
-          multiple={data.isMultiple}
-          onChange={onChange}
-        />
-      </div>
-    )
+    <div className={css.cascader}>
+      <Cascader
+        value={data.value}
+        options={options}
+        {...data.config}
+        multiple={data.isMultiple}
+        onChange={onChange}
+      />
+    </div>
   );
 }

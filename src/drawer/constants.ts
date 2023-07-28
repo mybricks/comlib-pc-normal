@@ -1,7 +1,8 @@
 export interface Data {
   title: string;
   position: 'top' | 'right' | 'bottom' | 'left' | undefined;
-  showMask: boolean; //是否现实遮罩
+  closable: boolean; //是否显示关闭按钮
+  showMask: boolean; //是否显示遮罩
   visible: boolean; //抽屉是否显示
   width: number; //left | right 时宽度
   height: number; //top | bottom 时高度

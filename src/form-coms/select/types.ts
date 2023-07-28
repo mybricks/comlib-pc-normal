@@ -7,11 +7,16 @@ export interface Data {
         allowClear: boolean;
         placeholder: string;
         loading?: boolean;
-        mode?: 'tags' | 'multiple';
+        mode?: 'tags' | 'multiple' | 'default';
         labelInValue?: boolean;
+        showSearch: boolean;
+        filterOption: boolean;
+        optionFilterProp: string;
     };
-    visible: boolean;
+    maxHeight: string;
     rules: any[];
     value?: number | string | number[] | string[];
     staticOptions: Option[];
+    remoteOptions: any[];
+    dropdownSearchOption: boolean;
 }

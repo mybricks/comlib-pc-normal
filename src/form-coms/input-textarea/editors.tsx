@@ -4,11 +4,6 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
-    if (schema === 'mybricks.normal-pc.form-container/form-item') {
-      parent['@_setFormItem']({ id, schema: { type: 'string' } });
-    }
-  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -153,7 +148,14 @@ export default {
         title: '事件',
         items: [
           {
-            title: '值发生改变',
+            title: '值初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
+          {
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'

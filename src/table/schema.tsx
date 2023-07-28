@@ -1,7 +1,7 @@
 import { InputIds, OutputIds, SlotIds } from './constants';
 import { ContentTypeEnum, Data, IColumn } from './types';
 import { setPath } from '../utils/path';
-import { getColumnItem } from './utils';
+import { getColumnItem, getColumnItemDataIndex } from './utils';
 
 interface Props {
   data: Data;
@@ -10,41 +10,76 @@ interface Props {
   slot: any;
 }
 
-function schema2Obj(schema: any = {}, parentKey = '', config: any = { isRoot: true }) {
-  const { isRoot = false } = config;
-  const { type } = schema;
-  const res: any = {};
-  if (type !== 'object' && type !== 'array') return;
-  const properties = (type === 'object' ? schema.properties : schema.items.properties) || {};
-  Object.keys(properties).forEach((key) => {
-    const subSchema = properties[key];
-    const targetKey = isRoot ? key : `${parentKey}.${key}`;
-    res[targetKey] = subSchema;
-    if (subSchema?.type === 'object') {
-      Object.assign(
-        res,
-        schema2Obj(properties[key], targetKey, {
-          ...config,
-          isRoot: false
-        })
-      );
+function getColumnsWithExpand(data: Data) {
+  const list = [...data.columns];
+  if (data.useExpand && data.expandDataIndex) {
+    list.push({
+      dataIndex: data.expandDataIndex,
+      title: '展开行数据',
+      key: '_expandIndex',
+      contentType: ContentTypeEnum.Text,
+      dataSchema: data.expandDataSchema
+    });
+  }
+  return list;
+}
+export function getDefaultDataSchema(dataIndex: string | string[] | undefined, data: Data) {
+  if (!dataIndex) {
+    return { type: 'string' };
+  }
+  const columnIdx = Array.isArray(dataIndex) ? dataIndex.join('.') : dataIndex;
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  return schemaObj[columnIdx] || { type: 'string' };
+}
+function schema2Obj(schema: any = {}, data: Data) {
+  function loop(schema: any = {}, parentKey = '', config: any = { isRoot: true }) {
+    const { isRoot = false } = config;
+    const { type } = schema;
+    const res: any = {};
+    if (type !== 'object' && type !== 'array') return;
+    const properties = (type === 'object' ? schema.properties : schema.items.properties) || {};
+    Object.keys(properties).forEach((key) => {
+      const subSchema = properties[key];
+      const targetKey = isRoot ? key : `${parentKey}.${key}`;
+      res[targetKey] = subSchema;
+      if (subSchema?.type === 'object') {
+        Object.assign(
+          res,
+          loop(properties[key], targetKey, {
+            ...config,
+            isRoot: false
+          })
+        );
+      }
+    });
+    return res;
+  }
+  const schemaObj = loop(schema) || {};
+  getColumnsWithExpand(data).forEach((item) => {
+    const idx = getColumnItemDataIndex(item);
+    if (
+      item.dataSchema &&
+      ([ContentTypeEnum.Text].includes(item.contentType) ||
+        ([ContentTypeEnum.SlotItem].includes(item.contentType) && item.keepDataIndex))
+    ) {
+      schemaObj[idx] = item.dataSchema;
     }
   });
-  return res;
+  return schemaObj;
 }
 
 // 获取列数据schema
 function getColumnsDataSchema(schemaObj: object, { data }: Props) {
-  const { columns } = data;
   const dataSchema = {};
 
   const setDataSchema = (columns: IColumn[]) => {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
+        const colDataIndex = getColumnItemDataIndex(item);
         const schema = {
           type: 'string',
           title: item.title,
-          ...schemaObj[Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex]
+          ...schemaObj[colDataIndex]
         };
         if (item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex) {
           return;
@@ -53,21 +88,17 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
           item.children && setDataSchema(item.children);
           return;
         }
-        if (Array.isArray(item.dataIndex)) {
-          setPath(dataSchema, item.dataIndex.join('.'), schema, true);
-        } else {
-          dataSchema[item.dataIndex] = schema;
-        }
+        setPath(dataSchema, colDataIndex, schema, true);
       });
     }
   };
-  setDataSchema(columns);
+  setDataSchema(getColumnsWithExpand(data));
   return dataSchema;
 }
 
 // 数据源schema
 function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
-  if (data.usePagination) {
+  if (data.usePagination && !data.paginationConfig?.useFrontPage) {
     input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
       title: '数据列表',
       type: 'object',
@@ -83,6 +114,9 @@ function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
           type: 'number'
         },
         pageSize: {
+          type: 'number'
+        },
+        pageNum: {
           type: 'number'
         }
       }
@@ -168,7 +202,7 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
         if (item.filter?.enable) {
-          const key = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
+          const key = getColumnItemDataIndex(item);
           schema1.properties[key] = {
             type: 'array',
             items: {
@@ -201,48 +235,91 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
   setDataSchema(data.columns);
 
   output.get(OutputIds.FILTER)?.setSchema(schema1);
-  input.get(OutputIds.GET_FILTER)?.setSchema(schema1);
+  output.get(OutputIds.GET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
 
 // 展开行插槽作用域schema
-function setExpandSlotSchema(dataSchema, { slot }: Props) {
+function setExpandSlotSchema(schemaObj: object, dataSchema, { slot, data }: Props) {
   slot?.get(SlotIds.EXPAND_CONTENT)?.inputs?.get(InputIds.EXP_COL_VALUES)?.setSchema({
     type: 'object',
     properties: dataSchema
   });
+  if (data.useExpand && data.expandDataIndex) {
+    const key = Array.isArray(data.expandDataIndex)
+      ? data.expandDataIndex.join('.')
+      : data.expandDataIndex;
+    slot
+      ?.get(SlotIds.EXPAND_CONTENT)
+      ?.inputs?.get(InputIds.EXP_ROW_VALUES)
+      ?.setSchema({
+        type: 'string',
+        ...(schemaObj[key] || {})
+      });
+  }
 }
 
 // 列插槽作用域schema
 function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }: Props) {
   data.columns.forEach((col) => {
-    const key = Array.isArray(col.dataIndex) ? col.dataIndex.join('.') : col.dataIndex;
+    const key = getColumnItemDataIndex(col);
     if (col.contentType === 'slotItem' && col.slotId) {
       slot?.setTitle(col.slotId, `自定义${col.title}列`);
       slot?.get(col.slotId)?.inputs?.get(InputIds.SLOT_ROW_RECORD)?.setSchema({
         type: 'object',
         properties: dataSchema
       });
-      // slot
-      //   ?.get(col.slotId)
-      //   ?.inputs?.get(InputIds.SLOT_ROW_VALUE)
-      //   ?.setSchema({
-      //     type: 'string',
-      //     ...(schemaObj[key] || {})
-      //   });
+      slot
+        ?.get(col.slotId)
+        ?.inputs?.get(InputIds.SLOT_ROW_VALUE)
+        ?.setSchema({
+          type: 'string',
+          ...(schemaObj[key] || {})
+        });
+      slot
+        ?.get(col.slotId)
+        ?.outputs?.get(OutputIds.Edit_Table_Data)
+        ?.setSchema({
+          type: 'object',
+          properties: {
+            index: {
+              type: 'number'
+            },
+            value: {
+              type: 'object',
+              properties: dataSchema
+            }
+          }
+        });
     }
   });
 }
 
+/**
+ * upgrade时候更新列插槽作用域schema
+ * @param
+ */
+export const upgradeSchema = ({ data, output, input, slot }) => {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
+  setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
+};
+
+export function getTableSchema({ data }) {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data } as any);
+  return dataSchema;
+}
+
 export function setDataSchema({ data, output, input, slot }: EditorResult<Data>) {
-  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
   const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
 
   setDataSourceSchema(dataSchema, { data, output, input, slot });
   setOutputsSchema(dataSchema, { data, output, input, slot });
   setFilterSchema(schemaObj, { data, output, input, slot });
-  setExpandSlotSchema(dataSchema, { data, output, input, slot });
+  setExpandSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
   setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
 }
 
@@ -291,6 +368,40 @@ export const Schemas = {
       },
       order: {
         type: 'string'
+      }
+    }
+  },
+  SET_SHOW_COLUMNS: {
+    type: 'array',
+    items: {
+      type: 'string'
+    }
+  },
+  SET_SHOW_TitleS: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string'
+        },
+        dataIndex: {
+          type: 'string'
+        },
+        width: {
+          type: 'number'
+        }
+      }
+    }
+  },
+  ROW_CLICK: {
+    type: 'object',
+    properties: {
+      index: {
+        type: 'number'
+      },
+      record: {
+        type: 'object'
       }
     }
   }

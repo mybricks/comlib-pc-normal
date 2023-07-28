@@ -1,7 +1,7 @@
 {
   "title": "工具条",
   "namespace": "mybricks.normal-pc.toolbar",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "工具条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,20 +9,24 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors/index.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [],
   "outputs": [
     {
       "id": "btn0",
       "title": "单击按钮0",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     },
     {
       "id": "doubleClick_btn0",
       "title": "双击按钮0",
       "schema": {
-        "type": "any"
+        "type": "number"
       }
     }
   ]

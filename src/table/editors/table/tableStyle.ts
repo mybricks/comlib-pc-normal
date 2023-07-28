@@ -1,5 +1,13 @@
+import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants';
 import { unitConversion } from '../../../utils';
+import { isEqual } from 'lodash';
 import { Data, SizeEnum } from '../../types';
+
+export const DEFAULT_COLOR = {
+  TitleColor: '#1f1f1f',
+  TitleBgColor: '#f5f7f9',
+  ContentColor: '#434343'
+};
 
 const tableStyleEditor = {
   title: '表格样式',
@@ -60,7 +68,97 @@ const tableStyleEditor = {
           data.scroll.y = unitConversion(value);
         }
       }
-    }
+    },
+    // {
+    //   title: '表头样式',
+    //   type: 'ColorPicker',
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data?.tableColor?.titleColor || DEFAULT_COLOR.TitleColor;
+    //     },
+    //     set({ data }: EditorResult<Data>, value: string) {
+    //       if (!data.tableColor) {
+    //         data.tableColor = {} as any;
+    //       }
+    //       data.columns = data.columns.map((item) => {
+    //         item.titleColor = value;
+    //         return item;
+    //       });
+    //       data.tableColor.titleColor = value;
+    //     }
+    //   }
+    // },
+    // {
+    //   title: '内容样式',
+    //   type: 'ColorPicker',
+    //   value: {
+    //     get({ data }: EditorResult<Data>) {
+    //       return data?.tableColor?.contentColor || DEFAULT_COLOR.ContentColor;
+    //     },
+    //     set({ data }: EditorResult<Data>, value: string) {
+    //       if (!data.tableColor) {
+    //         data.tableColor = {} as any;
+    //       }
+    //       data.columns = data.columns.map((item) => {
+    //         item.contentColor = value;
+    //         return item;
+    //       });
+    //       data.tableColor.contentColor = value;
+    //     }
+    //   }
+    // },
+    // {
+    //   title: '表头样式',
+    //   type: 'Style',
+    //   options: {
+    //     plugins: ['bgcolor', 'Font'],
+    //     fontProps: {
+    //       fontFamily: false,
+    //       lineHeight: false
+    //     }
+    //   },
+    //   value: {
+    //     get({ data, id }: EditorResult<Data>) {
+    //       return data.headStyle || { ...DefaultHeadStyle };
+    //     },
+    //     set({ data, id }: EditorResult<Data>, value) {
+    //       delete value.lineHeight;
+    //       delete value.display;
+    //       delete value.letterSpacing;
+    //       data.columns = data.columns.map((item) => {
+    //         item.headStyle = { ...value };
+    //         return item;
+    //       });
+    //       data.headStyle = value;
+    //     }
+    //   }
+    // },
+    // {
+    //   title: '内容样式',
+    //   type: 'Style',
+    //   options: {
+    //     plugins: ['bgColor', 'Font'],
+    //     fontProps: {
+    //       fontFamily: false,
+    //       lineHeight: false
+    //     }
+    //   },
+    //   value: {
+    //     get({ data, id }: EditorResult<Data>) {
+    //       return data.contentStyle || { ...DefaultContentStyle };
+    //     },
+    //     set({ data, id }: EditorResult<Data>, value) {
+    //       delete value.lineHeight;
+    //       delete value.display;
+    //       delete value.letterSpacing;
+    //       data.columns = data.columns.map((item) => {
+    //         item.contentStyle = { ...value };
+    //         return item;
+    //       });
+    //       data.contentStyle = value;
+    //     }
+    //   }
+    // }
   ]
 };
 

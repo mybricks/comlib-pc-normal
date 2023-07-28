@@ -1,0 +1,35 @@
+{
+  "title": "路由参数",
+  "namespace": "mybricks.normal-pc.query",
+  "version": "1.0.2",
+  "rtType": "js-autorun",
+  "description": "路由参数",
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "docs": "",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "getQuery",
+      "title": "获取路由参数",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["queryData"],
+      "desc": "获取路由参数"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "queryData",
+      "title": "路由参数",
+      "schema": {
+        "type": "object"
+      },
+      "editable": true
+    }
+  ]
+}

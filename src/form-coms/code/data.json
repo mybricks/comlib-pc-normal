@@ -1,0 +1,11 @@
+{
+  "aceConfig": {
+    "placeholder": "请输入代码",
+    "language": "json",
+    "minLines": 8,
+    "maxLines": 16,
+    "wrap": true,
+    "readOnly": false
+  },
+  "immediate": false
+}

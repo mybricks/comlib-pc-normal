@@ -2,21 +2,31 @@
   height: 100%;
   :global {
     .ant-card {
-      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
-    .ant-card-body {
-      height: 100%;
+    // .ant-card-body {
+
+    // }
+    .ant-card-bordered {
+      border-radius: 8px;
+      border-color: #f0f0f0;
+      border-width: 1px;
+      border-style: solid;
+    }
+    .ant-card-actions {
+      flex: 1;
     }
   }
 }
 
-//卡片标题这里固定了,如果卡片标题高度调整后，就得相应的进行调整
-.container {
-  overflow: auto;
-  height: calc(~'100% - 57.14px');
+.containerCard {
+  height: 100%;
+  padding: 1px 0;
 }
 
-.noTitleContainer {
-  overflow: auto;
-  height: 100%;
-}
+// .noTitleContainer {
+//   height: 100%;
+//   padding: 1px 0;
+// }

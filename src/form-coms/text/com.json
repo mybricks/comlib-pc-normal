@@ -3,16 +3,31 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.0",
+  "version": "1.2.9",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_x0zid8.182f138fe94b85f8.png",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "ai": "./ai.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "setValue",
       "title": "设置值",
+      "desc": "设置文本框的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置文本框的初始值，并触发值初始化事件输出",
       "schema": {
         "type": "string"
       }
@@ -20,6 +35,7 @@
     {
       "id": "validate",
       "title": "校验",
+      "desc": "触发文本框的校验检查，并输出校验结果",
       "schema": {
         "type": "any"
       },
@@ -30,6 +46,7 @@
     {
       "id": "getValue",
       "title": "获取值",
+      "desc": "获取文本框的值并输出",
       "schema": {
         "type": "any"
       },
@@ -40,6 +57,7 @@
     {
       "id": "resetValue",
       "title": "重置值",
+      "desc": "清空文本框的值",
       "schema": {
         "type": "any"
       }
@@ -61,8 +79,15 @@
   ],
   "outputs": [
     {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "onChange",
-      "title": "值发生改变",
+      "title": "值更新",
       "schema": {
         "type": "string"
       }
@@ -70,6 +95,13 @@
     {
       "id": "onBlur",
       "title": "失去焦点",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "string"
       }
@@ -99,9 +131,6 @@
       }
     }
   ],
-  "_valueSchema": {
-    "type": "string"
-  },
   "schema": [
     "mybricks.normal-pc.form-container/form-item",
     "*"

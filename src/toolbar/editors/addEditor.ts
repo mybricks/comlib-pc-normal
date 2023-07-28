@@ -15,8 +15,8 @@ const addEditor = [
           ...getNewBtn(),
           text: `按钮${data.btnList.length}`
         };
-        output.add(newItem.key, `单击${newItem.text}`, Schemas.Any);
-        output.add(`${OutputIds.DoubleClick}_${newItem.key}`, `双击${newItem.text}`, Schemas.Any);
+        output.add(newItem.key, `单击${newItem.text}`, Schemas.Number);
+        output.add(`${OutputIds.DoubleClick}_${newItem.key}`, `双击${newItem.text}`, Schemas.Number);
         data.btnList.push(newItem);
       }
     }

@@ -1,14 +1,18 @@
 {
   "title": "卡片",
   "namespace": "mybricks.normal-pc.card",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "卡片",
-  "author": "MyBricks",
+  "author": "HuangQiuyun",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
   "inputs": [
     {
       "id": "title",

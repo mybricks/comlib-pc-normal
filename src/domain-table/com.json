@@ -1,0 +1,107 @@
+{
+  "title": "领域模型",
+  "namespace": "mybricks.normal-pc.domain-table",
+  "version": "1.0.0",
+  "description": "领域模型",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setFieldsValue",
+      "title": "设置新增/编辑表单值",
+      "desc": "根据传入值，设置新增/编辑表单部分值",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onChange",
+      "title": "新增/编辑表单值更新",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "propKey": {
+            "type": "string"
+          },
+          "changedValue": {
+            "type": "object",
+            "properties": {}
+          },
+          "allValues": {
+            "type": "object",
+            "properties": {
+              "propKey": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "any"
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "table",
+      "title": "自定义表格",
+      "schema": "mybricks.normal-pc.domain-table/table",
+      "type": "scope",
+      "capacity": 1,
+      "inputs": [],
+      "_inputs": [
+        {
+          "id": "onPageChange",
+          "title": "触发分页变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "pageNum": {
+                "title": "页码",
+                "type": "number"
+              },
+              "pageSize": {
+                "title": "每页条数",
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "id": "onSorterChange",
+          "title": "触发排序变化",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "title": "排序字段",
+                "type": "string"
+              },
+              "sorter": {
+                "title": "排序方式",
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

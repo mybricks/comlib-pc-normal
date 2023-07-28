@@ -1,8 +1,8 @@
-import { Data } from './constants';
+import { Data, InputIds } from './constants';
 
 const setDescByData = ({ data, setDesc }: { data: Data; setDesc }) => {
-  const { loadingText } = data;
-  const info = [`文案：${loadingText}`];
+  const { loadingText, closeLoading } = data;
+  const info = closeLoading ? ['关闭全局loading'] : [`文案：${loadingText}`];
   setDesc(info.join('\n'));
 };
 export default {
@@ -11,9 +11,27 @@ export default {
   },
   ':root': [
     {
+      title: '关闭',
+      type: 'Switch',
+      description: '开启后，关闭全局loading',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.closeLoading;
+        },
+        set({ data, input, setDesc }: EditorResult<Data>, value: boolean) {
+          data.closeLoading = value;
+          input.get(InputIds.Trigger).setTitle(value ? '关闭' : '打开');
+          setDescByData({ data, setDesc });
+        }
+      }
+    },
+    {
       title: 'Loading文案',
       type: 'text',
       description: '可以通过逻辑连线，动态传入Loading文案',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.closeLoading;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.loadingText;
@@ -41,6 +59,9 @@ export default {
           value: 'small'
         }
       ],
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.closeLoading;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.size;
@@ -60,6 +81,9 @@ export default {
         { title: '下', min: 0, width: 50 },
         { title: '左', min: 0, width: 50 }
       ],
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.closeLoading;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           const { top, left, right, bottom } = data.style;
@@ -80,6 +104,9 @@ export default {
     {
       title: '样式',
       type: 'Character',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.closeLoading;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.style;
@@ -96,6 +123,9 @@ export default {
       title: '遮罩层样式',
       type: 'style',
       options: ['BGCOLOR'],
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.closeLoading;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.maskStyle;

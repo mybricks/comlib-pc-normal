@@ -1,18 +1,23 @@
 {
   "title": "菜单",
   "namespace": "mybricks.normal-pc.menu",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "description": "菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editor/index.tsx",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "upgrade": "./upgrade.ts",
   "outputs": [
     {
       "id": "click",
       "title": "点击",
+      "desc": "点击当前菜单项, 输出内容",
       "schema": {
         "type": "object",
         "properties": {
@@ -38,6 +43,7 @@
     {
       "id": "getActiveItem",
       "title": "获取选中项",
+      "desc": "获取选中菜单项, 并输出内容",
       "schema": {
         "type": "object",
         "properties": {
@@ -65,6 +71,7 @@
     {
       "id": "setMenuData",
       "title": "设置数据",
+      "desc": "设置初始数据和选中项",
       "schema": {
         "title": "菜单数据",
         "type": "object",
@@ -97,7 +104,7 @@
                 },
                 "value": {
                   "title": "其他数据",
-                  "type": "any"
+                  "type": "string"
                 }
               }
             }
@@ -112,6 +119,7 @@
     {
       "id": "setActiveItem",
       "title": "设置选中项",
+      "desc": "设置默认选中菜单项",
       "schema": {
         "title": "菜单名称/唯一标识",
         "type": "string"
@@ -120,6 +128,7 @@
     {
       "id": "getActiveItem",
       "title": "获取选中项",
+      "desc": "获取选中菜单项",
       "rels": ["getActiveItem"],
       "schema": {
         "type": "any"

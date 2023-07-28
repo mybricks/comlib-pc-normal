@@ -7,5 +7,20 @@
   "size": "default",
   "style": {},
   "bodyStyle": {},
-  "outputContent": ""
+  "outputContent": 0,
+  "dataType": "number",
+  "borderStyle": {
+    "borderRadius": "8px 8px 8px 8px",
+    "borderColor": "#F0F0F0 #F0F0F0 #F0F0F0 #F0F0F0",
+    "borderWidth": "1px 1px 1px 1px",
+    "borderStyle": "solid solid solid solid"
+  },
+  "isAction": false,
+  "items": [
+    {
+      "key": "key1",
+      "name": "操作项1"
+    }
+  ],
+  "padding": "24px"
 }

@@ -1,16 +1,28 @@
-import { Button, message, Steps } from 'antd';
-import React, { useCallback, useEffect } from 'react';
+import { Button, Steps } from 'antd';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
-import { Data, INTO, LEAVE } from './constants';
+import { Data, INTO, LEAVE, CLICK } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
+import { checkIfMobile } from '../utils';
 
 const { Step } = Steps;
 
-export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  slots,
+  outputs,
+  inputs,
+  logger,
+  onError
+}: RuntimeParams<Data>) {
   const { runtime } = env;
   const stepAry = data.stepAry.filter((item) => !item.hide);
   const preIndex = usePrevious<number>(data.current);
+  const isMobile = checkIfMobile(env);
+
+  const direction = isMobile ? 'vertical' : data.steps.direction || 'horizontal';
   useEffect(() => {
     if (runtime) {
       data.current = 0;
@@ -30,11 +42,13 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
 
       inputs['jumpTo']((val: number) => {
         if (typeof val !== 'number') {
-          message.error('【步骤条】跳转步骤必须是数字');
+          onError('【步骤条】跳转步骤必须是数字');
+          logger.error('【步骤条】跳转步骤必须是数字');
           return;
         }
         if (val > stepAry.length - 1 || val < 0) {
-          message.error('【步骤条】跳转步骤超出范围');
+          onError('【步骤条】跳转步骤超出范围');
+          logger.error('【步骤条】跳转步骤超出范围');
           return;
         }
         data.current = val;
@@ -43,6 +57,20 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
       inputs['getIndex']((_, relOutputs) => {
         relOutputs['getIndex'](data.current);
       });
+
+      inputs['setHideSteps'] &&
+        inputs['setHideSteps']((val: number[]) => {
+          if (!Array.isArray(val)) {
+            onError('【步骤条】设置隐藏步骤参数必须是数组');
+            logger.error('【步骤条】设置隐藏步骤参数必须是数组');
+            return;
+          }
+          data.stepAry.forEach((item, index) => {
+            if (val.includes(index)) {
+              item.hide = true;
+            }
+          });
+        });
 
       // stepAry.forEach(({ id }, index) => {
       //   //最后一步没有next output
@@ -143,7 +171,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   const renderPreviousBtn = () => {
     return data.toolbar.btns.includes('previous') && data.current > 0 ? (
       <Button
-        style={{ margin: '0 8px' }}
+        style={isMobile ? { margin: '5px 0' } : { margin: '0 8px' }}
         onClick={() => prev(getCurrentStep(-1))}
         data-item-type="pre"
       >
@@ -184,7 +212,7 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
-        className={css.stepsAction}
+        className={`${css.stepsAction} ${isMobile ? css.mobilebtns : ''}`}
         data-item-type="stepActions"
         style={{
           justifyContent: data.toolbar.actionAlign,
@@ -200,36 +228,46 @@ export default function ({ env, data, slots, outputs, inputs }: RuntimeParams<Da
     ) : null;
   };
 
+  const { type, progressDot } = useMemo(() => {
+    const type = data.steps.type as 'default' | 'navigation';
+    const progressDot = data.steps.type === 'dotted';
+    return { type, progressDot };
+  }, [data.steps.type]);
+
   return (
     <div className={css.stepbox}>
-      <div className={classnames(data.steps.direction === 'vertical' && css.verticalWrap)}>
+      <div
+        className={`${direction === 'vertical' && css.verticalWrap} ${
+          isMobile ? css.mobileWrap : ''
+        }`}
+      >
         <Steps
           current={data.current}
-          size={data.steps.size}
-          type={data.steps.type}
-          direction={data.steps.direction || 'horizontal'}
+          size={isMobile ? 'small' : data.steps.size}
+          type={type}
+          progressDot={progressDot}
+          direction={direction}
         >
-          {stepAry.map((item: any) => {
+          {stepAry.map((item: any, index) => {
+            const emptyNode = <div style={{ lineHeight: 32 }} />;
+            const stepProps = {
+              key: item.id,
+              title: !!item.title ? env.i18n(item.title) : emptyNode,
+              subTitle: !!item.subTitle ? env.i18n(item.subTitle) : emptyNode,
+              'data-item-type': 'step'
+            };
             if (data.steps.showDesc) {
-              return (
-                <Step
-                  key={item.id}
-                  title={env.i18n(item.title)}
-                  subTitle={env.i18n(item.subTitle)}
-                  description={env.i18n(item.description)}
-                  data-item-type="step"
-                />
-              );
-            } else {
-              return (
-                <Step
-                  key={item.id}
-                  title={env.i18n(item.title)}
-                  subTitle={env.i18n(item.subTitle)}
-                  data-item-type="step"
-                />
-              );
+              stepProps['description'] = !item.useCustomDesc
+                ? env.i18n(item.description)
+                : slots[`${item.id}_customDescSlot`].render();
             }
+            if (env.edit || !!data.steps.canClick) {
+              stepProps['onStepClick'] = () => {
+                data.current = index;
+                outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);
+              };
+            }
+            return <Step {...stepProps} />;
           })}
         </Steps>
         {!data.hideSlots ? (

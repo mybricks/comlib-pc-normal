@@ -1,3 +1,5 @@
+import { SizeEnum } from "./types";
+
 export const BtnItemDataSetKey = 'data-btn-idx';
 
 export const InputIds = {
@@ -7,7 +9,10 @@ export const InputIds = {
   SetHidden: 'setHidden',
   SetVisible: 'setVisible',
 
-  SetBtnText: 'setBtnText'
+  SetBtnText: 'setBtnText',
+
+  SetBtnOpenLoading: 'setBtnOpenLoading',
+  SetBtnCloseLoading: 'setBtnCloseLoading',
 };
 
 export const OutputIds = {
@@ -23,5 +28,14 @@ export const Schemas = {
   },
   String: {
     type: 'string'
+  },
+  Number: {
+    type: 'number'
   }
 };
+
+export const SizeHeightMap = {
+  [SizeEnum.Small]: '24px',
+  [SizeEnum.Middle]: '32px',
+  [SizeEnum.Large]: '40px',
+}

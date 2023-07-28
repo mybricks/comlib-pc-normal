@@ -1,13 +1,24 @@
-import React, { useEffect, useMemo, useCallback, useLayoutEffect, Fragment, useState } from 'react';
-import { Form, Button, Row, Col } from 'antd';
-import { Data, FormControlInputId } from './types';
+import React, {
+  useEffect,
+  useMemo,
+  useCallback,
+  useLayoutEffect,
+  Fragment,
+  useState,
+  useRef
+} from 'react';
+import { Form } from 'antd';
+import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol } from './utils';
+import { getLabelCol, isObject, setFormItemsProps, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
+import { ValidateInfo } from '../types';
+import css from './styles.less';
+import { checkIfMobile } from '../../utils';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
-    returnValidate: (val) => {};
+    returnValidate: (cb: (val: ValidateInfo) => void) => void;
   };
   getValue: (val?: any) => {
     returnValue: (val) => {};
@@ -15,22 +26,30 @@ type FormControlInputRels = {
   [key: string]: (val?: any) => void;
 };
 
+type FormControlInputType = {
+  [key in FormControlInputId]: FormControlInputRels[key];
+};
+
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
+  const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
-
+  const isMobile = checkIfMobile(env);
   const childrenInputs = useMemo<{
-    [id: string]: {
-      [key in FormControlInputId]: FormControlInputRels[key];
-    };
+    [id: string]: FormControlInputType;
   }>(() => {
     return {};
   }, [env.edit]);
 
   useLayoutEffect(() => {
     inputs[inputIds.SET_FIELDS_VALUE]((val) => {
-      resetFields();
+      // resetFields();
       setFieldsValue(val);
+      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+    });
+
+    inputs[inputIds.SET_INITIAL_VALUES]((val) => {
+      setInitialValues(val);
       slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
     });
 
@@ -44,70 +63,164 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs[inputIds.SUBMIT_AND_MERGE]((val, outputRels) => {
-      if (Object.prototype.toString.call(val) === '[object Object]') {
+      if (isObject(val)) {
         submitMethod(outputIds.ON_MERGE_FINISH, outputRels, val);
       } else {
         submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
       }
     });
 
-    // For 表单项私有
-    _inputs['validate']((val, outputRels) => {
-      validate().then((r) => {
-        outputRels['returnValidate']({
-          validateStatus: 'success'
-        });
-      });
-    });
-
-    _inputs['getValue']((val, outputRels) => {
+    inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
       getValue().then((v) => {
-        outputRels['returnValue'](v);
+        outputRels[outputIds.RETURN_VALUES](v);
       });
     });
 
-    _inputs['setValue']((val) => {
-      setFieldsValue(val);
+    // inputs[inputIds.SET_DISABLED](() => {
+    //   data.config.disabled = true;
+    //   setDisabled();
+    // });
+
+    // inputs[inputIds.SET_ENABLED](() => {
+    //   data.config.disabled = false;
+    //   setEnabled();
+    // });
+
+    //------ For 表单项私有 start ---------
+    // _inputs['validate']((val, outputRels) => {
+    //   validate().then((r) => {
+    //     outputRels['returnValidate']({
+    //       validateStatus: 'success'
+    //     });
+    //   });
+    // });
+
+    // _inputs['getValue']((val, outputRels) => {
+    //   getValue().then((v) => {
+    //     outputRels['returnValue'](v);
+    //   });
+    // });
+
+    // _inputs['setValue']((val) => {
+    //   setFieldsValue(val);
+    // });
+    //------ For 表单项私有 end---------
+
+    /**
+     * @description 响应触发对应表单项校验
+     */
+    slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
+      const { id, name } = params;
+      const item = getFormItem(data.items, { id, name });
+
+      if (item) {
+        // const input = childrenInputs[item.id];
+        const input = getFromItemInputEvent(item, childrenInputs);
+        validateForInput({ item, input });
+      }
     });
   }, []);
+
+  if (env.runtime) {
+    inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
+      setFormItemsProps(val, { data });
+    });
+
+    slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
+      const item = getFormItem(data.items, { id, name });
+
+      if (item) {
+        const fieldsValue = { [item.name || item.label]: value };
+
+        formContext.current.store = { ...formContext.current.store, ...fieldsValue };
+
+        if (outputs[outputIds.ON_VALUES_CHANGE]) {
+          outputs[outputIds.ON_VALUES_CHANGE]?.({
+            changedValues: { ...fieldsValue },
+            allValues: { ...formContext.current.store }
+          });
+        } else {
+          console.warn(`outputId onValuesChange 不存在，请升级至最新版本`);
+        }
+      }
+    });
+  }
+
+  // useEffect(() => {
+  //   if (env.edit) {
+  //     if (data.domainModel.entity && data.items.length === 0) {
+  //       const fieldAry = data.domainModel.entity.fieldAry
+
+  //       fieldAry?.forEach(item => {
+  //         if (!item.isPrivate) {
+  //           slots['content'].addCom('mybricks.normal-pc.form-text')
+  //         }
+  //       })
+
+  //       console.log(fieldAry, slots)
+  //     }
+  //   }
+  // }, [data.domainModel.entity, slots])
 
   const setFieldsValue = (val) => {
     if (val) {
       Object.keys(val).forEach((key) => {
-        const item = data.items.find((item) => item.name === key);
-        if (item) {
-          const input = childrenInputs[item.id];
-          if (Object.prototype.toString.call(val[key]) === '[Object Object]') {
-            input?.setValue({ ...val[key] });
-          } else {
-            input?.setValue(val[key]);
-          }
-        }
+        setValuesForInput({ childrenInputs, formItems: data.items, name: key }, 'setValue', val);
+      });
+    }
+  };
+
+  const setInitialValues = (val) => {
+    if (val) {
+      Object.keys(val).forEach((key) => {
+        setValuesForInput(
+          { childrenInputs, formItems: data.items, name: key },
+          'setInitialValue',
+          val
+        );
       });
     }
   };
 
   const resetFields = () => {
     data.items.forEach((item) => {
-      const id = item.id;
-      const input = childrenInputs[id];
+      // const id = item.id;
+      // const input = childrenInputs[id];
+      const input = getFromItemInputEvent(item, childrenInputs);
       input?.resetValue();
+      item.validateStatus = undefined;
+      item.help = undefined;
     });
   };
 
+  // const setDisabled = () => {
+  //   data.items.forEach((item) => {
+  //     const id = item.id;
+  //     const input = childrenInputs[id];
+  //     input?.setDisabled && input?.setDisabled();
+  //   });
+  // };
+
+  // const setEnabled = () => {
+  //   data.items.forEach((item) => {
+  //     const id = item.id;
+  //     const input = childrenInputs[id];
+  //     input?.setEnabled && input?.setEnabled();
+  //   });
+  // };
+
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
+      const formItems = getFormItems(data, childrenInputs);
+
       Promise.all(
-        data.items.map((item) => {
-          const id = item.id;
-          const input = childrenInputs[id];
+        formItems.map((item) => {
+          // const id = item.id;
+          // const input = childrenInputs[id];
+          const input = getFromItemInputEvent(item, childrenInputs);
+
           return new Promise((resolve, reject) => {
-            input?.validate({ ...item }).returnValidate((validateInfo) => {
-              //调用所有表单项的校验
-              item.validateStatus = validateInfo?.validateStatus;
-              item.help = validateInfo?.help;
-              resolve(validateInfo);
-            });
+            validateForInput({ item, input }, resolve);
           });
         })
       )
@@ -127,55 +240,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const getValue = useCallback(() => {
     return new Promise((resolve, reject) => {
+      const formItems = getFormItems(data, childrenInputs);
+
       Promise.all(
-        data.items.map((item) => {
-          const id = item.id;
-          const input = childrenInputs[id];
+        formItems.map((item) => {
+          // const id = item.id;
+          // const input = childrenInputs[id];
+          const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
-            let count = 0;
             let value = {};
+
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
-              if (typeof data.fieldsLength !== 'undefined') {
-                value[key] = {
-                  name: item.name,
-                  value: val
-                };
-                count++;
-                if (count == data.fieldsLength) {
-                  resolve(value);
-                }
-              } else {
-                value = {
-                  name: item.name,
-                  value: val
-                };
-                resolve(value);
-              }
+              value = {
+                name: item.name || item.label,
+                value: val
+              };
+
+              resolve(value);
             });
           });
         })
       )
         .then((values) => {
-          if (data.dataType === 'list') {
-            const arr = [];
-            values.forEach((valItem) => {
-              Object.keys(valItem).map((key) => {
-                if (!arr[key]) {
-                  arr[key] = {};
-                }
-                arr[key][valItem[key].name] = valItem[key].value;
-              });
-            });
-            resolve(arr);
-          } else {
-            const rtn = {};
-            values.forEach((item) => {
-              rtn[item.name] = item.value;
-            });
-            resolve(rtn);
-          }
+          const rtn = {};
+
+          values.forEach((item: any) => {
+            rtn[item.name] = item.value;
+          });
+
+          resolve({ ...rtn });
         })
         .catch((e) => reject(e));
     });
@@ -188,88 +283,133 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        getValue().then((values: any) => {
-          const res = { ...values, ...params };
-          if (outputRels) {
-            outputRels[outputId](res);
-          } else {
-            outputs[outputId](res);
-          }
-        });
+        getValue()
+          .then((values: any) => {
+            let res = { ...values, ...params };
+
+            if (
+              data.domainModel?.entity?.fieldAry?.length > 0 &&
+              data.domainModel?.isQuery &&
+              data.domainModel?.type === 'domain'
+            ) {
+              // 领域模型数据处理
+              res = {
+                values: { ...res },
+                fieldsRules: { ...data.domainModel.queryFieldRules }
+              };
+            }
+
+            if (outputRels) {
+              outputRels[outputId](res);
+            } else {
+              outputs[outputId](res);
+            }
+          })
+          .catch((e) => {
+            console.log('收集表单项值失败', e);
+          });
       })
       .catch((e) => {
+        const { validateStatus, ...other } = e;
+        outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
       });
   };
 
+  const { labelWrap, ...formCfg } = data.config;
+
   return (
-    <Fragment>
-      {!data.isFormItem ? (
-        <Form
-          form={formRef}
-          layout={data.layout}
-          labelCol={data.layout === 'horizontal' ? getLabelCol(data) : undefined}
-          // wrapperCol={{ span: 16 }}
-        >
-          <SlotContent
-            slots={slots}
-            data={data}
-            childrenInputs={childrenInputs}
-            outputs={outputs}
-            submit={submitMethod}
-          />
-        </Form>
-      ) : (
-        <SlotContent slots={slots} data={data} childrenInputs={childrenInputs} />
-      )}
-    </Fragment>
+    <div className={css.wrapper}>
+      <Fragment>
+        {!data.isFormItem ? (
+          <Form
+            className={slots['content'].size === 0 && env.edit ? css.empty : undefined}
+            form={formRef}
+            labelCol={
+              (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
+            }
+            {...formCfg}
+            // wrapperCol={{ span: 16 }}
+          >
+            <SlotContent
+              env={env}
+              slots={slots}
+              data={data}
+              childrenInputs={childrenInputs}
+              outputs={outputs}
+              submit={submitMethod}
+            />
+          </Form>
+        ) : (
+          <SlotContent env={env} slots={slots} data={data} childrenInputs={childrenInputs} />
+        )}
+      </Fragment>
+    </div>
   );
 }
 
 /**
- * @description 列表类型表单容器，暂不开放
+ * @description 获取表单项列表
  */
-const FormListItem = ({ content, slots, env, isFormItem, data }) => {
-  if (env.edit) {
-    return content();
+const getFormItems = (data: Data, childrenInputs) => {
+  let formItems = data.items;
+
+  // hack 脏数据问题，表单项数与实际表单项数不一致
+  if (data.items.length !== Object.keys(childrenInputs).length) {
+    formItems = formItems.filter((item) => {
+      if (item.comName) {
+        return childrenInputs[item.comName];
+      }
+
+      return childrenInputs[item.id];
+    });
   }
 
-  return (
-    <Form.List name="item4">
-      {(fields, { add, remove }) => {
-        data.fieldsLength = fields.length;
+  // 过滤隐藏表单项
+  if (!data.submitHiddenFields) {
+    formItems = formItems.filter((item) => item.visible);
+  }
 
-        return (
-          <>
-            {fields.map((field, index) => {
-              return <div key={field.key}>{content({ field })}</div>;
-            })}
-            {isFormItem ? (
-              <Button
-                onClick={() => {
-                  add();
-                }}
-              >
-                添加
-              </Button>
-            ) : (
-              <Row style={{ flex: '1 1 100%' }} data-form-actions>
-                <Col offset={8}>
-                  <Form.Item>
-                    <Button
-                      onClick={() => {
-                        add();
-                      }}
-                    >
-                      添加
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            )}
-          </>
-        );
-      }}
-    </Form.List>
-  );
+  return formItems;
+};
+
+/**
+ * @description 触发表单项校验，并更新校验结果
+ */
+const validateForInput = (
+  { input, item }: { input: FormControlInputType; item: any },
+  cb?: (val: any) => void
+): void => {
+  input?.validate({ ...item }).returnValidate((validateInfo) => {
+    item.validateStatus = validateInfo?.validateStatus;
+    item.help = validateInfo?.help;
+    if (cb) {
+      cb({
+        ...validateInfo,
+        name: item.name || item.label
+      });
+    }
+  });
+};
+
+const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
+  const item = formItems.find((item) => (item.name || item.label) === name);
+  if (item) {
+    // const input = childrenInputs[item.id];
+    const input = getFromItemInputEvent(item, childrenInputs);
+
+    if (isObject(values[name])) {
+      input[inputId] && input[inputId]({ ...values[name] });
+    } else {
+      input[inputId] && input[inputId](values[name]);
+    }
+  }
+};
+
+const getFromItemInputEvent = (formItem, childrenInputs) => {
+  if (formItem.comName) {
+    return childrenInputs[formItem.comName];
+  }
+
+  return childrenInputs[formItem.id];
 };

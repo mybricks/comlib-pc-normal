@@ -1,0 +1,194 @@
+{
+  "title": "穿梭框",
+  "namespace": "mybricks.normal-pc.transfer",
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "version": "1.0.6",
+  "description": "组件描述",
+  "docs": "组件使用说明文档链接",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_rdyy4i.0a226a8a9030181e.png",
+  "runtime": "./runtime.tsx",
+  "data": "./data.json",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "inputs": [
+    {
+      "id": "setSource",
+      "title": "设置数据源",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "desc": "给穿梭框设置数据源"
+    },
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "给穿梭框设置目标值"
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置穿梭框始值，并触发值初始化事件输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ],
+      "desc": "获取穿梭框目标值"
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "重置穿梭框目标值"
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "禁用穿梭框组件"
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "启用穿梭框组件"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "数据输出",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "目标数据更新",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "slots": [],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

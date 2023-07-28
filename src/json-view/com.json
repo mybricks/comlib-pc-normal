@@ -1,7 +1,7 @@
 {
   "title": "JSON展示",
   "namespace": "mybricks.normal-pc.json-view",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "description": "展示JSON数据",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "jsonData",
@@ -16,8 +17,27 @@
       "schema": {
         "type": "object"
       }
+    },
+    {
+      "id": "getJsonData",
+      "title": "输出数据",
+      "desc": "输出设置的JSON数据源",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "jsonData"
+      ]
     }
   ],
-  "outputs": [],
+  "outputs": [
+    {
+      "id": "jsonData",
+      "title": "数据输出",
+      "schema": {
+        "type": "object"
+      }
+    }
+  ],
   "slots": []
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
+
 import {
   Data,
   FOOTER_CONTENT_TYPE,
@@ -42,13 +43,12 @@ export default function Dialog({
 
         // 监听scope输出
         (data.footerBtns || []).forEach((item) => {
-          const { id, visible, isConnected } = item;
-          if (DefaultEvent.includes(id) && !visible) return;
+          const { id, visible, isConnected, autoClose } = item;
+          if (visible === false) return;
           if (slots[SlotIds.Container] && slots[SlotIds.Container].outputs[id]) {
             slots[SlotIds.Container].outputs[id]((val) => {
-              if (DefaultEvent.includes(id)) {
-                isConnected && close();
-              }
+              item.loading = false;
+              isConnected && autoClose !== false && close();
               relOutputs[id](val);
             });
           }
@@ -86,7 +86,7 @@ export default function Dialog({
         }
       });
 
-      // 底部按钮动态隐藏/禁用
+      // 底部按钮动态隐藏/禁用/关闭加载
       (data.footerBtns || []).forEach((item) => {
         if (item.dynamicDisabled) {
           inputs[`disable${item.id}`](() => {
@@ -104,6 +104,11 @@ export default function Dialog({
             item.hidden = false;
           });
         }
+        if (item.useBtnLoading) {
+          inputs[`stopLoading${item.id}`](() => {
+            item.loading = false;
+          });
+        }
       });
     }
   }, [visible]);
@@ -111,6 +116,8 @@ export default function Dialog({
   // 关闭对话框
   const close: () => void = useCallback(() => {
     setVisible(false);
+    // 对话框关闭后的回调
+    outputs[OutputIds.AfterClose]();
   }, []);
 
   // 【老】关闭对话框
@@ -123,7 +130,11 @@ export default function Dialog({
     const { id, isConnected } = item;
     eventList[id] = () => {
       outputs[`${id}Click`]();
-      !isConnected && close();
+      if (isConnected) {
+        item.loading = true;
+      } else {
+        item.autoClose !== false && close();
+      }
       // if (slots[SlotIds.Container] && slots[SlotIds.Container].inputs[id]) {
       // slots[SlotIds.Container].inputs[id]();
       // }
@@ -140,7 +151,6 @@ export default function Dialog({
               height: slots.container.size ? undefined : '100px'
             }
           }}
-          maskClosable={true}
           visible={true}
           slots={slots}
           getContainer={() => {
@@ -197,7 +207,6 @@ interface RuntimeRenderProps {
   slots: any;
   event?: Event;
   visible?: boolean;
-  maskClosable?: boolean;
   getContainer?: any;
   env: Env;
 }
@@ -207,8 +216,7 @@ const RuntimeRender = ({
   event,
   visible,
   getContainer,
-  env,
-  maskClosable
+  env
 }: RuntimeRenderProps): JSX.Element => {
   const {
     bodyStyle,
@@ -219,6 +227,7 @@ const RuntimeRender = ({
     centered,
     useFooter,
     cancelText,
+    maskClosable,
     width,
     footerBtns,
     footerLayout
@@ -238,13 +247,16 @@ const RuntimeRender = ({
             showText,
             icon,
             useIcon,
-            disabled,
-            hidden,
             visible = true,
-            location,
-            dynamicHidden,
             dynamicDisabled,
+            dynamicHidden,
+            location,
+            hidden,
+            disabled,
             isConnected,
+            loading,
+            useBtnLoading,
+            autoClose,
             ...res
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
@@ -255,6 +267,7 @@ const RuntimeRender = ({
               disabled={disabled}
               onClick={event?.[id]}
               data-btn-id={id}
+              loading={useBtnLoading && loading}
               key={id}
             >
               {useIcon && location !== Location.BACK && Icon}
@@ -266,13 +279,12 @@ const RuntimeRender = ({
       </div>
     );
   };
-
   return (
     <Modal
       visible={visible}
       width={width}
       keyboard={false}
-      maskClosable={false}
+      maskClosable={maskClosable}
       title={hideTitle ? undefined : env.i18n(title)}
       okText={env.i18n(okText)}
       closable={closable}

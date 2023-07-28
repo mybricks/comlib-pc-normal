@@ -9,7 +9,17 @@ export const getNewBtn = (): BtnItem => {
     showText: true,
     dataType: "number",
     outVal: 0,
-    inVal: ''
+    inVal: '',
+    isCustom: false,
+    src: '',
+    contentSize: [14, 14],
+    iconDistance: 8,
+    loading: false,
+    useDynamicLoading: false,
+    style: {
+      height: 'auto',
+      width: 'auto'
+    }
   };
 };
 

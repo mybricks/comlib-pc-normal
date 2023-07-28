@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Pagination } from 'antd';
 import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
+import { checkIfMobile } from '../utils';
 
 export default (props: RuntimeParams<Data>) => {
   const { data, inputs, outputs, env } = props;
@@ -17,7 +18,7 @@ export default (props: RuntimeParams<Data>) => {
     pageSizeOptions,
     hideOnSinglePage
   } = data;
-
+  const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
     if (typeof pageNum === 'number') {
       data.current = pageNum;
@@ -27,6 +28,7 @@ export default (props: RuntimeParams<Data>) => {
   useEffect(() => {
     if (env.runtime) {
       data.total = 0;
+      data.current = 1;
       inputs[InputIds.SetTotal]((val: number) => {
         if (typeof val === 'number') {
           data.total = val;
@@ -51,12 +53,14 @@ export default (props: RuntimeParams<Data>) => {
   }, []);
 
   const onChange = (pageNum: number, pageSize: number) => {
-    data.currentPage = {
-      pageNum,
-      pageSize
-    };
-    setPageNum(pageNum);
-    outputs[OutputIds.PageChange](data.currentPage);
+    if (env.runtime) {
+      data.currentPage = {
+        pageNum,
+        pageSize
+      };
+      setPageNum(pageNum);
+      outputs[OutputIds.PageChange](data.currentPage);
+    }
   };
 
   const totalText = (total: number, range: number[]) => {
@@ -67,7 +71,7 @@ export default (props: RuntimeParams<Data>) => {
     <div
       style={{
         display: 'flex',
-        justifyContent: align
+        justifyContent: isMobile ? 'center' : align
       }}
     >
       <Pagination
@@ -76,7 +80,7 @@ export default (props: RuntimeParams<Data>) => {
         current={current}
         defaultPageSize={defaultPageSize}
         size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-        simple={size === SizeTypeEnum.Simple}
+        simple={isMobile || size === SizeTypeEnum.Simple}
         showQuickJumper={showQuickJumper}
         showSizeChanger={showSizeChanger}
         pageSizeOptions={pageSizeOptions}

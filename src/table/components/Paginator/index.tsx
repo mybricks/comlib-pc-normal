@@ -2,12 +2,14 @@
 import React, { useEffect } from 'react';
 import { Pagination } from 'antd';
 import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
+import { checkIfMobile } from '../../../utils';
 
 interface Props {
   env: Env;
   data: Data;
   inputs: any;
   outputs: any;
+  parentSlot: any;
 }
 export default (props: Props) => {
   const { data, inputs, outputs, env } = props;
@@ -26,6 +28,7 @@ export default (props: Props) => {
     hideOnSinglePage
   } = data;
 
+  const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
     if (typeof pageNum === 'number') {
       data.current = pageNum;
@@ -40,6 +43,7 @@ export default (props: Props) => {
   useEffect(() => {
     if (env.runtime) {
       data.total = 0;
+      data.current = 1;
       inputs[InputIds.SetTotal]((val: number) => {
         if (typeof val === 'number') {
           data.total = val;
@@ -47,6 +51,7 @@ export default (props: Props) => {
       });
       inputs[InputIds.SetPageNum]((val) => {
         setPageNum(val);
+        data.currentPage.pageNum = val;
       });
       inputs[InputIds.GetPageInfo]((val, relOutputs) => {
         relOutputs[OutputIds.GetPageInfo](data.currentPage);
@@ -64,13 +69,16 @@ export default (props: Props) => {
   }, []);
 
   const onChange = (pageNum: number, pageSize: number) => {
-    data.currentPage = {
-      pageNum,
-      pageSize
-    };
-    setPageSize(pageSize);
-    setPageNum(pageNum);
-    outputs[OutputIds.PageChange](data.currentPage);
+    if (env.runtime) {
+      data.currentPage = {
+        pageNum,
+        pageSize
+      };
+      setPageSize(pageSize);
+      setPageNum(pageNum);
+      outputs[OutputIds.PageChange](data.currentPage);
+      // props.parentSlot?._inputs['onPageChange']?.({ value: data.currentPage });
+    }
   };
 
   const totalText = (total: number, range: number[]) => {
@@ -81,24 +89,31 @@ export default (props: Props) => {
     <div
       style={{
         display: 'flex',
-        justifyContent: align
+        justifyContent: isMobile ? 'center' : align
       }}
     >
-      <Pagination
-        total={total}
-        showTotal={totalText}
-        current={current}
-        pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
-        // defaultPageSize={defaultPageSize}
-        size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-        simple={size === SizeTypeEnum.Simple}
-        showQuickJumper={showQuickJumper}
-        showSizeChanger={showSizeChanger}
-        pageSizeOptions={pageSizeOptions}
-        hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
-        onChange={onChange}
-        disabled={disabled}
-      />
+      <div
+        data-table-pagination="pagination"
+        style={{
+          display: 'inline-block'
+        }}
+      >
+        <Pagination
+          total={total}
+          showTotal={isMobile ? () => null : totalText}
+          current={current}
+          pageSize={(env.edit ? 10 : pageSize || defaultPageSize) || 1}
+          // defaultPageSize={defaultPageSize}
+          size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
+          simple={isMobile || size === SizeTypeEnum.Simple}
+          showQuickJumper={showQuickJumper}
+          showSizeChanger={showSizeChanger}
+          pageSizeOptions={pageSizeOptions}
+          hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      </div>
     </div>
   );
 };

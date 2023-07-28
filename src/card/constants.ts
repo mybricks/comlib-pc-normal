@@ -17,7 +17,18 @@ export interface Data {
   hoverable?: boolean;
   cursor?: boolean;
   useClick?: boolean;
-  outputContent?: string;
+  outputContent?: any;
+  dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external';
+  borderStyle?: Object; 
+  isAction: boolean;
+  items: [Item];
+  padding: string;
+  inVal: any;
+}
+
+export interface Item {
+  key: string;
+  name: string;
 }
 
 export const OutputIds = {

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Empty, Tree, Input } from "antd";
-import { Data, TreeData } from "./constants";
-import { pretreatTreeData, setCheckboxStatus } from "./utils";
-import ActionBtns from "./ActionBtn";
-import { MODIFY_BTN_ID } from "./constants";
-import { deepCopy, typeCheck } from "../utils";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Empty, Tree, Input } from 'antd';
+import { Data, TreeData } from './constants';
+import { pretreatTreeData, setCheckboxStatus } from './utils';
+import ActionBtns from './ActionBtn';
+import { MODIFY_BTN_ID } from './constants';
+import { deepCopy, typeCheck, uuid } from '../utils';
 /**
  * 数组扁平化
  * @param arr 数组
@@ -22,7 +22,7 @@ const flatten = (arr: any[]) => {
  * @returns
  */
 const getLeafNodes = (treeData: TreeData[]) => {
-  const result = [];
+  const result: any[] = [];
   if (!treeData || treeData.length === 0) return;
   treeData.forEach((item) => {
     if (!item.children || item.children.length === 0) result.push(item.key);
@@ -38,7 +38,7 @@ const getLeafNodes = (treeData: TreeData[]) => {
  * @returns
  */
 const excludeParentKeys = (treeData: TreeData[], checkedKeys: React.Key[]) => {
-  const result = [],
+  const result: any = [],
     leafNodes = getLeafNodes(treeData);
 
   if (checkedKeys && Array.isArray(checkedKeys)) {
@@ -56,11 +56,13 @@ const excludeParentKeys = (treeData: TreeData[], checkedKeys: React.Key[]) => {
  * @returns
  */
 export const outputNodeValues = (treeData: TreeData[], keys: React.Key[]) => {
-  const result = [];
-  treeData.filter(def => !!def).forEach((item) => {
-    if ((keys || []).includes(item.key)) result.push(item.value);
-    result.push(outputNodeValues(item.children || [], keys));
-  });
+  const result: any[] = [];
+  treeData
+    .filter((def) => !!def)
+    .forEach((item) => {
+      if ((keys || []).includes(item.key)) result.push(item.value);
+      result.push(outputNodeValues(item.children || [], keys));
+    });
   return flatten(result);
 };
 
@@ -91,20 +93,15 @@ const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldNam
  * @param checkedValues 选中复选框的树节点 key 值
  * @returns
  */
-const filterCheckedKeysByCheckedValues = (
-  treeData: TreeData[],
-  checkedValues: string[]
-) => {
+const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedValues: string[]) => {
   if (!treeData || treeData.length === 0) return;
-  const result = [];
+  const result: any[] = [];
   treeData.forEach((item) => {
     if ((checkedValues || []).includes(item.value)) {
       result.push(item.key);
     }
     if (item.children) {
-      result.push(
-        filterCheckedKeysByCheckedValues(item.children || [], checkedValues)
-      );
+      result.push(filterCheckedKeysByCheckedValues(item.children || [], checkedValues));
     }
   });
   return flatten(result);
@@ -112,7 +109,7 @@ const filterCheckedKeysByCheckedValues = (
 /**
  * 查找父节点
  * @param key 子节点key
- * @param tree 
+ * @param tree
  * @returns
  */
 const getParentKey = (key, tree) => {
@@ -120,7 +117,7 @@ const getParentKey = (key, tree) => {
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
     if (node.children) {
-      if (node.children.some(item => item.key === key)) {
+      if (node.children.some((item) => item.key === key)) {
         parentKey = node.key;
       } else if (getParentKey(key, node.children)) {
         parentKey = getParentKey(key, node.children);
@@ -130,10 +127,10 @@ const getParentKey = (key, tree) => {
   return parentKey;
 };
 /**
-   * 获取树的key数组
-   * @param treeData 树节点数据
-   * @param dataList key数组
-   */
+ * 获取树的key数组
+ * @param treeData 树节点数据
+ * @param dataList key数组
+ */
 const generateList = (treeData, dataList) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
@@ -152,9 +149,13 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   );
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const treeKeys = useRef(null);
+  const treeKeys = useRef<any>(null);
 
   const keyFieldName = data.keyFieldName || 'key';
+
+  const rootKey = useMemo(() => {
+    return uuid();
+  }, []);
 
   useEffect(() => {
     treeKeys.current = [];
@@ -163,18 +164,18 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (env.runtime) {
-      inputs["outParentKeys"] &&
-        inputs["outParentKeys"]((value) => {
-          if (typeof value === "boolean") data.outParentKeys = value;
+      inputs['outParentKeys'] &&
+        inputs['outParentKeys']((value) => {
+          if (typeof value === 'boolean') data.outParentKeys = value;
         });
-      inputs["treeData"] &&
-        inputs["treeData"]((value: TreeData[]) => {
+      inputs['treeData'] &&
+        inputs['treeData']((value: TreeData[]) => {
           if (value && Array.isArray(value)) {
             data.expandedKeys = [];
             data.treeData = pretreatTreeData({
               treeData: [...value],
               data,
-              defaultExpandAll: data.defaultExpandAll,
+              defaultExpandAll: data.defaultExpandAll
             });
             setExpandedKeys([...data.expandedKeys]);
           } else {
@@ -182,81 +183,83 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
           }
         });
       // 更新节点数据
-      inputs["nodeData"] &&
-        inputs["nodeData"]((nodeData: TreeData) => {
+      inputs['nodeData'] &&
+        inputs['nodeData']((nodeData: TreeData) => {
           if (typeCheck(nodeData, 'OBJECT')) {
-            data.treeData = [...updateNodeData(data.treeData, pretreatTreeData({
-              treeData: [nodeData],
-              data,
-              defaultExpandAll: data.defaultExpandAll,
-            })[0], keyFieldName)];
-            setExpandedKeys([...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i));
+            data.treeData = [
+              ...updateNodeData(
+                data.treeData,
+                pretreatTreeData({
+                  treeData: [nodeData],
+                  data,
+                  defaultExpandAll: data.defaultExpandAll
+                })[0],
+                keyFieldName
+              )
+            ];
+            setExpandedKeys(
+              [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
+            );
           }
         });
       // 搜索
-      inputs["searchValue"] &&
-        inputs["searchValue"]((searchValue: string) => {
+      inputs['searchValue'] &&
+        inputs['searchValue']((searchValue: string) => {
           data.searchValue = searchValue;
-          const searchedKeys = treeKeys.current
-            .map(item => {
-              if (item.title.indexOf(searchValue) > -1) {
-                return getParentKey(item.key, data.treeData);
-              }
-              return null;
-            });
-          setExpandedKeys([...searchedKeys, ...data.expandedKeys]
-            .filter((item, i, self) => item && self.indexOf(item) === i));
+          const searchedKeys = treeKeys.current.map((item) => {
+            if (item.title.indexOf(searchValue) > -1) {
+              return getParentKey(item.key, data.treeData);
+            }
+            return null;
+          });
+          setExpandedKeys(
+            [...searchedKeys, ...data.expandedKeys].filter(
+              (item, i, self) => item && self.indexOf(item) === i
+            )
+          );
           setAutoExpandParent(true);
         });
       // 自定义添加提示文案
-      inputs["addTips"] &&
-        inputs["addTips"]((ds: string[]) => {
-          Array.isArray(ds) ?
-            data.addTips = ds :
-            data.addTips = new Array(data.maxDepth || 1000).fill(ds);
+      inputs['addTips'] &&
+        inputs['addTips']((ds: string[]) => {
+          Array.isArray(ds)
+            ? (data.addTips = ds)
+            : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
         });
-      inputs["checkedValues"] &&
-        inputs["checkedValues"]((value: []) => {
+      inputs['checkedValues'] &&
+        inputs['checkedValues']((value: []) => {
           if (value && Array.isArray(value)) {
-            const inputCheckedKeys = filterCheckedKeysByCheckedValues(
-              data.treeData,
-              value
-            );
+            const inputCheckedKeys = filterCheckedKeysByCheckedValues(data.treeData, value);
             data.checkedKeys = inputCheckedKeys;
             setCheckedKeys(inputCheckedKeys);
           }
         });
-      inputs["disableCheckbox"] &&
-        inputs["disableCheckbox"]((value: any) => {
-          data.treeData = [
-            ...setCheckboxStatus({ treeData: data.treeData, value: true }),
-          ];
+      inputs['disableCheckbox'] &&
+        inputs['disableCheckbox']((value: any) => {
+          data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: true })];
         });
-      inputs["enableCheckbox"] &&
-        inputs["enableCheckbox"]((value: any) => {
-          data.treeData = [
-            ...setCheckboxStatus({ treeData: data.treeData, value: false }),
-          ];
+      inputs['enableCheckbox'] &&
+        inputs['enableCheckbox']((value: any) => {
+          data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
         });
     }
   }, []);
 
   useEffect(() => {
-    const resultKeys = data.outParentKeys
-      ? checkedKeys
-      : excludeParentKeys(data.treeData, checkedKeys);
-    inputs["submit"]((val, relOutputs) => {
-      relOutputs["submit"](outputNodeValues(data.treeData, resultKeys));
+    const resultKeys =
+      data.outParentKeys || data.checkStrictly
+        ? checkedKeys
+        : excludeParentKeys(data.treeData, checkedKeys);
+    inputs['submit']((val, relOutputs) => {
+      relOutputs['submit'](outputNodeValues(data.treeData, resultKeys));
     });
   }, [checkedKeys]);
 
-  useEffect(() => {
-    inputs["outSelectedValues"]((val, relOutputs) => {
-      relOutputs["outSelectedValues"](
-        outputNodeValues(data.treeData, selectedKeys)
-      );
-    });
-  }, [selectedKeys]);
+  // useEffect(() => {
+  //   inputs['outSelectedValues']((val, relOutputs) => {
+  //     relOutputs['outSelectedValues'](outputNodeValues(data.treeData, selectedKeys));
+  //   });
+  // }, [selectedKeys]);
 
   const onCheck = useCallback((checkedKeys: React.Key[], info) => {
     // if (env.runtime) {
@@ -267,11 +270,15 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     //     outputs["check"](checkedKeys);
     //   }
     // }
-    data.checkedKeys = [...checkedKeys];
-    setCheckedKeys([...checkedKeys]);
+    const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
+    data.checkedKeys = [...checked];
+    setCheckedKeys([...checked]);
     if (data.useCheckEvent) {
-      const resultKeys = data.outParentKeys ? checkedKeys : excludeParentKeys(data.treeData, checkedKeys);
-      outputs["check"](outputNodeValues(data.treeData, resultKeys));
+      const resultKeys =
+        data.outParentKeys || data.checkStrictly
+          ? checked
+          : excludeParentKeys(data.treeData, checked);
+      outputs['check'](outputNodeValues(data.treeData, resultKeys));
     }
   }, []);
 
@@ -288,69 +295,73 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       if (keyIndex < 0) {
         setExpandedKeys([...expandedKeys, node.key]);
       } else {
-        setExpandedKeys(expandedKeys.filter(key => key !== node.key));
+        setExpandedKeys(expandedKeys.filter((key) => key !== node.key));
       }
     }
     setSelectedKeys([...selectedKeys]);
-    outputs["click"](selectedValues);
+    outputs['click'](selectedValues);
   };
 
   const renderAddTitle = (item, isRoot?: boolean) => {
     item.title = env.i18n(item.title);
     item.placeholder = env.i18n(item.placeholder);
     const tipStyle = {
-      color: 'rgb(204,204,204)',
-      display: data.isAdding === item.key ? 'none' : 'block',
-      marginLeft: data.checkable ? '20px' : void 0
-    },
+        color: 'rgb(204,204,204)',
+        display: data.isAdding === item.key ? 'none' : 'block',
+        marginLeft: data.checkable ? '20px' : void 0
+      },
       inputStyle = {
         display: data.isAdding === item.key ? 'block' : 'none',
         marginLeft: data.checkable ? '20px' : void 0
       };
-    return (<span
-      style={{ cursor: 'pointer' }}
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
+    return (
       <span
-        style={tipStyle}
+        style={{ cursor: 'pointer' }}
         onClick={(e) => {
-          data.isAdding = item.key;
+          e.stopPropagation();
         }}
       >
-        {item.title}
+        <span
+          style={tipStyle}
+          onClick={(e) => {
+            data.isAdding = item.key;
+          }}
+        >
+          {item.title}
+        </span>
+        <Input
+          style={inputStyle}
+          bordered={false}
+          size="small"
+          onPressEnter={({ target }) => {
+            data.isAdding = '';
+            const node = {
+              title: target.value,
+              value: target.value,
+              key: item.key
+            };
+            // 添加
+            if (isRoot) {
+              data.treeData = [...data.treeData, node];
+            } else {
+              Array.isArray(item.parent?.children)
+                ? item.parent?.children.push(node)
+                : (item.parent.children = [node]);
+            }
+            if (data.defaultExpandAll) {
+              data.expandedKeys.push(item.key);
+              setExpandedKeys([...data.expandedKeys]);
+            }
+            outputs['addNodeDone']({ node, parent: item.parent });
+          }}
+          placeholder={item.placeholder}
+        />
       </span>
-      <Input
-        style={inputStyle}
-        bordered={false}
-        size='small'
-        onPressEnter={({ target }) => {
-          data.isAdding = '';
-          const node = {
-            title: target.value,
-            value: target.value,
-            key: item.key
-          };
-          // 添加
-          if (isRoot) {
-            data.treeData = [...data.treeData, node];
-          } else {
-            Array.isArray(item.parent?.children) ? item.parent?.children.push(node) : item.parent.children = [node];
-          }
-          if (data.defaultExpandAll) {
-            data.expandedKeys.push(item.key);
-            setExpandedKeys([...data.expandedKeys]);
-          }
-          outputs['addNodeDone']({ node, parent: item.parent });
-        }}
-        placeholder={item.placeholder}
-      />
-    </span>);
+    );
   };
 
   const renderTitle = (item) => {
-    item.title = env.i18n(item.title);
+    item.title = env.i18n(item.title || '');
     // 搜索
     const index = item.title.indexOf(data.searchValue);
     const beforeStr = item.title.substr(0, index);
@@ -362,8 +373,8 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     };
     // 修改
     const titleStyle = {
-      display: data.isEditing === item.key ? 'none' : 'block'
-    },
+        display: data.isEditing === item.key ? 'none' : 'block'
+      },
       inputStyle = {
         display: data.isEditing === item.key ? 'block' : 'none'
       };
@@ -372,28 +383,32 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       outputItem.key = outputItem._key;
     }
 
-    const editInput = <Input
-      style={inputStyle}
-      bordered={false}
-      defaultValue={item.title}
-      size='middle'
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-      onPressEnter={({ target }) => {
-        item.title = target.value;
-        outputItem.title = target.value;
-        data.isEditing = '';
-        outputs[MODIFY_BTN_ID](outputItem);
-      }}
-    />,
-      actionBtns = data.isEditing !== item.key && data.useActions && ActionBtns({ data, record: item, outputItem: outputItem, env, outputs });
+    const editInput = (
+        <Input
+          style={inputStyle}
+          bordered={false}
+          defaultValue={item.title}
+          size="middle"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          onPressEnter={({ target }) => {
+            item.title = target.value;
+            outputItem.title = target.value;
+            data.isEditing = '';
+            const { children, ...res } = outputItem;
+            outputs[MODIFY_BTN_ID](res);
+          }}
+        />
+      ),
+      actionBtns =
+        data.isEditing !== item.key &&
+        data.useActions &&
+        ActionBtns({ data, record: item, outputItem: outputItem, env, outputs });
     if (index > -1) {
       return (
         <div style={wrapperStyle}>
-          <span
-            style={titleStyle}
-          >
+          <span style={titleStyle}>
             {beforeStr}
             <span style={{ color: '#f00' }}>{data.searchValue}</span>
             {afterStr}
@@ -401,29 +416,28 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
           {editInput}
           {actionBtns}
         </div>
-      )
+      );
     }
     return (
       <div style={wrapperStyle}>
-        <span
-          style={titleStyle}
-        >
+        <span style={titleStyle} className="title">
           {item.title}
         </span>
         {editInput}
         {actionBtns}
       </div>
     );
-  }
+  };
 
-  const renderTreeNode = (treeData: TreeData[], depth = 0, parent = { key: '0' }) => {
+  const renderTreeNode = (treeData: TreeData[], depth = 0, parent = { key: rootKey }) => {
     const { TreeNode } = Tree;
     const hasAddNode = data.addable && (!data.maxDepth || depth < data.maxDepth);
-    const addNodeKey = `${parent.key}-${treeData.length}`;
+    const lastTreeNode = treeData[treeData.length - 1];
+    const addNodeKey = `${parent.key}-${lastTreeNode?.key}`;
     return (
       <>
         {treeData.map((item, inx) => {
-          return (<>
+          return (
             <TreeNode
               key={item.key}
               data-tree-node-id={item.key}
@@ -432,21 +446,26 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
             >
               {renderTreeNode(item.children || [], depth + 1, item)}
             </TreeNode>
-          </>);
+          );
         })}
         {/* 添加节点 */}
-        {hasAddNode &&
+        {hasAddNode && (
           <TreeNode
             checkable={false}
             selectable={false}
             key={addNodeKey}
-            title={renderAddTitle({
-              title: data.addTips && data.addTips[depth] ? `添加${data.addTips[depth]}` : '添加节点',
-              placeholder: `请输入节点名称，按回车保存`,
-              key: addNodeKey,
-              parent
-            }, depth === 0)}
-          />}
+            title={renderAddTitle(
+              {
+                title:
+                  data.addTips && data.addTips[depth] ? `添加${data.addTips[depth]}` : '添加节点',
+                placeholder: `请输入节点名称，按回车保存`,
+                key: addNodeKey,
+                parent
+              },
+              depth === 0
+            )}
+          />
+        )}
       </>
     );
   };
@@ -458,6 +477,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       ) : (
         <Tree
           checkable={data.checkable}
+          checkStrictly={data.checkStrictly}
           onExpand={onExpand}
           expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
           autoExpandParent={autoExpandParent}

@@ -1,7 +1,12 @@
 {
   "visible": true,
   "rules": [],
+  "textMap": {
+    "开启时": "",
+    "关闭时": ""
+  },
   "config": {
-    "disabled": false
+    "disabled": false,
+    "checked": false
   }
 }

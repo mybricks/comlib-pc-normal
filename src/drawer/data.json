@@ -1,6 +1,7 @@
 {
   "title": "标题",
   "position": "right",
+  "closable": true,
   "showMask": true,
   "visible": false,
   "width": 720,

@@ -1,3 +1,4 @@
+import { TformattersValue } from 'src/utils/dataFormatter/types';
 import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
@@ -49,10 +50,17 @@ export interface IColumn {
   title: string;
   contentType: ContentTypeEnum;
 
-  visible: boolean;
+  visible?: boolean;
   width?: number | WidthTypeEnum;
   align?: AlignEnum;
-
+  /** 内容字体颜色 */
+  contentColor?: string;
+  /** 表头背景色 */
+  titleBgColor?: string;
+  /** 表头字体色 */
+  titleColor?: string;
+  headStyle: any;
+  contentStyle: any;
   hasTip?: boolean;
   tip?: string;
 
@@ -67,6 +75,9 @@ export interface IColumn {
   className?: string;
 
   keepDataIndex?: boolean;
+  dataSchema?: any;
+
+  formatData?: TformattersValue
 }
 
 export enum SizeEnum {
@@ -150,7 +161,27 @@ export interface Data {
 
   // 使用列展开
   useExpand?: boolean;
+  expandDataIndex?: string | string[];
+  expandDataSchema?: any;
 
   usePagination?: boolean;
   paginationConfig: PaginationData;
+
+  // 动态设置显示列
+  useDynamicColumn?: boolean;
+
+  //动态设置显示表格标题和字段
+  useDynamicTitle?: boolean;
+
+  titleBgColor: string;
+  headStyle: any;
+  contentStyle;
+  enableRowClick?: boolean;
+  enableRowFocus: boolean,
+  focusRowStyle: any,
+  domainModel: {
+    entity: any
+  },
+  // 是否默认展开所有行
+  defaultExpandAllRows: boolean
 }

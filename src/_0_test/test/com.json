@@ -1,0 +1,35 @@
+{
+  "title": "test",
+  "namespace": "test.test.test",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.1-beta.4",
+  "description": "test",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "当前数据",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "value",
+          "title": "当前数据",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ]
+}

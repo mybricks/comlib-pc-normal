@@ -10,5 +10,8 @@
     "textAlign": "left"
   },
   "flexStyleHorizontalKey": "horizontallyauto",
-  "flexStyleVerticalKey": "verticallyauto"
+  "flexStyleVerticalKey": "verticallyauto",
+  "isUnity": false,
+  "padding": [0, 16],
+  "rowKey": ""
 }

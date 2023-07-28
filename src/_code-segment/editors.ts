@@ -1,24 +1,5 @@
-import { CODE_TEMPLATE, COMMENTS, Data } from './constants';
+import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
 import { jsonToSchema } from './util';
-
-const getFnParams = ({ data, outputs }) => {
-  const params = ['context','inputValue', ...outputs.get().map(({ id }) => id)];
-  if (data.runImmediate) {
-    params.splice(1, 1);
-  }
-  return params;
-};
-
-const getExtralib = ({ outputs }) => {
-  return [
-    ...outputs.get().map(({ id, title }) => 
-    `/** \n* ${title} \n*/ \ndeclare function ${id}(val: any): void`),
-    `declare var inputValue: any;`,
-  ].join(';\n');
-};
-
-// editors inject run method
-const forceRender = { run: () => {} };
 
 export default {
   '@init': ({ data, setAutoRun, isAutoRun, output }: EditorResult<Data>) => {
@@ -26,30 +7,44 @@ export default {
     if (autoRun || data.runImmediate) {
       setAutoRun(true);
       data.runImmediate = true;
+      output.get('output0').setSchema({ type: 'number' });
     }
-    data.fns = data.fns || encodeURIComponent(CODE_TEMPLATE);
-    // data.fnBody = data.fnBody || encodeURIComponent(CODE_TEMPLATE);
-    // data.fnParams = data.fnParams || getFnParams({ data, outputs: output });
+    data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
   },
-  '@pinRemoved'({ data, outputs}){
-    // data.fnParams = getFnParams({ data, outputs });
-  },
-  '@inputUpdated'({ data }, fromPin) {
-    data.inputSchema = fromPin.schema;
-  },
-  '@inputConnected'({ data }, fromPin) {
-    data.inputSchema = fromPin.schema;
-  },
-  '@inputDisConnected'({ data }) {
-    data.inputSchema = { type: 'any' };
+  '@inputConnected'({ data, output }, fromPin) {
+    if (data.fns === CODE_TEMPLATE) {
+      output.get('output0').setSchema({ type: 'unknown' });
+    }
   },
   ':root': [
+    {
+      title: '添加输入项',
+      type: 'Button',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.runImmediate;
+      },
+      value: {
+        set({ data, input }: EditorResult<Data>) {
+          const idx = getIoOrder(input);
+          const hostId = `input${idx}`;
+          const title = `输入项${idx}`;
+          input.add({
+            id: hostId,
+            title,
+            schema: {
+              type: 'follow'
+            },
+            deletable: true
+          });
+        }
+      }
+    },
     {
       title: '添加输出项',
       type: 'Button',
       value: {
         set({ output }: EditorResult<Data>) {
-          const idx = getOutputOrder({ output });
+          const idx = getIoOrder(output);
           const hostId = `output${idx}`;
           const title = `输出项${idx}`;
           output.add({
@@ -68,7 +63,7 @@ export default {
     },
     {
       type: 'code',
-      options: ({ data, outputs }) => {
+      options: ({ data, output }) => {
         const option = {
           babel: true,
           comments: COMMENTS,
@@ -84,7 +79,10 @@ export default {
               sourceType: 'module'
             }
           },
-          schema: data.inputSchema
+          autoSave: false,
+          onBlur: () => {
+            updateOutputSchema(output, data.fns);
+          }
         };
         // Object.defineProperty(option, 'fnParams', {
         //   get() {
@@ -103,11 +101,10 @@ export default {
       title: '代码编辑',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.fns || CODE_TEMPLATE;
+          return data.fns;
         },
-        set({ data, output }: EditorResult<Data>, fns: any) {
+        set({ data }: EditorResult<Data>, fns: any) {
           data.fns = fns;
-          updateOutputSchema(output, fns);
         }
       }
     }
@@ -116,6 +113,7 @@ export default {
 
 function updateOutputSchema(output, code) {
   const outputs = {};
+  const inputs = {};
   output.get().forEach(({ id }) => {
     outputs[id] = (v: any) => {
       try {
@@ -128,16 +126,19 @@ function updateOutputSchema(output, code) {
   });
 
   try {
-    const fn = eval(decodeURIComponent(code.code || code));
-    fn({
-      inputValue: void 0,
-      outputs
+    setTimeout(() => {
+      const fn = eval(decodeURIComponent(code.code || code));
+      fn({
+        inputValue: void 0,
+        outputs,
+        inputs
+      });
     });
   } catch (error) {}
 }
 
-function getOutputOrder({ output }) {
-  const ports = output.get();
+function getIoOrder(io) {
+  const ports = io.get();
   const { id } = ports.pop();
-  return Number(id.slice(6)) + 1;
+  return Number(id.replace(/\D+/, '')) + 1;
 }

@@ -6,7 +6,20 @@
       "showText": true,
       "dataType": "number",
       "outVal": 0,
-      "inVal": ""
+      "inVal": "",
+      "isCustom": false,
+      "contentSize": [
+        14,
+        14
+      ],
+      "iconDistance": 8,
+      "src": "",
+      "loading": false,
+      "useDynamicLoading": false,
+      "style": {
+        "height": "auto",
+        "width": "auto"
+      }
     }
   ],
   "layout": "flex-start",
