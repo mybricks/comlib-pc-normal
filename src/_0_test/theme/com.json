@@ -1,0 +1,16 @@
+{
+  "title": "测试-主题变量",
+  "namespace": "test.theme",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "schema为*",
+  "runtime": "./runtime.tsx",
+  "inputs": [
+  ],
+  "outputs": [
+  ],
+  "schema": [
+    "*"
+  ]
+}
