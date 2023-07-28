@@ -53,6 +53,7 @@ export function Init({
     fontsize_formats: '12px 14px 16px 18px 20px 24px 36px 48px 56px 72px',
     fullpage_default_font_size: '12px',
     nonbreaking_force_tab: true,
+    relative_urls: false, //转换为相对地址
     skin: `oxide`,
     theme: 'silver',
     setup: setUp,
