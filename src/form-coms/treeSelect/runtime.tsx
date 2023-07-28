@@ -1,10 +1,12 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { TreeSelect } from 'antd';
 import { validateFormItem } from '../utils/validator';
-import { Data } from './types';
-import css from './runtime.less';
 import { typeCheck, uuid } from '../../utils';
-import { Option } from '../types';
+import { OutputIds } from '../types';
+import { validateTrigger } from '../form-container/models/validate';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { Data, Option } from './types';
+import css from './runtime.less';
 
 /**遍历树组件 */
 const traversalTree = (treeData: Option[], cb) => {
@@ -17,7 +19,16 @@ const traversalTree = (treeData: Option[], cb) => {
   });
 };
 
-export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeParams<Data>) {
+export default function Runtime({
+  env,
+  data,
+  inputs,
+  outputs,
+  logger,
+  parentSlot,
+  id,
+  name
+}: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -41,14 +52,24 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       if (data.config.multiple) {
         Array.isArray(val) ? onChange(val) : logger.error(`树选择的值应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
-        onChange(val);
+        changeValue(val);
+      } else {
+        logger.error(`树选择的值应为基本类型`);
+      }
+    });
+
+    inputs['setInitialValue']((val) => {
+      if (data.config.multiple) {
+        Array.isArray(val) ? onInit(val) : logger.error(`树选择的值应为数组格式`);
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
+        onInit(val);
       } else {
         logger.error(`树选择的值应为基本类型`);
       }
     });
 
     inputs['resetValue'](() => {
-      onChange(void 0);
+      data.value = void 0;
     });
 
     inputs['setOptions']((ds) => {
@@ -58,7 +79,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
           tempDs.push({
             checked: false,
             disabled: false,
-            lable: `选项${index}`,
+            label: `选项${index}`,
             value: `${uuid()}`,
             children: [],
             ...item
@@ -69,7 +90,7 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
           {
             checked: false,
             disabled: false,
-            lable: `选项`,
+            label: `选项`,
             value: `${uuid()}`,
             children: [],
             ...(ds || {})
@@ -78,27 +99,26 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
       }
       let newValArray: any[] = [],
         newVal;
-      let updateValue = false;
       traversalTree(tempDs, (node) => {
         const { checked, value } = node;
         if (checked && value != undefined) {
-          updateValue = true;
           newVal = value;
           newValArray.push(value);
         }
       });
-      if (updateValue) {
-        onChange(data.config.multiple ? newValArray : newVal);
-      }
-      data.options = tempDs.map(({ label, value, disabled, checked, children }) => {
-        return {
-          label,
-          value,
-          disabled,
-          checked,
-          children
-        };
-      });
+      data.options = tempDs.map(
+        ({ label, checkable, disableCheckbox, selectable, value, disabled, children }) => {
+          return {
+            label,
+            value,
+            disabled,
+            children,
+            checkable,
+            disableCheckbox,
+            selectable
+          };
+        }
+      );
     });
 
     inputs['setLoading']((val: boolean) => {
@@ -118,21 +138,32 @@ export default function Runtime({ env, data, inputs, outputs, logger }: RuntimeP
     });
   }, []);
 
-  const onChange = useCallback((value) => {
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name });
+  };
+
+  const changeValue = useCallback((value) => {
+    if (value === undefined) {
+      data.value = '';
+    }
     data.value = value;
-    outputs['onChange'](value);
+    onChangeForFc(parentSlot, { id, value, name });
+    outputs[OutputIds.OnChange](value);
   }, []);
 
-  const options = data.options.map((item) => {
-    return {
-      ...item,
-      label: item.label
-    };
-  });
+  const onChange = useCallback((value) => {
+    changeValue(value);
+    onValidateTrigger();
+  }, []);
+
+  const onInit = useCallback((value) => {
+    data.value = value;
+    outputs[OutputIds.OnInitial](value);
+  }, []);
 
   return (
     <div className={css.select}>
-      <TreeSelect {...data.config} value={data.value} onChange={onChange} treeData={options} />
+      <TreeSelect {...data.config} value={data.value} onChange={onChange} treeData={data.options} />
     </div>
   );
 }
