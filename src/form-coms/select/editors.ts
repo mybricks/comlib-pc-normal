@@ -45,7 +45,7 @@ export default {
           return data.config.mode !== 'default';
         },
         options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-select-multiple .ant-select-selection-item'
+        target: ['.ant-select-multiple .ant-select-selection-item','.ant-select-multiple .ant-select-selection-item-remove']
       }
       // {
       //   title: '激活样式',
