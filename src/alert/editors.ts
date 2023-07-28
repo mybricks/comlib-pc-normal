@@ -24,6 +24,10 @@ export default {
         target: '.ant-alert-message'
       },
       {
+        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-alert-info'
+      },
+      {
         title: '辅助介绍字体',
         options: ['font'],
         ifVisible({ data }: EditorResult<Data>) {
