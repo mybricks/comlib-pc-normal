@@ -70,7 +70,7 @@
             },
             "value": {
               "title": "值",
-              "type": "any"
+              "type": "string"
             },
             "children": {
               "title": "子项",

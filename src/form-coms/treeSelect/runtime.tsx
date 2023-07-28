@@ -111,8 +111,8 @@ export default function Runtime({
           return {
             label,
             value,
-            disabled,
             children,
+            disabled,
             checkable,
             disableCheckbox,
             selectable
