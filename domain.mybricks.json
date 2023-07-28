@@ -48,6 +48,7 @@
         "./src/form-coms/text/com.json",
         "./src/form-coms/select/com.json",
         "./src/form-coms/cascader/com.json",
+        "./src/form-coms/treeSelect/com.json",
         "./src/form-coms/date-picker/com.json",
         "./src/form-coms/range-picker/com.json",
         "./src/form-coms/input-number/com.json",
