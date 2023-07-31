@@ -15,6 +15,7 @@ export default {
     if (!data.connector) return;
 
     if (connector.id === data.connector.id) {
+      data.globalMock = connector.globalMock;
       data.connector = {
         id: connector.id,
         title: connector.title,
@@ -45,6 +46,7 @@ export default {
     if (!data.connector) return;
 
     if (connector.id === data.connector.id) {
+      data.globalMock = false;
       data.connector = void 0;
 
       const callInt = input.get('call');
@@ -69,6 +71,7 @@ export default {
         },
         set({ data, input, output, setDesc }, connector) {
           data.connector = connector;
+          data.globalMock = connector.globalMock;
           data.outputSchema = data.connector.outputSchema;
           updateIO({ input, output }, connector);
 

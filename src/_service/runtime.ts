@@ -14,7 +14,7 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
 				curParams.showToplLog = data.showToplLog;
 			}
       env
-        .callConnector(data.connector, curParams, { openMock: data.mock, mockSchema: data.outputSchema, ...connectorConfig })
+        .callConnector(data.connector, curParams, { openMock: data.globalMock || data.mock, mockSchema: data.outputSchema, ...connectorConfig })
         .then((val) => {
 	        if (curParams.showToplLog && typeof val === 'object' && val !== null && val.__ORIGIN_RESPONSE__) {
 		        (val.__ORIGIN_RESPONSE__?.logStack || []).map(log => {
@@ -33,7 +33,7 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
         .catch((err) => {
           outputs['catch'](err);
         });
-    } catch (ex) {
+    } catch (ex: any) {
       console.error(ex);
 
       outputs['catch'](`执行错误 ${ex.message || ex}`);
