@@ -1,11 +1,12 @@
 {
   "title": "树选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "树选择",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_7xd3f2.315b881e6dc8013d.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
