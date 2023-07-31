@@ -22,7 +22,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat } = data;
-  const [value, setValue] = useState<Moment | undefined>();
+  const [value, setValue] = useState<Moment | null>();
   const validate = useCallback(
     (output) => {
       validateFormItem({
@@ -86,6 +86,7 @@ export default function ({
 
   const getValue = useCallback(
     (value) => {
+      if (!value) return value;
       if (format === 'timeStamp') return value.endOf('second').valueOf();
       if (format === 'custom') return value.format(customFormat);
       return value.format(format);
@@ -93,7 +94,7 @@ export default function ({
     [format, customFormat]
   );
 
-  const onChange = (time, timeString: string) => {
+  const onChange = (time: Moment | null, timeString: string) => {
     setValue(time);
     const value = getValue(time);
     onChangeForFc(parentSlot, { id, name, value });
