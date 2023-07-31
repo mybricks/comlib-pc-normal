@@ -40,22 +40,35 @@ export default function ({
     [value]
   );
 
-  const setTimestamp = (val) => {
-    if (!val) {
-      setValue(void 0);
-      return;
-    }
-    if (isNumber(val)) {
-      setValue(moment(val));
-      return;
-    }
-    //兼容moment
-    if (isMoment(val)) {
-      setValue(val);
-      return;
-    }
-    message.error('输入数据是时间戳或者moment对象');
-  };
+  const _format = useMemo(() => {
+    if (format === 'custom') return customFormat;
+    if (format === 'timeStamp') return 'HH:mm:ss';
+    return format;
+  }, [format, customFormat]);
+
+  const setTimestamp = useCallback(
+    (val) => {
+      if (!val) {
+        setValue(void 0);
+        return;
+      }
+      if (isNumber(val)) {
+        setValue(moment(val));
+        return;
+      }
+      //兼容moment
+      if (isMoment(val)) {
+        setValue(val);
+        return;
+      }
+      if (typeof val === 'string') {
+        setValue(moment(val, _format));
+        return;
+      }
+      message.error('输入数据是时间戳或者moment对象');
+    },
+    [_format]
+  );
 
   useFormItemInputs(
     {
@@ -100,12 +113,6 @@ export default function ({
     onChangeForFc(parentSlot, { id, name, value });
     outputs['onChange'](value);
   };
-
-  const _format = useMemo(() => {
-    if (format === 'custom') return customFormat;
-    if (format === 'timeStamp') return 'HH:mm:ss';
-    return format;
-  }, [format, customFormat]);
 
   return (
     <div className={styles.wrap}>
