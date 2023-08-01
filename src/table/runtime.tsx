@@ -313,7 +313,7 @@ export default function (props: RuntimeParams<Data>) {
       // 是否后端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
       if (!usePagination && Array.isArray(ds)) {
-        temp = formatDataSource(ds);
+        temp = formatDataSource(ds, rowKey);
       } else if (usePagination && ds && typeof ds === 'object') {
         /**
          * 分页特殊处理逻辑
@@ -325,11 +325,11 @@ export default function (props: RuntimeParams<Data>) {
          */
         const dsKey = Object.keys(ds);
         if (Array.isArray(ds?.dataSource)) {
-          temp = formatDataSource(ds?.dataSource);
+          temp = formatDataSource(ds?.dataSource, rowKey);
         } else {
           const arrayItemKey = dsKey.filter((key) => !!Array.isArray(ds[key]));
           if (arrayItemKey.length === 1) {
-            temp = formatDataSource(ds?.[arrayItemKey[0]]);
+            temp = formatDataSource(ds?.[arrayItemKey[0]], rowKey);
           } else {
             console.error('[数据表格]：未传入列表数据', ds);
           }
@@ -588,7 +588,7 @@ export default function (props: RuntimeParams<Data>) {
                       }
                       return slots[SlotIds.EXPAND_CONTENT].render({
                         inputValues,
-                        key: `${InputIds.EXP_COL_VALUES}-${index}`
+                        key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
                       });
                     },
                     expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置

@@ -88,17 +88,17 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 };
 
 // 格式化表格数据
-export const formatDataSource = (dataSource) => {
+export const formatDataSource = (dataSource, rowKey) => {
   return dataSource.map(({ children, ...rest }) => {
     if (children && children.length) {
       return {
-        [DefaultRowKey]: uuid(),
-        children: formatDataSource(children),
+        [rowKey]: uuid(),
+        children: formatDataSource(children, rowKey),
         ...rest
       };
     } else {
       return {
-        [DefaultRowKey]: uuid(),
+        [rowKey]: uuid(),
         ...rest
       };
     }

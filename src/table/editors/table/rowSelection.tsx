@@ -1,5 +1,5 @@
 import { runScript } from '../../../utils/runExpCodeScript';
-import { DefaultRowKey, InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
+import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
 import { Schemas, setDataSchema } from '../../schema';
 
@@ -48,7 +48,6 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
             setDataSchema({ data, input, output, slot, ...res });
           } else {
-            data.rowKey = DefaultRowKey;
             if (output.get(OutputIds.GET_ROW_SELECTION)) {
               output.remove(OutputIds.GET_ROW_SELECTION);
             }
