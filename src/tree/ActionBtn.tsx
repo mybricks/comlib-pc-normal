@@ -65,6 +65,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
           }}
           onClick={(e) => {
             e.stopPropagation();
+            if (env.edit) return;
             if (id !== DELETE_BTN_ID) btnClick(id);
             else confirm();
           }}

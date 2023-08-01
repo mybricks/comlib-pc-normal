@@ -270,6 +270,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     //     outputs["check"](checkedKeys);
     //   }
     // }
+    if (env.edit) return;
     const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
     data.checkedKeys = [...checked];
     setCheckedKeys([...checked]);
