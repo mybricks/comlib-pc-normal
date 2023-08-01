@@ -1,3 +1,4 @@
+import { DropDownProps } from "antd";
 
 export interface ActionBtn {
   id: any,
@@ -40,6 +41,10 @@ export interface Data {
   keyFieldName: string;
   useCheckEvent?: boolean;
   checkStrictly?: boolean;
+  ellipsisActionBtnsConfig: {
+    useEllipsis: boolean;
+    maxToEllipsis: number;
+  } & DropDownProps;
 }
 
 export interface TreeData {

@@ -285,7 +285,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       actionBtns =
         data.isEditing !== item.key &&
         data.useActions &&
-        ActionBtns({ data, record: item, outputItem: outputItem, env, outputs });
+        ActionBtns({ data, record: item, outputItem, env, outputs });
     if (index > -1) {
       return (
         <div style={wrapperStyle}>

@@ -1,5 +1,6 @@
 import { uuid } from '../utils';
 import { actionBtnsEditor, actionBtnEditor, addBtn } from './actionBtnEditor';
+import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID } from './constants';
 import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
@@ -266,7 +267,7 @@ export default {
           }
         },
         {
-          title: '操作项',
+          title: '节点操作项',
           type: 'Switch',
           value: {
             get({ data }: EditorResult<Data>) {
@@ -306,33 +307,7 @@ export default {
             }
           }
         },
-        {
-          title: '操作列表',
-          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
-          type: 'array',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.useActions;
-          },
-          options: {
-            addText: '添加按钮',
-            deletable: false,
-            editable: false,
-            getTitle: (item) => {
-              return item?.title;
-            },
-            onAdd: () => {
-              return addBtn({ data, output });
-            }
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.actionBtns || [];
-            },
-            set({ data }: EditorResult<Data>, val: any[]) {
-              data.actionBtns = val;
-            }
-          }
-        },
+        commonActionBtnsEditor,
         {
           title: '添加节点',
           description: '开启后，树组件支持添加节点功能',
@@ -366,6 +341,9 @@ export default {
         {
           title: '添加完成',
           type: '_Event',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.addable;
+          },
           options: () => {
             return {
               outputId: 'addNodeDone'

@@ -1,4 +1,5 @@
 import { uuid } from "../utils";
+import { commonActionBtnsEditor } from "./actionBtnsCommonEditor";
 import { Data, DELETE_BTN_ID, MODIFY_BTN_ID } from "./constants";
 
 function removeActionBtn({ data, focusArea, output }) {
@@ -141,30 +142,7 @@ export const actionBtnsEditor = {
           }
         }
       },
-      {
-        title: '操作列表',
-        description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
-        type: 'array',
-        options: {
-          addText: '添加按钮',
-          deletable: false,
-          editable: false,
-          getTitle: (item) => {
-            return item?.title;
-          },
-          onAdd: () => {
-            return addBtn({ data, output });
-          }
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.actionBtns || [];
-          },
-          set({ data }: EditorResult<Data>, val: any[]) {
-            data.actionBtns = val;
-          }
-        }
-      },
+      commonActionBtnsEditor
     ];
   }
 };

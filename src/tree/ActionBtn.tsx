@@ -1,12 +1,44 @@
-import { Button, Modal } from 'antd';
 import React from 'react';
-import { ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './constants';
+import { Button, Dropdown, Menu, Modal } from 'antd';
+import { EllipsisOutlined } from '@ant-design/icons';
+import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './constants';
 import css from './ActionBtns.less';
 
 export default function ActionBtns({ record, outputItem, data, env, outputs }: ActionBtnsProps) {
-  const { actionBtns, treeData } = data;
+  const { treeData } = data;
   const hasChildren = record?.children?.length > 0;
+  const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 
+  /** 计算省略展示和正常展示的按钮列表 */
+  let ellipsisActionBtns: ActionBtn[] = [];
+  let actionBtns = data.actionBtns;
+  if (env.runtime && useEllipsis) {
+    let maxToEllipsisIdx = 0,
+      tempMaxToEllipsis = 0;
+    (data.actionBtns || []).forEach((btn) => {
+      try {
+        if (tempMaxToEllipsis < maxToEllipsis) {
+          maxToEllipsisIdx += 1;
+          if (!btn.hidden) {
+            tempMaxToEllipsis += 1;
+          }
+        }
+      } catch (e) {
+        // console.log(e);
+      }
+    });
+    ellipsisActionBtns = (data.actionBtns || []).slice(maxToEllipsisIdx).filter((btn) => {
+      const isHidden =
+        btn.hidden || (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
+      return !isHidden;
+    });
+    actionBtns = (data.actionBtns || []).slice(0, maxToEllipsisIdx);
+  }
+  actionBtns = actionBtns.filter((btn) => {
+    const isHidden =
+      btn.hidden || (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
+    return !isHidden;
+  });
   /**
    * 删除节点
    * @param treeData treeNodes 数据
@@ -24,19 +56,24 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
     });
   };
 
+  /**
+   * 按钮点击事件
+   * @param id 按钮id
+   */
   const btnClick = (id) => {
-    if (env?.runtime) {
-      if (id === MODIFY_BTN_ID) {
-        data.isEditing = record.key;
-      } else {
-        if (id === DELETE_BTN_ID) {
-          data.treeData = deleteNode(treeData, record.key).filter((def) => !!def) as TreeData[];
-        }
-        outputs[id](outputItem);
+    if (id === MODIFY_BTN_ID) {
+      data.isEditing = record.key;
+    } else {
+      if (id === DELETE_BTN_ID) {
+        data.treeData = deleteNode(treeData, record.key).filter((def) => !!def) as TreeData[];
       }
+      outputs[id](outputItem);
     }
   };
 
+  /**
+   * 删除节点的二次弹窗
+   */
   const confirm = () => {
     const text = hasChildren
       ? '确定删除节点"${title}"及其所有子节点吗？此操作不可恢复！'
@@ -52,9 +89,8 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
     });
   };
 
-  const renderActionBtn = (btn, btnIdx) => {
+  const renderActionBtn = (btn) => {
     const { id, title, size, type, showText = true } = btn;
-    if (id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable) return;
     const renderBtn = () => {
       return (
         <Button
@@ -64,8 +100,8 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
             ...btn.style
           }}
           onClick={(e) => {
-            e.stopPropagation();
             if (env.edit) return;
+            e.stopPropagation();
             if (id !== DELETE_BTN_ID) btnClick(id);
             else confirm();
           }}
@@ -85,9 +121,41 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
     flex: `0 0 ${(actionBtns?.length + 1) * 60}px`,
     justifyContent: 'end'
   };
+
+  /**
+   * 下拉按钮渲染
+   * @param btn 按钮数据
+   * @returns JSX
+   */
+  const renderMenuActionBtn = (btn: ActionBtn) => {
+    if (env?.runtime && btn.hidden) {
+      return null;
+    }
+    const onBtnClick = () => {
+      if (env?.runtime) {
+        btnClick(btn.id);
+      }
+    };
+
+    return (
+      <Menu.Item key={btn.id} id={btn.id} onClick={onBtnClick}>
+        {renderActionBtn(btn)}
+      </Menu.Item>
+    );
+  };
+
+  const menu = <Menu>{ellipsisActionBtns.map((btn) => renderMenuActionBtn(btn))}</Menu>;
+
   return (
     <div className={css['action-btns']} style={wrapperStyle} data-action-btns>
-      {actionBtns.map((btn, btnIdx) => !btn.hidden && renderActionBtn(btn, btnIdx))}
+      {actionBtns.map((btn) => !btn.hidden && renderActionBtn(btn))}
+      {ellipsisActionBtns && !!ellipsisActionBtns.length && (
+        <Dropdown overlay={menu} placement="bottomRight" {...dropdownProps}>
+          <div className={css.ellipsisIcon}>
+            <EllipsisOutlined />
+          </div>
+        </Dropdown>
+      )}
     </div>
   );
 }
