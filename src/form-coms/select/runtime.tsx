@@ -7,6 +7,7 @@ import { typeCheck, uuid } from '../../utils';
 import { Option, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { OptionProps } from 'antd/lib/select';
 
 export default function Runtime({
   env,
@@ -88,7 +89,7 @@ export default function Runtime({
     });
 
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
+      let tempDs: OptionProps[] = [];
       if (Array.isArray(ds)) {
         ds.forEach((item, index) => {
           tempDs.push({
@@ -99,41 +100,34 @@ export default function Runtime({
             ...item
           });
         });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            lable: `选项`,
-            value: `${uuid()}`,
-            ...(ds || {})
+        let newValArray: any[] = [],
+          newVal;
+        let updateValue = false;
+        tempDs.map((item) => {
+          const { checked, value } = item;
+          if (checked && value != undefined) {
+            updateValue = true;
+            newVal = value;
+            newValArray.push(value);
           }
-        ];
-      }
-      let newValArray: any[] = [],
-        newVal;
-      let updateValue = false;
-      tempDs.map((item) => {
-        const { checked, value } = item;
-        if (checked && value != undefined) {
-          updateValue = true;
-          newVal = value;
-          newValArray.push(value);
+        });
+        if (updateValue) {
+          data.value =
+            data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
+              ? newValArray
+              : newVal;
         }
-      });
-      if (updateValue) {
-        data.value =
-          data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
-            ? newValArray
-            : newVal;
+        data.config.options = tempDs.map(({ label, value, disabled, options }) => {
+          return {
+            label,
+            value,
+            disabled,
+            options
+          };
+        });
+      } else {
+        data.config.options = [];
       }
-      data.config.options = tempDs.map(({ label, value, disabled }) => {
-        return {
-          label,
-          value,
-          disabled
-        };
-      });
     });
 
     inputs['setLoading']((val: boolean) => {
