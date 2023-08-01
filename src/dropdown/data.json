@@ -1,5 +1,5 @@
 {
-  "options": [ {"label": "选项1", "value": "","disabled": "true"} ],
+  "options": [ {"label": "选项1", "link": "","disabled": "true", "useIcon": false, "icon": "HomeOutlined", "iconColor": "rgba(0, 0, 0, 0.85)"} ],
   "placement": "bottomLeft",
   "width": 100,
   "isCustom": false,

@@ -1,7 +1,7 @@
 {
   "title": "下拉菜单",
   "namespace": "mybricks.normal-pc.dropdown",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "下拉菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -18,6 +18,9 @@
         "type": "object",
         "properties": {
           "label": {
+            "type": "string"
+          },
+          "link": {
             "type": "string"
           }
         }

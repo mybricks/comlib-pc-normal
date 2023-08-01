@@ -18,9 +18,27 @@ export default function ({
     "properties": {
       "label": {
         "type": "string"
+      },
+      "link": {
+        "type": "string"
       }
     }
   }
   output.get("onChange").setSchema(outputSchema);
+
+  data.options.map((item)=>{
+    if(item.value){
+      item.link = item.value
+    }
+    if(!item.useIcon){
+      item.useIcon = false
+    }
+    if(!item.icon){
+      item.icon = "HomeOutlined"
+    }
+    if(!item.iconColor){
+      item.iconColor = "rgba(0, 0, 0, 0.85)"
+    }
+  })
   return true;
 }
