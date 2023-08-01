@@ -28,7 +28,9 @@ const SlotContent = (props) => {
   }, [layout]);
 
   const FormActionsWrapper = () => {
-    return <FormActions data={data} outputs={outputs} submit={submit} isMobile={isMobile} />;
+    return (
+      <FormActions data={data} env={env} outputs={outputs} submit={submit} isMobile={isMobile} />
+    );
   };
 
   const content = useMemo(() => {
