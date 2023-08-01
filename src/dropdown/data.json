@@ -3,5 +3,6 @@
   "placement": "bottomLeft",
   "width": 100,
   "isCustom": false,
-  "content": "下拉菜单"
+  "content": "下拉菜单",
+  "trigger": "hover"
 }
