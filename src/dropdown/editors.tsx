@@ -142,7 +142,10 @@ export default {
           onAdd: () => {
             const defaultOption = {
               label: `选项${tempOptions.length + 1}`,
-              value: ''
+              link: '',
+              useIcon: false,
+              icon: 'HomeOutlined',
+              iconColor: 'rgba(0, 0, 0, 0.85)'
             };
             addOption(defaultOption);
             return defaultOption;
@@ -157,12 +160,33 @@ export default {
               title: '跳转链接(可选)',
               type: 'textarea',
               description: '下拉菜单中选项可跳转链接，可不填',
-              value: 'value'
+              value: 'link'
             },
             {
               title: '禁用',
               type: 'switch',
               value: 'disabled'
+            },
+            {
+              title: '图标',
+              type: 'switch',
+              value: 'useIcon'
+            },
+            {
+              title: '图标库',
+              type: 'icon',
+              ifVisible(item) {
+                return item.useIcon || false;
+              },
+              value: 'icon'
+            },
+            {
+              title: '图标颜色',
+              ifVisible(item) {
+                return item.useIcon || false;
+              },
+              type: 'colorpicker',
+              value: 'iconColor'
             }
           ]
         },
