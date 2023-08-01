@@ -24,15 +24,18 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
   // 选项改变
   const onClick = (option) => {
     outputs['onChange']({
-      disabled: option.disabled,
-      label: option.label,
-      value: option.value
+      label: option.label
     });
   };
   if (env.runtime) {
     return (
       <div>
-        <Dropdown overlay={menuRender({ data })} placement={data.placement} arrow>
+        <Dropdown
+          overlay={menuRender({ data })}
+          placement={data.placement}
+          arrow
+          trigger={[data.trigger]}
+        >
           {data.isCustom === false ? (
             <a onClick={(e) => e.preventDefault()}>
               <Space>

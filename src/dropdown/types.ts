@@ -3,5 +3,6 @@ export interface Data {
     placement: "bottomLeft" | "bottomCenter" | "bottomRight" | "topLeft" | "topCenter" | "topCenter",
     width: number | string,
     isCustom: boolean,
-    content: string
+    content: string,
+    trigger: "hover" | "click"
 }

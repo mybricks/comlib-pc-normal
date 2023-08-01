@@ -5,7 +5,7 @@ interface Result {
   style?: any;
 }
 
-let tempOptions = [],
+let tempOptions: any = [],
   addOption,
   delOption;
 
@@ -57,6 +57,28 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.isCustom = value;
+          }
+        }
+      },
+      {
+        title: '触发方式',
+        type: 'Select',
+        options: [
+          {
+            label: '悬浮',
+            value: 'hover'
+          },
+          {
+            label: '点击',
+            value: 'click'
+          }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.trigger || 'hover';
+          },
+          set({ data }: EditorResult<Data>, val: 'hover' | 'click') {
+            data.trigger = val;
           }
         }
       },
