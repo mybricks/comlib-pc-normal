@@ -1,8 +1,10 @@
 import { Actions } from '../utils/history';
 import { Data } from './constants';
-import css from './runtime.less';
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     style: [
       {
