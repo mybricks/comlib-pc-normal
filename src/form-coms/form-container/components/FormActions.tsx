@@ -6,6 +6,7 @@ import style from './formActions.less';
 
 interface Props {
   data: Data;
+  env: any;
   submit: (outputId: string, outputRels?: any) => void;
   outputs: any;
   isMobile: boolean;
@@ -15,6 +16,7 @@ const FormActions = (props: Props) => {
   const { actions, layout, formItemColumn, config } = props.data;
 
   const onClick = (item) => {
+    if (props.env?.edit) return;
     if (item.outputId === outputIds.ON_CLICK_SUBMIT) {
       props.submit(item.outputId);
     } else {
