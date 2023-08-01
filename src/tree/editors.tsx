@@ -1,5 +1,5 @@
 import { uuid } from '../utils';
-import { actionBtnEditor } from './actionBtnEditor';
+import { actionBtnsEditor, actionBtnEditor, addBtn } from './actionBtnEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID } from './constants';
 import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
@@ -95,7 +95,7 @@ export default {
           'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title '
       }
     ],
-    items: ({ data }, ...cate) => {
+    items: ({ data, output }: EditorResult<Data>, ...cate) => {
       cate[0].title = '常规';
       cate[1].title = '高级';
       cate[0].items = [
@@ -303,6 +303,33 @@ export default {
                 !output.get(MODIFY_BTN_ID) && output.add(MODIFY_BTN_ID, '修改', schema);
                 !output.get(DELETE_BTN_ID) && output.add(DELETE_BTN_ID, '删除', schema);
               }
+            }
+          }
+        },
+        {
+          title: '操作列表',
+          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
+          type: 'array',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useActions;
+          },
+          options: {
+            addText: '添加按钮',
+            deletable: false,
+            editable: false,
+            getTitle: (item) => {
+              return item?.title;
+            },
+            onAdd: () => {
+              return addBtn({ data, output });
+            }
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.actionBtns || [];
+            },
+            set({ data }: EditorResult<Data>, val: any[]) {
+              data.actionBtns = val;
             }
           }
         },
@@ -553,5 +580,6 @@ export default {
       }
     ]
   },
-  ...actionBtnEditor
+  '[data-action-btns]': actionBtnsEditor,
+  '[data-btn-id]': actionBtnEditor
 };
