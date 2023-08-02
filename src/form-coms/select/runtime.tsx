@@ -119,12 +119,20 @@ export default function Runtime({
         }
       }
       data.config.options = tempDs.map(({ label, value, disabled, options }) => {
-        return {
-          label,
-          value,
-          disabled,
-          options: Array.isArray(options) ? options : void 0
-        };
+        if (Array.isArray(options)) {
+          return {
+            label,
+            value,
+            disabled,
+            options
+          };
+        } else {
+          return {
+            label,
+            value,
+            disabled
+          };
+        }
       });
     });
 
