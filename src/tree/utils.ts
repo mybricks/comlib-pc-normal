@@ -83,3 +83,140 @@ export const traverseTree = ({
   }
   return null;
 };
+
+/**
+ * 数组扁平化
+ * @param arr 数组
+ * @returns
+ */
+const flatten = (arr: any[]) => {
+  return arr.reduce((res, next) => {
+    return res.concat(Array.isArray(next) ? flatten(next) : next);
+  }, []);
+};
+
+/**
+ * 获取所有叶子节点
+ * @param treeData treeNodes 数据
+ * @returns
+ */
+const getLeafNodes = (treeData: TreeData[]) => {
+  const result: any[] = [];
+  if (!treeData || treeData.length === 0) return;
+  treeData.forEach((item) => {
+    if (!item.children || item.children.length === 0) result.push(item.key);
+    else result.push(getLeafNodes(item.children || []));
+  });
+  return flatten(result);
+};
+
+/**
+ * 排除父节点
+ * @param checkedKeys 选中复选框的树节点 key 值
+ * @param treeData treeNodes 数据
+ * @returns
+ */
+export const excludeParentKeys = (treeData: TreeData[], checkedKeys: React.Key[]) => {
+  const result: any = [],
+    leafNodes = getLeafNodes(treeData);
+
+  if (checkedKeys && Array.isArray(checkedKeys)) {
+    checkedKeys.forEach((key) => {
+      if (leafNodes.indexOf(key) !== -1) result.push(key);
+    });
+  }
+  return result;
+};
+
+/**
+ * 输出选中节点的 value 值
+ * @param treeData treeNodes 数据
+ * @param checkedKeys 选中复选框的树节点 key 值
+ * @returns
+ */
+export const outputNodeValues = (treeData: TreeData[], keys: React.Key[]) => {
+  const result: any[] = [];
+  treeData
+    .filter((def) => !!def)
+    .forEach((item) => {
+      if ((keys || []).includes(item.key)) result.push(item.value);
+      result.push(outputNodeValues(item.children || [], keys));
+    });
+  return flatten(result);
+};
+
+/**
+ * 根据keyFieldName设置节点数据
+ * @param treeData treeNodes 数据
+ * @param newNodeData 节点数据
+ * @returns
+ */
+export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldName: string) => {
+  treeData = treeData.map((item) => {
+    if (item.key === newNodeData[keyFieldName]) {
+      item = {
+        ...item,
+        ...newNodeData
+      };
+    } else if (item.children) {
+      item.children = updateNodeData(item.children, newNodeData, keyFieldName);
+    }
+    return item;
+  });
+  return treeData;
+};
+
+/**
+ * 根据选中节点的 value 此筛选出选中节点的 key
+ * @param treeData treeNodes 数据
+ * @param checkedValues 选中复选框的树节点 key 值
+ * @returns
+ */
+export const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedValues: string[]) => {
+  if (!treeData || treeData.length === 0) return;
+  const result: any[] = [];
+  treeData.forEach((item) => {
+    if ((checkedValues || []).includes(item.value)) {
+      result.push(item.key);
+    }
+    if (item.children) {
+      result.push(filterCheckedKeysByCheckedValues(item.children || [], checkedValues));
+    }
+  });
+  return flatten(result);
+};
+/**
+ * 查找父节点
+ * @param key 子节点key
+ * @param tree
+ * @returns
+ */
+export const getParentKey = (key, tree) => {
+  let parentKey;
+  for (let i = 0; i < tree.length; i++) {
+    const node = tree[i];
+    if (node.children) {
+      if (node.children.some((item) => item.key === key)) {
+        parentKey = node.key;
+      } else if (getParentKey(key, node.children)) {
+        parentKey = getParentKey(key, node.children);
+      }
+    }
+  }
+  return parentKey;
+};
+/**
+ * 获取树的key数组
+ * @param treeData 树节点数据
+ * @param dataList key数组
+ */
+export const generateList = (treeData, dataList) => {
+  for (let i = 0; i < treeData.length; i++) {
+    const node = treeData[i];
+    const { key, title } = node;
+    dataList.push({ key, title });
+    if (node.children) {
+      generateList(node.children, dataList);
+    }
+  }
+};
