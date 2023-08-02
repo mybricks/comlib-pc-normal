@@ -23,6 +23,13 @@
   "expandedKeys": [],
   "isEditing": "",
   "isAdding": "",
+  "ellipsisActionBtnsConfig": {
+    "useEllipsis": false,
+    "maxToEllipsis": 3,
+    "trigger": [
+      "click"
+    ]
+  },
   "actionBtns": [
     {
       "type": "link",

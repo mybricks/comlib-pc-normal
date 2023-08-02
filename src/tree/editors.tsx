@@ -1,5 +1,6 @@
 import { uuid } from '../utils';
-import { actionBtnEditor } from './actionBtnEditor';
+import { actionBtnsEditor, actionBtnEditor, addBtn } from './actionBtnEditor';
+import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID } from './constants';
 import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
@@ -95,7 +96,7 @@ export default {
           'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title '
       }
     ],
-    items: ({ data }, ...cate) => {
+    items: ({ data, output }: EditorResult<Data>, ...cate) => {
       cate[0].title = '常规';
       cate[1].title = '高级';
       cate[0].items = [
@@ -266,7 +267,7 @@ export default {
           }
         },
         {
-          title: '操作项',
+          title: '节点操作项',
           type: 'Switch',
           value: {
             get({ data }: EditorResult<Data>) {
@@ -306,6 +307,7 @@ export default {
             }
           }
         },
+        commonActionBtnsEditor,
         {
           title: '添加节点',
           description: '开启后，树组件支持添加节点功能',
@@ -339,6 +341,9 @@ export default {
         {
           title: '添加完成',
           type: '_Event',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.addable;
+          },
           options: () => {
             return {
               outputId: 'addNodeDone'
@@ -553,5 +558,6 @@ export default {
       }
     ]
   },
-  ...actionBtnEditor
+  '[data-action-btns]': actionBtnsEditor,
+  '[data-btn-id]': actionBtnEditor
 };
