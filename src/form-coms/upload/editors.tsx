@@ -480,8 +480,8 @@ export default {
         {
           title: '自定义上传接口',
           type: '_event',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.customUpload;
+          ifVisible({ data, env }: EditorResult<Data>) {
+            return typeof env.uploadFile !== 'function' || data.customUpload;
           },
           options: {
             outputId: 'upload'
