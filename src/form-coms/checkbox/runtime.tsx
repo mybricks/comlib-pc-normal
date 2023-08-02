@@ -126,18 +126,22 @@ export default function Runtime({
       data.value = void 0;
     }
   }, []);
-  // 全选框组监听事件
+
+  // 多选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id: id, name: name, value: checkedValue });
+    onChangeForFc(parentSlot, { id, name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
+
   // 全选框监听事件
   const onCheckAllChange = (e) => {
     data.value = e.target.checked ? data.config.options.map((item) => item.value) : [];
     setIndeterminate(false);
     setCheckAll(e.target.checked);
+    onChangeForFc(parentSlot, { id, name, value: data.value });
+    outputs['onChange'](data.value);
     onValidateTrigger();
   };
   if (data.renderError) {
@@ -170,7 +174,7 @@ export default function Runtime({
         style={checkboxGroup}
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}
-        value={data.value as any}
+        value={data.value}
         onChange={onChange}
       />
     </div>
