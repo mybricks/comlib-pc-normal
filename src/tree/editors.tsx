@@ -307,7 +307,7 @@ export default {
             }
           }
         },
-        commonActionBtnsEditor,
+        commonActionBtnsEditor(data, output),
         {
           title: '添加节点',
           description: '开启后，树组件支持添加节点功能',
