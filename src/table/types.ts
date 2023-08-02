@@ -37,6 +37,7 @@ export interface Filter {
   enable?: boolean;
   type?: FilterTypeEnum;
   options?: any[];
+  hideFilterDropdown?: boolean
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
 }

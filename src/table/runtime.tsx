@@ -416,6 +416,7 @@ export default function (props: RuntimeParams<Data>) {
     return ColumnsTitleRender({
       ...props,
       filterMap,
+      dataSource,
       focusRowIndex,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>

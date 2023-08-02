@@ -1,3 +1,4 @@
+import { outputIds } from 'src/form-coms/form-container/constants';
 import { InputIds, OutputIds } from '../../constants';
 import { Schemas, setDataSchema } from '../../schema';
 import { ContentTypeEnum, Data, Filter, FilterTypeEnum, IColumn } from '../../types';
@@ -14,6 +15,7 @@ const addFilterIO = ({ data, output, input }: Props) => {
   const event3 = input.get(InputIds.GET_FILTER);
   const event4 = input.get(InputIds.SET_FILTER);
   const event5 = input.get(InputIds.SET_FILTER_INPUT);
+  const event6 = output.get(OutputIds.FILTER_CLICK);
 
   // 接口筛选
   const useFilter = data.columns.some((item) => item.filter?.enable);
@@ -34,12 +36,16 @@ const addFilterIO = ({ data, output, input }: Props) => {
     if (!event5) {
       input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
     }
+    if (!event6) {
+      output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
+    }
   } else {
     event1 && output.remove(OutputIds.FILTER);
     event2 && output.remove(OutputIds.GET_FILTER);
     event3 && input.remove(InputIds.GET_FILTER);
     event4 && input.remove(InputIds.SET_FILTER);
     event5 && input.remove(InputIds.SET_FILTER_INPUT);
+    event6 && output.remove(OutputIds.FILTER_CLICK);
   }
 };
 
@@ -77,6 +83,38 @@ const FilterEditor = {
           addFilterIO({ data, output, input });
           setDataSchema({ data, focusArea, input, output, ...res });
         }
+      }
+    },
+    {
+      title: '隐藏筛选菜单',
+      type: 'Switch',
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.filter?.hideFilterDropdown ?? false;
+        },
+        set({ data, focusArea, input, output, ...res }: EditorResult<Data>, value: boolean) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          setFilterProps(item, 'hideFilterDropdown', value);
+          addFilterIO({ data, output, input });
+          setDataSchema({ data, focusArea, input, output, ...res });
+        }
+      }
+    },
+    {
+      title: '点击筛选事件',
+      type: '_Event',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.filter?.enable;
+      },
+      options: () => {
+        return {
+          outputId: OutputIds.FILTER_CLICK
+        };
       }
     },
     {

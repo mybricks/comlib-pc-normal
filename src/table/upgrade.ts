@@ -2,7 +2,7 @@ import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 import { ContentTypeEnum, IColumn } from './types';
 import { OutputIds } from './constants';
-import { upgradeSchema } from './schema'
+import { Schemas, upgradeSchema } from './schema'
 
 import { Data } from './types';
 
@@ -51,7 +51,7 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
       item.contentStyle = {}
     }
   });
-  
+
   /*
   * 更新行数据 添加插槽列的新输出
   */
@@ -87,5 +87,9 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
   // 列插槽作用域schema
   upgradeSchema({ data, output, input, slot });
 
+  const useFilter = data.columns.some((item) => item.filter?.enable);
+  if (useFilter) {
+    output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
+  }
   return true;
 }
