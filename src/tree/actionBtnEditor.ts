@@ -76,8 +76,8 @@ export const addBtn = ({ data, output }: { data: Data, output: any }) => {
     size: 'middle',
     type: 'ghost',
   };
-  data.actionBtns.push(defaultBtn);
   output.add(id, title, schema);
+  return defaultBtn;
 };
 
 const getBtnProp = (
@@ -142,7 +142,7 @@ export const actionBtnsEditor = {
           }
         }
       },
-      commonActionBtnsEditor
+      commonActionBtnsEditor(data, output)
     ];
   }
 };
