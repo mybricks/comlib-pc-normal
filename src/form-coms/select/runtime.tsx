@@ -95,7 +95,7 @@ export default function Runtime({
           tempDs.push({
             checked: false,
             disabled: false,
-            lable: `选项${index}`,
+            label: `选项${index}`,
             value: `${uuid()}`,
             ...item
           });
@@ -117,17 +117,15 @@ export default function Runtime({
               ? newValArray
               : newVal;
         }
-        data.config.options = tempDs.map(({ label, value, disabled, options }) => {
-          return {
-            label,
-            value,
-            disabled,
-            options
-          };
-        });
-      } else {
-        data.config.options = [];
       }
+      data.config.options = tempDs.map(({ label, value, disabled, options }) => {
+        return {
+          label,
+          value,
+          disabled,
+          options: Array.isArray(options) ? options : void 0
+        };
+      });
     });
 
     inputs['setLoading']((val: boolean) => {
