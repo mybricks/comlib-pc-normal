@@ -56,8 +56,12 @@ export default function (props: RuntimeParams<Data>) {
       const dataIndex = Array.isArray(cItem.dataIndex)
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;
-      if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
+      if (!cItem.filter?.enable) {
+        res[env.edit ? cItem.key : dataIndex] = null;
+      } else if (cItem.filter?.filterSource !== FilterTypeEnum.Request) {
         res[env.edit ? cItem.key : dataIndex] = cItem.filter.options || [];
+      } else {
+        res[env.edit ? cItem.key : dataIndex] = [];
       }
     });
     setFilterMap(res);
