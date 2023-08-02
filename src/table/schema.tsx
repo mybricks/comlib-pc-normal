@@ -197,6 +197,17 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
     type: 'object',
     properties: {}
   };
+  const schema3 = {
+    type: 'object',
+    properties: {
+      dataIndex: {
+        type: 'string'
+      },
+      dataSource: {
+        type: 'array'
+      }
+    }
+  };
 
   const setDataSchema = (columns: IColumn[]) => {
     if (Array.isArray(columns)) {
@@ -236,6 +247,7 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
 
   output.get(OutputIds.FILTER)?.setSchema(schema1);
   output.get(OutputIds.GET_FILTER)?.setSchema(schema1);
+  output.get(OutputIds.FILTER_CLICK)?.setSchema(schema3);
   input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
@@ -390,6 +402,9 @@ export const Schemas = {
         },
         width: {
           type: 'number'
+        },
+        usePrevious: {
+          type: 'boolean'
         }
       }
     }

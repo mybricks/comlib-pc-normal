@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { message, Space, Tag, Input, InputRef } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { Data, Tag as TagType } from './types';
@@ -8,8 +8,8 @@ import styles from './style.less';
 export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const { checkable } = data;
 
-  inputs['dynamicTags'] &&
-    inputs['dynamicTags']((val: Array<TagType>) => {
+  inputs.dynamicTags &&
+    inputs.dynamicTags((val: Array<TagType>) => {
       if (!Array.isArray(val)) {
         message.error('请输入列表数据');
         return;
@@ -23,6 +23,11 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         }
         return item;
       });
+    });
+
+  inputs.getTags &&
+    inputs.getTags((_, relOutputs) => {
+      relOutputs.outputTags(data.tags);
     });
 
   return checkable ? (
@@ -45,6 +50,7 @@ const DefaultTag = ({
     tags,
     tagSize,
     appendAble,
+    useAppendBtn,
     appendBtn = {
       text: '新增',
       icon: 'PlusOutlined'
@@ -81,6 +87,37 @@ const DefaultTag = ({
     }
     setInputVisible(false);
   };
+
+  const appendJsx = useMemo(() => {
+    if (!appendAble) return null;
+    if (inputVisible) {
+      return (
+        <Input
+          ref={inputRef}
+          type="text"
+          size="small"
+          style={{ width: 80 }}
+          onBlur={handleInputConfirm}
+          onPressEnter={handleInputConfirm}
+        />
+      );
+    }
+    if (useAppendBtn) {
+      return (
+        <Tag
+          data-item-tag="append"
+          color="default"
+          icon={Icons && Icons[appendBtn.icon as string]?.render()}
+          className={styles.appendBtn}
+          onClick={showInput}
+        >
+          {appendBtn.text}
+        </Tag>
+      );
+    }
+    return null;
+  }, [useAppendBtn, appendAble, inputVisible, JSON.stringify(appendBtn)]);
+
   return (
     <Space
       data-root="root"
@@ -107,27 +144,7 @@ const DefaultTag = ({
           </Tag>
         );
       })}
-      {appendAble &&
-        (inputVisible ? (
-          <Input
-            ref={inputRef}
-            type="text"
-            size="small"
-            style={{ width: 80 }}
-            onBlur={handleInputConfirm}
-            onPressEnter={handleInputConfirm}
-          />
-        ) : (
-          <Tag
-            data-item-tag="append"
-            color="default"
-            icon={Icons && Icons[appendBtn.icon as string]?.render()}
-            className={styles.appendBtn}
-            onClick={showInput}
-          >
-            {appendBtn.text}
-          </Tag>
-        ))}
+      {appendJsx}
     </Space>
   );
 };

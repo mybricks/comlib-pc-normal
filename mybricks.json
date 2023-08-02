@@ -129,7 +129,8 @@
       "./src/_enum-map/com.json",
       "./src/_props/com.json",
       "../comlib-basic/src/popup/com.json",
-      "../comlib-basic/src/_muilt-inputJs/com.json"
+      "../comlib-basic/src/_muilt-inputJs/com.json",
+      "../comlib-basic/src/_schema-simulator/com.json"
     ],
     "publish": [
       {

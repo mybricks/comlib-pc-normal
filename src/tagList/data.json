@@ -15,5 +15,6 @@
   "appendBtn": {
     "text": "新增",
     "icon": "PlusOutlined"
-  }
+  },
+  "useAppendBtn": true
 }

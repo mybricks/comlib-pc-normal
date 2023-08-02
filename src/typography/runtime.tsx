@@ -225,6 +225,12 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
             if (!item.type) {
               newItem = { ...newItem, type: 'Text' };
             }
+            if (!item.style) {
+              newItem = {
+                ...newItem,
+                style: {}
+              };
+            }
             if (item.style && item.style.stylePadding) {
               if (Array.isArray(item.style.stylePadding)) {
                 newItem = {
