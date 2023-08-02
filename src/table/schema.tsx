@@ -402,6 +402,9 @@ export const Schemas = {
         },
         width: {
           type: 'number'
+        },
+        usePrevious: {
+          type: 'boolean'
         }
       }
     }
