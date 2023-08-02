@@ -162,6 +162,21 @@ export default {
           }
         },
         {
+          title: '显示新增按钮',
+          type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.appendAble;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.useAppendBtn;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.useAppendBtn = val;
+            }
+          }
+        },
+        {
           title: '标签改变时',
           type: '_Event',
           ifVisible({}: EditorResult<Data>) {
