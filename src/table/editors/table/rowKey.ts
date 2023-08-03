@@ -1,6 +1,6 @@
 import Tree from '../../../components/editorRender/fieldSelect';
+import { InputIds } from '../../constants';
 import { Data } from '../../types';
-import { getColumnsSchema } from '../../utils';
 
 const RowKeyEditor = [
   {
@@ -11,10 +11,10 @@ const RowKeyEditor = [
       render: Tree
     },
     value: {
-      get({ data }: EditorResult<Data>) {
+      get({ data, input }: EditorResult<Data>) {
         return {
-          value: data.rowKey || undefined,
-          schema: getColumnsSchema(data),
+          value: data.rowKey || '',
+          schema: input.get(InputIds.SET_DATA_SOURCE).schema || {},
           placeholder: '默认使用随机生成的内置标识'
         };
       },

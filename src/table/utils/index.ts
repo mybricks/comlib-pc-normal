@@ -1,7 +1,7 @@
 import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
 import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
-import { InputIds, DefaultRowKey } from '../constants';
+import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
@@ -88,26 +88,26 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 };
 
 // 格式化表格数据
-export const formatDataSource = (dataSource) => {
+export const formatDataSource = (dataSource, rowKey) => {
   return dataSource.map(({ children, ...rest }) => {
     if (children && children.length) {
       return {
-        [DefaultRowKey]: uuid(),
-        children: formatDataSource(children),
+        [rowKey]: uuid(),
+        children: formatDataSource(children, rowKey),
         ...rest
       };
     } else {
       return {
-        [DefaultRowKey]: uuid(),
+        [rowKey]: uuid(),
         ...rest
       };
     }
   });
 };
 // 编辑态默认值
-export const getDefaultDataSource = (columns: IColumn[]) => {
+export const getDefaultDataSource = (columns: IColumn[], rowKey) => {
   const mockData = {
-    [DefaultRowKey]: uuid()
+    [rowKey]: uuid()
   };
   const setDefaultDataSource = (columns) => {
     if (Array.isArray(columns)) {
@@ -122,7 +122,7 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
           setPath(mockData, item.dataIndex.join('.'), defaultValue, false);
         } else {
           mockData[item.key] = defaultValue;
-          mockData[item.dataIndex] = defaultValue;
+          mockData[item.dataIndex || item.title] = defaultValue;
         }
       });
     }

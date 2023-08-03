@@ -86,36 +86,34 @@ export default {
     }
   },
   '@inputConnected'({ data, output, input, ...res }: EditorResult<Data>, fromPin, toPin) {
-    if (toPin.id === InputIds.SET_DATA_SOURCE) {
-      if (data.columns.length === 0) {
-        let tempSchema;
-        if (!data.usePagination && fromPin.schema.type === 'array') {
-          tempSchema = fromPin.schema;
-        }
-        /**
-         * 分页模式下特殊处理逻辑
-         * 当存在dataSource字段且为数组类型数据时，直接使用
-         * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
-         */
-        if (data.usePagination && fromPin.schema.type === 'object') {
-          if (fromPin.schema.properties?.dataSource?.type === 'array') {
-            tempSchema = fromPin.schema.properties?.dataSource;
-          } else {
-            const dsKey = Object.keys(fromPin.schema?.properties || {});
-            const arrayItemKey = dsKey.filter(
-              (key) => fromPin.schema.properties?.[key]?.type === 'array'
-            );
-            if (arrayItemKey.length === 1) {
-              tempSchema = fromPin.schema.properties?.[arrayItemKey[0]];
-            }
+    if (toPin.id === InputIds.SET_DATA_SOURCE && data.columns.length === 0) {
+      let tempSchema;
+      if (!data.usePagination && fromPin.schema.type === 'array') {
+        tempSchema = fromPin.schema;
+      }
+      /**
+       * 分页模式下特殊处理逻辑
+       * 当存在dataSource字段且为数组类型数据时，直接使用
+       * 当不存在dataSource字段且仅有一个数组类型数据时，直接使用
+       */
+      if (data.usePagination && fromPin.schema.type === 'object') {
+        if (fromPin.schema.properties?.dataSource?.type === 'array') {
+          tempSchema = fromPin.schema.properties?.dataSource;
+        } else {
+          const dsKey = Object.keys(fromPin.schema?.properties || {});
+          const arrayItemKey = dsKey.filter(
+            (key) => fromPin.schema.properties?.[key]?.type === 'array'
+          );
+          if (arrayItemKey.length === 1) {
+            tempSchema = fromPin.schema.properties?.[arrayItemKey[0]];
           }
         }
+      }
 
-        if (tempSchema) {
-          data.columns = getColumnsFromSchema(tempSchema);
-          input.get(InputIds.SET_DATA_SOURCE).setSchema(tempSchema);
-          data[`input${InputIds.SET_DATA_SOURCE}Schema`] = tempSchema;
-        }
+      if (tempSchema) {
+        data.columns = getColumnsFromSchema(tempSchema);
+        input.get(InputIds.SET_DATA_SOURCE).setSchema(tempSchema);
+        data[`input${InputIds.SET_DATA_SOURCE}Schema`] = tempSchema;
       }
       setDataSchema({ data, output, input, ...res });
     }
