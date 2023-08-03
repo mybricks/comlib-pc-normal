@@ -19,7 +19,7 @@ export function schema2Options(schema: any = {}, parentKey = '', config: any = {
   const { type } = schema;
   const list: any = [];
   if (type !== 'object' && type !== 'array') return;
-  const properties = (type === 'object' ? schema.properties : schema.items.properties) || {};
+  const properties = (type === 'object' ? schema.properties : schema.items?.properties) || {};
   Object.keys(properties).forEach((key) => {
     const subSchema = properties[key];
     const item: any = {};
