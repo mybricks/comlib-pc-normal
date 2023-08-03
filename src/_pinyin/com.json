@@ -1,0 +1,35 @@
+{
+  "title": "汉字转拼音",
+  "namespace": "mybricks.normal-pc.pinyin",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "汉字转拼音",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "text",
+      "title": "输入汉字",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "letter"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "letter",
+      "title": "输出拼音",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "slots": []
+}
