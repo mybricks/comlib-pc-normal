@@ -492,8 +492,8 @@ export default function (props: RuntimeParams<Data>) {
 
   // 设计态数据mock
   const defaultDataSource = useMemo(() => {
-    return getDefaultDataSource(data.columns);
-  }, [data.columns]);
+    return getDefaultDataSource(data.columns, rowKey);
+  }, [data.columns, rowKey]);
 
   const onRow = useCallback(
     (record, index) => {
