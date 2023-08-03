@@ -128,9 +128,7 @@
       "./src/_receive-message/com.json",
       "./src/_enum-map/com.json",
       "./src/_props/com.json",
-      "../comlib-basic/src/popup/com.json",
-      "../comlib-basic/src/_muilt-inputJs/com.json",
-      "../comlib-basic/src/_schema-simulator/com.json"
+      "./src/_pinyin/com.json"
     ],
     "publish": [
       {
@@ -241,7 +239,8 @@
       "./src/_post-message/com.json",
       "./src/_receive-message/com.json",
       "./src/_enum-map/com.json",
-      "./src/_props/com.json"
+      "./src/_props/com.json",
+      "./src/_pinyin/com.json"
     ]
   },
   "externals": [
