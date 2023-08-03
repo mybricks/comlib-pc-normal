@@ -123,12 +123,19 @@ export default {
         title: '事件',
         items: [
           {
-            title: '值发生改变',
+            title: '值初始化',
+            type: '_event',
+            options: {
+              outputId: 'onInitial'
+            }
+          },
+          {
+            title: '值更新',
             type: '_event',
             options: {
               outputId: 'onChange'
             }
-          }
+          },
         ]
       }
     ];
