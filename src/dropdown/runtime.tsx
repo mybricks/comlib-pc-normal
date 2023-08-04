@@ -46,7 +46,7 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
           overlay={menuRender({ data })}
           placement={data.placement}
           arrow
-          trigger={[data.trigger]}
+          trigger={[data.trigger || 'hover']}
         >
           {data.isCustom === false ? (
             <a onClick={(e) => e.preventDefault()}>
