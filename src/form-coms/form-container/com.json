@@ -221,7 +221,7 @@
     {
       "id": "content",
       "title": "表单容器",
-      "schema": "mybricks.normal-pc.form-container/form-item",
+      "schema": ["mybricks.normal-pc.form-container/form-item"],
       "type": "scope",
       "inputs": [
         {

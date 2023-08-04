@@ -50,6 +50,7 @@
         "comAry": [
           "./src/form-coms/form-container/com.json",
           "./src/form-coms/form-list/com.json",
+          "./src/form-coms/extral/com.json",
           "./src/domain-form/com.json",
           "./src/form-coms/form-item-container/com.json",
           "./src/form-coms/text/com.json",

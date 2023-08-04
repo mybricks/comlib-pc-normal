@@ -1,0 +1,25 @@
+{
+  "title": "额外内容",
+  "namespace": "mybricks.normal-pc.form-extral",
+  "version": "1.0.0",
+  "description": "非表单项内容",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_9en9i2.6e0f524f237f3fa5.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "form-extral",
+      "title": "自定义内容"
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-extral",
+    "*"
+  ]
+}

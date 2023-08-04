@@ -111,9 +111,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
      */
     slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
       const { id, name } = params;
-      const item = getFormItem(data.items, { id, name });
+      const { item, isFormItem } = getFormItem(data, { id, name });
 
-      if (item) {
+      if (item && isFormItem) {
         // const input = childrenInputs[item.id];
         const input = getFromItemInputEvent(item, childrenInputs);
         validateForInput({ item, input });
@@ -127,9 +127,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
-      const item = getFormItem(data.items, { id, name });
+      const { item, isFormItem } = getFormItem(data, { id, name });
 
-      if (item) {
+      if (item && isFormItem) {
         const fieldsValue = { [item.name || item.label]: value };
 
         formContext.current.store = { ...formContext.current.store, ...fieldsValue };

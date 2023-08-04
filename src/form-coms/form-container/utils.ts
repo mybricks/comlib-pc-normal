@@ -1,4 +1,4 @@
-import { Data, FormItems } from './types'
+import { Data, FormItems, ExtralFormItem } from './types'
 import { labelWidthTypes } from './constants'
 import { typeCheck } from '../../utils'
 
@@ -49,14 +49,23 @@ export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data 
   }
 };
 
-export const getFormItem = (formItems: FormItems[], com) => {
-  const item = formItems.find((item) => {
+export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: true } | { item: ExtralFormItem, isFormItem: false } => {
+  const { items, extralItems } = data;
+  console.log(items,extralItems)
+  const item = items.find((item) => {
     if (item.comName) {
       return item.comName === com.name
     }
 
     return item.id === com.id
   });
+  if (item) return { item, isFormItem: true };
 
-  return item
+  const extralItem = extralItems.find((item) => {
+    if (item.comName) {
+      return item.comName === com.name
+    }
+    return item.id === com.id
+  });
+  return { item: extralItem, isFormItem: false };
 }
