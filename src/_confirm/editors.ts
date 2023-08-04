@@ -81,9 +81,6 @@ export default {
       }
     }),
     Editor<Data>('详情', EditorType.TextArea, 'content', {
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.showTitle;
-      },
       value: {
         set({ data, setDesc }: EditorResult<Data>, val: string) {
           data.content = val;
