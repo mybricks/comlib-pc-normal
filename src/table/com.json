@@ -15,8 +15,7 @@
     "toReact": "./toReact.ts"
   },
   "schema": [
-    "mybricks.domain-pc.crud/table",
-    "*"
+    "mybricks.domain-pc.crud/table"
   ],
   "inputs": [
     {
