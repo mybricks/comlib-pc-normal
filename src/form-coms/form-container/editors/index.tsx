@@ -17,7 +17,7 @@ function getFormItemProp(
   name: keyof FormItems
 ) {
   try {
-    const item = getFormItem(data.items, { id: com.id, name: com.name });
+    const { item } = getFormItem(data, { id: com.id, name: com.name });
 
     return item?.[name];
   } catch (e) {
@@ -30,7 +30,7 @@ function setFormItemProps(
   value: any
 ) {
   try {
-    const item = getFormItem(data.items, { id: com.id, name: com.name }) || {};
+    const { item } = getFormItem(data, { id: com.id, name: com.name }) || {};
 
     item[name] = value;
   } catch (e) {
@@ -58,58 +58,76 @@ export default {
       refreshParamsSchema(data, outputs);
     }
   },
-  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot) {
+  '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
+    console.log(child, res, 'child');
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
       const com = outputDefs.find((item) => item.id === 'returnValue');
+      if (com) {
+        // 表单项
+        if (item) {
+          item.schema = com.schema;
+        } else {
+          const nowC = data.nameCount++;
 
-      if (item) {
-        item.schema = com.schema;
+          data.items.push({
+            id,
+            comName: name,
+            schema: com.schema,
+            name: '',
+            label: `表单项${nowC}`,
+            widthOption: 'span',
+            span: 24 / data.formItemColumn,
+            colon: 'default',
+            labelAlign: 'default',
+            labelAutoWrap: 'default',
+            hiddenLabel: false,
+            descriptionStyle: {
+              whiteSpace: 'pre-wrap',
+              lineHeight: '12px',
+              letterSpacing: '0px',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.45)',
+              fontStyle: 'normal'
+            },
+            labelStyle: {
+              lineHeight: '14px',
+              letterSpacing: '0px',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.85)',
+              fontStyle: 'normal'
+            },
+            inlineMargin: [0, 16, 24, 0],
+            visible: true
+          });
+        }
+
+        refreshSchema({ data, inputs, outputs, slots });
       } else {
-        const nowC = data.nameCount++;
-
-        data.items.push({
+        data.additionalItems.push({
           id,
           comName: name,
-          schema: com.schema,
-          name: '',
-          label: `表单项${nowC}`,
           widthOption: 'span',
-          span: 24 / data.formItemColumn,
-          colon: 'default',
-          labelAlign: 'default',
-          labelAutoWrap: 'default',
-          hiddenLabel: false,
-          descriptionStyle: {
-            whiteSpace: 'pre-wrap',
-            lineHeight: '12px',
-            letterSpacing: '0px',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.45)',
-            fontStyle: 'normal'
-          },
-          labelStyle: {
-            lineHeight: '14px',
-            letterSpacing: '0px',
-            fontSize: '14px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.85)',
-            fontStyle: 'normal'
-          },
-          inlineMargin: [0, 16, 24, 0],
-          visible: true
+          span: 24 / data.formItemColumn
         });
       }
-
-      refreshSchema({ data, inputs, outputs, slots });
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, child) {
     const { id, name, title } = child;
 
     data.items = data.items.filter((item) => {
+      if (item?.comName) {
+        return item.comName !== name;
+      }
+
+      return item.id !== id;
+    });
+
+    data.additionalItems = data.additionalItems.filter((item) => {
       if (item?.comName) {
         return item.comName !== name;
       }
@@ -211,6 +229,9 @@ export default {
                 data.formItemColumn = value;
                 data.actions.span = 24 / value;
                 data.items.forEach((item) => {
+                  item.span = 24 / value;
+                });
+                data.additionalItems.forEach((item) => {
                   item.span = 24 / value;
                 });
               }
@@ -406,9 +427,9 @@ export default {
             return getFormItemProp({ data, id, name }, 'label');
           },
           set({ id, name, data, slot }: EditorResult<Data>, val) {
-            const item = getFormItem(data.items, { id, name });
+            const { item, isFormItem } = getFormItem(data, { id, name });
 
-            if (item) {
+            if (item && isFormItem) {
               if (item?.slotAfter) {
                 slot.setTitle(item?.slotAfter, getSlotAfterTitle(val));
               }
@@ -427,12 +448,12 @@ export default {
         },
         value: {
           get({ id, data, name }: EditorResult<Data>) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
 
             return item?.name || item?.label;
           },
           set({ id, data, name, input, output, slots }: EditorResult<Data>, val: string) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
             const fieldName = setFieldName(item, data, val);
 
             if (fieldName) {
@@ -444,7 +465,7 @@ export default {
             //   return message.warn('字段名不能为空');
             // }
 
-            // const item = getFormItem(data.items, { id, name });
+            // const {item} = getFormItem(data, { id, name });
 
             // if (item && item.name !== val) {
             //   if (fieldNameCheck(data, val)) {
@@ -471,7 +492,7 @@ export default {
         },
         value: {
           get({ id, data, name }: EditorResult<Data>) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
 
             return item?.name ? item?.name : undefined;
           },
@@ -479,7 +500,7 @@ export default {
             { id, data, name, input, output, slots }: EditorResult<Data>,
             params: { name: string; bizType: string }
           ) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
 
             const fieldName = setFieldName(item, data, params.name);
 
@@ -512,7 +533,7 @@ export default {
             //   return message.warn('字段名不能为空');
             // }
 
-            // const item = getFormItem(data.items, { id, name });
+            // const {item} = getFormItem(data, { id, name });
 
             // if (item && item.name !== params.name) {
             //   if (fieldNameCheck(data, params.name)) {
@@ -568,14 +589,14 @@ export default {
         },
         value: {
           get({ id, name, data }: EditorResult<Data>) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
             if (!item) return;
             const queryField = data.domainModel?.queryFieldRules?.[item.name];
 
             return queryField?.operator;
           },
           set({ id, name, data }: EditorResult<Data>, value: string) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
 
             if (item) {
               setQueryFieldRule(data.domainModel, item, value);
@@ -620,7 +641,7 @@ export default {
             return getFormItemProp({ data, id, name }, 'slotAfter');
           },
           set({ id, name, data, slot }: EditorResult<Data>, value) {
-            const item = getFormItem(data.items, { id, name });
+            const { item } = getFormItem(data, { id, name });
             if (value && item) {
               const slotId = uuid();
               item['slotAfter'] = slotId;
@@ -675,7 +696,7 @@ export default {
               }
             ],
             ifVisible({ data, id, name }: EditorResult<Data>) {
-              const item = getFormItem(data.items, { id, name });
+              const { item } = getFormItem(data, { id, name });
 
               return item?.widthOption !== 'px';
             },
@@ -695,7 +716,7 @@ export default {
               type: 'number'
             },
             ifVisible({ data, id, name }: EditorResult<Data>) {
-              const item = getFormItem(data.items, { id, name });
+              const { item } = getFormItem(data, { id, name });
               return item?.widthOption === 'px';
             },
             value: {
@@ -742,7 +763,7 @@ export default {
             },
             value: {
               set({ id, data, name }: EditorResult<Data>) {
-                const curItem = getFormItem(data.items, { id, name });
+                const { item: curItem } = getFormItem(data, { id, name });
 
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
                 data.items.forEach((item) => (item.inlineMargin = [...margin]));
@@ -827,7 +848,7 @@ export default {
             description: '表单项标题的字体样式',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
-                const item = getFormItem(data.items, { id, name });
+                const { item } = getFormItem(data, { id, name });
 
                 if (!item?.labelStyle) {
                   setFormItemProps({ data, id, name }, 'labelStyle', {
@@ -855,7 +876,7 @@ export default {
             },
             value: {
               set({ id, name, data }: EditorResult<Data>, value: {}) {
-                const item = getFormItem(data.items, { id, name });
+                const { item } = getFormItem(data, { id, name });
 
                 const labelStyle = item?.labelStyle || {
                   lineHeight: '14px',
@@ -883,7 +904,7 @@ export default {
             description: '表单项提示语的字体样式',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
-                const item = getFormItem(data.items, { id, name });
+                const { item } = getFormItem(data, { id, name });
 
                 if (!item?.descriptionStyle) {
                   setFormItemProps({ data, id, name }, 'descriptionStyle', {
@@ -909,7 +930,7 @@ export default {
             type: 'Button',
             value: {
               set({ id, name, data }: EditorResult<Data>) {
-                const item = getFormItem(data.items, { id, name });
+                const { item } = getFormItem(data, { id, name });
 
                 const descriptionStyle = item?.descriptionStyle || {
                   whiteSpace: 'pre-wrap',
@@ -934,6 +955,126 @@ export default {
               },
               set({ id, name, data }: EditorResult<Data>, value) {
                 setFormItemProps({ data, id, name }, 'required', value);
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  ':child(mybricks.normal-pc.form-container/form-addition-container)': {
+    title: '其他内容',
+    items: [
+      {
+        title: '样式',
+        items: [
+          {
+            title: '宽度模式',
+            type: 'Select',
+            options: [
+              {
+                label: '24栅格',
+                value: 'span'
+              },
+              {
+                label: '固定宽度(px)',
+                value: 'px'
+              }
+            ],
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'widthOption');
+              },
+              set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, id, name }, 'widthOption', value);
+                refreshFormItemPropsSchema({ data, inputs });
+              }
+            }
+          },
+          {
+            title: '宽度配置(共24格)',
+            type: 'Slider',
+            options: [
+              {
+                max: 24,
+                min: 1,
+                step: 1,
+                formatter: '/24'
+              }
+            ],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const { item } = getFormItem(data, { id, name });
+
+              return item?.widthOption !== 'px';
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'span');
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, id, name }, 'span', value);
+              }
+            }
+          },
+          {
+            title: '宽度配置(px)',
+            type: 'text',
+            options: {
+              type: 'number'
+            },
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const { item } = getFormItem(data, { id, name });
+              return item?.widthOption === 'px';
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'width');
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, id, name }, 'width', value);
+              }
+            }
+          },
+          {
+            title: '边距',
+            type: 'inputNumber',
+            options: [
+              { min: 0, title: '上' },
+              { min: 0, title: '右' },
+              { min: 0, title: '下' },
+              { min: 0, title: '左' }
+            ],
+            ifVisible({ data }: EditorResult<Data>) {
+              /**
+               * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+               */
+              return (
+                (data.config?.layout || data.layout) !== 'horizontal' &&
+                !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery)
+              );
+            },
+            value: {
+              get({ id, data, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'inlineMargin');
+              },
+              set({ id, data, name }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, id, name }, 'inlineMargin', value);
+              }
+            }
+          },
+          {
+            title: '边距应用其它表单项及操作项',
+            type: 'Button',
+            ifVisible({ data }: EditorResult<Data>) {
+              return (data.config?.layout || data.layout) !== 'horizontal';
+            },
+            value: {
+              set({ id, data, name }: EditorResult<Data>) {
+                const { item: curItem } = getFormItem(data, { id, name });
+
+                const margin = curItem?.inlineMargin || [0, 16, 24, 0];
+                data.items.forEach((item) => (item.inlineMargin = [...margin]));
+                data.actions.inlinePadding = [...margin];
               }
             }
           }

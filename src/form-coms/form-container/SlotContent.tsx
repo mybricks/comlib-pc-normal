@@ -37,9 +37,8 @@ const SlotContent = (props) => {
     return slots['content'].render({
       itemWrap(com: { id; jsx; name }) {
         // todo name
-        const item = getFormItem(data.items, com);
-
-        return (
+        const { item, isFormItem } = getFormItem(data, com);
+        return isFormItem ? (
           <FormItem
             data={data}
             slots={slots}
@@ -48,6 +47,8 @@ const SlotContent = (props) => {
             isMobile={isMobile}
             // field={props?.field}
           />
+        ) : (
+          <>{com.jsx}</>
         );
       },
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
@@ -55,7 +56,7 @@ const SlotContent = (props) => {
 
         const jsx = comAray?.map((com, idx) => {
           if (com) {
-            const item = getFormItem(data.items, com);
+            const { item, isFormItem } = getFormItem(data, com);
 
             if (!item) {
               if (items.length === comAray.length) {
@@ -66,10 +67,19 @@ const SlotContent = (props) => {
 
             const { widthOption, span, width } = item;
 
-            if (item.comName) {
-              childrenInputs[com.name] = com.inputs;
-            } else {
-              childrenInputs[com.id] = com.inputs;
+            // 表单项的处理
+            if (isFormItem) {
+              if (item.comName) {
+                childrenInputs[com.name] = com.inputs;
+              } else {
+                childrenInputs[com.id] = com.inputs;
+              }
+
+              if (typeof item?.visible !== 'undefined') {
+                item.visible = com.style.display !== 'none';
+              } else {
+                item['visible'] = true;
+              }
             }
 
             const flexBasis = isMobile
@@ -77,12 +87,6 @@ const SlotContent = (props) => {
               : widthOption === 'px'
               ? `${width}px`
               : `${(span * 100) / 24}%`;
-
-            if (typeof item?.visible !== 'undefined') {
-              item.visible = com.style.display !== 'none';
-            } else {
-              item['visible'] = true;
-            }
 
             if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
               return (
