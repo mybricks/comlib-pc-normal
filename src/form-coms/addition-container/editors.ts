@@ -1,5 +1,3 @@
-import { Data } from './types';
-
 
 export default {
   '@resize': {
@@ -8,7 +6,7 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
-  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
-    
+  ':root'({ data }: EditorResult<any>, ...catalog) {
+
   }
 };

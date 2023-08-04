@@ -1,6 +1,3 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Data } from './types';
-import css from './runtime.less';
 import { SlotId } from './contants';
 
 export default function Runtime({
@@ -12,6 +9,6 @@ export default function Runtime({
   parentSlot,
   id,
   name
-}: RuntimeParams<Data>) {
+}: RuntimeParams<any>) {
   return slots[SlotId].render();
 }

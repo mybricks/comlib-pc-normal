@@ -1034,49 +1034,6 @@ export default {
                 setFormItemProps({ data, id, name }, 'width', value);
               }
             }
-          },
-          {
-            title: '边距',
-            type: 'inputNumber',
-            options: [
-              { min: 0, title: '上' },
-              { min: 0, title: '右' },
-              { min: 0, title: '下' },
-              { min: 0, title: '左' }
-            ],
-            ifVisible({ data }: EditorResult<Data>) {
-              /**
-               * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
-               */
-              return (
-                (data.config?.layout || data.layout) !== 'horizontal' &&
-                !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery)
-              );
-            },
-            value: {
-              get({ id, data, name }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'inlineMargin');
-              },
-              set({ id, data, name }: EditorResult<Data>, value: number[]) {
-                setFormItemProps({ data, id, name }, 'inlineMargin', value);
-              }
-            }
-          },
-          {
-            title: '边距应用其它表单项及操作项',
-            type: 'Button',
-            ifVisible({ data }: EditorResult<Data>) {
-              return (data.config?.layout || data.layout) !== 'horizontal';
-            },
-            value: {
-              set({ id, data, name }: EditorResult<Data>) {
-                const { item: curItem } = getFormItem(data, { id, name });
-
-                const margin = curItem?.inlineMargin || [0, 16, 24, 0];
-                data.items.forEach((item) => (item.inlineMargin = [...margin]));
-                data.actions.inlinePadding = [...margin];
-              }
-            }
           }
         ]
       }
