@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -15,8 +15,7 @@
     "toReact": "./toReact.ts"
   },
   "schema": [
-    "mybricks.domain-pc.crud/table",
-    "*"
+    "mybricks.domain-pc.crud/table"
   ],
   "inputs": [
     {

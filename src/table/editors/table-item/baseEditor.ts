@@ -85,7 +85,10 @@ const createBaseEditor = ({ data }) => ({
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           return {
             value: ret,
-            schema: input.get(InputIds.SET_DATA_SOURCE).schema || {},
+            schema: {
+              type: 'object',
+              properties: getTableSchema({ data }) || {}
+            },
             placeholder: '不填默认使用 列名 作为字段',
             disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
           };
