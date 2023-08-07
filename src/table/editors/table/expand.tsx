@@ -1,6 +1,6 @@
 import { InputIds, SlotIds } from '../../constants';
 import { Data } from '../../types';
-import { getDefaultDataSchema, Schemas, setDataSchema } from '../../schema';
+import { getDefaultDataSchema, getTableSchema, Schemas, setDataSchema } from '../../schema';
 import Tree from '../../../components/editorRender/fieldSelect';
 
 const expandEditor = [
@@ -64,13 +64,16 @@ const expandEditor = [
           return data.useExpand;
         },
         value: {
-          get({ data, input }: EditorResult<Data>) {
+          get({ data }: EditorResult<Data>) {
             const ret = Array.isArray(data.expandDataIndex)
               ? data.expandDataIndex.join('.')
               : data.expandDataIndex;
             return {
               value: ret || '',
-              schema: input.get(InputIds.SET_DATA_SOURCE).schema || {},
+              schema: {
+                type: 'object',
+                properties: getTableSchema({ data }) || {}
+              },
               placeholder: '[非必填]与后端返回数据字段对应'
             };
           },

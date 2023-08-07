@@ -1,5 +1,5 @@
+import { getTableSchema } from '../../schema';
 import Tree from '../../../components/editorRender/fieldSelect';
-import { InputIds } from '../../constants';
 import { Data } from '../../types';
 
 const RowKeyEditor = [
@@ -11,10 +11,13 @@ const RowKeyEditor = [
       render: Tree
     },
     value: {
-      get({ data, input }: EditorResult<Data>) {
+      get({ data }: EditorResult<Data>) {
         return {
           value: data.rowKey || '',
-          schema: input.get(InputIds.SET_DATA_SOURCE).schema || {},
+          schema: {
+            type: 'object',
+            properties: getTableSchema({ data }) || {}
+          },
           placeholder: '默认使用随机生成的内置标识'
         };
       },
