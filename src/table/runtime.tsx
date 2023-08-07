@@ -154,6 +154,7 @@ export default function (props: RuntimeParams<Data>) {
           data.columns = val
             .filter((item) => !item.usePrevious)
             .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
+          initFilterMap();
         });
       }
 
