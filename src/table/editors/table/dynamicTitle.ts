@@ -1,6 +1,7 @@
 import { InputIds } from '../../constants';
 import { Schemas } from '../../schema';
 import { Data } from '../../types';
+import { OutputIds } from '../../constants'
 
 const DynamicTitleEditor = [
   {
@@ -20,6 +21,30 @@ const DynamicTitleEditor = [
         }
         data.useDynamicTitle = value;
       }
+    }
+  },
+  {
+    title: '点击筛选事件',
+    type: '_Event',
+    ifVisible({ data }: EditorResult<Data>) {
+      return data.useDynamicTitle
+    },
+    options: () => {
+      return {
+        outputId: OutputIds.FILTER_CLICK
+      };
+    }
+  },
+  {
+    title: '筛选事件',
+    type: '_Event',
+    ifVisible({ data }: EditorResult<Data>) {
+      return data.useDynamicTitle
+    },
+    options: () => {
+      return {
+        outputId: OutputIds.FILTER
+      };
     }
   }
 ];

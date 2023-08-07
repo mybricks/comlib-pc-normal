@@ -405,6 +405,34 @@ export const Schemas = {
         },
         usePrevious: {
           type: 'boolean'
+        },
+        filter: {
+          type: 'object',
+          properties: {
+            enable: {
+              type: 'boolean'
+            },
+            type: {
+              type: 'string'
+            },
+            hideFilterDropdown: {
+              type: 'boolean'
+            },
+            options: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  text: {
+                    type: 'string'
+                  },
+                  value: {
+                    type: 'string'
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
