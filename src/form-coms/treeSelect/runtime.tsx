@@ -77,35 +77,13 @@ export default function Runtime({
       if (Array.isArray(ds)) {
         ds.forEach((item, index) => {
           tempDs.push({
-            checked: false,
-            disabled: false,
             label: `选项${index}`,
             value: `${uuid()}`,
             children: [],
             ...item
           });
         });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            label: `选项`,
-            value: `${uuid()}`,
-            children: [],
-            ...(ds || {})
-          }
-        ];
       }
-      let newValArray: any[] = [],
-        newVal;
-      traversalTree(tempDs, (node) => {
-        const { checked, value } = node;
-        if (checked && value != undefined) {
-          newVal = value;
-          newValArray.push(value);
-        }
-      });
       data.options = tempDs.map(
         ({ label, checkable, disableCheckbox, selectable, value, disabled, children }) => {
           return {
