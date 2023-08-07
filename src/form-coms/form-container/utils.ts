@@ -51,7 +51,10 @@ export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data 
 
 export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: true } | { item: AdditionalItem, isFormItem: false } => {
   const { items, additionalItems } = data;
-  const item = items.find((item) => {
+  let item, isFormItem = false;
+
+  // 查找表单项
+  item = items.find((item) => {
     if (item.comName) {
       return item.comName === com.name
     }
@@ -60,11 +63,14 @@ export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: tru
   });
   if (item) return { item, isFormItem: true };
 
-  const additionalItem = additionalItems.find((item) => {
+  // 查找非表单项
+  item = additionalItems.find((item) => {
     if (item.comName) {
       return item.comName === com.name
     }
     return item.id === com.id
   });
-  if (additionalItem) return { item: additionalItem, isFormItem: false };
+  if (item) return { item, isFormItem: false };
+
+  return { item, isFormItem };
 }

@@ -59,7 +59,6 @@ export default {
     }
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
-    console.log(child, res, 'child');
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
