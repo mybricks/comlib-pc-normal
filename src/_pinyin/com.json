@@ -1,7 +1,7 @@
 {
   "title": "汉字转拼音",
   "namespace": "mybricks.normal-pc.pinyin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "汉字转拼音",
   "author": "HuangQiuyun",
