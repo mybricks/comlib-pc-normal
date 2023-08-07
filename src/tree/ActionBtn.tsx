@@ -75,11 +75,15 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
    * 删除节点的二次弹窗
    */
   const confirm = () => {
-    const text = hasChildren
-      ? '确定删除节点"${title}"及其所有子节点吗？此操作不可恢复！'
-      : '确定删除节点"${title}"吗？此操作不可恢复！';
+    // const text = hasChildren
+    //   ? '确定删除节点"${title}"及其所有子节点吗？此操作不可恢复！'
+    //   : '确定删除节点"${title}"吗？此操作不可恢复！';
+    const content = hasChildren
+      ? `确定删除节点${record.title}及其所有子节点吗？此操作不可恢复！`
+      : `确定删除节点"${record.title}"吗？此操作不可恢复！`;
     Modal.confirm({
-      content: env.i18n({ text, params: { title: env.i18n(record.title) } }),
+      // content: env.i18n({ text, params: { title: env.i18n(record.title) } }),
+      content,
       okText: env.i18n('确定'),
       cancelText: env.i18n('取消'),
       closable: true,
