@@ -316,7 +316,7 @@ export default function (props: RuntimeParams<Data>) {
             pageSize: pageParams.pageSize,
             usePagination
           },
-          ordersParams
+          ordersParams: ordersParams.length ? ordersParams : [{ fieldName: 'id', order: 'DESC' }]
         }
       )
         .then((r: any) => {
