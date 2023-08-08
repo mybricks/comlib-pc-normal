@@ -45,7 +45,7 @@ export default {
           return data.config.mode !== 'default';
         },
         options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: ['.ant-select-multiple .ant-select-selection-item','.ant-select-multiple .ant-select-selection-item-remove']
+        target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
       }
       // {
       //   title: '激活样式',
@@ -103,20 +103,7 @@ export default {
                 if (data.value != undefined && !Array.isArray(data.value)) {
                   data.value = [data.value] as any;
                 }
-                const valueSchema = data.config.labelInValue ? {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      label: {
-                        type: 'string'
-                      },
-                      value: {
-                        type: 'string'
-                      }
-                    }
-                  }
-                } : {
+                const valueSchema = {
                   type: 'array'
                 };
                 updateValueSchema({ input, output, schema: valueSchema });
@@ -124,17 +111,7 @@ export default {
                 if (Array.isArray(data.value)) {
                   data.value = data.value[0];
                 }
-                const valueSchema = data.config.labelInValue ? {
-                  type: 'object',
-                  properties: {
-                    label: {
-                      type: 'string'
-                    },
-                    value: {
-                      type: 'string'
-                    }
-                  }
-                } : {
+                const valueSchema = {
                   type: 'string'
                 };
                 updateValueSchema({ input, output, schema: valueSchema });
@@ -176,59 +153,8 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data.config.labelInValue;
             },
-            set({ data, input, output }: EditorResult<Data>, val: boolean) {
+            set({ data }: EditorResult<Data>, val: boolean) {
               data.config.labelInValue = val;
-              const checkedList = data.staticOptions?.filter(opt => opt?.checked) || [];
-              switch (data.config.mode) {
-                case 'multiple':
-                case 'tags':
-                  const arrSchema = val ? {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        label: {
-                          type: 'string'
-                        },
-                        value: {
-                          type: 'string'
-                        }
-                      }
-                    }
-                  } : {
-                    type: 'array'
-                  };
-                  updateValueSchema({ input, output, schema: arrSchema });
-                  break;
-                default:
-                  const basicSchema = data.config.labelInValue ? {
-                    type: 'object',
-                    properties: {
-                      label: {
-                        type: 'string'
-                      },
-                      value: {
-                        type: 'string'
-                      }
-                    }
-                  } : {
-                    type: 'string'
-                  };
-                  updateValueSchema({ input, output, schema: basicSchema });
-                  break;
-              }
-              if (checkedList.length > 0) {
-                switch (data.config.mode) {
-                  case 'multiple':
-                  case 'tags':
-                    data.value = checkedList.map(({ label, value }) => val ? { label, value } : value) as any;
-                    break;
-                  default:
-                    const { label, value } = checkedList[0];
-                    data.value = val ? { label, value } : value as any;
-                    break;
-                }
-              }
             }
           }
         },
@@ -245,7 +171,6 @@ export default {
               const defaultOption = {
                 label: `选项${value}`,
                 value: `选项${value}`,
-                key: uuid()
               };
               return defaultOption;
             },

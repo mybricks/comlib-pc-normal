@@ -23,17 +23,14 @@ export default function Runtime({
   const [fetching, setFetching] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const typeMap = useMemo(() => {
+  /**
+   * 类型校验方法
+   */
+  const valueTypeCheck = useMemo(() => {
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
         type: ['ARRAY', 'UNDEFINED'],
         message: `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
-      };
-    }
-    if (data.config.labelInValue) {
-      return {
-        type: ['OBJECT', 'UNDEFINED'],
-        message: `下拉框的值应为{label,value}对象格式`
       };
     }
     return {
@@ -62,8 +59,8 @@ export default function Runtime({
     });
 
     inputs['setValue']((val) => {
-      if (!typeCheck(val, typeMap.type)) {
-        logger.error(typeMap.message);
+      if (!typeCheck(val, valueTypeCheck.type)) {
+        logger.error(valueTypeCheck.message);
       } else {
         changeValue(val);
         // data.value = val;
@@ -72,8 +69,8 @@ export default function Runtime({
 
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
-        if (!typeCheck(val, typeMap.type)) {
-          logger.error(typeMap.message);
+        if (!typeCheck(val, valueTypeCheck.type)) {
+          logger.error(valueTypeCheck.message);
         } else {
           if (val === undefined) {
             data.value = '';
