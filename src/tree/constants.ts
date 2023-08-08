@@ -45,6 +45,8 @@ export interface Data {
     useEllipsis: boolean;
     maxToEllipsis: number;
   } & DropDownProps;
+  removeConfirm: string;
+  editInline?: boolean;
 }
 
 export interface TreeData {

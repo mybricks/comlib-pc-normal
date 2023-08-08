@@ -1,6 +1,6 @@
-import { uuid } from "../utils";
-import { commonActionBtnsEditor } from "./actionBtnsCommonEditor";
-import { Data, DELETE_BTN_ID, MODIFY_BTN_ID } from "./constants";
+import { uuid } from '../utils';
+import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
+import { Data, DELETE_BTN_ID, MODIFY_BTN_ID } from './constants';
 
 function removeActionBtn({ data, focusArea, output }) {
   const btns: any[] = data.actionBtns;
@@ -48,7 +48,7 @@ function allowMove({ data, focusArea }) {
   return res;
 }
 
-export const addBtn = ({ data, output }: { data: Data, output: any }) => {
+export const addBtn = ({ data, output }: { data: Data; output: any }) => {
   const id = uuid(),
     title = '按钮';
   const schema = {
@@ -74,22 +74,17 @@ export const addBtn = ({ data, output }: { data: Data, output: any }) => {
     title,
     showText: true,
     size: 'middle',
-    type: 'ghost',
+    type: 'ghost'
   };
   output.add(id, title, schema);
   return defaultBtn;
 };
 
-const getBtnProp = (
-  data: Data,
-  focusArea: any,
-  dataset: any,
-  val: any
-) => {
+const getBtnProp = (data: Data, focusArea: any, dataset: any, val: any) => {
   if (!focusArea) return;
   const btnId: string = focusArea.dataset[dataset];
-  const item = data.actionBtns.find(btn => btn.id === btnId) || {};
-  if (val === "obj") return item;
+  const item = data.actionBtns.find((btn) => btn.id === btnId) || {};
+  if (val === 'obj') return item;
   else return item[val];
 };
 
@@ -103,11 +98,11 @@ export const actionBtnsEditor = {
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
-            const btn = data.actionBtns.find(def => def.id === MODIFY_BTN_ID);
+            const btn = data.actionBtns.find((def) => def.id === MODIFY_BTN_ID);
             return btn?.hidden;
           },
           set({ data }: EditorResult<Data>, value: boolean) {
-            const btn = data.actionBtns.find(def => def.id === MODIFY_BTN_ID);
+            const btn = data.actionBtns.find((def) => def.id === MODIFY_BTN_ID);
             btn && (btn.hidden = value);
           }
         }
@@ -117,11 +112,11 @@ export const actionBtnsEditor = {
         type: 'Switch',
         value: {
           get({ data }: EditorResult<Data>) {
-            const btn = data.actionBtns.find(def => def.id === DELETE_BTN_ID);
+            const btn = data.actionBtns.find((def) => def.id === DELETE_BTN_ID);
             return btn?.hidden;
           },
           set({ data }: EditorResult<Data>, value: boolean) {
-            const btn = data.actionBtns.find(def => def.id === DELETE_BTN_ID);
+            const btn = data.actionBtns.find((def) => def.id === DELETE_BTN_ID);
             btn && (btn.hidden = value);
           }
         }
@@ -130,7 +125,7 @@ export const actionBtnsEditor = {
         title: '支持非叶节点删除',
         type: 'Switch',
         ifVisible({ data }: EditorResult<Data>) {
-          const btn = data.actionBtns.find(def => def.id === DELETE_BTN_ID);
+          const btn = data.actionBtns.find((def) => def.id === DELETE_BTN_ID);
           return !btn?.hidden;
         },
         value: {
@@ -188,6 +183,50 @@ export const actionBtnEditor = {
           if (!focusArea) return;
           const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
           btn.type = value;
+        }
+      }
+    },
+    {
+      title: '删除二次提示',
+      type: 'expression',
+      options: {
+        suggestions: [
+          {
+            label: 'title',
+            detail: '标题'
+          },
+          {
+            label: 'key',
+            detail: '键值'
+          }
+        ]
+      },
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        const btnId = getBtnProp(data, focusArea, 'btnId', 'id');
+        return btnId === 'delete';
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.removeConfirm;
+        },
+        set({ data }: EditorResult<Data>, val: string) {
+          data.removeConfirm = val;
+        }
+      }
+    },
+    {
+      title: '行内编辑',
+      type: 'switch',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        const btnId = getBtnProp(data, focusArea, 'btnId', 'id');
+        return btnId === 'modify';
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.editInline;
+        },
+        set({ data }: EditorResult<Data>, val: boolean) {
+          data.editInline = val;
         }
       }
     },
@@ -267,6 +306,6 @@ export const actionBtnEditor = {
           }
         }
       ]
-    },
+    }
   ]
-}
+};

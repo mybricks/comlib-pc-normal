@@ -2,10 +2,11 @@ import React from 'react';
 import { Button, Dropdown, Menu, Modal } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './constants';
+import { ExpressionSandbox } from '../../package/com-utils';
 import css from './ActionBtns.less';
 
 export default function ActionBtns({ record, outputItem, data, env, outputs }: ActionBtnsProps) {
-  const { treeData } = data;
+  const { treeData, removeConfirm } = data;
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 
@@ -61,7 +62,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
    * @param id 按钮id
    */
   const btnClick = (id) => {
-    if (id === MODIFY_BTN_ID) {
+    if (id === MODIFY_BTN_ID && data.editInline) {
       data.isEditing = record.key;
     } else {
       if (id === DELETE_BTN_ID) {
@@ -78,12 +79,15 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
     // const text = hasChildren
     //   ? '确定删除节点"${title}"及其所有子节点吗？此操作不可恢复！'
     //   : '确定删除节点"${title}"吗？此操作不可恢复！';
+
+    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context: record });
+    const confirmTitle = sandbox.executeWithTemplate(removeConfirm);
     const content = hasChildren
       ? `确定删除节点${record.title}及其所有子节点吗？此操作不可恢复！`
       : `确定删除节点"${record.title}"吗？此操作不可恢复！`;
     Modal.confirm({
       // content: env.i18n({ text, params: { title: env.i18n(record.title) } }),
-      content,
+      content: confirmTitle,
       okText: env.i18n('确定'),
       cancelText: env.i18n('取消'),
       closable: true,
