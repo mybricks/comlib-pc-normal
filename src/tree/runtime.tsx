@@ -15,7 +15,7 @@ import ActionBtns from './ActionBtn';
 import { MODIFY_BTN_ID } from './constants';
 import { deepCopy, typeCheck, uuid } from '../utils';
 
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, onError, logger }: RuntimeParams<Data>) {
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
     data.defaultExpandAll ? data.expandedKeys : []
@@ -114,6 +114,14 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       inputs['enableCheckbox'] &&
         inputs['enableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
+        });
+
+      inputs.setSelectedKeys &&
+        inputs.setSelectedKeys((keys: Array<string>) => {
+          if (!Array.isArray(keys)) {
+            return onError('设置选中项参数是数组');
+          }
+          setSelectedKeys(keys);
         });
     }
   }, []);

@@ -1,7 +1,7 @@
 {
   "title": "树组件",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -113,6 +113,17 @@
           "type": "string"
         }
       }
+    },
+    {
+      "id": "setSelectedKeys",
+      "title": "设置选中项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "设置树形结构中选中的节点"
     }
   ],
   "outputs": [
