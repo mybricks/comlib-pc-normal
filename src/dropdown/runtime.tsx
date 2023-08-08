@@ -13,12 +13,16 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
           data.options.map((option, index) => {
             const Icon = Icons && Icons[option.icon as string]?.render();
             return (
-              <Menu.Item disabled={option.disabled} key={index} onClick={() => onClick(option)}>
+              <Menu.Item
+                disabled={option.disabled}
+                style={{ color: option.disabled ? void 0 : option.iconColor }}
+                key={index}
+                onClick={() => onClick(option)}
+              >
                 <a target="_blank" href={option.value ? option.value : void 0}>
                   <span
                     style={{
                       display: !option.useIcon ? 'none' : void 0,
-                      color: option.iconColor,
                       marginRight: '8px'
                     }}
                   >

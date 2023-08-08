@@ -181,10 +181,7 @@ export default {
               value: 'icon'
             },
             {
-              title: '图标颜色',
-              ifVisible(item) {
-                return item.useIcon || false;
-              },
+              title: '文案颜色',
               type: 'colorpicker',
               value: 'iconColor'
             }
