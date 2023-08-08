@@ -5,6 +5,7 @@ import { OutputIds } from './constants';
 import { Schemas, upgradeSchema } from './schema'
 
 import { Data } from './types';
+import { addFilterIO } from './editors/table-item/filterEditor';
 
 export default function ({ data, setDeclaredStyle, id, slot, output, input }: UpgradeParams<Data>): boolean {
   /**
@@ -91,5 +92,7 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
   if (useFilter) {
     output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
   }
+
+  addFilterIO({ data, output, input })
   return true;
 }

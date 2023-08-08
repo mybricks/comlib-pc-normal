@@ -22,30 +22,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   const setValueSchema = input.get(InputIds.SetValue).schema;
   let valueSchema = {};
   if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
-    valueSchema = data.config.labelInValue ? {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string'
-          },
-          value: setValueSchema
-        }
-      }
-    } : {
+    valueSchema = {
       type: 'array'
     };
   } else {
-    valueSchema = data.config.labelInValue ? {
-      type: 'object',
-      properties: {
-        label: {
-          type: 'string'
-        },
-        value: setValueSchema
-      }
-    } : setValueSchema;
+    valueSchema = setValueSchema;
   }
   if (!input.get('setInitialValue')) {
     input.add('setInitialValue', '设置初始值', valueSchema);

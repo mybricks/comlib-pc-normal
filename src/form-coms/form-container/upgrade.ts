@@ -242,5 +242,16 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   ]);
   //=========== v1.3.9 end ===============
 
+  /**
+   * @description v1.3.11 , 增加 设置禁用/设置启用 输入项
+   */
+  if (!input.get(inputIds.SET_DISABLED)) {
+    input.add(inputIds.SET_DISABLED, '设置禁用', { type: 'any' });
+  }
+  if (!input.get(inputIds.SET_ENABLED)) {
+    input.add(inputIds.SET_ENABLED, '设置启用', { type: 'any' });
+  }
+  //=========== v1.3.11 end ===============
+
   return true;
 }
