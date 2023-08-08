@@ -9,7 +9,7 @@ interface Props {
   output: any;
   input: any;
 }
-const addFilterIO = ({ data, output, input }: Props) => {
+export const addFilterIO = ({ data, output, input }: Props) => {
   const event1 = output.get(OutputIds.FILTER);
   const event2 = output.get(OutputIds.GET_FILTER);
   const event3 = input.get(InputIds.GET_FILTER);
@@ -18,35 +18,35 @@ const addFilterIO = ({ data, output, input }: Props) => {
   const event6 = output.get(OutputIds.FILTER_CLICK);
 
   // 接口筛选
-  const useFilter = data.columns.some((item) => item.filter?.enable);
-  if (useFilter) {
-    if (!event1) {
-      output.add(OutputIds.FILTER, '筛选', Schemas.Object);
-    }
-    if (!event2) {
-      output.add(OutputIds.GET_FILTER, '筛选数据', Schemas.Object);
-    }
-    if (!event3) {
-      input.add(InputIds.GET_FILTER, '获取筛选数据', Schemas.Void);
-      input.get(InputIds.GET_FILTER).setRels([OutputIds.GET_FILTER]);
-    }
-    if (!event4) {
-      input.add(InputIds.SET_FILTER, '设置筛选数据', Schemas.Object);
-    }
-    if (!event5) {
-      input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
-    }
-    if (!event6) {
-      output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
-    }
-  } else {
-    event1 && output.remove(OutputIds.FILTER);
-    event2 && output.remove(OutputIds.GET_FILTER);
-    event3 && input.remove(InputIds.GET_FILTER);
-    event4 && input.remove(InputIds.SET_FILTER);
-    event5 && input.remove(InputIds.SET_FILTER_INPUT);
-    event6 && output.remove(OutputIds.FILTER_CLICK);
+  // const useFilter = data.columns.some((item) => item.filter?.enable);
+  // if (useFilter) {
+  if (!event1) {
+    output.add(OutputIds.FILTER, '筛选', Schemas.Object);
   }
+  if (!event2) {
+    output.add(OutputIds.GET_FILTER, '筛选数据', Schemas.Object);
+  }
+  if (!event3) {
+    input.add(InputIds.GET_FILTER, '获取筛选数据', Schemas.Void);
+    input.get(InputIds.GET_FILTER).setRels([OutputIds.GET_FILTER]);
+  }
+  if (!event4) {
+    input.add(InputIds.SET_FILTER, '设置筛选数据', Schemas.Object);
+  }
+  if (!event5) {
+    input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
+  }
+  if (!event6) {
+    output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
+  }
+  // } else {
+  //   event1 && output.remove(OutputIds.FILTER);
+  //   event2 && output.remove(OutputIds.GET_FILTER);
+  //   event3 && input.remove(InputIds.GET_FILTER);
+  //   event4 && input.remove(InputIds.SET_FILTER);
+  //   event5 && input.remove(InputIds.SET_FILTER_INPUT);
+  //   event6 && output.remove(OutputIds.FILTER_CLICK);
+  // }
 };
 
 const setFilterProps = <T extends keyof Filter, P extends Filter[T]>(
