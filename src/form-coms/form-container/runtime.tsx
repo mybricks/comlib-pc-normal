@@ -76,15 +76,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
     });
 
-    // inputs[inputIds.SET_DISABLED](() => {
-    //   data.config.disabled = true;
-    //   setDisabled();
-    // });
+    inputs[inputIds.SET_DISABLED](() => {
+      data.config.disabled = true;
+      setDisabled();
+    });
 
-    // inputs[inputIds.SET_ENABLED](() => {
-    //   data.config.disabled = false;
-    //   setEnabled();
-    // });
+    inputs[inputIds.SET_ENABLED](() => {
+      data.config.disabled = false;
+      setEnabled();
+    });
 
     //------ For 表单项私有 start ---------
     // _inputs['validate']((val, outputRels) => {
@@ -193,21 +193,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
-  // const setDisabled = () => {
-  //   data.items.forEach((item) => {
-  //     const id = item.id;
-  //     const input = childrenInputs[id];
-  //     input?.setDisabled && input?.setDisabled();
-  //   });
-  // };
+  const setDisabled = () => {
+    data.items.forEach((item) => {
+      const input = getFromItemInputEvent(item, childrenInputs);
+      input?.setDisabled && input?.setDisabled();
+    });
+  };
 
-  // const setEnabled = () => {
-  //   data.items.forEach((item) => {
-  //     const id = item.id;
-  //     const input = childrenInputs[id];
-  //     input?.setEnabled && input?.setEnabled();
-  //   });
-  // };
+  const setEnabled = () => {
+    data.items.forEach((item) => {
+      const input = getFromItemInputEvent(item, childrenInputs);
+      input?.setEnabled && input?.setEnabled();
+    });
+  };
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -316,7 +314,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
   };
 
-  const { labelWrap, ...formCfg } = data.config;
+  const { labelWrap, disabled, ...formCfg } = data.config;
 
   return (
     <div className={css.wrapper}>
