@@ -1046,47 +1046,7 @@ export default {
     }
   },
   '[data-form-actions-item]': {
-    title: '操作',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string;
-            return data.actions.items.find((item) => item.key === comId)?.visible;
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
-            const comId = focusArea.dataset['formActionsItem'];
-            const item = data.actions.items.find((item) => item.key === comId);
-            if (item) {
-              item.visible = val;
-            }
-          }
-        }
-      },
-      {
-        title: '标题',
-        type: 'text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string;
-            return comId && data.actions.items.find((item) => item.key === comId)?.title;
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
-            if (!val) {
-              return message.warn('操作标题不能为空');
-            }
-
-            const comId = focusArea.dataset['formActionsItem'];
-            const item = data.actions.items.find((item) => item.key === comId);
-            if (item) {
-              item.title = val;
-              output.setTitle(item.outputId, `点击${item.title}`);
-            }
-          }
-        }
-      },
+    style: [
       {
         title: '风格',
         type: 'Select',
@@ -1130,6 +1090,65 @@ export default {
 
             if (item) {
               item.danger = value;
+            }
+          }
+        }
+      },
+      {
+        title: '默认',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target({ focusArea }) {
+          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+        }
+      },
+      {
+        title: 'Hover',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target({ focusArea }) {
+          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
+        },
+        domTarget({ focusArea }) {
+          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+        }
+      }
+    ],
+    title: '操作',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string;
+            return data.actions.items.find((item) => item.key === comId)?.visible;
+          },
+          set({ data, focusArea, output }: EditorResult<Data>, val) {
+            const comId = focusArea.dataset['formActionsItem'];
+            const item = data.actions.items.find((item) => item.key === comId);
+            if (item) {
+              item.visible = val;
+            }
+          }
+        }
+      },
+      {
+        title: '标题',
+        type: 'text',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string;
+            return comId && data.actions.items.find((item) => item.key === comId)?.title;
+          },
+          set({ data, focusArea, output }: EditorResult<Data>, val) {
+            if (!val) {
+              return message.warn('操作标题不能为空');
+            }
+
+            const comId = focusArea.dataset['formActionsItem'];
+            const item = data.actions.items.find((item) => item.key === comId);
+            if (item) {
+              item.title = val;
+              output.setTitle(item.outputId, `点击${item.title}`);
             }
           }
         }
