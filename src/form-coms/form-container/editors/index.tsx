@@ -1046,6 +1046,72 @@ export default {
     }
   },
   '[data-form-actions-item]': {
+    style: [
+      {
+        title: '风格',
+        type: 'Select',
+        options() {
+          return [
+            { value: 'primary', label: '主按钮' },
+            { value: 'default', label: '次按钮' },
+            { value: 'dashed', label: '虚线按钮' },
+            { value: 'link', label: '链接按钮' },
+            { value: 'text', label: '文字按钮' }
+          ];
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string;
+
+            return data.actions.items.find((item) => item.key === comId)?.type || 'default';
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: ButtonType) {
+            const comId = focusArea.dataset['formActionsItem'];
+            const item = data.actions.items.find((item) => item.key === comId);
+
+            if (item) {
+              item.type = value;
+            }
+          }
+        }
+      },
+      {
+        title: '危险按钮',
+        type: 'Switch',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const comId = focusArea.dataset.formActionsItem as string;
+
+            return data.actions.items.find((item) => item.key === comId)?.danger;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+            const comId = focusArea.dataset['formActionsItem'];
+            const item = data.actions.items.find((item) => item.key === comId);
+
+            if (item) {
+              item.danger = value;
+            }
+          }
+        }
+      },
+      {
+        title: '默认',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target({ focusArea }) {
+          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+        }
+      },
+      {
+        title: 'Hover',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target({ focusArea }) {
+          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
+        },
+        domTarget({ focusArea }) {
+          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+        }
+      }
+    ],
     title: '操作',
     items: [
       {
