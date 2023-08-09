@@ -3,6 +3,7 @@
   "componentType": "PC",
   "fileId": 7632,
   "commitInfo": "update",
+  "namespace": "mybricks.normal-pc",
   "comAry": [
     {
       "title": "常规",

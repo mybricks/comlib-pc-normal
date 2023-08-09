@@ -1,6 +1,7 @@
 {
   "debugger": "pc-spa",
   "componentType": "PC",
+  "namespace": "mybricks.normal-pc",
   "comAry": {
     "test": [
       {
