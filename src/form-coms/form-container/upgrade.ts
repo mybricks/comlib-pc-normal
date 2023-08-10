@@ -236,6 +236,7 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   /**
    * @description v1.3.9 , 作用域支持添加自定义内容项组件
    */
+  if (!data.additionalItems) data.additionalItems = [];
   slot.get('content').setSchema([
     "mybricks.normal-pc.form-container/form-item",
     "mybricks.normal-pc.form-container/form-addition-container"
