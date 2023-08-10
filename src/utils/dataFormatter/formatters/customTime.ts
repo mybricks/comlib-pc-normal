@@ -16,7 +16,7 @@ const customTimeFormatter: TFormatterInfo = {
   genFormatting(editorValue) {
     const formatTemplate = editorValue ?? 'YYYY-MM-DD HH:mm:ss'
     return (data) => {
-      const m = moment(Number(data))
+      const m = moment(data)
       return m.format(formatTemplate)
     }
   },
