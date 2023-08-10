@@ -75,7 +75,7 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
 
   const UpdateColumnsOutput = (columns: IColumn[]) => {
     columns.forEach((column) => {
-      if (column.contentType === ContentTypeEnum.SlotItem && slot.get(column.slotId)) {
+      if (column.contentType === ContentTypeEnum.SlotItem && slot?.get(column.slotId)) {
         addOutput(column.slotId, OutputIds.Edit_Table_Data);
       }
       if (column.children) {
