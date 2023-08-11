@@ -1,4 +1,5 @@
 import { addBtn } from "./actionBtnEditor";
+import { Data } from "./constants";
 
 export const commonActionBtnsEditor = (data, output) => {
   return {
@@ -49,7 +50,7 @@ export const commonActionBtnsEditor = (data, output) => {
         type: 'radio',
         options: [
           { label: '点击', value: 'click' },
-          { label: '聚焦', value: 'hover' }
+          { label: '悬浮', value: 'hover' }
         ],
         ifVisible({ data, }: EditorResult<Data>) {
           return data.ellipsisActionBtnsConfig.useEllipsis;

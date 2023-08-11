@@ -97,12 +97,16 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
     });
   };
 
+  /**
+   * 普通按钮渲染
+   * @param btn
+   * @returns JSX
+   */
   const renderActionBtn = (btn) => {
-    const { id, title, size, type, showText = true } = btn;
+    const { id, title, type } = btn;
     const renderBtn = () => {
       return (
         <Button
-          size={size}
           type={type}
           style={{
             ...btn.style
@@ -114,7 +118,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
             else confirm();
           }}
         >
-          {showText && env.i18n(title)}
+          {env.i18n(title)}
         </Button>
       );
     };
@@ -136,18 +140,23 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
    * @returns JSX
    */
   const renderMenuActionBtn = (btn: ActionBtn) => {
-    if (env?.runtime && btn.hidden) {
+    const { id, title, type, hidden } = btn;
+    if (env?.runtime && hidden) {
       return null;
     }
-    const onBtnClick = () => {
-      if (env?.runtime) {
-        btnClick(btn.id);
-      }
-    };
 
     return (
-      <Menu.Item key={btn.id} id={btn.id} onClick={onBtnClick}>
-        {renderActionBtn(btn)}
+      <Menu.Item
+        key={id}
+        id={id}
+        danger={type === 'danger'}
+        onClick={() => {
+          if (env.edit) return;
+          if (id !== DELETE_BTN_ID) btnClick(id);
+          else confirm();
+        }}
+      >
+        {env.i18n(title)}
       </Menu.Item>
     );
   };
@@ -159,9 +168,11 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
       {actionBtns.map((btn) => !btn.hidden && renderActionBtn(btn))}
       {ellipsisActionBtns && !!ellipsisActionBtns.length && (
         <Dropdown overlay={menu} placement="bottomRight" {...dropdownProps}>
-          <div className={css.ellipsisIcon}>
-            <EllipsisOutlined />
-          </div>
+          <EllipsisOutlined
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
         </Dropdown>
       )}
     </div>
