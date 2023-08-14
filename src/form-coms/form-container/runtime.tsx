@@ -35,6 +35,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
+
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
   }>(() => {

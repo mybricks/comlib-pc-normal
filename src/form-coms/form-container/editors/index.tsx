@@ -100,7 +100,8 @@ export default {
               fontStyle: 'normal'
             },
             inlineMargin: [0, 16, 24, 0],
-            visible: true
+            visible: true,
+            hidden: false
           });
         }
 
@@ -193,7 +194,65 @@ export default {
   ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
     cate1.items = [
       {
-        title: '布局',
+        title: '类型',
+        type: 'Select',
+        options: [
+          { label: '普通表单', value: 'Form' },
+          { label: '查询表单', value: 'QueryFilter' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.layoutType;
+          },
+          set({ data, inputs }: EditorResult<Data>, value: 'Form' | 'QueryFilter') {
+            data.layoutType = value;
+          }
+        }
+      },
+      {
+        title: '默认折叠表单项',
+        type: 'Switch',
+        description: '默认折叠收起超出的表单项，折叠的表单项会参与提交',
+        ifVisible({ data, id, name }: EditorResult<Data>) {
+          return data.layoutType === 'QueryFilter';
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.defaultCollapsed;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.defaultCollapsed = value;
+          }
+        }
+      },
+      {
+        title: '提交隐藏表单项',
+        type: 'Switch',
+        description: '提交时收集被隐藏的表单项字段并进行校验',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.submitHiddenFields;
+          },
+          set({ data }: EditorResult<Data>, val: boolean) {
+            data.submitHiddenFields = val;
+          }
+        }
+      },
+      {
+        title: '添加表单项',
+        type: 'comSelector',
+        options: {
+          schema: 'mybricks.normal-pc.form-container/*',
+          type: 'add'
+        },
+        value: {
+          set({ data, slot }: EditorResult<Data>, namespace: string) {
+            slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
+          }
+        }
+      },
+      {
+        title: '表单项布局',
         items: [
           {
             title: '类型',
@@ -215,11 +274,38 @@ export default {
             }
           },
           {
+            title: '表单项宽度',
+            type: 'Slider',
+            options: [
+              {
+                max: 24,
+                min: 1,
+                step: 1,
+                formatter: '/24'
+              }
+            ],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              return data.layoutType === 'QueryFilter';
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return data.span || 8;
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                data.span = value;
+                data.actions.align = 'right';
+              }
+            }
+          },
+          {
             title: '每行列数',
             type: 'Slider',
             description:
               '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
             options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              return data.layoutType === 'Form';
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.formItemColumn;
@@ -236,40 +322,9 @@ export default {
               }
             }
           }
-          // {
-          //   title: '表单项',
-          //   items: [
-
-          //   ]
-          // }
         ]
       },
-      {
-        title: '添加表单项',
-        type: 'comSelector',
-        options: {
-          schema: 'mybricks.normal-pc.form-container/*',
-          type: 'add'
-        },
-        value: {
-          set({ data, slot }: EditorResult<Data>, namespace: string) {
-            slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
-          }
-        }
-      },
-      {
-        title: '提交隐藏表单项',
-        type: 'Switch',
-        description: '提交时收集被隐藏的表单项字段并进行校验',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.submitHiddenFields;
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.submitHiddenFields = val;
-          }
-        }
-      },
+
       {
         title: '标题',
         ifVisible({ data }: EditorResult<Data>) {
@@ -673,6 +728,9 @@ export default {
                 value: 'px'
               }
             ],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              return data.layoutType !== 'QueryFilter';
+            },
             value: {
               get({ data, name, id }: EditorResult<Data>) {
                 return getFormItemProp({ data, id, name }, 'widthOption');
@@ -697,7 +755,7 @@ export default {
             ifVisible({ data, id, name }: EditorResult<Data>) {
               const { item } = getFormItem(data, { id, name });
 
-              return item?.widthOption !== 'px';
+              return data.layoutType !== 'QueryFilter' && item?.widthOption !== 'px';
             },
             value: {
               get({ data, id, name }: EditorResult<Data>) {
@@ -716,7 +774,7 @@ export default {
             },
             ifVisible({ data, id, name }: EditorResult<Data>) {
               const { item } = getFormItem(data, { id, name });
-              return item?.widthOption === 'px';
+              return data.layoutType !== 'QueryFilter' && item?.widthOption === 'px';
             },
             value: {
               get({ data, id, name }: EditorResult<Data>) {

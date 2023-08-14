@@ -36,7 +36,7 @@ export const actionsEditor = (data: Data, output) => {
           }
         ],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.layout !== 'inline'
+          return data.config.layout !== 'inline' && data.layoutType !== 'QueryFilter'
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -59,7 +59,7 @@ export const actionsEditor = (data: Data, output) => {
           },
         ],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption === 'span' && data.config.layout !== 'inline';
+          return data.actions.widthOption === 'span' && data.config.layout !== 'inline' && data.layoutType !== 'QueryFilter'
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -77,7 +77,7 @@ export const actionsEditor = (data: Data, output) => {
           type: 'number'
         },
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.widthOption === 'px' && data.config.layout !== 'inline';
+          return data.actions.widthOption === 'px' && data.config.layout !== 'inline' && data.layoutType !== 'QueryFilter'
         },
         value: {
           get({ data }: EditorResult<Data>) {
@@ -91,7 +91,7 @@ export const actionsEditor = (data: Data, output) => {
       {
         title: '对齐方式',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.actions.visible;
+          return data.actions.visible && data.layoutType !== 'QueryFilter';
         },
         type: 'Radio',
         options: [

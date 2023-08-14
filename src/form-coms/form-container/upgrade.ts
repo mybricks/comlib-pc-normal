@@ -254,5 +254,24 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   }
   //=========== v1.3.11 end ===============
 
+
+  /**
+   * @description v1.4.0 , 新增 表单展示类型，支持查询表单，展开、收起
+   */
+
+  if (typeof data.layoutType === 'undefined') {
+    data.layoutType = 'Form';
+  }
+
+  if (typeof data.span === 'undefined') {
+    data.span = 8;
+  }
+
+  if (typeof data.defaultCollapsed === 'undefined') {
+    data.defaultCollapsed = true;
+  }
+
+  //=========== v1.4.0 end ===============
+
   return true;
 }

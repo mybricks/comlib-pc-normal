@@ -34,8 +34,11 @@ const FormItem = (props: FormItemProps) => {
         ? item.inlineMargin?.map(String).map(unitConversion).join(' ')
         : void 0
   };
+
   const colon = item?.colon === 'default' ? formColon : item.colon;
+
   const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
+
   const whiteSpace =
     item?.labelAutoWrap === 'default'
       ? data.config?.labelWrap
@@ -47,7 +50,7 @@ const FormItem = (props: FormItemProps) => {
 
   return (
     <Form.Item
-      // {...field}
+      style={style}
       label={
         item?.hiddenLabel || (isMobile && item?.label?.trim()?.length === 0) ? (
           void 0
@@ -61,8 +64,8 @@ const FormItem = (props: FormItemProps) => {
       validateStatus={item?.validateStatus}
       help={item?.help}
       tooltip={item?.tooltip}
-      style={style}
       colon={!!item?.label && colon}
+      hidden={item?.hidden}
     >
       <div className={css.formItemControl}>
         <div className={css.formItemSlotContent}>

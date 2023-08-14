@@ -1,4 +1,6 @@
 {
+  "layoutType": "Form",
+  "span": 8,
   "items": [],
   "additionalItems": [],
   "nameCount": 0,
@@ -51,5 +53,6 @@
     "entity": {},
     "type": "",
     "queryFieldRules": {}
-  }
+  },
+  "defaultCollapsed": true
 }
