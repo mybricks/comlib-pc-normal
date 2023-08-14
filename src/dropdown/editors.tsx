@@ -1,4 +1,5 @@
 import { Data } from './types';
+import { uuid } from '../utils';
 
 interface Result {
   data: Data;
@@ -145,7 +146,8 @@ export default {
               link: '',
               useIcon: false,
               icon: 'HomeOutlined',
-              iconColor: 'rgba(0, 0, 0, 0.85)'
+              iconColor: 'rgba(0, 0, 0, 0.85)',
+              key: uuid()
             };
             addOption(defaultOption);
             return defaultOption;
@@ -161,6 +163,11 @@ export default {
               type: 'textarea',
               description: '下拉菜单中选项可跳转链接，可不填',
               value: 'link'
+            },
+            {
+              title: '唯一标识',
+              type: 'text',
+              value: 'key'
             },
             {
               title: '禁用',
