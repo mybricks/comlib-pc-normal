@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Empty, Tree, Input } from 'antd';
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import * as Icons from '@ant-design/icons';
+import { Empty, Tree, Input, Image, Space } from 'antd';
 import { Data, TreeData } from './constants';
 import {
   pretreatTreeData,
@@ -245,12 +246,44 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   };
 
   /**
+   * 树节点图标渲染
+   * @param item 节点数据
+   * @returns JSX
+   */
+  const getNodeIcon = (item) => {
+    const { iconConfig } = data;
+    <Space size={iconConfig?.gutter}></Space>;
+    if (item.icon || (iconConfig?.defaultSrc === 'custom' && iconConfig?.customIcon))
+      return (
+        <Image
+          width={iconConfig?.size[1] || 14}
+          height={iconConfig?.size[0] || 14}
+          src={item.icon || iconConfig?.customIcon}
+          preview={false}
+        />
+      );
+    if (iconConfig?.defaultSrc === 'inner') {
+      return (
+        Icons && (
+          <span style={{ fontSize: Math.max(...iconConfig?.size) }}>
+            {Icons[iconConfig?.innerIcon || ('FolderOpenOutlined' as string)]?.render()}
+          </span>
+        )
+      );
+    }
+    return void 0;
+  };
+
+  /**
    * 树节点标题渲染
    * @param item 树节点数据
    * @returns JSX
    */
   const renderTitle = (item) => {
     item.title = env.i18n(item.title || '');
+
+    const Icon = getNodeIcon(item);
+
     // 搜索
     const index = item.title.indexOf(data.searchValue);
     const beforeStr = item.title.substr(0, index);
@@ -261,8 +294,8 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       alignItems: 'center'
     };
     // 修改
-    const titleStyle = {
-        display: data.isEditing === item.key ? 'none' : 'block'
+    const titleStyle: CSSProperties = {
+        display: data.isEditing === item.key ? 'none' : void 0
       },
       inputStyle = {
         display: data.isEditing === item.key ? 'block' : 'none'
@@ -272,6 +305,23 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       outputItem.key = outputItem._key;
     }
 
+    /**只读态 */
+    const title = (
+      <Space size={data.iconConfig?.gutter} style={titleStyle}>
+        {Icon}
+        {index > -1 ? (
+          <>
+            {beforeStr}
+            <span style={{ color: '#f00' }}>{data.searchValue}</span>
+            {afterStr}
+          </>
+        ) : (
+          item.title
+        )}
+      </Space>
+    );
+
+    /**编辑态 */
     const editInput = (
         <Input
           style={inputStyle}
@@ -294,24 +344,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         data.isEditing !== item.key &&
         data.useActions &&
         ActionBtns({ data, record: item, outputItem, env, outputs });
-    if (index > -1) {
-      return (
-        <div style={wrapperStyle}>
-          <span style={titleStyle}>
-            {beforeStr}
-            <span style={{ color: '#f00' }}>{data.searchValue}</span>
-            {afterStr}
-          </span>
-          {editInput}
-          {actionBtns}
-        </div>
-      );
-    }
     return (
       <div style={wrapperStyle}>
-        <span style={titleStyle} className="title">
-          {item.title}
-        </span>
+        {title}
         {editInput}
         {actionBtns}
       </div>

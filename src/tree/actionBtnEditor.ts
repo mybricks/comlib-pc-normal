@@ -153,9 +153,7 @@ export const actionBtnEditor = {
           return getBtnProp(data, focusArea, 'btnId', 'title');
         },
         set({ data, focusArea }: EditorResult<Data>, value: string) {
-          if (typeof value !== 'string' || value.trim() === '') {
-            throw new Error(`请输入正确的按钮标题.`);
-          }
+          if (typeof value !== 'string' || value.trim() === '') return;
           const res = getBtnProp(data, focusArea, 'btnId', 'obj');
           res.title = value;
         }

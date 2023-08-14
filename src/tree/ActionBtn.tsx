@@ -150,8 +150,9 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
         key={id}
         id={id}
         danger={type === 'danger'}
-        onClick={() => {
+        onClick={({ domEvent }) => {
           if (env.edit) return;
+          domEvent.stopPropagation();
           if (id !== DELETE_BTN_ID) btnClick(id);
           else confirm();
         }}
