@@ -307,7 +307,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
     /**只读态 */
     const title = (
-      <Space size={data.iconConfig?.gutter} style={titleStyle}>
+      <Space size={data.iconConfig?.gutter} style={titleStyle} className="title">
         {Icon}
         {index > -1 ? (
           <>
