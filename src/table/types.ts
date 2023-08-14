@@ -178,6 +178,7 @@ export interface Data {
   headStyle: any;
   contentStyle;
   enableRowClick?: boolean;
+  enableRowDoubleClick?: boolean;
   enableRowFocus: boolean,
   focusRowStyle: any,
   domainModel: {

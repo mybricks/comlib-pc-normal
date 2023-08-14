@@ -82,6 +82,8 @@ export const OutputIds = {
   SORTER: 'sorter',
   // 点击行触发
   ROW_CLICK: 'rowClick',
+  // 双击行触发
+  ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData'
 };
 

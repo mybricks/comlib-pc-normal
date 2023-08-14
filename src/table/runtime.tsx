@@ -501,11 +501,20 @@ export default function (props: RuntimeParams<Data>) {
   }, [data.columns, rowKey]);
 
   const onRow = useCallback(
-    (record, index) => {
+    (_record, index) => {
+      const { [DefaultRowKey]: _, ...record } = _record;
       return {
         onClick: () => {
           if (data.enableRowClick) {
             outputs[OutputIds.ROW_CLICK]({ record, index });
+          }
+          if (data.enableRowFocus) {
+            setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+        },
+        onDoubleClick: () => {
+          if (data.enableRowDoubleClick) {
+            outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
           }
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
