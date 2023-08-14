@@ -45,5 +45,13 @@
     }
   ],
   "removeConfirm": "确定删除节点{title}吗（子节点也会被删除）？此操作不可恢复！",
-  "editInline": true
+  "editInline": true,
+  "iconConfig": {
+    "defaultSrc": false,
+    "size": [
+      14,
+      14
+    ],
+    "gutter": 8
+  }
 }
