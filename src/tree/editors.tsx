@@ -121,7 +121,7 @@ export default {
             description: '图标与文字间的距离',
             value: {
               get({ data }: EditorResult<Data>) {
-                return [data.iconConfig.gutter];
+                return [data.iconConfig.gutter || 8];
               },
               set({ data }: EditorResult<Data>, value: number[]) {
                 data.iconConfig.gutter = value[0];

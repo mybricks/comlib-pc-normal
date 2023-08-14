@@ -18,17 +18,30 @@ export default function ({
     };
   }
   //=========== v1.0.6 end ===============
+
   if (!input.get('setSelectedKeys')) {
     input.add('setSelectedKeys', '设置选中项', { type: 'array', items: { type: 'string' } });
   }
 
-  if(!data.hasOwnProperty('removeConfirm')){
+  if (!data.hasOwnProperty('removeConfirm')) {
     data.removeConfirm = "确定删除节点{title}吗（子节点也会被删除）？此操作不可恢复！";
   }
 
-  if(!data.hasOwnProperty('editInline')){
+  if (!data.hasOwnProperty('editInline')) {
     data.editInline = true
   }
-  
+
+  /**
+      * @description v1.0.10 节点支持图标配置
+      */
+  if (!data.iconConfig) {
+    data.iconConfig = {
+      defaultSrc: false,
+      size: [14, 14],
+      gutter: 8
+    };
+  }
+  //=========== v1.0.10 end ===============
+
   return true;
 }
