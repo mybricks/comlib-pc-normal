@@ -40,7 +40,8 @@ export default function ({ data, env, style, inputs, outputs, slots }: RuntimePa
   const onClick = (option) => {
     outputs['onChange']({
       label: option.label,
-      link: option.link
+      link: option.link,
+      key: option.key
     });
   };
   if (env.runtime) {

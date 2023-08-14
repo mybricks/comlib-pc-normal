@@ -1,4 +1,5 @@
 import { Data } from './types';
+import { uuid } from '../utils';
 
 export default function ({ 
   data,
@@ -40,5 +41,29 @@ export default function ({
       item.iconColor = "rgba(0, 0, 0, 0.85)"
     }
   })
+
+  //1.0.6->1.0.7 添加唯一标识
+  const newOutputSchema = {
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "link": {
+        "type": "string"
+      },
+      "key": {
+        "type": "string"
+      }
+    }
+  }
+  output.get("onChange").setSchema(newOutputSchema);
+  
+  data.options.map((item)=>{
+    if(!item.key){
+      item.key = uuid()
+    }
+  })
+
   return true;
 }
