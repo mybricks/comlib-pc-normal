@@ -50,7 +50,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
         maxHeight: window.screen.availHeight
       }}
       getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? triggerNode : document.body
+        edit || debug ? env?.canvasElement || triggerNode : document.body
       }
     >
       <div className={styles.wrap}>{slots.carrier?.render()}</div>
