@@ -38,7 +38,15 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   const legacyStyle = useMemo(() => {
-    return { ...data.legacyStyle, ...data.legacyConfigStyle };
+    const legacyStyle = { ...data.legacyStyle };
+    if (env.runtime.debug || env.edit) {
+      Object.entries(legacyStyle).map(([key, value]) => {
+        if (typeof value === 'string' && value?.includes('vw')) {
+          legacyStyle[key] = value.replace('vw', '%');
+        }
+      });
+    }
+    return { ...legacyStyle, ...data.legacyConfigStyle };
   }, [data.legacyConfigStyle, data.legacyStyle]);
 
   const getOverflowStyle = () => {
