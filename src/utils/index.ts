@@ -48,9 +48,9 @@ function unitConversion(value: string) {
     return value
   } else if (/^(?:calc)/.test(value)) {
     return value
-  } else if (/^\d+(?:vh)?$/.test(value)) {
+  } else if (/^\d+(?:vh)$/.test(value)) {
     return parseInt(value, 10) + 'vh'
-  } else if (/^\d+(?:vw)?$/.test(value)) {
+  } else if (/^\d+(?:vw)$/.test(value)) {
     return parseInt(value, 10) + 'vw'
   } else {
     return /^\d+(?:px)?$/.test(value) ? parseInt(value, 10) + 'px' : void 0
