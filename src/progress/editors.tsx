@@ -73,6 +73,47 @@ export default {
       }
     },
     {
+      title: '自定义进度值',
+      type: 'switch',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.isShow;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.isFormat;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.isFormat = value;
+        }
+      }
+    },
+    {
+      title: '自定义进度值表达式',
+      type: 'expression',
+      description: '会将括号内值替换成进度值, 如 {percent}% 会替换成 50%',
+      options: {
+        autoSize: true,
+        placeholder: '输入表达式如{percent}%',
+        suggestions: [
+          {
+            label: 'percent',
+            detail: '进度值'
+          }
+        ]
+      },
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.isShow && data.isFormat;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.formatFunction;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.formatFunction = value;
+        }
+      }
+    },
+    {
       title: '类型',
       type: 'select',
       description: '进度条的类型',
@@ -127,21 +168,32 @@ export default {
     },
     {
       title: '尺寸',
-      description: '进度条尺寸',
-      type: 'text',
+      description: '进度圈、仪表盘 画布宽度，单位 px',
+      type: 'inputnumber',
+      options: [{ min: 1, max: Infinity, width: 180 }],
       ifVisible({ data }: EditorResult<Data>) {
         return data.type !== 'line';
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return String(data.circleSize);
+          return [data.circleSize];
         },
-        set({ data }: EditorResult<Data>, value: string) {
-          if (/^\d+$/.test(value)) {
-            data.circleSize = `${value}px`;
-          } else {
-            data.circleSize = value;
-          }
+        set({ data }: EditorResult<Data>, value: number[]) {
+          data.circleSize = value[0];
+        }
+      }
+    },
+    {
+      title: '进度条线宽度',
+      description: '进度条线的宽度，单位 进度条线是 px, 进度圈和仪表盘是 画布宽度的百分比',
+      type: 'inputnumber',
+      options: [{ min: 1, max: Infinity, width: 180 }],
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return [data.strokeWidth];
+        },
+        set({ data }: EditorResult<Data>, value: number[]) {
+          data.strokeWidth = value[0];
         }
       }
     },
@@ -215,7 +267,7 @@ export default {
       }
     },
     {
-      title: '颜色选择',
+      title: '完成分段颜色',
       type: 'colorpicker',
       ifVisible({ data }: EditorResult<Data>) {
         return data.isColor || '#1890ff';
@@ -226,6 +278,21 @@ export default {
         },
         set({ data }: EditorResult<Data>, value: string) {
           data.strokeColor = value;
+        }
+      }
+    },
+    {
+      title: '未完成分段颜色',
+      type: 'colorpicker',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.isColor;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.trailColor;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.trailColor = value;
         }
       }
     }

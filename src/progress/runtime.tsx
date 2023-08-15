@@ -20,44 +20,58 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
       });
     }
   });
-  let fontSize = Number(data.circleSize.slice(0, -2));
-  useEffect(() => {
+
+  // 调整因circleSize变化导致的内容字体
+  // 自定义进度值
+  const circleSizeFormat = (percent?: number, successPercent?: number): React.ReactNode => {
+    let percentFormat =
+      data?.formatFunction && data?.isFormat && data?.isShow
+        ? data.formatFunction.replace(/{([^}]+)}/g, `${percent}`)
+        : `${percent}%`;
     if (data.type !== 'line') {
-      document.body.style.setProperty('--inner--size', data.circleSize);
-      if (fontSize <= 60 && fontSize > 20) {
-        document.body.style.setProperty('--inner--font-size', '14px');
-      } else if (fontSize <= 20) {
-        document.body.style.setProperty('--inner--font-size', '0px');
+      if (data.circleSize <= 60 && data.circleSize > 20) {
+        return <span style={{ fontSize: '12px' }}>{percentFormat}</span>;
+      } else if (data.circleSize > 60) {
+        return <span style={{ fontSize: '24px' }}>{percentFormat}</span>;
       } else {
-        document.body.style.setProperty('--inner--font-size', '24px');
+        return null;
       }
     }
-  }, [data.circleSize]);
+    return percentFormat;
+  };
 
   return (
     <div className={css.progress}>
       <div className={data.type !== 'line' ? css.circleProgress : void 0}>
-        {fontSize <= 20 ? (
+        {data.circleSize <= 20 ? (
           <Tooltip title={data.percent + '%'}>
             <Progress
               percent={data.percent}
+              format={() => null}
               type={data.type}
               showInfo={data.isShow}
               status={data.status}
               steps={data.isSteps ? data.steps : void 0}
               size={data.size}
               strokeColor={data.isColor ? data.strokeColor : void 0}
+              trailColor={data.isColor ? data.trailColor : void 0}
+              strokeWidth={data.strokeWidth}
+              width={data.circleSize}
             />
           </Tooltip>
         ) : (
           <Progress
             percent={data.percent}
+            format={circleSizeFormat}
             type={data.type}
             showInfo={data.isShow}
             status={data.status}
             steps={data.isSteps && data.type === 'line' ? data.steps : void 0}
             size={data.size}
             strokeColor={data.isColor ? data.strokeColor : void 0}
+            trailColor={data.isColor ? data.trailColor : void 0}
+            strokeWidth={data.strokeWidth}
+            width={data.circleSize}
           />
         )}
       </div>

@@ -10,6 +10,10 @@
  * @param isColor 是否开启颜色
  * @param size 'line'的尺寸
  * @param circleSize 'circle' | 'dashboard' 的尺寸
+ * @param strokeWidth 进度条线的宽度，单位 px
+ * @param trailColor 未完成的分段的颜色
+ * @param isFormat 是否自定义内容
+ * @param formatFunction 自定义内容的模板函数
  */
 export interface Data {
   percent: number;
@@ -21,7 +25,11 @@ export interface Data {
   steps: number;
   isColor: boolean;
   size: any;
-  circleSize: string;
+  circleSize: number;
+  strokeWidth: number;
+  trailColor: string;
+  isFormat: boolean;
+  formatFunction?: string;
 }
 
 export const InputIds = {
