@@ -74,6 +74,7 @@ const SlotContent = (
           switch (data.currentAction) {
             case 'add':
             case 'init':
+              data.currentAction = '';
               // 计算新增项默认值
               const initValue = {};
               new Promise((resolve, reject) => {
@@ -103,9 +104,6 @@ const SlotContent = (
                     data.value = [{}];
                   }
                   changeValue({ data, id, outputs, parentSlot, name: props.name });
-                })
-                .finally(() => {
-                  data.currentAction = '';
                 });
               break;
             default:
