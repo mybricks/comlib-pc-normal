@@ -8,5 +8,9 @@
   "steps": 3,
   "isColor": false,
   "size": "default",
-  "circleSize": "120px"
+  "circleSize": 120,
+  "strokeWidth": 6,
+  "trailColor": "f3f3f3",
+  "isFormat": false,
+  "formatFunction": "{percent}%"
 }
