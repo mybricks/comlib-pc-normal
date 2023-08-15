@@ -147,7 +147,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         //如果是输入的值不合规范，即会输出[null, null]
         val = val.map((item) => {
           const num = Number(item);
-          const result: any = isNaN(num) ? moment(val) : moment(num);
+          const result: any = isNaN(num) ? moment(item) : moment(num);
           let data = !result?._isValid ? undefined : result;
           return data;
         });
@@ -163,7 +163,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           //如果是输入的值不合规范，即会输出[null, null]
           val = val.map((item) => {
             const num = Number(item);
-            const result: any = isNaN(num) ? moment(val) : moment(num);
+            const result: any = isNaN(num) ? moment(item) : moment(num);
             let data = !result?._isValid ? undefined : result;
             return data;
           });
