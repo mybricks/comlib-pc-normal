@@ -172,14 +172,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setInitialValues = (val) => {
-    if (val) {
-      Object.keys(val).forEach((key) => {
-        setValuesForInput(
-          { childrenInputs, formItems: data.items, name: key },
-          'setInitialValue',
-          val
-        );
-      });
+    try {
+      if (val) {
+        Object.keys(val).forEach((key) => {
+          setValuesForInput(
+            { childrenInputs, formItems: data.items, name: key },
+            'setInitialValue',
+            val
+          );
+        });
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -393,14 +397,24 @@ const validateForInput = (
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
   const item = formItems.find((item) => (item.name || item.label) === name);
+
   if (item) {
-    // const input = childrenInputs[item.id];
     const input = getFromItemInputEvent(item, childrenInputs);
 
-    if (isObject(values[name])) {
-      input[inputId] && input[inputId]({ ...values[name] });
+    if (input) {
+      if (isObject(values[name])) {
+        if (input[inputId]) {
+          input?.[inputId]?.({ ...values[name] });
+        }
+      } else {
+        input[inputId] && input[inputId](values[name]);
+      }
     } else {
-      input[inputId] && input[inputId](values[name]);
+      console.warn(
+        `FormItem Input Not Found, FormItem Name: ${
+          item.name || item.label
+        }, 可能存在脏数据 请联系开发人员`
+      );
     }
   }
 };
