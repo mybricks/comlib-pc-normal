@@ -8,6 +8,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Option {
   value: string;
+  label: string;
 }
 
 export interface Data {
@@ -25,7 +26,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, logger } = props;
 
   useFormItemInputs({
     id: props.id,
@@ -68,7 +69,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
   //输入数据源
   inputs['setOptions']((value) => {
-    data.options = value;
+    if (Array.isArray(value) && value.every((item) => 'value' in item)) {
+      if (value.every((item) => 'value' in item)) {
+        data.options = value;
+      } else {
+        console.error('数据源缺少value字段');
+        logger.error('数据源缺少value字段');
+      }
+    } else {
+      console.error('数据源数据结构不正确');
+      logger.error('数据源数据结构不正确');
+    }
   });
 
   const onValidateTrigger = () => {
