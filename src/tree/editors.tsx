@@ -300,6 +300,9 @@ export default {
             {
               title: '勾选事件',
               type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.checkable;
+              },
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.useCheckEvent;
