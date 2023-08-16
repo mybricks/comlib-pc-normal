@@ -32,8 +32,8 @@ export default function ({
   }
 
   /**
-      * @description v1.0.10 节点支持图标配置
-      */
+    * @description v1.0.10 节点支持图标配置
+    */
   if (!data.iconConfig) {
     data.iconConfig = {
       defaultSrc: false,
@@ -42,6 +42,20 @@ export default function ({
     };
   }
   //=========== v1.0.10 end ===============
+
+  /**
+    * @description v1.0.11 操作项增加图标、动态显隐表达式配置
+    */
+  data.actionBtns.forEach(btn => {
+    if (!btn.iconConfig) {
+      btn.iconConfig = {
+        src: false,
+        size: [14, 14],
+        gutter: 8
+      };
+    }
+  })
+  //=========== v1.0.11 end ===============
 
   return true;
 }
