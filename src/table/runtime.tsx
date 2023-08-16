@@ -44,6 +44,8 @@ export default function (props: RuntimeParams<Data>) {
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
+  // 显示数据
+  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
 
   const rowKey = data.rowKey || DefaultRowKey;
 
@@ -191,6 +193,21 @@ export default function (props: RuntimeParams<Data>) {
     },
     []
   );
+
+  useEffect(() => {
+    if (!env.runtime || !data.useExpand) return;
+    console.log('realShowDataSource1', realShowDataSource);
+    // 开启关闭所有展开项
+    inputs[InputIds.EnableAllExpandedRows]((enable) => {
+      console.log(
+        'realShowDataSource2',
+        expandedRowKeys,
+        realShowDataSource,
+        realShowDataSource.map((item) => item[rowKey])
+      );
+      setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
+    });
+  }, [realShowDataSource]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -550,9 +567,6 @@ export default function (props: RuntimeParams<Data>) {
     // 当任意列为自适应时，宽度为100%
     return hasAuto ? '100%' : width;
   };
-
-  // 显示数据
-  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
 
   // 当数据发生变化时，重新设置所有行展开
   useEffect(() => {

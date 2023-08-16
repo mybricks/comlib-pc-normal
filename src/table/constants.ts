@@ -60,7 +60,9 @@ export const InputIds = {
   SET_SHOW_COLUMNS: 'showColumns',
 
   //动态设置显示表头
-  SET_SHOW_TitleS: 'showTitles'
+  SET_SHOW_TitleS: 'showTitles',
+  // 开启关闭所有展开项
+  EnableAllExpandedRows: 'enableAllExpandedRows'
 };
 export const OutputIds = {
   // 输出勾选项
