@@ -16,7 +16,7 @@
       "key": "0-1"
     }
   ],
-  "checkable": true,
+  "checkable": false,
   "disableCheckbox": false,
   "outParentNode": false,
   "defaultExpandAll": true,

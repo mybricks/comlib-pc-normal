@@ -130,7 +130,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
   };
 
   const wrapperStyle: React.CSSProperties = {
-    flex: `0 0 ${(actionBtns?.length + 1) * 60}px`,
+    flex: `0 0 ${actionBtns?.length * 50 + 25}px`,
     justifyContent: 'end'
   };
 
