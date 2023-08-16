@@ -252,7 +252,6 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    */
   const getNodeIcon = (item) => {
     const { iconConfig } = data;
-    <Space size={iconConfig?.gutter}></Space>;
     if (item.icon || (iconConfig?.defaultSrc === 'custom' && iconConfig?.customIcon))
       return (
         <Image

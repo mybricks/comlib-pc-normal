@@ -7,6 +7,13 @@ export interface ActionBtn {
   type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any
   showText?: boolean,
   hidden?: boolean,
+  iconConfig: {
+    src: IconSrcType,
+    size: [number, number],
+    gutter: number,
+    innerIcon?: string,
+    customIcon?: string,
+  }
 }
 export interface ActionBtnsProps {
   record: Record<string, any>;
