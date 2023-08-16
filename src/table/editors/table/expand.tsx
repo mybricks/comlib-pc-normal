@@ -15,8 +15,9 @@ const expandEditor = [
           get({ data }: EditorResult<Data>) {
             return data.useExpand;
           },
-          set({ data, slot, ...res }: EditorResult<Data>, value: boolean) {
+          set({ data, inputs, slot, ...res }: EditorResult<Data>, value: boolean) {
             if (value) {
+              inputs.add(InputIds.EnableAllExpandedRows, '开启关闭所有展开项', { type: 'boolean' });
               slot.add({ id: SlotIds.EXPAND_CONTENT, title: `展开内容`, type: 'scope' });
               if (data.expandDataIndex) {
                 slot
@@ -29,9 +30,10 @@ const expandEditor = [
               slot
                 .get(SlotIds.EXPAND_CONTENT)
                 .inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
-              setDataSchema({ data, slot, ...res });
+              setDataSchema({ data, slot, inputs, ...res });
             } else {
               slot.remove(SlotIds.EXPAND_CONTENT);
+              inputs.remove(InputIds.EnableAllExpandedRows);
             }
             data.useExpand = value;
           }
