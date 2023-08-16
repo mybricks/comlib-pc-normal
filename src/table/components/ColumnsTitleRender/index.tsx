@@ -160,7 +160,7 @@ export default ({
         }}
         onFilterDropdownVisibleChange={(visible) => {
           if (!visible || typeof outputs[OutputIds.FILTER_CLICK] !== 'function') return;
-          outputs[OutputIds.FILTER_CLICK]({ dataIndex: cItem.dataIndex, dataSource });
+          outputs[OutputIds.FILTER_CLICK]({ dataIndex: cItem.dataIndex, dataSource, item: cItem });
         }}
         {...filterVisibleProps}
         showSorterTooltip={false}
