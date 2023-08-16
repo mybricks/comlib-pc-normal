@@ -17,6 +17,7 @@ export interface Data {
     addonAfter: string;
     showCount: boolean;
     maxLength?: number;
+    size?: 'large' | 'middle' | 'small';
   };
 }
 
@@ -97,6 +98,7 @@ export default function (props: RuntimeParams<Data>) {
       onChange={changeValue}
       onBlur={onBlur}
       onPressEnter={onPressEnter}
+      //size={'large'}
     />
   );
 

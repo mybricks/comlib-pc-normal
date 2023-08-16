@@ -36,6 +36,17 @@ export default {
         target: '.ant-alert-description'
       },
       {
+        title: '关闭按钮',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.closable;
+        },
+        target: '.ant-alert-action',
+        initValue: {
+          fontSize: 16
+        }
+      },
+      {
         title: '图标尺寸',
         type: 'text',
         description: '图标尺寸,支持百分比和定宽',
@@ -51,6 +62,11 @@ export default {
             }
           }
         }
+      },
+      {
+        title: '图标',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: '.ant-alert-icon'
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {

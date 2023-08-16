@@ -35,9 +35,21 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认样式',
+        title: '边框-默认',
         options: ['border'],
-        target: '.ant-select-selector'
+        target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
+      },
+      {
+        title: '边框-hover',
+        options: ['border'],
+        target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+        domTarget: 'div.ant-select-selector'
+      },
+      {
+        title: '边框-focus',
+        options: ['border','BoxShadow'],
+        target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+        domTarget: 'div.ant-select-selector'
       },
       {
         title: '标签',
@@ -46,7 +58,29 @@ export default {
         },
         options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
         target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
-      }
+      },
+      {
+        title: '选项-默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } },{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: 'div.ant-select-item.ant-select-item-option',
+        //domTarget: '.ant-select-item-option-content'
+      },
+      {
+        title: '选项-hover',
+        options: [{ type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+        target: [
+          'div.ant-select-item-option-active:not(.ant-select-item-option-disabled)',
+        ],
+        //domTarget: '.ant-select-item-option-active'
+      },
+      {
+        title: '选项-focus',
+        options: [{ type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+        target: [
+          'div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)',
+        ],
+        //domTarget: '.ant-select-item-option-active'
+      },
       // {
       //   title: '激活样式',
       //   options: ['border'],
