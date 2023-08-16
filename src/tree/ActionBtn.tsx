@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Dropdown, Menu, Modal } from 'antd';
+import * as Icons from '@ant-design/icons';
+import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './constants';
 import { ExpressionSandbox } from '../../package/com-utils';
@@ -98,6 +99,42 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
   };
 
   /**
+   * 操作项图标渲染
+   * @param btn 按钮数据
+   * @returns JSX
+   */
+  const getNodeIcon = (btn: ActionBtn) => {
+    const { iconConfig } = btn;
+    if (iconConfig?.src === 'custom' && iconConfig?.customIcon)
+      return (
+        <Image
+          width={iconConfig?.size[1] || 14}
+          height={iconConfig?.size[0] || 14}
+          style={{
+            marginRight: iconConfig?.gutter || 8
+          }}
+          src={iconConfig?.customIcon}
+          preview={false}
+        />
+      );
+    if (iconConfig?.src === 'inner') {
+      return (
+        Icons && (
+          <span
+            style={{
+              fontSize: Math.max(...iconConfig?.size),
+              marginRight: iconConfig?.gutter || 8
+            }}
+          >
+            {Icons[iconConfig?.innerIcon || ('EditOutlined' as string)]?.render()}
+          </span>
+        )
+      );
+    }
+    return void 0;
+  };
+
+  /**
    * 普通按钮渲染
    * @param btn
    * @returns JSX
@@ -117,6 +154,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
             if (id !== DELETE_BTN_ID) btnClick(id);
             else confirm();
           }}
+          icon={getNodeIcon(btn)}
         >
           {env.i18n(title)}
         </Button>
@@ -130,7 +168,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
   };
 
   const wrapperStyle: React.CSSProperties = {
-    flex: `0 0 ${actionBtns?.length * 50 + 25}px`,
+    paddingLeft: env.edit ? 25 : void 0,
     justifyContent: 'end'
   };
 
@@ -156,6 +194,7 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
           if (id !== DELETE_BTN_ID) btnClick(id);
           else confirm();
         }}
+        icon={getNodeIcon(btn)}
       >
         {env.i18n(title)}
       </Menu.Item>
