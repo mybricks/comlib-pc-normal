@@ -74,7 +74,7 @@ export const OutputIds = {
 
   // 自动输出勾选项
   ROW_SELECTION: 'rowSelection',
-  // 筛选事件触发
+  // 点击筛选触发
   FILTER_CLICK: 'filterClick',
   // 筛选事件触发
   FILTER: 'filter',
