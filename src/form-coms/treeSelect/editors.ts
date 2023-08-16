@@ -139,5 +139,77 @@ export default {
         ]
       }
     ];
+
+    catalog[1].title = '高级'
+    catalog[1].items = [
+      {
+        title: '标题字段',
+        type: 'Text',
+        options: {
+          placeholder: '默认值为 label'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.labelFieldName
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.labelFieldName = value
+          }
+        }
+      },
+      {
+        title: '值字段',
+        type: 'Text',
+        options: {
+          placeholder: '默认值为 value'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.valueFieldName
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.valueFieldName = value
+          }
+        }
+      },
+      {
+        title: '叶子节点字段',
+        type: 'Text',
+        options: {
+          placeholder: '默认值为 children'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.childrenFieldName
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.childrenFieldName = value
+          }
+        }
+      },
+      {
+        title: '异步加载',
+        type: 'Switch',
+        description: '开启后可配置子节点异步加载',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useLoadData;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.useLoadData = value;
+          }
+        }
+      },
+      {
+        title: '异步加载输出',
+        type: '_event',
+        ifVisible ({ data }: EditorResult<Data>) {
+          return data.useLoadData
+        },
+        options: {
+          outputId: 'loadData'
+        }
+      },
+    ]
   }
 }

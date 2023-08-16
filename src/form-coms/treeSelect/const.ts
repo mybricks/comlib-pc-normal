@@ -1,5 +1,5 @@
 export const SelectOptionFilterPropsType = {
-    Label: "label",
-    Value: "value",
-    Children: "children",
+  Label: "label",
+  Value: "value",
+  Children: "children",
 };

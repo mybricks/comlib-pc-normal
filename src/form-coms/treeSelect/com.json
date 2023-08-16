@@ -1,7 +1,7 @@
 {
   "title": "树选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "树选择",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -10,6 +10,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setValue",
@@ -72,6 +73,42 @@
             "value": {
               "title": "值",
               "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setLoadData",
+      "title": "设置异步加载数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean"
             },
             "children": {
               "title": "子项",
@@ -144,6 +181,23 @@
       "title": "值输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "loadData",
+      "title": "异步加载",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          }
+        }
       }
     }
   ],
