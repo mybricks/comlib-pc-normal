@@ -204,9 +204,25 @@ export default {
         }
       },
       {
+        title: '仅首次加载',
+        type: 'Switch',
+        description: '关闭后，每次展开节点，都会重新触发异步加载',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useLoadData
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.loadDataOnce;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.loadDataOnce = value;
+          }
+        }
+      },
+      {
         title: '异步加载输出',
         type: '_event',
-        ifVisible ({ data }: EditorResult<Data>) {
+        ifVisible({ data }: EditorResult<Data>) {
           return data.useLoadData
         },
         options: {
