@@ -56,6 +56,7 @@ export interface AdditionalItem {
   span: number
   widthOption: LabelWidthType
   width: number
+  visible: boolean
 }
 
 export type LabelWidthType = 'px' | 'span' | 'flexFull'
