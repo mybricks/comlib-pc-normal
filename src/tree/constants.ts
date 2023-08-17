@@ -7,6 +7,14 @@ export interface ActionBtn {
   type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any
   showText?: boolean,
   hidden?: boolean,
+  iconConfig: {
+    src: IconSrcType,
+    size: [number, number],
+    gutter: number,
+    innerIcon?: string,
+    customIcon?: string,
+  }
+  displayScript?: string;
 }
 export interface ActionBtnsProps {
   record: Record<string, any>;
@@ -14,6 +22,7 @@ export interface ActionBtnsProps {
   data: Data;
   env: any;
   outputs: any;
+  onError: any;
 }
 
 export const MODIFY_BTN_ID = 'modify';
@@ -44,6 +53,11 @@ export interface Data {
   keyFieldName: string;
   useCheckEvent?: boolean;
   checkStrictly?: boolean;
+  fieldNames?: {
+    title?: string;
+    key?: string;
+    children?: string;
+  }
   /** 省略样式配置 */
   ellipsisActionBtnsConfig: {
     useEllipsis: boolean;

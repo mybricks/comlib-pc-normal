@@ -252,7 +252,6 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    */
   const getNodeIcon = (item) => {
     const { iconConfig } = data;
-    <Space size={iconConfig?.gutter}></Space>;
     if (item.icon || (iconConfig?.defaultSrc === 'custom' && iconConfig?.customIcon))
       return (
         <Image
@@ -279,7 +278,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * @param item 树节点数据
    * @returns JSX
    */
-  const renderTitle = (item) => {
+  const renderTitle = (item, isRoot) => {
     item.title = env.i18n(item.title || '');
 
     const Icon = getNodeIcon(item);
@@ -300,9 +299,16 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       inputStyle = {
         display: data.isEditing === item.key ? 'block' : 'none'
       };
+
     const outputItem = deepCopy(item);
     if (outputItem._key) {
       outputItem.key = outputItem._key;
+    }
+    if (outputItem.isRoot === undefined) {
+      outputItem.isRoot = isRoot;
+    }
+    if (outputItem.isLeaf === undefined) {
+      outputItem.isLeaf = !outputItem.children?.length;
     }
 
     /**只读态 */
@@ -343,7 +349,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       actionBtns =
         data.isEditing !== item.key &&
         data.useActions &&
-        ActionBtns({ data, record: item, outputItem, env, outputs });
+        ActionBtns({ data, record: item, outputItem, env, outputs, onError });
     return (
       <div style={wrapperStyle}>
         {title}
@@ -372,7 +378,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             <TreeNode
               key={item.key}
               data-tree-node-id={item.key}
-              title={renderTitle(item)}
+              title={renderTitle(item, depth === 0)}
               disableCheckbox={item.disableCheckbox}
             >
               {renderTreeNode(item.children || [], depth + 1, item)}
