@@ -138,13 +138,21 @@ export default function Runtime({
   }, []);
 
   const onLoadData = (node) => {
+    // 有子节点 且 非异步加载，不触发异步加载
+    if (node.children?.length && !treeLoadedKeys.includes(node.key)) {
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
       curNode.current = {
         node,
         resolve
       };
 
-      outputs['loadData'](node);
+      outputs['loadData']({
+        ...node,
+        [data.labelFieldName || 'label']: node.title
+      });
     });
   };
 
@@ -162,21 +170,24 @@ export default function Runtime({
   );
 }
 
-const setTreeDataForLoadData = (data, curNode, treeData, leafData) => {
+const setTreeDataForLoadData = (data, curNode, treeData, newNodeData = {}) => {
   let newTreeData = [];
   const trueValueFieldName = data.valueFieldName || 'value';
   const trurChildrenFieldName = data.childrenFieldName || 'children';
 
   newTreeData = treeData.map((item) => {
     if (item[trueValueFieldName] === curNode[trueValueFieldName]) {
-      item[trurChildrenFieldName] = leafData;
+      item = {
+        ...item,
+        ...newNodeData
+      };
     } else {
       if (Array.isArray(item[trurChildrenFieldName])) {
         item[trurChildrenFieldName] = setTreeDataForLoadData(
           data,
           curNode,
           item[trurChildrenFieldName],
-          leafData
+          newNodeData
         );
       }
     }

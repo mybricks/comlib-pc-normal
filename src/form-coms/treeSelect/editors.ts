@@ -223,7 +223,7 @@ const refreshSchema = (data: Data, input, output) => {
   const trueLabelFieldName = data.labelFieldName || 'label';
   const trurChildrenFieldName = data.childrenFieldName || 'children';
 
-  const schema =  {
+  const schema = {
     type: 'array',
     items: {
       type: 'object',
@@ -252,8 +252,8 @@ const refreshSchema = (data: Data, input, output) => {
     }
   }
 
-  const setOptionsPin =  input.get('setOptions')
-  const setLoadDataPin =  input.get('setLoadData')
+  const setOptionsPin = input.get('setOptions')
+  const setLoadDataPin = input.get('setLoadData')
   const loadDataPin = output.get('loadData')
 
   if (setOptionsPin) {
@@ -261,22 +261,10 @@ const refreshSchema = (data: Data, input, output) => {
   }
 
   if (setLoadDataPin) {
-    setLoadDataPin.setSchema(schema)
+    setLoadDataPin.setSchema(schema.items)
   }
 
   if (loadDataPin) {
-    loadDataPin.setSchema({
-      type: 'object',
-      properties: {
-        [trueLabelFieldName]: {
-          title: '标签',
-          type: 'string'
-        },
-        [trueValueFieldName]: {
-          title: '值',
-          type: 'string'
-        },
-      }
-    })
+    loadDataPin.setSchema(schema.items)
   }
 }
