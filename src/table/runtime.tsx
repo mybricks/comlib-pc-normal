@@ -27,6 +27,7 @@ import ColumnRender from './components/ColumnRender';
 import ColumnsTitleRender from './components/ColumnsTitleRender';
 import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
+import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
 import { getColumnsFromSchema } from './editors';
@@ -46,6 +47,7 @@ export default function (props: RuntimeParams<Data>) {
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
   // 显示数据
   const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
+  const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
 
@@ -125,6 +127,11 @@ export default function (props: RuntimeParams<Data>) {
             id
           };
         });
+
+      // 总结栏数据
+      inputs[InputIds.SUMMARY_COLUMN]((val) => {
+        setSummaryColumnData(val);
+      });
 
       // 动态设置显示列
       if (data.useDynamicColumn && inputs[InputIds.SET_SHOW_COLUMNS]) {
@@ -608,6 +615,9 @@ export default function (props: RuntimeParams<Data>) {
               x: '100%',
               y: data.scroll.y ? data.scroll.y : void 0
             }}
+            summary={
+              data.useSummaryColumn ? () => SummaryColumn(slots, data, summaryColumnData) : void 0
+            }
             expandable={
               data.useExpand && slots[SlotIds.EXPAND_CONTENT]
                 ? {

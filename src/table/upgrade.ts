@@ -93,6 +93,24 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
     output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
   }
 
-  addFilterIO({ data, output, input })
+  addFilterIO({ data, output, input });
+
+  if (data?.useSummaryColumn === undefined) {
+    data.useSummaryColumn = false;
+  }
+  if (data?.SummaryColumnTitle === undefined) {
+    data.SummaryColumnTitle = "合计";
+  }
+  if (data?.SummaryCellTitleCol === undefined) {
+    data.SummaryCellTitleCol = 1;
+  }
+  if (data?.SummaryColumnContentType === undefined) {
+    data.SummaryColumnContentType = "text";
+  }
+  if (data?.SummaryColumnContentSchema === undefined) {
+    data.SummaryColumnContentSchema = {
+      type: "string"
+    }
+  }
   return true;
 }

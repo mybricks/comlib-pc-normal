@@ -62,7 +62,10 @@ export const InputIds = {
   //动态设置显示表头
   SET_SHOW_TitleS: 'showTitles',
   // 开启关闭所有展开项
-  EnableAllExpandedRows: 'enableAllExpandedRows'
+  EnableAllExpandedRows: 'enableAllExpandedRows',
+
+  // 总结栏输入数据
+  SUMMARY_COLUMN: 'summaryColumn'
 };
 export const OutputIds = {
   // 输出勾选项
