@@ -11,11 +11,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     items: {
       type: 'object',
       properties: {
-        [data.labelFieldName || 'label']: {
+        label: {
           title: '标签',
           type: 'string'
         },
-        [data.valueFieldName || 'value']: {
+        value: {
           title: '值',
           type: 'string'
         },
@@ -23,7 +23,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
           title: '是否叶子节点',
           type: 'boolean'
         },
-        [data.childrenFieldName || 'children']: {
+        children: {
           title: '子项',
           type: 'array',
           items: {
@@ -60,20 +60,6 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   //=========== v1.1.0 end ===============
-
-  /**
-   * @description v1.1.2 , 新增 更新节点数据输入项、节点展开输出项
-  */
-
-  if (!input.get('setNodeData')) {
-    input.add('setNodeData', '更新节点数据', treeDataSchema.items);
-  }
-
-  if (!output.get('onExpand')) {
-    output.add('onExpand', '节点展开', treeDataSchema.items);
-  }
-
-  //=========== v1.1.2 end ===============
 
   return true;
 }
