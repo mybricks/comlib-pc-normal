@@ -18,4 +18,5 @@ export interface Data {
   labelFieldName?: string
   valueFieldName?: string
   childrenFieldName?: string
+  loadDataOnce?: boolean
 }
