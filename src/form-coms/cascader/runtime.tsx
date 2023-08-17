@@ -90,6 +90,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {...data.config}
         multiple={data.isMultiple}
         onChange={onChange}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          //edit || debug ? triggerNode : document.body
+          triggerNode
+        }
       />
     </div>
   );

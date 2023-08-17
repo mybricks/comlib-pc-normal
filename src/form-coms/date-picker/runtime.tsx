@@ -181,7 +181,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     <div className={css.datePicker}>
-      <DatePicker value={value} {...data.config} showTime={getShowTime()} onChange={onChange} />
+      <DatePicker
+        value={value}
+        {...data.config}
+        showTime={getShowTime()}
+        onChange={onChange}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          //edit || debug ? triggerNode : document.body
+          triggerNode
+        }
+      />
     </div>
   );
 }

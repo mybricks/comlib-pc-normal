@@ -46,15 +46,59 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认样式',
+        title: '边框-默认',
         options: ['border'],
         target: '.ant-picker'
       },
-      // {
-      //   title: '激活样式',
-      //   options: ['border'],
-      //   target: '.ant-picker:hover'
-      // },
+      {
+        title: '边框-hover',
+        options: ['border'],
+        target: '.ant-picker:hover',
+        domTarget: '.ant-picker'
+      },
+      {
+        title: '边框-focus',
+        options: ['border','BoxShadow'],
+        target: ['.ant-picker-focused.ant-picker']
+      },
+      {
+        title: '边框底线-focus',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-picker-range .ant-picker-active-bar'
+      },
+      {
+        title: '日期-当前',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before'
+      },
+      {
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: '.ant-picker-cell-today'
+      },
+      {
+        title: '日期-选中',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
+        target: [
+          '.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner',
+          '.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner',
+          '.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner',
+          '.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner'
+        ]
+      },
+      {
+        title: '日期-选中区间',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: [
+          '.ant-picker-cell-in-view.ant-picker-cell-in-range:before',
+          '.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before',
+          '.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before'
+        ]
+      },
+      {
+        title: '日期-hover',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
+        target: '.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner'
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

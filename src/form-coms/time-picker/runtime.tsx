@@ -122,6 +122,10 @@ export default function ({
         format={_format}
         disabled={disabled}
         allowClear
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          //edit || debug ? triggerNode : document.body
+          triggerNode
+        }
         onChange={onChange}
       />
     </div>

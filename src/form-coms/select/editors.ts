@@ -37,7 +37,7 @@ export default {
       {
         title: '边框-默认',
         options: ['border'],
-        target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
+        target: '.ant-select-selector'
       },
       {
         title: '边框-hover',

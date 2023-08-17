@@ -138,6 +138,10 @@ export default function ({
         allowClear
         disabled={disabled}
         onChange={onChange}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          //edit || debug ? triggerNode : document.body
+          triggerNode
+        }
       />
     </div>
   );
