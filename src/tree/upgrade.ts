@@ -44,7 +44,7 @@ export default function ({
   //=========== v1.0.10 end ===============
 
   /**
-    * @description v1.0.11 操作项增加图标、动态显隐表达式配置
+    * @description v1.0.11 操作项增加图标、动态显示表达式配置
     */
   data.actionBtns.forEach(btn => {
     if (!btn.iconConfig) {
