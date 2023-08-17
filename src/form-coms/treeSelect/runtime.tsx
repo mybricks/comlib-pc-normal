@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { TreeSelect } from 'antd';
+import { uniq } from 'lodash';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
 import { OutputIds } from '../types';
@@ -31,6 +32,7 @@ export default function Runtime({
   name
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
+  const [treeLoadedKeys, setTreeLoadKeys] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -109,7 +111,7 @@ export default function Runtime({
       const { node, resolve } = curNode.current as any;
 
       data.options = setTreeDataForLoadData(data, node, data.options, val);
-
+      setTreeLoadKeys(uniq([...treeLoadedKeys, node.key]));
       resolve();
     });
   }, []);
@@ -165,6 +167,7 @@ export default function Runtime({
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={getFieldNames(data)}
         onChange={onChange}
+        treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
       />
     </div>
   );
