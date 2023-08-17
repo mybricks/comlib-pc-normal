@@ -6,41 +6,23 @@ import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } fr
 import { ExpressionSandbox } from '../../package/com-utils';
 import css from './ActionBtns.less';
 
-export default function ActionBtns({ record, outputItem, data, env, outputs }: ActionBtnsProps) {
+export default function ActionBtns({
+  record,
+  outputItem,
+  data,
+  env,
+  outputs,
+  onError
+}: ActionBtnsProps) {
   const { treeData, removeConfirm } = data;
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 
-  /** 计算省略展示和正常展示的按钮列表 */
-  let ellipsisActionBtns: ActionBtn[] = [];
-  let actionBtns = data.actionBtns;
-  if (env.runtime && useEllipsis) {
-    let maxToEllipsisIdx = 0,
-      tempMaxToEllipsis = 0;
-    (data.actionBtns || []).forEach((btn) => {
-      try {
-        if (tempMaxToEllipsis < maxToEllipsis) {
-          maxToEllipsisIdx += 1;
-          if (!btn.hidden) {
-            tempMaxToEllipsis += 1;
-          }
-        }
-      } catch (e) {
-        // console.log(e);
-      }
-    });
-    ellipsisActionBtns = (data.actionBtns || []).slice(maxToEllipsisIdx).filter((btn) => {
-      const isHidden =
-        btn.hidden || (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
-      return !isHidden;
-    });
-    actionBtns = (data.actionBtns || []).slice(0, maxToEllipsisIdx);
-  }
-  actionBtns = actionBtns.filter((btn) => {
-    const isHidden =
-      btn.hidden || (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
-    return !isHidden;
-  });
+  const wrapperStyle: React.CSSProperties = {
+    paddingLeft: env.edit ? 25 : void 0,
+    justifyContent: 'end'
+  };
+
   /**
    * 删除节点
    * @param treeData treeNodes 数据
@@ -56,21 +38,6 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
       }
       return item;
     });
-  };
-
-  /**
-   * 按钮点击事件
-   * @param id 按钮id
-   */
-  const btnClick = (id) => {
-    if (id === MODIFY_BTN_ID && data.editInline) {
-      data.isEditing = record.key;
-    } else {
-      if (id === DELETE_BTN_ID) {
-        data.treeData = deleteNode(treeData, record.key).filter((def) => !!def) as TreeData[];
-      }
-      outputs[id](outputItem);
-    }
   };
 
   /**
@@ -99,19 +66,55 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
   };
 
   /**
+   * 按钮点击事件
+   * @param id 按钮id
+   */
+  const btnClick = (id) => {
+    if (id === MODIFY_BTN_ID && data.editInline) {
+      data.isEditing = record.key;
+    } else {
+      if (id === DELETE_BTN_ID) {
+        data.treeData = deleteNode(treeData, record.key).filter((def) => !!def) as TreeData[];
+      }
+      outputs[id](outputItem);
+    }
+  };
+
+  /**
+   * 计算按钮动态显示表达式
+   * @param btn 按钮数据
+   */
+  const getDynamicDisplay = (btn: ActionBtn): boolean => {
+    if (env.edit) return true;
+    let dynamicDisplay = true;
+    const context = {
+      ...outputItem
+    };
+    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    if (btn.displayScript) {
+      try {
+        dynamicDisplay = sandbox.executeWithTemplate(btn.displayScript);
+      } catch (error: any) {
+        onError?.(`树组件[${btn.title}]操作项: ${error}`);
+      }
+    }
+    return dynamicDisplay;
+  };
+
+  /**
    * 操作项图标渲染
    * @param btn 按钮数据
    * @returns JSX
    */
   const getNodeIcon = (btn: ActionBtn) => {
-    const { iconConfig } = btn;
+    const { iconConfig, title } = btn;
     if (iconConfig?.src === 'custom' && iconConfig?.customIcon)
       return (
         <Image
-          width={iconConfig?.size[1] || 14}
-          height={iconConfig?.size[0] || 14}
+          width={iconConfig?.size[1] ?? 14}
+          height={iconConfig?.size[0] ?? 14}
           style={{
-            marginRight: iconConfig?.gutter || 8
+            marginRight: title ? iconConfig?.gutter ?? 8 : void 0
           }}
           src={iconConfig?.customIcon}
           preview={false}
@@ -123,16 +126,48 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
           <span
             style={{
               fontSize: Math.max(...iconConfig?.size),
-              marginRight: iconConfig?.gutter || 8
+              marginRight: title ? iconConfig?.gutter ?? 8 : void 0
             }}
           >
-            {Icons[iconConfig?.innerIcon || ('EditOutlined' as string)]?.render()}
+            {Icons[iconConfig?.innerIcon ?? ('EditOutlined' as string)]?.render()}
           </span>
         )
       );
     }
     return void 0;
   };
+
+  /** 计算省略展示和正常展示的按钮列表 */
+  let ellipsisActionBtns: ActionBtn[] = [];
+  let actionBtns = data.actionBtns;
+  if (env.runtime && useEllipsis) {
+    let maxToEllipsisIdx = 0,
+      tempMaxToEllipsis = 0;
+    (data.actionBtns || []).forEach((btn) => {
+      try {
+        if (tempMaxToEllipsis < maxToEllipsis) {
+          maxToEllipsisIdx += 1;
+          if (!btn.hidden) {
+            tempMaxToEllipsis += 1;
+          }
+        }
+      } catch (e) {
+        // console.log(e);
+      }
+    });
+    ellipsisActionBtns = (data.actionBtns || []).slice(maxToEllipsisIdx).filter((btn) => {
+      const isHidden =
+        btn.hidden ?? (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
+      return !isHidden;
+    });
+    actionBtns = (data.actionBtns || []).slice(0, maxToEllipsisIdx);
+  }
+  actionBtns = actionBtns.filter((btn) => {
+    const dynamicDisplay = getDynamicDisplay(btn);
+    const isHidden =
+      btn.hidden ?? (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
+    return !isHidden && dynamicDisplay;
+  });
 
   /**
    * 普通按钮渲染
@@ -165,11 +200,6 @@ export default function ActionBtns({ record, outputItem, data, env, outputs }: A
         {renderBtn()}
       </div>
     );
-  };
-
-  const wrapperStyle: React.CSSProperties = {
-    paddingLeft: env.edit ? 25 : void 0,
-    justifyContent: 'end'
   };
 
   /**

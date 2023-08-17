@@ -653,13 +653,15 @@ export default {
     ]
   },
   '[data-action-btns]': actionBtnsEditor,
-  '[data-btn-id]': ({ data, focusArea }: EditorResult<Data>, cate1, cate2) => {
+  '[data-btn-id]': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
     if (!focusArea) return;
     const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
-    const cates = actionBtnEditor(btn);
+    const cates = actionBtnEditor(btn, data);
     cate1.title = cates[0].title;
     cate1.items = cates[0].items;
     cate2.title = cates[1].title;
     cate2.items = cates[1].items;
+    cate3.title = cates[2].title;
+    cate3.items = cates[2].items;
   }
 };
