@@ -136,6 +136,13 @@ export default {
               outputId: 'onChange'
             }
           },
+          {
+            title: '节点展开',
+            type: '_event',
+            options: {
+              outputId: 'onExpand'
+            }
+          }
         ]
       }
     ];
@@ -206,7 +213,7 @@ export default {
       {
         title: '异步加载输出',
         type: '_event',
-        ifVisible ({ data }: EditorResult<Data>) {
+        ifVisible({ data }: EditorResult<Data>) {
           return data.useLoadData
         },
         options: {
@@ -223,7 +230,7 @@ const refreshSchema = (data: Data, input, output) => {
   const trueLabelFieldName = data.labelFieldName || 'label';
   const trurChildrenFieldName = data.childrenFieldName || 'children';
 
-  const schema =  {
+  const schema = {
     type: 'array',
     items: {
       type: 'object',
@@ -252,9 +259,11 @@ const refreshSchema = (data: Data, input, output) => {
     }
   }
 
-  const setOptionsPin =  input.get('setOptions')
-  const setLoadDataPin =  input.get('setLoadData')
+  const setOptionsPin = input.get('setOptions')
+  const setLoadDataPin = input.get('setLoadData')
+  const setNodeDataPin = input.get('setNodeData')
   const loadDataPin = output.get('loadData')
+  const onExpandPin = output.get('onExpand')
 
   if (setOptionsPin) {
     setOptionsPin.setSchema(schema)
@@ -262,6 +271,10 @@ const refreshSchema = (data: Data, input, output) => {
 
   if (setLoadDataPin) {
     setLoadDataPin.setSchema(schema)
+  }
+
+  if (setNodeDataPin) {
+    setNodeDataPin.setSchema(schema.items)
   }
 
   if (loadDataPin) {
@@ -278,5 +291,9 @@ const refreshSchema = (data: Data, input, output) => {
         },
       }
     })
+  }
+
+  if (onExpandPin) {
+    onExpandPin.setSchema(schema.items);
   }
 }
