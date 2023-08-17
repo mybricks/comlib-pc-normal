@@ -7,7 +7,6 @@ export interface Option {
   disableCheckbox?: boolean
   selectable?: boolean;
   checkable?: boolean;
-  isLeaf?: boolean;
 }
 export interface Data {
   config: TreeSelectProps;

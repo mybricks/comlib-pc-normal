@@ -19,46 +19,6 @@ import css from './runtime.less';
 //   });
 // };
 
-/**
- * 根据key查找节点
- * @param treeData treeNodes 数据
- * @param key 节点标识
- * @param keyFieldName 节点标识字段
- * @param cb 回调函数
- * @returns
- */
-export const getNodeDataByKey = (treeData: Option[], key: string, keyFieldName, cb) => {
-  treeData.forEach((item) => {
-    if (item[keyFieldName] === key) {
-      cb(item);
-    } else if (item.children) {
-      getNodeDataByKey(item.children, key, keyFieldName, cb);
-    }
-  });
-};
-
-/**
- * 根据keyFieldName更新节点数据
- * @param treeData treeNodes 数据
- * @param newNodeData 新节点数据
- * @param keyFieldName 节点标识字段
- * @returns
- */
-export const updateNodeData = (treeData: Option[], newNodeData: Option, keyFieldName: string) => {
-  treeData = treeData.map((item) => {
-    if (item[keyFieldName] === newNodeData[keyFieldName]) {
-      item = {
-        ...item,
-        ...newNodeData
-      };
-    } else if (item.children) {
-      item.children = updateNodeData(item.children, newNodeData, keyFieldName);
-    }
-    return item;
-  });
-  return treeData;
-};
-
 export default function Runtime({
   title,
   env,
@@ -71,8 +31,6 @@ export default function Runtime({
   name
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
-  const keyFieldName = data.valueFieldName || 'value';
-  let expandKeys: React.Key[] = [];
 
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -140,14 +98,6 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
-
-    // 更新节点数据
-    inputs['setNodeData'] &&
-      inputs['setNodeData']((nodeData: Option) => {
-        if (typeCheck(nodeData, 'OBJECT')) {
-          data.options = [...updateNodeData(data.options, nodeData, keyFieldName)];
-        }
-      });
   }, []);
 
   useEffect(() => {
@@ -198,19 +148,6 @@ export default function Runtime({
     });
   };
 
-  const onExpand = (newExpandKeys) => {
-    if (newExpandKeys.length > expandKeys.length) {
-      const index = newExpandKeys.length - 1;
-      const currentExpandKey = newExpandKeys[index];
-      let currentNode = {};
-      getNodeDataByKey(data.options, currentExpandKey, keyFieldName, (node) => {
-        currentNode = node;
-      });
-      outputs['onExpand']({ ...currentNode });
-    }
-    expandKeys = newExpandKeys;
-  };
-
   return (
     <div className={css.select}>
       <TreeSelect
@@ -220,7 +157,6 @@ export default function Runtime({
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={getFieldNames(data)}
         onChange={onChange}
-        onTreeExpand={onExpand}
       />
     </div>
   );
