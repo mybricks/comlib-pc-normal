@@ -78,12 +78,12 @@ const SlotContent = (props) => {
               } else {
                 childrenInputs[com.id] = com.inputs;
               }
+            }
 
-              if (typeof item?.visible !== 'undefined') {
-                item.visible = com.style.display !== 'none';
-              } else {
-                item['visible'] = true;
-              }
+            if (typeof item?.visible !== 'undefined') {
+              item.visible = com.style.display !== 'none';
+            } else {
+              item['visible'] = true;
             }
 
             const flexBasis = isMobile
