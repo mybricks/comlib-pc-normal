@@ -1,11 +1,12 @@
 import { Data } from './types';
+import { uuid } from '../utils';
 
 interface Result {
   data: Data;
   style?: any;
 }
 
-let tempOptions = [],
+let tempOptions: any = [],
   addOption,
   delOption;
 
@@ -57,6 +58,28 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.isCustom = value;
+          }
+        }
+      },
+      {
+        title: '触发方式',
+        type: 'Select',
+        options: [
+          {
+            label: '悬浮',
+            value: 'hover'
+          },
+          {
+            label: '点击',
+            value: 'click'
+          }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.trigger || 'hover';
+          },
+          set({ data }: EditorResult<Data>, val: 'hover' | 'click') {
+            data.trigger = val;
           }
         }
       },
@@ -120,7 +143,11 @@ export default {
           onAdd: () => {
             const defaultOption = {
               label: `选项${tempOptions.length + 1}`,
-              value: ''
+              link: '',
+              useIcon: false,
+              icon: 'HomeOutlined',
+              iconColor: 'rgba(0, 0, 0, 0.85)',
+              key: uuid()
             };
             addOption(defaultOption);
             return defaultOption;
@@ -135,12 +162,35 @@ export default {
               title: '跳转链接(可选)',
               type: 'textarea',
               description: '下拉菜单中选项可跳转链接，可不填',
-              value: 'value'
+              value: 'link'
+            },
+            {
+              title: '唯一标识',
+              type: 'text',
+              value: 'key'
             },
             {
               title: '禁用',
               type: 'switch',
               value: 'disabled'
+            },
+            {
+              title: '图标',
+              type: 'switch',
+              value: 'useIcon'
+            },
+            {
+              title: '图标库',
+              type: 'icon',
+              ifVisible(item) {
+                return item.useIcon || false;
+              },
+              value: 'icon'
+            },
+            {
+              title: '文案颜色',
+              type: 'colorpicker',
+              value: 'iconColor'
             }
           ]
         },

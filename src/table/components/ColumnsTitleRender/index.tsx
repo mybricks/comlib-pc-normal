@@ -13,6 +13,7 @@ import {
   WidthTypeEnum
 } from '../../types';
 import css from './style.less';
+import { OutputIds } from '../../constants';
 
 const { Column, ColumnGroup } = Table;
 
@@ -20,11 +21,22 @@ interface Props {
   env: Env;
   data: Data;
   slots: any;
+  outputs: any;
+  dataSource: any;
   filterMap: any;
   renderCell: any;
   focusRowIndex: number | null;
 }
-export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Props) => {
+export default ({
+  env,
+  data,
+  slots,
+  dataSource,
+  outputs,
+  filterMap,
+  renderCell,
+  focusRowIndex
+}: Props) => {
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -122,6 +134,12 @@ export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Prop
             return get(record, cItem.dataIndex) == value;
           }
         : null;
+
+    const filterVisibleProps = cItem.filter?.hideFilterDropdown
+      ? {
+          filterDropdownVisible: false
+        }
+      : {};
     return (
       <Column
         {...(cItem as any)}
@@ -140,6 +158,11 @@ export default ({ env, data, slots, filterMap, renderCell, focusRowIndex }: Prop
             data
           });
         }}
+        onFilterDropdownVisibleChange={(visible) => {
+          if (!visible || typeof outputs[OutputIds.FILTER_CLICK] !== 'function') return;
+          outputs[OutputIds.FILTER_CLICK]({ dataIndex: cItem.dataIndex, dataSource, item: cItem });
+        }}
+        {...filterVisibleProps}
         showSorterTooltip={false}
         sortOrder={data?.sortParams?.id === `${cItem.dataIndex}` ? data?.sortParams?.order : null}
         sorter={sorter}

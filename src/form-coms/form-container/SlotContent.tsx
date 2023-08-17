@@ -5,14 +5,18 @@ import FormActions from './components/FormActions';
 import InlineLayout from './layout/InlineLayout';
 import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
+import QueryFilter from './layout/QueryFilter';
 import { getFormItem } from './utils';
 import { checkIfMobile } from '../../utils';
 
 const SlotContent = (props) => {
   const { slots, data, childrenInputs, outputs, submit, env } = props;
+  const layoutType = data.layoutType;
+
   const layout = data.config?.layout || data.layout;
 
   const isEmpty = slots['content'].size === 0 && env.edit;
+
   const isMobile = checkIfMobile(env);
 
   const isInlineModel = useMemo(() => {
@@ -28,16 +32,17 @@ const SlotContent = (props) => {
   }, [layout]);
 
   const FormActionsWrapper = () => {
-    return <FormActions data={data} outputs={outputs} submit={submit} isMobile={isMobile} />;
+    return (
+      <FormActions data={data} env={env} outputs={outputs} submit={submit} isMobile={isMobile} />
+    );
   };
 
   const content = useMemo(() => {
     return slots['content'].render({
       itemWrap(com: { id; jsx; name }) {
         // todo name
-        const item = getFormItem(data.items, com);
-
-        return (
+        const { item, isFormItem } = getFormItem(data, com);
+        return isFormItem ? (
           <FormItem
             data={data}
             slots={slots}
@@ -46,6 +51,8 @@ const SlotContent = (props) => {
             isMobile={isMobile}
             // field={props?.field}
           />
+        ) : (
+          <>{com.jsx}</>
         );
       },
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
@@ -53,7 +60,7 @@ const SlotContent = (props) => {
 
         const jsx = comAray?.map((com, idx) => {
           if (com) {
-            const item = getFormItem(data.items, com);
+            const { item, isFormItem } = getFormItem(data, com);
 
             if (!item) {
               if (items.length === comAray.length) {
@@ -64,10 +71,19 @@ const SlotContent = (props) => {
 
             const { widthOption, span, width } = item;
 
-            if (item.comName) {
-              childrenInputs[com.name] = com.inputs;
-            } else {
-              childrenInputs[com.id] = com.inputs;
+            // 表单项的处理
+            if (isFormItem) {
+              if (item.comName) {
+                childrenInputs[com.name] = com.inputs;
+              } else {
+                childrenInputs[com.id] = com.inputs;
+              }
+
+              if (typeof item?.visible !== 'undefined') {
+                item.visible = com.style.display !== 'none';
+              } else {
+                item['visible'] = true;
+              }
             }
 
             const flexBasis = isMobile
@@ -75,12 +91,6 @@ const SlotContent = (props) => {
               : widthOption === 'px'
               ? `${width}px`
               : `${(span * 100) / 24}%`;
-
-            if (typeof item?.visible !== 'undefined') {
-              item.visible = com.style.display !== 'none';
-            } else {
-              item['visible'] = true;
-            }
 
             if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
               return (
@@ -103,40 +113,55 @@ const SlotContent = (props) => {
           return <div key={idx}>组件错误</div>;
         });
 
-        return (
-          <Row style={{ width: '100%' }}>
-            {isInlineModel && (
-              <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
-                {jsx}
-              </InlineLayout>
-            )}
-            {isHorizontalModel && (
-              <HorizontalLayout
-                data={data}
-                isEmpty={isEmpty}
-                isMobile={isMobile}
-                actions={<FormActionsWrapper />}
-              >
-                {jsx}
-              </HorizontalLayout>
-            )}
-            {isVerticalModel && (
-              <VerticalLayout
-                data={data}
-                isEmpty={isEmpty}
-                isMobile={isMobile}
-                actions={<FormActionsWrapper />}
-              >
-                {jsx}
-              </VerticalLayout>
-            )}
-          </Row>
-        );
+        if (layoutType === 'QueryFilter') {
+          // 查询表单，支持展开/收起
+          return (
+            <QueryFilter
+              env={env}
+              data={data}
+              isEmpty={isEmpty}
+              comAray={comAray}
+              outputs={outputs}
+              submit={submit}
+              childrenInputs={childrenInputs}
+            ></QueryFilter>
+          );
+        } else {
+          return (
+            <Row style={{ width: '100%' }}>
+              {isInlineModel && (
+                <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
+                  {jsx}
+                </InlineLayout>
+              )}
+              {isHorizontalModel && (
+                <HorizontalLayout
+                  data={data}
+                  isEmpty={isEmpty}
+                  isMobile={isMobile}
+                  actions={<FormActionsWrapper />}
+                >
+                  {jsx}
+                </HorizontalLayout>
+              )}
+              {isVerticalModel && (
+                <VerticalLayout
+                  data={data}
+                  isEmpty={isEmpty}
+                  isMobile={isMobile}
+                  actions={<FormActionsWrapper />}
+                >
+                  {jsx}
+                </VerticalLayout>
+              )}
+            </Row>
+          );
+        }
       }
       // inputValues: {}
       // key: props?.field?.name
     });
-  }, [layout, slots, isMobile]);
+  }, [layout, slots, isMobile, layoutType]);
 
   return content;
 };

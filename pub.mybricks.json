@@ -1,6 +1,7 @@
 {
   "debugger": "pc-spa",
   "componentType": "PC",
+  "namespace": "mybricks.normal-pc",
   "comAry": [
     {
       "title": "常规",
@@ -57,7 +58,8 @@
         "./src/form-coms/time-picker/com.json",
         "./src/form-coms/time-range-picker/com.json",
         "./src/form-coms/code/com.json",
-        "./src/form-coms/input-richtext/com.json"
+        "./src/form-coms/input-richtext/com.json",
+        "./src/form-coms/search/com.json"
       ]
     },
     {
@@ -104,7 +106,8 @@
     "./src/_pick/com.json",
     "./src/_post-message/com.json",
     "./src/_receive-message/com.json",
-    "./src/_excel/com.json"
+    "./src/_excel/com.json",
+    "./src/_pinyin/com.json"
   ],
   "externals": [
     {

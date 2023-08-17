@@ -37,6 +37,7 @@ export interface Filter {
   enable?: boolean;
   type?: FilterTypeEnum;
   options?: any[];
+  hideFilterDropdown?: boolean
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
 }
@@ -177,6 +178,7 @@ export interface Data {
   headStyle: any;
   contentStyle;
   enableRowClick?: boolean;
+  enableRowDoubleClick?: boolean;
   enableRowFocus: boolean,
   focusRowStyle: any,
   domainModel: {

@@ -31,6 +31,7 @@ export default function (props: RuntimeParams<Data>) {
   // const editModalFormInputs = useRef<{ [x: string]: any }>();
   // const createModalFormInputs = useRef<{ [x: string]: any }>();
 
+  const pageNumRef = useRef(1);
   const queryParamsRef = useRef({});
   const ordersParamsRef = useRef<OrderParams[]>([]);
 
@@ -73,10 +74,12 @@ export default function (props: RuntimeParams<Data>) {
       // });
 
       inputs['query']((val, relOutputs) => {
+        pageNumRef.current = 1;
         getListData(val, { pageNum: 1, pageSize: data.pageSize }, true, relOutputs);
       });
 
       inputs['pageChange']((val, relOutputs) => {
+        pageNumRef.current = val.pageNum;
         getListData(
           queryParamsRef.current,
           { pageNum: val.pageNum, pageSize: data.pageSize },
@@ -127,7 +130,10 @@ export default function (props: RuntimeParams<Data>) {
             .then((r) => {
               relOutputs[OutputIds.INSERT.THEN](r?.response);
               message.success('创建成功');
-              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+              getListData(queryParamsRef.current, {
+                pageNum: pageNumRef.current,
+                pageSize: data.pageSize
+              });
             })
             .catch((msg) => {
               relOutputs[OutputIds.INSERT.CATCH](msg);
@@ -145,7 +151,10 @@ export default function (props: RuntimeParams<Data>) {
             .then((r) => {
               message.success('更新成功');
               relOutputs[OutputIds.EDIT.THEN](r?.response);
-              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+              getListData(queryParamsRef.current, {
+                pageNum: pageNumRef.current,
+                pageSize: data.pageSize
+              });
             })
             .catch((msg) => {
               relOutputs[OutputIds.EDIT.CATCH](msg);
@@ -162,7 +171,10 @@ export default function (props: RuntimeParams<Data>) {
             .then((r) => {
               message.success('删除成功');
               relOutputs[OutputIds.DELETE.THEN](r?.response);
-              getListData(queryParamsRef.current, { pageNum: 1, pageSize: data.pageSize });
+              getListData(queryParamsRef.current, {
+                pageNum: pageNumRef.current,
+                pageSize: data.pageSize
+              });
             })
             .catch((msg) => {
               relOutputs[OutputIds.DELETE.CATCH](msg);
@@ -267,6 +279,7 @@ export default function (props: RuntimeParams<Data>) {
     if (env.runtime) {
       if (item.key === 'submit') {
         formInputs.current?.submit().onFinish((val) => {
+          pageNumRef.current = 1;
           getListData(val, { pageNum: 1, pageSize: data.pageSize }, true);
         });
       }
@@ -303,7 +316,7 @@ export default function (props: RuntimeParams<Data>) {
             pageSize: pageParams.pageSize,
             usePagination
           },
-          ordersParams
+          ordersParams: ordersParams.length ? ordersParams : [{ fieldName: 'id', order: 'DESC' }]
         }
       )
         .then((r: any) => {
@@ -405,6 +418,7 @@ export default function (props: RuntimeParams<Data>) {
                     eventName: 'pageChange',
                     getOutputs: () => tableOutputs.current,
                     cb: (val) => {
+                      pageNumRef.current = val.pageNum;
                       getListData(queryParamsRef.current, {
                         pageNum: val.pageNum,
                         pageSize: data.pageSize

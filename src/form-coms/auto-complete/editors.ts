@@ -90,21 +90,27 @@ export default {
         title: '静态选项配置',
         type: 'array',
         options: {
-          getTitle: ({ value }) => {
-            return value;
+          getTitle: ({ label }) => {
+            return label;
           },
           onAdd: () => {
             const defaultOption = {
-              value: `选项${optionsLength + 1}`
+              value: `选项${optionsLength + 1}`,
+              label: `选项${optionsLength + 1}`
             };
             addOption(defaultOption);
             return defaultOption;
           },
           items: [
             {
+              title: '选项标签',
+              type: 'textarea',
+              value: 'label'
+            },
+            {
               title: '选项值',
               type: 'valueSelect',
-              options: ['text'],
+              options: ['text', 'number', 'boolean'],
               description: '选项的唯一标识，可以修改为有意义的值',
               value: 'value'
             }

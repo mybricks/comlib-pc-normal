@@ -20,6 +20,7 @@ export default {
         id: connector.id,
         title: connector.title,
         type: connector.type,
+        connectorName: connector.connectorName,
         script: connector.script,
         inputSchema: connector.inputSchema,
         outputSchema: connector.outputSchema

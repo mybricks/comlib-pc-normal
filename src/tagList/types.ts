@@ -23,6 +23,7 @@ export interface Data extends SpaceProps {
   tags: Array<Tag>;
   dynamic?: boolean;
   appendAble?: boolean;
+  useAppendBtn?: boolean;
   checkable?: boolean;
   tagSize: TagSize;
   tagStyle: Partial<{

@@ -3,7 +3,7 @@ import { uuid } from '../../../utils';
 import { InputIds, OutputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } from '../../schema';
-import { getColumnItem, getColumnsSchema } from '../../utils';
+import { getColumnItem } from '../../utils';
 import createDataFormatEditor from '../../../utils/dataFormatter';
 
 const formatCode = `
@@ -79,13 +79,16 @@ const createBaseEditor = ({ data }) => ({
         return ![ContentTypeEnum.Group].includes(item.contentType);
       },
       value: {
-        get({ data, focusArea }: EditorResult<Data>) {
+        get({ data, input, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           return {
             value: ret,
-            schema: getColumnsSchema(data),
+            schema: {
+              type: 'object',
+              properties: getTableSchema({ data }) || {}
+            },
             placeholder: '不填默认使用 列名 作为字段',
             disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
           };
@@ -144,15 +147,15 @@ const createBaseEditor = ({ data }) => ({
             slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
             slot.get(slotId).outputs.add(OutputIds.Edit_Table_Data, '更新行数据', {
               type: 'object',
-                properties: {
-                  index: {
-                    type: 'number'
-                  },
-                  value: {
-                    type: 'any'
-                  }
+              properties: {
+                index: {
+                  type: 'number'
+                },
+                value: {
+                  type: 'any'
                 }
               }
+            }
             );
           } else {
             if (slot.get(column.slotId)) {

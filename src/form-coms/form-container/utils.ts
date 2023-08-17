@@ -1,4 +1,4 @@
-import { Data, FormItems } from './types'
+import { Data, FormItems, AdditionalItem } from './types'
 import { labelWidthTypes } from './constants'
 import { typeCheck } from '../../utils'
 
@@ -49,14 +49,28 @@ export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data 
   }
 };
 
-export const getFormItem = (formItems: FormItems[], com) => {
-  const item = formItems.find((item) => {
+export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: true } | { item: AdditionalItem, isFormItem: false } => {
+  const { items, additionalItems } = data;
+  let item, isFormItem = false;
+
+  // 查找表单项
+  item = items.find((item) => {
     if (item.comName) {
       return item.comName === com.name
     }
 
     return item.id === com.id
   });
+  if (item) return { item, isFormItem: true };
 
-  return item
+  // 查找非表单项
+  item = additionalItems.find((item) => {
+    if (item.comName) {
+      return item.comName === com.name
+    }
+    return item.id === com.id
+  });
+  if (item) return { item, isFormItem: false };
+
+  return { item, isFormItem };
 }

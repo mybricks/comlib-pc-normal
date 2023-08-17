@@ -1,148 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Empty, Tree, Input } from 'antd';
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import * as Icons from '@ant-design/icons';
+import { Empty, Tree, Input, Image, Space } from 'antd';
 import { Data, TreeData } from './constants';
-import { pretreatTreeData, setCheckboxStatus } from './utils';
+import {
+  pretreatTreeData,
+  setCheckboxStatus,
+  generateList,
+  updateNodeData,
+  getParentKey,
+  filterCheckedKeysByCheckedValues,
+  excludeParentKeys,
+  outputNodeValues
+} from './utils';
 import ActionBtns from './ActionBtn';
 import { MODIFY_BTN_ID } from './constants';
 import { deepCopy, typeCheck, uuid } from '../utils';
-/**
- * 数组扁平化
- * @param arr 数组
- * @returns
- */
-const flatten = (arr: any[]) => {
-  return arr.reduce((res, next) => {
-    return res.concat(Array.isArray(next) ? flatten(next) : next);
-  }, []);
-};
 
-/**
- * 获取所有叶子节点
- * @param treeData treeNodes 数据
- * @returns
- */
-const getLeafNodes = (treeData: TreeData[]) => {
-  const result: any[] = [];
-  if (!treeData || treeData.length === 0) return;
-  treeData.forEach((item) => {
-    if (!item.children || item.children.length === 0) result.push(item.key);
-    else result.push(getLeafNodes(item.children || []));
-  });
-  return flatten(result);
-};
-
-/**
- * 排除父节点
- * @param checkedKeys 选中复选框的树节点 key 值
- * @param treeData treeNodes 数据
- * @returns
- */
-const excludeParentKeys = (treeData: TreeData[], checkedKeys: React.Key[]) => {
-  const result: any = [],
-    leafNodes = getLeafNodes(treeData);
-
-  if (checkedKeys && Array.isArray(checkedKeys)) {
-    checkedKeys.forEach((key) => {
-      if (leafNodes.indexOf(key) !== -1) result.push(key);
-    });
-  }
-  return result;
-};
-
-/**
- * 输出选中节点的 value 值
- * @param treeData treeNodes 数据
- * @param checkedKeys 选中复选框的树节点 key 值
- * @returns
- */
-export const outputNodeValues = (treeData: TreeData[], keys: React.Key[]) => {
-  const result: any[] = [];
-  treeData
-    .filter((def) => !!def)
-    .forEach((item) => {
-      if ((keys || []).includes(item.key)) result.push(item.value);
-      result.push(outputNodeValues(item.children || [], keys));
-    });
-  return flatten(result);
-};
-
-/**
- * 根据keyFieldName设置节点数据
- * @param treeData treeNodes 数据
- * @param newNodeData 节点数据
- * @returns
- */
-const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldName: string) => {
-  treeData = treeData.map((item) => {
-    if (item.key === newNodeData[keyFieldName]) {
-      item = {
-        ...item,
-        ...newNodeData
-      };
-    } else if (item.children) {
-      item.children = updateNodeData(item.children, newNodeData, keyFieldName);
-    }
-    return item;
-  });
-  return treeData;
-};
-
-/**
- * 根据选中节点的 value 此筛选出选中节点的 key
- * @param treeData treeNodes 数据
- * @param checkedValues 选中复选框的树节点 key 值
- * @returns
- */
-const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedValues: string[]) => {
-  if (!treeData || treeData.length === 0) return;
-  const result: any[] = [];
-  treeData.forEach((item) => {
-    if ((checkedValues || []).includes(item.value)) {
-      result.push(item.key);
-    }
-    if (item.children) {
-      result.push(filterCheckedKeysByCheckedValues(item.children || [], checkedValues));
-    }
-  });
-  return flatten(result);
-};
-/**
- * 查找父节点
- * @param key 子节点key
- * @param tree
- * @returns
- */
-const getParentKey = (key, tree) => {
-  let parentKey;
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i];
-    if (node.children) {
-      if (node.children.some((item) => item.key === key)) {
-        parentKey = node.key;
-      } else if (getParentKey(key, node.children)) {
-        parentKey = getParentKey(key, node.children);
-      }
-    }
-  }
-  return parentKey;
-};
-/**
- * 获取树的key数组
- * @param treeData 树节点数据
- * @param dataList key数组
- */
-const generateList = (treeData, dataList) => {
-  for (let i = 0; i < treeData.length; i++) {
-    const node = treeData[i];
-    const { key, title } = node;
-    dataList.push({ key, title });
-    if (node.children) {
-      generateList(node.children, dataList);
-    }
-  }
-};
-
-export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, onError, logger }: RuntimeParams<Data>) {
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
     data.defaultExpandAll ? data.expandedKeys : []
@@ -242,6 +116,14 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
         inputs['enableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
         });
+
+      inputs.setSelectedKeys &&
+        inputs.setSelectedKeys((keys: Array<string>) => {
+          if (!Array.isArray(keys)) {
+            return onError('设置选中项参数是数组');
+          }
+          setSelectedKeys(keys);
+        });
     }
   }, []);
 
@@ -255,21 +137,12 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     });
   }, [checkedKeys]);
 
-  // useEffect(() => {
-  //   inputs['outSelectedValues']((val, relOutputs) => {
-  //     relOutputs['outSelectedValues'](outputNodeValues(data.treeData, selectedKeys));
-  //   });
-  // }, [selectedKeys]);
-
+  /**
+   * 勾选事件处理
+   * @param checkedKeys
+   */
   const onCheck = useCallback((checkedKeys: React.Key[], info) => {
-    // if (env.runtime) {
-    //   if (!data.outParentKeys) {
-    //     const noParentKeys = excludeParentKeys(checkedKeys, data.treeData);
-    //     outputs["check"](noParentKeys);
-    //   } else {
-    //     outputs["check"](checkedKeys);
-    //   }
-    // }
+    if (env.edit) return;
     const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
     data.checkedKeys = [...checked];
     setCheckedKeys([...checked]);
@@ -281,13 +154,19 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       outputs['check'](outputNodeValues(data.treeData, resultKeys));
     }
   }, []);
-
+  /**
+   * 展开事件处理
+   * @param expandedKeys
+   */
   const onExpand = useCallback((expandedKeys: React.Key[]) => {
     data.expandedKeys = [...expandedKeys];
     setExpandedKeys([...expandedKeys]);
     setAutoExpandParent(false);
   }, []);
-
+  /**
+   * 选择事件处理
+   * @param selectedKeys
+   */
   const onSelect = (selectedKeys: React.Key[], { node, selected }) => {
     const selectedValues = outputNodeValues(data.treeData, selectedKeys);
     if (data.clickExpandable) {
@@ -302,6 +181,12 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     outputs['click'](selectedValues);
   };
 
+  /**
+   * 添加节点渲染
+   * @param item 树节点数据
+   * @param isRoot 是否为根节点
+   * @returns JSX
+   */
   const renderAddTitle = (item, isRoot?: boolean) => {
     item.title = env.i18n(item.title);
     item.placeholder = env.i18n(item.placeholder);
@@ -360,8 +245,45 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
     );
   };
 
+  /**
+   * 树节点图标渲染
+   * @param item 节点数据
+   * @returns JSX
+   */
+  const getNodeIcon = (item) => {
+    const { iconConfig } = data;
+    <Space size={iconConfig?.gutter}></Space>;
+    if (item.icon || (iconConfig?.defaultSrc === 'custom' && iconConfig?.customIcon))
+      return (
+        <Image
+          width={iconConfig?.size[1] || 14}
+          height={iconConfig?.size[0] || 14}
+          src={item.icon || iconConfig?.customIcon}
+          preview={false}
+        />
+      );
+    if (iconConfig?.defaultSrc === 'inner') {
+      return (
+        Icons && (
+          <span style={{ fontSize: Math.max(...iconConfig?.size) }}>
+            {Icons[iconConfig?.innerIcon || ('FolderOpenOutlined' as string)]?.render()}
+          </span>
+        )
+      );
+    }
+    return void 0;
+  };
+
+  /**
+   * 树节点标题渲染
+   * @param item 树节点数据
+   * @returns JSX
+   */
   const renderTitle = (item) => {
     item.title = env.i18n(item.title || '');
+
+    const Icon = getNodeIcon(item);
+
     // 搜索
     const index = item.title.indexOf(data.searchValue);
     const beforeStr = item.title.substr(0, index);
@@ -372,8 +294,8 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       alignItems: 'center'
     };
     // 修改
-    const titleStyle = {
-        display: data.isEditing === item.key ? 'none' : 'block'
+    const titleStyle: CSSProperties = {
+        display: data.isEditing === item.key ? 'none' : void 0
       },
       inputStyle = {
         display: data.isEditing === item.key ? 'block' : 'none'
@@ -383,6 +305,23 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       outputItem.key = outputItem._key;
     }
 
+    /**只读态 */
+    const title = (
+      <Space size={data.iconConfig?.gutter} style={titleStyle} className="title">
+        {Icon}
+        {index > -1 ? (
+          <>
+            {beforeStr}
+            <span style={{ color: '#f00' }}>{data.searchValue}</span>
+            {afterStr}
+          </>
+        ) : (
+          item.title
+        )}
+      </Space>
+    );
+
+    /**编辑态 */
     const editInput = (
         <Input
           style={inputStyle}
@@ -404,31 +343,23 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       actionBtns =
         data.isEditing !== item.key &&
         data.useActions &&
-        ActionBtns({ data, record: item, outputItem: outputItem, env, outputs });
-    if (index > -1) {
-      return (
-        <div style={wrapperStyle}>
-          <span style={titleStyle}>
-            {beforeStr}
-            <span style={{ color: '#f00' }}>{data.searchValue}</span>
-            {afterStr}
-          </span>
-          {editInput}
-          {actionBtns}
-        </div>
-      );
-    }
+        ActionBtns({ data, record: item, outputItem, env, outputs });
     return (
       <div style={wrapperStyle}>
-        <span style={titleStyle} className="title">
-          {item.title}
-        </span>
+        {title}
         {editInput}
         {actionBtns}
       </div>
     );
   };
 
+  /**
+   * 树节点遍历渲染
+   * @param treeData 树数据
+   * @param depth 当前层级
+   * @param parent 父节点数据
+   * @returns JSX
+   */
   const renderTreeNode = (treeData: TreeData[], depth = 0, parent = { key: rootKey }) => {
     const { TreeNode } = Tree;
     const hasAddNode = data.addable && (!data.maxDepth || depth < data.maxDepth);

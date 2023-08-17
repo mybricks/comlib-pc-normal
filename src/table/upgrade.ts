@@ -2,9 +2,10 @@ import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 import { ContentTypeEnum, IColumn } from './types';
 import { OutputIds } from './constants';
-import { upgradeSchema } from './schema'
+import { Schemas, upgradeSchema } from './schema'
 
 import { Data } from './types';
+import { addFilterIO } from './editors/table-item/filterEditor';
 
 export default function ({ data, setDeclaredStyle, id, slot, output, input }: UpgradeParams<Data>): boolean {
   /**
@@ -51,7 +52,7 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
       item.contentStyle = {}
     }
   });
-  
+
   /*
   * 更新行数据 添加插槽列的新输出
   */
@@ -74,7 +75,7 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
 
   const UpdateColumnsOutput = (columns: IColumn[]) => {
     columns.forEach((column) => {
-      if (column.contentType === ContentTypeEnum.SlotItem && slot.get(column.slotId)) {
+      if (column.contentType === ContentTypeEnum.SlotItem && slot?.get(column.slotId)) {
         addOutput(column.slotId, OutputIds.Edit_Table_Data);
       }
       if (column.children) {
@@ -87,5 +88,11 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
   // 列插槽作用域schema
   upgradeSchema({ data, output, input, slot });
 
+  const useFilter = data.columns.some((item) => item.filter?.enable);
+  if (useFilter) {
+    output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
+  }
+
+  addFilterIO({ data, output, input })
   return true;
 }

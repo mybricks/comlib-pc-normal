@@ -60,7 +60,9 @@ export const InputIds = {
   SET_SHOW_COLUMNS: 'showColumns',
 
   //动态设置显示表头
-  SET_SHOW_TitleS: 'showTitles'
+  SET_SHOW_TitleS: 'showTitles',
+  // 开启关闭所有展开项
+  EnableAllExpandedRows: 'enableAllExpandedRows'
 };
 export const OutputIds = {
   // 输出勾选项
@@ -74,12 +76,16 @@ export const OutputIds = {
 
   // 自动输出勾选项
   ROW_SELECTION: 'rowSelection',
+  // 点击筛选触发
+  FILTER_CLICK: 'filterClick',
   // 筛选事件触发
   FILTER: 'filter',
   // 排序事件触发
   SORTER: 'sorter',
   // 点击行触发
   ROW_CLICK: 'rowClick',
+  // 双击行触发
+  ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData'
 };
 

@@ -271,6 +271,67 @@ export default {
       return {
         title: '分页器'
       };
-    }
+    },
+    style: [
+      {
+        title: '页码',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: `.ant-pagination-item`
+      },
+      {
+        title: '页码字体',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        initValue: {
+          color: '#000000'
+        },
+        target: `.ant-pagination-item a`
+      },
+      {
+        title: '页码Hover',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: `.ant-pagination-item:hover`,
+        domTarget: '.ant-pagination-item'
+      },
+      {
+        title: '页码Hover字体',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        initValue: {
+          color: '#000000'
+        },
+        target: `.ant-pagination-item:hover a`,
+        domTarget: '.ant-pagination-item'
+      },
+      {
+        title: '页码激活态',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: `.ant-pagination-item-active`
+      },
+      {
+        title: '页码激活态字体',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        },
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        initValue: {
+          color: '#000000'
+        },
+        target: `.ant-pagination-item-active a`
+      }
+    ]
   }
 };

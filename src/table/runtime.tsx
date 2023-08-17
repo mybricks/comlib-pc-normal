@@ -44,6 +44,8 @@ export default function (props: RuntimeParams<Data>) {
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
+  // 显示数据
+  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
 
   const rowKey = data.rowKey || DefaultRowKey;
 
@@ -56,8 +58,12 @@ export default function (props: RuntimeParams<Data>) {
       const dataIndex = Array.isArray(cItem.dataIndex)
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;
-      if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
+      if (!cItem.filter?.enable) {
+        res[env.edit ? cItem.key : dataIndex] = null;
+      } else if (cItem.filter?.filterSource !== FilterTypeEnum.Request) {
         res[env.edit ? cItem.key : dataIndex] = cItem.filter.options || [];
+      } else {
+        res[env.edit ? cItem.key : dataIndex] = [];
       }
     });
     setFilterMap(res);
@@ -143,7 +149,14 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置表头
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
         inputs[InputIds.SET_SHOW_TitleS]((val) => {
-          data.columns = val;
+          // 需要保留的列
+          const previousDataIndex = val
+            .filter((item) => item.usePrevious)
+            .map((item) => item.dataIndex);
+          data.columns = val
+            .filter((item) => !item.usePrevious)
+            .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
+          initFilterMap();
         });
       }
 
@@ -180,6 +193,21 @@ export default function (props: RuntimeParams<Data>) {
     },
     []
   );
+
+  useEffect(() => {
+    if (!env.runtime || !data.useExpand) return;
+    console.log('realShowDataSource1', realShowDataSource);
+    // 开启关闭所有展开项
+    inputs[InputIds.EnableAllExpandedRows]((enable) => {
+      console.log(
+        'realShowDataSource2',
+        expandedRowKeys,
+        realShowDataSource,
+        realShowDataSource.map((item) => item[rowKey])
+      );
+      setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
+    });
+  }, [realShowDataSource]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -313,7 +341,7 @@ export default function (props: RuntimeParams<Data>) {
       // 是否后端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
       if (!usePagination && Array.isArray(ds)) {
-        temp = formatDataSource(ds);
+        temp = formatDataSource(ds, rowKey);
       } else if (usePagination && ds && typeof ds === 'object') {
         /**
          * 分页特殊处理逻辑
@@ -325,11 +353,11 @@ export default function (props: RuntimeParams<Data>) {
          */
         const dsKey = Object.keys(ds);
         if (Array.isArray(ds?.dataSource)) {
-          temp = formatDataSource(ds?.dataSource);
+          temp = formatDataSource(ds?.dataSource, rowKey);
         } else {
           const arrayItemKey = dsKey.filter((key) => !!Array.isArray(ds[key]));
           if (arrayItemKey.length === 1) {
-            temp = formatDataSource(ds?.[arrayItemKey[0]]);
+            temp = formatDataSource(ds?.[arrayItemKey[0]], rowKey);
           } else {
             console.error('[数据表格]：未传入列表数据', ds);
           }
@@ -416,6 +444,7 @@ export default function (props: RuntimeParams<Data>) {
     return ColumnsTitleRender({
       ...props,
       filterMap,
+      dataSource,
       focusRowIndex,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
@@ -485,15 +514,24 @@ export default function (props: RuntimeParams<Data>) {
 
   // 设计态数据mock
   const defaultDataSource = useMemo(() => {
-    return getDefaultDataSource(data.columns);
-  }, [data.columns]);
+    return getDefaultDataSource(data.columns, rowKey);
+  }, [data.columns, rowKey]);
 
   const onRow = useCallback(
-    (record, index) => {
+    (_record, index) => {
+      const { [DefaultRowKey]: _, ...record } = _record;
       return {
         onClick: () => {
           if (data.enableRowClick) {
             outputs[OutputIds.ROW_CLICK]({ record, index });
+          }
+          if (data.enableRowFocus) {
+            setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+        },
+        onDoubleClick: () => {
+          if (data.enableRowDoubleClick) {
+            outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
           }
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
@@ -529,9 +567,6 @@ export default function (props: RuntimeParams<Data>) {
     // 当任意列为自适应时，宽度为100%
     return hasAuto ? '100%' : width;
   };
-
-  // 显示数据
-  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
 
   // 当数据发生变化时，重新设置所有行展开
   useEffect(() => {
@@ -588,7 +623,7 @@ export default function (props: RuntimeParams<Data>) {
                       }
                       return slots[SlotIds.EXPAND_CONTENT].render({
                         inputValues,
-                        key: `${InputIds.EXP_COL_VALUES}-${index}`
+                        key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
                       });
                     },
                     expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置

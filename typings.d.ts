@@ -80,6 +80,7 @@ interface UpgradeParams<T> {
   config: {
     get: (id: string) => ConfigInstance;
   }
+  children: any
 }
 
 type ConfigInstance = {

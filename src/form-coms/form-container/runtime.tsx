@@ -35,6 +35,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
+
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
   }>(() => {
@@ -76,15 +77,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
     });
 
-    // inputs[inputIds.SET_DISABLED](() => {
-    //   data.config.disabled = true;
-    //   setDisabled();
-    // });
+    inputs[inputIds.SET_DISABLED](() => {
+      data.config.disabled = true;
+      setDisabled();
+    });
 
-    // inputs[inputIds.SET_ENABLED](() => {
-    //   data.config.disabled = false;
-    //   setEnabled();
-    // });
+    inputs[inputIds.SET_ENABLED](() => {
+      data.config.disabled = false;
+      setEnabled();
+    });
 
     //------ For 表单项私有 start ---------
     // _inputs['validate']((val, outputRels) => {
@@ -111,9 +112,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
      */
     slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
       const { id, name } = params;
-      const item = getFormItem(data.items, { id, name });
+      const { item, isFormItem } = getFormItem(data, { id, name });
 
-      if (item) {
+      if (item && isFormItem) {
         // const input = childrenInputs[item.id];
         const input = getFromItemInputEvent(item, childrenInputs);
         validateForInput({ item, input });
@@ -127,9 +128,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
-      const item = getFormItem(data.items, { id, name });
+      const { item, isFormItem } = getFormItem(data, { id, name });
 
-      if (item) {
+      if (item && isFormItem) {
         const fieldsValue = { [item.name || item.label]: value };
 
         formContext.current.store = { ...formContext.current.store, ...fieldsValue };
@@ -171,14 +172,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setInitialValues = (val) => {
-    if (val) {
-      Object.keys(val).forEach((key) => {
-        setValuesForInput(
-          { childrenInputs, formItems: data.items, name: key },
-          'setInitialValue',
-          val
-        );
-      });
+    try {
+      if (val) {
+        Object.keys(val).forEach((key) => {
+          setValuesForInput(
+            { childrenInputs, formItems: data.items, name: key },
+            'setInitialValue',
+            val
+          );
+        });
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -193,21 +198,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
-  // const setDisabled = () => {
-  //   data.items.forEach((item) => {
-  //     const id = item.id;
-  //     const input = childrenInputs[id];
-  //     input?.setDisabled && input?.setDisabled();
-  //   });
-  // };
+  const setDisabled = () => {
+    data.items.forEach((item) => {
+      const input = getFromItemInputEvent(item, childrenInputs);
+      input?.setDisabled && input?.setDisabled();
+    });
+  };
 
-  // const setEnabled = () => {
-  //   data.items.forEach((item) => {
-  //     const id = item.id;
-  //     const input = childrenInputs[id];
-  //     input?.setEnabled && input?.setEnabled();
-  //   });
-  // };
+  const setEnabled = () => {
+    data.items.forEach((item) => {
+      const input = getFromItemInputEvent(item, childrenInputs);
+      input?.setEnabled && input?.setEnabled();
+    });
+  };
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -316,7 +319,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
   };
 
-  const { labelWrap, ...formCfg } = data.config;
+  const { labelWrap, disabled, ...formCfg } = data.config;
 
   return (
     <div className={css.wrapper}>
@@ -394,14 +397,24 @@ const validateForInput = (
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
   const item = formItems.find((item) => (item.name || item.label) === name);
+
   if (item) {
-    // const input = childrenInputs[item.id];
     const input = getFromItemInputEvent(item, childrenInputs);
 
-    if (isObject(values[name])) {
-      input[inputId] && input[inputId]({ ...values[name] });
+    if (input) {
+      if (isObject(values[name])) {
+        if (input[inputId]) {
+          input?.[inputId]?.({ ...values[name] });
+        }
+      } else {
+        input[inputId] && input[inputId](values[name]);
+      }
     } else {
-      input[inputId] && input[inputId](values[name]);
+      console.warn(
+        `FormItem Input Not Found, FormItem Name: ${
+          item.name || item.label
+        }, 可能存在脏数据 请联系开发人员`
+      );
     }
   }
 };

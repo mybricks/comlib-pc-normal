@@ -1,3 +1,4 @@
+import { DropDownProps } from "antd";
 
 export interface ActionBtn {
   id: any,
@@ -17,6 +18,9 @@ export interface ActionBtnsProps {
 
 export const MODIFY_BTN_ID = 'modify';
 export const DELETE_BTN_ID = 'delete';
+
+export type IconSrcType = false | 'custom' | 'inner';
+
 export interface Data {
   jsonData: string;
   isEditing: string;
@@ -40,6 +44,21 @@ export interface Data {
   keyFieldName: string;
   useCheckEvent?: boolean;
   checkStrictly?: boolean;
+  /** 省略样式配置 */
+  ellipsisActionBtnsConfig: {
+    useEllipsis: boolean;
+    maxToEllipsis: number;
+  } & DropDownProps;
+  /** 节点icon配置 */
+  iconConfig: {
+    defaultSrc: IconSrcType;
+    size: [number, number];
+    gutter: number;
+    innerIcon?: string;
+    customIcon?: string;
+  }
+  removeConfirm: string;
+  editInline?: boolean;
 }
 
 export interface TreeData {

@@ -1,6 +1,7 @@
 import { uuid } from '../utils';
-import { actionBtnEditor } from './actionBtnEditor';
-import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID } from './constants';
+import { actionBtnsEditor, actionBtnEditor, addBtn } from './actionBtnEditor';
+import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
+import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID, IconSrcType } from './constants';
 import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
 interface Result {
@@ -93,9 +94,91 @@ export default {
         ],
         target:
           'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title '
+      },
+      {
+        title: '节点图标配置',
+        items: [
+          {
+            title: '尺寸',
+            type: 'InputNumber',
+            options: [
+              { title: '高度', min: 0, width: 100 },
+              { title: '宽度', min: 0, width: 100 }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.iconConfig?.size || [14, 14];
+              },
+              set({ data }: EditorResult<Data>, value: [number, number]) {
+                data.iconConfig.size = value;
+              }
+            }
+          },
+          {
+            title: '间距',
+            type: 'Inputnumber',
+            options: [{ min: 0, max: 1000, width: 200 }],
+            description: '图标与文字间的距离',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return [data.iconConfig.gutter || 8];
+              },
+              set({ data }: EditorResult<Data>, value: number[]) {
+                data.iconConfig.gutter = value[0];
+              }
+            }
+          },
+          {
+            title: '默认图标',
+            type: 'Radio',
+            options: [
+              { label: '无', value: false },
+              { label: '内置图标库', value: 'inner' },
+              { label: '自定义上传', value: 'custom' }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.iconConfig?.defaultSrc || false;
+              },
+              set({ data }: EditorResult<Data>, value: IconSrcType) {
+                data.iconConfig.defaultSrc = value;
+              }
+            }
+          },
+          {
+            title: '图标库',
+            type: 'Icon',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.iconConfig?.defaultSrc === 'inner';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.iconConfig?.innerIcon || 'FolderOpenOutlined';
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.iconConfig.innerIcon = value;
+              }
+            }
+          },
+          {
+            title: '上传',
+            type: 'ImageSelector',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.iconConfig?.defaultSrc === 'custom';
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.iconConfig?.customIcon;
+              },
+              set({ data }: EditorResult<Data>, value: string) {
+                data.iconConfig.customIcon = value;
+              }
+            }
+          }
+        ]
       }
     ],
-    items: ({ data }, ...cate) => {
+    items: ({ data, output }: EditorResult<Data>, ...cate) => {
       cate[0].title = '常规';
       cate[1].title = '高级';
       cate[0].items = [
@@ -266,7 +349,7 @@ export default {
           }
         },
         {
-          title: '操作项',
+          title: '节点操作项',
           type: 'Switch',
           value: {
             get({ data }: EditorResult<Data>) {
@@ -306,6 +389,7 @@ export default {
             }
           }
         },
+        commonActionBtnsEditor(data, output),
         {
           title: '添加节点',
           description: '开启后，树组件支持添加节点功能',
@@ -339,6 +423,9 @@ export default {
         {
           title: '添加完成',
           type: '_Event',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.addable;
+          },
           options: () => {
             return {
               outputId: 'addNodeDone'
@@ -362,7 +449,6 @@ export default {
           }
         ],
         target: ({ focusArea, data }: EditorResult<Data>) => {
-          if (!focusArea) return;
           return `div.ant-tree-treenode[data-tree-node-id="${focusArea.dataset.treeNodeId}"] > span.ant-tree-node-content-wrapper > .ant-tree-title .title `;
         }
       }
@@ -553,5 +639,6 @@ export default {
       }
     ]
   },
-  ...actionBtnEditor
+  '[data-action-btns]': actionBtnsEditor,
+  '[data-btn-id]': actionBtnEditor
 };

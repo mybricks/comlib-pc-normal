@@ -1,0 +1,24 @@
+{
+  "title": "自定义内容项",
+  "namespace": "mybricks.normal-pc.form-addition-container",
+  "version": "1.0.0",
+  "description": "添加一些非表单项的展示内容",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_ky8dyy.31aa208dcc23864b.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "form-addition-container",
+      "title": "自定义内容"
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-addition-container"
+  ]
+}

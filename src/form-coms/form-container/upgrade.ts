@@ -233,5 +233,45 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   }
   //=========== v1.3.4 end ===============
 
+  /**
+   * @description v1.3.9 , 作用域支持添加自定义内容项组件
+   */
+  if (!data.additionalItems) data.additionalItems = [];
+  slot.get('content').setSchema([
+    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.normal-pc.form-container/form-addition-container"
+  ]);
+  //=========== v1.3.9 end ===============
+
+  /**
+   * @description v1.3.11 , 增加 设置禁用/设置启用 输入项
+   */
+  if (!input.get(inputIds.SET_DISABLED)) {
+    input.add(inputIds.SET_DISABLED, '设置禁用', { type: 'any' });
+  }
+  if (!input.get(inputIds.SET_ENABLED)) {
+    input.add(inputIds.SET_ENABLED, '设置启用', { type: 'any' });
+  }
+  //=========== v1.3.11 end ===============
+
+
+  /**
+   * @description v1.4.0 , 新增 表单展示类型，支持查询表单，展开、收起
+   */
+
+  if (typeof data.layoutType === 'undefined') {
+    data.layoutType = 'Form';
+  }
+
+  if (typeof data.span === 'undefined') {
+    data.span = 8;
+  }
+
+  if (typeof data.defaultCollapsed === 'undefined') {
+    data.defaultCollapsed = true;
+  }
+
+  //=========== v1.4.0 end ===============
+
   return true;
 }

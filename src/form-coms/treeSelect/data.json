@@ -7,5 +7,9 @@
     "allowClear": true,
     "showCheckedStrategy": "SHOW_CHILD",
     "treeNodeFilterProp": "label"
-  }
+  },
+  "useLoadData": false,
+  "labelFieldName": "",
+  "valueFieldName": "",
+  "childrenFieldName": ""
 }

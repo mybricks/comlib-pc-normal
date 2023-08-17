@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { TreeSelect } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
@@ -9,17 +9,18 @@ import { Data, Option } from './types';
 import css from './runtime.less';
 
 /**遍历树组件 */
-const traversalTree = (treeData: Option[], cb) => {
-  treeData.forEach((node) => {
-    const { children, ...res } = node;
-    cb(res);
-    if (Array.isArray(children)) {
-      traversalTree(children, cb);
-    }
-  });
-};
+// const traversalTree = (treeData: Option[], cb) => {
+//   treeData.forEach((node) => {
+//     const { children, ...res } = node;
+//     cb(res);
+//     if (Array.isArray(children)) {
+//       traversalTree(children, cb);
+//     }
+//   });
+// };
 
 export default function Runtime({
+  title,
   env,
   data,
   inputs,
@@ -29,6 +30,8 @@ export default function Runtime({
   id,
   name
 }: RuntimeParams<Data>) {
+  const curNode = useRef({});
+
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -73,52 +76,11 @@ export default function Runtime({
     });
 
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            label: `选项${index}`,
-            value: `${uuid()}`,
-            children: [],
-            ...item
-          });
-        });
+        data.options = ds;
       } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            label: `选项`,
-            value: `${uuid()}`,
-            children: [],
-            ...(ds || {})
-          }
-        ];
+        logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
-      let newValArray: any[] = [],
-        newVal;
-      traversalTree(tempDs, (node) => {
-        const { checked, value } = node;
-        if (checked && value != undefined) {
-          newVal = value;
-          newValArray.push(value);
-        }
-      });
-      data.options = tempDs.map(
-        ({ label, checkable, disableCheckbox, selectable, value, disabled, children }) => {
-          return {
-            label,
-            value,
-            children,
-            disabled,
-            checkable,
-            disableCheckbox,
-            selectable
-          };
-        }
-      );
     });
 
     inputs['setLoading']((val: boolean) => {
@@ -135,6 +97,20 @@ export default function Runtime({
     //设置启用
     inputs['setEnabled'](() => {
       data.config.disabled = false;
+    });
+  }, []);
+
+  useEffect(() => {
+    inputs['setLoadData']((val) => {
+      if (!data.useLoadData) {
+        return;
+      }
+
+      const { node, resolve } = curNode.current as any;
+
+      data.options = setTreeDataForLoadData(data, node, data.options, val);
+
+      resolve();
     });
   }, []);
 
@@ -161,9 +137,62 @@ export default function Runtime({
     outputs[OutputIds.OnInitial](value);
   }, []);
 
+  const onLoadData = (node) => {
+    return new Promise((resolve) => {
+      curNode.current = {
+        node,
+        resolve
+      };
+
+      outputs['loadData'](node);
+    });
+  };
+
   return (
     <div className={css.select}>
-      <TreeSelect {...data.config} value={data.value} onChange={onChange} treeData={data.options} />
+      <TreeSelect
+        {...data.config}
+        value={data.value}
+        treeData={data.options}
+        loadData={data.useLoadData ? onLoadData : undefined}
+        fieldNames={getFieldNames(data)}
+        onChange={onChange}
+      />
     </div>
   );
 }
+
+const setTreeDataForLoadData = (data, curNode, treeData, leafData) => {
+  let newTreeData = [];
+  const trueValueFieldName = data.valueFieldName || 'value';
+  const trurChildrenFieldName = data.childrenFieldName || 'children';
+
+  newTreeData = treeData.map((item) => {
+    if (item[trueValueFieldName] === curNode[trueValueFieldName]) {
+      item[trurChildrenFieldName] = leafData;
+    } else {
+      if (Array.isArray(item[trurChildrenFieldName])) {
+        item[trurChildrenFieldName] = setTreeDataForLoadData(
+          data,
+          curNode,
+          item[trurChildrenFieldName],
+          leafData
+        );
+      }
+    }
+
+    return item;
+  });
+
+  return newTreeData;
+};
+
+const getFieldNames = (data: Data) => {
+  const fieldNames = {
+    label: data.labelFieldName,
+    value: data.valueFieldName,
+    children: data.childrenFieldName
+  };
+
+  return fieldNames;
+};

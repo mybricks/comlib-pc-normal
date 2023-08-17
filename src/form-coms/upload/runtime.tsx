@@ -190,7 +190,6 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       env
         .uploadFile(fileList)
         .then((res) => {
-          console.log('上传成功', res);
           onUploadComplete(res);
         })
         .catch(() => {
@@ -277,6 +276,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   const onRemove = (file) => {
     if (!data.config.useCustomRemove) {
+      fileListRef.current = fileList.filter(({ uid }) => file.uid !== uid);
       setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
       return true;
     }
