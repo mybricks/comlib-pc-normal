@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { TreeSelect } from 'antd';
+import { uniq } from 'lodash';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
 import { OutputIds } from '../types';
@@ -31,6 +32,7 @@ export default function Runtime({
   name
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
+  const [treeLoadedKeys, setTreeLoadKeys] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -109,7 +111,7 @@ export default function Runtime({
       const { node, resolve } = curNode.current as any;
 
       data.options = setTreeDataForLoadData(data, node, data.options, val);
-
+      setTreeLoadKeys(uniq([...treeLoadedKeys, node.key]));
       resolve();
     });
   }, []);
@@ -144,7 +146,10 @@ export default function Runtime({
         resolve
       };
 
-      outputs['loadData'](node);
+      outputs['loadData']({
+        ...node,
+        [data.labelFieldName || 'label']: node.title
+      });
     });
   };
 
@@ -157,26 +162,30 @@ export default function Runtime({
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={getFieldNames(data)}
         onChange={onChange}
+        treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
       />
     </div>
   );
 }
 
-const setTreeDataForLoadData = (data, curNode, treeData, leafData) => {
+const setTreeDataForLoadData = (data, curNode, treeData, newNodeData = {}) => {
   let newTreeData = [];
   const trueValueFieldName = data.valueFieldName || 'value';
   const trurChildrenFieldName = data.childrenFieldName || 'children';
 
   newTreeData = treeData.map((item) => {
     if (item[trueValueFieldName] === curNode[trueValueFieldName]) {
-      item[trurChildrenFieldName] = leafData;
+      item = {
+        ...item,
+        ...newNodeData
+      };
     } else {
       if (Array.isArray(item[trurChildrenFieldName])) {
         item[trurChildrenFieldName] = setTreeDataForLoadData(
           data,
           curNode,
           item[trurChildrenFieldName],
-          leafData
+          newNodeData
         );
       }
     }

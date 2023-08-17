@@ -1,5 +1,5 @@
 import { uuid } from '../utils';
-import { actionBtnsEditor, actionBtnEditor, addBtn } from './actionBtnEditor';
+import { actionBtnsEditor, actionBtnEditor, getBtnProp } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID, IconSrcType } from './constants';
 import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
@@ -300,6 +300,9 @@ export default {
             {
               title: '勾选事件',
               type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.checkable;
+              },
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.useCheckEvent;
@@ -363,13 +366,23 @@ export default {
                     type: 'link',
                     title: '修改',
                     size: 'middle',
-                    id: 'modify'
+                    id: 'modify',
+                    iconConfig: {
+                      src: false,
+                      size: [14, 14],
+                      gutter: 8
+                    }
                   },
                   {
                     type: 'link',
                     title: '删除',
                     size: 'middle',
-                    id: 'delete'
+                    id: 'delete',
+                    iconConfig: {
+                      src: false,
+                      size: [14, 14],
+                      gutter: 8
+                    }
                   }
                 ];
                 const schema = {
@@ -640,5 +653,15 @@ export default {
     ]
   },
   '[data-action-btns]': actionBtnsEditor,
-  '[data-btn-id]': actionBtnEditor
+  '[data-btn-id]': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+    if (!focusArea) return;
+    const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+    const cates = actionBtnEditor(btn, data);
+    cate1.title = cates[0].title;
+    cate1.items = cates[0].items;
+    cate2.title = cates[1].title;
+    cate2.items = cates[1].items;
+    cate3.title = cates[2].title;
+    cate3.items = cates[2].items;
+  }
 };

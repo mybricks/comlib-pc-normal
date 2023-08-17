@@ -23,7 +23,8 @@ import {
   createStyleForHead,
   createStyleForContent,
   getNewColumn,
-  setColumns
+  setColumns,
+  createStyleForRowHover
 } from '../utils';
 import {
   OutputIds as PaginatorOutputIds,
@@ -150,7 +151,10 @@ export default {
     style: [
       ...TableStyleEditor.items,
       createStyleForHead({ target: ({ id }) => `table thead tr th${getFilterSelector(id)}` }),
-      createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` })
+      createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` }),
+      createStyleForRowHover({
+        target: ({ id }) => `table .ant-table-tbody>tr>td.ant-table-cell-row-hover`
+      })
     ]
   },
   ...columnEditor,

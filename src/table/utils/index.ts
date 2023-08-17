@@ -250,3 +250,12 @@ export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
   },
   target
 });
+
+export const createStyleForRowHover = ({ target }: StyleModeType<Data>) => ({
+  title: '行hover样式',
+  options: ['font', { type: 'background', config: { disableBackgroundImage: true } }],
+  ifVisible({ data }: EditorResult<Data>) {
+    return !!data.columns.length;
+  },
+  target
+});

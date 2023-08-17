@@ -152,8 +152,9 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.labelFieldName
           },
-          set({ data }: EditorResult<Data>, value: string) {
+          set({ data, input, output }: EditorResult<Data>, value: string) {
             data.labelFieldName = value
+            refreshSchema(data, input, output)
           }
         }
       },
@@ -167,8 +168,9 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.valueFieldName
           },
-          set({ data }: EditorResult<Data>, value: string) {
+          set({ data, input, output }: EditorResult<Data>, value: string) {
             data.valueFieldName = value
+            refreshSchema(data, input, output)
           }
         }
       },
@@ -182,8 +184,9 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.childrenFieldName
           },
-          set({ data }: EditorResult<Data>, value: string) {
+          set({ data, input, output }: EditorResult<Data>, value: string) {
             data.childrenFieldName = value
+            refreshSchema(data, input, output)
           }
         }
       },
@@ -201,9 +204,25 @@ export default {
         }
       },
       {
+        title: '仅首次加载',
+        type: 'Switch',
+        description: '关闭后，每次展开节点，都会重新触发异步加载',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useLoadData
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.loadDataOnce;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.loadDataOnce = value;
+          }
+        }
+      },
+      {
         title: '异步加载输出',
         type: '_event',
-        ifVisible ({ data }: EditorResult<Data>) {
+        ifVisible({ data }: EditorResult<Data>) {
           return data.useLoadData
         },
         options: {
@@ -211,5 +230,57 @@ export default {
         }
       },
     ]
+  }
+}
+
+const refreshSchema = (data: Data, input, output) => {
+
+  const trueValueFieldName = data.valueFieldName || 'value';
+  const trueLabelFieldName = data.labelFieldName || 'label';
+  const trurChildrenFieldName = data.childrenFieldName || 'children';
+
+  const schema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        [trueLabelFieldName]: {
+          title: '标签',
+          type: 'string'
+        },
+        [trueValueFieldName]: {
+          title: '值',
+          type: 'string'
+        },
+        isLeaf: {
+          title: '是否叶子节点',
+          type: 'boolean'
+        },
+        [trurChildrenFieldName]: {
+          title: '子项',
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {}
+          }
+        }
+      }
+    }
+  }
+
+  const setOptionsPin = input.get('setOptions')
+  const setLoadDataPin = input.get('setLoadData')
+  const loadDataPin = output.get('loadData')
+
+  if (setOptionsPin) {
+    setOptionsPin.setSchema(schema)
+  }
+
+  if (setLoadDataPin) {
+    setLoadDataPin.setSchema(schema.items)
+  }
+
+  if (loadDataPin) {
+    loadDataPin.setSchema(schema.items)
   }
 }
