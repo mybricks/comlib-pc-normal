@@ -140,11 +140,6 @@ export default function Runtime({
   }, []);
 
   const onLoadData = (node) => {
-    // 有子节点 且 非异步加载，不触发异步加载
-    if (node.children?.length && !treeLoadedKeys.includes(node.key)) {
-      return Promise.resolve();
-    }
-
     return new Promise((resolve) => {
       curNode.current = {
         node,
