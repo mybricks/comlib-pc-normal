@@ -142,6 +142,35 @@
       "schema": {
         "type": "boolean"
       }
+    },
+    {
+      "id": "setNodeData",
+      "title": "更新节点数据",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -196,6 +225,36 @@
           "value": {
             "title": "值",
             "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "onExpand",
+      "title": "节点展开",
+      "schema": {
+        "type": "object",
+        "title": "节点数据",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            }
           }
         }
       }
