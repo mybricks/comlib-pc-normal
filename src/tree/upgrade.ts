@@ -57,5 +57,15 @@ export default function ({
   })
   //=========== v1.0.11 end ===============
 
+  /**
+    * @description v1.0.12 增加 过滤filter 输入项 和 过滤字段data.filterValue
+    */
+  if (!input.get('filter')) {
+    input.add('filter', '过滤', {
+      type: 'string'
+    });
+  }
+  //=========== v1.0.12 end ===============
+
   return true;
 }
