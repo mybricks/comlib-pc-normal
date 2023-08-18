@@ -17,6 +17,7 @@
     }
   ],
   "checkable": false,
+  "showLine": false,
   "disableCheckbox": false,
   "outParentNode": false,
   "defaultExpandAll": true,

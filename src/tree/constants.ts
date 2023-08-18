@@ -39,6 +39,7 @@ export interface Data {
   checkable: boolean;
   checkedKeys: any[];
   disableCheckbox: boolean;
+  showLine: boolean;
   expandedKeys: any[];
   outParentKeys?: boolean;
   showError: boolean;
