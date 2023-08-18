@@ -7,6 +7,7 @@ import { isValidInput, isValidRange } from './util';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateTrigger } from '../form-container/models/validate';
 
 export default function ({
   data,
@@ -129,6 +130,7 @@ export default function ({
       const formatValue = getValue(values);
       onChangeForFc(parentSlot, { id, name, value: formatValue });
       outputs['onChange'](formatValue);
+      validateTrigger(parentSlot, { id, name });
     },
     [outFormat, splitChar]
   );

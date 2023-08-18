@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Data } from './types';
-import { message, TimePicker } from 'antd';
-import moment, { Moment, isMoment } from 'moment';
+import { TimePicker } from 'antd';
+import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateTrigger } from '../form-container/models/validate';
 
 import styles from './style.less';
 
@@ -111,6 +112,7 @@ export default function ({
     const value = getValue(time);
     onChangeForFc(parentSlot, { id, name, value });
     outputs['onChange'](value);
+    validateTrigger(parentSlot, { id, name });
   };
 
   return (

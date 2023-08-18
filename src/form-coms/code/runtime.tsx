@@ -5,6 +5,7 @@ import CodeEditor from './CodeEditor';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateTrigger } from '../form-container/models/validate';
 
 export default function ({
   data,
@@ -64,6 +65,7 @@ export default function ({
     setValue(value);
     onChangeForFc(parentSlot, { id, name, value });
     outputs.onChange(value);
+    validateTrigger(parentSlot, { id, name });
   };
 
   return env.runtime ? (
