@@ -57,5 +57,10 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     });
     data.tagStyle = {};
   }
+
+  // 兼容1.0.8版本之前 没有关闭设置，使用appendAble作为判断条件的数据
+  if (typeof data.closeAble === 'undefined' && data.appendAble) {
+    data.closeAble = true;
+  }
   return true;
 }

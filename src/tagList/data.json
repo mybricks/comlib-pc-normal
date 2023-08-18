@@ -10,6 +10,11 @@
       "color": "default"
     }
   ],
+  "isEllipsis": false,
+  "ellipsis": {
+    "maxWidth": 120
+  },
+  "closeAble": false,
   "tagSize": "small-tag",
   "dynamic": false,
   "appendBtn": {
