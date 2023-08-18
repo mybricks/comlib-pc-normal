@@ -17,7 +17,8 @@ export default function Runtime({
   logger,
   parentSlot,
   id,
-  name
+  name,
+  title
 }: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
@@ -29,13 +30,13 @@ export default function Runtime({
   const valueTypeCheck = useMemo(() => {
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
-        type: ['ARRAY', 'UNDEFINED'],
-        message: `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+        type: ['ARRAY', 'UNDEFINED', 'NULL'],
+        message: `${title}:【设置值】参数必须是数组！`
       };
     }
     return {
-      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'],
-      message: `下拉框的值应为基本类型`
+      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED', 'NULL'],
+      message: `${title}:【设置值】参数必须是基本类型！`
     };
   }, [data.config.mode, data.config.labelInValue]);
 
@@ -60,7 +61,7 @@ export default function Runtime({
 
     inputs['setValue']((val) => {
       if (!typeCheck(val, valueTypeCheck.type)) {
-        logger.error(valueTypeCheck.message);
+        logger.warn(valueTypeCheck.message);
       } else {
         changeValue(val);
         // data.value = val;
@@ -70,9 +71,9 @@ export default function Runtime({
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         if (!typeCheck(val, valueTypeCheck.type)) {
-          logger.error(valueTypeCheck.message);
+          logger.warn(valueTypeCheck.message);
         } else {
-          if (val === undefined) {
+          if (val == undefined) {
             data.value = '';
           }
           data.value = val;
@@ -166,7 +167,7 @@ export default function Runtime({
     validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((value) => {
-    if (value === undefined) {
+    if (value == undefined) {
       data.value = '';
     }
     data.value = value;
