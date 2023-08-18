@@ -55,6 +55,11 @@ export const pretreatTreeData = ({
   return treeData;
 };
 
+/**
+ * 遍历树，根据key查找节点
+ * @param param0 
+ * @returns 
+ */
 export const traverseTree = ({
   treeData,
   targetKey,
@@ -205,6 +210,7 @@ export const getParentKey = (key, tree) => {
   }
   return parentKey;
 };
+
 /**
  * 获取树的key数组
  * @param treeData 树节点数据
@@ -219,4 +225,33 @@ export const generateList = (treeData, dataList) => {
       generateList(node.children, dataList);
     }
   }
+};
+
+/**
+ * 遍历树，根据key数组返回节点
+ * @param treeData 树数据 
+ * @param keys key数组 
+ * @returns 
+ */
+export const filterTreeDataByKeys = (treeData: TreeData[] = [], keys: React.Key[]) => {
+  const filteredTreeData: TreeData[] = [];
+
+  const filterTreeData = (treeData: TreeData[], parent: TreeData[]) => {
+    treeData.forEach(node => {
+      const { children = [], ...res } = node;
+      const newChildren = [];
+      if (children.length) {
+        filterTreeData(children, newChildren);
+      }
+      if (keys.includes(res.key)) {
+        parent.push({
+          ...res,
+          children: newChildren
+        });
+      }
+    })
+  };
+
+  filterTreeData(treeData, filteredTreeData);
+  return filteredTreeData;
 };
