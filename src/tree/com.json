@@ -1,7 +1,7 @@
 {
   "title": "树组件",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -34,7 +34,7 @@
             },
             "children": {
               "title": "子项",
-              "type":"array",
+              "type": "array",
               "items": {
                 "type": "object"
               }
@@ -65,7 +65,7 @@
           },
           "children": {
             "title": "子项",
-            "type":"array",
+            "type": "array",
             "items": {
               "type": "object"
             }
@@ -78,7 +78,8 @@
       "title": "搜索",
       "schema": {
         "type": "string"
-      }
+      },
+      "desc": "输入字符串，高亮展示匹配的树节点"
     },
     {
       "id": "disableCheckbox",
@@ -124,6 +125,14 @@
         }
       },
       "desc": "设置树形结构中选中的节点"
+    },
+    {
+      "id": "filter",
+      "title": "过滤",
+      "schema": {
+        "type": "string"
+      },
+      "desc": "输入字符串，筛选匹配的树节点"
     }
   ],
   "outputs": [
