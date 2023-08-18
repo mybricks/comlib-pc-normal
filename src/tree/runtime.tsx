@@ -170,8 +170,6 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       inputs['filter'] &&
         inputs['filter']((filterValue: string) => {
           data.filterValue = filterValue;
-          // 高亮显示搜索内容
-          search(filterValue);
         });
     }
   }, []);
@@ -457,11 +455,13 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     );
   };
 
-  const treeData = data.filterValue ? filter(filterMethods.byTitle) : data.treeData;
+  const treeData = useMemo(() => {
+    return data.filterValue ? filter(filterMethods.byTitle) : data.treeData;
+  }, [data.filterValue]);
 
   return (
     <div>
-      {data && treeData.length === 0 ? (
+      {treeData?.length === 0 ? (
         <Empty description={<span>{env.i18n('暂无数据')}</span>} />
       ) : (
         <Tree
