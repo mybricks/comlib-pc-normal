@@ -9,6 +9,7 @@
     "editors": "./editor.ts",
     "data": "./data.json",
     "icon": "./icon.svg",
+    "upgrade": "./upgrade.ts",
     "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-9e7987dd-27c4-4375-8c8c-82465588a0dd.png",
     "inputs": [
       {

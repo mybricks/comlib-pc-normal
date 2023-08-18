@@ -7,5 +7,6 @@
     "wrap": true,
     "readOnly": false
   },
-  "immediate": false
+  "immediate": false,
+  "rules": []
 }
