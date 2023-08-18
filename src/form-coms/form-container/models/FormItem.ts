@@ -15,6 +15,7 @@ interface FormItemInputsProps {
     validate?: (cb) => void
     setDisabled?: () => void
     setEnabled?: () => void
+    onChange?: (val) => void
   }
   parentSlot?: any
 }
@@ -48,8 +49,12 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
       }
 
       // 触发onchange
-      outputs[formItemOutputIds.ON_CHANGE](val);
       
+      if(configs?.onChange){
+        configs.onChange(val)
+      }else{
+        outputs[formItemOutputIds.ON_CHANGE](val);
+      }
       if (parentSlot && id) {
         onChange(parentSlot, { id, value: val, name })
       }
