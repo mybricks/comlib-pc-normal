@@ -19,7 +19,8 @@ export default function ({
   env,
   id,
   parentSlot,
-  name
+  name,
+  onError
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat } = data;
   const [value, setValue] = useState<Moment | null>();
@@ -48,24 +49,22 @@ export default function ({
 
   const setTimestamp = useCallback(
     (val) => {
-      if (!val) {
-        setValue(void 0);
-        return;
+      try {
+        if (!val) {
+          setValue(void 0);
+          return;
+        }
+        let formatVal: Moment;
+        if (isNaN(Number(val))) {
+          formatVal = moment(val, _format);
+        } else {
+          formatVal = moment(Number(val));
+        }
+        if (!formatVal.isValid()) throw Error('params error');
+        setValue(formatVal);
+      } catch (error) {
+        onError('时间数据格式错误');
       }
-      if (isNumber(val)) {
-        setValue(moment(val));
-        return;
-      }
-      //兼容moment
-      if (isMoment(val)) {
-        setValue(val);
-        return;
-      }
-      if (typeof val === 'string') {
-        setValue(moment(val, _format));
-        return;
-      }
-      message.error('输入数据是时间戳或者moment对象');
     },
     [_format]
   );
