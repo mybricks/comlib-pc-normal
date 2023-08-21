@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Data } from './types';
-import { message, TimePicker } from 'antd';
-import moment, { Moment, isMoment } from 'moment';
+import { TimePicker } from 'antd';
+import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
-import { isValidInput, isNumber, isValidRange } from './util';
+import { isValidInput, isValidRange } from './util';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateTrigger } from '../form-container/models/validate';
 
 export default function ({
   data,
@@ -20,6 +21,13 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat, outFormat, splitChar } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
+
+  const _format = useMemo(() => {
+    if (format === 'custom') return customFormat;
+    if (format === 'timeStamp') return 'HH:mm:ss';
+    return format;
+  }, [format, customFormat]);
+
   const validate = useCallback(
     (output) => {
       validateFormItem({
@@ -39,40 +47,43 @@ export default function ({
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
 
+  const formatValue = useCallback(
+    (val) => {
+      let start, end;
+      if (typeof val === 'string' && val.includes(splitChar)) {
+        [start, end] = val.split(splitChar);
+      }
+      if (Array.isArray(val)) {
+        if (!val.length) return [];
+        if (!isValidInput(val)) {
+          onError('时间范围值是一个长度为2的数组');
+          return [];
+        }
+        [start, end] = val;
+      }
+
+      const startM = isNaN(Number(start)) ? moment(start, _format) : moment(Number(start));
+      const endM = isNaN(Number(end)) ? moment(end, _format) : moment(Number(end));
+      return [startM, endM];
+    },
+    [splitChar, _format]
+  );
+
   const setTimestampRange = (val) => {
-    if (Array.isArray(val) && !val.length) {
-      setValue([] as unknown as [Moment, Moment]);
-      return;
-    }
-    if (typeof val === 'string') {
-      if (val.includes(splitChar)) {
-        const [start, end] = val.split(splitChar);
-        setValue([moment(Number(start)), moment(Number(end))]);
+    try {
+      const initValue = formatValue(val) as [Moment, Moment];
+      if (!isValidInput(initValue)) {
+        setValue(initValue);
+        return;
+      }
+      if (isValidRange(initValue, 'moment')) {
+        setValue(initValue);
       } else {
-        onError('时间数据格式错误');
+        onError('开始时间必须小于结束时间');
       }
-      return;
+    } catch (error) {
+      onError('时间范围数据格式错误');
     }
-    if (isValidInput(val)) {
-      if (val.every((item) => isNumber(item))) {
-        if (isValidRange(val, 'number')) {
-          setValue([moment(val[0]), moment(val[1])]);
-        } else {
-          message.error('开始时间必须小于结束时间');
-        }
-        return;
-      }
-      //兼容moment
-      if (val.every((item) => isMoment(item))) {
-        if (isValidRange(val, 'moment')) {
-          setValue(val as unknown as [Moment, Moment]);
-        } else {
-          message.error('开始时间必须小于结束时间');
-        }
-        return;
-      }
-    }
-    message.error('输入数据是时间戳数组或者moment对象数组，长度为0或2');
   };
 
   useFormItemInputs(
@@ -121,15 +132,10 @@ export default function ({
       const formatValue = getValue(values);
       onChangeForFc(parentSlot, { id, name, value: formatValue });
       outputs['onChange'](formatValue);
+      validateTrigger(parentSlot, { id, name });
     },
     [outFormat, splitChar]
   );
-
-  const _format = useMemo(() => {
-    if (format === 'custom') return customFormat;
-    if (format === 'timeStamp') return 'HH:mm:ss';
-    return format;
-  }, [format, customFormat]);
 
   return (
     <div className={styles.wrap}>

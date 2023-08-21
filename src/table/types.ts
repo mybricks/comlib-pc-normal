@@ -185,5 +185,11 @@ export interface Data {
     entity: any
   },
   // 是否默认展开所有行
-  defaultExpandAllRows: boolean
+  defaultExpandAllRows: boolean,
+
+  useSummaryColumn: boolean, // 是否开启总结栏
+  SummaryColumnTitle: string, // 总结栏 title
+  SummaryCellTitleCol: number, // 总结栏 title col
+  SummaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
+  SummaryColumnContentSchema: object, // 总结栏内容Schema
 }

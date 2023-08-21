@@ -16,6 +16,8 @@ import PaginatorEditor from './paginator';
 import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
+import SummaryColumn from './table/summaryColumn';
+import SummaryColumnEditor from './table-summary';
 import { getFilterSelector } from '../../utils/cssSelector';
 
 import {
@@ -143,6 +145,7 @@ export default {
         HeaderEditor,
         ...ExpandEditor,
         rowOperationEditor,
+        ...SummaryColumn,
         ...DynamicColumnEditor,
         ...DynamicTitleEditor,
         ...getRowSelectionEditor(props)
@@ -158,5 +161,6 @@ export default {
     ]
   },
   ...columnEditor,
-  ...PaginatorEditor
+  ...PaginatorEditor,
+  ...SummaryColumnEditor
 };

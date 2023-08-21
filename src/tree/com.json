@@ -78,7 +78,8 @@
       "title": "搜索",
       "schema": {
         "type": "string"
-      }
+      },
+      "desc": "输入字符串，高亮展示匹配的树节点"
     },
     {
       "id": "disableCheckbox",
@@ -124,6 +125,14 @@
         }
       },
       "desc": "设置树形结构中选中的节点"
+    },
+    {
+      "id": "filter",
+      "title": "过滤",
+      "schema": {
+        "type": "string"
+      },
+      "desc": "输入字符串，筛选匹配的树节点"
     }
   ],
   "outputs": [

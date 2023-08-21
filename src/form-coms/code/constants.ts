@@ -13,5 +13,5 @@ import type { AceConfig } from './CodeEditor';
 export interface Data {
   rules: string[]
   aceConfig: AceConfig;
-  readOnly?: boolean
+  readOnly?: boolean;
 }

@@ -19,4 +19,5 @@ export interface Data {
     staticOptions: Option[];
     remoteOptions: any[];
     dropdownSearchOption: boolean;
+    outputValueType: 'value' | 'labelInValue' | 'option';
 }

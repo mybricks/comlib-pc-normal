@@ -3,11 +3,34 @@ import { Select, Spin } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
-import { typeCheck, uuid } from '../../utils';
-import { Option, OutputIds } from '../types';
+import { typeCheck } from '../../utils';
+import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { OptionProps } from 'antd/lib/select';
+
+const DefaultOptionKey = '_id';
+
+/**
+ * 计算表单项的输出值
+ * @params data 组件数据
+ */
+const getOutputValue = (data) => {
+  let outputValue: any = data.value;
+  if (data.config.labelInValue) {
+    const option = data.config.options?.find((i) => i.value === outputValue) || {};
+    const { value, label } = option;
+    outputValue = {
+      value,
+      label
+    };
+  }
+  if (data.outputValueType === 'all') {
+    const { [DefaultOptionKey]: id, ...res } =
+      data.config.options.find((i) => i.value === outputValue) || {};
+    outputValue = res;
+  }
+  return outputValue;
+};
 
 export default function Runtime({
   env,
@@ -17,7 +40,8 @@ export default function Runtime({
   logger,
   parentSlot,
   id,
-  name
+  name,
+  title
 }: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
@@ -31,13 +55,13 @@ export default function Runtime({
   const valueTypeCheck = useMemo(() => {
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
-        type: ['ARRAY', 'UNDEFINED'],
-        message: `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
+        type: ['ARRAY', 'UNDEFINED', 'NULL'],
+        message: `${title}组件:【设置值】参数必须是数组！`
       };
     }
     return {
-      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'],
-      message: `下拉框的值应为基本类型`
+      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED', 'NULL'],
+      message: `${title}组件:【设置值】参数必须是基本类型！`
     };
   }, [data.config.mode, data.config.labelInValue]);
 
@@ -57,12 +81,13 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      const outputValue = getOutputValue(data);
+      outputRels['returnValue'](outputValue);
     });
 
     inputs['setValue']((val) => {
       if (!typeCheck(val, valueTypeCheck.type)) {
-        logger.error(valueTypeCheck.message);
+        logger.warn(valueTypeCheck.message);
       } else {
         changeValue(val);
         // data.value = val;
@@ -72,13 +97,14 @@ export default function Runtime({
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         if (!typeCheck(val, valueTypeCheck.type)) {
-          logger.error(valueTypeCheck.message);
+          logger.warn(valueTypeCheck.message);
         } else {
-          if (val === undefined) {
+          if (val == undefined) {
             data.value = '';
           }
           data.value = val;
-          outputs[OutputIds.OnInitial](val);
+          const outputValue = getOutputValue(data);
+          outputs[OutputIds.OnInitial](outputValue);
         }
       });
 
@@ -88,21 +114,14 @@ export default function Runtime({
     });
 
     inputs['setOptions']((ds) => {
-      let tempDs: OptionProps[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            label: `选项${index}`,
-            value: `${uuid()}`,
-            ...item
-          });
-        });
+        data.config.options = [...ds];
+
+        //计算值更新
         let newValArray: any[] = [],
           newVal;
         let updateValue = false;
-        tempDs.map((item) => {
+        ds.map((item) => {
           const { checked, value } = item;
           if (checked && value != undefined) {
             updateValue = true;
@@ -111,28 +130,13 @@ export default function Runtime({
           }
         });
         if (updateValue) {
-          data.value =
-            data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
-              ? newValArray
-              : newVal;
+          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode))
+            data.value = newValArray;
+          if (!data.config.mode || data.config.mode === 'default') data.value = newVal;
         }
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
-      data.config.options = tempDs.map(({ label, value, disabled, options }) => {
-        if (Array.isArray(options)) {
-          return {
-            label,
-            value,
-            disabled,
-            options
-          };
-        } else {
-          return {
-            label,
-            value,
-            disabled
-          };
-        }
-      });
     });
 
     inputs['setLoading']((val: boolean) => {
@@ -168,19 +172,25 @@ export default function Runtime({
     validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((value) => {
-    if (value === undefined) {
+    if (value == undefined) {
       data.value = '';
     }
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value, name });
-    outputs['onChange'](value);
+    const outputValue = getOutputValue(data);
+    onChangeForFc(parentSlot, { id: id, value: outputValue, name });
+    outputs['onChange'](outputValue);
   }, []);
-  const onChange = useCallback((value) => {
+  const onChange = useCallback((val) => {
+    let value = val;
+    if (data.config.labelInValue) {
+      value = val?.value;
+    }
     changeValue(value);
     onValidateTrigger();
   }, []);
   const onBlur = useCallback((e) => {
-    outputs['onBlur'](data.value);
+    const outputValue = getOutputValue(data);
+    outputs['onBlur'](outputValue);
   }, []);
 
   const onSearch = (e) => {

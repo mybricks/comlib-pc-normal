@@ -18,5 +18,18 @@ export interface Data {
   labelFieldName?: string
   valueFieldName?: string
   childrenFieldName?: string
-  loadDataOnce?: boolean
+  loadDataOnce?: boolean,
+  icons: IconType[],
+}
+
+export type IconSrcType = false | 'custom' | 'inner';
+export interface IconType {
+  title: string,
+  src: IconSrcType,
+  size: [number, number],
+  gutter: [number],
+  displayRule: 'default' | 'dynamic',
+  innerIcon?: string,
+  customIcon?: string,
+  displayExpression?: string
 }
