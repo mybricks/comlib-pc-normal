@@ -163,19 +163,28 @@ export default {
           'border',
           'size'
         ],
-        target: '.ant-popover .ant-popover-inner',
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.${id}.ant-popover .ant-popover-inner`;
+        },
         domTarget: '.ant-popover .ant-popover-inner'
       },
       {
         title: '标题',
-        options: ['font', 'padding'],
-        target: '.ant-popover .ant-popover-inner .ant-popover-title',
+        options: ['font', 'padding', 'border'],
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.${id}.ant-popover .ant-popover-inner .ant-popover-title`;
+        },
         domTarget: '.ant-popover .ant-popover-inner .ant-popover-title'
       },
       {
         title: '内容',
         options: ['font', 'padding'],
-        target: '.ant-popover .ant-popover-inner .ant-popover-inner-content',
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.${id}.ant-popover .ant-popover-inner .ant-popover-inner-content`;
+        },
         domTarget: '.ant-popover .ant-popover-inner .ant-popover-inner-content'
       },
       {
@@ -194,7 +203,10 @@ export default {
         initValue: {
           '--antd-arrow-background-color': '#ffffff'
         },
-        target: '.ant-popover .ant-popover-arrow .ant-popover-arrow-content'
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.${id}.ant-popover .ant-popover-arrow .ant-popover-arrow-content`;
+        }
       }
     ]
   }

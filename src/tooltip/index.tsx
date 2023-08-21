@@ -3,7 +3,7 @@ import { Tooltip } from 'antd';
 import { isString } from '../utils';
 import { Data } from './types';
 
-export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
+export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) {
   const { title, placement, trigger } = data;
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -17,6 +17,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
   return (
     <Tooltip
       placement={placement}
+      overlayClassName={id}
       title={() => (
         <div
           style={{ whiteSpace: 'pre-wrap' }}
@@ -25,7 +26,7 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
       )}
       trigger={trigger}
       getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? triggerNode : document.body
+        edit || debug ? env?.canvasElement : document.body
       }
     >
       <div>{slots.carrier?.render()}</div>

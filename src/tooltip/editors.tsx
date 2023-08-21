@@ -102,9 +102,13 @@ export default {
           'font',
           'size',
           'padding',
+          'border',
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
-        target: '.ant-tooltip .ant-tooltip-inner',
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.${id}.ant-tooltip .ant-tooltip-inner`;
+        },
         domTarget: '.ant-tooltip .ant-tooltip-inner'
       },
       {
@@ -123,7 +127,10 @@ export default {
         initValue: {
           '--antd-arrow-background-color': '#000000bf'
         },
-        target: '.ant-tooltip .ant-tooltip-arrow .ant-tooltip-arrow-content'
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.${id}.ant-tooltip .ant-tooltip-arrow .ant-tooltip-arrow-content`;
+        }
       }
     ]
   }

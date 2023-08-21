@@ -4,7 +4,7 @@ import { Data } from './constants';
 import { isString } from '../utils';
 import styles from './index.less';
 
-export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
+export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) {
   const { title, content, placement, trigger, useTitleSlot, useContentSlot } = data;
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -45,12 +45,13 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
       content={useContentSlot ? slots['content']?.render() : renderWrapText(content as string)}
       visible={visible}
       trigger={trigger}
+      overlayClassName={id}
       overlayInnerStyle={{
         maxWidth: window.screen.availWidth,
         maxHeight: window.screen.availHeight
       }}
       getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? triggerNode : document.body
+        edit || debug ? env?.canvasElement : document.body
       }
     >
       <div className={styles.wrap}>{slots.carrier?.render()}</div>
