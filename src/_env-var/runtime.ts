@@ -2,16 +2,16 @@ import { Data } from './types';
 
 export default function ({ env, data, inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   const { runImmediate } = data;
-  const { executeEnv } = env;
+  const { getExecuteEnv } = env?.vars || {};
   try {
-    if (typeof executeEnv !== 'undefined') {
+    if (typeof getExecuteEnv === 'function') {
       if (runImmediate && env.runtime) {
-        outputs['outputEnv'](executeEnv);
+        outputs['outputEnv'](getExecuteEnv());
       }
 
       inputs['getEnv'](() => {
         try {
-          outputs['outputEnv'](executeEnv);
+          outputs['outputEnv'](getExecuteEnv());
         } catch (ex) {
           onError?.(ex);
           console.error('获取环境变量错误.', ex);
