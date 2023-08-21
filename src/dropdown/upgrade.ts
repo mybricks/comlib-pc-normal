@@ -3,7 +3,9 @@ import { uuid } from '../utils';
 
 export default function ({ 
   data,
-  output
+  output,
+  setDeclaredStyle,
+  id
 }: UpgradeParams<Data>): boolean {
   //1.0.0 ->1.0.1，增加提示内容
   if(typeof data.content === "undefined"){
@@ -65,5 +67,15 @@ export default function ({
     }
   })
 
+  //1.0.7->1.0.8 样式处理及增加isChildCustom
+  if(typeof data.isChildCustom === "undefined"){
+    data.isChildCustom = false;
+  };
+  data.options.map((item)=>{
+    if(item.iconColor!==''){
+      setDeclaredStyle(`.${id} li[data-menu-item="${item.key}"]`, {color: item.iconColor});
+      item.iconColor = ''
+    }
+  })
   return true;
 }

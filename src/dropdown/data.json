@@ -1,8 +1,9 @@
 {
-  "options": [ {"label": "选项1", "link": "","disabled": "true", "useIcon": false, "icon": "HomeOutlined", "iconColor": "rgba(0, 0, 0, 0.85)", "key": "选项1"} ],
+  "options": [ {"label": "选项1", "link": "","disabled": "true", "useIcon": false, "icon": "HomeOutlined", "key": "选项1"} ],
   "placement": "bottomLeft",
   "width": 100,
   "isCustom": false,
   "content": "下拉菜单",
-  "trigger": "hover"
+  "trigger": "hover",
+  "isChildCustom": false
 }
