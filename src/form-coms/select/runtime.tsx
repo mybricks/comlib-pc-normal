@@ -54,12 +54,12 @@ export default function Runtime({
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
         type: ['ARRAY', 'UNDEFINED', 'NULL'],
-        message: `${title}:【设置值】参数必须是数组！`
+        message: `${title}组件:【设置值】参数必须是数组！`
       };
     }
     return {
       type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED', 'NULL'],
-      message: `${title}:【设置值】参数必须是基本类型！`
+      message: `${title}组件:【设置值】参数必须是基本类型！`
     };
   }, [data.config.mode, data.config.labelInValue]);
 
