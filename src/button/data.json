@@ -7,9 +7,15 @@
   "useIcon": false,
   "isCustom": false,
   "icon": "HomeOutlined",
+  "size": "middle",
+  "type": "default",
+  "shape": "default",
   "src": "",
   "showText": true,
   "iconLocation": "front",
   "iconDistance": 8,
-  "contentSize": [14,14]
+  "contentSize": [
+    14,
+    14
+  ]
 }

@@ -1,6 +1,7 @@
-import { Data, OutputIds } from './constants';
+import { Data, OutputIds } from '../constants';
 import { message } from 'antd';
-import IconEditor from './iconEditor';
+import styleEditor from './styleEditor';
+import IconEditor from '../iconEditor';
 
 export default {
   '@init'({ style }) {
@@ -24,6 +25,7 @@ export default {
           }
         }
       },
+      ...styleEditor,
       {
         title: '默认',
         ifVisible({ data }: EditorResult<Data>) {
