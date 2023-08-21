@@ -457,7 +457,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
   const treeData = useMemo(() => {
     return data.filterValue ? filter(filterMethods.byTitle) : data.treeData;
-  }, [data.filterValue]);
+  }, [data.filterValue, data.treeData]);
 
   return (
     <div>
