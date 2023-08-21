@@ -102,6 +102,7 @@ export default {
           'font',
           'size',
           'padding',
+          'border',
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
