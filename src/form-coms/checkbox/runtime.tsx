@@ -2,8 +2,7 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Alert, Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
-import { Option, OutputIds } from '../types';
-import { uuid } from '../../utils';
+import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
@@ -40,7 +39,7 @@ export default function Runtime({
 
     inputs['setValue']((val) => {
       if (val !== undefined && !Array.isArray(val)) {
-        logger.error(`多选框的值应为数组格式`);
+        logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
         outputs['onChange'](data.value);
@@ -50,7 +49,7 @@ export default function Runtime({
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         if (val !== undefined && !Array.isArray(val)) {
-          logger.error(`多选框的值应为数组格式`);
+          logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
           outputs[OutputIds.OnInitial](val);
@@ -70,39 +69,21 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
-
+    //设置数据源
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            lable: `选项${index}`,
-            value: `${uuid()}`,
-            ...item
-          });
-        });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            lable: `选项`,
-            value: `${uuid()}`,
-            ...(ds || {})
+        data.config.options = [...ds];
+        let newValArray: any[] = [];
+        ds.map((item) => {
+          const { checked, value } = item;
+          if (checked && value != undefined) {
+            newValArray.push(value);
           }
-        ];
+        });
+        newValArray.length ? (data.value = newValArray) : void 0;
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
-      let newValArray: any[] = [];
-      tempDs.map((item) => {
-        const { checked, value } = item;
-        if (checked && value != undefined) {
-          newValArray.push(value);
-        }
-      });
-      data.value = newValArray;
-      data.config.options = tempDs;
     });
   }, []);
 

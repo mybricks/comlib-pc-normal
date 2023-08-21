@@ -4,6 +4,7 @@ export function isNumber(input) {
 
 export function isValidRange(val, type: 'moment' | 'number') {
   if (type === 'moment') {
+    if (!val[0].isValid() || !val[1].isValid()) throw Error('params error');
     return val[0].valueOf() <= val[1].valueOf();
   }
   if (type === 'number') {

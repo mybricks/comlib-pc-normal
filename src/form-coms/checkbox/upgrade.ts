@@ -2,11 +2,13 @@ import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
-    "type": "array"
+    type: 'array',
+    items: {
+      type: 'string'
+    }
   }
 
   if (!input.get('setInitialValue')) {
-
     input.add('setInitialValue', '设置初始值', valueSchema);
   }
 

@@ -114,6 +114,7 @@ export default {
             {
               title: '输出格式',
               type: 'select',
+              description: "建议输入输出格式保持一致",
               options: {
                 options: [
                   { label: '数组', value: 'array' },

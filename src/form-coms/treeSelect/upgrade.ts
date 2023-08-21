@@ -11,11 +11,11 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     items: {
       type: 'object',
       properties: {
-        label: {
+        [data.labelFieldName || 'label']: {
           title: '标签',
           type: 'string'
         },
-        value: {
+        [data.valueFieldName || 'value']: {
           title: '值',
           type: 'string'
         },
@@ -23,7 +23,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
           title: '是否叶子节点',
           type: 'boolean'
         },
-        children: {
+        [data.childrenFieldName || 'children']: {
           title: '子项',
           type: 'array',
           items: {
@@ -40,26 +40,26 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   if (!input.get('setLoadData')) {
-    input.add('setLoadData', '设置异步加载数据', treeDataSchema);
+    input.add('setLoadData', '设置异步加载数据', treeDataSchema.items);
   }
 
   if (!output.get('loadData')) {
-    output.add('loadData', '异步加载', {
-      type: 'object',
-      properties: {
-        label: {
-          title: '标签',
-          type: 'string'
-        },
-        value: {
-          title: '值',
-          type: 'string'
-        }
-      }
-    });
+    output.add('loadData', '异步加载', treeDataSchema.items);
   }
 
   //=========== v1.1.0 end ===============
+
+  /**
+   * @description v1.1.2: 异步加载数据重构，新增 仅首次加载 配置项
+  */
+
+  if (typeof data.loadDataOnce === 'undefined') {
+    data.loadDataOnce = true;
+  }
+  input.get('setLoadData').setSchema(treeDataSchema.items);
+  output.get('loadData').setSchema(treeDataSchema.items);
+
+  //=========== v1.1.2 end ===============
 
   return true;
 }

@@ -139,11 +139,16 @@ export default function ActionBtns({
 
   /** 计算省略展示和正常展示的按钮列表 */
   let ellipsisActionBtns: ActionBtn[] = [];
-  let actionBtns = data.actionBtns;
+  let actionBtns = data.actionBtns.filter((btn) => {
+    const dynamicDisplay = getDynamicDisplay(btn);
+    const isHidden =
+      btn.hidden ?? (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
+    return !isHidden && dynamicDisplay;
+  });
   if (env.runtime && useEllipsis) {
     let maxToEllipsisIdx = 0,
       tempMaxToEllipsis = 0;
-    (data.actionBtns || []).forEach((btn) => {
+    (actionBtns || []).forEach((btn) => {
       try {
         if (tempMaxToEllipsis < maxToEllipsis) {
           maxToEllipsisIdx += 1;
@@ -155,19 +160,9 @@ export default function ActionBtns({
         // console.log(e);
       }
     });
-    ellipsisActionBtns = (data.actionBtns || []).slice(maxToEllipsisIdx).filter((btn) => {
-      const isHidden =
-        btn.hidden ?? (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
-      return !isHidden;
-    });
-    actionBtns = (data.actionBtns || []).slice(0, maxToEllipsisIdx);
+    ellipsisActionBtns = (actionBtns || []).slice(maxToEllipsisIdx);
+    actionBtns = (actionBtns || []).slice(0, maxToEllipsisIdx);
   }
-  actionBtns = actionBtns.filter((btn) => {
-    const dynamicDisplay = getDynamicDisplay(btn);
-    const isHidden =
-      btn.hidden ?? (btn.id === DELETE_BTN_ID && hasChildren && !data.allNodeDeletable);
-    return !isHidden && dynamicDisplay;
-  });
 
   /**
    * 普通按钮渲染

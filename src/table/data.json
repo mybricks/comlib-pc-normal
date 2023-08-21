@@ -50,5 +50,12 @@
     "hideOnSinglePage": false,
     "useDynamicTitle": false
   },
-  "domainModel": {}
+  "domainModel": {},
+  "useSummaryColumn": false,
+  "SummaryColumnTitle": "合计",
+  "SummaryCellTitleCol": 1,
+  "SummaryColumnContentType": "text",
+  "SummaryColumnContentSchema": {
+    "type": "string"
+  }
 }

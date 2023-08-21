@@ -10,7 +10,8 @@ import {
   getParentKey,
   filterCheckedKeysByCheckedValues,
   excludeParentKeys,
-  outputNodeValues
+  outputNodeValues,
+  filterTreeDataByKeys
 } from './utils';
 import ActionBtns from './ActionBtn';
 import { MODIFY_BTN_ID } from './constants';
@@ -35,6 +36,57 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current);
   }, [data.treeData]);
+
+  /** 按标签搜索，高亮展示树节点
+   * @param searchValue 搜索值
+   */
+  const search = useCallback((searchValue: string) => {
+    data.searchValue = searchValue;
+    const searchedKeys = treeKeys.current.map((item) => {
+      if (filterMethods.byTitle(item)) {
+        return getParentKey(item.key, data.treeData);
+      }
+      return null;
+    });
+    setExpandedKeys(
+      [...searchedKeys, ...data.expandedKeys].filter(
+        (item, i, self) => item && self.indexOf(item) === i
+      )
+    );
+    setAutoExpandParent(true);
+  }, []);
+
+  /** 过滤：符合过滤方法的树节点及父节点
+   * @param filterMethod 过滤方法
+   * @returns 符合条件的节点key数组
+   */
+  const filter = useCallback((filterMethod: (nodeData: TreeData) => boolean) => {
+    const filterKeys: React.Key[] = [];
+    treeKeys.current.forEach((item) => {
+      if (filterMethod(item)) {
+        let childKey = item.key;
+        filterKeys.push(childKey);
+        while (getParentKey(childKey, data.treeData)) {
+          const parentKey = getParentKey(childKey, data.treeData);
+          childKey = parentKey;
+          filterKeys.push(parentKey);
+        }
+      }
+    });
+    const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys);
+    return filteredTreeData;
+  }, []);
+
+  /**
+   * 过滤方法合集
+   */
+  const filterMethods = useMemo(() => {
+    return {
+      byTitle: (node: TreeData) => {
+        return node.title?.indexOf(data.filterValue) > -1;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (env.runtime) {
@@ -79,19 +131,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       // 搜索
       inputs['searchValue'] &&
         inputs['searchValue']((searchValue: string) => {
-          data.searchValue = searchValue;
-          const searchedKeys = treeKeys.current.map((item) => {
-            if (item.title.indexOf(searchValue) > -1) {
-              return getParentKey(item.key, data.treeData);
-            }
-            return null;
-          });
-          setExpandedKeys(
-            [...searchedKeys, ...data.expandedKeys].filter(
-              (item, i, self) => item && self.indexOf(item) === i
-            )
-          );
-          setAutoExpandParent(true);
+          search(searchValue);
         });
       // 自定义添加提示文案
       inputs['addTips'] &&
@@ -100,6 +140,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             ? (data.addTips = ds)
             : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
         });
+      // 设置勾选项
       inputs['checkedValues'] &&
         inputs['checkedValues']((value: []) => {
           if (value && Array.isArray(value)) {
@@ -123,6 +164,12 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             return onError('设置选中项参数是数组');
           }
           setSelectedKeys(keys);
+        });
+
+      // 过滤
+      inputs['filter'] &&
+        inputs['filter']((filterValue: string) => {
+          data.filterValue = filterValue;
         });
     }
   }, []);
@@ -163,6 +210,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     setExpandedKeys([...expandedKeys]);
     setAutoExpandParent(false);
   }, []);
+
   /**
    * 选择事件处理
    * @param selectedKeys
@@ -284,7 +332,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     const Icon = getNodeIcon(item);
 
     // 搜索
-    const index = item.title.indexOf(data.searchValue);
+    const index = item.title?.indexOf(data.searchValue);
     const beforeStr = item.title.substr(0, index);
     const afterStr = item.title.substr(index + data?.searchValue?.length);
     const wrapperStyle: React.CSSProperties = {
@@ -316,11 +364,11 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       <Space size={data.iconConfig?.gutter} style={titleStyle} className="title">
         {Icon}
         {index > -1 ? (
-          <>
+          <div>
             {beforeStr}
             <span style={{ color: '#f00' }}>{data.searchValue}</span>
             {afterStr}
-          </>
+          </div>
         ) : (
           item.title
         )}
@@ -407,9 +455,13 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     );
   };
 
+  const treeData = useMemo(() => {
+    return data.filterValue ? filter(filterMethods.byTitle) : data.treeData;
+  }, [data.filterValue]);
+
   return (
     <div>
-      {data && data.treeData.length === 0 ? (
+      {treeData?.length === 0 ? (
         <Empty description={<span>{env.i18n('暂无数据')}</span>} />
       ) : (
         <Tree
@@ -426,7 +478,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
           onSelect={onSelect}
           blockNode
         >
-          {renderTreeNode(data.treeData || [])}
+          {renderTreeNode(treeData || [])}
         </Tree>
       )}
     </div>

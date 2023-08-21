@@ -2,6 +2,7 @@ import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { InputIds, Option, OutputIds } from '../types';
 import { Data } from './types';
+import { Schemas } from './constants';
 
 let tempOptions: Option[] = [],
   optionsLength;
@@ -16,13 +17,49 @@ const initParams = (data: Data) => {
   optionsLength = (data.staticOptions || []).length;
 };
 
-const updateValueSchema = ({ input, output, schema }) => {
-  input.get(InputIds.SetInitialValue)?.setSchema(schema);
-  output.get(OutputIds.OnInitial)?.setSchema(schema);
-  input.get(InputIds.SetValue).setSchema(schema);
-  output.get(OutputIds.OnChange).setSchema(schema);
-  output.get(OutputIds.OnBlur).setSchema(schema);
-  output.get(OutputIds.ReturnValue).setSchema(schema);
+const refreshSchema = ({ input, output, data }: { input: any, output: any, data: Data }) => {
+  let setValueSchema,
+    returnValueSchema;
+  if (data.outputValueType === 'value') {
+    returnValueSchema = Schemas.String;
+  } else if (data.outputValueType === 'option') {
+    returnValueSchema = {
+      type: 'object',
+      properties: {
+        label: Schemas.String,
+        value: Schemas.String,
+        checked: Schemas.Boolean,
+        disabled: Schemas.Boolean,
+      }
+    };
+  } else if (data.config.labelInValue) {
+    returnValueSchema = {
+      type: 'object',
+      properties: {
+        label: Schemas.String,
+        value: Schemas.String,
+      }
+    };
+  }
+  if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+    setValueSchema = {
+      type: 'array',
+      items: Schemas.String
+    };
+    returnValueSchema = {
+      type: 'array',
+      items: returnValueSchema
+    };
+  } else {
+    setValueSchema = Schemas.String;
+  }
+  input.get(InputIds.SetInitialValue)?.setSchema(setValueSchema);
+  input.get(InputIds.SetValue).setSchema(setValueSchema);
+
+  output.get(OutputIds.OnInitial)?.setSchema(returnValueSchema);
+  output.get(OutputIds.OnChange).setSchema(returnValueSchema);
+  output.get(OutputIds.OnBlur).setSchema(returnValueSchema);
+  output.get(OutputIds.ReturnValue).setSchema(returnValueSchema);
 };
 
 export default {
@@ -103,19 +140,12 @@ export default {
                 if (data.value != undefined && !Array.isArray(data.value)) {
                   data.value = [data.value] as any;
                 }
-                const valueSchema = {
-                  type: 'array'
-                };
-                updateValueSchema({ input, output, schema: valueSchema });
               } else {
                 if (Array.isArray(data.value)) {
                   data.value = data.value[0];
                 }
-                const valueSchema = {
-                  type: 'string'
-                };
-                updateValueSchema({ input, output, schema: valueSchema });
               }
+              refreshSchema({ input, output, data });
             }
           }
         },
@@ -142,19 +172,6 @@ export default {
             },
             set({ data }, value: boolean) {
               data.config.disabled = value;
-            }
-          }
-        },
-        {
-          title: '提交数据为选项的{标签-值}',
-          type: 'Switch',
-          description: '开启后提交选项的标签（文本）和值',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.config.labelInValue;
-            },
-            set({ data }: EditorResult<Data>, val: boolean) {
-              data.config.labelInValue = val;
             }
           }
         },
@@ -207,7 +224,7 @@ export default {
             set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
               const initValue: any = [];
               options.forEach(({ checked, value, label }) => {
-                if (checked) initValue.push(data.config.labelInValue ? { label, value } : value);
+                if (checked) initValue.push(value);
               });
               if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
                 data.value = initValue;
@@ -222,7 +239,7 @@ export default {
                 const formItemVal: any = data.value;
                 // 更新选项
                 options = options.map(option => {
-                  const checked = formItemVal !== undefined && option.value === (data.config.labelInValue ? formItemVal?.value : formItemVal);
+                  const checked = formItemVal !== undefined && option.value === formItemVal;
                   return {
                     ...option,
                     checked
@@ -233,6 +250,26 @@ export default {
               data.config.options = options;
             }
           }
+        },
+        {
+          title: '输出数据',
+          type: 'Radio',
+          options: [
+            { label: '选项值', value: 'value' },
+            { label: '{选项标签, 选项值}', value: 'labelInValue' },
+            { label: '当前选项', value: 'option' },
+          ],
+          description: '设置下拉框输出的数据内容',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.outputValueType;
+            },
+            set({ data, input, output }: EditorResult<Data>, value: 'value' | 'labelInValue' | 'option') {
+              data.config.labelInValue = (value === 'labelInValue');
+              data.outputValueType = value;
+              refreshSchema({ input, output, data });
+            },
+          },
         },
         {
           title: '校验规则',

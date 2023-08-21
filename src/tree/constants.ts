@@ -42,7 +42,10 @@ export interface Data {
   expandedKeys: any[];
   outParentKeys?: boolean;
   showError: boolean;
+  // 搜索值
   searchValue: string;
+  // 过滤值
+  filterValue: string;
   clickExpandable: boolean;
   addable: boolean;
   addTips: string[];
