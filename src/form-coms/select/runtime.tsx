@@ -87,21 +87,11 @@ export default function Runtime({
     });
 
     inputs['setOptions']((ds) => {
-      let tempDs: OptionProps[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            label: `选项${index}`,
-            value: `${uuid()}`,
-            ...item
-          });
-        });
         let newValArray: any[] = [],
           newVal;
         let updateValue = false;
-        tempDs.map((item) => {
+        ds.map((item) => {
           const { checked, value } = item;
           if (checked && value != undefined) {
             updateValue = true;
@@ -110,28 +100,29 @@ export default function Runtime({
           }
         });
         if (updateValue) {
-          data.value =
-            data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
-              ? newValArray
-              : newVal;
+          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode))
+            data.value = newValArray;
+          if (!data.config.mode || data.config.mode === 'default') data.value = newVal;
         }
+        data.config.options = ds.map(({ label, value, disabled, options }) => {
+          if (Array.isArray(options)) {
+            return {
+              label,
+              value,
+              disabled,
+              options
+            };
+          } else {
+            return {
+              label,
+              value,
+              disabled
+            };
+          }
+        });
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
-      data.config.options = tempDs.map(({ label, value, disabled, options }) => {
-        if (Array.isArray(options)) {
-          return {
-            label,
-            value,
-            disabled,
-            options
-          };
-        } else {
-          return {
-            label,
-            value,
-            disabled
-          };
-        }
-      });
     });
 
     inputs['setLoading']((val: boolean) => {
