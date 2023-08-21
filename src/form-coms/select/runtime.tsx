@@ -24,7 +24,7 @@ const getOutputValue = (data) => {
       label
     };
   }
-  if (data.outputValueType === 'all') {
+  if (data.outputValueType === 'option') {
     const { [DefaultOptionKey]: id, ...res } =
       data.config.options.find((i) => i.value === outputValue) || {};
     outputValue = res;
