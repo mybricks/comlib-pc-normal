@@ -40,6 +40,24 @@ export default function Runtime({
     };
   }, [data.config.mode, data.config.labelInValue]);
 
+  /**
+   * 计算表单项的输出值
+   */
+  const getOutputValue = useCallback((data) => {
+    let outputValue: any = data.value;
+    if (data.config.labelInValue) {
+      const option = data.config.options.find((i) => i.value === outputValue) || {};
+      const { value, label, key, disabled } = option;
+      outputValue = {
+        value,
+        label,
+        key: key || value,
+        disabled
+      };
+    }
+    return outputValue;
+  }, []);
+
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
       validateFormItem({
@@ -56,7 +74,8 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      const outputValue = getOutputValue(data);
+      outputRels['returnValue'](outputValue);
     });
 
     inputs['setValue']((val) => {
@@ -77,7 +96,8 @@ export default function Runtime({
             data.value = '';
           }
           data.value = val;
-          outputs[OutputIds.OnInitial](val);
+          const outputValue = getOutputValue(data);
+          outputs[OutputIds.OnInitial](outputValue);
         }
       });
 
@@ -162,15 +182,21 @@ export default function Runtime({
       data.value = '';
     }
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value, name });
-    outputs['onChange'](value);
+    const outputValue = getOutputValue(data);
+    onChangeForFc(parentSlot, { id: id, value: outputValue, name });
+    outputs['onChange'](outputValue);
   }, []);
-  const onChange = useCallback((value) => {
+  const onChange = useCallback((val) => {
+    let value = val;
+    if (data.config.labelInValue) {
+      value = val?.value;
+    }
     changeValue(value);
     onValidateTrigger();
   }, []);
   const onBlur = useCallback((e) => {
-    outputs['onBlur'](data.value);
+    const outputValue = getOutputValue(data);
+    outputs['onBlur'](outputValue);
   }, []);
 
   const onSearch = (e) => {

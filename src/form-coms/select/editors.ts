@@ -207,7 +207,7 @@ export default {
             set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
               const initValue: any = [];
               options.forEach(({ checked, value, label }) => {
-                if (checked) initValue.push(data.config.labelInValue ? { label, value } : value);
+                if (checked) initValue.push(value);
               });
               if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
                 data.value = initValue;
@@ -222,7 +222,7 @@ export default {
                 const formItemVal: any = data.value;
                 // 更新选项
                 options = options.map(option => {
-                  const checked = formItemVal !== undefined && option.value === (data.config.labelInValue ? formItemVal?.value : formItemVal);
+                  const checked = formItemVal !== undefined && option.value === formItemVal;
                   return {
                     ...option,
                     checked
