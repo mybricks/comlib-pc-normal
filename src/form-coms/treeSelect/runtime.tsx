@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { TreeSelect } from 'antd';
+import { TreeNodeProps, TreeSelect, Image } from 'antd';
+import * as Icons from '@ant-design/icons';
 import { uniq } from 'lodash';
+import { ExpressionSandbox } from '../../../package/com-utils';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
 import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { Data, Option } from './types';
+import { Data, IconType, Option } from './types';
 import css from './runtime.less';
 
 /**遍历树组件 */
@@ -29,7 +31,8 @@ export default function Runtime({
   logger,
   parentSlot,
   id,
-  name
+  name,
+  onError
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
   const [treeLoadedKeys, setTreeLoadKeys] = useState<string[]>([]);
@@ -152,18 +155,50 @@ export default function Runtime({
       });
     });
   };
+  /**
+   * 树节点遍历渲染
+   * @param treeData 树数据
+   * @param depth 当前层级
+   * @param parent 父节点数据
+   * @returns JSX
+   */
+  const renderTreeNode = (treeData: Option[], depth = 0) => {
+    const { TreeNode } = TreeSelect;
+    return (
+      <>
+        {treeData.map((item, inx) => {
+          const outputItem = {
+            isRoot: depth === 0,
+            isLeaf: !item.children?.length,
+            ...item
+          };
+          return (
+            <TreeNode
+              key={item[data.valueFieldName || 'value']}
+              {...item}
+              icon={getNodeIcon(outputItem, data, onError)}
+            >
+              {renderTreeNode(item.children || [], depth + 1)}
+            </TreeNode>
+          );
+        })}
+      </>
+    );
+  };
 
   return (
     <div className={css.select}>
       <TreeSelect
+        treeIcon
         {...data.config}
         value={data.value}
-        treeData={data.options}
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={getFieldNames(data)}
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
-      />
+      >
+        {renderTreeNode(data.options)}
+      </TreeSelect>
     </div>
   );
 }
@@ -204,4 +239,61 @@ const getFieldNames = (data: Data) => {
   };
 
   return fieldNames;
+};
+
+/**
+ * 计算图标动态显示表达式
+ * @param item 节点数据
+ * @param icon 图标数据
+ */
+const getDynamicDisplay = (item: TreeNodeProps, icon: IconType, onError?): boolean => {
+  let dynamicDisplay = true;
+
+  if (icon.displayRule === 'dynamic' && icon.displayExpression) {
+    const context = {
+      ...item
+    };
+    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      dynamicDisplay = sandbox.executeWithTemplate(icon.displayExpression);
+    } catch (error: any) {
+      onError?.(`树选择[${icon.title}]图标: ${error}`);
+    }
+  }
+  return dynamicDisplay;
+};
+
+/**
+ * 节点图标渲染
+ * @param item 节点数据
+ * @param data 组件数据
+ * @returns JSX
+ */
+const getNodeIcon = (item: TreeNodeProps, data: Data, onError?) => {
+  const icon =
+    data.icons?.find((icon) => getDynamicDisplay(item, icon, onError)) ||
+    ({
+      size: [14, 14]
+    } as IconType);
+  const { src, size, innerIcon, customIcon } = icon;
+  if (item.icon || (src === 'custom' && customIcon))
+    return (
+      <Image
+        width={size[1] || 14}
+        height={size[0] || 14}
+        src={item.icon || customIcon}
+        preview={false}
+      />
+    );
+  if (src === 'inner') {
+    return (
+      Icons && (
+        <span style={{ fontSize: Math.max(...size) }}>
+          {Icons[innerIcon || ('FolderOpenOutlined' as string)]?.render()}
+        </span>
+      )
+    );
+  }
+
+  return void 0;
 };

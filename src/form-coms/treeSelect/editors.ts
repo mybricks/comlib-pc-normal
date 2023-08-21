@@ -1,7 +1,43 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { InputIds, OutputIds } from '../types';
-import { Data } from './types';
+import { Data, IconType } from './types';
 import TreeSelectEditors from './treeSelectEditors';
+
+const getSuggestions = (data: Data) => {
+  return [
+    {
+      label: 'node',
+      insertText: `node.`,
+      detail: `当前节点`,
+      properties: [
+        {
+          label: 'isRoot',
+          insertText: `{isRoot}`,
+          detail: `当前节点是否为根节点`
+        },
+        {
+          label: 'isLeaf',
+          insertText: `{isLeaf}`,
+          detail: `当前节点是否为叶子节点`
+        },
+        {
+          label: data.valueFieldName || 'value',
+          insertText: `{${data.valueFieldName || 'value'}}` + ' === ',
+          detail: `当前节点${data.valueFieldName || 'value'}值`
+        },
+        {
+          label: data.labelFieldName || 'label',
+          insertText: `{${data.labelFieldName || 'label'}}` + ' === ',
+          detail: `当前节点${data.labelFieldName || 'label'}值`
+        },
+        {
+          label: data.childrenFieldName || 'children',
+          insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+          detail: `当前节点${data.childrenFieldName || 'children'}值`
+        },
+      ]
+    },
+  ];
+}
 
 export default {
   '@resize': {
@@ -10,7 +46,7 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
-  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<Data>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -229,6 +265,113 @@ export default {
           outputId: 'loadData'
         }
       },
+    ]
+
+    catalog[2].title = '样式';
+    catalog[2].items = [
+      {
+        title: '节点图标',
+        type: 'array',
+        description: `图标动态显示表达式约定以“node”开头, node表示当前节点, 如{node.isRoot}: 当前节点为根节点时显示`,
+        options: {
+          addText: '添加图标',
+          editable: true,
+          getTitle(item) {
+            return `${item.title} ${item.displayExpression}`;
+          },
+          onAdd(): IconType {
+            return {
+              title: '图标',
+              src: 'inner',
+              size: [14, 14],
+              gutter: [8],
+              innerIcon: 'FolderOpenOutlined',
+              displayRule: 'default',
+              customIcon: '',
+              displayExpression: ''
+            };
+          },
+          items: [
+            {
+              title: '名称',
+              type: 'text',
+              value: 'title'
+            },
+            {
+              title: '尺寸',
+              type: 'InputNumber',
+              options: [
+                { title: '高度', min: 0, width: 100 },
+                { title: '宽度', min: 0, width: 100 }
+              ],
+              value: 'size'
+            },
+            // {
+            //   title: '间隔',
+            //   type: 'InputNumber',
+            //   options: [
+            //     { min: 0, width: 100 },
+            //   ],
+            //   value: 'gutter'
+            // },
+            {
+              title: '图标来源',
+              type: 'Radio',
+              options: [
+                { label: '无', value: false },
+                { label: '内置图标库', value: 'inner' },
+                { label: '自定义上传', value: 'custom' }
+              ],
+              value: 'src'
+            },
+            {
+              title: '图标库',
+              type: 'Icon',
+              ifVisible(item: any) {
+                return item.src === 'inner';
+              },
+              value: 'innerIcon'
+            },
+            {
+              title: '上传',
+              type: 'ImageSelector',
+              ifVisible(item: any) {
+                return item.src === 'custom';
+              },
+              value: 'customIcon'
+            },
+            {
+              title: '应用节点',
+              type: 'Radio',
+              options: [
+                { label: '所有节点', value: 'default' },
+                { label: '自定义节点', value: 'dynamic' }
+              ],
+              value: 'displayRule'
+            },
+            {
+              title: '动态显示表达式',
+              type: 'expression',
+              options: {
+                suggestions: getSuggestions(data),
+                placeholder: `例：{node.isRoot} 图标应用在根节点上`,
+              },
+              ifVisible(item: any) {
+                return item.displayRule === 'dynamic';
+              },
+              value: 'displayExpression',
+            }
+          ]
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [...(data.icons || [])];
+          },
+          set({ data }: EditorResult<Data>, val: Array<IconType>) {
+            data.icons = val;
+          }
+        }
+      }
     ]
   }
 }
