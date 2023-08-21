@@ -21,8 +21,10 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, name } = props;
+  const { data, inputs, outputs, env, parentSlot, name, id } = props;
   const [value, setValue] = useState();
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -187,9 +189,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         showTime={getShowTime()}
         onChange={onChange}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          //edit || debug ? triggerNode : document.body
-          triggerNode
+          edit || debug ? triggerNode : document.body
         }
+        open={true}
+        dropdownClassName={id}
       />
     </div>
   );

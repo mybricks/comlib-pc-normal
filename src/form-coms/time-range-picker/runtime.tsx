@@ -36,6 +36,8 @@ export default function ({
     },
     [value]
   );
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
 
   const setTimestampRange = (val) => {
     if (Array.isArray(val) && !val.length) {
@@ -139,9 +141,9 @@ export default function ({
         disabled={disabled}
         onChange={onChange}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          //edit || debug ? triggerNode : document.body
-          triggerNode
+          edit || debug ? triggerNode : document.body
         }
+        dropdownClassName={id}
       />
     </div>
   );

@@ -68,36 +68,81 @@ export default {
       },
       {
         title: '日期-当前',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before'
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
+        }
       },
       {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-cell-today'
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-cell-today`
+        }
       },
       {
         title: '日期-选中',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: [
-          '.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner',
-          '.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner',
-          '.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner',
-          '.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner'
-        ]
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return [
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner`,
+          ]
+        }
       },
       {
         title: '日期-选中区间',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: [
-          '.ant-picker-cell-in-view.ant-picker-cell-in-range:before',
-          '.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before',
-          '.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before'
-        ]
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return [
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
+          ]
+        }
+      },
+      {
+        title: '选中日期区间-hover',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return [
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover:before`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start:before`,
+            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end:before`
+          ]
+        }
       },
       {
         title: '日期-hover',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner'
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+        }
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {

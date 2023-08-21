@@ -40,6 +40,9 @@ export default function ({
     [value]
   );
 
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
+
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;
     if (format === 'timeStamp') return 'HH:mm:ss';
@@ -123,9 +126,9 @@ export default function ({
         disabled={disabled}
         allowClear
         getPopupContainer={(triggerNode: HTMLElement) =>
-          //edit || debug ? triggerNode : document.body
-          triggerNode
+          edit || debug ? triggerNode : document.body
         }
+        dropdownClassName={id}
         onChange={onChange}
       />
     </div>

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { Data } from './runtime'
 
 export default {
   '@resize': {
@@ -28,22 +29,45 @@ export default {
       },
       {
         title: '日期-当前',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before'
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({id}: EditorResult<Data>){
+          return `.${id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
+        }
       },
       {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-cell-today'
+        global: true,
+        target({id}: EditorResult<Data>){
+          return `.${id} .ant-picker-cell-today`
+        }
       },
       {
         title: '日期-选中',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner'
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({id}: EditorResult<Data>){
+          return `.${id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`
+        }
       },
       {
         title: '日期-hover',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner'
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({id}: EditorResult<Data>){
+          return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+        }
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {

@@ -206,9 +206,9 @@ export default function Runtime({
         onChange={onChange}
         onBlur={onBlur}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          //edit || debug ? triggerNode : document.body
-          triggerNode
+          edit || debug ? triggerNode : document.body
         }
+        dropdownClassName={id}
         onSearch={data.config.showSearch ? onSearch : void 0}
         notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
       />

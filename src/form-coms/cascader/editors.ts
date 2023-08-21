@@ -1,4 +1,5 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { Data } from './runtime'
 
 export default {
   '@resize': {
@@ -31,25 +32,45 @@ export default {
         ifVisible({ data }) {
           return data.isMultiple;
         },
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+        options: [
+          'border', 
+          { type: 'font', config: { disableTextAlign: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
         target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
       },
       {
         title: '选项-默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } },{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-cascader-menu-item'
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-cascader-menu-item`
+        }
       },
       {
         title: '选项-hover',
-        options: [{ type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: ['.ant-cascader-menu-item:hover']
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-cascader-menu-item:hover`
+        }
       },
       {
         title: '选项-focus',
-        options: [{ type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: [
-          '.ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover',
-        ]
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return [`.${id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
+        }
       },
     ],
     items: ({data}: EditorResult<{ type }>, ...catalog) => {

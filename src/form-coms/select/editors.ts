@@ -61,31 +61,37 @@ export default {
       },
       {
         title: '选项-默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } },{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: 'div.ant-select-item.ant-select-item-option',
-        //domTarget: '.ant-select-item-option-content'
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} div.ant-select-item.ant-select-item-option`
+        }
       },
       {
         title: '选项-hover',
-        options: [{ type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: [
-          'div.ant-select-item-option-active:not(.ant-select-item-option-disabled)',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } }
         ],
-        //domTarget: '.ant-select-item-option-active'
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
+        }
       },
       {
         title: '选项-focus',
-        options: [{ type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: [
-          'div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
         ],
-        //domTarget: '.ant-select-item-option-active'
-      },
-      // {
-      //   title: '激活样式',
-      //   options: ['border'],
-      //   target: '.ant-select:not(.ant-select-disabled):hover .ant-select-selector'
-      // },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
+        }
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

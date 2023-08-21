@@ -27,23 +27,51 @@ export default {
       },
       {
         title: '时间-默认',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner'
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+        }
       },
       {
         title: '时间-hover',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover'
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+        }
       },
       {
         title: '时间-选中',
-        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner'
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+        }
       },
       {
         title: '确认按钮',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }, { type: 'font', config: { disableTextAlign: true } },'BoxShadow'],
-        target: '.ant-btn-primary'
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          'BoxShadow'
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-btn-primary`
+        }
       }
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {

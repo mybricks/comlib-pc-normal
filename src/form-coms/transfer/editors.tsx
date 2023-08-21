@@ -56,7 +56,6 @@ export default {
         target: '.ant-checkbox-checked .ant-checkbox-inner'
       },
       {
-        //.ant-checkbox-inner
         title: '穿梭按钮-默认',
         options: [
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -64,10 +63,9 @@ export default {
           { type: 'font', config: { disableTextAlign: true } },
           'BoxShadow'
         ],
-        target: '.ant-btn-primary'
+        target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only'
       },
       {
-        //.ant-checkbox-inner
         title: '穿梭按钮-hover',
         options: [
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -75,7 +73,7 @@ export default {
           { type: 'font', config: { disableTextAlign: true } },
           'BoxShadow'
         ],
-        target: '.ant-btn-primary:hover',
+        target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:hover',
         domTarget: '.ant-btn-primary'
       }
     ],
