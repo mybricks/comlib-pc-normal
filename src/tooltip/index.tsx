@@ -25,9 +25,9 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
         />
       )}
       trigger={trigger}
-      // getPopupContainer={(triggerNode: HTMLElement) =>
-      //   edit || debug ? triggerNode : document.body
-      // }
+      getPopupContainer={(triggerNode: HTMLElement) =>
+        edit || debug ? env?.canvasElement : document.body
+      }
     >
       <div>{slots.carrier?.render()}</div>
     </Tooltip>
