@@ -2,8 +2,6 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Radio, Space } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
-import { uuid } from '../../utils';
-import { Option } from '../types';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -16,7 +14,9 @@ export default function Runtime({
   outputs,
   parentSlot,
   id,
-  name
+  name,
+  title,
+  logger
 }: RuntimeParams<Data>) {
   useFormItemInputs({
     name,
@@ -67,44 +67,21 @@ export default function Runtime({
 
   useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            lable: `单选框${index}`,
-            value: `${uuid()}`,
-            key: `${uuid()}`,
-            ...item
-          });
-        });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            lable: `单选框`,
-            value: `${uuid()}`,
-            key: `${uuid()}`,
-            ...(ds || {})
+        let newVal;
+        ds.map((radio) => {
+          const { checked, value } = radio;
+          if (checked && value != undefined) {
+            newVal = value;
           }
-        ];
-      }
-      let newVal;
-      tempDs.map((radio) => {
-        const { checked, value } = radio;
-        if (checked && value != undefined) {
-          newVal = value;
+        });
+        if (typeof newVal !== 'undefined') {
+          data.value = newVal;
         }
-      });
-      if (typeof newVal !== 'undefined') {
-        data.value = newVal;
+        data.config.options = ds;
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
-      if (!tempDs.some((item) => item.value === data.value)) {
-        data.value = undefined;
-      }
-      data.config.options = tempDs;
     });
   }, []);
 
