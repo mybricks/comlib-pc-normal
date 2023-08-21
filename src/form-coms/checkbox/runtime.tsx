@@ -73,16 +73,14 @@ export default function Runtime({
     inputs['setOptions']((ds) => {
       if (Array.isArray(ds)) {
         data.config.options = [...ds];
-        let newValArray: any[] = [],
-          updateValue = false;
+        let newValArray: any[] = [];
         ds.map((item) => {
           const { checked, value } = item;
           if (checked && value != undefined) {
             newValArray.push(value);
-            updateValue = true;
           }
         });
-        updateValue ? (data.value = newValArray) : void 0;
+        newValArray.length ? (data.value = newValArray) : void 0;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
