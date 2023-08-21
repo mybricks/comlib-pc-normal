@@ -45,7 +45,7 @@ export default {
       {
         title: '选项-focus',
         options: ['border','BoxShadow'],
-        target: '.ant-radio-checked .ant-radio-inner'
+        target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
       },
       {
         title: '中心-focus',
