@@ -10,15 +10,49 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认样式',
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: [
+          {
+            label: '宽',
+            value: 'large'
+          },
+          {
+            label: '中',
+            value: 'middle'
+          },
+          {
+            label: '窄',
+            value: 'small'
+          }
+        ],
+        value: {
+          get({ data }) {
+            return data.config.size || 'middle';
+          },
+          set({ data }, val: 'large' | 'middle' | 'small') {
+            data.config.size = val;
+          }
+        }
+      },
+      {
+        title: '边框-默认',
         options: ['border'],
         target: '.ant-input-affix-wrapper'
+      },
+      {
+        title: '边框-hover',
+        options: ['border'],
+        target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+        domTarget: '.ant-input-affix-wrapper'
+      },
+      {
+        title: '边框-focus',
+        options: ['border', 'BoxShadow'],
+        target:
+          'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
       }
-      // {
-      //   title: '激活样式',
-      //   options: ['border'],
-      //   target: '.ant-input-affix-wrapper:hover'
-      // }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

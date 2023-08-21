@@ -10,15 +10,74 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认样式',
+        title: '边框-默认',
         options: ['border'],
         target: '.ant-picker'
       },
-      // {
-      //   title: '激活样式',
-      //   options: ['border'],
-      //   target: '.ant-picker:hover'
-      // },
+      {
+        title: '边框-hover',
+        options: ['border'],
+        target: '.ant-picker:hover',
+        domTarget: '.ant-picker'
+      },
+      {
+        title: '边框-focus',
+        options: ['border','BoxShadow'],
+        target: '.ant-picker-focused.ant-picker'
+      },
+      {
+        title: '边框底线-focus',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-picker-range .ant-picker-active-bar'
+      },
+      {
+        title: '时间-默认',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+        }
+      },
+      {
+        title: '时间-hover',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+        }
+      },
+      {
+        title: '时间-选中',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+        }
+      },
+      {
+        title: '确认按钮',
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } },
+          'BoxShadow'
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-btn-primary`
+        }
+      }
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '配置';

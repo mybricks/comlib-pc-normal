@@ -290,7 +290,7 @@ export default {
         initValue: {
           color: '#000000'
         },
-        target: `.ant-pagination-item a`
+        target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
       },
       {
         title: '页码Hover',
@@ -331,6 +331,21 @@ export default {
           color: '#000000'
         },
         target: `.ant-pagination-item-active a`
+      },
+      {
+        title: '翻页按钮',
+        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+        target: `.ant-pagination li:not(.ant-pagination-disabled) button`
+      },
+      {
+        title: '翻页按钮hover',
+        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+        target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
+      },
+      {
+        title: '翻页按钮禁止',
+        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+        target: `.ant-pagination li.ant-pagination-disabled button`
       }
     ]
   }

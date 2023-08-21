@@ -427,3 +427,55 @@ const refreshSchema = (data: Data, input, output) => {
     loadDataPin.setSchema(schema.items)
   }
 }
+
+const refreshSchema = (data: Data, input, output) => {
+
+  const trueValueFieldName = data.valueFieldName || 'value';
+  const trueLabelFieldName = data.labelFieldName || 'label';
+  const trurChildrenFieldName = data.childrenFieldName || 'children';
+
+  const schema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        [trueLabelFieldName]: {
+          title: '标签',
+          type: 'string'
+        },
+        [trueValueFieldName]: {
+          title: '值',
+          type: 'string'
+        },
+        isLeaf: {
+          title: '是否叶子节点',
+          type: 'boolean'
+        },
+        [trurChildrenFieldName]: {
+          title: '子项',
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {}
+          }
+        }
+      }
+    }
+  }
+
+  const setOptionsPin = input.get('setOptions')
+  const setLoadDataPin = input.get('setLoadData')
+  const loadDataPin = output.get('loadData')
+
+  if (setOptionsPin) {
+    setOptionsPin.setSchema(schema)
+  }
+
+  if (setLoadDataPin) {
+    setLoadDataPin.setSchema(schema.items)
+  }
+
+  if (loadDataPin) {
+    loadDataPin.setSchema(schema.items)
+  }
+}

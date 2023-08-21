@@ -19,5 +19,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add('onPressEnter', '按下回车', valueSchema);
   }
 
+  /**
+    * @description v1.0.9->v1.0.10 增加尺寸
+  */
+  if (typeof data.config.size === 'undefined') {
+    data.config.size = 'middle'
+  }
+
   return true;
 }

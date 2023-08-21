@@ -3,7 +3,8 @@ import classnames from 'classnames';
 import { Data, OutputIds, LocationEnum } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
-import { Space, Image } from 'antd';
+import { Space, Image, Button } from 'antd';
+
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //如果data.dataType是'external'的
   useEffect(() => {
@@ -46,6 +47,21 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     return <span>{env.i18n(text)}</span>;
   };
 
+  // const renderTextAndIcon = (item: Data) => {
+  //   const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
+  //   const Icon = Icons && Icons[icon as string]?.render();
+  //   return (
+  //     <Space size={text !== '' ? iconDistance : 0}>
+  //       {useIcon && Icon && iconLocation === LocationEnum.FRONT ? (
+  //         <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
+  //       ) : null}
+  //       {!useIcon || showText ? renderText(text) : null}
+  //       {useIcon && Icon && iconLocation === LocationEnum.BACK ? (
+  //         <span style={{ fontSize: contentSize[0] }}>{Icon}</span>
+  //       ) : null}
+  //     </Space>
+  //   );
+  // };
   const renderTextAndIcon = (item: Data) => {
     const { useIcon, icon, iconLocation, iconDistance, text, showText, contentSize } = item;
     const Icon = Icons && Icons[icon as string]?.render();
@@ -111,9 +127,16 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   }
   return (
     <div className={css.wrapper}>
-      <div className={`${css.button} button`} onClick={onClick} onDoubleClick={onDoubleClick}>
+      <Button
+        className={`${css.button} button`}
+        type={data.type}
+        size={data.size}
+        shape={data.shape}
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
+      >
         {renderBtnContext(data)}
-      </div>
+      </Button>
     </div>
   );
 }

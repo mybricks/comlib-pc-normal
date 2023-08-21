@@ -24,8 +24,11 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, id } = props;
   const [options, setOptions] = useState();
+
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
 
   useFormItemInputs({
     id: props.id,
@@ -90,6 +93,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {...data.config}
         multiple={data.isMultiple}
         onChange={onChange}
+        dropdownClassName={id}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          edit || debug ? triggerNode : document.body
+        }
       />
     </div>
   );

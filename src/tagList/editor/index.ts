@@ -133,6 +133,18 @@ export default {
           }
         },
         {
+          title: '可关闭',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.closeAble;
+            },
+            set({ data, output }: EditorResult<Data>, val: boolean) {
+              data.closeAble = val
+            }
+          }
+        },
+        {
           title: '可新增',
           type: 'switch',
           ifVisible({ data }: EditorResult<Data>) {
@@ -177,9 +189,10 @@ export default {
           }
         },
         {
-          title: '标签改变时',
+          title: '标签删除/改变时',
+          description: '标签关闭/勾选/删除时触发',
           type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return data.appendAble;
           },
           options: () => {
@@ -220,7 +233,7 @@ export default {
         {
           title: '选中状态改变时',
           type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
+          ifVisible({ }: EditorResult<Data>) {
             return data.checkable;
           },
           options: () => {
@@ -231,7 +244,43 @@ export default {
         }
       ];
     },
-    style: createStyle({ target: 'div[data-root="root"] span[data-item-tag="tag"]' })
+    style: [
+      {
+        title: '文本溢出/省略',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isEllipsis;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.isEllipsis = value;
+            if (value === true && !data.ellipsis) {
+              data.ellipsis = {
+                maxWidth: 120,
+              };
+            }
+          }
+        }
+      },
+      {
+        title: '最大显示宽度',
+        type: 'text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.isEllipsis;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data?.ellipsis?.maxWidth || 120;
+          },
+          set({ data }: EditorResult<Data>, value) {
+            data.ellipsis = {
+              maxWidth: value,
+            };
+          }
+        }
+      },
+      createStyle({ target: 'div[data-root="root"] span[data-item-tag="tag"]' })
+    ]
   },
   ...TagEditor,
   ...AppendEditor

@@ -22,13 +22,16 @@ export interface Data {
   outVal: any;
   inVal: any;
   useIcon: boolean;
-  isCustom: boolean; 
+  isCustom: boolean;
   icon: string;
   src: string;
   contentSize: number[];
   showText: boolean;
   iconLocation: 'front' | 'back',
-  iconDistance: number
+  iconDistance: number,
+  size: SizeEnum,
+  type: TypeEnum,
+  shape: ShapeEnum,
 }
 
 export const OutputIds = {
@@ -39,4 +42,26 @@ export const OutputIds = {
 export enum LocationEnum {
   FRONT = 'front',
   BACK = 'back'
+}
+
+export enum SizeEnum {
+  Large = 'large',
+  Middle = 'middle',
+  Small = 'small'
+}
+
+export enum ShapeEnum {
+  Default = 'default',
+  Circle = 'circle',
+  Round = 'round'
+}
+export enum TypeEnum {
+  Default = 'default',
+  Primary = 'primary',
+  Ghost = 'ghost',
+  Dashed = 'dashed',
+  Link = 'link',
+  Text = 'text',
+  Danger = 'danger',
+  ALink = 'a'
 }

@@ -67,6 +67,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
 
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
+
   //输出数据变形函数
   const transCalculation = (val, type, props, index) => {
     let transValue;
@@ -286,6 +289,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onCalendarChange={(dates) => setDates(dates)}
         onOpenChange={onOpenChange}
         allowEmpty={emptyArr}
+        open={true}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          edit || debug ? triggerNode : document.body
+        }
+        dropdownClassName={id}
         {...disabledDateTime}
       />
     </div>

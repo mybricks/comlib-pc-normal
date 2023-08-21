@@ -1,4 +1,4 @@
-import { Data, OutputIds } from './constants';
+import { Data, OutputIds, ShapeEnum, SizeEnum, TypeEnum } from './constants';
 import { isEmptyObject } from '../utils';
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -52,6 +52,15 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   }
   if (typeof data.contentSize === "undefined") {
     data.contentSize = [14, 14];
+  };
+  if (typeof data.type === "undefined") {
+    data.type = TypeEnum.Primary
+  };
+  if (typeof data.size === "undefined") {
+    data.size = SizeEnum.Middle
+  };
+  if (typeof data.shape === "undefined") {
+    data.shape = ShapeEnum.Default
   };
 
   /**

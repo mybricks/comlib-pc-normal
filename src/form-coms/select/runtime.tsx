@@ -47,6 +47,8 @@ export default function Runtime({
   const [fetching, setFetching] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
   /**
    * 类型校验方法
    */
@@ -206,13 +208,17 @@ export default function Runtime({
   };
 
   return (
-    <div className={css.select} ref={ref}>
+    <div className={css.select} ref={ref} id="area">
       <Select
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value}
         onChange={onChange}
         onBlur={onBlur}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          edit || debug ? triggerNode : document.body
+        }
+        dropdownClassName={id}
         onSearch={data.config.showSearch ? onSearch : void 0}
         notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
       />

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { uniq } from 'lodash';
 import { TreeNodeProps, TreeSelect, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { uniq } from 'lodash';
 import { ExpressionSandbox } from '../../../package/com-utils';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';

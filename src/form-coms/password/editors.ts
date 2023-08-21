@@ -9,10 +9,24 @@ export default {
     style.width = '100%'
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-input-affix-wrapper'
-    },
+    style: [
+      {
+        title: '边框-默认',
+        options: ['border'],
+        target: '.ant-input-affix-wrapper'
+      },
+      {
+        title: '边框-hover',
+        options: ['border'],
+        target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+        domTarget: '.ant-input-affix-wrapper'
+      },
+      {
+        title: '边框-focus',
+        options: ['border','BoxShadow'],
+        target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+      },
+    ],
     items: ({ data }: EditorResult<{ type }>, ...cate) => {
       cate[0].title = '配置';
       cate[0].items = [
