@@ -290,7 +290,7 @@ export default {
         initValue: {
           color: '#000000'
         },
-        target: `.ant-pagination-item a`
+        target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
       },
       {
         title: '页码Hover',
