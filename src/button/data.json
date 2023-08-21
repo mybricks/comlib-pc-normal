@@ -8,7 +8,7 @@
   "isCustom": false,
   "icon": "HomeOutlined",
   "size": "middle",
-  "type": "default",
+  "type": "primary",
   "shape": "default",
   "src": "",
   "showText": true,

@@ -63,7 +63,6 @@ const StyleEditor = [
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
         return data.shape || ShapeEnum.Default;
       },
       set({ data, focusArea }: EditorResult<Data>, value: ShapeEnum) {
