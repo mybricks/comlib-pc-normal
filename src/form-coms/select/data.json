@@ -9,5 +9,6 @@
     "optionFilterProp": "label"
   },
   "staticOptions": [],
-  "dropdownSearchOption": false
+  "dropdownSearchOption": false,
+  "outputValueType": "value"
 }

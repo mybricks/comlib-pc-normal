@@ -3,11 +3,34 @@ import { Select, Spin } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
-import { typeCheck, uuid } from '../../utils';
-import { Option, OutputIds } from '../types';
+import { typeCheck } from '../../utils';
+import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { OptionProps } from 'antd/lib/select';
+
+const DefaultOptionKey = '_id';
+
+/**
+ * 计算表单项的输出值
+ * @params data 组件数据
+ */
+const getOutputValue = (data) => {
+  let outputValue: any = data.value;
+  if (data.config.labelInValue) {
+    const option = data.config.options?.find((i) => i.value === outputValue) || {};
+    const { value, label } = option;
+    outputValue = {
+      value,
+      label
+    };
+  }
+  if (data.outputValueType === 'all') {
+    const { [DefaultOptionKey]: id, ...res } =
+      data.config.options.find((i) => i.value === outputValue) || {};
+    outputValue = res;
+  }
+  return outputValue;
+};
 
 export default function Runtime({
   env,
@@ -39,24 +62,6 @@ export default function Runtime({
       message: `${title}:【设置值】参数必须是基本类型！`
     };
   }, [data.config.mode, data.config.labelInValue]);
-
-  /**
-   * 计算表单项的输出值
-   */
-  const getOutputValue = useCallback((data) => {
-    let outputValue: any = data.value;
-    if (data.config.labelInValue) {
-      const option = data.config.options.find((i) => i.value === outputValue) || {};
-      const { value, label, key, disabled } = option;
-      outputValue = {
-        value,
-        label,
-        key: key || value,
-        disabled
-      };
-    }
-    return outputValue;
-  }, []);
 
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -108,6 +113,9 @@ export default function Runtime({
 
     inputs['setOptions']((ds) => {
       if (Array.isArray(ds)) {
+        data.config.options = [...ds];
+
+        //计算值更新
         let newValArray: any[] = [],
           newVal;
         let updateValue = false;
@@ -124,22 +132,6 @@ export default function Runtime({
             data.value = newValArray;
           if (!data.config.mode || data.config.mode === 'default') data.value = newVal;
         }
-        data.config.options = ds.map(({ label, value, disabled, options }) => {
-          if (Array.isArray(options)) {
-            return {
-              label,
-              value,
-              disabled,
-              options
-            };
-          } else {
-            return {
-              label,
-              value,
-              disabled
-            };
-          }
-        });
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
