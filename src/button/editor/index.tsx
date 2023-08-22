@@ -44,7 +44,7 @@ export default {
         domTarget: '.button'
       },
       {
-        title: 'Active',
+        title: '激活',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },
@@ -52,7 +52,7 @@ export default {
         target: `button.ant-btn:not([disabled]):active`
       },
       {
-        title: 'Disable',
+        title: '禁用',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.asMapArea;
         },

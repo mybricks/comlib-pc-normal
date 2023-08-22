@@ -30,7 +30,6 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         data.text = val;
       });
       inputs[InputIds.Disabled]((value) => {
-        console.log('触发 input disable  value:', value);
         setDisable(value);
       });
     }
