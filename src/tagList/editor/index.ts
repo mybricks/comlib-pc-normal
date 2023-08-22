@@ -1,7 +1,7 @@
 import { Data, TagSize, Preset } from '../types';
 import TagEditor from './tag';
 import AppendEditor from './append';
-import { createTag, createStyle } from './util';
+import { createTag, createStyleForDefault, createStyleForChecked, createStyleForCheckableHover } from './util';
 
 const TagSchema = {
   type: 'object',
@@ -140,7 +140,7 @@ export default {
               return !!data.closeAble;
             },
             set({ data, output }: EditorResult<Data>, val: boolean) {
-              data.closeAble = val
+              data.closeAble = val;
             }
           }
         },
@@ -192,7 +192,7 @@ export default {
           title: '标签删除/改变时',
           description: '标签关闭/勾选/删除时触发',
           type: '_Event',
-          ifVisible({ }: EditorResult<Data>) {
+          ifVisible({}: EditorResult<Data>) {
             return data.appendAble;
           },
           options: () => {
@@ -233,7 +233,7 @@ export default {
         {
           title: '选中状态改变时',
           type: '_Event',
-          ifVisible({ }: EditorResult<Data>) {
+          ifVisible({}: EditorResult<Data>) {
             return data.checkable;
           },
           options: () => {
@@ -256,7 +256,7 @@ export default {
             data.isEllipsis = value;
             if (value === true && !data.ellipsis) {
               data.ellipsis = {
-                maxWidth: 120,
+                maxWidth: 120
               };
             }
           }
@@ -274,12 +274,19 @@ export default {
           },
           set({ data }: EditorResult<Data>, value) {
             data.ellipsis = {
-              maxWidth: value,
+              maxWidth: value
             };
           }
         }
       },
-      createStyle({ target: 'div[data-root="root"] span[data-item-tag="tag"]' })
+      createStyleForDefault({ target: 'div[data-root="root"] span[data-item-tag="tag"]' }),
+      createStyleForCheckableHover({
+        target: 'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover',
+      }),
+      createStyleForChecked({
+        target: 'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable-checked',
+        domTarget: '.ant-tag.ant-tag-checkable.ant-tag-checkable-checked'
+      })
     ]
   },
   ...TagEditor,

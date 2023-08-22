@@ -120,6 +120,7 @@ const DefaultTag = ({
         <Tag
           data-item-tag="append"
           color="default"
+          key={'tag-append'}
           icon={Icons && Icons[appendBtn.icon as string]?.render()}
           className={styles.appendBtn}
           onClick={showInput}
