@@ -10,8 +10,13 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
-  ':root':{
+  ':root': {
     style: [
+      {
+        title: '选项标签-默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
+      },
       {
         title: '选项-默认',
         options: ['border'],
@@ -24,14 +29,19 @@ export default {
         domTarget: '.ant-checkbox-inner'
       },
       {
-        title: '选项-focus',
-        options: ['border','BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
+        title: '选项-选中态',
+        options: ['border', 'BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-checkbox-checked .ant-checkbox-inner'
+      },
+      {
+        title: '选项-禁用态',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-checkbox-disabled .ant-checkbox-inner'
       }
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) =>{
+    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
-  
+
       catalog[0].items = [
         {
           title: '禁用状态',
@@ -129,7 +139,7 @@ export default {
                 if (checked) values.push(value);
                 if (value === undefined) renderError = true;
               });
-  
+
               data.renderError = renderError;
               data.value = values as any;
               data.staticOptions = options;
@@ -247,5 +257,5 @@ export default {
       ];
     }
   }
-  
+
 }
