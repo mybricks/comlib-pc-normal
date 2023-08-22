@@ -71,6 +71,7 @@ export default {
         options: [
           { type: 'background', config: { disableBackgroundImage: true } }, 
           { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
           'BoxShadow'
         ],
         global: true,

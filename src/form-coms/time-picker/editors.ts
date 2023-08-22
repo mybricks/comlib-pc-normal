@@ -22,30 +22,30 @@ export default {
       },
       {
         title: '边框-focus',
-        options: ['border','BoxShadow'],
+        options: ['border', 'BoxShadow'],
         target: '.ant-picker-focused.ant-picker'
       },
       {
         title: '时间-默认',
         options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }, 
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>){
+        target({ id }: EditorResult<Data>) {
           return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
         }
       },
       {
         title: '时间-hover',
         options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }, 
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>){
+        target({ id }: EditorResult<Data>) {
           return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
         }
       },
@@ -53,11 +53,11 @@ export default {
         title: '时间-选中',
         options: [
           'border',
-          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>){
+        target({ id }: EditorResult<Data>) {
           return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
         }
       },
@@ -66,10 +66,11 @@ export default {
         options: [
           { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
           'BoxShadow'
         ],
         global: true,
-        target({ id }: EditorResult<Data>){
+        target({ id }: EditorResult<Data>) {
           return `.${id} .ant-btn-primary`
         }
       }
