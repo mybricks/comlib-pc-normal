@@ -72,6 +72,39 @@ export default {
           return [`.${id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
         }
       },
+      {
+        title: '多选节点-默认',
+        ifVisible({ data }) {
+          return data.isMultiple;
+        },
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-cascader-checkbox-inner`
+        }
+      },
+      {
+        title: '多选节点-hover',
+        ifVisible({ data }) {
+          return data.isMultiple;
+        },
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
+        },
+      },
+      {
+        title: '多选节点-focus',
+        ifVisible({ data }) {
+          return data.isMultiple;
+        },
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
+        },
+      },
     ],
     items: ({data}: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
