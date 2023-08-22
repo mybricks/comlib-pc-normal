@@ -289,7 +289,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onCalendarChange={(dates) => setDates(dates)}
         onOpenChange={onOpenChange}
         allowEmpty={emptyArr}
-        open={true}
         getPopupContainer={(triggerNode: HTMLElement) =>
           edit || debug ? triggerNode : document.body
         }
