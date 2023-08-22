@@ -21,6 +21,13 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "dynamicDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "boolean"
+      }
     }
   ],
   "outputs": [

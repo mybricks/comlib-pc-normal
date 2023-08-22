@@ -27,17 +27,21 @@ export interface Data {
   src: string;
   contentSize: number[];
   showText: boolean;
-  iconLocation: 'front' | 'back',
-  iconDistance: number,
-  size: SizeEnum,
-  type: TypeEnum,
-  shape: ShapeEnum,
+  iconLocation: 'front' | 'back';
+  iconDistance: number;
+  size: SizeEnum;
+  type: TypeEnum;
+  shape: ShapeEnum;
 }
+
+export const InputIds = {
+  Disabled: 'dynamicDisabled'
+};
 
 export const OutputIds = {
   Click: 'click',
   DbClick: 'dbClick'
-}
+};
 
 export enum LocationEnum {
   FRONT = 'front',
