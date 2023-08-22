@@ -319,7 +319,7 @@ export default {
           return data.paginationConfig.size !== SizeTypeEnum.Simple;
         },
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item-active`
+        target: `.ant-pagination-item.ant-pagination-item-active`
       },
       {
         title: '页码激活态字体',
@@ -330,7 +330,7 @@ export default {
         initValue: {
           color: '#000000'
         },
-        target: `.ant-pagination-item-active a`
+        target: `.ant-pagination-item.ant-pagination-item-active a`
       },
       {
         title: '翻页按钮',
@@ -346,6 +346,11 @@ export default {
         title: '翻页按钮禁止',
         options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
         target: `.ant-pagination li.ant-pagination-disabled button`
+      },
+      {
+        title: '前置文案字体',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `.ant-pagination-total-text`
       }
     ]
   }
