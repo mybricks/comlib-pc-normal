@@ -1,5 +1,12 @@
 import { Data, Tag, Preset } from '../types';
-import { getTagItem, arrayMove, getTagIndex, createStyle } from './util';
+import {
+  getTagItem,
+  arrayMove,
+  getTagIndex,
+  createStyleForDefault,
+  createStyleForChecked,
+  createStyleForCheckableHover
+} from './util';
 
 export default {
   '[data-item-tag="tag"]': {
@@ -109,11 +116,25 @@ export default {
         }
       ];
     },
-    style: createStyle({
-      target({ focusArea }: EditorResult<Data>) {
-        const { index } = focusArea.dataset;
-        return `div[data-root] span[data-index="${index}"]`;
-      }
-    })
+    style: [
+      createStyleForDefault({
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea.dataset;
+          return `div[data-root] span[data-index="${index}"]`;
+        }
+      }),
+      createStyleForCheckableHover({
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea.dataset;
+          return `div[data-root] span[data-index="${index}"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover`;
+        }
+      }),
+      createStyleForChecked({
+        target({ focusArea }: EditorResult<Data>) {
+          const { index } = focusArea.dataset;
+          return `div[data-root] span[data-index="${index}"].ant-tag-checkable-checked`;
+        }
+      })
+    ]
   }
 };
