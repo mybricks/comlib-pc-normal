@@ -13,6 +13,7 @@ interface Env {
   events: any[]
   vars?: {
     getQuery: () => any;
+    getExecuteEnv?: () => any;
     getProps: () => any;
     getCookies: () => any;
     getRouter: () => Record<string, Function>

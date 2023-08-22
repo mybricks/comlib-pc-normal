@@ -48,7 +48,7 @@ export default function (props: RuntimeParams<Data>) {
     return (
       <div
         style={{
-          fontSize: data.size,
+          //fontSize: data.size,
           marginRight: '0px',
           marginTop: '0px'
         }}

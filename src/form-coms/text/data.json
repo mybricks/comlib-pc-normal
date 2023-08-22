@@ -9,6 +9,7 @@
     "addonBefore": "",
     "addonAfter": "",
     "showCount": false,
-    "maxLength": -1
+    "maxLength": -1,
+    "size": "middle"
   }
 }

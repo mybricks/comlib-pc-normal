@@ -19,10 +19,31 @@ const createTag = (content = '新标签') => {
   };
 };
 
-const createStyle = ({ target }: StyleModeType<Data>) => ({
-  title: '描述',
+const createStyleForDefault = ({ target }: StyleModeType<Data>) => ({
+  title: '默认',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   target
 });
 
-export { getTagItem, getTagIndex, createTag, createStyle, arrayMove, uuid };
+const createStyleForCheckableHover = ({ target }: StyleModeType<Data>) => ({
+  title: '可选择（Hover）',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  target
+});
+
+const createStyleForChecked = ({ target }: StyleModeType<Data>) => ({
+  title: '可选择（选中）',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  target
+});
+
+export {
+  getTagItem,
+  getTagIndex,
+  createTag,
+  arrayMove,
+  uuid,
+  createStyleForDefault,
+  createStyleForCheckableHover,
+  createStyleForChecked
+};

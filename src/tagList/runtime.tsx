@@ -31,11 +31,22 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     });
 
   return checkable ? (
-    <CheckTag data={data} outputs={outputs} />
+    <CheckTag data={data} outputs={outputs} env={env} />
   ) : (
     <DefaultTag data={data} outputs={outputs} env={env} />
   );
 }
+
+const getTagStyle = (data): React.CSSProperties => {
+  return {
+    display: 'block',
+    wordBreak: 'break-all',
+    whiteSpace: data.isEllipsis ? 'nowrap' : 'pre-wrap',
+    maxWidth: data.isEllipsis ? data?.ellipsis?.maxWidth + 'px' : undefined,
+    overflow: 'hidden',
+    textOverflow: data.isEllipsis ? 'ellipsis' : undefined
+  };
+};
 
 const DefaultTag = ({
   data,
@@ -50,6 +61,7 @@ const DefaultTag = ({
     tags,
     tagSize,
     appendAble,
+    closeAble,
     useAppendBtn,
     appendBtn = {
       text: '新增',
@@ -59,6 +71,7 @@ const DefaultTag = ({
   const [inputVisible, setInputVisible] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const onTagClose = (index: number, tag: TagType) => {
+    if (env.edit) return;
     data.tags.splice(index, 1);
     outputs['onChange']({ changed: { ...tag, index }, allTag: data.tags });
   };
@@ -107,6 +120,7 @@ const DefaultTag = ({
         <Tag
           data-item-tag="append"
           color="default"
+          key={'tag-append'}
           icon={Icons && Icons[appendBtn.icon as string]?.render()}
           className={styles.appendBtn}
           onClick={showInput}
@@ -132,15 +146,15 @@ const DefaultTag = ({
         return (
           <Tag
             key={key}
-            className={styles[tagSize]}
+            className={`${styles[tagSize]} ${styles.tag}`}
             data-index={index}
             data-item-tag="tag"
             color={color}
-            closable={!env.edit && appendAble}
-            onClose={appendAble ? () => onTagClose(index, tag) : void 0}
+            closable={closeAble}
+            onClose={() => onTagClose(index, tag)}
             icon={Icons && Icons[icon as string]?.render()}
           >
-            {content}
+            <span style={getTagStyle(data)}>{content}</span>
           </Tag>
         );
       })}
@@ -149,13 +163,18 @@ const DefaultTag = ({
   );
 };
 
-const CheckTag = ({ data, outputs }: Pick<RuntimeParams<Data>, 'data' | 'outputs'>) => {
+const CheckTag = ({
+  data,
+  outputs,
+  env
+}: Pick<RuntimeParams<Data>, 'data' | 'outputs' | 'env'>) => {
   const { direction, align, wrap, size, tags, tagSize } = data;
   const onTagChange = (index: number) => {
     const pre = data.tags[index];
     data.tags[index] = { ...pre, checked: !pre.checked };
     outputs['onCheck']({ changed: { ...data.tags[index], index }, allTag: data.tags });
   };
+
   return (
     <Space
       data-root="root"
@@ -170,13 +189,13 @@ const CheckTag = ({ data, outputs }: Pick<RuntimeParams<Data>, 'data' | 'outputs
         return (
           <Tag.CheckableTag
             key={key}
-            className={styles[tagSize]}
+            className={`${styles[tagSize]} ${styles.tag}`}
             data-index={index}
             data-item-tag="tag"
             checked={checked as boolean}
             onChange={() => onTagChange(index)}
           >
-            {content}
+            <span style={getTagStyle(data)}>{content}</span>
           </Tag.CheckableTag>
         );
       })}

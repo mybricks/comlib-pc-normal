@@ -26,10 +26,15 @@ export interface Data extends SpaceProps {
   useAppendBtn?: boolean;
   checkable?: boolean;
   tagSize: TagSize;
+  isEllipsis: boolean,
+  ellipsis: {
+    maxWidth: number,
+  }
   tagStyle: Partial<{
     color: string;
     borderColor: string;
     textColor: string;
   }>;
+  closeAble: boolean
   appendBtn: AppendBtn
 }

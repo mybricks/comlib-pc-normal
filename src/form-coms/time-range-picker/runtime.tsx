@@ -44,6 +44,8 @@ export default function ({
     },
     [value]
   );
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
 
   const formatValue = useCallback(
     (val) => {
@@ -144,6 +146,10 @@ export default function ({
         allowClear
         disabled={disabled}
         onChange={onChange}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          edit || debug ? triggerNode : document.body
+        }
+        dropdownClassName={id}
       />
     </div>
   );

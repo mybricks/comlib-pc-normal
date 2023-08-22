@@ -457,7 +457,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
   const treeData = useMemo(() => {
     return data.filterValue ? filter(filterMethods.byTitle) : data.treeData;
-  }, [data.filterValue]);
+  }, [data.filterValue, data.treeData]);
 
   return (
     <div>
@@ -466,6 +466,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       ) : (
         <Tree
           checkable={data.checkable}
+          showLine={data.showLine}
           checkStrictly={data.checkStrictly}
           onExpand={onExpand}
           expandedKeys={env.edit ? data.expandedKeys : expandedKeys}

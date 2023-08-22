@@ -4,5 +4,6 @@ export interface Data {
     width: number | string,
     isCustom: boolean,
     content: string,
-    trigger: "hover" | "click"
+    trigger: "hover" | "click",
+    isChildCustom: boolean
 }

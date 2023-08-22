@@ -101,6 +101,7 @@
     "./src/_global-loading/com.json",
     "./src/_array-merge/com.json",
     "./src/_query/com.json",
+    "./src/_env-var/com.json",
     "./src/_events/com.json",
     "./src/_service/com.json",
     "./src/_pick/com.json",

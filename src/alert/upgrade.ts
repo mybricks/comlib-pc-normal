@@ -15,6 +15,14 @@ export default function ({ data, setDeclaredStyle }: UpgradeParams<Data>): boole
     }
     data.textColor = '';
   }
+
+  /**
+   * @description v1.0.3 -> v1.0.4, 兼容图标大小
+  */
+  if(data.size && data.size !== ''){
+    setDeclaredStyle(`.ant-alert-action`, { fontSize: data.size});
+    data.size = '';
+  }
   
   return true;
 }

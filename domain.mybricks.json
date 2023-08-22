@@ -111,6 +111,7 @@
     "./src/_message/com.json",
     "./src/_page-router/com.json",
     "./src/_props/com.json",
+    "./src/_env-var/com.json",
     "./src/_global-loading/com.json",
     "./src/_array-merge/com.json",
     "./src/_query/com.json",
