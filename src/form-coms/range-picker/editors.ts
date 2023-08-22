@@ -85,6 +85,30 @@ export default {
         }
       },
       {
+        title: '日期-默认',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({id}: EditorResult<Data>){
+          return [`.${id} .ant-picker-cell .ant-picker-cell-inner`]
+        }
+      },
+      {
+        title: '日期-hover',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({id}: EditorResult<Data>){
+          return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+        }
+      },
+      {
         title: '日期-选中',
         options: [
           'border',
@@ -142,6 +166,83 @@ export default {
         global: true,
         target({ id }: EditorResult<Data>){
           return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+        }
+      },
+      {
+        title: '时间-默认',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime;
+        },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+        }
+      },
+      {
+        title: '时间-hover',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === "date";
+        },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+        }
+      },
+      {
+        title: '时间-选中',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === "date";
+        },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+        }
+      },
+      {
+        title: '确认按钮-默认',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } },
+          'BoxShadow'
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === "date";
+        },
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-btn-primary`
+        }
+      },
+      {
+        title: '确认按钮-hover',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } },
+          'BoxShadow'
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === "date";
+        },
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-btn-primary:hover`
         }
       }
     ],

@@ -46,6 +46,18 @@ export default {
         }
       },
       {
+        title: '日期-默认',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({id}: EditorResult<Data>){
+          return [`.${id} .ant-picker-cell .ant-picker-cell-inner`]
+        }
+      },
+      {
         title: '日期-选中',
         options: [
           'border', 
@@ -54,7 +66,7 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return `.${id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`
+          return [`.${id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`]
         }
       },
       {
@@ -68,7 +80,52 @@ export default {
         target({id}: EditorResult<Data>){
           return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
         }
-      }
+      },
+      {
+        title: '时间-默认',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime;
+        },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+        }
+      },
+      {
+        title: '时间-hover',
+        options: [
+          'border', 
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime;
+        },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+        }
+      },
+      {
+        title: '时间-选中',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime;
+        },
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+        }
+      },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
