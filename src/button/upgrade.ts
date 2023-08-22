@@ -73,7 +73,7 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   }
 
   /**
-   * @description v1.0.8 , 新增按钮动态禁用
+   * @description v1.0.15 , 新增按钮动态禁用
    */
   if (!input.get(InputIds.Disabled)) {
     input.add(InputIds.Disabled, '设置禁用', {
