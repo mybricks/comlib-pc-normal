@@ -5,6 +5,7 @@ import { actionsEditor } from './actions'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
+import { getFormItem } from '../utils'
 
 const defaultRules = [
   {
@@ -41,30 +42,18 @@ function fieldNameCheck(data: Data, name: string) {
   }
 }
 
-function setSlotLayout(slot, val) {
-  if (val.position === 'absolute') {
-    slot.setLayout(val.position);
-  } else if (val.display === 'flex') {
-    if (val.flexDirection === 'row') {
-      slot.setLayout('flex-row');
-    } else if (val.flexDirection === 'column') {
-      slot.setLayout('flex-column');
-    }
-  }
-};
-
-function getFormItemProp({ data, id }: { data: Data, id: string }, name: keyof FormItems) {
+function getFormItemProp({ data, com }: { data: Data, com: { name: string, id?: string } }, key: keyof FormItems) {
   try {
-    const item = data.items.find(item => item.id === id);
-    return item?.[name];
+    const { item } = getFormItem(data, com) || {};
+    return item?.[key];
   } catch (e) {
     console.error(e);
   }
 }
-function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof FormItems, value: any) {
+function setFormItemProps({ data, com }: { data: Data, com: { name: string, id?: string } }, key: keyof FormItems, value: any) {
   try {
-    const item = data.items.find(item => item.id === id) || {};
-    item[name] = value;
+    const { item } = getFormItem(data, com) || {};
+    item[key] = value;
   } catch (e) {
     console.error(e);
   }
@@ -78,57 +67,69 @@ export default {
     style.width = '100%';
   },
   '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
+    console.log(child, 'childAdd')
     if (curSlot.id === SlotIds.FormItems) {
       const { id, inputDefs, outputDefs, name } = child
       const item = data.items.find(item => item.id === id)
       const com = outputDefs.find(item => item.id === 'returnValue')
-
-      if (item) {
-        item.schema = com.schema
+      if (com) {
+        // 表单项
+        if (item) {
+          item.schema = com.schema
+        } else {
+          data.nameCount++;
+          data.items.push({
+            id,
+            schema: com.schema,
+            comName: name,
+            name: `name${data.nameCount}`,
+            label: `${data.nameCount}`,
+            widthOption: 'span',
+            span: 24 / data.formItemColumn,
+            colon: 'default',
+            labelAlign: 'default',
+            labelAutoWrap: 'default',
+            hiddenLabel: true,
+            descriptionStyle: {
+              whiteSpace: 'pre-wrap',
+              lineHeight: '12px',
+              letterSpacing: '0px',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.45)',
+              fontStyle: 'normal',
+            },
+            labelStyle: {
+              lineHeight: '14px',
+              letterSpacing: '0px',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.85)',
+              fontStyle: 'normal',
+            },
+            inlineMargin: [0, 16, 24, 0],
+            visible: true,
+          })
+        }
+        refreshSchema({ data, inputs, outputs, slots })
       } else {
-        data.nameCount++;
-        data.items.push({
+        data.additionalItems.push({
           id,
-          schema: com.schema,
           comName: name,
-          name: `name${data.nameCount}`,
-          label: `${data.nameCount}`,
           widthOption: 'span',
-          span: 24 / data.formItemColumn,
-          colon: 'default',
-          labelAlign: 'default',
-          labelAutoWrap: 'default',
-          hiddenLabel: true,
-          descriptionStyle: {
-            whiteSpace: 'pre-wrap',
-            lineHeight: '12px',
-            letterSpacing: '0px',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.45)',
-            fontStyle: 'normal',
-          },
-          labelStyle: {
-            lineHeight: '14px',
-            letterSpacing: '0px',
-            fontSize: '14px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.85)',
-            fontStyle: 'normal',
-          },
-          inlineMargin: [0, 16, 24, 0],
-          visible: true,
-        })
+          span: 24 / data.formItemColumn
+        });
       }
-      refreshSchema({ data, inputs, outputs, slots })
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, { id, name, title }) {
-    // console.log('@childRemove', id, title)
-    data.items = data.items.filter(item => item?.comName !== name)
+    data.items = data.items.filter(item => item.comName !== name);
+
+    data.additionalItems = data.additionalItems?.filter(item => item.comName !== name);
+
     refreshSchema({ data, inputs, outputs, slots })
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
+  '@parentUpdated'({ id, name, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true
@@ -175,11 +176,14 @@ export default {
                 return data.formItemColumn
               },
               set({ data }: EditorResult<Data>, value: number) {
-                data.formItemColumn = value
-                data.actions.span = (24 / value)
+                data.formItemColumn = value;
+                data.actions.span = (24 / value);
                 data.items.forEach(item => {
                   item.span = (24 / value);
-                })
+                });
+                data.additionalItems?.forEach((item) => {
+                  item.span = 24 / value;
+                });
               }
             }
           },
@@ -429,30 +433,26 @@ export default {
         title: '显示标题',
         type: 'Switch',
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return !getFormItemProp({ data, id }, 'hiddenLabel');
+          get({ id, name, data }: EditorResult<Data>) {
+            return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
           },
-          set({ id, data }: EditorResult<Data>, val) {
-            setFormItemProps({ data, id }, 'hiddenLabel', !val);
+          set({ id, name, data }: EditorResult<Data>, val) {
+            setFormItemProps({ data, com: { name, id } }, 'hiddenLabel', !val);
           }
         }
       },
       {
         title: '标题',
         type: 'text',
-        ifVisible({ id, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
         },
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'label');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'label');
           },
-          set({ id, data, slot }: EditorResult<Data>, val) {
-            const item = data.items.find(item => item.id === id)
-            if (item) {
-              item['label'] = val
-              // setFormItemProps({ data, id }, 'label', val);
-            }
+          set({ id, name, data, slot }: EditorResult<Data>, val) {
+            setFormItemProps({ data, com: { name, id } }, 'label', val);
           }
         }
       },
@@ -460,12 +460,11 @@ export default {
         title: '字段',
         type: 'text',
         value: {
-          get({ id, data, focusArea }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-
-            return item?.name || item?.label
+          get({ id, name, data, focusArea }: EditorResult<Data>) {
+            const { item } = getFormItem(data, { id, name }) || {};
+            return item?.name || item?.label;
           },
-          set({ id, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
+          set({ id, name, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
             val = val.trim();
             if (!val) {
               return message.warn('字段名不能为空')
@@ -487,16 +486,16 @@ export default {
       {
         title: "标题提示",
         type: "Text",
-        ifVisible({ id, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
         },
         description: "展示在标题后面的悬浮提示内容",
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'tooltip');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'tooltip');
           },
-          set({ id, data }: EditorResult<Data>, value: string) {
-            setFormItemProps({ data, id }, 'tooltip', value);
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, com: { name, id } }, 'tooltip', value);
           },
         },
       },
@@ -505,11 +504,11 @@ export default {
         type: "Text",
         description: "展示在表单项下方的提示内容",
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'description');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'description');
           },
-          set({ id, data }: EditorResult<Data>, value: string) {
-            setFormItemProps({ data, id }, 'description', value);
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, com: { name, id } }, 'description', value);
           },
         },
       },
@@ -530,11 +529,11 @@ export default {
               }
             ],
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'widthOption');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'widthOption');
               },
-              set({ data, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
-                setFormItemProps({ data, id }, 'widthOption', value);
+              set({ data, name, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, com: { name, id } }, 'widthOption', value);
               }
             },
           },
@@ -549,16 +548,15 @@ export default {
                 formatter: '/24',
               },
             ],
-            ifVisible({ data, id }: EditorResult<Data>) {
-              const item = data.items.find(item => item.id === id)
-              return item?.widthOption !== 'px';
+            ifVisible({ data, name, id }: EditorResult<Data>) {
+              return getFormItemProp({ data, com: { name, id } }, 'widthOption') !== 'px';
             },
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'span');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'span');
               },
-              set({ data, id }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id }, 'span', value);
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'span', value);
               }
             },
           },
@@ -568,17 +566,16 @@ export default {
             options: {
               type: 'number'
             },
-            ifVisible({ data, id }: EditorResult<Data>) {
-              const item = data.items.find(item => item.id === id)
-              return item?.widthOption === 'px';
+            ifVisible({ data, name, id }: EditorResult<Data>) {
+              return getFormItemProp({ data, com: { name, id } }, 'widthOption') === 'px';
             },
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'width');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'width');
 
               },
-              set({ data, id }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id }, 'width', value);
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'width', value);
               }
             },
           },
@@ -587,11 +584,11 @@ export default {
             type: 'inputNumber',
             options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'inlineMargin');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'inlineMargin');
               },
-              set({ id, data }: EditorResult<Data>, value: number[]) {
-                setFormItemProps({ data, id }, 'inlineMargin', value);
+              set({ id, name, data }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, com: { name, id } }, 'inlineMargin', value);
               }
             }
           },
@@ -599,8 +596,8 @@ export default {
             title: '边距应用其它表单项及操作项',
             type: 'Button',
             value: {
-              set({ id, data }: EditorResult<Data>) {
-                const curItem = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>) {
+                const { item: curItem } = getFormItem(data, { name, id }) || {};
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
                 data.items.forEach(item => item.inlineMargin = [...margin]);
                 data.actions.inlinePadding = [...margin];
@@ -610,8 +607,8 @@ export default {
           {
             title: '标题自动换行',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
             },
             options: [
               { label: '是', value: true },
@@ -619,19 +616,19 @@ export default {
               { label: '跟随容器配置', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAutoWrap');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'labelAutoWrap');
               },
-              set({ id, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, id }, 'labelAutoWrap', value);
+              set({ id, name, data }: EditorResult<Data>, value: boolean) {
+                setFormItemProps({ data, com: { name, id } }, 'labelAutoWrap', value);
               }
             }
           },
           {
             title: '标题对齐方式',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
             },
             options: [
               { label: '左对齐', value: 'left' },
@@ -639,19 +636,19 @@ export default {
               { label: '跟随容器配置', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAlign');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'labelAlign');
               },
-              set({ id, data }: EditorResult<Data>, value: 'left' | 'right') {
-                setFormItemProps({ data, id }, 'labelAlign', value);
+              set({ id, name, data }: EditorResult<Data>, value: 'left' | 'right') {
+                setFormItemProps({ data, com: { name, id } }, 'labelAlign', value);
               }
             }
           },
           {
             title: '标题冒号',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
@@ -660,11 +657,11 @@ export default {
               { label: '跟随容器配置', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'colon');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'colon');
               },
-              set({ id, data }: EditorResult<Data>, value: FormItemColonType) {
-                setFormItemProps({ data, id }, 'colon', value);
+              set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
+                setFormItemProps({ data, com: { name, id } }, 'colon', value);
               }
             }
           },
@@ -672,15 +669,15 @@ export default {
             title: "标题样式",
             type: "Style",
             options: ['font'],
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
             },
             description: "表单项标题的字体样式",
             value: {
-              get({ id, data }: EditorResult<Data>) {
+              get({ id, name, data }: EditorResult<Data>) {
                 const item = data.items.find(item => item.id === id);
                 if (!item?.labelStyle) {
-                  setFormItemProps({ data, id }, 'labelStyle', {
+                  setFormItemProps({ data, com: { name, id } }, 'labelStyle', {
                     lineHeight: '14px',
                     letterSpacing: '0px',
                     fontSize: '14px',
@@ -691,21 +688,21 @@ export default {
                 }
                 return item?.labelStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: any) {
+              set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id }, 'labelStyle', style);
+                setFormItemProps({ data, com: { name, id } }, 'labelStyle', style);
               },
             },
           },
           {
             title: '标题样式应用所有表单项',
             type: 'Button',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
             },
             value: {
-              set({ id, data }: EditorResult<Data>, value: {}) {
-                const item = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>, value: {}) {
+                const { item } = getFormItem(data, { name, id }) || {};
                 const labelStyle = item?.labelStyle || {
                   lineHeight: '14px',
                   letterSpacing: '0px',
@@ -724,10 +721,10 @@ export default {
             options: ['font'],
             description: "表单项提示语的字体样式",
             value: {
-              get({ id, data }: EditorResult<Data>) {
+              get({ id, name, data }: EditorResult<Data>) {
                 const item = data.items.find(item => item.id === id);
                 if (!item?.descriptionStyle) {
-                  setFormItemProps({ data, id }, 'descriptionStyle', {
+                  setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', {
                     whiteSpace: 'pre-wrap',
                     lineHeight: '12px',
                     letterSpacing: '0px',
@@ -739,9 +736,9 @@ export default {
                 }
                 return item?.descriptionStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: any) {
+              set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id }, 'descriptionStyle', style);
+                setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', style);
               },
             },
           },
@@ -749,8 +746,8 @@ export default {
             title: '提示语样式应用所有表单项',
             type: 'Button',
             value: {
-              set({ id, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>) {
+                const { item } = getFormItem(data, { name, id }) || {};
                 const descriptionStyle = item?.descriptionStyle || {
                   whiteSpace: 'pre-wrap',
                   lineHeight: '12px',
@@ -768,16 +765,93 @@ export default {
             title: '必填样式',
             type: 'Switch',
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'required');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'required');
               },
-              set({ id, data }: EditorResult<Data>, value) {
-                setFormItemProps({ data, id }, 'required', value);
+              set({ id, name, data }: EditorResult<Data>, value) {
+                setFormItemProps({ data, com: { name, id } }, 'required', value);
               }
             }
           }
         ]
       },
+    ]
+  },
+  ':child(mybricks.normal-pc.form-container/form-addition-container)': {
+    title: '自定义内容',
+    items: [
+      {
+        title: '样式',
+        items: [
+          {
+            title: '宽度模式',
+            type: 'Select',
+            options: [
+              {
+                label: '24栅格',
+                value: 'span'
+              },
+              {
+                label: '固定宽度(px)',
+                value: 'px'
+              }
+            ],
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'widthOption');
+              },
+              set({ data, name, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, com: { name, id } }, 'widthOption', value);
+                refreshFormItemPropsSchema({ data, inputs });
+              }
+            }
+          },
+          {
+            title: '宽度配置(共24格)',
+            type: 'Slider',
+            options: [
+              {
+                max: 24,
+                min: 1,
+                step: 1,
+                formatter: '/24'
+              }
+            ],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const { item } = getFormItem(data, { id, name });
+
+              return item?.widthOption !== 'px';
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'span');
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'span', value);
+              }
+            }
+          },
+          {
+            title: '宽度配置(px)',
+            type: 'text',
+            options: {
+              type: 'number'
+            },
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const { item } = getFormItem(data, { id, name });
+              return item?.widthOption === 'px';
+            },
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'width');
+              },
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'width', value);
+              }
+            }
+          }
+        ]
+      }
     ]
   },
   '[data-form-actions]': {

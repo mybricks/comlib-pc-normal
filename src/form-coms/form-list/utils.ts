@@ -1,4 +1,4 @@
-import { ChildrenStore, Data, FormControlInputRels } from './types'
+import { AdditionalItem, ChildrenStore, Data, FormControlInputRels, FormItems } from './types'
 import { labelWidthTypes } from './constants'
 import { InputIds, OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
@@ -17,6 +17,31 @@ export function getLabelCol(data: Data) {
 
 function isObject(val: any) {
   return Object.prototype.toString.call(val) === '[object Object]'
+}
+
+/**
+ * 查找子组件
+ * @param data 
+ * @param com 组件
+ * @returns 
+ */
+export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: true } | { item: AdditionalItem, isFormItem: false } => {
+  const { items, additionalItems } = data;
+  let item, isFormItem = false;
+
+  // 查找表单项
+  item = items.find((item) => {
+    return item.comName === com.name
+  });
+  if (item) return { item, isFormItem: true };
+
+  // 查找非表单项
+  item = additionalItems?.find((item) => {
+    return item.comName === com.name
+  });
+  if (item) return { item, isFormItem: false };
+
+  return { item, isFormItem };
 }
 
 /**

@@ -47,6 +47,13 @@ export interface FormItems {
   slotAfter?: string
 }
 
+export interface AdditionalItem {
+  id: string;
+  comName: string
+  span: number
+  widthOption: LabelWidthType
+  width?: number
+}
 
 export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
@@ -71,7 +78,11 @@ export interface Data {
   /**
    * 表单项列表
    */
-  items: FormItems[]
+  items: FormItems[];
+  /**
+   * 非表单项列表
+   */
+  additionalItems: AdditionalItem[];
   /**
    * 列表初始长度
    */

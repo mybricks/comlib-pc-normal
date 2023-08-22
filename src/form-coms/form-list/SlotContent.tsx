@@ -3,7 +3,7 @@ import { Col, FormListFieldData, Row } from 'antd';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
 import { ChildrenStore, Data } from './types';
-import { changeValue, isChildrenStoreValid, setValuesForInput } from './utils';
+import { changeValue, getFormItem, isChildrenStoreValid, setValuesForInput } from './utils';
 
 const SlotContent = (
   props: RuntimeParams<Data> & {
@@ -18,18 +18,22 @@ const SlotContent = (
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
-        const item = data.items.find((item) => item.comName === com.name);
+        const { item, isFormItem } = getFormItem(data, com);
 
-        return <FormItem data={data} slots={slots} com={com} item={item} field={field} />;
+        return isFormItem ? (
+          <FormItem data={data} slots={slots} com={com} item={item} field={field} />
+        ) : (
+          <>{com.jsx}</>
+        );
       },
       wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
         const jsx = comAray?.map((com, idx) => {
           if (com) {
-            let item = data.items.find((item) => item.comName === com.name);
+            let { item, isFormItem } = getFormItem(data, com);
             if (!item) return;
             const visible = com.style.display !== 'none';
-            // 收集childrenStore
-            if (field) {
+            // 表单项收集childrenStore
+            if (field && isFormItem) {
               const { key, name } = field;
               if (!childrenStore[key]) {
                 childrenStore[key] = {};
