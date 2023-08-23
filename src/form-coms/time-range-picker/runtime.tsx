@@ -147,7 +147,7 @@ export default function ({
         disabled={disabled}
         onChange={onChange}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? triggerNode : document.body
+          edit || debug ? env?.canvasElement : document.body
         }
         dropdownClassName={id}
       />

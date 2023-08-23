@@ -89,7 +89,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         arrow
         visible={edit && data.isChildCustom ? true : void 0}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? triggerNode : document.body
+          edit ? triggerNode : debug ? env?.canvasElement : document.body
         }
         trigger={[data.trigger || 'hover']}
       >

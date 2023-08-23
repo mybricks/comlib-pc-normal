@@ -290,7 +290,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onOpenChange={onOpenChange}
         allowEmpty={emptyArr}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? triggerNode : document.body
+          edit || debug ? env?.canvasElement : document.body
         }
         dropdownClassName={id}
         {...disabledDateTime}
