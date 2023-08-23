@@ -1,0 +1,85 @@
+@media all {
+  .page-break {
+    display: none;
+  }
+}
+
+@media print {
+  html,
+  body {
+    height: 100vh;
+    // height: initial !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+  }
+
+  @page {
+    size: landscape;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 0;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.45);
+  :global {
+    .ant-modal-wrap {
+      position: absolute;
+    }
+  }
+  z-index: 1000;
+}
+
+.container {
+  :global {
+    .ant-modal-close {
+      position: absolute !important;
+    }
+    .ant-modal-body {
+      padding: 36px 24px 24px 24px;
+      overflow: auto;
+    }
+  }
+}
+
+.antdMask {
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.45);
+  :global {
+    .ant-modal-wrap {
+      overflow: unset;
+      position: unset;
+    }
+    .ant-modal {
+      top: 0px;
+      padding: unset;
+    }
+  }
+}
+
+.debugMask {
+  :global {
+    .ant-modal-mask {
+      position: unset;
+    }
+  }
+}
