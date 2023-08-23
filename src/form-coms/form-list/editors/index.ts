@@ -5,7 +5,7 @@ import { actionsEditor } from './actions'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
-import { getFormItem } from '../utils'
+import { fieldNameCheck, getFormItem, getFormItemProp, isShowLabel, setFormItemProps } from '../utils'
 
 const defaultRules = [
   {
@@ -32,32 +32,6 @@ const defaultRules = [
     `
   }
 ]
-
-function fieldNameCheck(data: Data, name: string) {
-  const fieldNameList = data.items.map(item => item.name)
-  if (fieldNameList.includes(name)) {
-    return true
-  } else {
-    return false
-  }
-}
-
-function getFormItemProp({ data, com }: { data: Data, com: { name: string, id?: string } }, key: keyof FormItems) {
-  try {
-    const { item } = getFormItem(data, com) || {};
-    return item?.[key];
-  } catch (e) {
-    console.error(e);
-  }
-}
-function setFormItemProps({ data, com }: { data: Data, com: { name: string, id?: string } }, key: keyof FormItems, value: any) {
-  try {
-    const { item } = getFormItem(data, com) || {};
-    item[key] = value;
-  } catch (e) {
-    console.error(e);
-  }
-}
 
 export default {
   '@resize': {
@@ -89,7 +63,7 @@ export default {
             colon: 'default',
             labelAlign: 'default',
             labelAutoWrap: 'default',
-            hiddenLabel: true,
+            showLabel: 'default',
             descriptionStyle: {
               whiteSpace: 'pre-wrap',
               lineHeight: '12px',
@@ -195,99 +169,108 @@ export default {
           // }
         ]
       },
-      // {
-      //   title: '标题',
-      //   items: [
-      //     {
-      //       title: '宽度类型',
-      //       type: 'Select',
-      //       options: [
-      //         { label: '固定像素', value: 'px' },
-      //         { label: '24 栅格', value: 'span' },
-      //       ],
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.labelWidthType
-      //         },
-      //         set({ data }: EditorResult<Data>, value: LabelWidthType) {
-      //           data.labelWidthType = value
-      //         },
-      //       }
-      //     },
-      //     {
-      //       title: '标题宽度(px)',
-      //       type: 'inputNumber',
-      //       options: [{ min: 1 }],
-      //       ifVisible({ data }: EditorResult<Data>) {
-      //         return data.labelWidthType === 'px'
-      //       },
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return [data.labelWidth]
-      //         },
-      //         set({ data }: EditorResult<Data>, value: number) {
-      //           data.labelWidth = value[0]
-      //         }
-      //       }
-      //     },
-      //     {
-      //       title: '标题宽度(栅格)',
-      //       type: 'Slider',
-      //       options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-      //       ifVisible({ data }: EditorResult<Data>) {
-      //         return data.labelWidthType === 'span'
-      //       },
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.labelCol
-      //         },
-      //         set({ data }: EditorResult<Data>, value: number) {
-      //           data.labelCol = value
-      //         }
-      //       }
-      //     },
-      //     {
-      //       title: '显示冒号',
-      //       type: 'Switch',
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.formItemConfig?.colon || data.colon
-      //         },
-      //         set({ data }: EditorResult<Data>, value: boolean) {
-      //           data.formItemConfig.colon = value
-      //         },
-      //       }
-      //     },
-      //     {
-      //       title: '自动换行',
-      //       type: 'Switch',
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.formItemConfig?.labelWrap
-      //         },
-      //         set({ data }: EditorResult<Data>, value: boolean) {
-      //           data.formItemConfig.labelWrap = value
-      //         },
-      //       }
-      //     },
-      //     {
-      //       title: '对齐方式',
-      //       type: 'Radio',
-      //       options: [
-      //         { label: '左对齐', value: 'left' },
-      //         { label: '右对齐', value: 'right' }
-      //       ],
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.formItemConfig?.labelAlign
-      //         },
-      //         set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-      //           data.formItemConfig.labelAlign = value
-      //         },
-      //       }
-      //     },
-      //   ]
-      // },
+      {
+        title: '子项标题',
+        items: [
+          {
+            title: '显示',
+            type: 'Switch',
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.showLabel;
+              },
+              set({ data }: EditorResult<Data>, val: boolean) {
+                data.showLabel = val;
+              }
+            }
+          },
+          {
+            title: '宽度类型',
+            type: 'Select',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.showLabel;
+            },
+            options: [
+              { label: '固定像素', value: 'px' },
+              { label: '24 栅格', value: 'span' },
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.labelWidthType
+              },
+              set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                data.labelWidthType = value
+              },
+            }
+          },
+          {
+            title: '标题宽度(px)',
+            type: 'inputNumber',
+            options: [{ min: 1 }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.showLabel && data.labelWidthType === 'px'
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return [data.labelWidth]
+              },
+              set({ data }: EditorResult<Data>, value: number) {
+                data.labelWidth = value[0]
+              }
+            }
+          },
+          {
+            title: '标题宽度(栅格)',
+            type: 'Slider',
+            options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.showLabel && data.labelWidthType === 'span'
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.labelCol
+              },
+              set({ data }: EditorResult<Data>, value: number) {
+                data.labelCol = value
+              }
+            }
+          },
+          {
+            title: '显示冒号',
+            type: 'Switch',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.showLabel;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.formItemConfig?.colon
+              },
+              set({ data }: EditorResult<Data>, value: boolean) {
+                data.formItemConfig.colon = value
+              },
+            }
+          },
+          {
+            title: '对齐方式',
+            type: 'Radio',
+            options: [
+              { label: '左对齐', value: 'left' },
+              { label: '右对齐', value: 'right' }
+            ],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.showLabel;
+            },
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.formItemConfig?.labelAlign
+              },
+              set({ data }: EditorResult<Data>, value: 'left' | 'right') {
+                data.formItemConfig.labelAlign = value
+              },
+            }
+          },
+        ]
+      },
       // {
       //   title: '初始长度',
       //   type: 'Slider',
@@ -431,13 +414,18 @@ export default {
     items: [
       {
         title: '显示标题',
-        type: 'Switch',
+        type: 'Radio',
+        options: [
+          { label: '是', value: true },
+          { label: '否', value: false },
+          { label: '跟随容器配置', value: 'default' },
+        ],
         value: {
           get({ id, name, data }: EditorResult<Data>) {
-            return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+            return getFormItemProp({ data, com: { name, id } }, 'showLabel');
           },
-          set({ id, name, data }: EditorResult<Data>, val) {
-            setFormItemProps({ data, com: { name, id } }, 'hiddenLabel', !val);
+          set({ id, name, data }: EditorResult<Data>, value: true | false | 'default') {
+            setFormItemProps({ data, com: { name, id } }, 'showLabel', value);
           }
         }
       },
@@ -445,7 +433,7 @@ export default {
         title: '标题',
         type: 'text',
         ifVisible({ id, name, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+          return isShowLabel({ data, com: { id, name } });
         },
         value: {
           get({ id, name, data }: EditorResult<Data>) {
@@ -487,7 +475,7 @@ export default {
         title: "标题提示",
         type: "Text",
         ifVisible({ id, name, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+          return isShowLabel({ data, com: { id, name } });
         },
         description: "展示在标题后面的悬浮提示内容",
         value: {
@@ -604,31 +592,31 @@ export default {
               }
             }
           },
-          {
-            title: '标题自动换行',
-            type: 'Radio',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
-            },
-            options: [
-              { label: '是', value: true },
-              { label: '否', value: false },
-              { label: '跟随容器配置', value: 'default' },
-            ],
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, com: { name, id } }, 'labelAutoWrap');
-              },
-              set({ id, name, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, com: { name, id } }, 'labelAutoWrap', value);
-              }
-            }
-          },
+          // {
+          //   title: '标题自动换行',
+          //   type: 'Radio',
+          //   ifVisible({ id, name, data }: EditorResult<Data>) {
+          //     return isShowLabel({ data, com: { id, name } });
+          //   },
+          //   options: [
+          //     { label: '是', value: true },
+          //     { label: '否', value: false },
+          //     { label: '跟随容器配置', value: 'default' },
+          //   ],
+          //   value: {
+          //     get({ id, name, data }: EditorResult<Data>) {
+          //       return getFormItemProp({ data, com: { name, id } }, 'labelAutoWrap');
+          //     },
+          //     set({ id, name, data }: EditorResult<Data>, value: boolean) {
+          //       setFormItemProps({ data, com: { name, id } }, 'labelAutoWrap', value);
+          //     }
+          //   }
+          // },
           {
             title: '标题对齐方式',
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+              return isShowLabel({ data, com: { id, name } });
             },
             options: [
               { label: '左对齐', value: 'left' },
@@ -648,7 +636,7 @@ export default {
             title: '标题冒号',
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+              return isShowLabel({ data, com: { id, name } });
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
@@ -670,7 +658,7 @@ export default {
             type: "Style",
             options: ['font'],
             ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+              return isShowLabel({ data, com: { id, name } });
             },
             description: "表单项标题的字体样式",
             value: {
@@ -698,7 +686,7 @@ export default {
             title: '标题样式应用所有表单项',
             type: 'Button',
             ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, com: { name, id } }, 'hiddenLabel');
+              return isShowLabel({ data, com: { id, name } });
             },
             value: {
               set({ id, name, data }: EditorResult<Data>, value: {}) {
@@ -802,7 +790,6 @@ export default {
               },
               set({ data, name, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, com: { name, id } }, 'widthOption', value);
-                refreshFormItemPropsSchema({ data, inputs });
               }
             }
           },

@@ -47,7 +47,7 @@
   "isFormItem": false,
   "wrapperCol": 24,
   "labelWidthType": "px",
-  "labelWidth": 98,
+  "labelWidth": 25,
   "labelCol": 4,
   "itemWidthType": "flex",
   "submitHiddenFields": false,

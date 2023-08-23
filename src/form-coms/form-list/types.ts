@@ -39,6 +39,7 @@ export interface FormItems {
   labelAlign?: 'left' | 'right' | 'default'
   labelAutoWrap?: boolean | 'default'
   hiddenLabel?: boolean
+  showLabel: boolean | 'default'
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
@@ -119,6 +120,10 @@ export interface Data {
    * 操作项
    */
   actions: Actions
+  /**
+   * 显示标题
+   */
+  showLabel: boolean
   /**
    * 标题宽度类型
    */
