@@ -42,6 +42,49 @@ export default {
     options: ['width']
   },
   ':root': {
+    style: [
+      {
+        title: '菜单',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        target({ id }) {
+          return `.${id} .ant-dropdown-menu`;
+        }
+      },
+      {
+        title: '箭头',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        target({ id }) {
+          return `.${id} .ant-dropdown-arrow:before`;
+        }
+      },
+      {
+        title: '选项-默认',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }) {
+          return `.${id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
+        }
+      },
+      {
+        title: '选项-hover',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }) {
+          return `.${id} .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title`;
+        },
+        domTarget({ focusArea, id }) {
+          return `.${id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
+        }
+      }
+    ],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '常规';
       cate[0].items = [
