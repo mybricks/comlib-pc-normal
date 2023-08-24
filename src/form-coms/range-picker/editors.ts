@@ -129,7 +129,7 @@ export default {
         title: '日期-选中区间',
         options: [
           'border',
-          { type: 'background', config: { disableBackgroundImage: true } }
+          { type: 'background', config: { disableBackgroundImage: true } },
         ],
         global: true,
         target({ id }: EditorResult<Data>){
@@ -137,6 +137,17 @@ export default {
             `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
             `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
             `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
+          ]
+        }
+      },
+      {
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>){
+          return [
+            `.${id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
           ]
         }
       },
