@@ -26,6 +26,7 @@ interface RuntimeParams<T> {
   name: string
   data: T
   env: Env
+  _env: any
   style: any
   slots: {
     [key: string]: {
