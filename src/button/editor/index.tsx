@@ -57,7 +57,12 @@ export default {
           return !data.asMapArea;
         },
         options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target: `button.ant-btn[disabled], button.ant-btn[disabled]:active, button.ant-btn[disabled]:focus, button.ant-btn[disabled]:hover`
+        target: [
+          'button.ant-btn[disabled]',
+          'button.ant-btn[disabled]:active',
+          'button.ant-btn[disabled]:focus',
+          'button.ant-btn[disabled]:hover'
+        ]
       }
     ],
     items: [
