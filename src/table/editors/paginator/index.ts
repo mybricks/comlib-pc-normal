@@ -351,6 +351,22 @@ export default {
         title: '前置文案字体',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         target: `.ant-pagination-total-text`
+      },
+      {
+        title: '跳转字体',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.showQuickJumper;
+        },
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `.ant-pagination-options-quick-jumper`
+      },
+      {
+        title: '跳转输入框',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.paginationConfig.showQuickJumper;
+        },
+        options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true }}],
+        target: `.ant-pagination-options-quick-jumper input`
       }
     ]
   }
