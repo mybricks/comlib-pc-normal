@@ -177,6 +177,7 @@ export default function Runtime({
               key={item[data.valueFieldName || 'value']}
               {...item}
               icon={getNodeIcon(outputItem, data, onError)}
+              className={id}
             >
               {renderTreeNode(item.children || [], depth + 1)}
             </TreeNode>
