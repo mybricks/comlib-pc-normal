@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "时间选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
