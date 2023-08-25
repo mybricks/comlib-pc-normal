@@ -1,5 +1,6 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
+import styleEditors from './styleEditors';
 export default {
   '@resize': {
     options: ['width']
@@ -8,75 +9,7 @@ export default {
     style.width = '100%';
   },
   ':root': {
-    style: [
-      {
-        title: '选项-默认',
-        //.ant-transfer-list-content-item-checked
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          { type: 'font', config: { disableTextAlign: true } }
-        ],
-        target: '.ant-transfer-list-content-item'
-      },
-      {
-        title: '选项-hover',
-        //.ant-transfer-list-content-item-checked
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          { type: 'font', config: { disableTextAlign: true } }
-        ],
-        target: '.ant-transfer-list-content-item:hover',
-        domTarget: '.ant-transfer-list-content-item'
-      },
-      {
-        title: '选项-focuse',
-        //.ant-transfer-list-content-item-checked
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          { type: 'font', config: { disableTextAlign: true } }
-        ],
-        target: '.ant-transfer-list-content-item-checked'
-      },
-      {
-        //.ant-checkbox-inner
-        title: '勾选框-默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
-        target: '.ant-checkbox-inner'
-      },
-      {
-        //.ant-checkbox-inner
-        title: '勾选框-hover',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
-        target: '.ant-checkbox:hover .ant-checkbox-inner',
-        domTarget: '.ant-checkbox-inner'
-      },
-      {
-        title: '勾选框-focus',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }, 'border'],
-        target: '.ant-checkbox-checked .ant-checkbox-inner'
-      },
-      {
-        title: '穿梭按钮-默认',
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          'border',
-          { type: 'font', config: { disableTextAlign: true } },
-          'BoxShadow'
-        ],
-        target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only'
-      },
-      {
-        title: '穿梭按钮-hover',
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          'border',
-          { type: 'font', config: { disableTextAlign: true } },
-          'BoxShadow'
-        ],
-        target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:hover',
-        domTarget: '.ant-btn-primary'
-      }
-    ],
+    style: [...styleEditors],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '配置';
       cate[0].items = [

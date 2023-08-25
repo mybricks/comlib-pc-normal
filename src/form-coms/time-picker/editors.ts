@@ -34,7 +34,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
         }
       },
       {
@@ -46,7 +46,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
         }
       },
       {
@@ -58,7 +58,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
         }
       },
       {
@@ -71,7 +71,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id} .ant-btn-primary`
+          return `.{id} .ant-btn-primary`
         }
       }
     ],

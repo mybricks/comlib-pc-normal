@@ -111,7 +111,8 @@
           "./src/dropdown/com.json",
           "./src/sort-bar/com.json",
           "./src/video/com.json",
-          "./src/progress/com.json"
+          "./src/progress/com.json",
+          "./src/print/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -224,7 +225,8 @@
           "./src/icon/com.json",
           "./src/dropdown/com.json",
           "./src/sort-bar/com.json",
-          "./src/video/com.json"
+          "./src/video/com.json",
+          "./src/print/com.json"
         ]
       },
       "./src/_code-segment/com.json",

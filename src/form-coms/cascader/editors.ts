@@ -47,7 +47,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-cascader-menu-item`
+          return `.{id} .ant-cascader-menu-item`
         }
       },
       {
@@ -58,7 +58,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-cascader-menu-item:hover`
+          return `.{id} .ant-cascader-menu-item:hover`
         }
       },
       {
@@ -69,7 +69,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return [`.${id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
+          return [`.{id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
         }
       },
       {
@@ -80,7 +80,7 @@ export default {
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-cascader-checkbox-inner`
+          return `.{id} .ant-cascader-checkbox-inner`
         }
       },
       {
@@ -91,7 +91,7 @@ export default {
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
+          return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
         },
       },
       {
@@ -102,7 +102,7 @@ export default {
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
+          return `.{id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
         },
       },
     ],

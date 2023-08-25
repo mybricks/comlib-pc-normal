@@ -95,7 +95,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         dropdownClassName={id}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? triggerNode : document.body
+          edit || debug ? env?.canvasElement : document.body
         }
       />
     </div>

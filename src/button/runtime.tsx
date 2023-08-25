@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import classnames from 'classnames';
-import { Data, OutputIds, LocationEnum } from './constants';
+import { Data, OutputIds, LocationEnum, InputIds } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { Space, Image, Button } from 'antd';
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
+  const [disabled, setDisable] = useState(false);
+
   //如果data.dataType是'external'的
   useEffect(() => {
     if (env.runtime) {
@@ -26,6 +28,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           }
         }
         data.text = val;
+      });
+      inputs[InputIds.Disabled]((value) => {
+        setDisable(value);
       });
     }
   }, []);
@@ -132,6 +137,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         type={data.type}
         size={data.size}
         shape={data.shape}
+        disabled={disabled}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
       >

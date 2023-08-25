@@ -42,6 +42,27 @@ export default {
         options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
         target: `.button:hover`,
         domTarget: '.button'
+      },
+      {
+        title: '激活',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.asMapArea;
+        },
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target: `button.ant-btn:not([disabled]):active`
+      },
+      {
+        title: '禁用',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.asMapArea;
+        },
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target: [
+          'button.ant-btn[disabled]',
+          'button.ant-btn[disabled]:active',
+          'button.ant-btn[disabled]:focus',
+          'button.ant-btn[disabled]:hover'
+        ]
       }
     ],
     items: [

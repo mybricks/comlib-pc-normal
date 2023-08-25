@@ -196,6 +196,10 @@ export default function Runtime({
         fieldNames={getFieldNames(data)}
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
+        dropdownClassName={id}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          env.edit || env.runtime.debug ? env?.canvasElement : document.body
+        }
       >
         {renderTreeNode(data.options)}
       </TreeSelect>

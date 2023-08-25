@@ -216,7 +216,7 @@ export default function Runtime({
         onChange={onChange}
         onBlur={onBlur}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? triggerNode : document.body
+          edit || debug ? env?.canvasElement : document.body
         }
         dropdownClassName={id}
         onSearch={data.config.showSearch ? onSearch : void 0}

@@ -46,23 +46,24 @@ export default {
           fontSize: 16
         }
       },
-      {
-        title: '图标尺寸',
-        type: 'text',
-        description: '图标尺寸,支持百分比和定宽',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return String(data.size);
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            if (/^\d+$/.test(value)) {
-              data.size = `${value}px`;
-            } else {
-              data.size = value;
-            }
-          }
-        }
-      },
+      // {
+      //   title: '图标尺寸',
+      //   type: 'text',
+      //   description: '图标尺寸,支持百分比和定宽',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return String(data.size);
+      //     },
+      //     set({ data }: EditorResult<Data>, value: string) {
+      //       if (/^\d+$/.test(value)) {
+      //         data.size = `${value}px`;
+      //       } else {
+      //         data.size = value;
+      //       }
+      //       console.log(data.size);
+      //     }
+      //   }
+      // },
       {
         title: '图标',
         options: [{ type: 'font', config: { disableTextAlign: true } }],

@@ -189,7 +189,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         showTime={getShowTime()}
         onChange={onChange}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? triggerNode : document.body
+          edit || debug ? env?.canvasElement : document.body
         }
         dropdownClassName={id}
       />

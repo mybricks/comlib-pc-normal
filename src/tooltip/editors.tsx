@@ -107,7 +107,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id}.ant-tooltip .ant-tooltip-inner`;
+          return `.{id}.ant-tooltip .ant-tooltip-inner`;
         },
         domTarget: '.ant-tooltip .ant-tooltip-inner'
       },
@@ -129,7 +129,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id}.ant-tooltip .ant-tooltip-arrow .ant-tooltip-arrow-content`;
+          return `.{id}.ant-tooltip .ant-tooltip-arrow .ant-tooltip-arrow-content`;
         }
       }
     ]
