@@ -104,7 +104,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} div.ant-select-item.ant-select-item-option`
+          return `.{id} div.ant-select-item.ant-select-item-option`
         }
       },
       {
@@ -115,7 +115,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
+          return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
         }
       },
       {
@@ -126,7 +126,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
+          return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
         }
       }
     ],
