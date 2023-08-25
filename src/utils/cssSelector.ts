@@ -1,1 +1,1 @@
-export const getFilterSelector = (id: string) => `:not(#${id} *[data-isslot="1"] *)`;
+export const getFilterSelector = (id: string) => `:not(#{id} *[data-isslot="1"] *)`;
