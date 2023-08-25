@@ -461,9 +461,6 @@ export default {
         {
           title: '开启自定义上传',
           type: 'switch',
-          ifVisible({ data, env }: EditorResult<Data>) {
-            return typeof env.uploadFile === 'function';
-          },
           value: {
             get({ data, env }: EditorResult<Data>) {
               // 兼容没有设置env.uploadFile的情况
