@@ -3,16 +3,32 @@ import { Data } from "./types";
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
 
   /**
-     * @description v1.0.7 , 作用域支持添加自定义内容项组件
-     */
-  console.log(data.additionalItems, 'before')
+   * @description v1.1.0
+   */
+
+  /** 1. 作用域支持添加自定义内容项组件 */
   if (!data.additionalItems) data.additionalItems = [];
-  console.log(data.additionalItems, 'after')
   slot.get('formItems').setSchema([
     "mybricks.normal-pc.form-container/form-item",
     "mybricks.normal-pc.form-container/form-addition-container"
   ]);
-  //=========== v1.0.7 end ===============
+
+  /** 2. 支持标题样式配置 */
+  if (data.showLabel === undefined) {
+    data.showLabel = false;
+    data.labelWidth = 25;
+    data.items.forEach(item => {
+      if (item.hiddenLabel === true) {
+        item.showLabel = 'default';
+      } else {
+        item.showLabel = true;
+      }
+    });
+  }
+
+  /** 3. 支持操作项尺寸、图标、动态显隐配置 */
+
+  //=========== v1.1.0 end ===============
 
   return true;
 }
