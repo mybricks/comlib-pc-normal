@@ -39,37 +39,6 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
       </Menu>
     );
   }
-  const menuRender1 = useMemo(() => {
-    return (
-      <Menu style={{ width: data.width }}>
-        {data.options &&
-          data.options.map((option, index) => {
-            const Icon = Icons && Icons[option.icon as string]?.render();
-            return (
-              <Menu.Item
-                data-menu-item={option.key}
-                disabled={option.disabled}
-                //style={{ color: option.disabled ? void 0 : option.iconColor }}
-                key={index}
-                onClick={() => onClick(option)}
-              >
-                <a target="_blank" href={option.value ? option.value : void 0}>
-                  <span
-                    style={{
-                      display: !option.useIcon ? 'none' : void 0,
-                      marginRight: '8px'
-                    }}
-                  >
-                    {Icon}
-                  </span>
-                  {option.label}
-                </a>
-              </Menu.Item>
-            );
-          })}
-      </Menu>
-    );
-  }, [data]);
 
   // 选项改变
   const onClick = (option) => {
@@ -91,6 +60,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         getPopupContainer={(triggerNode: HTMLElement) =>
           edit ? triggerNode : debug ? env?.canvasElement : document.body
         }
+        overlayStyle={{ minWidth: data.width }}
         trigger={[data.trigger || 'hover']}
       >
         {data.isCustom === false ? (

@@ -48,7 +48,7 @@ export default {
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target({ id }) {
-          return `.${id} .ant-dropdown-menu`;
+          return `.{id} .ant-dropdown-menu`;
         }
       },
       {
@@ -56,7 +56,7 @@ export default {
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target({ id }) {
-          return `.${id} .ant-dropdown-arrow:before`;
+          return `.{id} .ant-dropdown-arrow:before`;
         }
       },
       {
@@ -67,7 +67,7 @@ export default {
         ],
         global: true,
         target({ id }) {
-          return `.${id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
+          return `.{id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
         }
       },
       {
@@ -78,10 +78,10 @@ export default {
         ],
         global: true,
         target({ id }) {
-          return `.${id} .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title`;
+          return `.{id} .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title`;
         },
         domTarget({ focusArea, id }) {
-          return `.${id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
+          return `.{id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
         }
       }
     ],
@@ -300,7 +300,7 @@ export default {
         ],
         global: true,
         target({ focusArea, id }) {
-          return `.${id} li[data-menu-item="${focusArea.dataset.menuItem}"]`;
+          return `.{id} li[data-menu-item="${focusArea.dataset.menuItem}"]`;
         }
       },
       {
@@ -311,10 +311,10 @@ export default {
         ],
         global: true,
         target({ focusArea, id }) {
-          return `.${id} li[data-menu-item="${focusArea.dataset.menuItem}"]:hover`;
+          return `.{id} li[data-menu-item="${focusArea.dataset.menuItem}"]:hover`;
         },
         domTarget({ focusArea, id }) {
-          return `.${id} li[data-menu-item="${focusArea.dataset.menuItem}"]`;
+          return `.{id} li[data-menu-item="${focusArea.dataset.menuItem}"]`;
         }
       }
     ],

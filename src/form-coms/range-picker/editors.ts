@@ -74,14 +74,14 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
+          return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
         }
       },
       {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-cell-today`
+          return `.{id} .ant-picker-cell-today`
         }
       },
       {
@@ -93,7 +93,7 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return [`.${id} .ant-picker-cell .ant-picker-cell-inner`]
+          return [`.{id} .ant-picker-cell .ant-picker-cell-inner`]
         }
       },
       {
@@ -105,7 +105,7 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+          return `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
         }
       },
       {
@@ -118,10 +118,10 @@ export default {
         global: true,
         target({ id }: EditorResult<Data>){
           return [
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner`,
           ]
         }
       },
@@ -134,9 +134,9 @@ export default {
         global: true,
         target({ id }: EditorResult<Data>){
           return [
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
           ]
         }
       },
@@ -147,7 +147,7 @@ export default {
         global: true,
         target({ id }: EditorResult<Data>){
           return [
-            `.${id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
+            `.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`
           ]
         }
       },
@@ -161,9 +161,9 @@ export default {
         global: true,
         target({ id }: EditorResult<Data>){
           return [
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover:before`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start:before`,
-            `.${id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end:before`
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover:before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start:before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-end:before`
           ]
         }
       },
@@ -176,7 +176,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+          return `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
         }
       },
       {
@@ -191,7 +191,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
         }
       },
       {
@@ -206,7 +206,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
         }
       },
       {
@@ -221,7 +221,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
         }
       },
       {
@@ -237,7 +237,7 @@ export default {
           return !!data.showTime && data.config.picker === "date";
         },
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-btn-primary`
+          return `.{id} .ant-btn-primary`
         }
       },
       {
@@ -253,7 +253,7 @@ export default {
           return !!data.showTime && data.config.picker === "date";
         },
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-btn-primary:hover`
+          return `.{id} .ant-btn-primary:hover`
         }
       }
     ],

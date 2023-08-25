@@ -35,14 +35,14 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return `.${id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
+          return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
         }
       },
       {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({id}: EditorResult<Data>){
-          return `.${id} .ant-picker-cell-today`
+          return `.{id} .ant-picker-cell-today`
         }
       },
       {
@@ -54,7 +54,7 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return [`.${id} .ant-picker-cell .ant-picker-cell-inner`]
+          return [`.{id} .ant-picker-cell .ant-picker-cell-inner`]
         }
       },
       {
@@ -66,7 +66,7 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return [`.${id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`]
+          return [`.{id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`]
         }
       },
       {
@@ -78,7 +78,7 @@ export default {
         ],
         global: true,
         target({id}: EditorResult<Data>){
-          return `.${id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+          return `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
         }
       },
       {
@@ -93,7 +93,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
         }
       },
       {
@@ -108,7 +108,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
         }
       },
       {
@@ -123,7 +123,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>){
-          return `.${id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
         }
       },
     ],
