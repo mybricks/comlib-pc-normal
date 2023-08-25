@@ -49,18 +49,18 @@ export default {
   ':root': {
     style: [
       {
-        title: '边框-默认',
-        options: ['border'],
+        title: '输入框-默认',
+        options: ['border', 'font'],
         target: '.ant-select-selector'
       },
       {
-        title: '边框-hover',
+        title: '输入框-hover',
         options: ['border'],
         target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
         domTarget: 'div.ant-select-selector'
       },
       {
-        title: '边框-focus',
+        title: '输入框-focus',
         options: ['border', 'BoxShadow'],
         target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
         domTarget: 'div.ant-select-selector'
@@ -72,10 +72,7 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>) {
-          console.log(id)
-          return `.ant-select-tree .${id}.ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
-        }
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
       },
       {
         title: '选项-hover',
@@ -84,56 +81,80 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.ant-select-tree .${id}.ant-select-tree-treenode .ant-select-tree-node-content-wrapper:hover`
-        },
-        domTarget({ id }: EditorResult<Data>) {
-          return `.ant-select-tree .${id}.ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
-        }
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper:hover`,
+        domTarget: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
       },
       {
         title: '选项-select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.config.multiple;
+        },
         options: [
           { type: 'font', config: { disableTextAlign: true } },
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.ant-select-tree .{id}.ant-select-tree-treenode .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected`
-        }
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected`
       },
       {
         title: '选项-check',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.multiple;
+        },
         options: [
           { type: 'font', config: { disableTextAlign: true } },
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.ant-select-tree .${id}.ant-select-tree-treenode.ant-select-tree-treenode-checkbox-checked .ant-select-tree-node-content-wrapper`
-        }
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode.ant-select-tree-treenode-checkbox-checked .ant-select-tree-node-content-wrapper`
       },
       {
         title: '勾选框-默认态',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.multiple;
+        },
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.ant-select-tree .{id}.ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
-        }
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
       },
       {
         title: '勾选框-选中态',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.multiple;
+        },
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
         global: true,
-        target({ id }: EditorResult<Data>) {
-          return `.ant-select-tree .${id}.ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`
-        }
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`,
+      },
+      {
+        title: '勾选框-禁用态',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.multiple;
+        },
+        options: [
+          { type: 'border', config: { useImportant: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked.ant-select-tree-checkbox-disabled .ant-select-tree-checkbox-inner`,
+      },
+      {
+        title: '勾选框-选中hover态',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.multiple;
+        },
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target: `.{id} .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked:after`
       },
     ],
     items: ({ data }: EditorResult<Data>, ...catalog) => {

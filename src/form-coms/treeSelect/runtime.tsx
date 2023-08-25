@@ -177,7 +177,6 @@ export default function Runtime({
               key={item[data.valueFieldName || 'value']}
               {...item}
               icon={getNodeIcon(outputItem, data, onError)}
-              className={id}
             >
               {renderTreeNode(item.children || [], depth + 1)}
             </TreeNode>
@@ -197,6 +196,10 @@ export default function Runtime({
         fieldNames={getFieldNames(data)}
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
+        dropdownClassName={id}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          env.edit || env.runtime.debug ? env?.canvasElement : document.body
+        }
       >
         {renderTreeNode(data.options)}
       </TreeSelect>
