@@ -2,6 +2,7 @@ import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
+import { StyleEditor } from './styleEditor'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
@@ -850,135 +851,94 @@ export default {
   },
   '[data-form-actions-item]': {
     title: '操作',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-            return data.actions.items.find(item => item.key === comId)?.visible
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
+    items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
+      cate1.title = '操作';
+      cate1.items = [
+        {
+          title: '显示',
+          type: 'Switch',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              const comId = focusArea.dataset.formActionsItem as string
+              return data.actions.items.find(item => item.key === comId)?.visible
+            },
+            set({ data, focusArea, output }: EditorResult<Data>, val) {
 
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-            if (item) {
-              item.visible = val
-            }
-          }
-        }
-      },
-      {
-        title: '标题',
-        type: 'text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-            return comId && data.actions.items.find(item => item.key === comId)?.title
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
-            if (!val) {
-              return message.warn('操作标题不能为空')
-            }
-
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-            if (item) {
-              item.title = val
-              output.setTitle(item.outputId, `点击${item.title}`)
-            }
-          }
-        }
-      },
-      {
-        title: '风格',
-        type: 'Select',
-        options() {
-          return [
-            { value: 'primary', label: '主按钮' },
-            { value: 'default', label: '次按钮' },
-            { value: 'dashed', label: '虚线按钮' },
-            { value: 'link', label: '链接按钮' },
-            { value: 'text', label: '文字按钮' }
-          ];
-        },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-
-            return data.actions.items.find(item => item.key === comId)?.type || 'default'
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: ButtonType) {
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-
-            if (item) {
-              item.type = value
-            }
-          }
-        }
-      },
-      {
-        title: '危险按钮',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-
-            return data.actions.items.find(item => item.key === comId)?.danger
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-
-            if (item) {
-              item.danger = value
-            }
-          }
-        }
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '点击',
-            type: '_event',
-            options({ data, focusArea }) {
               const comId = focusArea.dataset['formActionsItem']
               const item = data.actions.items.find(item => item.key === comId)
-              if (!item) return
-
-              return {
-                outputId: item.outputId,
-                // slotId: SlotIds.FormItems
+              if (item) {
+                item.visible = val
               }
             }
           }
-        ]
-      },
-      {
-        title: '删除',
-        type: 'Button',
-        ifVisible({ data, focusArea }) {
-          const actions = data.actions.items
-          const itemId = focusArea.dataset['formActionsItem']
-          const item = actions.find(item => item.key === itemId)
-
-          return item && !item?.isDefault
         },
-        value: {
-          set({ data, output, focusArea }: EditorResult<Data>) {
+        {
+          title: '标题',
+          type: 'text',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              const comId = focusArea.dataset.formActionsItem as string
+              return comId && data.actions.items.find(item => item.key === comId)?.title
+            },
+            set({ data, focusArea, output }: EditorResult<Data>, val) {
+              const comId = focusArea.dataset['formActionsItem']
+              const item = data.actions.items.find(item => item.key === comId)
+              if (item) {
+                item.title = val
+                output.setTitle(item.outputId, `点击${item.title}`)
+              }
+            }
+          }
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '点击',
+              type: '_event',
+              options({ data, focusArea }) {
+                const comId = focusArea.dataset['formActionsItem']
+                const item = data.actions.items.find(item => item.key === comId)
+                if (!item) return
+
+                return {
+                  outputId: item.outputId,
+                  // slotId: SlotIds.FormItems
+                }
+              }
+            }
+          ]
+        },
+        {
+          title: '删除',
+          type: 'Button',
+          ifVisible({ data, focusArea }) {
             const actions = data.actions.items
             const itemId = focusArea.dataset['formActionsItem']
-            const index = actions.findIndex(item => item.key === itemId)
-            const item = data.actions.items[index]
+            const item = actions.find(item => item.key === itemId)
 
-            output.remove(item.outputId)
-            actions.splice(index, 1)
+            return item && !item?.isDefault
+          },
+          value: {
+            set({ data, output, focusArea }: EditorResult<Data>) {
+              const actions = data.actions.items
+              const itemId = focusArea.dataset['formActionsItem']
+              const index = actions.findIndex(item => item.key === itemId)
+              const item = data.actions.items[index]
+
+              output.remove(item.outputId)
+              actions.splice(index, 1)
+            }
           }
-        }
-      },
-    ]
+        },
+      ];
+
+      cate2.title = '样式';
+      cate2.items = [
+        ...StyleEditor,
+
+      ];
+    }
+
   }
 }

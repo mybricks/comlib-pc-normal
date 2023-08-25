@@ -10,6 +10,7 @@ export interface Action {
   key: string
   visible?: boolean
   danger?: boolean
+  size: SizeEnum
 }
 
 interface Actions {
@@ -19,7 +20,7 @@ interface Actions {
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
-  inlinePadding?: number[]
+  inlinePadding?: number[],
 }
 
 export interface FormItems {
@@ -172,4 +173,9 @@ export type ChildrenStore = {
   [key: number | string]: {
     [id: string]: FormControlInputType
   };
+}
+export enum SizeEnum {
+  Large = 'large',
+  Middle = 'middle',
+  Small = 'small'
 }

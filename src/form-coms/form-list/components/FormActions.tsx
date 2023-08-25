@@ -87,14 +87,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           }
         }
         return (
-          <Button
-            data-form-actions-item={item.key}
-            type={item.type}
-            loading={item.loading}
-            key={item.key}
-            onClick={() => onClick(item)}
-            disabled={data.disabled}
-          >
+          <Button data-form-actions-item={item.key} {...item} onClick={() => onClick(item)}>
             {item.title}
           </Button>
         );
