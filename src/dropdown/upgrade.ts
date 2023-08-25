@@ -73,7 +73,7 @@ export default function ({
   };
   data.options.map((item)=>{
     if(item.iconColor!==''){
-      setDeclaredStyle(`.${id} li[data-menu-item="${item.key}"]`, {color: item.iconColor});
+      setDeclaredStyle(`.{id} li[data-menu-item="${item.key}"]`, {color: item.iconColor});
       item.iconColor = ''
     }
   })
