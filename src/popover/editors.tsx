@@ -165,7 +165,7 @@ export default {
         ],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id}.ant-popover .ant-popover-inner`;
+          return `.{id}.ant-popover .ant-popover-inner`;
         },
         domTarget: '.ant-popover .ant-popover-inner'
       },
@@ -174,7 +174,7 @@ export default {
         options: ['font', 'padding', 'border'],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id}.ant-popover .ant-popover-inner .ant-popover-title`;
+          return `.{id}.ant-popover .ant-popover-inner .ant-popover-title`;
         },
         domTarget: '.ant-popover .ant-popover-inner .ant-popover-title'
       },
@@ -183,7 +183,7 @@ export default {
         options: ['font', 'padding'],
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id}.ant-popover .ant-popover-inner .ant-popover-inner-content`;
+          return `.{id}.ant-popover .ant-popover-inner .ant-popover-inner-content`;
         },
         domTarget: '.ant-popover .ant-popover-inner .ant-popover-inner-content'
       },
@@ -205,7 +205,7 @@ export default {
         },
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.${id}.ant-popover .ant-popover-arrow .ant-popover-arrow-content`;
+          return `.{id}.ant-popover .ant-popover-arrow .ant-popover-arrow-content`;
         }
       }
     ]
