@@ -37,21 +37,45 @@ export default {
         }
       },
       {
-        title: '边框-默认',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper'
-      },
-      {
-        title: '边框-hover',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-        domTarget: '.ant-input-affix-wrapper'
-      },
-      {
-        title: '边框-focus',
-        options: ['border', 'BoxShadow'],
-        target:
-          'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            // options: ['border'],
+            // target: '.ant-input-affix-wrapper',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              }
+            ]
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
+              }
+            ]
+          },
+          {
+            title: 'Focus',
+            catelog: 'Focus',
+            items: [
+              {
+                title: '边框',
+                options: ['border', 'BoxShadow'],
+                target:
+                  'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+              }
+            ]
+          }
+        ]
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
