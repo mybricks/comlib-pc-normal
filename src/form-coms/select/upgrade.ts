@@ -4,6 +4,8 @@ import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
 
+  const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
+
   if (typeof data.config.showSearch === "undefined") {
     data.config.showSearch = true;
   };
@@ -21,7 +23,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     * @description v1.0.2 增加"设置初始值"输入项和“初始化”输出项
     */
   let setValueSchema;
-  if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+  if (isMultiple) {
     setValueSchema = {
       type: 'array',
       items: Schemas.String
@@ -91,7 +93,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       returnValueSchema = Schemas.String;
     }
     let outputValueSchema = returnValueSchema;
-    if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
+    if (isMultiple) {
       outputValueSchema = {
         type: 'array',
         items: returnValueSchema
@@ -104,6 +106,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   //=========== v1.0.22 end ===============
+
+  /**
+    * @description v1.0.25 支持 下拉箭头 配置项
+    */
+
+  if (data.config.showArrow === undefined) {
+    data.config.showArrow = !isMultiple;
+  }
+
+  //=========== v1.0.25 end ===============
 
   return true;
 }
