@@ -297,7 +297,8 @@ export default {
     title: '菜单项',
     style: [
       {
-        title: '选项-默认',
+        title: '选项',
+        catelog: '默认',
         options: [
           { type: 'font', config: { disableTextAlign: true } },
           { type: 'background', config: { disableBackgroundImage: true } }
@@ -308,7 +309,8 @@ export default {
         }
       },
       {
-        title: '选项-hover',
+        title: '选项',
+        catelog: 'Hover',
         options: [
           { type: 'font', config: { disableTextAlign: true } },
           { type: 'background', config: { disableBackgroundImage: true } }
