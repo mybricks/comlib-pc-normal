@@ -26,13 +26,13 @@ const createStyleForDefault = ({ target }: StyleModeType<Data>) => ({
 });
 
 const createStyleForCheckableHover = ({ target }: StyleModeType<Data>) => ({
-  title: '可选择（Hover）',
+  title: '可选择',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   target
 });
 
 const createStyleForChecked = ({ target }: StyleModeType<Data>) => ({
-  title: '可选择（选中）',
+  title: '可选择',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   target
 });

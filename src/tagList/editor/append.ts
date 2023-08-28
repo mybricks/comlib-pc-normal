@@ -4,7 +4,7 @@ export default {
   '[data-item-tag="append"]': {
     title: '新增按钮',
     items({}: EditorResult<Data>, cate1) {
-      cate1.title = '基础配置';
+      cate1.title = '常规';
       cate1.items = [
         {
           title: '内容',
