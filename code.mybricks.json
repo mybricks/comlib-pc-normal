@@ -17,7 +17,8 @@
         "./src/dialog/com.json",
         "./src/drawer/com.json",
         "./src/menu/com.json",
-        "./src/steps/com.json"
+        "./src/steps/com.json",
+        "./src/print/com.json"
       ]
     },
     {
@@ -52,9 +53,7 @@
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": [
-        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
-      ]
+      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
     },
     {
       "name": "antd",
