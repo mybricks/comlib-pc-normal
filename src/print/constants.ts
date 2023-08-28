@@ -5,12 +5,13 @@
  * @param closable 是否显示关闭按钮
  */
 export interface Data {
-	documentTitle: string,
-	closeScene: boolean,
-	useFooter: boolean,
-	closable: boolean
+  documentTitle: string;
+  closeScene: boolean;
+  useFooter: boolean;
+  closable: boolean;
+  width: number;
 }
 
 export enum InputIds {
-	StartPrint = 'startPrint',
+  StartPrint = 'startPrint'
 }
