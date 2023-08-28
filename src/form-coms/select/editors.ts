@@ -72,72 +72,81 @@ export default {
   ':root': {
     style: [
       {
-        title: '边框',
         items: [
           {
             catelog: '默认',
-            options: ['border'],
-            target: '.ant-select-selector'
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-select-selector'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} div.ant-select-item.ant-select-item-option`
+                }
+              },
+              {
+                title: '标签',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.config.mode !== 'default';
+                },
+                options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
+              },
+            ]
           },
           {
             catelog: 'Hover',
-            options: ['border'],
-            target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
-            domTarget: 'div.ant-select-selector'
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+                domTarget: 'div.ant-select-selector'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
+                }
+              },
+            ]
           },
           {
             catelog: 'Focus',
-            options: ['border', 'BoxShadow'],
-            target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
-            domTarget: 'div.ant-select-selector'
+            items: [
+              {
+                title: '边框',
+                options: ['border', 'BoxShadow'],
+                target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+                domTarget: 'div.ant-select-selector'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
+                }
+              }
+            ]
           },
         ]
-      },
-      {
-        title: '选项',
-        items:[
-          {
-            catelog:'默认',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} div.ant-select-item.ant-select-item-option`
-            }
-          },
-          {
-            catelog: 'Hover',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
-            }
-          },
-          {
-            catelog: 'Focus',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
-            }
-          }
-        ]
-      },
-      {
-        title: '标签',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.mode !== 'default';
-        },
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
       },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
