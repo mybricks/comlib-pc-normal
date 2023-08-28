@@ -46,7 +46,7 @@ export default {
   ':root': {
     style: [
       {
-        title: '边框-默认',
+        title: '边框',
         catelog: '默认',
         options: ['border'],
         target: '.ant-picker'
@@ -59,13 +59,13 @@ export default {
         domTarget: '.ant-picker'
       },
       {
-        title: '边框-focus',
+        title: '边框',
         catelog: 'Focus',
         options: ['border', 'BoxShadow'],
         target: ['.ant-picker-focused.ant-picker']
       },
       {
-        title: '边框底线-focus',
+        title: '边框底线',
         catelog: 'Focus',
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-picker-range .ant-picker-active-bar'
@@ -88,7 +88,7 @@ export default {
         }
       },
       {
-        title: '日期-默认',
+        title: '日期',
         catelog: '默认',
         options: [
           'border',
@@ -101,7 +101,7 @@ export default {
         }
       },
       {
-        title: '日期-hover',
+        title: '日期',
         catelog: 'Hover',
         options: [
           'border',
@@ -152,7 +152,7 @@ export default {
         }
       },
       {
-        title: '选中日期区间-hover',
+        title: '选中日期区间',
         catelog: 'Hover',
         options: [
           'border',
@@ -169,7 +169,7 @@ export default {
         }
       },
       {
-        title: '日期-hover',
+        title: '日期',
         catelog: 'Hover',
         options: [
           'border',
@@ -182,7 +182,7 @@ export default {
         }
       },
       {
-        title: '时间-默认',
+        title: '时间',
         catelog: '默认',
         options: [
           'border',
@@ -198,7 +198,7 @@ export default {
         }
       },
       {
-        title: '时间-hover',
+        title: '时间',
         catelog: 'Hover',
         options: [
           'border',
@@ -215,6 +215,7 @@ export default {
       },
       {
         title: '时间-选中',
+        catelog: '默认',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -229,7 +230,7 @@ export default {
         }
       },
       {
-        title: '确认按钮-默认',
+        title: '确认按钮',
         catelog: '默认',
         options: [
           'border',
@@ -246,7 +247,7 @@ export default {
         }
       },
       {
-        title: '确认按钮-hover',
+        title: '确认按钮',
         catelog: 'Hover',
         options: [
           'border',

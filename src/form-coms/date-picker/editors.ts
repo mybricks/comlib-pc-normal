@@ -12,20 +12,20 @@ export default {
   ':root': {
     style: [
       {
-        title: '边框-默认',
+        title: '边框',
         catelog: '默认',
         options: ['border'],
         target: '.ant-picker'
       },
       {
-        title: '边框-hover',
+        title: '边框',
         catelog: 'Hover',
         options: ['border'],
         target: '.ant-picker:hover',
         domTarget: '.ant-picker'
       },
       {
-        title: '边框-focus',
+        title: '边框',
         catelog: 'Focus',
         options: ['border', 'BoxShadow'],
         target: '.ant-picker-focused.ant-picker'
@@ -48,7 +48,7 @@ export default {
         }
       },
       {
-        title: '日期-默认',
+        title: '日期',
         catelog: '默认',
         options: [
           'border',
@@ -62,7 +62,7 @@ export default {
       },
       {
         title: '日期-选中',
-        catelog: '选中',
+        catelog: '默认',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -74,7 +74,7 @@ export default {
         }
       },
       {
-        title: '日期-hover',
+        title: '日期',
         catelog: 'Hover',
         options: [
           'border',
@@ -87,7 +87,7 @@ export default {
         }
       },
       {
-        title: '时间-默认',
+        title: '时间',
         catelog: '默认',
         options: [
           'border',
@@ -103,7 +103,7 @@ export default {
         }
       },
       {
-        title: '时间-hover',
+        title: '时间',
         catelog: 'Hover',
         options: [
           'border',
@@ -120,7 +120,7 @@ export default {
       },
       {
         title: '时间-选中',
-        catelog: '选中',
+        catelog: '默认',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },

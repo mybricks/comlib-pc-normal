@@ -60,20 +60,20 @@ export default {
       //   }
       // },
       {
-        title: '边框-默认',
+        title: '边框',
         catelog: '默认',
         options: ['border'],
         target: '.ant-input-affix-wrapper'
       },
       {
-        title: '边框-hover',
+        title: '边框',
         catelog: 'Hover',
         options: ['border'],
         target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
         domTarget: '.ant-input-affix-wrapper'
       },
       {
-        title: '边框-focus',
+        title: '边框',
         catelog: 'Focus',
         options: ['border', 'BoxShadow'],
         target:
