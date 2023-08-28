@@ -13,36 +13,46 @@ export default {
   ':root': {
     style: [
       {
-        title: '选项标签-默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
+        title: '选项标签',
+        items: [
+          {
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
+          },
+          {
+            catelog: '禁用',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
+          },
+        ]
       },
       {
-        title: '选择框-默认',
-        options: ['border'],
-        target: '.ant-checkbox-inner'
+        title: '选择框',
+        items: [
+          {
+            catelog: '默认',
+            options: ['border'],
+            target: '.ant-checkbox-inner'
+          },
+          {
+            catelog: 'Hover',
+            options: ['border'],
+            target: '.ant-checkbox:hover .ant-checkbox-inner',
+            domTarget: '.ant-checkbox-inner'
+          },
+          {
+            catelog: '选中',
+            options: ['border', 'BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-checkbox-checked .ant-checkbox-inner'
+          },
+          {
+            catelog: '禁用',
+            options: [{ type: 'border', config: { useImportant: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
+          }
+        ]
       },
-      {
-        title: '选择框-hover',
-        options: ['border'],
-        target: '.ant-checkbox:hover .ant-checkbox-inner',
-        domTarget: '.ant-checkbox-inner'
-      },
-      {
-        title: '选择框-选中态',
-        options: ['border', 'BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-checkbox-checked .ant-checkbox-inner'
-      },
-      {
-        title: '选项标签-禁用',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
-      },
-      {
-        title: '选择框-禁用态',
-        options: [{type: 'border', config: { useImportant: true }}, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
-      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
