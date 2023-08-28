@@ -32,59 +32,68 @@ export default {
   ':root': {
     style: [
       {
-        title: '选项标签',
         items: [
           {
             catelog: '默认',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: 'label.ant-radio-wrapper > span:nth-child(2)'
-          },
-          {
-            catelog: '禁用',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)'
-          },
-        ]
-      },
-      {
-        title: '选择框',
-        items: [
-          {
-            catelog: '默认',
-            options: ['border'],
-            target: '.ant-radio-inner'
+            items: [
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-radio-wrapper > span:nth-child(2)'
+              },
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-radio-inner'
+              },
+            ]
           },
           {
             catelog: 'Hover',
-            options: ['border'],
-            target: '.ant-radio:hover .ant-radio-inner',
-            domTarget: '.ant-radio-inner'
+            items: [
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-radio:hover .ant-radio-inner',
+                domTarget: '.ant-radio-inner'
+              },
+            ]
           },
           {
-            catelog: '选中',
-            options: ['border', 'BoxShadow'],
-            target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
+            catelog: 'Check',
+            items: [
+              {
+                title: '选择框',
+                options: ['border', 'BoxShadow'],
+                target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
+              },
+              {
+                title: '选择框中心',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-radio-inner:after'
+              },
+            ]
           },
           {
             catelog: '禁用',
-            options: ['border'],
-            target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
+            items: [
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)'
+              },
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
+              },
+              {
+                title: '选择框中心',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-radio.ant-radio-disabled .ant-radio-inner:after'
+              }
+            ]
           },
-        ]
-      },
-      {
-        title: '选择框中心',
-        items: [
-          {
-            catelog: '选中',
-            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-            target: '.ant-radio-inner:after'
-          },
-          {
-            catelog: '禁用',
-            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-            target: '.ant-radio.ant-radio-disabled .ant-radio-inner:after'
-          }
         ]
       },
     ],
