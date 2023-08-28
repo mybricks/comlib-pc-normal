@@ -6,6 +6,7 @@ import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
+import ConfigProvider from '../../components/ConfigProvider';
 
 import styles from './style.less';
 
@@ -119,19 +120,21 @@ export default function ({
   };
 
   return (
-    <div className={styles.wrap}>
-      <TimePicker
-        placeholder={placeholder}
-        value={value}
-        format={_format}
-        disabled={disabled}
-        allowClear
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? env?.canvasElement : document.body
-        }
-        dropdownClassName={id}
-        onChange={onChange}
-      />
-    </div>
+    <ConfigProvider locale={env.vars?.locale}>
+      <div className={styles.wrap}>
+        <TimePicker
+          placeholder={placeholder}
+          value={value}
+          format={_format}
+          disabled={disabled}
+          allowClear
+          getPopupContainer={(triggerNode: HTMLElement) =>
+            edit || debug ? env?.canvasElement : document.body
+          }
+          dropdownClassName={id}
+          onChange={onChange}
+        />
+      </div>
+    </ConfigProvider>
   );
 }
