@@ -278,75 +278,88 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return data.paginationConfig.size !== SizeTypeEnum.Simple;
         },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item`
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+            target: `.ant-pagination-item`
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+            target: `.ant-pagination-item:hover`,
+            domTarget: '.ant-pagination-item'
+          },
+          {
+            title: '激活',
+            catelog: '激活',
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+            target: `.ant-pagination-item.ant-pagination-item-active`
+          },
+        ]
       },
       {
         title: '页码字体',
         ifVisible({ data }: EditorResult<Data>) {
           return data.paginationConfig.size !== SizeTypeEnum.Simple;
         },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
-        },
-        target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
+        items: [
+          {
+            title: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            initValue: {
+              color: '#000000'
+            },
+            target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            initValue: {
+              color: '#000000'
+            },
+            target: `.ant-pagination-item:hover a`,
+            domTarget: '.ant-pagination-item'
+          },
+
+          {
+            title: '激活',
+            catelog: '激活',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            initValue: {
+              color: '#000000'
+            },
+            target: `.ant-pagination-item.ant-pagination-item-active a`
+          },
+        ]
       },
       {
-        title: '页码Hover',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item:hover`,
-        domTarget: '.ant-pagination-item'
+        title: '翻译按钮',
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+            target: `.ant-pagination li:not(.ant-pagination-disabled) button`
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+            target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
+          },
+          {
+            title: '禁用',
+            catelog: '禁用',
+            options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+            target: `.ant-pagination li.ant-pagination-disabled button`
+          },
+        ]
       },
-      {
-        title: '页码Hover字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
-        },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
-        },
-        target: `.ant-pagination-item:hover a`,
-        domTarget: '.ant-pagination-item'
-      },
-      {
-        title: '页码激活态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item.ant-pagination-item-active`
-      },
-      {
-        title: '页码激活态字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
-        },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
-        },
-        target: `.ant-pagination-item.ant-pagination-item-active a`
-      },
-      {
-        title: '翻页按钮',
-        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-        target: `.ant-pagination li:not(.ant-pagination-disabled) button`
-      },
-      {
-        title: '翻页按钮hover',
-        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-        target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
-      },
-      {
-        title: '翻页按钮禁止',
-        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-        target: `.ant-pagination li.ant-pagination-disabled button`
-      },
+
       {
         title: '前置文案字体',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
@@ -365,7 +378,7 @@ export default {
         ifVisible({ data }: EditorResult<Data>) {
           return data.paginationConfig.showQuickJumper;
         },
-        options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true }}],
+        options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: `.ant-pagination-options-quick-jumper input`
       }
     ]
