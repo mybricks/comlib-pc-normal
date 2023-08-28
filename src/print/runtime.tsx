@@ -46,7 +46,7 @@ export default function MyComponent({
   const popupContent = (
     <Modal
       visible={true}
-      width={!env.edit ? '80%' : '100%'}
+      width={!env.edit ? '80%' : data.width}
       onCancel={handleClose}
       cancelText={'取消'}
       okText={'打印预览'}
