@@ -41,7 +41,7 @@ export default {
             ]
           },
           {
-            catelog: 'Check',
+            catelog: '选中',
             items: [
               {
                 title: '选择框',
