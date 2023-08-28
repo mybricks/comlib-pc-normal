@@ -90,8 +90,7 @@
       "./src/timer/com.json",
       "./src/merge/com.json",
       "./src/download/com.json",
-      "./src/object-merge/com.json",
-      "./src/print/com.json"
+      "./src/object-merge/com.json"
     ],
     "publish": [
       {
@@ -179,8 +178,7 @@
       "./src/timer/com.json",
       "./src/merge/com.json",
       "./src/download/com.json",
-      "./src/object-merge/com.json",
-      "./src/print/com.json"
+      "./src/object-merge/com.json"
     ]
   }
 }
