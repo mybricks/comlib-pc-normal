@@ -1,7 +1,7 @@
 import { Data } from '../constants';
 import { getFilterSelector } from '../../utils/cssSelector';
 export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>) => ({
-  title: '默认标签',
+  title: '标签',
   initValue,
   options: [
     { type: 'font', config: { disableTextAlign: true } },
@@ -13,7 +13,7 @@ export const createStyleForDefault = ({ initValue, target }: StyleModeType<Data>
 });
 
 export const createStyleForActive = ({ initValue, target }: StyleModeType<Data>) => ({
-  title: '选中标签',
+  title: '标签',
   initValue,
   options: [
     { type: 'font', config: { disableTextAlign: true } },

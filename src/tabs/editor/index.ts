@@ -204,23 +204,32 @@ export default {
       ];
     },
     style: [
-      createStyleForDefault({
-        initValue: {
-          color: 'rgba(0,0,0,.85)'
-        },
-        target: ({ id }: EditorResult<Data>) =>
-          `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(
-            id
-          )}`
-      }),
-      createStyleForActive({
-        initValue: {
-          color: '#1890ff'
-        },
-        target: ({ id }: EditorResult<Data>) =>
-          `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)}`
-      }),
-      createStyleForBar()
+      {
+        catelog: "默认",
+        ... createStyleForDefault({
+          initValue: {
+            color: 'rgba(0,0,0,.85)'
+          },
+          target: ({ id }: EditorResult<Data>) =>
+            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(
+              id
+            )}`
+        }),
+      },
+      {
+        catelog: "默认",
+        ...createStyleForBar()
+      },
+      {
+        catelog: "激活",
+        ...createStyleForActive({
+          initValue: {
+            color: '#1890ff'
+          },
+          target: ({ id }: EditorResult<Data>) =>
+            `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab-active${getFilterSelector(id)}`
+        })
+      }
     ]
   },
   ...TabEditor

@@ -32,17 +32,8 @@ export default {
         }
       ];
     },
-    style: [
-      {
-        items: [
-          {
-            catelog: '默认',
-            ...createStyleForDefault({
-              target: 'div[data-root="root"] span[data-item-tag="append"]'
-            })
-          }
-        ]
-      }
-    ]
+    style: createStyleForDefault({
+      target: 'div[data-root="root"] span[data-item-tag="append"]'
+    })
   }
 };
