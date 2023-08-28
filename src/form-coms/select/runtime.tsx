@@ -24,7 +24,7 @@ const getOutputValue = (data) => {
       label
     };
   }
-  if (data.outputValueType === 'all') {
+  if (data.outputValueType === 'option') {
     const { [DefaultOptionKey]: id, ...res } =
       data.config.options.find((i) => i.value === outputValue) || {};
     outputValue = res;
@@ -211,6 +211,7 @@ export default function Runtime({
     <div className={css.select} ref={ref} id="area">
       <Select
         {...data.config}
+        showArrow={data.config.showArrow}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value}
         onChange={onChange}
