@@ -23,10 +23,9 @@ import { getFilterSelector } from '../../utils/cssSelector';
 import {
   getColumnsSchema,
   createStyleForHead,
-  createStyleForContent,
+  createStyleForTableContent,
   getNewColumn,
-  setColumns,
-  createStyleForRowHover
+  setColumns
 } from '../utils';
 import {
   OutputIds as PaginatorOutputIds,
@@ -154,8 +153,7 @@ export default {
     style: [
       ...TableStyleEditor.items,
       createStyleForHead({ target: ({ id }) => `table thead tr th${getFilterSelector(id)}` }),
-      createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` }),
-      createStyleForRowHover({
+      createStyleForTableContent({
         target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover${getFilterSelector(id)}`
       })
     ]

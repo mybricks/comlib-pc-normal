@@ -3,6 +3,7 @@ import { uuid } from '../../utils';
 import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
 import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
+import { getFilterSelector } from '../../utils/cssSelector';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -242,18 +243,48 @@ export const createStyleForHead = ({ target }: StyleModeType<Data> = {}) => ({
   target
 });
 
-export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
-  title: '内容',
-  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+// export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
+//   title: '内容',
+//   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+//   ifVisible({ data }: EditorResult<Data>) {
+//     return !!data.columns.length;
+//   },
+//   target
+// });
+
+// export const createStyleForRowHover = ({ target }: StyleModeType<Data>) => ({
+//   title: '行hover样式',
+//   options: ['font', { type: 'background', config: { disableBackgroundImage: true } }],
+//   ifVisible({ data }: EditorResult<Data>) {
+//     return !!data.columns.length;
+//   },
+//   target
+// });
+
+export const createStyleForTableContent = () => ({
+  title: '内容样式',
   ifVisible({ data }: EditorResult<Data>) {
     return !!data.columns.length;
   },
-  target
-});
+  items: [
+    {
+      title: '默认',
+      catelog: '默认',
+      options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+      target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
+    },
+    {
+      title: '行Hover',
+      catelog: '行Hover',
+      options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+      target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover[data-table-column-id]${getFilterSelector(id)}`
+    }
+  ]
+})
 
-export const createStyleForRowHover = ({ target }: StyleModeType<Data>) => ({
-  title: '行hover样式',
-  options: ['font', { type: 'background', config: { disableBackgroundImage: true } }],
+export const createStyleForColumnContent = ({ target }: StyleModeType<Data>) => ({
+  title: '内容',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   ifVisible({ data }: EditorResult<Data>) {
     return !!data.columns.length;
   },

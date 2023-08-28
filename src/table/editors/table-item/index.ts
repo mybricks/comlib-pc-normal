@@ -8,7 +8,7 @@ import FilterEditor from './filterEditor';
 import createBaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
 import StyleEditor from './styleEditor';
-import { createStyleForHead, createStyleForContent } from '../../utils';
+import { createStyleForHead, createStyleForColumnContent } from '../../utils';
 
 const column = {
   [COLUMN_EDITORS_CLASS_KEY]: {
@@ -39,7 +39,7 @@ const column = {
           return selector;
         }
       }),
-      createStyleForContent({
+      createStyleForColumnContent({
         target({ data, focusArea, id }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
           const selector = `table tbody tr td[data-table-column-id="${tableThIdx}"]${getFilterSelector(id)}`;

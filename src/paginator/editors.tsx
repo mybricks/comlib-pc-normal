@@ -8,6 +8,12 @@ import {
   templateRender,
   WidthTypeEnum
 } from './constants';
+const catelogEditors = (catelog, editors) => {
+  return editors.map((item) => ({
+    catelog,
+    ...item
+  }));
+};
 
 export default {
   '@resize': {
@@ -243,64 +249,161 @@ export default {
     },
     style: [
       {
-        title: '页码',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.size !== SizeTypeEnum.Simple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item`
-      },
-      {
-        title: '页码字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.size !== SizeTypeEnum.Simple;
-        },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
-        },
-        target: `.ant-pagination-item a`
-      },
-      {
-        title: '页码Hover',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.size !== SizeTypeEnum.Simple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item:hover`,
-        domTarget: '.ant-pagination-item'
-      },
-      {
-        title: '页码Hover字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.size !== SizeTypeEnum.Simple;
-        },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
-        },
-        target: `.ant-pagination-item:hover a`,
-        domTarget: '.ant-pagination-item'
-      },
-      {
-        title: '页码激活态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.size !== SizeTypeEnum.Simple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item-active`
-      },
-      {
-        title: '页码激活态字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.size !== SizeTypeEnum.Simple;
-        },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
-        },
-        target: `.ant-pagination-item-active a`
+        items: [
+          ...catelogEditors('默认', [
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item`
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
+            },
+            {
+              title: '翻页按钮',
+              options: [
+                'font',
+                'border',
+                { type: 'background', config: { disableTextAlign: true } }
+              ],
+              target: `.ant-pagination li:not(.ant-pagination-disabled) button`
+            },
+            {
+              title: '前置文案字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-total-text`
+            }
+            // {
+            //   title: '跳转字体',
+            //   options: [{ type: 'font', config: { disableTextAlign: true } }],
+            //   target: `.ant-pagination-options-quick-jumper`
+            // },
+            // {
+            //   title: '跳转输入框',
+            //   options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+            //   target: `.ant-pagination-options-quick-jumper input`
+            // }
+          ]),
+          ...catelogEditors('Hover', [
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item:hover`,
+              domTarget: '.ant-pagination-item'
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination-item:hover a`,
+              domTarget: '.ant-pagination-item'
+            },
+            {
+              title: '翻页按钮',
+              options: [
+                'font',
+                'border',
+                { type: 'background', config: { disableTextAlign: true } }
+              ],
+              target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
+            }
+          ]),
+          ...catelogEditors('激活', [
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item.ant-pagination-item-active`
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination-item.ant-pagination-item-active a`
+            }
+          ]),
+          ...catelogEditors('禁用', [
+            {
+              title: '翻页按钮',
+              options: [
+                'font',
+                'border',
+                { type: 'background', config: { disableTextAlign: true } }
+              ],
+              target: `.ant-pagination li.ant-pagination-disabled button`
+            }
+          ])
+        ]
       }
     ]
+    // style: [
+    //   {
+    //     title: '页码',
+    //     ifVisible({ data }: EditorResult<Data>) {
+    //       return data.size !== SizeTypeEnum.Simple;
+    //     },
+    //     options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+    //     target: `.ant-pagination-item`
+    //   },
+    //   {
+    //     title: '页码字体',
+    //     ifVisible({ data }: EditorResult<Data>) {
+    //       return data.size !== SizeTypeEnum.Simple;
+    //     },
+    //     options: [{ type: 'font', config: { disableTextAlign: true } }],
+    //     initValue: {
+    //       color: '#000000'
+    //     },
+    //     target: `.ant-pagination-item a`
+    //   },
+    //   {
+    //     title: '页码Hover',
+    //     ifVisible({ data }: EditorResult<Data>) {
+    //       return data.size !== SizeTypeEnum.Simple;
+    //     },
+    //     options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+    //     target: `.ant-pagination-item:hover`,
+    //     domTarget: '.ant-pagination-item'
+    //   },
+    //   {
+    //     title: '页码Hover字体',
+    //     ifVisible({ data }: EditorResult<Data>) {
+    //       return data.size !== SizeTypeEnum.Simple;
+    //     },
+    //     options: [{ type: 'font', config: { disableTextAlign: true } }],
+    //     initValue: {
+    //       color: '#000000'
+    //     },
+    //     target: `.ant-pagination-item:hover a`,
+    //     domTarget: '.ant-pagination-item'
+    //   },
+    //   {
+    //     title: '页码激活态',
+    //     ifVisible({ data }: EditorResult<Data>) {
+    //       return data.size !== SizeTypeEnum.Simple;
+    //     },
+    //     options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+    //     target: `.ant-pagination-item-active`
+    //   },
+    //   {
+    //     title: '页码激活态字体',
+    //     ifVisible({ data }: EditorResult<Data>) {
+    //       return data.size !== SizeTypeEnum.Simple;
+    //     },
+    //     options: [{ type: 'font', config: { disableTextAlign: true } }],
+    //     initValue: {
+    //       color: '#000000'
+    //     },
+    //     target: `.ant-pagination-item-active a`
+    //   }
+    // ]
   }
 };
