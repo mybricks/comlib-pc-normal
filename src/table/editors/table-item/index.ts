@@ -8,7 +8,7 @@ import FilterEditor from './filterEditor';
 import createBaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
 import StyleEditor from './styleEditor';
-import { createStyleForHead, createStyleForColumnContent } from '../../utils';
+import { createStyleForColumnContent } from '../../utils';
 
 const column = {
   [COLUMN_EDITORS_CLASS_KEY]: {
@@ -32,13 +32,26 @@ const column = {
       };
     },
     style: [
-      createStyleForHead({
-        target({ data, focusArea, id }: EditorResult<Data>) {
+      {
+        title: '表头',
+        catelog: '默认',
+        options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.columns.length;
+        },
+        target: ({ data, focusArea, id }: EditorResult<Data>) => {
           const { tableThIdx } = focusArea.dataset;
           const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(id)}`;
           return selector;
         }
-      }),
+      },
+      // createStyleForHead({
+      //   target({ data, focusArea, id }: EditorResult<Data>) {
+      //     const { tableThIdx } = focusArea.dataset;
+      //     const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(id)}`;
+      //     return selector;
+      //   }
+      // }),
       createStyleForColumnContent({
         target({ data, focusArea, id }: EditorResult<Data>) {
           const { tableThIdx } = focusArea.dataset;
