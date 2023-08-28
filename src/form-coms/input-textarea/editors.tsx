@@ -1,4 +1,5 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { Data } from './runtime';
 
 export default {
   '@resize': {
@@ -7,20 +8,27 @@ export default {
   ':root': {
     style: [
       {
-        title: '边框-默认',
-        options: ['border'],
-        target: '.ant-input'
-      },
-      {
-        title: '边框-hover',
-        options: ['border'],
-        target: '.ant-input:hover',
-        domTarget: '.ant-input'
-      },
-      {
-        title: '边框-focus',
-        options: ['border', 'BoxShadow'],
-        target: 'textarea.ant-input:focus'
+        items: [
+          {
+            title: '边框-默认',
+            catelog: '默认',
+            options: ['border'],
+            target: '.ant-input'
+          },
+          {
+            title: '边框-hover',
+            catelog: 'Hover',
+            options: ['border'],
+            target: '.ant-input:hover',
+            domTarget: '.ant-input'
+          },
+          {
+            title: '边框-focus',
+            catelog: 'Focus',
+            options: ['border', 'BoxShadow'],
+            target: 'textarea.ant-input:focus'
+          }
+        ]
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
