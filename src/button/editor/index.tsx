@@ -13,18 +13,6 @@ export default {
   },
   ':root': {
     style: [
-      {
-        title: '作为热区使用',
-        type: 'switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.asMapArea;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.asMapArea = value;
-          }
-        }
-      },
       ...styleEditor,
       {
         //title:'SAAA',
@@ -103,6 +91,18 @@ export default {
             }
           }
         ]
+      },
+      {
+        title: '作为热区使用',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.asMapArea;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.asMapArea = value;
+          }
+        }
       },
       ...IconEditor,
       {
