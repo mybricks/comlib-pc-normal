@@ -30,7 +30,7 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%';
   },
-  ':root':{
+  ':root': {
     style: [
       // {
       //   title: '尺寸',
@@ -61,24 +61,28 @@ export default {
       // },
       {
         title: '边框-默认',
+        catelog: '默认',
         options: ['border'],
         target: '.ant-input-affix-wrapper'
       },
       {
         title: '边框-hover',
+        catelog: 'Hover',
         options: ['border'],
         target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
         domTarget: '.ant-input-affix-wrapper'
       },
       {
         title: '边框-focus',
-        options: ['border','BoxShadow'],
-        target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
-      },
+        catelog: 'Focus',
+        options: ['border', 'BoxShadow'],
+        target:
+          'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+      }
     ],
-    items:({data}: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
-  
+
       catalog[0].items = [
         {
           title: '提示内容',
@@ -158,11 +162,11 @@ export default {
             },
             set({ data, output }, value: boolean) {
               data.isSelect = value;
-              if(data.isSelect){
-                output.get('onChange').setSchema({ type: 'array', items: { type: 'string'} });
-                output.get('onSearch').setSchema({ type: 'array', items: { type: 'string'} });
-                output.get('onBlur').setSchema({ type: 'array', items: { type: 'string'} });
-              }else{
+              if (data.isSelect) {
+                output.get('onChange').setSchema({ type: 'array', items: { type: 'string' } });
+                output.get('onSearch').setSchema({ type: 'array', items: { type: 'string' } });
+                output.get('onBlur').setSchema({ type: 'array', items: { type: 'string' } });
+              } else {
                 output.get('onChange').setSchema({ type: 'string' });
                 output.get('onSearch').setSchema({ type: 'string' });
                 output.get('onBlur').setSchema({ type: 'string' });
@@ -245,7 +249,7 @@ export default {
                 if (checked) initValue.push(value);
               });
               if (data.initValue) {
-                data.initValue = initValue.find(item => item !== data.initValue);
+                data.initValue = initValue.find((item) => item !== data.initValue);
               } else {
                 data.initValue = initValue[0];
               }
@@ -253,12 +257,12 @@ export default {
               tempOptions = options;
               const formItemVal: any = data.initValue;
               // 更新选项
-              options = options.map(option => {
+              options = options.map((option) => {
                 const checked = formItemVal !== undefined && option.value === formItemVal;
                 return {
                   ...option,
                   checked
-                }
+                };
               });
               data.staticOptions = options;
             }
@@ -283,7 +287,7 @@ export default {
           type: 'ArrayCheckbox',
           options: {
             checkField: 'status',
-  
+
             visibleField: 'visible',
             getTitle,
             items: [
@@ -362,12 +366,11 @@ export default {
               }
             }
           ]
-        },
-      ]
+        }
+      ];
     }
-  } 
-  
-}
+  }
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;
