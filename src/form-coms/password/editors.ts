@@ -11,18 +11,21 @@ export default {
   ':root': {
     style: [
       {
-        title: '边框-默认',
+        title: '默认',
+        catelog: '默认',
         options: ['border'],
         target: '.ant-input-affix-wrapper'
       },
       {
-        title: '边框-hover',
+        title: 'Hover',
+        catelog: 'Hover',
         options: ['border'],
         target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
         domTarget: '.ant-input-affix-wrapper'
       },
       {
-        title: '边框-focus',
+        title: '激活',
+        catelog: '激活',
         options: ['border','BoxShadow'],
         target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
       },

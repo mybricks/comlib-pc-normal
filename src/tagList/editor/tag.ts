@@ -117,24 +117,37 @@ export default {
       ];
     },
     style: [
-      createStyleForDefault({
-        target({ focusArea }: EditorResult<Data>) {
-          const { index } = focusArea.dataset;
-          return `div[data-root] span[data-index="${index}"]`;
-        }
-      }),
-      createStyleForCheckableHover({
-        target({ focusArea }: EditorResult<Data>) {
-          const { index } = focusArea.dataset;
-          return `div[data-root] span[data-index="${index}"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover`;
-        }
-      }),
-      createStyleForChecked({
-        target({ focusArea }: EditorResult<Data>) {
-          const { index } = focusArea.dataset;
-          return `div[data-root] span[data-index="${index}"].ant-tag-checkable-checked`;
-        }
-      })
+      {
+        items: [
+          {
+            catelog: '默认',
+            ...createStyleForDefault({
+              target({ focusArea }: EditorResult<Data>) {
+                const { index } = focusArea.dataset;
+                return `div[data-root] span[data-index="${index}"]`;
+              }
+            })
+          },
+          {
+            catelog: 'Hover',
+            ...createStyleForCheckableHover({
+              target({ focusArea }: EditorResult<Data>) {
+                const { index } = focusArea.dataset;
+                return `div[data-root] span[data-index="${index}"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover`;
+              }
+            })
+          },
+          {
+            catelog: '激活',
+            ...createStyleForChecked({
+              target({ focusArea }: EditorResult<Data>) {
+                const { index } = focusArea.dataset;
+                return `div[data-root] span[data-index="${index}"].ant-tag-checkable-checked`;
+              }
+            })
+          }
+        ]
+      }
     ]
   }
 };
