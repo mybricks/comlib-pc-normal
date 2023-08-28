@@ -65,21 +65,27 @@ export default {
         }
       },
       {
-        title: '默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.isUnity;
-        },
-        target: `:root`
-      },
-      {
-        title: 'Hover',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.isUnity;
-        },
-        target: `.container>span:hover`,
-        domTarget: '.container>span'
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.isUnity;
+            },
+            target: `:root`
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.isUnity;
+            },
+            target: `.container>span:hover`,
+            domTarget: '.container>span'
+          }
+        ]
       },
       {
         title: '间距',
@@ -222,27 +228,33 @@ export default {
         }
       },
       {
-        title: '默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.isUnity;
-        },
-        target({ data, focusArea }) {
-          return `.${findEle({ data, focusArea }, 'textId').key}`;
-        }
-      },
-      {
-        title: 'Hover',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.isUnity;
-        },
-        target({ data, focusArea }) {
-          return `.${findEle({ data, focusArea }, 'textId').key}:hover`;
-        },
-        domTarget({ data, focusArea }) {
-          return `.${findEle({ data, focusArea }, 'textId').key}`;
-        }
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.isUnity;
+            },
+            target({ data, focusArea }) {
+              return `.${findEle({ data, focusArea }, 'textId').key}`;
+            }
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.isUnity;
+            },
+            target({ data, focusArea }) {
+              return `.${findEle({ data, focusArea }, 'textId').key}:hover`;
+            },
+            domTarget({ data, focusArea }) {
+              return `.${findEle({ data, focusArea }, 'textId').key}`;
+            }
+          }
+        ]
       },
       {
         title: '间距',
