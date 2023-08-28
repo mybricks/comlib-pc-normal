@@ -1,5 +1,6 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { createrCatelogEditor } from '../utils';
 import { Option } from '../types';
 import { Data } from './types';
 
@@ -33,7 +34,7 @@ export default {
     style: [
       {
         items: [
-          {
+          ...createrCatelogEditor({
             catelog: '默认',
             items: [
               {
@@ -47,8 +48,8 @@ export default {
                 target: '.ant-radio-inner'
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
               {
@@ -58,8 +59,8 @@ export default {
                 domTarget: '.ant-radio-inner'
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: '选中',
             items: [
               {
@@ -73,8 +74,8 @@ export default {
                 target: '.ant-radio-inner:after'
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: '禁用',
             items: [
               {
@@ -93,7 +94,7 @@ export default {
                 target: '.ant-radio.ant-radio-disabled .ant-radio-inner:after'
               }
             ]
-          },
+          }),
         ]
       },
     ],

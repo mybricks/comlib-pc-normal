@@ -3,6 +3,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { InputIds, Option, OutputIds } from '../types';
 import { Data } from './types';
 import { Schemas } from './constants';
+import { createrCatelogEditor } from '../utils';
 
 let tempOptions: Option[] = [],
   optionsLength;
@@ -73,7 +74,7 @@ export default {
     style: [
       {
         items: [
-          {
+          ...createrCatelogEditor({
             catelog: '默认',
             items: [
               {
@@ -101,8 +102,8 @@ export default {
                 target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
               {
@@ -123,8 +124,8 @@ export default {
                 }
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: 'Focus',
             items: [
               {
@@ -145,7 +146,7 @@ export default {
                 }
               }
             ]
-          },
+          }),
         ]
       },
     ],

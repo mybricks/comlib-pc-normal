@@ -1,3 +1,4 @@
+import { createrCatelogEditor } from '../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data } from './runtime'
 
@@ -12,7 +13,7 @@ export default {
     style: [
       {
         items: [
-          {
+          ...createrCatelogEditor({
             catelog: '默认',
             items: [
               {
@@ -55,17 +56,19 @@ export default {
                 target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
               {
+                catelog: 'Hover',
                 title: '边框',
                 options: ['border'],
                 target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
                 domTarget: 'div.ant-select-selector'
               },
               {
+                catelog: 'Hover',
                 title: '选项',
                 options: [
                   { type: 'font', config: { disableTextAlign: true } },
@@ -77,6 +80,7 @@ export default {
                 }
               },
               {
+                catelog: 'Hover',
                 title: '多选节点',
                 ifVisible({ data }) {
                   return data.isMultiple;
@@ -88,8 +92,8 @@ export default {
                 },
               }
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: 'Focus',
             items: [
               {
@@ -121,8 +125,8 @@ export default {
                 },
               },
             ]
-          },
-        ]
+          })
+        ],
       },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {

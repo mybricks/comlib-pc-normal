@@ -2,6 +2,7 @@ import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Option } from '../types';
 import { Data } from './types';
+import { createrCatelogEditor } from '../utils';
 
 export default {
   '@resize': {
@@ -14,7 +15,7 @@ export default {
     style: [
       {
         items: [
-          {
+          ...createrCatelogEditor({
             catelog: '默认',
             items: [
               {
@@ -28,8 +29,8 @@ export default {
                 target: '.ant-checkbox-inner'
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: 'Hover',
             items: [
               {
@@ -39,8 +40,8 @@ export default {
                 domTarget: '.ant-checkbox-inner'
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: '选中',
             items: [
               {
@@ -49,8 +50,8 @@ export default {
                 target: '.ant-checkbox-checked .ant-checkbox-inner'
               },
             ]
-          },
-          {
+          }),
+          ...createrCatelogEditor({
             catelog: '禁用',
             items: [
               {
@@ -64,7 +65,7 @@ export default {
                 target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
               }
             ]
-          },
+          }),
         ]
       },
     ],

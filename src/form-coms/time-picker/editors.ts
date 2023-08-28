@@ -1,5 +1,6 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
+import { createrCatelogEditor } from '../utils';
 export default {
   '@resize': {
     options: ['width']
@@ -9,7 +10,7 @@ export default {
   },
   ':root': {
     style: [
-      {
+      ...createrCatelogEditor({
         catelog: '默认',
         items: [
           {
@@ -43,8 +44,8 @@ export default {
             }
           }
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: 'Hover',
         items: [
           {
@@ -66,8 +67,8 @@ export default {
             }
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: 'Focus',
         items: [
           {
@@ -76,8 +77,8 @@ export default {
             target: '.ant-picker-focused.ant-picker'
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: '选中',
         items: [
           {
@@ -93,7 +94,7 @@ export default {
             }
           },
         ]
-      },
+      }),
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '配置';

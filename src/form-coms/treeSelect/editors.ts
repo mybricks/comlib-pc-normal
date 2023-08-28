@@ -1,6 +1,7 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data, IconType } from './types';
 import TreeSelectEditors from './treeSelectEditors';
+import { createrCatelogEditor } from '../utils';
 
 const getSuggestions = (data: Data) => {
   return [
@@ -48,7 +49,7 @@ export default {
   },
   ':root': {
     style: [
-      {
+      ...createrCatelogEditor({
         catelog: '默认',
         items: [
           {
@@ -78,8 +79,8 @@ export default {
             target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: 'Hover',
         items: [
           {
@@ -111,8 +112,8 @@ export default {
             target: `.{id} .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked:after`
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: 'Focus',
         items: [
           {
@@ -122,8 +123,8 @@ export default {
             domTarget: 'div.ant-select-selector'
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: 'Select',
         items: [
           {
@@ -139,11 +140,11 @@ export default {
             target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected`
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: 'Check',
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.multiple;
+          return !!data.config.multiple;
         },
         items: [
           {
@@ -165,8 +166,8 @@ export default {
             target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`,
           },
         ]
-      },
-      {
+      }),
+      ...createrCatelogEditor({
         catelog: '禁用',
         items: [
           {
@@ -182,7 +183,7 @@ export default {
             target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked.ant-select-tree-checkbox-disabled .ant-select-tree-checkbox-inner`,
           },
         ]
-      }
+      })
     ],
     items: ({ data }: EditorResult<Data>, ...catalog) => {
       catalog[0].title = '常规';
