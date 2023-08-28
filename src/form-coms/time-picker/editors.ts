@@ -78,7 +78,7 @@ export default {
         ]
       },
       {
-        catelog: 'Chekc',
+        catelog: '选中',
         items: [
           {
             title: '时间',
