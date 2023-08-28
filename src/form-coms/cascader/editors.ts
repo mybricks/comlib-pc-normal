@@ -42,6 +42,18 @@ export default {
                   return `.{id} .ant-cascader-checkbox-inner`
                 }
               },
+              {
+                title: '标签',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
+              },
             ]
           },
           {
@@ -111,18 +123,6 @@ export default {
             ]
           },
         ]
-      },
-      {
-        title: '标签',
-        ifVisible({ data }) {
-          return data.isMultiple;
-        },
-        options: [
-          'border',
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
       },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
