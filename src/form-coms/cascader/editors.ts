@@ -1,3 +1,4 @@
+import { createrCatelogEditor } from '../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data } from './runtime'
 
@@ -8,107 +9,129 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%'
   },
-  ':root':{
+  ':root': {
     style: [
       {
-        title: '边框-默认',
-        options: ['border'],
-        target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
-      },
-      {
-        title: '边框-hover',
-        options: ['border'],
-        target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
-        domTarget: 'div.ant-select-selector'
-      },
-      {
-        title: '边框-focus',
-        options: ['border','BoxShadow'],
-        target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
-        domTarget: 'div.ant-select-selector'
-      },
-      {
-        title: '标签',
-        ifVisible({ data }) {
-          return data.isMultiple;
-        },
-        options: [
-          'border', 
-          { type: 'font', config: { disableTextAlign: true } }, 
-          { type: 'background', config: { disableBackgroundImage: true } }
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-menu-item`
+                }
+              },
+              {
+                title: '多选节点',
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                global: true,
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-checkbox-inner`
+                }
+              },
+              {
+                title: '标签',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                catelog: 'Hover',
+                title: '边框',
+                options: ['border'],
+                target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+                domTarget: 'div.ant-select-selector'
+              },
+              {
+                catelog: 'Hover',
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-menu-item:hover`
+                }
+              },
+              {
+                catelog: 'Hover',
+                title: '多选节点',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
+                },
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Focus',
+            items: [
+              {
+                title: '边框',
+                options: ['border', 'BoxShadow'],
+                target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+                domTarget: 'div.ant-select-selector'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return [`.{id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
+                }
+              },
+              {
+                title: '多选节点',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
+                },
+              },
+            ]
+          })
         ],
-        target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
-      },
-      {
-        title: '选项-默认',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-cascader-menu-item`
-        }
-      },
-      {
-        title: '选项-hover',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } }, 
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-cascader-menu-item:hover`
-        }
-      },
-      {
-        title: '选项-focus',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } }, 
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target({ id }: EditorResult<Data>){
-          return [`.{id} .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled), .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover`]
-        }
-      },
-      {
-        title: '多选节点-默认',
-        ifVisible({ data }) {
-          return data.isMultiple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-cascader-checkbox-inner`
-        }
-      },
-      {
-        title: '多选节点-hover',
-        ifVisible({ data }) {
-          return data.isMultiple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
-        },
-      },
-      {
-        title: '多选节点-focus',
-        ifVisible({ data }) {
-          return data.isMultiple;
-        },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
-        },
       },
     ],
-    items: ({data}: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
-  
+
       catalog[0].items = [
         {
           title: '提示内容',
@@ -181,15 +204,15 @@ export default {
             }
           ],
           value: {
-            get({ data }){
-              if(!data.maxTagCountType){
+            get({ data }) {
+              if (!data.maxTagCountType) {
                 data.maxTagCountType = "isResponsive"
               }
               return data.maxTagCountType
             },
-            set({ data }, value: string ) {
+            set({ data }, value: string) {
               data.maxTagCountType = value
-              if(data.maxTagCountType == "isResponsive"){
+              if (data.maxTagCountType == "isResponsive") {
                 data.config.maxTagCount = 'responsive'
               }
             }
@@ -211,12 +234,12 @@ export default {
           },
           value: {
             get({ data }) {
-              if(!data.config.maxTagCount){
+              if (!data.config.maxTagCount) {
                 data.config.maxTagCount = 1
               }
               return data.config.maxTagCount;
             },
-            set({ data }, value: number ) {
+            set({ data }, value: number) {
               data.config.maxTagCount = value;
             }
           }
@@ -319,8 +342,8 @@ export default {
         },
       ]
     }
-  } 
-  
+  }
+
 }
 
 const getTitle = (item: any, index: number) => {

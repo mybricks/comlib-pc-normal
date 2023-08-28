@@ -1,6 +1,7 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data, IconType } from './types';
 import TreeSelectEditors from './treeSelectEditors';
+import { createrCatelogEditor } from '../utils';
 
 const getSuggestions = (data: Data) => {
   return [
@@ -48,114 +49,141 @@ export default {
   },
   ':root': {
     style: [
-      {
-        title: '输入框-默认',
-        options: ['border', 'font'],
-        target: '.ant-select-selector'
-      },
-      {
-        title: '输入框-hover',
-        options: ['border'],
-        target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
-        domTarget: 'div.ant-select-selector'
-      },
-      {
-        title: '输入框-focus',
-        options: ['border', 'BoxShadow'],
-        target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
-        domTarget: 'div.ant-select-selector'
-      },
-      {
-        title: '选项-默认',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
-      },
-      {
-        title: '选项-hover',
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper:hover`,
-        domTarget: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
-      },
-      {
-        title: '选项-select',
+      ...createrCatelogEditor({
+        catelog: '默认',
+        items: [
+          {
+            title: '输入框',
+            options: ['border', 'font'],
+            target: '.ant-select-selector'
+          },
+          {
+            title: '选项',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
+          },
+          {
+            title: '勾选框',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.multiple;
+            },
+            options: [
+              'border',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: 'Hover',
+        items: [
+          {
+            title: '输入框',
+            options: ['border'],
+            target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
+            domTarget: 'div.ant-select-selector'
+          },
+          {
+            title: '选项',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper:hover`,
+            domTarget: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper`
+          },
+          {
+            title: '勾选框选中',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.multiple;
+            },
+            options: [
+              'border',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked:after`
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: 'Focus',
+        items: [
+          {
+            title: '输入框',
+            options: ['border', 'BoxShadow'],
+            target: 'div.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) > div.ant-select-selector',
+            domTarget: 'div.ant-select-selector'
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: 'Select',
+        items: [
+          {
+            title: '选项',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.config.multiple;
+            },
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected`
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: 'Check',
         ifVisible({ data }: EditorResult<Data>) {
-          return !data.config.multiple;
+          return !!data.config.multiple;
         },
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected`
-      },
-      {
-        title: '选项-check',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.multiple;
-        },
-        options: [
-          { type: 'font', config: { disableTextAlign: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode.ant-select-tree-treenode-checkbox-checked .ant-select-tree-node-content-wrapper`
-      },
-      {
-        title: '勾选框-默认态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.multiple;
-        },
-        options: [
-          'border',
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox .ant-select-tree-checkbox-inner`
-      },
-      {
-        title: '勾选框-选中态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.multiple;
-        },
-        options: [
-          'border',
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`,
-      },
-      {
-        title: '勾选框-禁用态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.multiple;
-        },
-        options: [
-          { type: 'border', config: { useImportant: true } },
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked.ant-select-tree-checkbox-disabled .ant-select-tree-checkbox-inner`,
-      },
-      {
-        title: '勾选框-选中hover态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.config.multiple;
-        },
-        options: [
-          'border',
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target: `.{id} .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked:after`
-      },
+        items: [
+          {
+            title: '选项',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode.ant-select-tree-treenode-checkbox-checked .ant-select-tree-node-content-wrapper`
+          },
+          {
+            title: '勾选框',
+            options: [
+              'border',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner`,
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: '禁用',
+        items: [
+          {
+            title: '勾选框',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.config.multiple;
+            },
+            options: [
+              { type: 'border', config: { useImportant: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            global: true,
+            target: `.{id} .ant-select-tree .ant-select-tree-treenode .ant-select-tree-checkbox.ant-select-tree-checkbox-checked.ant-select-tree-checkbox-disabled .ant-select-tree-checkbox-inner`,
+          },
+        ]
+      })
     ],
     items: ({ data }: EditorResult<Data>, ...catalog) => {
       catalog[0].title = '常规';
