@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import { Form, Button, Row, Col, Space, FormListOperation, FormListFieldData } from 'antd';
-import { Action, Data } from '../types';
+import { Form, Button, Image, Col, Space, FormListOperation, FormListFieldData } from 'antd';
+import * as Icons from '@ant-design/icons';
+import { Action, Data, LocationEnum } from '../types';
 import { unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
@@ -75,6 +76,8 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   return (
     <Space wrap>
       {data.actions.items.map((item) => {
+        const { iconConfig, ...res } = item;
+        const icon = getBtnIcon(item);
         if (!env.edit) {
           if (item.visible === false) {
             return null;
@@ -87,8 +90,12 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           }
         }
         return (
-          <Button data-form-actions-item={item.key} {...item} onClick={() => onClick(item)}>
-            {item.title}
+          <Button data-form-actions-item={item.key} {...res} onClick={() => onClick(item)}>
+            <Space size={iconConfig?.gutter || 8}>
+              {iconConfig?.location === LocationEnum.FRONT ? icon : void 0}
+              {item.title}
+              {iconConfig?.location === LocationEnum.BACK ? icon : void 0}
+            </Space>
           </Button>
         );
       })}
@@ -136,3 +143,26 @@ const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
   return null;
 };
 export { Actions, ActionsWrapper };
+
+/**
+ * 操作项图标渲染
+ * @param btn 按钮数据
+ * @param data 组件数据
+ * @returns JSX
+ */
+const getBtnIcon = (btn: Action) => {
+  const { src, size, gutter, innerIcon, customIcon } = btn.iconConfig || {};
+  if (src === 'custom' && customIcon)
+    return <Image width={size[1] || 14} height={size[0] || 14} src={customIcon} preview={false} />;
+  if (src === 'inner') {
+    return (
+      Icons && (
+        <span style={{ fontSize: Math.max(...size) }}>
+          {Icons[innerIcon || ('EditOutlined' as string)]?.render()}
+        </span>
+      )
+    );
+  }
+
+  return void 0;
+};

@@ -1,6 +1,9 @@
 import { FormItemProps, FormListFieldData, FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 import { ValidateInfo } from '../types'
+
+export type IconSrcType = false | 'custom' | 'inner';
+
 export interface Action {
   title: string
   loading?: boolean
@@ -11,6 +14,22 @@ export interface Action {
   visible?: boolean
   danger?: boolean
   size: SizeEnum
+  /** 图标配置 */
+  iconConfig: {
+    // 图标来源
+    src: IconSrcType;
+    // 图标尺寸
+    size: [number, number];
+    // 图标与文字的间隔
+    gutter: number;
+    // 内置图标
+    innerIcon?: string;
+    // 自定义图标
+    customIcon?: string;
+    // 图标位置
+    location: LocationEnum;
+  }
+
 }
 
 interface Actions {
@@ -174,8 +193,16 @@ export type ChildrenStore = {
     [id: string]: FormControlInputType
   };
 }
+
+/** 按钮尺寸 */
 export enum SizeEnum {
   Large = 'large',
   Middle = 'middle',
   Small = 'small'
+}
+
+/** 按钮图标位置 */
+export enum LocationEnum {
+  FRONT = 'front',
+  BACK = 'back'
 }

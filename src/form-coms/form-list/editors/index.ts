@@ -3,6 +3,7 @@ import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
 import { StyleEditor } from './styleEditor'
+import { IconEditor } from './iconEditor'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
@@ -851,24 +852,24 @@ export default {
   },
   '[data-form-actions-item]': {
     title: '操作',
-    items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
+    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2) => {
+      if (!focusArea) return;
+      const comId = focusArea.dataset['formActionsItem'];
+      const btn = data.actions.items.find(item => item.key === comId);
+
+      if (!btn) return;
+
       cate1.title = '操作';
       cate1.items = [
         {
           title: '显示',
           type: 'Switch',
           value: {
-            get({ data, focusArea }: EditorResult<Data>) {
-              const comId = focusArea.dataset.formActionsItem as string
-              return data.actions.items.find(item => item.key === comId)?.visible
+            get({ data }: EditorResult<Data>) {
+              return btn.visible
             },
-            set({ data, focusArea, output }: EditorResult<Data>, val) {
-
-              const comId = focusArea.dataset['formActionsItem']
-              const item = data.actions.items.find(item => item.key === comId)
-              if (item) {
-                item.visible = val
-              }
+            set({ data, }: EditorResult<Data>, val) {
+              btn.visible = val
             }
           }
         },
@@ -876,17 +877,12 @@ export default {
           title: '标题',
           type: 'text',
           value: {
-            get({ data, focusArea }: EditorResult<Data>) {
-              const comId = focusArea.dataset.formActionsItem as string
-              return comId && data.actions.items.find(item => item.key === comId)?.title
+            get({ data, }: EditorResult<Data>) {
+              return btn.title
             },
-            set({ data, focusArea, output }: EditorResult<Data>, val) {
-              const comId = focusArea.dataset['formActionsItem']
-              const item = data.actions.items.find(item => item.key === comId)
-              if (item) {
-                item.title = val
-                output.setTitle(item.outputId, `点击${item.title}`)
-              }
+            set({ data,output }: EditorResult<Data>, val) {
+                btn.title = val
+                output.setTitle(btn.outputId, `点击${btn.title}`)
             }
           }
         },
@@ -896,13 +892,9 @@ export default {
             {
               title: '点击',
               type: '_event',
-              options({ data, focusArea }) {
-                const comId = focusArea.dataset['formActionsItem']
-                const item = data.actions.items.find(item => item.key === comId)
-                if (!item) return
-
+              options({ data, }) {
                 return {
-                  outputId: item.outputId,
+                  outputId: btn.outputId,
                   // slotId: SlotIds.FormItems
                 }
               }
@@ -912,22 +904,17 @@ export default {
         {
           title: '删除',
           type: 'Button',
-          ifVisible({ data, focusArea }) {
-            const actions = data.actions.items
-            const itemId = focusArea.dataset['formActionsItem']
-            const item = actions.find(item => item.key === itemId)
-
-            return item && !item?.isDefault
+          ifVisible({ data, }) {
+            return !btn?.isDefault
           },
           value: {
             set({ data, output, focusArea }: EditorResult<Data>) {
               const actions = data.actions.items
               const itemId = focusArea.dataset['formActionsItem']
               const index = actions.findIndex(item => item.key === itemId)
-              const item = data.actions.items[index]
 
-              output.remove(item.outputId)
-              actions.splice(index, 1)
+              output.remove(btn.outputId)
+              data.actions.items.splice(index, 1)
             }
           }
         },
@@ -935,8 +922,8 @@ export default {
 
       cate2.title = '样式';
       cate2.items = [
-        ...StyleEditor,
-
+        ...StyleEditor(btn),
+        ...IconEditor(btn)
       ];
     }
 

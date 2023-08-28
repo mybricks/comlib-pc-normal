@@ -33,14 +33,34 @@
         "isDefault": true,
         "visible": true,
         "outputId": "add",
-        "key": "add"
+        "key": "add",
+        "size": "middle",
+        "iconConfig": {
+          "src": false,
+          "size": [
+            14,
+            14
+          ],
+          "gutter": 8,
+          "location": "front"
+        }
       },
       {
         "title": "删除",
         "isDefault": true,
         "visible": true,
         "outputId": "remove",
-        "key": "remove"
+        "key": "remove",
+        "size": "middle",
+        "iconConfig": {
+          "src": false,
+          "size": [
+            14,
+            14
+          ],
+          "gutter": 8,
+          "location": "front"
+        }
       }
     ]
   },
