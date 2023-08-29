@@ -20,14 +20,7 @@ import SummaryColumn from './table/summaryColumn';
 import SummaryColumnEditor from './table-summary';
 import { getFilterSelector } from '../../utils/cssSelector';
 
-import {
-  getColumnsSchema,
-  createStyleForHead,
-  createStyleForContent,
-  getNewColumn,
-  setColumns,
-  createStyleForRowHover
-} from '../utils';
+import { getColumnsSchema, createStyleForTableContent, getNewColumn, setColumns } from '../utils';
 import {
   OutputIds as PaginatorOutputIds,
   InputIds as PaginatorInputIds
@@ -153,11 +146,9 @@ export default {
     },
     style: [
       ...TableStyleEditor.items,
-      createStyleForHead({ target: ({ id }) => `table thead tr th${getFilterSelector(id)}` }),
-      createStyleForContent({ target: ({ id }) => `table tbody tr td${getFilterSelector(id)}` }),
-      createStyleForRowHover({
-        target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover${getFilterSelector(id)}`
-      })
+      {
+        items: createStyleForTableContent()
+      }
     ]
   },
   ...columnEditor,

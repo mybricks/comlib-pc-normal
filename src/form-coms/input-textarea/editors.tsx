@@ -10,20 +10,20 @@ export default {
       {
         items: [
           {
-            title: '边框-默认',
+            title: '边框',
             catelog: '默认',
             options: ['border'],
             target: '.ant-input'
           },
           {
-            title: '边框-hover',
+            title: '边框',
             catelog: 'Hover',
             options: ['border'],
             target: '.ant-input:hover',
             domTarget: '.ant-input'
           },
           {
-            title: '边框-focus',
+            title: '边框',
             catelog: 'Focus',
             options: ['border', 'BoxShadow'],
             target: 'textarea.ant-input:focus'

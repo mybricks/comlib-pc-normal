@@ -1,5 +1,6 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { createrCatelogEditor } from '../utils';
 import { Option } from '../types';
 import { Data } from './types';
 
@@ -32,46 +33,70 @@ export default {
   ':root': {
     style: [
       {
-        title: '选项标签-默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: 'label.ant-radio-wrapper > span:nth-child(2)'
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-radio-wrapper > span:nth-child(2)'
+              },
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-radio-inner'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-radio:hover .ant-radio-inner',
+                domTarget: '.ant-radio-inner'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '选中',
+            items: [
+              {
+                title: '选择框',
+                options: ['border', 'BoxShadow'],
+                target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
+              },
+              {
+                title: '选择框中心',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-radio-inner:after'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)'
+              },
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
+              },
+              {
+                title: '选择框中心',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-radio.ant-radio-disabled .ant-radio-inner:after'
+              }
+            ]
+          }),
+        ]
       },
-      {
-        title: '选择框-默认',
-        options: ['border'],
-        target: '.ant-radio-inner'
-      },
-      {
-        title: '选择框-hover',
-        options: ['border'],
-        target: '.ant-radio:hover .ant-radio-inner',
-        domTarget: '.ant-radio-inner'
-      },
-      {
-        title: '选择框-选中态',
-        options: ['border', 'BoxShadow'],
-        target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
-      },
-      {
-        title: '选择框中心-选中态',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-radio-inner:after'
-      },
-      {
-        title: '选项标签-禁用态',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)'
-      },
-      {
-        title: '选择框-禁用态',
-        options: ['border'],
-        target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
-      },
-      {
-        title: '选择框中心-禁用态',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-radio.ant-radio-disabled .ant-radio-inner:after'
-      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
