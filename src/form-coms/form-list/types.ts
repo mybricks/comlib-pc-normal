@@ -167,6 +167,10 @@ export interface Data {
    * 表单项公共配置
    */
   formItemConfig: FormItemProps
+  /**
+   * 列表项外边距
+   */
+  listItemMargin: number[]
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'

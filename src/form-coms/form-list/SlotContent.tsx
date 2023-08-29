@@ -128,7 +128,11 @@ const SlotContent = (
     });
   }, [data.slotStyle, data.fields[field.name]]);
 
-  return <Row key={field.key}>{content}</Row>;
+  return (
+    <Row key={field.key} className="form-list-item">
+      {content}
+    </Row>
+  );
 };
 
 export default SlotContent;

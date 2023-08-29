@@ -27,7 +27,6 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
 
   /** 3. 支持操作项尺寸、图标、动态显隐配置 */
-
   data.actions.items.forEach(btn => {
     if (!btn.iconConfig) {
       btn.iconConfig = {
@@ -40,8 +39,12 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     if (btn.size === undefined) {
       btn.size = SizeEnum.Middle;
     }
-    
   });
+
+  /** 4. 支持列表项样式配置 */
+  if (!data.listItemMargin) {
+    data.listItemMargin = [0, 0, 0, 0];
+  }
 
   //=========== v1.1.0 end ===============
 

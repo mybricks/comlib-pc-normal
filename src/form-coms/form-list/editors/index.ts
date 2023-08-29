@@ -148,303 +148,330 @@ export default {
       data.isFormItem = false
     }
   },
-  ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
-    cate1.items = [
+  ':root': {
+    style: [
       {
-        title: '布局',
-        items: [
-          // {
-          //   title: '排列方式',
-          //   type: 'layout',
-          //   options: [],
-          //   value: {
-          //     get({ data, slots }: EditorResult<Data>) {
-          //       const { slotStyle = {} } = data;
-          //       const slotInstance = slots.get(SlotIds.FormItems);
-          //       setSlotLayout(slotInstance, slotStyle);
-          //       return slotStyle;
-          //     },
-          //     set({ data, slots }: EditorResult<Data>, val: any) {
-          //       if (!data.slotStyle) {
-          //         data.slotStyle = {};
-          //       }
-          //       data.slotStyle = {
-          //         ...data.slotStyle,
-          //         ...val
-          //       };
-          //       const slotInstance = slots.get(SlotIds.FormItems);
-          //       setSlotLayout(slotInstance, val);
-          //     }
-          //   }
-          // },
-          {
-            title: '每行列数',
-            type: 'Slider',
-            description: '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
-            options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemColumn
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.formItemColumn = value;
-                data.actions.span = (24 / value);
-                data.items.forEach(item => {
-                  item.span = (24 / value);
-                });
-                data.additionalItems?.forEach((item) => {
-                  item.span = 24 / value;
-                });
-              }
-            }
-          },
-          // {
-          //   title: '表单项',
-          //   items: [
-
-          //   ]
-          // }
-        ]
+        title: '列表项',
+        options: ['border', 'background', 'padding'],
+        target: '.ant-row.form-list-item'
       },
       {
-        title: '子项标题',
-        items: [
-          {
-            title: '显示',
-            type: 'Switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.showLabel;
-              },
-              set({ data }: EditorResult<Data>, val: boolean) {
-                data.showLabel = val;
-              }
-            }
-          },
-          {
-            title: '宽度类型',
-            type: 'Select',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.showLabel;
-            },
-            options: [
-              { label: '固定像素', value: 'px' },
-              { label: '24 栅格', value: 'span' },
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.labelWidthType
-              },
-              set({ data }: EditorResult<Data>, value: LabelWidthType) {
-                data.labelWidthType = value
-              },
-            }
-          },
-          {
-            title: '标题宽度(px)',
-            type: 'inputNumber',
-            options: [{ min: 1 }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.showLabel && data.labelWidthType === 'px'
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return [data.labelWidth]
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.labelWidth = value[0]
-              }
-            }
-          },
-          {
-            title: '标题宽度(栅格)',
-            type: 'Slider',
-            options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.showLabel && data.labelWidthType === 'span'
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.labelCol
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.labelCol = value
-              }
-            }
-          },
-          {
-            title: '显示冒号',
-            type: 'Switch',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.showLabel;
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemConfig?.colon
-              },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.formItemConfig.colon = value
-              },
-            }
-          },
-          {
-            title: '对齐方式',
-            type: 'Radio',
-            options: [
-              { label: '左对齐', value: 'left' },
-              { label: '右对齐', value: 'right' }
-            ],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.showLabel;
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemConfig?.labelAlign
-              },
-              set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                data.formItemConfig.labelAlign = value
-              },
-            }
-          },
-        ]
-      },
-      // {
-      //   title: '初始长度',
-      //   type: 'Slider',
-      //   options: [{ min: 0, steps: 1 }],
-      //   description: '动态列表的初始项数',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.initLength;
-      //     },
-      //     set({ data }: EditorResult<Data>, val: number) {
-      //       data.initLength = val;
-      //     }
-      //   }
-      // },
-      {
-        title: '添加表单项',
-        type: 'comSelector',
-        options: {
-          schema: 'mybricks.normal-pc.form-container/*',
-          type: 'add'
-        },
-        value: {
-          set({ data, slot }: EditorResult<Data>, namespace: string) {
-            slot
-              .get(SlotIds.FormItems)
-              .addCom(namespace, false, { deletable: true, movable: true });
-          }
-        }
-      },
-      {
-        title: '提交隐藏表单项',
-        type: 'Switch',
-        description: '提交时收集被隐藏的表单项字段并进行校验',
+        title: '列表项外边距',
+        type: 'inputNumber',
+        options: [
+          { min: 0, title: '上' },
+          { min: 0, title: '右' },
+          { min: 0, title: '下' },
+          { min: 0, title: '左' }
+        ],
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.submitHiddenFields
+            return data.listItemMargin;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.submitHiddenFields = val
+          set({ data }: EditorResult<Data>, value: number[]) {
+            data.listItemMargin = value;
           }
         }
       },
-      // {
-      //   title: '禁用状态',
-      //   type: 'Switch',
-      //   description: '开启后，所以表单项和操作项都会被禁用',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.disabled
-      //     },
-      //     set({ data }: EditorResult<Data>, val: boolean) {
-      //       data.disabled = val
-      //       if (val) {
-      //         data.currentAction = InputIds.SetDisabled;
-      //       }
-      //       else {
-      //         data.currentAction = InputIds.SetEnabled;
-      //       }
-      //     }
-      //   }
-      // },
-      {
-        title: '校验规则',
-        description: '提供快捷校验配置，需要配合表单容器使用生效',
-        type: 'ArrayCheckbox',
-        options: {
-          checkField: 'status',
-          visibleField: 'visible',
-          getTitle: ({ title }: any) => {
-            return title;
-          },
+    ],
+    items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
+      cate1.items = [
+        {
+          title: '布局',
+          items: [
+            // {
+            //   title: '排列方式',
+            //   type: 'layout',
+            //   options: [],
+            //   value: {
+            //     get({ data, slots }: EditorResult<Data>) {
+            //       const { slotStyle = {} } = data;
+            //       const slotInstance = slots.get(SlotIds.FormItems);
+            //       setSlotLayout(slotInstance, slotStyle);
+            //       return slotStyle;
+            //     },
+            //     set({ data, slots }: EditorResult<Data>, val: any) {
+            //       if (!data.slotStyle) {
+            //         data.slotStyle = {};
+            //       }
+            //       data.slotStyle = {
+            //         ...data.slotStyle,
+            //         ...val
+            //       };
+            //       const slotInstance = slots.get(SlotIds.FormItems);
+            //       setSlotLayout(slotInstance, val);
+            //     }
+            //   }
+            // },
+            {
+              title: '每行列数',
+              type: 'Slider',
+              description: '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
+              options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemColumn
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.formItemColumn = value;
+                  data.actions.span = (24 / value);
+                  data.items.forEach(item => {
+                    item.span = (24 / value);
+                  });
+                  data.additionalItems?.forEach((item) => {
+                    item.span = 24 / value;
+                  });
+                }
+              }
+            },
+            // {
+            //   title: '表单项',
+            //   items: [
+
+            //   ]
+            // }
+          ]
+        },
+        {
+          title: '子项标题',
           items: [
             {
-              title: '提示文字',
-              type: 'Text',
-              value: 'message',
-              ifVisible(item: any, index: number) {
-                return item.key === RuleKeys.REQUIRED;
+              title: '显示',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.showLabel;
+                },
+                set({ data }: EditorResult<Data>, val: boolean) {
+                  data.showLabel = val;
+                }
               }
             },
             {
-              title: '编辑校验规则',
-              type: 'code',
-              options: {
-                language: 'javascript',
-                enableFullscreen: false,
-                title: '编辑校验规则',
-                width: 600,
-                minimap: {
-                  enabled: false
+              title: '宽度类型',
+              type: 'Select',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel;
+              },
+              options: [
+                { label: '固定像素', value: 'px' },
+                { label: '24 栅格', value: 'span' },
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelWidthType
                 },
-                babel: true,
-                eslint: {
-                  parserOptions: {
-                    ecmaVersion: '2020',
-                    sourceType: 'module'
-                  }
+                set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                  data.labelWidthType = value
+                },
+              }
+            },
+            {
+              title: '标题宽度(px)',
+              type: 'inputNumber',
+              options: [{ min: 1 }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel && data.labelWidthType === 'px'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.labelWidth]
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelWidth = value[0]
                 }
+              }
+            },
+            {
+              title: '标题宽度(栅格)',
+              type: 'Slider',
+              options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel && data.labelWidthType === 'span'
               },
-              ifVisible(item: any, index: number) {
-                return item.key === RuleKeys.CODE_VALIDATOR;
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelCol
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelCol = value
+                }
+              }
+            },
+            {
+              title: '显示冒号',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel;
               },
-              value: 'validateCode'
-            }
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemConfig?.colon
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.formItemConfig.colon = value
+                },
+              }
+            },
+            {
+              title: '对齐方式',
+              type: 'Radio',
+              options: [
+                { label: '左对齐', value: 'left' },
+                { label: '右对齐', value: 'right' }
+              ],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemConfig?.labelAlign
+                },
+                set({ data }: EditorResult<Data>, value: 'left' | 'right') {
+                  data.formItemConfig.labelAlign = value
+                },
+              }
+            },
           ]
         },
-        value: {
-          get({ data }) {
-            return data.rules?.length > 0 ? data.rules : defaultRules;
+        // {
+        //   title: '初始长度',
+        //   type: 'Slider',
+        //   options: [{ min: 0, steps: 1 }],
+        //   description: '动态列表的初始项数',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.initLength;
+        //     },
+        //     set({ data }: EditorResult<Data>, val: number) {
+        //       data.initLength = val;
+        //     }
+        //   }
+        // },
+        {
+          title: '添加表单项',
+          type: 'comSelector',
+          options: {
+            schema: 'mybricks.normal-pc.form-container/*',
+            type: 'add'
           },
-          set({ data }, value: any) {
-            data.rules = value;
+          value: {
+            set({ data, slot }: EditorResult<Data>, namespace: string) {
+              slot
+                .get(SlotIds.FormItems)
+                .addCom(namespace, false, { deletable: true, movable: true });
+            }
           }
+        },
+        {
+          title: '提交隐藏表单项',
+          type: 'Switch',
+          description: '提交时收集被隐藏的表单项字段并进行校验',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.submitHiddenFields
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.submitHiddenFields = val
+            }
+          }
+        },
+        // {
+        //   title: '禁用状态',
+        //   type: 'Switch',
+        //   description: '开启后，所以表单项和操作项都会被禁用',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.disabled
+        //     },
+        //     set({ data }: EditorResult<Data>, val: boolean) {
+        //       data.disabled = val
+        //       if (val) {
+        //         data.currentAction = InputIds.SetDisabled;
+        //       }
+        //       else {
+        //         data.currentAction = InputIds.SetEnabled;
+        //       }
+        //     }
+        //   }
+        // },
+        {
+          title: '校验规则',
+          description: '提供快捷校验配置，需要配合表单容器使用生效',
+          type: 'ArrayCheckbox',
+          options: {
+            checkField: 'status',
+            visibleField: 'visible',
+            getTitle: ({ title }: any) => {
+              return title;
+            },
+            items: [
+              {
+                title: '提示文字',
+                type: 'Text',
+                value: 'message',
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REQUIRED;
+                }
+              },
+              {
+                title: '编辑校验规则',
+                type: 'code',
+                options: {
+                  language: 'javascript',
+                  enableFullscreen: false,
+                  title: '编辑校验规则',
+                  width: 600,
+                  minimap: {
+                    enabled: false
+                  },
+                  babel: true,
+                  eslint: {
+                    parserOptions: {
+                      ecmaVersion: '2020',
+                      sourceType: 'module'
+                    }
+                  }
+                },
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.CODE_VALIDATOR;
+                },
+                value: 'validateCode'
+              }
+            ]
+          },
+          value: {
+            get({ data }) {
+              return data.rules?.length > 0 ? data.rules : defaultRules;
+            },
+            set({ data }, value: any) {
+              data.rules = value;
+            }
+          }
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '值初始化',
+              type: '_event',
+              options: {
+                outputId: 'onInitial'
+              }
+            },
+            {
+              title: '值更新',
+              type: '_event',
+              options: {
+                outputId: 'onChange'
+              }
+            }
+          ]
         }
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '值初始化',
-            type: '_event',
-            options: {
-              outputId: 'onInitial'
-            }
-          },
-          {
-            title: '值更新',
-            type: '_event',
-            options: {
-              outputId: 'onChange'
-            }
-          }
-        ]
-      }
-    ];
-    cate2.title = '操作区';
-    cate2.items = actionsEditor(data, output)
+      ];
+      cate2.title = '操作区';
+      cate2.items = actionsEditor(data, output)
+    }
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
@@ -913,7 +940,7 @@ export default {
           type: 'expression',
           options: {
             suggestions: getSuggestions(data),
-            placeholder: `例：{item.index} < 10`,
+            placeholder: `例：{item.index < 4}`,
           },
           value: {
             get({ data }: EditorResult<Data>) {
