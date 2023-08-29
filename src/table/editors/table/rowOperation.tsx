@@ -7,6 +7,9 @@ export default {
     {
       title: '行点击',
       type: 'switch',
+      ifVisible({ data }: EditorResult<Data>) {
+        return !data.useRowSelection;
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.enableRowClick;
