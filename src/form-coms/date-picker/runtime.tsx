@@ -104,10 +104,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         setValue(val);
         //自定义转换
         let transValue;
-        if (value === null || value === undefined) {
+        if (val === null || val === undefined) {
           transValue = undefined;
         } else {
-          transValue = transCalculation(value, data.contentType, props);
+          transValue = transCalculation(val, data.contentType, props);
         }
         outputs[OutputIds.OnInitial](transValue);
       });
