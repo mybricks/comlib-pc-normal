@@ -2,9 +2,12 @@ import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
+import { StyleEditor } from './styleEditor'
+import { IconEditor } from './iconEditor'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
+import { fieldNameCheck, getFormItem, getFormItemProp, isShowLabel, setFormItemProps } from '../utils'
 
 const defaultRules = [
   {
@@ -30,44 +33,42 @@ const defaultRules = [
 }        
     `
   }
-]
+];
 
-function fieldNameCheck(data: Data, name: string) {
-  const fieldNameList = data.items.map(item => item.name)
-  if (fieldNameList.includes(name)) {
-    return true
-  } else {
-    return false
-  }
-}
-
-function setSlotLayout(slot, val) {
-  if (val.position === 'absolute') {
-    slot.setLayout(val.position);
-  } else if (val.display === 'flex') {
-    if (val.flexDirection === 'row') {
-      slot.setLayout('flex-row');
-    } else if (val.flexDirection === 'column') {
-      slot.setLayout('flex-column');
+/** 操作项显隐表达式提示片段 */
+const getSuggestions = (data: Data) => {
+  const valueSuggestion = data.items.map(item => {
+    return {
+      label: item.name || item.label,
+      insertText: item.name || item.label,
+      detail: `${item.name || item.label}字段值`,
     }
-  }
-};
-
-function getFormItemProp({ data, id }: { data: Data, id: string }, name: keyof FormItems) {
-  try {
-    const item = data.items.find(item => item.id === id);
-    return item?.[name];
-  } catch (e) {
-    console.error(e);
-  }
-}
-function setFormItemProps({ data, id }: { data: Data, id: string }, name: keyof FormItems, value: any) {
-  try {
-    const item = data.items.find(item => item.id === id) || {};
-    item[name] = value;
-  } catch (e) {
-    console.error(e);
-  }
+  })
+  return [
+    {
+      label: 'item',
+      insertText: `item.`,
+      detail: `当前项`,
+      properties: [
+        {
+          label: 'index',
+          insertText: `{index}`,
+          detail: `当前项的索引`
+        },
+        {
+          label: 'key',
+          insertText: `{key}`,
+          detail: `当前项的唯一标识`
+        },
+        {
+          label: 'value',
+          insertText: `value`,
+          detail: `当前项的值`,
+          properties: valueSuggestion
+        },
+      ]
+    },
+  ];
 }
 
 export default {
@@ -82,53 +83,64 @@ export default {
       const { id, inputDefs, outputDefs, name } = child
       const item = data.items.find(item => item.id === id)
       const com = outputDefs.find(item => item.id === 'returnValue')
-
-      if (item) {
-        item.schema = com.schema
+      if (com) {
+        // 表单项
+        if (item) {
+          item.schema = com.schema
+        } else {
+          data.nameCount++;
+          data.items.push({
+            id,
+            schema: com.schema,
+            comName: name,
+            name: `name${data.nameCount}`,
+            label: `${data.nameCount}`,
+            widthOption: 'span',
+            span: 24 / data.formItemColumn,
+            colon: 'default',
+            labelAlign: 'default',
+            labelAutoWrap: 'default',
+            showLabel: 'default',
+            descriptionStyle: {
+              whiteSpace: 'pre-wrap',
+              lineHeight: '12px',
+              letterSpacing: '0px',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.45)',
+              fontStyle: 'normal',
+            },
+            labelStyle: {
+              lineHeight: '14px',
+              letterSpacing: '0px',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'rgba(0, 0, 0, 0.85)',
+              fontStyle: 'normal',
+            },
+            inlineMargin: [0, 16, 24, 0],
+            visible: true,
+          })
+        }
+        refreshSchema({ data, inputs, outputs, slots })
       } else {
-        data.nameCount++;
-        data.items.push({
+        data.additionalItems.push({
           id,
-          schema: com.schema,
           comName: name,
-          name: `name${data.nameCount}`,
-          label: `${data.nameCount}`,
           widthOption: 'span',
-          span: 24 / data.formItemColumn,
-          colon: 'default',
-          labelAlign: 'default',
-          labelAutoWrap: 'default',
-          hiddenLabel: true,
-          descriptionStyle: {
-            whiteSpace: 'pre-wrap',
-            lineHeight: '12px',
-            letterSpacing: '0px',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.45)',
-            fontStyle: 'normal',
-          },
-          labelStyle: {
-            lineHeight: '14px',
-            letterSpacing: '0px',
-            fontSize: '14px',
-            fontWeight: 400,
-            color: 'rgba(0, 0, 0, 0.85)',
-            fontStyle: 'normal',
-          },
-          inlineMargin: [0, 16, 24, 0],
-          visible: true,
-        })
+          span: 24 / data.formItemColumn
+        });
       }
-      refreshSchema({ data, inputs, outputs, slots })
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, { id, name, title }) {
-    // console.log('@childRemove', id, title)
-    data.items = data.items.filter(item => item?.comName !== name)
+    data.items = data.items.filter(item => item.comName !== name);
+
+    data.additionalItems = data.additionalItems?.filter(item => item.comName !== name);
+
     refreshSchema({ data, inputs, outputs, slots })
   },
-  '@parentUpdated'({ id, data, parent }, { schema }) {
+  '@parentUpdated'({ id, name, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
       data.isFormItem = true
@@ -136,323 +148,363 @@ export default {
       data.isFormItem = false
     }
   },
-  ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
-    cate1.items = [
+  ':root': {
+    style: [
       {
-        title: '布局',
-        items: [
-          // {
-          //   title: '排列方式',
-          //   type: 'layout',
-          //   options: [],
-          //   value: {
-          //     get({ data, slots }: EditorResult<Data>) {
-          //       const { slotStyle = {} } = data;
-          //       const slotInstance = slots.get(SlotIds.FormItems);
-          //       setSlotLayout(slotInstance, slotStyle);
-          //       return slotStyle;
-          //     },
-          //     set({ data, slots }: EditorResult<Data>, val: any) {
-          //       if (!data.slotStyle) {
-          //         data.slotStyle = {};
-          //       }
-          //       data.slotStyle = {
-          //         ...data.slotStyle,
-          //         ...val
-          //       };
-          //       const slotInstance = slots.get(SlotIds.FormItems);
-          //       setSlotLayout(slotInstance, val);
-          //     }
-          //   }
-          // },
-          {
-            title: '每行列数',
-            type: 'Slider',
-            description: '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
-            options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemColumn
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.formItemColumn = value
-                data.actions.span = (24 / value)
-                data.items.forEach(item => {
-                  item.span = (24 / value);
-                })
-              }
-            }
-          },
-          // {
-          //   title: '表单项',
-          //   items: [
-
-          //   ]
-          // }
-        ]
-      },
-      // {
-      //   title: '标题',
-      //   items: [
-      //     {
-      //       title: '宽度类型',
-      //       type: 'Select',
-      //       options: [
-      //         { label: '固定像素', value: 'px' },
-      //         { label: '24 栅格', value: 'span' },
-      //       ],
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.labelWidthType
-      //         },
-      //         set({ data }: EditorResult<Data>, value: LabelWidthType) {
-      //           data.labelWidthType = value
-      //         },
-      //       }
-      //     },
-      //     {
-      //       title: '标题宽度(px)',
-      //       type: 'inputNumber',
-      //       options: [{ min: 1 }],
-      //       ifVisible({ data }: EditorResult<Data>) {
-      //         return data.labelWidthType === 'px'
-      //       },
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return [data.labelWidth]
-      //         },
-      //         set({ data }: EditorResult<Data>, value: number) {
-      //           data.labelWidth = value[0]
-      //         }
-      //       }
-      //     },
-      //     {
-      //       title: '标题宽度(栅格)',
-      //       type: 'Slider',
-      //       options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-      //       ifVisible({ data }: EditorResult<Data>) {
-      //         return data.labelWidthType === 'span'
-      //       },
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.labelCol
-      //         },
-      //         set({ data }: EditorResult<Data>, value: number) {
-      //           data.labelCol = value
-      //         }
-      //       }
-      //     },
-      //     {
-      //       title: '显示冒号',
-      //       type: 'Switch',
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.formItemConfig?.colon || data.colon
-      //         },
-      //         set({ data }: EditorResult<Data>, value: boolean) {
-      //           data.formItemConfig.colon = value
-      //         },
-      //       }
-      //     },
-      //     {
-      //       title: '自动换行',
-      //       type: 'Switch',
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.formItemConfig?.labelWrap
-      //         },
-      //         set({ data }: EditorResult<Data>, value: boolean) {
-      //           data.formItemConfig.labelWrap = value
-      //         },
-      //       }
-      //     },
-      //     {
-      //       title: '对齐方式',
-      //       type: 'Radio',
-      //       options: [
-      //         { label: '左对齐', value: 'left' },
-      //         { label: '右对齐', value: 'right' }
-      //       ],
-      //       value: {
-      //         get({ data }: EditorResult<Data>) {
-      //           return data.formItemConfig?.labelAlign
-      //         },
-      //         set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-      //           data.formItemConfig.labelAlign = value
-      //         },
-      //       }
-      //     },
-      //   ]
-      // },
-      // {
-      //   title: '初始长度',
-      //   type: 'Slider',
-      //   options: [{ min: 0, steps: 1 }],
-      //   description: '动态列表的初始项数',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.initLength;
-      //     },
-      //     set({ data }: EditorResult<Data>, val: number) {
-      //       data.initLength = val;
-      //     }
-      //   }
-      // },
-      {
-        title: '添加表单项',
-        type: 'comSelector',
-        options: {
-          schema: 'mybricks.normal-pc.form-container/*',
-          type: 'add'
-        },
-        value: {
-          set({ data, slot }: EditorResult<Data>, namespace: string) {
-            slot
-              .get(SlotIds.FormItems)
-              .addCom(namespace, false, { deletable: true, movable: true });
-          }
-        }
+        title: '列表项',
+        options: ['border', 'background', 'padding'],
+        target: '.ant-row.form-list-item'
       },
       {
-        title: '提交隐藏表单项',
-        type: 'Switch',
-        description: '提交时收集被隐藏的表单项字段并进行校验',
+        title: '列表项外边距',
+        type: 'inputNumber',
+        options: [
+          { min: 0, title: '上' },
+          { min: 0, title: '右' },
+          { min: 0, title: '下' },
+          { min: 0, title: '左' }
+        ],
         value: {
           get({ data }: EditorResult<Data>) {
-            return data.submitHiddenFields
+            return data.listItemMargin;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.submitHiddenFields = val
+          set({ data }: EditorResult<Data>, value: number[]) {
+            data.listItemMargin = value;
           }
         }
       },
-      // {
-      //   title: '禁用状态',
-      //   type: 'Switch',
-      //   description: '开启后，所以表单项和操作项都会被禁用',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.disabled
-      //     },
-      //     set({ data }: EditorResult<Data>, val: boolean) {
-      //       data.disabled = val
-      //       if (val) {
-      //         data.currentAction = InputIds.SetDisabled;
-      //       }
-      //       else {
-      //         data.currentAction = InputIds.SetEnabled;
-      //       }
-      //     }
-      //   }
-      // },
-      {
-        title: '校验规则',
-        description: '提供快捷校验配置，需要配合表单容器使用生效',
-        type: 'ArrayCheckbox',
-        options: {
-          checkField: 'status',
-          visibleField: 'visible',
-          getTitle: ({ title }: any) => {
-            return title;
-          },
+    ],
+    items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
+      cate1.items = [
+        {
+          title: '布局',
+          items: [
+            // {
+            //   title: '排列方式',
+            //   type: 'layout',
+            //   options: [],
+            //   value: {
+            //     get({ data, slots }: EditorResult<Data>) {
+            //       const { slotStyle = {} } = data;
+            //       const slotInstance = slots.get(SlotIds.FormItems);
+            //       setSlotLayout(slotInstance, slotStyle);
+            //       return slotStyle;
+            //     },
+            //     set({ data, slots }: EditorResult<Data>, val: any) {
+            //       if (!data.slotStyle) {
+            //         data.slotStyle = {};
+            //       }
+            //       data.slotStyle = {
+            //         ...data.slotStyle,
+            //         ...val
+            //       };
+            //       const slotInstance = slots.get(SlotIds.FormItems);
+            //       setSlotLayout(slotInstance, val);
+            //     }
+            //   }
+            // },
+            {
+              title: '每行列数',
+              type: 'Slider',
+              description: '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
+              options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemColumn
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.formItemColumn = value;
+                  data.actions.span = (24 / value);
+                  data.items.forEach(item => {
+                    item.span = (24 / value);
+                  });
+                  data.additionalItems?.forEach((item) => {
+                    item.span = 24 / value;
+                  });
+                }
+              }
+            },
+            // {
+            //   title: '表单项',
+            //   items: [
+
+            //   ]
+            // }
+          ]
+        },
+        {
+          title: '子项标题',
           items: [
             {
-              title: '提示文字',
-              type: 'Text',
-              value: 'message',
-              ifVisible(item: any, index: number) {
-                return item.key === RuleKeys.REQUIRED;
+              title: '显示',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.showLabel;
+                },
+                set({ data }: EditorResult<Data>, val: boolean) {
+                  data.showLabel = val;
+                }
               }
             },
             {
-              title: '编辑校验规则',
-              type: 'code',
-              options: {
-                language: 'javascript',
-                enableFullscreen: false,
-                title: '编辑校验规则',
-                width: 600,
-                minimap: {
-                  enabled: false
+              title: '宽度类型',
+              type: 'Select',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel;
+              },
+              options: [
+                { label: '固定像素', value: 'px' },
+                { label: '24 栅格', value: 'span' },
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelWidthType
                 },
-                babel: true,
-                eslint: {
-                  parserOptions: {
-                    ecmaVersion: '2020',
-                    sourceType: 'module'
-                  }
+                set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                  data.labelWidthType = value
+                },
+              }
+            },
+            {
+              title: '标题宽度(px)',
+              type: 'inputNumber',
+              options: [{ min: 1 }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel && data.labelWidthType === 'px'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.labelWidth]
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelWidth = value[0]
                 }
+              }
+            },
+            {
+              title: '标题宽度(栅格)',
+              type: 'Slider',
+              options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel && data.labelWidthType === 'span'
               },
-              ifVisible(item: any, index: number) {
-                return item.key === RuleKeys.CODE_VALIDATOR;
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelCol
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelCol = value
+                }
+              }
+            },
+            {
+              title: '显示冒号',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel;
               },
-              value: 'validateCode'
-            }
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemConfig?.colon
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.formItemConfig.colon = value
+                },
+              }
+            },
+            {
+              title: '对齐方式',
+              type: 'Radio',
+              options: [
+                { label: '左对齐', value: 'left' },
+                { label: '右对齐', value: 'right' }
+              ],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showLabel;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemConfig?.labelAlign
+                },
+                set({ data }: EditorResult<Data>, value: 'left' | 'right') {
+                  data.formItemConfig.labelAlign = value
+                },
+              }
+            },
           ]
         },
-        value: {
-          get({ data }) {
-            return data.rules?.length > 0 ? data.rules : defaultRules;
+        // {
+        //   title: '初始长度',
+        //   type: 'Slider',
+        //   options: [{ min: 0, steps: 1 }],
+        //   description: '动态列表的初始项数',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.initLength;
+        //     },
+        //     set({ data }: EditorResult<Data>, val: number) {
+        //       data.initLength = val;
+        //     }
+        //   }
+        // },
+        {
+          title: '添加表单项',
+          type: 'comSelector',
+          options: {
+            schema: 'mybricks.normal-pc.form-container/*',
+            type: 'add'
           },
-          set({ data }, value: any) {
-            data.rules = value;
+          value: {
+            set({ data, slot }: EditorResult<Data>, namespace: string) {
+              slot
+                .get(SlotIds.FormItems)
+                .addCom(namespace, false, { deletable: true, movable: true });
+            }
           }
+        },
+        {
+          title: '提交隐藏表单项',
+          type: 'Switch',
+          description: '提交时收集被隐藏的表单项字段并进行校验',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.submitHiddenFields
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.submitHiddenFields = val
+            }
+          }
+        },
+        // {
+        //   title: '禁用状态',
+        //   type: 'Switch',
+        //   description: '开启后，所以表单项和操作项都会被禁用',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.disabled
+        //     },
+        //     set({ data }: EditorResult<Data>, val: boolean) {
+        //       data.disabled = val
+        //       if (val) {
+        //         data.currentAction = InputIds.SetDisabled;
+        //       }
+        //       else {
+        //         data.currentAction = InputIds.SetEnabled;
+        //       }
+        //     }
+        //   }
+        // },
+        {
+          title: '校验规则',
+          description: '提供快捷校验配置，需要配合表单容器使用生效',
+          type: 'ArrayCheckbox',
+          options: {
+            checkField: 'status',
+            visibleField: 'visible',
+            getTitle: ({ title }: any) => {
+              return title;
+            },
+            items: [
+              {
+                title: '提示文字',
+                type: 'Text',
+                value: 'message',
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REQUIRED;
+                }
+              },
+              {
+                title: '编辑校验规则',
+                type: 'code',
+                options: {
+                  language: 'javascript',
+                  enableFullscreen: false,
+                  title: '编辑校验规则',
+                  width: 600,
+                  minimap: {
+                    enabled: false
+                  },
+                  babel: true,
+                  eslint: {
+                    parserOptions: {
+                      ecmaVersion: '2020',
+                      sourceType: 'module'
+                    }
+                  }
+                },
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.CODE_VALIDATOR;
+                },
+                value: 'validateCode'
+              }
+            ]
+          },
+          value: {
+            get({ data }) {
+              return data.rules?.length > 0 ? data.rules : defaultRules;
+            },
+            set({ data }, value: any) {
+              data.rules = value;
+            }
+          }
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '值初始化',
+              type: '_event',
+              options: {
+                outputId: 'onInitial'
+              }
+            },
+            {
+              title: '值更新',
+              type: '_event',
+              options: {
+                outputId: 'onChange'
+              }
+            }
+          ]
         }
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '值初始化',
-            type: '_event',
-            options: {
-              outputId: 'onInitial'
-            }
-          },
-          {
-            title: '值更新',
-            type: '_event',
-            options: {
-              outputId: 'onChange'
-            }
-          }
-        ]
-      }
-    ];
-    cate2.title = '操作区';
-    cate2.items = actionsEditor(data, output)
+      ];
+      cate2.title = '操作区';
+      cate2.items = actionsEditor(data, output)
+    }
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
     items: [
       {
         title: '显示标题',
-        type: 'Switch',
+        type: 'Radio',
+        options: [
+          { label: '是', value: true },
+          { label: '否', value: false },
+          { label: '跟随容器配置', value: 'default' },
+        ],
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return !getFormItemProp({ data, id }, 'hiddenLabel');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'showLabel');
           },
-          set({ id, data }: EditorResult<Data>, val) {
-            setFormItemProps({ data, id }, 'hiddenLabel', !val);
+          set({ id, name, data }: EditorResult<Data>, value: true | false | 'default') {
+            setFormItemProps({ data, com: { name, id } }, 'showLabel', value);
           }
         }
       },
       {
         title: '标题',
         type: 'text',
-        ifVisible({ id, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return isShowLabel({ data, com: { id, name } });
         },
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'label');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'label');
           },
-          set({ id, data, slot }: EditorResult<Data>, val) {
-            const item = data.items.find(item => item.id === id)
-            if (item) {
-              item['label'] = val
-              // setFormItemProps({ data, id }, 'label', val);
-            }
+          set({ id, name, data, slot }: EditorResult<Data>, val) {
+            setFormItemProps({ data, com: { name, id } }, 'label', val);
           }
         }
       },
@@ -460,12 +512,11 @@ export default {
         title: '字段',
         type: 'text',
         value: {
-          get({ id, data, focusArea }: EditorResult<Data>) {
-            const item = data.items.find(item => item.id === id)
-
-            return item?.name || item?.label
+          get({ id, name, data, focusArea }: EditorResult<Data>) {
+            const { item } = getFormItem(data, { id, name }) || {};
+            return item?.name || item?.label;
           },
-          set({ id, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
+          set({ id, name, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
             val = val.trim();
             if (!val) {
               return message.warn('字段名不能为空')
@@ -487,16 +538,16 @@ export default {
       {
         title: "标题提示",
         type: "Text",
-        ifVisible({ id, data }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id }, 'hiddenLabel');
+        ifVisible({ id, name, data }: EditorResult<Data>) {
+          return isShowLabel({ data, com: { id, name } });
         },
         description: "展示在标题后面的悬浮提示内容",
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'tooltip');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'tooltip');
           },
-          set({ id, data }: EditorResult<Data>, value: string) {
-            setFormItemProps({ data, id }, 'tooltip', value);
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, com: { name, id } }, 'tooltip', value);
           },
         },
       },
@@ -505,11 +556,11 @@ export default {
         type: "Text",
         description: "展示在表单项下方的提示内容",
         value: {
-          get({ id, data }: EditorResult<Data>) {
-            return getFormItemProp({ data, id }, 'description');
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, com: { name, id } }, 'description');
           },
-          set({ id, data }: EditorResult<Data>, value: string) {
-            setFormItemProps({ data, id }, 'description', value);
+          set({ id, name, data }: EditorResult<Data>, value: string) {
+            setFormItemProps({ data, com: { name, id } }, 'description', value);
           },
         },
       },
@@ -530,11 +581,11 @@ export default {
               }
             ],
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'widthOption');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'widthOption');
               },
-              set({ data, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
-                setFormItemProps({ data, id }, 'widthOption', value);
+              set({ data, name, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, com: { name, id } }, 'widthOption', value);
               }
             },
           },
@@ -549,16 +600,15 @@ export default {
                 formatter: '/24',
               },
             ],
-            ifVisible({ data, id }: EditorResult<Data>) {
-              const item = data.items.find(item => item.id === id)
-              return item?.widthOption !== 'px';
+            ifVisible({ data, name, id }: EditorResult<Data>) {
+              return getFormItemProp({ data, com: { name, id } }, 'widthOption') !== 'px';
             },
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'span');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'span');
               },
-              set({ data, id }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id }, 'span', value);
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'span', value);
               }
             },
           },
@@ -568,17 +618,16 @@ export default {
             options: {
               type: 'number'
             },
-            ifVisible({ data, id }: EditorResult<Data>) {
-              const item = data.items.find(item => item.id === id)
-              return item?.widthOption === 'px';
+            ifVisible({ data, name, id }: EditorResult<Data>) {
+              return getFormItemProp({ data, com: { name, id } }, 'widthOption') === 'px';
             },
             value: {
-              get({ data, id }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'width');
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'width');
 
               },
-              set({ data, id }: EditorResult<Data>, value: number) {
-                setFormItemProps({ data, id }, 'width', value);
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'width', value);
               }
             },
           },
@@ -587,11 +636,11 @@ export default {
             type: 'inputNumber',
             options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'inlineMargin');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'inlineMargin');
               },
-              set({ id, data }: EditorResult<Data>, value: number[]) {
-                setFormItemProps({ data, id }, 'inlineMargin', value);
+              set({ id, name, data }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, com: { name, id } }, 'inlineMargin', value);
               }
             }
           },
@@ -599,39 +648,39 @@ export default {
             title: '边距应用其它表单项及操作项',
             type: 'Button',
             value: {
-              set({ id, data }: EditorResult<Data>) {
-                const curItem = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>) {
+                const { item: curItem } = getFormItem(data, { name, id }) || {};
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
                 data.items.forEach(item => item.inlineMargin = [...margin]);
                 data.actions.inlinePadding = [...margin];
               }
             }
           },
-          {
-            title: '标题自动换行',
-            type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
-            },
-            options: [
-              { label: '是', value: true },
-              { label: '否', value: false },
-              { label: '跟随容器配置', value: 'default' },
-            ],
-            value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAutoWrap');
-              },
-              set({ id, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, id }, 'labelAutoWrap', value);
-              }
-            }
-          },
+          // {
+          //   title: '标题自动换行',
+          //   type: 'Radio',
+          //   ifVisible({ id, name, data }: EditorResult<Data>) {
+          //     return isShowLabel({ data, com: { id, name } });
+          //   },
+          //   options: [
+          //     { label: '是', value: true },
+          //     { label: '否', value: false },
+          //     { label: '跟随容器配置', value: 'default' },
+          //   ],
+          //   value: {
+          //     get({ id, name, data }: EditorResult<Data>) {
+          //       return getFormItemProp({ data, com: { name, id } }, 'labelAutoWrap');
+          //     },
+          //     set({ id, name, data }: EditorResult<Data>, value: boolean) {
+          //       setFormItemProps({ data, com: { name, id } }, 'labelAutoWrap', value);
+          //     }
+          //   }
+          // },
           {
             title: '标题对齐方式',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return isShowLabel({ data, com: { id, name } });
             },
             options: [
               { label: '左对齐', value: 'left' },
@@ -639,19 +688,19 @@ export default {
               { label: '跟随容器配置', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'labelAlign');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'labelAlign');
               },
-              set({ id, data }: EditorResult<Data>, value: 'left' | 'right') {
-                setFormItemProps({ data, id }, 'labelAlign', value);
+              set({ id, name, data }: EditorResult<Data>, value: 'left' | 'right') {
+                setFormItemProps({ data, com: { name, id } }, 'labelAlign', value);
               }
             }
           },
           {
             title: '标题冒号',
             type: 'Radio',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return isShowLabel({ data, com: { id, name } });
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
@@ -660,11 +709,11 @@ export default {
               { label: '跟随容器配置', value: 'default' },
             ],
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'colon');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'colon');
               },
-              set({ id, data }: EditorResult<Data>, value: FormItemColonType) {
-                setFormItemProps({ data, id }, 'colon', value);
+              set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
+                setFormItemProps({ data, com: { name, id } }, 'colon', value);
               }
             }
           },
@@ -672,15 +721,15 @@ export default {
             title: "标题样式",
             type: "Style",
             options: ['font'],
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return isShowLabel({ data, com: { id, name } });
             },
             description: "表单项标题的字体样式",
             value: {
-              get({ id, data }: EditorResult<Data>) {
+              get({ id, name, data }: EditorResult<Data>) {
                 const item = data.items.find(item => item.id === id);
                 if (!item?.labelStyle) {
-                  setFormItemProps({ data, id }, 'labelStyle', {
+                  setFormItemProps({ data, com: { name, id } }, 'labelStyle', {
                     lineHeight: '14px',
                     letterSpacing: '0px',
                     fontSize: '14px',
@@ -691,21 +740,21 @@ export default {
                 }
                 return item?.labelStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: any) {
+              set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id }, 'labelStyle', style);
+                setFormItemProps({ data, com: { name, id } }, 'labelStyle', style);
               },
             },
           },
           {
             title: '标题样式应用所有表单项',
             type: 'Button',
-            ifVisible({ id, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id }, 'hiddenLabel');
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return isShowLabel({ data, com: { id, name } });
             },
             value: {
-              set({ id, data }: EditorResult<Data>, value: {}) {
-                const item = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>, value: {}) {
+                const { item } = getFormItem(data, { name, id }) || {};
                 const labelStyle = item?.labelStyle || {
                   lineHeight: '14px',
                   letterSpacing: '0px',
@@ -724,10 +773,10 @@ export default {
             options: ['font'],
             description: "表单项提示语的字体样式",
             value: {
-              get({ id, data }: EditorResult<Data>) {
+              get({ id, name, data }: EditorResult<Data>) {
                 const item = data.items.find(item => item.id === id);
                 if (!item?.descriptionStyle) {
-                  setFormItemProps({ data, id }, 'descriptionStyle', {
+                  setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', {
                     whiteSpace: 'pre-wrap',
                     lineHeight: '12px',
                     letterSpacing: '0px',
@@ -739,9 +788,9 @@ export default {
                 }
                 return item?.descriptionStyle;
               },
-              set({ id, data }: EditorResult<Data>, value: any) {
+              set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id }, 'descriptionStyle', style);
+                setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', style);
               },
             },
           },
@@ -749,8 +798,8 @@ export default {
             title: '提示语样式应用所有表单项',
             type: 'Button',
             value: {
-              set({ id, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id)
+              set({ id, name, data }: EditorResult<Data>) {
+                const { item } = getFormItem(data, { name, id }) || {};
                 const descriptionStyle = item?.descriptionStyle || {
                   whiteSpace: 'pre-wrap',
                   lineHeight: '12px',
@@ -768,16 +817,92 @@ export default {
             title: '必填样式',
             type: 'Switch',
             value: {
-              get({ id, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id }, 'required');
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'required');
               },
-              set({ id, data }: EditorResult<Data>, value) {
-                setFormItemProps({ data, id }, 'required', value);
+              set({ id, name, data }: EditorResult<Data>, value) {
+                setFormItemProps({ data, com: { name, id } }, 'required', value);
               }
             }
           }
         ]
       },
+    ]
+  },
+  ':child(mybricks.normal-pc.form-container/form-addition-container)': {
+    title: '自定义内容',
+    items: [
+      {
+        title: '样式',
+        items: [
+          {
+            title: '宽度模式',
+            type: 'Select',
+            options: [
+              {
+                label: '24栅格',
+                value: 'span'
+              },
+              {
+                label: '固定宽度(px)',
+                value: 'px'
+              }
+            ],
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'widthOption');
+              },
+              set({ data, name, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
+                setFormItemProps({ data, com: { name, id } }, 'widthOption', value);
+              }
+            }
+          },
+          {
+            title: '宽度配置(共24格)',
+            type: 'Slider',
+            options: [
+              {
+                max: 24,
+                min: 1,
+                step: 1,
+                formatter: '/24'
+              }
+            ],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const { item } = getFormItem(data, { id, name });
+
+              return item?.widthOption !== 'px';
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'span');
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'span', value);
+              }
+            }
+          },
+          {
+            title: '宽度配置(px)',
+            type: 'text',
+            options: {
+              type: 'number'
+            },
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              const { item } = getFormItem(data, { id, name });
+              return item?.widthOption === 'px';
+            },
+            value: {
+              get({ data, name, id }: EditorResult<Data>) {
+                return getFormItemProp({ data, com: { name, id } }, 'width');
+              },
+              set({ data, name, id }: EditorResult<Data>, value: number) {
+                setFormItemProps({ data, com: { name, id } }, 'width', value);
+              }
+            }
+          }
+        ]
+      }
     ]
   },
   '[data-form-actions]': {
@@ -789,135 +914,96 @@ export default {
   },
   '[data-form-actions-item]': {
     title: '操作',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-            return data.actions.items.find(item => item.key === comId)?.visible
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
+    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2) => {
+      if (!focusArea) return;
+      const comId = focusArea.dataset['formActionsItem'];
+      const btn = data.actions.items.find(item => item.key === comId);
 
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-            if (item) {
-              item.visible = val
+      if (!btn) return;
+
+      cate1.title = '操作';
+      cate1.items = [
+        {
+          title: '显示',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return btn.visible
+            },
+            set({ data, }: EditorResult<Data>, val) {
+              btn.visible = val
             }
           }
-        }
-      },
-      {
-        title: '标题',
-        type: 'text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-            return comId && data.actions.items.find(item => item.key === comId)?.title
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
-            if (!val) {
-              return message.warn('操作标题不能为空')
-            }
-
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-            if (item) {
-              item.title = val
-              output.setTitle(item.outputId, `点击${item.title}`)
-            }
-          }
-        }
-      },
-      {
-        title: '风格',
-        type: 'Select',
-        options() {
-          return [
-            { value: 'primary', label: '主按钮' },
-            { value: 'default', label: '次按钮' },
-            { value: 'dashed', label: '虚线按钮' },
-            { value: 'link', label: '链接按钮' },
-            { value: 'text', label: '文字按钮' }
-          ];
         },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-
-            return data.actions.items.find(item => item.key === comId)?.type || 'default'
+        {
+          title: '动态显示表达式',
+          type: 'expression',
+          options: {
+            suggestions: getSuggestions(data),
+            placeholder: `例：{item.index < 4}`,
           },
-          set({ data, focusArea }: EditorResult<Data>, value: ButtonType) {
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-
-            if (item) {
-              item.type = value
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return btn.displayExpression
+            },
+            set({ data, }: EditorResult<Data>, val: string) {
+              btn.displayExpression = val
             }
           }
-        }
-      },
-      {
-        title: '危险按钮',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string
-
-            return data.actions.items.find(item => item.key === comId)?.danger
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            const comId = focusArea.dataset['formActionsItem']
-            const item = data.actions.items.find(item => item.key === comId)
-
-            if (item) {
-              item.danger = value
+        },
+        {
+          title: '标题',
+          type: 'text',
+          value: {
+            get({ data, }: EditorResult<Data>) {
+              return btn.title
+            },
+            set({ data, output }: EditorResult<Data>, val) {
+              btn.title = val
+              output.setTitle(btn.outputId, `点击${btn.title}`)
             }
           }
-        }
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '点击',
-            type: '_event',
-            options({ data, focusArea }) {
-              const comId = focusArea.dataset['formActionsItem']
-              const item = data.actions.items.find(item => item.key === comId)
-              if (!item) return
-
-              return {
-                outputId: item.outputId,
-                // slotId: SlotIds.FormItems
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '点击',
+              type: '_event',
+              options({ data, }) {
+                return {
+                  outputId: btn.outputId,
+                  // slotId: SlotIds.FormItems
+                }
               }
             }
-          }
-        ]
-      },
-      {
-        title: '删除',
-        type: 'Button',
-        ifVisible({ data, focusArea }) {
-          const actions = data.actions.items
-          const itemId = focusArea.dataset['formActionsItem']
-          const item = actions.find(item => item.key === itemId)
-
-          return item && !item?.isDefault
+          ]
         },
-        value: {
-          set({ data, output, focusArea }: EditorResult<Data>) {
-            const actions = data.actions.items
-            const itemId = focusArea.dataset['formActionsItem']
-            const index = actions.findIndex(item => item.key === itemId)
-            const item = data.actions.items[index]
+        {
+          title: '删除',
+          type: 'Button',
+          ifVisible({ data, }) {
+            return !btn?.isDefault
+          },
+          value: {
+            set({ data, output, focusArea }: EditorResult<Data>) {
+              const actions = data.actions.items
+              const itemId = focusArea.dataset['formActionsItem']
+              const index = actions.findIndex(item => item.key === itemId)
 
-            output.remove(item.outputId)
-            actions.splice(index, 1)
+              output.remove(btn.outputId)
+              data.actions.items.splice(index, 1)
+            }
           }
-        }
-      },
-    ]
+        },
+      ];
+
+      cate2.title = '样式';
+      cate2.items = [
+        ...StyleEditor(btn),
+        ...IconEditor(btn)
+      ];
+    }
+
   }
 }

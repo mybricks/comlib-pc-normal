@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
-import { Form, Button, Row, Col, Space, FormListOperation, FormListFieldData } from 'antd';
-import { Action, Data } from '../types';
+import { Form, Button, Image, Col, Space, FormListOperation, FormListFieldData } from 'antd';
+import * as Icons from '@ant-design/icons';
+import { ExpressionSandbox } from '../../../../package/com-utils';
+import { Action, Data, LocationEnum } from '../types';
 import { unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
@@ -13,6 +15,7 @@ export interface FormListActionsProps {
   childrenStore?: any;
 }
 
+/** 添加一行 */
 export const addField = ({ data }: { data: Data }) => {
   const { fields } = data;
   data.MaxKey = data.MaxKey + 1;
@@ -22,6 +25,7 @@ export const addField = ({ data }: { data: Data }) => {
   });
 };
 
+/** 删除一行 */
 const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
   const { fields } = data;
@@ -44,8 +48,37 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   changeValue({ data, id, outputs, parentSlot, name: props.name });
 };
 
+/**
+ * 计算操作动态显示表达式
+ * @param btn 按钮
+ * @param field 当前项数据
+ * @param onError 错误回调函数
+ */
+const getDynamicDisplay = (btn: Action, field, onError?): boolean => {
+  let dynamicDisplay = true;
+
+  if (btn.displayExpression) {
+    const context = {
+      ...field
+    };
+    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'item' });
+    try {
+      dynamicDisplay = sandbox.executeWithTemplate(btn.displayExpression);
+    } catch (error: any) {
+      onError?.(`动态表单项[${btn.title}]: ${error}`);
+    }
+  }
+  return dynamicDisplay;
+};
+
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, env, field, outputs, fieldIndex, hiddenRemoveButton } = props;
+
+  const currentField = {
+    index: fieldIndex,
+    key: field.key,
+    value: data.value?.[fieldIndex]
+  };
 
   const onClick = (item: Action) => {
     if (env.edit) return;
@@ -59,12 +92,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         });
       return;
     }
-    outputs[item.key] &&
-      outputs[item.key]({
-        index: fieldIndex,
-        key: field.key,
-        value: data.value?.[fieldIndex]
-      });
+    outputs[item.key] && outputs[item.key](currentField);
     if (item.key === 'remove' && field) {
       removeField(props);
     }
@@ -75,8 +103,14 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   return (
     <Space wrap>
       {data.actions.items.map((item) => {
+        const { iconConfig, ...res } = item;
+        const icon = getBtnIcon(item);
         if (!env.edit) {
           if (item.visible === false) {
+            return null;
+          }
+          const dynamicDisplay = getDynamicDisplay(item, currentField, props.onError);
+          if (dynamicDisplay === false) {
             return null;
           }
           if (item.key === 'add' && notLastField && data.fields.length !== 0) {
@@ -87,15 +121,12 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           }
         }
         return (
-          <Button
-            data-form-actions-item={item.key}
-            type={item.type}
-            loading={item.loading}
-            key={item.key}
-            onClick={() => onClick(item)}
-            disabled={data.disabled}
-          >
-            {item.title}
+          <Button data-form-actions-item={item.key} {...res} onClick={() => onClick(item)}>
+            <Space size={iconConfig?.gutter || 8}>
+              {iconConfig?.location === LocationEnum.FRONT ? icon : void 0}
+              {item.title}
+              {iconConfig?.location === LocationEnum.BACK ? icon : void 0}
+            </Space>
           </Button>
         );
       })}
@@ -143,3 +174,26 @@ const ActionsWrapper = (props: RuntimeParams<Data> & FormListActionsProps) => {
   return null;
 };
 export { Actions, ActionsWrapper };
+
+/**
+ * 操作项图标渲染
+ * @param btn 按钮数据
+ * @param data 组件数据
+ * @returns JSX
+ */
+const getBtnIcon = (btn: Action) => {
+  const { src, size, gutter, innerIcon, customIcon } = btn.iconConfig || {};
+  if (src === 'custom' && customIcon)
+    return <Image width={size[1] || 14} height={size[0] || 14} src={customIcon} preview={false} />;
+  if (src === 'inner') {
+    return (
+      Icons && (
+        <span style={{ fontSize: Math.max(...size) }}>
+          {Icons[innerIcon || ('EditOutlined' as string)]?.render()}
+        </span>
+      )
+    );
+  }
+
+  return void 0;
+};

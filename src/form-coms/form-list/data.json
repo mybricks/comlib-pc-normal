@@ -2,6 +2,7 @@
   "value": [],
   "initLength": 1,
   "items": [],
+  "additionalItems": [],
   "nameCount": 0,
   "formItemColumn": 4,
   "fields": [],
@@ -32,21 +33,41 @@
         "isDefault": true,
         "visible": true,
         "outputId": "add",
-        "key": "add"
+        "key": "add",
+        "size": "middle",
+        "iconConfig": {
+          "src": false,
+          "size": [
+            14,
+            14
+          ],
+          "gutter": 8,
+          "location": "front"
+        }
       },
       {
         "title": "删除",
         "isDefault": true,
         "visible": true,
         "outputId": "remove",
-        "key": "remove"
+        "key": "remove",
+        "size": "middle",
+        "iconConfig": {
+          "src": false,
+          "size": [
+            14,
+            14
+          ],
+          "gutter": 8,
+          "location": "front"
+        }
       }
     ]
   },
   "isFormItem": false,
   "wrapperCol": 24,
   "labelWidthType": "px",
-  "labelWidth": 98,
+  "labelWidth": 25,
   "labelCol": 4,
   "itemWidthType": "flex",
   "submitHiddenFields": false,

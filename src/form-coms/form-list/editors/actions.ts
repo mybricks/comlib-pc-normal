@@ -1,4 +1,4 @@
-import { Data, LabelWidthType } from '../types'
+import { Action, Data, LabelWidthType, LocationEnum, SizeEnum } from '../types'
 import { uuid } from '../../../utils'
 import visibleOpt from '../../../components/editorRender/visibleOpt'
 import { getItemSchema } from '../schema'
@@ -145,12 +145,19 @@ export const actionsEditor = (data: Data, output) => {
         onAdd: (_id) => {
           const outputId = uuid()
           const title = `操作${actions.items.length + 1}`
-          const item = {
+          const item: Action = {
             title: title,
             key: outputId,
             outputId,
             isDefault: false,
-            visible: true
+            visible: true,
+            size: SizeEnum.Middle,
+            iconConfig: {
+              src: false,
+              size: [14, 14],
+              gutter: 8,
+              location: LocationEnum.FRONT
+            }
           }
           const itemSchema = getItemSchema(data);
 

@@ -199,7 +199,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         };
         const actions = <ActionsWrapper {...actionProps} />;
         return (
-          <div key={field.key}>
+          <div
+            key={field.key}
+            style={{
+              margin: data.listItemMargin.map((i) => i + 'px').join(' ')
+            }}
+          >
             <SlotContent {...props} childrenStore={childrenStore} actions={actions} field={field} />
           </div>
         );

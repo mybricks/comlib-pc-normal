@@ -1,4 +1,4 @@
-import { ChildrenStore, Data, FormControlInputRels } from './types'
+import { AdditionalItem, ChildrenStore, Data, FormControlInputRels, FormItems } from './types'
 import { labelWidthTypes } from './constants'
 import { InputIds, OutputIds } from '../types'
 import { validateTrigger } from '../form-container/models/validate';
@@ -7,10 +7,15 @@ import { debounce } from 'lodash';
 import { addField } from './components/FormActions';
 import { deepCopy } from '../../utils';
 
+/**
+ * 计算标签宽度
+ * @param data 
+ * @returns labelCol
+ */
 export function getLabelCol(data: Data) {
   const labelCol = data.labelWidthType === labelWidthTypes.SPAN
     ? { span: data.labelCol }
-    : { flex: `0 0 ${data.labelWidth ? data.labelWidth : 98}px` }
+    : { flex: `0 0 ${data.labelWidth ? data.labelWidth : 25}px` }
 
   return labelCol
 }
@@ -20,15 +25,96 @@ function isObject(val: any) {
 }
 
 /**
+ * 查找子组件
+ * @param data 
+ * @param com 组件
+ * @returns 
+ */
+export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: true } | { item: AdditionalItem, isFormItem: false } => {
+  const { items, additionalItems } = data;
+  let item, isFormItem = false;
+
+  // 查找表单项
+  item = items.find((item) => {
+    return item.comName === com.name
+  });
+  if (item) return { item, isFormItem: true };
+
+  // 查找非表单项
+  item = additionalItems?.find((item) => {
+    return item.comName === com.name
+  });
+  if (item) return { item, isFormItem: false };
+
+  return { item, isFormItem };
+}
+
+
+/**
+ * 校验是否存在传入的字段名
+ * @param data Data
+ * @param name 字段名
+ * @returns boolean
+ */
+export function fieldNameCheck(data: Data, name: string) {
+  const fieldNameList = data.items.map(item => item.name)
+  if (fieldNameList.includes(name)) {
+    return true
+  } else {
+    return false
+  }
+}
+
+/**
+ * 获取表单项属性
+ * @param pros 
+ * @param key 属性key
+ * @returns 
+ */
+export function getFormItemProp({ data, com }: { data: Data, com: { name: string, id?: string } }, key: keyof FormItems) {
+  try {
+    const { item } = getFormItem(data, com) || {};
+    return item?.[key];
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+/**
+ * 设置表单项属性
+ * @param props 
+ * @param key 属性key
+ * @param value 属性value
+ */
+export function setFormItemProps({ data, com }: { data: Data, com: { name: string, id?: string } }, key: keyof FormItems, value: any) {
+  try {
+    const { item } = getFormItem(data, com) || {};
+    item[key] = value;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+/**
+ * 表单项是否显示标题
+ * @param props 
+ * @returns boolean
+ */
+export function isShowLabel({ data, com }: { data: Data, com: { name: string, id?: string } }) {
+  const showLabel = getFormItemProp({ data, com }, 'showLabel');
+  if (typeof showLabel === 'boolean') return showLabel;
+  return data.showLabel;
+}
+
+/**
  * 判断childrenStore是否收集完成
  * @param param0 
  */
-export function isChildrenStoreValid({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
-  const formItemsCount = data.items.length;
+export function isChildrenStoreValid({ data, childrenStore, comCount }: { data: Data, childrenStore: ChildrenStore, comCount: number }) {
   const res = data.fields.every(field => {
     const { key } = field;
     return childrenStore[key]
-      && Object.keys(childrenStore[key]).length === formItemsCount
+      && Object.keys(childrenStore[key]).length === comCount
   });
   return res;
 }

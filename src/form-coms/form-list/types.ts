@@ -1,6 +1,9 @@
 import { FormItemProps, FormListFieldData, FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
 import { ValidateInfo } from '../types'
+
+export type IconSrcType = false | 'custom' | 'inner';
+
 export interface Action {
   title: string
   loading?: boolean
@@ -10,6 +13,25 @@ export interface Action {
   key: string
   visible?: boolean
   danger?: boolean
+  size: SizeEnum
+  /** 动态显示表达式 */
+  displayExpression?: string
+  /** 图标配置 */
+  iconConfig: {
+    // 图标来源
+    src: IconSrcType;
+    // 图标尺寸
+    size: [number, number];
+    // 图标与文字的间隔
+    gutter: number;
+    // 内置图标
+    innerIcon?: string;
+    // 自定义图标
+    customIcon?: string;
+    // 图标位置
+    location: LocationEnum;
+  }
+
 }
 
 interface Actions {
@@ -19,7 +41,7 @@ interface Actions {
   span: number;
   visible: boolean;
   align: 'left' | 'center' | 'right';
-  inlinePadding?: number[]
+  inlinePadding?: number[],
 }
 
 export interface FormItems {
@@ -39,6 +61,7 @@ export interface FormItems {
   labelAlign?: 'left' | 'right' | 'default'
   labelAutoWrap?: boolean | 'default'
   hiddenLabel?: boolean
+  showLabel: boolean | 'default'
   description?: string
   descriptionStyle?: {}
   widthOption: LabelWidthType
@@ -47,6 +70,13 @@ export interface FormItems {
   slotAfter?: string
 }
 
+export interface AdditionalItem {
+  id: string;
+  comName: string
+  span: number
+  widthOption: LabelWidthType
+  width?: number
+}
 
 export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
@@ -71,7 +101,11 @@ export interface Data {
   /**
    * 表单项列表
    */
-  items: FormItems[]
+  items: FormItems[];
+  /**
+   * 非表单项列表
+   */
+  additionalItems: AdditionalItem[];
   /**
    * 列表初始长度
    */
@@ -109,6 +143,10 @@ export interface Data {
    */
   actions: Actions
   /**
+   * 显示标题
+   */
+  showLabel: boolean
+  /**
    * 标题宽度类型
    */
   labelWidthType: LabelWidthType
@@ -129,6 +167,10 @@ export interface Data {
    * 表单项公共配置
    */
   formItemConfig: FormItemProps
+  /**
+   * 列表项外边距
+   */
+  listItemMargin: number[]
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
@@ -156,4 +198,17 @@ export type ChildrenStore = {
   [key: number | string]: {
     [id: string]: FormControlInputType
   };
+}
+
+/** 按钮尺寸 */
+export enum SizeEnum {
+  Large = 'large',
+  Middle = 'middle',
+  Small = 'small'
+}
+
+/** 按钮图标位置 */
+export enum LocationEnum {
+  FRONT = 'front',
+  BACK = 'back'
 }
