@@ -110,12 +110,11 @@ export function isShowLabel({ data, com }: { data: Data, com: { name: string, id
  * 判断childrenStore是否收集完成
  * @param param0 
  */
-export function isChildrenStoreValid({ data, childrenStore }: { data: Data, childrenStore: ChildrenStore }) {
-  const formItemsCount = data.items.length;
+export function isChildrenStoreValid({ data, childrenStore, comCount }: { data: Data, childrenStore: ChildrenStore, comCount: number }) {
   const res = data.fields.every(field => {
     const { key } = field;
     return childrenStore[key]
-      && Object.keys(childrenStore[key]).length === formItemsCount
+      && Object.keys(childrenStore[key]).length === comCount
   });
   return res;
 }

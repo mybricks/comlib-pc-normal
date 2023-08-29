@@ -27,6 +27,7 @@ const SlotContent = (
         );
       },
       wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
+        const comCount = comAray?.length;
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let { item, isFormItem } = getFormItem(data, com);
@@ -72,7 +73,7 @@ const SlotContent = (
         // childrenStore收集完成后的处理
         if (
           field.name === data.fields.length - 1 &&
-          isChildrenStoreValid({ data, childrenStore }) &&
+          isChildrenStoreValid({ data, childrenStore, comCount }) &&
           data.currentAction
         ) {
           switch (data.currentAction) {
