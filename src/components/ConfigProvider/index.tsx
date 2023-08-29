@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ConfigProvider } from 'antd';
-import enUS from 'antd/es/locale/en_US';
-import zhCN from 'antd/es/locale/zh_CN';
-import 'moment/locale/zh-cn';
-const LocaleMap = {
-  'en-us': enUS,
-  'zh-cn': zhCN
-};
+const localeMap = window.antd.locale;
 const LocaleProvider = ({
   locale = 'zh-cn',
   children
 }: {
-  locale?: keyof typeof LocaleMap;
+  locale?: keyof typeof localeMap;
   children: React.ReactNode;
 }) => {
   if (window.moment) {
-    window.moment.locale(locale);
+    window.moment.locale(locale as string);
   }
-  return <ConfigProvider locale={LocaleMap[locale]}>{children}</ConfigProvider>;
+  const antdLocaleKey = useMemo(() => {
+    const localeArr = locale.split('-');
+    const lang = localeArr.pop()?.toUpperCase();
+    return localeArr.concat(['_', lang as string]).join('');
+  }, [locale]);
+  return <ConfigProvider locale={localeMap[antdLocaleKey]?.default}>{children}</ConfigProvider>;
 };
 
 export default LocaleProvider;
