@@ -14,6 +14,8 @@ export interface Action {
   visible?: boolean
   danger?: boolean
   size: SizeEnum
+  /** 动态显示表达式 */
+  displayExpression?: string
   /** 图标配置 */
   iconConfig: {
     // 图标来源

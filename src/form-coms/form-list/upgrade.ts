@@ -1,4 +1,4 @@
-import { Data } from "./types";
+import { Data, LocationEnum, SizeEnum } from "./types";
 
 export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
 
@@ -27,6 +27,21 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
 
   /** 3. 支持操作项尺寸、图标、动态显隐配置 */
+
+  data.actions.items.forEach(btn => {
+    if (!btn.iconConfig) {
+      btn.iconConfig = {
+        src: false,
+        size: [14, 14],
+        gutter: 8,
+        location: LocationEnum.FRONT
+      }
+    }
+    if (btn.size === undefined) {
+      btn.size = SizeEnum.Middle;
+    }
+    
+  });
 
   //=========== v1.1.0 end ===============
 

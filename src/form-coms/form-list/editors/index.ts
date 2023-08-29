@@ -33,7 +33,43 @@ const defaultRules = [
 }        
     `
   }
-]
+];
+
+/** 操作项显隐表达式提示片段 */
+const getSuggestions = (data: Data) => {
+  const valueSuggestion = data.items.map(item => {
+    return {
+      label: item.name || item.label,
+      insertText: item.name || item.label,
+      detail: `${item.name || item.label}字段值`,
+    }
+  })
+  return [
+    {
+      label: 'item',
+      insertText: `item.`,
+      detail: `当前项`,
+      properties: [
+        {
+          label: 'index',
+          insertText: `{index}`,
+          detail: `当前项的索引`
+        },
+        {
+          label: 'key',
+          insertText: `{key}`,
+          detail: `当前项的唯一标识`
+        },
+        {
+          label: 'value',
+          insertText: `value`,
+          detail: `当前项的值`,
+          properties: valueSuggestion
+        },
+      ]
+    },
+  ];
+}
 
 export default {
   '@resize': {
@@ -43,7 +79,6 @@ export default {
     style.width = '100%';
   },
   '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
-    console.log(child, 'childAdd')
     if (curSlot.id === SlotIds.FormItems) {
       const { id, inputDefs, outputDefs, name } = child
       const item = data.items.find(item => item.id === id)
@@ -874,15 +909,31 @@ export default {
           }
         },
         {
+          title: '动态显示表达式',
+          type: 'expression',
+          options: {
+            suggestions: getSuggestions(data),
+            placeholder: `例：{item.index} < 10`,
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return btn.displayExpression
+            },
+            set({ data, }: EditorResult<Data>, val: string) {
+              btn.displayExpression = val
+            }
+          }
+        },
+        {
           title: '标题',
           type: 'text',
           value: {
             get({ data, }: EditorResult<Data>) {
               return btn.title
             },
-            set({ data,output }: EditorResult<Data>, val) {
-                btn.title = val
-                output.setTitle(btn.outputId, `点击${btn.title}`)
+            set({ data, output }: EditorResult<Data>, val) {
+              btn.title = val
+              output.setTitle(btn.outputId, `点击${btn.title}`)
             }
           }
         },
