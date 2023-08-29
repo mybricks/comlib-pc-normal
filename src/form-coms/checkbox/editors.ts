@@ -2,6 +2,7 @@ import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Option } from '../types';
 import { Data } from './types';
+import { createrCatelogEditor } from '../utils';
 
 export default {
   '@resize': {
@@ -13,36 +14,60 @@ export default {
   ':root': {
     style: [
       {
-        title: '选项标签-默认',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-checkbox-wrapper > span:nth-child(2)'
+              },
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-checkbox-inner'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                title: '选择框',
+                options: ['border'],
+                target: '.ant-checkbox:hover .ant-checkbox-inner',
+                domTarget: '.ant-checkbox-inner'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '选中',
+            items: [
+              {
+                title: '选择框',
+                options: ['border', 'BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-checkbox-checked .ant-checkbox-inner'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
+              },
+              {
+                title: '选择框',
+                options: [{ type: 'border', config: { useImportant: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
+              }
+            ]
+          }),
+        ]
       },
-      {
-        title: '选择框-默认',
-        options: ['border'],
-        target: '.ant-checkbox-inner'
-      },
-      {
-        title: '选择框-hover',
-        options: ['border'],
-        target: '.ant-checkbox:hover .ant-checkbox-inner',
-        domTarget: '.ant-checkbox-inner'
-      },
-      {
-        title: '选择框-选中态',
-        options: ['border', 'BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-checkbox-checked .ant-checkbox-inner'
-      },
-      {
-        title: '选项标签-禁用',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
-      },
-      {
-        title: '选择框-禁用态',
-        options: [{type: 'border', config: { useImportant: true }}, { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
-      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

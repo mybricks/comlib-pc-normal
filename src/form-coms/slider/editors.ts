@@ -13,54 +13,54 @@ export default {
   ':root':{
     style:[
       {
-        title: '有值区间-默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-slider-track'
-      },
-      {
-        title: '有值区间-hover',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-slider:hover .ant-slider-track',
-        domTarget: '.ant-slider-track'
-      },
-      {
-        title: '滑动轴-默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-slider-rail'
-      },
-      {
-        title: '滑动轴-hover',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-slider-rail:hover',
-        domTarget: '.ant-slider-rail'
-      },
-      {
-        title: '滑动轴-默认',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-slider-rail'
-      },
-      {
-        title: '滑动轴-hover',
-        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-slider-rail:hover',
-        domTarget: '.ant-slider-rail'
-      },
-      {
-        title: '滑块-默认',
-        options: ['border'],
-        target: '.ant-slider-handle'
-      },
-      {
-        title: '滑块-hover',
-        options: ['border'],
-        target: '.ant-slider-handle:hover',
-        domTarget: '.ant-picker'
-      },
-      {
-        title: '滑块-focus',
-        options: ['border','BoxShadow'],
-        target: ['.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open)','.ant-slider-handle:focus']
-      },
+        items: [
+          {
+            catelog: '默认',
+            title: '有值区间',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-slider-track'
+          },
+          {
+            catelog: '默认',
+            title: '滑动轴',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-slider-rail'
+          },
+          {
+            catelog: '默认',
+            title: '滑块',
+            options: ['border'],
+            target: '.ant-slider-handle'
+          },
+          {
+            catelog: 'Hover',
+            title: '有值区间',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-slider:hover .ant-slider-track',
+            domTarget: '.ant-slider-track'
+          },
+          {
+            catelog: 'Hover',
+            title: '滑动轴',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-slider-rail:hover',
+            domTarget: '.ant-slider-rail'
+          },
+          {
+            catelog: 'Hover',
+            title: '滑块',
+            options: ['border'],
+            target: '.ant-slider-handle:hover',
+            domTarget: '.ant-picker'
+          },
+          {
+            catelog: 'Focus',
+            title: '滑块',
+            options: ['border','BoxShadow'],
+            target: ['.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open)','.ant-slider-handle:focus']
+          }
+        ]
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';

@@ -13,55 +13,62 @@ export default {
   },
   ':root': {
     style: [
-      {
-        title: '作为热区使用',
-        type: 'switch',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.asMapArea;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.asMapArea = value;
-          }
-        }
-      },
       ...styleEditor,
       {
-        title: '默认',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.asMapArea;
-        },
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target: `.button`
-      },
-      {
-        title: 'Hover',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.asMapArea;
-        },
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target: `.button:hover`,
-        domTarget: '.button'
-      },
-      {
-        title: '激活',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.asMapArea;
-        },
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target: `button.ant-btn:not([disabled]):active`
-      },
-      {
-        title: '禁用',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.asMapArea;
-        },
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target: [
-          'button.ant-btn[disabled]',
-          'button.ant-btn[disabled]:active',
-          'button.ant-btn[disabled]:focus',
-          'button.ant-btn[disabled]:hover'
+        //title:'SAAA',
+        // catelogChange: {
+        //   value: {
+        //     get({ data, focusArea }) {
+        //
+        //     },
+        //     set({ data, focusArea, catelog }) {
+        //
+        //     }
+        //   }
+        // },
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea;
+            },
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target: `.button`
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea;
+            },
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target: `.button:hover`,
+            domTarget: '.button'
+          },
+          {
+            title: '激活',
+            catelog: '激活',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea;
+            },
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target: `button.ant-btn:not([disabled]):active`
+          },
+          {
+            title: '禁用',
+            catelog: '禁用',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea;
+            },
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target: [
+              'button.ant-btn[disabled]',
+              'button.ant-btn[disabled]:active',
+              'button.ant-btn[disabled]:focus',
+              'button.ant-btn[disabled]:hover'
+            ]
+          }
         ]
       }
     ],
@@ -84,6 +91,18 @@ export default {
             }
           }
         ]
+      },
+      {
+        title: '作为热区使用',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.asMapArea;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.asMapArea = value;
+          }
+        }
       },
       ...IconEditor,
       {

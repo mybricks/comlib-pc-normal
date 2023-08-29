@@ -3,6 +3,7 @@ import { uuid } from '../../utils';
 import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
 import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
+import { getFilterSelector } from '../../utils/cssSelector';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -233,27 +234,41 @@ export function getColumnItemDataIndex(item: IColumn) {
   return idx;
 }
 
-export const createStyleForHead = ({ target }: StyleModeType<Data> = {}) => ({
-  title: '表头',
-  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-  ifVisible({ data }: EditorResult<Data>) {
-    return !!data.columns.length;
-  },
-  target
-});
 
-export const createStyleForContent = ({ target }: StyleModeType<Data>) => ({
+export const createStyleForTableContent = () => [
+  {
+    title: '表头',
+    catelog: '默认',
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
+  },
+  {
+    title: '表格内容',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
+  },
+  {
+    title: '行Hover',
+    catelog: 'Hover',
+
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover[data-table-column-id]${getFilterSelector(id)}`
+  }
+]
+
+export const createStyleForColumnContent = ({ target }: StyleModeType<Data>) => ({
   title: '内容',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-  ifVisible({ data }: EditorResult<Data>) {
-    return !!data.columns.length;
-  },
-  target
-});
-
-export const createStyleForRowHover = ({ target }: StyleModeType<Data>) => ({
-  title: '行hover样式',
-  options: ['font', { type: 'background', config: { disableBackgroundImage: true } }],
   ifVisible({ data }: EditorResult<Data>) {
     return !!data.columns.length;
   },

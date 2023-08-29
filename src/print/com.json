@@ -1,7 +1,8 @@
 {
   "title": "打印",
+  "visibility": false,
   "namespace": "mybricks.normal-pc.print",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "可用于打印组件",
   "author": "MyBricks",
   "author_name": "MyBricks",

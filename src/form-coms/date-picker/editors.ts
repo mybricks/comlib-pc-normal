@@ -1,131 +1,139 @@
 import moment from 'moment';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Data } from './runtime'
+import { Data } from './runtime';
 
 export default {
   '@resize': {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
   ':root': {
     style: [
       {
-        title: '边框-默认',
+        title: '边框',
+        catelog: '默认',
         options: ['border'],
         target: '.ant-picker'
       },
       {
-        title: '边框-hover',
+        title: '边框',
+        catelog: 'Hover',
         options: ['border'],
         target: '.ant-picker:hover',
         domTarget: '.ant-picker'
       },
       {
-        title: '边框-focus',
-        options: ['border','BoxShadow'],
+        title: '边框',
+        catelog: 'Focus',
+        options: ['border', 'BoxShadow'],
         target: '.ant-picker-focused.ant-picker'
       },
       {
         title: '日期-当前',
-        options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
+        catelog: '默认',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
-        target({id}: EditorResult<Data>){
-          return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`;
         }
       },
       {
+        catelog: '默认',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
-        target({id}: EditorResult<Data>){
-          return `.{id} .ant-picker-cell-today`
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-cell-today`;
         }
       },
       {
-        title: '日期-默认',
-        options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }, 
-          { type: 'font', config: { disableTextAlign: true } }
-        ],
-        global: true,
-        target({id}: EditorResult<Data>){
-          return [`.{id} .ant-picker-cell .ant-picker-cell-inner`]
-        }
-      },
-      {
-        title: '日期-选中',
-        options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }, 
-          { type: 'font', config: { disableTextAlign: true } }
-        ],
-        global: true,
-        target({id}: EditorResult<Data>){
-          return [`.{id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`]
-        }
-      },
-      {
-        title: '日期-hover',
+        title: '日期',
+        catelog: '默认',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         global: true,
-        target({id}: EditorResult<Data>){
-          return `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+        target({ id }: EditorResult<Data>) {
+          return [`.{id} .ant-picker-cell .ant-picker-cell-inner`];
         }
       },
       {
-        title: '时间-默认',
+        title: '日期-选中',
+        catelog: '默认',
         options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }, 
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return [`.{id} .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner`];
+        }
+      },
+      {
+        title: '日期',
+        catelog: 'Hover',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`;
+        }
+      },
+      {
+        title: '时间',
+        catelog: '默认',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.showTime;
         },
         global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`;
         }
       },
       {
-        title: '时间-hover',
+        title: '时间',
+        catelog: 'Hover',
         options: [
-          'border', 
-          { type: 'background', config: { disableBackgroundImage: true } }, 
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.showTime;
         },
         global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`;
         }
       },
       {
         title: '时间-选中',
+        catelog: '默认',
         options: [
           'border',
-          { type: 'background', config: { disableBackgroundImage: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         ifVisible({ data }: EditorResult<Data>) {
           return !!data.showTime;
         },
         global: true,
-        target({ id }: EditorResult<Data>){
-          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`;
         }
-      },
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
@@ -158,23 +166,23 @@ export default {
           }
         },
         {
-          title: "日期选择类型",
-          type: "Select",
+          title: '日期选择类型',
+          type: 'Select',
           options: [
-            { label: "日期", value: "date" },
-            { label: "周", value: "week" },
-            { label: "月份", value: "month" },
-            { label: "季度", value: "quarter" },
-            { label: "年份", value: "year" },
+            { label: '日期', value: 'date' },
+            { label: '周', value: 'week' },
+            { label: '月份', value: 'month' },
+            { label: '季度', value: 'quarter' },
+            { label: '年份', value: 'year' }
           ],
           value: {
             get({ data }) {
               return data.config.picker;
             },
-            set({ data }, value: "date" | "week" | "month" | "quarter" | "year" | undefined) {
+            set({ data }, value: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined) {
               data.config.picker = value;
-            },
-          },
+            }
+          }
         },
         {
           title: '时间选择',
@@ -185,7 +193,7 @@ export default {
             },
             set({ data }, value: boolean) {
               data.showTime = value;
-            },
+            }
           }
         },
         {
@@ -205,16 +213,14 @@ export default {
                 return data.showTime?.defaultValue;
               }
               if (typeof showTime !== 'object') {
-                data.showTime = {}
+                data.showTime = {};
               }
               return undefined;
             },
             set({ data }, value: string) {
               data.showTime = {
-                defaultValue: moment(value, 'HH:mm:ss').isValid()
-                  ? value
-                  : undefined
-              }
+                defaultValue: moment(value, 'HH:mm:ss').isValid() ? value : undefined
+              };
             }
           }
         },
@@ -333,11 +339,11 @@ export default {
               }
             }
           ]
-        },
-      ]
+        }
+      ];
     }
   }
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

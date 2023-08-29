@@ -36,9 +36,7 @@
     },
     {
       "title": "领域模型",
-      "comAry": [
-        "./src/domain/domain-crud/com.json"
-      ]
+      "comAry": ["./src/domain/domain-crud/com.json"]
     },
     {
       "title": "数据录入",
@@ -102,7 +100,8 @@
         "./src/icon/com.json",
         "./src/dropdown/com.json",
         "./src/sort-bar/com.json",
-        "./src/progress/com.json"
+        "./src/progress/com.json",
+        "./src/print/com.json"
       ]
     },
     "./src/_muilt-inputJs/com.json",
@@ -125,9 +124,7 @@
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": [
-        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
-      ]
+      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
     },
     {
       "name": "antd",

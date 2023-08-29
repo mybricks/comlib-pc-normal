@@ -10,6 +10,13 @@ import {
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
 import { setDataSchema } from '../../schema';
 
+const catelogEditors = (catelog, editors) => {
+  return editors.map(item => ({
+    catelog,
+    ...item,
+  }))
+}
+
 export default {
   '[data-table-pagination]': {
     title: '分页',
@@ -272,102 +279,94 @@ export default {
         title: '分页器'
       };
     },
-    style: [
-      {
-        title: '页码',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+    style: [{
+      items: [...catelogEditors('默认', [
+        {
+          title: '页码',
+          options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+          target: `.ant-pagination-item`
         },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item`
-      },
-      {
-        title: '页码字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        {
+          title: '页码字体',
+          options: [{ type: 'font', config: { disableTextAlign: true } }],
+          initValue: {
+            color: '#000000'
+          },
+          target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
         },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
+        {
+          title: '翻页按钮',
+          options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+          target: `.ant-pagination li:not(.ant-pagination-disabled) button`
         },
-        target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
-      },
-      {
-        title: '页码Hover',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        {
+          title: '前置文案字体',
+          options: [{ type: 'font', config: { disableTextAlign: true } }],
+          target: `.ant-pagination-total-text`
         },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item:hover`,
-        domTarget: '.ant-pagination-item'
-      },
-      {
-        title: '页码Hover字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        {
+          title: '跳转字体',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.paginationConfig.showQuickJumper;
+          },
+          options: [{ type: 'font', config: { disableTextAlign: true } }],
+          target: `.ant-pagination-options-quick-jumper`
         },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
+        {
+          title: '跳转输入框',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.paginationConfig.showQuickJumper;
+          },
+          options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+          target: `.ant-pagination-options-quick-jumper input`
+        }
+      ]),
+      ...catelogEditors('Hover', [
+        {
+          title: '页码',
+          options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+          target: `.ant-pagination-item:hover`,
+          domTarget: '.ant-pagination-item'
         },
-        target: `.ant-pagination-item:hover a`,
-        domTarget: '.ant-pagination-item'
-      },
-      {
-        title: '页码激活态',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        {
+          title: '页码字体',
+          options: [{ type: 'font', config: { disableTextAlign: true } }],
+          initValue: {
+            color: '#000000'
+          },
+          target: `.ant-pagination-item:hover a`,
+          domTarget: '.ant-pagination-item'
         },
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: `.ant-pagination-item.ant-pagination-item-active`
-      },
-      {
-        title: '页码激活态字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.size !== SizeTypeEnum.Simple;
+        {
+          title: '翻页按钮',
+          options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+          target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
         },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        initValue: {
-          color: '#000000'
+      ]),
+      ...catelogEditors('激活', [
+        {
+          title: '页码',
+          options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+          target: `.ant-pagination-item.ant-pagination-item-active`
         },
-        target: `.ant-pagination-item.ant-pagination-item-active a`
-      },
-      {
-        title: '翻页按钮',
-        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-        target: `.ant-pagination li:not(.ant-pagination-disabled) button`
-      },
-      {
-        title: '翻页按钮hover',
-        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-        target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
-      },
-      {
-        title: '翻页按钮禁止',
-        options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-        target: `.ant-pagination li.ant-pagination-disabled button`
-      },
-      {
-        title: '前置文案字体',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: `.ant-pagination-total-text`
-      },
-      {
-        title: '跳转字体',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.showQuickJumper;
+        {
+          title: '页码字体',
+          options: [{ type: 'font', config: { disableTextAlign: true } }],
+          initValue: {
+            color: '#000000'
+          },
+          target: `.ant-pagination-item.ant-pagination-item-active a`
         },
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: `.ant-pagination-options-quick-jumper`
-      },
-      {
-        title: '跳转输入框',
-        ifVisible({ data }: EditorResult<Data>) {
-          return data.paginationConfig.showQuickJumper;
+      ]),
+      ...catelogEditors('禁用', [
+        {
+          title: '翻页按钮',
+          options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
+          target: `.ant-pagination li.ant-pagination-disabled button`
         },
-        options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true }}],
-        target: `.ant-pagination-options-quick-jumper input`
-      }
+      ])
+      ]
+    },
     ]
   }
 };

@@ -1,7 +1,12 @@
 import { Data, TagSize, Preset } from '../types';
 import TagEditor from './tag';
 import AppendEditor from './append';
-import { createTag, createStyleForDefault, createStyleForChecked, createStyleForCheckableHover } from './util';
+import {
+  createTag,
+  createStyleForDefault,
+  createStyleForChecked,
+  createStyleForCheckableHover
+} from './util';
 
 const TagSchema = {
   type: 'object',
@@ -27,7 +32,7 @@ const TagSchema = {
 export default {
   ':root': {
     items({ data }: EditorResult<Data>, ...cate) {
-      cate[0].title = '配置';
+      cate[0].title = '常规';
       cate[0].items = [
         {
           title: '添加标签',
@@ -110,7 +115,7 @@ export default {
           ]
         }
       ];
-      cate[1].title = '高级';
+      cate[1].title = '交互';
       cate[1].items = [
         {
           title: '动态数据',
@@ -279,14 +284,28 @@ export default {
           }
         }
       },
-      createStyleForDefault({ target: 'div[data-root="root"] span[data-item-tag="tag"]' }),
-      createStyleForCheckableHover({
-        target: 'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover',
-      }),
-      createStyleForChecked({
-        target: 'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable-checked',
-        domTarget: '.ant-tag.ant-tag-checkable.ant-tag-checkable-checked'
-      })
+      {
+        items: [
+          {
+            catelog: '默认',
+            ...createStyleForDefault({ target: 'div[data-root="root"] span[data-item-tag="tag"]' })
+          },
+          {
+            catelog: 'Hover',
+            ...createStyleForCheckableHover({
+              target:
+                'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover'
+            })
+          },
+          {
+            catelog: '激活',
+            ...createStyleForChecked({
+              target: 'div[data-root="root"] span[data-item-tag="tag"].ant-tag-checkable-checked',
+              domTarget: '.ant-tag.ant-tag-checkable.ant-tag-checkable-checked'
+            })
+          }
+        ]
+      }
     ]
   },
   ...TagEditor,

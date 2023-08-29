@@ -30,7 +30,7 @@ export default {
   },
   ':root': {
     items({ slot }: EditorResult<Data>, cate1, cate2, cate3) {
-      cate1.title = '布局';
+      cate1.title = '常规';
       cate1.items = [
         {
           title: '布局',
@@ -58,7 +58,7 @@ export default {
         },
       ];
 
-      cate2.title = '高级';
+      cate2.title = '交互';
       cate2.items = [...ClickEditor, ...PageScrollEditor];
 
       return {
@@ -70,15 +70,21 @@ export default {
       OverflowEditor,
       ...FixedEditor,
       {
-        title: '默认',
-        options: ['padding', 'border', 'background'],
-        target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
-      },
-      {
-        title: 'Hover',
-        options: ['padding', 'border', 'background'],
-        target: ({ id }: EditorResult<Data>) => `.root:hover${getFilterSelector(id)}`,
-        domTarget: '.root'
+        items: [
+          {
+            title: '默认',
+            catelog: "默认",
+            options: ['padding', 'border', 'background'],
+            target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
+          },
+          {
+            title: 'Hover',
+            catelog: "Hover",
+            options: ['padding', 'border', 'background'],
+            target: ({ id }: EditorResult<Data>) => `.root:hover${getFilterSelector(id)}`,
+            domTarget: '.root'
+          }
+        ]
       }
     ]
   }

@@ -26,15 +26,21 @@ export default {
         }
       },
       {
-        title: '默认',
-        options: ['font'],
-        target: '[data-item-type="root"]'
-      },
-      {
-        title: 'Hover',
-        options: ['font'],
-        target: '[data-item-type="root"]:hover',
-        domTarget: '[data-item-type="root"]'
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            options: ['font'],
+            target: '[data-item-type="root"]'
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: ['font'],
+            target: '[data-item-type="root"]:hover',
+            domTarget: '[data-item-type="root"]'
+          }
+        ]
       }
     ],
     items: ({}: EditorResult<Data>, cate1) => {

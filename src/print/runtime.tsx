@@ -16,26 +16,28 @@ export default function MyComponent({
   const { documentTitle, closeScene, closable, useFooter } = data;
   const componentRef = useRef(null);
 
-  const handlePrint = useReactToPrint({
+  const handlePrint = useCallback(() => {
+    if (closeScene) {
+      _env.currentScenes.close();
+    }
+    outputs.afterPrint();
+  }, [closeScene, _env, outputs]);
+
+  const handlePrintAction = useReactToPrint({
     documentTitle,
     copyStyles: true,
     removeAfterPrint: true,
     content: () => componentRef.current,
-    onAfterPrint: () => {
-      if (closeScene) {
-        _env.currentScenes.close();
-      }
-      outputs.afterPrint();
-    }
+    onAfterPrint: handlePrint
   });
 
   useEffect(() => {
     if (!runtime.debug) {
       inputs[InputIds.StartPrint](() => {
-        handlePrint();
+        handlePrintAction();
       });
     }
-  }, []);
+  }, [runtime.debug, inputs, handlePrintAction]);
 
   const handleClose = useCallback(() => {
     _env.currentScenes.close();
@@ -44,12 +46,12 @@ export default function MyComponent({
   const popupContent = (
     <Modal
       visible={true}
-      width={!env.edit ? '80%' : '100%'}
+      width={!env.edit ? '80%' : data.width}
       onCancel={handleClose}
       cancelText={'取消'}
       okText={'打印预览'}
       wrapClassName={css.container}
-      onOk={env.runtime && env.runtime.debug ? undefined : handlePrint}
+      onOk={env.runtime && env.runtime.debug ? undefined : handlePrintAction}
       mask={!env.edit}
       footer={!useFooter ? null : undefined}
       closable={closable}

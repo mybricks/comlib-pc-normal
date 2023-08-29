@@ -499,6 +499,7 @@ export default function (props: RuntimeParams<Data>) {
       const targetRowKeyVal = record[rowKey];
       if (
         data.rowSelectionLimit &&
+        data.selectionType === RowSelectionTypeEnum.Checkbox &&
         selectedRowKeys.length >= data.rowSelectionLimit &&
         !selectedRowKeys.includes(targetRowKeyVal)
       ) {
