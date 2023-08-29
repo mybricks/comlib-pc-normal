@@ -14,6 +14,7 @@ import {
 } from '../../types';
 import css from './style.less';
 import { OutputIds } from '../../constants';
+import { runJs } from '../../../../package/com-utils';
 
 const { Column, ColumnGroup } = Table;
 
@@ -173,9 +174,18 @@ export default ({
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
+          let cellConfig = {};
+          if (cItem.enableColMerge && !env.edit) {
+            try {
+              cellConfig = runJs(cItem.colMergeScirpt, [{ record, index: rowIndex }]);
+            } catch (e) {
+              cellConfig = {};
+            }
+          }
           return {
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
-            'data-table-column-id': cItem.key
+            'data-table-column-id': cItem.key,
+            ...cellConfig
           };
         }}
         onHeaderCell={(): any => {
