@@ -428,8 +428,10 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         beforeUpload={beforeUpload}
         onRemove={onRemove}
         onPreview={(file: UploadFile) => {
-          if (usePreview) {
+          if (usePreview && !/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
             onpenImgPreview(file.url);
+          } else {
+            window.open(file.url);
           }
         }}
         disabled={condition ? true : disabled}
