@@ -7,6 +7,7 @@ import { OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import ConfigProvider from '../../components/ConfigProvider';
 
 const { RangePicker } = DatePicker;
 
@@ -279,22 +280,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
       : [false, false];
 
   return (
-    <div className={css.rangePicker}>
-      <RangePicker
-        value={value}
-        {...data.config}
-        ranges={data.useRanges ? rangeOptions : []}
-        showTime={getShowTime()}
-        onChange={onChange}
-        onCalendarChange={(dates) => setDates(dates)}
-        onOpenChange={onOpenChange}
-        allowEmpty={emptyArr}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? env?.canvasElement : document.body
-        }
-        dropdownClassName={id}
-        {...disabledDateTime}
-      />
-    </div>
+    <ConfigProvider locale={env.vars?.locale}>
+      <div className={css.rangePicker}>
+        <RangePicker
+          value={value}
+          {...data.config}
+          ranges={data.useRanges ? rangeOptions : []}
+          showTime={getShowTime()}
+          onChange={onChange}
+          onCalendarChange={(dates) => setDates(dates)}
+          onOpenChange={onOpenChange}
+          allowEmpty={emptyArr}
+          getPopupContainer={(triggerNode: HTMLElement) =>
+            edit || debug ? env?.canvasElement : document.body
+          }
+          dropdownClassName={id}
+          {...disabledDateTime}
+        />
+      </div>
+    </ConfigProvider>
   );
 }
