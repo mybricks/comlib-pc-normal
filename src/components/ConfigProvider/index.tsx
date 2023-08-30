@@ -16,7 +16,7 @@ const LocaleProvider = ({
     const lang = localeArr.pop()?.toUpperCase();
     return localeArr.concat(['_', lang as string]).join('');
   }, [locale]);
-  return <ConfigProvider locale={localeMap[antdLocaleKey]?.default}>{children}</ConfigProvider>;
+  return <ConfigProvider locale={localeMap?.[antdLocaleKey]?.default}>{children}</ConfigProvider>;
 };
 
 export default LocaleProvider;

@@ -26,9 +26,7 @@ export default {
               { type: 'font', config: { disableTextAlign: true } }
             ],
             global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
-            }
+            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
           },
           {
             title: '确认按钮',
@@ -39,9 +37,7 @@ export default {
               'BoxShadow'
             ],
             global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} .ant-btn-primary`
-            }
+            target: `.{id} .ant-btn-primary`
           }
         ]
       }),
@@ -62,10 +58,18 @@ export default {
               { type: 'font', config: { disableTextAlign: true } }
             ],
             global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
-            }
+            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
           },
+          // {
+          //   title: '确认按钮-禁用态',
+          //   options: [
+          //     { type: 'background', config: { disableBackgroundImage: true } },
+          //     { type: 'font', config: { disableTextAlign: true } },
+          //     { type: 'border' },
+          //   ],
+          //   global: true,
+          //   target: `.{id} .ant-btn-primary[disabled]:hover`
+          // },
         ]
       }),
       ...createrCatelogEditor({
@@ -89,9 +93,22 @@ export default {
               { type: 'font', config: { disableTextAlign: true } }
             ],
             global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
-            }
+            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: '禁用',
+        items: [
+          {
+            title: '确认按钮',
+            options: [
+              { type: 'background', config: { disableBackgroundImage: true } },
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'border' },
+            ],
+            global: true,
+            target: `.{id}  .ant-btn-primary[disabled]`
           },
         ]
       }),
