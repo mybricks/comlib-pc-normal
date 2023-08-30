@@ -151,7 +151,7 @@ export default function ({
           getPopupContainer={(triggerNode: HTMLElement) =>
             edit || debug ? env?.canvasElement : document.body
           }
-          dropdownClassName={id}
+          popupClassName={id}
         />
       </div>
     </ConfigProvider>
