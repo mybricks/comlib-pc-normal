@@ -5,6 +5,9 @@ import { createStyleForDefault, createStyleForActive, createStyleForBar } from '
 import { getFilterSelector } from '../../utils/cssSelector';
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     items({}: EditorResult<Data>, cate1, cate2, cate3) {
       cate1.title = '常规';
