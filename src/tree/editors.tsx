@@ -102,6 +102,11 @@ export default {
         catelog: '默认',
         items: [
           {
+            title: '树组件样式',
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-tree'
+          },
+          {
             title: '树节点公共样式',
             options: [
               {
@@ -150,7 +155,7 @@ export default {
         items: [
           {
             title: '树节点公共样式',
-            options: ['boreder', { type: 'background', config: { disableBackgroundImage: true } }],
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
             target:
               'div.ant-tree-treenode > span.ant-tree-node-content-wrapper.ant-tree-node-selected'
           }
@@ -164,7 +169,7 @@ export default {
         items: [
           {
             title: '树节点公共样式',
-            options: ['boreder', { type: 'background', config: { disableBackgroundImage: true } }],
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
             target:
               'div.ant-tree-treenode.ant-tree-treenode-checkbox-checked > span.ant-tree-node-content-wrapper'
           }
