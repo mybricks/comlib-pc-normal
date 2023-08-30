@@ -39,9 +39,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValidate"
-      ]
+      "rels": ["returnValidate"]
     },
     {
       "id": "getValue",
@@ -50,9 +48,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValue"
-      ]
+      "rels": ["returnValue"]
     },
     {
       "id": "resetValue",
@@ -74,6 +70,14 @@
       "title": "设置启用",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置文本框里字体的颜色",
+      "schema": {
+        "type": "string"
       }
     }
   ],
@@ -131,8 +135,5 @@
       }
     }
   ],
-  "schema": [
-    "mybricks.normal-pc.form-container/form-item",
-    "*"
-  ]
+  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
 }
