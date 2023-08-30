@@ -15,6 +15,9 @@ export default {
     data.items.push(createItem({ data }));
     updateIOSchema({ data, input, output });
   },
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     items({}: EditorResult<Data>, cate1) {
       cate1.title = '常规';

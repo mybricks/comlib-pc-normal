@@ -119,6 +119,9 @@ export default {
       setDataSchema({ data, output, input, ...res });
     }
   },
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';

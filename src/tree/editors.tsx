@@ -80,6 +80,9 @@ export default {
     pretreatTreeData({ treeData: data.treeData, data, defaultExpandAll: true });
     setCheckboxStatus({ treeData: data.treeData, value: false });
   },
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     title: '树组件',
     style: [

@@ -191,6 +191,9 @@ export default {
   // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
   //   console.log('@init', slot.get('content'))
   // },
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
     cate1.items = [
       {
