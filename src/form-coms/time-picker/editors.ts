@@ -58,9 +58,7 @@ export default {
               { type: 'font', config: { disableTextAlign: true } }
             ],
             global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
-            }
+            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
           },
           // {
           //   title: '确认按钮-禁用态',
@@ -95,9 +93,7 @@ export default {
               { type: 'font', config: { disableTextAlign: true } }
             ],
             global: true,
-            target({ id }: EditorResult<Data>) {
-              return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
-            }
+            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
           },
         ]
       }),
