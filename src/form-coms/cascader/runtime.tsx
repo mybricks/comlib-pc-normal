@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Cascader } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -26,7 +26,6 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id } = props;
   const [options, setOptions] = useState();
-
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
 
@@ -95,7 +94,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         dropdownClassName={id}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? env?.canvasElement : document.body
+          edit || debug ? env?.canvasElement : env.container || document.body
         }
       />
     </div>
