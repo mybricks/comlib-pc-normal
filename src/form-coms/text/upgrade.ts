@@ -2,11 +2,10 @@ import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
-    "type": "string"
-  }
+    type: 'string'
+  };
 
   if (!input.get('setInitialValue')) {
-
     input.add('setInitialValue', '设置初始值', valueSchema);
   }
 
@@ -20,10 +19,17 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   /**
-    * @description v1.0.9->v1.0.10 增加尺寸
-  */
+   * @description v1.0.9->v1.0.10 增加尺寸
+   */
   if (typeof data.config.size === 'undefined') {
-    data.config.size = 'middle'
+    data.config.size = 'middle';
+  }
+
+  /**
+   * v1.2.11 -> v1.2.12 增加「设置字体颜色」能力
+   */
+  if (!input.get('setColor')) {
+    input.add('setColor', '设置字体颜色', valueSchema);
   }
 
   return true;
