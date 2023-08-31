@@ -81,7 +81,7 @@
     {
       "title": "数据展示",
       "comAry": [
-        "./scr/table/com.json",
+        "./src/table/com.json",
         "./src/form-detail/com.json",
         "./src/json-view/com.json",
         "./src/tree/com.json",
