@@ -98,83 +98,96 @@ export default {
           }
         }
       },
-      ...createrCatelogEditor({
-        catelog: '默认',
+      {
         items: [
-          {
-            title: '树组件样式',
-            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-            target: '.ant-tree'
-          },
-          {
-            title: '树节点公共样式',
-            options: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
               {
-                type: 'font',
-                config: {
-                  disableTextAlign: true
-                }
-              }
-            ],
-            target:
-              'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title'
-          },
-          {
-            title: '树节点公共样式',
-            options: [
+                title: '树组件样式',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-tree'
+              },
               {
-                type: 'background',
-                config: {
-                  disableBackgroundImage: true
-                }
-              }
-            ],
-            target: 'div.ant-tree-treenode > span.ant-tree-node-content-wrapper'
-          }
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: 'Hover',
-        items: [
-          {
-            title: '树节点公共样式',
-            options: [
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  }
+                ],
+                target:
+                  'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title'
+              },
               {
-                type: 'background',
-                config: {
-                  disableBackgroundImage: true
-                }
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'background',
+                    config: {
+                      disableBackgroundImage: true
+                    }
+                  }
+                ],
+                target: 'div.ant-tree-treenode > span.ant-tree-node-content-wrapper'
               }
-            ],
-            target: 'div.ant-tree-treenode > span.ant-tree-node-content-wrapper:hover'
-          }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'background',
+                    config: {
+                      disableBackgroundImage: true
+                    }
+                  }
+                ],
+                target: 'div.ant-tree-treenode > span.ant-tree-node-content-wrapper:hover'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Select',
+            items: [
+              {
+                title: '树节点公共样式',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target:
+                  'div.ant-tree-treenode > span.ant-tree-node-content-wrapper.ant-tree-node-selected'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Check',
+            ifVisible: ({ data }: EditorResult<Data>) => {
+              return !!data.checkable;
+            },
+            items: [
+              {
+                title: '树节点公共样式',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target:
+                  'div.ant-tree-treenode.ant-tree-treenode-checkbox-checked > span.ant-tree-node-content-wrapper'
+              }
+            ]
+          })
         ]
-      }),
-      ...createrCatelogEditor({
-        catelog: 'Select',
-        items: [
-          {
-            title: '树节点公共样式',
-            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-            target:
-              'div.ant-tree-treenode > span.ant-tree-node-content-wrapper.ant-tree-node-selected'
-          }
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: 'Check',
-        ifVisible: ({ data }: EditorResult<Data>) => {
-          return !!data.checkable;
-        },
-        items: [
-          {
-            title: '树节点公共样式',
-            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-            target:
-              'div.ant-tree-treenode.ant-tree-treenode-checkbox-checked > span.ant-tree-node-content-wrapper'
-          }
-        ]
-      }),
+      },
       {
         title: '节点图标配置',
         items: [
