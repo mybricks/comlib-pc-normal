@@ -78,7 +78,9 @@ export interface IColumn {
   keepDataIndex?: boolean;
   dataSchema?: any;
 
-  formatData?: TformattersValue
+  formatData?: TformattersValue,
+  enableColMerge?: boolean,
+  colMergeScirpt?: string,
 }
 
 export enum SizeEnum {

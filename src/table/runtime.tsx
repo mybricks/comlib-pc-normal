@@ -525,16 +525,54 @@ export default function (props: RuntimeParams<Data>) {
     return getDefaultDataSource(data.columns, rowKey);
   }, [data.columns, rowKey]);
 
+  const setCurrentSelectRows = useCallback(
+    (_record) => {
+      const targetRowKeyVal = _record[rowKey];
+      let newSelectedRows = [...selectedRows];
+      let newSelectedRowKeys: any = [];
+      // 多选情况下，如果没有超出限制就可以选择
+      if (data.selectionType === RowSelectionTypeEnum.Checkbox) {
+        if (
+          !data.rowSelectionLimit ||
+          (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
+          selectedRowKeys.includes(targetRowKeyVal)
+        ) {
+          if (newSelectedRows.find((item) => item[rowKey] === targetRowKeyVal)) {
+            newSelectedRows = newSelectedRows.filter((item) => item[rowKey] !== targetRowKeyVal);
+          } else {
+            newSelectedRows.push(_record);
+          }
+        }
+      } else {
+        // 单选的情况
+        if (selectedRowKeys.includes(_record)) {
+          newSelectedRows = [];
+        } else {
+          newSelectedRows = [_record];
+        }
+      }
+      newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
+      setSelectedRows(newSelectedRows);
+      setSelectedRowKeys(newSelectedRowKeys);
+    },
+    [selectedRows, selectedRowKeys]
+  );
+
   const onRow = useCallback(
     (_record, index) => {
       const { [DefaultRowKey]: _, ...record } = _record;
       return {
         onClick: () => {
-          if (data.enableRowClick) {
-            outputs[OutputIds.ROW_CLICK]({ record, index });
+          if (data.useRowSelection) {
+            setCurrentSelectRows(_record);
           }
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+          // 如果开通勾选，则屏蔽点击事件
+          if (data.useRowSelection) return;
+          if (data.enableRowClick) {
+            outputs[OutputIds.ROW_CLICK]({ record, index });
           }
         },
         onDoubleClick: () => {
