@@ -43,16 +43,17 @@ export function schema2Options(schema: any = {}, parentKey = '', config: any = {
 }
 
 const isUseSelect = (options, val) => {
-  if (Array.isArray(options) && options.length) {
-    return options.some((item) => {
-      if (item.value === val) {
-        return true;
-      }
-      return isUseSelect(item.children, val);
-    });
-  } else {
-    return false;
-  }
+  // if (Array.isArray(options) && options.length) {
+  //   return options.some((item) => {
+  //     if (item.value === val) {
+  //       return true;
+  //     }
+  //     return isUseSelect(item.children, val);
+  //   });
+  // } else {
+  //   return false;
+  // }
+  return false;
 };
 export default function Tree({ editConfig }: any) {
   const { value, schema = {}, placeholder, disabled } = editConfig.value.get() || {};

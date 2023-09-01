@@ -1,10 +1,12 @@
 {
   "debugger": "pc-spa",
   "componentType": "PC",
+  "fileId": 7632,
+  "commitInfo": "update",
   "namespace": "mybricks.normal-pc",
   "comAry": [
     {
-      "title": "常规",
+      "title": "基础",
       "comAry": [
         "./src/text/com.json",
         "./src/link/com.json",
@@ -13,40 +15,56 @@
         "./src/single-image/com.json",
         "./src/toolbar/com.json",
         "./src/button/com.json",
-        "./src/breadcrumb/com.json",
-        "./src/richtext/com.json"
+        "./src/icon/com.json",
+        "./src/richtext/com.json",
+        "./src/tagList/com.json"
       ]
     },
     {
-      "title": "容器",
+      "title": "排版布局",
       "comAry": [
         "./src/grid/com.json",
-        "./src/dialog/com.json",
         "./src/card/com.json",
         "./src/tabs/com.json",
-        "./src/steps/com.json",
         "./src/list/com.json",
         "./src/list-new/com.json",
-        "./src/drawer/com.json",
         "./src/collapse/com.json",
-        "./src/custom-container/com.json"
+        "./src/custom-container/com.json",
+        "./src/popover/com.json",
+        "./src/dialog/com.json",
+        "./src/drawer/com.json"
       ]
     },
     {
-      "title": "数据录入",
+      "title": "导航",
+      "comAry": [
+        "./src/breadcrumb/com.json",
+        "./src/paginator/com.json",
+        "./src/menu/com.json",
+        "./src/steps/com.json"
+      ]
+    },
+    {
+      "title": "表单",
       "comAry": [
         "./src/form-coms/form-container/com.json",
+        "./src/form-coms/addition-container/com.json",
         "./src/form-coms/form-list/com.json",
         "./src/form-coms/form-item-container/com.json",
         "./src/form-coms/text/com.json",
-        "./src/form-coms/select/com.json",
-        "./src/form-coms/cascader/com.json",
-        "./src/form-coms/date-picker/com.json",
-        "./src/form-coms/range-picker/com.json",
         "./src/form-coms/input-number/com.json",
         "./src/form-coms/input-textarea/com.json",
+        "./src/form-coms/auto-complete/com.json",
+        "./src/form-coms/search/com.json",
         "./src/form-coms/radio/com.json",
+        "./src/form-coms/select/com.json",
         "./src/form-coms/checkbox/com.json",
+        "./src/form-coms/cascader/com.json",
+        "./src/form-coms/treeSelect/com.json",
+        "./src/form-coms/date-picker/com.json",
+        "./src/form-coms/range-picker/com.json",
+        "./src/form-coms/time-picker/com.json",
+        "./src/form-coms/time-range-picker/com.json",
         "./src/form-coms/switch/com.json",
         "./src/form-coms/transfer/com.json",
         "./src/form-coms/upload/com.json",
@@ -55,42 +73,42 @@
         "./src/form-coms/email/com.json",
         "./src/form-coms/password/com.json",
         "./src/form-coms/phone-number/com.json",
-        "./src/form-coms/time-picker/com.json",
-        "./src/form-coms/time-range-picker/com.json",
+        "./src/form-coms/color/com.json",
         "./src/form-coms/code/com.json",
-        "./src/form-coms/input-richtext/com.json",
-        "./src/form-coms/search/com.json"
+        "./src/form-coms/input-richtext/com.json"
       ]
     },
     {
       "title": "数据展示",
       "comAry": [
         "./src/table/com.json",
-        "./src/paginator/com.json",
-        "./src/timeline/com.json",
         "./src/form-detail/com.json",
         "./src/json-view/com.json",
-        "./src/tree/com.json"
+        "./src/tree/com.json",
+        "./src/timeline/com.json",
+        "./src/calendar/com.json",
+        "./src/iframe/com.json",
+        "./src/qr-code/com.json",
+        "./src/progress/com.json"
+      ]
+    },
+    {
+      "title": "领域模型",
+      "comAry": [
+        "./src/domain/domain-crud/com.json"
       ]
     },
     {
       "title": "其它",
       "comAry": [
-        "./src/tagList/com.json",
-        "./src/calendar/com.json",
         "./src/bottom-bar/com.json",
-        "./src/iframe/com.json",
-        "./src/qr-code/com.json",
         "./src/alert/com.json",
         "./src/result/com.json",
         "./src/spin/com.json",
-        "./src/popover/com.json",
         "./src/tooltip/com.json",
-        "./src/menu/com.json",
-        "./src/icon/com.json",
         "./src/dropdown/com.json",
         "./src/sort-bar/com.json",
-        "./src/progress/com.json"
+        "./src/print/com.json"
       ]
     },
     "./src/_muilt-inputJs/com.json",
@@ -98,15 +116,14 @@
     "./src/_confirm/com.json",
     "./src/_message/com.json",
     "./src/_page-router/com.json",
+    "./src/_props/com.json",
+    "./src/_env-var/com.json",
     "./src/_global-loading/com.json",
     "./src/_array-merge/com.json",
     "./src/_query/com.json",
-    "./src/_env-var/com.json",
     "./src/_events/com.json",
     "./src/_service/com.json",
     "./src/_pick/com.json",
-    "./src/_post-message/com.json",
-    "./src/_receive-message/com.json",
     "./src/_excel/com.json",
     "./src/_pinyin/com.json"
   ],
@@ -114,9 +131,7 @@
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": [
-        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
-      ]
+      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
     },
     {
       "name": "antd",
