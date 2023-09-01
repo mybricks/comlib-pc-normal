@@ -68,8 +68,10 @@ export interface BtnItem {
   //图标尺寸
   contentSize: [number, number];
 
-  // 权限key
+  // [已废弃]权限key
   permissionKey?: string;
+  // 权限ID
+  permission?: { id:string };
 
   // 动态启用/禁用
   useDynamicDisabled?: boolean;

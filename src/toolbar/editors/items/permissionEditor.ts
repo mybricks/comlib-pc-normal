@@ -1,11 +1,11 @@
-import { Data } from '../../types';
+import { BtnItem, Data } from '../../types';
 import { getBtnItemInfo } from '../../utils';
 
 const PermissionEditor = [
   {
-    title: '权限Key',
-    description: '唯一标识的权限key',
-    type: 'Text',
+    title: '权限信息配置',
+    description: '权限信息配置',
+    type: '_permission',
     options: {
       placeholder: '不填写，默认无权限校验'
     },
@@ -13,12 +13,12 @@ const PermissionEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        return item.permissionKey;
+        return item.permission;
       },
-      set({ data, focusArea }: EditorResult<Data>, value: string) {
+      set({ data, focusArea }: EditorResult<Data>, value: BtnItem['permission']) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        item.permissionKey = value;
+        item.permission = value;
       }
     }
   }

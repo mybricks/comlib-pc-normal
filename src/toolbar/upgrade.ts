@@ -71,6 +71,8 @@ export default function ({
       setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, item.style);
       item.style = false;
     }
+
+    // TODO: 把 permissionKey 转化成新版 permission 数据
   });
 
   return true;
