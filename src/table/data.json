@@ -15,9 +15,6 @@
   "bordered": false,
   "size": "middle",
   "useRowSelection": false,
-  "rowSelection": {
-    "type": "checkbox"
-  },
   "rowSelectionPostion": [
     "top",
     "bottom"

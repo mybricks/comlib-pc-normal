@@ -24,6 +24,9 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         set({ data, input, output, slot, ...res }: EditorResult<Data>, value: boolean) {
           data.useRowSelection = value;
+          if (!data.selectionType) {
+            data.selectionType = RowSelectionTypeEnum.Checkbox;
+          }
           if (value) {
             slot.add({ id: SlotIds.ROW_SELECTION_OPERATION, title: `勾选操作区`, type: 'scope' });
             slot
