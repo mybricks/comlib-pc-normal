@@ -26,6 +26,7 @@ import {
   InputIds as PaginatorInputIds
 } from '../components/Paginator/constants';
 import { PageSchema } from './table/paginator';
+import rowMerge from './table/rowMerge';
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -141,6 +142,7 @@ export default {
         HeaderEditor,
         ...ExpandEditor,
         rowOperationEditor,
+        rowMerge,
         ...SummaryColumn,
         ...DynamicColumnEditor,
         ...DynamicTitleEditor,
