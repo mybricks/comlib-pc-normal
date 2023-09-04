@@ -113,21 +113,19 @@ export default function ({
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div style={style}>
-        <Transfer
-          className={styles.wrap}
-          titles={titles}
-          dataSource={_dataSource}
-          targetKeys={targetKeys}
-          showSearch={showSearch}
-          showSelectAll
-          oneWay={oneWay}
-          disabled={disabled}
-          render={renderItem}
-          pagination={showPagination && pagination}
-          onChange={onChange}
-        />
-      </div>
+      <Transfer
+        className={styles.transfer}
+        titles={titles}
+        dataSource={_dataSource}
+        targetKeys={targetKeys}
+        showSearch={showSearch}
+        showSelectAll
+        oneWay={oneWay}
+        disabled={disabled}
+        render={renderItem}
+        pagination={showPagination && pagination}
+        onChange={onChange}
+      />
     </ConfigProvider>
   );
 }
