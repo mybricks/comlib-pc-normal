@@ -566,8 +566,8 @@ export default function (props: RuntimeParams<Data>) {
     (_record, index) => {
       const { [DefaultRowKey]: _, ...record } = _record;
       return {
-        onClick: () => {
-          if (data.useRowSelection) {
+        onClick: (e) => {
+          if (data.useRowSelection && e?.target?.tagName === 'TD') {
             setCurrentSelectRows(_record);
           }
           if (data.enableRowFocus) {
