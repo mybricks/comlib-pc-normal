@@ -21,15 +21,45 @@ const itemEditor = {
         }
       },
       {
-        title: '按钮样式',
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          { type: 'font', config: { disableTextAlign: true } },
-          'border'
-        ],
-        target({ focusArea }) {
-          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
-        }
+        items: [
+          {
+            title: '按钮样式',
+            catelog: '默认',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: 'Hover',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button:hover`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '激活',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn:not([disabled]):active`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '禁用',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return [
+                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]`,
+                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:active`,
+                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:focus`,
+                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:hover`
+              ];
+            }
+          }
+        ]
       },
       ...IconEditor
     ],

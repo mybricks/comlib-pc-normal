@@ -92,6 +92,9 @@ export interface BtnItem {
   loading: boolean;
   //设置动态加载
   useDynamicLoading: boolean;
+
+  // 是否是危险按钮
+  danger?: boolean
 }
 
 /**
@@ -109,4 +112,5 @@ export interface Data {
 
   useEllipses?: boolean;
   maxShowNumber?: number;
+
 }
