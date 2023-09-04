@@ -194,4 +194,11 @@ export interface Data {
   SummaryCellTitleCol: number, // 总结栏 title col
   SummaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
   SummaryColumnContentSchema: object, // 总结栏内容Schema
+  enbaleRowMerge?: boolean,
+  rowMergeConfig?: {
+    // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
+    mergeByField: string,
+    // 返回true，表示对应的列不能合并
+    excludeFields?: string[]
+  }
 }
