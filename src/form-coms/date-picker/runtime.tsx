@@ -182,6 +182,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
   };
 
+  console.log('env?.canvasElement', env?.canvasElement);
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div className={css.datePicker}>
@@ -194,6 +196,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             edit || debug ? env?.canvasElement : document.body
           }
           dropdownClassName={id}
+          open={env.design ? true : void 0}
         />
       </div>
     </ConfigProvider>
