@@ -4,7 +4,8 @@ import { Data, SizeEnum } from './types';
 export default function ({
   data,
   output,
-  setDeclaredStyle
+  setDeclaredStyle,
+  registerPermission
 }: UpgradeParams<Data>): boolean {
   data.btnList.forEach((item) => {
     //1.0.0->1.0.1
@@ -72,7 +73,18 @@ export default function ({
       item.style = false;
     }
 
-    // TODO: 把 permissionKey 转化成新版 permission 数据
+    /**
+     * @description v1.0.13 权限能力改版
+     * 把 permissionKey 转化成新版 permission 数据
+     */
+    if (item.permissionKey) {
+      const { id } = registerPermission({
+        code: item.permissionKey,
+        title: '权限名称'
+      });
+      item.permission = { id };
+    }
+
   });
 
   return true;

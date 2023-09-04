@@ -70,8 +70,8 @@ export interface BtnItem {
 
   // [已废弃]权限key
   permissionKey?: string;
-  // 权限ID
-  permission?: { id:string };
+  // 权限信息
+  permission?: { id: string };
 
   // 动态启用/禁用
   useDynamicDisabled?: boolean;

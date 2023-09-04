@@ -91,6 +91,12 @@ interface UpgradeParams<T> {
     get: (id: string) => ConfigInstance;
   }
   children: any
+  /**
+   * 注册权限信息
+   * @param options 权限相关信息
+   * @returns 注册后的权限ID
+   */
+  registerPermission: (options: { code: string; title: string }) => { id: string };
 }
 
 type ConfigInstance = {

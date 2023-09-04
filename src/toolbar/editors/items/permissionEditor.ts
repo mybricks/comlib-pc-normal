@@ -13,12 +13,14 @@ const PermissionEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
+        console.log('item.permission JD==> ',item.permission);
         return item.permission;
       },
-      set({ data, focusArea }: EditorResult<Data>, value: BtnItem['permission']) {
+      set({ data, focusArea }: EditorResult<Data>, value: { id: string, register: () => void }) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        item.permission = value;
+        item.permission = { id: value.id };
+        value.register()
       }
     }
   }
