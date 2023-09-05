@@ -53,7 +53,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     const permission = !(env.runtime && key && !env?.hasPermission({ key }));
     if (permission) return 'none';
 
-    const info = env.getPermissionInfo({ id: key });
+    const info = env.getPermissionInfo?.({ id: key });
 
     // TODO: 等后续「无权限时」字段开放后，将 xxx 改成对应的字段
     if (info?.register?.xxx === 'disable') return 'disable';
