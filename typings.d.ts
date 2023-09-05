@@ -19,12 +19,6 @@ interface Env {
     getRouter: () => Record<string, Function>
   },
   hasPermission: ({ key:string }) => boolean
-  /**
-   * 通过权限ID获取对应的权限配置信息，TODO: 把 xxx 换成「无权限时」对应的字段
-   * @param key 权限ID
-   * @returns 权限配置信息
-   */
-  getPermissionInfo: ({ id:string }) => { id:string, type: string, register: { code:string, title:string, xxx:string } }
   [x: string]: any
 }
 interface RuntimeParams<T> {
