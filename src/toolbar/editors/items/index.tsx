@@ -35,7 +35,7 @@ const itemEditor = {
             catelog: 'Hover',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({ focusArea }) {
-              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button:hover`;
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn:not([disabled]):hover`;
             }
           },
           {
@@ -51,12 +51,17 @@ const itemEditor = {
             catelog: '禁用',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
             target({ focusArea }) {
-              return [
-                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]`,
-                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:active`,
-                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:focus`,
-                `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:hover`
-              ];
+              // TODO: 由于子作用域组件无法使用数组型 target，暂且通过 #{id} 的形式绕过去
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled],
+              #{id} div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:active,
+              #{id} div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:focus,
+              #{id} div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:hover`;
+              // return [
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]`,
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:active`,
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:focus`,
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:hover`
+              // ];
             }
           }
         ]

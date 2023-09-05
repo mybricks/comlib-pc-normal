@@ -43,7 +43,7 @@ export default {
               return !data.asMapArea;
             },
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-            target: `.button:hover`,
+            target: `button:not([disabled]):hover`,
             domTarget: '.button'
           },
           {
