@@ -150,6 +150,12 @@ const QueryFilter = (props: QueryFilterProps) => {
             <Space wrap data-form-actions>
               <CollapseButton collapsed={collapsed} setCollapsed={setCollapsed} />
               {data.actions.items.map((item) => {
+                if (env?.runtime && item.permission?.id) {
+                  if (env.hasPermission({ key: item.permission?.id })) {
+                    return null;
+                  }
+                }
+
                 if (typeof item.visible !== 'undefined' && !item.visible) {
                   return null;
                 }

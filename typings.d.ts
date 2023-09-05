@@ -17,7 +17,8 @@ interface Env {
     getProps: () => any;
     getCookies: () => any;
     getRouter: () => Record<string, Function>
-  }
+  },
+  hasPermission: ({ key:string }) => boolean
   [x: string]: any
 }
 interface RuntimeParams<T> {
@@ -67,6 +68,7 @@ interface EditorResult<T> {
   setDesc: (desc?: string) => void
   /** 获取子组件data，引擎 v1.2.69 **/
   getChildByName: (name: string) => any
+  removePermission: (id:string) => void;
 }
 
 interface UpgradeParams<T> {
@@ -83,6 +85,12 @@ interface UpgradeParams<T> {
     get: (id: string) => ConfigInstance;
   }
   children: any
+  /**
+   * 注册权限信息
+   * @param options 权限相关信息
+   * @returns 注册后的权限ID
+   */
+  registerPermission: (options: { code: string; title: string }) => { id: string };
 }
 
 type ConfigInstance = {

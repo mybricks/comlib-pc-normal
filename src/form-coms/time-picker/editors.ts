@@ -93,7 +93,7 @@ export default {
               { type: 'font', config: { disableTextAlign: true } }
             ],
             global: true,
-            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+            target: `.{id} .ant-picker-panel .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
           },
         ]
       }),

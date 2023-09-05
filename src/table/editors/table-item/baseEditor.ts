@@ -6,7 +6,7 @@ import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } 
 import { getColumnItem } from '../../utils';
 import createDataFormatEditor from '../../../utils/dataFormatter';
 
-const formatCode = `
+const formatCode = encodeURIComponent(`
 /**
  * 输入参数：
  *  - 当前列数据： value 
@@ -15,7 +15,7 @@ const formatCode = `
  **/
 ({ value, index, rowRecord }) => {
   return value
-}`
+}`)
 
 const createBaseEditor = ({ data }) => ({
   title: '基础配置',

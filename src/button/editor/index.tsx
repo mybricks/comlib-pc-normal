@@ -28,7 +28,7 @@ export default {
         // },
         items: [
           {
-            title: '默认',
+            title: '按钮样式',
             catelog: '默认',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
@@ -37,17 +37,17 @@ export default {
             target: `.button`
           },
           {
-            title: 'Hover',
+            title: '按钮样式',
             catelog: 'Hover',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
             },
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-            target: `.button:hover`,
+            target: `button:not([disabled]):hover`,
             domTarget: '.button'
           },
           {
-            title: '激活',
+            title: '按钮样式',
             catelog: '激活',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
@@ -56,7 +56,7 @@ export default {
             target: `button.ant-btn:not([disabled]):active`
           },
           {
-            title: '禁用',
+            title: '按钮样式',
             catelog: '禁用',
             ifVisible({ data }: EditorResult<Data>) {
               return !data.asMapArea;
