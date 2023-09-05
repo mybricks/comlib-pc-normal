@@ -42,6 +42,7 @@ export default function (props: RuntimeParams<Data>) {
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
+
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
@@ -203,7 +204,6 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
-    console.log('realShowDataSource1', realShowDataSource);
     // 开启关闭所有展开项
     inputs[InputIds.EnableAllExpandedRows]((enable) => {
       console.log(
@@ -531,7 +531,7 @@ export default function (props: RuntimeParams<Data>) {
       let newSelectedRows = [...selectedRows];
       let newSelectedRowKeys: any = [];
       // 多选情况下，如果没有超出限制就可以选择
-      if (data.selectionType === RowSelectionTypeEnum.Checkbox) {
+      if (data.selectionType !== RowSelectionTypeEnum.Radio) {
         if (
           !data.rowSelectionLimit ||
           (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
@@ -554,16 +554,20 @@ export default function (props: RuntimeParams<Data>) {
       newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
       setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
+      outputs[OutputIds.ROW_SELECTION]({
+        selectedRows: newSelectedRowKeys,
+        selectedRowKeys: newSelectedRowKeys
+      });
     },
-    [selectedRows, selectedRowKeys]
+    [selectedRows, data.rowSelectionLimit, selectedRowKeys]
   );
 
   const onRow = useCallback(
     (_record, index) => {
       const { [DefaultRowKey]: _, ...record } = _record;
       return {
-        onClick: () => {
-          if (data.useRowSelection) {
+        onClick: (e) => {
+          if (data.useRowSelection && e?.target?.tagName === 'TD') {
             setCurrentSelectRows(_record);
           }
           if (data.enableRowFocus) {
@@ -585,7 +589,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       };
     },
-    [focusRowIndex]
+    [focusRowIndex, setCurrentSelectRows]
   );
 
   // 获取表格显示列宽度和

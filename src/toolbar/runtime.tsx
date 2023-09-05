@@ -49,7 +49,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
    * @param key 权限ID
    * @returns 没有权限时需要做的事情吗，如果有权限返回 none
    */
-  const getWhatToDoWithoutPermission = (key?: string) => {
+  const getWhatToDoWithoutPermission = (key?: string): 'none' | 'hide' | 'disable' => {
     const permission = !(env.runtime && key && !env?.hasPermission({ key }));
     if (permission) return 'none';
 
@@ -171,11 +171,12 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     return btnList.map((item) => {
       const todo = getWhatToDoWithoutPermission(item.permission?.id);
       if (item.hidden || todo === 'hide') return;
-      const { type, size, shape, disabled, isCustom, loading } = item;
+      const { type, danger, size, shape, disabled, isCustom, loading } = item;
       return (
         <div key={item.key} data-btn-idx={item.key} className={css.button}>
           <Button
             type={type as any}
+            danger={danger}
             size={size}
             shape={shape}
             disabled={todo === 'disable' ? true : disabled}

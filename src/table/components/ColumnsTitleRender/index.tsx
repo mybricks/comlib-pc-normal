@@ -14,7 +14,7 @@ import {
 } from '../../types';
 import css from './style.less';
 import { OutputIds } from '../../constants';
-import { runJs } from '../../../../package/com-utils';
+// import { runJs } from '../../../../package/com-utils';
 
 const { Column, ColumnGroup } = Table;
 
@@ -141,6 +141,38 @@ export default ({
           filterDropdownVisible: false
         }
       : {};
+
+    const getCellConfig = (dataSource, currentField, rowIndex) => {
+      const { mergeByField, excludeFields } = data.rowMergeConfig || {};
+      if (!data.enbaleRowMerge || !mergeByField || excludeFields?.includes(currentField))
+        return { rowSpan: 1 };
+      const fieldValues = dataSource.map((item) => item[mergeByField]);
+
+      // 如果跟上一行数据一样，则直接合并
+      if (rowIndex !== 0 && fieldValues[rowIndex] === fieldValues[rowIndex - 1]) {
+        return { rowSpan: 0 };
+      }
+
+      // 计算连续相同的值的个数
+      const calcEqualCount = (list, index) => {
+        if (index === list.length - 1) {
+          return 1;
+        }
+        if (index >= list.length) {
+          return 0;
+        }
+        if (list[index] === list[index + 1]) {
+          return 1 + calcEqualCount(list, index + 1);
+        }
+        return 1;
+      };
+
+      let count = calcEqualCount(fieldValues, rowIndex);
+      return {
+        rowSpan: count
+      };
+    };
+
     return (
       <Column
         {...(cItem as any)}
@@ -174,19 +206,20 @@ export default ({
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
-          let cellConfig = {};
-          if (cItem.enableColMerge && !env.edit) {
-            try {
-              cellConfig = runJs(cItem.colMergeScirpt, [{ record, index: rowIndex }]);
-            } catch (e) {
-              cellConfig = {};
-            }
-          }
-          return {
+          // let cellConfig = {};
+          // if (cItem.enableColMerge && !env.edit) {
+          //   try {
+          //     // cellConfig = runJs(cItem.colMergeScirpt, [{ record, index: rowIndex }]);
+          //   } catch (e) {
+          //     cellConfig = {};
+          //   }
+          // }
+          let res = {
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
             'data-table-column-id': cItem.key,
-            ...cellConfig
+            ...getCellConfig(dataSource, cItem.dataIndex, rowIndex)
           };
+          return res;
         }}
         onHeaderCell={(): any => {
           return {

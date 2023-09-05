@@ -83,15 +83,14 @@ export default function ({
   }, []);
 
   return (
-    <div style={style}>
-      <Input.Password
-        allowClear
-        placeholder={placeholder}
-        value={value}
-        disabled={disabled}
-        onChange={onChange}
-        onPressEnter={onPressEnter}
-      />
-    </div>
+    <Input.Password
+      allowClear
+      placeholder={placeholder}
+      value={value}
+      disabled={disabled}
+      onChange={onChange}
+      onPressEnter={onPressEnter}
+      className={css.password}
+    />
   );
 }

@@ -27,7 +27,7 @@ const column = {
       // cateAry[1].items = [...StyleEditor, TitleTipEditor];
 
       cateAry[1].title = '高级';
-      cateAry[1].items = [SortEditor, FilterEditor, ...colMergeEditors];
+      cateAry[1].items = [SortEditor, FilterEditor];
       return {
         title: '表格列'
       };

@@ -28,5 +28,12 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       item.label = item.value
     }
   })
+
+  /**
+    * @description v1.0.7->1.0.8 增加值选择
+  */
+  if (!output.get('onSelect')) {
+    output.add('onSelect', '值选择', { type: "any"});
+  }
   return true;
 }
