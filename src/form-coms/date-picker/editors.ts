@@ -33,11 +33,10 @@ export default {
         title: '清除按钮',
         catelog: '表单项',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: '.anticon-close-circle',
-        initValue: { color: 'rgba(0, 0, 0, 0.25)' }
+        target: '.anticon-close-circle'
       },
       {
-        title: '表单项内容',
+        title: '文本内容',
         catelog: '表单项',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         target: '.ant-picker-input>input'
@@ -51,13 +50,13 @@ export default {
       {
         title: '日期-当前',
         catelog: '默认',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true}}],
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.picker === 'week' || data.config.picker === 'date';
         },
         global: true,
         target({ id }: EditorResult<Data>) {
-          return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`;
+          return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before`;
         }
       },
       {
@@ -76,16 +75,33 @@ export default {
         catelog: '默认',
         options: [
           'border',
-          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'background', config: { disableBackgroundImage: true} },
           { type: 'font', config: { disableTextAlign: true } }
         ],
         global: true,
         ifVisible({ data }: EditorResult<Data>) {
-          return data.config.picker === 'week' || data.config.picker === 'date';
+          return data.config.picker === 'date';
         },
         target({ id }: EditorResult<Data>) {
           return [
-            `.{id} .ant-picker-cell .ant-picker-cell-inner`,
+            `.{id} .ant-picker-cell .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '日期',
+        catelog: '默认',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true, useImportant: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'week';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
             `.{id} .ant-picker-week-panel .ant-picker-cell .ant-picker-cell-inner`
           ];
         }
@@ -175,7 +191,6 @@ export default {
         catelog: 'Hover',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         target: '.anticon-close-circle:hover',
-        initValue: { color: 'rgba(0, 0, 0, 0.45)' },
         domTarget: '.anticon-close-circle'
       },
       {
@@ -330,11 +345,8 @@ export default {
         global: true,
         target({ id }: EditorResult<Data>) {
           return [`.{id} .ant-picker-week-panel-row-selected td.ant-picker-cell-week`];
-        },
-        initValue: { color: 'rgba(255, 255, 255, 0.5)' }
-        //initValue: { color: 'rgba(255, 255, 255, 0.5)' }
+        }
       },
-      //.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner
       {
         title: '月份',
         catelog: 'Focus',
