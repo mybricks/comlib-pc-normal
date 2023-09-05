@@ -308,14 +308,19 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
                   detail: `当前节点是否为叶子节点`
                 },
                 {
-                  label: data.fieldNames?.key || 'key',
-                  insertText: `{${data.fieldNames?.key || 'key'}}` + ' === ',
-                  detail: `当前节点${data.fieldNames?.key || 'key'}值`
+                  label: data.keyFieldName || 'key',
+                  insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
+                  detail: `当前节点${data.keyFieldName || 'key'}值`
                 },
                 {
-                  label: data.fieldNames?.title || 'title',
-                  insertText: `{${data.fieldNames?.title || 'title'}}` + ' === ',
-                  detail: `当前节点${data.fieldNames?.title || 'title'}值`
+                  label: data.titleFieldName || 'title',
+                  insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
+                  detail: `当前节点${data.titleFieldName || 'title'}值`
+                },
+                {
+                  label: data.childrenFieldName || 'children',
+                  insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+                  detail: `当前节点${data.childrenFieldName || 'children'}值`
                 },
               ]
             },

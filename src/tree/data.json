@@ -17,6 +17,9 @@
     }
   ],
   "checkable": false,
+  "draggable": false,
+  "allowDrop": true,
+  "useDropScope": false,
   "showLine": false,
   "disableCheckbox": false,
   "outParentNode": false,

@@ -613,6 +613,9 @@ export default {
             {
               title: '放置范围限制',
               type: 'Radio',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.draggable;
+              },
               options: [
                 {
                   label: '任意',

@@ -67,5 +67,19 @@ export default function ({
   }
   //=========== v1.0.12 end ===============
 
+  /**
+    * @description v1.0.17 增加 动态勾选、拖拽、字段配置 配置项
+    */
+  if (data.draggable === undefined) {
+    data.draggable = false;
+  }
+  if (data.allowDrop === undefined) {
+    data.allowDrop = true;
+  }
+  if (data.useDropScope === undefined) {
+    data.useDropScope = false;
+  }
+  //=========== v1.0.17 end ===============
+
   return true;
 }
