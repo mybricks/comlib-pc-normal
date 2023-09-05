@@ -137,6 +137,7 @@ export default function Runtime({
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
+      setFetching(false);
     });
 
     inputs['setLoading']((val: boolean) => {
@@ -196,8 +197,8 @@ export default function Runtime({
   const onSearch = (e) => {
     //开启远程搜索功能
     if (data.dropdownSearchOption) {
-      outputs['remoteSearch'](e);
       setFetching(true);
+      outputs['remoteSearch'](e);
     }
     //1、远程数据源
     if (!e && data.dropdownSearchOption === true) {
