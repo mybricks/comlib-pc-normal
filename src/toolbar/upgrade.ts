@@ -1,5 +1,5 @@
 import { OutputIds, SizeHeightMap } from './constants';
-import { Data, SizeEnum } from './types';
+import { Data, SizeEnum, TypeEnum } from './types';
 
 export default function ({
   data,
@@ -71,7 +71,18 @@ export default function ({
       setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, item.style);
       item.style = false;
     }
+
+
+    /**
+     * @description v1.0.13 「item style 配置项 => 风格」删除选项「危险按钮」，新增「item style 配置项 => 危险按钮」
+     */
+    if(item.type === TypeEnum.Danger) {
+      item.type = TypeEnum.Primary;
+      item.danger = true;
+    }
   });
+
+ 
 
   return true;
 }
