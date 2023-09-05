@@ -320,6 +320,59 @@ export default {
               }
             },
             {
+              title: '动态显示勾选框',
+              description: `根据节点数据在运行时动态显示节点勾选框的表达式，支持JS表达式语法, 例：{node.checkable}`,
+              type: 'expression',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.checkable;
+              },
+              options: {
+                placeholder: `例：{node.checkable} 节点checkabled为true时显示`,
+                suggestions: [
+                  {
+                    label: 'node',
+                    insertText: `node.`,
+                    detail: `当前节点`,
+                    properties: [
+                      {
+                        label: 'isRoot',
+                        insertText: `{isRoot}`,
+                        detail: `当前节点是否为根节点`
+                      },
+                      {
+                        label: 'isLeaf',
+                        insertText: `{isLeaf}`,
+                        detail: `当前节点是否为叶子节点`
+                      },
+                      {
+                        label: 'checkable',
+                        insertText: `{checkable}`,
+                        detail: `当前节点的checkable值`
+                      },
+                      {
+                        label: data.fieldNames?.key || 'key',
+                        insertText: `{${data.fieldNames?.key || 'key'}}` + ' === ',
+                        detail: `当前节点${data.fieldNames?.key || 'key'}值`
+                      },
+                      {
+                        label: data.fieldNames?.title || 'title',
+                        insertText: `{${data.fieldNames?.title || 'title'}}` + ' === ',
+                        detail: `当前节点${data.fieldNames?.title || 'title'}值`
+                      }
+                    ]
+                  }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.checkboxDisplayScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.checkboxDisplayScript = value;
+                }
+              }
+            },
+            {
               title: '父子节点勾选联动',
               type: 'Switch',
               description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',

@@ -1,6 +1,7 @@
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as Icons from '@ant-design/icons';
 import { Empty, Tree, Input, Image, Space } from 'antd';
+import { ExpressionSandbox } from '../../package/com-utils';
 import { Data, TreeData } from './constants';
 import {
   pretreatTreeData,
@@ -408,6 +409,35 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   };
 
   /**
+   * 树节点勾选框动态显示表达式
+   * @param node 节点数据
+   * @param isRoot 是否根节点
+   */
+  const getDynamicCheckable = (node: TreeData, isRoot?: boolean): boolean => {
+    if (env.edit) return true;
+    let dynamicDisplay = true;
+    if (data.checkable && data.checkboxDisplayScript) {
+      const context = deepCopy(node);
+      if (context._key) {
+        context.key = context._key;
+      }
+      if (context.isRoot === undefined) {
+        context.isRoot = isRoot;
+      }
+      if (context.isLeaf === undefined) {
+        context.isLeaf = !context.children?.length;
+      }
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        dynamicDisplay = !!sandbox.executeWithTemplate(data.checkboxDisplayScript);
+      } catch (error: any) {
+        onError?.(`树组件[${node.title}]节点: ${error}`);
+      }
+    }
+    return dynamicDisplay;
+  };
+
+  /**
    * 树节点遍历渲染
    * @param treeData 树数据
    * @param depth 当前层级
@@ -422,12 +452,14 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     return (
       <>
         {treeData.map((item, inx) => {
+          const checkable = getDynamicCheckable(item, depth === 0);
           return (
             <TreeNode
               key={item.key}
               data-tree-node-id={item.key}
               title={renderTitle(item, depth === 0)}
               disableCheckbox={item.disableCheckbox}
+              checkable={checkable}
             >
               {renderTreeNode(item.children || [], depth + 1, item)}
             </TreeNode>
