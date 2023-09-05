@@ -1,6 +1,6 @@
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as Icons from '@ant-design/icons';
-import { Empty, Tree, Input, Image, Space } from 'antd';
+import { Empty, Tree, Input, Image, Space, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { ExpressionSandbox } from '../../package/com-utils';
 import { Data, TreeData } from './constants';
@@ -253,7 +253,16 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     if (!dragNodeInfo || !dropNodeInfo) return;
     const { parent: dragNodeParent, node: dragNode, index: dragNodeIndex } = dragNodeInfo;
     const { parent: dropNodeParent, node: dropNode, index: dropNodeIndex } = dropNodeInfo;
-    console.log(dragNodeInfo, dropNodeInfo, 'onDrop');
+
+    /** 判断是否满足拖拽范围限制 */
+    switch (data.useDropScope) {
+      case 'parent':
+        if (dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
+          message.error(data.dropScopeMessage);
+          return;
+        }
+        break;
+    }
 
     // 删除原来的节点
     if (!dragNodeParent) {
@@ -559,7 +568,6 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
               data-tree-node-id={item[keyFieldName]}
               data-draggable={draggable}
               data-allow-drop={allowDrop}
-              // data-node={outputItem}
               title={renderTitle(item, outputItem, depth === 0)}
               disableCheckbox={item.disableCheckbox}
               checkable={checkable}

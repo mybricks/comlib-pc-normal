@@ -29,18 +29,20 @@ const getItemProp = ({
 }) => {
   if (!focusArea) return;
   const key: string = focusArea.dataset[dataset];
-  const item = traverseTree({
-    data,
-    targetKey: key,
-    isParent
-  });
+  const { node, parent } =
+    traverseTree({
+      data,
+      targetKey: key
+    }) || {};
+  const item = isParent ? parent : node;
   if (val === 'obj') return item;
   else return item[val];
 };
 
 const moveNode = ({ data, focusArea, isDown }: { data: Data; focusArea: any; isDown: boolean }) => {
   const key: string = focusArea.dataset['treeNodeId'];
-  const index = data.treeData.findIndex((item) => item.key === key);
+  const { keyFieldName = 'key' } = data;
+  const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
   if (index !== -1) {
     const target = data.treeData.splice(index, 1)[0];
     if (isDown) {
@@ -57,7 +59,7 @@ const moveNode = ({ data, focusArea, isDown }: { data: Data; focusArea: any; isD
       isParent: true
     });
     if (parent && parent.children) {
-      const chileIndex = parent.children.findIndex((item) => item.key === key);
+      const chileIndex = parent.children.findIndex((item) => item[keyFieldName] === key);
       const child = parent.children.splice(chileIndex, 1)[0];
       if (isDown) {
         parent.children.splice(chileIndex + 1, 0, child);
@@ -607,6 +609,46 @@ export default {
                   data.allowDropScript = value;
                 }
               }
+            },
+            {
+              title: '放置范围限制',
+              type: 'Radio',
+              options: [
+                {
+                  label: '任意',
+                  value: false
+                },
+                {
+                  label: '当前父节点',
+                  value: 'parent'
+                }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useDropScope;
+                },
+                set({ data }: EditorResult<Data>, value: boolean | 'parent') {
+                  data.useDropScope = value;
+                }
+              }
+            },
+            {
+              title: '禁止放置提示语',
+              type: 'text',
+              options: {
+                placeholder: '不满足放置范围限制时的提示语'
+              },
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.useDropScope;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.dropScopeMessage;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.dropScopeMessage = value;
+                }
+              }
             }
           ]
         },
@@ -803,7 +845,8 @@ export default {
         type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           const key: string = focusArea.dataset['treeNodeId'];
-          const index = data.treeData.findIndex((item) => item.key === key);
+          const { keyFieldName = 'key' } = data;
+          const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
           if (index === 0) {
             return false;
           }
@@ -815,7 +858,7 @@ export default {
               val: 'obj',
               isParent: true
             });
-            if (parent && parent.children?.[0].key === key) return false;
+            if (parent && parent.children?.[0]?.[keyFieldName] === key) return false;
           }
           return true;
         },
@@ -830,7 +873,8 @@ export default {
         type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           const key: string = focusArea.dataset['treeNodeId'];
-          const index = data.treeData.findIndex((item) => item.key === key);
+          const { keyFieldName = 'key' } = data;
+          const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
           if (index === data.treeData.length - 1) {
             return false;
           }
@@ -842,7 +886,8 @@ export default {
               val: 'obj',
               isParent: true
             });
-            if (parent && parent.children?.[parent.children.length - 1].key === key) return false;
+            if (parent && parent.children?.[parent.children.length - 1]?.[keyFieldName] === key)
+              return false;
           }
           return true;
         },
@@ -858,7 +903,8 @@ export default {
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             const key: string = focusArea.dataset['treeNodeId'];
-            const index = data.treeData.findIndex((item) => item.key === key);
+            const { keyFieldName = 'key' } = data;
+            const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
             if (index !== -1) {
               data.treeData.splice(index, 1);
             } else {
@@ -870,7 +916,7 @@ export default {
                 isParent: true
               });
               if (Array.isArray(parent.children)) {
-                const index = parent.children.findIndex((item) => item.key === key);
+                const index = parent.children.findIndex((item) => item[keyFieldName] === key);
                 index !== -1 && parent.children.splice(index, 1);
               }
             }
@@ -881,8 +927,9 @@ export default {
         title: '删除所有子节点',
         type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const { keyFieldName = 'key' } = data;
           const key: string = focusArea.dataset['treeNodeId'];
-          const index = data.treeData.findIndex((item) => item.key === key);
+          const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
           let target: TreeData;
           if (index !== -1) {
             target = data.treeData[index];
@@ -898,8 +945,9 @@ export default {
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
+            const { keyFieldName = 'key' } = data;
             const key: string = focusArea.dataset['treeNodeId'];
-            const index = data.treeData.findIndex((item) => item.key === key);
+            const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
             if (index !== -1) {
               data.treeData[index].children = [];
             } else {

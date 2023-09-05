@@ -81,13 +81,20 @@ export interface Data {
   draggable: boolean | 'custom';
   /** 动态可拖拽表达式 */
   draggableScript?: string;
+  /** 允许放置 */
+  allowDrop: boolean | 'custom';
+  /** 动态可放置表达式 */
+  allowDropScript?: string;
+  /** 放置范围限制 */
+  useDropScope: boolean | 'parent';
+  /** 放置范围限制提示语 */
+  dropScopeMessage?: string;
 }
 
 export interface TreeData {
   title: string;
   value: string;
   key: string;
-  _key?: string;
   disableCheckbox?: boolean;
   children?: TreeData[];
   [key: string]: any;
