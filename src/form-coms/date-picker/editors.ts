@@ -180,6 +180,21 @@ export default {
         }
       },
       {
+        title: '确认按钮',
+        catelog: '默认',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === 'date';
+        },
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
+          'BoxShadow'
+        ],
+        global: true,
+        target: `.{id} .ant-btn-primary`
+      },
+      {
         title: '边框',
         catelog: 'Hover',
         options: ['border'],
@@ -294,6 +309,20 @@ export default {
         target({ id }: EditorResult<Data>) {
           return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`;
         }
+      },
+      {
+        title: '确认按钮',
+        catelog: 'Hover',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === 'date';
+        },
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
+        ],
+        global: true,
+        target: `.{id}  .ant-btn:not([disabled]):hover`
       },
       {
         title: '边框',
@@ -418,10 +447,38 @@ export default {
         }
       },
       {
+        title: '确认按钮',
+        catelog: '选中',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === 'date';
+        },
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
+        ],
+        global: true,
+        target: `.{id}  .ant-btn-primary:active`
+      },
+      {
         title: '表单项',
         catelog: '禁用',
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-picker.ant-picker-disabled'
+      },
+      {
+        title: '确认按钮',
+        catelog: '禁用',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === 'date';
+        },
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
+        ],
+        global: true,
+        target: `.{id}  .ant-btn-primary[disabled]`
       },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {

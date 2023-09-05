@@ -36,11 +36,6 @@ const emptyRules = [
   }
 ];
 
-const titleMap = {
-  month: '月份',
-  quarter: '季度',
-  year: '年'
-}
 
 export default {
   '@resize': {
@@ -598,11 +593,39 @@ export default {
         }
       },
       {
+        title: '确认按钮',
+        catelog: '选中',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === 'date';
+        },
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
+        ],
+        global: true,
+        target: `.{id}  .ant-btn-primary:active`
+      },
+      {
         title: '表单项',
         catelog: '禁用',
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-picker.ant-picker-disabled'
       },
+      {
+        title: '确认按钮',
+        catelog: '禁用',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.showTime && data.config.picker === 'date';
+        },
+        options: [
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'border' },
+        ],
+        global: true,
+        target: `.{id}  .ant-btn-primary[disabled]`
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
