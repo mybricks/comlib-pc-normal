@@ -89,7 +89,7 @@ export default {
         }
       },
       {
-        title: '日期',
+        title: '日期-周',
         catelog: '默认',
         options: [
           'border',
@@ -303,7 +303,7 @@ export default {
       },
       {
         title: '日期-选中',
-        catelog: 'Focus',
+        catelog: '选中',
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.picker === 'date';
         },
@@ -319,7 +319,7 @@ export default {
       },
       {
         title: '日期-选中',
-        catelog: 'Focus',
+        catelog: '选中',
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.picker === 'week';
         },
@@ -335,7 +335,7 @@ export default {
       },
       {
         title: '周-选中',
-        catelog: 'Focus',
+        catelog: '选中',
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.picker === 'week';
         },
@@ -349,7 +349,7 @@ export default {
       },
       {
         title: '月份',
-        catelog: 'Focus',
+        catelog: '选中',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -367,7 +367,7 @@ export default {
       },
       {
         title: '季度',
-        catelog: 'Focus',
+        catelog: '选中',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -385,7 +385,7 @@ export default {
       },
       {
         title: '年份',
-        catelog: 'Focus',
+        catelog: '选中',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },

@@ -36,6 +36,12 @@ const emptyRules = [
   }
 ];
 
+const titleMap = {
+  month: '月份',
+  quarter: '季度',
+  year: '年'
+}
+
 export default {
   '@resize': {
     options: ['width']
@@ -86,6 +92,9 @@ export default {
         catelog: '默认',
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'date' || data.config.picker === 'week';
+        },
         target({ id }: EditorResult<Data>) {
           return `.{id} .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner:before`;
         }
@@ -94,6 +103,9 @@ export default {
         catelog: '默认',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'date' || data.config.picker === 'week';
+        },
         target({ id }: EditorResult<Data>) {
           return `.{id} .ant-picker-cell-today`;
         }
@@ -107,8 +119,84 @@ export default {
           { type: 'font', config: { disableTextAlign: true } }
         ],
         global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'date';
+        },
         target({ id }: EditorResult<Data>) {
           return [`.{id} .ant-picker-cell .ant-picker-cell-inner`];
+        }
+      },
+      {
+        title: '日期-周',
+        catelog: '默认',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true, useImportant: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'week';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [`.{id} .ant-picker-week-panel .ant-picker-cell .ant-picker-cell-inner`];
+        }
+      },
+      {
+        title: '月',
+        catelog: '默认',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'month';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell .ant-picker-cell-inner`,
+            `.{id} .ant-picker-week-panel .ant-picker-cell .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '季度',
+        catelog: '默认',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'quarter';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell .ant-picker-cell-inner`,
+            `.{id} .ant-picker-week-panel .ant-picker-cell .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '年份',
+        catelog: '默认',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'year';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell .ant-picker-cell-inner`,
+            `.{id} .ant-picker-week-panel .ant-picker-cell .ant-picker-cell-inner`
+          ];
         }
       },
       {
@@ -166,6 +254,9 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker !== 'week';
+        },
         global: true,
         target({ id }: EditorResult<Data>) {
           return [
@@ -183,9 +274,82 @@ export default {
           { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'date';
+        },
         global: true,
         target({ id }: EditorResult<Data>) {
           return `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`;
+        }
+      },
+      {
+        title: '日期-周',
+        catelog: 'Hover',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'week';
+        },
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return `.{id} .ant-picker-week-panel-row:hover td`
+        }
+      },
+      {
+        title: '月份',
+        catelog: 'Hover',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'month';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '季度',
+        catelog: 'Hover',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'quarter';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '年份',
+        catelog: 'Hover',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'year';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
+          ];
         }
       },
       {
@@ -236,12 +400,15 @@ export default {
       
       {
         title: '日期-选中',
-        catelog: 'Focus',
+        catelog: '选中',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
           { type: 'font', config: { disableTextAlign: true } }
         ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'date';
+        },
         global: true,
         target({ id }: EditorResult<Data>) {
           return [
@@ -253,10 +420,148 @@ export default {
         }
       },
       {
+        title: '日期-选中',
+        catelog: '选中',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'week';
+        },
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return [`.{id} .ant-picker-week-panel-row-selected td`];
+        }
+      },
+      {
+        title: '周-选中',
+        catelog: '选中',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'week';
+        },
+        options: [
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        target({ id }: EditorResult<Data>) {
+          return [`.{id} .ant-picker-week-panel-row-selected td.ant-picker-cell-week`];
+        }
+      },
+      {
+        title: '月份',
+        catelog: '选中',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'month';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner`,
+            `.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '季度',
+        catelog: '选中',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'quarter';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner`,
+            `.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
+        title: '年份',
+        catelog: '选中',
+        options: [
+          'border',
+          { type: 'background', config: { disableBackgroundImage: true } },
+          { type: 'font', config: { disableTextAlign: true } }
+        ],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'year';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner`,
+            `.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner`
+          ];
+        }
+      },
+      {
         title: '日期-选中区间',
-        catelog: 'Focus',
+        catelog: '选中',
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'date';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
+          ];
+        }
+      },
+      {
+        title: '月-选中区间',
+        catelog: '选中',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'month';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
+          ];
+        }
+      },
+      {
+        title: '季度-选中区间',
+        catelog: '选中',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'quarter';
+        },
+        target({ id }: EditorResult<Data>) {
+          return [
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):before`,
+            `.{id} .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):before`
+          ];
+        }
+      },
+      {
+        title: '年份-选中区间',
+        catelog: '选中',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker === 'year';
+        },
         target({ id }: EditorResult<Data>) {
           return [
             `.{id} .ant-picker-cell-in-view.ant-picker-cell-in-range:before`,
@@ -267,17 +572,18 @@ export default {
       },
       {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
-        catelog: 'Focus',
+        catelog: '选中',
         global: true,
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.picker !== 'week';
+        },
         target({ id }: EditorResult<Data>) {
           return [`.{id} td.ant-picker-cell.ant-picker-cell-in-view.ant-picker-cell-in-range`];
         }
       },
-      
-      
       {
         title: '时间-选中',
-        catelog: 'Focus',
+        catelog: '选中',
         options: [
           'border',
           { type: 'background', config: { disableBackgroundImage: true } },
@@ -290,7 +596,13 @@ export default {
         target({ id }: EditorResult<Data>) {
           return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`;
         }
-      }
+      },
+      {
+        title: '表单项',
+        catelog: '禁用',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-picker.ant-picker-disabled'
+      },
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
