@@ -272,19 +272,49 @@ export default {
           title: '配置',
           items: [
             {
-              title: '节点标识字段',
-              type: 'text',
-              description:
-                '不填时会根据节点位置生成唯一标识，存储在key属性中。所有节点的标识字段值在整个树范围内不能重复。',
+              title: '标题字段',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 title'
+              },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  if (!data.keyFieldName) {
-                    data.keyFieldName = 'key';
-                  }
+                  return data.titleFieldName;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.titleFieldName = value;
+                }
+              }
+            },
+            {
+              title: '标识字段',
+              type: 'Text',
+              description:
+                '所有节点的标识字段值在整个树范围内不能重复。不填时会根据节点位置生成唯一标识，存储在key属性中。',
+              options: {
+                placeholder: '节点的唯一标识，默认值为 key'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
                   return data.keyFieldName;
                 },
-                set({ data }: EditorResult<Data>, value: string) {
+                set({ data, input, output }: EditorResult<Data>, value: string) {
                   data.keyFieldName = value;
+                }
+              }
+            },
+            {
+              title: '叶子节点字段',
+              type: 'Text',
+              options: {
+                placeholder: '默认值为 children'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.childrenFieldName;
+                },
+                set({ data, input, output }: EditorResult<Data>, value: string) {
+                  data.childrenFieldName = value;
                 }
               }
             },

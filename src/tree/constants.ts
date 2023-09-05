@@ -54,14 +54,12 @@ export interface Data {
   useActions: boolean;
   actionBtns: ActionBtn[];
   allNodeDeletable: boolean;
+  /** 字段配置 */
   keyFieldName: string;
+  titleFieldName: string;
+  childrenFieldName: string;
   useCheckEvent?: boolean;
   checkStrictly?: boolean;
-  fieldNames?: {
-    title?: string;
-    key?: string;
-    children?: string;
-  }
   /** 省略样式配置 */
   ellipsisActionBtnsConfig: {
     useEllipsis: boolean;

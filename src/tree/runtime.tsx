@@ -1,6 +1,7 @@
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as Icons from '@ant-design/icons';
 import { Empty, Tree, Input, Image, Space } from 'antd';
+import type { TreeProps } from 'antd/es/tree';
 import { ExpressionSandbox } from '../../package/com-utils';
 import { Data, TreeData } from './constants';
 import {
@@ -27,7 +28,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const treeKeys = useRef<any>(null);
 
-  const keyFieldName = data.keyFieldName || 'key';
+  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
+  const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
+  const childrenFieldName = env.edit ? 'children' : data.childrenFieldName || 'children';
 
   const rootKey = useMemo(() => {
     return uuid();
@@ -84,7 +87,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   const filterMethods = useMemo(() => {
     return {
       byTitle: (node: TreeData) => {
-        return node.title?.indexOf(data.filterValue) > -1;
+        return node[titleFieldName]?.indexOf(data.filterValue) > -1;
       }
     };
   }, []);
@@ -231,6 +234,17 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   };
 
   /**
+   * onDrop事件处理
+   */
+  const onDrop: TreeProps['onDrop'] = (info) => {
+    console.log(info);
+    const dropKey = info.node.key;
+    const dragKey = info.dragNode.key;
+    const dropPos = info.node.pos.split('-');
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+  };
+
+  /**
    * 添加节点渲染
    * @param item 树节点数据
    * @param isRoot 是否为根节点
@@ -278,9 +292,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             if (isRoot) {
               data.treeData = [...data.treeData, node];
             } else {
-              Array.isArray(item.parent?.children)
-                ? item.parent?.children.push(node)
-                : (item.parent.children = [node]);
+              Array.isArray(item.parent?.[childrenFieldName])
+                ? item.parent?.[childrenFieldName].push(node)
+                : (item.parent[childrenFieldName] = [node]);
             }
             if (data.defaultExpandAll) {
               data.expandedKeys.push(item.key);
@@ -328,14 +342,14 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * @returns JSX
    */
   const renderTitle = (item, isRoot) => {
-    item.title = env.i18n(item.title || '');
+    const title = env.i18n(item[titleFieldName] || '');
 
     const Icon = getNodeIcon(item);
 
     // 搜索
-    const index = item.title?.indexOf(data.searchValue);
-    const beforeStr = item.title.substr(0, index);
-    const afterStr = item.title.substr(index + data?.searchValue?.length);
+    const index = title?.indexOf(data.searchValue);
+    const beforeStr = title.substr(0, index);
+    const afterStr = title.substr(index + data?.searchValue?.length);
     const wrapperStyle: React.CSSProperties = {
       display: 'flex',
       justifyContent: 'space-between',
@@ -357,11 +371,11 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       outputItem.isRoot = isRoot;
     }
     if (outputItem.isLeaf === undefined) {
-      outputItem.isLeaf = !outputItem.children?.length;
+      outputItem.isLeaf = !outputItem[childrenFieldName]?.length;
     }
 
     /**只读态 */
-    const title = (
+    const Title = (
       <Space size={data.iconConfig?.gutter} style={titleStyle} className="title">
         {Icon}
         {index > -1 ? (
@@ -371,7 +385,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             {afterStr}
           </div>
         ) : (
-          item.title
+          title
         )}
       </Space>
     );
@@ -381,16 +395,16 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         <Input
           style={inputStyle}
           bordered={false}
-          defaultValue={item.title}
+          defaultValue={title}
           size="middle"
           onClick={(e) => {
             e.stopPropagation();
           }}
           onPressEnter={({ target }) => {
-            item.title = target.value;
-            outputItem.title = target.value;
+            item[titleFieldName] = target.value;
+            outputItem[titleFieldName] = target.value;
             data.isEditing = '';
-            const { children, ...res } = outputItem;
+            const { [childrenFieldName]: children, ...res } = outputItem;
             outputs[MODIFY_BTN_ID](res);
           }}
         />
@@ -401,7 +415,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         ActionBtns({ data, record: item, outputItem, env, outputs, onError });
     return (
       <div style={wrapperStyle}>
-        {title}
+        {Title}
         {editInput}
         {actionBtns}
       </div>
@@ -545,6 +559,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
           defaultCheckedKeys={data.checkedKeys}
           selectedKeys={selectedKeys}
           onSelect={onSelect}
+          onDrop={onDrop}
           blockNode
         >
           {renderTreeNode(treeData || [])}
