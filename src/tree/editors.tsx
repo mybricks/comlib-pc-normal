@@ -5,13 +5,6 @@ import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID, IconSrcType } from './constants';
 import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
-interface Result {
-  data: Data;
-  input: any;
-  output: any;
-  focusArea?: any;
-}
-
 const buildNewNode = (uuid: string) => {
   return {
     title: uuid,
@@ -76,7 +69,7 @@ const moveNode = ({ data, focusArea, isDown }: { data: Data; focusArea: any; isD
 };
 
 export default {
-  '@init': ({ data }: Result) => {
+  '@init': ({ data }: EditorResult<Data>) => {
     pretreatTreeData({ treeData: data.treeData, data, defaultExpandAll: true });
     setCheckboxStatus({ treeData: data.treeData, value: false });
   },
@@ -308,114 +301,14 @@ export default {
               }
             },
             {
-              title: '勾选',
+              title: '节点点击展开收起',
               type: 'Switch',
-              value: {
-                get({ data }: Result) {
-                  return data.checkable;
-                },
-                set({ data }: Result, value: boolean) {
-                  data.checkable = value;
-                }
-              }
-            },
-            {
-              title: '动态显示勾选框',
-              description: `根据节点数据在运行时动态显示节点勾选框的表达式，支持JS表达式语法, 例：{node.checkable}`,
-              type: 'expression',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.checkable;
-              },
-              options: {
-                placeholder: `例：{node.checkable} 节点checkabled为true时显示`,
-                suggestions: [
-                  {
-                    label: 'node',
-                    insertText: `node.`,
-                    detail: `当前节点`,
-                    properties: [
-                      {
-                        label: 'isRoot',
-                        insertText: `{isRoot}`,
-                        detail: `当前节点是否为根节点`
-                      },
-                      {
-                        label: 'isLeaf',
-                        insertText: `{isLeaf}`,
-                        detail: `当前节点是否为叶子节点`
-                      },
-                      {
-                        label: 'checkable',
-                        insertText: `{checkable}`,
-                        detail: `当前节点的checkable值`
-                      },
-                      {
-                        label: data.fieldNames?.key || 'key',
-                        insertText: `{${data.fieldNames?.key || 'key'}}` + ' === ',
-                        detail: `当前节点${data.fieldNames?.key || 'key'}值`
-                      },
-                      {
-                        label: data.fieldNames?.title || 'title',
-                        insertText: `{${data.fieldNames?.title || 'title'}}` + ' === ',
-                        detail: `当前节点${data.fieldNames?.title || 'title'}值`
-                      }
-                    ]
-                  }
-                ]
-              },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.checkboxDisplayScript;
+                  return data.clickExpandable;
                 },
-                set({ data }: EditorResult<Data>, value: string) {
-                  data.checkboxDisplayScript = value;
-                }
-              }
-            },
-            {
-              title: '父子节点勾选联动',
-              type: 'Switch',
-              description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',
-              ifVisible({ data }: EditorResult<Data>) {
-                return data.checkable;
-              },
-              value: {
-                get({ data }: Result) {
-                  return !data.checkStrictly;
-                },
-                set({ data }: Result, value: boolean) {
-                  data.checkStrictly = !value;
-                }
-              }
-            },
-            {
-              title: '禁用',
-              type: 'Switch',
-              ifVisible({ data }: Result) {
-                return data.checkable;
-              },
-              value: {
-                get({ data }: Result) {
-                  return data.disableCheckbox;
-                },
-                set({ data }: Result, value: boolean) {
-                  setCheckboxStatus({ treeData: data.treeData, value });
-                  data.disableCheckbox = value;
-                }
-              }
-            },
-            {
-              title: '输出父节点信息',
-              type: 'Switch',
-              ifVisible({ data }: Result) {
-                return data.checkable && !data.checkStrictly;
-              },
-              value: {
-                get({ data }: Result) {
-                  return data.outParentKeys;
-                },
-                set({ data }: Result, value: boolean) {
-                  data.outParentKeys = value;
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.clickExpandable = value;
                 }
               }
             }
@@ -442,12 +335,103 @@ export default {
                   outputId: 'click'
                 };
               }
+            }
+          ]
+        }
+      ];
+      cate[1].items = [
+        {
+          title: '勾选功能',
+          items: [
+            {
+              title: '节点勾选',
+              type: 'Radio',
+              options: [
+                {
+                  label: '不开启',
+                  value: false
+                },
+                {
+                  label: '全部节点',
+                  value: true
+                },
+                {
+                  label: '自定义节点',
+                  value: 'custom'
+                }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.checkable;
+                },
+                set({ data }: EditorResult<Data>, value: boolean | 'custom') {
+                  data.checkable = value;
+                }
+              }
+            },
+            {
+              title: '节点可勾选表达式',
+              description: `根据节点数据在运行时动态显示节点勾选框的表达式，支持JS表达式语法, 例：{node.checkable}`,
+              type: 'expression',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.checkable === 'custom';
+              },
+              options: {
+                placeholder: `例：{node.checkable} 节点checkabled为true时显示勾选框`,
+                suggestions: [
+                  {
+                    label: 'node',
+                    insertText: `node.`,
+                    detail: `当前节点`,
+                    properties: [
+                      {
+                        label: 'isRoot',
+                        insertText: `{isRoot}`,
+                        detail: `当前节点是否为根节点`
+                      },
+                      {
+                        label: 'isLeaf',
+                        insertText: `{isLeaf}`,
+                        detail: `当前节点是否为叶子节点`
+                      },
+                      {
+                        label: 'checkable',
+                        insertText: `{checkable}`,
+                        detail: `当前节点的checkable值`
+                      },
+                      {
+                        label: data.keyFieldName || 'key',
+                        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
+                        detail: `当前节点${data.keyFieldName || 'key'}值`
+                      },
+                      {
+                        label: data.titleFieldName || 'title',
+                        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
+                        detail: `当前节点${data.titleFieldName || 'title'}值`
+                      },
+                      {
+                        label: data.childrenFieldName || 'children',
+                        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+                        detail: `当前节点${data.childrenFieldName || 'children'}值`
+                      }
+                    ]
+                  }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.checkableScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.checkableScript = value;
+                }
+              }
             },
             {
               title: '勾选事件',
               type: 'Switch',
               ifVisible({ data }: EditorResult<Data>) {
-                return data.checkable;
+                return !!data.checkable;
               },
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -473,123 +457,245 @@ export default {
               title: '勾选事件',
               type: '_Event',
               ifVisible({ data }: EditorResult<Data>) {
-                return data.useCheckEvent;
+                return !!data.checkable && data.useCheckEvent;
               },
               options: () => {
                 return {
                   outputId: 'check'
                 };
               }
+            },
+            {
+              title: '父子节点勾选联动',
+              type: 'Switch',
+              description: '关闭后，可以单独勾选父节点，子节点不再被联动选择。',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.checkable;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return !data.checkStrictly;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.checkStrictly = !value;
+                }
+              }
+            },
+            {
+              title: '禁用勾选框',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.checkable;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disableCheckbox;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  setCheckboxStatus({ treeData: data.treeData, value });
+                  data.disableCheckbox = value;
+                }
+              }
+            },
+            {
+              title: '输出父节点信息',
+              type: 'Switch',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.checkable && !data.checkStrictly;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.outParentKeys;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.outParentKeys = value;
+                }
+              }
             }
           ]
-        }
-      ];
-      cate[1].items = [
+        },
         {
-          title: '节点点击展开收起',
-          type: 'Switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.clickExpandable;
+          title: '拖拽功能',
+          items: [
+            {
+              title: '节点拖拽',
+              type: 'Radio',
+              options: [
+                {
+                  label: '不开启',
+                  value: false
+                },
+                {
+                  label: '全部节点',
+                  value: true
+                },
+                {
+                  label: '自定义节点',
+                  value: 'custom'
+                }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.draggable;
+                },
+                set({ data }: EditorResult<Data>, value: boolean | 'custom') {
+                  data.draggable = value;
+                }
+              }
             },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.clickExpandable = value;
+            {
+              title: '节点可拖拽表达式',
+              description: `根据节点数据在运行时动态计算节点是否可拖拽的表达式，支持JS表达式语法, 例：{node.draggable}`,
+              type: 'expression',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.draggable === 'custom';
+              },
+              options: {
+                placeholder: `例：{node.isLeaf} 节点isLeaf属性为true时可拖拽`,
+                suggestions: [
+                  {
+                    label: 'node',
+                    insertText: `node.`,
+                    detail: `当前节点`,
+                    properties: [
+                      {
+                        label: 'isRoot',
+                        insertText: `{isRoot}`,
+                        detail: `当前节点是否为根节点`
+                      },
+                      {
+                        label: 'isLeaf',
+                        insertText: `{isLeaf}`,
+                        detail: `当前节点是否为叶子节点`
+                      },
+                      {
+                        label: data.keyFieldName || 'key',
+                        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
+                        detail: `当前节点${data.keyFieldName || 'key'}值`
+                      },
+                      {
+                        label: data.titleFieldName || 'title',
+                        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
+                        detail: `当前节点${data.titleFieldName || 'title'}值`
+                      },
+                      {
+                        label: data.childrenFieldName || 'children',
+                        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+                        detail: `当前节点${data.childrenFieldName || 'children'}值`
+                      }
+                    ]
+                  }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.draggableScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.draggableScript = value;
+                }
+              }
             }
-          }
+          ]
         },
         {
           title: '节点操作项',
-          type: 'Switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useActions;
+          items: [
+            {
+              title: '节点操作项',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useActions;
+                },
+                set({ data, output }: EditorResult<Data>, value: boolean) {
+                  data.useActions = value;
+                  if (value && !data?.actionBtns?.length) {
+                    data.actionBtns = [
+                      {
+                        type: 'link',
+                        title: '修改',
+                        size: 'middle',
+                        id: 'modify',
+                        iconConfig: {
+                          src: false,
+                          size: [14, 14],
+                          gutter: 8
+                        }
+                      },
+                      {
+                        type: 'link',
+                        title: '删除',
+                        size: 'middle',
+                        id: 'delete',
+                        iconConfig: {
+                          src: false,
+                          size: [14, 14],
+                          gutter: 8
+                        }
+                      }
+                    ];
+                    const schema = {
+                      type: 'object',
+                      properties: {
+                        title: {
+                          type: 'string'
+                        },
+                        depth: {
+                          type: 'number'
+                        }
+                      }
+                    };
+                    !output.get(MODIFY_BTN_ID) && output.add(MODIFY_BTN_ID, '修改', schema);
+                    !output.get(DELETE_BTN_ID) && output.add(DELETE_BTN_ID, '删除', schema);
+                  }
+                }
+              }
             },
-            set({ data, output }: EditorResult<Data>, value: boolean) {
-              data.useActions = value;
-              if (value && !data?.actionBtns?.length) {
-                data.actionBtns = [
-                  {
-                    type: 'link',
-                    title: '修改',
-                    size: 'middle',
-                    id: 'modify',
-                    iconConfig: {
-                      src: false,
-                      size: [14, 14],
-                      gutter: 8
-                    }
-                  },
-                  {
-                    type: 'link',
-                    title: '删除',
-                    size: 'middle',
-                    id: 'delete',
-                    iconConfig: {
-                      src: false,
-                      size: [14, 14],
-                      gutter: 8
-                    }
-                  }
-                ];
-                const schema = {
-                  type: 'object',
-                  properties: {
-                    title: {
-                      type: 'string'
-                    },
-                    depth: {
-                      type: 'number'
-                    }
-                  }
+            commonActionBtnsEditor(data, output),
+            {
+              title: '添加节点',
+              description: '开启后，树组件支持添加节点功能',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.addable;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.addable = value;
+                }
+              }
+            },
+            {
+              title: '支持添加节点的最大深度',
+              type: 'InputNumber',
+              description: '设置允许添加节点的最大深度，0表示不限制',
+              options: [{ min: 0, width: 100 }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.addable;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.maxDepth];
+                },
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.maxDepth = value[0];
+                }
+              }
+            },
+            {
+              title: '添加完成',
+              type: '_Event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.addable;
+              },
+              options: () => {
+                return {
+                  outputId: 'addNodeDone'
                 };
-                !output.get(MODIFY_BTN_ID) && output.add(MODIFY_BTN_ID, '修改', schema);
-                !output.get(DELETE_BTN_ID) && output.add(DELETE_BTN_ID, '删除', schema);
               }
             }
-          }
-        },
-        commonActionBtnsEditor(data, output),
-        {
-          title: '添加节点',
-          description: '开启后，树组件支持添加节点功能',
-          type: 'Switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.addable;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.addable = value;
-            }
-          }
-        },
-        {
-          title: '支持添加节点的最大深度',
-          type: 'InputNumber',
-          description: '设置允许添加节点的最大深度，0表示不限制',
-          options: [{ min: 0, width: 100 }],
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.addable;
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return [data.maxDepth];
-            },
-            set({ data }: EditorResult<Data>, value: number[]) {
-              data.maxDepth = value[0];
-            }
-          }
-        },
-        {
-          title: '添加完成',
-          type: '_Event',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.addable;
-          },
-          options: () => {
-            return {
-              outputId: 'addNodeDone'
-            };
-          }
+          ]
         }
       ];
     }

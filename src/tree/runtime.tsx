@@ -414,9 +414,8 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * @param isRoot 是否根节点
    */
   const getDynamicCheckable = (node: TreeData, isRoot?: boolean): boolean => {
-    if (env.edit) return true;
-    let dynamicDisplay = true;
-    if (data.checkable && data.checkboxDisplayScript) {
+    let flag = true;
+    if (data.checkable === 'custom' && data.checkableScript) {
       const context = deepCopy(node);
       if (context._key) {
         context.key = context._key;
@@ -425,16 +424,44 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         context.isRoot = isRoot;
       }
       if (context.isLeaf === undefined) {
-        context.isLeaf = !context.children?.length;
+        context.isLeaf = !context[childrenFieldName]?.length;
       }
       const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
       try {
-        dynamicDisplay = !!sandbox.executeWithTemplate(data.checkboxDisplayScript);
+        flag = !!sandbox.executeWithTemplate(data.checkableScript);
       } catch (error: any) {
-        onError?.(`树组件[${node.title}]节点: ${error}`);
+        onError?.(`树组件[${node[titleFieldName]}]节点: ${error}`);
       }
     }
-    return dynamicDisplay;
+    return flag;
+  };
+
+  /**
+   * 树节点动态可拖拽表达式
+   * @param node 节点数据
+   * @param isRoot 是否根节点
+   */
+  const getDynamicDraggable = (node: TreeData, isRoot?: boolean): boolean => {
+    let flag = true;
+    if (data.draggable === 'custom' && data.draggableScript) {
+      const context = deepCopy(node);
+      if (context._key) {
+        context.key = context._key;
+      }
+      if (context.isRoot === undefined) {
+        context.isRoot = isRoot;
+      }
+      if (context.isLeaf === undefined) {
+        context.isLeaf = !context[childrenFieldName]?.length;
+      }
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        flag = !!sandbox.executeWithTemplate(data.draggableScript);
+      } catch (error: any) {
+        onError?.(`树组件[${node[titleFieldName]}]节点: ${error}`);
+      }
+    }
+    return flag;
   };
 
   /**
@@ -453,15 +480,17 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       <>
         {treeData.map((item, inx) => {
           const checkable = getDynamicCheckable(item, depth === 0);
+          const draggable = getDynamicDraggable(item, depth === 0);
           return (
             <TreeNode
               key={item.key}
               data-tree-node-id={item.key}
+              data-draggable={draggable}
               title={renderTitle(item, depth === 0)}
               disableCheckbox={item.disableCheckbox}
               checkable={checkable}
             >
-              {renderTreeNode(item.children || [], depth + 1, item)}
+              {renderTreeNode(item[childrenFieldName] || [], depth + 1, item)}
             </TreeNode>
           );
         })}
@@ -497,7 +526,14 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         <Empty description={<span>{env.i18n('暂无数据')}</span>} />
       ) : (
         <Tree
-          checkable={data.checkable}
+          checkable={!!data.checkable}
+          draggable={
+            data.draggable
+              ? (node) => {
+                  return node['data-draggable'];
+                }
+              : false
+          }
           showLine={data.showLine}
           checkStrictly={data.checkStrictly}
           onExpand={onExpand}

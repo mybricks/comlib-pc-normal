@@ -36,7 +36,7 @@ export interface Data {
   isAdding: string;
   defaultExpandAll: boolean;
   treeData: TreeData[];
-  checkable: boolean;
+  checkable: boolean | 'custom';
   checkedKeys: any[];
   disableCheckbox: boolean;
   showLine: boolean;
@@ -77,6 +77,12 @@ export interface Data {
   }
   removeConfirm: string;
   editInline?: boolean;
+  /** 动态可勾选表达式 */
+  checkableScript?: string;
+  /** 拖拽 */
+  draggable: boolean | 'custom';
+  /** 动态可拖拽表达式 */
+  draggableScript?: string;
 }
 
 export interface TreeData {
