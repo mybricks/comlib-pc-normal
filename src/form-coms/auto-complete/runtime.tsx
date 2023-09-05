@@ -98,6 +98,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onBlur'](value);
   }, []);
 
+  const onSelect = (e) => {
+    outputs['onSelect'](e);
+  };
+
   const onSearch = (e) => {
     //开启搜索功能，自定义下拉选项
     if (data.isOnSearch) {
@@ -113,6 +117,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         filterOption={data.isFilter}
         onBlur={onBlur}
+        onSelect={onSelect}
         onSearch={data.isOnSearch ? onSearch : void 0}
         options={env.edit ? data.staticOptions : data.options}
       />
