@@ -14,7 +14,7 @@ export default function ActionBtns({
   outputs,
   onError
 }: ActionBtnsProps) {
-  const { treeData, removeConfirm } = data;
+  const { treeData, removeConfirm, keyFieldName } = data;
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 
@@ -26,12 +26,13 @@ export default function ActionBtns({
   /**
    * 删除节点
    * @param treeData treeNodes 数据
-   * @param key  节点的key
+   * @param key 节点的key
+   * @param keyFieldName 标识字段
    * @returns
    */
   const deleteNode = (treeData: TreeData[], key: string) => {
     return treeData.map((item) => {
-      if (item.key === key) {
+      if (item[keyFieldName] === key) {
         return null;
       } else if (item.children) {
         item.children = deleteNode(item.children, key).filter((def) => !!def) as TreeData[];
@@ -71,10 +72,12 @@ export default function ActionBtns({
    */
   const btnClick = (id) => {
     if (id === MODIFY_BTN_ID && data.editInline) {
-      data.isEditing = record.key;
+      data.isEditing = record[keyFieldName];
     } else {
       if (id === DELETE_BTN_ID) {
-        data.treeData = deleteNode(treeData, record.key).filter((def) => !!def) as TreeData[];
+        data.treeData = deleteNode(treeData, record[keyFieldName]).filter(
+          (def) => !!def
+        ) as TreeData[];
       }
       outputs[id](outputItem);
     }

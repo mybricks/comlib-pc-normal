@@ -3,7 +3,7 @@ import { uuid } from '../utils';
 import { actionBtnsEditor, actionBtnEditor, getBtnProp } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID, IconSrcType } from './constants';
-import { pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
+import { getSuggestions, pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
 const buildNewNode = (uuid: string) => {
   return {
@@ -30,7 +30,7 @@ const getItemProp = ({
   if (!focusArea) return;
   const key: string = focusArea.dataset[dataset];
   const item = traverseTree({
-    treeData: data.treeData,
+    data,
     targetKey: key,
     isParent
   });
@@ -265,6 +265,7 @@ export default {
       }
     ],
     items: ({ data, output }: EditorResult<Data>, ...cate) => {
+      const suggestions = getSuggestions(data);
       cate[0].title = '常规';
       cate[1].title = '高级';
       cate[0].items = [
@@ -304,7 +305,7 @@ export default {
               }
             },
             {
-              title: '叶子节点字段',
+              title: '子节点字段',
               type: 'Text',
               options: {
                 placeholder: '默认值为 children'
@@ -374,7 +375,7 @@ export default {
           title: '勾选功能',
           items: [
             {
-              title: '节点勾选',
+              title: '支持勾选',
               type: 'Radio',
               options: [
                 {
@@ -408,45 +409,7 @@ export default {
               },
               options: {
                 placeholder: `例：{node.checkable} 节点checkabled为true时显示勾选框`,
-                suggestions: [
-                  {
-                    label: 'node',
-                    insertText: `node.`,
-                    detail: `当前节点`,
-                    properties: [
-                      {
-                        label: 'isRoot',
-                        insertText: `{isRoot}`,
-                        detail: `当前节点是否为根节点`
-                      },
-                      {
-                        label: 'isLeaf',
-                        insertText: `{isLeaf}`,
-                        detail: `当前节点是否为叶子节点`
-                      },
-                      {
-                        label: 'checkable',
-                        insertText: `{checkable}`,
-                        detail: `当前节点的checkable值`
-                      },
-                      {
-                        label: data.keyFieldName || 'key',
-                        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
-                        detail: `当前节点${data.keyFieldName || 'key'}值`
-                      },
-                      {
-                        label: data.titleFieldName || 'title',
-                        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
-                        detail: `当前节点${data.titleFieldName || 'title'}值`
-                      },
-                      {
-                        label: data.childrenFieldName || 'children',
-                        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
-                        detail: `当前节点${data.childrenFieldName || 'children'}值`
-                      }
-                    ]
-                  }
-                ]
+                suggestions
               },
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -548,7 +511,7 @@ export default {
           title: '拖拽功能',
           items: [
             {
-              title: '节点拖拽',
+              title: '支持拖拽',
               type: 'Radio',
               options: [
                 {
@@ -570,6 +533,9 @@ export default {
                 },
                 set({ data }: EditorResult<Data>, value: boolean | 'custom') {
                   data.draggable = value;
+                  if (!!data.draggable && data.allowDrop === undefined) {
+                    data.allowDrop = true;
+                  }
                 }
               }
             },
@@ -582,40 +548,7 @@ export default {
               },
               options: {
                 placeholder: `例：{node.isLeaf} 节点isLeaf属性为true时可拖拽`,
-                suggestions: [
-                  {
-                    label: 'node',
-                    insertText: `node.`,
-                    detail: `当前节点`,
-                    properties: [
-                      {
-                        label: 'isRoot',
-                        insertText: `{isRoot}`,
-                        detail: `当前节点是否为根节点`
-                      },
-                      {
-                        label: 'isLeaf',
-                        insertText: `{isLeaf}`,
-                        detail: `当前节点是否为叶子节点`
-                      },
-                      {
-                        label: data.keyFieldName || 'key',
-                        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
-                        detail: `当前节点${data.keyFieldName || 'key'}值`
-                      },
-                      {
-                        label: data.titleFieldName || 'title',
-                        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
-                        detail: `当前节点${data.titleFieldName || 'title'}值`
-                      },
-                      {
-                        label: data.childrenFieldName || 'children',
-                        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
-                        detail: `当前节点${data.childrenFieldName || 'children'}值`
-                      }
-                    ]
-                  }
-                ]
+                suggestions
               },
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -623,6 +556,55 @@ export default {
                 },
                 set({ data }: EditorResult<Data>, value: string) {
                   data.draggableScript = value;
+                }
+              }
+            },
+            {
+              title: '支持放置',
+              type: 'Radio',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.draggable;
+              },
+              options: [
+                {
+                  label: '不开启',
+                  value: false
+                },
+                {
+                  label: '全部节点',
+                  value: true
+                },
+                {
+                  label: '自定义节点',
+                  value: 'custom'
+                }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.allowDrop;
+                },
+                set({ data }: EditorResult<Data>, value: boolean | 'custom') {
+                  data.allowDrop = value;
+                }
+              }
+            },
+            {
+              title: '节点可放置表达式',
+              description: `根据节点数据在运行时动态计算节点上下是否可放置节点的表达式，支持JS表达式语法, 例：{node.isLeaf}`,
+              type: 'expression',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.draggable && data.allowDrop === 'custom';
+              },
+              options: {
+                placeholder: `例：{node.isLeaf} 节点isLeaf属性为true时可放置拖拽的节点`,
+                suggestions
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.allowDropScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.allowDropScript = value;
                 }
               }
             }

@@ -35,21 +35,19 @@ export const pretreatTreeData = ({
 }) => {
   const keyFieldName = data.keyFieldName || 'key';
   treeData.forEach((item, inx) => {
-    const id = parentKey + '-' + inx;
-    // key不是唯一标识但源数据存在该字段时需要额外处理
-    if (keyFieldName !== 'key' && item.key != null) {
-      item._key = item.key;
+    if (item[keyFieldName] == null) {
+      const id = parentKey + '-' + inx;
+      item[keyFieldName] = id;
     }
-    item.key = item[keyFieldName] == undefined ? id : String(item[keyFieldName]);
     if (item.value == null) {
       // 若没有传入 value，则指定默认 value 为 key 值
-      item.value = item.key;
+      item.value = item[keyFieldName];
     }
     if (data && defaultExpandAll) {
-      data.expandedKeys = [...data.expandedKeys, item.key];
+      data.expandedKeys = [...data.expandedKeys, item[keyFieldName]];
     }
     if (item.children) {
-      pretreatTreeData({ treeData: item.children, data, defaultExpandAll, parentKey: item.key });
+      pretreatTreeData({ treeData: item.children, data, defaultExpandAll, parentKey: item[keyFieldName] });
     }
   });
   return treeData;
@@ -61,21 +59,24 @@ export const pretreatTreeData = ({
  * @returns 
  */
 export const traverseTree = ({
-  treeData,
+  data,
   targetKey,
-  isParent = false,
 }: {
-  treeData: TreeData[];
+  data: Data;
   targetKey: string;
-  isParent?: boolean;
-}) => {
+}): { parent?: TreeData, index: number, node: TreeData } | null => {
+  const { treeData, keyFieldName = 'key' } = data;
   if (!treeData || treeData.length === 0) return null;
-  const searchTree = (treeNode: TreeData, parent?: TreeData) => {
-    if (treeNode.key === targetKey) {
-      return isParent && parent ? parent : treeNode;
+  const searchTree = (treeNode: TreeData, index: number, parent?: TreeData) => {
+    if (treeNode[keyFieldName] === targetKey) {
+      return {
+        parent,
+        node: treeNode,
+        index
+      };
     } else if (treeNode.children) {
       for (let i = 0; i < treeNode.children.length; i++) {
-        const result = searchTree(treeNode.children[i], treeNode);
+        const result = searchTree(treeNode.children[i], i, treeNode);
         if (result !== null) return result;
       }
     }
@@ -83,7 +84,7 @@ export const traverseTree = ({
   };
 
   for (let i = 0; i < treeData.length; i++) {
-    const result = searchTree(treeData[i]);
+    const result = searchTree(treeData[i], i);
     if (result) return result;
   }
   return null;
@@ -103,14 +104,15 @@ const flatten = (arr: any[]) => {
 /**
  * 获取所有叶子节点
  * @param treeData treeNodes 数据
+ * @param keyFieldName 标识字段
  * @returns
  */
-const getLeafNodes = (treeData: TreeData[]) => {
+const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
   const result: any[] = [];
   if (!treeData || treeData.length === 0) return;
   treeData.forEach((item) => {
-    if (!item.children || item.children.length === 0) result.push(item.key);
-    else result.push(getLeafNodes(item.children || []));
+    if (!item.children || item.children.length === 0) result.push(item[keyFieldName]);
+    else result.push(getLeafNodes(item.children || [], keyFieldName));
   });
   return flatten(result);
 };
@@ -118,12 +120,13 @@ const getLeafNodes = (treeData: TreeData[]) => {
 /**
  * 排除父节点
  * @param checkedKeys 选中复选框的树节点 key 值
- * @param treeData treeNodes 数据
+ * @param data 组件数据
  * @returns
  */
-export const excludeParentKeys = (treeData: TreeData[], checkedKeys: React.Key[]) => {
+export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
+  const { treeData, keyFieldName = 'key' } = data;
   const result: any = [],
-    leafNodes = getLeafNodes(treeData);
+    leafNodes = getLeafNodes(treeData, keyFieldName);
 
   if (checkedKeys && Array.isArray(checkedKeys)) {
     checkedKeys.forEach((key) => {
@@ -136,16 +139,17 @@ export const excludeParentKeys = (treeData: TreeData[], checkedKeys: React.Key[]
 /**
  * 输出选中节点的 value 值
  * @param treeData treeNodes 数据
- * @param checkedKeys 选中复选框的树节点 key 值
+ * @param checkedKeys 选中复选框的树节点 keyFieldName 值
+ * @param keyFieldName 标识字段
  * @returns
  */
-export const outputNodeValues = (treeData: TreeData[], keys: React.Key[]) => {
+export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFieldName: string) => {
   const result: any[] = [];
   treeData
     .filter((def) => !!def)
     .forEach((item) => {
-      if ((keys || []).includes(item.key)) result.push(item.value);
-      result.push(outputNodeValues(item.children || [], keys));
+      if ((keys || []).includes(item[keyFieldName])) result.push(item.value);
+      result.push(outputNodeValues(item.children || [], keys, keyFieldName));
     });
   return flatten(result);
 };
@@ -158,7 +162,7 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[]) => {
  */
 export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldName: string) => {
   treeData = treeData.map((item) => {
-    if (item.key === newNodeData[keyFieldName]) {
+    if (item[keyFieldName] === newNodeData[keyFieldName]) {
       item = {
         ...item,
         ...newNodeData
@@ -175,17 +179,18 @@ export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyF
  * 根据选中节点的 value 此筛选出选中节点的 key
  * @param treeData treeNodes 数据
  * @param checkedValues 选中复选框的树节点 key 值
+ * @param keyFieldName 标识字段
  * @returns
  */
-export const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedValues: string[]) => {
+export const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedValues: string[], keyFieldName) => {
   if (!treeData || treeData.length === 0) return;
   const result: any[] = [];
   treeData.forEach((item) => {
     if ((checkedValues || []).includes(item.value)) {
-      result.push(item.key);
+      result.push(item[keyFieldName]);
     }
     if (item.children) {
-      result.push(filterCheckedKeysByCheckedValues(item.children || [], checkedValues));
+      result.push(filterCheckedKeysByCheckedValues(item.children || [], checkedValues, keyFieldName));
     }
   });
   return flatten(result);
@@ -194,17 +199,18 @@ export const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedVa
  * 查找父节点
  * @param key 子节点key
  * @param tree
+ * @param keyFieldName 标识字段
  * @returns
  */
-export const getParentKey = (key, tree) => {
+export const getParentKey = (key, tree, keyFieldName: string) => {
   let parentKey;
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
     if (node.children) {
-      if (node.children.some((item) => item.key === key)) {
-        parentKey = node.key;
-      } else if (getParentKey(key, node.children)) {
-        parentKey = getParentKey(key, node.children);
+      if (node.children.some((item) => item[keyFieldName] === key)) {
+        parentKey = node[keyFieldName];
+      } else if (getParentKey(key, node.children, keyFieldName)) {
+        parentKey = getParentKey(key, node.children, keyFieldName);
       }
     }
   }
@@ -215,14 +221,15 @@ export const getParentKey = (key, tree) => {
  * 获取树的key数组
  * @param treeData 树节点数据
  * @param dataList key数组
+ * @param keyFieldName 标识字段
  */
-export const generateList = (treeData, dataList) => {
+export const generateList = (treeData, dataList, keyFieldName) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
-    const { key, title } = node;
+    const { [keyFieldName]: key, title } = node;
     dataList.push({ key, title });
     if (node.children) {
-      generateList(node.children, dataList);
+      generateList(node.children, dataList, keyFieldName);
     }
   }
 };
@@ -231,9 +238,10 @@ export const generateList = (treeData, dataList) => {
  * 遍历树，根据key数组返回节点
  * @param treeData 树数据 
  * @param keys key数组 
+ * @param keyFieldName 标识字段
  * @returns 
  */
-export const filterTreeDataByKeys = (treeData: TreeData[] = [], keys: React.Key[]) => {
+export const filterTreeDataByKeys = (treeData: TreeData[] = [], keys: React.Key[], keyFieldName: string) => {
   const filteredTreeData: TreeData[] = [];
 
   const filterTreeData = (treeData: TreeData[], parent: TreeData[]) => {
@@ -243,7 +251,7 @@ export const filterTreeDataByKeys = (treeData: TreeData[] = [], keys: React.Key[
       if (children.length) {
         filterTreeData(children, newChildren);
       }
-      if (keys.includes(res.key)) {
+      if (keys.includes(res[keyFieldName])) {
         parent.push({
           ...res,
           children: newChildren
@@ -255,3 +263,53 @@ export const filterTreeDataByKeys = (treeData: TreeData[] = [], keys: React.Key[
   filterTreeData(treeData, filteredTreeData);
   return filteredTreeData;
 };
+
+/**
+ * 获取代码提示片段
+ * @param data 组件数据
+ * @returns 代码提示片段
+ */
+export const getSuggestions = (data: Data) => [
+  {
+    label: 'node',
+    insertText: `node.`,
+    detail: `当前节点`,
+    properties: [
+      {
+        label: 'isRoot',
+        insertText: `{isRoot}`,
+        detail: `当前节点是否为根节点`
+      },
+      {
+        label: 'isLeaf',
+        insertText: `{isLeaf}`,
+        detail: `当前节点是否为叶子节点`
+      },
+      {
+        label: 'checkable',
+        insertText: `{checkable}`,
+        detail: `当前节点的checkable值`
+      },
+      {
+        label: 'depth',
+        insertText: `{depth}`,
+        detail: `当前节点的深度`
+      },
+      {
+        label: data.keyFieldName || 'key',
+        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
+        detail: `当前节点标识字段值`
+      },
+      {
+        label: data.titleFieldName || 'title',
+        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
+        detail: `当前节点标题字段值`
+      },
+      {
+        label: data.childrenFieldName || 'children',
+        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+        detail: `当前节点子节点字段值`
+      },
+    ]
+  }
+];
