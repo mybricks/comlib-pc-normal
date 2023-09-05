@@ -1215,14 +1215,36 @@ export default {
         }
       },
       {
+        title: '权限',
+        type: '_permission',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const item = getAcitonsItem(focusArea, data.actions.items);
+
+            return item?.permission;
+          },
+          set(params: EditorResult<Data>, val) {
+            const { data, focusArea, output } = params;
+
+            const item = getAcitonsItem(focusArea, data.actions.items);
+
+            if (item) {
+              item['permission'] = { id: val.id };
+              val.register(val.id);
+            }
+          }
+        }
+      },
+      {
         title: '事件',
         items: [
           {
             title: '点击',
             type: '_event',
             options({ data, focusArea }) {
-              const comId = focusArea.dataset['formActionsItem'];
-              const item = data.actions.items.find((item) => item.key === comId);
+              // const comId = focusArea.dataset['formActionsItem'];
+              // const item = data.actions.items.find((item) => item.key === comId);
+              const item = getAcitonsItem(focusArea, data.actions.items);
               if (!item) return;
 
               return {
@@ -1236,18 +1258,24 @@ export default {
         title: '删除',
         type: 'Button',
         ifVisible({ data, focusArea }) {
-          const actions = data.actions.items;
-          const itemId = focusArea.dataset['formActionsItem'];
-          const item = actions.find((item) => item.key === itemId);
+          // const actions = data.actions.items;
+          // const itemId = focusArea.dataset['formActionsItem'];
+          // const item = actions.find((item) => item.key === itemId);
+          const item = getAcitonsItem(focusArea, data.actions.items);
 
           return item && !item?.isDefault;
         },
         value: {
-          set({ data, output, focusArea }: EditorResult<Data>) {
+          set({ data, output, focusArea, removePermission }: EditorResult<Data>) {
             const actions = data.actions.items;
             const itemId = focusArea.dataset['formActionsItem'];
             const index = actions.findIndex((item) => item.key === itemId);
             const item = data.actions.items[index];
+
+            if (item?.permission) {
+              removePermission(item.permission?.id);
+              item.permission = undefined;
+            }
 
             output.remove(item.outputId);
             actions.splice(index, 1);
@@ -1270,6 +1298,13 @@ const setQueryFieldRule = (domainModel, item, value) => {
   domainModel.queryFieldRules[item?.name || item.label] = {
     operator: value
   };
+};
+
+const getAcitonsItem = (focusArea, actions) => {
+  const itemId = focusArea.dataset['formActionsItem'];
+  const item = actions.find((item) => item.key === itemId);
+
+  return item;
 };
 
 const setFieldName = (item, data, value) => {
