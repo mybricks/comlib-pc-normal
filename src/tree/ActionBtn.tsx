@@ -14,7 +14,9 @@ export default function ActionBtns({
   outputs,
   onError
 }: ActionBtnsProps) {
-  const { treeData, removeConfirm, keyFieldName } = data;
+  const { treeData, removeConfirm } = data;
+  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
+
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 

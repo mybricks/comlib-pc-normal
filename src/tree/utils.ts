@@ -61,11 +61,15 @@ export const pretreatTreeData = ({
 export const traverseTree = ({
   data,
   targetKey,
+  isEdit
 }: {
   data: Data;
   targetKey: string;
+  isEdit?: boolean;
 }): { parent?: TreeData, index: number, node: TreeData } | null => {
-  const { treeData, keyFieldName = 'key' } = data;
+  const { treeData, } = data;
+  const keyFieldName = isEdit ? 'key' : data.keyFieldName || 'key';
+
   if (!treeData || treeData.length === 0) return null;
   const searchTree = (treeNode: TreeData, index: number, parent?: TreeData) => {
     if (treeNode[keyFieldName] === targetKey) {

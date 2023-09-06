@@ -32,7 +32,8 @@ const getItemProp = ({
   const { node, parent } =
     traverseTree({
       data,
-      targetKey: key
+      targetKey: key,
+      isEdit: true
     }) || {};
   const item = isParent ? parent : node;
   if (val === 'obj') return item;
@@ -41,7 +42,7 @@ const getItemProp = ({
 
 const moveNode = ({ data, focusArea, isDown }: { data: Data; focusArea: any; isDown: boolean }) => {
   const key: string = focusArea.dataset['treeNodeId'];
-  const { keyFieldName = 'key' } = data;
+  const keyFieldName = 'key';
   const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
   if (index !== -1) {
     const target = data.treeData.splice(index, 1)[0];
@@ -848,7 +849,7 @@ export default {
         type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           const key: string = focusArea.dataset['treeNodeId'];
-          const { keyFieldName = 'key' } = data;
+          const keyFieldName = 'key';
           const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
           if (index === 0) {
             return false;
@@ -876,7 +877,7 @@ export default {
         type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
           const key: string = focusArea.dataset['treeNodeId'];
-          const { keyFieldName = 'key' } = data;
+          const keyFieldName = 'key';
           const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
           if (index === data.treeData.length - 1) {
             return false;
@@ -906,7 +907,7 @@ export default {
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
             const key: string = focusArea.dataset['treeNodeId'];
-            const { keyFieldName = 'key' } = data;
+            const keyFieldName = 'key';
             const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
             if (index !== -1) {
               data.treeData.splice(index, 1);
@@ -930,7 +931,7 @@ export default {
         title: '删除所有子节点',
         type: 'button',
         ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const { keyFieldName = 'key' } = data;
+          const keyFieldName = 'key';
           const key: string = focusArea.dataset['treeNodeId'];
           const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
           let target: TreeData;
@@ -948,7 +949,7 @@ export default {
         },
         value: {
           set({ data, focusArea }: EditorResult<Data>) {
-            const { keyFieldName = 'key' } = data;
+            const keyFieldName = 'key';
             const key: string = focusArea.dataset['treeNodeId'];
             const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
             if (index !== -1) {
