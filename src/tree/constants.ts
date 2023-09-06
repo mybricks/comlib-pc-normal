@@ -36,7 +36,7 @@ export interface Data {
   isAdding: string;
   defaultExpandAll: boolean;
   treeData: TreeData[];
-  checkable: boolean;
+  checkable: boolean | 'custom';
   checkedKeys: any[];
   disableCheckbox: boolean;
   showLine: boolean;
@@ -54,14 +54,12 @@ export interface Data {
   useActions: boolean;
   actionBtns: ActionBtn[];
   allNodeDeletable: boolean;
+  /** 字段配置 */
   keyFieldName: string;
+  titleFieldName: string;
+  childrenFieldName: string;
   useCheckEvent?: boolean;
   checkStrictly?: boolean;
-  fieldNames?: {
-    title?: string;
-    key?: string;
-    children?: string;
-  }
   /** 省略样式配置 */
   ellipsisActionBtnsConfig: {
     useEllipsis: boolean;
@@ -77,14 +75,43 @@ export interface Data {
   }
   removeConfirm: string;
   editInline?: boolean;
+  /** 动态可勾选表达式 */
+  checkableScript?: string;
+  /** 拖拽 */
+  draggable: boolean | 'custom';
+  /** 动态可拖拽表达式 */
+  draggableScript?: string;
+  /** 允许放置 */
+  allowDrop: boolean | 'custom';
+  /** 动态可放置表达式 */
+  allowDropScript?: string;
+  /** 放置范围限制 */
+  useDropScope: boolean | 'parent';
+  /** 放置范围限制提示语 */
+  dropScopeMessage?: string;
+  /** 输出数据类型 */
+  valueType: string;
 }
 
 export interface TreeData {
   title: string;
-  value: string;
   key: string;
-  _key?: string;
   disableCheckbox?: boolean;
   children?: TreeData[];
   [key: string]: any;
+}
+
+export const InputIds = {
+  SET_TREE_DATA: 'treeData'
+}
+
+export const OutputIds = {
+  ON_DROP_DONE: 'onDropDone',
+  NODE_CLICK: 'click',
+  ON_CHECK: 'check'
+}
+
+export const ValueType = {
+  KEY_FIELD: 'keyField',
+  TREE_NODE: 'treeNode'
 }
