@@ -219,6 +219,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   /**
    * 选择事件处理
    * @param selectedKeys
+   * @param node TreeNode 的 props
    */
   const onSelect = (selectedKeys: React.Key[], { node, selected }) => {
     const selectedValues = outputNodeValues(data.treeData, selectedKeys, keyFieldName);
@@ -236,6 +237,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
   /**
    * onDrop事件处理
+   * 注: node TreeNode 的props
    */
   const onDrop: TreeProps['onDrop'] = (info) => {
     /**
@@ -257,7 +259,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     /** 判断是否满足拖拽范围限制 */
     switch (data.useDropScope) {
       case 'parent':
-        if (dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
+        if (dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName] && dropFlag !== 0) {
           message.error(data.dropScopeMessage);
           return;
         }
@@ -298,6 +300,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * @param dragNode 拖拽的节点信息
    * @param dropNode 落下的节点信息
    * @param dropPosition 落下的位置
+   * 注: node TreeNode 的props
    */
   const allowDrop: TreeProps['allowDrop'] = (info) => {
     if (!data.draggable && data.allowDrop) return false;
