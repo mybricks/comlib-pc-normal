@@ -365,13 +365,27 @@ export const refreshSchema = (props: EditorResult<Data>) => {
     type: 'array',
     items: treeNodeSchema
   };
+  const nodeInfoSchema = {
+    type: 'object',
+    properties: {
+      parent: treeDataSchema,
+      node: treeDataSchema,
+      index: {
+        type: 'number'
+      }
+    }
+  };
 
   input.get(InputIds.SET_TREE_DATA).setSchema(treeDataSchema);
   output.get(OutputIds.ON_DROP_DONE)?.setSchema({
     type: 'object',
     properties: {
-      treeData: treeDataSchema,
-      dragNode: treeNodeSchema
+      dropNodeInfo: nodeInfoSchema,
+      dragNodeInfo: nodeInfoSchema,
+      flag: {
+        title: '位置标识',
+        type: 'number'
+      }
     }
   });
 

@@ -308,7 +308,11 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         break;
     }
 
-    outputs(OutputIds.ON_DROP_DONE)({});
+    outputs[OutputIds.ON_DROP_DONE]({
+      dragNodeInfo,
+      dropNodeInfo,
+      flag: dropFlag
+    });
   };
 
   /**
