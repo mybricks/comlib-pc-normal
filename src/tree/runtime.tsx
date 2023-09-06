@@ -241,7 +241,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       }
     }
     setSelectedKeys([...selectedKeys]);
-    outputs[OutputIds.ON_CHECK](selectedValues);
+    outputs[OutputIds.NODE_CLICK](selectedValues);
   };
 
   /**
