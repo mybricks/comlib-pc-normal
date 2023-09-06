@@ -38,7 +38,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SET_COLOR]((color: string) => {
       // 设置输入框字体颜色
       if (inputRef.current?.input) {
-        inputRef.current.input.style.color = color || 'rgba(0, 0, 0, 0.85)';
+        inputRef.current.input.style.color = typeof color === 'string' ? color : '';
       }
     });
   }, []);
