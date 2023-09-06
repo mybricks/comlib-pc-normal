@@ -14,12 +14,43 @@ export default {
       {
         items: [
           ...createrCatelogEditor({
-            catelog: '默认',
+            catelog: '表单项',
             items: [
               {
-                title: '输入框',
-                options: ['border', 'font'],
+                title: '边框',
+                options: ['border'],
                 target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
+              },
+              {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-selection-placeholder'
+              },
+              {
+                title: '下拉图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-arrow'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.config.allowClear;
+                },
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                ifVisible({ data }: EditorResult<Data>) {
+                  return !data.isMultiple;
+                },
+                target: '.ant-select-single.ant-select-show-arrow .ant-select-selection-item'
               },
               {
                 title: '标签',
@@ -31,8 +62,23 @@ export default {
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
+                target: ['.ant-select-multiple .ant-select-selection-item']
               },
+              {
+                title: '标签-关闭图标',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item-remove']
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
               {
                 title: '选项',
                 options: [
@@ -66,6 +112,13 @@ export default {
                 options: ['border'],
                 target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector:hover',
                 domTarget: 'div.ant-select-selector'
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
               },
               {
                 catelog: 'Hover',
@@ -123,6 +176,22 @@ export default {
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
                 },
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                ifVisible({ data }: EditorResult<Data>) {
+                  return data.config.disabled;
+                },
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                target: [
+                  '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+                ]
               },
             ]
           })
