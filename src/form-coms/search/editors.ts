@@ -1,6 +1,7 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data, Options } from './runtime';
 import { uuid } from '../../utils';
+import { createrCatelogEditor } from '../utils';
 
 let tempOptions: Options[] = [],
   optionsLength,
@@ -60,24 +61,214 @@ export default {
       //   }
       // },
       {
-        title: '边框',
-        catelog: '默认',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper'
-      },
-      {
-        title: '边框',
-        catelog: 'Hover',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-        domTarget: '.ant-input-affix-wrapper'
-      },
-      {
-        title: '边框',
-        catelog: 'Focus',
-        options: ['border', 'BoxShadow'],
-        target:
-          'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+        items: [
+          ...createrCatelogEditor({
+            catelog: '表单项',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                ifVisible({ data }) {
+                  return data.config.allowClear;
+                },
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input'
+              },
+              {
+                title: '前置标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return data.config.addonBefore !== '';
+                },
+                target: '.ant-input-group-addon:first-child'
+              },
+              {
+                title: '搜索标签',
+                options: [
+                  //'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return !data.isenterButton;
+                },
+                target: '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary)'
+              },
+              {
+                options: [
+                  'border',
+                ],
+                ifVisible({ data }) {
+                  return !data.isenterButton;
+                },
+                target: '.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button'
+              },
+              {
+                title: '搜索按钮',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return data.isenterButton;
+                },
+                target: '.ant-btn-primary '
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                title: '边框',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                ifVisible({ data }) {
+                  return data.config.allowClear;
+                },
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '搜索标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return !data.isenterButton;
+                },
+                target: '.ant-btn:hover'
+              },
+              {
+                title: '搜索按钮',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return data.isenterButton;
+                },
+                target: '.ant-btn-primary:hover'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Focus',
+            items: [
+              {
+                title: '边框',
+                catelog: 'Focus',
+                options: ['border', 'BoxShadow'],
+                target:
+                  'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '选中',
+            items: [
+              {
+                title: '搜索标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return !data.isenterButton;
+                },
+                target: ['.ant-btn:active']
+              },
+              {
+                title: '搜索按钮',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return data.isenterButton;
+                },
+                target: '.ant-btn-primary:active'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                ifVisible({ data }) {
+                  return data.config.disabled;
+                },
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-input-affix-wrapper-disabled']
+              },
+              {
+                title: '搜索标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return !data.isenterButton && data.config.disabled;
+                },
+                target: '.ant-btn[disabled]'
+              },
+              {
+                title: '搜索按钮',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                ifVisible({ data }) {
+                  return data.isenterButton && data.config.disabled;
+                },
+                target: '.ant-btn-primary[disabled]'
+              },
+            ]
+          })
+        ]
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
