@@ -1,6 +1,7 @@
 import { uuid } from '../utils';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { ActionBtn, Data, DELETE_BTN_ID, IconSrcType, MODIFY_BTN_ID } from './constants';
+import { getNodeSuggestions } from './utils';
 
 function removeActionBtn({ data, focusArea, output }) {
   const btns: any[] = data.actionBtns;
@@ -291,40 +292,7 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
         type: 'expression',
         options: {
           placeholder: `例：{node.isRoot} 按钮在根节点中显示`,
-          suggestions: [
-            {
-              label: 'node',
-              insertText: `node.`,
-              detail: `当前节点`,
-              properties: [
-                {
-                  label: 'isRoot',
-                  insertText: `{isRoot}`,
-                  detail: `当前节点是否为根节点`
-                },
-                {
-                  label: 'isLeaf',
-                  insertText: `{isLeaf}`,
-                  detail: `当前节点是否为叶子节点`
-                },
-                {
-                  label: data.keyFieldName || 'key',
-                  insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
-                  detail: `当前节点${data.keyFieldName || 'key'}值`
-                },
-                {
-                  label: data.titleFieldName || 'title',
-                  insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
-                  detail: `当前节点${data.titleFieldName || 'title'}值`
-                },
-                {
-                  label: data.childrenFieldName || 'children',
-                  insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
-                  detail: `当前节点${data.childrenFieldName || 'children'}值`
-                },
-              ]
-            },
-          ]
+          suggestions: getNodeSuggestions(data)
         },
         value: {
           get({ }: EditorResult<Data>) {
