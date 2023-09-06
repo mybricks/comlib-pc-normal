@@ -2,8 +2,22 @@ import { createrCatelogEditor } from '../form-coms/utils';
 import { uuid } from '../utils';
 import { actionBtnsEditor, actionBtnEditor, getBtnProp } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
-import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID, IconSrcType } from './constants';
-import { getNodeSuggestions, pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
+import {
+  Data,
+  TreeData,
+  MODIFY_BTN_ID,
+  DELETE_BTN_ID,
+  IconSrcType,
+  OutputIds,
+  ValueType
+} from './constants';
+import {
+  getNodeSuggestions,
+  refreshSchema,
+  pretreatTreeData,
+  setCheckboxStatus,
+  traverseTree
+} from './utils';
 
 const buildNewNode = (uuid: string) => {
   return {
@@ -285,8 +299,9 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.titleFieldName;
                 },
-                set({ data, input, output }: EditorResult<Data>, value: string) {
+                set(props: EditorResult<Data>, value: string) {
                   data.titleFieldName = value;
+                  refreshSchema(props);
                 }
               }
             },
@@ -302,8 +317,9 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.keyFieldName;
                 },
-                set({ data, input, output }: EditorResult<Data>, value: string) {
+                set(props: EditorResult<Data>, value: string) {
                   data.keyFieldName = value;
+                  refreshSchema(props);
                 }
               }
             },
@@ -317,8 +333,32 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.childrenFieldName;
                 },
-                set({ data, input, output }: EditorResult<Data>, value: string) {
+                set(props: EditorResult<Data>, value: string) {
                   data.childrenFieldName = value;
+                  refreshSchema(props);
+                }
+              }
+            },
+            {
+              title: '输出数据',
+              type: 'Radio',
+              options: [
+                {
+                  label: '标识字段',
+                  value: ValueType.KEY_FIELD
+                },
+                {
+                  label: '节点数据',
+                  value: ValueType.TREE_NODE
+                }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.valueType;
+                },
+                set(props: EditorResult<Data>, value: string) {
+                  data.valueType = value;
+                  refreshSchema(props);
                 }
               }
             },
@@ -366,7 +406,7 @@ export default {
               type: '_Event',
               options: () => {
                 return {
-                  outputId: 'click'
+                  outputId: OutputIds.NODE_CLICK
                 };
               }
             }
@@ -433,17 +473,18 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.useCheckEvent;
                 },
-                set({ data, output }: EditorResult<Data>, val) {
+                set(props: EditorResult<Data>, val) {
                   if (val) {
-                    output.add('check', '勾选事件', {
+                    output.add(OutputIds.ON_CHECK, '勾选事件', {
                       title: '勾选项数据',
                       type: 'array',
                       items: {
                         type: 'string'
                       }
                     });
+                    refreshSchema(props);
                   } else {
-                    output.remove('check');
+                    output.remove(OutputIds.ON_CHECK);
                   }
                   data.useCheckEvent = val;
                 }
@@ -457,7 +498,7 @@ export default {
               },
               options: () => {
                 return {
-                  outputId: 'check'
+                  outputId: OutputIds.ON_CHECK
                 };
               }
             },
@@ -534,10 +575,18 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.draggable;
                 },
-                set({ data }: EditorResult<Data>, value: boolean | 'custom') {
+                set(props: EditorResult<Data>, value: boolean | 'custom') {
                   data.draggable = value;
-                  if (!!data.draggable && data.allowDrop === undefined) {
-                    data.allowDrop = true;
+                  if (!!data.draggable) {
+                    if (data.allowDrop === undefined) {
+                      data.allowDrop = true;
+                    }
+                    output.add(OutputIds.ON_DROP_DONE, '拖拽完成', {
+                      type: 'object'
+                    });
+                    refreshSchema(props);
+                  } else {
+                    output.remove(OutputIds.ON_DROP_DONE);
                   }
                 }
               }
@@ -652,6 +701,18 @@ export default {
                 set({ data }: EditorResult<Data>, value: string) {
                   data.dropScopeMessage = value;
                 }
+              }
+            },
+            {
+              title: '拖拽完成',
+              type: '_Event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.draggable;
+              },
+              options: () => {
+                return {
+                  outputId: OutputIds.ON_DROP_DONE
+                };
               }
             }
           ]

@@ -89,13 +89,29 @@ export interface Data {
   useDropScope: boolean | 'parent';
   /** 放置范围限制提示语 */
   dropScopeMessage?: string;
+  /** 输出数据类型 */
+  valueType: string;
 }
 
 export interface TreeData {
   title: string;
-  value: string;
   key: string;
   disableCheckbox?: boolean;
   children?: TreeData[];
   [key: string]: any;
+}
+
+export const InputIds = {
+  SET_TREE_DATA: 'treeData'
+}
+
+export const OutputIds = {
+  ON_DROP_DONE: 'onDropDone',
+  NODE_CLICK: 'click',
+  ON_CHECK: 'check'
+}
+
+export const ValueType = {
+  KEY_FIELD: 'keyField',
+  TREE_NODE: 'treeNode'
 }

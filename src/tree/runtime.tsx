@@ -3,7 +3,7 @@ import * as Icons from '@ant-design/icons';
 import { Empty, Tree, Input, Image, Space, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { ExpressionSandbox } from '../../package/com-utils';
-import { Data, TreeData } from './constants';
+import { Data, OutputIds, TreeData } from './constants';
 import {
   pretreatTreeData,
   setCheckboxStatus,
@@ -187,7 +187,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     const resultKeys =
       data.outParentKeys || data.checkStrictly ? checkedKeys : excludeParentKeys(data, checkedKeys);
     inputs['submit']((val, relOutputs) => {
-      relOutputs['submit'](outputNodeValues(data.treeData, resultKeys, keyFieldName));
+      relOutputs['submit'](
+        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+      );
     });
   }, [checkedKeys]);
 
@@ -203,7 +205,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     if (data.useCheckEvent) {
       const resultKeys =
         data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
-      outputs['check'](outputNodeValues(data.treeData, resultKeys, keyFieldName));
+      outputs[OutputIds.ON_CHECK](
+        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+      );
     }
   }, []);
   /**
@@ -222,7 +226,12 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * @param node TreeNode 的 props
    */
   const onSelect = (selectedKeys: React.Key[], { node, selected }) => {
-    const selectedValues = outputNodeValues(data.treeData, selectedKeys, keyFieldName);
+    const selectedValues = outputNodeValues(
+      data.treeData,
+      selectedKeys,
+      keyFieldName,
+      data.valueType
+    );
     if (data.clickExpandable) {
       const keyIndex = expandedKeys.indexOf(node[keyFieldName]);
       if (keyIndex < 0) {
@@ -232,7 +241,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       }
     }
     setSelectedKeys([...selectedKeys]);
-    outputs['click'](selectedValues);
+    outputs[OutputIds.ON_CHECK](selectedValues);
   };
 
   /**
@@ -298,6 +307,8 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         dropNodeParent?.children?.splice(dropNodeIndex, 0, dragNode);
         break;
     }
+
+    outputs(OutputIds.ON_DROP_DONE)({});
   };
 
   /**
@@ -359,7 +370,6 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             data.isAdding = '';
             const node = {
               title: target.value,
-              value: target.value,
               key: item[keyFieldName]
             };
             // 添加

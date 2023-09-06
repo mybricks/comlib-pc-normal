@@ -1,4 +1,5 @@
-import { Data, TreeData } from "./constants";
+import { deepCopy } from "../utils";
+import { Data, InputIds, OutputIds, TreeData, ValueType } from "./constants";
 
 export const setCheckboxStatus = ({
   treeData,
@@ -38,10 +39,6 @@ export const pretreatTreeData = ({
     if (item[keyFieldName] == null) {
       const id = parentKey + '-' + inx;
       item[keyFieldName] = id;
-    }
-    if (item.value == null) {
-      // 若没有传入 value，则指定默认 value 为 key 值
-      item.value = item[keyFieldName];
     }
     if (data && defaultExpandAll) {
       data.expandedKeys = [...data.expandedKeys, item[keyFieldName]];
@@ -142,18 +139,24 @@ export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
 
 /**
  * 输出选中节点的 value 值
- * @param treeData treeNodes 数据
+ * @param treeData 树数据
  * @param checkedKeys 选中复选框的树节点 keyFieldName 值
  * @param keyFieldName 标识字段
  * @returns
  */
-export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFieldName: string) => {
+export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFieldName: string, valueType: string) => {
   const result: any[] = [];
   treeData
     .filter((def) => !!def)
     .forEach((item) => {
-      if ((keys || []).includes(item[keyFieldName])) result.push(item.value);
-      result.push(outputNodeValues(item.children || [], keys, keyFieldName));
+      if ((keys || []).includes(item[keyFieldName])) {
+        if (valueType === ValueType.TREE_NODE) {
+          result.push(deepCopy(item));
+        } else {
+          result.push(item[keyFieldName]);
+        }
+      }
+      result.push(outputNodeValues(item.children || [], keys, keyFieldName, valueType));
     });
   return flatten(result);
 };
@@ -317,3 +320,68 @@ export const getNodeSuggestions = (data: Data) => [
     ]
   }
 ];
+
+/** 
+ * 更新schema
+ */
+export const refreshSchema = (props: EditorResult<Data>) => {
+  const { data, input, output } = props;
+  const keyFieldName = data.keyFieldName || 'key';
+  const titleFieldName = data.titleFieldName || 'title';
+  const childrenFieldName = data.childrenFieldName || 'children';
+
+  const stringArraySchema = {
+    type: 'array',
+    items: {
+      type: 'string'
+    }
+  };
+  const treeNodeSchema = {
+    type: 'object',
+    properties: {
+      [titleFieldName]: {
+        title: '标题',
+        type: 'string',
+      },
+      [keyFieldName]: {
+        title: '字段名',
+        type: 'string',
+      },
+      disableCheckbox: {
+        title: '禁用勾选',
+        type: 'boolean',
+      },
+      [childrenFieldName]: {
+        title: '子项',
+        type: 'array',
+        items: {
+          type: 'object',
+        },
+      },
+    },
+  };
+  const treeDataSchema = {
+    title: '树数据',
+    type: 'array',
+    items: treeNodeSchema
+  };
+
+  input.get(InputIds.SET_TREE_DATA).setSchema(treeDataSchema);
+  output.get(OutputIds.ON_DROP_DONE)?.setSchema({
+    type: 'object',
+    properties: {
+      treeData: treeDataSchema,
+      dragNode: treeNodeSchema
+    }
+  });
+
+  switch (data.valueType) {
+    case ValueType.TREE_NODE:
+      output.get(OutputIds.NODE_CLICK).setSchema(treeDataSchema);
+      output.get(OutputIds.ON_CHECK)?.setSchema(treeDataSchema);
+      break;
+    default:
+      output.get(OutputIds.NODE_CLICK).setSchema(stringArraySchema);
+      output.get(OutputIds.ON_CHECK)?.setSchema(stringArraySchema);
+  }
+}
