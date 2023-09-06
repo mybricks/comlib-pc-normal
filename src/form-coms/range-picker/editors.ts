@@ -627,6 +627,7 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } },
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'border' },
+                  'BoxShadow'
                 ],
                 global: true,
                 target: `.{id}  .ant-btn-primary:active`
@@ -655,6 +656,7 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } },
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'border' },
+                  'BoxShadow'
                 ],
                 global: true,
                 target: `.{id}  .ant-btn-primary[disabled]`

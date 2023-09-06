@@ -11,13 +11,44 @@ export default {
   ':root': {
     style: [
       ...createrCatelogEditor({
-        catelog: '默认',
+        catelog: '表单项',
         items: [
           {
             title: '边框',
             options: ['border'],
             target: '.ant-picker'
           },
+          {
+            title: '表单项背景色',
+            catelog: '表单项',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-picker'
+          },
+          {
+            title: '提示内容',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: 'input::placeholder'
+          },
+          {
+            title: '清除按钮',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: '.anticon-close-circle'
+          },
+          {
+            title: '时间图标',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: '.anticon-clock-circle'
+          },
+          {
+            title: '文本内容',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: '.ant-input'
+          },
+        ]
+      }),
+      ...createrCatelogEditor({
+        catelog: '默认',
+        items: [
           {
             title: '时间',
             options: [
@@ -39,6 +70,14 @@ export default {
             global: true,
             target: `.{id} .ant-btn-primary`
           },
+          {
+            title: '此刻',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } }
+            ],
+            global: true,
+            target: `.{id} a`
+          }
         ]
       }),
       ...createrCatelogEditor({
@@ -60,6 +99,33 @@ export default {
             global: true,
             target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
           },
+          {
+            title: '清除按钮',
+            catelog: 'Hover',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: '.anticon-close-circle:hover',
+            domTarget: '.anticon-close-circle'
+          },
+          {
+            title: '确认按钮',
+            catelog: 'Hover',
+            options: [
+              { type: 'background', config: { disableBackgroundImage: true } },
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'border' },
+              'BoxShadow'
+            ],
+            global: true,
+            target: `.{id}  .ant-btn:not([disabled]):hover`
+          },
+          {
+            title: '此刻',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } }
+            ],
+            global: true,
+            target: `.{id} a:hover`
+          }
         ]
       }),
       ...createrCatelogEditor({
@@ -90,6 +156,26 @@ export default {
             global: true,
             target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
           },
+          {
+            title: '确认按钮',
+            catelog: '选中',
+            options: [
+              { type: 'background', config: { disableBackgroundImage: true } },
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'border' },
+              'BoxShadow'
+            ],
+            global: true,
+            target: `.{id}  .ant-btn-primary:active`
+          },
+          {
+            title: '此刻',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } }
+            ],
+            global: true,
+            target: `.{id} a:active`
+          }
         ]
       }),
       ...createrCatelogEditor({
@@ -105,6 +191,15 @@ export default {
             global: true,
             target: `.{id}  .ant-btn-primary[disabled]`
           },
+          {
+            title: '表单项',
+            catelog: '禁用',
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.disabled;
+            },
+            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+            target: '.ant-picker.ant-picker-disabled'
+          }
         ]
       }),
     ],
