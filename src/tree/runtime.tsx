@@ -259,7 +259,12 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     /** 判断是否满足拖拽范围限制 */
     switch (data.useDropScope) {
       case 'parent':
-        if (dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName] && dropFlag !== 0) {
+        if (dropFlag === 0 && dropNode[keyFieldName] !== dragNodeParent?.[keyFieldName]) {
+          // 拖拽到dropNode的第一个子节点
+          message.error(data.dropScopeMessage);
+          return;
+        }
+        if (dropFlag !== 0 && dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
           message.error(data.dropScopeMessage);
           return;
         }

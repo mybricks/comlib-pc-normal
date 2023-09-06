@@ -273,7 +273,7 @@ export const filterTreeDataByKeys = (treeData: TreeData[] = [], keys: React.Key[
  * @param data 组件数据
  * @returns 代码提示片段
  */
-export const getSuggestions = (data: Data) => [
+export const getNodeSuggestions = (data: Data) => [
   {
     label: 'node',
     insertText: `node.`,

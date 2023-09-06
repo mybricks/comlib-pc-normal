@@ -3,7 +3,7 @@ import { uuid } from '../utils';
 import { actionBtnsEditor, actionBtnEditor, getBtnProp } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import { Data, TreeData, MODIFY_BTN_ID, DELETE_BTN_ID, IconSrcType } from './constants';
-import { getSuggestions, pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
+import { getNodeSuggestions, pretreatTreeData, setCheckboxStatus, traverseTree } from './utils';
 
 const buildNewNode = (uuid: string) => {
   return {
@@ -268,7 +268,7 @@ export default {
       }
     ],
     items: ({ data, output }: EditorResult<Data>, ...cate) => {
-      const suggestions = getSuggestions(data);
+      const suggestions = getNodeSuggestions(data);
       cate[0].title = '常规';
       cate[1].title = '高级';
       cate[0].items = [
