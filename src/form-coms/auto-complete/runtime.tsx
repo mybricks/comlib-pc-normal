@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { AutoComplete } from 'antd';
+import React, { useCallback, useRef, useLayoutEffect } from 'react';
+import { AutoComplete, Input, InputRef } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -25,8 +25,23 @@ export interface Data {
   };
 }
 
+export enum InputIds {
+  SET_COLOR = 'setColor'
+}
+
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, logger } = props;
+
+  const inputRef = useRef<InputRef>(null);
+
+  useLayoutEffect(() => {
+    inputs[InputIds.SET_COLOR]((color: string) => {
+      // 设置输入框字体颜色
+      if (inputRef.current?.input) {
+        inputRef.current.input.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
 
   useFormItemInputs({
     id: props.id,
@@ -116,6 +131,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={data.value}
         onChange={onChange}
         filterOption={data.isFilter}
+        children={<Input ref={inputRef} />}
         onBlur={onBlur}
         onSelect={onSelect}
         onSearch={data.isOnSearch ? onSearch : void 0}
