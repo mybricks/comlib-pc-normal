@@ -88,7 +88,7 @@ const tableStyleEditor = {
       ifVisible({ data }: EditorResult<Data>) {
         return data.enableStripe;
       },
-      options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+      options: [{ type: 'background', config: { disableBackgroundImage: true } }],
       target: ({ id }) => `table tbody tr.mybricks-table-row-single td${getFilterSelector(id)}`
     },
     {
@@ -96,7 +96,7 @@ const tableStyleEditor = {
       ifVisible({ data }: EditorResult<Data>) {
         return data.enableStripe;
       },
-      options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+      options: [{ type: 'background', config: { disableBackgroundImage: true } }],
       target: ({ id }) => `table tbody tr.mybricks-table-row-double td${getFilterSelector(id)}`,
     },
     // {
