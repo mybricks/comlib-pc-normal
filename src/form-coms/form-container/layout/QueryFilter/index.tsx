@@ -167,7 +167,7 @@ const QueryFilter = (props: QueryFilterProps) => {
                     type={item.type}
                     loading={item.loading}
                     danger={item?.danger}
-                    disabled={data.config.disabled}
+                    disabled={item.disabled || data.config.disabled}
                     onClick={() => onClick(item)}
                   >
                     {item.title}

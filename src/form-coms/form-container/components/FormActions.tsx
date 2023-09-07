@@ -56,7 +56,7 @@ const FormActions = (props: Props) => {
             key={item.key}
             danger={item?.danger}
             onClick={() => onClick(item)}
-            disabled={config.disabled}
+            disabled={item.disabled || config.disabled}
           >
             {item.title}
           </Button>

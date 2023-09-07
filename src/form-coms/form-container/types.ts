@@ -12,7 +12,10 @@ interface Action {
   permission?: {
     id: string
     type?: string
-  }
+  },
+  useDynamicHidden: boolean;
+  useDynamicDisabled: boolean;
+  disabled: boolean;
 }
 
 interface Actions {
