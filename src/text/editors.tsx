@@ -1,6 +1,9 @@
 import { Data, AlignTypeEnum, OutputIds, Schemas, InputIds } from './constants';
 
 export default {
+  '@init'({ style }) {
+    style.width = 'fit-content';
+  },
   '@resize': {
     options: ['width']
   },
