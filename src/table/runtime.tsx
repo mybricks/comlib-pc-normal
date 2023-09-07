@@ -654,6 +654,12 @@ export default function (props: RuntimeParams<Data>) {
             pagination={false}
             rowSelection={data.useRowSelection ? rowSelection : undefined}
             showHeader={data.showHeader === false && env.runtime ? false : true}
+            rowClassName={(_, index) => {
+              if (data.enableBanMaWen) {
+                return (index + 1) % 2 === 0 ? 'ant-row-double' : 'ant-row-single';
+              }
+              return '';
+            }}
             scroll={{
               x: '100%',
               y: data.scroll.y ? data.scroll.y : void 0

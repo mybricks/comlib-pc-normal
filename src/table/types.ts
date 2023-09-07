@@ -128,6 +128,7 @@ export interface Data {
   size: SizeEnum;
   // 固定表头
   fixedHeader: boolean;
+  enableBanMaWen: boolean;
   // 滚动
   scroll: Scroll;
 
