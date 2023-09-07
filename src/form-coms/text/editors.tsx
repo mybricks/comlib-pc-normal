@@ -109,6 +109,9 @@ export default {
               {
                 title: '清除按钮',
                 catelog: 'Hover',
+                ifVisible({ data }) {
+                  return data.config.allowClear;
+                },
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'

@@ -143,6 +143,16 @@ export default {
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
                 },
+              },
+              {
+                title: '标签-关闭图标',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
               }
             ]
           }),
