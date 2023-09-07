@@ -2,6 +2,7 @@ import { Data, OutputIds } from '../constants';
 import { message } from 'antd';
 import styleEditor from './styleEditor';
 import IconEditor from '../iconEditor';
+import { TypeEnum } from '../constants';
 
 export default {
   '@init'({ style }) {
@@ -40,20 +41,61 @@ export default {
             title: 'Hover',
             catelog: 'Hover',
             ifVisible({ data }: EditorResult<Data>) {
-              return !data.asMapArea;
+              return !data.asMapArea && data.type !== TypeEnum.Link;
             },
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-            target: `.button:hover`,
+            target: [`.button:hover`],
             domTarget: '.button'
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea && data.type === TypeEnum.Link;
+            },
+            options: ['border', 'background'],
+            target: [`.button:hover`],
+            domTarget: '.button'
+          },
+          {
+            catelog: 'Hover',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea && data.type === TypeEnum.Link;
+            },
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: ['.button:hover > span']
           },
           {
             title: '激活',
             catelog: '激活',
             ifVisible({ data }: EditorResult<Data>) {
-              return !data.asMapArea;
+              return !data.asMapArea && data.type !== TypeEnum.Link;
             },
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-            target: `button.ant-btn:not([disabled]):active`
+            target: [
+              `button.ant-btn:not([disabled]):active`,
+              `button.ant-btn:not([disabled]):active > span`
+            ]
+          },
+          {
+            title: '激活',
+            catelog: '激活',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea && data.type === TypeEnum.Link;
+            },
+            options: ['border', 'background'],
+            target: [
+              `button.ant-btn:not([disabled]):active`,
+              `button.ant-btn:not([disabled]):active > span`
+            ]
+          },
+          {
+            catelog: '激活',
+            ifVisible({ data }: EditorResult<Data>) {
+              return !data.asMapArea && data.type === TypeEnum.Link;
+            },
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target: [`button.ant-btn:not([disabled]):active > span`]
           },
           {
             title: '禁用',
