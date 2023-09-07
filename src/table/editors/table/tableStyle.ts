@@ -76,33 +76,33 @@ const tableStyleEditor = {
       description: '配置表格的单双行为不同样式',
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.enableBanMaWen;
+          return data.enableStripe;
         },
         set({ data }: EditorResult<Data>, value: boolean) {
-          data.enableBanMaWen = value;
+          data.enableStripe = value;
         }
       }
     },
     {
       title: '单行',
       ifVisible({ data }: EditorResult<Data>) {
-        return data.enableBanMaWen;
+        return data.enableStripe;
       },
       options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-      target: ({ id }) => `table thead tr.ant-row-single th${getFilterSelector(id)}`
+      target: ({ id }) => `table tbody tr.mybricks-table-row-single td${getFilterSelector(id)}`
     },
     {
       title: '双行',
       ifVisible({ data }: EditorResult<Data>) {
-        return data.enableBanMaWen;
+        return data.enableStripe;
       },
       options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-      target: ({ id }) => `table tbody tr.ant-row-double td${getFilterSelector(id)}`,
+      target: ({ id }) => `table tbody tr.mybricks-table-row-double td${getFilterSelector(id)}`,
     },
     // {
     //   title: '斑马纹设置',
     //   ifVisible({ data }: EditorResult<Data>) {
-    //     return data.enableBanMaWen;
+    //     return data.enableStripe;
     //   },
     //   items: [
     //     {

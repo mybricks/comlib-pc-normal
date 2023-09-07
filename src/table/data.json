@@ -3,7 +3,7 @@
   "dataSource": [],
   "columns": [],
   "fixedHeader": false,
-  "enableBanMaWen": false,
+  "enableStripe": false,
   "headStyle": {
     "color": "#1f1f1f",
     "background": "#f5f7f9"

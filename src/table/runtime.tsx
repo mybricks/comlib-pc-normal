@@ -655,8 +655,10 @@ export default function (props: RuntimeParams<Data>) {
             rowSelection={data.useRowSelection ? rowSelection : undefined}
             showHeader={data.showHeader === false && env.runtime ? false : true}
             rowClassName={(_, index) => {
-              if (data.enableBanMaWen) {
-                return (index + 1) % 2 === 0 ? 'ant-row-double' : 'ant-row-single';
+              if (data.enableStripe) {
+                return (index + 1) % 2 === 0
+                  ? 'mybricks-table-row-double'
+                  : 'mybricks-table-row-single';
               }
               return '';
             }}
