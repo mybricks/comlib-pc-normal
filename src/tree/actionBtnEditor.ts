@@ -1,6 +1,6 @@
 import { uuid } from '../utils';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
-import { ActionBtn, Data, DELETE_BTN_ID, IconSrcType, MODIFY_BTN_ID } from './constants';
+import { ActionBtn, Data, DELETE_BTN_ID, IconSrcType, MODIFY_BTN_ID } from './types';
 import { getNodeSuggestions } from './utils';
 
 function removeActionBtn({ data, focusArea, output }) {
@@ -291,7 +291,7 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
         description: `根据节点数据在调试态下动态显示该按钮的表达式，支持JS表达式语法, 例：{node.title === '1'}`,
         type: 'expression',
         options: {
-          placeholder: `例：{node.isRoot} 按钮在根节点中显示`,
+          placeholder: `例：{node.isLeaf} 按钮在叶子节点中显示`,
           suggestions: getNodeSuggestions(data)
         },
         value: {

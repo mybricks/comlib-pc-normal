@@ -2,7 +2,7 @@ import React from 'react';
 import * as Icons from '@ant-design/icons';
 import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './constants';
+import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './types';
 import { ExpressionSandbox } from '../../package/com-utils';
 import css from './ActionBtns.less';
 
