@@ -9,6 +9,32 @@ export default {
     options: ['width', 'height']
   },
   ':root': {
+    style: [
+      {
+        title: '弹窗宽度',
+        description: '设置0将使用默认宽度：520',
+        type: 'Slider',
+        options: {
+          max: 5000,
+          min: 0,
+          step: 100,
+          formatter: 'px'
+        },
+        value: {
+          get({ data }) {
+            return data.width;
+          },
+          set({ data }, value: number) {
+            data.width = value || undefined;
+          }
+        }
+      },
+      {
+        title: '内容',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-modal-body'
+      }
+    ],
     items: ({}, cate1) => {
       cate1.title = '常规';
       cate1.items = [
