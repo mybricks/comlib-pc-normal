@@ -638,104 +638,108 @@ export default {
         },
         {
           title: '节点图标',
-          type: 'array',
-          description: `图标动态显示表达式约定以“node”开头, node表示当前节点, 如{node.isLeaf}: 当前节点为叶子节点时显示`,
-          options: {
-            addText: '添加图标',
-            editable: true,
-            getTitle(item) {
-              return `${item.title} ${item.displayExpression}`;
-            },
-            onAdd(): IconType {
-              return {
-                title: '图标',
-                src: 'inner',
-                size: [14, 14],
-                gutter: [8],
-                innerIcon: 'FolderOpenOutlined',
-                displayRule: 'default',
-                customIcon: '',
-                displayExpression: ''
-              };
-            },
-            items: [
-              {
-                title: '名称',
-                type: 'text',
-                value: 'title'
-              },
-              {
-                title: '尺寸',
-                type: 'InputNumber',
-                options: [
-                  { title: '高度', min: 0, width: 100 },
-                  { title: '宽度', min: 0, width: 100 }
-                ],
-                value: 'size'
-              },
-              {
-                title: '间隔',
-                type: 'InputNumber',
-                options: [{ min: 0, width: 100 }],
-                value: 'gutter'
-              },
-              {
-                title: '图标来源',
-                type: 'Radio',
-                options: [
-                  { label: '无', value: false },
-                  { label: '内置图标库', value: 'inner' },
-                  { label: '自定义上传', value: 'custom' }
-                ],
-                value: 'src'
-              },
-              {
-                title: '图标库',
-                type: 'Icon',
-                ifVisible(item: any) {
-                  return item.src === 'inner';
+          items: [
+            {
+              type: 'array',
+              description: `图标动态显示表达式约定以“node”开头, node表示当前节点, 如{node.isLeaf}: 当前节点为叶子节点时显示`,
+              options: {
+                addText: '添加图标',
+                editable: true,
+                getTitle(item) {
+                  return `${item.title} ${item.displayExpression}`;
                 },
-                value: 'innerIcon'
-              },
-              {
-                title: '上传',
-                type: 'ImageSelector',
-                ifVisible(item: any) {
-                  return item.src === 'custom';
+                onAdd(): IconType {
+                  return {
+                    title: '图标',
+                    src: 'inner',
+                    size: [14, 14],
+                    gutter: [8],
+                    innerIcon: 'FolderOpenOutlined',
+                    displayRule: 'default',
+                    customIcon: '',
+                    displayExpression: ''
+                  };
                 },
-                value: 'customIcon'
+                items: [
+                  {
+                    title: '名称',
+                    type: 'text',
+                    value: 'title'
+                  },
+                  {
+                    title: '尺寸',
+                    type: 'InputNumber',
+                    options: [
+                      { title: '高度', min: 0, width: 100 },
+                      { title: '宽度', min: 0, width: 100 }
+                    ],
+                    value: 'size'
+                  },
+                  {
+                    title: '间隔',
+                    type: 'InputNumber',
+                    options: [{ min: 0, width: 100 }],
+                    value: 'gutter'
+                  },
+                  {
+                    title: '图标来源',
+                    type: 'Radio',
+                    options: [
+                      { label: '无', value: false },
+                      { label: '内置图标库', value: 'inner' },
+                      { label: '自定义上传', value: 'custom' }
+                    ],
+                    value: 'src'
+                  },
+                  {
+                    title: '图标库',
+                    type: 'Icon',
+                    ifVisible(item: any) {
+                      return item.src === 'inner';
+                    },
+                    value: 'innerIcon'
+                  },
+                  {
+                    title: '上传',
+                    type: 'ImageSelector',
+                    ifVisible(item: any) {
+                      return item.src === 'custom';
+                    },
+                    value: 'customIcon'
+                  },
+                  {
+                    title: '应用节点',
+                    type: 'Radio',
+                    options: [
+                      { label: '所有节点', value: 'default' },
+                      { label: '自定义节点', value: 'dynamic' }
+                    ],
+                    value: 'displayRule'
+                  },
+                  {
+                    title: '动态显示表达式',
+                    type: 'expression',
+                    options: {
+                      suggestions,
+                      placeholder: `例：{node.isLeaf} 图标应用在叶子节点上`
+                    },
+                    ifVisible(item: any) {
+                      return item.displayRule === 'dynamic';
+                    },
+                    value: 'displayExpression'
+                  }
+                ]
               },
-              {
-                title: '应用节点',
-                type: 'Radio',
-                options: [
-                  { label: '所有节点', value: 'default' },
-                  { label: '自定义节点', value: 'dynamic' }
-                ],
-                value: 'displayRule'
-              },
-              {
-                title: '动态显示表达式',
-                type: 'expression',
-                options: {
-                  suggestions,
-                  placeholder: `例：{node.isLeaf} 图标应用在叶子节点上`
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [...(data.icons || [])];
                 },
-                ifVisible(item: any) {
-                  return item.displayRule === 'dynamic';
-                },
-                value: 'displayExpression'
+                set({ data }: EditorResult<Data>, val: Array<IconType>) {
+                  data.icons = val;
+                }
               }
-            ]
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return [...(data.icons || [])];
-            },
-            set({ data }: EditorResult<Data>, val: Array<IconType>) {
-              data.icons = val;
             }
-          }
+          ]
         },
         {
           title: '节点操作项',
