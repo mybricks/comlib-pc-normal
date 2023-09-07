@@ -33,7 +33,10 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
         width="100%"
         height="100%"
         style={{
-          cursor: 'pointer',
+          cursor:
+            outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
+              ? 'pointer'
+              : undefined,
           ...(customStyle || {})
         }}
         fallback={useFallback && fallbackImgSrc ? fallbackImgSrc : undefined}
