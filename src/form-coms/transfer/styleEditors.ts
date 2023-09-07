@@ -12,7 +12,7 @@ export default [
   ...createEditor('默认', [
     {
       title: "选项",
-      options,
+      options: [...options, { type: 'font', config: { disableTextAlign: true } }],
       target: '.ant-transfer-list-content-item'
     },
     {
@@ -24,6 +24,11 @@ export default [
       title: "穿梭按钮",
       options,
       target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled)'
+    },
+    {
+      title: '穿梭图标',
+      options: [{ type: 'font', config: { disableTextAlign: true } }],
+      target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled) > .anticon'
     }
   ]),
   ...createEditor('Hover', [
@@ -44,7 +49,12 @@ export default [
       options,
       target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled):hover',
       domTarget: '.ant-btn-primary'
-    }
+    },
+    {
+      title: '穿梭图标',
+      options: [{ type: 'font', config: { disableTextAlign: true } }],
+      target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled):hover > .anticon'
+    },
   ]),
   ...createEditor('激活', [
     {
@@ -56,6 +66,41 @@ export default [
       title: "勾选框",
       options,
       target: '.ant-transfer-list-content-item .ant-checkbox-checked .ant-checkbox-inner'
+    }
+  ]),
+  ...createEditor('选中', [
+    {
+      title: "穿梭按钮",
+      options,
+      target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled):active',
+      domTarget: '.ant-btn-primary'
+    },
+    {
+      title: '穿梭图标',
+      options: [{ type: 'font', config: { disableTextAlign: true } }],
+      target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled):active > .anticon'
+    },
+  ]),
+  ...createEditor('禁用', [
+    {
+      title: "穿梭按钮",
+      options,
+      target: '.ant-btn-primary[disabled]'
+    },
+    {
+      title: '穿梭图标',
+      options: [{ type: 'font', config: { disableTextAlign: true } }],
+      target: '.ant-btn-primary[disabled] > .anticon'
+    },
+    {
+      title: '勾选框',
+      options,
+      target: '.ant-checkbox-disabled .ant-checkbox-inner'
+    },
+    {
+      title: '列表块',
+      options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+      target: '.ant-transfer-disabled .ant-transfer-list'
     }
   ])
 ]
