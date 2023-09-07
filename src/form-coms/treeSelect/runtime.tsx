@@ -192,6 +192,7 @@ export default function Runtime({
         treeIcon
         {...data.config}
         showArrow={data.config.showArrow}
+        open={env.design ? true : void 0}
         value={data.value}
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={getFieldNames(data)}
