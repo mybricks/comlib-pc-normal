@@ -133,11 +133,12 @@ export default {
                   }
                 ],
                 target:
-                  'div.ant-tree-treenode > span.ant-tree-node-content-wrapper > .ant-tree-title .title'
+                  '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
               },
               {
                 title: '树节点公共样式',
                 options: [
+                  'border',
                   {
                     type: 'background',
                     config: {
@@ -145,7 +146,7 @@ export default {
                     }
                   }
                 ],
-                target: 'div.ant-tree-treenode > span.ant-tree-node-content-wrapper'
+                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
               }
             ]
           }),
@@ -156,13 +157,27 @@ export default {
                 title: '树节点公共样式',
                 options: [
                   {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  }
+                ],
+                target:
+                  '.ant-tree-treenode > .ant-tree-node-content-wrapper:hover > .ant-tree-title .title'
+              },
+              {
+                title: '树节点公共样式',
+                options: [
+                  'border',
+                  {
                     type: 'background',
                     config: {
                       disableBackgroundImage: true
                     }
                   }
                 ],
-                target: 'div.ant-tree-treenode > span.ant-tree-node-content-wrapper:hover'
+                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper:hover'
               }
             ]
           }),
@@ -172,11 +187,24 @@ export default {
               {
                 title: '树节点公共样式',
                 options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  }
+                ],
+                target:
+                  'div.ant-tree-treenode > .ant-tree-node-content-wrapper.ant-tree-node-selected > .ant-tree-title .title'
+              },
+              {
+                title: '树节点公共样式',
+                options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target:
-                  'div.ant-tree-treenode > span.ant-tree-node-content-wrapper.ant-tree-node-selected'
+                  'div.ant-tree-treenode > .ant-tree-node-content-wrapper.ant-tree-node-selected'
               }
             ]
           }),
@@ -186,6 +214,19 @@ export default {
               return !!data.checkable;
             },
             items: [
+              {
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  }
+                ],
+                target:
+                  'div.ant-tree-treenode.ant-tree-treenode-checkbox-checked > span.ant-tree-node-content-wrapper > .ant-tree-title .title'
+              },
               {
                 title: '树节点公共样式',
                 options: [
