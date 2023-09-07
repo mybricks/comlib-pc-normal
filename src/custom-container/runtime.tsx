@@ -67,8 +67,6 @@ export default function (props: RuntimeParams<Data>) {
       ref={ref}
       className={`${css.container} root`}
       style={{
-        ...getOverflowStyle(),
-        transition: 'all 0.2s',
         position: useFixed ? 'fixed' : 'static',
         cursor: useClick ? 'pointer' : '',
         ...legacyStyle
