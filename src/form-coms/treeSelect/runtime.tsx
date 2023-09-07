@@ -191,6 +191,7 @@ export default function Runtime({
       <TreeSelect
         treeIcon
         {...data.config}
+        showArrow={data.config.showArrow}
         value={data.value}
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={getFieldNames(data)}

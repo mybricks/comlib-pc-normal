@@ -279,6 +279,18 @@ export default {
           }
         },
         {
+          title: '显示下拉箭头',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.config.showArrow;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.config.showArrow = value;
+            }
+          }
+        },
+        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',
