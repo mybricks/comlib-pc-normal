@@ -1,5 +1,6 @@
 import { deepCopy } from "../utils";
-import { Data, InputIds, OutputIds, TreeData, ValueType } from "./constants";
+import { Data, TreeData, ValueType } from "./types";
+import { InputIds, OutputIds, } from "./constants";
 
 export const setCheckboxStatus = ({
   treeData,
@@ -283,9 +284,9 @@ export const getNodeSuggestions = (data: Data) => [
     detail: `当前节点`,
     properties: [
       {
-        label: 'isRoot',
-        insertText: `{isRoot}`,
-        detail: `当前节点是否为根节点`
+        label: '_depth',
+        insertText: `{_depth}`,
+        detail: `当前节点的深度`
       },
       {
         label: 'isLeaf',
@@ -296,11 +297,6 @@ export const getNodeSuggestions = (data: Data) => [
         label: 'checkable',
         insertText: `{checkable}`,
         detail: `当前节点的checkable值`
-      },
-      {
-        label: 'depth',
-        insertText: `{depth}`,
-        detail: `当前节点的深度`
       },
       {
         label: data.keyFieldName || 'key',

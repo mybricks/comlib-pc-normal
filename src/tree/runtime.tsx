@@ -1,9 +1,18 @@
-import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import * as Icons from '@ant-design/icons';
-import { Empty, Tree, Input, Image, Space, message } from 'antd';
+import { Empty, Tree, Input, Image, Space, message, TreeNodeProps } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { ExpressionSandbox } from '../../package/com-utils';
-import { Data, OutputIds, TreeData } from './constants';
+import { Data, IconType, TreeData } from './types';
+import { OutputIds } from './constants';
 import {
   pretreatTreeData,
   setCheckboxStatus,
@@ -17,7 +26,7 @@ import {
   traverseTree
 } from './utils';
 import ActionBtns from './ActionBtn';
-import { MODIFY_BTN_ID } from './constants';
+import { MODIFY_BTN_ID } from './types';
 import { deepCopy, typeCheck, uuid } from '../utils';
 
 export default function ({ env, data, inputs, outputs, onError, logger }: RuntimeParams<Data>) {
@@ -397,31 +406,57 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   };
 
   /**
+   * 计算图标动态显示表达式
+   * @param item 节点数据
+   * @param icon 图标数据
+   */
+  const getDynamicDisplay = (item: TreeNodeProps, icon: IconType): boolean => {
+    let dynamicDisplay = true;
+
+    if (icon.displayRule === 'dynamic' && icon.displayExpression) {
+      const context = {
+        ...item
+      };
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        dynamicDisplay = sandbox.executeWithTemplate(icon.displayExpression);
+      } catch (error: any) {
+        onError?.(`树[${icon.title}]图标: ${error}`);
+      }
+    }
+    return dynamicDisplay;
+  };
+
+  /**
    * 树节点图标渲染
    * @param item 节点数据
    * @returns JSX
    */
   const getNodeIcon = (item) => {
-    const { iconConfig } = data;
-    if (item.icon || (iconConfig?.defaultSrc === 'custom' && iconConfig?.customIcon))
-      return (
+    const icon = data.icons?.find((i) => getDynamicDisplay(item, i));
+    const Icon: { gutter: number; jsx?: ReactNode } = {
+      gutter: 0
+    };
+    if (item.icon || (icon?.src === 'custom' && icon?.customIcon)) {
+      Icon.gutter = icon?.gutter?.[0] || 8;
+      Icon.jsx = (
         <Image
-          width={iconConfig?.size[1] || 14}
-          height={iconConfig?.size[0] || 14}
-          src={item.icon || iconConfig?.customIcon}
+          width={icon?.size[1] || 14}
+          height={icon?.size[0] || 14}
+          src={item.icon || icon?.customIcon}
           preview={false}
         />
       );
-    if (iconConfig?.defaultSrc === 'inner') {
-      return (
-        Icons && (
-          <span style={{ fontSize: Math.max(...iconConfig?.size) }}>
-            {Icons[iconConfig?.innerIcon || ('FolderOpenOutlined' as string)]?.render()}
-          </span>
-        )
+    }
+    if (icon?.src === 'inner') {
+      Icon.gutter = icon?.gutter?.[0] || 8;
+      Icon.jsx = Icons && (
+        <span style={{ fontSize: Math.max(...icon?.size) }}>
+          {Icons[icon?.innerIcon || ('FolderOpenOutlined' as string)]?.render()}
+        </span>
       );
     }
-    return void 0;
+    return Icon;
   };
 
   /**
@@ -432,7 +467,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   const renderTitle = (item, outputItem, isRoot) => {
     const title = env.i18n(item[titleFieldName] || '');
 
-    const Icon = getNodeIcon(item);
+    const Icon = getNodeIcon(outputItem);
 
     // 搜索
     const index = title?.indexOf(data.searchValue);
@@ -453,8 +488,8 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
     /**只读态 */
     const Title = (
-      <Space size={data.iconConfig?.gutter} style={titleStyle} className="title">
-        {Icon}
+      <Space size={Icon.gutter} style={titleStyle} className="title">
+        {Icon.jsx}
         {index > -1 ? (
           <div>
             {beforeStr}
@@ -578,6 +613,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
           }
           if (outputItem.depth === undefined) {
             outputItem.depth = depth;
+          }
+          if (outputItem._depth === undefined) {
+            outputItem._depth = depth;
           }
 
           const checkable = getDynamicCheckable(outputItem);

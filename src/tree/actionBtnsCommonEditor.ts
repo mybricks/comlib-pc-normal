@@ -1,5 +1,5 @@
 import { addBtn } from "./actionBtnEditor";
-import { Data } from "./constants";
+import { Data } from "./types";
 
 export const commonActionBtnsEditor = (data, output) => {
   return {

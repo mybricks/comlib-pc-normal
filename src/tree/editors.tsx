@@ -8,9 +8,10 @@ import {
   MODIFY_BTN_ID,
   DELETE_BTN_ID,
   IconSrcType,
-  OutputIds,
+  IconType,
   ValueType
-} from './constants';
+} from './types';
+import { OutputIds } from './constants';
 import {
   getNodeSuggestions,
   refreshSchema,
@@ -196,88 +197,6 @@ export default {
               }
             ]
           })
-        ]
-      },
-      {
-        title: '节点图标配置',
-        items: [
-          {
-            title: '尺寸',
-            type: 'InputNumber',
-            options: [
-              { title: '高度', min: 0, width: 100 },
-              { title: '宽度', min: 0, width: 100 }
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.iconConfig?.size || [14, 14];
-              },
-              set({ data }: EditorResult<Data>, value: [number, number]) {
-                data.iconConfig.size = value;
-              }
-            }
-          },
-          {
-            title: '间距',
-            type: 'Inputnumber',
-            options: [{ min: 0, max: 1000, width: 200 }],
-            description: '图标与文字间的距离',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return [data.iconConfig.gutter || 8];
-              },
-              set({ data }: EditorResult<Data>, value: number[]) {
-                data.iconConfig.gutter = value[0];
-              }
-            }
-          },
-          {
-            title: '默认图标',
-            type: 'Radio',
-            options: [
-              { label: '无', value: false },
-              { label: '内置图标库', value: 'inner' },
-              { label: '自定义上传', value: 'custom' }
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.iconConfig?.defaultSrc || false;
-              },
-              set({ data }: EditorResult<Data>, value: IconSrcType) {
-                data.iconConfig.defaultSrc = value;
-              }
-            }
-          },
-          {
-            title: '图标库',
-            type: 'Icon',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.iconConfig?.defaultSrc === 'inner';
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.iconConfig?.innerIcon || 'FolderOpenOutlined';
-              },
-              set({ data }: EditorResult<Data>, value: string) {
-                data.iconConfig.innerIcon = value;
-              }
-            }
-          },
-          {
-            title: '上传',
-            type: 'ImageSelector',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.iconConfig?.defaultSrc === 'custom';
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.iconConfig?.customIcon;
-              },
-              set({ data }: EditorResult<Data>, value: string) {
-                data.iconConfig.customIcon = value;
-              }
-            }
-          }
         ]
       }
     ],
@@ -716,6 +635,107 @@ export default {
               }
             }
           ]
+        },
+        {
+          title: '节点图标',
+          type: 'array',
+          description: `图标动态显示表达式约定以“node”开头, node表示当前节点, 如{node.isLeaf}: 当前节点为叶子节点时显示`,
+          options: {
+            addText: '添加图标',
+            editable: true,
+            getTitle(item) {
+              return `${item.title} ${item.displayExpression}`;
+            },
+            onAdd(): IconType {
+              return {
+                title: '图标',
+                src: 'inner',
+                size: [14, 14],
+                gutter: [8],
+                innerIcon: 'FolderOpenOutlined',
+                displayRule: 'default',
+                customIcon: '',
+                displayExpression: ''
+              };
+            },
+            items: [
+              {
+                title: '名称',
+                type: 'text',
+                value: 'title'
+              },
+              {
+                title: '尺寸',
+                type: 'InputNumber',
+                options: [
+                  { title: '高度', min: 0, width: 100 },
+                  { title: '宽度', min: 0, width: 100 }
+                ],
+                value: 'size'
+              },
+              {
+                title: '间隔',
+                type: 'InputNumber',
+                options: [{ min: 0, width: 100 }],
+                value: 'gutter'
+              },
+              {
+                title: '图标来源',
+                type: 'Radio',
+                options: [
+                  { label: '无', value: false },
+                  { label: '内置图标库', value: 'inner' },
+                  { label: '自定义上传', value: 'custom' }
+                ],
+                value: 'src'
+              },
+              {
+                title: '图标库',
+                type: 'Icon',
+                ifVisible(item: any) {
+                  return item.src === 'inner';
+                },
+                value: 'innerIcon'
+              },
+              {
+                title: '上传',
+                type: 'ImageSelector',
+                ifVisible(item: any) {
+                  return item.src === 'custom';
+                },
+                value: 'customIcon'
+              },
+              {
+                title: '应用节点',
+                type: 'Radio',
+                options: [
+                  { label: '所有节点', value: 'default' },
+                  { label: '自定义节点', value: 'dynamic' }
+                ],
+                value: 'displayRule'
+              },
+              {
+                title: '动态显示表达式',
+                type: 'expression',
+                options: {
+                  suggestions,
+                  placeholder: `例：{node.isLeaf} 图标应用在叶子节点上`
+                },
+                ifVisible(item: any) {
+                  return item.displayRule === 'dynamic';
+                },
+                value: 'displayExpression'
+              }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return [...(data.icons || [])];
+            },
+            set({ data }: EditorResult<Data>, val: Array<IconType>) {
+              data.icons = val;
+            }
+          }
         },
         {
           title: '节点操作项',
