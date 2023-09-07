@@ -11,9 +11,9 @@ const getSuggestions = (data: Data) => {
       detail: `当前节点`,
       properties: [
         {
-          label: 'isRoot',
-          insertText: `{isRoot}`,
-          detail: `当前节点是否为根节点`
+          label: '_depth',
+          insertText: `{_depth}`,
+          detail: `当前节点的深度`
         },
         {
           label: 'isLeaf',
