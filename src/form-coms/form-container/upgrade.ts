@@ -273,5 +273,20 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
 
   //=========== v1.4.0 end ===============
 
+  /**
+   * @description v1.4.5 , 新增 操作项，禁用启用
+  */
+  data.actions.items?.forEach(act => {
+    if (act && act.disabled === undefined) {
+      act.disabled = false;
+    }
+    if(act && act.useDynamicDisabled === undefined){
+      act.useDynamicDisabled = false;
+    }
+    if(act && act.useDynamicHidden === undefined){
+      act.useDynamicHidden = false;
+    }
+  })
+
   return true;
 }

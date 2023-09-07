@@ -145,6 +145,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       }
     });
+
+    (data.actions.items || []).forEach((item) => {
+      const { key } = item;
+      //禁用
+      inputs[`${inputIds.SetDisable}_${key}`]?.(() => {
+        item.disabled = true;
+      });
+      //启用
+      inputs[`${inputIds.SetEnable}_${key}`]?.(() => {
+        item.disabled = false;
+      });
+      //显示
+      inputs[`${inputIds.SetShow}_${key}`]?.(() => {
+        item.visible = true;
+      });
+      //隐藏
+      inputs[`${inputIds.SetHidden}_${key}`]?.(() => {
+        item.visible = false;
+      });
+    });
   }
 
   // useEffect(() => {

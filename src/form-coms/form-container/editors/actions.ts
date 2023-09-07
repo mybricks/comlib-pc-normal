@@ -157,7 +157,10 @@ export const actionsEditor = (data: Data, output) => {
               key: outputId,
               outputId,
               isDefault: false,
-              visible: true
+              visible: true,
+              disabled: false,
+              useDynamicDisabled: false,
+              useDynamicHidden: false
             }
             output.add(outputId, `点击${title}`, { type: 'any' })
             data.actions.items.push(item)
