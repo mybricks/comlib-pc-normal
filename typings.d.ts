@@ -18,7 +18,7 @@ interface Env {
     getCookies: () => any;
     getRouter: () => Record<string, Function>
   },
-  hasPermission: ({ key:string }) => boolean
+  hasPermission: (id: string) => boolean
   [x: string]: any
 }
 interface RuntimeParams<T> {

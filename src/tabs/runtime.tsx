@@ -30,8 +30,8 @@ export default function ({
   const findTargetByKey = useCallback(
     (target = data.defaultActiveKey) => {
       return data.tabList.find(
-        ({ id, permissionKey, key }) =>
-          (!permissionKey || env.hasPermission({ key: permissionKey })) &&
+        ({ id, permission, key }) =>
+          (!permission || env.hasPermission(permission.id)) &&
           showTabs?.includes(id as string) &&
           key === target
       );
@@ -42,8 +42,8 @@ export default function ({
   const findIndexByKey = useCallback(
     (target = data.defaultActiveKey) => {
       return data.tabList.findIndex(
-        ({ id, permissionKey, key }) =>
-          (!permissionKey || env.hasPermission({ key: permissionKey })) &&
+        ({ id, permission, key }) =>
+          (!permission || env.hasPermission(permission.id)) &&
           showTabs?.includes(id as string) &&
           key === target
       );
@@ -81,8 +81,8 @@ export default function ({
           activeTab = data.tabList[val];
         }
         if (activeTab) {
-          const { permissionKey } = activeTab;
-          if (!permissionKey || (permissionKey && env.hasPermission({ key: permissionKey }))) {
+          const { permission } = activeTab;
+          if (!permission || (permission && env.hasPermission(permission.id))) {
             data.defaultActiveKey = activeTab.key;
             data.active = true;
             return;
@@ -229,7 +229,7 @@ export default function ({
           const tabName = env.i18n(item.name);
           if (
             env.runtime &&
-            ((item.permissionKey && !env.hasPermission({ key: item.permissionKey })) ||
+            ((item.permission && !env.hasPermission(item.permission.id)) ||
               !showTabs?.includes(item.id))
           ) {
             return null;
