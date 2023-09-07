@@ -46,11 +46,11 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
    *  1. hide: 隐藏
    *  2. disable: 禁用
    *  3. none: 什么都不用做
-   * @param key 权限ID
+   * @param id 权限ID
    * @returns 没有权限时需要做的事情吗，如果有权限返回 none
    */
-  const getWhatToDoWithoutPermission = (key?: string): 'none' | 'hide' | 'disable' => {
-    const permission = !(env.runtime && key && !env?.hasPermission({ key }));
+  const getWhatToDoWithoutPermission = (id?: string): 'none' | 'hide' | 'disable' => {
+    const permission = !(env.runtime && id && !env?.hasPermission(id));
     if (permission) return 'none';
 
     // TODO: 等后续「无权限时」字段开放后，将返回值按类型返回

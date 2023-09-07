@@ -206,15 +206,16 @@ export default {
           title: '权限控制',
           items: [
             {
-              title: '权限Key',
-              description: '唯一标识的权限key',
-              type: 'text',
+              title: '权限信息配置',
+              description: '权限信息配置',
+              type: '_permission',
               value: {
                 get({}: EditorResult<Data>) {
-                  return item?.permissionKey;
+                  return item.permission;
                 },
-                set({}: EditorResult<Data>, value: string) {
-                  item.permissionKey = value;
+                set({}: EditorResult<Data>, value: { id: string, register: () => void }) {
+                  item.permission = { id: value.id };
+                  value.register();
                 }
               }
             }

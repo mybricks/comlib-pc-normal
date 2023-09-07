@@ -39,7 +39,7 @@ const FormActions = (props: Props) => {
     <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
         if (props.env?.runtime && item.permission?.id) {
-          if (!props.env.hasPermission({ key: item.permission?.id })) {
+          if (!props.env.hasPermission(item.permission?.id)) {
             return null;
           }
         }

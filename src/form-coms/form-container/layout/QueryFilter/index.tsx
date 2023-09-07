@@ -151,7 +151,7 @@ const QueryFilter = (props: QueryFilterProps) => {
               <CollapseButton collapsed={collapsed} setCollapsed={setCollapsed} />
               {data.actions.items.map((item) => {
                 if (env?.runtime && item.permission?.id) {
-                  if (env.hasPermission({ key: item.permission?.id })) {
+                  if (env.hasPermission(item.permission?.id)) {
                     return null;
                   }
                 }
