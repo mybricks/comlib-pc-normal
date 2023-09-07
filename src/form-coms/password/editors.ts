@@ -14,7 +14,7 @@ export default {
       {
         items: [
           ...createrCatelogEditor({
-            catelog: '表单项',
+            catelog: '默认',
             items: [
               {
                 title: '边框',
@@ -77,7 +77,6 @@ export default {
             items: [
               {
                 title: '激活',
-                catelog: '激活',
                 options: ['border','BoxShadow'],
                 target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
               },

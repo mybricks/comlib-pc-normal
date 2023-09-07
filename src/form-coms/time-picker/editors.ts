@@ -11,7 +11,7 @@ export default {
   ':root': {
     style: [
       ...createrCatelogEditor({
-        catelog: '表单项',
+        catelog: '默认',
         items: [
           {
             title: '边框',
@@ -20,7 +20,6 @@ export default {
           },
           {
             title: '表单项背景色',
-            catelog: '表单项',
             options: [{ type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-picker'
           },
@@ -44,11 +43,6 @@ export default {
             options: [{ type: 'font', config: { disableTextAlign: true } }],
             target: '.ant-input'
           },
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: '默认',
-        items: [
           {
             title: '时间',
             options: [
@@ -149,7 +143,7 @@ export default {
         ]
       }),
       ...createrCatelogEditor({
-        catelog: '选中',
+        catelog: 'Select',
         items: [
           {
             title: '时间',
@@ -163,7 +157,6 @@ export default {
           },
           {
             title: '确认按钮',
-            catelog: '选中',
             options: [
               { type: 'background', config: { disableBackgroundImage: true } },
               { type: 'font', config: { disableTextAlign: true } },

@@ -14,7 +14,7 @@ export default {
       {
         items: [
           ...createrCatelogEditor({
-            catelog: '表单项',
+            catelog: '默认',
             items: [
               {
                 title: '边框',
@@ -73,12 +73,7 @@ export default {
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
                 target: ['.ant-select-multiple .ant-select-selection-item-remove']
-              }
-            ]
-          }),
-          ...createrCatelogEditor({
-            catelog: '默认',
-            items: [
+              },
               {
                 title: '选项',
                 options: [

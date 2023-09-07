@@ -15,49 +15,38 @@ export default {
       {
         items: [
           ...createrCatelogEditor({
-            catelog: '表单项',
+            catelog: '默认',
             items: [
               {
                 title: '边框',
-                catelog: '表单项',
                 options: ['border'],
                 target: '.ant-picker'
               },
               {
                 title: '表单项背景色',
-                catelog: '表单项',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-picker'
               },
               {
                 title: '日历图标',
-                catelog: '表单项',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-calendar'
               },
               {
                 title: '清除按钮',
-                catelog: '表单项',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle'
               },
               {
                 title: '文本内容',
-                catelog: '表单项',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.ant-picker-input>input'
               },
               {
                 title: '提示内容',
-                catelog: '表单项',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: 'input::placeholder'
-              }
-            ]
-          }),
-          ...createrCatelogEditor({
-            catelog: '默认',
-            items: [
+              },
               {
                 title: '日期-当前',
                 catelog: '默认',
@@ -355,11 +344,10 @@ export default {
             ]
           }),
           ...createrCatelogEditor({
-            catelog: '选中',
+            catelog: 'Select',
             items: [
               {
                 title: '日期-选中',
-                catelog: '选中',
                 ifVisible({ data }: EditorResult<Data>) {
                   return data.config.picker === 'date';
                 },
@@ -375,7 +363,6 @@ export default {
               },
               {
                 title: '日期-选中',
-                catelog: '选中',
                 ifVisible({ data }: EditorResult<Data>) {
                   return data.config.picker === 'week';
                 },
@@ -391,7 +378,6 @@ export default {
               },
               {
                 title: '周-选中',
-                catelog: '选中',
                 ifVisible({ data }: EditorResult<Data>) {
                   return data.config.picker === 'week';
                 },
@@ -405,7 +391,6 @@ export default {
               },
               {
                 title: '月份',
-                catelog: '选中',
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } },
@@ -423,7 +408,6 @@ export default {
               },
               {
                 title: '季度',
-                catelog: '选中',
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } },
@@ -441,7 +425,6 @@ export default {
               },
               {
                 title: '年份',
-                catelog: '选中',
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } },
@@ -459,7 +442,6 @@ export default {
               },
               {
                 title: '时间-选中',
-                catelog: '选中',
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } },
@@ -475,7 +457,6 @@ export default {
               },
               {
                 title: '确认按钮',
-                catelog: '选中',
                 ifVisible({ data }: EditorResult<Data>) {
                   return !!data.showTime && data.config.picker === 'date';
                 },

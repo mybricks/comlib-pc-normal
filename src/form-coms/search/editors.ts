@@ -63,7 +63,7 @@ export default {
       {
         items: [
           ...createrCatelogEditor({
-            catelog: '表单项',
+            catelog: '默认',
             items: [
               {
                 title: '边框',
@@ -199,7 +199,7 @@ export default {
             ]
           }),
           ...createrCatelogEditor({
-            catelog: '选中',
+            catelog: 'Select',
             items: [
               {
                 title: '搜索标签',

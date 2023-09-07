@@ -11,7 +11,7 @@ export default {
       {
         items: [
           ...createrCatelogEditor({
-            catelog: '表单项',
+            catelog: '默认',
             items: [
               {
                 title: '边框',

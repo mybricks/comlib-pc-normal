@@ -56,7 +56,7 @@ export default [
       target: 'button.ant-btn.ant-btn-primary.ant-btn-sm.ant-btn-icon-only:not(:disabled):hover > .anticon'
     },
   ]),
-  ...createEditor('激活', [
+  ...createEditor('Check', [
     {
       title: "选项",
       options,
@@ -68,7 +68,7 @@ export default [
       target: '.ant-transfer-list-content-item .ant-checkbox-checked .ant-checkbox-inner'
     }
   ]),
-  ...createEditor('选中', [
+  ...createEditor('Select', [
     {
       title: "穿梭按钮",
       options,
