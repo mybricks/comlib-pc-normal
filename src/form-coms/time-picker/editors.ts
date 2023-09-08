@@ -193,9 +193,6 @@ export default {
           {
             title: '表单项',
             catelog: '禁用',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.disabled;
-            },
             options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
             target: '.ant-picker.ant-picker-disabled'
           },

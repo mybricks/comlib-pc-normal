@@ -88,9 +88,6 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                ifVisible({ data }) {
-                  return data.disabled;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 target: [
                   '.ant-input-affix-wrapper-disabled'

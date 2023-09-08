@@ -31,9 +31,6 @@ export default {
               {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                ifVisible({ data }) {
-                  return data.config.allowClear;
-                },
                 target: '.anticon-close-circle'
               },
               {
@@ -44,9 +41,6 @@ export default {
               {
                 title: '字数',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.config.showCount;
-                },
                 target: '.ant-input-textarea-show-count::after'
               }
             ]
@@ -64,9 +58,6 @@ export default {
               {
                 title: '清除按钮',
                 catelog: 'Hover',
-                ifVisible({ data }) {
-                  return data.config.allowClear;
-                },
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
@@ -90,9 +81,6 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                ifVisible({ data }) {
-                  return data.config.disabled;
-                },
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
