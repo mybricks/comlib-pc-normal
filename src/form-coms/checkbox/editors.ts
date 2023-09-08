@@ -27,7 +27,7 @@ export default {
                 title: '选择框',
                 options: ['border'],
                 target: '.ant-checkbox-inner'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -38,7 +38,7 @@ export default {
                 options: ['border'],
                 target: '.ant-checkbox:hover .ant-checkbox-inner',
                 domTarget: '.ant-checkbox-inner'
-              },
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -46,9 +46,27 @@ export default {
             items: [
               {
                 title: '选择框',
-                options: ['border', 'BoxShadow', { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  'border',
+                  'BoxShadow',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-checkbox-checked .ant-checkbox-inner'
               },
+              {
+                title: '选择框勾选符号',
+                options: [
+                  {
+                    type: 'border',
+                    config: {
+                      disableBorderWidth: true,
+                      disableBorderStyle: true,
+                      disableBorderRadius: true
+                    }
+                  }
+                ],
+                target: '.ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner:after'
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -57,17 +75,35 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
+                target:
+                  'label.ant-checkbox-wrapper.ant-checkbox-wrapper-disabled > span:nth-child(2)'
               },
               {
                 title: '选择框',
-                options: [{ type: 'border', config: { useImportant: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
+                options: [
+                  { type: 'border', config: { useImportant: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
                 target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
+              },
+              {
+                title: '选择框勾选符号',
+                options: [
+                  {
+                    type: 'border',
+                    config: {
+                      disableBorderWidth: true,
+                      disableBorderStyle: true,
+                      disableBorderRadius: true
+                    }
+                  }
+                ],
+                target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner:after'
               }
             ]
-          }),
+          })
         ]
-      },
+      }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
@@ -117,7 +153,7 @@ export default {
         },
         // 选项配置
         {
-          title: "静态选项配置",
+          title: '静态选项配置',
           type: 'array',
           options: {
             getTitle: ({ label, checked }) => {
@@ -155,7 +191,7 @@ export default {
                 options: ['text', 'number', 'boolean'],
                 description: '选项的唯一标识，可以修改为有意义的值',
                 value: 'value'
-              },
+              }
             ]
           },
           value: {
@@ -281,11 +317,10 @@ export default {
               options: {
                 outputId: 'onChange'
               }
-            },
+            }
           ]
         }
       ];
     }
   }
-
-}
+};
