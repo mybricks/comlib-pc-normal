@@ -19,7 +19,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
           item.key = uuid();
         }
         if (!item.color) {
-          item.color = 'default';
+          item.color = data.type ?? 'default';
         }
         return item;
       });

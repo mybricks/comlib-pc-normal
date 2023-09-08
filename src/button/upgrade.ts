@@ -81,5 +81,13 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     });
   }
 
+  /**
+   * @description v1.0.17 「style 配置项 => 风格」删除选项「危险按钮」，新增「style 配置项 => 危险按钮」
+   */
+  if(data.type === TypeEnum.Danger) {
+    data.type = TypeEnum.Primary;
+    data.danger = true;
+  }
+
   return true;
 }

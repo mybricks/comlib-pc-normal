@@ -202,6 +202,13 @@ export default {
             options: {
               outputId: 'onBlur'
             }
+          },
+          {
+            title: '值选择',
+            type: '_event',
+            options: {
+              outputId: 'onSelect'
+            }
           }
         ]
       },

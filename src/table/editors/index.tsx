@@ -152,6 +152,7 @@ export default {
     style: [
       ...TableStyleEditor.items,
       {
+        title: '表格样式控制',
         items: createStyleForTableContent()
       }
     ]

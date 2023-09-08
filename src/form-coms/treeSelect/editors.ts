@@ -11,9 +11,9 @@ const getSuggestions = (data: Data) => {
       detail: `当前节点`,
       properties: [
         {
-          label: 'isRoot',
-          insertText: `{isRoot}`,
-          detail: `当前节点是否为根节点`
+          label: '_depth',
+          insertText: `{_depth}`,
+          detail: `当前节点的深度`
         },
         {
           label: 'isLeaf',
@@ -428,7 +428,7 @@ export default {
         {
           title: '节点图标',
           type: 'array',
-          description: `图标动态显示表达式约定以“node”开头, node表示当前节点, 如{node.isRoot}: 当前节点为根节点时显示`,
+          description: `图标动态显示表达式约定以“node”开头, node表示当前节点, 如{node._depth===0}: 当前节点为根节点时显示`,
           options: {
             addText: '添加图标',
             editable: true,
@@ -510,7 +510,7 @@ export default {
                 type: 'expression',
                 options: {
                   suggestions: getSuggestions(data),
-                  placeholder: `例：{node.isRoot} 图标应用在根节点上`,
+                  placeholder: `例：{node._depth===0} 图标应用在根节点上`,
                 },
                 ifVisible(item: any) {
                   return item.displayRule === 'dynamic';

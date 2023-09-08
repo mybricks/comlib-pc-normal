@@ -135,6 +135,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       <Button
         className={`${css.button} button`}
         type={data.type}
+        danger={data.danger}
         size={data.size}
         shape={data.shape}
         disabled={disabled}

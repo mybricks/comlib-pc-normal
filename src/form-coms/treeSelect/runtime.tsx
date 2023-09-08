@@ -170,6 +170,7 @@ export default function Runtime({
         {treeData.map((item, inx) => {
           const outputItem = {
             isRoot: depth === 0,
+            _depth: depth,
             isLeaf: !item.children?.length,
             ...item
           };

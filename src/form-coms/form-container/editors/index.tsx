@@ -194,270 +194,281 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root': ({ data, output }: EditorResult<Data>, cate1, cate2) => {
-    cate1.items = [
+  ':root': {
+    style: [
       {
-        title: '类型',
-        type: 'Select',
-        options: [
-          { label: '普通表单', value: 'Form' },
-          { label: '查询表单', value: 'QueryFilter' }
-        ],
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.layoutType;
-          },
-          set({ data, inputs }: EditorResult<Data>, value: 'Form' | 'QueryFilter') {
-            data.layoutType = value;
-          }
-        }
-      },
-      {
-        title: '默认折叠表单项',
-        type: 'Switch',
-        description: '默认折叠收起超出的表单项，折叠的表单项会参与提交',
-        ifVisible({ data, id, name }: EditorResult<Data>) {
-          return data.layoutType === 'QueryFilter';
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.defaultCollapsed;
-          },
-          set({ data }: EditorResult<Data>, value: boolean) {
-            data.defaultCollapsed = value;
-          }
-        }
-      },
-      {
-        title: '提交隐藏表单项',
-        type: 'Switch',
-        description: '提交时收集被隐藏的表单项字段并进行校验',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.submitHiddenFields;
-          },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.submitHiddenFields = val;
-          }
-        }
-      },
-      {
-        title: '添加表单项',
-        type: 'comSelector',
-        options: {
-          schema: 'mybricks.normal-pc.form-container/*',
-          type: 'add'
-        },
-        value: {
-          set({ data, slot }: EditorResult<Data>, namespace: string) {
-            slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
-          }
-        }
-      },
-      {
-        title: '表单项布局',
-        items: [
-          {
-            title: '类型',
-            type: 'Select',
-            options: [
-              { label: '水平', value: 'horizontal' },
-              { label: '垂直', value: 'vertical' },
-              { label: '内联', value: 'inline' }
-              // { label: '自由', value: 'absolute' },
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.config?.layout || data.layout;
-              },
-              set({ data, inputs }: EditorResult<Data>, value: FormLayout) {
-                data.config.layout = value;
-                // refreshFormItemPropsSchema({ data, inputs });
-              }
-            }
-          },
-          {
-            title: '表单项宽度',
-            type: 'Slider',
-            options: [
-              {
-                max: 24,
-                min: 1,
-                step: 1,
-                formatter: '/24'
-              }
-            ],
-            ifVisible({ data, id, name }: EditorResult<Data>) {
-              return data.layoutType === 'QueryFilter';
-            },
-            value: {
-              get({ data, id, name }: EditorResult<Data>) {
-                return data.span || 8;
-              },
-              set({ data, id, name }: EditorResult<Data>, value: number) {
-                data.span = value;
-                data.actions.align = 'right';
-              }
-            }
-          },
-          {
-            title: '每行列数',
-            type: 'Slider',
-            description:
-              '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
-            options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
-            ifVisible({ data, id, name }: EditorResult<Data>) {
-              return data.layoutType === 'Form';
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.formItemColumn;
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.formItemColumn = value;
-                data.actions.span = 24 / value;
-                data.items.forEach((item) => {
-                  item.span = 24 / value;
-                });
-                data.additionalItems.forEach((item) => {
-                  item.span = 24 / value;
-                });
-              }
-            }
-          }
-        ]
-      },
-
-      {
-        title: '标题',
-        ifVisible({ data }: EditorResult<Data>) {
-          return (data.config?.layout || data.layout) === 'horizontal';
-        },
-        items: [
-          {
-            title: '宽度类型',
-            type: 'Select',
-            options: [
-              { label: '固定像素', value: 'px' },
-              { label: '24 栅格', value: 'span' }
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.labelWidthType;
-              },
-              set({ data }: EditorResult<Data>, value: LabelWidthType) {
-                data.labelWidthType = value;
-              }
-            }
-          },
-          {
-            title: '标题宽度(px)',
-            type: 'inputNumber',
-            options: [{ min: 1 }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.labelWidthType === 'px';
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return [data.labelWidth];
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.labelWidth = value[0];
-              }
-            }
-          },
-          {
-            title: '标题宽度(栅格)',
-            type: 'Slider',
-            options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.labelWidthType === 'span';
-            },
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.labelCol;
-              },
-              set({ data }: EditorResult<Data>, value: number) {
-                data.labelCol = value;
-              }
-            }
-          },
-          {
-            title: '显示冒号',
-            type: 'Switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.config?.colon || data.colon;
-              },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.config.colon = value;
-              }
-            }
-          },
-          {
-            title: '自动换行',
-            type: 'Switch',
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.config?.labelWrap;
-              },
-              set({ data }: EditorResult<Data>, value: boolean) {
-                data.config.labelWrap = value;
-              }
-            }
-          },
-          {
-            title: '对齐方式',
-            type: 'Radio',
-            options: [
-              { label: '左对齐', value: 'left' },
-              { label: '右对齐', value: 'right' }
-            ],
-            value: {
-              get({ data }: EditorResult<Data>) {
-                return data.config?.labelAlign;
-              },
-              set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                data.config.labelAlign = value;
-              }
-            }
-          }
-        ]
-      },
-      // {
-      //   title: '禁用状态',
-      //   type: 'Switch',
-      //   description: '开启后，所以表单项和操作项都会被禁用',
-      //   value: {
-      //     get({ data }: EditorResult<Data>) {
-      //       return data.config.disabled
-      //     },
-      //     set({ data }: EditorResult<Data>, val: boolean) {
-      //       data.config.disabled = val
-      //     }
-      //   }
-      // },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '字段值更新',
-            type: '_event',
-            options({ data }) {
-              return {
-                outputId: outputIds.ON_VALUES_CHANGE
-              };
-            }
-          }
-        ]
+        title: '默认',
+        catelog: '默认',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-form'
       }
-    ];
+    ],
+    items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
+      cate1.items = [
+        {
+          title: '类型',
+          type: 'Select',
+          options: [
+            { label: '普通表单', value: 'Form' },
+            { label: '查询表单', value: 'QueryFilter' }
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.layoutType;
+            },
+            set({ data, inputs }: EditorResult<Data>, value: 'Form' | 'QueryFilter') {
+              data.layoutType = value;
+            }
+          }
+        },
+        {
+          title: '默认折叠表单项',
+          type: 'Switch',
+          description: '默认折叠收起超出的表单项，折叠的表单项会参与提交',
+          ifVisible({ data, id, name }: EditorResult<Data>) {
+            return data.layoutType === 'QueryFilter';
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.defaultCollapsed;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.defaultCollapsed = value;
+            }
+          }
+        },
+        {
+          title: '提交隐藏表单项',
+          type: 'Switch',
+          description: '提交时收集被隐藏的表单项字段并进行校验',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.submitHiddenFields;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.submitHiddenFields = val;
+            }
+          }
+        },
+        {
+          title: '添加表单项',
+          type: 'comSelector',
+          options: {
+            schema: 'mybricks.normal-pc.form-container/*',
+            type: 'add'
+          },
+          value: {
+            set({ data, slot }: EditorResult<Data>, namespace: string) {
+              slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
+            }
+          }
+        },
+        {
+          title: '表单项布局',
+          items: [
+            {
+              title: '类型',
+              type: 'Select',
+              options: [
+                { label: '水平', value: 'horizontal' },
+                { label: '垂直', value: 'vertical' },
+                { label: '内联', value: 'inline' }
+                // { label: '自由', value: 'absolute' },
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.config?.layout || data.layout;
+                },
+                set({ data, inputs }: EditorResult<Data>, value: FormLayout) {
+                  data.config.layout = value;
+                  // refreshFormItemPropsSchema({ data, inputs });
+                }
+              }
+            },
+            {
+              title: '表单项宽度',
+              type: 'Slider',
+              options: [
+                {
+                  max: 24,
+                  min: 1,
+                  step: 1,
+                  formatter: '/24'
+                }
+              ],
+              ifVisible({ data, id, name }: EditorResult<Data>) {
+                return data.layoutType === 'QueryFilter';
+              },
+              value: {
+                get({ data, id, name }: EditorResult<Data>) {
+                  return data.span || 8;
+                },
+                set({ data, id, name }: EditorResult<Data>, value: number) {
+                  data.span = value;
+                  data.actions.align = 'right';
+                }
+              }
+            },
+            {
+              title: '每行列数',
+              type: 'Slider',
+              description:
+                '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
+              options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
+              ifVisible({ data, id, name }: EditorResult<Data>) {
+                return data.layoutType === 'Form';
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.formItemColumn;
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.formItemColumn = value;
+                  data.actions.span = 24 / value;
+                  data.items.forEach((item) => {
+                    item.span = 24 / value;
+                  });
+                  data.additionalItems.forEach((item) => {
+                    item.span = 24 / value;
+                  });
+                }
+              }
+            }
+          ]
+        },
 
-    if (!data.isFormItem) {
-      cate2.title = actionsEditor(data, output).title;
-      cate2.items = actionsEditor(data, output).items;
+        {
+          title: '标题',
+          ifVisible({ data }: EditorResult<Data>) {
+            return (data.config?.layout || data.layout) === 'horizontal';
+          },
+          items: [
+            {
+              title: '宽度类型',
+              type: 'Select',
+              options: [
+                { label: '固定像素', value: 'px' },
+                { label: '24 栅格', value: 'span' }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelWidthType;
+                },
+                set({ data }: EditorResult<Data>, value: LabelWidthType) {
+                  data.labelWidthType = value;
+                }
+              }
+            },
+            {
+              title: '标题宽度(px)',
+              type: 'inputNumber',
+              options: [{ min: 1 }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.labelWidthType === 'px';
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.labelWidth];
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelWidth = value[0];
+                }
+              }
+            },
+            {
+              title: '标题宽度(栅格)',
+              type: 'Slider',
+              options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.labelWidthType === 'span';
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.labelCol;
+                },
+                set({ data }: EditorResult<Data>, value: number) {
+                  data.labelCol = value;
+                }
+              }
+            },
+            {
+              title: '显示冒号',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.config?.colon || data.colon;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.config.colon = value;
+                }
+              }
+            },
+            {
+              title: '自动换行',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.config?.labelWrap;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.config.labelWrap = value;
+                }
+              }
+            },
+            {
+              title: '对齐方式',
+              type: 'Radio',
+              options: [
+                { label: '左对齐', value: 'left' },
+                { label: '右对齐', value: 'right' }
+              ],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.config?.labelAlign;
+                },
+                set({ data }: EditorResult<Data>, value: 'left' | 'right') {
+                  data.config.labelAlign = value;
+                }
+              }
+            }
+          ]
+        },
+        // {
+        //   title: '禁用状态',
+        //   type: 'Switch',
+        //   description: '开启后，所以表单项和操作项都会被禁用',
+        //   value: {
+        //     get({ data }: EditorResult<Data>) {
+        //       return data.config.disabled
+        //     },
+        //     set({ data }: EditorResult<Data>, val: boolean) {
+        //       data.config.disabled = val
+        //     }
+        //   }
+        // },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '字段值更新',
+              type: '_event',
+              options({ data }) {
+                return {
+                  outputId: outputIds.ON_VALUES_CHANGE
+                };
+              }
+            }
+          ]
+        }
+      ];
+
+      if (!data.isFormItem) {
+        cate2.title = actionsEditor(data, output).title;
+        cate2.items = actionsEditor(data, output).items;
+      }
     }
   },
+
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
     items: [
@@ -1173,88 +1184,189 @@ export default {
         }
       }
     ],
-    title: '操作',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string;
-            return data.actions.items.find((item) => item.key === comId)?.visible;
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
-            const comId = focusArea.dataset['formActionsItem'];
-            const item = data.actions.items.find((item) => item.key === comId);
-            if (item) {
-              item.visible = val;
-            }
-          }
-        }
-      },
-      {
-        title: '标题',
-        type: 'text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            const comId = focusArea.dataset.formActionsItem as string;
-            return comId && data.actions.items.find((item) => item.key === comId)?.title;
-          },
-          set({ data, focusArea, output }: EditorResult<Data>, val) {
-            if (!val) {
-              return message.warn('操作标题不能为空');
-            }
-
-            const comId = focusArea.dataset['formActionsItem'];
-            const item = data.actions.items.find((item) => item.key === comId);
-            if (item) {
-              item.title = val;
-              output.setTitle(item.outputId, `点击${item.title}`);
-            }
-          }
-        }
-      },
-      {
-        title: '事件',
-        items: [
+    items: ({}: EditorResult<Data>, cate1, cate2) => {
+      (cate1.title = '操作'),
+        (cate1.items = [
           {
-            title: '点击',
-            type: '_event',
-            options({ data, focusArea }) {
-              const comId = focusArea.dataset['formActionsItem'];
-              const item = data.actions.items.find((item) => item.key === comId);
-              if (!item) return;
+            title: '显示',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                const comId = focusArea.dataset.formActionsItem as string;
+                return data.actions.items.find((item) => item.key === comId)?.visible;
+              },
+              set({ data, focusArea, output }: EditorResult<Data>, val) {
+                const comId = focusArea.dataset['formActionsItem'];
+                const item = data.actions.items.find((item) => item.key === comId);
+                if (item) {
+                  item.visible = val;
+                }
+              }
+            }
+          },
+          {
+            title: '标题',
+            type: 'text',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                const comId = focusArea.dataset.formActionsItem as string;
+                return comId && data.actions.items.find((item) => item.key === comId)?.title;
+              },
+              set({ data, focusArea, output }: EditorResult<Data>, val) {
+                if (!val) {
+                  return message.warn('操作标题不能为空');
+                }
 
-              return {
-                outputId: item.outputId
-              };
+                const comId = focusArea.dataset['formActionsItem'];
+                const item = data.actions.items.find((item) => item.key === comId);
+                if (item) {
+                  item.title = val;
+                  output.setTitle(item.outputId, `点击${item.title}`);
+                }
+              }
+            }
+          },
+          {
+            title: '权限',
+            type: '_permission',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                const item = getAcitonsItem(focusArea, data.actions.items);
+
+                return item?.permission;
+              },
+              set(params: EditorResult<Data>, val) {
+                const { data, focusArea, output } = params;
+
+                const item = getAcitonsItem(focusArea, data.actions.items);
+
+                if (item) {
+                  item['permission'] = { id: val.id };
+                  val.register(val.id);
+                }
+              }
+            }
+          },
+          {
+            title: '事件',
+            items: [
+              {
+                title: '点击',
+                type: '_event',
+                options({ data, focusArea }) {
+                  // const comId = focusArea.dataset['formActionsItem'];
+                  // const item = data.actions.items.find((item) => item.key === comId);
+                  const item = getAcitonsItem(focusArea, data.actions.items);
+                  if (!item) return;
+
+                  return {
+                    outputId: item.outputId
+                  };
+                }
+              }
+            ]
+          },
+          {
+            title: '删除',
+            type: 'Button',
+            ifVisible({ data, focusArea }) {
+              // const actions = data.actions.items;
+              // const itemId = focusArea.dataset['formActionsItem'];
+              // const item = actions.find((item) => item.key === itemId);
+              const item = getAcitonsItem(focusArea, data.actions.items);
+
+              return item && !item?.isDefault;
+            },
+            value: {
+              set({ data, output, focusArea, removePermission }: EditorResult<Data>) {
+                const actions = data.actions.items;
+                const itemId = focusArea.dataset['formActionsItem'];
+                const index = actions.findIndex((item) => item.key === itemId);
+                const item = data.actions.items[index];
+
+                if (item?.permission) {
+                  removePermission(item.permission?.id);
+                  item.permission = undefined;
+                }
+
+                output.remove(item.outputId);
+                actions.splice(index, 1);
+              }
             }
           }
-        ]
-      },
-      {
-        title: '删除',
-        type: 'Button',
-        ifVisible({ data, focusArea }) {
-          const actions = data.actions.items;
-          const itemId = focusArea.dataset['formActionsItem'];
-          const item = actions.find((item) => item.key === itemId);
+        ]),
+        (cate2.title = '高级'),
+        (cate2.items = [
+          {
+            title: '动态启用/禁用',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
+                const comId = focusArea.dataset.formActionsItem as string;
+                return (
+                  comId && data.actions.items.find((item) => item.key === comId)?.useDynamicDisabled
+                );
+              },
+              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const comId = focusArea.dataset['formActionsItem'];
+                const item = data.actions.items.find((item) => item.key === comId);
 
-          return item && !item?.isDefault;
-        },
-        value: {
-          set({ data, output, focusArea }: EditorResult<Data>) {
-            const actions = data.actions.items;
-            const itemId = focusArea.dataset['formActionsItem'];
-            const index = actions.findIndex((item) => item.key === itemId);
-            const item = data.actions.items[index];
+                const eventKey1 = `${inputIds.SetEnable}_${item?.key}`;
+                const eventKey2 = `${inputIds.SetDisable}_${item?.key}`;
 
-            output.remove(item.outputId);
-            actions.splice(index, 1);
+                const event1 = input.get(eventKey1);
+                const event2 = input.get(eventKey2);
+                if (value) {
+                  !event1 && input.add(eventKey1, `启用-"${item?.title}"`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `禁用-"${item?.title}"`, { type: 'any' });
+                } else {
+                  event1 && input.remove(eventKey1);
+                  event2 && input.remove(eventKey2);
+                }
+                if (item) {
+                  item.useDynamicDisabled = value;
+                }
+              }
+            }
+          },
+          {
+            title: '动态显示/隐藏',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                if (!focusArea) return;
+                const comId = focusArea.dataset.formActionsItem as string;
+                return (
+                  comId && data.actions.items.find((item) => item.key === comId)?.useDynamicHidden
+                );
+              },
+              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const comId = focusArea.dataset['formActionsItem'];
+                const item = data.actions.items.find((item) => item.key === comId);
+
+                const eventKey1 = `${inputIds.SetShow}_${item?.key}`;
+                const eventKey2 = `${inputIds.SetHidden}_${item?.key}`;
+
+                const event1 = input.get(eventKey1);
+                const event2 = input.get(eventKey2);
+                if (value) {
+                  !event1 && input.add(eventKey1, `显示-"${item?.title}"`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `隐藏-"${item?.title}"`, { type: 'any' });
+                } else {
+                  event1 && input.remove(eventKey1);
+                  event2 && input.remove(eventKey2);
+                }
+                if (item) {
+                  item.useDynamicHidden = value;
+                }
+              }
+            }
           }
-        }
-      }
-    ]
+        ]);
+    }
   }
 };
 
@@ -1270,6 +1382,13 @@ const setQueryFieldRule = (domainModel, item, value) => {
   domainModel.queryFieldRules[item?.name || item.label] = {
     operator: value
   };
+};
+
+const getAcitonsItem = (focusArea, actions) => {
+  const itemId = focusArea.dataset['formActionsItem'];
+  const item = actions.find((item) => item.key === itemId);
+
+  return item;
 };
 
 const setFieldName = (item, data, value) => {

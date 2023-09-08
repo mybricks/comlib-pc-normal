@@ -1,6 +1,9 @@
 import { Data, OutputIds } from './constants';
 
 export default {
+  '@init'({ style }) {
+    style.width = 'fit-content';
+  },
   '@resize': {
     options: ['width']
   },
