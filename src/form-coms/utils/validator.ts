@@ -12,14 +12,14 @@ export enum RuleKeys {
   PHONE_NUMBER_VALIDATOR = 'phoneNumberValidator'
 }
 
-export const defaultValidatorExample = `export default async function (value, context) {
+export const defaultValidatorExample = encodeURIComponent(`export default async function (value, context) {
   if (!value && ![0, false].includes(value)) {
     context.failed(\`内容不能为空\`);
   } else {
     context.successed();
   }
 }
-`
+`)
 
 export const defaultRules = [
   {

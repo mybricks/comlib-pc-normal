@@ -2,7 +2,7 @@ import React from 'react';
 import * as Icons from '@ant-design/icons';
 import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './constants';
+import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './types';
 import { ExpressionSandbox } from '../../package/com-utils';
 import css from './ActionBtns.less';
 
@@ -15,6 +15,8 @@ export default function ActionBtns({
   onError
 }: ActionBtnsProps) {
   const { treeData, removeConfirm } = data;
+  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
+
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 
@@ -26,12 +28,13 @@ export default function ActionBtns({
   /**
    * 删除节点
    * @param treeData treeNodes 数据
-   * @param key  节点的key
+   * @param key 节点的key
+   * @param keyFieldName 标识字段
    * @returns
    */
   const deleteNode = (treeData: TreeData[], key: string) => {
     return treeData.map((item) => {
-      if (item.key === key) {
+      if (item[keyFieldName] === key) {
         return null;
       } else if (item.children) {
         item.children = deleteNode(item.children, key).filter((def) => !!def) as TreeData[];
@@ -71,10 +74,12 @@ export default function ActionBtns({
    */
   const btnClick = (id) => {
     if (id === MODIFY_BTN_ID && data.editInline) {
-      data.isEditing = record.key;
+      data.isEditing = record[keyFieldName];
     } else {
       if (id === DELETE_BTN_ID) {
-        data.treeData = deleteNode(treeData, record.key).filter((def) => !!def) as TreeData[];
+        data.treeData = deleteNode(treeData, record[keyFieldName]).filter(
+          (def) => !!def
+        ) as TreeData[];
       }
       outputs[id](outputItem);
     }

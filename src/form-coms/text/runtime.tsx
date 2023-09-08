@@ -75,7 +75,7 @@ export default function (props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     inputs[InputIds.SET_COLOR]((color: string) => {
       if (inputRef.current?.input) {
-        inputRef.current.input.style.color = color || 'rgba(0, 0, 0, 0.85)';
+        inputRef.current.input.style.color = typeof color === 'string' ? color : '';
       }
     });
   }, []);

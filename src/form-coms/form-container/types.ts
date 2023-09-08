@@ -9,6 +9,13 @@ interface Action {
   key: string
   visible?: boolean
   danger?: boolean
+  permission?: {
+    id: string
+    type?: string
+  },
+  useDynamicHidden: boolean;
+  useDynamicDisabled: boolean;
+  disabled: boolean;
 }
 
 interface Actions {

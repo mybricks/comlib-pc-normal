@@ -21,15 +21,50 @@ const itemEditor = {
         }
       },
       {
-        title: '按钮样式',
-        options: [
-          { type: 'background', config: { disableBackgroundImage: true } },
-          { type: 'font', config: { disableTextAlign: true } },
-          'border'
-        ],
-        target({ focusArea }) {
-          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
-        }
+        items: [
+          {
+            title: '按钮样式',
+            catelog: '默认',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: 'Hover',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn:not([disabled]):hover`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '激活',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn:not([disabled]):active`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '禁用',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea }) {
+              // TODO: 由于子作用域组件无法使用数组型 target，暂且通过 #{id} 的形式绕过去
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled],
+              #{id} div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:active,
+              #{id} div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:focus,
+              #{id} div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:hover`;
+              // return [
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]`,
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:active`,
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:focus`,
+              //   `div[data-btn-idx="${focusArea.dataset.btnIdx}"] > button.ant-btn[disabled]:hover`
+              // ];
+            }
+          }
+        ]
       },
       ...IconEditor
     ],

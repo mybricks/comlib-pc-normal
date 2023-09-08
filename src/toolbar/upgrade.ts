@@ -1,10 +1,11 @@
 import { OutputIds, SizeHeightMap } from './constants';
-import { Data, SizeEnum } from './types';
+import { Data, SizeEnum, TypeEnum } from './types';
 
 export default function ({
   data,
   output,
-  setDeclaredStyle
+  setDeclaredStyle,
+  registerPermission
 }: UpgradeParams<Data>): boolean {
   data.btnList.forEach((item) => {
     //1.0.0->1.0.1
@@ -70,6 +71,26 @@ export default function ({
       }
       setDeclaredStyle(`div[data-btn-idx="${item.key}"]`, item.style);
       item.style = false;
+    }
+
+    /**
+     * @description v1.0.13 权限能力改版
+     * 把 permissionKey 转化成新版 permission 数据
+     */
+    if (item.permissionKey) {
+      const { id } = registerPermission({
+        code: item.permissionKey,
+        title: '权限名称'
+      });
+      item.permission = { id };
+    }
+
+    /**
+     * @description v1.0.13 「item style 配置项 => 风格」删除选项「危险按钮」，新增「item style 配置项 => 危险按钮」
+     */
+    if(item.type === TypeEnum.Danger) {
+      item.type = TypeEnum.Primary;
+      item.danger = true;
     }
   });
 

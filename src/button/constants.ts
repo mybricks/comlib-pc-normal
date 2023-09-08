@@ -32,6 +32,10 @@ export interface Data {
   size: SizeEnum;
   type: TypeEnum;
   shape: ShapeEnum;
+  /**
+   * 是否是危险按钮样式
+   */
+  danger?: boolean;
 }
 
 export const InputIds = {

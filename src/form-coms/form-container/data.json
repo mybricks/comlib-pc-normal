@@ -23,14 +23,20 @@
         "isDefault": true,
         "visible": true,
         "outputId": "onClickSubmit",
-        "key": "submit"
+        "key": "submit",
+        "useDynamicDisabled": false,
+        "useDynamicHidden": false,
+        "disabled": false
       },
       {
         "title": "取消",
         "isDefault": false,
         "visible": true,
         "outputId": "onClickCancel",
-        "key": "cancel"
+        "key": "cancel",
+        "useDynamicDisabled": false,
+        "useDynamicHidden": false,
+        "disabled": false
       }
     ]
   },

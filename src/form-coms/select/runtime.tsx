@@ -15,20 +15,32 @@ const DefaultOptionKey = '_id';
  * @params data 组件数据
  */
 const getOutputValue = (data) => {
+  const getOutputValuefromValue = (val, index?) => {
+    let result = val;
+    if (val == null) return result;
+    if (data.config.labelInValue) {
+      const option = data.config.options?.find((i) => i.value === val) || {};
+      const { value, label } = option;
+      result = {
+        value,
+        label
+      };
+    }
+    if (data.outputValueType === 'option') {
+      const { [DefaultOptionKey]: id, ...res } =
+        data.config.options.find((i) => i.value === val) || {};
+      result = res;
+    }
+    return result;
+  };
+
   let outputValue: any = data.value;
-  if (data.config.labelInValue) {
-    const option = data.config.options?.find((i) => i.value === outputValue) || {};
-    const { value, label } = option;
-    outputValue = {
-      value,
-      label
-    };
+  if (Array.isArray(outputValue)) {
+    outputValue = outputValue.map(getOutputValuefromValue);
+  } else {
+    outputValue = getOutputValuefromValue(outputValue);
   }
-  if (data.outputValueType === 'option') {
-    const { [DefaultOptionKey]: id, ...res } =
-      data.config.options.find((i) => i.value === outputValue) || {};
-    outputValue = res;
-  }
+
   return outputValue;
 };
 
@@ -137,6 +149,7 @@ export default function Runtime({
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
+      setFetching(false);
     });
 
     inputs['setLoading']((val: boolean) => {
@@ -183,7 +196,11 @@ export default function Runtime({
   const onChange = useCallback((val) => {
     let value = val;
     if (data.config.labelInValue) {
-      value = val?.value;
+      if (Array.isArray(val)) {
+        value = val.map((i) => i?.value);
+      } else {
+        value = val?.value;
+      }
     }
     changeValue(value);
     onValidateTrigger();
@@ -196,8 +213,8 @@ export default function Runtime({
   const onSearch = (e) => {
     //开启远程搜索功能
     if (data.dropdownSearchOption) {
-      outputs['remoteSearch'](e);
       setFetching(true);
+      outputs['remoteSearch'](e);
     }
     //1、远程数据源
     if (!e && data.dropdownSearchOption === true) {
