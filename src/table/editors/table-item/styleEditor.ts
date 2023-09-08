@@ -57,26 +57,26 @@ const StyleEditor = [
       }
     }
   },
-  {
-    title: '对齐方式',
-    type: 'Select',
-    options: [
-      { label: '左对齐', value: AlignEnum.Left },
-      { label: '居中对齐', value: AlignEnum.Center },
-      { label: '右对齐', value: AlignEnum.Right }
-    ],
-    value: {
-      get({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getColumnItem(data, focusArea);
-        return item.align || AlignEnum.Left;
-      },
-      set({ data, focusArea }: EditorResult<Data>, value: AlignEnum) {
-        if (!focusArea) return;
-        setCol({ data, focusArea }, 'align', value);
-      }
-    }
-  },
+  // {
+  //   title: '对齐方式',
+  //   type: 'Select',
+  //   options: [
+  //     { label: '左对齐', value: AlignEnum.Left },
+  //     { label: '居中对齐', value: AlignEnum.Center },
+  //     { label: '右对齐', value: AlignEnum.Right }
+  //   ],
+  //   value: {
+  //     get({ data, focusArea }: EditorResult<Data>) {
+  //       if (!focusArea) return;
+  //       const item = getColumnItem(data, focusArea);
+  //       return item.align || AlignEnum.Left;
+  //     },
+  //     set({ data, focusArea }: EditorResult<Data>, value: AlignEnum) {
+  //       if (!focusArea) return;
+  //       setCol({ data, focusArea }, 'align', value);
+  //     }
+  //   }
+  // },
   {
     title: '固定列',
     type: 'Select',

@@ -1,4 +1,4 @@
-import { SlotIds } from '../../constants';
+import { SlotIds, OutputIds } from '../../constants';
 import { Data } from '../../types';
 
 const headerEditor = {
@@ -30,7 +30,7 @@ const headerEditor = {
         get({ data }: EditorResult<Data>) {
           return data.useHeaderOperationSlot;
         },
-        set({ data, slot }: EditorResult<Data>, value: boolean) {
+        set({ data, slot, output }: EditorResult<Data>, value: boolean) {
           if (value) {
             slot.add(SlotIds.HEADER_OPERATION, '操作区插槽');
           } else {
@@ -48,9 +48,26 @@ const headerEditor = {
         get({ data }: EditorResult<Data>) {
           return data.useColumnSetting;
         },
-        set({ data }: EditorResult<Data>, value: boolean) {
+        set({ data, output }: EditorResult<Data>, value: boolean) {
+          if (value && !output.get(OutputIds.COLUMNS_CHANGE)) {
+            output.add(OutputIds.COLUMNS_CHANGE, '列结构变化', {
+              type: 'array'
+            });
+          }
           data.useColumnSetting = value;
         }
+      }
+    },
+    {
+      title: '列结构变化事件',
+      type: '_Event',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.useColumnSetting;
+      },
+      options: () => {
+        return {
+          outputId: OutputIds.COLUMNS_CHANGE
+        };
       }
     }
   ]

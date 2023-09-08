@@ -93,6 +93,10 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
     output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
   }
 
+  if (!output.get(OutputIds.COLUMNS_CHANGE)) {
+    output.add(OutputIds.COLUMNS_CHANGE, '列结构变化', Schemas.Array);
+  }
+
   addFilterIO({ data, output, input });
 
   if (data?.useSummaryColumn === undefined) {

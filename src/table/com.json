@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.0.62",
+  "version": "1.0.63",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -59,6 +59,13 @@
     {
       "id": "getTableData",
       "title": "表格数据",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "columnsChange",
+      "title": "列结构变化",
       "schema": {
         "type": "array"
       }
