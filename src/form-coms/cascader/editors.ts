@@ -39,24 +39,15 @@ export default {
               {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.config.allowClear;
-                },
                 target: '.anticon-close-circle'
               },
               {
                 title: '文本内容',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                ifVisible({ data }: EditorResult<Data>) {
-                  return !data.isMultiple;
-                },
                 target: '.ant-select-single.ant-select-show-arrow .ant-select-selection-item'
               },
               {
                 title: '标签',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
@@ -66,9 +57,6 @@ export default {
               },
               {
                 title: '标签-关闭图标',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: [
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
@@ -89,9 +77,6 @@ export default {
                 title: '多选节点',
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-inner`
                 }
@@ -130,9 +115,6 @@ export default {
               {
                 catelog: 'Hover',
                 title: '多选节点',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
@@ -141,9 +123,6 @@ export default {
               },
               {
                 title: '标签-关闭图标',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: [
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
@@ -173,9 +152,6 @@ export default {
               },
               {
                 title: '多选节点',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
@@ -190,9 +166,6 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.config.disabled;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 target: [
                   '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'
