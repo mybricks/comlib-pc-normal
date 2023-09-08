@@ -5,6 +5,7 @@ import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { mockData } from './mockData';
 
 export interface Data {
   options: any[];
@@ -25,7 +26,7 @@ export interface Data {
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id } = props;
-  const [options, setOptions] = useState();
+  const [options, setOptions] = useState(env.design ? mockData : []);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
 
