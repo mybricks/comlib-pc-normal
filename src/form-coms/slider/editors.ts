@@ -29,7 +29,7 @@ export default {
           {
             catelog: '默认',
             title: '滑块',
-            options: ['border'],
+            options: ['border', 'size'],
             target: '.ant-slider-handle'
           },
           {
