@@ -26,6 +26,7 @@ import {
   InputIds as PaginatorInputIds
 } from '../components/Paginator/constants';
 import { PageSchema } from './table/paginator';
+import rowMerge from './table/rowMerge';
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -119,6 +120,9 @@ export default {
       setDataSchema({ data, output, input, ...res });
     }
   },
+  '@resize': {
+    options: ['width']
+  },
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
       cateAry[0].title = '常规';
@@ -138,6 +142,7 @@ export default {
         HeaderEditor,
         ...ExpandEditor,
         rowOperationEditor,
+        rowMerge,
         ...SummaryColumn,
         ...DynamicColumnEditor,
         ...DynamicTitleEditor,
@@ -147,6 +152,7 @@ export default {
     style: [
       ...TableStyleEditor.items,
       {
+        title: '表格样式控制',
         items: createStyleForTableContent()
       }
     ]

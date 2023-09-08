@@ -6,6 +6,7 @@ import css from './runtime.less';
 import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import ConfigProvider from '../../components/ConfigProvider';
 
 export interface Data {
   options: any[];
@@ -103,10 +104,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         setValue(val);
         //自定义转换
         let transValue;
-        if (value === null || value === undefined) {
+        if (val === null || val === undefined) {
           transValue = undefined;
         } else {
-          transValue = transCalculation(value, data.contentType, props);
+          transValue = transCalculation(val, data.contentType, props);
         }
         outputs[OutputIds.OnInitial](transValue);
       });
@@ -182,17 +183,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   return (
-    <div className={css.datePicker}>
-      <DatePicker
-        value={value}
-        {...data.config}
-        showTime={getShowTime()}
-        onChange={onChange}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? env?.canvasElement : document.body
-        }
-        dropdownClassName={id}
-      />
-    </div>
+    <ConfigProvider locale={env.vars?.locale}>
+      <div className={css.datePicker}>
+        <DatePicker
+          value={value}
+          {...data.config}
+          showTime={getShowTime()}
+          onChange={onChange}
+          getPopupContainer={(triggerNode: HTMLElement) =>
+            edit || debug ? env?.canvasElement : document.body
+          }
+          dropdownClassName={id}
+        />
+      </div>
+    </ConfigProvider>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import { Data, InputIds } from './constants';
 import { useReactToPrint } from 'react-to-print';
 import css from './index.less';
@@ -51,7 +51,16 @@ export default function MyComponent({
       cancelText={'取消'}
       okText={'打印预览'}
       wrapClassName={css.container}
-      onOk={env.runtime && env.runtime.debug ? undefined : handlePrintAction}
+      onOk={
+        env.runtime && env.runtime.debug
+          ? () => {
+              message.open({
+                type: 'warning',
+                content: '请预览查看效果，调试不支持打印预览'
+              });
+            }
+          : handlePrintAction
+      }
       mask={!env.edit}
       footer={!useFooter ? null : undefined}
       closable={closable}

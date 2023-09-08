@@ -68,8 +68,10 @@ export interface BtnItem {
   //图标尺寸
   contentSize: [number, number];
 
-  // 权限key
+  // [已废弃]权限key
   permissionKey?: string;
+  // 权限信息
+  permission?: { id: string };
 
   // 动态启用/禁用
   useDynamicDisabled?: boolean;
@@ -92,6 +94,9 @@ export interface BtnItem {
   loading: boolean;
   //设置动态加载
   useDynamicLoading: boolean;
+
+  // 是否是危险按钮
+  danger?: boolean
 }
 
 /**
@@ -109,4 +114,5 @@ export interface Data {
 
   useEllipses?: boolean;
   maxShowNumber?: number;
+
 }

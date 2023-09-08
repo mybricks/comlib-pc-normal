@@ -9,6 +9,7 @@ import createBaseEditor from './baseEditor';
 import TitleTipEditor from './titleTipEditor';
 import StyleEditor from './styleEditor';
 import { createStyleForColumnContent } from '../../utils';
+import colMergeEditors from './colMerge';
 
 const column = {
   [COLUMN_EDITORS_CLASS_KEY]: {

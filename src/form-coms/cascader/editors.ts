@@ -17,9 +17,21 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '边框',
-                options: ['border'],
+                title: '输入框',
+                options: ['border', 'font'],
                 target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
+              },
+              {
+                title: '标签',
+                ifVisible({ data }) {
+                  return data.isMultiple;
+                },
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
               },
               {
                 title: '选项',
@@ -42,18 +54,6 @@ export default {
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-inner`
                 }
-              },
-              {
-                title: '标签',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
-                options: [
-                  'border',
-                  { type: 'font', config: { disableTextAlign: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
-                ],
-                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
               },
             ]
           }),

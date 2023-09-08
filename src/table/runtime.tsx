@@ -42,6 +42,7 @@ export default function (props: RuntimeParams<Data>) {
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
+
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
@@ -203,7 +204,6 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
-    console.log('realShowDataSource1', realShowDataSource);
     // 开启关闭所有展开项
     inputs[InputIds.EnableAllExpandedRows]((enable) => {
       console.log(
@@ -525,16 +525,58 @@ export default function (props: RuntimeParams<Data>) {
     return getDefaultDataSource(data.columns, rowKey);
   }, [data.columns, rowKey]);
 
+  const setCurrentSelectRows = useCallback(
+    (_record) => {
+      const targetRowKeyVal = _record[rowKey];
+      let newSelectedRows = [...selectedRows];
+      let newSelectedRowKeys: any = [];
+      // 多选情况下，如果没有超出限制就可以选择
+      if (data.selectionType !== RowSelectionTypeEnum.Radio) {
+        if (
+          !data.rowSelectionLimit ||
+          (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
+          selectedRowKeys.includes(targetRowKeyVal)
+        ) {
+          if (newSelectedRows.find((item) => item[rowKey] === targetRowKeyVal)) {
+            newSelectedRows = newSelectedRows.filter((item) => item[rowKey] !== targetRowKeyVal);
+          } else {
+            newSelectedRows.push(_record);
+          }
+        }
+      } else {
+        // 单选的情况
+        if (selectedRowKeys.includes(_record)) {
+          newSelectedRows = [];
+        } else {
+          newSelectedRows = [_record];
+        }
+      }
+      newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
+      setSelectedRows(newSelectedRows);
+      setSelectedRowKeys(newSelectedRowKeys);
+      outputs[OutputIds.ROW_SELECTION]({
+        selectedRows: newSelectedRowKeys,
+        selectedRowKeys: newSelectedRowKeys
+      });
+    },
+    [selectedRows, data.rowSelectionLimit, selectedRowKeys]
+  );
+
   const onRow = useCallback(
     (_record, index) => {
       const { [DefaultRowKey]: _, ...record } = _record;
       return {
-        onClick: () => {
-          if (data.enableRowClick) {
-            outputs[OutputIds.ROW_CLICK]({ record, index });
+        onClick: (e) => {
+          if (data.useRowSelection && e?.target?.tagName === 'TD') {
+            setCurrentSelectRows(_record);
           }
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+          // 如果开通勾选，则屏蔽点击事件
+          if (data.useRowSelection) return;
+          if (data.enableRowClick) {
+            outputs[OutputIds.ROW_CLICK]({ record, index });
           }
         },
         onDoubleClick: () => {
@@ -547,7 +589,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       };
     },
-    [focusRowIndex]
+    [focusRowIndex, setCurrentSelectRows]
   );
 
   // 获取表格显示列宽度和
@@ -612,6 +654,14 @@ export default function (props: RuntimeParams<Data>) {
             pagination={false}
             rowSelection={data.useRowSelection ? rowSelection : undefined}
             showHeader={data.showHeader === false && env.runtime ? false : true}
+            rowClassName={(_, index) => {
+              if (data.enableStripe) {
+                return (index + 1) % 2 === 0
+                  ? 'mybricks-table-row-double'
+                  : 'mybricks-table-row-single';
+              }
+              return '';
+            }}
             scroll={{
               x: '100%',
               y: data.scroll.y ? data.scroll.y : void 0

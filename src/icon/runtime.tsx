@@ -24,7 +24,11 @@ export default function ({ env, data, outputs }: RuntimeParams<Data>) {
       className={css.icon}
       style={{
         fontSize: data.size,
-        color: data.color
+        color: data.color,
+        cursor:
+          outputs[OutputIds.Click] && outputs[OutputIds.Click]?.getConnections()?.length > 0
+            ? 'pointer'
+            : undefined
       }}
       onClick={onClick}
     >

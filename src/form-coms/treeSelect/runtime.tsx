@@ -169,6 +169,7 @@ export default function Runtime({
         {treeData.map((item, inx) => {
           const outputItem = {
             isRoot: depth === 0,
+            _depth: depth,
             isLeaf: !item.children?.length,
             ...item
           };
@@ -198,7 +199,7 @@ export default function Runtime({
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
         dropdownClassName={id}
         getPopupContainer={(triggerNode: HTMLElement) =>
-          env.edit || env.runtime.debug ? env?.canvasElement : document.body
+          env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
         }
       >
         {renderTreeNode(data.options)}

@@ -44,9 +44,10 @@ const IndexEditor = [
     title: '删除',
     type: 'Button',
     value: {
-      set({ data, output, input, focusArea }: EditorResult<Data>) {
+      set({ data, output, input, focusArea, removePermission }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item, index } = getBtnItemInfo(data, focusArea);
+        item.permission?.id && removePermission(item.permission?.id);
         output.remove(item.key);
         input.remove(`${InputIds.SetBtnText}_${item.key}`);
         input.remove(`${InputIds.SetDisable}_${item.key}`);

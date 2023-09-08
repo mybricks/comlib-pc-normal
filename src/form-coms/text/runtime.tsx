@@ -1,5 +1,5 @@
-import { Form, Input } from 'antd';
-import React, { useCallback } from 'react';
+import { Form, Input, InputRef } from 'antd';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
@@ -21,9 +21,15 @@ export interface Data {
   };
 }
 
+const InputIds = {
+  SET_COLOR: 'setColor'
+};
+
 export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, parentSlot, style } = props;
   const { edit } = env;
+
+  const inputRef = useRef<InputRef>(null);
 
   useFormItemInputs({
     id: props.id,
@@ -66,6 +72,14 @@ export default function (props: RuntimeParams<Data>) {
     }
   });
 
+  useLayoutEffect(() => {
+    inputs[InputIds.SET_COLOR]((color: string) => {
+      if (inputRef.current?.input) {
+        inputRef.current.input.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
@@ -91,6 +105,7 @@ export default function (props: RuntimeParams<Data>) {
 
   let jsx = (
     <Input
+      ref={inputRef}
       type="text"
       {...data.config}
       value={data.value}

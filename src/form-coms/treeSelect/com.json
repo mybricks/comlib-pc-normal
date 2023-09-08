@@ -1,8 +1,8 @@
 {
-  "title": "树选择",
+  "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.1.5",
-  "description": "树选择",
+  "version": "1.1.8",
+  "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
   "icon": "./icon.svg",

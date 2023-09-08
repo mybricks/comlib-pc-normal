@@ -78,7 +78,9 @@ export interface IColumn {
   keepDataIndex?: boolean;
   dataSchema?: any;
 
-  formatData?: TformattersValue
+  formatData?: TformattersValue,
+  enableColMerge?: boolean,
+  colMergeScirpt?: string,
 }
 
 export enum SizeEnum {
@@ -126,6 +128,7 @@ export interface Data {
   size: SizeEnum;
   // 固定表头
   fixedHeader: boolean;
+  enableStripe: boolean;
   // 滚动
   scroll: Scroll;
 
@@ -192,4 +195,11 @@ export interface Data {
   SummaryCellTitleCol: number, // 总结栏 title col
   SummaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
   SummaryColumnContentSchema: object, // 总结栏内容Schema
+  enbaleRowMerge?: boolean,
+  rowMergeConfig?: {
+    // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
+    mergeByField: string,
+    // 返回true，表示对应的列不能合并
+    excludeFields?: string[]
+  }
 }

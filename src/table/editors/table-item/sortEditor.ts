@@ -81,7 +81,7 @@ const SortEditor = {
         { label: '字符长度', value: SorterTypeEnum.Length },
         { label: '数字大小', value: SorterTypeEnum.Size },
         { label: '时间前后', value: SorterTypeEnum.Date },
-        { label: '请求接口', value: SorterTypeEnum.Request }
+        { label: '自定义', value: SorterTypeEnum.Request }
       ],
       value: {
         get({ data, focusArea }: EditorResult<Data>) {

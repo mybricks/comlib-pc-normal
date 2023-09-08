@@ -1,7 +1,18 @@
-import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import * as Icons from '@ant-design/icons';
-import { Empty, Tree, Input, Image, Space } from 'antd';
-import { Data, TreeData } from './constants';
+import { Empty, Tree, Input, Image, Space, message, TreeNodeProps } from 'antd';
+import type { TreeProps } from 'antd/es/tree';
+import { ExpressionSandbox } from '../../package/com-utils';
+import { Data, IconType, TreeData } from './types';
+import { OutputIds } from './constants';
 import {
   pretreatTreeData,
   setCheckboxStatus,
@@ -11,10 +22,11 @@ import {
   filterCheckedKeysByCheckedValues,
   excludeParentKeys,
   outputNodeValues,
-  filterTreeDataByKeys
+  filterTreeDataByKeys,
+  traverseTree
 } from './utils';
 import ActionBtns from './ActionBtn';
-import { MODIFY_BTN_ID } from './constants';
+import { MODIFY_BTN_ID } from './types';
 import { deepCopy, typeCheck, uuid } from '../utils';
 
 export default function ({ env, data, inputs, outputs, onError, logger }: RuntimeParams<Data>) {
@@ -26,7 +38,9 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const treeKeys = useRef<any>(null);
 
-  const keyFieldName = data.keyFieldName || 'key';
+  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
+  const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
+  const childrenFieldName = env.edit ? 'children' : data.childrenFieldName || 'children';
 
   const rootKey = useMemo(() => {
     return uuid();
@@ -34,7 +48,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
   useEffect(() => {
     treeKeys.current = [];
-    generateList(data.treeData, treeKeys.current);
+    generateList(data.treeData, treeKeys.current, keyFieldName);
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -44,7 +58,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     data.searchValue = searchValue;
     const searchedKeys = treeKeys.current.map((item) => {
       if (filterMethods.byTitle(item)) {
-        return getParentKey(item.key, data.treeData);
+        return getParentKey(item[keyFieldName], data.treeData, keyFieldName);
       }
       return null;
     });
@@ -64,16 +78,16 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     const filterKeys: React.Key[] = [];
     treeKeys.current.forEach((item) => {
       if (filterMethod(item)) {
-        let childKey = item.key;
+        let childKey = item[keyFieldName];
         filterKeys.push(childKey);
-        while (getParentKey(childKey, data.treeData)) {
-          const parentKey = getParentKey(childKey, data.treeData);
+        while (getParentKey(childKey, data.treeData, keyFieldName)) {
+          const parentKey = getParentKey(childKey, data.treeData, keyFieldName);
           childKey = parentKey;
           filterKeys.push(parentKey);
         }
       }
     });
-    const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys);
+    const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
     return filteredTreeData;
   }, []);
 
@@ -83,7 +97,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   const filterMethods = useMemo(() => {
     return {
       byTitle: (node: TreeData) => {
-        return node.title?.indexOf(data.filterValue) > -1;
+        return node[titleFieldName]?.indexOf(data.filterValue) > -1;
       }
     };
   }, []);
@@ -144,7 +158,11 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
       inputs['checkedValues'] &&
         inputs['checkedValues']((value: []) => {
           if (value && Array.isArray(value)) {
-            const inputCheckedKeys = filterCheckedKeysByCheckedValues(data.treeData, value);
+            const inputCheckedKeys = filterCheckedKeysByCheckedValues(
+              data.treeData,
+              value,
+              keyFieldName
+            );
             data.checkedKeys = inputCheckedKeys;
             setCheckedKeys(inputCheckedKeys);
           }
@@ -176,11 +194,11 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
   useEffect(() => {
     const resultKeys =
-      data.outParentKeys || data.checkStrictly
-        ? checkedKeys
-        : excludeParentKeys(data.treeData, checkedKeys);
+      data.outParentKeys || data.checkStrictly ? checkedKeys : excludeParentKeys(data, checkedKeys);
     inputs['submit']((val, relOutputs) => {
-      relOutputs['submit'](outputNodeValues(data.treeData, resultKeys));
+      relOutputs['submit'](
+        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+      );
     });
   }, [checkedKeys]);
 
@@ -188,17 +206,17 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * 勾选事件处理
    * @param checkedKeys
    */
-  const onCheck = useCallback((checkedKeys: React.Key[], info) => {
+  const onCheck: TreeProps['onCheck'] = useCallback((checkedKeys: React.Key[], info) => {
     if (env.edit) return;
     const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
     data.checkedKeys = [...checked];
     setCheckedKeys([...checked]);
     if (data.useCheckEvent) {
       const resultKeys =
-        data.outParentKeys || data.checkStrictly
-          ? checked
-          : excludeParentKeys(data.treeData, checked);
-      outputs['check'](outputNodeValues(data.treeData, resultKeys));
+        data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
+      outputs[OutputIds.ON_CHECK](
+        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+      );
     }
   }, []);
   /**
@@ -214,19 +232,114 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   /**
    * 选择事件处理
    * @param selectedKeys
+   * @param node TreeNode 的 props
    */
   const onSelect = (selectedKeys: React.Key[], { node, selected }) => {
-    const selectedValues = outputNodeValues(data.treeData, selectedKeys);
+    const selectedValues = outputNodeValues(
+      data.treeData,
+      selectedKeys,
+      keyFieldName,
+      data.valueType
+    );
     if (data.clickExpandable) {
-      const keyIndex = expandedKeys.indexOf(node.key);
+      const keyIndex = expandedKeys.indexOf(node[keyFieldName]);
       if (keyIndex < 0) {
-        setExpandedKeys([...expandedKeys, node.key]);
+        setExpandedKeys([...expandedKeys, node[keyFieldName]]);
       } else {
-        setExpandedKeys(expandedKeys.filter((key) => key !== node.key));
+        setExpandedKeys(expandedKeys.filter((key) => key !== node[keyFieldName]));
       }
     }
     setSelectedKeys([...selectedKeys]);
-    outputs['click'](selectedValues);
+    outputs[OutputIds.NODE_CLICK](selectedValues);
+  };
+
+  /**
+   * onDrop事件处理
+   * 注: node TreeNode 的props
+   */
+  const onDrop: TreeProps['onDrop'] = (info) => {
+    /**
+     * info.node: 落下的节点信息
+     * info.dragNode: 拖拽的节点信息
+     * info.dropPosition: 落下的位置信息
+     */
+    const dropKey = info.node.key;
+    const dragKey = info.dragNode.key;
+    const dropPos = info.node.pos.split('-');
+    const dropFlag = info.dropPosition - Number(dropPos[dropPos.length - 1]); // dropPos[dropPos.length - 1]: 落下节点的index
+
+    const dragNodeInfo = traverseTree({ data, targetKey: dragKey as string });
+    const dropNodeInfo = traverseTree({ data, targetKey: dropKey as string });
+    if (!dragNodeInfo || !dropNodeInfo) return;
+    const { parent: dragNodeParent, node: dragNode, index: dragNodeIndex } = dragNodeInfo;
+    const { parent: dropNodeParent, node: dropNode, index: dropNodeIndex } = dropNodeInfo;
+
+    /** 判断是否满足拖拽范围限制 */
+    switch (data.useDropScope) {
+      case 'parent':
+        if (dropFlag === 0 && dropNode[keyFieldName] !== dragNodeParent?.[keyFieldName]) {
+          // 拖拽到dropNode的第一个子节点
+          message.error(data.dropScopeMessage);
+          return;
+        }
+        if (dropFlag !== 0 && dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
+          message.error(data.dropScopeMessage);
+          return;
+        }
+        break;
+    }
+
+    // 删除原来的节点
+    if (!dragNodeParent) {
+      data.treeData.splice(dragNodeIndex, 1);
+    } else {
+      dragNodeParent.children?.splice(dragNodeIndex, 1);
+    }
+
+    switch (dropFlag) {
+      // 移动到dropNode下面的第一个子级
+      case 0:
+        if (Array.isArray(dropNode?.children)) {
+          dropNode.children.unshift(dragNode);
+        } else {
+          dropNode.children = [dragNode];
+        }
+        break;
+
+      // 移动到和dropNode平级，在其后面
+      case 1:
+        dropNodeParent?.children?.splice(dropNodeIndex + 1, 0, dragNode);
+        break;
+
+      // 移动到和dropNode平级，在其前面
+      case -1:
+        dropNodeParent?.children?.splice(dropNodeIndex, 0, dragNode);
+        break;
+    }
+
+    outputs[OutputIds.ON_DROP_DONE]({
+      dragNodeInfo,
+      dropNodeInfo,
+      flag: dropFlag
+    });
+  };
+
+  /**
+   * allowDrop事件处理
+   * @param dragNode 拖拽的节点信息
+   * @param dropNode 落下的节点信息
+   * @param dropPosition 落下的位置
+   * 注: node TreeNode 的props
+   */
+  const allowDrop: TreeProps['allowDrop'] = (info) => {
+    if (!data.draggable && data.allowDrop) return false;
+    const dropPosition = info.dropPosition;
+    // 放置在子级
+    if (dropPosition === 0) {
+      return true;
+    } else {
+      return info.dropNode['data-allow-drop'];
+    }
   };
 
   /**
@@ -240,11 +353,11 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     item.placeholder = env.i18n(item.placeholder);
     const tipStyle = {
         color: 'rgb(204,204,204)',
-        display: data.isAdding === item.key ? 'none' : 'block',
+        display: data.isAdding === item[keyFieldName] ? 'none' : 'block',
         marginLeft: data.checkable ? '20px' : void 0
       },
       inputStyle = {
-        display: data.isAdding === item.key ? 'block' : 'none',
+        display: data.isAdding === item[keyFieldName] ? 'block' : 'none',
         marginLeft: data.checkable ? '20px' : void 0
       };
     return (
@@ -257,7 +370,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         <span
           style={tipStyle}
           onClick={(e) => {
-            data.isAdding = item.key;
+            data.isAdding = item[keyFieldName];
           }}
         >
           {item.title}
@@ -270,19 +383,18 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             data.isAdding = '';
             const node = {
               title: target.value,
-              value: target.value,
-              key: item.key
+              key: item[keyFieldName]
             };
             // 添加
             if (isRoot) {
               data.treeData = [...data.treeData, node];
             } else {
-              Array.isArray(item.parent?.children)
-                ? item.parent?.children.push(node)
-                : (item.parent.children = [node]);
+              Array.isArray(item.parent?.[childrenFieldName])
+                ? item.parent?.[childrenFieldName].push(node)
+                : (item.parent[childrenFieldName] = [node]);
             }
             if (data.defaultExpandAll) {
-              data.expandedKeys.push(item.key);
+              data.expandedKeys.push(item[keyFieldName]);
               setExpandedKeys([...data.expandedKeys]);
             }
             outputs['addNodeDone']({ node, parent: item.parent });
@@ -294,31 +406,57 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   };
 
   /**
+   * 计算图标动态显示表达式
+   * @param item 节点数据
+   * @param icon 图标数据
+   */
+  const getDynamicDisplay = (item: TreeNodeProps, icon: IconType): boolean => {
+    let dynamicDisplay = true;
+
+    if (icon.displayRule === 'dynamic' && icon.displayExpression) {
+      const context = {
+        ...item
+      };
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        dynamicDisplay = sandbox.executeWithTemplate(icon.displayExpression);
+      } catch (error: any) {
+        onError?.(`树[${icon.title}]图标: ${error}`);
+      }
+    }
+    return dynamicDisplay;
+  };
+
+  /**
    * 树节点图标渲染
    * @param item 节点数据
    * @returns JSX
    */
   const getNodeIcon = (item) => {
-    const { iconConfig } = data;
-    if (item.icon || (iconConfig?.defaultSrc === 'custom' && iconConfig?.customIcon))
-      return (
+    const icon = data.icons?.find((i) => getDynamicDisplay(item, i));
+    const Icon: { gutter: number; jsx?: ReactNode } = {
+      gutter: 0
+    };
+    if (item.icon || (icon?.src === 'custom' && icon?.customIcon)) {
+      Icon.gutter = icon?.gutter?.[0] || 8;
+      Icon.jsx = (
         <Image
-          width={iconConfig?.size[1] || 14}
-          height={iconConfig?.size[0] || 14}
-          src={item.icon || iconConfig?.customIcon}
+          width={icon?.size[1] || 14}
+          height={icon?.size[0] || 14}
+          src={item.icon || icon?.customIcon}
           preview={false}
         />
       );
-    if (iconConfig?.defaultSrc === 'inner') {
-      return (
-        Icons && (
-          <span style={{ fontSize: Math.max(...iconConfig?.size) }}>
-            {Icons[iconConfig?.innerIcon || ('FolderOpenOutlined' as string)]?.render()}
-          </span>
-        )
+    }
+    if (icon?.src === 'inner') {
+      Icon.gutter = icon?.gutter?.[0] || 8;
+      Icon.jsx = Icons && (
+        <span style={{ fontSize: Math.max(...icon?.size) }}>
+          {Icons[icon?.innerIcon || ('FolderOpenOutlined' as string)]?.render()}
+        </span>
       );
     }
-    return void 0;
+    return Icon;
   };
 
   /**
@@ -326,15 +464,15 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
    * @param item 树节点数据
    * @returns JSX
    */
-  const renderTitle = (item, isRoot) => {
-    item.title = env.i18n(item.title || '');
+  const renderTitle = (item, outputItem, isRoot) => {
+    const title = env.i18n(item[titleFieldName] || '');
 
-    const Icon = getNodeIcon(item);
+    const Icon = getNodeIcon(outputItem);
 
     // 搜索
-    const index = item.title?.indexOf(data.searchValue);
-    const beforeStr = item.title.substr(0, index);
-    const afterStr = item.title.substr(index + data?.searchValue?.length);
+    const index = title?.indexOf(data.searchValue);
+    const beforeStr = title.substr(0, index);
+    const afterStr = title.substr(index + data?.searchValue?.length);
     const wrapperStyle: React.CSSProperties = {
       display: 'flex',
       justifyContent: 'space-between',
@@ -342,27 +480,16 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     };
     // 修改
     const titleStyle: CSSProperties = {
-        display: data.isEditing === item.key ? 'none' : void 0
+        display: data.isEditing === item[keyFieldName] ? 'none' : void 0
       },
       inputStyle = {
-        display: data.isEditing === item.key ? 'block' : 'none'
+        display: data.isEditing === item[keyFieldName] ? 'block' : 'none'
       };
 
-    const outputItem = deepCopy(item);
-    if (outputItem._key) {
-      outputItem.key = outputItem._key;
-    }
-    if (outputItem.isRoot === undefined) {
-      outputItem.isRoot = isRoot;
-    }
-    if (outputItem.isLeaf === undefined) {
-      outputItem.isLeaf = !outputItem.children?.length;
-    }
-
     /**只读态 */
-    const title = (
-      <Space size={data.iconConfig?.gutter} style={titleStyle} className="title">
-        {Icon}
+    const Title = (
+      <Space size={Icon.gutter} style={titleStyle} className="title">
+        {Icon.jsx}
         {index > -1 ? (
           <div>
             {beforeStr}
@@ -370,7 +497,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
             {afterStr}
           </div>
         ) : (
-          item.title
+          title
         )}
       </Space>
     );
@@ -380,31 +507,85 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         <Input
           style={inputStyle}
           bordered={false}
-          defaultValue={item.title}
+          defaultValue={title}
           size="middle"
           onClick={(e) => {
             e.stopPropagation();
           }}
           onPressEnter={({ target }) => {
-            item.title = target.value;
-            outputItem.title = target.value;
+            item[titleFieldName] = target.value;
+            outputItem[titleFieldName] = target.value;
             data.isEditing = '';
-            const { children, ...res } = outputItem;
+            const { [childrenFieldName]: children, ...res } = outputItem;
             outputs[MODIFY_BTN_ID](res);
           }}
         />
       ),
       actionBtns =
-        data.isEditing !== item.key &&
+        data.isEditing !== item[keyFieldName] &&
         data.useActions &&
         ActionBtns({ data, record: item, outputItem, env, outputs, onError });
     return (
       <div style={wrapperStyle}>
-        {title}
+        {Title}
         {editInput}
         {actionBtns}
       </div>
     );
+  };
+
+  /**
+   * 树节点勾选框动态显示表达式
+   * @param node 节点数据
+   * @param isRoot 是否根节点
+   */
+  const getDynamicCheckable = (context: TreeData): boolean => {
+    let flag = true;
+    if (data.checkable === 'custom' && data.checkableScript) {
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        flag = !!sandbox.executeWithTemplate(data.checkableScript);
+      } catch (error: any) {
+        onError?.(`树组件[${context[titleFieldName]}]节点可勾选: ${error}`);
+      }
+    }
+    return flag;
+  };
+
+  /**
+   * 树节点动态可拖拽表达式
+   * @param node 节点数据
+   * @param isRoot 是否根节点
+   */
+  const getDynamicDraggable = (context: TreeData): boolean => {
+    let flag = true;
+    if (data.draggable === 'custom' && data.draggableScript) {
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        flag = !!sandbox.executeWithTemplate(data.draggableScript);
+      } catch (error: any) {
+        onError?.(`树组件[${context[titleFieldName]}]节点可拖拽: ${error}`);
+      }
+    }
+    return flag;
+  };
+
+  /**
+   * 树节点动态可放置表达式
+   * @param node 节点数据
+   * @param isRoot 是否根节点
+   */
+  const getDynamicAllowDrop = (context: TreeData): boolean => {
+    let flag = true;
+    if (!!data.draggable && data.allowDrop === 'custom' && data.allowDropScript) {
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        flag = !!sandbox.executeWithTemplate(data.allowDropScript);
+      } catch (error: any) {
+        onError?.(`树组件[${context[titleFieldName]}]节点可放置: ${error}`);
+      }
+    }
+    return flag;
   };
 
   /**
@@ -418,18 +599,40 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     const { TreeNode } = Tree;
     const hasAddNode = data.addable && (!data.maxDepth || depth < data.maxDepth);
     const lastTreeNode = treeData[treeData.length - 1];
-    const addNodeKey = `${parent.key}-${lastTreeNode?.key}`;
+    const addNodeKey = `${parent[keyFieldName]}-${lastTreeNode?.[keyFieldName]}`;
     return (
       <>
         {treeData.map((item, inx) => {
+          /** outputItem：用于表达式计算和输出的节点数据 */
+          const outputItem = deepCopy(item);
+          if (outputItem.isRoot === undefined) {
+            outputItem.isRoot = depth === 0;
+          }
+          if (outputItem.isLeaf === undefined) {
+            outputItem.isLeaf = !outputItem[childrenFieldName]?.length;
+          }
+          if (outputItem.depth === undefined) {
+            outputItem.depth = depth;
+          }
+          if (outputItem._depth === undefined) {
+            outputItem._depth = depth;
+          }
+
+          const checkable = getDynamicCheckable(outputItem);
+          const draggable = getDynamicDraggable(outputItem);
+          const allowDrop = getDynamicAllowDrop(outputItem);
+
           return (
             <TreeNode
-              key={item.key}
-              data-tree-node-id={item.key}
-              title={renderTitle(item, depth === 0)}
+              key={item[keyFieldName]}
+              data-tree-node-id={item[keyFieldName]}
+              data-draggable={draggable}
+              data-allow-drop={allowDrop}
+              title={renderTitle(item, outputItem, depth === 0)}
               disableCheckbox={item.disableCheckbox}
+              checkable={checkable}
             >
-              {renderTreeNode(item.children || [], depth + 1, item)}
+              {renderTreeNode(item[childrenFieldName] || [], depth + 1, item)}
             </TreeNode>
           );
         })}
@@ -465,7 +668,15 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
         <Empty description={<span>{env.i18n('暂无数据')}</span>} />
       ) : (
         <Tree
-          checkable={data.checkable}
+          checkable={!!data.checkable}
+          draggable={
+            data.draggable
+              ? (node) => {
+                  return node['data-draggable'];
+                }
+              : false
+          }
+          allowDrop={allowDrop}
           showLine={data.showLine}
           checkStrictly={data.checkStrictly}
           onExpand={onExpand}
@@ -477,6 +688,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
           defaultCheckedKeys={data.checkedKeys}
           selectedKeys={selectedKeys}
           onSelect={onSelect}
+          onDrop={onDrop}
           blockNode
         >
           {renderTreeNode(treeData || [])}

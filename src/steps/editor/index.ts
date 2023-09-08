@@ -9,6 +9,9 @@ const DefaultSchema = {
 };
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({ }, cate1, cate2) => {
     cate1.title = "常规"
     cate1.items = [

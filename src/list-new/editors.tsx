@@ -12,6 +12,9 @@ export default {
       }
     }
   },
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({}: EditorResult<Data>, cate1) => {
     cate1.title = '高级';
     cate1.items = [

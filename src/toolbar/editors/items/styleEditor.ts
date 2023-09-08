@@ -38,7 +38,6 @@ const StyleEditor = [
         { value: TypeEnum.Primary, label: '主按钮' },
         { value: TypeEnum.Default, label: '次按钮' },
         { value: TypeEnum.Dashed, label: '虚线按钮' },
-        { value: TypeEnum.Danger, label: '危险按钮' },
         { value: TypeEnum.Link, label: '链接按钮' },
         { value: TypeEnum.Text, label: '文字按钮' }
       ];
@@ -53,6 +52,22 @@ const StyleEditor = [
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
         item.type = value;
+      }
+    },
+  },
+  {
+    title: '危险按钮',
+    type: 'Switch',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        return item.danger;
+      },
+      set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        item.danger = value;
       }
     },
   },
