@@ -109,9 +109,6 @@ export default {
           },
           {
             title: '勾选框',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.config.multiple;
-            },
             options: [
               'border',
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -149,9 +146,6 @@ export default {
           },
           {
             title: '勾选框选中',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.config.multiple;
-            },
             options: [
               'border',
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -177,9 +171,6 @@ export default {
         items: [
           {
             title: '选项',
-            ifVisible({ data }: EditorResult<Data>) {
-              return !data.config.multiple;
-            },
             options: [
               { type: 'font', config: { disableTextAlign: true } },
               { type: 'background', config: { disableBackgroundImage: true } }
@@ -191,9 +182,6 @@ export default {
       }),
       ...createrCatelogEditor({
         catelog: 'Check',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !!data.config.multiple;
-        },
         items: [
           {
             title: '选项',
@@ -236,9 +224,6 @@ export default {
           },
           {
             title: '勾选框',
-            ifVisible({ data }: EditorResult<Data>) {
-              return data.config.multiple;
-            },
             options: [
               { type: 'border', config: { useImportant: true } },
               { type: 'background', config: { disableBackgroundImage: true } }
