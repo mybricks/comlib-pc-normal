@@ -131,6 +131,7 @@ export default function ({
           getPopupContainer={(triggerNode: HTMLElement) =>
             edit || debug ? env?.canvasElement : document.body
           }
+          open={env.design ? true : void 0}
           popupClassName={id}
           onChange={onChange}
         />

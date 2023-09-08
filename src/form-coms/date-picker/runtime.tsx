@@ -193,7 +193,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           getPopupContainer={(triggerNode: HTMLElement) =>
             edit || debug ? env?.canvasElement : document.body
           }
-          dropdownClassName={id}
+          dropdownClassName={`${id} ${css.datePicker}`}
+          open={env.design ? true : void 0}
         />
       </div>
     </ConfigProvider>

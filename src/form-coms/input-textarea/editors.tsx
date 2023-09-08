@@ -1,5 +1,6 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
+import { createrCatelogEditor } from '../utils';
 
 export default {
   '@resize': {
@@ -9,25 +10,85 @@ export default {
     style: [
       {
         items: [
-          {
-            title: '边框',
+          ...createrCatelogEditor({
             catelog: '默认',
-            options: ['border'],
-            target: '.ant-input'
-          },
-          {
-            title: '边框',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input'
+              },
+              {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-input']
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'textarea.ant-input::placeholder'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input'
+              },
+              {
+                title: '字数',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input-textarea-show-count::after'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
             catelog: 'Hover',
-            options: ['border'],
-            target: '.ant-input:hover',
-            domTarget: '.ant-input'
-          },
-          {
-            title: '边框',
+            items: [
+              {
+                title: '边框',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input:hover',
+                domTarget: '.ant-input'
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
             catelog: 'Focus',
-            options: ['border', 'BoxShadow'],
-            target: 'textarea.ant-input:focus'
-          }
+            items: [
+              {
+                title: '边框',
+                catelog: 'Focus',
+                options: ['border', 'BoxShadow'],
+                target: 'textarea.ant-input:focus'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-input[disabled]']
+              }
+            ]
+          })
         ]
       }
     ],

@@ -87,6 +87,18 @@ export default {
         domTarget({ focusArea, id }) {
           return `.{id} .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title`;
         }
+      },
+      {
+        title: '选项',
+        catelog: '禁用',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        global: true,
+        target({ id }) {
+          return `.{id} .ant-dropdown-menu-item-disabled`;
+        }
       }
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {

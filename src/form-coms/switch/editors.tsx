@@ -1,6 +1,7 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { StatusEnum } from './const';
 import { Data } from './runtime';
+import { createrCatelogEditor } from '../utils';
 
 export default {
   // '@resize': {
@@ -9,19 +10,52 @@ export default {
   ':root': {
     style: [
       {
-        title: '开关',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-switch'
-      },
-      {
-        title: '控件',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-switch-handle:before'
-      },
-      {
-        title: '开关内文本',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: '.ant-switch-inner'
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                title: '激活',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-switch'
+              },
+              {
+                title: '非激活',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-switch'
+              },
+              {
+                title: '控件',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-switch-handle:before'
+              },
+              {
+                title: '开关内文本',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-switch-inner'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '禁用',
+                options: ['opacity'],
+                target: '.ant-switch-disabled'
+              }
+            ]
+          })
+        ]
       }
     ],
     items: ({ data }: EditorResult<Data>, ...catalog) => {
