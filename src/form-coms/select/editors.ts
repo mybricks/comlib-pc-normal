@@ -100,9 +100,6 @@ export default {
               {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.config.allowClear;
-                },
                 target: '.anticon-close-circle'
               },
               {
@@ -112,9 +109,6 @@ export default {
               },
               {
                 title: '标签',
-                ifVisible({ data }) {
-                  return data.config.mode !== 'default';
-                },
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
@@ -127,9 +121,6 @@ export default {
               },
               {
                 title: '标签-关闭图标',
-                ifVisible({ data }) {
-                  return data.config.mode !== 'default';
-                },
                 options: [
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
@@ -183,9 +174,6 @@ export default {
               },
               {
                 title: '标签-关闭图标',
-                ifVisible({ data }) {
-                  return data.config.mode !== 'default';
-                },
                 options: [
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
@@ -237,9 +225,6 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.config.disabled;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 target: [
                   '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'

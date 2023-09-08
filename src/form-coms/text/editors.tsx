@@ -60,9 +60,6 @@ export default {
               {
                 title: '清除按钮',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                ifVisible({ data }) {
-                  return data.config.allowClear;
-                },
                 target: '.anticon-close-circle'
               },
               {
@@ -77,9 +74,6 @@ export default {
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                ifVisible({ data }) {
-                  return data.config.addonBefore !== '';
-                },
                 target: '.ant-input-group-addon:first-child'
               },
               {
@@ -89,9 +83,6 @@ export default {
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                ifVisible({ data }) {
-                  return data.config.addonAfter !== '';
-                },
                 target: '.ant-input-group-addon:last-child'
               }
             ]
@@ -109,9 +100,6 @@ export default {
               {
                 title: '清除按钮',
                 catelog: 'Hover',
-                ifVisible({ data }) {
-                  return data.config.allowClear;
-                },
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target: '.anticon-close-circle:hover',
                 domTarget: '.anticon-close-circle'
@@ -131,9 +119,6 @@ export default {
               {
                 title: '表单项',
                 catelog: '禁用',
-                ifVisible({ data }) {
-                  return data.config.disabled;
-                },
                 options: [
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
