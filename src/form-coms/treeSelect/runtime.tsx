@@ -9,6 +9,7 @@ import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data, IconType, Option } from './types';
+import { treeDataInDesign } from './const';
 import css from './runtime.less';
 
 /**遍历树组件 */
@@ -190,8 +191,14 @@ export default function Runtime({
     <div className={css.select}>
       <TreeSelect
         treeIcon
-        {...data.config}
+        showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
+        treeDefaultExpandAll={env.design ? true : data.config.treeDefaultExpandAll}
+        multiple={data.config.multiple}
+        treeCheckable={data.config.treeCheckable}
+        showCheckedStrategy={data.config.showCheckedStrategy}
+        maxTagCount={data.config.maxTagCount}
+        treeNodeFilterProp={data.config.treeNodeFilterProp}
         open={env.design ? true : void 0}
         value={data.value}
         loadData={data.useLoadData ? onLoadData : undefined}
@@ -203,7 +210,7 @@ export default function Runtime({
           env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
         }
       >
-        {renderTreeNode(data.options)}
+        {renderTreeNode(env.design ? treeDataInDesign(data) : data.options)}
       </TreeSelect>
     </div>
   );
