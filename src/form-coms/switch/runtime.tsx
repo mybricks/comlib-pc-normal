@@ -75,10 +75,12 @@ export default function ({
   }, []);
 
   return (
-    <Switch
-      {...data.config}
-      onChange={changeValue}
-      // onBlur={onBlur}
-    />
+    <div>
+      <Switch
+        {...data.config}
+        onChange={changeValue}
+        // onBlur={onBlur}
+      />
+    </div>
   );
 }
