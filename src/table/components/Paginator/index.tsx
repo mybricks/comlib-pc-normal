@@ -97,6 +97,7 @@ export default (props: Props) => {
         style={{
           display: 'inline-block'
         }}
+        className={disabled ? 'paginationDisable' : undefined}
       >
         <Pagination
           total={total}

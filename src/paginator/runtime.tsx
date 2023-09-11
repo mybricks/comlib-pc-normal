@@ -73,6 +73,7 @@ export default (props: RuntimeParams<Data>) => {
         display: 'flex',
         justifyContent: isMobile ? 'center' : align
       }}
+      className={disabled ? 'paginationDisable' : undefined}
     >
       <Pagination
         total={total}

@@ -24,8 +24,32 @@ export default {
         target: '.ant-alert-message'
       },
       {
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.type === 'info';
+        },
         options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-alert-info'
+      },
+      {
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.type === 'success';
+        },
+        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-alert-success'
+      },
+      {
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.type === 'error';
+        },
+        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-alert-error'
+      },
+      {
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.type === 'warning';
+        },
+        options: ['border',{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-alert-warning'
       },
       {
         title: '辅助介绍字体',

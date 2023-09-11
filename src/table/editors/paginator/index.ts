@@ -2,8 +2,8 @@ import {
   AlignTypeEnum,
   SizeTypeEnum,
   OutputIds,
-  // InputIds,
-  // Schemas,
+  InputIds,
+  Schemas,
   templateRender
   // WidthTypeEnum
 } from '../../components/Paginator/constants';
@@ -11,16 +11,16 @@ import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types
 import { setDataSchema } from '../../schema';
 
 const catelogEditors = (catelog, editors) => {
-  return editors.map(item => ({
+  return editors.map((item) => ({
     catelog,
-    ...item,
-  }))
-}
+    ...item
+  }));
+};
 
 export default {
   '[data-table-pagination]': {
     title: '分页',
-    items: ({ }: EditorResult<Data>, cate1, cate2) => {
+    items: ({}: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -230,7 +230,9 @@ export default {
             },
             set({ data }: EditorResult<Data>, value: string[]) {
               let numReg: RegExp = /^[1-9]\d*$/;
-              data.paginationConfig.pageSizeOptions = value.filter((val) => numReg.test(val.trim()));
+              data.paginationConfig.pageSizeOptions = value.filter((val) =>
+                numReg.test(val.trim())
+              );
             }
           }
         },
@@ -251,122 +253,281 @@ export default {
               data.paginationConfig.hideOnSinglePage = value;
             }
           }
+        },
+        {
+          title: '动态启用/禁用',
+          type: 'Switch',
+          description: '是否支持通过输入项动态启用或禁用分页器',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.paginationConfig.isDynamic;
+            },
+            set({ data, input }: EditorResult<Data>, value: boolean) {
+              data.paginationConfig.isDynamic = value;
+              const event1 = input.get(InputIds.SetDisable);
+              const event2 = input.get(InputIds.SetDisable);
+              if (value) {
+                !event1 && input.add(InputIds.SetDisable, '禁用分页器', Schemas.Any);
+                !event2 && input.add(InputIds.SetEnable, '启用分页器', Schemas.Any);
+              } else {
+                event1 && input.remove(InputIds.SetDisable);
+                event2 && input.remove(InputIds.SetEnable);
+              }
+            }
+          }
         }
-        // {
-        //   title: '动态启用/禁用',
-        //   type: 'Switch',
-        //   description: '是否支持通过输入项动态启用或禁用分页器',
-        //   value: {
-        //     get({ data }: EditorResult<Data>) {
-        //       return data.paginationConfig.isDynamic;
-        //     },
-        //     set({ data, input }: EditorResult<Data>, value: boolean) {
-        //       data.paginationConfig.isDynamic = value;
-        //       const event1 = input.get(InputIds.SetDisable);
-        //       const event2 = input.get(InputIds.SetDisable);
-        //       if (value) {
-        //         !event1 && input.add(InputIds.SetDisable, '禁用', Schemas.Any);
-        //         !event2 && input.add(InputIds.SetEnable, '启用', Schemas.Any);
-        //       } else {
-        //         event1 && input.remove(InputIds.SetDisable);
-        //         event2 && input.remove(InputIds.SetEnable);
-        //       }
-        //     }
-        //   }
-        // }
       ];
       return {
         title: '分页器'
       };
     },
-    style: [{
-      items: [...catelogEditors('默认', [
-        {
-          title: '页码',
-          options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-          target: `.ant-pagination-item`
-        },
-        {
-          title: '页码字体',
-          options: [{ type: 'font', config: { disableTextAlign: true } }],
-          initValue: {
-            color: '#000000'
-          },
-          target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
-        },
-        {
-          title: '翻页按钮',
-          options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-          target: `.ant-pagination li:not(.ant-pagination-disabled) button`
-        },
-        {
-          title: '前置文案字体',
-          options: [{ type: 'font', config: { disableTextAlign: true } }],
-          target: `.ant-pagination-total-text`
-        },
-        {
-          title: '跳转字体',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.paginationConfig.showQuickJumper;
-          },
-          options: [{ type: 'font', config: { disableTextAlign: true } }],
-          target: `.ant-pagination-options-quick-jumper`
-        },
-        {
-          title: '跳转输入框',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.paginationConfig.showQuickJumper;
-          },
-          options: [{ type: 'font', config: { disableTextAlign: true }, }, 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-          target: `.ant-pagination-options-quick-jumper input`
-        }
-      ]),
-      ...catelogEditors('Hover', [
-        {
-          title: '页码',
-          options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-          target: `.ant-pagination-item:hover`,
-          domTarget: '.ant-pagination-item'
-        },
-        {
-          title: '页码字体',
-          options: [{ type: 'font', config: { disableTextAlign: true } }],
-          initValue: {
-            color: '#000000'
-          },
-          target: `.ant-pagination-item:hover a`,
-          domTarget: '.ant-pagination-item'
-        },
-        {
-          title: '翻页按钮',
-          options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-          target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
-        },
-      ]),
-      ...catelogEditors('激活', [
-        {
-          title: '页码',
-          options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-          target: `.ant-pagination-item.ant-pagination-item-active`
-        },
-        {
-          title: '页码字体',
-          options: [{ type: 'font', config: { disableTextAlign: true } }],
-          initValue: {
-            color: '#000000'
-          },
-          target: `.ant-pagination-item.ant-pagination-item-active a`
-        },
-      ]),
-      ...catelogEditors('禁用', [
-        {
-          title: '翻页按钮',
-          options: ['font', 'border', { type: 'background', config: { disableTextAlign: true } }],
-          target: `.ant-pagination li.ant-pagination-disabled button`
-        },
-      ])
-      ]
-    },
+    style: [
+      {
+        items: [
+          ...catelogEditors('默认', [
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item`
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination-item:not(.ant-pagination-item-active) a`
+            },
+            {
+              title: '翻页按钮',
+              options: [
+                'font',
+                'border',
+                { type: 'background', config: { disableTextAlign: true } }
+              ],
+              target: `.ant-pagination li:not(.ant-pagination-disabled) button`
+            },
+            {
+              title: '前置文案字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-total-text`
+            },
+            {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-select-selector`
+            },
+            {
+              title: '条数选择标签',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-select-item:not(.ant-select-item-option-selected)`;
+              }
+            },
+            {
+              title: '跳转字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.paginationConfig.showQuickJumper;
+              },
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-options-quick-jumper`
+            },
+            {
+              title: '跳转输入框',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.paginationConfig.showQuickJumper;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-pagination-options-quick-jumper input`
+            }
+          ]),
+          ...catelogEditors('Hover', [
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item:hover`,
+              domTarget: '.ant-pagination-item'
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination-item:hover a`,
+              domTarget: '.ant-pagination-item'
+            },
+            {
+              title: '翻页按钮',
+              options: [
+                'font',
+                'border',
+                { type: 'background', config: { disableTextAlign: true } }
+              ],
+              target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`,
+              domTarget: '.ant-pagination li:not(.ant-pagination-disabled) button'
+            },
+            {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-select-selector:hover`,
+              domTarget: `.ant-select-selector`
+            },
+            {
+              title: '条数选择标签',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-select-item:hover:not(.ant-select-item-option-selected)`;
+              }
+            }
+          ]),
+          ...catelogEditors('激活', [
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-item.ant-pagination-item-active`
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination-item.ant-pagination-item-active a`
+            },
+            {
+              title: '条数选择标签',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-select-item-option-selected`;
+              }
+            }
+          ]),
+          ...catelogEditors('禁用', [
+            {
+              title: '整体',
+              options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+              target: '.paginationDisable'
+            },
+            {
+              title: '页码',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination.ant-pagination-disabled .ant-pagination-item`,
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination.ant-pagination-disabled .ant-pagination-item a`,
+            },
+            {
+              title: '翻页按钮',
+              options: [
+                'font',
+                'border',
+                { type: 'background', config: { disableTextAlign: true } }
+              ],
+              target: `.ant-pagination.ant-pagination-disabled .ant-pagination-item-link`
+            },
+            {
+              title: '前置文案字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-disabled .ant-pagination-total-text`
+            },
+            {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector`
+            },
+            {
+              title: '跳转字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.paginationConfig.showQuickJumper;
+              },
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-disabled .ant-pagination-options-quick-jumper`
+            },
+            {
+              title: '跳转输入框',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.paginationConfig.showQuickJumper;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-pagination-options-quick-jumper input[disabled]`
+            }
+          ])
+        ]
+      }
     ]
   }
 };

@@ -10,8 +10,8 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root':{
-    style:[
+  ':root': {
+    style: [
       {
         items: [
           {
@@ -29,7 +29,7 @@ export default {
           {
             catelog: '默认',
             title: '滑块',
-            options: ['border'],
+            options: ['border', 'size'],
             target: '.ant-slider-handle'
           },
           {
@@ -56,15 +56,40 @@ export default {
           {
             catelog: 'Focus',
             title: '滑块',
-            options: ['border','BoxShadow'],
-            target: ['.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open)','.ant-slider-handle:focus']
+            options: ['border', 'BoxShadow'],
+            target: [
+              '.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open)',
+              '.ant-slider-handle:focus'
+            ]
+          },
+          {
+            catelog: '禁用',
+            title: '有值区间',
+            options: [
+              { type: 'background', config: { disableBackgroundImage: true, useImportant: true } }
+            ],
+            target: '.ant-slider-disabled .ant-slider-track'
+          },
+          {
+            catelog: '禁用',
+            title: '滑动轴',
+            options: [
+              { type: 'background', config: { disableBackgroundImage: true, useImportant: true } }
+            ],
+            target: '.ant-slider-disabled .ant-slider-rail'
+          },
+          {
+            catelog: '禁用',
+            title: '滑块',
+            options: [{ type: 'border', config: { useImportant: true } }],
+            target: '.ant-slider-disabled .ant-slider-handle'
           }
         ]
       }
     ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
-  
+
       catalog[0].items = [
         {
           title: '范围',
@@ -154,7 +179,7 @@ export default {
             max: 24,
             min: 1,
             steps: 1,
-            formatter: "/24栅格"
+            formatter: '/24栅格'
           },
           ifVisible({ data }: EditorResult<Data>) {
             return !data.config.range && data.useInput;
@@ -175,7 +200,7 @@ export default {
             max: 24,
             min: 1,
             steps: 1,
-            formatter: "/24栅格"
+            formatter: '/24栅格'
           },
           ifVisible({ data }: EditorResult<Data>) {
             return !data.config.range && data.useInput;
@@ -272,11 +297,10 @@ export default {
               options: {
                 outputId: 'onChange'
               }
-            },
+            }
           ]
         }
       ];
     }
   }
-  
-}
+};
