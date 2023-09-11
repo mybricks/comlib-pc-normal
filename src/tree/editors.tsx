@@ -210,9 +210,6 @@ export default {
           }),
           ...createrCatelogEditor({
             catelog: 'Check',
-            ifVisible: ({ data }: EditorResult<Data>) => {
-              return !!data.checkable;
-            },
             items: [
               {
                 title: '树节点公共样式',

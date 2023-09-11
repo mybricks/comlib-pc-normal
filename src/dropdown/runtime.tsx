@@ -56,7 +56,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         overlay={menuRender({ data })}
         placement={data.placement}
         arrow
-        visible={edit && data.isChildCustom ? true : edit ? false : void 0}
+        visible={(edit && data.isChildCustom) || env.design ? true : edit ? false : void 0}
         getPopupContainer={(triggerNode: HTMLElement) =>
           edit ? triggerNode : debug ? env?.canvasElement : env.container || document.body
         }

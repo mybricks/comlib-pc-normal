@@ -83,6 +83,55 @@ export default {
                 target: '.ant-select-selector'
               },
               {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-selection-placeholder'
+              },
+              {
+                title: '下拉图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-arrow'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-single.ant-select-show-arrow .ant-select-selection-item'
+              },
+              {
+                title: '标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: [
+                  '.ant-select-multiple .ant-select-selection-item',
+                  '.ant-select-multiple .ant-select-selection-item-remove'
+                ]
+              },
+              {
+                title: '标签-关闭图标',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item-remove']
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
                 title: '选项',
                 options: [
                   { type: 'font', config: { disableTextAlign: true } },
@@ -93,14 +142,7 @@ export default {
                   return `.{id} div.ant-select-item.ant-select-item-option`
                 }
               },
-              {
-                title: '标签',
-                ifVisible({ data }: EditorResult<Data>) {
-                  return data.config.mode !== 'default';
-                },
-                options: ['border', { type: 'font', config: { disableTextAlign: true } }, { type: 'background', config: { disableBackgroundImage: true } }],
-                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
-              },
+              
             ]
           }),
           ...createrCatelogEditor({
@@ -123,6 +165,20 @@ export default {
                   return `.{id} div.ant-select-item-option-active:not(.ant-select-item-option-disabled)`
                 }
               },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '标签-关闭图标',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -147,6 +203,35 @@ export default {
               }
             ]
           }),
+          ...createrCatelogEditor({
+            catelog: 'Select',
+            items: [
+              {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} div.ant-select-item-option-selected:not(.ant-select-item-option-disabled)`
+                }
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                target: [
+                  '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+                ]
+              },
+            ]
+          })
         ]
       },
     ],

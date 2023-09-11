@@ -61,5 +61,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   //=========== v1.1.2 end ===============
 
+  /**
+    * @description v1.1.8 支持 下拉箭头 配置项
+    */
+
+  if (data.config.showArrow === undefined) {
+    data.config.showArrow = !data.config.multiple;
+  }
+
+  //=========== v1.1.8 end ===============
+
   return true;
 }

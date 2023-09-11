@@ -17,21 +17,50 @@ export default {
             catelog: '默认',
             items: [
               {
-                title: '输入框',
-                options: ['border', 'font'],
+                title: '边框',
+                options: ['border'],
                 target: 'div.ant-select:not(.ant-select-customize-input) > div.ant-select-selector'
               },
               {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-selection-placeholder'
+              },
+              {
+                title: '下拉图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-arrow'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-select-single.ant-select-show-arrow .ant-select-selection-item'
+              },
+              {
                 title: '标签',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: [
                   'border',
                   { type: 'font', config: { disableTextAlign: true } },
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: ['.ant-select-multiple .ant-select-selection-item', '.ant-select-multiple .ant-select-selection-item-remove']
+                target: ['.ant-select-multiple .ant-select-selection-item']
+              },
+              {
+                title: '标签-关闭图标',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item-remove']
               },
               {
                 title: '选项',
@@ -48,9 +77,6 @@ export default {
                 title: '多选节点',
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-inner`
                 }
@@ -68,6 +94,13 @@ export default {
                 domTarget: 'div.ant-select-selector'
               },
               {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
                 catelog: 'Hover',
                 title: '选项',
                 options: [
@@ -82,14 +115,18 @@ export default {
               {
                 catelog: 'Hover',
                 title: '多选节点',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-wrapper:hover .ant-cascader-checkbox-inner, .ant-cascader-checkbox:not(.ant-cascader-checkbox-checked):hover .ant-cascader-checkbox-inner`;
                 },
+              },
+              {
+                title: '标签-关闭图标',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                target: ['.ant-select-multiple .ant-select-selection-item-remove:hover']
               }
             ]
           }),
@@ -115,14 +152,24 @@ export default {
               },
               {
                 title: '多选节点',
-                ifVisible({ data }) {
-                  return data.isMultiple;
-                },
                 options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
                 global: true,
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-cascader-checkbox-checked .ant-cascader-checkbox-inner`;
                 },
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                target: [
+                  '.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector'
+                ]
               },
             ]
           })

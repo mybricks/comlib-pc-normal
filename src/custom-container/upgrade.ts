@@ -1,8 +1,14 @@
 import { Data, SlotIds } from './constants';
-import { getFilterSelector } from '../utils/cssSelector'
-import { isEmptyObject } from '../utils'
+import { getFilterSelector } from '../utils/cssSelector';
+import { isEmptyObject } from '../utils';
 
-export default function ({ id, data, slot, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({
+  id,
+  data,
+  slot,
+  config,
+  setDeclaredStyle
+}: UpgradeParams<Data>): boolean {
   const styleConfig = config.get('style');
   if (styleConfig) {
     styleConfig.setBinding('data.legacyConfigStyle');
@@ -25,13 +31,28 @@ export default function ({ id, data, slot, config, setDeclaredStyle }: UpgradePa
     };
   }
   //style upgrade
-  if(!isEmptyObject(data.style)){
+  if (!isEmptyObject(data.style)) {
     setDeclaredStyle(`.root${getFilterSelector(id)}`, { ...data.style });
-    data.style = {}
+    data.style = {};
   }
-  if(!isEmptyObject(data.hoverStyle)){
+  if (!isEmptyObject(data.hoverStyle)) {
     setDeclaredStyle(`.root:hover${getFilterSelector(id)}`, { ...data.hoverStyle });
-    data.hoverStyle = {}
+    data.hoverStyle = {};
+  }
+
+  if (data.hasOwnProperty('overflowX')) {
+    setDeclaredStyle(`.root${getFilterSelector(id)}`, { overflowX: data.overflowX });
+    delete data.overflowX;
+  }
+
+  if (data.hasOwnProperty('overflowY')) {
+    setDeclaredStyle(`.root${getFilterSelector(id)}`, { overflowY: data.overflowY });
+    delete data.overflowY;
+  }
+
+  if (data.hasOwnProperty('useOverflowUnset') && data.useOverflowUnset) {
+    setDeclaredStyle(`.root${getFilterSelector(id)}`, { overflow: 'unset' });
+    delete data.useOverflowUnset;
   }
   return true;
 }

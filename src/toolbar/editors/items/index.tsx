@@ -14,14 +14,16 @@ const itemEditor = {
     title: '按钮',
     style: [
       ...StyleEditor,
-      {
-        options: ['size'],
-        target({ focusArea }) {
-          return `div[data-btn-idx="${focusArea.dataset.btnIdx}"]`;
-        }
-      },
+      ...IconEditor,
       {
         items: [
+          {
+            options: ['size'],
+            catelog: '默认',
+            target({ focusArea }) {
+              return `div[data-btn-idx="${focusArea.dataset.btnIdx}"]`;
+            }
+          },
           {
             title: '按钮样式',
             catelog: '默认',
@@ -65,8 +67,7 @@ const itemEditor = {
             }
           }
         ]
-      },
-      ...IconEditor
+      }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2, cate3) => {
       cate1.title = '常规';

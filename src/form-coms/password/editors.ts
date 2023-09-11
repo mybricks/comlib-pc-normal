@@ -1,5 +1,6 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
+import { createrCatelogEditor } from '../utils';
 
 export default {
   '@resize': {
@@ -11,23 +12,90 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认',
-        catelog: '默认',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper'
-      },
-      {
-        title: 'Hover',
-        catelog: 'Hover',
-        options: ['border'],
-        target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-        domTarget: '.ant-input-affix-wrapper'
-      },
-      {
-        title: '激活',
-        catelog: '激活',
-        options: ['border','BoxShadow'],
-        target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target:  ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '密码图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input-password-icon.anticon'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                title: 'Hover',
+                catelog: 'Hover',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              },
+              {
+                title: '密码图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input-password-icon.anticon:hover'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Focus',
+            items: [
+              {
+                title: '激活',
+                options: ['border','BoxShadow'],
+                target: 'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+                target: [
+                  '.ant-input-affix-wrapper-disabled'
+                ]
+              },
+            ]
+          }),
+        ]
       },
     ],
     items: ({ data }: EditorResult<{ type }>, ...cate) => {

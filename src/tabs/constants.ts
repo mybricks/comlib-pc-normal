@@ -11,7 +11,7 @@ export interface TabItem {
   dynamic?: boolean;
   num?: number | string;
   outputContent?: string;
-  permissionKey?: string;
+  permission?:{ id: string };
   id: string;
 
   tooltipText?: string;

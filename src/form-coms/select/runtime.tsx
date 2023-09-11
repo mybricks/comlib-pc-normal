@@ -237,6 +237,7 @@ export default function Runtime({
           edit || debug ? env?.canvasElement : document.body
         }
         dropdownClassName={id}
+        open={env.design ? true : void 0}
         onSearch={data.config.showSearch ? onSearch : void 0}
         notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
       />

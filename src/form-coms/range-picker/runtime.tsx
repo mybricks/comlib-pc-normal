@@ -294,7 +294,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           getPopupContainer={(triggerNode: HTMLElement) =>
             edit || debug ? env?.canvasElement : document.body
           }
-          dropdownClassName={id}
+          open={env.design ? true : void 0}
+          dropdownClassName={`${id} ${css.rangePicker}`}
           {...disabledDateTime}
         />
       </div>

@@ -1,4 +1,5 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { createrCatelogEditor } from '../utils';
 
 export default {
   '@resize': {
@@ -38,28 +39,94 @@ export default {
       },
       {
         items: [
-          {
+          ...createrCatelogEditor({
             catelog: '默认',
-            // options: ['border'],
-            // target: '.ant-input-affix-wrapper',
-            title: '边框',
-            options: ['border'],
-            target: '.ant-input-affix-wrapper'
-          },
-          {
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '表单项背景色',
+                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
+              },
+              {
+                title: '清除按钮',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input'
+              },
+              {
+                title: '前置标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-input-group-addon:first-child'
+              },
+              {
+                title: '后置标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-input-group-addon:last-child'
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
             catelog: 'Hover',
-            title: '边框',
-            options: ['border'],
-            target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
-            domTarget: '.ant-input-affix-wrapper'
-          },
+            items: [
+              {
+                catelog: 'Hover',
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover',
+                domTarget: '.ant-input-affix-wrapper'
+              },
+              {
+                title: '清除按钮',
+                catelog: 'Hover',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.anticon-close-circle:hover',
+                domTarget: '.anticon-close-circle'
+              }
+            ]
+          }),
           {
             catelog: 'Focus',
             title: '边框',
             options: ['border', 'BoxShadow'],
             target:
               'span.ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper'
-          }
+          },
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-input-affix-wrapper-disabled']
+              }
+            ]
+          })
         ]
       }
     ],

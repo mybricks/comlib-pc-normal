@@ -277,6 +277,32 @@ export default {
               title: '前置文案字体',
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               target: `.ant-pagination-total-text`
+            },
+            {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-select-selector`
+            },
+            {
+              title: '条数选择标签',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-select-item:not(.ant-select-item-option-selected)`;
+              }
             }
             // {
             //   title: '跳转字体',
@@ -312,7 +338,35 @@ export default {
                 'border',
                 { type: 'background', config: { disableTextAlign: true } }
               ],
-              target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`
+              target: `.ant-pagination li:not(.ant-pagination-disabled):hover button`,
+              domTarget: '.ant-pagination li:not(.ant-pagination-disabled) button'
+            },
+            {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-select-selector:hover`,
+              domTarget: '.ant-select-selector'
+            },
+            {
+              title: '条数选择标签',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-select-item:hover:not(.ant-select-item-option-selected)`;
+              }
             }
           ]),
           ...catelogEditors('激活', [
@@ -328,9 +382,36 @@ export default {
                 color: '#000000'
               },
               target: `.ant-pagination-item.ant-pagination-item-active a`
+            },
+            {
+              title: '条数选择标签',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-select-item-option-selected`;
+              }
             }
           ]),
           ...catelogEditors('禁用', [
+            {
+              title: '整体',
+              options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+              target: '.paginationDisable'
+            },
+            {
+              title: '页码字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              initValue: {
+                color: '#000000'
+              },
+              target: `.ant-pagination.ant-pagination-disabled .ant-pagination-item a`
+            },
             {
               title: '翻页按钮',
               options: [
@@ -339,6 +420,23 @@ export default {
                 { type: 'background', config: { disableTextAlign: true } }
               ],
               target: `.ant-pagination li.ant-pagination-disabled button`
+            },
+            {
+              title: '前置文案字体',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-disabled .ant-pagination-total-text`
+            },
+            {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector`
             }
           ])
         ]
