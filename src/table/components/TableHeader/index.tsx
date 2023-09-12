@@ -10,12 +10,14 @@ interface Props {
   env: Env;
   data: Data;
   slots: any;
+  outputs: any;
+  dataSource: any[];
   selectedRows: any[];
   selectedRowKeys: string[];
 }
 
 export default (props: Props): JSX.Element | null => {
-  const { data, slots, env } = props;
+  const { data, slots, env, dataSource, outputs } = props;
 
   // 顶部显示批量操作按钮
   const useTopRowSelection =
@@ -65,7 +67,7 @@ export default (props: Props): JSX.Element | null => {
           <div className={classnames(css.width100, css.flex, css.flexRowReverse)}>
             {/* 渲染工作区tools */}
             <div data-table-header-tools>
-              <FilterColumnRender data={data} env={env} />
+              <FilterColumnRender data={data} env={env} dataSource={dataSource} outputs={outputs} />
             </div>
             {/* 渲染操作按钮 */}
             {renderTableBtns()}

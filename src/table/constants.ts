@@ -89,7 +89,8 @@ export const OutputIds = {
   ROW_CLICK: 'rowClick',
   // 双击行触发
   ROW_DOUBLE_CLICK: 'rowDoubleClick',
-  Edit_Table_Data: 'editTableData'
+  Edit_Table_Data: 'editTableData',
+  COLUMNS_CHANGE: 'columnsChange',
 };
 
 export const DefaultRowKey = '_uuid';
