@@ -53,6 +53,7 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
       getPopupContainer={(triggerNode: HTMLElement) =>
         edit || debug ? env?.canvasElement : document.body
       }
+      destroyTooltipOnHide
     >
       <div className={styles.wrap}>{slots.carrier?.render()}</div>
     </Popover>
