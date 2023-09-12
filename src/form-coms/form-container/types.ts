@@ -9,6 +9,13 @@ interface Action {
   key: string
   visible?: boolean
   danger?: boolean
+  permission?: {
+    id: string
+    type?: string
+  },
+  useDynamicHidden: boolean;
+  useDynamicDisabled: boolean;
+  disabled: boolean;
 }
 
 interface Actions {
@@ -43,15 +50,39 @@ export interface FormItems {
   width: number
   inlineMargin?: number[]
   slotAfter?: string
+  /**
+   * 表单项收起时隐藏，不影响提交数据
+   */
+  hidden?: boolean
+}
+
+export interface AdditionalItem {
+  id: string;
+  comName: string
+  name: string
+  span: number
+  widthOption: LabelWidthType
+  width: number
+  visible: boolean
 }
 
 export type LabelWidthType = 'px' | 'span' | 'flexFull'
 
 export interface Data {
+
+  /**
+   * 表单类型 普通表单、查询表单
+   */
+  layoutType: 'Form' | 'QueryFilter'
+
   /**
    * 表单项列表
    */
   items: FormItems[]
+  /**
+   * 非表单项列表
+   */
+  additionalItems: AdditionalItem[]
   /**
    * 是否作为表单项
    */
@@ -60,15 +91,16 @@ export interface Data {
    * 单行列数
    */
   formItemColumn: number
-  /**
-   * 数据类型
-   */
-  dataType: 'object' | 'list'
+  // /**
+  //  * 数据类型
+  //  */
+  // dataType: 'object' | 'list'
   /**
    * 布局类型
    */
   layout?: 'horizontal' | 'vertical' | 'inline'
-  fieldsLength?: number
+
+  // fieldsLength?: number
   /**
    * 操作项
    */
@@ -104,6 +136,36 @@ export interface Data {
    *  提交隐藏表单项 （隐藏表单项依旧参与校验与提交）
    */
   submitHiddenFields: boolean
+
+
+  /**
+  *  绑定的领域模型数据
+  */
+  domainModel: DomainModel
+
+  /**
+   * 表单项 24栅格宽度
+   */
+  span?: number
+
+  /*
+  * 默认状态下是否折叠超出的表单项
+  */
+  defaultCollapsed: boolean
+}
+
+interface DomainModel {
+  // formValues: any
+  entity?: any
+  queryFieldRules: QueryFieldRules
+  isQuery?: boolean
+  type?: string
+}
+
+interface QueryFieldRules {
+  [field: string]: {
+    operator: string
+  }
 }
 
 export interface FormControlProps {

@@ -1,45 +1,19 @@
-import { Data, Tag } from '../types';
-import { getTagItem, arrayMove } from './util';
-export const TagSchema = {
-  type: 'object',
-  properties: {
-    icon: {
-      title: '图标',
-      type: 'string'
-    },
-    content: {
-      title: '标签内容',
-      type: 'string'
-    },
-    color: {
-      title: '背景颜色',
-      type: 'string'
-    },
-    textColor: {
-      title: '文本颜色',
-      type: 'string'
-    },
-    borderColor: {
-      title: '边框颜色',
-      type: 'string'
-    },
-    checkable: {
-      title: '是否可选',
-      type: 'boolean'
-    },
-    closable: {
-      title: '是否可关闭',
-      type: 'boolean'
-    }
-  }
-};
+import { Data, Tag, Preset } from '../types';
+import {
+  getTagItem,
+  arrayMove,
+  getTagIndex,
+  createStyleForDefault,
+  createStyleForChecked,
+  createStyleForCheckableHover
+} from './util';
 
 export default {
-  '.ant-space-item': {
-    title: "标签",
-    items: ({ data, focusArea, slot }: EditorResult<Data>, cate1, cate2) => {
+  '[data-item-tag="tag"]': {
+    title: '标签',
+    items: ({ data, focusArea }: EditorResult<Data>, cate1) => {
       if (!focusArea) return;
-      const tag: Tag = getTagItem(data, focusArea);
+      const [tag, index]: [Tag, number] = getTagItem(data, focusArea);
       cate1.title = '基础配置';
       cate1.items = [
         {
@@ -58,6 +32,27 @@ export default {
               }
             },
             {
+              title: '类型',
+              type: 'select',
+              options: {
+                options: [
+                  { label: '默认', value: 'default' },
+                  { label: '成功', value: 'success' },
+                  { label: '进行中', value: 'processing' },
+                  { label: '警告', value: 'warning' },
+                  { label: '失败', value: 'error' }
+                ]
+              },
+              value: {
+                get({}: EditorResult<Data>) {
+                  return tag.color;
+                },
+                set({}: EditorResult<Data>, val: Preset) {
+                  tag.color = val;
+                }
+              }
+            },
+            {
               title: '图标',
               type: 'icon',
               value: {
@@ -72,72 +67,33 @@ export default {
           ]
         },
         {
-          title: '样式',
-          items: [
-            {
-              title: '背景色',
-              type: 'colorPicker',
-              value: {
-                get({}: EditorResult<Data>) {
-                  return tag.color;
-                },
-                set({}: EditorResult<Data>, val: string) {
-                  tag.color = val;
-                }
-              }
-            },
-            {
-              title: '文本颜色',
-              type: 'colorPicker',
-              value: {
-                get({}: EditorResult<Data>) {
-                  return tag.textColor;
-                },
-                set({}: EditorResult<Data>, val: string) {
-                  tag.textColor = val;
-                }
-              }
-            },
-            {
-              title: '边框颜色',
-              type: 'colorPicker',
-              value: {
-                get({}: EditorResult<Data>) {
-                  return tag.borderColor;
-                },
-                set({}: EditorResult<Data>, val: string) {
-                  tag.borderColor = val;
-                }
-              }
-            }
-          ]
-        },
-        {
           title: '操作',
           items: [
             {
-              title: '向前移动',
+              title: '前移',
               type: 'button',
+              ifVisible({ data, focusArea }: EditorResult<Data>) {
+                const [tag, index]: [Tag, number] = getTagItem(data, focusArea);
+                return index > 0 && tag.key != data.tags[0].key;
+              },
               value: {
-                get({ focusArea }: EditorResult<Data>) {
-                  return focusArea.index;
-                },
                 set({ data, focusArea }: EditorResult<Data>) {
-                  const { index } = focusArea;
+                  const index = getTagIndex({ focusArea });
                   if (index === 0) return;
                   data.tags = arrayMove<Tag>(data.tags, index, index - 1);
                 }
               }
             },
             {
-              title: '向后移动',
+              title: '后移',
               type: 'button',
+              ifVisible({ data, focusArea }: EditorResult<Data>) {
+                const index = getTagIndex({ focusArea });
+                return index < data.tags.length - 1;
+              },
               value: {
-                get({ focusArea }: EditorResult<Data>) {
-                  return focusArea.index;
-                },
-                set({ data }: EditorResult<Data>) {
-                  const { index } = focusArea;
+                set({ data, focusArea }: EditorResult<Data>) {
+                  const index = getTagIndex({ focusArea });
                   if (index === data.tags.length - 1) return;
                   data.tags = arrayMove<Tag>(data.tags, index, index + 1);
                 }
@@ -150,11 +106,8 @@ export default {
                 return data.tags.length > 1;
               },
               value: {
-                get({ focusArea }: EditorResult<Data>) {
-                  return focusArea.index;
-                },
                 set({ data, focusArea }: EditorResult<Data>, val: string) {
-                  const { index } = focusArea;
+                  const index = getTagIndex({ focusArea });
                   data.tags.splice(index, 1);
                 }
               }
@@ -162,75 +115,39 @@ export default {
           ]
         }
       ];
-      cate2.title = '高级配置';
-      cate2.items = [
-        {
-          title: '可选择',
-          type: 'switch',
-          description: '标签选择功能与关闭功能互斥',
-          ifVisible({}: EditorResult<Data>) {
-            return !tag.closable;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return !!tag.checkable;
-            },
-            set({ output }: EditorResult<Data>, val: boolean) {
-              tag.checkable = val;
-              if (val) {
-                output.add('onChange', '选中状态改变时', { type: 'boolean' });
-              } else if (output.get('onChange')) {
-                output.remove('onChange');
+    },
+    style: [
+      {
+        items: [
+          {
+            catelog: '默认',
+            ...createStyleForDefault({
+              target({ focusArea }: EditorResult<Data>) {
+                const { index } = focusArea.dataset;
+                return `div[data-root] span[data-index="${index}"]`;
               }
-            }
-          }
-        },
-        {
-          title: '选中状态改变',
-          type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
-            return tag.checkable;
+            })
           },
-          options: () => {
-            return {
-              outputId: 'onChange'
-            };
-          }
-        },
-        {
-          title: '可关闭',
-          type: 'switch',
-          description: '标签关闭功能与选择功能互斥',
-          ifVisible({}: EditorResult<Data>) {
-            return !tag.checkable;
-          },
-          value: {
-            get({}: EditorResult<Data>) {
-              return !!tag.closable;
-            },
-            set({ output }: EditorResult<Data>, val: boolean) {
-              tag.closable = val;
-              if (val) {
-                output.add('onClose', '标签关闭时', TagSchema);
-              } else if (output.get('onClose')) {
-                output.remove('onClose');
+          {
+            catelog: 'Hover',
+            ...createStyleForCheckableHover({
+              target({ focusArea }: EditorResult<Data>) {
+                const { index } = focusArea.dataset;
+                return `div[data-root] span[data-index="${index}"].ant-tag-checkable:not(.ant-tag-checkable-checked):hover`;
               }
-            }
-          }
-        },
-        {
-          title: '标签关闭时',
-          type: '_Event',
-          ifVisible({}: EditorResult<Data>) {
-            return tag.closable;
+            })
           },
-          options: () => {
-            return {
-              outputId: 'onClose'
-            };
+          {
+            catelog: '激活',
+            ...createStyleForChecked({
+              target({ focusArea }: EditorResult<Data>) {
+                const { index } = focusArea.dataset;
+                return `div[data-root] span[data-index="${index}"].ant-tag-checkable-checked`;
+              }
+            })
           }
-        }
-      ];
-    }
+        ]
+      }
+    ]
   }
 };

@@ -3,14 +3,56 @@
   "namespace": "mybricks.normal-pc.tagList",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.0.1",
+  "version": "1.0.9",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editor",
-  "inputs": [],
-  "outputs": [],
+  "upgrade": "./upgrade.ts",
+  "inputs": [
+    {
+      "id": "getTags",
+      "title": "获取标签列表",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取标签列表数据",
+      "rels": [
+        "outputTags"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputTags",
+      "title": "输出标签列表",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "icon": {
+              "title": "图标",
+              "type": "string"
+            },
+            "content": {
+              "title": "标签内容",
+              "type": "string"
+            },
+            "color": {
+              "title": "背景颜色",
+              "type": "string"
+            },
+            "closable": {
+              "title": "是否可关闭",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  ],
   "slots": []
 }

@@ -3,19 +3,30 @@
   "namespace": "mybricks.normal-pc.video",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "播放器",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
   "runtime": "./runtime.tsx",
   "data": "./data.json",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
+    {
+      "id": "link",
+      "title": "视频链接",
+      "desc": "设置播放视频链接，支持mp4，mov，hls，flv视频（流）格式",
+      "schema": {
+        "type": "string"
+      }
+    },
     {
       "id": "screenshot",
       "title": "截屏",
+      "desc": "获取当前视频画面截图",
       "schema": {
-        "type": "any"
+        "type": "string",
+        "title": "截图文件名"
       }
     }
   ],

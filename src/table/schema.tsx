@@ -197,6 +197,17 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
     type: 'object',
     properties: {}
   };
+  const schema3 = {
+    type: 'object',
+    properties: {
+      dataIndex: {
+        type: 'string'
+      },
+      dataSource: {
+        type: 'array'
+      }
+    }
+  };
 
   const setDataSchema = (columns: IColumn[]) => {
     if (Array.isArray(columns)) {
@@ -236,6 +247,7 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
 
   output.get(OutputIds.FILTER)?.setSchema(schema1);
   output.get(OutputIds.GET_FILTER)?.setSchema(schema1);
+  output.get(OutputIds.FILTER_CLICK)?.setSchema(schema3);
   input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
@@ -277,8 +289,56 @@ function setRowSlotSchema(schemaObj: object, dataSchema: object, { data, slot }:
           type: 'string',
           ...(schemaObj[key] || {})
         });
+      slot
+        ?.get(col.slotId)
+        ?.outputs?.get(OutputIds.Edit_Table_Data)
+        ?.setSchema({
+          type: 'object',
+          properties: {
+            index: {
+              type: 'number'
+            },
+            value: {
+              type: 'object',
+              properties: dataSchema
+            }
+          }
+        });
     }
   });
+}
+// 行点击事件schema
+function setRowClickSchema(dataSchema: object, { output }: Props) {
+  const schema = {
+    type: 'object',
+    properties: {
+      index: {
+        type: 'number'
+      },
+      record: {
+        type: 'object',
+        properties: dataSchema
+      }
+    }
+  };
+  output.get(OutputIds.ROW_CLICK)?.setSchema(schema);
+  output.get(OutputIds.ROW_DOUBLE_CLICK)?.setSchema(schema);
+}
+
+/**
+ * upgrade时候更新列插槽作用域schema
+ * @param
+ */
+export const upgradeSchema = ({ data, output, input, slot }) => {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data, output, input, slot });
+  setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
+};
+
+export function getTableSchema({ data }) {
+  const schemaObj = schema2Obj(data[`input${InputIds.SET_DATA_SOURCE}Schema`], data) || {};
+  const dataSchema = getColumnsDataSchema(schemaObj, { data } as any);
+  return dataSchema;
 }
 
 export function setDataSchema({ data, output, input, slot }: EditorResult<Data>) {
@@ -290,6 +350,7 @@ export function setDataSchema({ data, output, input, slot }: EditorResult<Data>)
   setFilterSchema(schemaObj, { data, output, input, slot });
   setExpandSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
   setRowSlotSchema(schemaObj, dataSchema, { data, output, input, slot });
+  setRowClickSchema(dataSchema, { data, output, input, slot });
 }
 
 export const setCol = <T extends keyof IColumn, P extends IColumn[T]>(
@@ -359,7 +420,49 @@ export const Schemas = {
         },
         width: {
           type: 'number'
+        },
+        usePrevious: {
+          type: 'boolean'
+        },
+        filter: {
+          type: 'object',
+          properties: {
+            enable: {
+              type: 'boolean'
+            },
+            type: {
+              type: 'string'
+            },
+            hideFilterDropdown: {
+              type: 'boolean'
+            },
+            options: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  text: {
+                    type: 'string'
+                  },
+                  value: {
+                    type: 'string'
+                  }
+                }
+              }
+            }
+          }
         }
+      }
+    }
+  },
+  ROW_CLICK: {
+    type: 'object',
+    properties: {
+      index: {
+        type: 'number'
+      },
+      record: {
+        type: 'object'
       }
     }
   }

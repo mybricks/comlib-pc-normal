@@ -13,9 +13,12 @@ interface Env {
   events: any[]
   vars?: {
     getQuery: () => any;
+    getExecuteEnv?: () => any;
+    getProps: () => any;
     getCookies: () => any;
     getRouter: () => Record<string, Function>
-  }
+  },
+  hasPermission: (id: string) => boolean
   [x: string]: any
 }
 interface RuntimeParams<T> {
@@ -24,10 +27,11 @@ interface RuntimeParams<T> {
   name: string
   data: T
   env: Env
+  _env: any
   style: any
   slots: {
     [key: string]: {
-      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties }) => React.ReactNode
+      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties, outputs?: { [key: string]: Function } }) => React.ReactNode
       inputs: any
       [key: string]: any
     }
@@ -55,16 +59,20 @@ interface EditorResult<T> {
   outputs: any
   slot: any,
   diagram: any
-  style: any
+  style: React.CSSProperties
   catelog: any
   slots?: any
   env: Env
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDesc: (desc?: string) => void
+  /** 获取子组件data，引擎 v1.2.69 **/
+  getChildByName: (name: string) => any
+  removePermission: (id:string) => void;
 }
 
 interface UpgradeParams<T> {
+  id: string
   data: T
   output: any
   input: any
@@ -72,10 +80,38 @@ interface UpgradeParams<T> {
   style: any
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
+  setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
+  config: {
+    get: (id: string) => ConfigInstance;
+  }
+  children: any
+  /**
+   * 注册权限信息
+   * @param options 权限相关信息
+   * @returns 注册后的权限ID
+   */
+  registerPermission: (options: { code: string; title: string }) => { id: string };
+}
+
+type ConfigInstance = {
+  id: string;
+  title: string;
+  schema: Record<string, any>;
+  connectionCount: number;
+  setBinding: (binding: string) => void;
+  setSchema: (schema: Record<string, any>) => void;
+  setTitle: (title: string) => void;
+  remove: () => void
 }
 
 type AnyMap = {
   [key in string | number]: any
 }
 
-interface Env { preview?: {}, edit?: {}, runtime?: any, mock?: {} }
+type StyleModeType<T> = Partial<{
+  title: string;
+  initValue: CSSProperties;
+  target: string | ((props: EditorResult<T>) => string) | undefined;
+  domTarget: string;
+  options: Array<string | { type: string; config: Record<string, any> }>;
+}>;

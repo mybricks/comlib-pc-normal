@@ -1,19 +1,20 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Data } from './types';
-import { message, TimePicker } from 'antd';
-import moment, { Moment, isMoment } from 'moment';
+import { TimePicker } from 'antd';
+import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
-import { isValidInput, isNumber, isValidRange } from './util';
+import { isValidInput, isValidRange } from './util';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateTrigger } from '../form-container/models/validate';
+import ConfigProvider from '../../components/ConfigProvider';
 
 export default function ({
   data,
   inputs,
   outputs,
   env,
-  style,
   parentSlot,
   id,
   name,
@@ -21,6 +22,13 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat, outFormat, splitChar } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
+
+  const _format = useMemo(() => {
+    if (format === 'custom') return customFormat;
+    if (format === 'timeStamp') return 'HH:mm:ss';
+    return format;
+  }, [format, customFormat]);
+
   const validate = useCallback(
     (output) => {
       validateFormItem({
@@ -37,41 +45,46 @@ export default function ({
     },
     [value]
   );
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
+
+  const formatValue = useCallback(
+    (val) => {
+      let start, end;
+      if (typeof val === 'string' && val.includes(splitChar)) {
+        [start, end] = val.split(splitChar);
+      }
+      if (Array.isArray(val)) {
+        if (!val.length) return [];
+        if (!isValidInput(val)) {
+          onError('时间范围值是一个长度为2的数组');
+          return [];
+        }
+        [start, end] = val;
+      }
+
+      const startM = isNaN(Number(start)) ? moment(start, _format) : moment(Number(start));
+      const endM = isNaN(Number(end)) ? moment(end, _format) : moment(Number(end));
+      return [startM, endM];
+    },
+    [splitChar, _format]
+  );
 
   const setTimestampRange = (val) => {
-    if (Array.isArray(val) && !val.length) {
-      setValue([]);
-      return;
-    }
-    if (typeof val === 'string') {
-      if (val.includes(splitChar)) {
-        const [start, end] = val.split(splitChar);
-        setValue([moment(Number(start)), moment(Number(end))]);
+    try {
+      const initValue = formatValue(val) as [Moment, Moment];
+      if (!isValidInput(initValue)) {
+        setValue(initValue);
+        return;
+      }
+      if (isValidRange(initValue, 'moment')) {
+        setValue(initValue);
       } else {
-        onError('时间数据格式错误');
+        onError('开始时间必须小于结束时间');
       }
-      return;
+    } catch (error) {
+      onError('时间范围数据格式错误');
     }
-    if (isValidInput(val)) {
-      if (val.every((item) => isNumber(item))) {
-        if (isValidRange(val, 'number')) {
-          setValue([moment(val[0]), moment(val[1])]);
-        } else {
-          message.error('开始时间必须小于结束时间');
-        }
-        return;
-      }
-      //兼容moment
-      if (val.every((item) => isMoment(item))) {
-        if (isValidRange(val, 'moment')) {
-          setValue(val as unknown as [Moment, Moment]);
-        } else {
-          message.error('开始时间必须小于结束时间');
-        }
-        return;
-      }
-    }
-    message.error('输入数据是时间戳数组或者moment对象数组，长度为0或2');
   };
 
   useFormItemInputs(
@@ -103,11 +116,15 @@ export default function ({
 
   const getValue = useCallback(
     (value) => {
-      const _value = value ? [value[0].valueOf(), value[1].valueOf()] : [];
+      const _value = (value || []).map((val) => {
+        if (format === 'timeStamp') return val.endOf('second').valueOf();
+        if (format === 'custom') return val.format(customFormat);
+        return val.format(format);
+      });
       const formatValue = outFormat === 'array' ? _value : _value.join(splitChar);
       return formatValue;
     },
-    [outFormat, splitChar]
+    [outFormat, splitChar, format, customFormat]
   );
 
   const onChange = useCallback(
@@ -116,25 +133,28 @@ export default function ({
       const formatValue = getValue(values);
       onChangeForFc(parentSlot, { id, name, value: formatValue });
       outputs['onChange'](formatValue);
+      validateTrigger(parentSlot, { id, name });
     },
     [outFormat, splitChar]
   );
 
-  const _format = useMemo(() => {
-    if (format === 'custom') return customFormat;
-    return format;
-  }, [format, customFormat]);
-
   return (
-    <div className={styles.wrap} style={style}>
-      <TimePicker.RangePicker
-        placeholder={placeholder}
-        value={value}
-        format={_format}
-        allowClear
-        disabled={disabled}
-        onChange={onChange}
-      />
-    </div>
+    <ConfigProvider locale={env.vars?.locale}>
+      <div className={styles.wrap}>
+        <TimePicker.RangePicker
+          placeholder={placeholder}
+          value={value}
+          format={_format}
+          allowClear
+          disabled={disabled}
+          onChange={onChange}
+          getPopupContainer={(triggerNode: HTMLElement) =>
+            edit || debug ? env?.canvasElement : document.body
+          }
+          open={env.design ? true : void 0}
+          popupClassName={id}
+        />
+      </div>
+    </ConfigProvider>
   );
 }

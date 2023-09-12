@@ -1,10 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
-import { Table, Empty } from 'antd';
+import { Table, Empty, ConfigProvider } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
-import { formatColumnItemDataIndex, formatDataSource, getDefaultDataSource } from './utils';
+import zhCN from 'antd/es/locale/zh_CN';
+
+import {
+  formatColumnItemDataIndex,
+  formatDataSource,
+  getColumnsSchema,
+  getDefaultDataSource
+} from './utils';
 import { getTemplateRenderScript } from '../utils/runExpCodeScript';
 import {
   ContentTypeEnum,
@@ -20,8 +27,11 @@ import ColumnRender from './components/ColumnRender';
 import ColumnsTitleRender from './components/ColumnsTitleRender';
 import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
+import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
+import { getColumnsFromSchema } from './editors';
+import { setDataSchema } from './schema';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots } = props;
@@ -31,8 +41,14 @@ export default function (props: RuntimeParams<Data>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterMap, setFilterMap] = useState<any>({});
+  const [focusRowIndex, setFocusRowIndex] = useState(null);
+
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
+  // 显示数据
+  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
+  const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
 
@@ -45,8 +61,12 @@ export default function (props: RuntimeParams<Data>) {
       const dataIndex = Array.isArray(cItem.dataIndex)
         ? cItem.dataIndex.join('.')
         : cItem.dataIndex;
-      if (cItem.filter?.enable && cItem.filter?.filterSource !== FilterTypeEnum.Request) {
+      if (!cItem.filter?.enable) {
+        res[env.edit ? cItem.key : dataIndex] = null;
+      } else if (cItem.filter?.filterSource !== FilterTypeEnum.Request) {
         res[env.edit ? cItem.key : dataIndex] = cItem.filter.options || [];
+      } else {
+        res[env.edit ? cItem.key : dataIndex] = [];
       }
     });
     setFilterMap(res);
@@ -109,6 +129,11 @@ export default function (props: RuntimeParams<Data>) {
           };
         });
 
+      // 总结栏数据
+      inputs[InputIds.SUMMARY_COLUMN]((val) => {
+        setSummaryColumnData(val);
+      });
+
       // 动态设置显示列
       if (data.useDynamicColumn && inputs[InputIds.SET_SHOW_COLUMNS]) {
         inputs[InputIds.SET_SHOW_COLUMNS]((ds) => {
@@ -132,11 +157,64 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置表头
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
         inputs[InputIds.SET_SHOW_TitleS]((val) => {
-          data.columns = val;
+          // 需要保留的列
+          const previousDataIndex = val
+            .filter((item) => item.usePrevious)
+            .map((item) => item.dataIndex);
+          data.columns = val
+            .filter((item) => !item.usePrevious)
+            .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
+          initFilterMap();
+        });
+      }
+
+      // 监听插槽输出数据
+      if (slots) {
+        Object.keys(slots).forEach((slot) => {
+          const slotOutput = slots[slot]?.outputs[OutputIds.Edit_Table_Data];
+          if (slotOutput) {
+            slotOutput((val: { value: object; index: number }) => {
+              editTableData(val);
+            });
+          }
         });
       }
     }
   }, []);
+
+  // 更新某一行数据
+  const editTableData = useCallback(
+    /**
+     *
+     * @param param0 { value, index } value 目标值 index 行号
+     */
+    ({ value, index }) => {
+      index = Number(index);
+      if (value && index >= 0) {
+        setDataSource((prevDataSource) => {
+          if (index > prevDataSource.length) return prevDataSource;
+          const temp = [...prevDataSource];
+          temp[index] = value;
+          return temp;
+        });
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (!env.runtime || !data.useExpand) return;
+    // 开启关闭所有展开项
+    inputs[InputIds.EnableAllExpandedRows]((enable) => {
+      console.log(
+        'realShowDataSource2',
+        expandedRowKeys,
+        realShowDataSource,
+        realShowDataSource.map((item) => item[rowKey])
+      );
+      setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
+    });
+  }, [realShowDataSource]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -163,10 +241,8 @@ export default function (props: RuntimeParams<Data>) {
               newSelectedRowKeys.push(targetRowKeyVal);
             }
           });
-          if (newSelectedRowKeys.length > 0) {
-            setSelectedRowKeys(newSelectedRowKeys);
-            setSelectedRows(newSelectedRows);
-          }
+          setSelectedRowKeys(newSelectedRowKeys);
+          setSelectedRows(newSelectedRows);
         });
       }
     }
@@ -272,7 +348,7 @@ export default function (props: RuntimeParams<Data>) {
       // 是否后端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
       if (!usePagination && Array.isArray(ds)) {
-        temp = formatDataSource(ds);
+        temp = formatDataSource(ds, rowKey);
       } else if (usePagination && ds && typeof ds === 'object') {
         /**
          * 分页特殊处理逻辑
@@ -284,11 +360,11 @@ export default function (props: RuntimeParams<Data>) {
          */
         const dsKey = Object.keys(ds);
         if (Array.isArray(ds?.dataSource)) {
-          temp = formatDataSource(ds?.dataSource);
+          temp = formatDataSource(ds?.dataSource, rowKey);
         } else {
           const arrayItemKey = dsKey.filter((key) => !!Array.isArray(ds[key]));
           if (arrayItemKey.length === 1) {
-            temp = formatDataSource(ds?.[arrayItemKey[0]]);
+            temp = formatDataSource(ds?.[arrayItemKey[0]], rowKey);
           } else {
             console.error('[数据表格]：未传入列表数据', ds);
           }
@@ -322,7 +398,10 @@ export default function (props: RuntimeParams<Data>) {
       order
     };
     data.sortParams = order ? sortParams : undefined;
-    outputs[OutputIds.SORTER](data.sortParams);
+    outputs[OutputIds.SORTER]({
+      ...sortParams,
+      order: order || 'none'
+    });
   }, []);
 
   const filterChange = useCallback((filter: any) => {
@@ -372,9 +451,11 @@ export default function (props: RuntimeParams<Data>) {
     return ColumnsTitleRender({
       ...props,
       filterMap,
+      dataSource,
+      focusRowIndex,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} slots={props.slots} />
+          <ColumnRender {...columnRenderProps} env={env} slots={props.slots} />
         </ErrorBoundary>
       )
     });
@@ -418,6 +499,7 @@ export default function (props: RuntimeParams<Data>) {
       const targetRowKeyVal = record[rowKey];
       if (
         data.rowSelectionLimit &&
+        data.selectionType === RowSelectionTypeEnum.Checkbox &&
         selectedRowKeys.length >= data.rowSelectionLimit &&
         !selectedRowKeys.includes(targetRowKeyVal)
       ) {
@@ -440,8 +522,75 @@ export default function (props: RuntimeParams<Data>) {
 
   // 设计态数据mock
   const defaultDataSource = useMemo(() => {
-    return getDefaultDataSource(data.columns);
-  }, [data.columns]);
+    return getDefaultDataSource(data.columns, rowKey);
+  }, [data.columns, rowKey]);
+
+  const setCurrentSelectRows = useCallback(
+    (_record) => {
+      const targetRowKeyVal = _record[rowKey];
+      let newSelectedRows = [...selectedRows];
+      let newSelectedRowKeys: any = [];
+      // 多选情况下，如果没有超出限制就可以选择
+      if (data.selectionType !== RowSelectionTypeEnum.Radio) {
+        if (
+          !data.rowSelectionLimit ||
+          (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
+          selectedRowKeys.includes(targetRowKeyVal)
+        ) {
+          if (newSelectedRows.find((item) => item[rowKey] === targetRowKeyVal)) {
+            newSelectedRows = newSelectedRows.filter((item) => item[rowKey] !== targetRowKeyVal);
+          } else {
+            newSelectedRows.push(_record);
+          }
+        }
+      } else {
+        // 单选的情况
+        if (selectedRowKeys.includes(_record)) {
+          newSelectedRows = [];
+        } else {
+          newSelectedRows = [_record];
+        }
+      }
+      newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
+      setSelectedRows(newSelectedRows);
+      setSelectedRowKeys(newSelectedRowKeys);
+      outputs[OutputIds.ROW_SELECTION]({
+        selectedRows: newSelectedRowKeys,
+        selectedRowKeys: newSelectedRowKeys
+      });
+    },
+    [selectedRows, data.rowSelectionLimit, selectedRowKeys]
+  );
+
+  const onRow = useCallback(
+    (_record, index) => {
+      const { [DefaultRowKey]: _, ...record } = _record;
+      return {
+        onClick: (e) => {
+          if (data.useRowSelection && e?.target?.tagName === 'TD') {
+            setCurrentSelectRows(_record);
+          }
+          if (data.enableRowFocus) {
+            setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+          // 如果开通勾选，则屏蔽点击事件
+          if (data.useRowSelection) return;
+          if (data.enableRowClick) {
+            outputs[OutputIds.ROW_CLICK]({ record, index });
+          }
+        },
+        onDoubleClick: () => {
+          if (data.enableRowDoubleClick) {
+            outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
+          }
+          if (data.enableRowFocus) {
+            setFocusRowIndex(index === focusRowIndex ? null : index);
+          }
+        }
+      };
+    },
+    [focusRowIndex, setCurrentSelectRows]
+  );
 
   // 获取表格显示列宽度和
   const getUseWidth = () => {
@@ -469,80 +618,114 @@ export default function (props: RuntimeParams<Data>) {
     return hasAuto ? '100%' : width;
   };
 
-  // 显示数据
-  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
+  // 当数据发生变化时，重新设置所有行展开
+  useEffect(() => {
+    if (env.runtime) {
+      data.useExpand &&
+        data.defaultExpandAllRows &&
+        setExpandedRowKeys(realShowDataSource.map((item) => item[rowKey]));
+    }
+  }, [realShowDataSource, env.runtime, rowKey]);
+
   return (
-    <div className={css.table}>
-      <TableHeader
-        env={env}
-        data={data}
-        slots={slots}
-        selectedRows={selectedRows}
-        selectedRowKeys={selectedRowKeys}
-      />
-      {data.columns.length ? (
-        <Table
-          style={{
-            width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
-          }}
-          dataSource={edit ? defaultDataSource : realShowDataSource}
-          loading={{
-            tip: data.loadingTip,
-            spinning: loading
-          }}
-          rowKey={rowKey}
-          size={data.size as any}
-          bordered={data.bordered}
-          pagination={false}
-          rowSelection={data.useRowSelection ? rowSelection : undefined}
-          showHeader={data.showHeader === false && env.runtime ? false : true}
-          scroll={{
-            x: '100%',
-            y: data.scroll.y ? data.scroll.y : void 0
-          }}
-          expandable={
-            data.useExpand && slots[SlotIds.EXPAND_CONTENT]
-              ? {
-                  expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : undefined, //增加动态设置
-                  expandedRowRender: (record, index) => {
-                    const inputValues = {
-                      [InputIds.EXP_COL_VALUES]: {
-                        ...record
-                      },
-                      [InputIds.INDEX]: index
-                    };
-                    if (data.useExpand && data.expandDataIndex) {
-                      inputValues[InputIds.EXP_ROW_VALUES] = get(record, data.expandDataIndex);
+    <ConfigProvider locale={zhCN}>
+      <div className={css.table}>
+        <TableHeader
+          env={env}
+          data={data}
+          dataSource={dataSource}
+          slots={slots}
+          outputs={outputs}
+          selectedRows={selectedRows}
+          selectedRowKeys={selectedRowKeys}
+        />
+        {data.columns.length ? (
+          <Table
+            style={{
+              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
+            }}
+            dataSource={edit ? defaultDataSource : realShowDataSource}
+            loading={{
+              tip: data.loadingTip,
+              spinning: loading
+            }}
+            onRow={onRow}
+            rowKey={rowKey}
+            size={data.size as any}
+            bordered={data.bordered}
+            pagination={false}
+            rowSelection={data.useRowSelection ? rowSelection : undefined}
+            showHeader={data.showHeader === false && env.runtime ? false : true}
+            rowClassName={(_, index) => {
+              if (data.enableStripe) {
+                return (index + 1) % 2 === 0
+                  ? 'mybricks-table-row-double'
+                  : 'mybricks-table-row-single';
+              }
+              return '';
+            }}
+            scroll={{
+              x: '100%',
+              y: data.scroll.y ? data.scroll.y : void 0
+            }}
+            summary={
+              data.useSummaryColumn ? () => SummaryColumn(slots, data, summaryColumnData) : void 0
+            }
+            expandable={
+              data.useExpand && slots[SlotIds.EXPAND_CONTENT]
+                ? {
+                    expandedRowRender: (record, index) => {
+                      const inputValues = {
+                        [InputIds.EXP_COL_VALUES]: {
+                          ...record
+                        },
+                        [InputIds.INDEX]: index
+                      };
+                      if (data.useExpand && data.expandDataIndex) {
+                        inputValues[InputIds.EXP_ROW_VALUES] = get(record, data.expandDataIndex);
+                      }
+                      return slots[SlotIds.EXPAND_CONTENT].render({
+                        inputValues,
+                        key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                      });
+                    },
+                    expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                    onExpand: (expanded, record) => {
+                      if (!env.runtime) return;
+                      const key = record[rowKey];
+                      if (expanded && !expandedRowKeys.includes(key)) {
+                        setExpandedRowKeys([...expandedRowKeys, key]);
+                      } else if (!expanded && expandedRowKeys.includes(key)) {
+                        expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                        setExpandedRowKeys([...expandedRowKeys]);
+                      }
                     }
-                    return slots[SlotIds.EXPAND_CONTENT].render({
-                      inputValues,
-                      key: `${InputIds.EXP_COL_VALUES}-${index}`
-                    });
                   }
-                }
-              : undefined
-          }
-          onChange={onChange}
-          tableLayout={
-            (data.tableLayout === TableLayoutEnum.FixedWidth
-              ? TableLayoutEnum.Fixed
-              : data.tableLayout) || TableLayoutEnum.Fixed
-          }
-        >
-          {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
-        </Table>
-      ) : (
-        <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
-      )}
-      <TableFooter
-        env={env}
-        data={data}
-        slots={slots}
-        inputs={inputs}
-        outputs={outputs}
-        selectedRows={selectedRows}
-        selectedRowKeys={selectedRowKeys}
-      />
-    </div>
+                : undefined
+            }
+            onChange={onChange}
+            tableLayout={
+              (data.tableLayout === TableLayoutEnum.FixedWidth
+                ? TableLayoutEnum.Fixed
+                : data.tableLayout) || TableLayoutEnum.Fixed
+            }
+          >
+            {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
+          </Table>
+        ) : (
+          <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
+        )}
+        <TableFooter
+          env={env}
+          parentSlot={props.parentSlot}
+          data={data}
+          slots={slots}
+          inputs={inputs}
+          outputs={outputs}
+          selectedRows={selectedRows}
+          selectedRowKeys={selectedRowKeys}
+        />
+      </div>
+    </ConfigProvider>
   );
 }

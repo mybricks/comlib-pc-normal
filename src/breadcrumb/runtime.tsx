@@ -17,18 +17,12 @@ export default function ({ data, outputs, env }: RuntimeParams<Data>) {
           const { key, label, style } = child || {};
           return (
             <React.Fragment key={key}>
-              <Breadcrumb.Item
-                key={key}
-                data-breadcrumb={key}
-                onClick={() => onItemClick(child)}
-              >
-                <a style={style}>{env.i18n(label)}</a>
+              <Breadcrumb.Item key={key} data-breadcrumb={key} onClick={() => onItemClick(child)}>
+                <a className={key}>{env.i18n(label)}</a>
               </Breadcrumb.Item>
               {data.children.length - 1 !== idx && (
                 <Breadcrumb.Separator>
-                  {data.separator === 'custom'
-                    ? data.customSeparator
-                    : data.separator}
+                  {data.separator === 'custom' ? data.customSeparator : data.separator}
                 </Breadcrumb.Separator>
               )}
             </React.Fragment>

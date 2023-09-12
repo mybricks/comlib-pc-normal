@@ -15,7 +15,7 @@ export enum WhiteSpaceEnum {
 export interface Data {
   content: string;
   align?: AlignTypeEnum;
-  style: Record<string, any>;
+  style: React.CSSProperties;
   useClick?: boolean;
   outputContent?: string;
   isEllipsis: boolean;
@@ -26,6 +26,7 @@ export interface Data {
   useHoverStyle?: boolean;
   styleCatelog?: string;
   hoverStyle?: Record<string, any>;
+  legacyConfigStyle: React.CSSProperties;
 }
 
 export const InputIds = {

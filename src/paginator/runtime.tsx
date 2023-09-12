@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Pagination } from 'antd';
 import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
+import { checkIfMobile } from '../utils';
 
 export default (props: RuntimeParams<Data>) => {
   const { data, inputs, outputs, env } = props;
@@ -17,7 +18,7 @@ export default (props: RuntimeParams<Data>) => {
     pageSizeOptions,
     hideOnSinglePage
   } = data;
-
+  const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
     if (typeof pageNum === 'number') {
       data.current = pageNum;
@@ -70,8 +71,9 @@ export default (props: RuntimeParams<Data>) => {
     <div
       style={{
         display: 'flex',
-        justifyContent: align
+        justifyContent: isMobile ? 'center' : align
       }}
+      className={disabled ? 'paginationDisable' : undefined}
     >
       <Pagination
         total={total}
@@ -79,7 +81,7 @@ export default (props: RuntimeParams<Data>) => {
         current={current}
         defaultPageSize={defaultPageSize}
         size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-        simple={size === SizeTypeEnum.Simple}
+        simple={isMobile || size === SizeTypeEnum.Simple}
         showQuickJumper={showQuickJumper}
         showSizeChanger={showSizeChanger}
         pageSizeOptions={pageSizeOptions}

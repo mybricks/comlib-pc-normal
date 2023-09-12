@@ -9,14 +9,17 @@ export interface Option {
   label: string;
   value: string;
   children?: Option[];
-  key: string | number;
+  key?: string | number;
   disabled?: boolean;
   checked: boolean;
 }
 
 export const InputIds = {
   SetValue: 'setValue',
-  SetInitialValue: 'setInitialValue'
+  SetInitialValue: 'setInitialValue',
+  ResetValue: 'resetValue',
+  SetDisabled: 'setDisabled',
+  SetEnabled: 'setEnabled'
 }
 
 export const OutputIds = {

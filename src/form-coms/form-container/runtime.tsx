@@ -14,6 +14,7 @@ import { getLabelCol, isObject, setFormItemsProps, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
+import { checkIfMobile } from '../../utils';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -33,6 +34,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, env, outputs, inputs, slots, _inputs } = props;
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
+  const isMobile = checkIfMobile(env);
 
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
@@ -75,15 +77,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
     });
 
-    // inputs[inputIds.SET_DISABLED](() => {
-    //   data.config.disabled = true;
-    //   setDisabled();
-    // });
+    inputs[inputIds.SET_DISABLED](() => {
+      data.config.disabled = true;
+      setDisabled();
+    });
 
-    // inputs[inputIds.SET_ENABLED](() => {
-    //   data.config.disabled = false;
-    //   setEnabled();
-    // });
+    inputs[inputIds.SET_ENABLED](() => {
+      data.config.disabled = false;
+      setEnabled();
+    });
 
     //------ For 表单项私有 start ---------
     // _inputs['validate']((val, outputRels) => {
@@ -110,9 +112,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
      */
     slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
       const { id, name } = params;
-      const item = getFormItem(data.items, { id, name });
+      const { item, isFormItem } = getFormItem(data, { id, name });
 
-      if (item) {
+      if (item && isFormItem) {
         // const input = childrenInputs[item.id];
         const input = getFromItemInputEvent(item, childrenInputs);
         validateForInput({ item, input });
@@ -126,9 +128,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
-      const item = getFormItem(data.items, { id, name });
+      const { item, isFormItem } = getFormItem(data, { id, name });
 
-      if (item) {
+      if (item && isFormItem) {
         const fieldsValue = { [item.name || item.label]: value };
 
         formContext.current.store = { ...formContext.current.store, ...fieldsValue };
@@ -143,7 +145,43 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       }
     });
+
+    (data.actions.items || []).forEach((item) => {
+      const { key } = item;
+      //禁用
+      inputs[`${inputIds.SetDisable}_${key}`]?.(() => {
+        item.disabled = true;
+      });
+      //启用
+      inputs[`${inputIds.SetEnable}_${key}`]?.(() => {
+        item.disabled = false;
+      });
+      //显示
+      inputs[`${inputIds.SetShow}_${key}`]?.(() => {
+        item.visible = true;
+      });
+      //隐藏
+      inputs[`${inputIds.SetHidden}_${key}`]?.(() => {
+        item.visible = false;
+      });
+    });
   }
+
+  // useEffect(() => {
+  //   if (env.edit) {
+  //     if (data.domainModel.entity && data.items.length === 0) {
+  //       const fieldAry = data.domainModel.entity.fieldAry
+
+  //       fieldAry?.forEach(item => {
+  //         if (!item.isPrivate) {
+  //           slots['content'].addCom('mybricks.normal-pc.form-text')
+  //         }
+  //       })
+
+  //       console.log(fieldAry, slots)
+  //     }
+  //   }
+  // }, [data.domainModel.entity, slots])
 
   const setFieldsValue = (val) => {
     if (val) {
@@ -154,14 +192,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const setInitialValues = (val) => {
-    if (val) {
-      Object.keys(val).forEach((key) => {
-        setValuesForInput(
-          { childrenInputs, formItems: data.items, name: key },
-          'setInitialValue',
-          val
-        );
-      });
+    try {
+      if (val) {
+        Object.keys(val).forEach((key) => {
+          setValuesForInput(
+            { childrenInputs, formItems: data.items, name: key },
+            'setInitialValue',
+            val
+          );
+        });
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -176,21 +218,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
-  // const setDisabled = () => {
-  //   data.items.forEach((item) => {
-  //     const id = item.id;
-  //     const input = childrenInputs[id];
-  //     input?.setDisabled && input?.setDisabled();
-  //   });
-  // };
+  const setDisabled = () => {
+    data.items.forEach((item) => {
+      const input = getFromItemInputEvent(item, childrenInputs);
+      input?.setDisabled && input?.setDisabled();
+    });
+  };
 
-  // const setEnabled = () => {
-  //   data.items.forEach((item) => {
-  //     const id = item.id;
-  //     const input = childrenInputs[id];
-  //     input?.setEnabled && input?.setEnabled();
-  //   });
-  // };
+  const setEnabled = () => {
+    data.items.forEach((item) => {
+      const input = getFromItemInputEvent(item, childrenInputs);
+      input?.setEnabled && input?.setEnabled();
+    });
+  };
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -268,7 +308,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
       .then(() => {
         getValue()
           .then((values: any) => {
-            const res = { ...values, ...params };
+            let res = { ...values, ...params };
+
+            if (
+              data.domainModel?.entity?.fieldAry?.length > 0 &&
+              data.domainModel?.isQuery &&
+              data.domainModel?.type === 'domain'
+            ) {
+              // 领域模型数据处理
+              res = {
+                values: { ...res },
+                fieldsRules: { ...data.domainModel.queryFieldRules }
+              };
+            }
+
             if (outputRels) {
               outputRels[outputId](res);
             } else {
@@ -280,17 +333,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
           });
       })
       .catch((e) => {
+        const { validateStatus, ...other } = e;
+        outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
       });
   };
 
-  const { labelWrap, ...formCfg } = data.config;
+  const { labelWrap, disabled, ...formCfg } = data.config;
 
   return (
     <div className={css.wrapper}>
       <Fragment>
         {!data.isFormItem ? (
           <Form
+            className={slots['content'].size === 0 && env.edit ? css.empty : undefined}
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
@@ -322,9 +378,15 @@ const getFormItems = (data: Data, childrenInputs) => {
   let formItems = data.items;
 
   // hack 脏数据问题，表单项数与实际表单项数不一致
-  // if (data.items.length !== Object.keys(childrenInputs).length) {
-  //   formItems = formItems.filter((item) => childrenInputs[item.id]);
-  // }
+  if (data.items.length !== Object.keys(childrenInputs).length) {
+    formItems = formItems.filter((item) => {
+      if (item.comName) {
+        return childrenInputs[item.comName];
+      }
+
+      return childrenInputs[item.id];
+    });
+  }
 
   // 过滤隐藏表单项
   if (!data.submitHiddenFields) {
@@ -345,21 +407,34 @@ const validateForInput = (
     item.validateStatus = validateInfo?.validateStatus;
     item.help = validateInfo?.help;
     if (cb) {
-      cb(validateInfo);
+      cb({
+        ...validateInfo,
+        name: item.name || item.label
+      });
     }
   });
 };
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
   const item = formItems.find((item) => (item.name || item.label) === name);
+
   if (item) {
-    // const input = childrenInputs[item.id];
     const input = getFromItemInputEvent(item, childrenInputs);
 
-    if (isObject(values[name])) {
-      input[inputId] && input[inputId]({ ...values[name] });
+    if (input) {
+      if (isObject(values[name])) {
+        if (input[inputId]) {
+          input?.[inputId]?.({ ...values[name] });
+        }
+      } else {
+        input[inputId] && input[inputId](values[name]);
+      }
     } else {
-      input[inputId] && input[inputId](values[name]);
+      console.warn(
+        `FormItem Input Not Found, FormItem Name: ${
+          item.name || item.label
+        }, 可能存在脏数据 请联系开发人员`
+      );
     }
   }
 };

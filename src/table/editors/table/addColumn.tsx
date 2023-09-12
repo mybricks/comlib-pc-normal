@@ -1,7 +1,7 @@
 import React from 'react';
 import visibleOpt from '../../../components/editorRender/visibleOpt';
 import { setDataSchema } from '../../schema';
-import { Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
+import { ContentTypeEnum, Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
 import { getNewColumn, setColumns } from '../../utils';
 
 const ColorMap = {
@@ -110,15 +110,54 @@ const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
               options: {
                 placeholder: '不填默认使用 列名 作为字段'
               }
+            },
+            {
+              title: '适应剩余宽度',
+              type: 'switch',
+              // 添加额外字段用来标记是否自动
+              value: 'isAutoWidth',
+              ifVisible(item) {
+                return item.contentType !== ContentTypeEnum.Group;
+              },
+              options: {
+                type: 'number'
+              }
+            },
+            {
+              title: '宽度',
+              type: 'Text',
+              value: 'width',
+              ifVisible(item) {
+                return (
+                  item.contentType !== ContentTypeEnum.Group && item.width !== WidthTypeEnum.Auto
+                );
+              },
+              options: {
+                type: 'number'
+              }
             }
           ]
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return [...data.columns];
+            return [
+              ...data.columns.map((item) => ({
+                ...item,
+                isAutoWidth: item.width === WidthTypeEnum.Auto
+              }))
+            ];
           },
           set({ data, output, input, slot, ...res }: EditorResult<Data>, val: IColumn[]) {
-            setColumns({ data, slot }, val);
+            const cols = val.map((item) => ({
+              ...item,
+              width: item.isAutoWidth
+                ? WidthTypeEnum.Auto
+                : item.width === WidthTypeEnum.Auto
+                ? 140
+                : Number(item.width),
+              isAutoWidth: undefined
+            }));
+            setColumns({ data, slot }, cols);
             setDataSchema({ data, output, input, slot, ...res });
           }
         }

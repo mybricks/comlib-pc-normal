@@ -1,7 +1,7 @@
 {
   "title": "链接",
   "namespace": "mybricks.normal-pc.link",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "链接",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "content",

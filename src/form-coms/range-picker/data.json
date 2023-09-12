@@ -60,5 +60,6 @@
     ]
   },
   "dateType": "array",
-  "splitChart": "-"
+  "splitChart": "-",
+  "emptyRules": []
 }

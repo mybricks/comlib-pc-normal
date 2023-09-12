@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { AutoComplete } from 'antd';
+import React, { useCallback, useRef, useLayoutEffect } from 'react';
+import { AutoComplete, Input, InputRef } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -8,6 +8,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Option {
   value: string;
+  label: string;
 }
 
 export interface Data {
@@ -24,8 +25,23 @@ export interface Data {
   };
 }
 
+export enum InputIds {
+  SET_COLOR = 'setColor'
+}
+
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot } = props;
+  const { data, inputs, outputs, env, parentSlot, logger } = props;
+
+  const inputRef = useRef<InputRef>(null);
+
+  useLayoutEffect(() => {
+    inputs[InputIds.SET_COLOR]((color: string) => {
+      // 设置输入框字体颜色
+      if (inputRef.current?.input) {
+        inputRef.current.input.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
 
   useFormItemInputs({
     id: props.id,
@@ -68,7 +84,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
   //输入数据源
   inputs['setOptions']((value) => {
-    data.options = value;
+    if (Array.isArray(value) && value.every((item) => 'value' in item)) {
+      if (value.every((item) => 'value' in item)) {
+        data.options = value;
+      } else {
+        console.error('数据源缺少value字段');
+        logger.error('数据源缺少value字段');
+      }
+    } else {
+      console.error('数据源数据结构不正确');
+      logger.error('数据源数据结构不正确');
+    }
   });
 
   const onValidateTrigger = () => {
@@ -87,6 +113,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onBlur'](value);
   }, []);
 
+  const onSelect = (e) => {
+    outputs['onSelect'](e);
+  };
+
   const onSearch = (e) => {
     //开启搜索功能，自定义下拉选项
     if (data.isOnSearch) {
@@ -101,7 +131,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={data.value}
         onChange={onChange}
         filterOption={data.isFilter}
+        children={<Input ref={inputRef} />}
         onBlur={onBlur}
+        onSelect={onSelect}
         onSearch={data.isOnSearch ? onSearch : void 0}
         options={env.edit ? data.staticOptions : data.options}
       />

@@ -17,7 +17,7 @@
           "widthOption": "span",
           "width": 300,
           "flex": 1,
-          "colStyle": {
+          "legacyStyle": {
             "overflowX": "hidden",
             "overflowY": "hidden"
           },
@@ -37,7 +37,7 @@
           "widthOption": "span",
           "width": 300,
           "flex": 1,
-          "colStyle": {
+          "legacyStyle": {
             "overflowX": "hidden",
             "overflowY": "hidden"
           },
@@ -57,7 +57,7 @@
           "widthOption": "auto",
           "width": 300,
           "flex": 1,
-          "colStyle": {
+          "legacyStyle": {
             "overflowX": "hidden",
             "overflowY": "hidden"
           },

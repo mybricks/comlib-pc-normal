@@ -7,8 +7,10 @@ import { Init, getWindowVal } from './utils';
 import { uuid } from '../../utils';
 import { loadPkg } from '../../utils/loadPkg';
 import { validateTrigger } from '../form-container/models/validate';
+import { EnvContext } from './context';
+import { Data } from './types';
 
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 
 import css from './richText.less';
 
@@ -24,7 +26,21 @@ class Ctx {
   tinymceFSId!: string;
 }
 
-export default function ({ data, outputs, inputs, env, readonly, parentSlot, id, name }): JSX.Element {
+interface RichTextProps extends RuntimeParams<Data> {
+  readonly?: boolean;
+}
+
+export default function ({
+  data,
+  outputs,
+  inputs,
+  env,
+  readonly,
+  parentSlot,
+  id,
+  name,
+  logger
+}: RichTextProps): JSX.Element {
   const tinymceId = useMemo(() => '_pceditor_tinymce_' + uuid(), []);
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
@@ -71,11 +87,17 @@ export default function ({ data, outputs, inputs, env, readonly, parentSlot, id,
       placeholder: data.placeholder,
       customIconsId,
       setUp: (editor: any) => {
-        if (!uploadCb.current) {
+        if (data.toolbar.includes('uploadimage')) {
           uploadCb.current = uploadimage({
             click: (type: string) => {
               switch (type) {
                 case 'uploadimage':
+                  if (!env.uploadFile) {
+                    const log = '【富文本输入】： 环境变量 env.uploadFile 方法未实现';
+                    message.error(log);
+                    logger.error(log);
+                    return;
+                  }
                   setModalVisible(true);
                   setUploadModel({
                     title: '上传图片',
@@ -192,12 +214,12 @@ export default function ({ data, outputs, inputs, env, readonly, parentSlot, id,
   useEffect(() => {
     if (readonly) {
       const isRuntime = !!(env.runtime && !env.runtime.debug);
-      const body = isRuntime ? document : document.querySelector('iframe').contentDocument;
+      const body = isRuntime ? document : document.querySelector('iframe')?.contentDocument;
       const container = body?.getElementById(`p${tinymceId}`);
       const iframeEle = container?.querySelector('iframe');
       const editorEle = container?.querySelector('.tox-editor-container') as HTMLElement;
       if (iframeEle && editorEle) {
-        editorEle.style.height = iframeEle.contentDocument.documentElement.offsetHeight + 'px';
+        editorEle.style.height = iframeEle.contentDocument?.documentElement.offsetHeight + 'px';
       }
     }
   }, [readonly]);
@@ -296,17 +318,19 @@ export default function ({ data, outputs, inputs, env, readonly, parentSlot, id,
   }, []);
 
   return (
-    <div
-      className={`${css['editor-rich-text']} ${readonly ? css['editor-rich-text__readonly'] : ''} ${
-        data.disabled ? css['editor-rich-text__disabled'] : ''
-      }`}
-      style={data.style}
-      id={`p${tinymceId}`}
-    >
-      {RenderTextArea}
-      {RenderImgModal}
-      {RenderFSTinyMCE}
-    </div>
+    <EnvContext.Provider value={{ env }}>
+      <div
+        className={`${css['editor-rich-text']} ${
+          readonly ? css['editor-rich-text__readonly'] : ''
+        } ${data.disabled ? css['editor-rich-text__disabled'] : ''}`}
+        style={data.style}
+        id={`p${tinymceId}`}
+      >
+        {RenderTextArea}
+        {RenderImgModal}
+        {RenderFSTinyMCE}
+      </div>
+    </EnvContext.Provider>
   );
 }
 

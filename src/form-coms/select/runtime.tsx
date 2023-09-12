@@ -1,12 +1,48 @@
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useCallback, useRef, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Select, Spin } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
-import { typeCheck, uuid } from '../../utils';
-import { Option, OutputIds } from '../types';
+import { typeCheck } from '../../utils';
+import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+
+const DefaultOptionKey = '_id';
+
+/**
+ * 计算表单项的输出值
+ * @params data 组件数据
+ */
+const getOutputValue = (data) => {
+  const getOutputValuefromValue = (val, index?) => {
+    let result = val;
+    if (val == null) return result;
+    if (data.config.labelInValue) {
+      const option = data.config.options?.find((i) => i.value === val) || {};
+      const { value, label } = option;
+      result = {
+        value,
+        label
+      };
+    }
+    if (data.outputValueType === 'option') {
+      const { [DefaultOptionKey]: id, ...res } =
+        data.config.options.find((i) => i.value === val) || {};
+      result = res;
+    }
+    return result;
+  };
+
+  let outputValue: any = data.value;
+  if (Array.isArray(outputValue)) {
+    outputValue = outputValue.map(getOutputValuefromValue);
+  } else {
+    outputValue = getOutputValuefromValue(outputValue);
+  }
+
+  return outputValue;
+};
 
 export default function Runtime({
   env,
@@ -16,26 +52,28 @@ export default function Runtime({
   logger,
   parentSlot,
   id,
-  name
+  name,
+  title
 }: RuntimeParams<Data>) {
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
-  const typeMap = useMemo(() => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
+  /**
+   * 类型校验方法
+   */
+  const valueTypeCheck = useMemo(() => {
     if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
       return {
-        type: ['ARRAY', 'UNDEFINED'],
-        message: `${data.config.mode === 'multiple' ? '多选下拉框' : '标签多选框'}的值应为数组格式`
-      };
-    }
-    if (data.config.labelInValue) {
-      return {
-        type: ['OBJECT', 'UNDEFINED'],
-        message: `下拉框的值应为{label,value}对象格式`
+        type: ['ARRAY', 'UNDEFINED', 'NULL'],
+        message: `${title}组件:【设置值】参数必须是数组！`
       };
     }
     return {
-      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'],
-      message: `下拉框的值应为基本类型`
+      type: ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED', 'NULL'],
+      message: `${title}组件:【设置值】参数必须是基本类型！`
     };
   }, [data.config.mode, data.config.labelInValue]);
 
@@ -55,12 +93,13 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      const outputValue = getOutputValue(data);
+      outputRels['returnValue'](outputValue);
     });
 
     inputs['setValue']((val) => {
-      if (!typeCheck(val, typeMap.type)) {
-        logger.error(typeMap.message);
+      if (!typeCheck(val, valueTypeCheck.type)) {
+        logger.warn(valueTypeCheck.message);
       } else {
         changeValue(val);
         // data.value = val;
@@ -69,11 +108,15 @@ export default function Runtime({
 
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
-        if (!typeCheck(val, typeMap.type)) {
-          logger.error(typeMap.message);
+        if (!typeCheck(val, valueTypeCheck.type)) {
+          logger.warn(valueTypeCheck.message);
         } else {
+          if (val == undefined) {
+            data.value = '';
+          }
           data.value = val;
-          outputs[OutputIds.OnInitial](val);
+          const outputValue = getOutputValue(data);
+          outputs[OutputIds.OnInitial](outputValue);
         }
       });
 
@@ -83,52 +126,30 @@ export default function Runtime({
     });
 
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            lable: `选项${index}`,
-            value: `${uuid()}`,
-            ...item
-          });
-        });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            lable: `选项`,
-            value: `${uuid()}`,
-            ...(ds || {})
+        data.config.options = [...ds];
+
+        //计算值更新
+        let newValArray: any[] = [],
+          newVal;
+        let updateValue = false;
+        ds.map((item) => {
+          const { checked, value } = item;
+          if (checked && value != undefined) {
+            updateValue = true;
+            newVal = value;
+            newValArray.push(value);
           }
-        ];
-      }
-      let newValArray: any[] = [],
-        newVal;
-      let updateValue = false;
-      tempDs.map((item) => {
-        const { checked, value } = item;
-        if (checked && value != undefined) {
-          updateValue = true;
-          newVal = value;
-          newValArray.push(value);
+        });
+        if (updateValue) {
+          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode))
+            data.value = newValArray;
+          if (!data.config.mode || data.config.mode === 'default') data.value = newVal;
         }
-      });
-      if (updateValue) {
-        data.value =
-          data.config.mode && ['tags', 'multiple'].includes(data.config.mode)
-            ? newValArray
-            : newVal;
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
-      data.config.options = tempDs.map(({ label, value, disabled }) => {
-        return {
-          label,
-          value,
-          disabled
-        };
-      });
+      setFetching(false);
     });
 
     inputs['setLoading']((val: boolean) => {
@@ -148,30 +169,52 @@ export default function Runtime({
     });
   }, []);
 
+  useEffect(() => {
+    const isNumberString = new RegExp(/^\d*$/);
+    if (isNumberString.test(data.maxHeight)) {
+      ref.current?.style.setProperty(
+        '--select--selection-overflow-max-height',
+        data.maxHeight + 'px'
+      );
+    } else {
+      ref.current?.style.setProperty('--select--selection-overflow-max-height', data.maxHeight);
+    }
+  }, [data.maxHeight]);
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((value) => {
-    if (value === undefined) {
+    if (value == undefined) {
       data.value = '';
     }
     data.value = value;
-    onChangeForFc(parentSlot, { id: id, value, name });
-    outputs['onChange'](value);
+    const outputValue = getOutputValue(data);
+    onChangeForFc(parentSlot, { id: id, value: outputValue, name });
+    outputs['onChange'](outputValue);
   }, []);
-  const onChange = useCallback((value) => {
+  const onChange = useCallback((val) => {
+    let value = val;
+    if (data.config.labelInValue) {
+      if (Array.isArray(val)) {
+        value = val.map((i) => i?.value);
+      } else {
+        value = val?.value;
+      }
+    }
     changeValue(value);
     onValidateTrigger();
   }, []);
   const onBlur = useCallback((e) => {
-    outputs['onBlur'](data.value);
+    const outputValue = getOutputValue(data);
+    outputs['onBlur'](outputValue);
   }, []);
 
   const onSearch = (e) => {
     //开启远程搜索功能
     if (data.dropdownSearchOption) {
-      outputs['remoteSearch'](e);
       setFetching(true);
+      outputs['remoteSearch'](e);
     }
     //1、远程数据源
     if (!e && data.dropdownSearchOption === true) {
@@ -182,13 +225,19 @@ export default function Runtime({
   };
 
   return (
-    <div className={css.select}>
+    <div className={css.select} ref={ref} id="area">
       <Select
         {...data.config}
+        showArrow={data.config.showArrow}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value}
         onChange={onChange}
         onBlur={onBlur}
+        getPopupContainer={(triggerNode: HTMLElement) =>
+          edit || debug ? env?.canvasElement : document.body
+        }
+        dropdownClassName={id}
+        open={env.design ? true : void 0}
         onSearch={data.config.showSearch ? onSearch : void 0}
         notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
       />

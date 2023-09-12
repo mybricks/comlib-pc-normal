@@ -6,7 +6,10 @@
     "mode": "default",
     "showSearch": true,
     "filterOption": true,
-    "optionFilterProp": "label"
+    "optionFilterProp": "label",
+    "showArrow": "true"
   },
-  "dropdownSearchOption": false
+  "staticOptions": [],
+  "dropdownSearchOption": false,
+  "outputValueType": "value"
 }

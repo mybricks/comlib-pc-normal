@@ -1,3 +1,4 @@
+import { SelectProps } from 'antd';
 import { Option } from '../types';
 
 export interface Data {
@@ -12,10 +13,12 @@ export interface Data {
         showSearch: boolean;
         filterOption: boolean;
         optionFilterProp: string;
-    };
+    } & SelectProps;
+    maxHeight: string;
     rules: any[];
     value?: number | string | number[] | string[];
     staticOptions: Option[];
     remoteOptions: any[];
     dropdownSearchOption: boolean;
+    outputValueType: 'value' | 'labelInValue' | 'option';
 }

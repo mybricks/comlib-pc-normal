@@ -1,0 +1,36 @@
+{
+  "entity": [],
+  "isImmediate": true,
+  "queryParams": {},
+  "fieldAry": [],
+  "childNames": {
+    "queryContent": [],
+    "tableContent": [],
+    "createModalContent": [],
+    "editModalContent": []
+  },
+  "pageSize": 10,
+  "actions": {
+    "useSlot": true,
+    "items": [
+      {
+        "title": "新建",
+        "type": "primary",
+        "key": "create"
+      }
+    ]
+  },
+  "queryContent": {
+    "visible": true,
+    "slotId": "queryContent"
+  },
+  "queryActions": {
+    "items": [
+      {
+        "title": "查询",
+        "type": "primary",
+        "key": "submit"
+      }
+    ]
+  }
+}

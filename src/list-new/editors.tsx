@@ -12,6 +12,9 @@ export default {
       }
     }
   },
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({}: EditorResult<Data>, cate1) => {
     cate1.title = '高级';
     cate1.items = [
@@ -67,6 +70,9 @@ export default {
       {
         title: '加载中文案',
         type: 'text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useLoading;
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.loadingTip;

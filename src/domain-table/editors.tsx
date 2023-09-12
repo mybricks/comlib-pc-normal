@@ -7,6 +7,7 @@ import {
   DefaultValueWhenCreate,
   FieldBizType,
   FieldDBType,
+  InputIds,
   ModalAction,
   TableRenderType
 } from './constants';
@@ -15,7 +16,6 @@ import { RuleKeys, RuleMapByBizType } from './rule';
 import { ajax } from './util';
 import Refresh from './editors/refresh';
 import Delete from './editors/delete';
-import { InputIds } from './constants';
 
 enum SizeEnum {
   DEFAULT = 'default',
@@ -180,7 +180,7 @@ export default {
                       const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
-                          field.bizType === FieldBizType.ENUM
+                          field?.bizType === FieldBizType.ENUM
                             ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
@@ -232,11 +232,9 @@ export default {
 
                 if (curFieldAry.length > 0) {
                   curFieldAry.push(handleCustomColumnSlot(data, slot));
-
-                  data.fieldAry = curFieldAry;
-                } else {
-                  data.fieldAry = [];
                 }
+                handleTableColumnChange(curFieldAry, data.fieldAry, slot);
+                data.fieldAry = curFieldAry;
 
                 newEntity.fieldAry.forEach((newField) => {
                   newField.form = {};
@@ -289,7 +287,7 @@ export default {
                       const hasChecked = field?.form?.options?.find((o) => o.checked);
                       newField.form.options = newField.enumValues.map((v) => {
                         const oldOption =
-                          field.bizType === FieldBizType.ENUM
+                          field?.bizType === FieldBizType.ENUM
                             ? field?.form?.options?.find((o) => o.value === v)
                             : undefined;
 
@@ -373,6 +371,48 @@ export default {
         },
         items: [
           {
+            title: '渲染方式',
+            description: '渲染方式切换将重置表格渲染逻辑，不支持回退',
+            type: 'Select',
+            options: [
+              { label: '内置表格', value: TableRenderType.NORMAL },
+              { label: '自定义表格', value: TableRenderType.SLOT }
+            ],
+            value: {
+              get({ data }: EditorResult<Data>) {
+                return data.table?.renderType || TableRenderType.NORMAL;
+              },
+              set({ data, output, input, slot }: EditorResult<Data>, value: TableRenderType) {
+                data.table.renderType = value;
+
+                if (value === TableRenderType.SLOT) {
+                  const slotId = 'table';
+                  data.table.slotId = slotId;
+                  slot.add({ id: slotId, title: `自定义表格`, type: 'scope' });
+                  slot
+                    .get(slotId)
+                    .inputs.add(InputIds.DATA_SOURCE, '当前表格数据', { type: 'array' });
+
+                  data.fieldAry.forEach((field) => {
+                    handleColumnSlot(TableRenderType.NORMAL, { field, slot });
+                  });
+                } else {
+                  slot.get(data.table.slotId) && slot.remove(data.table.slotId);
+                  data.table.slotId = '';
+
+                  data.fieldAry.forEach((field) => {
+                    if (
+                      field.tableInfo.renderType === TableRenderType.SLOT ||
+                      field.bizType === FieldBizType.FRONT_CUSTOM
+                    ) {
+                      handleColumnSlot(TableRenderType.SLOT, { field, slot });
+                    }
+                  });
+                }
+              }
+            }
+          },
+          {
             title: '表格列',
             type: 'Select',
             options(props) {
@@ -396,6 +436,9 @@ export default {
                   return options;
                 }
               };
+            },
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
             },
             value: {
               get({ data }: EditorResult<Data>) {
@@ -442,6 +485,8 @@ export default {
                 if (fieldAry.length > 0) {
                   fieldAry.push(handleCustomColumnSlot(data, slot));
                 }
+
+                handleTableColumnChange(fieldAry, data.fieldAry, slot);
                 data.fieldAry = fieldAry;
               }
             }
@@ -449,7 +494,7 @@ export default {
           {
             type: 'array',
             ifVisible() {
-              return !!data.fieldAry;
+              return !!data.fieldAry && data.table?.renderType !== TableRenderType.SLOT;
             },
             options: {
               editable: false,
@@ -472,6 +517,7 @@ export default {
                 if (curFields.length > 0) {
                   curFields.push(handleCustomColumnSlot(data, slot));
                 }
+                handleTableColumnChange(curFields, data.fieldAry, slot);
                 data.fieldAry = curFields;
               }
             }
@@ -479,6 +525,9 @@ export default {
           {
             title: '开启分页',
             type: 'Switch',
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.pagination.show;
@@ -491,6 +540,9 @@ export default {
           {
             title: '隐藏操作区',
             type: 'Switch',
+            ifVisible() {
+              return data.table?.renderType !== TableRenderType.SLOT;
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.table?.operate?.disabled;
@@ -1514,7 +1566,10 @@ export default {
       ];
     }
   },
-  'th.ant-table-cell:not(:empty)': ({ data, focusArea, ...args }: EditorResult<Data>, cate1) => {
+  '.domain-default-table th.ant-table-cell:not(:empty)': (
+    { data, focusArea, ...args }: EditorResult<Data>,
+    cate1
+  ) => {
     if (!data.fieldAry?.length) {
       return;
     }
@@ -1801,6 +1856,19 @@ export default {
       }
     ];
   }
+};
+
+/** 列变更时删除不需要的插槽 */
+const handleTableColumnChange = (newFields, originFields, slot) => {
+  originFields.forEach((f) => {
+    if (
+      !newFields.find((nf) => nf.id === f.id || nf.name === f.name) &&
+      slot.get(f.tableInfo.slotId)
+    ) {
+      slot.remove(f.tableInfo.slotId);
+      f.tableInfo.slotId = '';
+    }
+  });
 };
 
 const handleCustomColumnSlot = (data, slot) => {

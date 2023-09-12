@@ -8,6 +8,7 @@ export interface StepItem {
   hide?: boolean;
   content?: any;
   render?: boolean
+  useCustomDesc?: boolean
 }
 
 export type Btn = 'previous' | 'next' | 'submit'

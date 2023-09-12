@@ -1,0 +1,208 @@
+{
+  "title": "树形选择",
+  "namespace": "mybricks.normal-pc.treeSelect",
+  "version": "1.1.8",
+  "description": "树形选择结构的下拉框",
+  "author": "ZhuLin",
+  "author_name": "朱琳",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_7xd3f2.315b881e6dc8013d.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置树选择的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置树选择的初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发树选择的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取树选择的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "returnValue"
+      ]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空树选择的值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setOptions",
+      "title": "设置数据源",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setLoadData",
+      "title": "设置异步加载数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setLoading",
+      "title": "设置加载中状态",
+      "schema": {
+        "type": "boolean"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "loadData",
+      "title": "异步加载",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

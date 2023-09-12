@@ -95,7 +95,6 @@ const IndexEditor = (item) => [
         value: {
           set({ data, slot, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
-            // const item = getColItem(data, focusArea);
             const [rowIndex, colIndex] = getColIndex(data, focusArea);
             slot.remove(item?.slot);
             data.rows[rowIndex].columns.splice(colIndex, 1);

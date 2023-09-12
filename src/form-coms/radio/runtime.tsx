@@ -2,8 +2,6 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Radio, Space } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
-import { uuid } from '../../utils';
-import { Option } from '../types';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -16,7 +14,9 @@ export default function Runtime({
   outputs,
   parentSlot,
   id,
-  name
+  name,
+  title,
+  logger
 }: RuntimeParams<Data>) {
   useFormItemInputs({
     name,
@@ -25,9 +25,15 @@ export default function Runtime({
     outputs,
     configs: {
       setValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
         data.value = val;
       },
       setInitialValue(val) {
+        if (val === undefined) {
+          data.value = '';
+        }
         data.value = val;
       },
       returnValue(output) {
@@ -61,39 +67,21 @@ export default function Runtime({
 
   useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            lable: `单选框${index}`,
-            value: `${uuid()}`,
-            key: `${uuid()}`,
-            ...item
-          });
-        });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            lable: `单选框`,
-            value: `${uuid()}`,
-            key: `${uuid()}`,
-            ...(ds || {})
+        let newVal;
+        ds.map((radio) => {
+          const { checked, value } = radio;
+          if (checked && value != undefined) {
+            newVal = value;
           }
-        ];
-      }
-      let newVal;
-      tempDs.map((radio) => {
-        const { checked, value } = radio;
-        if (checked && value != undefined) {
-          newVal = value;
+        });
+        if (typeof newVal !== 'undefined') {
+          data.value = newVal;
         }
-      });
-      data.value = newVal;
-      data.config.options = tempDs;
+        data.config.options = ds;
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
+      }
     });
   }, []);
 
@@ -109,32 +97,63 @@ export default function Runtime({
     onValidateTrigger();
   }, []);
 
-  return (
-    <div className={css.radio}>
+  const renderRadio = () => {
+    return (
+      <div className={css.radio}>
+        <Radio.Group
+          optionType={data.enableButtonStyle ? 'button' : 'default'}
+          buttonStyle={data.buttonStyle}
+          disabled={data.config.disabled}
+          value={data.value}
+          onChange={onChange}
+        >
+          <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+              const label = item.label;
+              return (
+                <Radio
+                  key={item.key}
+                  value={item.value}
+                  disabled={item.disabled}
+                  checked={item.checked}
+                  style={{ marginRight: 8 }}
+                >
+                  {label}
+                </Radio>
+              );
+            })}
+          </Space>
+        </Radio.Group>
+      </div>
+    );
+  };
+
+  return data.enableButtonStyle ? (
+    <div>
       <Radio.Group
         optionType={data.enableButtonStyle ? 'button' : 'default'}
         buttonStyle={data.buttonStyle}
-        disabled={data.config.disabled}
+        {...data.config}
         value={data.value}
         onChange={onChange}
       >
-        <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
-          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-            const label = item.label;
-            return (
-              <Radio
-                key={item.key}
-                value={item.value}
-                disabled={item.disabled}
-                checked={item.checked}
-                style={{ marginRight: 8 }}
-              >
-                {label}
-              </Radio>
-            );
-          })}
-        </Space>
+        {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+          const label = item.label;
+          return (
+            <Radio
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              checked={item.checked}
+              style={{ marginRight: 8 }}
+            >
+              {label}
+            </Radio>
+          );
+        })}
       </Radio.Group>
     </div>
+  ) : (
+    renderRadio()
   );
 }

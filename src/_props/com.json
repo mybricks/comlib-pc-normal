@@ -1,0 +1,35 @@
+{
+  "title": "主应用参数",
+  "namespace": "mybricks.normal-pc.props",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "获取主应用参数",
+  "author": "YanWenJun",
+  "author_name": "YanWenJun",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "getProps",
+      "title": "获取主应用参数",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["propsData"],
+      "desc": "主应用参数"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "propsData",
+      "title": "主应用参数",
+      "schema": {
+        "type": "object"
+      },
+      "editable": true
+    }
+  ],
+  "slots": []
+}

@@ -1,9 +1,7 @@
-import Tree from '../../../components/editorRender/fieldSelect';
 import { runScript } from '../../../utils/runExpCodeScript';
-import { DefaultRowKey, InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
+import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY } from '../../constants';
 import { Data, RowSelectionPostionEnum, RowSelectionTypeEnum } from '../../types';
 import { Schemas, setDataSchema } from '../../schema';
-import { getColumnsSchema } from '../../utils';
 
 const getRowSelectionEditor = (props: EditorResult<Data>) => {
   const suggestions: any[] = [];
@@ -26,6 +24,9 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
         },
         set({ data, input, output, slot, ...res }: EditorResult<Data>, value: boolean) {
           data.useRowSelection = value;
+          if (!data.selectionType) {
+            data.selectionType = RowSelectionTypeEnum.Checkbox;
+          }
           if (value) {
             slot.add({ id: SlotIds.ROW_SELECTION_OPERATION, title: `勾选操作区`, type: 'scope' });
             slot
@@ -50,7 +51,6 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
             setDataSchema({ data, input, output, slot, ...res });
           } else {
-            data.rowKey = DefaultRowKey;
             if (output.get(OutputIds.GET_ROW_SELECTION)) {
               output.remove(OutputIds.GET_ROW_SELECTION);
             }
@@ -100,26 +100,6 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             },
             set({ data }: EditorResult<Data>, value: number[]) {
               data.rowSelectionLimit = value[0];
-            }
-          }
-        },
-        {
-          title: '勾选标识',
-          description: '勾选标识所对应的行数据，需要全局唯一',
-          type: 'editorRender',
-          options: {
-            render: Tree
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return {
-                value: data.rowKey || undefined,
-                schema: getColumnsSchema(data),
-                placeholder: '默认使用内置标识'
-              };
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              data.rowKey = value || undefined;
             }
           }
         },

@@ -1,6 +1,5 @@
-import { uuid } from '../../utils';
 import { Data, InputIds, TypeEnum } from '../constants';
-import { updateIOSchema } from './utils';
+import { createItem, updateIOSchema } from './utils';
 import { updateScopeIOSchema } from './item/baseEditor';
 
 export const BaseEditor = [
@@ -58,20 +57,16 @@ export const BaseEditor = [
       }
     }
   },
-  //内容做对齐需求
   {
-    title: '标签宽度',
-    type: 'inputNumber',
-    options: [{ min: 0, width: 120 }],
+    title: '移动端列数',
+    type: 'Slider',
+    options: [{ max: 12, min: 1, steps: 1, formatter: '/12' }],
     value: {
       get({ data }: EditorResult<Data>) {
-        return [data?.globalLabelStyle?.width || 'auto'];
+        return data.mobileColumn;
       },
-      set({ data }: EditorResult<Data>, val: number[]) {
-        if (!data.globalLabelStyle) {
-          data.globalLabelStyle = {};
-        }
-        data.globalLabelStyle.width = val[0];
+      set({ data }: EditorResult<Data>, value: number) {
+        data.mobileColumn = value;
       }
     }
   },
@@ -80,39 +75,10 @@ export const BaseEditor = [
     type: 'Button',
     value: {
       set({ data, input, output, slots }: EditorResult<Data>) {
-        const id = uuid();
-        data.items.push({
-          id: id,
-          label: `描述项${data.items.length + 1}`,
-          key: id,
-          showLable: true,
-          value: `field${data.items.length + 1}`,
-          span: 1,
-          labelStyle: {
-            fontSize: 14,
-            fontWeight: '400',
-            lineHeight: 1,
-            color: '#8c8c8c',
-            letterSpacing: 0
-          },
-          contentStyle: {
-            fontSize: 14,
-            fontWeight: '400',
-            lineHeight: 1,
-            color: '#333333',
-            letterSpacing: 0
-          },
-          type: TypeEnum.Text,
-          direction: 'horizontal',
-          useSuffix: false,
-          suffixBtnText: '查看更多',
-          schema: {
-            type: 'string'
-          }
-        });
+        data.items.push(createItem({ data }));
         updateIOSchema({ data, input, output });
-        data.items.map((item)=>{
-          if(item.type !== TypeEnum.Text){
+        data.items.map((item) => {
+          if (item.type !== TypeEnum.Text) {
             updateScopeIOSchema({ data, item, slots, input });
           }
         })

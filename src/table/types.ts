@@ -1,3 +1,4 @@
+import { TformattersValue } from 'src/utils/dataFormatter/types';
 import { Data as PaginationData } from './components/Paginator/constants';
 
 export enum ContentTypeEnum {
@@ -36,6 +37,7 @@ export interface Filter {
   enable?: boolean;
   type?: FilterTypeEnum;
   options?: any[];
+  hideFilterDropdown?: boolean
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
 }
@@ -75,6 +77,10 @@ export interface IColumn {
 
   keepDataIndex?: boolean;
   dataSchema?: any;
+
+  formatData?: TformattersValue,
+  enableColMerge?: boolean,
+  colMergeScirpt?: string,
 }
 
 export enum SizeEnum {
@@ -122,6 +128,7 @@ export interface Data {
   size: SizeEnum;
   // 固定表头
   fixedHeader: boolean;
+  enableStripe: boolean;
   // 滚动
   scroll: Scroll;
 
@@ -173,4 +180,26 @@ export interface Data {
   titleBgColor: string;
   headStyle: any;
   contentStyle;
+  enableRowClick?: boolean;
+  enableRowDoubleClick?: boolean;
+  enableRowFocus: boolean,
+  focusRowStyle: any,
+  domainModel: {
+    entity: any
+  },
+  // 是否默认展开所有行
+  defaultExpandAllRows: boolean,
+
+  useSummaryColumn: boolean, // 是否开启总结栏
+  SummaryColumnTitle: string, // 总结栏 title
+  SummaryCellTitleCol: number, // 总结栏 title col
+  SummaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
+  SummaryColumnContentSchema: object, // 总结栏内容Schema
+  enbaleRowMerge?: boolean,
+  rowMergeConfig?: {
+    // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
+    mergeByField: string,
+    // 返回true，表示对应的列不能合并
+    excludeFields?: string[]
+  }
 }

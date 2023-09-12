@@ -13,11 +13,9 @@ export const BaseEditor = [
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
-        return (
-          data.items[getEleIdx({ data, focusArea })]?.type || TypeEnum.Text
-        );
+        return data.items[getEleIdx({ data, focusArea })]?.type || TypeEnum.Text;
       },
-      set({ data, focusArea, slots, input}: EditorResult<Data>, value: TypeEnum) {
+      set({ data, focusArea, slots, input }: EditorResult<Data>, value: TypeEnum) {
         if (!focusArea) return;
         const item = data.items[getEleIdx({ data, focusArea })];
         item.type = value;
@@ -29,7 +27,7 @@ export const BaseEditor = [
           addScopeSlotInputs({ data, item, slots });
           updateScopeIOSchema({ data, item, slots, input });
         } else {
-          item.showLable = true;
+          item.showLabel = true;
         }
       }
     }
@@ -42,11 +40,11 @@ export const BaseEditor = [
     type: 'Switch',
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
-        const { showLable = true } = data.items[getEleIdx({ data, focusArea })];
-        return showLable;
+        const { showLabel = true } = data.items[getEleIdx({ data, focusArea })];
+        return showLabel;
       },
       set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-        data.items[getEleIdx({ data, focusArea })].showLable = value;
+        data.items[getEleIdx({ data, focusArea })].showLabel = value;
       }
     }
   },
@@ -54,8 +52,8 @@ export const BaseEditor = [
     title: '标签名称',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
-      const { showLable = true } = data.items[getEleIdx({ data, focusArea })];
-      return showLable;
+      const { showLabel = true } = data.items[getEleIdx({ data, focusArea })];
+      return showLabel;
     },
     type: 'Text',
     value: {
@@ -78,6 +76,26 @@ export const BaseEditor = [
     }
   },
   {
+    title: '标签说明',
+    type: 'text',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      if (!focusArea) return;
+      const { showLabel = true } = data.items[getEleIdx({ data, focusArea })];
+      return showLabel;
+    },
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        return data.items[getEleIdx({ data, focusArea })]?.labelDesc;
+      },
+      set({ data, focusArea }: EditorResult<Data>, val: string) {
+        if (!focusArea) return;
+        const item = data.items[getEleIdx({ data, focusArea })];
+        item.labelDesc = val;
+      }
+    }
+  },
+  {
     title: '字段名',
     type: 'Text',
     value: {
@@ -90,11 +108,11 @@ export const BaseEditor = [
         const item = data.items[getEleIdx({ data, focusArea })];
         item.key = value;
         updateIOSchema({ data, input, output });
-        data.items.map((item)=>{
-          if(item.type !== TypeEnum.Text){
+        data.items.map((item) => {
+          if (item.type !== TypeEnum.Text) {
             updateScopeIOSchema({ data, item, slots, input });
           }
-        })
+        });
       }
     }
   },
@@ -120,16 +138,16 @@ export const BaseEditor = [
         if (!focusArea) return;
         return data.items[getEleIdx({ data, focusArea })]?.schema;
       },
-      set({ data, focusArea, input, output, slots,  }: EditorResult<Data>, value: string) {
+      set({ data, focusArea, input, output, slots }: EditorResult<Data>, value: string) {
         if (!focusArea) return;
         const item = data.items[getEleIdx({ data, focusArea })];
         item.schema = value;
         updateIOSchema({ data, input, output });
-        data.items.map((item)=>{
-          if(item.type !== TypeEnum.Text){
+        data.items.map((item) => {
+          if (item.type !== TypeEnum.Text) {
             updateScopeIOSchema({ data, item, slots, input });
           }
-        })
+        });
       }
     }
   }
@@ -163,11 +181,7 @@ function removeScopeSlotInputs({ item, slots }) {
 
 export function updateScopeIOSchema({ data, slots, item, input }) {
   const slot = slots.get(item.slotId);
-  slot.inputs
-    .get(InputIds.CurDs)
-    .setSchema(item.schema || { type: 'string' });
-  
-  slot.inputs
-    .get(InputIds.DataSource)
-    .setSchema(input.get(InputIds.SetDataSource).schema);
+  slot.inputs.get(InputIds.CurDs).setSchema(item.schema || { type: 'string' });
+
+  slot.inputs.get(InputIds.DataSource).setSchema(input.get(InputIds.SetDataSource).schema);
 }

@@ -4,8 +4,10 @@ import { Data } from './constants';
 import { isString } from '../utils';
 import styles from './index.less';
 
-export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
-  const { title, content, placement, trigger, useTitleSlot, useContentSlot, style } = data;
+export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) {
+  const { title, content, placement, trigger, useTitleSlot, useContentSlot } = data;
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
   inputs['_title']((val) => {
     if (isString(val)) {
       data.title = val;
@@ -37,20 +39,23 @@ export default function ({ env, data, slots, inputs }: RuntimeParams<Data>) {
 
   return (
     <Popover
+      defaultVisible={!!edit && (useTitleSlot || useContentSlot)}
       placement={placement}
       title={useTitleSlot ? slots['title']?.render() : renderWrapText(title as string)}
       content={useContentSlot ? slots['content']?.render() : renderWrapText(content as string)}
       visible={visible}
       trigger={trigger}
-      color={style?.background as string}
-      getPopupContainer={env.edit ? (triggerNode) => triggerNode : undefined}
+      overlayClassName={id}
       overlayInnerStyle={{
         maxWidth: window.screen.availWidth,
-        maxHeight: window.screen.availHeight,
-        ...style
+        maxHeight: window.screen.availHeight
       }}
+      getPopupContainer={(triggerNode: HTMLElement) =>
+        edit || debug ? env?.canvasElement : document.body
+      }
+      destroyTooltipOnHide
     >
-      <div className={styles.wrap}>{slots['carrier'] && slots['carrier'].render()}</div>
+      <div className={styles.wrap}>{slots.carrier?.render()}</div>
     </Popover>
   );
 }

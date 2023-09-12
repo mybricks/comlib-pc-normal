@@ -1,7 +1,6 @@
 import { InputIds, SlotIds } from '../../constants';
 import { Data } from '../../types';
-import { getDefaultDataSchema, Schemas, setDataSchema } from '../../schema';
-import { getColumnsSchema } from '../../utils';
+import { getDefaultDataSchema, getTableSchema, Schemas, setDataSchema } from '../../schema';
 import Tree from '../../../components/editorRender/fieldSelect';
 
 const expandEditor = [
@@ -16,8 +15,9 @@ const expandEditor = [
           get({ data }: EditorResult<Data>) {
             return data.useExpand;
           },
-          set({ data, slot, ...res }: EditorResult<Data>, value: boolean) {
+          set({ data, inputs, slot, ...res }: EditorResult<Data>, value: boolean) {
             if (value) {
+              inputs.add(InputIds.EnableAllExpandedRows, '开启关闭所有展开项', { type: 'boolean' });
               slot.add({ id: SlotIds.EXPAND_CONTENT, title: `展开内容`, type: 'scope' });
               if (data.expandDataIndex) {
                 slot
@@ -30,11 +30,28 @@ const expandEditor = [
               slot
                 .get(SlotIds.EXPAND_CONTENT)
                 .inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
-              setDataSchema({ data, slot, ...res });
+              setDataSchema({ data, slot, inputs, ...res });
             } else {
               slot.remove(SlotIds.EXPAND_CONTENT);
+              inputs.remove(InputIds.EnableAllExpandedRows);
             }
             data.useExpand = value;
+          }
+        }
+      },
+      {
+        title: '默认展开',
+        type: 'switch',
+        description: '开启后，默认展开每一行数据',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useExpand;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.defaultExpandAllRows;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.defaultExpandAllRows = value;
           }
         }
       },
@@ -54,8 +71,11 @@ const expandEditor = [
               ? data.expandDataIndex.join('.')
               : data.expandDataIndex;
             return {
-              value: ret,
-              schema: getColumnsSchema(data),
+              value: ret || '',
+              schema: {
+                type: 'object',
+                properties: getTableSchema({ data }) || {}
+              },
               placeholder: '[非必填]与后端返回数据字段对应'
             };
           },

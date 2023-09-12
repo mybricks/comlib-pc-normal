@@ -1,11 +1,23 @@
 import Tree from '../../../components/editorRender/fieldSelect';
 import { uuid } from '../../../utils';
-import { InputIds } from '../../constants';
+import { InputIds, OutputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
-import { getDefaultDataSchema, Schemas, setCol, setDataSchema } from '../../schema';
-import { getColumnItem, getColumnsSchema } from '../../utils';
+import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } from '../../schema';
+import { getColumnItem, getNewColumn } from '../../utils';
+import createDataFormatEditor from '../../../utils/dataFormatter';
 
-const BaseEditor = {
+const formatCode = encodeURIComponent(`
+/**
+ * 输入参数：
+ *  - 当前列数据： value 
+ *  - 当前行号：   index
+ *  - 当前行数据:  rowRecord
+ **/
+({ value, index, rowRecord }) => {
+  return value
+}`)
+
+const createBaseEditor = ({ data }) => ({
   title: '基础配置',
   items: [
     {
@@ -67,13 +79,16 @@ const BaseEditor = {
         return ![ContentTypeEnum.Group].includes(item.contentType);
       },
       value: {
-        get({ data, focusArea }: EditorResult<Data>) {
+        get({ data, input, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
           const ret = Array.isArray(item.dataIndex) ? item.dataIndex.join('.') : item.dataIndex;
           return {
             value: ret,
-            schema: getColumnsSchema(data),
+            schema: {
+              type: 'object',
+              properties: getTableSchema({ data }) || {}
+            },
             placeholder: '不填默认使用 列名 作为字段',
             disabled: item.contentType === ContentTypeEnum.SlotItem && !item.keepDataIndex
           };
@@ -87,6 +102,11 @@ const BaseEditor = {
           }
           if (!`${valArr}`.startsWith('u_') && !item.keepDataIndex) {
             setCol({ data, focusArea }, 'keepDataIndex', true);
+          }
+          if (data?.domainModel?.entity && valArr) {
+            // 在领域模型容器，选择字段自动修改列标题
+            //@ts-ignore
+            setCol({ data, focusArea }, 'title', valArr);
           }
           setCol({ data, focusArea }, 'dataIndex', valArr);
           setDataSchema({ data, focusArea, output, input, ...res });
@@ -113,7 +133,11 @@ const BaseEditor = {
           if (!focusArea) return;
           const column = getColumnItem(data, focusArea);
           if (value === ContentTypeEnum.Group) {
-            column.children = column.children || [];
+            if (!Array.isArray(column.children) || column.children.length === 0) {
+              column.children = [...(column.children || []), getNewColumn(data)];
+            } else {
+              column.children = column.children;
+            }
           }
 
           if (value === ContentTypeEnum.SlotItem) {
@@ -125,6 +149,18 @@ const BaseEditor = {
             }
             slot.get(slotId).inputs.add(InputIds.SLOT_ROW_RECORD, '当前行数据', Schemas.Object);
             slot.get(slotId).inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
+            slot.get(slotId).outputs.add(OutputIds.Edit_Table_Data, '更新行数据', {
+              type: 'object',
+              properties: {
+                index: {
+                  type: 'number'
+                },
+                value: {
+                  type: 'any'
+                }
+              }
+            }
+            );
           } else {
             if (slot.get(column.slotId)) {
               slot.remove(column.slotId);
@@ -136,6 +172,57 @@ const BaseEditor = {
         }
       }
     },
+
+    createDataFormatEditor({
+      title: '格式转化',
+      formatters: [{
+        formatter: 'KEYMAP'
+      }, {
+        formatter: 'EXPRESSION',
+        description: '表达式输出内容为字符串，在花括号内可以引用变量并进行简单处理',
+        options: {
+          placeholder: '如：当前是第{index+1}行，列数据为{value}, 行数据为{rowRecord}',
+          suggestions: [
+            {
+              label: 'value',
+              detail: '当前列数据',
+            },
+            {
+              label: 'rowRecord',
+              detail: '当前行数据',
+              properties: getSuggestionFromSchema({
+                type: 'object',
+                properties: getTableSchema({ data })
+              })
+            },
+            {
+              label: 'index',
+              detail: '当前行序号',
+            }
+          ]
+        }
+      }, {
+        formatter: 'TIMETEMPLATE',
+        defaultValue: 'YYYY-MM-DD HH:mm:ss'
+      }, {
+        formatter: 'CUSTOMTIME',
+        defaultValue: 'YYYY-MM-DD HH:mm:ss'
+      }, {
+        formatter: 'CUSTOMSCRIPT',
+        defaultValue: formatCode
+      }],
+      value: {
+        get({ data, focusArea }) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return item.formatData
+        },
+        set({ data, focusArea }, value) {
+          if (!focusArea) return;
+          setCol({ data, focusArea }, 'formatData', value);
+        }
+      }
+    }),
     {
       title: '列数据类型',
       type: '_schema',
@@ -161,6 +248,26 @@ const BaseEditor = {
       }
     }
   ]
+})
+
+function getSuggestionFromSchema(schema) {
+  if (schema?.type?.toLowerCase() === 'object') {
+    const res = Object.keys(schema.properties || {}).map((key) => {
+      const suggestion = {
+        label: key,
+      };
+      if (!!schema.properties[key].properties) {
+        //@ts-ignore
+        suggestion.properties = getSuggestionFromSchema(schema.properties[key]);
+      }
+      return suggestion
+    });
+    return res
+  }
+  if (schema?.type?.toLowerCase() === 'array') {
+    return getSuggestionFromSchema(schema?.items);
+  }
+  return [];
 };
 
-export default BaseEditor;
+export default createBaseEditor;

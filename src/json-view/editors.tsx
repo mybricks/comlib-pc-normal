@@ -1,7 +1,25 @@
 import { jsonToSchema } from '../_code-segment/util';
 import { Data, dataSourceTypeMap, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
 
+const colorEditor = (options: { title: string; description?: string }, key: TypeEnum) => {
+  return {
+    ...options,
+    type: 'colorpicker',
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.colors[key];
+      },
+      set({ data }: EditorResult<Data>, value: string) {
+        data.colors[key] = value;
+      }
+    }
+  };
+};
+
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': ({}: EditorResult<Data>, cate1, cate2, cate3) => {
     cate1.title = '常规';
     const eventItems = [
@@ -192,55 +210,12 @@ export default {
 
     cate2.title = '样式';
     cate2.items = [
-      {
-        title: '键名 颜色',
-        type: 'colorpicker',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.colors[TypeEnum.Key];
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.colors[TypeEnum.Key] = value;
-          }
-        }
-      },
-      {
-        title: '括号 颜色',
-        type: 'colorpicker',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.colors[TypeEnum.Bracket];
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.colors[TypeEnum.Bracket] = value;
-          }
-        }
-      },
-      {
-        title: '字符串 颜色',
-        type: 'colorpicker',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.colors[TypeEnum.String];
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.colors[TypeEnum.String] = value;
-          }
-        }
-      },
-      {
-        title: '其余类型 颜色',
-        description: '数值/布尔/空值/未定义',
-        type: 'colorpicker',
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.colors[TypeEnum.Number];
-          },
-          set({ data }: EditorResult<Data>, value: string) {
-            data.colors[TypeEnum.Number] = value;
-          }
-        }
-      }
+      colorEditor({ title: '键名 颜色' }, TypeEnum.Key),
+      colorEditor({ title: '括号 颜色' }, TypeEnum.Bracket),
+      colorEditor({ title: '字符串 颜色' }, TypeEnum.String),
+      colorEditor({ title: '其余类型 颜色' }, TypeEnum.Number),
+      colorEditor({ title: '背景色', description: '默认白色' }, TypeEnum.BackgroundColor),
+      colorEditor({ title: '节点悬浮背景色' }, TypeEnum.NodeHoverBackgroundColor)
     ];
   }
 };

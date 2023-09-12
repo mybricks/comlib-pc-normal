@@ -3,7 +3,7 @@ export default function uploadimage(props) {
   const global = (window).tinyMCE.util.Tools.resolve('tinymce.PluginManager');
 
   function selectLocalImages(editor) {		
-      click('uploadimage')
+    click('uploadimage')
   }
 
   function selectLocalFullScreen(editor) {
@@ -110,10 +110,10 @@ export default function uploadimage(props) {
         const dom = editor.dom;
         const { type, url } = modal;
         if (type === 'image') {
-          editor.insertContent(dom.createHTML('img', {src: url}))
+          editor.insertContent(dom.createHTML('img', { src: url, style: "max-width: 100%;"}))
         }
         if (type === 'video') {
-          editor.insertContent(dom.createHTML('video', {src: url, controls: true}))
+          editor.insertContent(dom.createHTML('video', { src: url, controls: true }))
         }
       }
     }

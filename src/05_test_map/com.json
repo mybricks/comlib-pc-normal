@@ -1,0 +1,66 @@
+{
+  "title": "地图",
+  "namespace": "btri.chart.map",
+  "version": "1.0.0",
+  "description": "地图",
+  "data": "./data.json",
+  "icon": "./icon.svg",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setDataSource",
+      "title": "设置点位数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "title": "点位经纬度"
+              }
+            },
+            "value": {
+              "type": "any"
+            },
+            "scale": {
+              "type": "number"
+            },
+            "pointColor": {
+              "type": "string",
+              "title": "点位颜色"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setZoom",
+      "title": "设置值",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onPointClick",
+      "title": "标记单击事件",
+      "schema": {
+        "type": "any",
+        "title": "点位信息"
+      }
+    },
+    {
+      "id": "onZoomChange",
+      "title": "地图缩放事件",
+      "schema": {
+        "type": "number",
+        "title": "zoom"
+      }
+    }
+  ]
+}

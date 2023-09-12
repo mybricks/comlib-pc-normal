@@ -2,15 +2,18 @@ import React, { useCallback } from 'react';
 import { Form, Col } from 'antd';
 import { unitConversion } from '../../../utils';
 import { Data } from '../types';
+import styles from '../styles.less';
 
 interface VerticalLayoutProps {
   data: Data;
   children?: React.ReactNode;
   actions?: React.ReactNode;
+  isEmpty: boolean;
+  isMobile?: boolean;
 }
 
 const VerticalLayout = (props: VerticalLayoutProps) => {
-  const { children, actions, data } = props;
+  const { children, actions, data, isEmpty, isMobile } = props;
   const { align, widthOption, width, span, inlinePadding } = data.actions;
 
   const actionStyle: React.CSSProperties = {
@@ -33,8 +36,18 @@ const VerticalLayout = (props: VerticalLayoutProps) => {
     <>
       {children}
       {data.actions.visible && (
-        <Col flex={getFlexValue()} style={actionStyle}>
-          <Form.Item data-form-actions label=" " colon={false}>
+        <Col
+          className={
+            isEmpty
+              ? data.formItemColumn === 1
+                ? `${styles.emptyVerActions} ${styles.onlyone}`
+                : styles.emptyVerActions
+              : undefined
+          }
+          style={actionStyle}
+          flex={getFlexValue()}
+        >
+          <Form.Item label={isMobile || data.formItemColumn === 1 ? undefined : ' '} colon={false}>
             {actions}
           </Form.Item>
         </Col>

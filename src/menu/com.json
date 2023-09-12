@@ -1,17 +1,18 @@
 {
   "title": "菜单",
   "namespace": "mybricks.normal-pc.menu",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "description": "菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx",
+  "editors": "./editor/index.tsx",
   "target": {
     "toReact": "./toReact.ts"
   },
+  "upgrade": "./upgrade.ts",
   "outputs": [
     {
       "id": "click",
@@ -103,7 +104,7 @@
                 },
                 "value": {
                   "title": "其他数据",
-                  "type": "any"
+                  "type": "string"
                 }
               }
             }

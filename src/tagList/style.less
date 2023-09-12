@@ -1,6 +1,12 @@
 .wrap {
-  :global(.ant-tag) {
-    margin: 0;
+  :global {
+    .ant-tag {
+      margin: 0;
+    }
+    .ant-tag-close-icon {
+      color: inherit;
+      opacity: 0.6;
+    }
   }
   .small-tag {
     line-height: 20px;
@@ -17,4 +23,13 @@
     padding: 2px 14px;
     font-size: 16px;
   }
+  .appendBtn {
+    border-style: dashed;
+    cursor: pointer;
+  }
+}
+
+.tag {
+  display: flex;
+  align-items: center;
 }

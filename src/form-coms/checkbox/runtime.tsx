@@ -2,8 +2,7 @@ import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Alert, Checkbox } from 'antd';
 import { validateFormItem } from '../utils/validator';
 import { Data } from './types';
-import { Option, OutputIds } from '../types';
-import { uuid } from '../../utils';
+import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
@@ -40,7 +39,7 @@ export default function Runtime({
 
     inputs['setValue']((val) => {
       if (val !== undefined && !Array.isArray(val)) {
-        logger.error(`多选框的值应为数组格式`);
+        logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
         outputs['onChange'](data.value);
@@ -50,9 +49,9 @@ export default function Runtime({
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
         if (val !== undefined && !Array.isArray(val)) {
-          logger.error(`多选框的值应为数组格式`);
+          logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
-          data.value = val;
+          changeValue(val);
           outputs[OutputIds.OnInitial](val);
         }
       });
@@ -70,39 +69,21 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
-
+    //设置数据源
     inputs['setOptions']((ds) => {
-      let tempDs: Option[] = [];
       if (Array.isArray(ds)) {
-        ds.forEach((item, index) => {
-          tempDs.push({
-            checked: false,
-            disabled: false,
-            lable: `选项${index}`,
-            value: `${uuid()}`,
-            ...item
-          });
-        });
-      } else {
-        tempDs = [
-          {
-            checked: false,
-            disabled: false,
-            lable: `选项`,
-            value: `${uuid()}`,
-            ...(ds || {})
+        data.config.options = [...ds];
+        let newValArray: any[] = [];
+        ds.map((item) => {
+          const { checked, value } = item;
+          if (checked && value != undefined) {
+            newValArray.push(value);
           }
-        ];
+        });
+        newValArray.length ? (data.value = newValArray) : void 0;
+      } else {
+        logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
-      let newValArray: any[] = [];
-      tempDs.map((item) => {
-        const { checked, value } = item;
-        if (checked && value != undefined) {
-          newValArray.push(value);
-        }
-      });
-      data.value = newValArray;
-      data.config.options = tempDs;
     });
   }, []);
 
@@ -126,18 +107,22 @@ export default function Runtime({
       data.value = void 0;
     }
   }, []);
-  // 全选框组监听事件
+
+  // 多选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id: id, name: name, value: checkedValue });
+    onChangeForFc(parentSlot, { id, name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
+
   // 全选框监听事件
   const onCheckAllChange = (e) => {
     data.value = e.target.checked ? data.config.options.map((item) => item.value) : [];
     setIndeterminate(false);
     setCheckAll(e.target.checked);
+    onChangeForFc(parentSlot, { id, name, value: data.value });
+    outputs['onChange'](data.value);
     onValidateTrigger();
   };
   if (data.renderError) {
@@ -170,7 +155,7 @@ export default function Runtime({
         style={checkboxGroup}
         {...data.config}
         options={env.edit ? data.staticOptions : data.config.options}
-        value={data.value as any}
+        value={data.value}
         onChange={onChange}
       />
     </div>

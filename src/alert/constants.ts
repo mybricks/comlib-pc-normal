@@ -30,6 +30,7 @@ export interface Data {
   percentWidth: number;
   openWidth: boolean;
   useContentSlot?: boolean;
+  size: string;
 }
 
 export const InputIds = {

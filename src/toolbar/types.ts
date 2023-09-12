@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export enum LocationEnum {
   FRONT = 'front',
   BACK = 'back'
@@ -29,6 +31,9 @@ export enum TypeEnum {
   ALink = 'a'
 }
 
+export type FzCSSProperties = CSSProperties & {
+  styleEditorUnfold: boolean
+}
 export interface BtnItem {
   // 唯一标识
   key: string;
@@ -41,6 +46,8 @@ export interface BtnItem {
   shape?: ShapeEnum;
   // 大小
   size?: SizeEnum;
+  // 样式
+  style: CSSProperties | false;
   // 按钮类型
   type?: TypeEnum;
 
@@ -61,8 +68,10 @@ export interface BtnItem {
   //图标尺寸
   contentSize: [number, number];
 
-  // 权限key
+  // [已废弃]权限key
   permissionKey?: string;
+  // 权限信息
+  permission?: { id: string };
 
   // 动态启用/禁用
   useDynamicDisabled?: boolean;
@@ -85,6 +94,9 @@ export interface BtnItem {
   loading: boolean;
   //设置动态加载
   useDynamicLoading: boolean;
+
+  // 是否是危险按钮
+  danger?: boolean
 }
 
 /**
@@ -102,4 +114,5 @@ export interface Data {
 
   useEllipses?: boolean;
   maxShowNumber?: number;
+
 }

@@ -1,6 +1,6 @@
 import { typeCheck } from '../utils';
 import { jsonToSchema } from '../_code-segment/util';
-import { Data, dataSourceTypeMap, InputIds, OutputIds, Schemas } from './constant';
+import { Data, dataSourceTypeMap, InputIds, OutputIds, Schemas, TypeEnum } from './constant';
 
 export default function ({
   data,
@@ -38,5 +38,16 @@ export default function ({
     output.add(OutputIds.JsonData, '数据输出', dsSchema);
     input.get(InputIds.GetJsonData).setRels([OutputIds.JsonData])
   }
+
+  /**
+  * @description v1.0.5 , 增加背景色、节点悬浮背景色配置项
+  */
+  if (!data.colors[TypeEnum.BackgroundColor]) {
+    data.colors[TypeEnum.BackgroundColor] = 'rgba(255,255,255,1)';
+  }
+  if (!data.colors[TypeEnum.NodeHoverBackgroundColor]) {
+    data.colors[TypeEnum.NodeHoverBackgroundColor] = 'rgba(245,245,245,1)';
+  }
+
   return true;
 }

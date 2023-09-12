@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.0.11",
+  "version": "1.0.19",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -20,7 +20,10 @@
       "title": "设置值",
       "desc": "设置多选框的值，并触发值变化事件输出",
       "schema": {
-        "type": "array"
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     },
     {
@@ -28,7 +31,10 @@
       "title": "设置初始值",
       "desc": "设置多选框的初始值，并触发初始化事件输出",
       "schema": {
-        "type": "array"
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     },
     {
@@ -75,7 +81,7 @@
             },
             "value": {
               "title": "值",
-              "type": "any"
+              "type": "string"
             },
             "disabled": {
               "title": "禁用",
@@ -109,14 +115,20 @@
       "id": "onInitial",
       "title": "值初始化",
       "schema": {
-        "type": "array"
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     },
     {
       "id": "onChange",
       "title": "值更新",
       "schema": {
-        "type": "array"
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     },
     {
@@ -140,7 +152,10 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
-        "type": "array"
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
       }
     }
   ],

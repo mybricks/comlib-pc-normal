@@ -6,6 +6,7 @@ import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import ConfigProvider from '../../components/ConfigProvider';
 
 export default function ({
   data,
@@ -111,9 +112,9 @@ export default function ({
   };
 
   return (
-    <div style={style}>
+    <ConfigProvider locale={env.vars?.locale}>
       <Transfer
-        className={styles.wrap}
+        className={styles.transfer}
         titles={titles}
         dataSource={_dataSource}
         targetKeys={targetKeys}
@@ -125,6 +126,6 @@ export default function ({
         pagination={showPagination && pagination}
         onChange={onChange}
       />
-    </div>
+    </ConfigProvider>
   );
 }

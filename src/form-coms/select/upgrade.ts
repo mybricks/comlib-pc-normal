@@ -1,7 +1,10 @@
-import { InputIds } from '../types';
+import { InputIds, OutputIds } from '../types';
+import { Schemas } from './constants';
 import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+
+  const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
 
   if (typeof data.config.showSearch === "undefined") {
     data.config.showSearch = true;
@@ -19,47 +22,29 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   /**
     * @description v1.0.2 增加"设置初始值"输入项和“初始化”输出项
     */
-  const setValueSchema = input.get(InputIds.SetValue).schema;
-  let valueSchema = {};
-  if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
-    valueSchema = data.config.labelInValue ? {
+  let setValueSchema;
+  if (isMultiple) {
+    setValueSchema = {
       type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          label: {
-            type: 'string'
-          },
-          value: setValueSchema
-        }
-      }
-    } : {
-      type: 'array'
+      items: Schemas.String
     };
   } else {
-    valueSchema = data.config.labelInValue ? {
-      type: 'object',
-      properties: {
-        label: {
-          type: 'string'
-        },
-        value: setValueSchema
-      }
-    } : setValueSchema;
+    setValueSchema = Schemas.String;
   }
-  if (!input.get('setInitialValue')) {
-    input.add('setInitialValue', '设置初始值', valueSchema);
+  if (!input.get(InputIds.SetInitialValue)) {
+    input.add(InputIds.SetInitialValue, '设置初始值', setValueSchema);
   }
-  if (!output.get('onInitial')) {
-    output.add('onInitial', '值初始化', valueSchema);
+  if (!output.get(OutputIds.OnInitial)) {
+    output.add(OutputIds.OnInitial, '值初始化', setValueSchema);
   }
-  output.get('onInitial').setTitle('值初始化');
+  output.get(OutputIds.OnInitial).setTitle('值初始化');
+
+  //=========== v1.0.2 end ===============
 
   /**
     * @description v1.0.3 统一“设置数据源”、“设置值”、“设置初始值”、“值初始化”的schema
     */
-  input.get('setInitialValue').setSchema(valueSchema);
-  output.get('onInitial').setSchema(valueSchema);
+  input.get(InputIds.SetInitialValue).setSchema(setValueSchema);
   const dataSourceSchema = {
     type: 'array',
     items: {
@@ -71,7 +56,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
         },
         value: {
           title: '值',
-          type: setValueSchema?.type || 'string',
+          type: 'string',
         },
         disabled: {
           title: '禁用',
@@ -85,6 +70,52 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     },
   };
   input.get('setOptions').setSchema(dataSourceSchema);
+
+  //=========== v1.0.3 end ===============
+
+  /**
+    * @description v1.0.22 支持 输出数据 配置项
+    */
+
+  let returnValueSchema;
+  if (data.outputValueType === undefined) {
+    if (data.config.labelInValue) {
+      data.outputValueType = 'labelInValue';
+      returnValueSchema = {
+        type: 'object',
+        properties: {
+          label: Schemas.String,
+          value: Schemas.String,
+        }
+      };
+    } else {
+      data.outputValueType = 'value';
+      returnValueSchema = Schemas.String;
+    }
+    let outputValueSchema = returnValueSchema;
+    if (isMultiple) {
+      outputValueSchema = {
+        type: 'array',
+        items: returnValueSchema
+      };
+    }
+    output.get(OutputIds.OnChange)?.setSchema(outputValueSchema);
+    output.get(OutputIds.OnInitial)?.setSchema(outputValueSchema);
+    output.get(OutputIds.OnBlur)?.setSchema(outputValueSchema);
+    output.get(OutputIds.ReturnValue)?.setSchema(outputValueSchema);
+  }
+
+  //=========== v1.0.22 end ===============
+
+  /**
+    * @description v1.0.25 支持 下拉箭头 配置项
+    */
+
+  if (data.config.showArrow === undefined) {
+    data.config.showArrow = !isMultiple;
+  }
+
+  //=========== v1.0.25 end ===============
 
   return true;
 }

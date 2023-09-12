@@ -42,7 +42,7 @@ export default (props: RuntimeParams<Data>) => {
   };
 
   return (
-    <div ref={qrRef} style={{ width: '100%', height: '100%' }} onClick={onClick}>
+    <div ref={qrRef} className="root" style={{ width: '100%', height: '100%' }} onClick={onClick}>
       {!!data.link ? (
         <QRCode
           style={{ width: '100%', height: '100%' }}

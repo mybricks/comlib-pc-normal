@@ -2,17 +2,21 @@ import React, { useMemo } from 'react';
 import { Form, Button, Row, Col, Space } from 'antd';
 import { Data } from '../types';
 import { outputIds } from '../constants';
+import style from './formActions.less';
 
 interface Props {
   data: Data;
+  env: any;
   submit: (outputId: string, outputRels?: any) => void;
   outputs: any;
+  isMobile: boolean;
 }
 
 const FormActions = (props: Props) => {
   const { actions, layout, formItemColumn, config } = props.data;
 
   const onClick = (item) => {
+    if (props.env?.edit) return;
     if (item.outputId === outputIds.ON_CLICK_SUBMIT) {
       props.submit(item.outputId);
     } else {
@@ -32,8 +36,14 @@ const FormActions = (props: Props) => {
   // }, [layout])
 
   return (
-    <Space wrap>
+    <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
+        if (props.env?.runtime && item.permission?.id) {
+          if (!props.env.hasPermission(item.permission?.id)) {
+            return null;
+          }
+        }
+
         if (typeof item.visible !== 'undefined' && !item.visible) {
           return null;
         }
@@ -46,7 +56,7 @@ const FormActions = (props: Props) => {
             key={item.key}
             danger={item?.danger}
             onClick={() => onClick(item)}
-            // disabled={config.disabled}
+            disabled={item.disabled || config.disabled}
           >
             {item.title}
           </Button>

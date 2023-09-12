@@ -7,11 +7,19 @@ export const inputIds = {
   SET_FORM_ITEMS_PROPS: 'setFormItemsProps',
   SET_DISABLED: 'setDisabled',
   SET_ENABLED: 'setEnabled',
-  GET_FIELDS_VALUE: 'getFieldsValue'
+  GET_FIELDS_VALUE: 'getFieldsValue',
+  //禁用/启用
+  SetDisable: 'setDisable',
+  SetEnable: 'setEnable',
+
+  //显示/隐藏
+  SetHidden: 'setHidden',
+  SetShow: 'setShow',
 }
 
 export const outputIds = {
   ON_FINISH: 'onFinish',
+  ON_SUBMIT_ERROR: 'onSubmitError',
   ON_RESET_FINISH: 'onResetFinish',
   ON_CLICK_SUBMIT: 'onClickSubmit',
   ON_CLICK_CANCEL: 'onClickCancel',

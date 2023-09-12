@@ -31,6 +31,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const { edit } = env;
+  const [value, setValue] = useState();
   useFormItemInputs({
     id: id,
     name: name,
@@ -38,16 +39,19 @@ export default function ({
     outputs,
     configs: {
       setValue(val) {
-        data.value = val;
+        // data.value = val;
+        setValue(val);
       },
       setInitialValue(val) {
-        data.value = val;
+        // data.value = val;
+        setValue(val);
       },
       returnValue(output) {
         output(data.value);
       },
       resetValue() {
-        data.value = void 0;
+        // data.value = void 0;
+        setValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -70,6 +74,9 @@ export default function ({
       }
     }
   });
+  useEffect(() => {
+    data.value = value;
+  }, [value]);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
@@ -77,7 +84,8 @@ export default function ({
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
-    data.value = value;
+    // data.value = value;
+    setValue(value);
     onChangeForFc(parentSlot, { id: id, name: name, value });
     outputs['onChange'](value);
   }, []);
@@ -85,19 +93,36 @@ export default function ({
   const onBlur = useCallback((e) => {
     const value = e.target.value;
     onValidateTrigger();
-    data.value = value;
+    // data.value = value;
+    setValue(value);
     outputs['onBlur'](value);
   }, []);
+
+  const sizeConfig = useMemo(() => {
+    if (env.edit) {
+      return {
+        rows: data.minRows
+      };
+    }
+
+    return {
+      autoSize: {
+        minRows: data.minRows,
+        maxRows: data.maxRows
+      }
+    };
+  }, [env.edit, data.minRows, data.maxRows]);
 
   return (
     <div>
       <Input.TextArea
         {...data.config}
-        value={data.value}
+        // value={data.value}
+        value={value}
         readOnly={!!edit}
+        {...sizeConfig}
         onChange={changeValue}
         onBlur={onBlur}
-        autoSize={{ minRows: data.minRows, maxRows: data.maxRows }}
       />
     </div>
   );

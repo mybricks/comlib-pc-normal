@@ -1,0 +1,33 @@
+{
+  "title": "环境变量",
+  "namespace": "mybricks.normal-pc.env-var",
+  "version": "1.0.0",
+  "rtType": "js-autorun",
+  "description": "环境变量",
+  "author": "liuzhigang",
+  "author_name": "liuzhigang",
+  "docs": "",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "getEnv",
+      "title": "获取",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "获取环境变量"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputEnv",
+      "title": "输出",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

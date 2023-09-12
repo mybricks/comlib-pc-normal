@@ -29,9 +29,14 @@ export interface Data {
   //列数
   column: number;
   //间隔
-  grid: ListGridType;
+  grid: ListGridType & {   //移动端列数
+    mobileColumn: number;
+  };
   canSort: boolean;
 
   //自定义rowKey
   rowKey: string;
+
+  //自动换行时，方向
+  layout: 'horizontal'|'vertical'
 }

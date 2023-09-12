@@ -1,40 +1,89 @@
 {
   "treeData": [
     {
-      "title": "0-0",
-      "key": "0-0",
+      "key": "第一级 1",
+      "title": "第一级 1",
       "children": [
         {
-          "title": "0-0-0",
-          "key": "0-0-0",
-          "children": []
+          "key": "第二级 1-1",
+          "title": "第二级 1-1",
+          "children": [
+            {
+              "key": "叶子 1-1-1",
+              "title": "叶子 1-1-1"
+            },
+            {
+              "key": "叶子 1-1-2",
+              "title": "叶子 1-1-2"
+            }
+          ]
+        },
+        {
+          "key": "第二级 1-2",
+          "title": "第二级 1-2",
+          "children": [
+            {
+              "key": "叶子 1-2-1",
+              "title": "叶子 1-2-1"
+            }
+          ]
         }
       ]
-    },
-    {
-      "title": "0-1",
-      "key": "0-1"
     }
   ],
-  "checkable": true,
+  "checkable": false,
+  "draggable": false,
+  "allowDrop": true,
+  "useDropScope": false,
+  "valueType": "keyField",
+  "showLine": false,
   "disableCheckbox": false,
   "outParentNode": false,
   "defaultExpandAll": true,
-  "expandedKeys": [],
+  "expandedKeys": [
+    "第一级 1",
+    "第二级 1-1",
+    "第二级 1-2"
+  ],
   "isEditing": "",
   "isAdding": "",
+  "ellipsisActionBtnsConfig": {
+    "useEllipsis": false,
+    "maxToEllipsis": 3,
+    "trigger": [
+      "click"
+    ]
+  },
   "actionBtns": [
     {
       "type": "link",
       "title": "修改",
       "size": "middle",
-      "id": "modify"
+      "id": "modify",
+      "iconConfig": {
+        "src": false,
+        "size": [
+          14,
+          14
+        ],
+        "gutter": 8
+      }
     },
     {
       "type": "link",
       "title": "删除",
       "size": "middle",
-      "id": "delete"
+      "id": "delete",
+      "iconConfig": {
+        "src": false,
+        "size": [
+          14,
+          14
+        ],
+        "gutter": 8
+      }
     }
-  ]
+  ],
+  "removeConfirm": "确定删除节点{title}吗（子节点也会被删除）？此操作不可恢复！",
+  "editInline": true
 }

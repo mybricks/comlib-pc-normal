@@ -2,11 +2,13 @@ import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
-    "type": "array"
+    type: 'array',
+    items: {
+      type: 'string'
+    }
   }
 
   if (!input.get('setInitialValue')) {
-
     input.add('setInitialValue', '设置初始值', valueSchema);
   }
 
@@ -30,6 +32,13 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (typeof data.layout === "undefined") {
     data.layout = "horizontal";
   };
-  
+
+  /**
+   * @description v1.0.13 修复初始时的动态选项
+   */
+  if (data.config.options !== data.staticOptions) {
+    data.config.options = data.staticOptions;
+  };
+
   return true;
 }

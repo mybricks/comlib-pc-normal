@@ -1,11 +1,32 @@
-.button {
+.wrapper {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
+
+  .button {
+    width: 100%;
+    height: 100%;
+  }
 }
+// .button {
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   /*初始样式*/
+//   color: #fff;
+//   font-weight: 400;
+//   font-style: normal;
+//   font-size: 14px;
+//   line-height: 1.5715;
+//   background: #0075ff;
+//   border-color: #0075ff;
+//   border-width: 1px;
+//   border-style: solid;
+//   border-radius: 4px;
+//   text-align: center;
+// }
 
 .asMapArea {
   background: linear-gradient(90deg, #ddd 50%, #fff 50%) repeat-x,
@@ -16,4 +37,16 @@
   background-position: 0 0, 0 100%, 0 0, 100% 0;
   width: 100%;
   height: 100%;
+}
+
+.space {
+  :global {
+    .ant-space-item {
+      display: flex;
+      /*实现垂直居中*/
+      align-items: center;
+      /*实现水平居中*/
+      justify-content: center;
+    }
+  }
 }

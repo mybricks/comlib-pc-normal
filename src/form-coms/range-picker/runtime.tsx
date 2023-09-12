@@ -7,6 +7,7 @@ import { OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import ConfigProvider from '../../components/ConfigProvider';
 
 const { RangePicker } = DatePicker;
 
@@ -29,6 +30,7 @@ export interface Data {
   };
   dateType: 'array' | 'string';
   splitChart: string;
+  emptyRules: any[];
 }
 
 export const DateType = {
@@ -65,6 +67,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
+
+  const { edit, runtime } = env;
+  const debug = !!(runtime && runtime.debug);
 
   //输出数据变形函数
   const transCalculation = (val, type, props, index) => {
@@ -146,7 +151,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         //如果是输入的值不合规范，即会输出[null, null]
         val = val.map((item) => {
           const num = Number(item);
-          const result: any = isNaN(num) ? moment(val) : moment(num);
+          const result: any = isNaN(num) ? moment(item) : moment(num);
           let data = !result?._isValid ? undefined : result;
           return data;
         });
@@ -162,7 +167,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           //如果是输入的值不合规范，即会输出[null, null]
           val = val.map((item) => {
             const num = Number(item);
-            const result: any = isNaN(num) ? moment(val) : moment(num);
+            const result: any = isNaN(num) ? moment(item) : moment(num);
             let data = !result?._isValid ? undefined : result;
             return data;
           });
@@ -269,18 +274,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
+  const emptyArr: [boolean, boolean] =
+    data.emptyRules?.length > 0
+      ? [!data.emptyRules[0].status, !data.emptyRules[1].status]
+      : [false, false];
+
   return (
-    <div className={css.rangePicker}>
-      <RangePicker
-        value={value}
-        {...data.config}
-        ranges={data.useRanges ? rangeOptions : []}
-        showTime={getShowTime()}
-        onChange={onChange}
-        onCalendarChange={(dates) => setDates(dates)}
-        onOpenChange={onOpenChange}
-        {...disabledDateTime}
-      />
-    </div>
+    <ConfigProvider locale={env.vars?.locale}>
+      <div className={css.rangePicker}>
+        <RangePicker
+          value={value}
+          {...data.config}
+          ranges={data.useRanges ? rangeOptions : []}
+          showTime={getShowTime()}
+          onChange={onChange}
+          onCalendarChange={(dates) => setDates(dates)}
+          onOpenChange={onOpenChange}
+          allowEmpty={emptyArr}
+          getPopupContainer={(triggerNode: HTMLElement) =>
+            edit || debug ? env?.canvasElement : document.body
+          }
+          open={env.design ? true : void 0}
+          dropdownClassName={`${id} ${css.rangePicker}`}
+          {...disabledDateTime}
+        />
+      </div>
+    </ConfigProvider>
   );
 }

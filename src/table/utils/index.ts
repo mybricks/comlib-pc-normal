@@ -1,7 +1,9 @@
 import { setPath } from '../../utils/path';
 import { uuid } from '../../utils';
-import { ContentTypeEnum, Data, IColumn } from '../types';
-import { InputIds, DefaultRowKey } from '../constants';
+import { ContentTypeEnum, Data, IColumn, SorterTypeEnum } from '../types';
+import { InputIds } from '../constants';
+import { Entity } from '../../domain-form/type';
+import { getFilterSelector } from '../../utils/cssSelector';
 
 const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
@@ -47,7 +49,11 @@ export const getNewColumn = (data?: Data) => {
     width: 140,
     key: uuid(),
     contentType: ContentTypeEnum.Text,
-    visible: true
+    visible: true,
+    sorter: {
+      enable: false,
+      type: SorterTypeEnum.Size
+    }
   };
   return obj;
 };
@@ -83,26 +89,26 @@ export const setColumns = ({ data, slot }: { data: Data; slot: any }, newColumns
 };
 
 // 格式化表格数据
-export const formatDataSource = (dataSource) => {
+export const formatDataSource = (dataSource, rowKey) => {
   return dataSource.map(({ children, ...rest }) => {
     if (children && children.length) {
       return {
-        [DefaultRowKey]: uuid(),
-        children: formatDataSource(children),
+        [rowKey]: uuid(),
+        children: formatDataSource(children, rowKey),
         ...rest
       };
     } else {
       return {
-        [DefaultRowKey]: uuid(),
+        [rowKey]: uuid(),
         ...rest
       };
     }
   });
 };
 // 编辑态默认值
-export const getDefaultDataSource = (columns: IColumn[]) => {
+export const getDefaultDataSource = (columns: IColumn[], rowKey) => {
   const mockData = {
-    [DefaultRowKey]: uuid()
+    [rowKey]: uuid()
   };
   const setDefaultDataSource = (columns) => {
     if (Array.isArray(columns)) {
@@ -117,7 +123,7 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
           setPath(mockData, item.dataIndex.join('.'), defaultValue, false);
         } else {
           mockData[item.key] = defaultValue;
-          mockData[item.dataIndex] = defaultValue;
+          mockData[item.dataIndex || item.title] = defaultValue;
         }
       });
     }
@@ -125,9 +131,71 @@ export const getDefaultDataSource = (columns: IColumn[]) => {
   setDefaultDataSource(columns);
   return [mockData];
 };
+
+const convertEntityField2SchemaType = (field, paredEntityIds: string[] = []) => {
+  switch (field.bizType) {
+    case 'string':
+    case 'enum':
+      return { type: 'string' };
+    case 'number':
+    case 'datetime':
+      return { type: 'number' };
+    case 'relation':
+      return {
+        type: 'object',
+        properties:
+          field?.mapping?.entity?.fieldAry.reduce((res, item) => {
+            if (!paredEntityIds.includes(field.relationEntityId)) {
+              paredEntityIds.push(field.relationEntityId);
+            }
+            res[item.name] = convertEntityField2SchemaType(item);
+            return res;
+          }, {}) || {}
+      };
+    case 'mapping':
+      return {
+        type: 'array',
+        items: {
+          properties:
+            field?.mapping?.entity?.fieldAry.reduce((res, item) => {
+              if (!item.relationEntityId || !paredEntityIds.includes(field.relationEntityId)) {
+                res[item.name] = convertEntityField2SchemaType(item);
+              }
+              if (!paredEntityIds.includes(field.relationEntityId)) {
+                paredEntityIds.push(field.relationEntityId);
+              }
+              return res;
+            }, {}) || {},
+          type: 'object'
+        }
+      };
+    default:
+      return { type: 'string' };
+  }
+};
+
+const convertEntity2Schema = (entity: Entity) => {
+  const publicFields = (entity?.fieldAry || []).filter((item) => !item.isPrivate);
+  const parsedEntityIds = [entity.id];
+  return {
+    items: {
+      type: 'object',
+      properties: publicFields.reduce((res, item) => {
+        res[item.name] = convertEntityField2SchemaType(item, parsedEntityIds);
+        return res;
+      }, {})
+    },
+    type: 'array'
+  };
+};
+
 // 获取列schema - 给编辑器使用
 export const getColumnsSchema = (data: Data) => {
-  const schema = data[`input${InputIds.SET_DATA_SOURCE}Schema`] || {};
+  let schema =
+    (data?.domainModel?.entity
+      ? convertEntity2Schema(data?.domainModel?.entity)
+      : data[`input${InputIds.SET_DATA_SOURCE}Schema`]) || {};
+
   let columnsSchema = {};
   if (schema.type === 'array') {
     columnsSchema = schema;
@@ -165,3 +233,44 @@ export function getColumnItemDataIndex(item: IColumn) {
   const idx = Array.isArray(colDataIndex) ? colDataIndex.join('.') : colDataIndex;
   return idx;
 }
+
+
+export const createStyleForTableContent = () => [
+  {
+    title: '表头',
+    catelog: '默认',
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    target: ({ id }) => `table thead tr th${getFilterSelector(id)}`
+  },
+  {
+    title: '表格内容',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
+  },
+  {
+    title: '行Hover',
+    catelog: 'Hover',
+
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover[data-table-column-id]${getFilterSelector(id)}`
+  }
+]
+
+export const createStyleForColumnContent = ({ target }: StyleModeType<Data>) => ({
+  title: '内容',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  ifVisible({ data }: EditorResult<Data>) {
+    return !!data.columns.length;
+  },
+  target
+});

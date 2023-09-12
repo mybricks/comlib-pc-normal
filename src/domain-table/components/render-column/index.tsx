@@ -33,7 +33,7 @@ const RenderColumn: FC<RenderColumnProps> = (props) => {
   }, []);
 
   const renderColumn = () => {
-    if (!field.tableInfo.renderType || field.tableInfo.renderType === TableRenderType.NORMAL) {
+    if (!field.tableInfo?.renderType || field.tableInfo?.renderType === TableRenderType.NORMAL) {
       if (field.bizType === FieldBizType.IMAGE) {
         const list = value ? safeParse(value, []) : [];
         return list.map((item, index) => {

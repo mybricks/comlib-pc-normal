@@ -1,7 +1,6 @@
 .stepbox {
   .verticalWrap {
     display: flex;
-
     :global {
       .ant-steps {
         width: fit-content;
@@ -30,11 +29,13 @@
       display: flex;
       justify-content: center;
     }
-
-    .ant-steps-item {
-      flex: 1;
-      max-width: 258px;
+    .ant-steps-item-container {
+      pointer-events: auto !important;
     }
+    // .ant-steps-item {
+    //   flex: 1;
+    //   max-width: 258px;
+    // }
 
     .ant-btn {
       box-sizing: border-box;
@@ -43,7 +44,6 @@
 
   .stepsContent {
     min-height: 100px;
-    line-height: 100px;
     display: flex;
     margin-top: 40px;
     .content {
@@ -66,4 +66,17 @@
 .preview {
   background-color: rgba(253, 247, 166, 0.2);
   outline: 1px dashed #d7d7d7;
+}
+
+.mobilebtns.mobilebtns {
+  display: flex;
+  flex-direction: column;
+  & > button {
+    margin: 5px 0;
+    width: 100% !important;
+  }
+}
+
+.mobileWrap.mobileWrap {
+  flex-direction: column;
 }

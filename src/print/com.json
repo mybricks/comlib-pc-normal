@@ -1,0 +1,34 @@
+{
+  "title": "打印",
+  "visibility": false,
+  "namespace": "mybricks.normal-pc.print",
+  "version": "1.0.3",
+  "description": "可用于打印组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "startPrint",
+      "title": "开始打印",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "afterPrint",
+      "title": "打印后"
+    }
+  ],
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容"
+    }
+  ]
+}

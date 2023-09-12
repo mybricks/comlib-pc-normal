@@ -2,6 +2,7 @@ import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants'
 import { unitConversion } from '../../../utils';
 import { isEqual } from 'lodash';
 import { Data, SizeEnum } from '../../types';
+import { getFilterSelector } from '../../../utils/cssSelector';
 
 export const DEFAULT_COLOR = {
   TitleColor: '#1f1f1f',
@@ -69,6 +70,58 @@ const tableStyleEditor = {
         }
       }
     },
+    {
+      title: '开启斑马纹',
+      type: 'Switch',
+      description: '配置表格的单双行为不同样式',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.enableStripe;
+        },
+        set({ data }: EditorResult<Data>, value: boolean) {
+          data.enableStripe = value;
+        }
+      }
+    },
+    {
+      title: '单行',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.enableStripe;
+      },
+      options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+      target: ({ id }) => `table tbody tr.mybricks-table-row-single td${getFilterSelector(id)}`
+    },
+    {
+      title: '双行',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.enableStripe;
+      },
+      options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+      target: ({ id }) => `table tbody tr.mybricks-table-row-double td${getFilterSelector(id)}`,
+    },
+    // {
+    //   title: '斑马纹设置',
+    //   ifVisible({ data }: EditorResult<Data>) {
+    //     return data.enableStripe;
+    //   },
+    //   items: [
+    //     {
+    //       title: '单行',
+    //       catelog: '单行',
+    //       options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    //       target: ({ id }) => `table thead tr.ant-row-single th${getFilterSelector(id)}`
+    //     },
+    //     {
+    //       title: '双行',
+    //       catelog: '双行',
+    //       options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    //       target: ({ id }) => `table tbody tr.ant-row-double td${getFilterSelector(id)}`,
+    //       initValue: {
+    //         backgroundColor: '#fafafa'
+    //       }
+    //     },
+    //   ]
+    // },
     // {
     //   title: '表头样式',
     //   type: 'ColorPicker',
@@ -107,58 +160,58 @@ const tableStyleEditor = {
     //     }
     //   }
     // },
-    {
-      title: '表头样式',
-      type: 'Style',
-      options: {
-        plugins: ['bgcolor', 'Font'],
-        fontProps: {
-          fontFamily: false,
-          lineHeight: false
-        }
-      },
-      value: {
-        get({ data, id }: EditorResult<Data>) {
-          return data.headStyle || { ...DefaultHeadStyle };
-        },
-        set({ data, id }: EditorResult<Data>, value) {
-          delete value.lineHeight;
-          delete value.display;
-          delete value.letterSpacing;
-          data.columns = data.columns.map((item) => {
-            item.headStyle = { ...value };
-            return item;
-          });
-          data.headStyle = value;
-        }
-      }
-    },
-    {
-      title: '内容样式',
-      type: 'Style',
-      options: {
-        plugins: ['bgColor', 'Font'],
-        fontProps: {
-          fontFamily: false,
-          lineHeight: false
-        }
-      },
-      value: {
-        get({ data, id }: EditorResult<Data>) {
-          return data.contentStyle || { ...DefaultContentStyle };
-        },
-        set({ data, id }: EditorResult<Data>, value) {
-          delete value.lineHeight;
-          delete value.display;
-          delete value.letterSpacing;
-          data.columns = data.columns.map((item) => {
-            item.contentStyle = { ...value };
-            return item;
-          });
-          data.contentStyle = value;
-        }
-      }
-    }
+    // {
+    //   title: '表头样式',
+    //   type: 'Style',
+    //   options: {
+    //     plugins: ['bgcolor', 'Font'],
+    //     fontProps: {
+    //       fontFamily: false,
+    //       lineHeight: false
+    //     }
+    //   },
+    //   value: {
+    //     get({ data, id }: EditorResult<Data>) {
+    //       return data.headStyle || { ...DefaultHeadStyle };
+    //     },
+    //     set({ data, id }: EditorResult<Data>, value) {
+    //       delete value.lineHeight;
+    //       delete value.display;
+    //       delete value.letterSpacing;
+    //       data.columns = data.columns.map((item) => {
+    //         item.headStyle = { ...value };
+    //         return item;
+    //       });
+    //       data.headStyle = value;
+    //     }
+    //   }
+    // },
+    // {
+    //   title: '内容样式',
+    //   type: 'Style',
+    //   options: {
+    //     plugins: ['bgColor', 'Font'],
+    //     fontProps: {
+    //       fontFamily: false,
+    //       lineHeight: false
+    //     }
+    //   },
+    //   value: {
+    //     get({ data, id }: EditorResult<Data>) {
+    //       return data.contentStyle || { ...DefaultContentStyle };
+    //     },
+    //     set({ data, id }: EditorResult<Data>, value) {
+    //       delete value.lineHeight;
+    //       delete value.display;
+    //       delete value.letterSpacing;
+    //       data.columns = data.columns.map((item) => {
+    //         item.contentStyle = { ...value };
+    //         return item;
+    //       });
+    //       data.contentStyle = value;
+    //     }
+    //   }
+    // }
   ]
 };
 

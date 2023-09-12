@@ -1,40 +1,43 @@
 /** @format */
 
-import { Data, Status } from './runtime'
+import { Data, Status } from './runtime';
 
 interface Result {
-  data: Data
-  focusArea: any
-  output: any
-  input: any
-  slot: any
+  data: Data;
+  focusArea: any;
+  output: any;
+  input: any;
+  slot: any;
 }
 
 export default {
+  '@resize': {
+    options: ['width']
+  },
   ':root': [
     {
       title: '标题',
       type: 'Text',
       value: {
         get({ data }: Result) {
-          return data.title
+          return data.title;
         },
         set({ data }: Result, value: string) {
-          data.title = value
-        },
-      },
+          data.title = value;
+        }
+      }
     },
     {
       title: '副标题',
       type: 'Text',
       value: {
         get({ data }: Result) {
-          return data.subTitle
+          return data.subTitle;
         },
         set({ data }: Result, value: string) {
-          data.subTitle = value
-        },
-      },
+          data.subTitle = value;
+        }
+      }
     },
     {
       title: '状态',
@@ -43,16 +46,16 @@ export default {
         { label: '成功', value: 'success' },
         { label: '错误', value: 'error' },
         { label: '信息', value: 'info' },
-        { label: '警告', value: 'warning' },
+        { label: '警告', value: 'warning' }
       ],
       value: {
         get({ data }: Result) {
-          return data.status
+          return data.status;
         },
         set({ data }: Result, value: Status) {
-          data.status = value
-        },
-      },
-    },
-  ],
-}
+          data.status = value;
+        }
+      }
+    }
+  ]
+};

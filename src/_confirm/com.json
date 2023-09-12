@@ -1,7 +1,7 @@
 {
   "title": "确认提示",
   "namespace": "mybricks.normal-pc.tips",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "rtType": "js",
   "description": "确认提示对话框",
   "author": "MyBricks",
@@ -15,6 +15,7 @@
     {
       "id": "open",
       "title": "弹出",
+      "rels": ["ok", "cancel"],
       "schema": {
         "type": "object",
         "properties": {

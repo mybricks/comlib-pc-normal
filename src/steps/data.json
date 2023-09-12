@@ -3,7 +3,8 @@
     "size": "default",
     "type": "default",
     "direction": "horizontal",
-    "showDesc": true
+    "showDesc": true,
+    "useCustomDesc": false
   },
   "stepAry": [
     {

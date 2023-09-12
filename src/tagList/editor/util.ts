@@ -1,18 +1,49 @@
 import { uuid, arrayMove } from '../../utils';
+import { Tag, Data } from '../types';
 
-export const getTagItem = (data, focusArea) => {
-  const { index } = focusArea;
-  return data.tags[index];
+const getTagItem = (data, focusArea): [Tag, number] => {
+  const { index } = focusArea.dataset;
+  return [data.tags[index], Number(index)];
 };
 
-export const createTag = () => {
+const getTagIndex = ({ focusArea }): number => {
+  const { index } = focusArea.dataset;
+  return Number(index);
+};
+
+const createTag = (content = '新标签') => {
   return {
     key: uuid(),
-    content: '新标签',
-    color: '#52c41a',
-    textColor: '#fff',
-    borderColor: '#52c41a'
+    content,
+    color: 'default'
   };
 };
 
-export { arrayMove };
+const createStyleForDefault = ({ target }: StyleModeType<Data>) => ({
+  title: '默认',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  target
+});
+
+const createStyleForCheckableHover = ({ target }: StyleModeType<Data>) => ({
+  title: '可选择',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  target
+});
+
+const createStyleForChecked = ({ target }: StyleModeType<Data>) => ({
+  title: '可选择',
+  options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+  target
+});
+
+export {
+  getTagItem,
+  getTagIndex,
+  createTag,
+  arrayMove,
+  uuid,
+  createStyleForDefault,
+  createStyleForCheckableHover,
+  createStyleForChecked
+};

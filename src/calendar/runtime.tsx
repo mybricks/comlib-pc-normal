@@ -5,6 +5,7 @@ import { Badge, Calendar } from 'antd';
 import { CalendarMode } from 'antd/lib/calendar/generateCalendar';
 import { Data, OutputIds, SlotIds, InputIds, ModeEnum } from './constants';
 import css from './style.less';
+import { checkIfMobile } from '../utils';
 
 // 格式化日期
 const formatDate = (date?: moment.Moment, format?: string) => {
@@ -28,8 +29,10 @@ export default (props: RuntimeParams<Data>) => {
   const [dataSource, setDataSource] = useState<object>({});
   // 当前日期
   const [currDate, setCurrDate] = useState<moment.Moment>();
+  // 编辑态是否渲染作用域
+  let showOneSlot = env.edit && true;
   const HeadSlotRef = useRef<any>({});
-
+  const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.edit) {
       const nowDate = formatDate();
@@ -140,11 +143,26 @@ export default (props: RuntimeParams<Data>) => {
     const ds = dataSource[formatDate(date, isMonth ? 'YYYY-MM' : 'YYYY-MM-DD')] || [];
     // 日期单元格插槽渲染
     if (!isMonth && useCustomDateCell && slots[SlotIds.DateCell]) {
+      if (env.edit) {
+        if (showOneSlot === true) {
+          showOneSlot = false;
+          return slots[SlotIds.DateCell].render({
+            inputValues: {
+              [InputIds.CurrentDate]: formatDate(date),
+              [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]
+            },
+            key: formatDate(date)
+          });
+        } else {
+          return <div style={{ color: '#ddd' }}>自定义内容</div>;
+        }
+      }
       return slots[SlotIds.DateCell].render({
         inputValues: {
           [InputIds.CurrentDate]: formatDate(date),
           [InputIds.CurrentDs]: Array.isArray(ds) ? ds : [ds]
-        }
+        },
+        key: formatDate(date)
       });
     }
     return (Array.isArray(ds) ? ds : [ds]).map(CellRender);
@@ -179,6 +197,7 @@ export default (props: RuntimeParams<Data>) => {
   return (
     <Calendar
       mode={data.mode}
+      fullscreen={!isMobile}
       className={classnames(
         css.calendar,
         !useModeSwitch && css.hideModeSwitch,

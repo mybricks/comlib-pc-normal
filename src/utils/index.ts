@@ -48,6 +48,10 @@ function unitConversion(value: string) {
     return value
   } else if (/^(?:calc)/.test(value)) {
     return value
+  } else if (/^\d+(?:vh)$/.test(value)) {
+    return parseInt(value, 10) + 'vh'
+  } else if (/^\d+(?:vw)$/.test(value)) {
+    return parseInt(value, 10) + 'vw'
   } else {
     return /^\d+(?:px)?$/.test(value) ? parseInt(value, 10) + 'px' : void 0
   }
@@ -120,9 +124,27 @@ export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[
   if (fromIndex < 0) throw Error('parameter fromIndex must be greater than 0')
   if (toIndex >= array.length) throw Error(`parameter toIndex must be less than ${array.length}`)
   if (!array.length) return array
-  const copy = array.slice()
-  const temp = copy[toIndex]
-  copy[toIndex] = copy[fromIndex]
-  copy[fromIndex] = temp
-  return copy
+  const item = array.splice(fromIndex, 1)[0]
+  array.splice(toIndex, 0, item)
+  return array
+}
+
+export const isEmptyObject = (obj: any) => {
+  return !Object.keys(obj ?? {}).length;
+}
+
+export const checkIfMobile = (env) => {
+  return env?.canvas?.type === 'mobile'
+}
+
+export const differObject = (obj, baseObj) => {
+  const difference = {};
+  Object.keys(obj).map(key => {
+    const value1 = obj[key];
+    const value2 = baseObj[key];
+    if (value1 !== value2) {
+      difference[key] = value1;
+    }
+  });
+  return difference;
 }

@@ -4,6 +4,8 @@
     "请选择结束时间"
   ],
   "rules": [],
+  "format": "timeStamp",
+  "customFormat": "HH:mm:ss",
   "outFormat": "array",
   "splitChar": "-"
 }

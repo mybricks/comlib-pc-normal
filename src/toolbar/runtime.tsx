@@ -5,8 +5,10 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import { InputIds, OutputIds } from './constants';
 import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
+import { checkIfMobile } from '../utils';
 
 export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
+  const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
@@ -38,11 +40,21 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     }
   }, []);
 
-  const hasPermission = (key) => {
-    if (env.runtime && key && !env?.hasPermission({ key })) {
-      return false;
-    }
-    return true;
+  /**
+   * 获取没有权限时组件要做的操作
+   * 返回值如下：
+   *  1. hide: 隐藏
+   *  2. disable: 禁用
+   *  3. none: 什么都不用做
+   * @param id 权限ID
+   * @returns 没有权限时需要做的事情吗，如果有权限返回 none
+   */
+  const getWhatToDoWithoutPermission = (id?: string): 'none' | 'hide' | 'disable' => {
+    const permission = !(env.runtime && id && !env?.hasPermission(id));
+    if (permission) return 'none';
+
+    // TODO: 等后续「无权限时」字段开放后，将返回值按类型返回
+    return 'hide';
   };
 
   //如果data.dataType是'external'的
@@ -131,8 +143,13 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     const menu = (
       <Menu>
         {btnList.map((item) => {
+          const todo = getWhatToDoWithoutPermission(item.permission?.id);
           return (
-            <Menu.Item key={item.key} disabled={item.disabled} onClick={() => onClick(item)}>
+            <Menu.Item
+              key={item.key}
+              disabled={todo === 'disable' ? true : item.disabled}
+              onClick={() => onClick(item)}
+            >
               {renderTextAndIcon(item)}
             </Menu.Item>
           );
@@ -152,18 +169,21 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
       return null;
     }
     return btnList.map((item) => {
-      if (!hasPermission(item.permissionKey) || item.hidden) return;
-      const { type, size, shape, disabled, isCustom, loading } = item;
+      const todo = getWhatToDoWithoutPermission(item.permission?.id);
+      if (item.hidden || todo === 'hide') return;
+      const { type, danger, size, shape, disabled, isCustom, loading } = item;
       return (
         <div key={item.key} data-btn-idx={item.key} className={css.button}>
           <Button
             type={type as any}
+            danger={danger}
             size={size}
             shape={shape}
-            disabled={disabled}
+            disabled={todo === 'disable' ? true : disabled}
             onClick={() => onClick(item)}
             onDoubleClick={() => onDoubleClick(item)}
             loading={loading}
+            block={true}
           >
             {renderBtnContext(item)}
           </Button>
@@ -173,23 +193,28 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
   };
 
   const normalBtnList = (data.btnList || [])
-    .filter((item) => !(!hasPermission(item.permissionKey) || item.hidden))
+    .filter(
+      (item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide' || item.hidden)
+    )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx < data.maxShowNumber : true
     );
 
   const ellipsisBtnList = (data.btnList || [])
-    .filter((item) => !(!hasPermission(item.permissionKey) || item.hidden))
+    .filter(
+      (item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide' || item.hidden)
+    )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx >= data.maxShowNumber : false
     );
 
   return (
     <div
-      className={css.toolbar}
+      className={`${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
       style={{
         justifyContent: data.layout,
-        gap: `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`
+        gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
+        height: '100%'
       }}
     >
       {(data.btnList || []).length > 0 || env.runtime ? (

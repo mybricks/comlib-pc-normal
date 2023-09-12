@@ -1,5 +1,8 @@
 {
+  "layoutType": "Form",
+  "span": 8,
   "items": [],
+  "additionalItems": [],
   "nameCount": 0,
   "formItemColumn": 1,
   "actions": {
@@ -20,14 +23,20 @@
         "isDefault": true,
         "visible": true,
         "outputId": "onClickSubmit",
-        "key": "submit"
+        "key": "submit",
+        "useDynamicDisabled": false,
+        "useDynamicHidden": false,
+        "disabled": false
       },
       {
         "title": "取消",
         "isDefault": false,
         "visible": true,
         "outputId": "onClickCancel",
-        "key": "cancel"
+        "key": "cancel",
+        "useDynamicDisabled": false,
+        "useDynamicHidden": false,
+        "disabled": false
       }
     ]
   },
@@ -45,5 +54,11 @@
     "labelWrap": false,
     "labelAlign": "right",
     "disabled": false
-  }
+  },
+  "domainModel": {
+    "entity": {},
+    "type": "",
+    "queryFieldRules": {}
+  },
+  "defaultCollapsed": true
 }

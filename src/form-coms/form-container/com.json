@@ -3,28 +3,19 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.2.13",
+  "version": "1.4.5",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors/index.ts",
+  "editors": "./editors/index.tsx",
   "upgrade": "./upgrade.ts",
   "ai": "./ai.ts",
   "target": {
     "toReact": "./toReact.ts"
   },
   "inputs": [
-    {
-      "id": "setFieldsValue",
-      "title": "设置表单数据（触发值变化）",
-      "schema": {
-        "type": "object",
-        "properties": {}
-      },
-      "desc": "给表单设置初始数据且触发表单项值变化输出"
-    },
     {
       "id": "setInitialValues",
       "title": "设置表单数据",
@@ -35,10 +26,20 @@
       "desc": "给表单设置初始数据"
     },
     {
+      "id": "setFieldsValue",
+      "title": "设置表单数据（触发值变化）",
+      "schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "desc": "给表单设置初始数据且触发表单项值变化输出"
+    },
+    {
       "id": "submit",
       "title": "提交表单",
       "rels": [
-        "onFinish"
+        "onFinish",
+        "onSubmitError"
       ],
       "schema": {
         "type": "any"
@@ -60,7 +61,8 @@
       "id": "submitAndMerge",
       "title": "提交表单(合并输入项)",
       "rels": [
-        "onMergeFinish"
+        "onMergeFinish",
+        "onSubmitError"
       ],
       "schema": {
         "type": "object"
@@ -79,6 +81,22 @@
       "desc": "触发表单所有字段进行重置"
     },
     {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "禁用表单项及操作项"
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      },
+      "desc": "启用表单项及操作项"
+    },
+    {
       "id": "setFormItemsProps",
       "title": "设置表单项配置",
       "schema": {
@@ -95,6 +113,23 @@
       "schema": {
         "type": "object",
         "properties": {}
+      }
+    },
+    {
+      "id": "onSubmitError",
+      "title": "校验失败输出",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "字段名",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验信息",
+            "type": "string"
+          }
+        }
       }
     },
     {
@@ -202,7 +237,10 @@
     {
       "id": "content",
       "title": "表单容器",
-      "schema": "mybricks.normal-pc.form-container/form-item",
+      "schema": [
+        "mybricks.normal-pc.form-container/form-item",
+        "mybricks.normal-pc.form-container/form-addition-container"
+      ],
       "type": "scope",
       "inputs": [
         {
@@ -249,7 +287,7 @@
     }
   ],
   "schema": [
-    "mybricks.normal-pc.form-container/form-item",
+    "mybricks.domain-pc.crud/query",
     "*"
   ]
 }

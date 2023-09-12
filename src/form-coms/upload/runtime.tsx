@@ -37,6 +37,7 @@ export interface Data {
   isShowUploadList: boolean;
   isCustom: boolean;
   imageSize: number[];
+  customUpload: boolean;
 }
 
 interface Window {
@@ -181,12 +182,27 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   };
   // 文件上传输出
   const onCustomRequest = (fileList: UploadFile[]) => {
-    const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append(fileKey, file);
-    });
-    fileListRef.current = onFormatFileList(fileList);
-    outputs.upload(formData);
+    if (!data.customUpload) {
+      if (typeof env.uploadFile !== 'function') {
+        message.error(`应用的env中没有uploadFile方法`);
+        return;
+      }
+      env
+        .uploadFile(fileList)
+        .then((res) => {
+          onUploadComplete(res);
+        })
+        .catch(() => {
+          setFileList([]);
+        });
+    } else {
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        formData.append(fileKey, file);
+      });
+      fileListRef.current = onFormatFileList(fileList);
+      outputs.upload(formData);
+    }
   };
 
   //上传图片尺寸限制
@@ -260,6 +276,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   const onRemove = (file) => {
     if (!data.config.useCustomRemove) {
+      fileListRef.current = fileList.filter(({ uid }) => file.uid !== uid);
       setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
       return true;
     }
@@ -411,8 +428,10 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         beforeUpload={beforeUpload}
         onRemove={onRemove}
         onPreview={(file: UploadFile) => {
-          if (usePreview) {
+          if (usePreview && !/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
             onpenImgPreview(file.url);
+          } else {
+            window.open(file.url);
           }
         }}
         disabled={condition ? true : disabled}

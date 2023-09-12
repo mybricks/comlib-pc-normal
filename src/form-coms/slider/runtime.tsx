@@ -99,7 +99,9 @@ export default function Runtime({
     onChange: changeValue,
     onAfterChange,
     tipFormatter: formatter,
-    disabled: data.config.disabled
+    disabled: data.config.disabled,
+    min: data.config.min,
+    max: data.config.max
   };
   const inputNumberProps: InputNumberProps = {
     value: data.singleValue,
@@ -114,13 +116,18 @@ export default function Runtime({
   };
 
   return data.config.range ? (
-    <Slider {...commonProps} range={data.config.range || true} value={data.rangeValue} />
+    <Slider
+      {...commonProps}
+      className={css.antSliderHorizontal}
+      range={data.config.range || true}
+      value={data.rangeValue}
+    />
   ) : !data.useInput ? (
-    <Slider {...commonProps} value={data.singleValue} />
+    <Slider {...commonProps} className={css.antSliderHorizontal} value={data.singleValue} />
   ) : (
     <Row>
       <Col span={data.sliderSpan}>
-        <Slider {...commonProps} value={data.singleValue} />
+        <Slider {...commonProps} className={css.antSliderHorizontal} value={data.singleValue} />
       </Col>
       <Col className={css.inputCol} span={data.inputSpan}>
         <InputNumber {...inputNumberProps} />

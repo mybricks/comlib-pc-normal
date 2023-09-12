@@ -1,21 +1,18 @@
-import { Switch } from 'antd';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Switch, SwitchProps } from 'antd';
+import React, { useCallback } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { StatusEnum } from './const';
 
 export interface Data {
   value: boolean | undefined;
   rules: any[];
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    addonBefore: string;
-    addonAfter: string;
-    showCount: boolean;
-    maxLength?: number;
-    checked: boolean;
+  textMap: {
+    [StatusEnum.check]: string;
+    [StatusEnum.unCheck]: string;
   };
+  config: SwitchProps;
 }
 
 export default function ({
@@ -71,16 +68,19 @@ export default function ({
   });
 
   const changeValue = useCallback((checked) => {
+    if (env.edit) return;
     data.config.checked = checked;
     onChangeForFc(parentSlot, { id: id, value: checked, name: name });
     outputs['onChange'](checked);
   }, []);
 
   return (
-    <Switch
-      {...data.config}
-      onChange={changeValue}
-      // onBlur={onBlur}
-    />
+    <div>
+      <Switch
+        {...data.config}
+        onChange={changeValue}
+        // onBlur={onBlur}
+      />
+    </div>
   );
 }

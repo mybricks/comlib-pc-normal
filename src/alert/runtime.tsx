@@ -1,12 +1,25 @@
 import React, { useEffect, ReactNode } from 'react';
 import { Alert } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  ExclamationCircleOutlined
+} from '@ant-design/icons';
 import * as Icons from '@ant-design/icons';
 import { Data, InputIds, SlotIds } from './constants';
 import css from './runtime.less';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, inputs, data, logger, slots, style } = props;
+
+  let iconMap = {
+    info: <InfoCircleOutlined />,
+    success: <CheckCircleOutlined />,
+    error: <CloseCircleOutlined />,
+    warning: <ExclamationCircleOutlined />
+  };
 
   useEffect(() => {
     if (env.runtime) {
@@ -32,7 +45,17 @@ export default function (props: RuntimeParams<Data>) {
   //选择图标样式
   const chooseIcon = ({ icon }: { icon: ReactNode }) => {
     const Icon = Icons && Icons[icon as string]?.render();
-    return <>{Icon}</>;
+    return (
+      <div
+        style={{
+          //fontSize: data.size,
+          marginRight: '0px',
+          marginTop: '0px'
+        }}
+      >
+        {data.isChoose ? Icon : iconMap[data.type]}
+      </div>
+    );
   };
 
   //改变选择图标的颜色
@@ -50,11 +73,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const description = (
     <>
-      <div
-        style={{
-          color: data.showInfo && data.isColor ? data.textColor : '#434343'
-        }}
-      >
+      <div>
         {data.showInfo && env.i18n(decodeURIComponent(data.content))}
         {data.useContentSlot && slots[SlotIds.DescSlot].render()}
       </div>
@@ -76,16 +95,9 @@ export default function (props: RuntimeParams<Data>) {
         type={data.type}
         showIcon={data.showIcon}
         //void 0表示去除掉该配置项
-        icon={
-          data.isChoose && data.showIcon
-            ? chooseIcon({ icon: data.icon })
-            : void 0
-        }
+        icon={chooseIcon({ icon: data.icon })}
         action={
-          <span
-            style={{ display: data.closable ? '' : 'none' }}
-            onClick={onClose}
-          >
+          <span style={{ display: data.closable ? '' : 'none' }} onClick={onClose}>
             <CloseOutlined />
           </span>
         }

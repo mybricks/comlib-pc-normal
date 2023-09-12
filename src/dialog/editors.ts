@@ -1,5 +1,5 @@
 import { isEmptyString, uuid } from '../utils';
-import { FOOTER_CONTENT_TYPE, Data, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
+import { FOOTER_CONTENT_TYPE, Data, DialogButtonProps, Location, SlotIds, InputIds, SlotInputIds, DefaultEvent, AlignEnum, OutputIds } from './constants';
 
 const defaultSchema = { type: 'any' };
 
@@ -34,12 +34,14 @@ function addBtn({ data, input, output, slot }: { data: Data, input: any, output:
     type: 'any'
   };
 
-  const defaultBtn: any = {
+  const defaultBtn: DialogButtonProps = {
     id,
     title,
     icon: '',
     dynamicHidden: true,
     dynamicDisabled: true,
+    visible: true,
+    autoClose: true,
     useIcon: false,
     showText: true,
     type: 'default',
@@ -92,7 +94,7 @@ function get(
   data: Data,
   focusArea: any,
   dataset: string,
-  val = 'obj',
+  val: keyof DialogButtonProps | 'obj',
   cb?: any
 ) {
   if (!focusArea) return;
@@ -109,7 +111,7 @@ function get(
 export default {
   '@inputUpdated'({ data, input, output, slots }, pin) {//id pin's id
     if (!data.isNew && pin.id === InputIds.Open) {
-      console.log('inputUpdated', pin)
+      // console.log('inputUpdated', pin)
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(pin.schema);
     }
   },
@@ -121,7 +123,7 @@ export default {
     output.get(pin.id)?.setSchema(pin.schema);
   },
   '@slotOutputUpdated'({ data, input, slots, output }, slotId, pin) {
-    console.log('slotOutputUpdated', slotId, pin)
+    // console.log('slotOutputUpdated', slotId, pin)
     if (data.isNew
       && slotId === SlotIds.Container
       && pin.id === SlotInputIds.DataSource) {
@@ -138,10 +140,10 @@ export default {
     output.get(toPin.id)?.setSchema(fromPin.schema);
   },
   '@slotOuputConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotOuputConnected', fromPin, toPin)
+    // console.log('slotOuputConnected', fromPin, toPin)
   },
   '@slotOuputDisConnected'({ data, slots, input, output }, fromPin, slotId, toPin) {
-    console.log('slotOuputDisConnected', fromPin, slotId, toPin)
+    // console.log('slotOuputDisConnected', fromPin, slotId, toPin)
     if (data.isNew
       && slotId === SlotIds.Container
       && fromPin.id === SlotInputIds.DataSource) {
@@ -158,7 +160,7 @@ export default {
     output.get(toPin.id)?.setSchema(defaultSchema);
   },
   '@inputDisConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputDisConnected')
+    // console.log('inputDisConnected')
     if (!data.isNew && toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
@@ -167,7 +169,7 @@ export default {
   //   console.log('outputConnected', 'toPin', fromPin, toPin);
   // },
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
-    console.log('inputConnected', fromPin, toPin)
+    // console.log('inputConnected', fromPin, toPin)
     if (!data.isNew && toPin.id === InputIds.Open) {
       slots.get(SlotIds.Container)?.inputs.get(SlotInputIds.DataSource)?.setSchema(defaultSchema);
     }
@@ -442,6 +444,20 @@ export default {
         {
           title: '事件',
           items: [
+            {
+              title: '点击自动关闭对话框',
+              description: '开启时, 单击按钮会自动关闭对话框。特殊处理：当需要向外输出数据时, 对话框在数据输出后关闭。',
+              type: 'switch',
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  return get(data, focusArea, 'btnId', 'autoClose');
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                  const res = get(data, focusArea, 'btnId', 'obj');
+                  res.autoClose = value;
+                }
+              }
+            },
             {
               title: '单击',
               type: '_Event',
