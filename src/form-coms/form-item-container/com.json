@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-item-container",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "自定义表单项的容器，支持拖入其他任意组件搭建组合表单项",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_w362ze.31720498c703e91b.png",
@@ -54,6 +54,20 @@
       "id": "resetValue",
       "title": "重置值",
       "desc": "清空表单项的值",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
       "schema": {
         "type": "any"
       }
@@ -108,6 +122,20 @@
         {
           "id": "curValue",
           "title": "当前项数据",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "onEnabled",
+          "title": "启用时",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "onDisabled",
+          "title": "禁用时",
           "schema": {
             "type": "any"
           }
