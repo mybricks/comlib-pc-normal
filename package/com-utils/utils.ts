@@ -95,7 +95,7 @@ const transformCodeByBabel = (val: string, props?: Props) => {
   return res;
 };
 
-const _matchAll = () => {
+const polyfill = () => {
   if (!String.prototype.matchAll) {
     String.prototype.matchAll = function (regexp: RegExp) {
       const matches = [];
@@ -117,5 +117,5 @@ export default {
   getCookies,
   getParams,
   transformCodeByBabel,
-  _matchAll
+  polyfill
 };
