@@ -1,6 +1,7 @@
 import { RuleKeys, defaultRules } from '../utils/validator';
-import { InputIds } from '../types';
+import { InputIds, OutputIds } from '../types';
 import { SlotIds, SlotInputIds } from './constants';
+import { Data } from './types';
 
 export default {
   '@resize': {
@@ -10,9 +11,19 @@ export default {
     style.width = '100%';
   },
   // '@inputUpdated'({ data, input, output, slots }: EditorResult<any>, updatePin) {
-  //   if (updatePin.id === InputIds.SetValue) {
-  //     console.log(updatePin.schema, 'inputUpdated')
+  //   if (updatePin.id === InputIds.SetInitialValue) {
   //     slots.get(SlotIds.FormItem).inputs.get(SlotInputIds.CurValue).setSchema(updatePin.schema);
+  //     output.get(OutputIds.OnInitial).setSchema(updatePin.schema);
+  //     if (output.get(OutputIds.OnChange).schema?.type === 'any') {
+  //       output.get(OutputIds.OnChange).setSchema(updatePin.schema);
+  //     }
+  //   }
+  //   if (updatePin.id === InputIds.SetValue) {
+  //     slots.get(SlotIds.FormItem).inputs.get(SlotInputIds.CurValue).setSchema(updatePin.schema);
+  //     output.get(OutputIds.OnChange).setSchema(updatePin.schema);
+  //     if (output.get(OutputIds.OnInitial).schema?.type === 'any') {
+  //       output.get(OutputIds.OnInitial).setSchema(updatePin.schema);
+  //     }
   //   }
   // },
   // '@inputDisConnected'({ data, output, input, slots }: EditorResult<any>, formPin, toPin) {
@@ -25,6 +36,25 @@ export default {
     catalog[0].title = '常规';
 
     catalog[0].items = [
+      {
+        title: '值数据类型',
+        type: '_schema',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.valueSchema || { type: 'any' };
+          },
+          set({ data, input, output, slot }: EditorResult<Data>, value: object) {
+            data.valueSchema = value;
+
+            input.get(InputIds.SetInitialValue).setSchema(value);
+            input.get(InputIds.SetValue).setSchema(value);
+            output.get(OutputIds.OnInitial).setSchema(value);
+            output.get(OutputIds.OnChange).setSchema(value);
+            output.get(OutputIds.ReturnValue).setSchema(value);
+            slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.CurValue).setSchema(value);
+          }
+        }
+      },
       {
         title: '校验规则',
         description: '提供快捷校验配置',
