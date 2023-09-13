@@ -1,3 +1,5 @@
+import utils from './utils';
+const { _matchAll } = utils;
 type Options = Partial<{
   prefix: string;
   context: Record<string, any>;
@@ -6,6 +8,7 @@ type Options = Partial<{
 export default class Sandbox {
   private options: Options = {};
   constructor(options: Options) {
+    _matchAll()
     this.options = options;
   }
   private unscopeCompileCode(prefix: string = 'context', expression: string) {
