@@ -6,6 +6,7 @@
   "nameCount": 0,
   "formItemColumn": 4,
   "fields": [],
+  "listItemMargin": [],
   "MaxKey": -1,
   "slotStyle": {
     "display": "flex",

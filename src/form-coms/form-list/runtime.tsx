@@ -202,7 +202,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           <div
             key={field.key}
             style={{
-              margin: data.listItemMargin.map((i) => i + 'px').join(' ')
+              margin: data.listItemMargin?.map((i) => i + 'px').join(' ')
             }}
           >
             <SlotContent {...props} childrenStore={childrenStore} actions={actions} field={field} />
