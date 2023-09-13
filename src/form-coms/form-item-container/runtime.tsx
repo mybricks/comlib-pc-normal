@@ -4,14 +4,7 @@ import { InputIds, OutputIds } from '../types';
 import { validateFormItem } from '../utils/validator';
 import { SlotIds } from './constants';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-
-interface Data {
-  value: string | undefined;
-  rules: any[];
-  disabled: boolean;
-  childrenInputs: Record<string, any>;
-  config: {};
-}
+import { Data } from './types';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, name, style } =
