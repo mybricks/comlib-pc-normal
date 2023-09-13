@@ -40,12 +40,12 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
     const onEnabled = formItemSlot.inputs.get('onEnabled');
     const onDisabled = formItemSlot.inputs.get('onDisabled');
     if (!onEnabled) {
-        formItemSlot.inputs.add('onEnabled', '设置启用时', {
+        formItemSlot.inputs.add('onEnabled', '启用时', {
             type: 'any'
         });
     }
     if (!onDisabled) {
-        formItemSlot.inputs.add('onDisabled', '设置禁用时', {
+        formItemSlot.inputs.add('onDisabled', '禁用时', {
             type: 'any'
         });
     }
