@@ -95,6 +95,19 @@ const transformCodeByBabel = (val: string, props?: Props) => {
   return res;
 };
 
+const polyfill = () => {
+  if (!String.prototype.matchAll) {
+    String.prototype.matchAll = function (regexp: RegExp) {
+      const matches = [];
+      let match: any;
+      while ((match = regexp.exec(this)) != null) {
+        matches.push(match);
+      }
+      return matches;
+    };
+  }
+};
+
 export default {
   isEmailPrefix,
   isCommaNumber,
@@ -103,5 +116,6 @@ export default {
   isUrl,
   getCookies,
   getParams,
-  transformCodeByBabel
+  transformCodeByBabel,
+  polyfill
 };
