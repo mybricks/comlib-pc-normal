@@ -192,6 +192,7 @@ export default function Runtime({
     <div className={css.select}>
       <TreeSelect
         treeIcon
+        disabled={data.config.disabled}
         showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : data.config.treeDefaultExpandAll}
