@@ -15,11 +15,11 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
 
   /** 2. 支持标题样式配置 */
   if (data.showLabel === undefined) {
-    data.showLabel = false;
-    data.labelWidth = 25;
+    data.showLabel = data.items.some(item => item.hiddenLabel === false);
+    data.labelWidth = 98;
     data.items.forEach(item => {
       if (item.showLabel === undefined) {
-        if (item.hiddenLabel !== false) {
+        if (item.hiddenLabel === true) {
           item.showLabel = 'default';
         } else {
           item.showLabel = true;
