@@ -15,13 +15,15 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
 
   /** 2. 支持标题样式配置 */
   if (data.showLabel === undefined) {
-    data.showLabel = false;
-    data.labelWidth = 25;
+    data.showLabel = data.items.some(item => item.hiddenLabel === false);
+    data.labelWidth = 98;
     data.items.forEach(item => {
-      if (item.hiddenLabel === true) {
-        item.showLabel = 'default';
-      } else {
-        item.showLabel = true;
+      if (item.showLabel === undefined) {
+        if (item.hiddenLabel === true) {
+          item.showLabel = 'default';
+        } else {
+          item.showLabel = true;
+        }
       }
     });
   }
@@ -38,6 +40,14 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
     }
     if (btn.size === undefined) {
       btn.size = SizeEnum.Middle;
+    }
+    if (['add', 'remove'].includes(btn.key) && !btn.displayExpression) {
+      if (btn.key === 'add') {
+        btn.displayExpression = '{item.isLast}';
+      }
+      if (btn.key === 'remove') {
+        btn.displayExpression = '{item.listLength !== 0}';
+      }
     }
   });
 
