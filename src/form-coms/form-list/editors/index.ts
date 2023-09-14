@@ -52,12 +52,22 @@ const getSuggestions = (data: Data) => {
       properties: [
         {
           label: 'index',
-          insertText: `{index}`,
+          insertText: `index`,
           detail: `当前项的索引`
         },
         {
+          label: 'isLast',
+          insertText: `isLast`,
+          detail: `当前是否是最后一项`
+        },
+        {
+          label: 'listLength',
+          insertText: `listLength`,
+          detail: `动态表单项长度`
+        },
+        {
           label: 'key',
-          insertText: `{key}`,
+          insertText: `key`,
           detail: `当前项的唯一标识`
         },
         {

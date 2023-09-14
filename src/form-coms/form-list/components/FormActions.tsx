@@ -54,12 +54,13 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
  * @param field 当前项数据
  * @param onError 错误回调函数
  */
-const getDynamicDisplay = (btn: Action, field, onError?): boolean => {
+const getDynamicDisplay = (btn: Action, field, extralParams, onError?): boolean => {
   let dynamicDisplay = true;
 
   if (btn.displayExpression) {
     const context = {
-      ...field
+      ...field,
+      ...extralParams
     };
     const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'item' });
     try {
@@ -72,7 +73,7 @@ const getDynamicDisplay = (btn: Action, field, onError?): boolean => {
 };
 
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
-  const { data, env, field, outputs, fieldIndex, hiddenRemoveButton } = props;
+  const { data, env, field, outputs, fieldIndex } = props;
 
   const currentField = {
     index: fieldIndex,
@@ -98,7 +99,10 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
     }
   };
 
-  const notLastField = typeof fieldIndex === 'number' && !(fieldIndex === data.fields.length - 1);
+  const isLast =
+    data.fields?.length === 0 ||
+    (typeof fieldIndex === 'number' && fieldIndex === data.fields.length - 1);
+  const listLength = data.fields.length;
 
   return (
     <Space wrap>
@@ -109,14 +113,13 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           if (item.visible === false) {
             return null;
           }
-          const dynamicDisplay = getDynamicDisplay(item, currentField, props.onError);
+          const dynamicDisplay = getDynamicDisplay(
+            item,
+            currentField,
+            { isLast, listLength },
+            props.onError
+          );
           if (dynamicDisplay === false) {
-            return null;
-          }
-          if (item.key === 'add' && notLastField && data.fields.length !== 0) {
-            return null;
-          }
-          if (item.key === 'remove' && hiddenRemoveButton) {
             return null;
           }
         }
