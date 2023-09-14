@@ -234,6 +234,8 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   // 文件合法校验
   const beforeUpload = useCallback((file: File, fileList: File[]) => {
     const acceptTypesList = fileType || [];
+    // 保证只执行最后一次
+    if (fileList[fileList.length - 1] !== file) return;
     const isNotAccept = fileList.some((file) => {
       let isImage = file.type.slice(0, 5) === 'image';
       let isAcceptFileType = true;

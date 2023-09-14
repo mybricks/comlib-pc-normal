@@ -3,7 +3,7 @@ import { uuid } from '../../../utils';
 import { InputIds, OutputIds } from '../../constants';
 import { ContentTypeEnum, Data } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } from '../../schema';
-import { getColumnItem } from '../../utils';
+import { getColumnItem, getNewColumn } from '../../utils';
 import createDataFormatEditor from '../../../utils/dataFormatter';
 
 const formatCode = encodeURIComponent(`
@@ -133,7 +133,11 @@ const createBaseEditor = ({ data }) => ({
           if (!focusArea) return;
           const column = getColumnItem(data, focusArea);
           if (value === ContentTypeEnum.Group) {
-            column.children = column.children || [];
+            if (!Array.isArray(column.children) || column.children.length === 0) {
+              column.children = [...(column.children || []), getNewColumn(data)];
+            } else {
+              column.children = column.children;
+            }
           }
 
           if (value === ContentTypeEnum.SlotItem) {

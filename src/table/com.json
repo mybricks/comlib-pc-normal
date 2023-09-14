@@ -62,6 +62,13 @@
       "schema": {
         "type": "array"
       }
+    },
+    {
+      "id": "columnsChange",
+      "title": "列结构变化",
+      "schema": {
+        "type": "array"
+      }
     }
   ]
 }

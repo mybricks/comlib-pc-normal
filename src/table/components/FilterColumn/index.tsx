@@ -1,119 +1,162 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tooltip, Dropdown, Menu, Checkbox, Button } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { ControlOutlined, SettingOutlined } from '@ant-design/icons';
+import { Tree } from 'antd';
+import { DefaultRowKey, OutputIds } from '../../constants';
+import style from './index.less';
 
-export default function FilterColumnRender({ data, env }) {
+const getDefaultCheckedKeys = (cloumns) => {
+  return cloumns.map((item) => item._id);
+};
+
+const flatTree = (tree) => {
+  let res = [] as any[];
+
+  if (Array.isArray(tree)) {
+    tree.forEach((item) => {
+      res.push(item);
+      if (item.children) {
+        res.push(...flatTree(item.children));
+      }
+    });
+  }
+  return res;
+};
+const moveEle = (list, item, sourceIndex, targetIndex) => {
+  list.splice(targetIndex, 0, item);
+  list.splice(targetIndex < sourceIndex ? sourceIndex + 1 : sourceIndex, 1);
+};
+
+export default function FilterColumnRender({ data, env, dataSource, outputs }) {
   //表格筛选栏渲染
-  //let [type, setType] = useState(Array(data.columns.length).fill(true)); 这里的useState里的data.columns.length一直为 4
-  //到100列都可以适用
-  let [check, setCheck] = useState(Array(100).fill(true));
-  let [checkAll, setCheckAll] = useState(true);
-  const [indeterminate, setIndeterminate] = useState(false);
+  const [checkedKeys, setCheckedKeys] = useState<string[]>(getDefaultCheckedKeys(data.columns));
+  const rowKey = data.rowKey || DefaultRowKey;
 
-  const onchange = function (i) {
-    return function () {
-      //设置单独每一项check值
-      check[i] = !check[i];
-      data.columns[i].visible = check[i];
-      data.columns = [...data.columns];
-      setCheck(check);
-    };
-  };
+  const treeData = useMemo(() => {
+    return [...data.columns].reduce(
+      (tree, item) => {
+        const newItem = { ...item };
+        // 用_id表示表格原始的key，
+        newItem.key = item._id;
+        if (item.fixed === 'left') {
+          tree[0].children.push(newItem);
+        } else if (item.fixed === 'right') {
+          tree[2].children.push(newItem);
+        } else {
+          tree[1].children.push(newItem);
+        }
+        return tree;
+      },
+      [
+        {
+          title: '固定在左侧',
+          key: 'left',
+          disabled: true,
+          checkable: false,
+          children: []
+        },
+        {
+          title: '不固定',
+          key: 'center',
+          disabled: true,
+          checkable: false,
+          children: []
+        },
+        {
+          title: '固定在右侧',
+          key: 'right',
+          disabled: true,
+          checkable: false,
+          children: []
+        }
+      ]
+    );
+  }, [data.columns]);
 
-  let coloumns = [...data.columns].map((item, index) => {
-    return {
-      ...item,
-      defaultChecked: true,
-      fun: onchange(index),
-      checkFun: check[index]
-    };
-  });
-
-  useEffect(() => {
-    if (env.runtime) {
-      data.columns = coloumns;
+  const checkedAll = useCallback((enable) => {
+    if (enable) {
+      setCheckedKeys(data.columns.map((item) => item._id));
+    } else {
+      setCheckedKeys([]);
     }
   }, []);
 
-  //全选按钮与单个按钮的关系
   useEffect(() => {
-    if (check.includes(false)) {
-      setCheckAll(false);
-    } else {
-      setCheckAll(true);
+    if (data.useColumnSetting) {
+      outputs?.[OutputIds.COLUMNS_CHANGE](data.columns);
     }
-  });
+  }, [data.columns]);
 
-  //全选按钮的chekc变化
-  const func = (e) => {
-    if (check.includes(false)) {
-      setCheckAll(true);
-      setCheck(Array(100).fill(true));
-      setIndeterminate(false);
-      coloumns.map((e) => {
-        e.visible = true;
-      });
-      data.columns = [...coloumns];
-    } else {
-      setCheckAll(false);
-      setCheck(Array(100).fill(false));
-      setIndeterminate(false);
-      coloumns.map((e) => {
-        e.visible = false;
-      });
-      data.columns = [...coloumns];
-    }
-  };
-
-  //全选按钮中的样式控制
   useEffect(() => {
-    let num = 0;
-    for (let i = 0; i < data.columns.length; i++) {
-      if (check[i] === false) {
-        num++;
+    data.columns = data.columns.map((item) => {
+      item.visible = checkedKeys.includes(item._id);
+      return item;
+    });
+  }, [checkedKeys]);
+
+  const changeOrder = useCallback(
+    (props) => {
+      const { dragNode, node } = props;
+
+      // 将节点拍平，方便进行节点的删除和插入操作
+      let treeList = flatTree(treeData);
+      const currentColumn = data.columns.find((item) => item._id === dragNode.key);
+      const position = node.pos;
+      if (position.indexOf('0-0') === 0) {
+        currentColumn.fixed = 'left';
+      } else if (position.indexOf('0-2') === 0) {
+        currentColumn.fixed = 'right';
+      } else {
+        currentColumn.fixed = 'center';
       }
-    }
-    if (check.includes(false) && num < data.columns.length) {
-      setIndeterminate(true);
-    } else {
-      setIndeterminate(false);
-    }
-  });
+
+      // dragNode为当前拖动的节点
+      const currentIndex = treeList.findIndex((item) => item.key === dragNode.key);
+      // node为插入位置的前一个节点
+      const insertRreIndex = treeList.findIndex((item) => item.key === node.key) + 1;
+      moveEle(treeList, dragNode, currentIndex, insertRreIndex);
+      data.columns = treeList
+        .filter((item) => !['left', 'right', 'center'].includes(item.key))
+        .map((node) => data.columns.find((item) => item._id === node.key));
+    },
+    [treeData]
+  );
 
   const menu = () => {
-    const genElements = (values) => {
-      if (!values) {
-        return null;
-      }
-      return values.map((ele) => {
-        return addEle(ele.key, ele.title, ele.defaultChecked, ele.fun, ele.checkFun);
-      });
-    };
-
-    const addEle = (key: any, val: any, defaultChecked: any, fun: any, checkFun: any) => {
-      return (
-        <Menu.Item key={key}>
-          <Checkbox defaultChecked={defaultChecked} onChange={fun} checked={checkFun}>
-            {val}
-          </Checkbox>
-        </Menu.Item>
-      );
-    };
-
     return (
       <Menu>
         <Menu.Item key="checked">
           <Checkbox
             defaultChecked={true}
-            indeterminate={indeterminate}
-            onChange={func}
-            checked={checkAll}
+            indeterminate={checkedKeys.length > 0 && checkedKeys.length < data.columns.length}
+            onChange={(e) => {
+              checkedAll(e.target.checked);
+            }}
+            checked={checkedKeys.length === data.columns.length}
           >
-            列展示
+            展示所有列
           </Checkbox>
         </Menu.Item>
         <Menu.Divider />
-        {genElements(coloumns)}
+        {/* {genElements(coloumns)} */}
+        <Tree
+          checkable
+          draggable
+          rootClassName={style.treeRoot}
+          onDrop={changeOrder}
+          switcherIcon={null}
+          expandedKeys={['right', 'center', 'left']}
+          onCheck={(keys, e) => {
+            const { key } = e.node;
+            if (checkedKeys.includes(key)) {
+              setCheckedKeys(checkedKeys.filter((item) => item !== key));
+            } else {
+              setCheckedKeys([...checkedKeys, key]);
+            }
+          }}
+          checkedKeys={checkedKeys}
+          treeData={treeData}
+        />
       </Menu>
     );
   };

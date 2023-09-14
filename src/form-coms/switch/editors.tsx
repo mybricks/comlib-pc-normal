@@ -7,6 +7,9 @@ export default {
   // '@resize': {
   //   // options: ['width']
   // },
+  '@init'({ style }) {
+    style.width = 'fit-content';
+  },
   ':root': {
     style: [
       {

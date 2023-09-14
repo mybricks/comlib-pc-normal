@@ -633,7 +633,9 @@ export default function (props: RuntimeParams<Data>) {
         <TableHeader
           env={env}
           data={data}
+          dataSource={dataSource}
           slots={slots}
+          outputs={outputs}
           selectedRows={selectedRows}
           selectedRowKeys={selectedRowKeys}
         />
