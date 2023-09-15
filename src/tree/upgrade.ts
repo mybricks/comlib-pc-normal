@@ -2,7 +2,8 @@ import { Data, ValueType } from "./types";
 
 export default function ({
   data,
-  input
+  input,
+  output
 }: UpgradeParams<Data>): boolean {
 
   /**
@@ -104,6 +105,12 @@ export default function ({
     data.iconConfig.defaultSrc = false;
   }
   //=========== v1.0.18 end ===============
+
+  /**
+    * @description v1.0.19 ref: 设置选中项触发事件输出
+    */
+  output.get('click').setTitle('节点选中事件');
+  //=========== v1.0.19 end ===============
 
   return true;
 }
