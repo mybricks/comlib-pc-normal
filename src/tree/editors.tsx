@@ -359,7 +359,7 @@ export default {
           title: '事件',
           items: [
             {
-              title: '节点点击',
+              title: '节点选中',
               type: '_Event',
               options: () => {
                 return {
