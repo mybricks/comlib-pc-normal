@@ -176,12 +176,20 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
         });
 
+      // 设置选中项
       inputs.setSelectedKeys &&
         inputs.setSelectedKeys((keys: Array<string>) => {
           if (!Array.isArray(keys)) {
             return onError('设置选中项参数是数组');
           }
           setSelectedKeys(keys);
+          const selectedValues = outputNodeValues(
+            data.treeData,
+            keys,
+            keyFieldName,
+            data.valueType
+          );
+          outputs[OutputIds.NODE_CLICK](selectedValues);
         });
 
       // 过滤

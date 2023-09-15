@@ -9,7 +9,6 @@ import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data, IconType, Option } from './types';
-import { treeDataInDesign } from './const';
 import css from './runtime.less';
 
 /**遍历树组件 */
@@ -192,6 +191,7 @@ export default function Runtime({
     <div className={css.select}>
       <TreeSelect
         treeIcon
+        {...data.config}
         showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : data.config.treeDefaultExpandAll}
