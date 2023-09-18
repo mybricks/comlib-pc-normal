@@ -142,7 +142,7 @@ export default {
                   return `.{id} div.ant-select-item.ant-select-item-option`
                 }
               },
-              
+
             ]
           }),
           ...createrCatelogEditor({
@@ -291,6 +291,22 @@ export default {
                 }
               }
               refreshSchema({ input, output, data });
+            }
+          }
+        },
+        {
+          title: '标签过多时省略',
+          type: 'switch',
+          description: '开启后，在宽度不够时，自动省略显示选中的标签',
+          ifVisible({ data }: EditorResult<Data>) {
+            return ['multiple', 'tags'].includes(data?.config?.mode || '')
+          },
+          value: {
+            get({ data }) {
+              return data.maxTagCount === 'responsive';
+            },
+            set({ data }, value: boolean) {
+              data.maxTagCount = (value ? 'responsive' : '');
             }
           }
         },

@@ -9,6 +9,7 @@
     "optionFilterProp": "label",
     "showArrow": "true"
   },
+  "maxTagCount": "",
   "staticOptions": [],
   "dropdownSearchOption": false,
   "outputValueType": "value"

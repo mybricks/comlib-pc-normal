@@ -236,6 +236,7 @@ export default function Runtime({
         getPopupContainer={(triggerNode: HTMLElement) =>
           edit || debug ? env?.canvasElement : document.body
         }
+        maxTagCount={data.maxTagCount}
         dropdownClassName={id}
         open={env.design ? true : void 0}
         onSearch={data.config.showSearch ? onSearch : void 0}
