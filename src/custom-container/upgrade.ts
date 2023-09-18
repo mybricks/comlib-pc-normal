@@ -7,7 +7,9 @@ export default function ({
   data,
   slot,
   config,
-  setDeclaredStyle
+  setDeclaredStyle,
+  getDeclaredStyle,
+  removeDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   const styleConfig = config.get('style');
   if (styleConfig) {
@@ -54,5 +56,22 @@ export default function ({
     setDeclaredStyle(`.root${getFilterSelector(id)}`, { overflow: 'unset' });
     delete data.useOverflowUnset;
   }
+
+  const preStyle = getDeclaredStyle(`.root${getFilterSelector(id)}`);
+  const preHoverStyle = getDeclaredStyle(`.root:hover${getFilterSelector(id)}`);
+
+  let css: React.CSSProperties = {}, hoverCss: React.CSSProperties = {};
+  
+  if (preStyle) {
+    css = { ...preStyle.css };
+    removeDeclaredStyle(`.root${getFilterSelector(id)}`);
+    setDeclaredStyle('> .root', css);
+  }
+  if (preHoverStyle) {
+    hoverCss = { ...preHoverStyle.css };
+    removeDeclaredStyle(`.root:hover${getFilterSelector(id)}`);
+    setDeclaredStyle('> .root:hover', hoverCss);
+  }
+
   return true;
 }
