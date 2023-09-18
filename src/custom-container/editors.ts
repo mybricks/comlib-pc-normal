@@ -75,13 +75,13 @@ export default {
             title: '默认',
             catelog: "默认",
             options: ['padding', 'border', 'background', 'overflow'],
-            target: ({ id }: EditorResult<Data>) => `.root${getFilterSelector(id)}`
+            target: ({ id }: EditorResult<Data>) => `> .root`
           },
           {
             title: 'Hover',
             catelog: "Hover",
             options: ['padding', 'border', 'background'],
-            target: ({ id }: EditorResult<Data>) => `.root:hover${getFilterSelector(id)}`,
+            target: ({ id }: EditorResult<Data>) => `> .root:hover`,
             domTarget: '.root'
           }
         ]
