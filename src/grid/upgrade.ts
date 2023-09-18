@@ -22,9 +22,8 @@ export default function ({
       row.backgroundColor = '';
     }
     columns.forEach((col, colIndex) => {
-      const selector = `.root > .ant-row:nth-child(${rowIndex + 1}) > .ant-col:nth-child(${
-        colIndex + 1
-      })${getFilterSelector(id)}`;
+      const coordinate = `${row.key},${col.key}`
+      const selector = `.root > .ant-row > div[data-col-coordinate="${coordinate}"]${getFilterSelector(id)}`;
       const { backgroundColor, ...colStyle } = col.colStyle || {};
       const dataStyle = {
         ...data.globalColStyle,

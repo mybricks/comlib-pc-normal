@@ -81,6 +81,8 @@ interface UpgradeParams<T> {
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
+  getDeclaredStyle: (selector: string) => ({selector: string, css: React.CSSProperties})
+  removeDeclaredStyle: (selector: string) => void
   config: {
     get: (id: string) => ConfigInstance;
   }

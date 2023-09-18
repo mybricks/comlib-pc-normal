@@ -49,7 +49,7 @@ export default {
     },
     style: createStyleForCol({
       target({ id, focusArea }: EditorResult<Data>) {
-        return `.root .ant-row > div[data-type-col="${focusArea.dataset.typeCol}"]${getFilterSelector(id)}`;
+        return `.root > .ant-row > div[data-type-col="${focusArea.dataset.typeCol}"]${getFilterSelector(id)}`;
       }
     })
   }
