@@ -2,7 +2,8 @@ import { CSSProperties } from 'react';
 
 export enum InputIds {
   ScrollIntoView = 'scrollInfoView',
-  SetMaxHeight = 'setMaxHeight'
+  SetMaxHeight = 'setMaxHeight',
+  SetStyle = 'setStyle',
 }
 export enum OutputIds {
   Click = 'click'

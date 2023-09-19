@@ -1,4 +1,4 @@
-import { Data, SlotIds } from './constants';
+import { Data, SlotIds, InputIds } from './constants';
 import { getFilterSelector } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 
@@ -6,6 +6,7 @@ export default function ({
   id,
   data,
   slot,
+  input,
   config,
   setDeclaredStyle,
   getDeclaredStyle,
@@ -71,6 +72,17 @@ export default function ({
     hoverCss = { ...preHoverStyle.css };
     removeDeclaredStyle(`.root:hover${getFilterSelector(id)}`);
     setDeclaredStyle('> .root:hover', hoverCss);
+  }
+
+  if (!input.get(InputIds.SetStyle)) {
+    input.add(InputIds.SetStyle, "动态设置样式", {
+      type: "object",
+      properties: {
+        background: {
+          type: "string",
+        },
+      },
+    });
   }
 
   return true;

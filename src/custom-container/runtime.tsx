@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 import css from './style.less';
 
@@ -17,6 +17,8 @@ export default function (props: RuntimeParams<Data>) {
   } = data;
   const ref = useRef<HTMLDivElement>(null);
 
+  const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
+
   useEffect(() => {
     if (useFixed && ref.current?.parentElement?.style) {
       ref.current.parentElement.style.zIndex = '1001';
@@ -34,6 +36,10 @@ export default function (props: RuntimeParams<Data>) {
           }
         });
       }
+
+      inputs[InputIds.SetStyle]((style: React.CSSProperties) => {
+        setDynamicStyle(style);
+      });
     }
   }, []);
 
@@ -69,7 +75,8 @@ export default function (props: RuntimeParams<Data>) {
       style={{
         position: useFixed ? 'fixed' : 'static',
         cursor: useClick ? 'pointer' : '',
-        ...legacyStyle
+        ...legacyStyle,
+        ...dynamicStyle
       }}
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {
