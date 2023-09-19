@@ -3,7 +3,7 @@
     "namespace": "mybricks.normal-pc.code-editor",
     "author": "tangxiaoxin",
     "author_name": "唐小新",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "用于在线编辑代码，支持多种编程语言",
     "runtime": "./runtime.tsx",
     "editors": "./editor.ts",
