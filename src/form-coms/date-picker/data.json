@@ -3,6 +3,7 @@
   "visible": true,
   "rules": [],
   "showTime": false,
+  "useCustomDateCell": false,
   "contentType": "timeStamp",
   "formatter": "YYYY-MM-DD HH:mm:ss 星期dd",
   "config": {

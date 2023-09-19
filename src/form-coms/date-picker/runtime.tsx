@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 import { validateFormItem } from '../utils/validator';
@@ -7,6 +7,7 @@ import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
+import { SlotIds, InputIds } from './constant';
 
 export interface Data {
   options: any[];
@@ -14,6 +15,7 @@ export interface Data {
   showTime: Record<string, unknown> | boolean;
   contentType: string;
   formatter: string;
+  useCustomDateCell: boolean;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -22,10 +24,11 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, name, id } = props;
+  const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
   const [value, setValue] = useState();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
+  const ref = useRef(null);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -126,6 +129,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         });
     });
 
+    inputs['disabledDate']((val) => {
+      if (typeof val === 'function') {
+        data.disabledDate = val;
+      }
+    });
+
     inputs['getValue']((val, outputRels) => {
       let transValue;
       //1.null是从日期选择框不选日期的情况；
@@ -182,19 +191,42 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
   };
 
+  const customDateRender = useCallback(
+    (currentDate, today) => {
+      return (
+        <div className="ant-picker-cell-inner">
+          {currentDate.date()}
+          {runtime || currentDate.isSame(today, 'day')
+            ? slots[SlotIds.DateCell].render({
+                inputValues: {
+                  [InputIds.CurrentDate]: currentDate,
+                  [InputIds.Today]: today
+                },
+                key: currentDate
+              })
+            : null}
+        </div>
+      );
+    },
+    [data.useCustomDateCell]
+  );
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={css.datePicker}>
+      <div className={css.datePicker} ref={ref}>
         <DatePicker
           value={value}
           {...data.config}
+          dateRender={data.useCustomDateCell ? customDateRender : undefined}
           showTime={getShowTime()}
           onChange={onChange}
-          getPopupContainer={(triggerNode: HTMLElement) =>
-            edit || debug ? env?.canvasElement : document.body
-          }
+          disabledDate={data.disabledDate || undefined}
+          getPopupContainer={(triggerNode: HTMLElement) => {
+            return ref.current || document.body;
+            // return env?.canvasElement || document.body
+          }}
           dropdownClassName={`${id} ${css.datePicker}`}
-          open={env.design ? true : void 0}
+          open={(edit && data.useCustomDateCell) || env.design}
         />
       </div>
     </ConfigProvider>

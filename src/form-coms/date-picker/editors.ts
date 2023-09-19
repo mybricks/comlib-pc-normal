@@ -1,6 +1,7 @@
 import moment from 'moment';
-import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
+import { SlotIds, InputIds } from './constant'
 import styleEditor from './styleEditor';
 
 export default {
@@ -218,6 +219,36 @@ export default {
           ]
         }
       ];
+
+      catalog[1].title = '高级';
+      catalog[1].items = [
+        {
+          title: '开启日期插槽',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.useCustomDateCell;
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                slot.add({ id: SlotIds.DateCell, title: '插槽', type: 'scope' });
+                slot
+                  .get(SlotIds.DateCell)
+                  .inputs.add(InputIds.CurrentDate, '当前日期', {
+                    type: 'any'
+                  })
+                slot
+                  .get(SlotIds.DateCell)
+                  .inputs.add(InputIds.Today, '今天', {
+                    type: 'any'
+                  })
+              } else {
+                slot.remove(SlotIds.DateCell);
+              }
+              data.useCustomDateCell = value;
+            }
+          }
+        }];
     }
   }
 };

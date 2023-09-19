@@ -74,6 +74,13 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "disabledDate",
+      "title": "禁用特定日期",
+      "schema": {
+        "type": "any"
+      }
     }
   ],
   "outputs": [
