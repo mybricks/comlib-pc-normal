@@ -15,5 +15,19 @@
       "id": "content",
       "title": "内容"
     }
+  ],
+  "inputs": [
+    {
+      "id": "setStyle",
+      "title": "动态设置样式",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "background": {
+            "type": "string"
+          }
+        }
+      }
+    }
   ]
 }
