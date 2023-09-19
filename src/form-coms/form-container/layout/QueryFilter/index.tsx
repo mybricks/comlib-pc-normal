@@ -71,7 +71,8 @@ const QueryFilter = (props: QueryFilterProps) => {
 
   // console.log(processedList)
 
-  const doms = comAray?.map((com, idx) => {
+  let idx = -1;
+  const doms = comAray?.map((com) => {
     const items = data.items;
 
     if (com) {
@@ -102,7 +103,9 @@ const QueryFilter = (props: QueryFilterProps) => {
       } else {
         item['visible'] = true;
       }
-
+      if (item['visible']) {
+        idx++;
+      }
       if (idx === 0) {
         firstRowFull = span === 24;
       }
