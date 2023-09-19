@@ -199,7 +199,7 @@ const CodeEditor = (
   return (
     <Spin spinning={loading} wrapperClassName={css.aceCodeEditor}>
       <div ref={containerRef} id="form-code-editor" onPaste={onPaste} onBlur={_onBlur} />
-      {supportFormat && (
+      {supportFormat && value && (
         <div className={css.formatIcon} title="点击格式化" onClick={onClick}>
           <svg
             viewBox="0 0 1024 1024"
