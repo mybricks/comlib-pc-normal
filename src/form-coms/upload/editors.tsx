@@ -76,6 +76,27 @@ export default {
           }
         }
       },
+      {
+        title: '背景',
+        options: ['background'],
+        target: ['.ant-upload', '.ant-btn']
+      },
+      {
+        title: '图标样式配置',
+        options: ['font'],
+        target: '.anticon',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'picture-card';
+        }
+      },
+      {
+        title: '文案样式配置',
+        options: ['font'],
+        target: '.ant-upload > div > div',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'picture-card';
+        }
+      },
       uploadEditors
       /**
       {

@@ -23,7 +23,7 @@ export default {
                   'border',
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
-                target: '.ant-switch'
+                target: '.ant-switch-checked'
               },
               {
                 title: '非激活',
