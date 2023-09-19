@@ -41,7 +41,7 @@ const getAssetsCDN = (language: string) => {
   const languageToolsCDN = `${baseUrl}/ace/1.4.12/ext-language_tools.js`;
   const aceLanguageCDN = `${baseUrl}/ace/1.4.12/mode-${language}.js`;
   const extBeautifyCDN = `${baseUrl}/ace/1.4.12/ext-beautify.js`;
-  const styleSheetCDN = `https://cdn.jsdelivr.net/npm/ace-builds@1.4.13/css/ace.min.css`;
+  const styleSheetCDN = `https://f2.beckwai.com/udata/pkg/eshop/fangzhou/pub/pkg/ace/ace-builds/1.4.13/ace.min.css`;
   return {
     aceEditorCDN,
     languageToolsCDN,
@@ -117,7 +117,7 @@ const CodeEditor = (
       mode: `ace/mode/${language}`,
       enableBasicAutoCompletion: true,
       enableLiveAutocompletion: true,
-      fontSize: fontSize || '12px'
+      fontSize: fontSize || 14
     });
 
     editor.current.session?.setUseWorker(false);
