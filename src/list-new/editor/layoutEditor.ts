@@ -1,5 +1,7 @@
 import {
-  Data
+  Data,
+  OutputIds,
+  Schemas
 } from '../constants';
 
 export const LayoutEditor = [
@@ -14,8 +16,12 @@ export const LayoutEditor = [
           get({ data }: EditorResult<Data>) {
             return data.isAuto;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
+          set({ data, output }: EditorResult<Data>, val: boolean) {
             data.isAuto = val;
+            const canSort = !!(data.isAuto && data.isCustom && data.grid.column === 1);
+            if(!canSort){
+              output.remove(OutputIds.SortComplete);
+            }
           }
         }
       },
@@ -66,8 +72,12 @@ export const LayoutEditor = [
           get({ data }: EditorResult<Data>) {
             return data.isCustom || false;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
+          set({ data, output }: EditorResult<Data>, val: boolean) {
             data.isCustom = val;
+            const canSort = !!(data.isAuto && data.isCustom && data.grid.column === 1)
+            if(!canSort){
+              output.remove(OutputIds.SortComplete);
+            }
           }
         }
       },
@@ -82,8 +92,12 @@ export const LayoutEditor = [
           get({ data }: EditorResult<Data>) {
             return [data.grid.column];
           },
-          set({ data }: EditorResult<Data>, val) {
+          set({ data, output }: EditorResult<Data>, val) {
             data.grid.column = val[0];
+            const canSort = !!(data.isAuto && data.isCustom && data.grid.column === 1)
+            if(!canSort){
+              output.remove(OutputIds.SortComplete);
+            }
           }
         }
       },
@@ -117,8 +131,13 @@ export const LayoutEditor = [
           get({ data }: EditorResult<Data>) {
             return !!data.canSort;
           },
-          set({ data }: EditorResult<Data>, val: boolean) {
-            data.canSort = val
+          set({ data, output }: EditorResult<Data>, val: boolean) {
+            data.canSort = val;
+            if(val && data.canSort){
+              output.add(OutputIds.SortComplete, '拖拽完成', Schemas.Array);
+            }else{
+              output.remove(OutputIds.SortComplete);
+            }
           }
         }
       },

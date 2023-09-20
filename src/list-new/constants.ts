@@ -6,7 +6,18 @@ export enum InputIds {
   GetDataSource = 'getdataSource'
 }
 export enum OutputIds {
-  GetDataSource = 'getdataSource'
+  GetDataSource = 'getdataSource',
+  SortComplete = 'sortComplete'
+}
+
+export const Schemas = {
+  Array: {
+    type: 'array',
+    items: {
+      title: '列表数据',
+      type: 'any'
+    }
+  }
 }
 
 export interface Data {
