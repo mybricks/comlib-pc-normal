@@ -125,12 +125,7 @@ export default {
                   { type: 'font', config: { disableTextAlign: true } }
                 ],
                 target: ['.ant-select-multiple .ant-select-selection-item-remove']
-              }
-            ]
-          }),
-          ...createrCatelogEditor({
-            catelog: '默认',
-            items: [
+              },
               {
                 title: '选项',
                 options: [
@@ -142,7 +137,26 @@ export default {
                   return `.{id} div.ant-select-item.ant-select-item-option`
                 }
               },
-
+              {
+                title: '下拉区域',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-select-dropdown`
+                }
+              },
+              // {
+              //   title: '下拉区域',
+              //   options: [
+              //     { type: 'background', config: { disableBackgroundImage: true } }
+              //   ],
+              //   global: true,
+              //   target({ id }: EditorResult<Data>) {
+              //     return `.{id} .ant-select-dropdown`
+              //   }
+              // }
             ]
           }),
           ...createrCatelogEditor({
