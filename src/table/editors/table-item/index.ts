@@ -33,6 +33,41 @@ const column = {
       };
     },
     style: [
+      // {
+      //   title: '开启斑马纹',
+      //   type: 'Switch',
+      //   description: '配置表格的单双行为不同样式',
+      //   value: {
+      //     get({ data }: EditorResult<Data>) {
+      //       return data.enableStripe;
+      //     },
+      //     set({ data }: EditorResult<Data>, value: boolean) {
+      //       data.enableStripe = value;
+      //     }
+      //   }
+      // },
+      {
+        title: '单行',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableStripe;
+        },
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: ({ id, focusArea }) => {
+          const { tableThIdx } = focusArea.dataset;
+          return `table tbody tr.mybricks-table-row-single td[data-table-column-id="${tableThIdx}"]${getFilterSelector(id)}`
+        }
+      },
+      {
+        title: '双行',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableStripe;
+        },
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        target: ({ id, focusArea }) => {
+          const { tableThIdx } = focusArea.dataset;
+          return `table tbody tr.mybricks-table-row-double td[data-table-column-id="${tableThIdx}"]${getFilterSelector(id)}`
+        }
+      },
       {
         title: '表头',
         catelog: '默认',
