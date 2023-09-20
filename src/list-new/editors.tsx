@@ -94,6 +94,16 @@ export default {
             data.rowKey = val;
           }
         }
+      },
+      {
+        title: '拖拽完成',
+        type: '_Event',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.canSort;
+        },
+        options: {
+          outputId: OutputIds.SortComplete
+        }
       }
     ];
   }

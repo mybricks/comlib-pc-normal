@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { List, Spin } from 'antd';
 import classnames from 'classnames';
-import { Data, InputIds } from './constants';
+import { Data, InputIds, OutputIds } from './constants';
 import { checkIfMobile, uuid } from '../utils';
 import css from './style.less';
 import { SortableList, SortableItem } from './sort';
@@ -127,6 +127,9 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
           )}
           onSortEnd={({ oldIndex, newIndex }) => {
             setDataSource(arrayMove(dataSource, oldIndex, newIndex));
+            if (data.canSort) {
+              outputs[OutputIds.SortComplete](arrayMove(dataSource, oldIndex, newIndex));
+            }
           }}
         />
       );
