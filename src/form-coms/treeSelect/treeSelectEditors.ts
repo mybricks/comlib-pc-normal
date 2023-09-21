@@ -84,7 +84,7 @@ const treeSelectEditors = [
   },
   {
     title: '节点数配置',
-    type: "Select",
+    type: "Radio",
     description: '多选结点是自适应还是自定义',
     ifVisible({ data }: EditorResult<Data>) {
       return data.config.multiple;
@@ -107,7 +107,26 @@ const treeSelectEditors = [
         data.maxTagCountType = value;
         if (data.maxTagCountType == "isResponsive") {
           data.config.maxTagCount = 'responsive';
+        } else {
+          data.config.maxTagCount = 0;
         }
+      }
+    }
+  },
+  {
+    title: '最多显示数量',
+    type: 'InputNumber',
+    description: '当选中个数大于设置值时，会只显示选中数量',
+    options: [{ min: 0 }],
+    ifVisible({ data }: EditorResult<Data>) {
+      return data.config.multiple && data.maxTagCountType === "isCustom";
+    },
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return [data.config.maxTagCount];
+      },
+      set({ data }: EditorResult<Data>, value: number[]) {
+        data.config.maxTagCount = value[0];
       }
     }
   },
@@ -131,23 +150,6 @@ const treeSelectEditors = [
       }
     }
   },
-  {
-    title: '最多显示数量',
-    type: 'InputNumber',
-    description: '当选中个数大于设置值时，会只显示选中数量',
-    options: [{ min: 0 }],
-    ifVisible({ data }: EditorResult<Data>) {
-      return data.config.multiple && data.maxTagCountType === "isCustom";
-    },
-    value: {
-      get({ data }: EditorResult<Data>) {
-        return [data.config.maxTagCount];
-      },
-      set({ data }: EditorResult<Data>, value: number[]) {
-        data.config.maxTagCount = value[0];
-      }
-    }
-  }
 ];
 
 export default treeSelectEditors;

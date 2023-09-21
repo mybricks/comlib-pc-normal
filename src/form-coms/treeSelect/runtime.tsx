@@ -10,6 +10,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data, IconType, Option } from './types';
 import css from './runtime.less';
+import { treeDataInDesign } from './const';
 
 /**遍历树组件 */
 // const traversalTree = (treeData: Option[], cb) => {
@@ -211,7 +212,7 @@ export default function Runtime({
           env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
         }
       >
-        {renderTreeNode(env.design ? treeDataInDesign(data) : data.options)}
+        {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
       </TreeSelect>
     </div>
   );
