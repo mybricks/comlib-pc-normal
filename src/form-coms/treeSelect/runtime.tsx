@@ -212,7 +212,7 @@ export default function Runtime({
           env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
         }
       >
-        {renderTreeNode(env.design ? treeDataInDesign(data) : data.options)}
+        {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
       </TreeSelect>
     </div>
   );
