@@ -63,6 +63,16 @@ export default {
                 target: ['.ant-select-multiple .ant-select-selection-item-remove']
               },
               {
+                title: '下拉区域',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-cascader-menu`
+                }
+              },
+              {
                 title: '选项',
                 options: [
                   { type: 'font', config: { disableTextAlign: true } },
