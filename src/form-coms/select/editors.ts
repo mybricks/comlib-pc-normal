@@ -144,19 +144,9 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} .ant-select-dropdown`
+                  return `.{id} div.ant-select-dropdown-placement-bottomLeft`
                 }
-              },
-              // {
-              //   title: '下拉区域',
-              //   options: [
-              //     { type: 'background', config: { disableBackgroundImage: true } }
-              //   ],
-              //   global: true,
-              //   target({ id }: EditorResult<Data>) {
-              //     return `.{id} .ant-select-dropdown`
-              //   }
-              // }
+              }
             ]
           }),
           ...createrCatelogEditor({
