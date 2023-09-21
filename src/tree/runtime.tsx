@@ -58,7 +58,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     data.searchValue = searchValue;
     const searchedKeys = treeKeys.current.map((item) => {
       if (filterMethods.byTitle(item)) {
-        return getParentKey(item[keyFieldName], data.treeData, keyFieldName);
+        return getParentKey(item.key, data.treeData, keyFieldName);
       }
       return null;
     });
@@ -78,7 +78,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
     const filterKeys: React.Key[] = [];
     treeKeys.current.forEach((item) => {
       if (filterMethod(item)) {
-        let childKey = item[keyFieldName];
+        let childKey = item.key;
         filterKeys.push(childKey);
         while (getParentKey(childKey, data.treeData, keyFieldName)) {
           const parentKey = getParentKey(childKey, data.treeData, keyFieldName);
