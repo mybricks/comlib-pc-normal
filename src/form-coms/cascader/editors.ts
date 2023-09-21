@@ -69,7 +69,6 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  //return `.{id} .ant-select-dropdown`
                   return `.{id} .ant-cascader-menu`
                 }
               },
