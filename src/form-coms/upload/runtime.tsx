@@ -116,6 +116,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   }, []);
 
   const onRemoveFile = useCallback((file) => {
+    fileListRef.current = fileListRef.current.filter(({ uid }) => file.uid !== uid);
     setFileList((list) => list.filter((item) => item.uid !== file.uid));
   }, []);
 
@@ -278,7 +279,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   const onRemove = (file) => {
     if (!data.config.useCustomRemove) {
-      fileListRef.current = fileList.filter(({ uid }) => file.uid !== uid);
+      fileListRef.current = fileListRef.current.filter(({ uid }) => file.uid !== uid);
       setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
       return true;
     }
