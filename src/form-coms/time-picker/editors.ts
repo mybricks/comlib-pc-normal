@@ -41,7 +41,7 @@ export default {
           {
             title: '文本内容',
             options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: '.ant-input'
+            target: '.ant-picker-input>input'
           },
           {
             title: '时间',
@@ -52,6 +52,18 @@ export default {
             ],
             global: true,
             target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+          },
+          {
+            title: '下拉区域',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            global: true,
+            target: '.{id} .ant-picker-panel-container'
+          },
+          {
+            title: '底部操作栏',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+            global: true,
+            target: `.{id} .ant-picker-ranges`
           },
           {
             title: '确认按钮',

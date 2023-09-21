@@ -80,6 +80,66 @@ const styleEditor = [{
               }
             },
             {
+              title: '下拉区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-panel-container`
+              }
+            },
+            {
+              title: '顶部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header`
+              }
+            },
+            {
+              title: '中间操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-body`
+              }
+            },
+            {
+              title: '底部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-footer`
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button`
+              }
+            },
+            {
+              title: '今天',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-today-btn`
+              }
+            },
+            {
               title: '确认按钮',
               options: [
                 { type: 'background', config: { disableBackgroundImage: true } },
@@ -129,6 +189,26 @@ const styleEditor = [{
               global: true,
               target({ id }: EditorResult<Data>) {
                 return `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`;
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button:hover`
+              }
+            },
+            {
+              title: '今天',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-today-btn:hover`
               }
             },
             {
@@ -282,6 +362,56 @@ const styleEditor = [{
                 ];
               }
             },
+            {
+              title: '下拉区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-panel-container`
+              }
+            },
+            {
+              title: '顶部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header`
+              }
+            },
+            {
+              title: '中间操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-body`
+              }
+            },
+            {
+              title: '底部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-footer`
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button`
+              }
+            }
           ]
         },
         {
@@ -321,6 +451,16 @@ const styleEditor = [{
               global: true,
               target({ id }: EditorResult<Data>) {
                 return `.{id} .ant-picker-week-panel-row:hover td`
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button:hover`
               }
             }
           ]
@@ -425,6 +565,56 @@ const styleEditor = [{
                 ];
               }
             },
+            {
+              title: '下拉区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-panel-container`
+              }
+            },
+            {
+              title: '顶部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header`
+              }
+            },
+            {
+              title: '中间操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-body`
+              }
+            },
+            {
+              title: '底部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-footer`
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button`
+              }
+            },
           ]
         },
         {
@@ -454,6 +644,16 @@ const styleEditor = [{
                 return [
                   `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
                 ];
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button:hover`
               }
             }
           ]
@@ -550,6 +750,56 @@ const styleEditor = [{
                 ];
               }
             },
+            {
+              title: '下拉区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-panel-container`
+              }
+            },
+            {
+              title: '顶部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header`
+              }
+            },
+            {
+              title: '中间操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-body`
+              }
+            },
+            {
+              title: '底部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-footer`
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button`
+              }
+            },
           ]
         },
         {
@@ -579,6 +829,16 @@ const styleEditor = [{
                 return [
                   `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
                 ];
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button:hover`
               }
             }
           ]
@@ -675,6 +935,56 @@ const styleEditor = [{
                 ];
               }
             },
+            {
+              title: '下拉区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-panel-container`
+              }
+            },
+            {
+              title: '顶部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header`
+              }
+            },
+            {
+              title: '中间操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-body`
+              }
+            },
+            {
+              title: '底部操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-footer`
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button`
+              }
+            },
           ]
         },
         {
@@ -704,6 +1014,16 @@ const styleEditor = [{
                 return [
                   `.{id} .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner`
                 ];
+              }
+            },
+            {
+              title: '顶部操作日期',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-header-view button:hover`
               }
             }
           ]
