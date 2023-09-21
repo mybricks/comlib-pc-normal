@@ -71,5 +71,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   //=========== v1.1.8 end ===============
 
+  /**
+    * @description v1.1.11 修复maxTagCount没有默认值的问题
+    */
+
+  if (data.maxTagCountType == "isResponsive") {
+    data.config.maxTagCount = 'responsive';
+  }
+
+  //=========== v1.1.11 end ===============
+
   return true;
 }
