@@ -30,7 +30,6 @@ const ColorMap = {
 const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
   return {
     title: '列',
-    folded: true,
     items: [
       {
         title: '显示列头',
