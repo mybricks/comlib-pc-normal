@@ -230,14 +230,15 @@ export const getParentKey = (key, tree, keyFieldName: string) => {
  * @param treeData 树节点数据
  * @param dataList key数组
  * @param keyFieldName 标识字段
+ * @param titleFieldName 标题字段
  */
-export const generateList = (treeData, dataList, keyFieldName) => {
+export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
-    const { [keyFieldName]: key, title } = node;
+    const { [keyFieldName]: key, [titleFieldName]: title } = node;
     dataList.push({ key, title });
     if (node.children) {
-      generateList(node.children, dataList, keyFieldName);
+      generateList(node.children, dataList, { keyFieldName, titleFieldName });
     }
   }
 };
