@@ -100,13 +100,23 @@ const styleEditor = [{
               }
             },
             {
-              title: '中间操作区域',
+              title: '中间日期操作区域',
               options: [
                 { type: 'background', config: { disableBackgroundImage: true } }
               ],
               global: true,
               target({ id }: EditorResult<Data>) {
                 return `.{id} .ant-picker-body`
+              }
+            },
+            {
+              title: '中间时间操作区域',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              global: true,
+              target({ id }: EditorResult<Data>) {
+                return `.{id} .ant-picker-time-panel>.ant-picker-content`
               }
             },
             {
