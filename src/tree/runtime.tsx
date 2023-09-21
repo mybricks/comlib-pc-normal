@@ -48,7 +48,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
 
   useEffect(() => {
     treeKeys.current = [];
-    generateList(data.treeData, treeKeys.current, keyFieldName);
+    generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -97,7 +97,7 @@ export default function ({ env, data, inputs, outputs, onError, logger }: Runtim
   const filterMethods = useMemo(() => {
     return {
       byTitle: (node: TreeData) => {
-        return node[titleFieldName]?.indexOf(data.filterValue) > -1;
+        return node.title?.indexOf(data.filterValue) > -1;
       }
     };
   }, []);
