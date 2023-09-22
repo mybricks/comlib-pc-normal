@@ -54,10 +54,7 @@ export default {
               return !data.asMapArea && data.type !== TypeEnum.Link;
             },
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-            target: [
-              `button.ant-btn:not([disabled]):active`,
-              `button.ant-btn:not([disabled]):active > span`
-            ]
+            target: [`button.ant-btn:not([disabled]):active`]
           },
           {
             title: '激活',
