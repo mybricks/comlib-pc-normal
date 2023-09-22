@@ -81,5 +81,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   //=========== v1.1.11 end ===============
 
+  /**
+    * @description v1.1.12 增加 展开深度openDepth 配置项
+    */
+
+  if (typeof data.openDepth !== "number") {
+    data.openDepth = data.config.treeDefaultExpandAll ? -1 : 0;
+    data.config.treeDefaultExpandAll = undefined;
+  }
+
+  //=========== v1.1.12 end ===============
+
   return true;
 }

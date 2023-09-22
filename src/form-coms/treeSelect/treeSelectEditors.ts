@@ -5,14 +5,16 @@ import { Data } from './types';
 
 const treeSelectEditors = [
   {
-    title: '默认展开所有树节点',
-    type: 'Switch',
+    title: '默认展开深度',
+    type: 'InputNumber',
+    description: '0表示全部折叠, -1表示全部展开',
+    options: [{ min: -1, max: 20, width: 100 }],
     value: {
       get({ data }: EditorResult<Data>) {
-        return data.config.treeDefaultExpandAll;
+        return [data.openDepth];
       },
-      set({ data }: EditorResult<Data>, value: boolean) {
-        data.config.treeDefaultExpandAll = value;
+      set({ data }: EditorResult<Data>, value: number[]) {
+        data.openDepth = value[0];
       }
     }
   },
