@@ -2,26 +2,16 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { uniq } from 'lodash';
 import { TreeNodeProps, TreeSelect, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { ExpressionSandbox } from '../../../package/com-utils';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
 import { OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data, IconType, Option } from './types';
+import { getDynamicDisplay, setTreeDataForLoadData, getFieldNames, traversalTree } from './utils';
 import css from './runtime.less';
 import { treeDataInDesign } from './const';
-
-/**遍历树组件 */
-// const traversalTree = (treeData: Option[], cb) => {
-//   treeData.forEach((node) => {
-//     const { children, ...res } = node;
-//     cb(res);
-//     if (Array.isArray(children)) {
-//       traversalTree(children, cb);
-//     }
-//   });
-// };
+import { FieldNamesType } from 'antd/lib/cascader';
 
 export default function Runtime({
   title,
@@ -36,7 +26,13 @@ export default function Runtime({
   onError
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
-  const [treeLoadedKeys, setTreeLoadKeys] = useState<string[]>([]);
+  const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
+  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
+  const [fieldNames, setFieldNames] = useState<FieldNamesType>({
+    label: 'label',
+    value: 'value',
+    children: 'children'
+  });
 
   useLayoutEffect(() => {
     inputs['validate']((val, outputRels) => {
@@ -107,6 +103,12 @@ export default function Runtime({
   }, []);
 
   useEffect(() => {
+    if (env.runtime) {
+      setFieldNames(getFieldNames(data));
+    }
+  }, []);
+
+  useEffect(() => {
     inputs['setLoadData']((val) => {
       if (!data.useLoadData) {
         return;
@@ -156,6 +158,23 @@ export default function Runtime({
       });
     });
   };
+
+  /** 更新展开节点 */
+  useEffect(() => {
+    if (env.runtime) {
+      const keys: React.Key[] = [];
+      traversalTree(data.options, fieldNames, (item) => {
+        const { [data.valueFieldName || 'value']: key, _depth } = item;
+        if (data.openDepth < 0) {
+          keys.push(key);
+        } else if (_depth < data.openDepth) {
+          keys.push(key);
+        }
+      });
+      setExpandedKeys(keys);
+    }
+  }, [data.options]);
+
   /**
    * 树节点遍历渲染
    * @param treeData 树数据
@@ -195,7 +214,9 @@ export default function Runtime({
         {...data.config}
         showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
-        treeDefaultExpandAll={env.design ? true : data.config.treeDefaultExpandAll}
+        treeDefaultExpandAll={env.design ? true : void 0}
+        treeExpandedKeys={expandedKeys}
+        // switcherIcon={}
         multiple={data.config.multiple}
         treeCheckable={data.config.treeCheckable}
         showCheckedStrategy={data.config.showCheckedStrategy}
@@ -204,7 +225,7 @@ export default function Runtime({
         open={env.design ? true : void 0}
         value={data.value}
         loadData={data.useLoadData ? onLoadData : undefined}
-        fieldNames={getFieldNames(data)}
+        fieldNames={fieldNames}
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
         dropdownClassName={id}
@@ -217,66 +238,6 @@ export default function Runtime({
     </div>
   );
 }
-
-const setTreeDataForLoadData = (data, curNode, treeData, newNodeData = {}) => {
-  let newTreeData = [];
-  const trueValueFieldName = data.valueFieldName || 'value';
-  const trurChildrenFieldName = data.childrenFieldName || 'children';
-
-  newTreeData = treeData.map((item) => {
-    if (item[trueValueFieldName] === curNode[trueValueFieldName]) {
-      item = {
-        ...item,
-        ...newNodeData
-      };
-    } else {
-      if (Array.isArray(item[trurChildrenFieldName])) {
-        item[trurChildrenFieldName] = setTreeDataForLoadData(
-          data,
-          curNode,
-          item[trurChildrenFieldName],
-          newNodeData
-        );
-      }
-    }
-
-    return item;
-  });
-
-  return newTreeData;
-};
-
-const getFieldNames = (data: Data) => {
-  const fieldNames = {
-    label: data.labelFieldName,
-    value: data.valueFieldName,
-    children: data.childrenFieldName
-  };
-
-  return fieldNames;
-};
-
-/**
- * 计算图标动态显示表达式
- * @param item 节点数据
- * @param icon 图标数据
- */
-const getDynamicDisplay = (item: TreeNodeProps, icon: IconType, onError?): boolean => {
-  let dynamicDisplay = true;
-
-  if (icon.displayRule === 'dynamic' && icon.displayExpression) {
-    const context = {
-      ...item
-    };
-    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
-    try {
-      dynamicDisplay = sandbox.executeWithTemplate(icon.displayExpression);
-    } catch (error: any) {
-      onError?.(`树选择[${icon.title}]图标: ${error}`);
-    }
-  }
-  return dynamicDisplay;
-};
 
 /**
  * 节点图标渲染

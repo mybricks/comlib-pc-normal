@@ -20,6 +20,7 @@ export interface Data {
   childrenFieldName?: string
   loadDataOnce?: boolean,
   icons: IconType[],
+  openDepth: number,
 }
 
 export type IconSrcType = false | 'custom' | 'inner';
