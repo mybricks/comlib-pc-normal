@@ -1,7 +1,7 @@
 import { Data, InputIds, OutputIds, ShapeEnum, SizeEnum, TypeEnum } from './constants';
 import { isEmptyObject } from '../utils';
 
-export default function ({ input, output, data, setDeclaredStyle, removeDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({ input, output, data, setDeclaredStyle, removeDeclaredStyle, getDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
    * @description v1.0.3 , 新增按钮动态标题
    */
@@ -94,7 +94,10 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
    * @description v1.0.18 调整激活态样式 target
    */
   if(!data.asMapArea && data.type !== TypeEnum.Link) {
+    const preStyle = getDeclaredStyle(`button.ant-btn:not([disabled]):active`);
+    removeDeclaredStyle(`button.ant-btn:not([disabled]):active`);
     removeDeclaredStyle(`button.ant-btn:not([disabled]):active > span`);
+    setDeclaredStyle(`button.ant-btn:not([disabled]):active`, preStyle.css);
   }
 
   return true;
