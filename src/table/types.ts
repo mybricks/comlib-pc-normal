@@ -183,6 +183,7 @@ export interface Data {
   enableRowClick?: boolean;
   enableRowDoubleClick?: boolean;
   enableCellClick?: boolean;
+  enableCellFocus?: boolean;
   enableRowFocus: boolean,
   focusRowStyle: any,
   domainModel: {
