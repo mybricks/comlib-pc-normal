@@ -465,5 +465,19 @@ export const Schemas = {
         type: 'object'
       }
     }
+  },
+  CEll_CLICK: {
+    type: 'object',
+    properties: {
+      record: {
+        type: 'object'
+      },
+      index: {
+        type: 'number'
+      },
+      dataIndex: {
+        type: 'string'
+      }
+    }
   }
 };

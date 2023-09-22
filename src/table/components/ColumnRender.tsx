@@ -1,5 +1,5 @@
-import React from 'react';
-import { DefaultRowKey } from '../constants';
+import React, { useMemo } from 'react';
+import { DefaultRowKey, OutputIds } from '../constants';
 import { ContentTypeEnum, IColumn } from '../types';
 import SlotRender from './Slot';
 import { genFormatting } from '../../utils/dataFormatter';
@@ -12,6 +12,7 @@ interface ColumnRenderProps {
   slots: any;
   data: any;
   env: any;
+  outputs: any;
 }
 
 export default function ColumnRender(props: ColumnRenderProps) {

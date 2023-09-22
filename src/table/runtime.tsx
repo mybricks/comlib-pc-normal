@@ -455,7 +455,7 @@ export default function (props: RuntimeParams<Data>) {
       focusRowIndex,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} env={env} slots={props.slots} />
+          <ColumnRender {...columnRenderProps} env={env} outputs={outputs} slots={props.slots} />
         </ErrorBoundary>
       )
     });
