@@ -263,7 +263,18 @@ export const createStyleForTableContent = () => [
     },
     options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
     target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover[data-table-column-id]${getFilterSelector(id)}`
-  }
+  },
+  {
+    title: '选中单元格',
+    catelog: '选中',
+    ifVisible({ data }: EditorResult<Data>) {
+      return data.enableCellFocus;
+    },
+    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    target: ({ id }) => {
+      return `table tbody tr td[data-focus-cell]${getFilterSelector(id)}`
+    }
+  },
 ]
 
 export const createStyleForColumnContent = ({ target }: StyleModeType<Data>) => ({

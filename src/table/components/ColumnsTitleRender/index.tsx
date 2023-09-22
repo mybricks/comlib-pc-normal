@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { Table, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -38,6 +38,8 @@ export default ({
   renderCell,
   focusRowIndex
 }: Props) => {
+  const [focusCellinfo, setFocusCellInfo] = useState<any>({});
+
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -206,26 +208,32 @@ export default ({
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
-          // let cellConfig = {};
-          // if (cItem.enableColMerge && !env.edit) {
-          //   try {
-          //     // cellConfig = runJs(cItem.colMergeScirpt, [{ record, index: rowIndex }]);
-          //   } catch (e) {
-          //     cellConfig = {};
-          //   }
-          // }
+          const { focusRecord = {}, dataIndex = null } = focusCellinfo || {};
+          const isFocus = dataIndex === cItem.dataIndex && focusRecord === record;
           let res = {
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
             'data-table-column-id': cItem.key,
             ...getCellConfig(dataSource, cItem.dataIndex, rowIndex),
-            onClick: data.enableCellClick
-              ? () =>
-                  outputs[OutputIds.CELL_CLICK]({
-                    record,
-                    index: rowIndex,
-                    dataIndex: cItem.dataIndex
-                  })
-              : undefined
+            'data-focus-cell': isFocus ? true : undefined,
+            onClick:
+              data.enableCellClick || data.enableCellFocus
+                ? () => {
+                    if (data.enableCellFocus) {
+                      if (isFocus) {
+                        setFocusCellInfo(null);
+                      } else {
+                        setFocusCellInfo({ focusRecord: record, dataIndex: cItem.dataIndex });
+                      }
+                    }
+                    if (data.enableCellClick) {
+                      outputs[OutputIds.CELL_CLICK]({
+                        record,
+                        index: rowIndex,
+                        dataIndex: cItem.dataIndex
+                      });
+                    }
+                  }
+                : null
           };
           return res;
         }}
