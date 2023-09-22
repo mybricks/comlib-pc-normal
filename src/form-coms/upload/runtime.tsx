@@ -111,12 +111,12 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       onUploadComplete(file);
     });
     inputs['remove']((file: any) => {
-      onRemoveFile(typeof file === 'object' ? file : removeFileRef.current || {});
+      onRemoveFile(file?.uid ? file : removeFileRef.current || {});
     });
   }, []);
 
   const onRemoveFile = useCallback((file) => {
-    fileListRef.current = fileListRef.current.filter(({ uid }) => file.uid !== uid);
+    fileListRef.current = fileListRef.current.filter((item) => item.uid !== file.uid);
     setFileList((list) => list.filter((item) => item.uid !== file.uid));
   }, []);
 
