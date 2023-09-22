@@ -38,6 +38,36 @@ export default {
       }
     },
     {
+      title: '单元格点击',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.enableCellClick;
+        },
+        set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
+          data.enableCellClick = value;
+          if (value) {
+            output.add(OutputIds.CELL_CLICK, '行点击事件', Schemas.CEll_CLICK);
+            setDataSchema({ data, output, ...res });
+          } else {
+            output.remove(OutputIds.CELL_CLICK);
+          }
+        }
+      }
+    },
+    {
+      title: '单元格点击事件',
+      type: '_Event',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.enableCellClick;
+      },
+      options: () => {
+        return {
+          outputId: OutputIds.CELL_CLICK
+        };
+      }
+    },
+    {
       title: '行双击',
       type: 'switch',
       value: {

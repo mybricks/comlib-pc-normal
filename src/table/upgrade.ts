@@ -96,6 +96,9 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
   if (!output.get(OutputIds.COLUMNS_CHANGE)) {
     output.add(OutputIds.COLUMNS_CHANGE, '列结构变化', Schemas.Array);
   }
+  if (!output.get(OutputIds.CELL_CLICK)) {
+    output.add(OutputIds.CELL_CLICK, '点击单元格', Schemas.CEll_CLICK);
+  }
 
   addFilterIO({ data, output, input });
 
