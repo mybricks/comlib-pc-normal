@@ -217,7 +217,15 @@ export default ({
           let res = {
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
             'data-table-column-id': cItem.key,
-            ...getCellConfig(dataSource, cItem.dataIndex, rowIndex)
+            ...getCellConfig(dataSource, cItem.dataIndex, rowIndex),
+            onClick: data.enableCellClick
+              ? () =>
+                  outputs[OutputIds.CELL_CLICK]({
+                    record,
+                    index: rowIndex,
+                    dataIndex: cItem.dataIndex
+                  })
+              : undefined
           };
           return res;
         }}
