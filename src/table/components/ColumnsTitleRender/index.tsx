@@ -38,8 +38,6 @@ export default ({
   renderCell,
   focusRowIndex
 }: Props) => {
-  const [focusCellinfo, setFocusCellInfo] = useState<any>({});
-
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -208,7 +206,7 @@ export default ({
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
-          const { focusRecord = {}, dataIndex = null } = focusCellinfo || {};
+          const { focusRecord = {}, dataIndex = null } = data.focusCellinfo || {};
           const isFocus = dataIndex === cItem.dataIndex && focusRecord === record;
           let res = {
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
@@ -220,9 +218,9 @@ export default ({
                 ? () => {
                     if (data.enableCellFocus) {
                       if (isFocus) {
-                        setFocusCellInfo(null);
+                        data.focusCellinfo = null;
                       } else {
-                        setFocusCellInfo({ focusRecord: record, dataIndex: cItem.dataIndex });
+                        data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
                       }
                     }
                     if (data.enableCellClick) {
