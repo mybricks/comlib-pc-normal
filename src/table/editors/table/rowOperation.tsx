@@ -47,7 +47,7 @@ export default {
         set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
           data.enableCellClick = value;
           if (value) {
-            output.add(OutputIds.CELL_CLICK, '行点击事件', Schemas.CEll_CLICK);
+            output.add(OutputIds.CELL_CLICK, '单元格点击事件', Schemas.CEll_CLICK);
             setDataSchema({ data, output, ...res });
           } else {
             output.remove(OutputIds.CELL_CLICK);

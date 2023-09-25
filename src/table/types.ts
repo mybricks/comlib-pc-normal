@@ -79,7 +79,6 @@ export interface IColumn {
   dataSchema?: any;
 
   formatData?: TformattersValue,
-  enableColMerge?: boolean,
   colMergeScirpt?: string,
 }
 

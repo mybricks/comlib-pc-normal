@@ -34,7 +34,7 @@ export default {
     }
   },
   {
-    title: '需要排除的字段',
+    title: '不能被合并的字段',
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       return !!data.enbaleRowMerge
     },
