@@ -1,4 +1,4 @@
-import { Data } from './constants';
+import { Data, OutputIds, Schemas } from './constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -24,6 +24,13 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   */
  if(typeof data.layout === "undefined"){
     data.layout = "vertical"
+ }
+
+ /**
+    * @description v1.0.11->1.0.12 已经是排序情况下，添加事件
+  */
+ if(data.canSort){
+  output.add(OutputIds.SortComplete, '拖拽完成', Schemas.Array);
  }
 
   return true;
