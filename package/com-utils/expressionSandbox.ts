@@ -72,7 +72,6 @@ export default class Sandbox {
       }
       return pre.replace(match, typeof ret === 'string' ? ret : JSON.stringify(ret));
     }, expression);
-    console.log(retStr);
     try {
       return JSON.parse(retStr);
     } catch (error) {
