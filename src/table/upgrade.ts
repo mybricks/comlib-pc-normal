@@ -7,7 +7,15 @@ import { Schemas, upgradeSchema } from './schema'
 import { Data } from './types';
 import { addFilterIO } from './editors/table-item/filterEditor';
 
-export default function ({ data, setDeclaredStyle, id, slot, output, input }: UpgradeParams<Data>): boolean {
+export default function ({ 
+  data, 
+  setDeclaredStyle,
+  getDeclaredStyle,
+  removeDeclaredStyle,
+  id, 
+  slot, 
+  output, 
+  input }: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.22 支持领域模型
   */
@@ -118,6 +126,19 @@ export default function ({ data, setDeclaredStyle, id, slot, output, input }: Up
     data.SummaryColumnContentSchema = {
       type: "string"
     }
+  }
+
+  /**
+   * @description 1.0.68->1.0.69  更改target
+  */
+  const prePaginationStyle = getDeclaredStyle(`.ant-pagination.ant-pagination-disabled .ant-pagination-item-link`);
+
+  let paginationCss: React.CSSProperties = {};
+  
+  if (prePaginationStyle) {
+    paginationCss = { ...prePaginationStyle.css };
+    removeDeclaredStyle(`.ant-pagination.ant-pagination-disabled .ant-pagination-item-link`);
+    setDeclaredStyle('.ant-pagination-disabled > .ant-pagination-item-link', paginationCss);
   }
   return true;
 }

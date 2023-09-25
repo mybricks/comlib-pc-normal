@@ -25,7 +25,10 @@ const styleEditor = [{
             },
             {
               title: '清除按钮',
-              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
               target: '.anticon-close-circle'
             },
             {
@@ -330,7 +333,10 @@ const styleEditor = [{
             },
             {
               title: '清除按钮',
-              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
               target: '.anticon-close-circle'
             },
             {
@@ -547,7 +553,10 @@ const styleEditor = [{
             },
             {
               title: '清除按钮',
-              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
               target: '.anticon-close-circle'
             },
             {
@@ -732,7 +741,10 @@ const styleEditor = [{
             },
             {
               title: '清除按钮',
-              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
               target: '.anticon-close-circle'
             },
             {
@@ -917,7 +929,10 @@ const styleEditor = [{
             },
             {
               title: '清除按钮',
-              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
               target: '.anticon-close-circle'
             },
             {

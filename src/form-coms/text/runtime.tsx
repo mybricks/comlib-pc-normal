@@ -1,9 +1,10 @@
-import { Form, Input, InputRef } from 'antd';
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { Form, Input, InputRef, Image } from 'antd';
+import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode } from 'react';
 import { validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less';
 
@@ -19,6 +20,9 @@ export interface Data {
     maxLength?: number;
     size?: 'large' | 'middle' | 'small';
   };
+  src: false | 'inner' | 'custom';
+  innerIcon: string;
+  customIcon: string;
 }
 
 const InputIds = {
@@ -103,6 +107,27 @@ export default function (props: RuntimeParams<Data>) {
     outputs['onPressEnter'](value);
   }, []);
 
+  const innerRender = ({ icon }: { icon: ReactNode }) => {
+    const Icon = Icons && Icons[icon as string]?.render();
+    return <>{Icon}</>;
+  };
+
+  const customRender = (src) => {
+    return (
+      <div className={css.customIcon}>
+        <Image src={src} preview={false} alt={' '} />
+      </div>
+    );
+  };
+
+  const renderSuffix = useCallback(() => {
+    if (data.src === 'inner') {
+      return innerRender({ icon: data.innerIcon });
+    } else if (data.src === 'custom' && data.customIcon) {
+      return customRender(data.customIcon);
+    }
+  }, [data.innerIcon, data.customIcon]);
+
   let jsx = (
     <Input
       ref={inputRef}
@@ -114,6 +139,7 @@ export default function (props: RuntimeParams<Data>) {
       onBlur={onBlur}
       onPressEnter={onPressEnter}
       //size={'large'}
+      suffix={data.src !== false ? renderSuffix() : void 0}
     />
   );
 

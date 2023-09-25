@@ -11,5 +11,7 @@
     "showCount": false,
     "maxLength": -1,
     "size": "middle"
-  }
+  },
+  "src": false,
+  "innerIcon": "HomeOutlined"
 }

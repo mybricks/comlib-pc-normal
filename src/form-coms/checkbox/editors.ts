@@ -25,7 +25,11 @@ export default {
               },
               {
                 title: '选择框',
-                options: ['border'],
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'opacity'
+                ],
                 target: '.ant-checkbox-inner'
               }
             ]
@@ -35,7 +39,11 @@ export default {
             items: [
               {
                 title: '选择框',
-                options: ['border'],
+                options: [
+                  'border', 
+                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'opacity'
+                ],
                 target: '.ant-checkbox:hover .ant-checkbox-inner',
                 domTarget: '.ant-checkbox-inner'
               }
@@ -49,7 +57,8 @@ export default {
                 options: [
                   'border',
                   'BoxShadow',
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'opacity'
                 ],
                 target: '.ant-checkbox-checked .ant-checkbox-inner'
               },
@@ -82,7 +91,8 @@ export default {
                 title: '选择框',
                 options: [
                   { type: 'border', config: { useImportant: true } },
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'opacity'
                 ],
                 target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner'
               },
