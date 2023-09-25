@@ -9,6 +9,11 @@ export interface StepItem {
   content?: any;
   render?: boolean
   useCustomDesc?: boolean
+  useIcon?: boolean
+  customIcon?: boolean
+  icon?: string
+  iconSrc?: string
+  iconSize?: [number, number]
 }
 
 export type Btn = 'previous' | 'next' | 'submit'

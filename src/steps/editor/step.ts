@@ -26,7 +26,7 @@ export default {
           type: 'Text',
           value: {
             get({ }: EditorResult<Data>) {
-              return stepItem.subTitle;
+              return stepItem.subTitle??'';
             },
             set({ }: EditorResult<Data>, values: string) {
               stepItem.subTitle = values;
@@ -70,6 +70,92 @@ export default {
             set({ }: EditorResult<Data>, values: string) {
               stepItem.description = values;
             }
+          }
+        },
+        {
+          title: '图标',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!stepItem.useIcon;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              stepItem.useIcon = val;
+            }
+          }
+        },
+        {
+          title: '自定义图标',
+          type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!stepItem.useIcon;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!stepItem.customIcon;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              stepItem.customIcon = val;
+            }
+          }
+        },
+        {
+          title: '图标库',
+          type: 'icon',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!stepItem.useIcon && !stepItem.customIcon;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return stepItem.icon;
+            },
+            set({ data }: EditorResult<Data>, val: string) {
+              stepItem.icon = val;
+            }
+          }
+        },
+        {
+          title: '上传',
+          type: 'imageSelector',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!stepItem.useIcon && stepItem.customIcon;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return stepItem.iconSrc;
+            },
+            set({ data }: EditorResult<Data>, val: string) {
+              stepItem.iconSrc = val;
+            }
+          }
+        },
+        {
+          title: '尺寸',
+          type: 'InputNumber',
+          options: [
+            { title: '高度', min: 0, width: 100 },
+            { title: '宽度', min: 0, width: 100 }
+          ],
+          ifVisible({ data }: EditorResult<Data>) {
+            return stepItem.useIcon;
+          },
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return stepItem.iconSize;
+            },
+            set({ data, focusArea }: EditorResult<Data>, value: [number, number]) {
+              stepItem.iconSize = value;
+            }
+          }
+        },
+        {
+          title: '',
+          type: '',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data;
+            },
+            set({ data }: EditorResult<Data>, val: string) {}
           }
         },
         {
