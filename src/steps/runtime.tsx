@@ -5,6 +5,7 @@ import { Data, INTO, LEAVE, CLICK } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
 import { checkIfMobile } from '../utils';
+import * as Icons from '@ant-design/icons';
 
 const { Step } = Steps;
 
@@ -248,7 +249,7 @@ export default function ({
           progressDot={progressDot}
           direction={direction}
         >
-          {stepAry.map((item: any, index) => {
+          {stepAry.map((item, index) => {
             const emptyNode = <div style={{ lineHeight: 32 }} />;
             const stepProps = {
               key: item.id,
@@ -266,6 +267,21 @@ export default function ({
                 data.current = index;
                 outputs[`${stepAry[index].id}${CLICK}`](stepAry[index]);
               };
+            }
+            if (item.useIcon) {
+              if (item.customIcon) {
+                const imageSize = {
+                  width: item.iconSize ? item.iconSize[1] : 'unset',
+                  height: item.iconSize ? item.iconSize[0] : 'unset'
+                };
+                stepProps['icon'] = <img {...imageSize} src={item.iconSrc} />;
+              } else if (item.icon) {
+                stepProps['icon'] = (
+                  <span style={{ fontSize: item.iconSize ? item.iconSize[1] : 'unset' }}>
+                    {Icons[item.icon]?.render()}
+                  </span>
+                );
+              }
             }
             return <Step {...stepProps} />;
           })}
