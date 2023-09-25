@@ -38,6 +38,53 @@ export default {
         }
       },
       {
+        title: '图标来源',
+        type: 'Radio',
+        options: [
+          { label: '无', value: false },
+          { label: '内置图标库', value: 'inner' },
+          { label: '自定义上传', value: 'custom' }
+        ],
+        value: {
+          get({ data }) {
+            return data.src;
+          },
+          set({ data }, val: false | 'inner' | 'custom') {
+            data.src = val;
+          }
+        }
+      },
+      {
+        title: '选择图标',
+        type: 'icon',
+        ifVisible({ data }) {
+          return data.src === 'inner';
+        },
+        value: {
+          get({ data }) {
+            return data.innerIcon;
+          },
+          set({ data }, val: string) {
+            data.innerIcon = val;
+          }
+        }
+      },
+      {
+        title: '上传',
+        type: 'ImageSelector',
+        ifVisible({ data }) {
+          return data.src === 'custom';
+        },
+        value: {
+          get({ data }) {
+            return data.customIcon;
+          },
+          set({ data }, val: string) {
+            data.customIcon = val;
+          }
+        }
+      },
+      {
         items: [
           ...createrCatelogEditor({
             catelog: '默认',
@@ -84,6 +131,16 @@ export default {
                   { type: 'background', config: { disableBackgroundImage: true } }
                 ],
                 target: '.ant-input-group-addon:last-child'
+              },
+              {
+                title: '后缀内置图标',
+                options: ['font'],
+                target: '.anticon'
+              },
+              {
+                title: '后缀自定义图标',
+                options: ['size'],
+                target: '.ant-image-img'
               }
             ]
           }),

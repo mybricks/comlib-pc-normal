@@ -32,5 +32,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.add('setColor', '设置字体颜色', valueSchema);
   }
 
+  /**
+   * @description v1.2.13->v1.2.14 新增后缀图标, src——图标来源，innerIcon——内置图标
+   */
+  if (typeof data.src === 'undefined') {
+    data.src = false;
+  }
+  if (typeof data.innerIcon === 'undefined') {
+    data.innerIcon = "HomeOutlined";
+  }
+
   return true;
 }

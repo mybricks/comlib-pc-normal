@@ -72,6 +72,7 @@ export default {
             title: '输入框-清除图标',
             options: [
               { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
             ],
             target: '.ant-select-allow-clear .ant-select-clear'
           },

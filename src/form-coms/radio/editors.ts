@@ -44,7 +44,11 @@ export default {
               },
               {
                 title: '选择框',
-                options: ['border'],
+                options: [
+                  'border', 
+                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'opacity'
+                ],
                 target: '.ant-radio-inner'
               },
             ]
@@ -54,7 +58,11 @@ export default {
             items: [
               {
                 title: '选择框',
-                options: ['border'],
+                options: [
+                  'border', 
+                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'opacity'
+                ],
                 target: '.ant-radio:hover .ant-radio-inner',
                 domTarget: '.ant-radio-inner'
               },
@@ -65,7 +73,12 @@ export default {
             items: [
               {
                 title: '选择框',
-                options: ['border', 'BoxShadow'],
+                options: [
+                  'border', 
+                  'BoxShadow', 
+                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'opacity'
+                ],
                 target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
               },
               {
@@ -85,7 +98,11 @@ export default {
               },
               {
                 title: '选择框',
-                options: ['border'],
+                options: [
+                  'border', 
+                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'opacity'
+                ],
                 target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
               },
               {

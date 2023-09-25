@@ -483,7 +483,7 @@ export default {
                 'border',
                 { type: 'background', config: { disableTextAlign: true } }
               ],
-              target: `.ant-pagination.ant-pagination-disabled .ant-pagination-item-link`
+              target: `.ant-pagination-disabled > .ant-pagination-item-link`
             },
             {
               title: '前置文案字体',

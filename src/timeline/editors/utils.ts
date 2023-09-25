@@ -51,7 +51,10 @@ export const isEqualSchema = (sourceSchema) => {
 
 export const createStyleForDot = ({ target }: StyleModeType<Data>) => ({
   title: '时间轴点',
-  options: ['border'],
+  options: [
+    'border',
+    { type: 'background', config: { disableBackgroundImage: true } }
+  ],
   target
 });
 
