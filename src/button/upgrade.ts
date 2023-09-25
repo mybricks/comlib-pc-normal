@@ -97,7 +97,9 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
     const preStyle = getDeclaredStyle(`button.ant-btn:not([disabled]):active`);
     removeDeclaredStyle(`button.ant-btn:not([disabled]):active`);
     removeDeclaredStyle(`button.ant-btn:not([disabled]):active > span`);
-    setDeclaredStyle(`button.ant-btn:not([disabled]):active`, preStyle.css);
+    if(preStyle?.css){
+      setDeclaredStyle(`button.ant-btn:not([disabled]):active`, preStyle.css);
+    }
   }
 
   return true;
