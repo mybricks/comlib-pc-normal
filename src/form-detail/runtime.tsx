@@ -117,7 +117,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
           }
           for (const [key, value] of Object.entries(ds)) {
             const item = data.items.find(({ key: itemKey }) => key === itemKey);
-            if (item && !!value) {
+            if (item) {
               item.value = value;
             }
           }
