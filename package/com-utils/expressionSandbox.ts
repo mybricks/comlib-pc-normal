@@ -8,7 +8,7 @@ type Options = Partial<{
 export default class Sandbox {
   private options: Options = {};
   constructor(options: Options) {
-    polyfill()
+    polyfill();
     this.options = options;
   }
   private unscopeCompileCode(prefix: string = 'context', expression: string) {
@@ -62,6 +62,9 @@ export default class Sandbox {
         input
       };
     });
+    if (retGroup.length === 1 && retGroup[0].input === retGroup[0].match) {
+      return retGroup[0].ret;
+    }
     const retStr = retGroup.reduce((pre, cur) => {
       const { match, ret } = cur;
       if (match === expression && ret === undefined) {
@@ -69,6 +72,7 @@ export default class Sandbox {
       }
       return pre.replace(match, typeof ret === 'string' ? ret : JSON.stringify(ret));
     }, expression);
+    console.log(retStr);
     try {
       return JSON.parse(retStr);
     } catch (error) {
