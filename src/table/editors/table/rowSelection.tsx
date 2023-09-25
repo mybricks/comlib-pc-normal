@@ -104,6 +104,21 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
           }
         },
         {
+          title: `行点击触发勾选`,
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useRowSelection;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.enableRowClickSelection;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.enableRowClickSelection = value;
+            }
+          }
+        },
+        {
           title: `顶部勾选操作区显示`,
           description: '开启后，显示顶部勾选操作区',
           type: 'Switch',

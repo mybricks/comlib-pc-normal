@@ -567,14 +567,12 @@ export default function (props: RuntimeParams<Data>) {
       const { [DefaultRowKey]: _, ...record } = _record;
       return {
         onClick: (e) => {
-          if (data.useRowSelection && e?.target?.tagName === 'TD') {
+          if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
             setCurrentSelectRows(_record);
           }
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
           }
-          // 如果开通勾选，则屏蔽点击事件
-          if (data.useRowSelection) return;
           if (data.enableRowClick) {
             outputs[OutputIds.ROW_CLICK]({ record, index });
           }

@@ -144,7 +144,14 @@ export default ({
 
     const getCellConfig = (dataSource, currentField, rowIndex) => {
       const { mergeByField, excludeFields } = data.rowMergeConfig || {};
-      if (!data.enbaleRowMerge || !mergeByField || excludeFields?.includes(currentField))
+      if (
+        !data.enbaleRowMerge ||
+        !mergeByField ||
+        excludeFields?.includes(currentField) ||
+        !dataSource ||
+        dataSource.length <= 1 ||
+        typeof dataSource[rowIndex]?.[mergeByField] === 'undefined'
+      )
         return { rowSpan: 1 };
       const fieldValues = dataSource.map((item) => item[mergeByField]);
 
