@@ -125,7 +125,9 @@
     "./src/_service/com.json",
     "./src/_pick/com.json",
     "./src/_excel/com.json",
-    "./src/_pinyin/com.json"
+    "./src/_pinyin/com.json",
+    "./src/_post-message/com.json",
+    "./src/_receive-message/com.json"
   ],
   "externals": [
     {
