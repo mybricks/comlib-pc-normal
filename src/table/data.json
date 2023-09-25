@@ -16,6 +16,7 @@
   "bordered": false,
   "size": "middle",
   "useRowSelection": false,
+  "enableRowClickSelection": false,
   "rowSelectionPostion": [
     "top",
     "bottom"

@@ -138,6 +138,8 @@ export interface Data {
 
   // 使用勾选
   useRowSelection: boolean;
+  // 点击行触发勾选
+  enableRowClickSelection: boolean,
   // 勾选类型
   selectionType: RowSelectionTypeEnum;
   // 勾选操作区位置
