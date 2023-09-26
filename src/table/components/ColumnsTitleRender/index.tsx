@@ -214,7 +214,9 @@ export default ({
         onFilter={onFilter}
         onCell={(record, rowIndex) => {
           const { focusRecord = {}, dataIndex = null } = data.focusCellinfo || {};
-          const isFocus = dataIndex === cItem.dataIndex && focusRecord === record;
+          const rowKey = data.rowKey || '_uuid';
+          const isFocus =
+            dataIndex === cItem.dataIndex && focusRecord?.[rowKey] === record?.[rowKey];
           let res = {
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
             'data-table-column-id': cItem.key,
