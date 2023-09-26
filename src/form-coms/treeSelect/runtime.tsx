@@ -80,6 +80,7 @@ export default function Runtime({
     inputs['setOptions']((ds) => {
       if (Array.isArray(ds)) {
         data.options = ds;
+        setExpandedKeys(getDefaultExpandKeys());
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
@@ -159,10 +160,10 @@ export default function Runtime({
     });
   };
 
-  /** 更新展开节点 */
-  useEffect(() => {
+  /** 更新默认展开节点 */
+  const getDefaultExpandKeys = useCallback(() => {
+    const keys: React.Key[] = [];
     if (env.runtime) {
-      const keys: React.Key[] = [];
       traversalTree(data.options, fieldNames, (item) => {
         const { [data.valueFieldName || 'value']: key, _depth } = item;
         if (data.openDepth < 0) {
@@ -171,9 +172,14 @@ export default function Runtime({
           keys.push(key);
         }
       });
-      setExpandedKeys(keys);
     }
-  }, [data.options]);
+    return keys;
+  }, []);
+
+  /** 展开事件 */
+  const onExpand: TreeSelectProps['onTreeExpand'] = useCallback((keys) => {
+    setExpandedKeys([...expandedKeys, ...keys]);
+  }, []);
 
   /**
    * 树节点遍历渲染
@@ -216,7 +222,7 @@ export default function Runtime({
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : void 0}
         treeExpandedKeys={expandedKeys}
-        // switcherIcon={}
+        onTreeExpand={onExpand}
         multiple={data.config.multiple}
         treeCheckable={data.config.treeCheckable}
         showCheckedStrategy={data.config.showCheckedStrategy}
