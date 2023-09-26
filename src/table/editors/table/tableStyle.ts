@@ -5,12 +5,6 @@ import { Data, SizeEnum } from '../../types';
 import { getFilterSelector } from '../../../utils/cssSelector';
 import { createStyleForTableContent } from '../../utils';
 
-export const DEFAULT_COLOR = {
-  TitleColor: '#1f1f1f',
-  TitleBgColor: '#f5f7f9',
-  ContentColor: '#434343'
-};
-
 const tableStyleEditor = {
   title: '表格样式',
   items: [
