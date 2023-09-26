@@ -221,22 +221,21 @@ export default ({
             style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
             'data-table-column-id': cItem.key,
             ...getCellConfig(dataSource, cItem.dataIndex, rowIndex),
-            'data-focus-cell': isFocus ? true : undefined,
+            'data-focus-cell': data.enableCellFocus && isFocus ? true : undefined,
             onClick:
               data.enableCellClick || data.enableCellFocus
                 ? () => {
-                    if (data.enableCellFocus) {
-                      if (isFocus) {
-                        data.focusCellinfo = null;
-                      } else {
-                        data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
-                      }
+                    if (isFocus) {
+                      data.focusCellinfo = null;
+                    } else {
+                      data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
                     }
                     if (data.enableCellClick) {
                       outputs[OutputIds.CELL_CLICK]({
                         record,
                         index: rowIndex,
-                        dataIndex: cItem.dataIndex
+                        dataIndex: cItem.dataIndex,
+                        isFocus: !isFocus
                       });
                     }
                   }

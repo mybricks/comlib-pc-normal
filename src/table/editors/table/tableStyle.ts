@@ -101,6 +101,18 @@ const tableStyleEditor = {
       target: ({ id }) => `table tbody tr.mybricks-table-row-double td${getFilterSelector(id)}`,
     },
     {
+      title: '单元格选中状态',
+      type: 'switch',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.enableCellFocus;
+        },
+        set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
+          data.enableCellFocus = value;
+        }
+      }
+    },
+    {
       title: '表格样式控制',
       items: createStyleForTableContent()
     }

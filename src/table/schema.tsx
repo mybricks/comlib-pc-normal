@@ -477,6 +477,9 @@ export const Schemas = {
       },
       dataIndex: {
         type: 'string'
+      },
+      isFocus: {
+        type: 'boolean'
       }
     }
   }

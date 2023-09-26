@@ -65,18 +65,6 @@ export default {
       }
     },
     {
-      title: '单元格选中状态',
-      type: 'switch',
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.enableCellFocus;
-        },
-        set({ data, output, ...res }: EditorResult<Data>, value: boolean) {
-          data.enableCellFocus = value;
-        }
-      }
-    },
-    {
       title: '行双击',
       type: 'switch',
       value: {
