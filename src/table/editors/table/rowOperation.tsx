@@ -65,7 +65,7 @@ export default {
       }
     },
     {
-      title: '单元格选中样式',
+      title: '单元格选中状态',
       type: 'switch',
       value: {
         get({ data }: EditorResult<Data>) {
