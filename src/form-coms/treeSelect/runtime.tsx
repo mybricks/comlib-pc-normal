@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { uniq } from 'lodash';
-import { TreeNodeProps, TreeSelect, Image } from 'antd';
+import { TreeNodeProps, TreeSelect, Image, TreeSelectProps } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
@@ -223,6 +223,7 @@ export default function Runtime({
         treeDefaultExpandAll={env.design ? true : void 0}
         treeExpandedKeys={expandedKeys}
         onTreeExpand={onExpand}
+        switcherIcon={(props) => getIcon(data.switcherIcon, props)}
         multiple={data.config.multiple}
         treeCheckable={data.config.treeCheckable}
         showCheckedStrategy={data.config.showCheckedStrategy}
@@ -244,6 +245,35 @@ export default function Runtime({
     </div>
   );
 }
+
+/**
+ * 简单图标渲染
+ * @param iconConfig 图标配置
+ * @param props renderProps
+ * @returns JSX
+ */
+const getIcon = (iconConfig: IconType, props: TreeNodeProps) => {
+  const { src, innerIcon, customIcon } = iconConfig || {};
+  switch (src) {
+    case 'inner':
+      return Icons && innerIcon && Icons[innerIcon]?.render();
+    case 'custom':
+      const { expanded } = props || {};
+      return (
+        customIcon && (
+          <Image
+            src={customIcon}
+            preview={false}
+            style={{
+              transform: expanded ? 'rotate(90deg)' : void 0
+            }}
+          />
+        )
+      );
+    default:
+      return void 0;
+  }
+};
 
 /**
  * 节点图标渲染
