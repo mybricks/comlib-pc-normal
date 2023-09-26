@@ -144,7 +144,8 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  return `.{id} div.ant-select-dropdown-placement-bottomLeft`
+                  //return `.{id} div.ant-select-dropdown-placement-bottomLeft`
+                  return `.{id}.ant-select-dropdown`
                 }
               }
             ]

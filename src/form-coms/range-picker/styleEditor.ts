@@ -202,6 +202,17 @@ const styleEditor = [
                 target({ id }: EditorResult<Data>) {
                   return `.{id} .ant-picker-header-view button:hover`
                 }
+              },
+              {
+                title: '确认按钮',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'border' },
+                  'BoxShadow'
+                ],
+                global: true,
+                target: `.{id}  .ant-btn:not([disabled]):hover`
               }
             ]
           },
