@@ -2,7 +2,14 @@ import { InputIds, OutputIds } from '../types';
 import { Schemas } from './constants';
 import { Data } from './types';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ 
+  data, 
+  input, 
+  output,
+  getDeclaredStyle,
+  removeDeclaredStyle,
+  setDeclaredStyle
+ }: UpgradeParams<Data>): boolean {
 
   const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
 
@@ -116,6 +123,21 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   //=========== v1.0.25 end ===============
+
+
+  /**
+    * @description v1.0.30 -> v1.0.31 下拉区域target改写
+  */
+
+  const preDropdownStyle = getDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
+
+  let dropdownCss: React.CSSProperties = {}, css: React.CSSProperties = {}, hoverCss: React.CSSProperties = {};
+  
+  if (preDropdownStyle) {
+    dropdownCss = { ...preDropdownStyle.css };
+    removeDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
+    setDeclaredStyle('.{id}.ant-select-dropdown', dropdownCss);
+  }
 
   return true;
 }

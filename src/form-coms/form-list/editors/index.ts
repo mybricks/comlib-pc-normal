@@ -2,12 +2,11 @@ import { message } from 'antd'
 import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
 import { ButtonType } from 'antd/es/button/button'
 import { actionsEditor } from './actions'
-import { StyleEditor } from './styleEditor'
-import { IconEditor } from './iconEditor'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
 import { fieldNameCheck, getFormItem, getFormItemProp, isShowLabel, setFormItemProps } from '../utils'
+import { StylesEditor } from './stylesEditor'
 
 const defaultRules = [
   {
@@ -924,6 +923,77 @@ export default {
   },
   '[data-form-actions-item]': {
     title: '操作',
+    style: [
+      ...StylesEditor,
+      {
+        items: [
+          {
+            options: ['size'],
+            catelog: '默认',
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '默认',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: 'Hover',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]:hover`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '激活',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]:active`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '禁用',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled]`
+            }
+          }
+        ]
+      }
+    ],
     items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2) => {
       if (!focusArea) return;
       const comId = focusArea.dataset['formActionsItem'];
@@ -1008,11 +1078,11 @@ export default {
         },
       ];
 
-      cate2.title = '样式';
-      cate2.items = [
-        ...StyleEditor(btn),
-        ...IconEditor(btn)
-      ];
+      // cate2.title = '样式';
+      // cate2.items = [
+      //   ...StyleEditor(btn),
+      //   ...IconEditor(btn),
+      // ];
     }
 
   }
