@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { uniq } from 'lodash';
-import { TreeNodeProps, TreeSelect, Image } from 'antd';
+import { TreeNodeProps, TreeSelect, Image, TreeSelectProps } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
@@ -80,6 +80,7 @@ export default function Runtime({
     inputs['setOptions']((ds) => {
       if (Array.isArray(ds)) {
         data.options = ds;
+        setExpandedKeys(getDefaultExpandKeys());
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
@@ -159,10 +160,10 @@ export default function Runtime({
     });
   };
 
-  /** 更新展开节点 */
-  useEffect(() => {
+  /** 更新默认展开节点 */
+  const getDefaultExpandKeys = useCallback(() => {
+    const keys: React.Key[] = [];
     if (env.runtime) {
-      const keys: React.Key[] = [];
       traversalTree(data.options, fieldNames, (item) => {
         const { [data.valueFieldName || 'value']: key, _depth } = item;
         if (data.openDepth < 0) {
@@ -171,9 +172,14 @@ export default function Runtime({
           keys.push(key);
         }
       });
-      setExpandedKeys(keys);
     }
-  }, [data.options]);
+    return keys;
+  }, []);
+
+  /** 展开事件 */
+  const onExpand: TreeSelectProps['onTreeExpand'] = useCallback((keys) => {
+    setExpandedKeys([...expandedKeys, ...keys]);
+  }, []);
 
   /**
    * 树节点遍历渲染
@@ -216,7 +222,8 @@ export default function Runtime({
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : void 0}
         treeExpandedKeys={expandedKeys}
-        // switcherIcon={}
+        onTreeExpand={onExpand}
+        switcherIcon={(props) => getIcon(data.switcherIcon, props)}
         multiple={data.config.multiple}
         treeCheckable={data.config.treeCheckable}
         showCheckedStrategy={data.config.showCheckedStrategy}
@@ -238,6 +245,35 @@ export default function Runtime({
     </div>
   );
 }
+
+/**
+ * 简单图标渲染
+ * @param iconConfig 图标配置
+ * @param props renderProps
+ * @returns JSX
+ */
+const getIcon = (iconConfig: IconType, props: TreeNodeProps) => {
+  const { src, innerIcon, customIcon } = iconConfig || {};
+  switch (src) {
+    case 'inner':
+      return Icons && innerIcon && Icons[innerIcon]?.render();
+    case 'custom':
+      const { expanded } = props || {};
+      return (
+        customIcon && (
+          <Image
+            src={customIcon}
+            preview={false}
+            style={{
+              transform: expanded ? 'rotate(90deg)' : void 0
+            }}
+          />
+        )
+      );
+    default:
+      return void 0;
+  }
+};
 
 /**
  * 节点图标渲染

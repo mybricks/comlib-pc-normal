@@ -20,7 +20,10 @@ export interface Data {
   childrenFieldName?: string
   loadDataOnce?: boolean,
   icons: IconType[],
+  // 默认展开深度
   openDepth: number,
+  // 展开图标配置
+  switcherIcon: IconType
 }
 
 export type IconSrcType = false | 'custom' | 'inner';

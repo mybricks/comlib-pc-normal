@@ -1,4 +1,4 @@
-import { Data } from './types';
+import { Data, IconType } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
 
@@ -91,6 +91,18 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   //=========== v1.1.12 end ===============
+
+  /**
+    * @description v1.1.13 增加 展开/收起图标switcherIcon 配置项, 修复默认展开深度和异步加载的冲突
+    */
+
+  if (!data.switcherIcon) {
+    data.switcherIcon = {
+      src: false
+    } as IconType;
+  }
+
+  //=========== v1.1.13 end ===============
 
   return true;
 }
