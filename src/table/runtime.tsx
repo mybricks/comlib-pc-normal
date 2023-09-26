@@ -194,7 +194,11 @@ export default function (props: RuntimeParams<Data>) {
         setDataSource((prevDataSource) => {
           if (index > prevDataSource.length) return prevDataSource;
           const temp = [...prevDataSource];
-          temp[index] = value;
+          const tempCellValue = temp[index];
+          temp[index] = {
+            ...tempCellValue, // 需要保留类似rowKey的数据
+            ...value
+          };
           return temp;
         });
       }
