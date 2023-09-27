@@ -3,18 +3,21 @@ import { isEmptyObject } from '../utils';
 import { ContentTypeEnum, IColumn } from './types';
 import { OutputIds } from './constants';
 import { Schemas, upgradeSchema } from './schema'
-
+import {
+  OutputIds as PaginatorOutputIds,
+  InputIds as PaginatorInputIds
+} from './components/Paginator/constants';
 import { Data } from './types';
 import { addFilterIO } from './editors/table-item/filterEditor';
 
-export default function ({ 
-  data, 
+export default function ({
+  data,
   setDeclaredStyle,
   getDeclaredStyle,
   removeDeclaredStyle,
-  id, 
-  slot, 
-  output, 
+  id,
+  slot,
+  output,
   input }: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.22 支持领域模型
@@ -134,11 +137,31 @@ export default function ({
   const prePaginationStyle = getDeclaredStyle(`.ant-pagination.ant-pagination-disabled .ant-pagination-item-link`);
 
   let paginationCss: React.CSSProperties = {};
-  
+
   if (prePaginationStyle) {
     paginationCss = { ...prePaginationStyle.css };
     removeDeclaredStyle(`.ant-pagination.ant-pagination-disabled .ant-pagination-item-link`);
     setDeclaredStyle('.ant-pagination-disabled > .ant-pagination-item-link', paginationCss);
   }
+
+  /**
+   * @description 1.0.73 “设置当前页码”增加 ”设置完成“ 关联输出项
+  */
+
+  const setPageNumPin = input.get(PaginatorInputIds.SetPageNum);
+  const setPageNumFinishPin = output.get(PaginatorOutputIds.SetPageNumFinish);
+  if (setPageNumPin) {
+    if (!setPageNumFinishPin) {
+      output.add(PaginatorOutputIds.SetPageNumFinish, '设置页码完成', {
+        type: 'number'
+      });
+    }
+    if (!setPageNumPin.rels) {
+      setPageNumPin.setRels([PaginatorOutputIds.SetPageNumFinish]);
+    }
+  }
+
+  //=========== v1.0.73 end ===============
+
   return true;
 }
