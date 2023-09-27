@@ -20,17 +20,18 @@ export default function ({
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
   const validate = useCallback(
-    (output) => {
+    (model, outputRels) => {
       validateFormItem({
         value,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
-          output(r);
+          outputRels(r);
         })
         .catch((e) => {
-          output(e);
+          outputRels(e);
         });
     },
     [value]
@@ -73,6 +74,7 @@ export default function ({
     const _value = e.target.value;
     setValue(_value);
     onChangeForFc(parentSlot, { id, name, value: _value });
+    onValidateTrigger();
     outputs['onChange'](_value);
   };
 

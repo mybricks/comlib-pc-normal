@@ -7,6 +7,7 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
+import { validateTrigger } from '../form-container/models/validate';
 
 export default function ({
   data,
@@ -21,7 +22,7 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
     data;
-  const _dataSource = dataSource.map((item) => {
+  const _dataSource = dataSource?.map((item) => {
     if (!item.key) {
       item.key = uuid();
     }
@@ -31,17 +32,18 @@ export default function ({
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
 
   const validate = useCallback(
-    (output) => {
+    (model, outputRels) => {
       validateFormItem({
         value: targetKeys,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
-          output(r);
+          outputRels(r);
         })
         .catch((e) => {
-          output(e);
+          outputRels(e);
         });
     },
     [targetKeys]
@@ -98,9 +100,14 @@ export default function ({
     data.dataSource = dataSource;
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name: name });
+  };
+
   const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
     setTargetKeys(targetKeys);
     onChangeForFc(parentSlot, { id, name, value: targetKeys });
+    onValidateTrigger();
     outputs['onChange'](targetKeys);
   };
 

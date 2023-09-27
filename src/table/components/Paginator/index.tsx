@@ -49,9 +49,10 @@ export default (props: Props) => {
           data.total = val;
         }
       });
-      inputs[InputIds.SetPageNum]((val) => {
+      inputs[InputIds.SetPageNum]((val, relOutputs) => {
         setPageNum(val);
         data.currentPage.pageNum = val;
+        relOutputs[OutputIds.SetPageNumFinish]?.(val);
       });
       inputs[InputIds.GetPageInfo]((val, relOutputs) => {
         relOutputs[OutputIds.GetPageInfo](data.currentPage);

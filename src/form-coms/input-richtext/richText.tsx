@@ -288,10 +288,11 @@ export default function ({
 
   useEffect(() => {
     //3.校验
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: valueRef.current,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
