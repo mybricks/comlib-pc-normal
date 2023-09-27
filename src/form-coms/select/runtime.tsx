@@ -78,10 +78,11 @@ export default function Runtime({
   }, [data.config.mode, data.config.labelInValue]);
 
   useLayoutEffect(() => {
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: data.value,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
