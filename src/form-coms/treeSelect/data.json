@@ -1,6 +1,9 @@
 {
   "maxTagCountType": "isResponsive",
   "options": [],
+  "switcherIcon": {
+    "src": false
+  },
   "config": {
     "disabled": false,
     "placeholder": "请选择",
