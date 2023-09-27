@@ -2,6 +2,7 @@ import { Switch, SwitchProps } from 'antd';
 import React, { useCallback } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
+import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { StatusEnum } from './const';
 
@@ -68,10 +69,15 @@ export default function ({
     }
   });
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name: name });
+  };
+
   const changeValue = useCallback((checked) => {
     if (env.edit) return;
     data.config.checked = checked;
     onChangeForFc(parentSlot, { id: id, value: checked, name: name });
+    onValidateTrigger();
     outputs['onChange'](checked);
   }, []);
 
