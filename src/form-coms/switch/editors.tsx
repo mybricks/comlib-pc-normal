@@ -4,11 +4,11 @@ import { Data } from './runtime';
 import { createrCatelogEditor } from '../utils';
 
 export default {
-  // '@resize': {
-  //   // options: ['width']
-  // },
+  '@resize': {
+    options: ['width']
+  },
   '@init'({ style }) {
-    style.width = 'fit-content';
+    style.width = '100%';
   },
   ':root': {
     style: [
