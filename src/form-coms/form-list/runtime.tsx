@@ -80,7 +80,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }, []);
 
     // 校验
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       // 校验子项
       validate()
         .then(() => {
@@ -88,6 +88,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           validateFormItem({
             value: data.value,
             env,
+            model,
             rules: data.rules
           })
             .then((r) => {
