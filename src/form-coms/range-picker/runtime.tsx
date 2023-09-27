@@ -187,10 +187,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       });
 
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: value,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {

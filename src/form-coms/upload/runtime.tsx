@@ -78,9 +78,10 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         fileListRef.current = val;
         outputs[OutputIds.OnInitial](val);
       });
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: fileListRef.current,
+        model,
         env,
         rules: data.rules
       })

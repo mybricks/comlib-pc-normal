@@ -51,17 +51,18 @@ export default function ({
       setEnabled() {
         data.config.disabled = false;
       },
-      validate(output) {
+      validate(model, outputRels) {
         validateFormItem({
           value: data.config.checked,
           env,
+          model,
           rules: data.rules
         })
           .then((r) => {
-            output(r);
+            outputRels(r);
           })
           .catch((e) => {
-            output(e);
+            outputRels(e);
           });
       }
     }

@@ -21,7 +21,7 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { dataSource, showSearch, oneWay, showDesc, showPagination, pagination, titles, disabled } =
     data;
-  const _dataSource = dataSource.map((item) => {
+  const _dataSource = dataSource?.map((item) => {
     if (!item.key) {
       item.key = uuid();
     }
@@ -31,17 +31,18 @@ export default function ({
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
 
   const validate = useCallback(
-    (output) => {
+    (model, outputRels) => {
       validateFormItem({
         value: targetKeys,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
-          output(r);
+          outputRels(r);
         })
         .catch((e) => {
-          output(e);
+          outputRels(e);
         });
     },
     [targetKeys]

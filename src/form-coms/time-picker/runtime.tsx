@@ -27,17 +27,18 @@ export default function ({
   const { placeholder, disabled, format, customFormat } = data;
   const [value, setValue] = useState<Moment | null>();
   const validate = useCallback(
-    (output) => {
+    (model, outputRels) => {
       validateFormItem({
         value: value?.valueOf(),
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
-          output(r);
+          outputRels(r);
         })
         .catch((e) => {
-          output(e);
+          outputRels(e);
         });
     },
     [value]
