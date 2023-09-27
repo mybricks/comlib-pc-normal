@@ -110,10 +110,10 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
       {data.actions.items.map((item) => {
         const { iconConfig, ...res } = item;
         const icon = getBtnIcon(item);
+        if (item.visible === false) {
+          return null;
+        }
         if (!env.edit) {
-          if (item.visible === false) {
-            return null;
-          }
           const dynamicDisplay = getDynamicDisplay(
             item,
             currentField,

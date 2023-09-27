@@ -16,7 +16,8 @@ interface Env {
     getExecuteEnv?: () => any;
     getProps: () => any;
     getCookies: () => any;
-    getRouter: () => Record<string, Function>
+    getRouter: () => Record<string, Function>;
+    locale: string | number | symbol | undefined;
   },
   hasPermission: (id: string) => boolean
   [x: string]: any

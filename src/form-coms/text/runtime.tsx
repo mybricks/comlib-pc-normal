@@ -60,17 +60,18 @@ export default function (props: RuntimeParams<Data>) {
       setEnabled() {
         data.config.disabled = false;
       },
-      validate(output) {
+      validate(model, relOutput) {
         validateFormItem({
           value: data.value,
           env,
+          model,
           rules: data.rules
         })
           .then((r) => {
-            output(r);
+            relOutput(r);
           })
           .catch((e) => {
-            output(e);
+            relOutput(e);
           });
       }
     }

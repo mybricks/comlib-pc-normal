@@ -117,7 +117,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (item && isFormItem) {
         // const input = childrenInputs[item.id];
         const input = getFromItemInputEvent(item, childrenInputs);
-        validateForInput({ item, input });
+        validateForInput({
+          input,
+          model: {
+            curFormItem: item,
+            ...formContext.current.store
+          }
+        });
       }
     });
   }, []);
@@ -243,7 +249,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
-            validateForInput({ item, input }, resolve);
+            validateForInput(
+              {
+                input,
+                model: {
+                  curFormItem: item,
+                  ...formContext.current.store
+                }
+              },
+              resolve
+            );
           });
         })
       )
@@ -400,10 +415,11 @@ const getFormItems = (data: Data, childrenInputs) => {
  * @description 触发表单项校验，并更新校验结果
  */
 const validateForInput = (
-  { input, item }: { input: FormControlInputType; item: any },
+  { input, model }: { input: FormControlInputType; model: any },
   cb?: (val: any) => void
 ): void => {
-  input?.validate({ ...item }).returnValidate((validateInfo) => {
+  const item = model?.curFormItem;
+  input?.validate(model).returnValidate((validateInfo) => {
     item.validateStatus = validateInfo?.validateStatus;
     item.help = validateInfo?.help;
     if (cb) {

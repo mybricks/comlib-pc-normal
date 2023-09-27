@@ -3,6 +3,7 @@ import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import ColorPicker from './color-picker';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { validateTrigger } from '../form-container/models/validate';
 
 export interface Data {
   color: string;
@@ -59,10 +60,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       });
     //3.校验
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: data.color,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
@@ -104,6 +106,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     setIsShow(!isShow);
   };
 
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id, name: name });
+  };
+
   const onChangeComplete = (e) => {
     data.color = e;
     //值变化
@@ -117,6 +123,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         outputs['onChange'](rgbToHex(data.color));
         break;
     }
+    onValidateTrigger();
   };
 
   document.addEventListener('click', (e) => {

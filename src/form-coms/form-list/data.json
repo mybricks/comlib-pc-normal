@@ -36,6 +36,7 @@
         "outputId": "add",
         "key": "add",
         "size": "middle",
+        "displayExpression": "{item.isLast || item.listLength == 0}",
         "iconConfig": {
           "src": false,
           "gutter": 8,
@@ -49,6 +50,7 @@
         "outputId": "remove",
         "key": "remove",
         "size": "middle",
+        "displayExpression": "{item.listLength !== 0}",
         "iconConfig": {
           "src": false,
           "gutter": 8,

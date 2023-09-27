@@ -29,10 +29,11 @@ export default function (props: RuntimeParams<Data>) {
       outputs[OutputIds.OnInitial](val);
     });
 
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: data.value,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
@@ -74,7 +75,7 @@ export default function (props: RuntimeParams<Data>) {
     <div>
       {slots[SlotIds.FormItem] &&
         slots[SlotIds.FormItem].render({
-          wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
+          wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[] = []) {
             comAray.forEach((com) => {
               // 编辑态：收集表单项组件
               if (env.edit && com.outputs?.[OutputIds.ReturnValue]) {

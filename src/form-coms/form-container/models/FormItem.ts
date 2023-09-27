@@ -12,7 +12,7 @@ interface FormItemInputsProps {
     getValue?: (cb) => void
     returnValue?: (cb) => void
     resetValue?: () => void
-    validate?: (cb) => void
+    validate?: (model, cb) => void
     setDisabled?: () => void
     setEnabled?: () => void
     onChange?: (val) => void
@@ -38,7 +38,7 @@ const formItemOutputIds = {
 }
 
 const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: FormItemInputsProps, deps?: React.DependencyList) => {
-  
+
   useLayoutEffect(() => {
     /**
      * @description 设置值
@@ -49,10 +49,10 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
       }
 
       // 触发onchange
-      
-      if(configs?.onChange){
+
+      if (configs?.onChange) {
         configs.onChange(val)
-      }else{
+      } else {
         outputs[formItemOutputIds.ON_CHANGE](val);
       }
       if (parentSlot && id) {
@@ -66,7 +66,7 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     inputs[formItemInputIds.SET_INITIAL_VALUE] && inputs[formItemInputIds.SET_INITIAL_VALUE]((val) => {
       if (configs?.setInitialValue) {
         configs.setInitialValue(val)
-      } 
+      }
       outputs[formItemOutputIds.ON_INITIAL](val);
     });
 
@@ -93,9 +93,9 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 校验
      */
-    inputs[formItemInputIds.VALIDATE] && inputs[formItemInputIds.VALIDATE]((val, outputRels) => {
+    inputs[formItemInputIds.VALIDATE] && inputs[formItemInputIds.VALIDATE]((model, outputRels) => {
       if (configs?.validate) {
-        configs.validate(outputRels[formItemOutputIds.RETURN_VALIDATE])
+        configs.validate(model, outputRels[formItemOutputIds.RETURN_VALIDATE])
       }
     });
 
@@ -106,7 +106,7 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
       if (configs?.setDisabled) {
         configs.setDisabled()
       }
-      
+
     });
 
     /**
