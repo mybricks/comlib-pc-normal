@@ -38,10 +38,6 @@
         "size": "middle",
         "iconConfig": {
           "src": false,
-          "size": [
-            14,
-            14
-          ],
           "gutter": 8,
           "location": "front"
         }
@@ -55,10 +51,6 @@
         "size": "middle",
         "iconConfig": {
           "src": false,
-          "size": [
-            14,
-            14
-          ],
           "gutter": 8,
           "location": "front"
         }

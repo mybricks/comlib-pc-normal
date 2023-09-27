@@ -940,6 +940,32 @@ export default {
             }
           },
           {
+            title: '内置图标',
+            catelog: '默认',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"] .anticon`;
+            }
+          },
+          {
+            title: '自定义图标',
+            catelog: '默认',
+            options: ['size'],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"] .ant-image-img`;
+            }
+          },
+          {
             title: '按钮样式',
             catelog: '默认',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
@@ -966,6 +992,32 @@ export default {
             }
           },
           {
+            title: '内置图标',
+            catelog: 'Hover',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]:hover .anticon`;
+            }
+          },
+          {
+            title: '自定义图标',
+            catelog: 'Hover',
+            options: ['size'],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]:hover .ant-image-img`;
+            }
+          },
+          {
             title: '按钮样式',
             catelog: '激活',
             options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
@@ -976,6 +1028,32 @@ export default {
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:active`;
+            }
+          },
+          {
+            title: '内置图标',
+            catelog: '激活',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]:active .anticon`;
+            }
+          },
+          {
+            title: '自定义图标',
+            catelog: '激活',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"]:active .ant-image-img`;
             }
           },
           {
@@ -990,7 +1068,33 @@ export default {
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled]`
             }
-          }
+          },
+          {
+            title: '内置图标',
+            catelog: '禁用',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled] .anticon`;
+            }
+          },
+          {
+            title: '自定义图标',
+            catelog: '激活',
+            options: [{ type: 'font', config: { disableTextAlign: true } }],
+            target({ focusArea, data }) {
+              if (!focusArea) return;
+              const comId = focusArea.dataset['formActionsItem'];
+              const btn = data.actions.items.find(item => item.key === comId);
+
+              if (!btn) return;
+              return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled] .ant-image-img`;
+            }
+          },
         ]
       }
     ],
