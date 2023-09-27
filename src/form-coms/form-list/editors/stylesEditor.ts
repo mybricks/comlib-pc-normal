@@ -172,42 +172,6 @@ export const StylesEditor =  [
       }
     },
     {
-      title: '尺寸',
-      type: 'InputNumber',
-      options: [
-        { title: '高度', min: 0, width: 100 },
-        { title: '宽度', min: 0, width: 100 }
-      ],
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-          const comId = focusArea.dataset['formActionsItem'];
-          const btn = data.actions.items.find(item => item.key === comId);
-  
-        if (!btn) return;
-        return !!btn.iconConfig?.src;
-      },
-      value: {
-        get({ data, focusArea }: EditorResult<Data>) {
-          if (!focusArea) return;
-          const comId = focusArea.dataset['formActionsItem'];
-          const btn = data.actions.items.find(item => item.key === comId);
-  
-          if (!btn) return;
-  
-          return btn.iconConfig?.size || [14, 14];
-        },
-        set({ data, focusArea }: EditorResult<Data>, value: [number, number]) {
-          if (!focusArea) return;
-          const comId = focusArea.dataset['formActionsItem'];
-          const btn = data.actions.items.find(item => item.key === comId);
-  
-          if (!btn) return;
-  
-          btn.iconConfig.size = value;
-        }
-      }
-    },
-    {
       title: '间距',
       type: 'Inputnumber',
       options: [{ min: 0, max: 1000, width: 200 }],

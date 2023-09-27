@@ -1,6 +1,6 @@
 import { Data, LocationEnum, SizeEnum } from "./types";
 
-export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
 
   /**
    * @description v1.1.0
@@ -57,6 +57,20 @@ export default function ({ data, input, output, slot }: UpgradeParams<Data>): bo
   }
 
   //=========== v1.1.0 end ===============
+
+  //v1.1.0 -> v1.1.1 兼容操作按钮图标尺寸配置
+  data.actions.items.forEach(btn => {
+    if (btn.iconConfig.size && btn.iconConfig.size.length === 2) {
+      setDeclaredStyle(
+        `button[data-form-actions-item="${btn.key}"] .anticon`,
+        {fontSize: `${Math.max(...btn.iconConfig.size)}px`}
+      );
+      setDeclaredStyle(
+        `button[data-form-actions-item="${btn.key}"] .ant-image-img`, 
+        { width: `${btn.iconConfig.size[1]}px`, height: `${btn.iconConfig.size[0]}px` }
+      );
+      btn.iconConfig.size = [];
+  }})
 
   return true;
 }

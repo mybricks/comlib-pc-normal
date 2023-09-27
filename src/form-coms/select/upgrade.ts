@@ -136,7 +136,7 @@ export default function ({
   if (preDropdownStyle) {
     dropdownCss = { ...preDropdownStyle.css };
     removeDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
-    setDeclaredStyle('.{id}.ant-select-dropdown', dropdownCss);
+    setDeclaredStyle('.{id}.ant-select-dropdown', dropdownCss, true);
   }
 
   return true;

@@ -6,6 +6,7 @@ import { Action, Data, LocationEnum } from '../types';
 import { unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
+import css from '../styles.less';
 
 export interface FormListActionsProps {
   operation?: FormListOperation;
@@ -187,11 +188,20 @@ export { Actions, ActionsWrapper };
 const getBtnIcon = (btn: Action) => {
   const { src, size, gutter, innerIcon, customIcon } = btn.iconConfig || {};
   if (src === 'custom' && customIcon)
-    return <Image width={size[1] || 14} height={size[0] || 14} src={customIcon} preview={false} />;
+    return (
+      <Image
+        className={css.image}
+        //width={size[1] || 14} height={size[0] || 14}
+        src={customIcon}
+        preview={false}
+      />
+    );
   if (src === 'inner') {
     return (
       Icons && (
-        <span style={{ fontSize: Math.max(...size) }}>
+        <span
+        //style={{ fontSize: Math.max(...size) }}
+        >
           {Icons[innerIcon || ('EditOutlined' as string)]?.render()}
         </span>
       )
