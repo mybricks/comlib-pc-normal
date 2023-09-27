@@ -118,7 +118,7 @@ export const ruleFnMap = {
   },
 };
 
-export function validateFormItem({ value, env, rules }) {
+export function validateFormItem({ value, model, env, rules }) {
   const curRule = (rules || defaultRules).filter(item => item.status)
 
   return new Promise((resolve, reject) => {
@@ -135,7 +135,7 @@ export function validateFormItem({ value, env, rules }) {
           args: [
             value,
             {
-              ...env,
+              model,
               ...validateFn
             }
           ],
