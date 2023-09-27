@@ -18,6 +18,7 @@ import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
 import SummaryColumn from './table/summaryColumn';
 import SummaryColumnEditor from './table-summary';
+import rowSelectEditor from './rowSelect';
 
 import { getColumnsSchema } from '../utils';
 import {
@@ -157,5 +158,6 @@ export default {
   },
   ...columnEditor,
   ...PaginatorEditor,
-  ...SummaryColumnEditor
+  ...SummaryColumnEditor,
+  ...rowSelectEditor
 };
