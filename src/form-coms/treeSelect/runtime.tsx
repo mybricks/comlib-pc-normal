@@ -35,10 +35,11 @@ export default function Runtime({
   });
 
   useLayoutEffect(() => {
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: data.value,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
