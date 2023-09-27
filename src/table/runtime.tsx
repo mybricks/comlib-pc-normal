@@ -199,6 +199,7 @@ export default function (props: RuntimeParams<Data>) {
             ...tempValue, // 需要保留类似rowKey的数据
             ...value
           };
+          console.log('222222', prevDataSource[index], temp[index]);
           return temp;
         });
       }
@@ -274,6 +275,16 @@ export default function (props: RuntimeParams<Data>) {
         });
     }
   }, [selectedRows, selectedRowKeys]);
+
+  useEffect(() => {
+    if (env.runtime) {
+      // 数据源变化时，修改选中的行数据
+      const newRows = selectedRowKeys.map((key) => {
+        return dataSource.find((item) => item?.[rowKey] === key) || {};
+      });
+      setSelectedRows(newRows);
+    }
+  }, [dataSource, selectedRowKeys]);
 
   // 前端分页逻辑
   const filterDataSourceBySortAndFilter = () => {
