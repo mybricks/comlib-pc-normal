@@ -71,10 +71,15 @@ export default {
       }
 
       inputs.add(PaginatorInputIds.SetTotal, '设置数据总数', { type: 'number' });
+
       inputs.add(PaginatorInputIds.SetPageNum, '设置当前页码', { type: 'number' });
+      outputs.add(PaginatorOutputIds.SetPageNumFinish, '设置页码完成', { type: 'number' });
+      inputs.get(PaginatorInputIds.SetPageNum).setRels([PaginatorOutputIds.SetPageNumFinish]);
+
       inputs.add(PaginatorInputIds.GetPageInfo, '获取分页数据', { type: 'any' });
       outputs.add(PaginatorOutputIds.GetPageInfo, '分页数据', PageSchema);
       inputs.get(PaginatorInputIds.GetPageInfo).setRels([PaginatorOutputIds.GetPageInfo]);
+
       outputs.add(PaginatorOutputIds.PageChange, '点击分页', PageSchema);
     } else {
       // 不在领域模型内时，清空domain信息
