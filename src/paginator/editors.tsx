@@ -253,11 +253,25 @@ export default {
           ...catelogEditors('默认', [
             {
               title: '页码',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
               target: `.ant-pagination-item`
             },
             {
               title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-simple .ant-pagination-simple-pager`
+            },
+            {
+              title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               initValue: {
                 color: '#000000'
@@ -275,6 +289,9 @@ export default {
             },
             {
               title: '前置文案字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               target: `.ant-pagination-total-text`
             },
@@ -303,6 +320,14 @@ export default {
               target({ id }: EditorResult<Data>) {
                 return `.{id} .ant-select-item:not(.ant-select-item-option-selected)`;
               }
+            },
+            {
+              title: '跳转输入框',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-simple .ant-pagination-simple-pager input`
             }
             // {
             //   title: '跳转字体',
@@ -318,12 +343,27 @@ export default {
           ...catelogEditors('Hover', [
             {
               title: '页码',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
               target: `.ant-pagination-item:hover`,
               domTarget: '.ant-pagination-item'
             },
             {
               title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination-simple .ant-pagination-simple-pager:hover`,
+              domTarget: `.ant-pagination-simple .ant-pagination-simple-pager`
+            },
+            {
+              title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               initValue: {
                 color: '#000000'
@@ -367,16 +407,32 @@ export default {
               target({ id }: EditorResult<Data>) {
                 return `.{id} .ant-select-item:hover:not(.ant-select-item-option-selected)`;
               }
+            },
+            {
+              title: '跳转输入框',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-simple .ant-pagination-simple-pager input:hover`,
+              domTarget: `.ant-pagination-simple .ant-pagination-simple-pager input`
             }
           ]),
           ...catelogEditors('激活', [
             {
               title: '页码',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
               target: `.ant-pagination-item.ant-pagination-item-active`
             },
+
             {
               title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               initValue: {
                 color: '#000000'
@@ -396,16 +452,39 @@ export default {
               target({ id }: EditorResult<Data>) {
                 return `.{id} .ant-select-item-option-selected`;
               }
+            },
+            {
+              title: '跳转输入框',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: `.ant-pagination-simple .ant-pagination-simple-pager input:focus`,
+              domTarget: `.ant-pagination-simple .ant-pagination-simple-pager input`
             }
           ]),
           ...catelogEditors('禁用', [
             {
               title: '整体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'background', config: { disableBackgroundImage: true } }],
               target: '.paginationDisable'
             },
             {
               title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-pagination.ant-pagination-disabled .ant-pagination-simple-pager`
+            },
+            {
+              title: '页码字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               initValue: {
                 color: '#000000'
@@ -423,6 +502,9 @@ export default {
             },
             {
               title: '前置文案字体',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size !== SizeTypeEnum.Simple;
+              },
               options: [{ type: 'font', config: { disableTextAlign: true } }],
               target: `.ant-pagination-disabled .ant-pagination-total-text`
             },
@@ -437,6 +519,18 @@ export default {
                 { type: 'background', config: { disableBackgroundImage: true } }
               ],
               target: `.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector`
+            },
+            {
+              title: '跳转输入框',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.size === SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: `.ant-pagination-simple .ant-pagination-simple-pager input[disabled]`
             }
           ])
         ]

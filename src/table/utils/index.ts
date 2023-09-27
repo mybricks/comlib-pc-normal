@@ -255,9 +255,26 @@ export const createStyleForTableContent = () => [
     target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
   },
   {
+    title: '表格',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, 'opacity'],
+    target: ({ id }) => `table`
+  },
+  {
+    title: '表格行',
+    catelog: '默认',
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.columns.length;
+    },
+    options: ['border', { type: 'background', config: { disableBackgroundImage: true } }, 'opacity'],
+    target: ({ id }) => `table tr`
+  },
+  {
     title: '行Hover',
     catelog: 'Hover',
-
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
