@@ -59,10 +59,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
       });
     //3.校验
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: data.color,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
