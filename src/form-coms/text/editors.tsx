@@ -96,7 +96,7 @@ export default {
               },
               {
                 title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                options: ['background'],
                 target: ['.ant-input-affix-wrapper', '.ant-input-affix-wrapper>input.ant-input']
               },
               {

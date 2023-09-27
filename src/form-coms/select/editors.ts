@@ -84,7 +84,7 @@ export default {
               },
               {
                 title: '表单项背景色',
-                options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+                options: ['background'],
                 target: '.ant-select:not(.ant-select-customize-input) .ant-select-selector'
               },
               {
@@ -144,8 +144,17 @@ export default {
                 ],
                 global: true,
                 target({ id }: EditorResult<Data>) {
-                  //return `.{id} div.ant-select-dropdown-placement-bottomLeft`
                   return `.{id}.ant-select-dropdown`
+                }
+              },
+              {
+                title: '空白描述',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } }
+                ],
+                global: true,
+                target({ id }: EditorResult<Data>) {
+                  return `.{id} .ant-empty-description`
                 }
               }
             ]
