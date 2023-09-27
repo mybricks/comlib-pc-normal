@@ -4,6 +4,21 @@ import { Data } from './runtime';
 import { SlotIds, InputIds } from './constant'
 import styleEditor from './styleEditor';
 
+export const defaultDisabledDateRule = [
+  {
+    title: '当前日期',
+    checked: true,
+    offset: [7],
+    direction: 'before'
+  },
+  {
+    title: '当前日期',
+    checked: true,
+    offset: [7],
+    direction: 'after'
+  }
+];
+
 export default {
   '@resize': {
     options: ['width']
@@ -71,6 +86,69 @@ export default {
             },
             set({ data }, value: boolean) {
               data.showTime = value;
+            }
+          }
+        },
+        {
+          title: '日期禁止选择',
+          type: 'select',
+          description: '选中“无”时的默认限制：结束日期小于开始日期，开启配置后默认前后7天可选',
+          options: [
+            {
+              label: '无',
+              value: 'default'
+            },
+            {
+              label: '静态配置',
+              value: 'static'
+            }
+          ],
+          value: {
+            get({ data }) {
+              return data.useDisabledDate ?? 'default';
+            },
+            set({ data }, val: string) {
+              data.useDisabledDate = val;
+            }
+          }
+        },
+        {
+          type: 'ArrayCheckbox',
+          ifVisible({ data }) {
+            return data.useDisabledDate === 'static';
+          },
+          options: {
+            checkField: 'checked',
+            deletable: false,
+            addable: false,
+            getTitle: (item, index: number) => {
+              const { direction, offset, title } = item;
+              return `${title}${direction === 'before' ? '之前' : '之后'} ${offset} 天禁止选择`;
+            },
+            items: [
+              {
+                title: '方向',
+                type: 'Select',
+                value: 'direction',
+                options: [
+                  { label: '之前', value: 'before' },
+                  { label: '之后', value: 'after' }
+                ]
+              },
+              {
+                title: '偏移',
+                type: 'InputNumber',
+                value: 'offset',
+                options: [{ min: -1000, max: 1000, width: 200 }]
+              }
+            ]
+          },
+          value: {
+            get({ data }) {
+              return data.staticDisabledDate ?? defaultDisabledDateRule;
+            },
+            set({ data }, val: []) {
+              data.staticDisabledDate = val;
             }
           }
         },
@@ -248,7 +326,8 @@ export default {
               data.useCustomDateCell = value;
             }
           }
-        }];
+        }
+      ];
     }
   }
 };

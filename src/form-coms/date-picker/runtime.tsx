@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { DatePicker } from 'antd';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import { OutputIds } from '../types';
@@ -8,7 +8,14 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
 import { SlotIds, InputIds } from './constant';
+import { defaultDisabledDateRule } from './editors';
 
+type DisabledDateRule = {
+  title: string;
+  checked: boolean;
+  offset: Array<number>;
+  direction: 'before' | 'after';
+};
 export interface Data {
   options: any[];
   rules: any[];
@@ -21,6 +28,8 @@ export interface Data {
     placeholder: string;
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
+  useDisabledDate: 'default' | 'static';
+  staticDisabledDate: [DisabledDateRule, DisabledDateRule];
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -211,6 +220,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
     [data.useCustomDateCell]
   );
 
+  const disabledDateConfig = useCallback(
+    (current: Moment | undefined) => {
+      if (!data.useDisabledDate || data.useDisabledDate === 'default' || !current) return false;
+      const disabledRules = (data.staticDisabledDate ?? defaultDisabledDateRule)
+        .filter((rule) => rule.checked)
+        .map((rule) => {
+          const date =
+            rule.direction === 'before'
+              ? moment().subtract(rule.offset[0], 'day').endOf('day')
+              : moment().add(rule.offset[0], 'day').endOf('day');
+          return {
+            ...rule,
+            date
+          };
+        });
+      const currentValue = current.endOf('day').valueOf();
+      if (disabledRules.every((rule) => rule.direction === 'before')) {
+        return currentValue < Math.max(...disabledRules.map((rule) => rule.date.valueOf()));
+      }
+      if (disabledRules.every((rule) => rule.direction === 'after')) {
+        return currentValue > Math.min(...disabledRules.map((rule) => rule.date.valueOf()));
+      }
+      const beforeDisabledValue =
+        disabledRules.find((rule) => rule.direction === 'before')?.date.valueOf() ?? -1;
+      const afterDisabledValue =
+        disabledRules.find((rule) => rule.direction === 'after')?.date.valueOf() ?? Infinity;
+      return currentValue < beforeDisabledValue || currentValue > afterDisabledValue;
+    },
+    [data.useDisabledDate, JSON.stringify(data.staticDisabledDate)]
+  );
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div className={css.datePicker} ref={ref}>
@@ -220,7 +260,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           dateRender={data.useCustomDateCell ? customDateRender : undefined}
           showTime={getShowTime()}
           onChange={onChange}
-          disabledDate={data.disabledDate || undefined}
+          disabledDate={data.disabledDate || disabledDateConfig}
           getPopupContainer={(triggerNode: HTMLElement) => {
             return ref.current || document.body;
             // return edit || debug ? env?.canvasElement : document.body;
