@@ -74,6 +74,7 @@ export default function ({
     const _value = e.target.value;
     setValue(_value);
     onChangeForFc(parentSlot, { id, name, value: _value });
+    onValidateTrigger();
     outputs['onChange'](_value);
   };
 
