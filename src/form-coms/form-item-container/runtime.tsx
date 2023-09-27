@@ -29,10 +29,11 @@ export default function (props: RuntimeParams<Data>) {
       outputs[OutputIds.OnInitial](val);
     });
 
-    inputs['validate']((val, outputRels) => {
+    inputs['validate']((model, outputRels) => {
       validateFormItem({
         value: data.value,
         env,
+        model,
         rules: data.rules
       })
         .then((r) => {
