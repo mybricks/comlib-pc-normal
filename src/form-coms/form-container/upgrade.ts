@@ -2,7 +2,7 @@ import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema } from './schema'
 
-export default function ({ data, input, output, slot, children }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -286,6 +286,14 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     if(act && act.useDynamicHidden === undefined){
       act.useDynamicHidden = false;
     }
+  })
+
+  /**
+   * @description v1.4.8 修改 label 样式的配置方式，支持风格化
+   */
+  data.items.forEach(item => {
+    setDeclaredStyle(`.${item.id} .ant-form-item-label label>label`, { color: 'blue' })
+    item.labelStyle = {};
   })
 
   return true;

@@ -201,6 +201,12 @@ export default {
         catelog: '默认',
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-form'
+      },
+      {
+        title: '标题公共样式',
+        catelog: '默认',
+        options: ['font'],
+        target: '.ant-form-item-label label'
       }
     ],
     items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
@@ -903,42 +909,42 @@ export default {
               }
             }
           },
-          {
-            title: '标题样式',
-            type: 'Style',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false,
-                verticalAlign: false
-              }
-            },
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            description: '表单项标题的字体样式',
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                const { item } = getFormItem(data, { id, name });
+          // {
+          //   title: '标题样式',
+          //   type: 'Style',
+          //   options: {
+          //     plugins: ['Font'],
+          //     fontProps: {
+          //       fontFamily: false,
+          //       verticalAlign: false
+          //     }
+          //   },
+          //   ifVisible({ id, name, data }: EditorResult<Data>) {
+          //     return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+          //   },
+          //   description: '表单项标题的字体样式',
+          //   value: {
+          //     get({ id, name, data }: EditorResult<Data>) {
+          //       const { item } = getFormItem(data, { id, name });
 
-                if (!item?.labelStyle) {
-                  setFormItemProps({ data, id, name }, 'labelStyle', {
-                    lineHeight: '14px',
-                    letterSpacing: '0px',
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    color: 'rgba(0, 0, 0, 0.85)',
-                    fontStyle: 'normal'
-                  });
-                }
-                return item?.labelStyle;
-              },
-              set({ id, name, data }: EditorResult<Data>, value: any) {
-                const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id, name }, 'labelStyle', style);
-              }
-            }
-          },
+          //       if (!item?.labelStyle) {
+          //         setFormItemProps({ data, id, name }, 'labelStyle', {
+          //           lineHeight: '14px',
+          //           letterSpacing: '0px',
+          //           fontSize: '14px',
+          //           fontWeight: 400,
+          //           color: 'rgba(0, 0, 0, 0.85)',
+          //           fontStyle: 'normal'
+          //         });
+          //       }
+          //       return item?.labelStyle;
+          //     },
+          //     set({ id, name, data }: EditorResult<Data>, value: any) {
+          //       const { styleEditorUnfold, ...style } = value;
+          //       setFormItemProps({ data, id, name }, 'labelStyle', style);
+          //     }
+          //   }
+          // },
           {
             title: '标题样式应用所有表单项',
             type: 'Button',
@@ -1030,6 +1036,14 @@ export default {
             }
           }
         ]
+      }
+    ],
+    style: [
+      {
+        title: '标题样式',
+        catelog: '标题样式',
+        options: ['font'],
+        target: '.ant-form-item-label label>label'
       }
     ]
   },
