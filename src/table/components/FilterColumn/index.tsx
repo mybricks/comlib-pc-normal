@@ -88,10 +88,12 @@ export default function FilterColumnRender({ data, env, dataSource, outputs }) {
   }, [data.columns]);
 
   useEffect(() => {
-    data.columns = data.columns.map((item) => {
-      item.visible = checkedKeys.includes(item._id);
-      return item;
-    });
+    if (env.runtime) {
+      data.columns = data.columns.map((item) => {
+        item.visible = checkedKeys.includes(item._id);
+        return item;
+      });
+    }
   }, [checkedKeys]);
 
   const changeOrder = useCallback(

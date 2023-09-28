@@ -66,9 +66,16 @@ export default (props: Props): JSX.Element | null => {
           <div>{useTopRowSelection && RenderBatchBtns(props)}</div>
           <div className={classnames(css.width100, css.flex, css.flexRowReverse)}>
             {/* 渲染工作区tools */}
-            <div data-table-header-tools>
-              <FilterColumnRender data={data} env={env} dataSource={dataSource} outputs={outputs} />
-            </div>
+            {data.useColumnSetting && (
+              <div data-table-header-tools>
+                <FilterColumnRender
+                  data={data}
+                  env={env}
+                  dataSource={dataSource}
+                  outputs={outputs}
+                />
+              </div>
+            )}
             {/* 渲染操作按钮 */}
             {renderTableBtns()}
           </div>
