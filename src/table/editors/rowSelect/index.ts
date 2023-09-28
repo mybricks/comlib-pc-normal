@@ -1,7 +1,7 @@
 import { Data } from '../../types';
 
 const rowSelectEditor = {
-  '.ant-table-cell.ant-table-selection-column': {
+  '.ant-table-thead .ant-table-cell.ant-table-selection-column': {
     title: '勾选栏',
     style: [
       {
@@ -12,6 +12,24 @@ const rowSelectEditor = {
         },
         options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
         target: `.ant-checkbox-wrapper .ant-checkbox-inner`
+      },
+      {
+        title: '表头',
+        catelog: '默认',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useRowSelection;
+        },
+        target: `.ant-table-thead .ant-table-cell.ant-table-selection-column`,
+      },
+      {
+        title: '内容',
+        catelog: '默认',
+        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useRowSelection;
+        },
+        target: `.ant-table-tbody .ant-table-cell.ant-table-selection-column`,
       },
       {
         title: '勾选框',
