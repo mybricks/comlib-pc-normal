@@ -29,6 +29,7 @@ export interface Data {
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
   useDisabledDate: 'default' | 'static';
+  hideDatePanel: boolean;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
 }
 
@@ -266,8 +267,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
             // return ref.current || document.body;
             return edit || debug ? env?.canvasElement : document.body;
           }}
-          dropdownClassName={`${id} ${css.datePicker}`}
-          open={(edit && data.useCustomDateCell) || env.design}
+          dropdownClassName={`${id} ${css.datePicker} ${
+            data.useCustomDateCell ? css.slotContainer : ''
+          }`}
+          open={(edit && data.useCustomDateCell && !data.hideDatePanel) || env.design}
         />
       </div>
     </ConfigProvider>
