@@ -263,8 +263,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           onChange={onChange}
           disabledDate={data.disabledDate || disabledDateConfig}
           getPopupContainer={(triggerNode: HTMLElement) => {
-            return ref.current || document.body;
-            // return edit || debug ? env?.canvasElement : document.body;
+            // return ref.current || document.body;
+            return edit || debug ? env?.canvasElement : document.body;
           }}
           dropdownClassName={`${id} ${css.datePicker}`}
           open={(edit && data.useCustomDateCell) || env.design}
