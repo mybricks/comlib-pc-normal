@@ -16,10 +16,11 @@ export const GlobalLoading = {
    *  @param spinProps spin属性
    *  @returns 关闭全局loading回调
    */
-  open: (ladingText?: string, spinProps?: SpinProps) => {
-    if (divEle) {
-      return;
-    }
+  open: (ladingText?: string, spinProps?: SpinProps, targetDOM?: HTMLElement) => {
+    // console.log('div', divEle);
+    // if (divEle) {
+    //   return;
+    // }
     const { wrapperClassName, ...resProps } = spinProps || {};
     divEle = document.createElement('div');
     divEle.setAttribute('id', divEleID);
@@ -28,13 +29,15 @@ export const GlobalLoading = {
       classList.push(wrapperClassName);
     }
     divEle.setAttribute('class', classList.join(' '));
-    document.body.appendChild(divEle);
+    // document.body.appendChild(divEle);
+    targetDOM?.appendChild(divEle);
     render(<Spin tip={ladingText} size="large" {...(resProps || {})} />, divEle);
     return GlobalLoading.close;
   },
   /** 关闭全局loading */
   close: () => {
     const temp = document.getElementById(divEleID);
+    console.log('divEleID', divEleID);
     if (temp) {
       document.body.removeChild(temp);
       divEle = null;

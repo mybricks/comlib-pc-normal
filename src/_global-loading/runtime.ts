@@ -11,7 +11,7 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
       }
       const loadingText = val && typeof val === 'string' ? val : data.loadingText;
 
-      GlobalLoading.open(loadingText, spinProps);
+      GlobalLoading.open(loadingText, spinProps, !!(env?.runtime && env?.runtime.debug) ? env?.canvasElement : document.body);
 
       const globalLoading = document.getElementById('global-loading');
       if (globalLoading) {
