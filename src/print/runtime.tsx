@@ -13,7 +13,7 @@ export default function MyComponent({
   slots
 }: RuntimeParams<Data>) {
   const { runtime } = env;
-  const { documentTitle, closeScene, closable, useFooter } = data;
+  const { documentTitle, closeScene, closable, useFooter, width } = data;
   const componentRef = useRef(null);
 
   const handlePrint = useCallback(() => {
@@ -46,7 +46,7 @@ export default function MyComponent({
   const popupContent = (
     <Modal
       visible={true}
-      width={!env.edit ? '80%' : data.width}
+      width={width}
       onCancel={handleClose}
       cancelText={'取消'}
       okText={'打印预览'}
