@@ -103,21 +103,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
-      val = !result?._isValid ? undefined : result;
+      val = val === null ? null : !result?._isValid ? undefined : result;
       setValue(val);
       onChange(val);
     });
 
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
-        // 为null不设置初始值
-        if (val === null) {
-          return;
-        }
         //时间戳转换
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
-        val = !result?._isValid ? undefined : result;
+        // 为null设置为null
+        val = val === null ? null : !result?._isValid ? undefined : result;
         setValue(val);
         //自定义转换
         let transValue;
