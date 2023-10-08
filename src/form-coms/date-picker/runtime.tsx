@@ -110,6 +110,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
+        // 为null不设置初始值
+        if (val === null) {
+          return;
+        }
         //时间戳转换
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
