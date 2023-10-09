@@ -163,5 +163,12 @@ export default function ({
 
   //=========== v1.0.73 end ===============
 
+  /**
+   * @description v1.0.76 合并勾选项
+   */
+  if (data?.MergeCheckboxColumn === undefined) {
+    data.MergeCheckboxColumn = false;
+  }
+
   return true;
 }

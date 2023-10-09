@@ -56,5 +56,6 @@
   "SummaryColumnContentType": "text",
   "SummaryColumnContentSchema": {
     "type": "string"
-  }
+  },
+  "MergeCheckboxColumn": false
 }
