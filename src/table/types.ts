@@ -204,5 +204,6 @@ export interface Data {
     mergeByField: string,
     // 返回true，表示对应的列不能合并
     excludeFields?: string[]
-  }
+  },
+  fixedHeight?: string | number
 }
