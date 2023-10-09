@@ -205,6 +205,7 @@ export interface Data {
     // 返回true，表示对应的列不能合并
     excludeFields?: string[]
   },
+  fixedHeight?: string | number
 
   mergeCheckboxColumn?: boolean; // 合并勾选栏
 }

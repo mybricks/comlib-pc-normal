@@ -749,7 +749,8 @@ export default function (props: RuntimeParams<Data>) {
         {data.columns.length ? (
           <Table
             style={{
-              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
+              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
+              height: data.fixedHeight
             }}
             dataSource={edit ? defaultDataSource : realShowDataSource}
             loading={{
