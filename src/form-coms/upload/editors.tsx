@@ -504,6 +504,58 @@ export default {
           options: {
             outputId: 'upload'
           }
+        },
+        {
+          title: '开启文件点击',
+          type: 'switch',
+          description: '开启后, 可自定义上传文件的点击事件且不跳转到新页面',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.fileClick;
+            },
+            set({ data, output }: EditorResult<Data>, value: boolean) {
+              const hasEvent = output.get('fileClick');
+              if (value) {
+                !hasEvent &&
+                  output.add('fileClick', '上传文件点击', {
+                    type: 'object',
+                    properties: {
+                      name: {
+                        type: 'string'
+                      },
+                      uid: {
+                        type: 'string'
+                      },
+                      url: {
+                        type: 'string'
+                      },
+                      status: {
+                        type: 'string'
+                      },
+                      percent: {
+                        type: 'number'
+                      },
+                      response: {
+                        type: 'string'
+                      }
+                    }
+                  });
+              } else {
+                hasEvent && output.remove('fileClick');
+              }
+              data.fileClick = value;
+            }
+          }
+        },
+        {
+          title: '上传文件点击',
+          type: '_Event',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.fileClick;
+          },
+          options: {
+            outputId: 'fileClick'
+          }
         }
       ];
     }

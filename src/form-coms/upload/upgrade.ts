@@ -172,5 +172,12 @@ export default function ({ input, output, slot, data }): boolean {
     data.customUpload = true;
   };
 
+  /**
+   * @description v1.0.22->1.0.23 , 新增上传点击事件
+  */
+  if (typeof data.fileClick === "undefined") {
+    data.fileClick = false;
+  };
+
   return true;
 }
