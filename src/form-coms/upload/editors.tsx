@@ -516,7 +516,30 @@ export default {
             set({ data, output }: EditorResult<Data>, value: boolean) {
               const hasEvent = output.get('fileClick');
               if (value) {
-                !hasEvent && output.add('fileClick', '上传文件点击', { type: 'string' });
+                !hasEvent &&
+                  output.add('fileClick', '上传文件点击', {
+                    type: 'object',
+                    properties: {
+                      name: {
+                        type: 'string'
+                      },
+                      uid: {
+                        type: 'string'
+                      },
+                      url: {
+                        type: 'string'
+                      },
+                      status: {
+                        type: 'string'
+                      },
+                      percent: {
+                        type: 'number'
+                      },
+                      response: {
+                        type: 'string'
+                      }
+                    }
+                  });
               } else {
                 hasEvent && output.remove('fileClick');
               }

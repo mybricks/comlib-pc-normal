@@ -294,10 +294,10 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     if (usePreview && /\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
       onpenImgPreview(file.url);
       if (data.fileClick && env.runtime) {
-        outputs['fileClick'](file.url);
+        outputs['fileClick'](file);
       }
     } else if (data.fileClick && env.runtime) {
-      outputs['fileClick'](file.url);
+      outputs['fileClick'](file);
     } else {
       window.open(file.url);
     }
