@@ -35,19 +35,6 @@ export default {
       }
     },
     {
-      title: '合并勾选栏',
-      description: '合并后,勾选会输出合并前的多项数据, 不支持单选合并',
-      type: 'switch',
-      value: {
-        get({ data, focusArea }: EditorResult<Data>) {
-          return !!data.mergeCheckboxColumn;
-        },
-        set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value) {
-          data.mergeCheckboxColumn = value;
-        }
-      }
-    },
-    {
       title: '不能被合并的字段',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         return !!data.enbaleRowMerge;
