@@ -116,17 +116,17 @@ export default function ({
   if (data?.useSummaryColumn === undefined) {
     data.useSummaryColumn = false;
   }
-  if (data?.SummaryColumnTitle === undefined) {
-    data.SummaryColumnTitle = "合计";
+  if (data?.summaryColumnTitle === undefined) {
+    data.summaryColumnTitle = "合计";
   }
-  if (data?.SummaryCellTitleCol === undefined) {
-    data.SummaryCellTitleCol = 1;
+  if (data?.summaryCellTitleCol === undefined) {
+    data.summaryCellTitleCol = 1;
   }
-  if (data?.SummaryColumnContentType === undefined) {
-    data.SummaryColumnContentType = "text";
+  if (data?.summaryColumnContentType === undefined) {
+    data.summaryColumnContentType = "text";
   }
-  if (data?.SummaryColumnContentSchema === undefined) {
-    data.SummaryColumnContentSchema = {
+  if (data?.summaryColumnContentSchema === undefined) {
+    data.summaryColumnContentSchema = {
       type: "string"
     }
   }
@@ -166,8 +166,8 @@ export default function ({
   /**
    * @description v1.0.76 合并勾选项
    */
-  if (data?.MergeCheckboxColumn === undefined) {
-    data.MergeCheckboxColumn = false;
+  if (data?.mergeCheckboxColumn === undefined) {
+    data.mergeCheckboxColumn = false;
   }
 
   return true;

@@ -4,10 +4,10 @@ import { Data } from '../types';
 import { uuid } from '../../utils';
 
 export default (slots, data: Data, summaryColumnData: string) => {
-  const { SummaryCellTitleCol, SummaryColumnContentType, columns } = data;
+  const { summaryCellTitleCol, summaryColumnContentType, columns } = data;
   const SummaryColumnContentColSpan =
-    columns.length - SummaryCellTitleCol < 0 ? 0 : columns.length - SummaryCellTitleCol;
-  let SummaryCellTitleColSpan: number = SummaryCellTitleCol < 0 ? 0 : SummaryCellTitleCol;
+    columns.length - summaryCellTitleCol < 0 ? 0 : columns.length - summaryCellTitleCol;
+  let SummaryCellTitleColSpan: number = summaryCellTitleCol < 0 ? 0 : summaryCellTitleCol;
   if (SummaryCellTitleColSpan > columns.length) {
     SummaryCellTitleColSpan = columns.length;
   }
@@ -20,15 +20,15 @@ export default (slots, data: Data, summaryColumnData: string) => {
           className="summaryCellTitle"
           colSpan={SummaryCellTitleColSpan}
         >
-          {data.SummaryColumnTitle}
+          {data.summaryColumnTitle}
         </Table.Summary.Cell>
         <Table.Summary.Cell
           index={1}
           key={uuid()}
-          className={SummaryColumnContentType === 'text' ? 'summaryCellContent' : ''}
+          className={summaryColumnContentType === 'text' ? 'summaryCellContent' : ''}
           colSpan={SummaryColumnContentColSpan}
         >
-          {SummaryColumnContentType === 'slotItem'
+          {summaryColumnContentType === 'slotItem'
             ? slots['summaryColumn'] &&
               slots['summaryColumn']?.render({
                 key: `summaryColumn-${uuid()}`

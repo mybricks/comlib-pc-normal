@@ -12,10 +12,10 @@ const SummaryColumnEditor = {
           type: 'text',
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.SummaryColumnTitle;
+              return data.summaryColumnTitle;
             },
             set({ data }: EditorResult<Data>, value: string) {
-              data.SummaryColumnTitle = value;
+              data.summaryColumnTitle = value;
             }
           }
         },
@@ -26,10 +26,10 @@ const SummaryColumnEditor = {
           options: [{ min: 0, max: 1000, width: 100 }],
           value: {
             get({ data }: EditorResult<Data>) {
-              return [data.SummaryCellTitleCol];
+              return [data.summaryCellTitleCol];
             },
             set({ data }: EditorResult<Data>, value: number[]) {
-              data.SummaryCellTitleCol = value[0];
+              data.summaryCellTitleCol = value[0];
             }
           }
         },
@@ -42,7 +42,7 @@ const SummaryColumnEditor = {
           ],
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.SummaryColumnContentType;
+              return data.summaryColumnContentType;
             },
             set({ data, slot }: EditorResult<Data>, value: 'text' | 'slotItem') {
               const hasEvent = slot.get('summaryColumn');
@@ -57,7 +57,7 @@ const SummaryColumnEditor = {
               } else {
                 hasEvent && slot.remove('summaryColumn');
               }
-              data.SummaryColumnContentType = value;
+              data.summaryColumnContentType = value;
             }
           }
         },
@@ -66,10 +66,10 @@ const SummaryColumnEditor = {
           type: '_schema',
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.SummaryColumnContentSchema;
+              return data.summaryColumnContentSchema;
             },
             set({ data, input }: EditorResult<Data>, value: object) {
-              data.SummaryColumnContentSchema = value;
+              data.summaryColumnContentSchema = value;
               input.get(InputIds.SUMMARY_COLUMN)?.setSchema(value);
             }
           }
@@ -89,7 +89,7 @@ const SummaryColumnEditor = {
         title: '内容',
         options: ['font'],
         ifVisible({ data }: EditorResult<Data>) {
-          return data.SummaryColumnContentType === 'text';
+          return data.summaryColumnContentType === 'text';
         },
         initValue: {
           textAlign: 'center'

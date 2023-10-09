@@ -487,7 +487,7 @@ export default function (props: RuntimeParams<Data>) {
     onChange: (selectedRowKeys: any[], selectedRows: any[]) => {
       if (
         data.rowMergeConfig &&
-        data.MergeCheckboxColumn &&
+        data.mergeCheckboxColumn &&
         data.selectionType === RowSelectionTypeEnum.Checkbox
       ) {
         const { mergeByField } = data.rowMergeConfig || {};
@@ -578,7 +578,7 @@ export default function (props: RuntimeParams<Data>) {
           !dataSource ||
           dataSource.length <= 1 ||
           typeof dataSource[rowIndex]?.[mergeByField] === 'undefined' ||
-          !data.MergeCheckboxColumn
+          !data.mergeCheckboxColumn
         )
           return 1;
         const fieldValues = dataSource.map((item) => item[mergeByField]);
@@ -607,7 +607,7 @@ export default function (props: RuntimeParams<Data>) {
       return {
         props: {
           rowSpan:
-            data.MergeCheckboxColumn && data.selectionType === RowSelectionTypeEnum.Checkbox
+            data.mergeCheckboxColumn && data.selectionType === RowSelectionTypeEnum.Checkbox
               ? getCellConfig(dataSource, index)
               : 1 // 合并行
         },

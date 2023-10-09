@@ -40,10 +40,10 @@ export default {
       type: 'switch',
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
-          return !!data.MergeCheckboxColumn;
+          return !!data.mergeCheckboxColumn;
         },
         set({ data, focusArea, output, input, ...res }: EditorResult<Data>, value) {
-          data.MergeCheckboxColumn = value;
+          data.mergeCheckboxColumn = value;
         }
       }
     },
