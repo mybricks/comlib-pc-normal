@@ -51,10 +51,11 @@
   },
   "domainModel": {},
   "useSummaryColumn": false,
-  "SummaryColumnTitle": "合计",
-  "SummaryCellTitleCol": 1,
-  "SummaryColumnContentType": "text",
-  "SummaryColumnContentSchema": {
+  "summaryColumnTitle": "合计",
+  "summaryCellTitleCol": 1,
+  "summaryColumnContentType": "text",
+  "summaryColumnContentSchema": {
     "type": "string"
-  }
+  },
+  "mergeCheckboxColumn": false
 }

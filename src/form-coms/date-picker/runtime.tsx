@@ -29,6 +29,7 @@ export interface Data {
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
   useDisabledDate: 'default' | 'static';
+  hideDatePanel: boolean;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
 }
 
@@ -102,7 +103,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
-      val = !result?._isValid ? undefined : result;
+      val = val === null ? null : !result?._isValid ? undefined : result;
       setValue(val);
       onChange(val);
     });
@@ -112,7 +113,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
         //时间戳转换
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
-        val = !result?._isValid ? undefined : result;
+        // 为null设置为null
+        val = val === null ? null : !result?._isValid ? undefined : result;
         setValue(val);
         //自定义转换
         let transValue;
@@ -263,11 +265,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
           onChange={onChange}
           disabledDate={data.disabledDate || disabledDateConfig}
           getPopupContainer={(triggerNode: HTMLElement) => {
-            return ref.current || document.body;
-            // return edit || debug ? env?.canvasElement : document.body;
+            // return ref.current || document.body;
+            return edit || debug ? env?.canvasElement : document.body;
           }}
-          dropdownClassName={`${id} ${css.datePicker}`}
-          open={(edit && data.useCustomDateCell) || env.design}
+          dropdownClassName={`${id} ${css.datePicker} ${
+            data.useCustomDateCell ? css.slotContainer : ''
+          }`}
+          open={(edit && data.useCustomDateCell && !data.hideDatePanel) || env.design}
         />
       </div>
     </ConfigProvider>

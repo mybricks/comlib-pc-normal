@@ -309,6 +309,7 @@ export default {
             },
             set({ data, slot }: EditorResult<Data>, value: boolean) {
               if (value) {
+                data.hideDatePanel = false
                 slot.add({ id: SlotIds.DateCell, title: '插槽', type: 'scope' });
                 slot
                   .get(SlotIds.DateCell)
@@ -324,6 +325,21 @@ export default {
                 slot.remove(SlotIds.DateCell);
               }
               data.useCustomDateCell = value;
+            }
+          }
+        }, {
+          title: '隐藏日期面板',
+          description: '仅在搭建时生效',
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useCustomDateCell;
+          },
+          value: {
+            get({ data }) {
+              return data.hideDatePanel || false
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              data.hideDatePanel = value
             }
           }
         }

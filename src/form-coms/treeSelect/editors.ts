@@ -283,6 +283,18 @@ export default {
           }
         },
         {
+          title: '下拉菜单和选择器同宽',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.config.dropdownMatchSelectWidth;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.config.dropdownMatchSelectWidth = value;
+            }
+          }
+        },
+        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',

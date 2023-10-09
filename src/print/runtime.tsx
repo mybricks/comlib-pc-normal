@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { Modal, message } from 'antd';
-import { Data, InputIds } from './constants';
+import { Data, InputIds, SlotIds } from './constants';
 import { useReactToPrint } from 'react-to-print';
 import css from './index.less';
 
@@ -13,7 +13,7 @@ export default function MyComponent({
   slots
 }: RuntimeParams<Data>) {
   const { runtime } = env;
-  const { documentTitle, closeScene, closable, useFooter } = data;
+  const { documentTitle, closeScene, closable, useFooter, width } = data;
   const componentRef = useRef(null);
 
   const handlePrint = useCallback(() => {
@@ -46,7 +46,7 @@ export default function MyComponent({
   const popupContent = (
     <Modal
       visible={true}
-      width={!env.edit ? '80%' : data.width}
+      width={width}
       onCancel={handleClose}
       cancelText={'取消'}
       okText={'打印预览'}
@@ -66,7 +66,8 @@ export default function MyComponent({
       closable={closable}
       getContainer={!env.edit as false}
     >
-      <div ref={componentRef}>{slots?.content.render()}</div>
+      {slots?.topWorkspace && <div>{slots?.[SlotIds.TOPWORKSPACE].render()}</div>}
+      <div ref={componentRef}>{slots?.[SlotIds.CONTENT].render()}</div>
     </Modal>
   );
 

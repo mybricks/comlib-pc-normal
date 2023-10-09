@@ -104,5 +104,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   //=========== v1.1.13 end ===============
 
+  /**
+    * @description v1.1.15 增加 下拉菜单和选择器同宽data.config.dropdownMatchSelectWidth 配置项
+    */
+
+  if (data.config.dropdownMatchSelectWidth === undefined) {
+    data.config.dropdownMatchSelectWidth = true;
+  }
+
+  //=========== v1.1.15 end ===============
+
   return true;
 }

@@ -8,18 +8,11 @@ const createFakeDom = (root: { appendChild: (arg0: HTMLDivElement) => void; }) =
   root?.appendChild(div);
   return div
 }
-
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
   const isMobile = checkIfMobile(env)
-  // const onOk = () => {
-  //   outputs[OutputIds.Ok](data.outputValue);
-  // };
-
-  // const onCancel = () => {
-  //   outputs[OutputIds.Cancel](data.outputValue);
-  // };
-
+  const root = createFakeDom(env?.canvasElement || document.body)
+  // console.log(`env?.canvasElement`, env?.canvasElement)
   const open = (onOk: () => void, onCancel: () => void) => {
     Modal[type]({
       ...data,
@@ -29,7 +22,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       onCancel,
       onOk,
       getContainer() {
-        return createFakeDom(env?.canvasElement || document.body)
+        return root
       },
     });
   };
@@ -40,7 +33,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
       const onOk = () => {
         outputRels[OutputIds.Ok](data.outputValue);
       };
-    
+
       const onCancel = () => {
         outputRels[OutputIds.Cancel](data.outputValue);
       };
