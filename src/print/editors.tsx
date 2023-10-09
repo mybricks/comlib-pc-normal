@@ -1,4 +1,4 @@
-import { Data } from './constants';
+import { Data, SlotIds } from './constants';
 
 export default {
   '@init'({ style }) {
@@ -73,6 +73,23 @@ export default {
             },
             set({ data }, value: boolean) {
               data.useFooter = value;
+            }
+          }
+        },
+        {
+          title: '顶部操作区插槽',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.useTop;
+            },
+            set({ data, slot }, value: boolean) {
+              if (value) {
+                slot.add(SlotIds.TOPWORKSPACE, '顶部操作区插槽');
+              } else {
+                slot.remove(SlotIds.TOPWORKSPACE);
+              }
+              data.useTop = value;
             }
           }
         },

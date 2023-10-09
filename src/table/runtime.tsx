@@ -497,15 +497,28 @@ export default function (props: RuntimeParams<Data>) {
         for (const key of selectedRowKeys) {
           // 找相应uuid数据
           const matchingObject = dataSource.find((obj) => obj[rowKey] === key);
+          const matchingObjectIndex = dataSource.findIndex((obj) => obj[rowKey] === key);
           // 去重
           if (matchingObject && !addedObjects.has(matchingObject[rowKey])) {
             if (!matchingObject[mergeByField as string]) {
               // col为undefined 只添加自己
               result.push(matchingObject);
             } else {
-              const matchingObjects = dataSource.filter(
-                (obj) => obj[mergeByField as string] === matchingObject[mergeByField as string]
-              );
+              // 是合并行中间项直接跳出 前一项合并标识相同
+              if (
+                matchingObjectIndex - 1 >= 0 &&
+                dataSource[matchingObjectIndex - 1]?.[mergeByField] === matchingObject[mergeByField]
+              ) {
+                continue;
+              }
+              const matchingObjects: any[] = [];
+              for (let i = matchingObjectIndex; i < dataSource.length; i++) {
+                if (dataSource[i]?.[mergeByField] !== matchingObject[mergeByField]) {
+                  break;
+                }
+
+                matchingObjects.push(dataSource[i]);
+              }
               // 反选 取消 不是合并行的第一个就取消
               const isFirst =
                 matchingObjects.length > 0 && matchingObjects[0][rowKey] === matchingObject[rowKey];
