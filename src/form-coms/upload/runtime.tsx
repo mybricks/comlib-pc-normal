@@ -38,6 +38,7 @@ export interface Data {
   isCustom: boolean;
   imageSize: number[];
   customUpload: boolean;
+  fileClick: boolean;
 }
 
 interface Window {
@@ -289,6 +290,19 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     return false;
   };
 
+  const onPreview = (file) => {
+    if (usePreview && /\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
+      onpenImgPreview(file.url);
+      if (data.fileClick && env.runtime) {
+        outputs['fileClick'](file.url);
+      }
+    } else if (data.fileClick && env.runtime) {
+      outputs['fileClick'](file.url);
+    } else {
+      window.open(file.url);
+    }
+  };
+
   const ImgPreview = (props: any) => {
     const [visible, setVisible] = useState(true);
     const { src, onClose } = props;
@@ -431,13 +445,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         customRequest={() => {}}
         beforeUpload={beforeUpload}
         onRemove={onRemove}
-        onPreview={(file: UploadFile) => {
-          if (usePreview && !/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name)) {
-            onpenImgPreview(file.url);
-          } else {
-            window.open(file.url);
-          }
-        }}
+        onPreview={onPreview}
         disabled={condition ? true : disabled}
         multiple={multiple}
         maxCount={fileCount}
