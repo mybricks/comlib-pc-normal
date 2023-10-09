@@ -11,7 +11,8 @@
     "showArrow": true,
     "showCheckedStrategy": "SHOW_CHILD",
     "treeNodeFilterProp": "label",
-    "maxTagCount": "responsive"
+    "maxTagCount": "responsive",
+    "dropdownMatchSelectWidth": true
   },
   "useLoadData": false,
   "labelFieldName": "",
