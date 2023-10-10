@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
@@ -13,6 +13,7 @@ import { Data } from './types';
 import { Spin, message } from 'antd';
 
 import css from './richText.less';
+import { InputIds, OutputIds } from '../types';
 
 // 自定义icon_id
 const customIconsId: string = '_pcEditor_customIcons_' + uuid();
@@ -45,6 +46,7 @@ export default function ({
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
   const uploadCb = useRef<any>();
+  const validateRelOuputRef = useRef<any>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
@@ -296,7 +298,15 @@ export default function ({
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            outputs[OutputIds.OnValidate](valueRef.current);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -315,6 +325,12 @@ export default function ({
     //7. 设置启用
     inputs['setEnabled'](() => {
       data.disabled = false;
+    });
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
     });
   }, []);
 
