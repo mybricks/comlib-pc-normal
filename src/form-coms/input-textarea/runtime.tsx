@@ -1,10 +1,11 @@
 import { Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { TextAreaRef } from 'antd/lib/input/TextArea';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export interface Data {
   value: string | undefined;
@@ -39,6 +40,7 @@ export default function ({
   const [value, setValue] = useState();
 
   const inputRef = useRef<TextAreaRef>(null);
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
     id: id,
@@ -75,7 +77,15 @@ export default function ({
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs[outputIds.ON_VALIDATE](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -94,6 +104,15 @@ export default function ({
           inputRef.current.resizableTextArea.textArea.style.color = color;
         }
       });
+  }, []);
+
+  useEffect(() => {
+    // 设置校验状态
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
   useEffect(() => {

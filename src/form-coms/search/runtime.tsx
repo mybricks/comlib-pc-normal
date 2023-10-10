@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Input, Select } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { inputIds, outputIds } from '../form-container/constants';
 export interface Data {
   options: any[];
   rules: any[];
@@ -33,6 +34,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
+  const validateRelOuputRef = useRef<any>(null);
 
   useEffect(() => {
     if (data.isenterButton && data.enterButton !== '') {
@@ -74,7 +76,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
             rules: data.rules
           })
             .then((r) => {
-              outputRels(r);
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](value);
+              } else {
+                outputRels(r);
+              }
             })
             .catch((e) => {
               outputRels(e);
@@ -84,6 +94,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     },
     [value]
   );
+
+  useEffect(() => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });

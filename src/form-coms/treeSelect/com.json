@@ -1,7 +1,7 @@
 {
   "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.1.16",
+  "version": "1.2.0",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -142,6 +142,32 @@
       "schema": {
         "type": "boolean"
       }
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -156,6 +182,14 @@
       "id": "onChange",
       "title": "值更新",
       "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
         "type": "string"
       }
     },

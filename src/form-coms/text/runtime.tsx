@@ -1,16 +1,19 @@
 import { Form, Input, InputRef, Image } from 'antd';
 import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode } from 'react';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
+import { inputIds, outputIds } from '../form-container/constants';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less';
+import { ValidateTriggerType } from '../types';
 
 export interface Data {
   value: string | undefined;
   rules: any[];
+  validateTrigger: string[];
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -34,6 +37,7 @@ export default function (props: RuntimeParams<Data>) {
   const { edit } = env;
 
   const inputRef = useRef<InputRef>(null);
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
     id: props.id,
@@ -44,9 +48,11 @@ export default function (props: RuntimeParams<Data>) {
     configs: {
       setValue(val) {
         data.value = val;
+        onValidateTrigger(ValidateTriggerType.OnChange);
       },
       setInitialValue(val) {
         data.value = val;
+        onValidateTrigger(ValidateTriggerType.OnInit);
       },
       returnValue(output) {
         output(data.value);
@@ -68,7 +74,15 @@ export default function (props: RuntimeParams<Data>) {
           rules: data.rules
         })
           .then((r) => {
-            relOutput(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = relOutput;
+              outputs[outputIds.ON_VALIDATE](data.value);
+            } else {
+              relOutput(r);
+            }
           })
           .catch((e) => {
             relOutput(e);
@@ -83,10 +97,16 @@ export default function (props: RuntimeParams<Data>) {
         inputRef.current.input.style.color = typeof color === 'string' ? color : '';
       }
     });
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
-  const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id, name: props.name });
+  const onValidateTrigger = (type: string) => {
+    data.validateTrigger?.includes(type) &&
+      validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const changeValue = useCallback((e) => {
@@ -94,17 +114,18 @@ export default function (props: RuntimeParams<Data>) {
     data.value = value;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
+    onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger();
+    onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](value);
   }, []);
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger();
+    onValidateTrigger(ValidateTriggerType.OnPressEnter);
     outputs['onPressEnter'](value);
   }, []);
 

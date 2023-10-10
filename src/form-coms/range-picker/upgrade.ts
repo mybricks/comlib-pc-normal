@@ -1,4 +1,4 @@
-import { DateType, OutputIds, TimeDateLimitItem } from '../types';
+import { DateType, InputIds, OutputIds, TimeDateLimitItem } from '../types';
 import { refreshSchema } from './editors';
 import { Data } from './runtime';
 
@@ -120,6 +120,55 @@ export default function ({
   if (typeof data.emptyRules === "undefined") {
     data.emptyRules = [];
   }
+
+  /**
+  * @description v1.1.0 新增自定义校验事件
+  */
+
+  if (!input.get(InputIds.SetValidateInfo)) {
+    input.add(InputIds.SetValidateInfo, '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success',
+            },
+            {
+              type: 'string',
+              value: 'error',
+            },
+          ],
+        },
+        help: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  const baseType = data.contentType === 'timeStamp' ? 'number' : 'string';
+  const valueSchema = data.dateType === 'string'
+    ? {
+      type: 'string'
+    }
+    : {
+      type: 'tuple',
+      items: [
+        {
+          type: baseType
+        },
+        {
+          type: baseType
+        }
+      ]
+    };
+  if (!output.get(OutputIds.OnValidate)) {
+    output.add(OutputIds.OnValidate, '校验触发', valueSchema);
+  }
+
+  //=========== v1.1.0 end ===============
 
   return true;
 }

@@ -19,14 +19,16 @@ export const InputIds = {
   SetInitialValue: 'setInitialValue',
   ResetValue: 'resetValue',
   SetDisabled: 'setDisabled',
-  SetEnabled: 'setEnabled'
+  SetEnabled: 'setEnabled',
+  SetValidateInfo: 'setValidateInfo'
 }
 
 export const OutputIds = {
   OnChange: 'onChange',
   OnBlur: 'onBlur',
   OnInitial: 'onInitial',
-  ReturnValue: 'returnValue'
+  ReturnValue: 'returnValue',
+  OnValidate: 'onValidate'
 }
 
 export type DateType = "custom" | "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years";
@@ -49,4 +51,11 @@ export const DateType = {
   Week: "weeks",
   Month: "months",
   Year: "years",
+};
+
+export const ValidateTriggerType = {
+  OnInit: "onInit",
+  OnChange: "onChange",
+  OnBlur: "onBlur",
+  OnPressEnter: "onPressEnter",
 }; 

@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useLayoutEffect, useEffect } from 'react';
+import React, { useMemo, useCallback, useLayoutEffect, useEffect, useRef } from 'react';
 import { ChildrenStore, Data } from './types';
 import SlotContent from './SlotContent';
 import {
@@ -9,13 +9,17 @@ import {
   changeValue
 } from './utils';
 import { deepCopy, typeCheck } from '../../utils';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, validateFormItem } from '../utils/validator';
 import { ActionsWrapper, addField } from './components/FormActions';
 import { SlotIds, SlotInputIds } from './constants';
 import { InputIds, OutputIds } from '../types';
+import { inputIds, outputIds } from '../form-container/constants';
+import { defaultRules } from './editors';
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
+
+  const validateRelOuputRef = useRef<any>(null);
 
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
@@ -92,7 +96,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
             rules: data.rules
           })
             .then((r) => {
-              outputRels['returnValidate'](r);
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels['returnValidate'];
+                outputs[outputIds.ON_VALIDATE](data.value);
+              } else {
+                outputRels['returnValidate'](r);
+              }
             })
             .catch((e) => {
               outputRels['returnValidate'](e);
@@ -101,6 +113,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         .catch((e) => {
           console.log('校验失败', e);
         });
+    });
+
+    // 设置校验信息
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
     });
   }, []);
 

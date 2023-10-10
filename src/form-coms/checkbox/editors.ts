@@ -1,6 +1,6 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { Option } from '../types';
+import { Option, OutputIds } from '../types';
 import { Data } from './types';
 import { createrCatelogEditor } from '../utils';
 
@@ -309,6 +309,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: OutputIds.OnValidate
           }
         },
         {

@@ -7,22 +7,27 @@ import styleEditor from './styleEditor';
 
 export const refreshSchema = ({ data, input, output }: { data: Data; input: any; output: any }) => {
   const baseType = data.contentType === 'timeStamp' ? 'number' : 'string';
-  const newSchema = {
-    type: 'tuple',
-    items: [
-      {
-        type: baseType
-      },
-      {
-        type: baseType
-      }
-    ]
-  };
+  const newSchema = data.dateType === 'string'
+    ? {
+      type: 'string'
+    }
+    : {
+      type: 'tuple',
+      items: [
+        {
+          type: baseType
+        },
+        {
+          type: baseType
+        }
+      ]
+    };
   input.get(InputIds.SetInitialValue).setSchema(newSchema);
   input.get(InputIds.SetValue).setSchema(newSchema);
   output.get(OutputIds.OnChange).setSchema(newSchema);
   output.get(OutputIds.OnInitial).setSchema(newSchema);
   output.get(OutputIds.ReturnValue).setSchema(newSchema);
+  output.get(OutputIds.OnValidate).setSchema(newSchema);
 };
 const emptyRules = [
   {
@@ -303,6 +308,19 @@ export default {
           }
         },
         {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: OutputIds.OnValidate
+          }
+        },
+        {
           title: '输出数据处理',
           items: [
             {
@@ -397,8 +415,9 @@ export default {
                 get({ data }) {
                   return data.dateType;
                 },
-                set({ data }, value: 'array' | 'string') {
+                set({ data, input, output }, value: 'array' | 'string') {
                   data.dateType = value;
+                  refreshSchema({ data, input, output });
                 }
               }
             },

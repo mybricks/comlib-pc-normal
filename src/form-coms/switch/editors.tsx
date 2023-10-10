@@ -2,6 +2,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { StatusEnum } from './const';
 import { Data } from './runtime';
 import { createrCatelogEditor } from '../utils';
+import { OutputIds } from '../types';
 
 export default {
   '@resize': {
@@ -187,6 +188,19 @@ export default {
             set({ data }: EditorResult<Data>, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: OutputIds.OnValidate
           }
         },
         {

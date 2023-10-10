@@ -1,5 +1,8 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
+import { outputIds } from '../form-container/constants';
+import { Data } from './runtime';
+import { ValidateTriggerType } from '../types';
 
 export default {
   '@resize': {
@@ -284,6 +287,29 @@ export default {
           }
         },
         {
+          title: '校验触发时机',
+          type: 'Select',
+          description: '配置校验触发的时机',
+          options: {
+            mode: 'tags',
+            multiple: true,
+            options: [
+              { label: '值初始化', value: ValidateTriggerType.OnInit },
+              { label: '值更新', value: ValidateTriggerType.OnChange },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+              { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.validateTrigger;
+            },
+            set({ data }: EditorResult<Data>, value: string[]) {
+              data.validateTrigger = value;
+            }
+          }
+        },
+        {
           title: '校验规则',
           description: '提供快捷校验配置',
           type: 'ArrayCheckbox',
@@ -344,6 +370,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: outputIds.ON_VALIDATE
           }
         },
         {

@@ -44,6 +44,7 @@ function refreshSchema({ data, inputs, outputs, slots }: { data: Data, inputs: a
   outputs.get(OutputIds.OnChange).setSchema(valueSchema)
   outputs.get(OutputIds.OnInitial).setSchema(valueSchema)
   outputs.get(OutputIds.ReturnValue).setSchema(valueSchema)
+  outputs.get(OutputIds.OnValidate).setSchema(valueSchema)
 
   data.actions.items.forEach(action => {
     const { key } = action;

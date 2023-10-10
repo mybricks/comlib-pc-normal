@@ -1,3 +1,4 @@
+import { inputIds, outputIds } from '../form-container/constants';
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -22,9 +23,9 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     output.add('onPressEnter', '按下回车', valueSchema);
   }
 
- /**
-   * @description v1.0.10->1.0.11, 新增格式化展示
-   */
+  /**
+    * @description v1.0.10->1.0.11, 新增格式化展示
+    */
   if (typeof data.isFormatter === "undefined") {
     data.isFormatter = false;
   }
@@ -34,6 +35,41 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (typeof data.character === "undefined") {
     data.character = "¥"
   }
+
+  /**
+   * @description v1.1.0 新增自定义校验事件
+   */
+
+  if (!input.get(inputIds.SET_VALIDATE_INFO)) {
+    input.add(inputIds.SET_VALIDATE_INFO, '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success',
+            },
+            {
+              type: 'string',
+              value: 'error',
+            },
+          ],
+        },
+        help: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  if (!output.get(outputIds.ON_VALIDATE)) {
+    output.add(outputIds.ON_VALIDATE, '校验触发', {
+      type: 'number'
+    });
+  }
+
+  //=========== v1.1.0 end ===============
 
   return true;
 }

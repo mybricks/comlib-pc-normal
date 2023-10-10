@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-textarea",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "description": "文本域",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_44zp5y.91531f9e6ba88161.png",
@@ -82,6 +82,32 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -103,6 +129,14 @@
       "id": "onBlur",
       "title": "失去焦点",
       "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
         "type": "string"
       }
     },

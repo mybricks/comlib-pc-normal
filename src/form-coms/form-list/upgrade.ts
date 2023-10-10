@@ -1,3 +1,5 @@
+import { inputIds, outputIds } from "../form-container/constants";
+import { getItemSchema } from "./schema";
 import { Data, LocationEnum, SizeEnum } from "./types";
 
 export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -63,14 +65,52 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     if (btn.iconConfig.size && btn.iconConfig.size.length === 2) {
       setDeclaredStyle(
         `button[data-form-actions-item="${btn.key}"] .anticon`,
-        {fontSize: `${Math.max(...btn.iconConfig.size)}px`}
+        { fontSize: `${Math.max(...btn.iconConfig.size)}px` }
       );
       setDeclaredStyle(
-        `button[data-form-actions-item="${btn.key}"] .ant-image-img`, 
+        `button[data-form-actions-item="${btn.key}"] .ant-image-img`,
         { width: `${btn.iconConfig.size[1]}px`, height: `${btn.iconConfig.size[0]}px` }
       );
       btn.iconConfig.size = [];
-  }})
+    }
+  })
+
+  /**
+   * @description v1.2.0 新增自定义校验事件
+   */
+
+  if (!input.get(inputIds.SET_VALIDATE_INFO)) {
+    input.add(inputIds.SET_VALIDATE_INFO, '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success',
+            },
+            {
+              type: 'string',
+              value: 'error',
+            },
+          ],
+        },
+        help: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  if (!output.get(outputIds.ON_VALIDATE)) {
+    const valueSchema = {
+      type: 'array',
+      items: getItemSchema(data)
+    };
+    output.add(outputIds.ON_VALIDATE, '校验触发', valueSchema);
+  }
+
+  //=========== v1.2.0 end ===============
 
   return true;
 }
