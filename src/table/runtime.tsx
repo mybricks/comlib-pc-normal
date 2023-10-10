@@ -279,11 +279,21 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (env.runtime) {
-      // 数据源变化时，修改选中的行数据
-      const newRows = selectedRowKeys.map((key) => {
-        return dataSource.find((item) => item?.[rowKey] === key) || {};
+      setSelectedRows((row) => {
+        let rowObj = Object.values(row).reduce((res, item) => {
+          res[item[rowKey]] = item;
+          return res;
+        }, {});
+
+        for (let key of selectedRowKeys) {
+          let curItem = dataSource.find((item) => item[rowKey] === key);
+          if (rowObj[key] && curItem) {
+            rowObj[key] == curItem;
+          }
+        }
+
+        return Object.values(rowObj);
       });
-      setSelectedRows(newRows);
     }
   }, [dataSource, selectedRowKeys]);
 
@@ -672,7 +682,7 @@ export default function (props: RuntimeParams<Data>) {
       setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
-        selectedRows: newSelectedRowKeys,
+        selectedRows: newSelectedRows,
         selectedRowKeys: newSelectedRowKeys
       });
     },
