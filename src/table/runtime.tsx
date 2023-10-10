@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'moment';
 import { Table, Empty, ConfigProvider } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
@@ -40,6 +40,8 @@ export default function (props: RuntimeParams<Data>) {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
+  const dataSourceRef = useRef(dataSource);
+  dataSourceRef.current = dataSource;
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
 
@@ -222,6 +224,8 @@ export default function (props: RuntimeParams<Data>) {
   }, [realShowDataSource]);
 
   useEffect(() => {
+    dataSourceRef.current = dataSource;
+
     if (env.runtime) {
       // 输出表格数据
       inputs[InputIds.GET_TABLE_DATA] &&
@@ -235,19 +239,23 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
         inputs[InputIds.SET_ROW_SELECTION]((val) => {
-          const newSelectedRowKeys: string[] = [];
-          const newSelectedRows: any[] = [];
-          (Array.isArray(val) ? val : [val]).forEach((selected) => {
-            // 目前行rowKey数据
-            const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
-            const tempItem = dataSource.find((item) => targetRowKeyVal === item[rowKey]);
-            if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
-              newSelectedRows.push(tempItem);
-              newSelectedRowKeys.push(targetRowKeyVal);
-            }
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-          setSelectedRows(newSelectedRows);
+          setTimeout(() => {
+            const newSelectedRowKeys: string[] = [];
+            const newSelectedRows: any[] = [];
+            (Array.isArray(val) ? val : [val]).forEach((selected) => {
+              // 目前行rowKey数据
+              const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
+              const tempItem = dataSourceRef.current.find(
+                (item) => targetRowKeyVal === item[rowKey]
+              );
+              if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
+                newSelectedRows.push(tempItem);
+                newSelectedRowKeys.push(targetRowKeyVal);
+              }
+            });
+            setSelectedRowKeys(newSelectedRowKeys);
+            setSelectedRows(newSelectedRows);
+          }, 0);
         });
       }
     }
