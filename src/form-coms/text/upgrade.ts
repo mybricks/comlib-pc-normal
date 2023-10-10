@@ -1,6 +1,5 @@
 import { inputIds, outputIds } from '../form-container/constants';
-import { ValidateTriggerType } from '../types';
-import { RuleKeys, defaultRules } from '../utils/validator';
+import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -46,7 +45,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   /**
-   * @description v1.3.0 新增自定义校验事件、触发时机配置项
+   * @description v1.3.0 新增自定义校验事件
    */
 
   if (!input.get(inputIds.SET_VALIDATE_INFO)) {
@@ -87,9 +86,6 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       visible: true,
       title: '自定义校验',
     });
-  }
-  if (!data.validateTrigger) {
-    data.validateTrigger = [ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter];
   }
 
   //=========== v1.3.0 end ===============
