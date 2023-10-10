@@ -76,6 +76,14 @@
         "type": "any"
       },
       "desc": "启用时间选择框"
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置时间选择框里字体的颜色",
+      "schema": {
+        "type": "string"
+      }
     }
   ],
   "outputs": [

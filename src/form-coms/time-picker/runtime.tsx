@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useLayoutEffect } from 'react';
 import { Data } from './types';
 import { TimePicker } from 'antd';
 import moment, { Moment } from 'moment';
@@ -14,6 +14,10 @@ function isNumber(input) {
   return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
 }
 
+const InputIds = {
+  SET_COLOR: 'setColor'
+};
+
 export default function ({
   data,
   inputs,
@@ -26,6 +30,8 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat } = data;
   const [value, setValue] = useState<Moment | null>();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
@@ -102,6 +108,15 @@ export default function ({
     [value]
   );
 
+  useLayoutEffect(() => {
+    inputs[InputIds.SET_COLOR]((color: string) => {
+      const target = wrapperRef.current?.querySelector?.('input');
+      if (target) {
+        target.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
+
   const getValue = useCallback(
     (value) => {
       if (!value) return value;
@@ -122,7 +137,7 @@ export default function ({
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={styles.wrap}>
+      <div ref={wrapperRef} className={styles.wrap}>
         <TimePicker
           placeholder={placeholder}
           value={value}

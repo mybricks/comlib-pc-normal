@@ -33,12 +33,16 @@ export interface Data {
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
 }
 
+const InputIds = {
+  SET_COLOR: 'setColor'
+};
+
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
   const [value, setValue] = useState();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const ref = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -160,6 +164,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, [value]);
 
+  useLayoutEffect(() => {
+    inputs[InputIds.SET_COLOR]((color: string) => {
+      const target = wrapperRef.current?.querySelector?.('input');
+      if (target) {
+        target.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
+
   //重置，
   inputs['resetValue'](() => {
     setValue(void 0);
@@ -256,7 +269,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={css.datePicker} ref={ref}>
+      <div className={css.datePicker} ref={wrapperRef}>
         <DatePicker
           value={value}
           {...data.config}
