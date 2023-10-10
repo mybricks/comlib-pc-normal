@@ -1,5 +1,6 @@
 import { inputIds, outputIds } from "../form-container/constants";
 import { InputIds } from "../types";
+import { RuleKeys } from "../utils/validator";
 import { SlotIds } from "./constants";
 
 export default function ({ data, input, output, slot }: UpgradeParams<any>): boolean {
@@ -82,7 +83,17 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   if (!output.get(outputIds.ON_VALIDATE)) {
     output.add(outputIds.ON_VALIDATE, '校验触发', data.valueSchema);
   }
-
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
   //=========== v1.1.0 end ===============
 
 

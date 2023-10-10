@@ -4,7 +4,6 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem, RuleKeys } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { ValidateTriggerType } from '../types';
 
 export interface Data {
   value: string | undefined;
@@ -72,10 +71,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   });
 
-  const onValidateTrigger = (type: string) => {
-    data.validateTrigger?.includes(type) &&
-      validateTrigger(parentSlot, { id: props.id, name: props.name });
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
+  // const onValidateTrigger = (type: string) => {
+  //   data.validateTrigger?.includes(type) &&
+  //   validateTrigger(parentSlot, { id: props.id, name: props.name });
+  // };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
@@ -87,7 +89,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onBlur = useCallback((e) => {
     const value = e.target.value;
     data.value = value;
-    onValidateTrigger(ValidateTriggerType.OnBlur);
+    onValidateTrigger();
+    // onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](value);
   }, []);
 

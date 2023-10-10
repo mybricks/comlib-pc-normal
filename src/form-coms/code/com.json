@@ -1,121 +1,155 @@
 {
-    "title": "代码编辑器",
-    "namespace": "mybricks.normal-pc.code-editor",
-    "author": "tangxiaoxin",
-    "author_name": "唐小新",
-    "version": "1.0.8",
-    "description": "用于在线编辑代码，支持多种编程语言",
-    "runtime": "./runtime.tsx",
-    "editors": "./editor.ts",
-    "data": "./data.json",
-    "icon": "./icon.svg",
-    "upgrade": "./upgrade.ts",
-    "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-9e7987dd-27c4-4375-8c8c-82465588a0dd.png",
-    "inputs": [
-      {
-        "id": "setValue",
-        "title": "设置值",
-        "schema": {
-          "type": "string"
-        },
-        "desc": "设置代码"
+  "title": "代码编辑器",
+  "namespace": "mybricks.normal-pc.code-editor",
+  "author": "tangxiaoxin",
+  "author_name": "唐小新",
+  "version": "1.1.0",
+  "description": "用于在线编辑代码，支持多种编程语言",
+  "runtime": "./runtime.tsx",
+  "editors": "./editor.ts",
+  "data": "./data.json",
+  "icon": "./icon.svg",
+  "upgrade": "./upgrade.ts",
+  "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-9e7987dd-27c4-4375-8c8c-82465588a0dd.png",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "schema": {
+        "type": "string"
       },
-      {
-        "id": "setInitialValue",
-        "title": "设置初始值",
-        "schema": {
-          "type": "string"
-        },
-        "desc": "设置代码框初始值"
+      "desc": "设置代码"
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "schema": {
+        "type": "string"
       },
-      {
-        "id": "getValue",
-        "title": "获取值",
-        "schema": {
-          "type": "any"
-        },
-        "rels": [
-          "returnValue"
-        ],
-        "desc": "获取代码"
+      "desc": "设置代码框初始值"
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "schema": {
+        "type": "any"
       },
-      {
-        "id": "resetValue",
-        "title": "重置值",
-        "schema": {
-          "type": "any"
-        },
-        "desc": "重置"
+      "rels": [
+        "returnValue"
+      ],
+      "desc": "获取代码"
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "schema": {
+        "type": "any"
       },
-      {
-        "id": "validate",
-        "title": "校验",
-        "schema": {
-          "type": "any"
-        },
-        "rels": [
-          "returnValidate"
-        ]
+      "desc": "重置"
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "schema": {
+        "type": "any"
       },
-      {
-        "id": "setDisabled",
-        "title": "设置禁用",
-        "schema": {
-          "type": "any"
-        },
-        "desc": "代码不可编辑"
+      "rels": [
+        "returnValidate"
+      ]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
       },
-      {
-        "id": "setEnabled",
-        "title": "设置启用",
-        "schema": {
-          "type": "any"
-        },
-        "desc": "代码可编辑"
-      }
-    ],
-    "outputs": [
-      {
-        "id": "onInitial",
-        "title": "值初始化",
-        "schema": {
-          "type": "string"
-        }
+      "desc": "代码不可编辑"
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
       },
-      {
-        "id": "returnValue",
-        "title": "数据输出",
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "id": "returnValidate",
-        "title": "校验结果",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "validateStatus": {
-              "title": "校验状态",
-              "type": "string"
-            },
-            "help": {
-              "title": "校验提示",
-              "type": "string"
-            }
+      "desc": "代码可编辑"
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
           }
         }
-      },
-      {
-        "id": "onChange",
-        "title": "值更新",
-        "schema": {
-          "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "数据输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
         }
       }
-    ],
-    "schema": [
-      "mybricks.normal-pc.form-container/form-item",
-      "*"
-    ]
-  }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "schema": [
+    "mybricks.normal-pc.form-container/form-item",
+    "*"
+  ]
+}

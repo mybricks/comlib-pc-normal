@@ -1,4 +1,5 @@
 import { DateType, InputIds, OutputIds, TimeDateLimitItem } from '../types';
+import { RuleKeys } from '../utils/validator';
 import { refreshSchema } from './editors';
 import { Data } from './runtime';
 
@@ -167,7 +168,17 @@ export default function ({
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', valueSchema);
   }
-
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
   //=========== v1.1.0 end ===============
 
   return true;

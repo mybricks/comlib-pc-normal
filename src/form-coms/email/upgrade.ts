@@ -1,5 +1,6 @@
 import { Data } from './runtime';
 import { ValidateTriggerType } from '../types';
+import { RuleKeys } from '../utils/validator';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -47,9 +48,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       type: 'string'
     });
   }
-
-  if (!data.validateTrigger) {
-    data.validateTrigger = [ValidateTriggerType.OnBlur];
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
   }
 
   return true;

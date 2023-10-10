@@ -6,7 +6,6 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import css from './style.less';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { ValidateTriggerType } from '../types';
 
 export default function ({
   data,
@@ -48,11 +47,9 @@ export default function ({
       configs: {
         setValue(val) {
           setValue(val);
-          onValidateTrigger(ValidateTriggerType.OnChange);
         },
         setInitialValue(val) {
           setValue(val);
-          onValidateTrigger(ValidateTriggerType.OnInit);
         },
         returnValue(output) {
           output(getValue());
@@ -91,8 +88,11 @@ export default function ({
     [value]
   );
 
-  const onValidateTrigger = (type: string) => {
-    data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
+  // const onValidateTrigger = (type: string) => {
+  //   data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
+  // };
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name });
   };
 
   const getValue = useCallback(() => value, [value]);
@@ -101,13 +101,12 @@ export default function ({
     const _value = e.target.value;
     setValue(_value);
     onChangeForFc(parentSlot, { id, name, value: _value });
-    onValidateTrigger(ValidateTriggerType.OnChange);
     outputs['onChange'](_value);
   };
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger(ValidateTriggerType.OnPressEnter);
+    onValidateTrigger();
     outputs['onPressEnter'](value);
   }, []);
 
