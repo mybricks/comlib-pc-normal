@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.switch",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.13",
+  "version": "1.1.0",
   "description": "开关选择器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_8969hz.276cbe33b62e0f79.png",
@@ -74,6 +74,32 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -88,6 +114,14 @@
       "id": "onChange",
       "title": "值更新",
       "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
         "type": "boolean"
       }
     },

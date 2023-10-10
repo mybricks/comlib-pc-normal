@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { Data } from './types';
 import { Input } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { validateFormItem, RuleKeys } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import css from './style.less';
 import { validateTrigger } from '../form-container/models/validate';
@@ -36,6 +36,7 @@ export default function ({
     },
     [value]
   );
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs(
     {
@@ -44,8 +45,12 @@ export default function ({
       inputs,
       outputs,
       configs: {
-        setValue,
-        setInitialValue: setValue,
+        setValue(val) {
+          setValue(val);
+        },
+        setInitialValue(val) {
+          setValue(val);
+        },
         returnValue(output) {
           output(getValue());
         },
@@ -58,12 +63,34 @@ export default function ({
         setEnabled() {
           data.disabled = false;
         },
-        validate
+        validate(model, outputRels) {
+          validateFormItem({
+            value: value,
+            env,
+            model,
+            rules: data.rules
+          })
+            .then((r) => {
+              const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs['onValidate'](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
     },
     [value]
   );
 
+  // const onValidateTrigger = (type: string) => {
+  //   data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
+  // };
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
   };
@@ -74,7 +101,6 @@ export default function ({
     const _value = e.target.value;
     setValue(_value);
     onChangeForFc(parentSlot, { id, name, value: _value });
-    onValidateTrigger();
     outputs['onChange'](_value);
   };
 
@@ -82,6 +108,14 @@ export default function ({
     const value = e.target.value;
     onValidateTrigger();
     outputs['onPressEnter'](value);
+  }, []);
+
+  useEffect(() => {
+    inputs['setValidateInfo']((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
   return (

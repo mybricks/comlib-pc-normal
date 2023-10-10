@@ -1,13 +1,14 @@
 import { Form, Input } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
-import { validateFormItem } from '../utils/validator';
+import { validateFormItem, RuleKeys } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 export interface Data {
   value: string | undefined;
   rules: any[];
+  validateTrigger: string[];
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -21,6 +22,7 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const { edit } = env;
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
     id: props.id,
@@ -54,7 +56,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs['onValidate'](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -66,6 +74,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
+  // const onValidateTrigger = (type: string) => {
+  //   data.validateTrigger?.includes(type) &&
+  //   validateTrigger(parentSlot, { id: props.id, name: props.name });
+  // };
 
   const changeValue = useCallback((e) => {
     const value = e.target.value;
@@ -78,7 +90,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     const value = e.target.value;
     data.value = value;
     onValidateTrigger();
+    // onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](value);
+  }, []);
+
+  useEffect(() => {
+    inputs['setValidateInfo']((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
   let jsx = (

@@ -1,11 +1,12 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Radio, Space } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function Runtime({
   env,
@@ -18,6 +19,8 @@ export default function Runtime({
   title,
   logger
 }: RuntimeParams<Data>) {
+  const validateRelOuputRef = useRef<any>(null);
+
   useFormItemInputs({
     name,
     id,
@@ -57,7 +60,15 @@ export default function Runtime({
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs[outputIds.ON_VALIDATE](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -82,6 +93,12 @@ export default function Runtime({
         data.config.options = ds;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
+      }
+    });
+    // 设置校验状态
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
       }
     });
   }, []);

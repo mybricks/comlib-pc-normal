@@ -3,6 +3,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { createrCatelogEditor } from '../utils';
 import { Option } from '../types';
 import { Data } from './types';
+import { outputIds } from '../form-container/constants';
 
 let tempOptions: Option[] = [];
 
@@ -348,6 +349,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: outputIds.ON_VALIDATE
           }
         },
         {

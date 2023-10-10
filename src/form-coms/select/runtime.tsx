@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Select, Spin } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck } from '../../utils';
-import { OutputIds } from '../types';
+import { InputIds, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
@@ -58,6 +58,7 @@ export default function Runtime({
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const validateRelOuputRef = useRef<any>(null);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -86,7 +87,16 @@ export default function Runtime({
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            const outputValue = getOutputValue(data);
+            outputs[OutputIds.OnValidate](outputValue);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -168,6 +178,12 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -195,15 +211,7 @@ export default function Runtime({
     outputs['onChange'](outputValue);
   }, []);
   const onChange = useCallback((val) => {
-    let value = val;
-    if (data.config.labelInValue) {
-      if (Array.isArray(val)) {
-        value = val.map((i) => i?.value);
-      } else {
-        value = val?.value;
-      }
-    }
-    changeValue(value);
+    changeValue(val);
     onValidateTrigger();
   }, []);
   const onBlur = useCallback((e) => {
@@ -229,6 +237,7 @@ export default function Runtime({
     <div className={css.select} ref={ref} id="area">
       <Select
         {...data.config}
+        labelInValue={false}
         showArrow={data.config.showArrow}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value}

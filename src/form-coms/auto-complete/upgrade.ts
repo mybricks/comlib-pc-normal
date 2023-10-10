@@ -1,4 +1,6 @@
+import { inputIds, outputIds } from '../form-container/constants';
 import { InputIds } from '../types';
+import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
 
 const valueSchema = {
@@ -27,8 +29,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   };
   input.get('setOptions').setSchema(dataSourceSchema);
 
-  data.staticOptions.map((item)=>{
-    if(!item.label){
+  data.staticOptions.map((item) => {
+    if (!item.label) {
       item.label = item.value
     }
   })
@@ -37,7 +39,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     * @description v1.0.7->1.0.8 增加值选择
   */
   if (!output.get('onSelect')) {
-    output.add('onSelect', '值选择', { type: "any"});
+    output.add('onSelect', '值选择', { type: "any" });
   }
 
   /**
@@ -46,6 +48,51 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (!input.get('setColor')) {
     input.add('setColor', '设置字体颜色', valueSchema);
   }
+
+  /**
+   * @description v1.1.0 新增自定义校验事件
+   */
+
+  if (!input.get(inputIds.SET_VALIDATE_INFO)) {
+    input.add(inputIds.SET_VALIDATE_INFO, '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success',
+            },
+            {
+              type: 'string',
+              value: 'error',
+            },
+          ],
+        },
+        help: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  if (!output.get(outputIds.ON_VALIDATE)) {
+    output.add(outputIds.ON_VALIDATE, '校验触发', {
+      type: 'string'
+    });
+  }
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
+  //=========== v1.1.0 end ===============
 
   return true;
 }

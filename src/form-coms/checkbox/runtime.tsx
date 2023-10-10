@@ -1,8 +1,8 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Alert, Checkbox } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
-import { OutputIds } from '../types';
+import { InputIds, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
@@ -18,6 +18,8 @@ export default function Runtime({
   title,
   name
 }: RuntimeParams<Data>) {
+  const validateRelOuputRef = useRef<any>(null);
+
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
@@ -27,7 +29,15 @@ export default function Runtime({
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            outputs[OutputIds.OnValidate](data.value);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -84,6 +94,12 @@ export default function Runtime({
         newValArray.length ? (data.value = newValArray) : void 0;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
+      }
+    });
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
       }
     });
   }, []);

@@ -1,4 +1,5 @@
-import { RuleKeys, defaultValidatorExample } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { ValidateTriggerType } from '../types';
 
 const phoneNumberRules = [
   {
@@ -14,6 +15,12 @@ const phoneNumberRules = [
     visible: true,
     title: '代码校验',
     validateCode: defaultValidatorExample
+  },
+  {
+    key: RuleKeys.CUSTOM_EVENT,
+    status: false,
+    visible: true,
+    title: '自定义校验'
   },
   {
     key: RuleKeys.PHONE_NUMBER_VALIDATOR,
@@ -137,6 +144,29 @@ export default {
             }
           }
         },
+        // {
+        //   title: '校验触发时机',
+        //   type: 'Select',
+        //   description: '配置校验触发的时机',
+        //   options: {
+        //     mode: 'tags',
+        //     multiple: true,
+        //     options: [
+        //       { label: '值初始化', value: ValidateTriggerType.OnInit },
+        //       { label: '值更新', value: ValidateTriggerType.OnChange },
+        //       { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+        //       { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
+        //     ]
+        //   },
+        //   value: {
+        //     get({ data }) {
+        //       return data.validateTrigger;
+        //     },
+        //     set({ data }, value: string[]) {
+        //       data.validateTrigger = value;
+        //     }
+        //   }
+        // },
         {
           title: '校验规则',
           description: '提供快捷校验配置',
@@ -187,6 +217,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: 'onValidate'
           }
         },
         {

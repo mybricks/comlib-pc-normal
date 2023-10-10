@@ -1,14 +1,15 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { Data } from './types';
 import { TimePicker } from 'antd';
 import moment, { Moment } from 'moment';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
 import ConfigProvider from '../../components/ConfigProvider';
 
 import styles from './style.less';
+import { InputIds, OutputIds } from '../types';
 
 function isNumber(input) {
   return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
@@ -26,6 +27,8 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat } = data;
   const [value, setValue] = useState<Moment | null>();
+  const validateRelOuputRef = useRef<any>(null);
+
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
@@ -35,7 +38,15 @@ export default function ({
         rules: data.rules
       })
         .then((r) => {
-          outputRels(r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels;
+            outputs[OutputIds.OnValidate](getValue(value));
+          } else {
+            outputRels(r);
+          }
         })
         .catch((e) => {
           outputRels(e);
@@ -101,6 +112,14 @@ export default function ({
     },
     [value]
   );
+  useEffect(() => {
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  });
 
   const getValue = useCallback(
     (value) => {

@@ -8,6 +8,7 @@ export const inputIds = {
   SET_DISABLED: 'setDisabled',
   SET_ENABLED: 'setEnabled',
   GET_FIELDS_VALUE: 'getFieldsValue',
+  SET_VALIDATE_INFO: 'setValidateInfo',
   //禁用/启用
   SetDisable: 'setDisable',
   SetEnable: 'setEnable',
@@ -25,7 +26,8 @@ export const outputIds = {
   ON_CLICK_CANCEL: 'onClickCancel',
   ON_MERGE_FINISH: 'onMergeFinish',
   ON_VALUES_CHANGE: 'onValuesChange',
-  RETURN_VALUES: 'returnValues'
+  RETURN_VALUES: 'returnValues',
+  ON_VALIDATE: 'onValidate'
 }
 
 export const slotInputIds = {

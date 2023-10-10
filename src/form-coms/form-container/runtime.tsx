@@ -349,7 +349,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
-        outputRels[outputIds.ON_SUBMIT_ERROR](other);
+        outputRels && outputRels[outputIds.ON_SUBMIT_ERROR](other);
         console.log('校验失败', e);
       });
   };

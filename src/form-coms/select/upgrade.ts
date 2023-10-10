@@ -1,15 +1,16 @@
 import { InputIds, OutputIds } from '../types';
+import { RuleKeys } from '../utils/validator';
 import { Schemas } from './constants';
 import { Data } from './types';
 
-export default function ({ 
-  data, 
-  input, 
+export default function ({
+  data,
+  input,
   output,
   getDeclaredStyle,
   removeDeclaredStyle,
   setDeclaredStyle
- }: UpgradeParams<Data>): boolean {
+}: UpgradeParams<Data>): boolean {
 
   const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
 
@@ -85,26 +86,29 @@ export default function ({
     */
 
   let returnValueSchema;
+  if (data.config.labelInValue) {
+    returnValueSchema = {
+      type: 'object',
+      properties: {
+        label: Schemas.String,
+        value: Schemas.String,
+      }
+    };
+  } else {
+    returnValueSchema = Schemas.String;
+  }
+  let outputValueSchema = returnValueSchema;
+  if (isMultiple) {
+    outputValueSchema = {
+      type: 'array',
+      items: returnValueSchema
+    };
+  }
   if (data.outputValueType === undefined) {
     if (data.config.labelInValue) {
       data.outputValueType = 'labelInValue';
-      returnValueSchema = {
-        type: 'object',
-        properties: {
-          label: Schemas.String,
-          value: Schemas.String,
-        }
-      };
     } else {
       data.outputValueType = 'value';
-      returnValueSchema = Schemas.String;
-    }
-    let outputValueSchema = returnValueSchema;
-    if (isMultiple) {
-      outputValueSchema = {
-        type: 'array',
-        items: returnValueSchema
-      };
     }
     output.get(OutputIds.OnChange)?.setSchema(outputValueSchema);
     output.get(OutputIds.OnInitial)?.setSchema(outputValueSchema);
@@ -132,22 +136,64 @@ export default function ({
   const preDropdownStyle = getDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
 
   let dropdownCss: React.CSSProperties = {}, css: React.CSSProperties = {}, hoverCss: React.CSSProperties = {};
-  
+
   if (preDropdownStyle) {
     dropdownCss = { ...preDropdownStyle.css };
     removeDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
     setDeclaredStyle('.{id}.ant-select-dropdown', dropdownCss, true);
   }
 
-  /**
-    * @description v1.0.32 -> v1.0.33 文本内容样式配置 target 修改
-    */
+  /*
+   * @description v1.0.32 -> v1.0.33 文本内容样式配置 target 修改
+   */
   const preSearchInputStyle = getDeclaredStyle('.ant-select-single.ant-select-show-arrow .ant-select-selection-item');
-  if(preSearchInputStyle) {
+  if (preSearchInputStyle) {
     removeDeclaredStyle('.ant-select-single.ant-select-show-arrow .ant-select-selection-item');
     setDeclaredStyle('.ant-select-selection-search .ant-select-selection-search-input', preSearchInputStyle.css);
   }
 
+  /**
+   * @description v1.1.0 新增自定义校验事件
+   */
+
+  if (!input.get(InputIds.SetValidateInfo)) {
+    input.add(InputIds.SetValidateInfo, '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success',
+            },
+            {
+              type: 'string',
+              value: 'error',
+            },
+          ],
+        },
+        help: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  if (!output.get(OutputIds.OnValidate)) {
+    output.add(OutputIds.OnValidate, '校验触发', outputValueSchema);
+  }
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
+  //=========== v1.1.0 end ===============
 
   return true;
 }

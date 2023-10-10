@@ -1,10 +1,11 @@
 import { Switch, SwitchProps } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { StatusEnum } from './const';
+import { InputIds, OutputIds } from '../types';
 
 export interface Data {
   value: boolean | undefined;
@@ -28,6 +29,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const { edit } = env;
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
     inputs,
@@ -60,7 +62,15 @@ export default function ({
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs[OutputIds.OnValidate](data.config.checked);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -68,6 +78,15 @@ export default function ({
       }
     }
   });
+
+  useEffect(() => {
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name: name });

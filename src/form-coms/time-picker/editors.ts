@@ -1,6 +1,7 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
+import { OutputIds } from '../types';
 export default {
   '@resize': {
     options: ['width']
@@ -266,8 +267,17 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.format || 'HH:mm:ss';
                 },
-                set({ data }: EditorResult<Data>, val: string) {
+                set({ data, output }: EditorResult<Data>, val: string) {
                   data.format = val
+                  let valueSchema = {
+                    type: 'string'
+                  };
+                  if (data.format === 'timeStamp') {
+                    valueSchema = {
+                      type: 'number'
+                    }
+                  }
+                  output.get(OutputIds.OnValidate).setSchema(valueSchema);
                 }
               }
             },
@@ -342,7 +352,20 @@ export default {
                   data.rules = value;
                 }
               }
-            }
+            },
+            {
+              title: '校验触发事件',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                const cutomRule = (data.rules || defaultRules).find(
+                  (i) => i.key === RuleKeys.CUSTOM_EVENT
+                );
+                return !!cutomRule?.status;
+              },
+              options: {
+                outputId: OutputIds.OnValidate
+              }
+            },
           ]
         },
         {

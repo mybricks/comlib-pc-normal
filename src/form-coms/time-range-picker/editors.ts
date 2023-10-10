@@ -1,6 +1,28 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
+import { OutputIds } from '../types';
+
+const refreshSchema = ({ data, output }) => {
+  const baseType = data.format === 'timeStamp' ? 'number' : 'string';
+  const returnValueSchema = data.outFormat === 'string'
+    ? {
+      type: 'string'
+    }
+    : {
+      type: 'tuple',
+      items: [
+        {
+          type: baseType
+        },
+        {
+          type: baseType
+        }
+      ]
+    };
+  output.get(OutputIds.OnValidate).setSchema(returnValueSchema);
+}
+
 export default {
   '@resize': {
     options: ['width']
@@ -285,8 +307,9 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.format || 'HH:mm:ss';
                 },
-                set({ data }: EditorResult<Data>, val: string) {
+                set({ data, output }: EditorResult<Data>, val: string) {
                   data.format = val;
+                  refreshSchema({ data, output });
                 }
               }
             },
@@ -319,8 +342,9 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.outFormat || 'array';
                 },
-                set({ data }: EditorResult<Data>, val: 'array' | 'string') {
+                set({ data, output }: EditorResult<Data>, val: 'array' | 'string') {
                   data.outFormat = val;
+                  refreshSchema({ data, output });
                 }
               }
             },
@@ -395,7 +419,20 @@ export default {
                   data.rules = value;
                 }
               }
-            }
+            },
+            {
+              title: '校验触发事件',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                const cutomRule = (data.rules || defaultRules).find(
+                  (i) => i.key === RuleKeys.CUSTOM_EVENT
+                );
+                return !!cutomRule?.status;
+              },
+              options: {
+                outputId: OutputIds.OnValidate
+              }
+            },
           ]
         },
         {

@@ -1,7 +1,7 @@
 export interface Data {
   placeholder?: string
   disabled?: boolean
-  rules: string[],
+  rules: any[],
   format: string,
   customFormat: string
 }

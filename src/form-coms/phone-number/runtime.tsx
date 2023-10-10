@@ -1,13 +1,13 @@
 import { Form, Input } from 'antd';
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
-import { validateFormItem } from '../utils/validator';
+import { validateFormItem, RuleKeys } from '../utils/validator';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-
 export interface Data {
   value: string | undefined;
   rules: any[];
+  validateTrigger: string[];
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -28,6 +28,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const { edit } = env;
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
     inputs,
@@ -60,7 +61,13 @@ export default function ({
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs['onValidate'](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -69,6 +76,9 @@ export default function ({
     }
   });
 
+  // const onValidateTrigger = (type: string) => {
+  //   data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
+  // };
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
   };
@@ -91,6 +101,14 @@ export default function ({
     const value = e.target.value;
     onValidateTrigger();
     outputs['onPressEnter'](value);
+  }, []);
+
+  useEffect(() => {
+    inputs['setValidateInfo']((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
   let jsx = (

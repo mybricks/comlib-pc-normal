@@ -9,7 +9,8 @@ export enum RuleKeys {
   REG_EXP = 'regExp',
   CODE_VALIDATOR = 'codeValidator',
   Email_VALIDATOR = 'emailValidator',
-  PHONE_NUMBER_VALIDATOR = 'phoneNumberValidator'
+  PHONE_NUMBER_VALIDATOR = 'phoneNumberValidator',
+  CUSTOM_EVENT = 'customEvent'
 }
 
 export const defaultValidatorExample = encodeURIComponent(`export default async function (value, context) {
@@ -35,6 +36,12 @@ export const defaultRules = [
     visible: true,
     title: '代码校验',
     validateCode: defaultValidatorExample
+  },
+  {
+    key: RuleKeys.CUSTOM_EVENT,
+    status: false,
+    visible: true,
+    title: '自定义校验',
   }
 ]
 
@@ -119,7 +126,7 @@ export const ruleFnMap = {
 };
 
 export function validateFormItem({ value, model, env, rules }) {
-  const curRule = (rules || defaultRules).filter(item => item.status)
+  const curRule = (rules || defaultRules).filter(item => item.status && item.key !== RuleKeys.CUSTOM_EVENT)
 
   return new Promise((resolve, reject) => {
     Promise.all(curRule.map(item => {

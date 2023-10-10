@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.0.20",
+  "version": "1.1.0",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -108,6 +108,32 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -125,6 +151,17 @@
       "id": "onChange",
       "title": "值更新",
       "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
         "type": "array",
         "items": {
           "type": "string"

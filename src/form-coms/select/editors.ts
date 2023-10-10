@@ -61,6 +61,7 @@ const refreshSchema = ({ input, output, data }: { input: any, output: any, data:
   output.get(OutputIds.OnChange).setSchema(returnValueSchema);
   output.get(OutputIds.OnBlur).setSchema(returnValueSchema);
   output.get(OutputIds.ReturnValue).setSchema(returnValueSchema);
+  output.get(OutputIds.OnValidate).setSchema(returnValueSchema);
 };
 
 export default {
@@ -521,6 +522,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: OutputIds.OnValidate
           }
         },
         {

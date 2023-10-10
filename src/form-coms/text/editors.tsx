@@ -1,5 +1,7 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
+import { outputIds } from '../form-container/constants';
+import { Data } from './runtime';
 
 export default {
   '@resize': {
@@ -344,6 +346,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: outputIds.ON_VALIDATE
           }
         },
         {
