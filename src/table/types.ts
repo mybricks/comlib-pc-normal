@@ -194,15 +194,18 @@ export interface Data {
   defaultExpandAllRows: boolean,
 
   useSummaryColumn: boolean, // 是否开启总结栏
-  SummaryColumnTitle: string, // 总结栏 title
-  SummaryCellTitleCol: number, // 总结栏 title col
-  SummaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
-  SummaryColumnContentSchema: object, // 总结栏内容Schema
+  summaryColumnTitle: string, // 总结栏 title
+  summaryCellTitleCol: number, // 总结栏 title col
+  summaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
+  summaryColumnContentSchema: object, // 总结栏内容Schema
   enbaleRowMerge?: boolean,
   rowMergeConfig?: {
     // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
     mergeByField: string,
     // 返回true，表示对应的列不能合并
     excludeFields?: string[]
-  }
+  },
+  fixedHeight?: string | number
+
+  mergeCheckboxColumn?: boolean; // 合并勾选栏
 }

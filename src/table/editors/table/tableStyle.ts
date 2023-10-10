@@ -51,7 +51,7 @@ const tableStyleEditor = {
       }
     },
     {
-      title: '设置固定表头可滚动高度',
+      title: '可滚动最大高度',
       type: 'Text',
       ifVisible({ data }: EditorResult<Data>) {
         return data.fixedHeader;
@@ -62,6 +62,21 @@ const tableStyleEditor = {
         },
         set({ data }: EditorResult<Data>, value) {
           data.scroll.y = unitConversion(value);
+        }
+      }
+    },
+    {
+      title: '固定高度',
+      type: 'text',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.fixedHeader;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.fixedHeight;
+        },
+        set({ data }: EditorResult<Data>, val: string) {
+          data.fixedHeight = unitConversion(val);
         }
       }
     },

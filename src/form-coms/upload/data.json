@@ -16,5 +16,6 @@
     0,
     0
   ],
-  "customUpload": true
+  "customUpload": true,
+  "fileClick": false
 }

@@ -92,20 +92,10 @@ const SlotContent = (props) => {
               ? `${width}px`
               : `${(span * 100) / 24}%`;
 
-            if (env.edit || env.runtime?.debug || data.submitHiddenFields) {
-              return (
-                <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
-                  {com.jsx}
-                </Col>
-              );
-            }
-
             return (
-              item?.visible && (
-                <Col key={com.id} style={{ width: flexBasis }}>
-                  {com.jsx}
-                </Col>
-              )
+              <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
+                {com.jsx}
+              </Col>
             );
           }
 

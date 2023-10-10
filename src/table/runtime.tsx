@@ -201,7 +201,6 @@ export default function (props: RuntimeParams<Data>) {
             ...tempValue, // 需要保留类似rowKey的数据
             ...value
           };
-          console.log('222222', prevDataSource[index], temp[index]);
           return temp;
         });
       }
@@ -213,12 +212,6 @@ export default function (props: RuntimeParams<Data>) {
     if (!env.runtime || !data.useExpand) return;
     // 开启关闭所有展开项
     inputs[InputIds.EnableAllExpandedRows]((enable) => {
-      console.log(
-        'realShowDataSource2',
-        expandedRowKeys,
-        realShowDataSource,
-        realShowDataSource.map((item) => item[rowKey])
-      );
       setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
     });
   }, [realShowDataSource]);
@@ -500,6 +493,62 @@ export default function (props: RuntimeParams<Data>) {
     selectedRowKeys,
     preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: any[], selectedRows: any[]) => {
+      if (
+        data.rowMergeConfig &&
+        data.mergeCheckboxColumn &&
+        data.selectionType === RowSelectionTypeEnum.Checkbox
+      ) {
+        const { mergeByField } = data.rowMergeConfig || {};
+        const result: any[] = [];
+        const addedObjects = new Set();
+
+        for (const key of selectedRowKeys) {
+          // 找相应uuid数据
+          const matchingObject = dataSource.find((obj) => obj[rowKey] === key);
+          const matchingObjectIndex = dataSource.findIndex((obj) => obj[rowKey] === key);
+          // 去重
+          if (matchingObject && !addedObjects.has(matchingObject[rowKey])) {
+            if (!matchingObject[mergeByField as string]) {
+              // col为undefined 只添加自己
+              result.push(matchingObject);
+            } else {
+              // 是合并行中间项直接跳出 前一项合并标识相同
+              if (
+                matchingObjectIndex - 1 >= 0 &&
+                dataSource[matchingObjectIndex - 1]?.[mergeByField] === matchingObject[mergeByField]
+              ) {
+                continue;
+              }
+              const matchingObjects: any[] = [];
+              for (let i = matchingObjectIndex; i < dataSource.length; i++) {
+                if (dataSource[i]?.[mergeByField] !== matchingObject[mergeByField]) {
+                  break;
+                }
+
+                matchingObjects.push(dataSource[i]);
+              }
+              // 反选 取消 不是合并行的第一个就取消
+              const isFirst =
+                matchingObjects.length > 0 && matchingObjects[0][rowKey] === matchingObject[rowKey];
+              if (!isFirst) {
+                continue;
+              }
+              // 添加合并行 col相同项
+              matchingObjects.forEach((obj) => {
+                if (!addedObjects.has(obj[rowKey])) {
+                  result.push(obj);
+                  addedObjects.add(obj[rowKey]);
+                }
+              });
+            }
+
+            addedObjects.add(matchingObject[rowKey]);
+          }
+        }
+        selectedRows = result;
+        selectedRowKeys = result.map((item) => item[rowKey]);
+      }
+
       if (data.rowSelectionLimit && selectedRowKeys.length > data.rowSelectionLimit) {
         selectedRows = selectedRows.slice(0, data.rowSelectionLimit);
         selectedRowKeys = selectedRowKeys.slice(0, data.rowSelectionLimit);
@@ -540,6 +589,51 @@ export default function (props: RuntimeParams<Data>) {
         return { disabled: true };
       }
       return null;
+    },
+    renderCell: (value: boolean, record: any, index: number, originNode: React.ReactNode) => {
+      const getCellConfig = (dataSource: any[], rowIndex: number): number => {
+        const { mergeByField } = data.rowMergeConfig || {};
+        if (
+          !data.enbaleRowMerge ||
+          !mergeByField ||
+          !dataSource ||
+          dataSource.length <= 1 ||
+          typeof dataSource[rowIndex]?.[mergeByField] === 'undefined' ||
+          !data.mergeCheckboxColumn
+        )
+          return 1;
+        const fieldValues = dataSource.map((item) => item[mergeByField]);
+
+        // 如果跟上一行数据一样，则直接合并
+        if (rowIndex !== 0 && fieldValues[rowIndex] === fieldValues[rowIndex - 1]) {
+          return 0;
+        }
+
+        // 计算连续相同的值的个数
+        const calcEqualCount = (list: string | any[], index: number) => {
+          if (index === list.length - 1) {
+            return 1;
+          }
+          if (index >= list.length) {
+            return 0;
+          }
+          if (list[index] === list[index + 1]) {
+            return 1 + calcEqualCount(list, index + 1);
+          }
+          return 1;
+        };
+
+        return calcEqualCount(fieldValues, rowIndex);
+      };
+      return {
+        props: {
+          rowSpan:
+            data.mergeCheckboxColumn && data.selectionType === RowSelectionTypeEnum.Checkbox
+              ? getCellConfig(dataSource, index)
+              : 1 // 合并行
+        },
+        children: originNode
+      };
     }
   };
 
@@ -663,7 +757,8 @@ export default function (props: RuntimeParams<Data>) {
         {data.columns.length ? (
           <Table
             style={{
-              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
+              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
+              height: data.fixedHeight
             }}
             dataSource={edit ? defaultDataSource : realShowDataSource}
             loading={{
