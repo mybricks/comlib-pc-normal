@@ -1,9 +1,9 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
-import { OutputIds, TimeDateLimitItem } from '../types';
+import { InputIds, OutputIds, TimeDateLimitItem } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -66,6 +66,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
+  const validateRelOuputRef = useRef<any>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
 
   const { edit, runtime } = env;
@@ -195,7 +196,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            let transValue;
+            if (!Array.isArray(value)) {
+              transValue = null;
+            } else {
+              transValue = value.map((item, index) => {
+                return transCalculation(item, data.contentType, props, index);
+              });
+              if (data.dateType !== 'array') {
+                transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+              }
+            }
+            outputs[OutputIds.OnValidate](transValue);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -218,18 +238,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, [value]);
 
-  //重置
-  inputs['resetValue'](() => {
-    setValue(void 0);
-  });
-  //设置禁用
-  inputs['setDisabled'](() => {
-    data.config.disabled = true;
-  });
-  //设置启用
-  inputs['setEnabled'](() => {
-    data.config.disabled = false;
-  });
+  useEffect(() => {
+    //重置
+    inputs['resetValue'](() => {
+      setValue(void 0);
+    });
+    //设置禁用
+    inputs['setDisabled'](() => {
+      data.config.disabled = true;
+    });
+    //设置启用
+    inputs['setEnabled'](() => {
+      data.config.disabled = false;
+    });
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
