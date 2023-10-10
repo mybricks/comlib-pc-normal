@@ -3,6 +3,7 @@ import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
 import { SlotIds, InputIds } from './constant'
 import styleEditor from './styleEditor';
+import { OutputIds } from '../types';
 
 export const defaultDisabledDateRule = [
   {
@@ -231,6 +232,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: OutputIds.OnValidate
           }
         },
         {

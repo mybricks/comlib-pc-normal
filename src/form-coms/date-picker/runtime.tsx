@@ -1,9 +1,9 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
-import { OutputIds } from '../types';
+import { OutputIds, InputIds as CommonInputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
@@ -39,6 +39,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const ref = useRef(null);
+  const validateRelOuputRef = useRef<any>(null);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -134,7 +135,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            let transValue;
+            //1.null是从日期选择框不选日期的情况；
+            //2.undefined是手动设置值为空或者不正确的情况
+            if (value === null || value === undefined) {
+              transValue = undefined;
+            } else {
+              transValue = transCalculation(value, data.contentType, props);
+            }
+            outputs[OutputIds.OnValidate](transValue);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -157,6 +174,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         transValue = transCalculation(value, data.contentType, props);
       }
       outputRels['returnValue'](transValue);
+    });
+
+    // 设置校验状态
+    inputs[CommonInputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
     });
   }, [value]);
 
