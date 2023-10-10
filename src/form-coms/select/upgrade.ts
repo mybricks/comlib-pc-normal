@@ -85,26 +85,29 @@ export default function ({
     */
 
   let returnValueSchema;
+  if (data.config.labelInValue) {
+    returnValueSchema = {
+      type: 'object',
+      properties: {
+        label: Schemas.String,
+        value: Schemas.String,
+      }
+    };
+  } else {
+    returnValueSchema = Schemas.String;
+  }
+  let outputValueSchema = returnValueSchema;
+  if (isMultiple) {
+    outputValueSchema = {
+      type: 'array',
+      items: returnValueSchema
+    };
+  }
   if (data.outputValueType === undefined) {
     if (data.config.labelInValue) {
       data.outputValueType = 'labelInValue';
-      returnValueSchema = {
-        type: 'object',
-        properties: {
-          label: Schemas.String,
-          value: Schemas.String,
-        }
-      };
     } else {
       data.outputValueType = 'value';
-      returnValueSchema = Schemas.String;
-    }
-    let outputValueSchema = returnValueSchema;
-    if (isMultiple) {
-      outputValueSchema = {
-        type: 'array',
-        items: returnValueSchema
-      };
     }
     output.get(OutputIds.OnChange)?.setSchema(outputValueSchema);
     output.get(OutputIds.OnInitial)?.setSchema(outputValueSchema);
@@ -167,9 +170,7 @@ export default function ({
     });
   }
   if (!output.get(OutputIds.OnValidate)) {
-    output.add(OutputIds.OnValidate, '校验触发', {
-      type: 'string'
-    });
+    output.add(OutputIds.OnValidate, '校验触发', outputValueSchema);
   }
 
   //=========== v1.1.0 end ===============

@@ -92,7 +92,8 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](data.value);
+            const outputValue = getOutputValue(data);
+            outputs[OutputIds.OnValidate](outputValue);
           } else {
             outputRels['returnValidate'](r);
           }
