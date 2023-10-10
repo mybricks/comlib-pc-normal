@@ -4,6 +4,7 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { TextAreaRef } from 'antd/lib/input/TextArea';
 
 export interface Data {
   value: string | undefined;
@@ -19,6 +20,10 @@ export interface Data {
   maxRows?: number;
 }
 
+const InputIds = {
+  SET_COLOR: 'setColor'
+};
+
 export default function ({
   env,
   data,
@@ -32,6 +37,9 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { edit } = env;
   const [value, setValue] = useState();
+
+  const inputRef = useRef<TextAreaRef>(null);
+
   useFormItemInputs({
     id: id,
     name: name,
@@ -75,6 +83,19 @@ export default function ({
       }
     }
   });
+
+  useLayoutEffect(() => {
+    /**
+     * @description 设置字体颜色
+     */
+    inputs[InputIds.SET_COLOR] &&
+      inputs[InputIds.SET_COLOR]((color) => {
+        if (inputRef?.current?.resizableTextArea?.textArea) {
+          inputRef.current.resizableTextArea.textArea.style.color = color;
+        }
+      });
+  }, []);
+
   useEffect(() => {
     data.value = value;
   }, [value]);
@@ -117,6 +138,7 @@ export default function ({
   return (
     <div>
       <Input.TextArea
+        ref={inputRef}
         {...data.config}
         // value={data.value}
         value={value}

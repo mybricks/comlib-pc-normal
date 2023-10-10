@@ -74,6 +74,14 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置文本域里字体的颜色",
+      "schema": {
+        "type": "string"
+      }
     }
   ],
   "outputs": [
