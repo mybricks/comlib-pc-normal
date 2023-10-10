@@ -1,4 +1,5 @@
 import { inputIds, outputIds } from "../form-container/constants";
+import { getItemSchema } from "./schema";
 import { Data, LocationEnum, SizeEnum } from "./types";
 
 export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -102,9 +103,11 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     });
   }
   if (!output.get(outputIds.ON_VALIDATE)) {
-    output.add(outputIds.ON_VALIDATE, '校验触发', {
-      type: 'string'
-    });
+    const valueSchema = {
+      type: 'array',
+      items: getItemSchema(data)
+    };
+    output.add(outputIds.ON_VALIDATE, '校验触发', valueSchema);
   }
 
   //=========== v1.2.0 end ===============

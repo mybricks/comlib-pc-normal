@@ -80,9 +80,7 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
     });
   }
   if (!output.get(outputIds.ON_VALIDATE)) {
-    output.add(outputIds.ON_VALIDATE, '校验触发', {
-      type: 'string'
-    });
+    output.add(outputIds.ON_VALIDATE, '校验触发', data.valueSchema);
   }
 
   //=========== v1.1.0 end ===============
