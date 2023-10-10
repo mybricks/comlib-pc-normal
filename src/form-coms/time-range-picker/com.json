@@ -27,11 +27,11 @@
       },
       "desc": "设置时间范围"
     },
-     {
+    {
       "id": "setInitialValue",
       "title": "设置初始值",
       "desc": "设置时间范围选择框初始值，并触发值初始化事件输出",
-       "schema": {
+      "schema": {
         "type": "array",
         "items": {
           "type": "number"
@@ -82,6 +82,32 @@
         "type": "any"
       },
       "desc": "启用时间范围选择框"
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -103,6 +129,22 @@
         "items": {
           "type": "number"
         }
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
       }
     },
     {
