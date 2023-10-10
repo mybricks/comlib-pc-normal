@@ -1,4 +1,5 @@
 import { inputIds, outputIds } from "../form-container/constants";
+import { RuleKeys } from "../utils/validator";
 import { getItemSchema } from "./schema";
 import { Data, LocationEnum, SizeEnum } from "./types";
 
@@ -109,7 +110,17 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     };
     output.add(outputIds.ON_VALIDATE, '校验触发', valueSchema);
   }
-
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
   //=========== v1.2.0 end ===============
 
   return true;

@@ -1,5 +1,6 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { ValidateTriggerType } from '../types';
+import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -74,6 +75,17 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (!output.get(outputIds.ON_VALIDATE)) {
     output.add(outputIds.ON_VALIDATE, '校验触发', {
       type: 'string'
+    });
+  }
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
     });
   }
   if (!data.validateTrigger) {
