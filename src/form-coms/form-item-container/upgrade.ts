@@ -10,11 +10,11 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
 
   if (!input.get('setInitialValue')) {
 
-    input.add('setInitialValue', '设置初始值', valueSchema);
+    input.add('setInitialValue', '设置初始值', data.valueSchema || valueSchema);
   }
 
   if (!output.get('onInitial')) {
-    output.add('onInitial', '初始化', valueSchema);
+    output.add('onInitial', '初始化', data.valueSchema || valueSchema);
   }
 
   /**
@@ -81,7 +81,7 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
     });
   }
   if (!output.get(outputIds.ON_VALIDATE)) {
-    output.add(outputIds.ON_VALIDATE, '校验触发', data.valueSchema);
+    output.add(outputIds.ON_VALIDATE, '校验触发', data.valueSchema || valueSchema);
   }
   const cutomRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
