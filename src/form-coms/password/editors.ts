@@ -132,28 +132,28 @@ export default {
             }
           ]
         },
-        {
-          title: '校验触发时机',
-          type: 'Select',
-          description: '配置校验触发的时机',
-          options: {
-            mode: 'tags',
-            multiple: true,
-            options: [
-              { label: '值初始化', value: ValidateTriggerType.OnInit },
-              { label: '值更新', value: ValidateTriggerType.OnChange },
-              { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
-            ]
-          },
-          value: {
-            get({ data }) {
-              return data.validateTrigger;
-            },
-            set({ data }, value: string[]) {
-              data.validateTrigger = value;
-            }
-          }
-        },
+        // {
+        //   title: '校验触发时机',
+        //   type: 'Select',
+        //   description: '配置校验触发的时机',
+        //   options: {
+        //     mode: 'tags',
+        //     multiple: true,
+        //     options: [
+        //       { label: '值初始化', value: ValidateTriggerType.OnInit },
+        //       { label: '值更新', value: ValidateTriggerType.OnChange },
+        //       { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
+        //     ]
+        //   },
+        //   value: {
+        //     get({ data }) {
+        //       return data.validateTrigger;
+        //     },
+        //     set({ data }, value: string[]) {
+        //       data.validateTrigger = value;
+        //     }
+        //   }
+        // },
         {
           title: '校验',
           items: [
