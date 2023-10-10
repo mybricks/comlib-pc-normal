@@ -2,14 +2,14 @@ import { InputIds, OutputIds } from '../types';
 import { Schemas } from './constants';
 import { Data } from './types';
 
-export default function ({ 
-  data, 
-  input, 
+export default function ({
+  data,
+  input,
   output,
   getDeclaredStyle,
   removeDeclaredStyle,
   setDeclaredStyle
- }: UpgradeParams<Data>): boolean {
+}: UpgradeParams<Data>): boolean {
 
   const isMultiple = data.config.mode && ['multiple', 'tags'].includes(data.config.mode);
 
@@ -132,12 +132,47 @@ export default function ({
   const preDropdownStyle = getDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
 
   let dropdownCss: React.CSSProperties = {}, css: React.CSSProperties = {}, hoverCss: React.CSSProperties = {};
-  
+
   if (preDropdownStyle) {
     dropdownCss = { ...preDropdownStyle.css };
     removeDeclaredStyle(`.{id} div.ant-select-dropdown-placement-bottomLeft`);
     setDeclaredStyle('.{id}.ant-select-dropdown', dropdownCss, true);
   }
+
+  /**
+   * @description v1.1.0 新增自定义校验事件
+   */
+
+  if (!input.get(InputIds.SetValidateInfo)) {
+    input.add(InputIds.SetValidateInfo, '设置校验状态', {
+      type: 'object',
+      properties: {
+        validateStatus: {
+          type: 'enum',
+          items: [
+            {
+              type: 'string',
+              value: 'success',
+            },
+            {
+              type: 'string',
+              value: 'error',
+            },
+          ],
+        },
+        help: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  if (!output.get(OutputIds.OnValidate)) {
+    output.add(OutputIds.OnValidate, '校验触发', {
+      type: 'string'
+    });
+  }
+
+  //=========== v1.1.0 end ===============
 
   return true;
 }
