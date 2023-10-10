@@ -6,6 +6,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { TextAreaRef } from 'antd/lib/input/TextArea';
 import { inputIds, outputIds } from '../form-container/constants';
+import { InputIds } from '../types';
 
 export interface Data {
   value: string | undefined;
@@ -20,10 +21,6 @@ export interface Data {
   minRows?: number;
   maxRows?: number;
 }
-
-const InputIds = {
-  SET_COLOR: 'setColor'
-};
 
 export default function ({
   env,
@@ -98,8 +95,8 @@ export default function ({
     /**
      * @description 设置字体颜色
      */
-    inputs[InputIds.SET_COLOR] &&
-      inputs[InputIds.SET_COLOR]((color) => {
+    inputs[InputIds.SetColor] &&
+      inputs[InputIds.SetColor]((color) => {
         if (inputRef?.current?.resizableTextArea?.textArea) {
           inputRef.current.resizableTextArea.textArea.style.color = color;
         }

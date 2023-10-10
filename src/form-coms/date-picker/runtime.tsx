@@ -33,10 +33,6 @@ export interface Data {
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
 }
 
-const InputIds = {
-  SET_COLOR: 'setColor'
-};
-
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
   const [value, setValue] = useState();
@@ -189,7 +185,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [value]);
 
   useLayoutEffect(() => {
-    inputs[InputIds.SET_COLOR]((color: string) => {
+    inputs[CommonInputIds.SetColor]((color: string) => {
       const target = wrapperRef.current?.querySelector?.('input');
       if (target) {
         target.style.color = typeof color === 'string' ? color : '';

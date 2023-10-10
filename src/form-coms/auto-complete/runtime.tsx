@@ -6,6 +6,7 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
+import { InputIds } from '../types';
 
 export interface Option {
   value: string;
@@ -26,10 +27,6 @@ export interface Data {
   };
 }
 
-export enum InputIds {
-  SET_COLOR = 'setColor'
-}
-
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, logger } = props;
 
@@ -37,7 +34,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
 
   useLayoutEffect(() => {
-    inputs[InputIds.SET_COLOR]((color: string) => {
+    inputs[InputIds.SetColor]((color: string) => {
       // 设置输入框字体颜色
       if (inputRef.current?.input) {
         inputRef.current.input.style.color = typeof color === 'string' ? color : '';

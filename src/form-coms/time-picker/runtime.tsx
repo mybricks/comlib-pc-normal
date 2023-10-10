@@ -123,7 +123,7 @@ export default function ({
   });
 
   useLayoutEffect(() => {
-    inputs[InputIds.SET_COLOR]((color: string) => {
+    inputs[InputIds.SetColor]((color: string) => {
       const target = wrapperRef.current?.querySelector?.('input');
       if (target) {
         target.style.color = typeof color === 'string' ? color : '';

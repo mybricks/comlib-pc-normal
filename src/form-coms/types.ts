@@ -20,7 +20,8 @@ export const InputIds = {
   ResetValue: 'resetValue',
   SetDisabled: 'setDisabled',
   SetEnabled: 'setEnabled',
-  SetValidateInfo: 'setValidateInfo'
+  SetValidateInfo: 'setValidateInfo',
+  SetColor: 'setColor'
 }
 
 export const OutputIds = {

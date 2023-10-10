@@ -8,7 +8,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less';
-import { ValidateTriggerType } from '../types';
+import { InputIds, ValidateTriggerType } from '../types';
 
 export interface Data {
   value: string | undefined;
@@ -27,10 +27,6 @@ export interface Data {
   innerIcon: string;
   customIcon: string;
 }
-
-const InputIds = {
-  SET_COLOR: 'setColor'
-};
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, parentSlot, style } = props;
@@ -92,7 +88,7 @@ export default function (props: RuntimeParams<Data>) {
   });
 
   useLayoutEffect(() => {
-    inputs[InputIds.SET_COLOR]((color: string) => {
+    inputs[InputIds.SetColor]((color: string) => {
       if (inputRef.current?.input) {
         inputRef.current.input.style.color = typeof color === 'string' ? color : '';
       }
