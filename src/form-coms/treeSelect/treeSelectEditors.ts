@@ -68,18 +68,23 @@ const treeSelectEditors = [
         data.config.treeCheckable = value;
         if (value) {
           const valueSchema = {
-            type: 'array'
+            type: 'array',
+            items: {
+              type: 'string'
+            }
           };
           input.get(InputIds.SetValue).setSchema(valueSchema);
           output.get(OutputIds.OnChange).setSchema(valueSchema);
           output.get(OutputIds.ReturnValue).setSchema(valueSchema);
+          output.get(OutputIds.OnValidate).setSchema(valueSchema);
         } else {
           const valueSchema = {
-            type: 'any'
+            type: 'string'
           };
           input.get(InputIds.SetValue).setSchema(valueSchema);
           output.get(OutputIds.OnChange).setSchema(valueSchema);
           output.get(OutputIds.ReturnValue).setSchema(valueSchema);
+          output.get(OutputIds.OnValidate).setSchema(valueSchema);
         }
       }
     }

@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { uniq } from 'lodash';
 import { TreeNodeProps, TreeSelect, Image, TreeSelectProps } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
-import { OutputIds } from '../types';
+import { InputIds, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data, IconType, Option } from './types';
@@ -26,6 +26,7 @@ export default function Runtime({
   onError
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
+  const validateRelOuputRef = useRef<any>(null);
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
@@ -43,7 +44,15 @@ export default function Runtime({
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            outputs[OutputIds.OnValidate](data.value);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -101,6 +110,12 @@ export default function Runtime({
     //设置启用
     inputs['setEnabled'](() => {
       data.config.disabled = false;
+    });
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
     });
   }, []);
 
