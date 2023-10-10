@@ -2,6 +2,7 @@ import { RuleKeys, defaultRules } from '../utils/validator';
 import { InputIds, OutputIds } from '../types';
 import { SlotIds, SlotInputIds } from './constants';
 import { Data } from './types';
+import { outputIds } from '../form-container/constants';
 
 export default {
   '@resize': {
@@ -51,6 +52,7 @@ export default {
             output.get(OutputIds.OnInitial).setSchema(value);
             output.get(OutputIds.OnChange).setSchema(value);
             output.get(OutputIds.ReturnValue).setSchema(value);
+            output.get(OutputIds.OnValidate).setSchema(value);
             slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.CurValue).setSchema(value);
           }
         }
@@ -102,11 +104,24 @@ export default {
         },
         value: {
           get({ data }) {
-            return data.rules.length > 0 ? data.rules : [defaultRules[1]];
+            return data.rules.length > 0 ? data.rules : [defaultRules[1], defaultRules[2]];
           },
           set({ data }, value: any) {
             data.rules = value;
           }
+        }
+      },
+      {
+        title: '校验触发事件',
+        type: '_event',
+        ifVisible({ data }: EditorResult<Data>) {
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          return !!cutomRule?.status;
+        },
+        options: {
+          outputId: outputIds.ON_VALIDATE
         }
       },
       {

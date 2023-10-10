@@ -1,14 +1,16 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { SlotIds } from './constants';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data } from './types';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, name, style } =
     props;
+  const validateRelOuputRef = useRef<any>(null);
 
   useLayoutEffect(() => {
     if (!data.childrenInputs) {
@@ -37,7 +39,15 @@ export default function (props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = (data.rules || defaultRules).find(
+            (i) => i.key === RuleKeys.CUSTOM_EVENT
+          );
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            outputs[outputIds.ON_VALIDATE](data.value);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -65,6 +75,13 @@ export default function (props: RuntimeParams<Data>) {
       slots[SlotIds.FormItem].inputs['onEnabled'](val);
       setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
     }, []);
+
+    // 设置校验状态
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
   }, []);
 
   const onValidateTrigger = () => {
