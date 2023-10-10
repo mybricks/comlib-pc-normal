@@ -1,6 +1,7 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
 import { Data } from './runtime';
+import { ValidateTriggerType } from '../types';
 
 export default {
   '@resize': {
@@ -281,6 +282,29 @@ export default {
             },
             set({ data }, value: number) {
               data.config['maxLength'] = value[0];
+            }
+          }
+        },
+        {
+          title: '校验触发时机',
+          type: 'Select',
+          description: '配置校验触发的时机',
+          options: {
+            mode: 'tags',
+            multiple: true,
+            options: [
+              { label: '值初始化', value: ValidateTriggerType.OnInit },
+              { label: '值更新', value: ValidateTriggerType.OnChange },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+              { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.validateTrigger;
+            },
+            set({ data }: EditorResult<Data>, value: string[]) {
+              data.validateTrigger = value;
             }
           }
         },
