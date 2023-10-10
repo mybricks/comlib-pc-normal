@@ -1,10 +1,11 @@
-import React, { useCallback, useRef, useLayoutEffect } from 'react';
+import React, { useCallback, useRef, useLayoutEffect, useEffect } from 'react';
 import { AutoComplete, Input, InputRef } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export interface Option {
   value: string;
@@ -33,6 +34,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, logger } = props;
 
   const inputRef = useRef<InputRef>(null);
+  const validateRelOuputRef = useRef<any>(null);
 
   useLayoutEffect(() => {
     inputs[InputIds.SET_COLOR]((color: string) => {
@@ -75,7 +77,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs[outputIds.ON_VALIDATE](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -83,20 +93,28 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     }
   });
-  //输入数据源
-  inputs['setOptions']((value) => {
-    if (Array.isArray(value) && value.every((item) => 'value' in item)) {
-      if (value.every((item) => 'value' in item)) {
-        data.options = value;
+  useEffect(() => {
+    //输入数据源
+    inputs['setOptions']((value) => {
+      if (Array.isArray(value) && value.every((item) => 'value' in item)) {
+        if (value.every((item) => 'value' in item)) {
+          data.options = value;
+        } else {
+          console.error('数据源缺少value字段');
+          logger.error('数据源缺少value字段');
+        }
       } else {
-        console.error('数据源缺少value字段');
-        logger.error('数据源缺少value字段');
+        console.error('数据源数据结构不正确');
+        logger.error('数据源数据结构不正确');
       }
-    } else {
-      console.error('数据源数据结构不正确');
-      logger.error('数据源数据结构不正确');
-    }
-  });
+    });
+    // 设置校验状态
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
