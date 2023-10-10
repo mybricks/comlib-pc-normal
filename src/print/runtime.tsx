@@ -66,7 +66,9 @@ export default function MyComponent({
       closable={closable}
       getContainer={!env.edit as false}
     >
-      {slots?.topWorkspace && <div>{slots?.[SlotIds.TOPWORKSPACE].render()}</div>}
+      {data.useTop && slots?.[SlotIds.TOPWORKSPACE] && (
+        <div>{slots?.[SlotIds.TOPWORKSPACE].render()}</div>
+      )}
       <div ref={componentRef}>{slots?.[SlotIds.CONTENT].render()}</div>
     </Modal>
   );
