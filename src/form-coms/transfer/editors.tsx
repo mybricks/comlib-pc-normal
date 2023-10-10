@@ -1,6 +1,7 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
 import styleEditors from './styleEditors';
+import { OutputIds } from '../types';
 export default {
   '@resize': {
     options: ['width']
@@ -196,6 +197,19 @@ export default {
                 set({ data }, value: any) {
                   data.rules = value;
                 }
+              }
+            },
+            {
+              title: '校验触发事件',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                const cutomRule = (data.rules || defaultRules).find(
+                  (i) => i.key === RuleKeys.CUSTOM_EVENT
+                );
+                return !!cutomRule?.status;
+              },
+              options: {
+                outputId: OutputIds.OnValidate
               }
             }
           ]

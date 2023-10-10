@@ -131,28 +131,23 @@ export default {
             },
             set({ data, input, output }, value: boolean) {
               data.config.range = value;
+              let schema = {
+                type: 'number'
+              };
               if (value) {
-                const schema = {
+                schema = {
                   type: 'array',
                   items: {
                     type: 'number'
                   }
                 };
-                input.get(InputIds.SetInitialValue)?.setSchema(schema);
-                output.get(OutputIds.OnInitial)?.setSchema(schema);
-                input.get(InputIds.SetValue).setSchema(schema);
-                output.get(OutputIds.OnChange).setSchema(schema);
-                output.get(OutputIds.ReturnValue).setSchema(schema);
-              } else {
-                const schema = {
-                  type: 'number'
-                };
-                input.get(InputIds.SetInitialValue)?.setSchema(schema);
-                output.get(OutputIds.OnInitial)?.setSchema(schema);
-                input.get(InputIds.SetValue).setSchema(schema);
-                output.get(OutputIds.OnChange).setSchema(schema);
-                output.get(OutputIds.ReturnValue).setSchema(schema);
               }
+              input.get(InputIds.SetInitialValue)?.setSchema(schema);
+              output.get(OutputIds.OnInitial)?.setSchema(schema);
+              input.get(InputIds.SetValue).setSchema(schema);
+              output.get(OutputIds.OnChange).setSchema(schema);
+              output.get(OutputIds.ReturnValue).setSchema(schema);
+              output.get(OutputIds.OnValidate).setSchema(schema);
             }
           }
         },
@@ -279,6 +274,19 @@ export default {
             set({ data }: EditorResult<Data>, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: OutputIds.OnValidate
           }
         },
         {

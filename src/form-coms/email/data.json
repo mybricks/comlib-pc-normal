@@ -10,5 +10,8 @@
     "addonAfter": "",
     "showCount": false,
     "maxLength": -1
-  }
+  },
+  "validateTrigger": [
+    "onBlur"
+  ]
 }
