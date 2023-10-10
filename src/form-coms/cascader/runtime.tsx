@@ -1,11 +1,12 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Cascader } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { mockData } from './mockData';
+import { InputIds, OutputIds } from '../types';
 
 export interface Data {
   options: any[];
@@ -27,6 +28,7 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id } = props;
   const [options, setOptions] = useState(env.design ? mockData : []);
+  const validateRelOuputRef = useRef<any>(null);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
 
@@ -62,7 +64,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs[OutputIds.OnValidate](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -70,10 +80,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     }
   });
-  //输入数据源
-  inputs['setOptions']((value) => {
-    setOptions(value);
-  });
+  useEffect(() => {
+    //输入数据源
+    inputs['setOptions']((value) => {
+      setOptions(value);
+    });
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
