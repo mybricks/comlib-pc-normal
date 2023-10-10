@@ -8,12 +8,11 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less';
-import { InputIds, ValidateTriggerType } from '../types';
+import { InputIds } from '../types';
 
 export interface Data {
   value: string | undefined;
   rules: any[];
-  validateTrigger: string[];
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -44,11 +43,9 @@ export default function (props: RuntimeParams<Data>) {
     configs: {
       setValue(val) {
         data.value = val;
-        onValidateTrigger(ValidateTriggerType.OnChange);
       },
       setInitialValue(val) {
         data.value = val;
-        onValidateTrigger(ValidateTriggerType.OnInit);
       },
       returnValue(output) {
         output(data.value);
@@ -100,9 +97,8 @@ export default function (props: RuntimeParams<Data>) {
     });
   }, []);
 
-  const onValidateTrigger = (type: string) => {
-    data.validateTrigger?.includes(type) &&
-      validateTrigger(parentSlot, { id: props.id, name: props.name });
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const changeValue = useCallback((e) => {
@@ -110,18 +106,17 @@ export default function (props: RuntimeParams<Data>) {
     data.value = value;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
-    onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger(ValidateTriggerType.OnBlur);
+    onValidateTrigger();
     outputs['onBlur'](value);
   }, []);
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger(ValidateTriggerType.OnPressEnter);
+    onValidateTrigger();
     outputs['onPressEnter'](value);
   }, []);
 

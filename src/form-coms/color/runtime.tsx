@@ -1,9 +1,10 @@
-import React, { useState, useLayoutEffect } from 'react';
-import { validateFormItem } from '../utils/validator';
+import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
+import { validateFormItem, RuleKeys } from '../utils/validator';
 import css from './runtime.less';
 import ColorPicker from './color-picker';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
+import { ValidateTriggerType } from '../types';
 
 export interface Data {
   color: string;
@@ -11,6 +12,7 @@ export interface Data {
   disabled: boolean;
   width?: number | string;
   colorType: 'rgb' | 'hex';
+  validateTrigger: string[];
 }
 
 //RGB转换为HEX
@@ -32,6 +34,7 @@ function rgbToHex(rgb) {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name } = props;
   const [isShow, setIsShow] = useState<boolean>(false);
+  const validateRelOuputRef = useRef<any>(null);
 
   useLayoutEffect(() => {
     //1.设置值
@@ -40,9 +43,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       switch (data.colorType) {
         case 'rgb':
           outputs['onChange'](data.color);
+          //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
         case 'hex':
           outputs['onChange'](rgbToHex(data.color));
+          //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
       }
     });
@@ -53,9 +58,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         switch (data.colorType) {
           case 'rgb':
             outputs['onInitial'](data.color);
+            //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
           case 'hex':
             outputs['onInitial'](rgbToHex(data.color));
+            //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
         }
       });
@@ -68,7 +75,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          outputRels['returnValidate'](r);
+          const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+          if (cutomRule?.status) {
+            validateRelOuputRef.current = outputRels['returnValidate'];
+            outputs['onValidate'](data.color);
+          } else {
+            outputRels['returnValidate'](r);
+          }
         })
         .catch((e) => {
           outputRels['returnValidate'](e);
@@ -107,6 +120,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const onValidateTrigger = () => {
+    //data.validateTrigger?.includes(type) &&
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
@@ -123,6 +137,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         outputs['onChange'](rgbToHex(data.color));
         break;
     }
+    //onValidateTrigger(ValidateTriggerType.OnChange);
     onValidateTrigger();
   };
 
@@ -136,6 +151,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     e.nativeEvent.stopImmediatePropagation();
     setIsShow(true);
   };
+
+  useEffect(() => {
+    inputs['setValidateInfo']((info: object) => {
+      //console.log('validateRelOuputRef.current',validateRelOuputRef)
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   return (
     <div style={{ width: data.width }}>

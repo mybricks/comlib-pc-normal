@@ -4,7 +4,6 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { validateFormItem, RuleKeys } from '../utils/validator';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
-import { ValidateTriggerType } from '../types';
 export interface Data {
   value: string | undefined;
   rules: any[];
@@ -38,11 +37,9 @@ export default function ({
     configs: {
       setValue(val) {
         data.value = val;
-        onValidateTrigger(ValidateTriggerType.OnChange);
       },
       setInitialValue(val) {
         data.value = val;
-        onValidateTrigger(ValidateTriggerType.OnInit);
       },
       returnValue(output) {
         output(data.value);
@@ -79,8 +76,11 @@ export default function ({
     }
   });
 
-  const onValidateTrigger = (type: string) => {
-    data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
+  // const onValidateTrigger = (type: string) => {
+  //   data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
+  // };
+  const onValidateTrigger = () => {
+    validateTrigger(parentSlot, { id, name });
   };
 
   const changeValue = useCallback((e) => {
@@ -94,12 +94,12 @@ export default function ({
     const value = e.target.value;
     data.value = value;
     outputs['onBlur'](value);
-    onValidateTrigger(ValidateTriggerType.OnBlur);
+    onValidateTrigger();
   }, []);
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger(ValidateTriggerType.OnPressEnter);
+    onValidateTrigger();
     outputs['onPressEnter'](value);
   }, []);
 

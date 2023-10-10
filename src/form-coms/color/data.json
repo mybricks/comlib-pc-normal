@@ -1,6 +1,9 @@
 {
   "color": "#000000",
   "rules": [],
+  "validateTrigger": [
+    "onChange"
+  ],
   "disabled": false,
   "width": "32px",
   "colorType": "rgb"

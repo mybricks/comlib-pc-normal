@@ -1,4 +1,5 @@
 import { InputIds, OutputIds } from '../types';
+import { RuleKeys } from '../utils/validator';
 import { Schemas } from './constants';
 import { Data } from './types';
 
@@ -146,7 +147,7 @@ export default function ({
     * @description v1.0.32 -> v1.0.33 文本内容样式配置 target 修改
     */
   const preSearchInputStyle = getDeclaredStyle('.ant-select-single.ant-select-show-arrow .ant-select-selection-item');
-  if(preSearchInputStyle) {
+  if (preSearchInputStyle) {
     removeDeclaredStyle('.ant-select-single.ant-select-show-arrow .ant-select-selection-item');
     setDeclaredStyle('.ant-select-selection-search .ant-select-selection-search-input', preSearchInputStyle.css);
   }
@@ -180,7 +181,17 @@ export default function ({
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', outputValueSchema);
   }
-
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
   //=========== v1.1.0 end ===============
 
   return true;

@@ -218,15 +218,7 @@ export default function Runtime({
     outputs['onChange'](outputValue);
   }, []);
   const onChange = useCallback((val) => {
-    let value = val;
-    if (data.config.labelInValue) {
-      if (Array.isArray(val)) {
-        value = val.map((i) => i?.value);
-      } else {
-        value = val?.value;
-      }
-    }
-    changeValue(value);
+    changeValue(val);
     onValidateTrigger();
   }, []);
   const onBlur = useCallback((e) => {
@@ -252,6 +244,7 @@ export default function Runtime({
     <div className={css.select} ref={ref} id="area">
       <Select
         {...data.config}
+        labelInValue={false}
         showArrow={data.config.showArrow}
         options={env.edit ? data.staticOptions : data.config.options}
         value={data.value}

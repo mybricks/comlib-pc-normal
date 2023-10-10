@@ -1,4 +1,5 @@
 import { InputIds, OutputIds } from '../types';
+import { RuleKeys } from '../utils/validator';
 import { Data, IconType } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -155,7 +156,17 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', valueSchem);
   }
-
+  const cutomRule = data.rules?.find(
+    (i) => i.key === RuleKeys.CUSTOM_EVENT
+  );
+  if (data.rules?.length && !cutomRule) {
+    data.rules.push({
+      key: RuleKeys.CUSTOM_EVENT,
+      status: false,
+      visible: true,
+      title: '自定义校验',
+    });
+  }
   //=========== v1.2.0 end ===============
 
 

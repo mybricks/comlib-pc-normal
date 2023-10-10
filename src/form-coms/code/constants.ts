@@ -11,7 +11,7 @@ import type { AceConfig } from './CodeEditor';
  * @param immediate 初始化后是否提交
  */
 export interface Data {
-  rules: string[]
+  rules: any[]
   aceConfig: AceConfig;
   readOnly?: boolean;
 }
