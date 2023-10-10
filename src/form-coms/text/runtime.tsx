@@ -1,6 +1,7 @@
 import { Form, Input, InputRef, Image } from 'antd';
 import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode } from 'react';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
+import { inputIds, outputIds } from '../form-container/constants';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -34,6 +35,7 @@ export default function (props: RuntimeParams<Data>) {
   const { edit } = env;
 
   const inputRef = useRef<InputRef>(null);
+  const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
     id: props.id,
@@ -68,7 +70,15 @@ export default function (props: RuntimeParams<Data>) {
           rules: data.rules
         })
           .then((r) => {
-            relOutput(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = relOutput;
+              outputs[outputIds.ON_VALIDATE](data.value);
+            } else {
+              relOutput(r);
+            }
           })
           .catch((e) => {
             relOutput(e);
@@ -81,6 +91,11 @@ export default function (props: RuntimeParams<Data>) {
     inputs[InputIds.SET_COLOR]((color: string) => {
       if (inputRef.current?.input) {
         inputRef.current.input.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
       }
     });
   }, []);
