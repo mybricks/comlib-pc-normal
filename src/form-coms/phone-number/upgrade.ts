@@ -24,7 +24,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
    /**
-   * @description v1.0.12-1.0.13 新增自定义校验事件
+   * @description v1.0.12-1.1.0 新增自定义校验事件
    */
 
    if (!input.get('setValidateInfo')) {

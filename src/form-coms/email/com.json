@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-email",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "description": "邮箱",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav12333/fangzhou/pub/compress/image-aff3c239-e76c-492b-959e-98ab33d5e889.png",
@@ -74,6 +74,32 @@
       "schema": {
         "type": "any"
       }
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验状态",
+      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "outputs": [
@@ -119,6 +145,14 @@
       "id": "returnValue",
       "title": "值输出",
       "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
         "type": "string"
       }
     }
