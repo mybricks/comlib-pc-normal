@@ -143,6 +143,15 @@ export default function ({
     setDeclaredStyle('.{id}.ant-select-dropdown', dropdownCss, true);
   }
 
+  /*
+   * @description v1.0.32 -> v1.0.33 文本内容样式配置 target 修改
+   */
+  const preSearchInputStyle = getDeclaredStyle('.ant-select-single.ant-select-show-arrow .ant-select-selection-item');
+  if (preSearchInputStyle) {
+    removeDeclaredStyle('.ant-select-single.ant-select-show-arrow .ant-select-selection-item');
+    setDeclaredStyle('.ant-select-selection-search .ant-select-selection-search-input', preSearchInputStyle.css);
+  }
+
   /**
    * @description v1.1.0 新增自定义校验事件
    */

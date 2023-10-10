@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { Modal, message } from 'antd';
-import { Data, InputIds } from './constants';
+import { Data, InputIds, SlotIds } from './constants';
 import { useReactToPrint } from 'react-to-print';
 import css from './index.less';
 
@@ -66,7 +66,10 @@ export default function MyComponent({
       closable={closable}
       getContainer={!env.edit as false}
     >
-      <div ref={componentRef}>{slots?.content.render()}</div>
+      {data.useTop && slots?.[SlotIds.TOPWORKSPACE] && (
+        <div>{slots?.[SlotIds.TOPWORKSPACE].render()}</div>
+      )}
+      <div ref={componentRef}>{slots?.[SlotIds.CONTENT].render()}</div>
     </Modal>
   );
 

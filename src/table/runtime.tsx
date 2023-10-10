@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'moment';
 import { Table, Empty, ConfigProvider } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
@@ -40,6 +40,8 @@ export default function (props: RuntimeParams<Data>) {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
+  const dataSourceRef = useRef(dataSource);
+  dataSourceRef.current = dataSource;
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
 
@@ -215,6 +217,8 @@ export default function (props: RuntimeParams<Data>) {
   }, [realShowDataSource]);
 
   useEffect(() => {
+    dataSourceRef.current = dataSource;
+
     if (env.runtime) {
       // 输出表格数据
       inputs[InputIds.GET_TABLE_DATA] &&
@@ -228,19 +232,23 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
         inputs[InputIds.SET_ROW_SELECTION]((val) => {
-          const newSelectedRowKeys: string[] = [];
-          const newSelectedRows: any[] = [];
-          (Array.isArray(val) ? val : [val]).forEach((selected) => {
-            // 目前行rowKey数据
-            const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
-            const tempItem = dataSource.find((item) => targetRowKeyVal === item[rowKey]);
-            if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
-              newSelectedRows.push(tempItem);
-              newSelectedRowKeys.push(targetRowKeyVal);
-            }
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-          setSelectedRows(newSelectedRows);
+          setTimeout(() => {
+            const newSelectedRowKeys: string[] = [];
+            const newSelectedRows: any[] = [];
+            (Array.isArray(val) ? val : [val]).forEach((selected) => {
+              // 目前行rowKey数据
+              const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
+              const tempItem = dataSourceRef.current.find(
+                (item) => targetRowKeyVal === item[rowKey]
+              );
+              if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
+                newSelectedRows.push(tempItem);
+                newSelectedRowKeys.push(targetRowKeyVal);
+              }
+            });
+            setSelectedRowKeys(newSelectedRowKeys);
+            setSelectedRows(newSelectedRows);
+          }, 0);
         });
       }
     }
@@ -271,11 +279,21 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (env.runtime) {
-      // 数据源变化时，修改选中的行数据
-      const newRows = selectedRowKeys.map((key) => {
-        return dataSource.find((item) => item?.[rowKey] === key) || {};
+      setSelectedRows((row) => {
+        let rowObj = Object.values(row).reduce((res, item) => {
+          res[item[rowKey]] = item;
+          return res;
+        }, {});
+
+        for (let key of selectedRowKeys) {
+          let curItem = dataSource.find((item) => item[rowKey] === key);
+          if (rowObj[key] && curItem) {
+            rowObj[key] == curItem;
+          }
+        }
+
+        return Object.values(rowObj);
       });
-      setSelectedRows(newRows);
     }
   }, [dataSource, selectedRowKeys]);
 
@@ -497,15 +515,28 @@ export default function (props: RuntimeParams<Data>) {
         for (const key of selectedRowKeys) {
           // 找相应uuid数据
           const matchingObject = dataSource.find((obj) => obj[rowKey] === key);
+          const matchingObjectIndex = dataSource.findIndex((obj) => obj[rowKey] === key);
           // 去重
           if (matchingObject && !addedObjects.has(matchingObject[rowKey])) {
             if (!matchingObject[mergeByField as string]) {
               // col为undefined 只添加自己
               result.push(matchingObject);
             } else {
-              const matchingObjects = dataSource.filter(
-                (obj) => obj[mergeByField as string] === matchingObject[mergeByField as string]
-              );
+              // 是合并行中间项直接跳出 前一项合并标识相同
+              if (
+                matchingObjectIndex - 1 >= 0 &&
+                dataSource[matchingObjectIndex - 1]?.[mergeByField] === matchingObject[mergeByField]
+              ) {
+                continue;
+              }
+              const matchingObjects: any[] = [];
+              for (let i = matchingObjectIndex; i < dataSource.length; i++) {
+                if (dataSource[i]?.[mergeByField] !== matchingObject[mergeByField]) {
+                  break;
+                }
+
+                matchingObjects.push(dataSource[i]);
+              }
               // 反选 取消 不是合并行的第一个就取消
               const isFirst =
                 matchingObjects.length > 0 && matchingObjects[0][rowKey] === matchingObject[rowKey];
@@ -651,7 +682,7 @@ export default function (props: RuntimeParams<Data>) {
       setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
-        selectedRows: newSelectedRowKeys,
+        selectedRows: newSelectedRows,
         selectedRowKeys: newSelectedRowKeys
       });
     },
@@ -736,7 +767,8 @@ export default function (props: RuntimeParams<Data>) {
         {data.columns.length ? (
           <Table
             style={{
-              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%'
+              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
+              height: data.fixedHeight
             }}
             dataSource={edit ? defaultDataSource : realShowDataSource}
             loading={{

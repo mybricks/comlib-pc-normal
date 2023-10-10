@@ -5,6 +5,7 @@ import css from './style.less';
 
 let divEle: Container | null;
 const divEleID = 'global-loading';
+
 /**
  * 全局loading
  * @function open 显示全局loading
@@ -16,8 +17,13 @@ export const GlobalLoading = {
    *  @param spinProps spin属性
    *  @returns 关闭全局loading回调
    */
-  open: (ladingText?: string, spinProps?: SpinProps, targetDOM: HTMLElement = document.body) => {
-    if (divEle) {
+  open: (
+    ladingText?: string,
+    spinProps?: SpinProps,
+    targetDOM: HTMLElement = document.body,
+    globalLoading?: HTMLElement | null
+  ) => {
+    if (!!globalLoading) {
       return;
     }
     const { wrapperClassName, ...resProps } = spinProps || {};
@@ -33,14 +39,9 @@ export const GlobalLoading = {
     return GlobalLoading.close;
   },
   /** 关闭全局loading */
-  close: (targetDOM: HTMLElement = document.body, debugRuntime?: boolean) => {
-    const temp = debugRuntime
-      ? (document
-          .getElementById('_mybricks-geo-webview_')
-          ?.shadowRoot?.querySelector('#global-loading') as HTMLElement)
-      : document.getElementById(divEleID);
-    if (temp) {
-      targetDOM?.removeChild(temp);
+  close: (targetDOM: HTMLElement = document.body, globalLoading?: HTMLElement | null) => {
+    if (!!globalLoading) {
+      targetDOM?.removeChild(globalLoading);
       divEle = null;
     }
   }
