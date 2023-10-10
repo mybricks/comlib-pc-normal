@@ -1,6 +1,6 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { InputNumber, Slider, Row, Col } from 'antd';
-import { validateFormItem } from '../utils/validator';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import { valueType } from 'antd/lib/statistic/utils';
 import { InputNumberProps } from 'antd/es/input-number';
@@ -9,6 +9,7 @@ import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { InputIds, OutputIds } from '../types';
 
 export default function Runtime({
   env,
@@ -20,6 +21,8 @@ export default function Runtime({
   id,
   name
 }: RuntimeParams<Data>) {
+  const validateRelOuputRef = useRef<any>(null);
+
   useFormItemInputs({
     inputs,
     outputs,
@@ -57,7 +60,15 @@ export default function Runtime({
           rules: data.rules
         })
           .then((r) => {
-            outputRels(r);
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            if (cutomRule?.status) {
+              validateRelOuputRef.current = outputRels;
+              outputs[OutputIds.OnValidate](data.value);
+            } else {
+              outputRels(r);
+            }
           })
           .catch((e) => {
             outputRels(e);
@@ -65,6 +76,14 @@ export default function Runtime({
       }
     }
   });
+  useEffect(() => {
+    // 设置校验状态
+    inputs[InputIds.SetValidateInfo]((info: object) => {
+      if (validateRelOuputRef.current) {
+        validateRelOuputRef.current(info);
+      }
+    });
+  }, []);
 
   /**监听事件和格式化函数 */
   const onValidateTrigger = () => {
