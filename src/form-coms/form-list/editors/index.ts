@@ -5,10 +5,11 @@ import { actionsEditor } from './actions'
 import { SlotIds } from '../constants'
 import { refreshSchema } from '../schema'
 import { RuleKeys } from '../../../form-coms/utils/validator'
+import { outputIds } from '../../form-container/constants'
 import { fieldNameCheck, getFormItem, getFormItemProp, isShowLabel, setFormItemProps } from '../utils'
 import { StylesEditor } from './stylesEditor'
 
-const defaultRules = [
+export const defaultRules = [
   {
     key: RuleKeys.REQUIRED,
     status: false,
@@ -31,6 +32,12 @@ const defaultRules = [
   }
 }        
     `
+  },
+  {
+    key: RuleKeys.CUSTOM_EVENT,
+    status: false,
+    visible: true,
+    title: '自定义校验',
   }
 ];
 
@@ -456,6 +463,19 @@ export default {
             set({ data }, value: any) {
               data.rules = value;
             }
+          }
+        },
+        {
+          title: '校验触发事件',
+          type: '_event',
+          ifVisible({ data }: EditorResult<Data>) {
+            const cutomRule = (data.rules || defaultRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!cutomRule?.status;
+          },
+          options: {
+            outputId: outputIds.ON_VALIDATE
           }
         },
         {

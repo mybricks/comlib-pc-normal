@@ -1,5 +1,6 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
+import { outputIds } from '../form-container/constants';
 import { Data } from './runtime';
 import { ValidateTriggerType } from '../types';
 
@@ -381,7 +382,7 @@ export default {
             return !!cutomRule?.status;
           },
           options: {
-            outputId: 'onValidate'
+            outputId: outputIds.ON_VALIDATE
           }
         },
         {
