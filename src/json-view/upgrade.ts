@@ -49,5 +49,14 @@ export default function ({
     data.colors[TypeEnum.NodeHoverBackgroundColor] = 'rgba(245,245,245,1)';
   }
 
+  /**
+  * @description v1.0.10 , 增加 设置展开深度 输入项
+  */
+  if (!input.get(InputIds.SetExpandDepth)) {
+    input.add(InputIds.SetExpandDepth, '设置展开深度', {
+      type: 'number'
+    });
+  }
+
   return true;
 }

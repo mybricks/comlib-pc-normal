@@ -42,7 +42,8 @@ export interface Data {
 
 export const InputIds = {
   SetJsonData: 'jsonData',
-  GetJsonData: 'getJsonData'
+  GetJsonData: 'getJsonData',
+  SetExpandDepth: 'setExpandDepth'
 };
 export const OutputIds = {
   Select: 'nodeData',
