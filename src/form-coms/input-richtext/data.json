@@ -3,7 +3,7 @@
     "height": "200px"
   },
   "displayEditbar": true,
-  "toolbar": ["link"],
+  "toolbar": ["fontsizeselect", "italic", "forecolor", "bold", "alignleft", "aligncenter", "alignright", "link", "uploadimage"],
   "disabled": false,
   "placeholder": "请输入内容",
   "rules": []
