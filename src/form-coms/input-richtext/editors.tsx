@@ -79,6 +79,10 @@ export default {
                 value: 'underline'
               },
               {
+                label: '字体',
+                value: 'fontselect'
+              },
+              {
                 label: '删除线',
                 value: 'strikethrough'
               },
