@@ -6,10 +6,9 @@ import { typeCheck, uuid } from '../utils';
 import { Data, dataSourceTypeMap, InputIds, OutputIds, TypeEnum } from './constant';
 import css from './runtime.less';
 
-export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Data>) {
+export default function ({ env, data, inputs, outputs, title, logger }: RuntimeParams<Data>) {
   const {
     colors,
-    collapsed,
     collapseStringsAfterLength,
     displayObjectSize,
     enableClipboard,
@@ -31,6 +30,13 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
       });
       inputs[InputIds.GetJsonData]((_, outputRels) => {
         outputRels[OutputIds.JsonData](data.jsonObj);
+      });
+      inputs[InputIds.SetExpandDepth]((val) => {
+        if (typeof val === 'number' && val > -2) {
+          data.collapsed = val;
+        } else {
+          logger.warn('json展示[设置展开深度]: 请输入≥-1的数字');
+        }
       });
     }
   }, []);
@@ -60,7 +66,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
     expandedKeys: React.Key[] = [];
 
   if (enableClipboard || enableOutput) keyToData.set(rootKey, data.jsonObj);
-  if (collapsed !== 0) expandedKeys.push(rootKey);
+  if (data.collapsed !== 0) expandedKeys.push(rootKey);
 
   /**
    * 树节点的title渲染
@@ -138,7 +144,7 @@ export default function ({ env, data, inputs, outputs, title }: RuntimeParams<Da
         };
       if (typeCheck(value, ['ARRAY', 'OBJECT'])) {
         child.children = getTreeData(value, rand + 1);
-        if (collapsed === -1 || rand < collapsed) expandedKeys.push(nodeKey);
+        if (data.collapsed === -1 || rand < data.collapsed) expandedKeys.push(nodeKey);
       }
       treeData.push(child);
       if (enableClipboard || enableOutput) {

@@ -28,6 +28,14 @@
       "rels": [
         "jsonData"
       ]
+    },
+    {
+      "id": "setExpandDepth",
+      "title": "设置展开深度",
+      "desc": "接收≥-1的数字 -1表示全部展开, 0表示全部折叠",
+      "schema": {
+        "type": "number"
+      }
     }
   ],
   "outputs": [
