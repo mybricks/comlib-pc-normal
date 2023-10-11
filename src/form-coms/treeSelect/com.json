@@ -144,6 +144,14 @@
       }
     },
     {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置下拉框里字体的颜色",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
       "id": "setValidateInfo",
       "title": "设置校验状态",
       "desc": "设置表单项的校验状态和校验失败提示文案",
