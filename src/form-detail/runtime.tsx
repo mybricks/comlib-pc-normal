@@ -77,7 +77,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
       if (showLabel) {
         if (!!labelDesc) {
           labelNode = (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center' }}>
               <span style={{ marginRight: 5 }}>{labelNode}</span>
               <Tooltip title={labelDesc}>
                 <InfoCircleOutlined />
