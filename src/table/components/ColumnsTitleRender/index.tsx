@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import moment from 'moment';
 import { Table, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -38,6 +38,7 @@ export default ({
   renderCell,
   focusRowIndex
 }: Props) => {
+  const [focusCellinfo, setFocusCellinfo] = useState<any>(null);
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -52,14 +53,13 @@ export default ({
       title
     );
   };
-  // 获取列数据
-  const getColumns = (): IColumn[] => {
-    let res = [...(data.columns || [])].map((item) => ({
+
+  const columns = useMemo(() => {
+    return [...(data.columns || [])].map((item) => ({
       ...item,
       dataIndex: env.edit ? item.key : item.dataIndex
     }));
-    return res;
-  };
+  }, [data.columns, env.edit]);
 
   const renderColumn = ({ children, ...cItem }: IColumn) => {
     if (cItem.visible === false) {
@@ -180,6 +180,40 @@ export default ({
       };
     };
 
+    const onCell = (record, rowIndex) => {
+      const { focusRecord = {}, dataIndex = null } = focusCellinfo || {};
+      const rowKey = data.rowKey || '_uuid';
+      const isFocus = dataIndex === cItem.dataIndex && focusRecord?.[rowKey] === record?.[rowKey];
+      let res = {
+        style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
+        'data-table-column-id': cItem.key,
+        ...getCellConfig(dataSource, cItem.dataIndex, rowIndex),
+        'data-focus-cell': data.enableCellFocus && isFocus ? true : undefined,
+        onClick:
+          data.enableCellClick || data.enableCellFocus
+            ? () => {
+                // if (isFocus) {
+                //   data.focusCellinfo = null;
+                // } else {
+                //   data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
+                // }
+                setFocusCellinfo(
+                  isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
+                );
+                if (data.enableCellClick) {
+                  outputs[OutputIds.CELL_CLICK]({
+                    record,
+                    index: rowIndex,
+                    dataIndex: cItem.dataIndex,
+                    isFocus: !isFocus
+                  });
+                }
+              }
+            : null
+      };
+      return res;
+    };
+
     return (
       <Column
         {...(cItem as any)}
@@ -212,37 +246,7 @@ export default ({
         }))}
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
-        onCell={(record, rowIndex) => {
-          const { focusRecord = {}, dataIndex = null } = data.focusCellinfo || {};
-          const rowKey = data.rowKey || '_uuid';
-          const isFocus =
-            dataIndex === cItem.dataIndex && focusRecord?.[rowKey] === record?.[rowKey];
-          let res = {
-            style: data.enableRowFocus && focusRowIndex === rowIndex ? data.focusRowStyle : {},
-            'data-table-column-id': cItem.key,
-            ...getCellConfig(dataSource, cItem.dataIndex, rowIndex),
-            'data-focus-cell': data.enableCellFocus && isFocus ? true : undefined,
-            onClick:
-              data.enableCellClick || data.enableCellFocus
-                ? () => {
-                    if (isFocus) {
-                      data.focusCellinfo = null;
-                    } else {
-                      data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
-                    }
-                    if (data.enableCellClick) {
-                      outputs[OutputIds.CELL_CLICK]({
-                        record,
-                        index: rowIndex,
-                        dataIndex: cItem.dataIndex,
-                        isFocus: !isFocus
-                      });
-                    }
-                  }
-                : null
-          };
-          return res;
-        }}
+        onCell={onCell}
         onHeaderCell={(): any => {
           return {
             'data-table-th-idx': cItem.key
@@ -252,5 +256,5 @@ export default ({
     );
   };
 
-  return getColumns().map((item) => renderColumn(item));
+  return columns.map((item) => renderColumn(item));
 };
