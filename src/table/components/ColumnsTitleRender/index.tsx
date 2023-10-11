@@ -27,6 +27,8 @@ interface Props {
   filterMap: any;
   renderCell: any;
   focusRowIndex: number | null;
+  focusCellinfo: any;
+  setFocusCellinfo: any;
 }
 export default ({
   env,
@@ -36,9 +38,10 @@ export default ({
   outputs,
   filterMap,
   renderCell,
-  focusRowIndex
+  focusRowIndex,
+  setFocusCellinfo,
+  focusCellinfo
 }: Props) => {
-  const [focusCellinfo, setFocusCellinfo] = useState<any>(null);
   const renderTtl = (cItem: IColumn) => {
     const title = cItem.title;
     const tip = cItem.tip;
@@ -54,12 +57,12 @@ export default ({
     );
   };
 
-  const columns = useMemo(() => {
+  const getColumns = () => {
     return [...(data.columns || [])].map((item) => ({
       ...item,
       dataIndex: env.edit ? item.key : item.dataIndex
     }));
-  }, [data.columns, env.edit]);
+  };
 
   const renderColumn = ({ children, ...cItem }: IColumn) => {
     if (cItem.visible === false) {
@@ -256,5 +259,5 @@ export default ({
     );
   };
 
-  return columns.map((item) => renderColumn(item));
+  return getColumns().map((item) => renderColumn(item));
 };

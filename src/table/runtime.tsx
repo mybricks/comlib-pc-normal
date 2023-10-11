@@ -44,6 +44,7 @@ export default function (props: RuntimeParams<Data>) {
   dataSourceRef.current = dataSource;
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
+  const [focusCellinfo, setFocusCellinfo] = useState<any>(null);
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
@@ -479,6 +480,8 @@ export default function (props: RuntimeParams<Data>) {
       filterMap,
       dataSource,
       focusRowIndex,
+      setFocusCellinfo,
+      focusCellinfo,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
           <ColumnRender {...columnRenderProps} env={env} outputs={outputs} slots={props.slots} />
