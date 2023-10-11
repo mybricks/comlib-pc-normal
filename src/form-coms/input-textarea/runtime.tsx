@@ -4,7 +4,9 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { TextAreaRef } from 'antd/lib/input/TextArea';
 import { inputIds, outputIds } from '../form-container/constants';
+import { InputIds } from '../types';
 
 export interface Data {
   value: string | undefined;
@@ -33,6 +35,8 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { edit } = env;
   const [value, setValue] = useState();
+
+  const inputRef = useRef<TextAreaRef>(null);
   const validateRelOuputRef = useRef<any>(null);
 
   useFormItemInputs({
@@ -87,6 +91,18 @@ export default function ({
     }
   });
 
+  useLayoutEffect(() => {
+    /**
+     * @description 设置字体颜色
+     */
+    inputs[InputIds.SetColor] &&
+      inputs[InputIds.SetColor]((color) => {
+        if (inputRef?.current?.resizableTextArea?.textArea) {
+          inputRef.current.resizableTextArea.textArea.style.color = color;
+        }
+      });
+  }, []);
+
   useEffect(() => {
     // 设置校验状态
     inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
@@ -138,6 +154,7 @@ export default function ({
   return (
     <div>
       <Input.TextArea
+        ref={inputRef}
         {...data.config}
         // value={data.value}
         value={value}

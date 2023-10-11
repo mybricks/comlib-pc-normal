@@ -34,6 +34,7 @@ export default function Runtime({
     value: 'value',
     children: 'children'
   });
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
@@ -115,6 +116,15 @@ export default function Runtime({
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+      }
+    });
+    // 设置下拉框字体颜色
+    inputs[InputIds.SetColor]((color: string) => {
+      const target = wrapperRef.current?.querySelector(
+        '.ant-select-selection-item'
+      ) as HTMLSpanElement;
+      if (typeof color === 'string' && target) {
+        target.style.color = color;
       }
     });
   }, []);
@@ -231,7 +241,7 @@ export default function Runtime({
   };
 
   return (
-    <div className={css.select}>
+    <div ref={wrapperRef} className={css.select}>
       <TreeSelect
         treeIcon
         {...data.config}

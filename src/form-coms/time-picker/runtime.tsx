@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect, useLayoutEffect } from 'react';
 import { Data } from './types';
 import { TimePicker } from 'antd';
 import moment, { Moment } from 'moment';
@@ -27,6 +27,7 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { placeholder, disabled, format, customFormat } = data;
   const [value, setValue] = useState<Moment | null>();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
 
   const validate = useCallback(
@@ -121,6 +122,15 @@ export default function ({
     });
   });
 
+  useLayoutEffect(() => {
+    inputs[InputIds.SetColor]((color: string) => {
+      const target = wrapperRef.current?.querySelector?.('input');
+      if (target) {
+        target.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
+
   const getValue = useCallback(
     (value) => {
       if (!value) return value;
@@ -141,7 +151,7 @@ export default function ({
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={styles.wrap}>
+      <div ref={wrapperRef} className={styles.wrap}>
         <TimePicker
           placeholder={placeholder}
           value={value}

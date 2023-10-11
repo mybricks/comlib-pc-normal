@@ -19,6 +19,7 @@ export default function Runtime({
   name
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
+  const [activeFontColor, setActiveFontColor] = useState('');
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
@@ -102,6 +103,13 @@ export default function Runtime({
         validateRelOuputRef.current(info);
       }
     });
+
+    // 设置激活选项字体的颜色
+    inputs['setActiveFontColor']((color: string) => {
+      if (typeof color === 'string') {
+        setActiveFontColor(color);
+      }
+    });
   }, []);
 
   const [indeterminate, setIndeterminate] = useState(false);
@@ -155,6 +163,18 @@ export default function Runtime({
     gap: data.layout === 'vertical' ? '8px' : void 0
   };
 
+  let options = env.edit ? data.staticOptions : data.config.options;
+  options = options.map((opt) => {
+    return {
+      ...opt,
+      label: (
+        <span style={{ color: data.value?.includes(opt.value) ? activeFontColor : '' }}>
+          {opt.label}
+        </span>
+      )
+    };
+  });
+
   return (
     <div className={css.checkbox}>
       {data.checkAll && (
@@ -171,7 +191,7 @@ export default function Runtime({
       <Checkbox.Group
         style={checkboxGroup}
         {...data.config}
-        options={env.edit ? data.staticOptions : data.config.options}
+        options={options}
         value={data.value}
         onChange={onChange}
       />

@@ -233,6 +233,7 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
         inputs[InputIds.SET_ROW_SELECTION]((val) => {
+          // 时机延后，保证同时设置行选中和数据源时能生效
           setTimeout(() => {
             const newSelectedRowKeys: string[] = [];
             const newSelectedRows: any[] = [];

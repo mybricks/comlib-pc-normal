@@ -38,7 +38,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const ref = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
 
   //输出数据变形函数
@@ -184,6 +184,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, [value]);
 
+  useLayoutEffect(() => {
+    inputs[CommonInputIds.SetColor]((color: string) => {
+      const target = wrapperRef.current?.querySelector?.('input');
+      if (target) {
+        target.style.color = typeof color === 'string' ? color : '';
+      }
+    });
+  }, []);
+
   //重置，
   inputs['resetValue'](() => {
     setValue(void 0);
@@ -280,7 +289,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={css.datePicker} ref={ref}>
+      <div className={css.datePicker} ref={wrapperRef}>
         <DatePicker
           value={value}
           {...data.config}

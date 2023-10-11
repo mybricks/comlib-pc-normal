@@ -20,6 +20,7 @@ export default function Runtime({
   logger
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
+  const [activeFontColor, setActiveFontColor] = useState('');
 
   useFormItemInputs({
     name,
@@ -101,6 +102,11 @@ export default function Runtime({
         validateRelOuputRef.current(info);
       }
     });
+
+    // 设置激活选项字体的颜色
+    inputs['setActiveFontColor']((color: string) => {
+      setActiveFontColor(color);
+    });
   }, []);
 
   const onValidateTrigger = () => {
@@ -134,7 +140,10 @@ export default function Runtime({
                   value={item.value}
                   disabled={item.disabled}
                   checked={item.checked}
-                  style={{ marginRight: 8 }}
+                  style={{
+                    marginRight: 8,
+                    color: data.value === item.value ? activeFontColor : ''
+                  }}
                 >
                   {label}
                 </Radio>
@@ -163,7 +172,7 @@ export default function Runtime({
               value={item.value}
               disabled={item.disabled}
               checked={item.checked}
-              style={{ marginRight: 8 }}
+              style={{ marginRight: 8, color: data.value === item.value ? activeFontColor : '' }}
             >
               {label}
             </Radio>

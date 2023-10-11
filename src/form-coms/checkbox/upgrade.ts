@@ -85,5 +85,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.0 end ===============
 
+  input.add('setActiveFontColor', '设置激活选项字体的颜色', { type: "string" });
+
   return true;
 }

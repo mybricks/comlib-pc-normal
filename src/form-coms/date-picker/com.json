@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -106,6 +106,14 @@
       "title": "禁用特定日期",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置日期选择框里字体的颜色",
+      "schema": {
+        "type": "string"
       }
     }
   ],
