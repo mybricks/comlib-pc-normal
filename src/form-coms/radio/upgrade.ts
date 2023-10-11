@@ -2,7 +2,7 @@ import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, getDeclaredStyle, setDeclaredStyle, removeDeclaredStyle }: UpgradeParams<Data>): boolean {
   const valueSchema = {
     "type": "string"
   }
@@ -68,6 +68,22 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     });
   }
   //=========== v1.1.0 end ===============
+
+  /**
+   * v1.1.0 -> v1.1.1 调整选项标签的样式优先级
+   */
+  
+  const preLabelStyle = getDeclaredStyle("label.ant-radio-wrapper > span:nth-child(2)");
+  if(preLabelStyle) {
+    setDeclaredStyle("label.ant-radio-wrapper", preLabelStyle.css);
+    removeDeclaredStyle("label.ant-radio-wrapper > span:nth-child(2)");
+  }
+
+  const preLabelDisableStyle = getDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)");
+  if(preLabelDisableStyle) {
+    setDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled", preLabelDisableStyle.css);
+    removeDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)");
+  }
 
   return true;
 }

@@ -41,7 +41,7 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-radio-wrapper > span:nth-child(2)'
+                target: 'label.ant-radio-wrapper'
               },
               {
                 title: '选择框',
@@ -95,7 +95,7 @@ export default {
               {
                 title: '选项标签',
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
-                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)'
+                target: 'label.ant-radio-wrapper.ant-radio-wrapper-disabled'
               },
               {
                 title: '选择框',
