@@ -89,7 +89,8 @@
         "./src/calendar/com.json",
         "./src/iframe/com.json",
         "./src/qr-code/com.json",
-        "./src/progress/com.json"
+        "./src/progress/com.json",
+        "./src/video/com.json"
       ]
     },
     {
