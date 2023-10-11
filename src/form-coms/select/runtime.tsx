@@ -184,7 +184,7 @@ export default function Runtime({
         validateRelOuputRef.current(info);
       }
     });
-    // 设置
+    // 设置下拉框字体颜色
     inputs[InputIds.SetColor]((color: string) => {
       const target = ref.current?.querySelector?.('.ant-select-selection-item') as HTMLSpanElement;
       if (target) {
