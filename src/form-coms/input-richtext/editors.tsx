@@ -51,6 +51,7 @@ export default {
       {
         title: '插件选择',
         type: 'select',
+        description: '添加需要的插件,按照添加的顺序排序',
         ifVisible({ data }) {
           return data.displayEditbar;
         },
