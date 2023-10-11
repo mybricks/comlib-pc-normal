@@ -1,6 +1,7 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
+import { InputIds } from '../types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -89,6 +90,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   //=========== v1.3.0 end ===============
+
+  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
   return true;
 }

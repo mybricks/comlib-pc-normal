@@ -71,5 +71,7 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
+  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+
   return true;
 }

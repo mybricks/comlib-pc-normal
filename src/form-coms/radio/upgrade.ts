@@ -1,4 +1,5 @@
 import { inputIds, outputIds } from '../form-container/constants';
+import { InputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
 
@@ -84,6 +85,8 @@ export default function ({ data, input, output, getDeclaredStyle, setDeclaredSty
     setDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled", preLabelDisableStyle.css);
     removeDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)");
   }
+
+  input.add('setActiveFontColor', '设置激活选项字体的颜色', { type: "string" });
 
   return true;
 }

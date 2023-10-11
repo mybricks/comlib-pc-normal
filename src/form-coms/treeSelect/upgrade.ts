@@ -169,6 +169,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.2.0 end ===============
 
+  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
   return true;
 }
