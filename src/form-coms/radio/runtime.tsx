@@ -20,7 +20,7 @@ export default function Runtime({
   logger
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [activeFontColor, setActiveFontColor] = useState('');
 
   useFormItemInputs({
     name,
@@ -103,26 +103,9 @@ export default function Runtime({
       }
     });
 
-    let preTarget;
     // 设置激活选项字体的颜色
     inputs['setActiveFontColor']((color: string) => {
-      // 将执行时机延后保证 target 获取正确（如值变更时期望取得下一个选中的值）
-      setTimeout(() => {
-        const target = wrapperRef.current?.querySelector?.(
-          data.enableButtonStyle
-            ? '.ant-radio-button-wrapper-checked'
-            : '.ant-radio-wrapper-checked'
-        ) as HTMLSpanElement;
-        if (target) {
-          if (preTarget) {
-            preTarget.style.color = '';
-          }
-
-          target.style.color = typeof color === 'string' ? color : '';
-
-          preTarget = target;
-        }
-      }, 0);
+      setActiveFontColor(color);
     });
   }, []);
 
@@ -140,7 +123,7 @@ export default function Runtime({
 
   const renderRadio = () => {
     return (
-      <div ref={wrapperRef} className={css.radio}>
+      <div className={css.radio}>
         <Radio.Group
           optionType={data.enableButtonStyle ? 'button' : 'default'}
           buttonStyle={data.buttonStyle}
@@ -157,7 +140,10 @@ export default function Runtime({
                   value={item.value}
                   disabled={item.disabled}
                   checked={item.checked}
-                  style={{ marginRight: 8 }}
+                  style={{
+                    marginRight: 8,
+                    color: data.value === item.value ? activeFontColor : ''
+                  }}
                 >
                   {label}
                 </Radio>
@@ -170,7 +156,7 @@ export default function Runtime({
   };
 
   return data.enableButtonStyle ? (
-    <div ref={wrapperRef}>
+    <div>
       <Radio.Group
         optionType={data.enableButtonStyle ? 'button' : 'default'}
         buttonStyle={data.buttonStyle}
@@ -186,7 +172,7 @@ export default function Runtime({
               value={item.value}
               disabled={item.disabled}
               checked={item.checked}
-              style={{ marginRight: 8 }}
+              style={{ marginRight: 8, color: data.value === item.value ? activeFontColor : '' }}
             >
               {label}
             </Radio>
