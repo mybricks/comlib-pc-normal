@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -95,6 +95,17 @@
         "type": "any"
       },
       "desc": "启用表单项及操作项"
+    },
+    {
+      "id": "validateFields",
+      "title": "校验表单项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "输入字段数组，触发指定的表单项校验"
     },
     {
       "id": "setFormItemsProps",

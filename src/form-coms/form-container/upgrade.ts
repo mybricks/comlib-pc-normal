@@ -280,13 +280,30 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     if (act && act.disabled === undefined) {
       act.disabled = false;
     }
-    if(act && act.useDynamicDisabled === undefined){
+    if (act && act.useDynamicDisabled === undefined) {
       act.useDynamicDisabled = false;
     }
-    if(act && act.useDynamicHidden === undefined){
+    if (act && act.useDynamicHidden === undefined) {
       act.useDynamicHidden = false;
     }
   })
+
+  /**
+     * @description v1.4.9 , 新增 校验表单项 输入项
+     */
+
+  if (!input.get(inputIds.VALIDATE_FIELDS)) {
+    const schema = {
+      type: 'array',
+      items: {
+        type: 'string'
+      }
+    };
+
+    input.add(inputIds.VALIDATE_FIELDS, '校验表单项', schema);
+  }
+
+  //=========== v1.4.9 end ===============
 
   return true;
 }

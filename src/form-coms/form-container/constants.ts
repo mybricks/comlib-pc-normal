@@ -8,6 +8,8 @@ export const inputIds = {
   SET_DISABLED: 'setDisabled',
   SET_ENABLED: 'setEnabled',
   GET_FIELDS_VALUE: 'getFieldsValue',
+  // 校验
+  VALIDATE_FIELDS: 'validateFields',
   SET_VALIDATE_INFO: 'setValidateInfo',
   //禁用/启用
   SetDisable: 'setDisable',
