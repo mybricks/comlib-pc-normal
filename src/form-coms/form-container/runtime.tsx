@@ -15,6 +15,7 @@ import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
 import { checkIfMobile } from '../../utils';
+import { NamePath } from 'antd/lib/form/interface';
 
 type FormControlInputRels = {
   validate: (val?: any) => {
@@ -31,7 +32,7 @@ type FormControlInputType = {
 };
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, env, outputs, inputs, slots, _inputs } = props;
+  const { data, env, outputs, inputs, slots, _inputs, logger, title } = props;
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
@@ -43,89 +44,117 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [env.edit]);
 
   useLayoutEffect(() => {
-    inputs[inputIds.SET_FIELDS_VALUE]((val) => {
-      // resetFields();
-      setFieldsValue(val);
-      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
-    });
-
-    inputs[inputIds.SET_INITIAL_VALUES]((val) => {
-      setInitialValues(val);
-      slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
-    });
-
-    inputs['resetFields']((val, outputRels) => {
-      resetFields();
-      outputRels['onResetFinish']();
-    });
-
-    inputs[inputIds.SUBMIT]((val, outputRels) => {
-      submit(outputRels);
-    });
-
-    inputs[inputIds.SUBMIT_AND_MERGE]((val, outputRels) => {
-      if (isObject(val)) {
-        submitMethod(outputIds.ON_MERGE_FINISH, outputRels, val);
-      } else {
-        submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
-      }
-    });
-
-    inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
-      getValue().then((v) => {
-        outputRels[outputIds.RETURN_VALUES](v);
+    if (env.runtime) {
+      inputs[inputIds.SET_FIELDS_VALUE]((val) => {
+        // resetFields();
+        setFieldsValue(val);
+        slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
       });
-    });
 
-    inputs[inputIds.SET_DISABLED](() => {
-      data.config.disabled = true;
-      setDisabled();
-    });
+      inputs[inputIds.SET_INITIAL_VALUES]((val) => {
+        setInitialValues(val);
+        slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+      });
 
-    inputs[inputIds.SET_ENABLED](() => {
-      data.config.disabled = false;
-      setEnabled();
-    });
+      inputs['resetFields']((val, outputRels) => {
+        resetFields();
+        outputRels['onResetFinish']();
+      });
 
-    //------ For 表单项私有 start ---------
-    // _inputs['validate']((val, outputRels) => {
-    //   validate().then((r) => {
-    //     outputRels['returnValidate']({
-    //       validateStatus: 'success'
-    //     });
-    //   });
-    // });
+      inputs[inputIds.SUBMIT]((val, outputRels) => {
+        submit(outputRels);
+      });
 
-    // _inputs['getValue']((val, outputRels) => {
-    //   getValue().then((v) => {
-    //     outputRels['returnValue'](v);
-    //   });
-    // });
+      inputs[inputIds.SUBMIT_AND_MERGE]((val, outputRels) => {
+        if (isObject(val)) {
+          submitMethod(outputIds.ON_MERGE_FINISH, outputRels, val);
+        } else {
+          submitMethod(outputIds.ON_MERGE_FINISH, outputRels);
+        }
+      });
 
-    // _inputs['setValue']((val) => {
-    //   setFieldsValue(val);
-    // });
-    //------ For 表单项私有 end---------
-
-    /**
-     * @description 响应触发对应表单项校验
-     */
-    slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
-      const { id, name } = params;
-      const { item, isFormItem } = getFormItem(data, { id, name });
-
-      if (item && isFormItem) {
-        // const input = childrenInputs[item.id];
-        const input = getFromItemInputEvent(item, childrenInputs);
-        validateForInput({
-          input,
-          model: {
-            curFormItem: item,
-            ...formContext.current.store
-          }
+      inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
+        getValue().then((v) => {
+          outputRels[outputIds.RETURN_VALUES](v);
         });
-      }
-    });
+      });
+
+      inputs[inputIds.SET_DISABLED](() => {
+        data.config.disabled = true;
+        setDisabled();
+      });
+
+      inputs[inputIds.SET_ENABLED](() => {
+        data.config.disabled = false;
+        setEnabled();
+      });
+
+      // 校验字段
+      inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[]) => {
+        if (typeof nameList === 'string') nameList = [nameList];
+        let isValid = false;
+        if (Array.isArray(nameList)) {
+          nameList.forEach((name) => {
+            const item = data.items.find((item) => (item.name || item.label) === name);
+            if (item) {
+              isValid = true;
+              const input = getFromItemInputEvent(item, childrenInputs);
+              validateForInput({
+                input,
+                model: {
+                  curFormItem: item,
+                  ...formContext.current.store
+                }
+              });
+            }
+          });
+        }
+        if (!isValid) {
+          logger.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
+          console.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
+        }
+      });
+
+      //------ For 表单项私有 start ---------
+      // _inputs['validate']((val, outputRels) => {
+      //   validate().then((r) => {
+      //     outputRels['returnValidate']({
+      //       validateStatus: 'success'
+      //     });
+      //   });
+      // });
+
+      // _inputs['getValue']((val, outputRels) => {
+      //   getValue().then((v) => {
+      //     outputRels['returnValue'](v);
+      //   });
+      // });
+
+      // _inputs['setValue']((val) => {
+      //   setFieldsValue(val);
+      // });
+      //------ For 表单项私有 end---------
+
+      /**
+       * @description 响应触发对应表单项校验
+       */
+      slots['content']._inputs[slotInputIds.VALIDATE_TRIGGER]((params) => {
+        const { id, name } = params;
+        const { item, isFormItem } = getFormItem(data, { id, name });
+
+        if (item && isFormItem) {
+          // const input = childrenInputs[item.id];
+          const input = getFromItemInputEvent(item, childrenInputs);
+          validateForInput({
+            input,
+            model: {
+              curFormItem: item,
+              ...formContext.current.store
+            }
+          });
+        }
+      });
+    }
   }, []);
 
   if (env.runtime) {

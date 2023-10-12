@@ -97,6 +97,17 @@
       "desc": "启用表单项及操作项"
     },
     {
+      "id": "validateFields",
+      "title": "校验表单项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "输入字段数组，触发指定的表单项校验"
+    },
+    {
       "id": "setFormItemsProps",
       "title": "设置表单项配置",
       "schema": {
