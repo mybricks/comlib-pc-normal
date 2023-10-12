@@ -31,7 +31,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     // 设置值
     inputs[InputIds.SetValue]((value) => {
-      if (typeCheck(value, ['Array', 'Undefined'])) {
+      if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
         changeValue({ data, id, outputs, parentSlot, name: props.name });
         const changeLength = generateFields(data);
@@ -39,13 +39,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // changeLength < 0时，不会触发已有的列表项刷新
         changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
-        logger.error(title + '的值是列表类型');
+        logger.error(title + '[设置值]: 类型不合法');
       }
     });
 
     // 设置初始值
     inputs[InputIds.SetInitialValue]((value) => {
-      if (typeCheck(value, ['Array', 'Undefined'])) {
+      if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         const changeLength = generateFields(data);
@@ -53,7 +53,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // changeLength < 0时，不会触发已有的列表项刷新
         changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
-        logger.error(title + '的值是列表类型');
+        logger.error(title + '[设置初始值]: 类型不合法');
       }
     });
 
