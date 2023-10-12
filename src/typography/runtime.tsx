@@ -54,25 +54,25 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
   //2、动态设置颜色且该子项被激活时，设置动态颜色
   const fontStyle = {
     color: isUnity
-      ? isSet && item.style.color
-        ? item.style.color
+      ? isSet && item.style?.color
+        ? item.style?.color
         : 'unset'
-      : isSet && item.style.color
-      ? item.style.color
+      : isSet && item.style?.color
+      ? item.style?.color
       : void 0,
     fontSize: isUnity
-      ? isSet && item.style.fontSize
-        ? item.style.fontSize
+      ? isSet && item.style?.fontSize
+        ? item.style?.fontSize
         : 'unset'
-      : isSet && item.style.fontSize
-      ? item.style.fontSize
+      : isSet && item.style?.fontSize
+      ? item.style?.fontSize
       : void 0,
     fontWeight: isUnity
-      ? isSet && item.style.fontWeight
-        ? item.style.fontWeight
+      ? isSet && item.style?.fontWeight
+        ? item.style?.fontWeight
         : 'unset'
-      : isSet && item.style.fontWeight
-      ? item.style.fontWeight
+      : isSet && item.style?.fontWeight
+      ? item.style?.fontWeight
       : void 0
   };
   if (!itemContent) return null;
@@ -141,7 +141,7 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
               // fontSize: item.fontSize,
               // fontWeight: item.fontStyle,
               ...fontStyle,
-              color: isSet && item.style.color ? item.style.color : void 0
+              color: isSet && item.style?.color ? item.style?.color : void 0
             }}
             onClick={textClick}
           >
@@ -190,7 +190,7 @@ const EditRender = (props: RuntimeParams<Data>) => {
     <div
       className={`${css.container} container`}
       style={{
-        textAlign: data.style.textAlign,
+        textAlign: data.style?.textAlign,
         fontSize: !data.isUnity ? 'unset' : void 0,
         lineHeight: !data.isUnity ? 'unset' : void 0
       }}
@@ -328,7 +328,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
     <div
       className={`${css.container} container`}
       style={{
-        textAlign: data.style.textAlign,
+        textAlign: data.style?.textAlign,
         fontSize: !data.isUnity ? 'unset' : void 0,
         lineHeight: !data.isUnity ? 'unset' : void 0
       }}
