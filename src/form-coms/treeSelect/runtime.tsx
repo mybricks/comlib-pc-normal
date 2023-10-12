@@ -66,21 +66,25 @@ export default function Runtime({
 
     inputs['setValue']((val) => {
       if (data.config.multiple) {
-        Array.isArray(val) ? onChange(val) : logger.error(`树选择的值应为数组格式`);
-      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
+        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
+          ? changeValue(val)
+          : logger.error(`${title}【设置值】参数应为数组格式`);
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
       } else {
-        logger.error(`树选择的值应为基本类型`);
+        logger.error(`${title}【设置值】参数应为基本类型`);
       }
     });
 
     inputs['setInitialValue']((val) => {
       if (data.config.multiple) {
-        Array.isArray(val) ? onInit(val) : logger.error(`树选择的值应为数组格式`);
-      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
+        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
+          ? onInit(val)
+          : logger.error(`${title}【设置初始值】参数应为数组格式`);
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
       } else {
-        logger.error(`树选择的值应为基本类型`);
+        logger.error(`${title}【设置初始值】参数应为基本类型`);
       }
     });
 
@@ -168,6 +172,9 @@ export default function Runtime({
   }, []);
 
   const onInit = useCallback((value) => {
+    if (value === undefined) {
+      data.value = '';
+    }
     data.value = value;
     outputs[OutputIds.OnInitial](value);
   }, []);
