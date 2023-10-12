@@ -6,6 +6,7 @@ import { InputIds, OutputIds } from '../types';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import css from './runtime.less';
+import { typeCheck } from '../../utils';
 
 export default function Runtime({
   env,
@@ -50,7 +51,7 @@ export default function Runtime({
     });
 
     inputs['setValue']((val) => {
-      if (val !== undefined && !Array.isArray(val)) {
+      if (!typeCheck(val, ['Array', 'Undefined', 'NULL'])) {
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
@@ -60,7 +61,7 @@ export default function Runtime({
 
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
-        if (val !== undefined && !Array.isArray(val)) {
+        if (!typeCheck(val, ['Array', 'Undefined', 'NULL'])) {
           logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
@@ -69,8 +70,7 @@ export default function Runtime({
       });
 
     inputs['resetValue'](() => {
-      data.value = void 0;
-      changeValue();
+      changeValue(undefined);
     });
 
     //设置禁用
@@ -129,7 +129,7 @@ export default function Runtime({
       setIndeterminate(false);
       setCheckAll(false);
       data.value = [];
-      data.value = void 0;
+      data.value = checkedValue;
     }
   }, []);
 
