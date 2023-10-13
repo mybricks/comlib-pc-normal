@@ -417,7 +417,7 @@ export default {
             set({ data, inputs }: EditorResult<Data>, value: boolean) {
               data.controlled = value
               if(value) {
-                inputs.add("setOpen", "设置气泡开关", { type: "boolean" })
+                inputs.add("setOpen", "打开隐藏面板", { type: "boolean" })
               } else {
                 inputs.remove("setOpen")
               }

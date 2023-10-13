@@ -325,9 +325,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
           panelRender={(originPanel) => {
             return (
               <div>
-                {data.useCustomPanelHeader && slots[SlotIds.DatePanelHeader].render()}
+                {data.useCustomPanelHeader &&
+                  slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
                 {originPanel}
-                {data.useCustomPanelFooter && slots[SlotIds.DatePanelFooter].render()}
+                {data.useCustomPanelFooter &&
+                  slots[SlotIds.DatePanelFooter].render({ title: '底部插槽' })}
               </div>
             );
           }}
