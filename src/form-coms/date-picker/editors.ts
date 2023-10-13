@@ -47,6 +47,19 @@ export default {
           }
         },
         {
+          title: '显示清除图标',
+          type: 'switch',
+          description: '可以点击清除图标删除内容',
+          value: {
+            get({ data }) {
+              return data.config.allowClear;
+            },
+            set({ data }, value: boolean) {
+              data.config.allowClear = value;
+            }
+          }
+        },
+        {
           title: '禁用状态',
           type: 'switch',
           description: '是否禁用状态',
