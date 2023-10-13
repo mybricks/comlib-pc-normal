@@ -9,6 +9,7 @@
   "config": {
     "disabled": false,
     "placeholder": "请选择日期",
-    "picker": "date"
+    "picker": "date",
+    "allowClear": true
   }
 }

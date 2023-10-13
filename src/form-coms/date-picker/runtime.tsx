@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { DatePicker } from 'antd';
+import { DatePicker, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -27,6 +27,7 @@ export interface Data {
     disabled: boolean;
     placeholder: string;
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
+    allowClear: boolean;
   };
   useDisabledDate: 'default' | 'static';
   hideDatePanel: boolean;
@@ -183,6 +184,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
   }, [value]);
+
+  //设置日期选择类型
+  inputs['setDateType']((val) => {
+    const dateType = ['date', 'week', 'month', 'quarter', 'year'];
+    if (dateType.includes(val)) {
+      data.config.picker = val;
+    } else {
+      message.error('日期类型不正确');
+    }
+  });
 
   useLayoutEffect(() => {
     inputs[CommonInputIds.SetColor]((color: string) => {

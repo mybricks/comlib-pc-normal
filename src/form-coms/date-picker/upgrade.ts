@@ -73,5 +73,41 @@ export default function ({
 
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
+  /**
+   * @description v1.1.1->1.1.2 新增 显示清除图标、动态配置选择类型输入
+   */
+  if (typeof data.config.allowClear === "undefined") {
+    data.config.allowClear = true;
+  };
+
+  const dateSchema = {
+    type: "enum",
+    items: [
+      {
+        type: "string",
+        value: "date"
+      },
+      {
+        type: "string",
+        value: "week"
+      },
+      {
+        type: "string",
+        value: "month"
+      },
+      {
+        type: "string",
+        value: "quarter"
+      },
+      {
+        type: "string",
+        value: "year"
+      }
+    ]
+  };
+  if (!input.get('setDateType')) {
+    input.add('setDateType', '设置日期选择类型', dateSchema);
+  }
+  //=========== v1.1.2 end ===============
   return true;
 }
