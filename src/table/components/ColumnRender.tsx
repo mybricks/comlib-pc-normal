@@ -3,6 +3,8 @@ import { DefaultRowKey, OutputIds } from '../constants';
 import { ContentTypeEnum, IColumn } from '../types';
 import SlotRender from './Slot';
 import { genFormatting } from '../../utils/dataFormatter';
+import { Tooltip } from 'antd';
+import css from './style.less';
 
 interface ColumnRenderProps {
   columnItem: IColumn;
@@ -47,7 +49,15 @@ export default function ColumnRender(props: ColumnRenderProps) {
 
   switch (columnItem.contentType) {
     case ContentTypeEnum.Text:
-      return value;
+      if (columnItem.ellipsis) {
+        return (
+          <Tooltip placement="topLeft" title={value}>
+            <span className={css.ellipsisWrap}>{value}</span>
+          </Tooltip>
+        );
+      } else {
+        return value;
+      }
     case ContentTypeEnum.SlotItem:
       return (
         <SlotRender

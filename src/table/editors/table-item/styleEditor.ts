@@ -18,6 +18,26 @@ export const DefaultColor = {
 
 const StyleEditor = [
   {
+    title: '内容省略展示',
+    type: 'Switch',
+    description: '内容超出宽度后文本是否自动省略、不换行、以省略号结尾',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      if (!focusArea) return;
+      return getColumnItem(data, focusArea).contentType === ContentTypeEnum.Text;
+    },
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item.ellipsis;
+      },
+      set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+        if (!focusArea) return;
+        setCol({ data, focusArea }, 'ellipsis', value);
+      }
+    }
+  },
+  {
     title: '适应剩余宽度',
     type: 'Switch',
     ifVisible({ data, focusArea }: EditorResult<Data>) {

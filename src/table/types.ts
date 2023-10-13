@@ -64,6 +64,8 @@ export interface IColumn {
   contentStyle: any;
   hasTip?: boolean;
   tip?: string;
+  // 省略展示
+  ellipsis: any;
 
   sorter?: Sorter;
   filter?: Filter;
