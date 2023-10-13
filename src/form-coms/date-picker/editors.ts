@@ -354,12 +354,49 @@ export default {
               data.useCustomDateCell = value;
             }
           }
-        }, {
+        },
+        {
+          title: '开启日期选择面板顶部插槽',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.useCustomPanelHeader;
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                data.hideDatePanel = false
+                slot.add({ id: SlotIds.DatePanelHeader, title: '插槽', type: 'scope' });
+              } else {
+                slot.remove(SlotIds.DatePanelHeader);
+              }
+              data.useCustomPanelHeader = value;
+            }
+          }
+        },
+        {
+          title: '开启日期选择面板底部插槽',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.useCustomPanelFooter;
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                data.hideDatePanel = false
+                slot.add({ id: SlotIds.DatePanelFooter, title: '插槽', type: 'scope' });
+              } else {
+                slot.remove(SlotIds.DatePanelFooter);
+              }
+              data.useCustomPanelFooter = value;
+            }
+          }
+        },
+        {
           title: '隐藏日期面板',
           description: '仅在搭建时生效',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
-            return data.useCustomDateCell;
+            return data.useCustomDateCell || data.useCustomPanelHeader || data.useCustomPanelFooter;
           },
           value: {
             get({ data }) {
@@ -369,7 +406,24 @@ export default {
               data.hideDatePanel = value
             }
           }
-        }
+        },
+        {
+          title: '气泡受控',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.controlled || false
+            },
+            set({ data, inputs }: EditorResult<Data>, value: boolean) {
+              data.controlled = value
+              if(value) {
+                inputs.add("setOpen", "设置气泡开关", { type: "boolean" })
+              } else {
+                inputs.remove("setOpen")
+              }
+            }
+          }
+        },
       ];
     }
   }
