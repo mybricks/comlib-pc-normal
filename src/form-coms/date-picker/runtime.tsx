@@ -23,6 +23,9 @@ export interface Data {
   contentType: string;
   formatter: string;
   useCustomDateCell: boolean;
+  useCustomPanelHeader: boolean;
+  useCustomPanelFooter: boolean;
+  controlled: boolean;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -41,6 +44,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const debug = !!(runtime && runtime.debug);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
+
+  const [open, setOpen] = useState<boolean | undefined>(void 0);
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -202,6 +207,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         target.style.color = typeof color === 'string' ? color : '';
       }
     });
+    inputs[InputIds.SetOpen]?.((open: boolean) => {
+      setOpen(open);
+    });
   }, []);
 
   //重置，
@@ -298,10 +306,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
     [data.useDisabledDate, JSON.stringify(data.staticDisabledDate)]
   );
 
+  const finalOpen = (() => {
+    if (runtime && data.controlled) {
+      return open;
+    }
+    return (
+      (edit &&
+        (data.useCustomDateCell || data.useCustomPanelHeader || data.useCustomPanelFooter) &&
+        !data.hideDatePanel) ||
+      env.design
+    );
+  })();
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div className={css.datePicker} ref={wrapperRef}>
         <DatePicker
+          panelRender={(originPanel) => {
+            return (
+              <div>
+                {data.useCustomPanelHeader && slots[SlotIds.DatePanelHeader].render()}
+                {originPanel}
+                {data.useCustomPanelFooter && slots[SlotIds.DatePanelFooter].render()}
+              </div>
+            );
+          }}
           value={value}
           {...data.config}
           dateRender={data.useCustomDateCell ? customDateRender : undefined}
@@ -315,7 +344,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
           dropdownClassName={`${id} ${css.datePicker} ${
             data.useCustomDateCell ? css.slotContainer : ''
           }`}
-          open={(edit && data.useCustomDateCell && !data.hideDatePanel) || env.design}
+          open={finalOpen}
+          onClick={() => {
+            if (runtime && data.controlled && !open) setOpen(true);
+          }}
         />
       </div>
     </ConfigProvider>

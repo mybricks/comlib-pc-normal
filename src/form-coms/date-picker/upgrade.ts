@@ -109,5 +109,12 @@ export default function ({
     input.add('setDateType', '设置日期选择类型', dateSchema);
   }
   //=========== v1.1.2 end ===============
+  /**
+   * @description v1.1.1 => v1.1.2 升级，新增 useCustomPanelHeader、useCustomPanelFooter 字段
+   */
+  if(!Reflect.has(data, 'useCustomPanelHeader')) data.useCustomPanelHeader = false;
+  if(!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
+  if(!Reflect.has(data, 'controlled')) data.controlled = false;
+
   return true;
 }
