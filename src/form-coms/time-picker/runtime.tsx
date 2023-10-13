@@ -69,7 +69,7 @@ export default function ({
     (val) => {
       try {
         if (!val) {
-          setValue(void 0);
+          setValue(val);
           return;
         }
         let formatVal: Moment;

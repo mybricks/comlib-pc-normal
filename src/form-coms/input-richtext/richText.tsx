@@ -56,6 +56,7 @@ export default function ({
     type: 'image',
     url: ''
   });
+  const [value, setValue] = useState<any>();
 
   const textareaRef = useRef(null);
 
@@ -140,17 +141,25 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val) => {
-          if (val !== undefined) {
+          if (val !== undefined && val !== null) {
             editor.setContent(val);
             valueRef.current = val;
+            setValue(val);
+            outputs['onChange'](val);
+          } else {
+            setValue(val);
             outputs['onChange'](val);
           }
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any) => {
-          if (val !== undefined) {
+          if (val !== undefined && val !== null) {
             editor.setContent(val);
             valueRef.current = val;
+            setValue(val);
+            outputs['onInitial'](val);
+          } else {
+            setValue(val);
             outputs['onInitial'](val);
           }
         });
@@ -315,7 +324,11 @@ export default function ({
 
     //4. 获取值
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](valueRef.current);
+      if (value !== undefined && value !== null) {
+        outputRels['returnValue'](valueRef.current);
+      } else {
+        outputRels['returnValue'](value);
+      }
     });
 
     //6. 设置禁用

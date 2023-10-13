@@ -104,7 +104,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
-      val = val === null ? null : !result?._isValid ? undefined : result;
+      val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
       setValue(val);
       onChange(val);
     });
@@ -115,12 +115,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
         // 为null设置为null
-        val = val === null ? null : !result?._isValid ? undefined : result;
+        val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
         setValue(val);
         //自定义转换
         let transValue;
         if (val === null || val === undefined) {
-          transValue = undefined;
+          transValue = val;
         } else {
           transValue = transCalculation(val, data.contentType, props);
         }
@@ -169,7 +169,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //1.null是从日期选择框不选日期的情况；
       //2.undefined是手动设置值为空或者不正确的情况
       if (value === null || value === undefined) {
-        transValue = undefined;
+        transValue = value;
       } else {
         transValue = transCalculation(value, data.contentType, props);
       }
@@ -214,7 +214,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //自定义转换
     let transValue;
     if (value === null || value === undefined) {
-      transValue = undefined;
+      transValue = value;
     } else {
       transValue = transCalculation(value, data.contentType, props);
     }

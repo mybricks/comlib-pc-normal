@@ -3,7 +3,7 @@ import { Data } from './types';
 import { TimePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
-import { isValidInput, isValidRange } from './util';
+import { isValidInput, isValidRange, isDefaultInput } from './util';
 import useFormItemInputs from '../form-container/models/FormItem';
 import styles from './style.less';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -74,8 +74,18 @@ export default function ({
         [start, end] = val;
       }
 
-      const startM = isNaN(Number(start)) ? moment(start, _format) : moment(Number(start));
-      const endM = isNaN(Number(end)) ? moment(end, _format) : moment(Number(end));
+      const startM =
+        start === null || start === undefined
+          ? start
+          : isNaN(Number(start))
+          ? moment(start, _format)
+          : moment(Number(start));
+      const endM =
+        end === null || end === undefined
+          ? end
+          : isNaN(Number(end))
+          ? moment(end, _format)
+          : moment(Number(end));
       return [startM, endM];
     },
     [splitChar, _format]
@@ -84,6 +94,9 @@ export default function ({
   const setTimestampRange = (val) => {
     try {
       const initValue = formatValue(val) as [Moment, Moment];
+      if (isDefaultInput(initValue)) {
+        setValue(initValue);
+      }
       if (!isValidInput(initValue)) {
         setValue(initValue);
         return;
@@ -135,13 +148,17 @@ export default function ({
 
   const getValue = useCallback(
     (value) => {
-      const _value = (value || []).map((val) => {
-        if (format === 'timeStamp') return val.endOf('second').valueOf();
-        if (format === 'custom') return val.format(customFormat);
-        return val.format(format);
-      });
-      const formatValue = outFormat === 'array' ? _value : _value.join(splitChar);
-      return formatValue;
+      if (isDefaultInput(value) || value === null) {
+        return value;
+      } else {
+        const _value = (value || []).map((val) => {
+          if (format === 'timeStamp') return val.endOf('second').valueOf();
+          if (format === 'custom') return val.format(customFormat);
+          return val.format(format);
+        });
+        const formatValue = outFormat === 'array' ? _value : _value.join(splitChar);
+        return formatValue;
+      }
     },
     [outFormat, splitChar, format, customFormat]
   );

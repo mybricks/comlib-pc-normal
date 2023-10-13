@@ -153,7 +153,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
         val = val.map((item) => {
           const num = Number(item);
           const result: any = isNaN(num) ? moment(item) : moment(num);
-          let data = !result?._isValid ? undefined : result;
+          let data =
+            item === null ? null : !result?._isValid || item === undefined ? undefined : result;
           return data;
         });
         setValue(val);
@@ -169,16 +170,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
           val = val.map((item) => {
             const num = Number(item);
             const result: any = isNaN(num) ? moment(item) : moment(num);
-            let data = !result?._isValid ? undefined : result;
+            let data =
+              item === null ? null : !result?._isValid || item === undefined ? undefined : result;
             return data;
           });
           setValue(val);
           let transValue;
-          if (!Array.isArray(value)) {
+          if (!Array.isArray(val)) {
             transValue = null;
           } else {
-            transValue = value.map((item, index) => {
-              return transCalculation(item, data.contentType, props, index);
+            transValue = val.map((item, index) => {
+              if (item === undefined || item === null) {
+                return item;
+              } else {
+                return transCalculation(item, data.contentType, props, index);
+              }
             });
             if (data.dateType !== 'array') {
               transValue = transValue[0] + `${data.splitChart}` + transValue[1];
@@ -228,7 +234,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         transValue = null;
       } else {
         transValue = value.map((item, index) => {
-          return transCalculation(item, data.contentType, props, index);
+          if (item === undefined || item === null) {
+            return item;
+          } else {
+            return transCalculation(item, data.contentType, props, index);
+          }
         });
         if (data.dateType !== 'array') {
           transValue = transValue[0] + `${data.splitChart}` + transValue[1];
@@ -270,7 +280,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       transValue = null;
     } else {
       transValue = value.map((item, index) => {
-        return transCalculation(item, data.contentType, props, index);
+        if (item === undefined || item === null) {
+          return item;
+        } else {
+          return transCalculation(item, data.contentType, props, index);
+        }
       });
       if (data.dateType !== 'array') {
         transValue = transValue[0] + `${data.splitChart}` + transValue[1];
