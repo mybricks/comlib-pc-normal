@@ -106,7 +106,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const result: any = isNaN(num) ? moment(val) : moment(num);
       val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
       setValue(val);
-      onChange(val);
+      let transValue;
+      if (val === null || val === undefined) {
+        transValue = val;
+      } else {
+        transValue = transCalculation(val, data.contentType, props);
+      }
+      outputs['onChange'](transValue);
     });
 
     inputs['setInitialValue'] &&
