@@ -73,7 +73,6 @@ export default function ({
         }
         [start, end] = val;
       }
-
       const startM =
         start === null || start === undefined
           ? start
@@ -94,6 +93,10 @@ export default function ({
   const setTimestampRange = (val) => {
     try {
       const initValue = formatValue(val) as [Moment, Moment];
+      if (val === null || val === undefined) {
+        setValue(val);
+        return;
+      }
       if (isDefaultInput(initValue)) {
         setValue(initValue);
       }
@@ -148,7 +151,9 @@ export default function ({
 
   const getValue = useCallback(
     (value) => {
-      if (isDefaultInput(value) || value === null) {
+      if (value === undefined || value === null) {
+        return value;
+      } else if (isDefaultInput(value)) {
         return value;
       } else {
         const _value = (value || []).map((val) => {

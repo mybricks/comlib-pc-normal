@@ -345,7 +345,7 @@ export default function ({
         validateRelOuputRef.current(info);
       }
     });
-  }, []);
+  }, [value]);
 
   return (
     <EnvContext.Provider value={{ env }}>
