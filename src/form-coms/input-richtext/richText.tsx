@@ -148,6 +148,7 @@ export default function ({
             outputs['onChange'](val);
           } else {
             setValue(val);
+            editor.setContent('');
             outputs['onChange'](val);
           }
         });
@@ -160,6 +161,7 @@ export default function ({
             outputs['onInitial'](val);
           } else {
             setValue(val);
+            editor.setContent('');
             outputs['onInitial'](val);
           }
         });
