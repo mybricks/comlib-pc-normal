@@ -21,7 +21,6 @@ const { Column, ColumnGroup } = Table;
 interface Props {
   env: Env;
   data: Data;
-  slots: any;
   outputs: any;
   dataSource: any;
   filterMap: any;
@@ -30,10 +29,10 @@ interface Props {
   focusCellinfo: any;
   setFocusCellinfo: any;
 }
+
 export default ({
   env,
   data,
-  slots,
   dataSource,
   outputs,
   filterMap,
@@ -227,11 +226,10 @@ export default ({
         filterMultiple={cItem.filter?.filterType !== FilterTypeEnum.Single}
         render={(text, record, index) => {
           return renderCell({
-            columnItem: cItem,
+            colKey: cItem.key,
             value: cItem.dataIndex ? text : '',
             record,
             index,
-            slots,
             data
           });
         }}

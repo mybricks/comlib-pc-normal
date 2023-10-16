@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
 import { Table, Empty, ConfigProvider } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
@@ -30,8 +30,8 @@ import TableFooter from './components/TableFooter';
 import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
-import { getColumnsFromSchema } from './editors';
-import { setDataSchema } from './schema';
+
+export const TableContext = createContext<any>({ slots: {} });
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots } = props;
@@ -54,7 +54,7 @@ export default function (props: RuntimeParams<Data>) {
   const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
-
+  console.log('redner table');
   const initFilterMap = () => {
     let res = {};
     data.columns.forEach((cItem) => {
@@ -185,6 +185,16 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, []);
 
+  const getSelectedRows = useCallback((dataSource, selectedRowKeys) => {
+    let rowObj = {};
+    for (let key of selectedRowKeys) {
+      let curItem = dataSource.find((item) => item[rowKey] === key);
+      rowObj[key] == curItem;
+    }
+
+    return Object.values(rowObj) as any[];
+  }, []);
+
   // 更新某一行数据
   const editTableData = useCallback(
     /**
@@ -194,19 +204,19 @@ export default function (props: RuntimeParams<Data>) {
     ({ value, index }) => {
       index = Number(index);
       if (value && index >= 0) {
-        setDataSource((prevDataSource) => {
-          if (index > prevDataSource.length) return prevDataSource;
-          const temp = [...prevDataSource];
-          const tempValue = temp[index];
-          temp[index] = {
-            ...tempValue, // 需要保留类似rowKey的数据
-            ...value
-          };
-          return temp;
-        });
+        if (index > dataSource.length) return dataSource;
+        const newDataSource = [...dataSource];
+        const tempValue = newDataSource[index];
+        newDataSource[index] = {
+          ...tempValue, // 需要保留类似rowKey的数据
+          ...value
+        };
+        const selectedRows = getSelectedRows(newDataSource, selectedRowKeys);
+        setSelectedRows(selectedRows);
+        setDataSource(newDataSource);
       }
     },
-    []
+    [getSelectedRows, dataSource, selectedRowKeys]
   );
 
   useEffect(() => {
@@ -279,25 +289,25 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [selectedRows, selectedRowKeys]);
 
-  useEffect(() => {
-    if (env.runtime) {
-      setSelectedRows((row) => {
-        let rowObj = Object.values(row).reduce((res, item) => {
-          res[item[rowKey]] = item;
-          return res;
-        }, {});
+  // useEffect(() => {
+  //   if (env.runtime) {
+  //     setSelectedRows((row) => {
+  //       let rowObj = Object.values(row).reduce((res, item) => {
+  //         res[item[rowKey]] = item;
+  //         return res;
+  //       }, {});
 
-        for (let key of selectedRowKeys) {
-          let curItem = dataSource.find((item) => item[rowKey] === key);
-          if (rowObj[key] && curItem) {
-            rowObj[key] == curItem;
-          }
-        }
+  //       for (let key of selectedRowKeys) {
+  //         let curItem = dataSource.find((item) => item[rowKey] === key);
+  //         if (rowObj[key] && curItem) {
+  //           rowObj[key] == curItem;
+  //         }
+  //       }
 
-        return Object.values(rowObj);
-      });
-    }
-  }, [dataSource, selectedRowKeys]);
+  //       return Object.values(rowObj);
+  //     });
+  //   }
+  // }, [dataSource, selectedRowKeys]);
 
   // 前端分页逻辑
   const filterDataSourceBySortAndFilter = () => {
@@ -485,7 +495,7 @@ export default function (props: RuntimeParams<Data>) {
       focusCellinfo,
       renderCell: (columnRenderProps) => (
         <ErrorBoundary>
-          <ColumnRender {...columnRenderProps} env={env} outputs={outputs} slots={props.slots} />
+          <ColumnRender {...columnRenderProps} env={env} outputs={outputs} />
         </ErrorBoundary>
       )
     });
@@ -756,106 +766,114 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [realShowDataSource, env.runtime, rowKey]);
 
+  const contextValue = useMemo(() => {
+    return {
+      slots
+    };
+  }, [slots]);
+
   return (
     <ConfigProvider locale={zhCN}>
-      <div className={css.table}>
-        <TableHeader
-          env={env}
-          data={data}
-          dataSource={dataSource}
-          slots={slots}
-          outputs={outputs}
-          selectedRows={selectedRows}
-          selectedRowKeys={selectedRowKeys}
-        />
-        {data.columns.length ? (
-          <Table
-            style={{
-              width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
-              height: data.fixedHeight
-            }}
-            dataSource={edit ? defaultDataSource : realShowDataSource}
-            loading={{
-              tip: data.loadingTip,
-              spinning: loading
-            }}
-            onRow={onRow}
-            rowKey={rowKey}
-            size={data.size as any}
-            bordered={data.bordered}
-            pagination={false}
-            rowSelection={data.useRowSelection ? rowSelection : undefined}
-            showHeader={data.showHeader === false && env.runtime ? false : true}
-            rowClassName={(_, index) => {
-              if (data.enableStripe) {
-                return (index + 1) % 2 === 0
-                  ? 'mybricks-table-row-double'
-                  : 'mybricks-table-row-single';
+      <TableContext.Provider value={contextValue}>
+        <div className={css.table}>
+          <TableHeader
+            env={env}
+            data={data}
+            dataSource={dataSource}
+            slots={slots}
+            outputs={outputs}
+            selectedRows={selectedRows}
+            selectedRowKeys={selectedRowKeys}
+          />
+          {data.columns.length ? (
+            <Table
+              style={{
+                width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
+                height: data.fixedHeight
+              }}
+              dataSource={edit ? defaultDataSource : realShowDataSource}
+              loading={{
+                tip: data.loadingTip,
+                spinning: loading
+              }}
+              onRow={onRow}
+              rowKey={rowKey}
+              size={data.size as any}
+              bordered={data.bordered}
+              pagination={false}
+              rowSelection={data.useRowSelection ? rowSelection : undefined}
+              showHeader={data.showHeader === false && env.runtime ? false : true}
+              rowClassName={(_, index) => {
+                if (data.enableStripe) {
+                  return (index + 1) % 2 === 0
+                    ? 'mybricks-table-row-double'
+                    : 'mybricks-table-row-single';
+                }
+                return '';
+              }}
+              scroll={{
+                x: '100%',
+                y: data.scroll.y ? data.scroll.y : void 0
+              }}
+              summary={
+                data.useSummaryColumn ? () => SummaryColumn(slots, data, summaryColumnData) : void 0
               }
-              return '';
-            }}
-            scroll={{
-              x: '100%',
-              y: data.scroll.y ? data.scroll.y : void 0
-            }}
-            summary={
-              data.useSummaryColumn ? () => SummaryColumn(slots, data, summaryColumnData) : void 0
-            }
-            expandable={
-              data.useExpand && slots[SlotIds.EXPAND_CONTENT]
-                ? {
-                    expandedRowRender: (record, index) => {
-                      const inputValues = {
-                        [InputIds.EXP_COL_VALUES]: {
-                          ...record
-                        },
-                        [InputIds.INDEX]: index
-                      };
-                      if (data.useExpand && data.expandDataIndex) {
-                        inputValues[InputIds.EXP_ROW_VALUES] = get(record, data.expandDataIndex);
-                      }
-                      return slots[SlotIds.EXPAND_CONTENT].render({
-                        inputValues,
-                        key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                      });
-                    },
-                    expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                    onExpand: (expanded, record) => {
-                      if (!env.runtime) return;
-                      const key = record[rowKey];
-                      if (expanded && !expandedRowKeys.includes(key)) {
-                        setExpandedRowKeys([...expandedRowKeys, key]);
-                      } else if (!expanded && expandedRowKeys.includes(key)) {
-                        expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                        setExpandedRowKeys([...expandedRowKeys]);
+              expandable={
+                data.useExpand && slots[SlotIds.EXPAND_CONTENT]
+                  ? {
+                      expandedRowRender: (record, index) => {
+                        const inputValues = {
+                          [InputIds.EXP_COL_VALUES]: {
+                            ...record
+                          },
+                          [InputIds.INDEX]: index
+                        };
+                        if (data.useExpand && data.expandDataIndex) {
+                          inputValues[InputIds.EXP_ROW_VALUES] = get(record, data.expandDataIndex);
+                        }
+                        return slots[SlotIds.EXPAND_CONTENT].render({
+                          inputValues,
+                          key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                        });
+                      },
+                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                      onExpand: (expanded, record) => {
+                        if (!env.runtime) return;
+                        const key = record[rowKey];
+                        if (expanded && !expandedRowKeys.includes(key)) {
+                          setExpandedRowKeys([...expandedRowKeys, key]);
+                        } else if (!expanded && expandedRowKeys.includes(key)) {
+                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                          setExpandedRowKeys([...expandedRowKeys]);
+                        }
                       }
                     }
-                  }
-                : undefined
-            }
-            onChange={onChange}
-            tableLayout={
-              (data.tableLayout === TableLayoutEnum.FixedWidth
-                ? TableLayoutEnum.Fixed
-                : data.tableLayout) || TableLayoutEnum.Fixed
-            }
-          >
-            {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
-          </Table>
-        ) : (
-          <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
-        )}
-        <TableFooter
-          env={env}
-          parentSlot={props.parentSlot}
-          data={data}
-          slots={slots}
-          inputs={inputs}
-          outputs={outputs}
-          selectedRows={selectedRows}
-          selectedRowKeys={selectedRowKeys}
-        />
-      </div>
+                  : undefined
+              }
+              onChange={onChange}
+              tableLayout={
+                (data.tableLayout === TableLayoutEnum.FixedWidth
+                  ? TableLayoutEnum.Fixed
+                  : data.tableLayout) || TableLayoutEnum.Fixed
+              }
+            >
+              {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
+            </Table>
+          ) : (
+            <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
+          )}
+          <TableFooter
+            env={env}
+            parentSlot={props.parentSlot}
+            data={data}
+            slots={slots}
+            inputs={inputs}
+            outputs={outputs}
+            selectedRows={selectedRows}
+            selectedRowKeys={selectedRowKeys}
+          />
+        </div>
+      </TableContext.Provider>
     </ConfigProvider>
   );
 }
