@@ -110,6 +110,7 @@ const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params[
 }
 
 const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>) => {
+  
 
   const realFormatters = genRealFormatterInfos(formatters || [])
   const editors = realFormatters.map(item => convertFormatter2Editor(item, value))
@@ -117,6 +118,45 @@ const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>
   return {
     title,
     items: [
+      {
+        title: '空值处理',
+        type: 'Switch',
+        description: '开启后，可将输入值为undefined、null、空字符串转换成预期值',
+        value: {
+          get(info) {
+            const values = value?.get(info) || {}
+            return values?.['nullValueHandling'] || false;
+          },
+          set(info, switchValue: boolean) {
+            const values = value?.get(info) || {}
+            values['nullValueHandling'] = switchValue
+            value.set(info, values)
+          }
+        }
+      },
+      {
+        title: '空值处理',
+        type: 'Text',
+        description: '设置将输入值为undefined、null、空字符串转换成的预期值',
+        ifVisible(info) {
+          const values = value?.get(info) || {}
+          return values?.['nullValueHandling'] || false;
+        },
+        value: {
+          get(info) {
+            const values = value?.get(info) || {}
+            if (typeof values?.['nullValueHandlingValue'] === 'undefined') {
+              values['nullValueHandlingValue'] = '';
+            }
+            return values?.['nullValueHandlingValue'];
+          },
+          set(info, textValue: string) {
+            const values = value?.get(info) || {}
+            values['nullValueHandlingValue'] = textValue
+            value.set(info, values)
+          }
+        }
+      },
       createFormatterSelector(realFormatters.map(item => item.formatter), value),
       ...(editors.filter(item => !!item))
     ]

@@ -175,6 +175,7 @@ const createBaseEditor = ({ data }) => ({
 
     createDataFormatEditor({
       title: '格式转化',
+      
       formatters: [{
         formatter: 'KEYMAP'
       }, {
