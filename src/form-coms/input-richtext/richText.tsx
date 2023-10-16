@@ -194,6 +194,7 @@ export default function ({
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
+    setValue(valueRef.current);
     onValidateTrigger();
     outputs['onBlur'](valueRef.current);
   }, []);
@@ -209,6 +210,7 @@ export default function ({
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
+    setValue(valueRef.current);
     onChangeForFc(parentSlot, { id: id, name: name, value: valueRef.current });
     outputs['onChange'](valueRef.current);
   }, []);
