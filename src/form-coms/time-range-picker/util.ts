@@ -15,3 +15,19 @@ export function isValidRange(val, type: 'moment' | 'number') {
 export function isValidInput(val) {
   return Array.isArray(val) && val.length === 2;
 }
+
+export function isDefaultInput(val){
+  let parameter = false;
+  if(Array.isArray(val) && val.length === 2){
+    for(let i = 0; i < val.length; i++){
+      if(val[i]===undefined || val[i]===null){
+        parameter = true
+      }else{
+        parameter = false;
+        break;
+      }
+    }
+  }
+  
+  return parameter;
+}

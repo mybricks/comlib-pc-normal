@@ -157,7 +157,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return data;
         });
         setValue(val);
-        onChange(val);
+        let transValue;
+        if (!Array.isArray(val)) {
+          if (val === null || val === undefined) {
+            transValue = val;
+          } else {
+            transValue = null;
+          }
+        } else {
+          transValue = val.map((item, index) => {
+            return transCalculation(item, data.contentType, props, index);
+          });
+          if (data.dateType !== 'array') {
+            transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+          }
+        }
+        outputs['onChange'](transValue);
+      }
+      if (val === undefined || val === null) {
+        setValue(val);
+        outputs['onChange'](val);
       }
     });
 
@@ -185,6 +204,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }
           }
           outputs[OutputIds.OnInitial](transValue);
+        }
+        if (val === undefined || val === null) {
+          setValue(val);
+          outputs[OutputIds.OnInitial](val);
         }
       });
 
@@ -225,7 +248,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['getValue']((val, outputRels) => {
       let transValue;
       if (!Array.isArray(value)) {
-        transValue = null;
+        if (value === undefined || value === null) {
+          transValue = value;
+        } else {
+          transValue = null;
+        }
       } else {
         transValue = value.map((item, index) => {
           return transCalculation(item, data.contentType, props, index);
@@ -267,7 +294,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     setValue(value);
     let transValue;
     if (!Array.isArray(value)) {
-      transValue = null;
+      if (value === null || value === undefined) {
+        transValue = value;
+      } else {
+        transValue = null;
+      }
     } else {
       transValue = value.map((item, index) => {
         return transCalculation(item, data.contentType, props, index);

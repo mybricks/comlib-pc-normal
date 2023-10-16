@@ -189,8 +189,8 @@ export default {
                     type: 'InputNumber',
                     value: 'numList',
                     options: [
-                      { title: '前', min: -1000, max: 1000, width: 100 },
-                      { title: '后', min: -1000, max: 1000, width: 100 }
+                      { title: '前', width: 100 },
+                      { title: '后', width: 100 }
                     ]
                   }
                 ]
