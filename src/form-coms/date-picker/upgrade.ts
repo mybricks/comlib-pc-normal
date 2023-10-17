@@ -116,5 +116,18 @@ export default function ({
   if(!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
   if(!Reflect.has(data, 'controlled')) data.controlled = false;
 
+  /**
+   * @description v1.1.2 => v1.1.3 升级，新增 formatMap 字段
+   */
+  if(typeof data.formatMap === "undefined"){
+    data.formatMap = {
+      "日期": "YYYY-MM-DD",
+      "周": "YYYY-wo",
+      "月份": "YYYY-MM",
+      "季度": "YYYY-\\QQ",
+      "年份": "YYYY"
+    }
+  }
+
   return true;
 }

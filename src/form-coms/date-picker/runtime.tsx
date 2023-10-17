@@ -35,7 +35,22 @@ export interface Data {
   useDisabledDate: 'default' | 'static';
   hideDatePanel: boolean;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
+  formatMap: {
+    日期: string;
+    周: string;
+    月份: string;
+    季度: string;
+    年份: string;
+  };
 }
+
+const typeMap = {
+  date: '日期',
+  week: '周',
+  month: '月份',
+  quarter: '季度',
+  year: '年份'
+};
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
@@ -353,6 +368,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             data.useCustomDateCell ? css.slotContainer : ''
           }`}
           open={finalOpen}
+          format={
+            data.config.picker && data.formatMap
+              ? data.formatMap[typeMap[data.config.picker]]
+              : void 0
+          }
           onClick={() => {
             if (runtime && data.controlled && !open) setOpen(true);
           }}
