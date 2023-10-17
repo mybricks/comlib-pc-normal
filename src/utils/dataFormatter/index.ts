@@ -5,6 +5,7 @@ import keyMapFormatter from './formatters/keyMap'
 import noneFormatter from './formatters/none'
 import timeTemplateFormatter from './formatters/timeTemplate'
 import { Params, TFormatterInfo, TFormatterRef, TformattersValue } from './types'
+import { isEmpty } from "../types";
 
 
 // 内置的格式器，用户可以直接指定名称来引入
@@ -165,7 +166,12 @@ const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>
 
 // 用于组件内部通过格式器的配置获取当前格式化函数
 export const genFormatting = (formatData: TformattersValue) => {
-  const { formatterName = 'NONE', values } = formatData || {}
+  const {
+    formatterName = 'NONE',
+    values,
+    nullValueHandling = false,
+    nullValueHandlingValue = ''
+  } = formatData || {};
   const formatter: TFormatterInfo = builtInFormatters[formatterName]
   if (!formatter) {
     throw new Error(`找不到名为${formatterName}的格式器`)
@@ -174,7 +180,9 @@ export const genFormatting = (formatData: TformattersValue) => {
 
   const formatting = v => {
     try {
-      return formatter?.genFormatting(editValue)(v)
+      return isEmpty(v) && nullValueHandling
+        ? nullValueHandlingValue
+        : formatter?.genFormatting(editValue)(v);
     } catch (e) {
       console.error(`[${formatterName}]:格式转化错误, 格式器参数为`, editValue, `待转化数据为`, v)
     }
