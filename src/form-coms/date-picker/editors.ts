@@ -278,9 +278,9 @@ export default {
                     data.formatMap || {
                       "日期": "YYYY-MM-DD",
                       "周": "YYYY-wo",
-                      "月": "YYYY-MM",
+                      "月份": "YYYY-MM",
                       "季度": "YYYY-\\QQ",
-                      "年": "YYYY"
+                      "年份": "YYYY"
                     }
                   );
                 },
