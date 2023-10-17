@@ -20,6 +20,11 @@ export const Schemas = {
   }
 }
 
+export interface Option {
+  point: number;
+  relation: string; 
+  columns: number;
+}
 export interface Data {
   //数据源
   dataSource: any[];
@@ -50,4 +55,16 @@ export interface Data {
 
   //自动换行时，方向
   layout: 'horizontal'|'vertical'
+
+  //响应式布局
+  isResponsive: boolean;
+  //List断点列数
+  bootstrap: number[];
+  //横向滚动，列表项宽度
+  itemWidth: number | string;
+  //自定义断点
+  isCustomPoints: boolean;
+  //断点配置
+  customOptions: Option[];
 }
+

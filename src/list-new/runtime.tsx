@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { List, Spin } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds, OutputIds } from './constants';
@@ -6,6 +6,7 @@ import { checkIfMobile, uuid } from '../utils';
 import css from './style.less';
 import { SortableList, SortableItem } from './sort';
 import { AutoRender, NoAutoRender, NoAutoScrollRender } from './render';
+import { debounce } from 'lodash';
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -22,7 +23,27 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   const isMobile = checkIfMobile(env);
 
+  const [columns, setColumns] = useState(1);
+
   grid = isMobile ? { ...grid, column: grid.mobileColumn } : { ...grid };
+
+  function sortUsePoint(a, b) {
+    return b.point - a.point;
+  }
+
+  function columnHandel(opt, width) {
+    let newColumns;
+    for (let i = 0; i < opt.length; i++) {
+      if (width >= opt[i].point && opt[i].relation === '≥') {
+        newColumns = opt[i].columns;
+        break;
+      } else if (width < opt[i].point && opt[i].relation === '<') {
+        newColumns = opt[i].columns;
+        break;
+      }
+    }
+    return newColumns;
+  }
 
   //设置数据源输入及loading状态设置
   useEffect(() => {
@@ -75,9 +96,86 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     );
   };
 
+  useEffect(() => {
+    let orderedOptions = (data.customOptions || []).sort(sortUsePoint);
+    const debounceFn = debounce(() => {
+      let newColumns = columns;
+      const width = window.innerWidth;
+      newColumns = columnHandel(orderedOptions, width);
+      //如果没有对应列数默认处理成1
+      setColumns(newColumns || 1);
+    }, 50);
+    window.addEventListener('resize', debounceFn);
+    return () => window.removeEventListener('resize', debounceFn);
+  }, [data.customOptions]);
+
+  useEffect(() => {
+    let orderedOptions = (data.customOptions || []).sort(sortUsePoint);
+    const width = window.innerWidth;
+    let newColumns = columnHandel(orderedOptions, width);
+    //如果没有对应列数默认处理成1
+    setColumns(newColumns || 1);
+  }, []);
+
+  const IsCustomPointsRender = useMemo(() => {
+    return (
+      <List
+        loading={loading}
+        grid={{
+          gutter,
+          column: columns
+        }}
+        dataSource={dataSource}
+        renderItem={ListItemRender}
+        rowKey={rowKey}
+        className={classnames(
+          css.listWrap,
+          dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
+        )}
+      />
+    );
+  }, [columns]);
+
   //0、 无内容
   if (slots['item'].size === 0) {
     return slots['item'].render();
+  }
+  //5、响应式布局
+  if (data.isResponsive) {
+    return env.edit ? (
+      <List
+        loading={loading}
+        grid={{
+          gutter: data.grid.gutter
+        }}
+        dataSource={dataSource}
+        renderItem={ListItemRender}
+        rowKey={rowKey}
+        className={classnames(css.listWrap)}
+      />
+    ) : data.isCustomPoints ? (
+      IsCustomPointsRender
+    ) : (
+      <List
+        loading={loading}
+        grid={{
+          gutter: data.grid.gutter,
+          xs: data.bootstrap[0],
+          sm: data.bootstrap[1],
+          md: data.bootstrap[2],
+          lg: data.bootstrap[3],
+          xl: data.bootstrap[4],
+          xxl: data.bootstrap[5]
+        }}
+        dataSource={dataSource}
+        renderItem={ListItemRender}
+        rowKey={rowKey}
+        className={classnames(
+          css.listWrap,
+          dataSource.length === 0 && env.runtime && !loading && css.hideEmpty
+        )}
+      />
+    );
   }
   //1、 自动换行
   if (data.isAuto === true && data.isCustom === false) {

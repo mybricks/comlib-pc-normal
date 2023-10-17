@@ -17,5 +17,41 @@
     16
   ],
   "rowKey": "",
-  "layout": "vertical"
+  "layout": "vertical",
+  "isResponsive": false,
+  "bootstrap": [1,2,4,4,6,3],
+  "itemWidth": "100%",
+  "isCustomPoints": false,
+  "customOptions":[
+    {
+      "point": 576,
+      "relation": "<",
+      "columns": 1
+    },
+    {
+      "point": 576,
+      "relation": "≥",
+      "columns": 2
+    },
+    {
+      "point": 768,
+      "relation": "≥",
+      "columns": 4
+    },
+    {
+      "point": 992,
+      "relation": "≥",
+      "columns": 4
+    },
+    {
+      "point": 1200,
+      "relation": "≥",
+      "columns": 6
+    },
+    {
+      "point": 1600,
+      "relation": "≥",
+      "columns": 3
+    }
+  ]
 }
