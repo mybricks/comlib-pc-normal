@@ -11,12 +11,15 @@ export default {
   '@init': ({ style }) => {
     style.height = 'auto';
   },
-  ':root': ({ }: EditorResult<Data>, cate1, cate2) => {
-    cate1.title = '常规';
-    cate1.items = [...AddEditor, ...StyleEditor, ...EllipsisEditor];
-    return {
-      title: '工具条'
-    };
+  ':root': {
+    title: '工具条',
+    items: [...AddEditor, ...StyleEditor, ...EllipsisEditor],
+    style: [{
+      catelog: '默认',
+      title: '工具条背景',
+      options: [{ type: 'background' }],
+      target: `div.mybricks-toolbar`
+    }]
   },
   ...ItemEditor
 };

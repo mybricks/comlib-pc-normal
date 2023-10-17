@@ -210,7 +210,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
 
   return (
     <div
-      className={`${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
+      className={`mybricks-toolbar ${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
       style={{
         justifyContent: data.layout,
         gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,
