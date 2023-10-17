@@ -17,6 +17,8 @@ export type TFormatterInfo<I = any, O = any> = {
 
 export type TformattersValue<I = any, O = any> = {
   formatterName: string,
+  nullValueHandling?: boolean,
+  nullValueHandlingValue?: string,
   values: {
     [key: string]: any
   }

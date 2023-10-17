@@ -3,6 +3,7 @@ import { DefaultRowKey, OutputIds } from '../constants';
 import { ContentTypeEnum, IColumn } from '../types';
 import SlotRender from './Slot';
 import { genFormatting } from '../../utils/dataFormatter';
+import { isEmpty } from '../../utils/types';
 import { Tooltip } from 'antd';
 import css from './style.less';
 import { TableContext } from '../runtime';
@@ -52,7 +53,10 @@ function ColumnRender(props: ColumnRenderProps) {
             value: oriValue
           }
         : oriValue;
-      oriValue = genFormatting(columnItem.formatData)(valueToBeFormat);
+      oriValue =
+        isEmpty(valueToBeFormat) && columnItem.formatData?.nullValueHandling
+          ? columnItem.formatData?.nullValueHandlingValue || ''
+          : genFormatting(columnItem.formatData)(valueToBeFormat);
     }
 
     let value = oriValue;
