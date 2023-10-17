@@ -180,7 +180,7 @@ export const LayoutEditor = [
         type: 'text',
         description: '开启后传递的内容超过页面宽度后, 可选择是否需要横向滚动, 开启后横向滚动, 否则隐藏内容',
         ifVisible({ data }: EditorResult<Data>) {
-          return !data.isAuto && !data.isResponsive && data.isScroll;
+          return !data.isAuto && !data.isResponsive;
         },
         value: {
           get({ data }: EditorResult<Data>) {
