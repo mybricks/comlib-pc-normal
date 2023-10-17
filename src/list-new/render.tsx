@@ -64,7 +64,7 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
         <div
           key={key}
           className={css.scrollBox}
-          style={{ width: '100%', margin: `0 ${gutter[0]}px 0 0` }}
+          style={{ width: data.itemWidth, margin: `0 ${gutter[0]}px 0 0` }}
         >
           {slots['item'].render({
             inputValues: {
