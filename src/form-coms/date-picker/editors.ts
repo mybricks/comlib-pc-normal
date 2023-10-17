@@ -261,6 +261,37 @@ export default {
           }
         },
         {
+          title: '日期展示格式',
+          items: [
+            {
+              title: '格式化目标',
+              type: 'Map',
+              description:
+                '日期格式化模板 YYYY:年份 MM:月份 DD:日 dd:星期 HH:24小时制 hh:12小时制 mm:分 ss:秒',
+              options: {
+                notaddel: true,
+                noteditkey: true
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return (
+                    data.formatMap || {
+                      "日期": "YYYY-MM-DD",
+                      "周": "YYYY-wo",
+                      "月": "YYYY-MM",
+                      "季度": "YYYY-\\QQ",
+                      "年": "YYYY"
+                    }
+                  );
+                },
+                set({ data }: EditorResult<Data>, value: any) {
+                  data.formatMap = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '输出数据处理',
           items: [
             {
