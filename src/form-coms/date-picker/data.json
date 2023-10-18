@@ -18,5 +18,6 @@
     "月份": "YYYY-MM",
     "季度": "YYYY-\\QQ",
     "年份": "YYYY"
-  }
+  },
+  "isWeekNumber": false
 }
