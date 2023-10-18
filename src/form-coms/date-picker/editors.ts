@@ -461,7 +461,7 @@ export default {
           }
         },
         {
-          title: '隐藏日期面板',
+          title: '隐藏日期选择面板',
           description: '仅在搭建时生效',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
@@ -477,7 +477,7 @@ export default {
           }
         },
         {
-          title: '气泡受控',
+          title: '日期选择面板受控',
           type: 'Switch',
           value: {
             get({ data }) {
@@ -486,10 +486,25 @@ export default {
             set({ data, inputs }: EditorResult<Data>, value: boolean) {
               data.controlled = value
               if(value) {
-                inputs.add("setOpen", "打开隐藏面板", { type: "boolean" })
+                inputs.add("setOpen", "打开日期选择面板", { type: "boolean" })
               } else {
                 inputs.remove("setOpen")
               }
+            }
+          }
+        },
+        {
+          title: '点击日期选择面板外部关闭',
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.controlled;
+          },
+          value: {
+            get({ data }) {
+              return data.closeWhenClickOutOfPanel || false;
+            },
+            set({ data, inputs }: EditorResult<Data>, value: boolean) {
+              data.closeWhenClickOutOfPanel = value
             }
           }
         },

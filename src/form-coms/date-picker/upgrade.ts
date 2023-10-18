@@ -135,6 +135,13 @@ export default function ({
   if(typeof data.isWeekNumber === "undefined"){
     data.isWeekNumber = false
   }
+
+  /**
+   * @description v1.1.4 => v1.1.5 升级，修改 setOpen 的文案
+   */
+  if(input.get("setOpen")?.title === "打开隐藏面板" ) {
+    input.setTitle("setOpen", "打开日期选择面板");
+  }
   
   return true;
 }

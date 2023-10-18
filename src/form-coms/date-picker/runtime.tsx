@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DatePicker, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -26,6 +26,7 @@ export interface Data {
   useCustomPanelHeader: boolean;
   useCustomPanelFooter: boolean;
   controlled: boolean;
+  closeWhenClickOutOfPanel: boolean;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -59,6 +60,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
@@ -340,13 +342,35 @@ export default function Runtime(props: RuntimeParams<Data>) {
     );
   })();
 
+  useEffect(() => {
+    if (runtime && data.controlled && data.closeWhenClickOutOfPanel && finalOpen) {
+      const callback = function (e: MouseEvent) {
+        // 如果点击到了隐藏面板的外部
+        if (
+          e.target !== dropdownWrapperRef.current &&
+          !dropdownWrapperRef.current?.contains(e.target as Node)
+        ) {
+          setOpen(false);
+        }
+      };
+
+      const popupContainer = edit || debug ? env?.canvasElement : document.body;
+
+      popupContainer.addEventListener('click', callback);
+
+      return () => {
+        popupContainer.removeEventListener('click', callback);
+      };
+    }
+  }, [finalOpen]);
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div className={css.datePicker} ref={wrapperRef}>
         <DatePicker
           panelRender={(originPanel) => {
             return (
-              <div>
+              <div ref={dropdownWrapperRef}>
                 {data.useCustomPanelHeader &&
                   slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
                 {originPanel}
