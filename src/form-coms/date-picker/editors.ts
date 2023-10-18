@@ -389,6 +389,17 @@ export default {
               options: {
                 outputId: 'onChange'
               }
+            },
+            {
+              title: '点击到隐藏面板外部',
+              description: '只有在隐藏面板显示时会触发',
+              type: '_event',
+              options: {
+                outputId: "clickOutOfPanel"
+              },
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.controlled;
+              },
             }
           ]
         }
@@ -483,12 +494,14 @@ export default {
             get({ data }) {
               return data.controlled || false
             },
-            set({ data, inputs }: EditorResult<Data>, value: boolean) {
+            set({ data, inputs, outputs }: EditorResult<Data>, value: boolean) {
               data.controlled = value
               if(value) {
                 inputs.add("setOpen", "打开隐藏面板", { type: "boolean" })
+                outputs.add("clickOutOfPanel", "点击到隐藏面板外部", { type: "boolean" })
               } else {
                 inputs.remove("setOpen")
+                outputs.remove("clickOutOfPanel")
               }
             }
           }

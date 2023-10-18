@@ -131,9 +131,16 @@ export default function ({
 
   /**
    * @description v1.1.3 => v1.1.4 升级，新增 isWeekNumber 字段
-  */
+   */
   if(typeof data.isWeekNumber === "undefined"){
     data.isWeekNumber = false
+  }
+
+  /**
+   * @description v1.1.4 => v1.1.5 升级，新增「点击到隐藏面板外部」事件
+   */
+  if(!output.get("clickOutOfPanel") && data.controlled === true) {
+    output.add("clickOutOfPanel", "点击到隐藏面板外部", { type: "boolean" })
   }
   
   return true;
