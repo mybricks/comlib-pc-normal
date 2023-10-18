@@ -54,7 +54,7 @@ export default function (props: RuntimeParams<Data>) {
   const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
-  console.log('redner table');
+
   const initFilterMap = () => {
     let res = {};
     data.columns.forEach((cItem) => {
