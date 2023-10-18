@@ -42,6 +42,7 @@ export interface Data {
     季度: string;
     年份: string;
   };
+  isWeekNumber: boolean;
 }
 
 const typeMap = {
@@ -364,9 +365,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             // return ref.current || document.body;
             return edit || debug ? env?.canvasElement : document.body;
           }}
-          dropdownClassName={`${id} ${css.datePicker} ${
-            data.useCustomDateCell ? css.slotContainer : ''
-          }`}
+          dropdownClassName={`
+          ${id} 
+          ${css.datePicker} 
+          ${data.useCustomDateCell ? css.slotContainer : ''}
+          ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
           open={finalOpen}
           format={
             data.config.picker && data.formatMap

@@ -129,5 +129,12 @@ export default function ({
     }
   }
 
+  /**
+   * @description v1.1.3 => v1.1.4 升级，新增 isWeekNumber 字段
+  */
+  if(typeof data.isWeekNumber === "undefined"){
+    data.isWeekNumber = false
+  }
+  
   return true;
 }

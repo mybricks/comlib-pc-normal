@@ -104,6 +104,22 @@ export default {
           }
         },
         {
+          title: '周号隐藏',
+          type: 'Switch',
+          description: '开启后，日期选择类型为周时，周号隐藏',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.config.picker === 'week';
+          },
+          value:{
+            get({ data }) {
+              return data.isWeekNumber;
+            },
+            set({ data }, value: boolean) {
+              data.isWeekNumber = value;
+            }
+          }
+        },
+        {
           title: '日期禁止选择',
           type: 'select',
           description: '选中“无”时的默认限制：结束日期小于开始日期，开启配置后默认前后7天可选',
