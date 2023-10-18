@@ -1,6 +1,6 @@
 import { outputIds } from 'src/form-coms/form-container/constants';
 import { InputIds, OutputIds } from '../../constants';
-import { Schemas, setDataSchema } from '../../schema';
+import { Schemas, setCol, setDataSchema } from '../../schema';
 import { ContentTypeEnum, Data, Filter, FilterTypeEnum, IColumn } from '../../types';
 import { getColumnItem } from '../../utils';
 
@@ -50,6 +50,7 @@ export const addFilterIO = ({ data, output, input }: Props) => {
 };
 
 const setFilterProps = <T extends keyof Filter, P extends Filter[T]>(
+  data,
   col: IColumn,
   key: T,
   value: P
@@ -58,6 +59,7 @@ const setFilterProps = <T extends keyof Filter, P extends Filter[T]>(
     col.filter = {};
   }
   col.filter[key] = value;
+  data.columns = [...data.columns]
 };
 const FilterEditor = {
   title: '筛选',
@@ -79,7 +81,7 @@ const FilterEditor = {
         set({ data, focusArea, input, output, ...res }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          setFilterProps(item, 'enable', value);
+          setFilterProps(data, item, 'enable', value);
           addFilterIO({ data, output, input });
           setDataSchema({ data, focusArea, input, output, ...res });
         }
@@ -97,7 +99,7 @@ const FilterEditor = {
         set({ data, focusArea, input, output, ...res }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          setFilterProps(item, 'hideFilterDropdown', value);
+          setFilterProps(data, item, 'hideFilterDropdown', value);
           addFilterIO({ data, output, input });
           setDataSchema({ data, focusArea, input, output, ...res });
         }
@@ -153,7 +155,7 @@ const FilterEditor = {
         set({ data, focusArea }: EditorResult<Data>, value: FilterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          setFilterProps(item, 'filterType', value);
+          setFilterProps(data, item, 'filterType', value);
         }
       }
     },
@@ -179,7 +181,7 @@ const FilterEditor = {
         set({ data, focusArea, input, output, ...res }: EditorResult<Data>, value: FilterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          setFilterProps(item, 'filterSource', value);
+          setFilterProps(data, item, 'filterSource', value);
           addFilterIO({ data, output, input });
           setDataSchema({ data, focusArea, input, output, ...res });
         }
@@ -215,7 +217,7 @@ const FilterEditor = {
             value: value[k]
           }));
           const item = getColumnItem(data, focusArea);
-          setFilterProps(item, 'options', options);
+          setFilterProps(data, item, 'options', options);
         }
       }
     },
@@ -240,7 +242,7 @@ const FilterEditor = {
         set({ data, output, input, focusArea, ...res }: EditorResult<Data>, value: FilterTypeEnum) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          setFilterProps(item, 'type', value);
+          setFilterProps(data, item, 'type', value);
           addFilterIO({ data, input, output });
           setDataSchema({ data, focusArea, input, output, ...res });
         }

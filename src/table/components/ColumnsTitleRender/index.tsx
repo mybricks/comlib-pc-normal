@@ -216,6 +216,10 @@ export default ({
       return res;
     };
 
+    const filters = filterMap[`${cItem.dataIndex}`]?.map((item) => ({
+      text: item.text,
+      value: item.value
+    }));
     return (
       <Column
         {...(cItem as any)}
@@ -241,10 +245,7 @@ export default ({
         showSorterTooltip={false}
         sortOrder={data?.sortParams?.id === `${cItem.dataIndex}` ? data?.sortParams?.order : null}
         sorter={sorter}
-        filters={filterMap[`${cItem.dataIndex}`]?.map((item) => ({
-          text: item.text,
-          value: item.value
-        }))}
+        filters={filters}
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={onCell}

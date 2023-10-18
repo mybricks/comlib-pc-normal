@@ -50,6 +50,7 @@ export const getNewColumn = (data?: Data) => {
     key: uuid(),
     contentType: ContentTypeEnum.Text,
     visible: true,
+    filter: {},
     sorter: {
       enable: false,
       type: SorterTypeEnum.Size
