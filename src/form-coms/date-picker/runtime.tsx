@@ -26,6 +26,7 @@ export interface Data {
   useCustomPanelHeader: boolean;
   useCustomPanelFooter: boolean;
   controlled: boolean;
+  closeWhenClickOutOfPanel: boolean;
   config: {
     disabled: boolean;
     placeholder: string;
@@ -342,14 +343,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   })();
 
   useEffect(() => {
-    if (runtime && data.controlled && finalOpen) {
+    if (runtime && data.controlled && data.closeWhenClickOutOfPanel && finalOpen) {
       const callback = function (e: MouseEvent) {
         // 如果点击到了隐藏面板的外部
         if (
           e.target !== dropdownWrapperRef.current &&
           !dropdownWrapperRef.current?.contains(e.target as Node)
         ) {
-          outputs['clickOutOfPanel'](false);
+          setOpen(false);
         }
       };
 

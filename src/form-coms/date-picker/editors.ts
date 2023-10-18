@@ -389,17 +389,6 @@ export default {
               options: {
                 outputId: 'onChange'
               }
-            },
-            {
-              title: '点击到隐藏面板外部',
-              description: '只有在隐藏面板显示时会触发',
-              type: '_event',
-              options: {
-                outputId: "clickOutOfPanel"
-              },
-              ifVisible({ data }: EditorResult<Data>) {
-                return !!data.controlled;
-              },
             }
           ]
         }
@@ -472,7 +461,7 @@ export default {
           }
         },
         {
-          title: '隐藏日期面板',
+          title: '隐藏日期选择面板',
           description: '仅在搭建时生效',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
@@ -488,21 +477,34 @@ export default {
           }
         },
         {
-          title: '气泡受控',
+          title: '日期选择面板受控',
           type: 'Switch',
           value: {
             get({ data }) {
               return data.controlled || false
             },
-            set({ data, inputs, outputs }: EditorResult<Data>, value: boolean) {
+            set({ data, inputs }: EditorResult<Data>, value: boolean) {
               data.controlled = value
               if(value) {
-                inputs.add("setOpen", "打开隐藏面板", { type: "boolean" })
-                outputs.add("clickOutOfPanel", "点击到隐藏面板外部", { type: "boolean" })
+                inputs.add("setOpen", "打开日期选择面板", { type: "boolean" })
               } else {
                 inputs.remove("setOpen")
-                outputs.remove("clickOutOfPanel")
               }
+            }
+          }
+        },
+        {
+          title: '点击日期选择面板外部关闭',
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.controlled;
+          },
+          value: {
+            get({ data }) {
+              return data.closeWhenClickOutOfPanel || false;
+            },
+            set({ data, inputs }: EditorResult<Data>, value: boolean) {
+              data.closeWhenClickOutOfPanel = value
             }
           }
         },
