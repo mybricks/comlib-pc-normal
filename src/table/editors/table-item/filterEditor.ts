@@ -105,34 +105,34 @@ const FilterEditor = {
         }
       }
     },
-    {
-      title: '点击筛选事件',
-      type: '_Event',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getColumnItem(data, focusArea);
-        return item.filter?.enable;
-      },
-      options: () => {
-        return {
-          outputId: OutputIds.FILTER_CLICK
-        };
-      }
-    },
-    {
-      title: '筛选事件',
-      type: '_Event',
-      ifVisible({ data, focusArea }: EditorResult<Data>) {
-        if (!focusArea) return;
-        const item = getColumnItem(data, focusArea);
-        return item.filter?.enable;
-      },
-      options: () => {
-        return {
-          outputId: OutputIds.FILTER
-        };
-      }
-    },
+    // {
+    //   title: '点击筛选事件',
+    //   type: '_Event',
+    //   ifVisible({ data, focusArea }: EditorResult<Data>) {
+    //     if (!focusArea) return;
+    //     const item = getColumnItem(data, focusArea);
+    //     return item.filter?.enable;
+    //   },
+    //   options: () => {
+    //     return {
+    //       outputId: OutputIds.FILTER_CLICK
+    //     };
+    //   }
+    // },
+    // {
+    //   title: '筛选事件',
+    //   type: '_Event',
+    //   ifVisible({ data, focusArea }: EditorResult<Data>) {
+    //     if (!focusArea) return;
+    //     const item = getColumnItem(data, focusArea);
+    //     return item.filter?.enable;
+    //   },
+    //   options: () => {
+    //     return {
+    //       outputId: OutputIds.FILTER
+    //     };
+    //   }
+    // },
     {
       title: '筛选类型',
       type: 'Select',
