@@ -61,7 +61,7 @@ export interface Data {
   //List断点列数
   bootstrap: number[];
   //横向滚动，列表项宽度
-  itemWidth: number | string;
+  itemWidth: any;
   //自定义断点
   isCustomPoints: boolean;
   //断点配置

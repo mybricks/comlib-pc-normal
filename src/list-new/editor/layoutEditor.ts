@@ -4,6 +4,7 @@ import {
   Schemas,
   Option
 } from '../constants';
+import { unitConversion } from '../../utils';
 
 export const LayoutEditor = [
   {
@@ -178,20 +179,16 @@ export const LayoutEditor = [
       {
         title: '列表项宽度',
         type: 'text',
-        description: '开启后传递的内容超过页面宽度后, 可选择是否需要横向滚动, 开启后横向滚动, 否则隐藏内容',
+        description: '开启后传递的内容超过页面宽度后, 可选择是否需要横向滚动, 开启后横向滚动, 否则隐藏内容;支持px, %及计算值',
         ifVisible({ data }: EditorResult<Data>) {
           return !data.isAuto && !data.isResponsive;
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            return String(data.itemWidth);
+            return data.itemWidth;
           },
           set({ data }: EditorResult<Data>, value: string) {
-            if (/^\d+$/.test(value)) {
-              data.itemWidth = `${value}px`;
-            } else {
-              data.itemWidth = value;
-            }
+            data.itemWidth = unitConversion(value)
           }
         }
       },
