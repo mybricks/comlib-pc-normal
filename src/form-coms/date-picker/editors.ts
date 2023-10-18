@@ -274,18 +274,40 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return (
-                    data.formatMap || {
+                  if(data.formatMap){
+                    let newValueArr = Object.keys(data.formatMap).map((key,index)=>{
+                      return decodeURIComponent(data.formatMap[key]);
+                    })
+                    let newValue = {
+                      "日期": newValueArr[0],
+                      "周": newValueArr[1],
+                      "月份": newValueArr[2],
+                      "季度": newValueArr[3],
+                      "年份": newValueArr[4]
+                    }
+                    return newValue
+                  }else{
+                    return {
                       "日期": "YYYY-MM-DD",
                       "周": "YYYY-wo",
                       "月份": "YYYY-MM",
                       "季度": "YYYY-\\QQ",
                       "年份": "YYYY"
-                    }
-                  );
+                    };
+                  }
                 },
                 set({ data }: EditorResult<Data>, value: any) {
-                  data.formatMap = value;
+                  let newValueArr = Object.keys(value).map((key,index)=>{
+                    return encodeURIComponent(value[key]);
+                  })
+                  let newValue = {
+                    "日期": newValueArr[0],
+                    "周": newValueArr[1],
+                    "月份": newValueArr[2],
+                    "季度": newValueArr[3],
+                    "年份": newValueArr[4]
+                  }
+                  data.formatMap = newValue;
                 }
               }
             }

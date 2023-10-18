@@ -121,11 +121,11 @@ export default function ({
    */
   if(typeof data.formatMap === "undefined"){
     data.formatMap = {
-      "日期": "YYYY-MM-DD",
-      "周": "YYYY-wo",
-      "月份": "YYYY-MM",
-      "季度": "YYYY-\\QQ",
-      "年份": "YYYY"
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
     }
   }
 

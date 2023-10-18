@@ -370,7 +370,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           open={finalOpen}
           format={
             data.config.picker && data.formatMap
-              ? data.formatMap[typeMap[data.config.picker]]
+              ? decodeURIComponent(data.formatMap[typeMap[data.config.picker]])
               : void 0
           }
           onClick={() => {
