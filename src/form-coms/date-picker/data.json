@@ -12,12 +12,5 @@
     "picker": "date",
     "allowClear": true
   },
-  "formatMap": {
-    "日期": "YYYY-MM-DD",
-    "周": "YYYY-wo",
-    "月份": "YYYY-MM",
-    "季度": "YYYY-\\QQ",
-    "年份": "YYYY"
-  },
   "isWeekNumber": false
 }
