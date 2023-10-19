@@ -1,6 +1,7 @@
 import { Data, LabelWidthType } from '../types'
 import { uuid } from '../../../utils'
 import visibleOpt from '../../../components/editorRender/visibleOpt'
+import { outputIds } from '../constants'
 
 export const actionsEditor = (data: Data, output) => {
   return {
@@ -135,6 +136,16 @@ export const actionsEditor = (data: Data, output) => {
             const margin = data.actions.inlinePadding || [0, 0, 0, 0];
             data.items.forEach(item => item.inlineMargin = [...margin]);
           }
+        }
+      },
+      {
+        title: '收起/展开表单项',
+        type: '_Event',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layoutType === 'QueryFilter'
+        },
+        options: {
+          outputId: outputIds.ON_COLLAPSE
         }
       },
       {

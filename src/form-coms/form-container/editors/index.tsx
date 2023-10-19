@@ -216,8 +216,15 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data.layoutType;
             },
-            set({ data, inputs }: EditorResult<Data>, value: 'Form' | 'QueryFilter') {
+            set({ data, outputs }: EditorResult<Data>, value: 'Form' | 'QueryFilter') {
               data.layoutType = value;
+              if (value === 'QueryFilter') {
+                outputs.add(outputIds.ON_COLLAPSE, '收起/展开表单项', {
+                  type: 'boolean'
+                });
+              } else {
+                outputs.remove(outputIds.ON_COLLAPSE);
+              }
             }
           }
         },
