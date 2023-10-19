@@ -356,7 +356,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
       const popupContainer = edit || debug ? env?.canvasElement : document.body;
 
-      popupContainer.addEventListener('click', callback);
+      // 用 setTimeout 进入异步队列，错开触发 finalOpen 改变的 click 事件
+      setTimeout(() => {
+        popupContainer.addEventListener('click', callback);
+      }, 0);
 
       return () => {
         popupContainer.removeEventListener('click', callback);
