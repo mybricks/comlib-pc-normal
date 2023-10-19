@@ -236,6 +236,8 @@ export default function Runtime({
             <TreeNode
               key={item[data.valueFieldName || 'value']}
               {...item}
+              label={item[data.labelFieldName || 'label']}
+              value={item[data.valueFieldName || 'value']}
               title={item[data.labelFieldName || 'label']}
               icon={getNodeIcon(outputItem, data, onError)}
             >
