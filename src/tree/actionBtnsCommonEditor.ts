@@ -9,6 +9,25 @@ export const commonActionBtnsEditor = (data, output) => {
     },
     items: [
       {
+        title: '显示方式',
+        type: 'Radio',
+        options: [
+          { label: '常态显示', value: 'default' },
+          { label: '悬浮显示', value: 'hover' }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useActions;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actionsShowWay;
+          },
+          set({ data }: EditorResult<Data>, value: 'default' | 'hover') {
+            data.actionsShowWay = value
+          },
+        }
+      },
+      {
         title: '按钮列表',
         description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
         type: 'array',

@@ -41,6 +41,7 @@
   "outParentNode": false,
   "defaultExpandAll": true,
   "titleEllipsis": true,
+  "actionsShowWay": "default",
   "expandedKeys": [
     "第一级 1",
     "第二级 1-1",

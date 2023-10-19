@@ -3,7 +3,7 @@ import { Input, Image, Tooltip, TreeNodeProps } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { Data, IconType, MODIFY_BTN_ID } from '../../types';
-import ActionBtns from '../ActionBtns/ActionBtn';
+import ActionBtns from './ActionBtn';
 import css from './style.less';
 
 /**

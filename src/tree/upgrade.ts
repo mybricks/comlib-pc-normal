@@ -112,5 +112,13 @@ export default function ({
   output.get('click').setTitle('节点选中事件');
   //=========== v1.0.19 end ===============
 
+  /**
+    * @description v1.0.22 feat: 支持 标题省略样式配置、操作项显示方式 配置项
+    */
+  if (!data.actionsShowWay) {
+    data.actionsShowWay = 'default';
+  }
+  //=========== v1.0.22 end ===============
+
   return true;
 }

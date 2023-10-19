@@ -4,7 +4,7 @@ import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from '../../types';
 import { ExpressionSandbox } from '../../../../package/com-utils';
-import css from './ActionBtns.less';
+import css from './style.less';
 
 export default function ActionBtns({
   record,
@@ -229,7 +229,14 @@ export default function ActionBtns({
   const menu = <Menu>{ellipsisActionBtns.map((btn) => renderMenuActionBtn(btn))}</Menu>;
 
   return (
-    <div className={css['action-btns']} data-action-btns>
+    <div
+      className={
+        data.actionsShowWay === 'hover' && env.runtime
+          ? css['action-btns_dynamic']
+          : css['action-btns']
+      }
+      data-action-btns
+    >
       {actionBtns.map((btn) => !btn.hidden && renderActionBtn(btn))}
       {ellipsisActionBtns && !!ellipsisActionBtns.length && (
         <Dropdown overlay={menu} placement="bottomRight" {...dropdownProps}>

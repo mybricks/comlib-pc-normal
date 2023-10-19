@@ -105,8 +105,10 @@ export interface Data {
   dropScopeMessage?: string;
   /** 输出数据类型 */
   valueType: string;
-  /** 标题 */
+  /** 标题省略配置 */
   titleEllipsis: boolean;
+  /** 操作项显示方式 */
+  actionsShowWay: 'default' | 'hover'
 }
 
 export interface TreeData {

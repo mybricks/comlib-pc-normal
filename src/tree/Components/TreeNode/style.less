@@ -3,6 +3,11 @@
     .ant-tree-node-content-wrapper {
       min-width: 0;
     }
+
+    .ant-btn {
+      padding: 4px 5px;
+      margin: 0px 5px;
+    }
   }
 
   .normalWrap {
@@ -26,5 +31,26 @@
     overflow: hidden;
     justify-content: space-between;
     align-items: center;
+    min-height: 32px;
+  }
+
+  .action-btns {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: end;
+  }
+
+  .action-btns_dynamic {
+    display: none;
+  }
+}
+
+.treeNode:hover {
+  .action-btns_dynamic {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: end;
   }
 }
