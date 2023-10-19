@@ -320,6 +320,20 @@ export default {
               }
             },
             {
+              title: '标题超出省略',
+              type: 'switch',
+              description:
+                '内容超出宽度后文本是否自动省略、不换行、以省略号结尾，并悬浮显示完整内容',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.titleEllipsis;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.titleEllipsis = value;
+                }
+              }
+            },
+            {
               title: '默认展开',
               type: 'switch',
               value: {

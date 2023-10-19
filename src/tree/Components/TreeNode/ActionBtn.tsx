@@ -2,9 +2,9 @@ import React from 'react';
 import * as Icons from '@ant-design/icons';
 import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from './types';
-import { ExpressionSandbox } from '../../package/com-utils';
-import css from './ActionBtns.less';
+import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from '../../types';
+import { ExpressionSandbox } from '../../../../package/com-utils';
+import css from './style.less';
 
 export default function ActionBtns({
   record,
@@ -19,11 +19,6 @@ export default function ActionBtns({
 
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
-
-  const wrapperStyle: React.CSSProperties = {
-    paddingLeft: env.edit ? 25 : void 0,
-    justifyContent: 'end'
-  };
 
   /**
    * 删除节点
@@ -234,7 +229,14 @@ export default function ActionBtns({
   const menu = <Menu>{ellipsisActionBtns.map((btn) => renderMenuActionBtn(btn))}</Menu>;
 
   return (
-    <div className={css['action-btns']} style={wrapperStyle} data-action-btns>
+    <div
+      className={
+        data.actionsShowWay === 'hover' && env.runtime
+          ? css['action-btns_dynamic']
+          : css['action-btns']
+      }
+      data-action-btns
+    >
       {actionBtns.map((btn) => !btn.hidden && renderActionBtn(btn))}
       {ellipsisActionBtns && !!ellipsisActionBtns.length && (
         <Dropdown overlay={menu} placement="bottomRight" {...dropdownProps}>
