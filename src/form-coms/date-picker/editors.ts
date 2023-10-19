@@ -24,8 +24,15 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@init': ({ style }) => {
+  '@init': ({ style, data }) => {
     style.width = '100%';
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
   },
   ':root': {
     style: [...styleEditor],
