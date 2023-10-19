@@ -87,10 +87,7 @@
         "./src/tree/com.json",
         "./src/timeline/com.json",
         "./src/calendar/com.json",
-        "./src/iframe/com.json",
-        "./src/qr-code/com.json",
-        "./src/progress/com.json",
-        "./src/video/com.json"
+        "./src/progress/com.json"
       ]
     },
     {
@@ -104,11 +101,14 @@
       "comAry": [
         "./src/bottom-bar/com.json",
         "./src/alert/com.json",
+        "./src/iframe/com.json",
+        "./src/qr-code/com.json",
         "./src/result/com.json",
         "./src/spin/com.json",
         "./src/tooltip/com.json",
         "./src/dropdown/com.json",
         "./src/sort-bar/com.json",
+        "./src/video/com.json",
         "./src/print/com.json"
       ]
     },
