@@ -1,9 +1,10 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import { Input, Space, Image, TreeNodeProps } from 'antd';
+import { Input, Image, Tooltip, TreeNodeProps } from 'antd';
 import * as Icons from '@ant-design/icons';
-import { Data, IconType, MODIFY_BTN_ID } from '../../types';
 import { ExpressionSandbox } from '../../../../package/com-utils';
+import { Data, IconType, MODIFY_BTN_ID } from '../../types';
 import ActionBtns from '../ActionBtns/ActionBtn';
+import css from './style.less';
 
 /**
  * 树节点标题渲染
@@ -78,11 +79,6 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
   const index = title?.indexOf(data.searchValue);
   const beforeStr = title.substr(0, index);
   const afterStr = title.substr(index + data?.searchValue?.length);
-  const wrapperStyle: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  };
   // 修改
   const titleStyle: CSSProperties = {
       display: data.isEditing === item[keyFieldName] ? 'none' : void 0
@@ -92,11 +88,14 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
     };
 
   /**只读态 */
-  const Title = (
-    <Space size={Icon.gutter} style={titleStyle} className="title">
-      {Icon.jsx}
+  const titleConent = (
+    <div
+      style={titleStyle}
+      className={`${data.titleEllipsis ? css.ellipsisWrap : css.normalWrap} title`}
+    >
+      <span style={{ marginRight: Icon.gutter }}>{Icon.jsx}</span>
       {index > -1 ? (
-        <div>
+        <div className={data.titleEllipsis ? css.ellipsisWrap : css.normalWrap}>
           {beforeStr}
           <span style={{ color: '#f00' }}>{data.searchValue}</span>
           {afterStr}
@@ -104,8 +103,9 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
       ) : (
         title
       )}
-    </Space>
+    </div>
   );
+  const Title = data.titleEllipsis ? <Tooltip title={title}>{titleConent}</Tooltip> : titleConent;
 
   /**编辑态 */
   const editInput = (
@@ -131,7 +131,7 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
       data.useActions &&
       ActionBtns({ data, record: item, outputItem, env, outputs, onError });
   return (
-    <div style={wrapperStyle}>
+    <div className={css.wrapper}>
       {Title}
       {editInput}
       {actionBtns}

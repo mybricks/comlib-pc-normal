@@ -105,6 +105,8 @@ export interface Data {
   dropScopeMessage?: string;
   /** 输出数据类型 */
   valueType: string;
+  /** 标题 */
+  titleEllipsis: boolean;
 }
 
 export interface TreeData {

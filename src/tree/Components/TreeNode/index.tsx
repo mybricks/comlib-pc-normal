@@ -6,6 +6,7 @@ import { ExpressionSandbox } from '../../../../package/com-utils';
 import { renderAddTitle } from './AddTitle';
 import { renderTitle } from './Title';
 const { TreeNode } = Tree;
+import css from './style.less';
 
 /**
  * 树节点遍历渲染
@@ -108,6 +109,7 @@ const renderTreeNode = (
         return (
           <TreeNode
             key={item[keyFieldName]}
+            className={css.treeNode}
             data-tree-node-id={item[keyFieldName]}
             data-draggable={draggable}
             data-allow-drop={allowDrop}

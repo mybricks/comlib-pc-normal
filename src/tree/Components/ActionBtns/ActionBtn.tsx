@@ -20,11 +20,6 @@ export default function ActionBtns({
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};
 
-  const wrapperStyle: React.CSSProperties = {
-    paddingLeft: env.edit ? 25 : void 0,
-    justifyContent: 'end'
-  };
-
   /**
    * 删除节点
    * @param treeData treeNodes 数据
@@ -234,7 +229,7 @@ export default function ActionBtns({
   const menu = <Menu>{ellipsisActionBtns.map((btn) => renderMenuActionBtn(btn))}</Menu>;
 
   return (
-    <div className={css['action-btns']} style={wrapperStyle} data-action-btns>
+    <div className={css['action-btns']} data-action-btns>
       {actionBtns.map((btn) => !btn.hidden && renderActionBtn(btn))}
       {ellipsisActionBtns && !!ellipsisActionBtns.length && (
         <Dropdown overlay={menu} placement="bottomRight" {...dropdownProps}>
