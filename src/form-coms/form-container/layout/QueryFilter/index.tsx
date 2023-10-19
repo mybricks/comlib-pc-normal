@@ -151,7 +151,7 @@ const QueryFilter = (props: QueryFilterProps) => {
             label={data.config?.layout === 'vertical' ? ' ' : ''}
           >
             <Space wrap data-form-actions>
-              <CollapseButton collapsed={collapsed} setCollapsed={setCollapsed} />
+              <CollapseButton collapsed={collapsed} setCollapsed={setCollapsed} outputs={outputs} />
               {data.actions.items.map((item) => {
                 if (env?.runtime && item.permission?.id) {
                   if (env.hasPermission(item.permission?.id)) {

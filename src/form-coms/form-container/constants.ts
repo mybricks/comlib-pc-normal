@@ -29,7 +29,8 @@ export const outputIds = {
   ON_MERGE_FINISH: 'onMergeFinish',
   ON_VALUES_CHANGE: 'onValuesChange',
   RETURN_VALUES: 'returnValues',
-  ON_VALIDATE: 'onValidate'
+  ON_VALIDATE: 'onValidate',
+  ON_COLLAPSE: 'onCollapse',
 }
 
 export const slotInputIds = {
