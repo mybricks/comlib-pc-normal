@@ -30,6 +30,7 @@ import TableFooter from './components/TableFooter';
 import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
+import { unitConversion } from '../utils';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -130,6 +131,18 @@ export default function (props: RuntimeParams<Data>) {
             order,
             id
           };
+        });
+
+      // 设置表格高度
+      inputs[InputIds.TABLE_HEIGHT] &&
+        inputs[InputIds.TABLE_HEIGHT]((val) => {
+          const { maxScrollHeight, tableHeight } = val || {};
+          if (typeof maxScrollHeight !== 'undefined') {
+            data.scroll.y = unitConversion(maxScrollHeight);
+          }
+          if (typeof tableHeight !== 'undefined') {
+            data.fixedHeight = unitConversion(tableHeight);
+          }
         });
 
       // 总结栏数据

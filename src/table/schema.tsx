@@ -482,5 +482,16 @@ export const Schemas = {
         type: 'boolean'
       }
     }
+  },
+  TABLE_HEIGHT: {
+    type: 'object',
+    properties: {
+      maxScrollHeight: {
+        type: 'string'
+      },
+      tableHeight: {
+        type: 'string'
+      }
+    }
   }
 };

@@ -65,7 +65,9 @@ export const InputIds = {
   EnableAllExpandedRows: 'enableAllExpandedRows',
 
   // 总结栏输入数据
-  SUMMARY_COLUMN: 'summaryColumn'
+  SUMMARY_COLUMN: 'summaryColumn',
+
+  TABLE_HEIGHT: 'tableHeight'
 };
 export const OutputIds = {
   // 输出勾选项
