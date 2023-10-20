@@ -5,6 +5,7 @@ import { ContentTypeEnum, Data } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setCol, setDataSchema } from '../../schema';
 import { getColumnItem, getNewColumn } from '../../utils';
 import createDataFormatEditor from '../../../utils/dataFormatter';
+import noneFormatter from '../../../utils/dataFormatter/formatters/none';
 
 const formatCode = encodeURIComponent(`
 /**
@@ -175,7 +176,7 @@ const createBaseEditor = ({ data }) => ({
 
     createDataFormatEditor({
       title: '格式转化',
-      
+
       formatters: [{
         formatter: 'KEYMAP'
       }, {
@@ -216,7 +217,10 @@ const createBaseEditor = ({ data }) => ({
         get({ data, focusArea }) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return item.formatData
+          return item.formatData || {
+            formatterName: noneFormatter.name,
+            values: {}
+          }
         },
         set({ data, focusArea }, value) {
           if (!focusArea) return;

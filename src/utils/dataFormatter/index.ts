@@ -90,14 +90,7 @@ const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params[
     })),
     value: {
       get(info) {
-        let data = accessor?.get(info)
-        if (!data) {
-          data = {
-            formatterName: noneFormatter.name,
-            values: {}
-          }
-          accessor.set(info, data)
-        }
+        let data = accessor?.get(info) || {}
         return data?.formatterName || noneFormatter.name
       },
       set(info, v) {
@@ -111,8 +104,6 @@ const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params[
 }
 
 const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>) => {
-  
-
   const realFormatters = genRealFormatterInfos(formatters || [])
   const editors = realFormatters.map(item => convertFormatter2Editor(item, value))
 
@@ -168,7 +159,7 @@ const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>
 export const genFormatting = (formatData: TformattersValue) => {
   const {
     formatterName = 'NONE',
-    values,
+    values = {},
     nullValueHandling = false,
     nullValueHandlingValue = ''
   } = formatData || {};
