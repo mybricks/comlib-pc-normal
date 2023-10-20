@@ -67,6 +67,20 @@ export default function (props: RuntimeParams<Data>) {
     return res;
   };
 
+  const slotStyle = useMemo(() => {
+    const minHeight = dynamicStyle?.minHeight || legacyStyle?.minHeight;
+    const maxHeight = dynamicStyle?.maxHeight || legacyStyle?.maxHeight;
+    const minWidth = dynamicStyle?.minWidth || legacyStyle?.minWidth;
+    const maxWidth = dynamicStyle?.maxWidth || legacyStyle?.maxWidth;
+    return {
+      ...(data.slotStyle || {}),
+      minHeight,
+      maxHeight,
+      minWidth,
+      maxWidth
+    };
+  }, [dynamicStyle, legacyStyle, data.slotStyle]);
+
   return (
     <div
       id={data?.id}
@@ -84,7 +98,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       }}
     >
-      {slots[SlotIds.Content].render({ style: data.slotStyle })}
+      {slots[SlotIds.Content].render({ style: slotStyle })}
     </div>
   );
 }
