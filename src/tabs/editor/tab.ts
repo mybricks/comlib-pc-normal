@@ -203,6 +203,86 @@ export default {
           }
         },
         {
+          title: '通知类型',
+          type: 'select',
+          options: [
+            { label: '文本', value: 'text' },
+            { label: '状态点', value: 'icon' }
+          ],
+          ifVisible({ }) {
+            return !!item?.dynamic;
+          },
+          value: {
+            get({ }) {
+              return item.infoType || 'text';
+            },
+            set({ data }, value: 'text'|'icon') {
+              item.infoType = value;
+            }
+          }
+        },
+        {
+          title: '尺寸',
+          type: 'select',
+          options: [
+            { label: '常规', value: 'default' },
+            { label: '迷你', value: 'small' }
+          ],
+          ifVisible({ }) {
+            return !!item?.dynamic && item.infoType === 'icon';
+          },
+          value: {
+            get({ }) {
+              return item.size || 'default';
+            },
+            set({ data }, value: 'text'|'icon') {
+              item.size = value;
+            }
+          }
+        },
+        {
+          title: '位置偏移',
+          type: 'inputNumber',
+          options: [
+            { title: '横向', min: -100,  max: 100, width: 100 },
+            { title: '纵向', min: -100,  max: 100, width: 100 }
+          ],
+          description: '设置状态点的位置偏移, 横向和纵向',
+          ifVisible({ }) {
+            return !!item?.dynamic && item.infoType === 'icon';
+          },
+          value: {
+            get({ data }) {
+              return [data.offset[0], data.offset[1]] || [0, 0];
+            },
+            set({ data }, value: number[]) {
+              data.offset = value;
+            }
+          }
+        },
+        {
+          title: '状态',
+          type: 'select',
+          options: [
+            { label: '成功', value: 'success' },
+            { label: '进行中', value: 'processing' },
+            { label: '默认', value: 'default' },
+            { label: '错误', value: 'error' },
+            { label: '警告', value: 'warning' },
+          ],
+          ifVisible({ }) {
+            return !!item?.dynamic && item.infoType === 'icon';
+          },
+          value: {
+            get({ }) {
+              return item.status || 'error';
+            },
+            set({ data }, value: 'success'|'processing'|'default'|'error'|'warning') {
+              item.status = value;
+            }
+          }
+        },
+        {
           title: '权限控制',
           items: [
             {
