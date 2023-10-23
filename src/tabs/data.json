@@ -3,7 +3,11 @@
     {
       "name": "标签页1",
       "key": "tab0",
-      "id": "tab0"     
+      "id": "tab0",
+      "infoType": "text",
+      "size": "default",
+      "offset": [0,0],
+      "status": "error"   
     }
   ],
   "defaultActiveKey": "tab0",
