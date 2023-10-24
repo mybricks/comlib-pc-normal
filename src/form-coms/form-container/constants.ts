@@ -119,6 +119,10 @@ export const formItemPropsSchema = {
     type: 'object',
     title: '提示语样式'
   },
+  disabled: {
+    type: 'boolean',
+    title: '是否禁用'
+  },
   // visible: {
   //   type: 'boolean',
   //   title: '是否显示'

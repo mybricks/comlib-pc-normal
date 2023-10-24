@@ -14,41 +14,6 @@ export function isObject(val: any) {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
 
-/**
-  * 设置表单项公共配置
-  * @param formItemsProps 表单项配置对象
-  */
-export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data, title }: { data: Data, title?: string }) => {
-  if (typeCheck(formItemsProps, ['Object'])) {
-    Object.entries(formItemsProps).map(([name, props]) => {
-      if (!typeCheck(props, ['Object'])) {
-        console.warn(`${title}: 设置表单项【${name}】配置不是对象类型`);
-        return;
-      }
-
-      const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
-      if (formItemIndex < 0) {
-        console.warn(`${title}: 设置表单项配置【${name}】不存在`);
-        return;
-      }
-
-      const formItem = data.items[formItemIndex];
-      const newFormItem = { ...props };
-      const { descriptionStyle = {}, labelStyle = {} } = formItem;
-      const newLabelStyle = newFormItem.labelStyle || {};
-      const newDescriptionStyle = newFormItem.descriptionStyle || {};
-
-      const temp = {
-        ...formItem,
-        ...props,
-        labelStyle: { ...labelStyle, ...newLabelStyle },
-        descriptionStyle: { ...descriptionStyle, ...newDescriptionStyle },
-      };
-      data.items[formItemIndex] = temp;
-    });
-  }
-};
-
 export const getFormItem = (data: Data, com): { item: FormItems, isFormItem: true } | { item: AdditionalItem, isFormItem: false } => {
   const { items, additionalItems } = data;
   let item, isFormItem = false;

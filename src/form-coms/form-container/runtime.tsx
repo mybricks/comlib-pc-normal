@@ -10,11 +10,11 @@ import React, {
 import { Form } from 'antd';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject, setFormItemsProps, getFormItem } from './utils';
+import { getLabelCol, isObject, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
-import { checkIfMobile } from '../../utils';
+import { checkIfMobile, typeCheck } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 
 type FormControlInputRels = {
@@ -159,7 +159,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
-      setFormItemsProps(val, { data, title });
+      setFormItemsProps(val);
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
@@ -253,18 +253,68 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
-  const setDisabled = () => {
+  const setDisabled = (nameList?: string[]) => {
     data.items.forEach((item) => {
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.setDisabled && input?.setDisabled();
+      if (!nameList || nameList.includes(item.name || item.label)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.setDisabled && input?.setDisabled();
+      }
     });
   };
 
-  const setEnabled = () => {
+  const setEnabled = (nameList?: string[]) => {
     data.items.forEach((item) => {
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.setEnabled && input?.setEnabled();
+      if (!nameList || nameList.includes(item.name || item.label)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.setEnabled && input?.setEnabled();
+      }
     });
+  };
+
+  /**
+   * 设置表单项公共配置
+   * @param formItemsProps 表单项配置对象
+   */
+  const setFormItemsProps = (formItemsProps: { string: FormItems }) => {
+    if (typeCheck(formItemsProps, ['Object'])) {
+      const disableFormList: string[] = [];
+      const enableFormList: string[] = [];
+      Object.entries(formItemsProps).map(([name, props]) => {
+        if (!typeCheck(props, ['Object'])) {
+          console.warn(`${title}: 设置表单项【${name}】配置不是对象类型`);
+          return;
+        }
+
+        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
+        if (formItemIndex < 0) {
+          console.warn(`${title}: 设置表单项配置【${name}】不存在`);
+          return;
+        }
+
+        const formItem = data.items[formItemIndex];
+        const newFormItem = { ...props };
+
+        // 禁用、启用
+        if (typeof newFormItem.disabled === 'boolean') {
+          (newFormItem.disabled ? disableFormList : enableFormList).push(name);
+        }
+        // 标题样式、提示语样式
+        const { descriptionStyle = {}, labelStyle = {} } = formItem;
+        const newLabelStyle = newFormItem.labelStyle || {};
+        const newDescriptionStyle = newFormItem.descriptionStyle || {};
+
+        const temp = {
+          ...formItem,
+          ...props,
+          labelStyle: { ...labelStyle, ...newLabelStyle },
+          descriptionStyle: { ...descriptionStyle, ...newDescriptionStyle }
+        };
+        data.items[formItemIndex] = temp;
+      });
+      // 触发批量禁用、启用
+      disableFormList.length && setDisabled(disableFormList);
+      enableFormList.length && setEnabled(enableFormList);
+    }
   };
 
   const validate = useCallback(() => {
