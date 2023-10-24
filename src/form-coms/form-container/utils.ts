@@ -18,31 +18,31 @@ export function isObject(val: any) {
   * 设置表单项公共配置
   * @param formItemsProps 表单项配置对象
   */
-export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data }: { data: Data }) => {
+export const setFormItemsProps = (formItemsProps: { string: FormItems }, { data, title }: { data: Data, title?: string }) => {
   if (typeCheck(formItemsProps, ['Object'])) {
     Object.entries(formItemsProps).map(([name, props]) => {
       if (!typeCheck(props, ['Object'])) {
-        console.warn(`表单项配置不是对象类型`);
+        console.warn(`${title}: 设置表单项【${name}】配置不是对象类型`);
         return;
       }
 
       const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
       if (formItemIndex < 0) {
-        console.warn(`表单项${name}不存在`);
+        console.warn(`${title}: 设置表单项配置【${name}】不存在`);
         return;
       }
 
       const formItem = data.items[formItemIndex];
       const newFormItem = { ...props };
-      const { descriptionStyle, labelStyle } = formItem;
-      if (!newFormItem.descriptionStyle) newFormItem.descriptionStyle = {};
-      if (!newFormItem.labelStyle) newFormItem.labelStyle = {};
-      Object.assign(newFormItem.descriptionStyle, descriptionStyle);
-      Object.assign(newFormItem.labelStyle, labelStyle);
+      const { descriptionStyle = {}, labelStyle = {} } = formItem;
+      const newLabelStyle = newFormItem.labelStyle || {};
+      const newDescriptionStyle = newFormItem.descriptionStyle || {};
 
       const temp = {
         ...formItem,
-        ...props
+        ...props,
+        labelStyle: { ...labelStyle, ...newLabelStyle },
+        descriptionStyle: { ...descriptionStyle, ...newDescriptionStyle },
       };
       data.items[formItemIndex] = temp;
     });

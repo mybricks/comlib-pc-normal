@@ -111,6 +111,14 @@ export const formItemPropsSchema = {
     type: 'boolean',
     title: '必填样式'
   },
+  labelStyle: {
+    type: 'object',
+    title: '标签样式'
+  },
+  descriptionStyle: {
+    type: 'object',
+    title: '提示语样式'
+  },
   // visible: {
   //   type: 'boolean',
   //   title: '是否显示'

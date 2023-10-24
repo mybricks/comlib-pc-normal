@@ -159,7 +159,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
-      setFormItemsProps(val, { data });
+      setFormItemsProps(val, { data, title });
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
