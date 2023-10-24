@@ -21,6 +21,15 @@ export interface TabItem {
   icon?: string;
   //是否已经render
   render?: boolean
+
+  //类型
+  infoType: 'text'| 'icon';
+  //状态点尺寸
+  size: 'default' | 'small';
+  //偏移量
+  offset: number[];
+  //状态
+  status: 'success'|'processing'|'default'|'error'|'warning';
 }
 /**
  * 数据源
