@@ -501,6 +501,35 @@ export default {
               target: `.ant-pagination-item.ant-pagination-item-active a`
             },
             {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } },
+                'BoxShadow'
+              ],
+              target: `.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector`
+            },
+            {
+              title: '标签展开-条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+              ],
+              target: `.ant-select-single.ant-select-open .ant-select-selection-item`
+            },
+            {
               title: '条数选择标签',
               ifVisible({ data }: EditorResult<Data>) {
                 return (
@@ -520,11 +549,15 @@ export default {
             {
               title: '跳转输入框',
               ifVisible({ data }: EditorResult<Data>) {
-                return data.paginationConfig.size === SizeTypeEnum.Simple;
+                return data.paginationConfig.size !== SizeTypeEnum.Simple;
               },
-              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-              target: `.ant-pagination-simple .ant-pagination-simple-pager input:focus`,
-              domTarget: `.ant-pagination-simple .ant-pagination-simple-pager input`
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }, 
+                'BoxShadow',
+              ],
+              target: `.ant-pagination-options-quick-jumper input:focus`
             }
           ]),
           ...catelogEditors('禁用', [
