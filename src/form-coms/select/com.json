@@ -144,17 +144,6 @@
           }
         }
       }
-    },
-    {
-      "id": "getSearchValue",
-      "title": "获取搜索值",
-      "desc": "获取下拉框输入的搜索内容",
-      "schema": {
-        "type": "any"
-      },
-      "rels": [
-        "returnSearchValue"
-      ]
     }
   ],
   "outputs": [
@@ -207,13 +196,6 @@
     {
       "id": "returnValue",
       "title": "值输出",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "returnSearchValue",
-      "title": "搜索值",
       "schema": {
         "type": "string"
       }
