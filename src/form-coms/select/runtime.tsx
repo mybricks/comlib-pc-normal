@@ -59,7 +59,6 @@ export default function Runtime({
   const [fetching, setFetching] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
-  const searchValueRef = useRef<string>();
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -231,8 +230,6 @@ export default function Runtime({
   }, []);
 
   const onSearch = (e) => {
-    searchValueRef.current = e;
-    onValidateTrigger(ValidateTriggerType.OnSearch);
     //开启远程搜索功能
     if (data.dropdownSearchOption) {
       setFetching(true);

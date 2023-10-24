@@ -59,5 +59,4 @@ export const ValidateTriggerType = {
   OnChange: "onChange",
   OnBlur: "onBlur",
   OnPressEnter: "onPressEnter",
-  OnSearch: "onSearch"
 }; 

@@ -469,7 +469,6 @@ export default {
             options: [
               { label: '值变化', value: ValidateTriggerType.OnChange },
               { label: '失去焦点', value: ValidateTriggerType.OnBlur },
-              { label: '搜索', value: ValidateTriggerType.OnSearch }
             ]
           },
           value: {
