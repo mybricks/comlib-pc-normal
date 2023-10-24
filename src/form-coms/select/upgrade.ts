@@ -1,4 +1,4 @@
-import { InputIds, OutputIds } from '../types';
+import { InputIds, OutputIds, ValidateTriggerType } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Schemas } from './constants';
 import { Data } from './types';
@@ -156,7 +156,7 @@ export default function ({
    * @description v1.1.0 新增自定义校验事件
    */
   if (!input.get(InputIds.SetValidateInfo)) {
-    input.add(InputIds.SetValidateInfo, '设置校验状态', {
+    input.add(InputIds.SetValidateInfo, '设置校验结果', {
       type: 'object',
       properties: {
         validateStatus: {
@@ -195,6 +195,16 @@ export default function ({
   //=========== v1.1.0 end ===============
 
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+
+  /**
+   * @description v1.1.2 新增 校验触发时机 配置项
+   */
+
+  if (!data.validateTrigger) {
+    data.validateTrigger = [ValidateTriggerType.OnChange];
+  }
+
+  //=========== v1.1.2 end ===============
 
   return true;
 }

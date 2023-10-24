@@ -1,6 +1,6 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { InputIds, Option, OutputIds } from '../types';
+import { InputIds, Option, OutputIds, ValidateTriggerType } from '../types';
 import { Data } from './types';
 import { Schemas } from './constants';
 import { createrCatelogEditor } from '../utils';
@@ -458,6 +458,28 @@ export default {
               refreshSchema({ input, output, data });
             },
           },
+        },
+        {
+          title: '校验触发时机',
+          type: 'Select',
+          description: '配置校验触发的时机',
+          options: {
+            mode: 'tags',
+            multiple: true,
+            options: [
+              { label: '值变化', value: ValidateTriggerType.OnChange },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+              { label: '搜索', value: ValidateTriggerType.OnSearch }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.validateTrigger;
+            },
+            set({ data }: EditorResult<Data>, value: string[]) {
+              data.validateTrigger = value;
+            }
+          }
         },
         {
           title: '校验规则',

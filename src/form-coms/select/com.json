@@ -121,8 +121,8 @@
     },
     {
       "id": "setValidateInfo",
-      "title": "设置校验状态",
-      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
       "schema": {
         "type": "object",
         "properties": {
