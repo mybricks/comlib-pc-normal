@@ -9,3 +9,10 @@ export const Schemas = {
         type: 'number'
     },
 }
+export const InputIds = {
+    GetSearchValue: 'getSearchValue'
+
+}
+export const OutputIds = {
+    ReturnSearchValue: 'returnSearchValue'
+}

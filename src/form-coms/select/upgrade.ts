@@ -1,6 +1,6 @@
-import { InputIds, OutputIds, ValidateTriggerType } from '../types';
+import { InputIds as CommonInputIds, OutputIds as CommonOutputIds, ValidateTriggerType } from '../types';
 import { RuleKeys } from '../utils/validator';
-import { Schemas } from './constants';
+import { InputIds, OutputIds, Schemas } from './constants';
 import { Data } from './types';
 
 export default function ({
@@ -39,20 +39,20 @@ export default function ({
   } else {
     setValueSchema = Schemas.String;
   }
-  if (!input.get(InputIds.SetInitialValue)) {
-    input.add(InputIds.SetInitialValue, '设置初始值', setValueSchema);
+  if (!input.get(CommonInputIds.SetInitialValue)) {
+    input.add(CommonInputIds.SetInitialValue, '设置初始值', setValueSchema);
   }
-  if (!output.get(OutputIds.OnInitial)) {
-    output.add(OutputIds.OnInitial, '值初始化', setValueSchema);
+  if (!output.get(CommonOutputIds.OnInitial)) {
+    output.add(CommonOutputIds.OnInitial, '值初始化', setValueSchema);
   }
-  output.get(OutputIds.OnInitial).setTitle('值初始化');
+  output.get(CommonOutputIds.OnInitial).setTitle('值初始化');
 
   //=========== v1.0.2 end ===============
 
   /**
     * @description v1.0.3 统一“设置数据源”、“设置值”、“设置初始值”、“值初始化”的schema
     */
-  input.get(InputIds.SetInitialValue).setSchema(setValueSchema);
+  input.get(CommonInputIds.SetInitialValue).setSchema(setValueSchema);
   const dataSourceSchema = {
     type: 'array',
     items: {
@@ -110,10 +110,10 @@ export default function ({
     } else {
       data.outputValueType = 'value';
     }
-    output.get(OutputIds.OnChange)?.setSchema(outputValueSchema);
-    output.get(OutputIds.OnInitial)?.setSchema(outputValueSchema);
-    output.get(OutputIds.OnBlur)?.setSchema(outputValueSchema);
-    output.get(OutputIds.ReturnValue)?.setSchema(outputValueSchema);
+    output.get(CommonOutputIds.OnChange)?.setSchema(outputValueSchema);
+    output.get(CommonOutputIds.OnInitial)?.setSchema(outputValueSchema);
+    output.get(CommonOutputIds.OnBlur)?.setSchema(outputValueSchema);
+    output.get(CommonOutputIds.ReturnValue)?.setSchema(outputValueSchema);
   }
 
   //=========== v1.0.22 end ===============
@@ -155,8 +155,8 @@ export default function ({
   /**
    * @description v1.1.0 新增自定义校验事件
    */
-  if (!input.get(InputIds.SetValidateInfo)) {
-    input.add(InputIds.SetValidateInfo, '设置校验结果', {
+  if (!input.get(CommonInputIds.SetValidateInfo)) {
+    input.add(CommonInputIds.SetValidateInfo, '设置校验结果', {
       type: 'object',
       properties: {
         validateStatus: {
@@ -178,8 +178,8 @@ export default function ({
       },
     });
   }
-  if (!output.get(OutputIds.OnValidate)) {
-    output.add(OutputIds.OnValidate, '校验触发', outputValueSchema);
+  if (!output.get(CommonOutputIds.OnValidate)) {
+    output.add(CommonOutputIds.OnValidate, '校验触发', outputValueSchema);
   }
   const cutomRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
@@ -194,14 +194,20 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
-  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+  input.add(CommonInputIds.SetColor, '设置字体颜色', { type: "string" });
 
   /**
-   * @description v1.1.2 新增 校验触发时机 配置项
+   * @description v1.1.2 新增 校验触发时机 配置项、获取搜索值输入输出项
    */
 
   if (!data.validateTrigger) {
     data.validateTrigger = [ValidateTriggerType.OnChange];
+  }
+  if (!input.get(InputIds.GetSearchValue)) {
+    input.add(InputIds.GetSearchValue, '获取搜索值', { type: "any" });
+  }
+  if (!output.get(OutputIds.ReturnSearchValue)) {
+    output.add(OutputIds.ReturnSearchValue, '搜索值', { type: "string" });
   }
 
   //=========== v1.1.2 end ===============

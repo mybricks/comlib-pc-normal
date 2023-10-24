@@ -1,12 +1,17 @@
 import React, { useCallback, useRef, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Select, Spin } from 'antd';
-import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
-import { Data } from './types';
-import css from './runtime.less';
 import { typeCheck } from '../../utils';
-import { InputIds, OutputIds, ValidateTriggerType } from '../types';
+import {
+  InputIds as CommonInputIds,
+  OutputIds as CommonOutputIds,
+  ValidateTriggerType
+} from '../types';
+import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import { Data } from './types';
+import css from './runtime.less';
+import { InputIds, OutputIds } from './constants';
 
 const DefaultOptionKey = '_id';
 
@@ -94,7 +99,7 @@ export default function Runtime({
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
             const outputValue = getOutputValue(data);
-            outputs[OutputIds.OnValidate](outputValue);
+            outputs[CommonOutputIds.OnValidate](outputValue);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -128,7 +133,7 @@ export default function Runtime({
           }
           data.value = val;
           const outputValue = getOutputValue(data);
-          outputs[OutputIds.OnInitial](outputValue);
+          outputs[CommonOutputIds.OnInitial](outputValue);
         }
       });
 
@@ -180,17 +185,21 @@ export default function Runtime({
       data.config.disabled = false;
     });
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[CommonInputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
       }
     });
     // 设置下拉框字体颜色
-    inputs[InputIds.SetColor]((color: string) => {
+    inputs[CommonInputIds.SetColor]((color: string) => {
       const target = ref.current?.querySelector?.('.ant-select-selection-item') as HTMLSpanElement;
       if (target) {
         target.style.color = typeof color === 'string' ? color : '';
       }
+    });
+    // 获取搜索内容并输出
+    inputs[InputIds.GetSearchValue]((val, outputRels) => {
+      outputRels[OutputIds.ReturnSearchValue](searchValueRef.current);
     });
   }, []);
 
