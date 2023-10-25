@@ -4,7 +4,8 @@ export interface ActionBtn {
   id: any,
   title: string,
   size: 'small' | 'middle' | 'large' | any
-  type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any
+  type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any,
+  danger?: boolean,
   showText?: boolean,
   hidden?: boolean,
   iconConfig: {
