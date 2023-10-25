@@ -120,5 +120,19 @@ export default function ({
   }
   //=========== v1.0.22 end ===============
 
+  /**
+    * @description v1.0.23 feat: 支持 操作项样式，危险按钮开关
+    */
+  data.actionBtns.forEach((item)=>{
+    if(typeof item.danger === 'undefined'){
+      if(item.type === 'danger'){
+        item.danger = true
+      }else{
+        item.danger = false
+      }
+    }
+  })
+  //=========== v1.0.23 end ===============
+
   return true;
 }

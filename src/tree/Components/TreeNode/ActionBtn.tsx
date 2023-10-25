@@ -170,7 +170,7 @@ export default function ActionBtns({
    * @returns JSX
    */
   const renderActionBtn = (btn) => {
-    const { id, title, type } = btn;
+    const { id, title, type, danger } = btn;
     const renderBtn = () => {
       return (
         <Button
@@ -178,6 +178,7 @@ export default function ActionBtns({
           style={{
             ...btn.style
           }}
+          danger={danger}
           onClick={(e) => {
             if (env.edit) return;
             e.stopPropagation();

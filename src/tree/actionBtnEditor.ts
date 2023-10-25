@@ -316,7 +316,6 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
             { value: 'primary', label: '主按钮' },
             { value: 'ghost', label: '次按钮' },
             { value: 'dashed', label: '虚线按钮' },
-            { value: 'danger', label: '危险按钮' },
             { value: 'link', label: '链接按钮' },
             { value: 'text', label: '文字按钮' }
           ];
@@ -329,6 +328,19 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
             btn.type = value;
           }
         }
+      },
+      {
+        title: '危险按钮',
+        type: 'Switch',
+        value: {
+          get({ }: EditorResult<Data>) {
+            return btn.danger || false;
+          },
+          set({ }: EditorResult<Data>, value) {
+            btn.danger = value;
+          }
+        }
+      
       },
       {
         title: '图标配置',
@@ -421,3 +433,145 @@ export const actionBtnEditor = (btn: ActionBtn, data: Data) => [
     ]
   },
 ];
+
+export const styleEditor = [
+  {
+    title: '风格',
+    type: 'Select',
+    options() {
+      return [
+        { value: 'primary', label: '主按钮' },
+        { value: 'ghost', label: '次按钮' },
+        { value: 'dashed', label: '虚线按钮' },
+        { value: 'link', label: '链接按钮' },
+        { value: 'text', label: '文字按钮' }
+      ];
+    },
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+        return btn.type;
+      },
+      set({ data, focusArea }: EditorResult<Data>, value) {
+        const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+        btn.type = value;
+      }
+    }
+  },
+  {
+    title: '危险按钮',
+    type: 'Switch',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+        return btn.danger || false;
+      },
+      set({ data, focusArea }: EditorResult<Data>, value) {
+        const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+        btn.danger = value;
+      }
+    }
+  },
+  {
+    title: '图标配置',
+    items: [
+      {
+        title: '图标来源',
+        type: 'Radio',
+        options: [
+          { label: '无', value: false },
+          { label: '内置图标库', value: 'inner' },
+          { label: '自定义上传', value: 'custom' }
+        ],
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            return btn.iconConfig?.src || false;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: IconSrcType) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            btn.iconConfig.src = value;
+          }
+        }
+      },
+      {
+        title: '图标库',
+        type: 'Icon',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+          return btn.iconConfig?.src === 'inner';
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            return btn.iconConfig?.innerIcon || 'EditOutlined';
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: string) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            btn.iconConfig.innerIcon = value;
+          }
+        }
+      },
+      {
+        title: '上传',
+        type: 'ImageSelector',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+          return btn.iconConfig?.src === 'custom';
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            return btn.iconConfig?.customIcon;
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: string) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            btn.iconConfig.customIcon = value;
+          }
+        }
+      },
+      {
+        title: '尺寸',
+        type: 'InputNumber',
+        options: [
+          { title: '高度', min: 0, width: 100 },
+          { title: '宽度', min: 0, width: 100 }
+        ],
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+          return !!btn.iconConfig?.src;
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            return btn.iconConfig?.size || [14, 14];
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: [number, number]) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            btn.iconConfig.size = value;
+          }
+        }
+      },
+      {
+        title: '间距',
+        type: 'Inputnumber',
+        options: [{ min: 0, max: 1000, width: 200 }],
+        description: '图标与文字间的距离',
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+          return !!btn.iconConfig?.src;
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            return [btn.iconConfig?.gutter || 8];
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: number[]) {
+            const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+            btn.iconConfig.gutter = value[0];
+          }
+        }
+      },
+    ]
+  }
+]

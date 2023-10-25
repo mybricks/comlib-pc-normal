@@ -60,6 +60,7 @@
     {
       "type": "link",
       "title": "修改",
+      "danger": false,
       "size": "middle",
       "id": "modify",
       "iconConfig": {
@@ -74,6 +75,7 @@
     {
       "type": "link",
       "title": "删除",
+      "danger": false,
       "size": "middle",
       "id": "delete",
       "iconConfig": {

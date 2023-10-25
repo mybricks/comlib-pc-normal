@@ -1,6 +1,6 @@
 import { createrCatelogEditor } from '../form-coms/utils';
 import { uuid } from '../utils';
-import { actionBtnsEditor, actionBtnEditor, getBtnProp } from './actionBtnEditor';
+import { actionBtnsEditor, actionBtnEditor, getBtnProp, styleEditor } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import {
   Data,
@@ -1106,15 +1106,70 @@ export default {
     ]
   },
   '[data-action-btns]': actionBtnsEditor,
-  '[data-btn-id]': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
-    if (!focusArea) return;
-    const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
-    const cates = actionBtnEditor(btn, data);
-    cate1.title = cates[0].title;
-    cate1.items = cates[0].items;
-    cate2.title = cates[1].title;
-    cate2.items = cates[1].items;
-    cate3.title = cates[2].title;
-    cate3.items = cates[2].items;
+  '[data-btn-id]': {
+    title: '操作',
+    style: [
+      ...styleEditor,
+      {
+        items: [
+          {
+            options: ['size'],
+            catelog: '默认',
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '默认',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: 'Hover',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button.ant-btn:not([disabled]):hover`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '激活',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button.ant-btn:not([disabled]):active`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '禁用',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              // TODO: 由于子作用域组件无法使用数组型 target，暂且通过 #{id} 的形式绕过去
+              return `div[data-btn-id="${id}"] > button.ant-btn[disabled]`;
+            }
+          }
+        ]
+      }
+    ],
+    items: ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+      if (!focusArea) return;
+      const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+      const cates = actionBtnEditor(btn, data);
+      cate1.title = cates[0].title;
+      cate1.items = cates[0].items;
+      cate2.title = cates[1].title;
+      cate2.items = cates[1].items;
+      // cate3.title = cates[2].title;
+      // cate3.items = cates[2].items;
+    }
   }
 };
