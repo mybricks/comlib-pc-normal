@@ -241,6 +241,22 @@ export default {
           }
         },
         {
+          title: '数值-0-状态点显示',
+          description: '数值为0时, 状态点是否显示',
+          type: 'switch',
+          ifVisible({ }) {
+            return !!item?.dynamic && item.infoType === 'icon';
+          },
+          value: {
+            get({ }) {
+              return item.showZero || false;
+            },
+            set({ }, value: number[]) {
+              item.showZero = value;
+            }
+          }
+        },
+        {
           title: '位置偏移',
           type: 'inputNumber',
           options: [
@@ -252,11 +268,11 @@ export default {
             return !!item?.dynamic && item.infoType === 'icon';
           },
           value: {
-            get({ data }) {
-              return [data.offset[0], data.offset[1]] || [0, 0];
+            get({ }) {
+              return [item.offset[0], item.offset[1]] || [0, 0];
             },
-            set({ data }, value: number[]) {
-              data.offset = value;
+            set({ }, value: number[]) {
+              item.offset = value;
             }
           }
         },
