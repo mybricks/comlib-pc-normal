@@ -30,6 +30,8 @@ export interface TabItem {
   offset: number[];
   //状态
   status: 'success'|'processing'|'default'|'error'|'warning';
+  //showZero
+  showZero: boolean;
 }
 /**
  * 数据源

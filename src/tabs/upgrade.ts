@@ -34,10 +34,13 @@ export default function ({
     item.size = 'default'
   }
   if(typeof item.offset === 'undefined'){
-    item.size = [0, 0]
+    item.offset = [0, 0]
   }
   if(typeof item.status === 'undefined'){
     item.status = 'error'
+  }
+  if(typeof item.showZero === 'undefined'){
+    item.showZero = false
   }
  })
 

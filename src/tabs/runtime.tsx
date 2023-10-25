@@ -224,8 +224,14 @@ export default function ({
 
   const renderInfo = (item) => {
     const tabName = env.i18n(item.name);
-    return item.infoType === 'icon' && item.num ? (
-      <Badge count={item.num} offset={data.offset} size={item.size} status={item.status}>
+    return item.infoType === 'icon' ? (
+      <Badge
+        count={item.num}
+        offset={item.offset}
+        size={item.size}
+        status={item.status}
+        showZero={item.showZero}
+      >
         <span>
           {item.showIcon ? chooseIcon({ icon: item.icon }) : null}
           {tabName}
