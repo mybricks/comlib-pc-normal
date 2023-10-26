@@ -183,18 +183,6 @@ export default function (props: RuntimeParams<Data>) {
           initFilterMap();
         });
       }
-
-      // 监听插槽输出数据
-      if (slots) {
-        Object.keys(slots).forEach((slot) => {
-          const slotOutput = slots[slot]?.outputs[OutputIds.Edit_Table_Data];
-          if (slotOutput) {
-            slotOutput((val: { value: object; index: number }) => {
-              editTableData(val);
-            });
-          }
-        });
-      }
     }
   }, []);
 
@@ -231,6 +219,19 @@ export default function (props: RuntimeParams<Data>) {
     },
     [getSelectedRows, dataSource, selectedRowKeys]
   );
+  useEffect(() => {
+    // 监听插槽输出数据
+    if (slots) {
+      Object.keys(slots).forEach((slot) => {
+        const slotOutput = slots[slot]?.outputs[OutputIds.Edit_Table_Data];
+        if (slotOutput) {
+          slotOutput((val: { value: object; index: number }) => {
+            editTableData(val);
+          });
+        }
+      });
+    }
+  }, [editTableData]);
 
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
