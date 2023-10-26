@@ -348,7 +348,10 @@ export default function (props: RuntimeParams<Data>) {
   return (
     <div>
       {treeData?.length === 0 ? (
-        <Empty description={<span>{env.i18n('暂无数据')}</span>} />
+        <Empty
+          description={<span>{env.i18n(data.description)}</span>}
+          image={data.isImage ? data.image : void 0}
+        />
       ) : (
         <Tree
           checkable={!!data.checkable}
