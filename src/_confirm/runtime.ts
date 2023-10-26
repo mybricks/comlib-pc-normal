@@ -16,7 +16,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const open = (onOk: () => void, onCancel: () => void) => {
     Modal[type]({
       ...data,
-      width: isMobile ? '100%' : '520px',
+      width: isMobile ? '100%' : data.width || 520,
       className: isMobile ? css.mobileWrap : css.modalWrap,
       title: showTitle ? data.title : undefined,
       onCancel,
