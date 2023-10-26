@@ -109,7 +109,13 @@ export interface Data {
   /** 标题省略配置 */
   titleEllipsis: boolean;
   /** 操作项显示方式 */
-  actionsShowWay: 'default' | 'hover'
+  actionsShowWay: 'default' | 'hover';
+  /** 是否显示图片 */
+  description: string;
+  /** 是否显示图片 */
+  isImage: boolean;
+  /** 图片地址 */
+  image: string;
 }
 
 export interface TreeData {
