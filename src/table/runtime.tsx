@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
-import { Table, Empty, ConfigProvider } from 'antd';
+import { Table, Empty, ConfigProvider, Image } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
@@ -786,8 +786,15 @@ export default function (props: RuntimeParams<Data>) {
     };
   }, [slots]);
 
+  const customizeRenderEmpty = () => (
+    <div className={`emptyNormal ${css.emptyNormal}`}>
+      <Image src={data.image} className={`emptyImage ${css.emptyImage}`} />
+      <p className={`emptyDescription ${css.emptyDescription}`}>{data.description}</p>
+    </div>
+  );
+
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider locale={zhCN} renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}>
       <TableContext.Provider value={contextValue}>
         <div className={css.table}>
           <TableHeader
@@ -874,11 +881,7 @@ export default function (props: RuntimeParams<Data>) {
               {env.runtime ? renderColumns() : renderColumnsWhenEdit()}
             </Table>
           ) : (
-            <Empty
-              description={data.description}
-              image={data.isImage ? data.image : void 0}
-              className={css.emptyWrap}
-            />
+            <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
           )}
           <TableFooter
             env={env}

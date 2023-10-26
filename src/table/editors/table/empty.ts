@@ -2,14 +2,14 @@ import { Data } from '../../types';
 
 export const emptyEditor = [
   {
-    title: '自定义空状态图片',
+    title: '自定义空白状态',
     type: 'switch',
     value: {
       get({ data }: EditorResult<Data>) {
-        return data.isImage;
+        return data.isEmpty || false;
       },
       set({ data }: EditorResult<Data>, value: boolean) {
-        data.isImage = value;
+        data.isEmpty = value;
       }
     }
   },
@@ -17,7 +17,7 @@ export const emptyEditor = [
     title: '图片地址',
     type: 'ImageSelector',
     ifVisible({ data }: EditorResult<Data>) {
-      return !!data.isImage;
+      return !!data.isEmpty;
     },
     value: {
       get({ data }: EditorResult<Data>) {
@@ -35,6 +35,9 @@ export const emptyEditor = [
     options: {
       placeholder: '自定义描述内容'
     },
+    ifVisible({ data }: EditorResult<Data>) {
+      return !!data.isEmpty;
+    },
     value: {
       get({ data }: EditorResult<Data>) {
         return data.description;
@@ -51,12 +54,12 @@ export const emptyStyleEditor = {
     {
       title: '空状态图片',
       options: ['size','border', { type: 'background', config: { disableBackgroundImage: true } }],
-      target: ['.ant-empty-image > svg', '.ant-empty-image > img']
+      target: ['.ant-empty-image > svg', '.emptyImage']
     },
     {
       title: '空状态文案',
       options: ['font'],
-      target: [`.ant-empty-description`]
+      target: [`.ant-empty-description`, '.emptyDescription']
     }
   ]
 };
