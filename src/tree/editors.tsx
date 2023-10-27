@@ -448,6 +448,32 @@ export default {
       ];
       cate[1].items = [
         {
+          title: '过滤功能',
+          items: [
+            {
+              title: '过滤字段',
+              type: 'Select',
+              description: '配置树的过滤字段',
+              options: {
+                mode: 'tags',
+                multiple: true,
+                options: [
+                  { label: '标题', value: 'byTitle' },
+                  { label: '值', value: 'byKey' }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.filterNames;
+                },
+                set({ data }: EditorResult<Data>, value: string[]) {
+                  data.filterNames = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '勾选功能',
           items: [
             {

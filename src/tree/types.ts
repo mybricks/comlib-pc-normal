@@ -58,6 +58,8 @@ export interface Data {
   searchValue: string;
   // 过滤值
   filterValue: string;
+  // 过滤字段
+  filterNames: string[];
   clickExpandable: boolean;
   addable: boolean;
   addTips: string[];

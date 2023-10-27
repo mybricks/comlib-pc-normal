@@ -60,14 +60,13 @@ export default function (props: RuntimeParams<Data>) {
     setAutoExpandParent(true);
   }, []);
 
-  /** 过滤：符合过滤方法的树节点及父节点
-   * @param filterMethod 过滤方法
-   * @returns 符合条件的节点key数组
+  /** 过滤
+   * @returns 符合符合过滤方法的树节点及父节点
    */
-  const filter = useCallback((filterMethod: (nodeData: TreeData) => boolean) => {
+  const filter = useCallback(() => {
     const filterKeys: React.Key[] = [];
     treeKeys.current.forEach((item) => {
-      if (filterMethod(item)) {
+      if (data.filterNames.some((filterName) => filterMethods[filterName](item))) {
         let childKey = item.key;
         filterKeys.push(childKey);
         while (getParentKey(childKey, data.treeData, keyFieldName)) {
@@ -88,6 +87,9 @@ export default function (props: RuntimeParams<Data>) {
     return {
       byTitle: (node: TreeData) => {
         return node.title?.indexOf(data.filterValue) > -1;
+      },
+      byKey: (node: TreeData) => {
+        return node.key?.indexOf(data.filterValue) > -1;
       }
     };
   }, []);
@@ -342,7 +344,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   const treeData = useMemo(() => {
-    return data.filterValue ? filter(filterMethods.byTitle) : data.treeData;
+    return data.filterValue ? filter() : data.treeData;
   }, [data.filterValue, data.treeData]);
 
   return (
