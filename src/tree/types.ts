@@ -58,6 +58,8 @@ export interface Data {
   searchValue: string;
   // 过滤值
   filterValue: string;
+  // 过滤字段
+  filterNames: string[];
   clickExpandable: boolean;
   addable: boolean;
   addTips: string[];
@@ -116,6 +118,8 @@ export interface Data {
   isImage: boolean;
   /** 图片地址 */
   image: string;
+  /** 可滚动高度 */
+  scrollHeight: string;
 }
 
 export interface TreeData {
