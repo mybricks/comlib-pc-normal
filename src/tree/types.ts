@@ -118,6 +118,8 @@ export interface Data {
   isImage: boolean;
   /** 图片地址 */
   image: string;
+  /** 可滚动高度 */
+  scrollHeight: string;
 }
 
 export interface TreeData {

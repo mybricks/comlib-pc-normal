@@ -1,5 +1,5 @@
 import { createrCatelogEditor } from '../form-coms/utils';
-import { uuid } from '../utils';
+import { unitConversion, uuid } from '../utils';
 import { actionBtnsEditor, actionBtnEditor, getBtnProp, styleEditor } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import {
@@ -106,6 +106,21 @@ export default {
           },
           set({ data }: EditorResult<Data>, value: boolean) {
             data.showLine = value;
+          }
+        }
+      },
+      {
+        title: '可滚动高度',
+        type: 'text',
+        options: {
+          placeholder: '例如：100px/100%/100vw/calc(100px)'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.scrollHeight;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.scrollHeight = unitConversion(value) || '';
           }
         }
       },

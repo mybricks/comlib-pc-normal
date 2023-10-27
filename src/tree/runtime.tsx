@@ -17,6 +17,7 @@ import {
 import { Data, TreeData } from './types';
 import { OutputIds } from './constants';
 import TreeNode from './Components/TreeNode';
+import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, onError } = props;
@@ -346,10 +347,20 @@ export default function (props: RuntimeParams<Data>) {
   const treeData = useMemo(() => {
     return data.filterValue ? filter() : data.treeData;
   }, [data.filterValue, data.treeData]);
+  const isEmpty = useMemo(() => {
+    return treeData?.length === 0;
+  }, [treeData.length]);
 
   return (
-    <div>
-      {treeData?.length === 0 ? (
+    <div
+      className={`${isEmpty ? css.emptyWrapper : ''}`}
+      style={{
+        maxHeight: isEmpty ? void 0 : data.scrollHeight,
+        height: isEmpty ? data.scrollHeight : void 0,
+        overflowY: 'scroll'
+      }}
+    >
+      {isEmpty ? (
         <Empty
           description={<span>{env.i18n(data.description)}</span>}
           image={data.isImage ? data.image : void 0}

@@ -149,7 +149,7 @@ export default function ({
   //=========== v1.0.24 end ===============
 
   /**
-    * @description v1.0.25 feat: 支持 过滤字段 配置
+    * @description v1.0.25 feat: 支持 过滤字段、可滚动高度 配置
     */
 
   if (!data.filterNames) {
