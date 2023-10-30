@@ -136,6 +136,12 @@ export default function ({
     outputs['onBlur'](value);
   }, []);
 
+  const onPressEnter = useCallback((e) => {
+    const value = e.target.value;
+    onValidateTrigger();
+    outputs['onPressEnter'](value);
+  }, []);
+
   const sizeConfig = useMemo(() => {
     if (env.edit) {
       return {
@@ -162,6 +168,7 @@ export default function ({
         {...sizeConfig}
         onChange={changeValue}
         onBlur={onBlur}
+        onPressEnter={onPressEnter}
       />
     </div>
   );
