@@ -23,5 +23,26 @@ export default function ({
     }
   })
 
+  /**
+    * @description v1.0.8 -> v1.0.9 增加通知类型、尺寸、位置偏移、状态
+  */
+ data.tabList.forEach(item => {
+  if(typeof item.infoType === 'undefined'){
+    item.infoType = 'text'
+  }
+  if(typeof item.size === 'undefined'){
+    item.size = 'default'
+  }
+  if(typeof item.offset === 'undefined'){
+    item.offset = [0, 0]
+  }
+  if(typeof item.status === 'undefined'){
+    item.status = 'error'
+  }
+  if(typeof item.showZero === 'undefined'){
+    item.showZero = false
+  }
+ })
+
   return true;
 }

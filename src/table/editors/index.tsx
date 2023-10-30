@@ -19,6 +19,7 @@ import rowOperationEditor from './table/rowOperation';
 import SummaryColumn from './table/summaryColumn';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
+import { emptyEditor, emptyStyleEditor } from './table/empty';
 
 import { getColumnsSchema } from '../utils';
 import {
@@ -135,7 +136,8 @@ export default {
         getAddColumnEditor(props),
         ...UsePaginatorEditor,
         ...RowKeyEditor,
-        ...LoadingEditor
+        ...LoadingEditor,
+        ...emptyEditor
       ];
 
       // cateAry[1].title = '样式';
@@ -154,7 +156,7 @@ export default {
         ...getRowSelectionEditor(props)
       ];
     },
-    style: [...TableStyleEditor.items]
+    style: [...TableStyleEditor.items, emptyStyleEditor]
   },
   ...columnEditor,
   ...PaginatorEditor,

@@ -4,7 +4,8 @@ export interface ActionBtn {
   id: any,
   title: string,
   size: 'small' | 'middle' | 'large' | any
-  type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any
+  type: 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | any,
+  danger?: boolean,
   showText?: boolean,
   hidden?: boolean,
   iconConfig: {
@@ -57,6 +58,8 @@ export interface Data {
   searchValue: string;
   // 过滤值
   filterValue: string;
+  // 过滤字段
+  filterNames: string[];
   clickExpandable: boolean;
   addable: boolean;
   addTips: string[];
@@ -108,7 +111,15 @@ export interface Data {
   /** 标题省略配置 */
   titleEllipsis: boolean;
   /** 操作项显示方式 */
-  actionsShowWay: 'default' | 'hover'
+  actionsShowWay: 'default' | 'hover';
+  /** 是否显示图片 */
+  description: string;
+  /** 是否显示图片 */
+  isImage: boolean;
+  /** 图片地址 */
+  image: string;
+  /** 可滚动高度 */
+  scrollHeight: string;
 }
 
 export interface TreeData {

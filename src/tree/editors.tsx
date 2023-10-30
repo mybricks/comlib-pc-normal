@@ -1,6 +1,6 @@
 import { createrCatelogEditor } from '../form-coms/utils';
-import { uuid } from '../utils';
-import { actionBtnsEditor, actionBtnEditor, getBtnProp } from './actionBtnEditor';
+import { unitConversion, uuid } from '../utils';
+import { actionBtnsEditor, actionBtnEditor, getBtnProp, styleEditor } from './actionBtnEditor';
 import { commonActionBtnsEditor } from './actionBtnsCommonEditor';
 import {
   Data,
@@ -110,6 +110,21 @@ export default {
         }
       },
       {
+        title: '可滚动高度',
+        type: 'text',
+        options: {
+          placeholder: '例如：100px/100%/100vw/calc(100px)'
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.scrollHeight;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.scrollHeight = unitConversion(value) || '';
+          }
+        }
+      },
+      {
         items: [
           ...createrCatelogEditor({
             catelog: '默认',
@@ -147,6 +162,20 @@ export default {
                   }
                 ],
                 target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
+              },
+              {
+                title: '空状态图片',
+                options: [
+                  'size',
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-empty-image > svg', '.ant-empty-image > img']
+              },
+              {
+                title: '空状态文案',
+                options: ['font'],
+                target: [`.ant-empty-description`]
               }
             ]
           }),
@@ -360,6 +389,54 @@ export default {
           ]
         },
         {
+          title: '空状态',
+          items: [
+            {
+              title: '自定义空状态图片',
+              type: 'switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.isImage;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.isImage = value;
+                }
+              }
+            },
+            {
+              title: '图片地址',
+              type: 'ImageSelector',
+              ifVisible({ data }: EditorResult<Data>) {
+                return !!data.isImage;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.image;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.image = value;
+                }
+              }
+            },
+            {
+              title: '空状态文案',
+              type: 'Text',
+              description: '自定义描述内容',
+              options: {
+                placeholder: '自定义描述内容'
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.description;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.description = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '添加节点',
           type: 'button',
           value: {
@@ -385,6 +462,32 @@ export default {
         }
       ];
       cate[1].items = [
+        {
+          title: '过滤功能',
+          items: [
+            {
+              title: '过滤字段',
+              type: 'Select',
+              description: '配置树的过滤字段',
+              options: {
+                mode: 'tags',
+                multiple: true,
+                options: [
+                  { label: '标题', value: 'byTitle' },
+                  { label: '值', value: 'byKey' }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.filterNames;
+                },
+                set({ data }: EditorResult<Data>, value: string[]) {
+                  data.filterNames = value;
+                }
+              }
+            }
+          ]
+        },
         {
           title: '勾选功能',
           items: [
@@ -1106,15 +1209,70 @@ export default {
     ]
   },
   '[data-action-btns]': actionBtnsEditor,
-  '[data-btn-id]': ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
-    if (!focusArea) return;
-    const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
-    const cates = actionBtnEditor(btn, data);
-    cate1.title = cates[0].title;
-    cate1.items = cates[0].items;
-    cate2.title = cates[1].title;
-    cate2.items = cates[1].items;
-    cate3.title = cates[2].title;
-    cate3.items = cates[2].items;
+  '[data-btn-id]': {
+    title: '操作',
+    style: [
+      ...styleEditor,
+      {
+        items: [
+          {
+            options: ['size'],
+            catelog: '默认',
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '默认',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: 'Hover',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button.ant-btn:not([disabled]):hover`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '激活',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              return `div[data-btn-id="${id}"] > button.ant-btn:not([disabled]):active`;
+            }
+          },
+          {
+            title: '按钮样式',
+            catelog: '禁用',
+            options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+            target({ data, focusArea }) {
+              const id = getBtnProp(data, focusArea, 'btnId', 'id');
+              // TODO: 由于子作用域组件无法使用数组型 target，暂且通过 #{id} 的形式绕过去
+              return `div[data-btn-id="${id}"] > button.ant-btn[disabled]`;
+            }
+          }
+        ]
+      }
+    ],
+    items: ({ data, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
+      if (!focusArea) return;
+      const btn = getBtnProp(data, focusArea, 'btnId', 'obj');
+      const cates = actionBtnEditor(btn, data);
+      cate1.title = cates[0].title;
+      cate1.items = cates[0].items;
+      cate2.title = cates[1].title;
+      cate2.items = cates[1].items;
+      // cate3.title = cates[2].title;
+      // cate3.items = cates[2].items;
+    }
   }
 };

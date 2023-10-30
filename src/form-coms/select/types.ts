@@ -22,4 +22,5 @@ export interface Data {
   remoteOptions: any[];
   dropdownSearchOption: boolean;
   outputValueType: 'value' | 'labelInValue' | 'option';
+  validateTrigger: string[];
 }

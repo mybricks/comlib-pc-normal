@@ -2,6 +2,10 @@
   "value": "",
   "visible": true,
   "rules": [],
+  "validateTrigger": [
+    "onBlur",
+    "onPressEnter"
+  ],
   "config": {
     "allowClear": true,
     "placeholder": "请输入内容",

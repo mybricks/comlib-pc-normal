@@ -210,4 +210,13 @@ export interface Data {
   fixedHeight?: string | number
 
   mergeCheckboxColumn?: boolean; // 合并勾选栏
+  
+  //是否自定义空状态
+  isEmpty: boolean;
+  //自定义描述内容
+  description: string;
+  //是否自定义图片
+  //isImage: boolean;
+  //图片地址
+  image: string;
 }

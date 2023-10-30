@@ -4,8 +4,8 @@ import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
 import { typeCheck } from '../../utils';
-import { InputIds, OutputIds } from '../types';
-import { validateTrigger } from '../form-container/models/validate';
+import { InputIds, OutputIds, ValidateTriggerType } from '../types';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 const DefaultOptionKey = '_id';
@@ -205,8 +205,8 @@ export default function Runtime({
     }
   }, [data.maxHeight]);
 
-  const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id, name });
+  const onValidateTrigger = (type: string) => {
+    data.validateTrigger?.includes(type) && debounceValidateTrigger(parentSlot, { id, name });
   };
   const changeValue = useCallback((value) => {
     if (value == undefined) {
@@ -217,12 +217,15 @@ export default function Runtime({
     onChangeForFc(parentSlot, { id: id, value: outputValue, name });
     outputs['onChange'](outputValue);
   }, []);
+
   const onChange = useCallback((val) => {
     changeValue(val);
-    onValidateTrigger();
+    onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
+
   const onBlur = useCallback((e) => {
     const outputValue = getOutputValue(data);
+    onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](outputValue);
   }, []);
 

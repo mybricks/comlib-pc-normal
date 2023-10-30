@@ -55,6 +55,11 @@ function ColumnRender(props: ColumnRenderProps) {
       oriValue = genFormatting(columnItem.formatData)(valueToBeFormat);
     }
 
+    // 如果是插槽，则不转成自负
+    if (columnItem.contentType === ContentTypeEnum.SlotItem) {
+      return oriValue;
+    }
+
     let value = oriValue;
 
     try {
@@ -66,7 +71,7 @@ function ColumnRender(props: ColumnRenderProps) {
       console.error('JSON.stringify失败', value, e);
     }
     return value;
-  }, [props.value, columnItem.formatData, record, index, env.edit]);
+  }, [props.value, columnItem.formatData, columnItem.contentType, record, index, env.edit]);
 
   switch (columnItem.contentType) {
     case ContentTypeEnum.Text:
