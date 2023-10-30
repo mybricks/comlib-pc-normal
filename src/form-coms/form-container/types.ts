@@ -50,6 +50,7 @@ export interface FormItems {
   width: number
   inlineMargin?: number[]
   slotAfter?: string
+  disabled?: boolean
   /**
    * 表单项收起时隐藏，不影响提交数据
    */
