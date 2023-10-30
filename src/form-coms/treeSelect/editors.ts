@@ -229,6 +229,15 @@ export default {
                 target: '.ant-select-disabled .ant-select-selector .ant-select-selection-placeholder'
               },
               {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target: `.{id} .ant-select-tree .ant-select-tree-treenode.ant-select-tree-treenode-disabled span.ant-select-tree-node-content-wrapper`
+              },
+              {
                 title: '勾选框',
                 options: [
                   { type: 'border', config: { useImportant: true } },
