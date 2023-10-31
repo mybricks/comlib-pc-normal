@@ -38,7 +38,6 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const dataSourceRef = useRef(dataSource);
@@ -46,7 +45,6 @@ export default function (props: RuntimeParams<Data>) {
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
   const [focusCellinfo, setFocusCellinfo] = useState<any>(null);
-
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
@@ -57,6 +55,10 @@ export default function (props: RuntimeParams<Data>) {
   const rowKey = data.rowKey || DefaultRowKey;
 
   const ref = useRef<HTMLDivElement>(null);
+
+  const selectedRows = useMemo(() => {
+    return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
+  }, [dataSource, selectedRowKeys, rowKey]);
 
   const initFilterMap = () => {
     let res = {};
@@ -103,7 +105,6 @@ export default function (props: RuntimeParams<Data>) {
       // 清空勾选
       inputs[InputIds.CLEAR_ROW_SELECTION](() => {
         setSelectedRowKeys([]);
-        setSelectedRows([]);
       });
 
       // 获取筛选数据
@@ -195,16 +196,6 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.scroll.y, data.fixedHeader]);
 
-  const getSelectedRows = useCallback((dataSource, selectedRowKeys) => {
-    let rowObj = {};
-    for (let key of selectedRowKeys) {
-      let curItem = dataSource.find((item) => item[rowKey] === key);
-      rowObj[key] == curItem;
-    }
-
-    return Object.values(rowObj) as any[];
-  }, []);
-
   // 更新某一行数据
   const editTableData = useCallback(
     /**
@@ -221,12 +212,10 @@ export default function (props: RuntimeParams<Data>) {
           ...tempValue, // 需要保留类似rowKey的数据
           ...value
         };
-        const selectedRows = getSelectedRows(newDataSource, selectedRowKeys);
-        setSelectedRows(selectedRows);
         setDataSource(newDataSource);
       }
     },
-    [getSelectedRows, dataSource, selectedRowKeys]
+    [dataSource]
   );
   useEffect(() => {
     // 监听插槽输出数据
@@ -282,7 +271,6 @@ export default function (props: RuntimeParams<Data>) {
               }
             });
             setSelectedRowKeys(newSelectedRowKeys);
-            setSelectedRows(newSelectedRows);
           }, 0);
         });
       }
@@ -311,27 +299,7 @@ export default function (props: RuntimeParams<Data>) {
         });
     }
   }, [selectedRows, selectedRowKeys]);
-
-  // useEffect(() => {
-  //   if (env.runtime) {
-  //     setSelectedRows((row) => {
-  //       let rowObj = Object.values(row).reduce((res, item) => {
-  //         res[item[rowKey]] = item;
-  //         return res;
-  //       }, {});
-
-  //       for (let key of selectedRowKeys) {
-  //         let curItem = dataSource.find((item) => item[rowKey] === key);
-  //         if (rowObj[key] && curItem) {
-  //           rowObj[key] == curItem;
-  //         }
-  //       }
-
-  //       return Object.values(rowObj);
-  //     });
-  //   }
-  // }, [dataSource, selectedRowKeys]);
-
+  console.log('selectedRows', selectedRowKeys, selectedRows);
   // 前端分页逻辑
   const filterDataSourceBySortAndFilter = () => {
     let tempDataSource = [...dataSource];
@@ -600,7 +568,6 @@ export default function (props: RuntimeParams<Data>) {
         selectedRows = selectedRows.slice(0, data.rowSelectionLimit);
         selectedRowKeys = selectedRowKeys.slice(0, data.rowSelectionLimit);
       }
-      setSelectedRows(selectedRows);
       setSelectedRowKeys(selectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows,
@@ -716,7 +683,6 @@ export default function (props: RuntimeParams<Data>) {
         }
       }
       newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
-      setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows: newSelectedRows,
