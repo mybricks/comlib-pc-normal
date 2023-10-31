@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import * as Icons from '@ant-design/icons';
 import { Data, OutputIds } from './constants';
 import css from './runtime.less';
@@ -6,18 +6,24 @@ import css from './runtime.less';
 /**
  * @param icon 图标
  */
-
-const btnItemR = ({ icon }: { icon: ReactNode }) => {
-  const Icon = Icons && Icons[icon as string]?.render();
-  return <>{Icon}</>;
-};
-
 export default function ({ env, data, outputs }: RuntimeParams<Data>) {
   const onClick = () => {
     if (env.runtime) {
       outputs[OutputIds.Click]();
     }
   };
+
+  const btnItemR = useCallback(
+    ({ icon }: { icon: any }) => {
+      const Icon = Icons && Icons[icon as string]?.render();
+      if (typeof Icon === 'undefined') {
+        return <div dangerouslySetInnerHTML={{ __html: icon }} />;
+      } else {
+        return <>{Icon}</>;
+      }
+    },
+    [data.icon]
+  );
 
   return (
     <div
