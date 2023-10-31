@@ -299,7 +299,7 @@ export default function (props: RuntimeParams<Data>) {
         });
     }
   }, [selectedRows, selectedRowKeys]);
-  console.log('selectedRows', selectedRowKeys, selectedRows);
+
   // 前端分页逻辑
   const filterDataSourceBySortAndFilter = () => {
     let tempDataSource = [...dataSource];
