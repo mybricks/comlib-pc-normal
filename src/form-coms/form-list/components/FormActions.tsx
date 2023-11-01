@@ -33,6 +33,7 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
 
   fields.splice(field.name, 1);
   data.value?.splice(field.name, 1);
+  console.log([...fields], 'before------------');
   // 更新name
   fields.forEach((field, index) => {
     if (field.name !== index) {
@@ -42,6 +43,7 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
       };
     }
   });
+  console.log([...fields], 'after------------');
   childrenStore[field.key] = undefined;
   // data.currentAction = InputIds.SetInitialValue;
   // data.startIndex = field.name;
