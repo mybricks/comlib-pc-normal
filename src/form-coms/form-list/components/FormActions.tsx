@@ -43,8 +43,8 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
     }
   });
   childrenStore[field.key] = undefined;
-  data.currentAction = InputIds.SetInitialValue;
-  data.startIndex = field.name;
+  // data.currentAction = InputIds.SetInitialValue;
+  // data.startIndex = field.name;
 
   changeValue({ data, id, outputs, parentSlot, name: props.name });
 };
@@ -125,7 +125,12 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           }
         }
         return (
-          <Button data-form-actions-item={item.key} {...res} onClick={() => onClick(item)}>
+          <Button
+            data-form-actions-item={item.key}
+            {...res}
+            disabled={data.disabled}
+            onClick={() => onClick(item)}
+          >
             <Space size={iconConfig?.gutter || 8}>
               {iconConfig?.location === LocationEnum.FRONT ? icon : void 0}
               {item.title}
