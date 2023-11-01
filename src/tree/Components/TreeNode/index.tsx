@@ -108,6 +108,7 @@ const renderTreeNode = (
 
         return (
           <TreeNode
+            {...item}
             key={item[keyFieldName]}
             className={css.treeNode}
             data-tree-node-id={item[keyFieldName]}
