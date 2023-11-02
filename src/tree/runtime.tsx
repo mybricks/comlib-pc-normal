@@ -3,7 +3,6 @@ import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { typeCheck, uuid } from '../utils';
 import {
-  pretreatTreeData,
   setCheckboxStatus,
   generateList,
   updateNodeData,
@@ -28,7 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   );
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const treeKeys = useRef<any>(null);
+  const treeKeys = useRef<{ key: string; title: string }[]>([]);
 
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
   const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
@@ -36,11 +35,6 @@ export default function (props: RuntimeParams<Data>) {
   const rootKey = useMemo(() => {
     return uuid();
   }, []);
-
-  useEffect(() => {
-    treeKeys.current = [];
-    generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
-  }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
    * @param searchValue 搜索值
@@ -104,13 +98,7 @@ export default function (props: RuntimeParams<Data>) {
       inputs['treeData'] &&
         inputs['treeData']((value: TreeData[]) => {
           if (value && Array.isArray(value)) {
-            data.expandedKeys = [];
-            data.treeData = pretreatTreeData({
-              treeData: [...value],
-              data,
-              defaultExpandAll: data.defaultExpandAll
-            });
-            setExpandedKeys([...data.expandedKeys]);
+            data.treeData = [...value];
           } else {
             data.treeData = [];
           }
@@ -119,17 +107,7 @@ export default function (props: RuntimeParams<Data>) {
       inputs['nodeData'] &&
         inputs['nodeData']((nodeData: TreeData) => {
           if (typeCheck(nodeData, 'OBJECT')) {
-            data.treeData = [
-              ...updateNodeData(
-                data.treeData,
-                pretreatTreeData({
-                  treeData: [nodeData],
-                  data,
-                  defaultExpandAll: data.defaultExpandAll
-                })[0],
-                keyFieldName
-              )
-            ];
+            data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
@@ -344,9 +322,21 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
+  /** 更新key数组和expandedKeys */
+  useEffect(() => {
+    treeKeys.current = [];
+    generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+    data.expandedKeys = [];
+    if (data.defaultExpandAll) {
+      data.expandedKeys = treeKeys.current.map((i) => i.key);
+    }
+    setExpandedKeys([...data.expandedKeys]);
+  }, [data.treeData]);
+
   const treeData = useMemo(() => {
     return data.filterValue ? filter() : data.treeData;
   }, [data.filterValue, data.treeData]);
+
   const isEmpty = useMemo(() => {
     return treeData?.length === 0;
   }, [treeData.length]);
