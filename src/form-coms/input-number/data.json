@@ -12,5 +12,9 @@
   },
   "isFormatter": false,
   "charPostion": "prefix",
-  "character": "¥"
+  "character": "¥",
+  "isMax": false,
+  "isMin": false,
+  "max": 100,
+  "min": 0
 }

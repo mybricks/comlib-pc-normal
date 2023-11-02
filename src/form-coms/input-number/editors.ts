@@ -159,6 +159,68 @@ export default {
           }
         },
         {
+          title: '最大值限制',
+          type: 'switch',
+          description: '开启后, 有最大值限制',
+          value: {
+            get({ data }) {
+              return data.isMax;
+            },
+            set({ data }, value: string) {
+              data.isMax = value;
+            }
+          }
+        },
+        {
+          title: '最大值',
+          type: 'inputNumber',
+          ifVisible({ data }) {
+            return !!data.isMax;
+          },
+          options: [
+            { width: 200 },
+          ],
+          value: {
+            get({ data }) {
+              return [data.max] || [100];
+            },
+            set({ data }, value: number[]) {
+              data.max = value[0];
+            }
+          }
+        },
+        {
+          title: '最小值限制',
+          type: 'switch',
+          description: '开启后, 有最大值限制',
+          value: {
+            get({ data }) {
+              return data.isMin;
+            },
+            set({ data }, value: string) {
+              data.isMin = value;
+            }
+          }
+        },
+        {
+          title: '最小值',
+          type: 'inputNumber',
+          ifVisible({ data }) {
+            return !!data.isMin;
+          },
+          options: [
+            { width: 200 },
+          ],
+          value: {
+            get({ data }) {
+              return [data.min] || [0];
+            },
+            set({ data }, value: number[]) {
+              data.min = value[0];
+            }
+          }
+        },
+        {
           title: '校验规则',
           description: '提供快捷校验配置',
           type: 'ArrayCheckbox',
