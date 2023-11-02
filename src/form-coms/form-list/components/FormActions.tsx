@@ -29,22 +29,20 @@ export const addField = ({ data }: { data: Data }) => {
 /** 删除一行 */
 const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
-  const { fields } = data;
 
-  fields.splice(field.name, 1);
-  data.value?.splice(field.name, 1);
-  console.log([...fields], 'before------------');
+  // console.log([...data.fields], 'before------------')
   // 更新name
-  fields.forEach((field, index) => {
-    if (field.name !== index) {
-      data.fields[index] = {
-        ...field,
+  data.fields = data.fields
+    .filter((i) => i.key !== field.key)
+    .map((i, index) => {
+      return {
+        ...i,
         name: index
       };
-    }
-  });
-  console.log([...fields], 'after------------');
+    });
+  // console.log([...data.fields], 'after------------')
   childrenStore[field.key] = undefined;
+  data.value?.splice(field.name, 1);
   // data.currentAction = InputIds.SetInitialValue;
   // data.startIndex = field.name;
 
@@ -86,6 +84,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
 
   const onClick = (item: Action) => {
     if (env.edit) return;
+    console.log('onClick', currentField, item);
     if (item.key === 'add') {
       addField({ data });
       data.currentAction = 'add';
