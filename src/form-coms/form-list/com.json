@@ -103,6 +103,38 @@
           }
         }
       }
+    },
+    {
+      "id": "addRow",
+      "title": "添加一项",
+      "desc": "新增一行数据，支持自定义新增行数据的默认值和插入位置，默认插入到最后",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "data": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeRow",
+      "title": "删除一项",
+      "desc": "删除指定一项",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "key": {
+            "type": "number"
+          }
+        }
+      }
     }
   ],
   "outputs": [
