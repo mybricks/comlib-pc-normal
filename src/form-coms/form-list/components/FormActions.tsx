@@ -11,28 +11,23 @@ import css from '../styles.less';
 export interface FormListActionsProps {
   operation?: FormListOperation;
   field: FormListFieldData;
-  fieldIndex?: number;
+  fieldIndex: number;
   hiddenRemoveButton?: boolean;
   childrenStore?: any;
 }
 
 /** 添加一行 */
-export const addField = ({ data, index }: { data: Data; index?: number }) => {
+export const addField = ({ data }: { data: Data }) => {
   const { fields } = data;
   data.MaxKey = data.MaxKey + 1;
-  typeof index === 'number'
-    ? fields.splice(index, 0, {
-        name: fields.length,
-        key: data.MaxKey
-      })
-    : fields.push({
-        name: fields.length,
-        key: data.MaxKey
-      });
+  fields.push({
+    name: fields.length,
+    key: data.MaxKey
+  });
 };
 
 /** 删除一行 */
-export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
+const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
 
   // console.log([...data.fields], 'before------------')

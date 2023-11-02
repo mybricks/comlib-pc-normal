@@ -10,8 +10,9 @@ import {
 } from './utils';
 import { deepCopy, typeCheck } from '../../utils';
 import { RuleKeys, validateFormItem } from '../utils/validator';
-import { ActionsWrapper, addField, removeField } from './components/FormActions';
-import { SlotIds, SlotInputIds, InputIds, OutputIds } from './constants';
+import { ActionsWrapper, addField } from './components/FormActions';
+import { SlotIds, SlotInputIds } from './constants';
+import { InputIds, OutputIds } from '../types';
 import { inputIds, outputIds } from '../form-container/constants';
 import { defaultRules } from './editors';
 
@@ -120,25 +121,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
       }
-    });
-
-    // 新增一项
-    inputs[InputIds.AddRow]((val: { index?: number; rowData }) => {
-      const { index, rowData } = val || {};
-      addField({ data, index });
-      if (Array.isArray(data.value)) {
-        typeof index === 'number' ? data.value.splice(index, 0, rowData) : data.value.push(rowData);
-      } else {
-        data.value = [rowData];
-      }
-    });
-    // 删除一项
-    inputs[InputIds.RemoveRow]((rowData: { index: number; key: number }) => {
-      const field = {
-        name: rowData.index,
-        key: rowData.key
-      };
-      removeField({ ...props, field });
     });
   }, []);
 
