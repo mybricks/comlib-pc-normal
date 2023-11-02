@@ -20,6 +20,10 @@ export interface Data {
   isFormatter: boolean;
   charPostion: 'prefix' | 'suffix';
   character: string;
+  isMin: boolean;
+  isMax: boolean;
+  min: number;
+  max: number;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -162,6 +166,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
+        min={data.isMin ? data.min : void 0}
+        max={data.isMax ? data.max : void 0}
       />
     </div>
   );

@@ -82,5 +82,21 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.0 end ===============
 
+  /**
+   * @description v1.1.1 新增最大最小值配置
+   */
+  if(typeof data.isMax === "undefined"){
+    data.isMax = false
+  }
+  if(typeof data.isMin === "undefined"){
+    data.isMax = false
+  }
+  if(typeof data.max === "undefined"){
+    data.max = 100
+  }
+  if(typeof data.min === "undefined"){
+    data.max = 0
+  }
+
   return true;
 }
