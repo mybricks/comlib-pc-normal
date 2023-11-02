@@ -59,7 +59,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 获取值
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      const value = deepCopy(data.value);
+      outputRels['returnValue'](value);
     });
 
     // 重置值
