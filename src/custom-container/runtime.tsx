@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
-import { useResizeObserver } from '../hooks/useResizeObserver';
+// import { useResizeObserver } from '../hooks/useResizeObserver';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -82,13 +82,13 @@ export default function (props: RuntimeParams<Data>) {
     };
   }, [dynamicStyle, legacyStyle, data.slotStyle]);
 
-  useResizeObserver(ref, (entries) => {
-    if (!ref.current) return;
-    if (env.edit || env.runtime?.debug) {
-      const { contentRect } = entries[0];
-      ref.current.style.height = `${contentRect.height}px`;
-    }
-  });
+  // useResizeObserver(ref, (entries) => {
+  //   if (!ref.current) return;
+  //   if (env.edit || env.runtime?.debug) {
+  //     const { contentRect } = entries[0];
+  //     ref.current.style.height = `${contentRect.height}px`;
+  //   }
+  // });
 
   return (
     <div
