@@ -198,11 +198,14 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     const target = ref.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
-    if (target && data.scroll.minHeight !== undefined) {
-      target.style.minHeight =
-        typeof data.scroll.minHeight === 'string' ? data.scroll.minHeight : '';
+    if (target && data.fixedHeader && !!data.fixedHeight) {
+      target.style.minHeight = typeof data.scroll.y === 'string' ? data.scroll.y : '';
     }
-  }, [data.scroll.minHeight]);
+    console.log(`data.fixedHeader JD==> `, data.fixedHeader);
+    if (!data.fixedHeader) {
+      target.style.minHeight = '';
+    }
+  }, [data.fixedHeight, data.fixedHeader, data.scroll.y]);
 
   // 更新某一行数据
   const editTableData = useCallback(
