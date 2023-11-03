@@ -95,7 +95,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.max = 100
   }
   if(typeof data.min === "undefined"){
-    data.max = 0
+    data.min = 0
   }
 
   return true;
