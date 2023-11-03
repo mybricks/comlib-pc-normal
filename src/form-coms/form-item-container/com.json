@@ -155,7 +155,7 @@
       "inputs": [
         {
           "id": "curValue",
-          "title": "当前项数据",
+          "title": "表单项值",
           "schema": {
             "type": "any"
           }
@@ -170,6 +170,15 @@
         {
           "id": "onDisabled",
           "title": "禁用时",
+          "schema": {
+            "type": "any"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "setCurValue",
+          "title": "设置表单项值",
           "schema": {
             "type": "any"
           }

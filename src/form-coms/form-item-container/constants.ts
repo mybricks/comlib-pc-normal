@@ -4,3 +4,6 @@ export const SlotIds = {
 export const SlotInputIds = {
     CurValue: 'curValue',
 };
+export const SlotOutputIds = {
+    SetCurValue: 'setCurValue',
+};
