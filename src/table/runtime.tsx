@@ -201,7 +201,6 @@ export default function (props: RuntimeParams<Data>) {
     if (target && data.fixedHeader && !!data.fixedHeight) {
       target.style.minHeight = typeof data.scroll.y === 'string' ? data.scroll.y : '';
     }
-    console.log(`data.fixedHeader JD==> `, data.fixedHeader);
     if (!data.fixedHeader) {
       target.style.minHeight = '';
     }
