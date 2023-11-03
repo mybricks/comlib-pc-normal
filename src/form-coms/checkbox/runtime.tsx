@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Alert, Checkbox } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -21,6 +21,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
+  const [single, setSingle] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
@@ -163,8 +164,12 @@ export default function Runtime({
     gap: data.layout === 'vertical' ? '8px' : void 0
   };
 
+  const singlebox = {
+    width: '16px'
+  };
+
   let options = env.edit ? data.staticOptions : data.config.options;
-  options = options.map((opt) => {
+  let newOptions = options.map((opt) => {
     return {
       ...opt,
       label: (
@@ -175,8 +180,16 @@ export default function Runtime({
     };
   });
 
+  useEffect(() => {
+    if (options.length === 1 && options[0].label === '' && !data.checkAll) {
+      setSingle(true);
+    } else {
+      setSingle(false);
+    }
+  }, [data.staticOptions, data.config.options, data.checkAll]);
+
   return (
-    <div className={css.checkbox}>
+    <div className={css.checkbox} style={single ? singlebox : void 0}>
       {data.checkAll && (
         <Checkbox
           style={checkboxStyle}
@@ -191,7 +204,7 @@ export default function Runtime({
       <Checkbox.Group
         style={checkboxGroup}
         {...data.config}
-        options={options}
+        options={newOptions}
         value={data.value}
         onChange={onChange}
       />
