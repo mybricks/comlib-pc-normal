@@ -196,6 +196,14 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.scroll.y, data.fixedHeader]);
 
+  useEffect(() => {
+    const target = ref.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
+    if (target && data.scroll.minHeight !== undefined) {
+      target.style.minHeight =
+        typeof data.scroll.minHeight === 'string' ? data.scroll.minHeight : '';
+    }
+  }, [data.scroll.minHeight]);
+
   // 更新某一行数据
   const editTableData = useCallback(
     /**

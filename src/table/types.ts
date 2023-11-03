@@ -92,6 +92,7 @@ export enum SizeEnum {
 interface Scroll {
   x: number | boolean;
   y: number | string | undefined;
+  minHeight: number | string | undefined;
   scrollToFirstRowOnChange: boolean;
 }
 export enum RowSelectionPostionEnum {

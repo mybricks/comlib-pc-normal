@@ -73,6 +73,21 @@ const tableStyleEditor = {
       }
     },
     {
+      title: '可滚动最小高度',
+      type: 'Text',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.fixedHeader;
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.scroll.minHeight;
+        },
+        set({ data }: EditorResult<Data>, value) {
+          data.scroll.minHeight = unitConversion(value);
+        }
+      }
+    },
+    {
       title: '固定高度',
       type: 'text',
       ifVisible({ data }: EditorResult<Data>) {
