@@ -39,7 +39,7 @@ function ColumnRender(props: ColumnRenderProps) {
   }, [data.columns, colKey]);
 
   const value = useMemo(() => {
-    let oriValue = props.value ?? null;
+    let oriValue = props.value;
 
     if (columnItem?.formatData && !env.edit) {
       // 格式化数据时，如果是表达式传入index、行数据、当前cell数据
