@@ -63,9 +63,10 @@ function ColumnRender(props: ColumnRenderProps) {
     let value = oriValue;
 
     try {
-      value = ['object', 'function', 'boolean'].includes(typeof value)
-        ? JSON.stringify(value)
-        : value;
+      value =
+        value !== null && ['object', 'function', 'boolean'].includes(typeof value)
+          ? JSON.stringify(value)
+          : value;
     } catch (e) {
       console.error('JSON.stringify失败', value, e);
       return value;
