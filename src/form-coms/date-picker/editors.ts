@@ -28,6 +28,7 @@ export default {
     style.width = '100%';
     data.formatMap = {
       "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
       "周": encodeURIComponent("YYYY-wo"),
       "月份": encodeURIComponent("YYYY-MM"),
       "季度": encodeURIComponent("YYYY-\\QQ"),
@@ -297,21 +298,23 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  if(data.formatMap){
+                  if(data.formatMap && Object.keys(data.formatMap).length === 6){
                     let newValueArr = Object.keys(data.formatMap).map((key,index)=>{
                       return decodeURIComponent(data.formatMap[key]);
                     })
                     let newValue = {
                       "日期": newValueArr[0],
-                      "周": newValueArr[1],
-                      "月份": newValueArr[2],
-                      "季度": newValueArr[3],
-                      "年份": newValueArr[4]
+                      "日期+时间": newValueArr[1],
+                      "周": newValueArr[2],
+                      "月份": newValueArr[3],
+                      "季度": newValueArr[4],
+                      "年份": newValueArr[5]
                     }
                     return newValue
                   }else{
                     return {
                       "日期": "YYYY-MM-DD",
+                      "日期+时间": "YYYY-MM-DD HH:mm:ss",
                       "周": "YYYY-wo",
                       "月份": "YYYY-MM",
                       "季度": "YYYY-\\QQ",
@@ -325,10 +328,11 @@ export default {
                   })
                   let newValue = {
                     "日期": newValueArr[0],
-                    "周": newValueArr[1],
-                    "月份": newValueArr[2],
-                    "季度": newValueArr[3],
-                    "年份": newValueArr[4]
+                    "日期+时间": newValueArr[1],
+                    "周": newValueArr[2],
+                    "月份": newValueArr[3],
+                    "季度": newValueArr[4],
+                    "年份": newValueArr[5]
                   }
                   data.formatMap = newValue;
                 }

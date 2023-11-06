@@ -38,6 +38,7 @@ export interface Data {
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
   formatMap: {
     日期: string;
+    '日期+时间': string;
     周: string;
     月份: string;
     季度: string;
@@ -48,6 +49,7 @@ export interface Data {
 
 const typeMap = {
   date: '日期',
+  dateTime: '日期+时间',
   week: '周',
   month: '月份',
   quarter: '季度',
@@ -64,6 +66,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
+  const [type, setType] = useState<string>('date');
 
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
@@ -213,6 +216,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
   }, [value]);
+
+  //值展示类型
+  useEffect(() => {
+    if (data.config.picker === 'date' && data.showTime) {
+      setType('dateTime');
+    } else {
+      setType(data.config.picker || 'date');
+    }
+  }, [data.config.picker, data.showTime]);
 
   //设置日期选择类型
   inputs['setDateType']((val) => {
@@ -400,7 +412,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           open={finalOpen}
           format={
             data.config.picker && data.formatMap
-              ? decodeURIComponent(data.formatMap[typeMap[data.config.picker]])
+              ? decodeURIComponent(data.formatMap[typeMap[type]])
               : void 0
           }
           onClick={() => {
