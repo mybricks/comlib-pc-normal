@@ -41,6 +41,8 @@ export default function (props: RuntimeParams<Data>) {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
     data.expandedKeys = [];
+    data.checkedKeys = [];
+    setCheckedKeys([]);
     if (data.defaultExpandAll) {
       data.expandedKeys = treeKeys.current.map((i) => i.key);
     }
@@ -199,8 +201,10 @@ export default function (props: RuntimeParams<Data>) {
   const onCheck: TreeProps['onCheck'] = useCallback((checkedKeys: React.Key[], info) => {
     if (env.edit) return;
     const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
-    data.checkedKeys = [...checked];
-    setCheckedKeys([...checked]);
+    data.checkedKeys = [...data.checkedKeys, ...checked].filter(
+      (item, i, self) => item && self.indexOf(item) === i
+    );
+    setCheckedKeys([...data.checkedKeys]);
     if (data.useCheckEvent) {
       const resultKeys =
         data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
