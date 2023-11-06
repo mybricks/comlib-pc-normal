@@ -61,9 +61,9 @@ export const setTreeDataForLoadData = (data, curNode, treeData, newNodeData = {}
  */
 export const getFieldNames = (data: Data,) => {
     const fieldNames = {
-        label: data.labelFieldName,
-        value: data.valueFieldName,
-        children: data.childrenFieldName
+        label: data.labelFieldName || 'label',
+        value: data.valueFieldName || 'value',
+        children: data.childrenFieldName || 'children'
     };
 
     return fieldNames;
