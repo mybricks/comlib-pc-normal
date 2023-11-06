@@ -207,7 +207,9 @@ export default function (props: RuntimeParams<Data>) {
     setCheckedKeys([...data.checkedKeys]);
     if (data.useCheckEvent) {
       const resultKeys =
-        data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
+        data.outParentKeys || data.checkStrictly
+          ? data.checkedKeys
+          : excludeParentKeys(data, data.checkedKeys);
       outputs[OutputIds.ON_CHECK](
         outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
       );
