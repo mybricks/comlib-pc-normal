@@ -36,6 +36,17 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
+  /** 更新key数组和expandedKeys */
+  useEffect(() => {
+    treeKeys.current = [];
+    generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+    data.expandedKeys = [];
+    if (data.defaultExpandAll) {
+      data.expandedKeys = treeKeys.current.map((i) => i.key);
+    }
+    setExpandedKeys([...data.expandedKeys]);
+  }, [data.treeData]);
+
   /** 按标签搜索，高亮展示树节点
    * @param searchValue 搜索值
    */
@@ -321,17 +332,6 @@ export default function (props: RuntimeParams<Data>) {
       return info.dropNode['data-allow-drop'];
     }
   };
-
-  /** 更新key数组和expandedKeys */
-  useEffect(() => {
-    treeKeys.current = [];
-    generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
-    data.expandedKeys = [];
-    if (data.defaultExpandAll) {
-      data.expandedKeys = treeKeys.current.map((i) => i.key);
-    }
-    setExpandedKeys([...data.expandedKeys]);
-  }, [data.treeData]);
 
   const treeData = useMemo(() => {
     return data.filterValue ? filter() : data.treeData;
