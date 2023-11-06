@@ -200,7 +200,7 @@ export default function (props: RuntimeParams<Data>) {
     const target = ref.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
     if (target && data.fixedHeader && !!data.fixedHeight) {
       target.style.minHeight = typeof data.scroll.y === 'string' ? data.scroll.y : '';
-    } else {
+    } else if (target) {
       target.style.minHeight = '';
     }
   }, [data.fixedHeight, data.fixedHeader, data.scroll.y]);
