@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "选项卡切换组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
