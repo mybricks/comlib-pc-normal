@@ -1,0 +1,31 @@
+{
+  "title": "获取Storage数据",
+  "namespace": "mybricks.normal-pc.get-storage",
+  "version": "0.0.1",
+  "rtType": "js-autorun",
+  "description": "获取Storage数据",
+  "docs": "",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "inputContext",
+      "title": "开始",
+      "schema": {
+        "type": "follow"
+      },
+      "editable": true
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output0",
+      "title": "key0",
+      "editable": true
+    }
+  ]
+}

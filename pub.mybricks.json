@@ -128,13 +128,16 @@
     "./src/_excel/com.json",
     "./src/_pinyin/com.json",
     "./src/_post-message/com.json",
+    "./src/_get-storage/com.json",
     "./src/_receive-message/com.json"
   ],
   "externals": [
     {
       "name": "@ant-design/icons",
       "library": "icons",
-      "urls": ["https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"]
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
     },
     {
       "name": "antd",
