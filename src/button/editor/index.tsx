@@ -102,6 +102,9 @@ export default {
           {
             title: '文字标题',
             type: 'text',
+            options: {
+              locale: true
+            },
             value: {
               get({ data }: EditorResult<Data>) {
                 return data.text;
