@@ -25,6 +25,9 @@
     {
       "id": "output0",
       "title": "key0",
+      "schema": {
+        "type": "any"
+      },
       "editable": true
     }
   ]
