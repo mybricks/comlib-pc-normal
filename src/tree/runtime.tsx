@@ -84,8 +84,8 @@ export default function (props: RuntimeParams<Data>) {
         }
       }
     });
-    const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
-    return filteredTreeData;
+    // const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
+    return filterKeys;
   }, []);
 
   /**
@@ -201,15 +201,11 @@ export default function (props: RuntimeParams<Data>) {
   const onCheck: TreeProps['onCheck'] = useCallback((checkedKeys: React.Key[], info) => {
     if (env.edit) return;
     const checked = data.checkStrictly ? checkedKeys.checked : checkedKeys;
-    data.checkedKeys = [...data.checkedKeys, ...checked].filter(
-      (item, i, self) => item && self.indexOf(item) === i
-    );
-    setCheckedKeys([...data.checkedKeys]);
+    data.checkedKeys = [...checked];
+    setCheckedKeys([...checked]);
     if (data.useCheckEvent) {
       const resultKeys =
-        data.outParentKeys || data.checkStrictly
-          ? data.checkedKeys
-          : excludeParentKeys(data, data.checkedKeys);
+        data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
       outputs[OutputIds.ON_CHECK](
         outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
       );
@@ -339,13 +335,13 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
-  const treeData = useMemo(() => {
-    return data.filterValue ? filter() : data.treeData;
-  }, [data.filterValue, data.treeData]);
+  const filteredKeys = useMemo(() => {
+    return data.filterValue ? filter() : treeKeys.current.map((i) => i.key);
+  }, [data.filterValue, treeKeys.current]);
 
   const isEmpty = useMemo(() => {
-    return treeData?.length === 0;
-  }, [treeData.length]);
+    return filteredKeys.length === 0;
+  }, [filteredKeys.length]);
 
   return (
     <div
@@ -386,7 +382,7 @@ export default function (props: RuntimeParams<Data>) {
           onDrop={onDrop}
           blockNode
         >
-          {TreeNode(props, setExpandedKeys, treeData || [], 0, { key: rootKey })}
+          {TreeNode(props, setExpandedKeys, data.treeData || [], filteredKeys, 0, { key: rootKey })}
         </Tree>
       )}
     </div>
