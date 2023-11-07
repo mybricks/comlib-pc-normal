@@ -148,7 +148,35 @@ export default {
           data.showToplLog = use;
         }
       }
-    }
+    },
+    {},
+    {
+      title: '动态配置',
+      type: 'switch',
+      value: {
+        get({ data }) {
+          return data.showDynamicConfig;
+        },
+        set({ data, configs }, showDynamicConfig: boolean) {
+          if (showDynamicConfig) {
+            configs.add({
+              id: 'dynamicConfig',
+              title: '连接器',
+              schema: {
+                type: 'object'
+              },
+              binding: 'data.dynamicConfig',
+              editor: {
+                type: '_connectorSelect'
+              }
+            })
+          } else {
+            configs.remove('dynamicConfig')
+          }
+          data.showDynamicConfig = showDynamicConfig;
+        }
+      }
+    },
   ]
 };
 

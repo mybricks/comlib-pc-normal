@@ -4,7 +4,8 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
 	const { runtime } = env;
 	/** 调试 */
 	const debug = !!(runtime && runtime.debug);
-  if (data.connector) {
+  const { connector, dynamicConfig } = data
+  if (connector || dynamicConfig) {
     try {
 			const isObjectParams = typeof params === 'object' && Object.prototype.toString.call(params) !== '[object FormData]' && params !== null;
 	    const curParams: Record<string, unknown> = isObjectParams ? { ...params } : params;
@@ -13,8 +14,17 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
 			if (debug && isObjectParams && data.showToplLog) {
 				curParams.showToplLog = data.showToplLog;
 			}
+
+      let finalConnector = connector
+      let finalOptions = { openMock: data.globalMock || data.mock, mockSchema: data.outputSchema }
+
+      if (dynamicConfig) {
+        finalConnector = dynamicConfig
+        finalOptions = { openMock: dynamicConfig.globalMock || data.mock, mockSchema: dynamicConfig.outputSchema }
+      }
+
       env
-        .callConnector(data.connector, curParams, { openMock: data.globalMock || data.mock, mockSchema: data.outputSchema, ...connectorConfig })
+        .callConnector(finalConnector, curParams, { ...finalOptions, ...connectorConfig })
         .then((val) => {
 	        if (curParams.showToplLog && typeof val === 'object' && val !== null && val.__ORIGIN_RESPONSE__) {
 		        (val.__ORIGIN_RESPONSE__?.logStack || []).map(log => {
