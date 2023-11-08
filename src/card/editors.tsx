@@ -67,11 +67,15 @@ export default {
         Editor<Data>('点击', EditorType.Switch, 'useClick', {
           value: {
             set({ data, output }: EditorResult<Data>, value: boolean) {
-              const hasEvent = output.get(OutputIds.Click);
+              const hasClickEvent = output.get(OutputIds.Click);
+              const hasDoubleClickEvent = output.get(OutputIds.DoubleClick);
               if (value) {
-                !hasEvent && output.add(OutputIds.Click, '点击', { type: 'string' });
+                !hasClickEvent && output.add(OutputIds.Click, '单击', { type: 'number' });
+                !hasDoubleClickEvent &&
+                  output.add(OutputIds.DoubleClick, '双击', { type: 'number' });
               } else {
-                hasEvent && output.remove(OutputIds.Click);
+                hasClickEvent && output.remove(OutputIds.Click);
+                hasDoubleClickEvent && output.remove(OutputIds.DoubleClick);
               }
               data.useClick = value;
             }
@@ -96,12 +100,6 @@ export default {
               ],
               value: {
                 get({ data, output }: EditorResult<Data>) {
-                  const click = output.get(OutputIds.Click);
-                  if (data.dataType === 'number') {
-                    click.setSchema({
-                      type: 'number'
-                    });
-                  }
                   return data.dataType;
                 },
                 set(
@@ -109,27 +107,32 @@ export default {
                   value: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external'
                 ) {
                   const click = output.get(OutputIds.Click);
-                  click.setSchema({
+                  const doubleClick = output.get(OutputIds.DoubleClick);
+                  const setClickAndDoubleClickSchema = (schema: any) => {
+                    click.setSchema(schema);
+                    doubleClick.setSchema(schema);
+                  };
+                  setClickAndDoubleClickSchema({
                     type: 'any'
                   });
                   if (value === 'number') {
-                    click.setSchema({
+                    setClickAndDoubleClickSchema({
                       type: 'number'
                     });
                     data.outputContent = 0;
                   } else if (value === 'string') {
-                    click.setSchema({
+                    setClickAndDoubleClickSchema({
                       type: 'string'
                     });
                     data.outputContent = '';
                   } else if (value === 'object') {
-                    click.setSchema({
+                    setClickAndDoubleClickSchema({
                       type: 'object',
                       properties: {}
                     });
                     data.outputContent = {};
                   } else if (value === 'boolean') {
-                    click.setSchema({
+                    setClickAndDoubleClickSchema({
                       type: 'boolean'
                     });
                     data.outputContent = false;
@@ -137,7 +140,7 @@ export default {
                     data.outputContent = null;
                   }
                   if (value === 'external') {
-                    click.setSchema({
+                    setClickAndDoubleClickSchema({
                       type: 'follow'
                     });
                     input.add('external', '设置输出数据', {
@@ -231,10 +234,20 @@ export default {
             }
           ]
         },
-        Editor<Data>('点击卡片', EditorType.Event, null, {
+        Editor<Data>('单击卡片', EditorType.Event, null, {
           options: () => {
             return {
               outputId: OutputIds.Click
+            };
+          },
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.useClick;
+          }
+        }),
+        Editor<Data>('双击卡片', EditorType.Event, null, {
+          options: () => {
+            return {
+              outputId: OutputIds.DoubleClick
             };
           },
           ifVisible({ data }: EditorResult<Data>) {
