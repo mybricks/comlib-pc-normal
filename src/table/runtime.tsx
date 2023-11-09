@@ -3,7 +3,14 @@ import moment from 'moment';
 import { Table, Empty, ConfigProvider, Image } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
-import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
+import {
+  InputIds,
+  OutputIds,
+  SlotIds,
+  TEMPLATE_RENDER_KEY,
+  DefaultRowKey,
+  DefaultOnRowScript
+} from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
 import {
@@ -31,6 +38,7 @@ import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
 import { unitConversion } from '../utils';
+import { runJs } from '../../package/com-utils';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -704,6 +712,14 @@ export default function (props: RuntimeParams<Data>) {
   const onRow = useCallback(
     (_record, index) => {
       const { [DefaultRowKey]: _, ...record } = _record;
+      let props = {};
+      if (data?.enableOnRow && !env.edit) {
+        if (!data.onRowScript) {
+          data.onRowScript = DefaultOnRowScript;
+        }
+        props = runJs(data?.onRowScript, [_record, index]);
+      }
+
       return {
         onClick: (e) => {
           if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
@@ -723,7 +739,8 @@ export default function (props: RuntimeParams<Data>) {
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
           }
-        }
+        },
+        ...props
       };
     },
     [focusRowIndex, setCurrentSelectRows]

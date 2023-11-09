@@ -201,6 +201,7 @@ export interface Data {
   summaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
   summaryColumnContentSchema: object, // 总结栏内容Schema
   enbaleRowMerge?: boolean,
+  enableOnRow?: boolean,
   rowMergeConfig?: {
     // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
     mergeByField: string,
@@ -210,7 +211,7 @@ export interface Data {
   fixedHeight?: string | number
 
   mergeCheckboxColumn?: boolean; // 合并勾选栏
-  
+
   //是否自定义空状态
   isEmpty: boolean;
   //自定义描述内容
@@ -219,4 +220,5 @@ export interface Data {
   //isImage: boolean;
   //图片地址
   image: string;
+  onRowScript: string
 }

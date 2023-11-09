@@ -100,3 +100,14 @@ export const DefaultRowKey = '_uuid';
 
 export const DefaultHeadStyle = { color: '#1f1f1f', background: '#f5f7f9' };
 export const DefaultContentStyle = { color: '#434343' };
+
+export const DefaultOnRowScript = `/**
+ * 输入参数：
+ *  - 当前行数据:  record
+ *  - 当前行号：   index
+ **/
+(record, index) => {
+  return {
+    style: {}
+  }
+}`
