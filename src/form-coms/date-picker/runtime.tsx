@@ -302,7 +302,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
                   [InputIds.CurrentDate]: currentDate,
                   [InputIds.Today]: today
                 },
-                key: currentDate
+                key: currentDate.valueOf()
               })
             : null}
         </div>
