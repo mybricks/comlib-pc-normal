@@ -82,6 +82,19 @@ export default function (props: RuntimeParams<Data>) {
       setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
     }, []);
 
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.disabled = false;
+        slots[SlotIds.FormItem].inputs['onEnabled'](val);
+        setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
+      } else {
+        data.disabled = true;
+        slots[SlotIds.FormItem].inputs['onDisabled'](val);
+        setValuesForInput({ data, actionId: InputIds.SetDisabled, val });
+      }
+    });
+
     // 设置校验状态
     inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
       if (validateRelOuputRef.current) {

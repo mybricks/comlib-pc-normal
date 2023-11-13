@@ -1,7 +1,7 @@
 {
   "title": "单选框",
   "namespace": "mybricks.normal-pc.radio",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "单选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -101,6 +101,13 @@
       "title": "设置启用",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

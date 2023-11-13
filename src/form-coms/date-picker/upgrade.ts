@@ -1,6 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({
   data,
@@ -154,6 +155,16 @@ export default function ({
       "年份": data.formatMap['年份'],
     }
   }
+
+  /**
+   * @description v1.1.8 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.8 end ===============
   
   return true;
 }

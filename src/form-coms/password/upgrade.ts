@@ -1,6 +1,7 @@
 import { Data } from './types';
 import { ValidateTriggerType } from '../types';
 import { RuleKeys } from '../utils/validator';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -66,6 +67,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       title: '自定义校验',
     });
   }
+
+  /**
+   * @description v1.1.1 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.1 end ===============
 
   return true;
 }

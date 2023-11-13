@@ -178,6 +178,15 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.config.disabled = false;
+      } else {
+        data.config.disabled = true;
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {

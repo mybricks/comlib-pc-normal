@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.search",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "搜索框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bacj7f.ea2507b099403a42.png",
@@ -73,6 +73,13 @@
       "title": "设置启用",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

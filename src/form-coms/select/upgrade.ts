@@ -2,6 +2,7 @@ import { InputIds, OutputIds, ValidateTriggerType } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Schemas } from './constants';
 import { Data } from './types';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({
   data,
@@ -205,6 +206,16 @@ export default function ({
   }
 
   //=========== v1.1.2 end ===============
+
+  /**
+   * @description v1.1.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.3 end ===============
 
   return true;
 }
