@@ -261,6 +261,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     data.config.disabled = false;
   });
 
+  //设置启用/禁用
+  inputs['isEnable']((val) => {
+    if (val === true) {
+      data.config.disabled = false;
+    } else {
+      data.config.disabled = true;
+    }
+  });
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };

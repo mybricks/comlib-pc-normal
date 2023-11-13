@@ -60,6 +60,13 @@ export default function (props: RuntimeParams<Data>) {
       setEnabled() {
         data.config.disabled = false;
       },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
+      },
       validate(model, relOutput) {
         validateFormItem({
           value: data.value,

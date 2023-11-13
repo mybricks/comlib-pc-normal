@@ -88,5 +88,15 @@ export default function ({ data, input, output, getDeclaredStyle, setDeclaredSty
 
   input.add('setActiveFontColor', '设置激活选项字体的颜色', { type: "string" });
 
+  /**
+   * @description v1.1.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.3 end ===============
+
   return true;
 }
