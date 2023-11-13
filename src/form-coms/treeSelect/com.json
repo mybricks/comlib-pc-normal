@@ -61,6 +61,7 @@
     {
       "id": "setOptions",
       "title": "设置数据源",
+      "desc": "设置树选择的下拉选项列表",
       "schema": {
         "type": "array",
         "items": {

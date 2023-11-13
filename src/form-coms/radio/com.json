@@ -64,6 +64,7 @@
     {
       "id": "setOptions",
       "title": "设置数据源",
+      "desc": "设置单选框的选项列表",
       "schema": {
         "type": "array",
         "items": {

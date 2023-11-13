@@ -86,6 +86,7 @@
     {
       "id": "setOptions",
       "title": "输入数据源",
+      "desc": "设置自动完成的下拉选项列表",
       "schema": {
         "title": "输入数据源数据",
         "type": "array",
