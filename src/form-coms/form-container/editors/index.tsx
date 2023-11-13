@@ -79,6 +79,7 @@ export default {
             widthOption: 'span',
             span: 24 / data.formItemColumn,
             colon: 'default',
+            labelWidthType: 'default',
             labelAlign: 'default',
             labelAutoWrap: 'default',
             hiddenLabel: false,
@@ -846,6 +847,43 @@ export default {
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
                 data.items.forEach((item) => (item.inlineMargin = [...margin]));
                 data.actions.inlinePadding = [...margin];
+              }
+            }
+          },
+          {
+            title: '标题宽度',
+            type: 'Radio',
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+            },
+            options: [
+              { label: '自定义', value: 'custom' },
+              { label: '跟随容器', value: 'default' }
+            ],
+            value: {
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'labelWidthType');
+              },
+              set({ id, name, data }: EditorResult<Data>, value: boolean) {
+                setFormItemProps({ data, id, name }, 'labelWidthType', value);
+              }
+            }
+          },
+          {
+            type: 'inputNumber',
+            options: [{ min: 1, width: 100, formatter: 'px' }],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              return (
+                !getFormItemProp({ data, id, name }, 'hiddenLabel') &&
+                getFormItemProp({ data, id, name }, 'labelWidthType') === 'custom'
+              );
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return [getFormItemProp({ data, id, name }, 'labelWidth') || data.labelWidth];
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, id, name }, 'labelWidth', value[0]);
               }
             }
           },

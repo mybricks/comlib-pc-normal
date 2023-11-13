@@ -95,6 +95,10 @@ export const formItemPropsSchema = {
   //   ],
   //   title: '边距'
   // },
+  labelWidth: {
+    type: 'number',
+    title: '标题自定义宽度'
+  },
   labelAutoWrap: {
     type: 'boolean',
     title: '标题是否换行'
