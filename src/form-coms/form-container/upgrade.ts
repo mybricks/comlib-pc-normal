@@ -60,7 +60,12 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
       item.labelAutoWrap = 'default';
     }
 
-
+    /**
+     * @description v1.4.13 表单项增加"标题宽度"、自定义宽度 配置项
+     */
+    if (item.labelWidthType === undefined) {
+      item.labelWidthType = 'default';
+    }
 
   });
 

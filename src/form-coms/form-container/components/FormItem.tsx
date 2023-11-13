@@ -38,6 +38,10 @@ const FormItem = (props: FormItemProps) => {
   const colon = item?.colon === 'default' ? formColon : item.colon;
 
   const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
+  const labelCol =
+    item?.labelWidthType === 'default'
+      ? void 0
+      : { flex: `0 0 ${item.labelWidth ? item.labelWidth : 98}px` };
 
   const whiteSpace =
     item?.labelAutoWrap === 'default'
@@ -58,6 +62,7 @@ const FormItem = (props: FormItemProps) => {
           <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
         )
       }
+      labelCol={labelCol}
       labelAlign={labelAlign}
       name={item?.name}
       required={item?.required}
