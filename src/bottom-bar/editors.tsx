@@ -24,7 +24,7 @@ const addBtn = ({
   input: any;
   type?: string;
   text?: string;
-  btnType?: string
+  btnType?: string;
 }) => {
   const id = uuid();
   const title = text || '按钮';
@@ -41,7 +41,7 @@ const addBtn = ({
     size: 'middle',
     type: 'default',
     shape: undefined,
-    dataType: 'number',
+    dataType: 'number'
   };
   output.add(id, title, schema);
   data.tools.push({ ...defaultBtn, type: btnType || 'default', margin: [0, 0] });
@@ -80,8 +80,8 @@ const moveDelete = (dataset: string) => {
             data.tools.splice(index, 1);
             data.tools.splice(index - 1, 0, tool);
           });
-        },
-      },
+        }
+      }
     },
     {
       title: '后移',
@@ -102,8 +102,8 @@ const moveDelete = (dataset: string) => {
             data.tools.splice(index, 1);
             data.tools.splice(index + 1, 0, tool);
           });
-        },
-      },
+        }
+      }
     },
     {
       title: '删除',
@@ -114,15 +114,15 @@ const moveDelete = (dataset: string) => {
             output.remove(data.tools[index].id);
             data.tools.splice(index, 1);
           });
-        },
-      },
-    },
+        }
+      }
+    }
   ];
 };
 
 export default {
   '@init': ({ data, output, input, style }: Result) => {
-    style.position = 'fixed'
+    style.position = 'fixed';
     style.left = 0;
     style.bottom = 0;
     style.height = 64;
@@ -138,16 +138,16 @@ export default {
       options: [
         {
           label: '居左',
-          value: 'flex-start',
+          value: 'flex-start'
         },
         {
           label: '居中',
-          value: 'center',
+          value: 'center'
         },
         {
           label: '居右',
-          value: 'flex-end',
-        },
+          value: 'flex-end'
+        }
       ],
       value: {
         get({ data }: Result) {
@@ -155,8 +155,8 @@ export default {
         },
         set({ data }: Result, value: string) {
           data.layout = value;
-        },
-      },
+        }
+      }
     },
     {
       title: '高度',
@@ -170,8 +170,8 @@ export default {
         set({ data, style }: Result, value: number[]) {
           data.height = value[0];
           style.height = value[0];
-        },
-      },
+        }
+      }
     },
     {
       title: '宽度',
@@ -182,9 +182,9 @@ export default {
         },
         set({ data, style }: Result, value: string) {
           // style.left = void 0
-          data.width = unitConversion(value)
-        },
-      },
+          data.width = unitConversion(value);
+        }
+      }
     },
     {
       title: '自定义挂载父节点',
@@ -196,8 +196,8 @@ export default {
         },
         set({ data }, value: string) {
           data.parentId = value;
-        },
-      },
+        }
+      }
     },
     {
       title: '添加按钮',
@@ -206,9 +206,9 @@ export default {
       value: {
         set({ data, output, input }: Result) {
           addBtn({ data, output, input });
-        },
-      },
-    },
+        }
+      }
+    }
   ],
   '[data-btn-id]': {
     title: '按钮',
@@ -216,6 +216,9 @@ export default {
       {
         title: '名称',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }: Result) {
             return get(data, focusArea, 'btnId', 'title');
@@ -226,20 +229,20 @@ export default {
             }
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {
               output.setTitle(data.tools[index].id, value);
-              input.setTitle(`display${data.tools[index].id}`, `显示${value}`)
-              input.setTitle(`hidden${data.tools[index].id}`, `隐藏${value}`)
-              input.setTitle(`disable${data.tools[index].id}`, `控制禁用${value}`)
+              input.setTitle(`display${data.tools[index].id}`, `显示${value}`);
+              input.setTitle(`hidden${data.tools[index].id}`, `隐藏${value}`);
+              input.setTitle(`disable${data.tools[index].id}`, `控制禁用${value}`);
             });
             res.title = value;
-          },
-        },
+          }
+        }
       },
       {
         title: '支持动态显示/隐藏',
         type: 'Switch',
         value: {
           get({ data, focusArea }: Result) {
-            return get(data, focusArea, 'btnId', 'dynamicDisplay')
+            return get(data, focusArea, 'btnId', 'dynamicDisplay');
           },
           set({ data, focusArea, input, output }: Result, value: boolean) {
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {
@@ -248,11 +251,19 @@ export default {
                 type: 'follow'
               };
               if (value) {
-                input.add(`display${data.tools[index].id}`, `显示${data.tools[index].title}`, schema)
-                input.add(`hidden${data.tools[index].id}`, `隐藏${data.tools[index].title}`, schema)
+                input.add(
+                  `display${data.tools[index].id}`,
+                  `显示${data.tools[index].title}`,
+                  schema
+                );
+                input.add(
+                  `hidden${data.tools[index].id}`,
+                  `隐藏${data.tools[index].title}`,
+                  schema
+                );
               } else {
-                input.remove(`display${data.tools[index].id}`)
-                input.remove(`hidden${data.tools[index].id}`)
+                input.remove(`display${data.tools[index].id}`);
+                input.remove(`hidden${data.tools[index].id}`);
               }
             });
             res.dynamicDisplay = value;
@@ -264,18 +275,22 @@ export default {
         type: 'Switch',
         value: {
           get({ data, focusArea }: Result) {
-            return get(data, focusArea, 'btnId', 'dynamicDisabled')
+            return get(data, focusArea, 'btnId', 'dynamicDisabled');
           },
           set({ data, focusArea, input, output }: Result, value: boolean) {
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {
               // output.setTitle(data.tools[index].id, value);
               const schema = {
-                type: "any"
+                type: 'any'
               };
               if (value) {
-                input.add(`disable${data.tools[index].id}`, `控制禁用${data.tools[index].title}`, schema)
+                input.add(
+                  `disable${data.tools[index].id}`,
+                  `控制禁用${data.tools[index].title}`,
+                  schema
+                );
               } else {
-                input.remove(`disable${data.tools[index].id}`)
+                input.remove(`disable${data.tools[index].id}`);
               }
             });
             res.dynamicDisabled = value;
@@ -294,7 +309,7 @@ export default {
               { label: '虚线按钮', value: 'dashed' },
               { label: '危险按钮', value: 'danger' },
               { label: '链接按钮', value: 'link' },
-              { label: '文字按钮', value: 'text' },
+              { label: '文字按钮', value: 'text' }
             ],
             value: {
               get({ data, focusArea }: Result) {
@@ -303,8 +318,8 @@ export default {
               set({ data, focusArea }: Result, value: string) {
                 const res = get(data, focusArea, 'btnId', 'obj');
                 res.type = value;
-              },
-            },
+              }
+            }
           },
           {
             title: '形状',
@@ -312,7 +327,7 @@ export default {
             options: [
               { label: '默认', value: '' },
               { label: '(椭)圆', value: 'circle' },
-              { label: '圆角矩阵', value: 'round' },
+              { label: '圆角矩阵', value: 'round' }
             ],
             value: {
               get({ data, focusArea }: Result) {
@@ -321,15 +336,15 @@ export default {
               set({ data, focusArea }: Result, value: string) {
                 const res = get(data, focusArea, 'btnId', 'obj');
                 res.shape = value;
-              },
-            },
+              }
+            }
           },
           {
             title: '间距',
             type: 'Inputnumber',
             options: [
               { title: '左', min: 0, max: 50, width: 50 },
-              { title: '右', min: 0, max: 50, width: 50 },
+              { title: '右', min: 0, max: 50, width: 50 }
             ],
             value: {
               get({ data, focusArea }: Result) {
@@ -338,10 +353,10 @@ export default {
               set({ data, focusArea }: Result, value: number[]) {
                 const res = get(data, focusArea, 'btnId', 'obj');
                 res.margin = value;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       },
       ...moveDelete('btnId'),
       {
@@ -356,9 +371,9 @@ export default {
                 outputId: res
               };
             }
-          },
-        ],
-      },
-    ],
-  },
+          }
+        ]
+      }
+    ]
+  }
 };

@@ -100,6 +100,9 @@ export default {
         {
           title: '标题',
           type: 'TextArea',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return decodeURIComponent(data.message);
