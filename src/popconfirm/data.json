@@ -1,0 +1,7 @@
+{
+    "title": "这是一个确认框",
+    "okText": "确认",
+    "cancelText": "取消",
+    "icon": "ExclamationCircle",
+    "showCancel": true
+}
