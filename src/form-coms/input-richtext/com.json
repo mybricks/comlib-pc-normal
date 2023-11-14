@@ -1,7 +1,7 @@
 {
   "title": "富文本输入框",
   "namespace": "mybricks.normal-pc.input-richtext",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "富文本输入框",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -35,9 +35,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValidate"
-      ]
+      "rels": ["returnValidate"]
     },
     {
       "id": "getValue",
@@ -46,9 +44,7 @@
       "schema": {
         "type": "any"
       },
-      "rels": [
-        "returnValue"
-      ]
+      "rels": ["returnValue"]
     },
     {
       "id": "resetValue",
@@ -100,6 +96,27 @@
             ]
           },
           "help": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "uploadResponse",
+      "title": "上传响应",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "title": "文件数据",
+            "type": "any"
+          },
+          "file_name": {
+            "title": "文件名称",
+            "type": "string"
+          },
+          "file_type": {
+            "title": "文件类型",
             "type": "string"
           }
         }
@@ -161,8 +178,5 @@
       }
     }
   ],
-  "schema": [
-    "mybricks.normal-pc.form-container/form-item",
-    "*"
-  ]
+  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
 }

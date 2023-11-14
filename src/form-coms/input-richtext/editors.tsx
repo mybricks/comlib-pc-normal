@@ -36,6 +36,50 @@ export default {
         }
       },
       {
+        title: '自定义上传',
+        type: 'switch',
+        description: '是否自定义上传逻辑',
+        value: {
+          get({ data }) {
+            return data.customUpload;
+          },
+          set({ data, input, output }, val: boolean) {
+            data.customUpload = val;
+            if (val) {
+              input.add('uploadResponse', '上传响应', {
+                type: 'object',
+                properties: {
+                  url: {
+                    title: 'url',
+                    type: 'string'
+                  }
+                }
+              });
+              output.add('upload', '上传', {
+                type: 'object',
+                properties: {
+                  file: {
+                    title: '文件数据',
+                    type: 'any'
+                  },
+                  file_name: {
+                    title: '文件名称',
+                    type: 'string'
+                  },
+                  file_type: {
+                    title: '文件类型',
+                    type: 'string'
+                  }
+                }
+              });
+            } else {
+              input.remove('uploadResponse');
+              output.remove('upload');
+            }
+          }
+        }
+      },
+      {
         title: '显示编辑栏',
         type: 'switch',
         value: {
@@ -70,10 +114,10 @@ export default {
                 label: '图片上传',
                 value: 'uploadimage'
               },
-              // {
-              //   label: '视频上传',
-              //   value: 'uploadVideo',
-              // },
+              {
+                label: '视频上传',
+                value: 'uploadVideo'
+              },
               {
                 label: '下划线',
                 value: 'underline'
@@ -235,6 +279,16 @@ export default {
             type: '_event',
             options: {
               outputId: 'onChange'
+            }
+          },
+          {
+            title: '上传',
+            type: '_event',
+            options: {
+              outputId: 'upload'
+            },
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.customUpload;
             }
           }
         ]
