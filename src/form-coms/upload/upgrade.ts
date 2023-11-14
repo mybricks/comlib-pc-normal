@@ -1,3 +1,5 @@
+import { inputIds, outputIds } from '../form-container/constants';
+
 export default function ({ input, output, slot, data }): boolean {
   //1.0.0 -> 1.0.1
   input.get('setValue').setSchema({
@@ -178,6 +180,16 @@ export default function ({ input, output, slot, data }): boolean {
   if (typeof data.fileClick === "undefined") {
     data.fileClick = false;
   };
+
+  /**
+   * @description v1.0.24 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.1 end ===============
 
   return true;
 }

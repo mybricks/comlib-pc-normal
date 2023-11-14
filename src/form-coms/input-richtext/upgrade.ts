@@ -47,7 +47,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.1.0 end ===============
 
   /**
-   * @description v1.1.4 新增上传事件配置
+   * @description v1.1.4 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: 'boolean'
+    });
+  }
+
+  /**
+   * @description v1.1.5 新增上传事件配置
    */
   if (!output.get('onUpload')) {
     output.add('onUpload', '上传', {
@@ -85,6 +94,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       }
     });
   }
+
   //=========== v1.1.4 end ===============
 
   return true;

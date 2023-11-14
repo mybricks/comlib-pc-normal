@@ -54,6 +54,13 @@ export default function ({
       setEnabled() {
         data.config.disabled = false;
       },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
+      },
       validate(model, outputRels) {
         validateFormItem({
           value: data.config.checked,

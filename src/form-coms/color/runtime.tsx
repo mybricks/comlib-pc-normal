@@ -111,6 +111,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['setEnabled'](() => {
       data.disabled = false;
     });
+    //8. 设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.disabled = false;
+      } else {
+        data.disabled = true;
+      }
+    });
   }, []);
 
   const onClick = (e) => {

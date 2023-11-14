@@ -14,6 +14,7 @@ export const inputIds = {
   //禁用/启用
   SetDisable: 'setDisable',
   SetEnable: 'setEnable',
+  IsEnable: 'isEnable',
 
   //显示/隐藏
   SetHidden: 'setHidden',

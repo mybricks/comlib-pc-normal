@@ -82,6 +82,16 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.config.disabled = false;
+      } else {
+        data.config.disabled = true;
+      }
+    });
+
     //设置数据源
     inputs['setOptions']((ds) => {
       if (Array.isArray(ds)) {

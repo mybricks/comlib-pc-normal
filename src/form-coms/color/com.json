@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.color",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "颜色选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_50jt73.cb1a11284761ebfd.png",
@@ -72,6 +72,13 @@
       "title": "设置启用",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

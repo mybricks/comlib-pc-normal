@@ -108,6 +108,13 @@ export default function ({
         setEnabled() {
           data.disabled = false;
         },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.disabled = false;
+          } else if (val === false) {
+            data.disabled = true;
+          }
+        },
         validate
       }
     },

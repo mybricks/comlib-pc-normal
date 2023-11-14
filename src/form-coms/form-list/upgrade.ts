@@ -123,5 +123,15 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
   }
   //=========== v1.2.0 end ===============
 
+  /**
+   * @description v1.2.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.2.3 end ===============
+
   return true;
 }

@@ -67,6 +67,13 @@ export default function ({
         setEnabled() {
           data.readOnly = false;
         },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.readOnly = false;
+          } else if (val === false) {
+            data.readOnly = true;
+          }
+        },
         validate
       }
     },
