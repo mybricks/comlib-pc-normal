@@ -18,6 +18,9 @@ export default {
     {
       title: '标题',
       type: 'Text',
+      options: {
+        locale: true
+      },
       value: {
         get({ data }: Result) {
           return data.title;
@@ -30,6 +33,9 @@ export default {
     {
       title: '副标题',
       type: 'Text',
+      options: {
+        locale: true
+      },
       value: {
         get({ data }: Result) {
           return data.subTitle;
