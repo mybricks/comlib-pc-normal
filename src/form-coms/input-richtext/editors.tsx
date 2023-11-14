@@ -70,10 +70,10 @@ export default {
                 label: '图片上传',
                 value: 'uploadimage'
               },
-              // {
-              //   label: '视频上传',
-              //   value: 'uploadVideo',
-              // },
+              {
+                label: '视频上传',
+                value: 'uploadVideo'
+              },
               {
                 label: '下划线',
                 value: 'underline'
@@ -132,6 +132,7 @@ export default {
           }
         }
       },
+
       {
         title: '样式',
         type: 'Style',
@@ -235,6 +236,16 @@ export default {
             type: '_event',
             options: {
               outputId: 'onChange'
+            }
+          },
+          {
+            title: '上传',
+            type: '_event',
+            options: {
+              outputId: 'onUpload'
+            },
+            ifVisible({ data }: EditorResult<Data>): boolean {
+              return !!data.toolbar?.find((name) => ['uploadimage', 'uploadVideo'].includes(name));
             }
           }
         ]

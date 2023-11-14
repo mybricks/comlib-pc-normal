@@ -7,3 +7,12 @@ export interface Data {
   value: any;
   rules: any[];
 }
+
+export type UploadFn = (
+  contents: { file: any; file_type: 'image' | 'video'; file_name: string }[]
+) => Promise<
+  | {
+      url: string;
+    }[]
+  | null
+>;

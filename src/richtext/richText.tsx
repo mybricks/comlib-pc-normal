@@ -29,7 +29,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
   const uploadCb = useRef<any>();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
+  const [tinymceFSVisible, setTinymceFSVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploadModel, setUploadModel] = useState<any>({
     title: '上传图片',
@@ -91,10 +91,10 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
                   });
                   break;
                 case 'customfullscreen':
-                  setTinymceFSVisble(true);
+                  setTinymceFSVisible(true);
                   break;
                 case 'customfullscreenexit':
-                  setTinymceFSVisble(false);
+                  setTinymceFSVisible(false);
                   break;
                 default:
                   break;
@@ -128,7 +128,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
     if (!tinyMCE) return;
 
     const tinymceInstance =
-      tinymceFSVisble || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
+      tinymceFSVisible || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
@@ -198,7 +198,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
   }, [modalVisible, uploadModel]);
 
   const RenderFSTinyMCE: JSX.Element | null = useMemo(() => {
-    return tinymceFSVisble ? (
+    return tinymceFSVisible ? (
       <div>
         <textarea
           ref={(node) => {
@@ -220,7 +220,7 @@ export default function ({ data, outputs, inputs, env, readonly }): JSX.Element 
         />
       </div>
     ) : null;
-  }, [tinymceFSVisble]);
+  }, [tinymceFSVisible]);
 
   return (
     <div

@@ -8,7 +8,7 @@ import { uuid } from '../../utils';
 import { loadPkg } from '../../utils/loadPkg';
 import { validateTrigger } from '../form-container/models/validate';
 import { EnvContext } from './context';
-import { Data } from './types';
+import { Data, UploadFn } from './types';
 
 import { Spin, message } from 'antd';
 
@@ -46,10 +46,10 @@ export default function ({
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
   const uploadCb = useRef<any>();
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
+  const [tinymceFSVisible, setTinymceFSVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploadModel, setUploadModel] = useState<any>({
     title: '上传图片',
@@ -59,6 +59,22 @@ export default function ({
   const [value, setValue] = useState<any>();
 
   const textareaRef = useRef(null);
+
+  /** 实现搭建版 upload 函数 */
+  const uploadResponseSendRef = useRef<any>(null);
+  const upload: UploadFn = async (content) => {
+    outputs['onUpload'](content);
+    const response = await new Promise((res) => {
+      uploadResponseSendRef.current = res;
+    });
+    return response as { url: string }[] | null;
+  };
+  useEffect(() => {
+    inputs['setUploadResponse']((response) => {
+      uploadResponseSendRef.current?.(response);
+    });
+  }, []);
+  // -------------- 搭建版 upload 函数 end --------------
 
   const Load: () => void = useCallback(async () => {
     await loadPkg(tinymceCDN, 'tinyMCE');
@@ -74,7 +90,7 @@ export default function ({
 
   const TinymceInit: (cfg: {
     selector?: string;
-    height: string | number;
+    height?: string | number;
     isFS: boolean;
     toolbar: any;
     target: any;
@@ -95,12 +111,6 @@ export default function ({
             click: (type: string) => {
               switch (type) {
                 case 'uploadimage':
-                  if (!env.uploadFile) {
-                    const log = '【富文本输入】： 环境变量 env.uploadFile 方法未实现';
-                    message.error(log);
-                    logger.error(log);
-                    return;
-                  }
                   setModalVisible(true);
                   setUploadModel({
                     title: '上传图片',
@@ -117,10 +127,10 @@ export default function ({
                   });
                   break;
                 case 'customfullscreen':
-                  setTinymceFSVisble(true);
+                  setTinymceFSVisible(true);
                   break;
                 case 'customfullscreenexit':
-                  setTinymceFSVisble(false);
+                  setTinymceFSVisible(false);
                   break;
                 default:
                   break;
@@ -189,7 +199,7 @@ export default function ({
     if (!tinyMCE) return;
 
     const tinymceInstance =
-      tinymceFSVisble || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
+      tinymceFSVisible || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
@@ -205,7 +215,7 @@ export default function ({
     if (!tinyMCE) return;
 
     const tinymceInstance =
-      tinymceFSVisble || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
+      tinymceFSVisible || bool ? tinyMCE.editors[tinymceFSId] : tinyMCE.editors[tinymceId];
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
@@ -270,12 +280,13 @@ export default function ({
         uploadModel={uploadModel}
         onClose={onModalClose}
         visible={modalVisible}
+        upload={upload}
       />
     );
   }, [modalVisible, uploadModel]);
 
   const RenderFSTinyMCE: JSX.Element | null = useMemo(() => {
-    return tinymceFSVisble ? (
+    return tinymceFSVisible ? (
       <div>
         <textarea
           ref={(node) => {
@@ -299,7 +310,7 @@ export default function ({
         />
       </div>
     ) : null;
-  }, [tinymceFSVisble]);
+  }, [tinymceFSVisible]);
 
   useEffect(() => {
     //3.校验
@@ -311,11 +322,11 @@ export default function ({
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -345,8 +356,8 @@ export default function ({
     });
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
       }
     });
   }, [value]);

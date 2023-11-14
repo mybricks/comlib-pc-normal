@@ -5,6 +5,7 @@ import { Modal, Spin, Input } from 'antd';
 import { EnvContext } from '../context';
 
 import css from '../richText.less';
+import { UploadFn } from '../types';
 
 const disabledStyle = {
   color: 'rgba(0,0,0,.25)',
@@ -20,6 +21,7 @@ const disabledStyle = {
 
 interface Props {
   update: any;
+  upload: UploadFn;
   onClose: any;
   visible: boolean;
   uploadModel: any;
@@ -59,11 +61,10 @@ const renderPreview = ({ type, url }) => {
       );
   }
 };
-export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel }: Props) {
+export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel, upload }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { env } = useContext(EnvContext);
 
   return (
     <div ref={ref}>
@@ -74,11 +75,20 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
         ref={inputRef}
         className={css['editor-upload__input']}
         onChange={(evt) => {
-          const file: any = (evt.target && evt.target.files && evt.target.files[0]) || null;
+          const file = (evt.target && evt.target.files && evt.target.files[0]) || null;
           if (file) {
             setUploading(true);
-            uploadFile([file], env).then((urlList) => {
-              uploadModel.url = urlList[0];
+            upload([
+              {
+                file: file,
+                file_name: file.name,
+                file_type: uploadModel.type
+              }
+            ]).then((urlList) => {
+              const url = urlList?.[0]?.url;
+              if (url) {
+                uploadModel.url = url;
+              }
               setUploading(false);
             });
           }
@@ -126,8 +136,8 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
           {uploadModel.url ? null : (
             <textarea
               onPaste={(e) => {
-                paste(e, env).then((urlList) => {
-                  uploadModel.url = urlList[0];
+                paste(e, upload, uploadModel.type).then((url) => {
+                  uploadModel.url = url;
                   setUploading(false);
                 });
               }}
@@ -158,7 +168,7 @@ export default function ImgModal({ onOk, onChange, visible, onClose, uploadModel
   );
 }
 
-async function paste(e: any, env: RuntimeParams<any>['env']) {
+async function paste(e: any, upload: UploadFn, type: string) {
   const cbd = e.clipboardData;
 
   if (!(e.clipboardData && e.clipboardData.items)) return;
@@ -186,37 +196,17 @@ async function paste(e: any, env: RuntimeParams<any>['env']) {
       files.push(file);
     }
   }
-  const ret = await uploadFile(files, env);
-  e.target.value = ret[0];
-  return ret;
+  const ret = await upload(
+    files.map((file) => ({
+      file,
+      file_name: file.name,
+      file_type: type as 'video' | 'image'
+    }))
+  );
+  e.target.value = ret?.[0].url;
+  return ret?.[0].url;
 }
 
 function resetTextArea(e: any) {
   e.value = '';
 }
-
-const uploadFile = async (files: Array<File>, env: RuntimeParams<any>['env']) => {
-  const res = await env.uploadFile(files).catch((error) => {
-    console.error(error);
-    return [];
-  });
-  return res.map(({ url }) => url);
-};
-
-// function upload(file: any, set: (url: string) => void) {
-//   uploadFilesToCDN([file]).then((res: any) => {
-//     if (res && res.result === 1 && res.data.success) {
-//       const data = res.data.fileResults || [];
-//       const url = data[0]?.cdnUrl;
-
-//       if (url.length) {
-//         set(url);
-//         message.success('上传成功');
-//       } else {
-//         message.error(`上传失败，请稍后重试！${res.statusText}`);
-//       }
-//     } else {
-//       message.error(`上传失败，请稍后重试！${res.statusText}`);
-//     }
-//   });
-// }
