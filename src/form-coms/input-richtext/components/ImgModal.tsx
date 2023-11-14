@@ -234,6 +234,9 @@ const uploadFile = async (
       file_name: files[0].name,
       file_type: fileType
     });
+    if (!res) {
+      return [];
+    }
     return [res.url];
   } else {
     const res = await env.uploadFile(files).catch((error) => {

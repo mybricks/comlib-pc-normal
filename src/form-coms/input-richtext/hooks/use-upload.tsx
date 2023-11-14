@@ -14,7 +14,9 @@ export default function useUpload(inputs: any, outputs: any) {
   const resolvedRef = useRef<any>(null);
 
   const upload: UploadFn = async (params) => {
-    outputs['upload'](params);
+    setTimeout(() => {
+      outputs['upload'](params);
+    }, 0);
     return await new Promise((res) => {
       resolvedRef.current = res;
     });
