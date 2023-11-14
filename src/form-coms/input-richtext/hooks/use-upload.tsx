@@ -22,7 +22,7 @@ export default function useUpload(inputs: any, outputs: any) {
   };
 
   useEffect(() => {
-    inputs['uploadResponse']((response: { url: string }) => {
+    inputs['uploadResponse']?.((response: { url: string }) => {
       resolvedRef.current && resolvedRef.current(response);
     });
   }, []);
