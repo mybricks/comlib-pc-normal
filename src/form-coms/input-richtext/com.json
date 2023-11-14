@@ -108,15 +108,7 @@
         "type": "object",
         "properties": {
           "file": {
-            "title": "文件数据",
-            "type": "any"
-          },
-          "file_name": {
-            "title": "文件名称",
-            "type": "string"
-          },
-          "file_type": {
-            "title": "文件类型",
+            "title": "url",
             "type": "string"
           }
         }

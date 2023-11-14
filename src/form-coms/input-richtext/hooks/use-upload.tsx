@@ -14,10 +14,11 @@ export default function useUpload(inputs: any, outputs: any) {
   const resolvedRef = useRef<any>(null);
 
   const upload: UploadFn = async (params) => {
-    outputs['upload'](params);
-    return await new Promise((res) => {
+    const responsePromise = new Promise<{ url: string }>((res) => {
       resolvedRef.current = res;
     });
+    outputs['upload'](params);
+    return await responsePromise;
   };
 
   useEffect(() => {
