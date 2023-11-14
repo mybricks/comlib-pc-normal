@@ -104,5 +104,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
+  /**
+   * @description v1.3.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.3.3 end ===============
+
   return true;
 }

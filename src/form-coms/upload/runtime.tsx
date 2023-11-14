@@ -109,6 +109,16 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.config.disabled = false;
+      } else {
+        data.config.disabled = true;
+      }
+    });
+
     inputs['uploadDone']((file: any) => {
       onUploadComplete(file);
     });

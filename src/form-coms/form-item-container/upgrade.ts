@@ -107,5 +107,15 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   }
   //=========== v1.1.1 end ===============
 
+  /**
+   * @description v1.1.2 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.2 end ===============
+
   return true;
 }

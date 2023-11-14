@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "级联选择",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
@@ -82,8 +82,16 @@
       }
     },
     {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
       "id": "setOptions",
       "title": "输入数据源",
+      "desc": "设置级联选择的下拉选项列表",
       "schema": {
         "title": "输入数据源数据",
         "type": "array",

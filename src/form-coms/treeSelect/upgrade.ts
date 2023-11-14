@@ -1,6 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data, IconType } from './types';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
 
@@ -170,6 +171,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.2.0 end ===============
 
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+
+  /**
+   * @description v1.2.5 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.2.5 end ===============
 
   return true;
 }
