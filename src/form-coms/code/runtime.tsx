@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Input } from 'antd';
 import { Data } from './constants';
-import CodeEditor from './CodeEditor';
+import CodeEditor from './CodeLocal';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
