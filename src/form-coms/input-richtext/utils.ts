@@ -1,7 +1,7 @@
 interface InitProps {
   readonly?: boolean;
   isFS: boolean;
-  selector: string;
+  selector?: string;
   customIconsId: string;
   height: number | string;
   toolbar: string;
