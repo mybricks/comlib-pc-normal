@@ -32,7 +32,8 @@
         "./src/custom-container/com.json",
         "./src/popover/com.json",
         "./src/dialog/com.json",
-        "./src/drawer/com.json"
+        "./src/drawer/com.json",
+        "./src/popconfirm/com.json"
       ]
     },
     {
