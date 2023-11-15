@@ -14,7 +14,7 @@ import {
   traverseTree
 } from './utils';
 import { Data, TreeData } from './types';
-import { OutputIds } from './constants';
+import { DragConfigKeys, InputIds, OutputIds } from './constants';
 import TreeNode from './Components/TreeNode';
 import css from './style.less';
 
@@ -108,6 +108,8 @@ export default function (props: RuntimeParams<Data>) {
         inputs['outParentKeys']((value) => {
           if (typeof value === 'boolean') data.outParentKeys = value;
         });
+
+      // 设置数据源
       inputs['treeData'] &&
         inputs['treeData']((value: TreeData[]) => {
           if (value && Array.isArray(value)) {
@@ -126,18 +128,35 @@ export default function (props: RuntimeParams<Data>) {
             );
           }
         });
+
       // 搜索
       inputs['searchValue'] &&
         inputs['searchValue']((searchValue: string) => {
           search(searchValue);
         });
-      // 自定义添加提示文案
-      inputs['addTips'] &&
-        inputs['addTips']((ds: string[]) => {
-          Array.isArray(ds)
-            ? (data.addTips = ds)
-            : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
+
+      // 过滤
+      inputs['filter'] &&
+        inputs['filter']((filterValue: string) => {
+          data.filterValue = filterValue;
         });
+
+      // 设置选中项
+      inputs.setSelectedKeys &&
+        inputs.setSelectedKeys((keys: Array<string>) => {
+          if (!Array.isArray(keys)) {
+            return onError('设置选中项参数是数组');
+          }
+          setSelectedKeys(keys);
+          const selectedValues = outputNodeValues(
+            data.treeData,
+            keys,
+            keyFieldName,
+            data.valueType
+          );
+          outputs[OutputIds.OnNodeClick](selectedValues);
+        });
+
       // 设置勾选项
       inputs['checkedValues'] &&
         inputs['checkedValues']((value: []) => {
@@ -160,26 +179,33 @@ export default function (props: RuntimeParams<Data>) {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
         });
 
-      // 设置选中项
-      inputs.setSelectedKeys &&
-        inputs.setSelectedKeys((keys: Array<string>) => {
-          if (!Array.isArray(keys)) {
-            return onError('设置选中项参数是数组');
+      // 设置拖拽功能
+      inputs[InputIds.SetDragConfig] &&
+        inputs[InputIds.SetDragConfig]((ds: object) => {
+          let config = {
+            draggable: false,
+            allowDrop: true,
+            useDropScope: false
+          };
+          if (typeof ds === 'boolean') {
+            config.draggable = ds;
+          } else if (typeCheck(ds, 'object')) {
+            config = {
+              ...config,
+              ...ds
+            };
           }
-          setSelectedKeys(keys);
-          const selectedValues = outputNodeValues(
-            data.treeData,
-            keys,
-            keyFieldName,
-            data.valueType
-          );
-          outputs[OutputIds.NODE_CLICK](selectedValues);
+          DragConfigKeys.forEach((key) => {
+            config[key] != null && (data[key] = config[key]);
+          });
         });
 
-      // 过滤
-      inputs['filter'] &&
-        inputs['filter']((filterValue: string) => {
-          data.filterValue = filterValue;
+      // 自定义添加提示文案
+      inputs['addTips'] &&
+        inputs['addTips']((ds: string[]) => {
+          Array.isArray(ds)
+            ? (data.addTips = ds)
+            : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
         });
     }
   }, []);
@@ -206,7 +232,7 @@ export default function (props: RuntimeParams<Data>) {
     if (data.useCheckEvent) {
       const resultKeys =
         data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
-      outputs[OutputIds.ON_CHECK](
+      outputs[OutputIds.OnCheck](
         outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
       );
     }
@@ -243,7 +269,7 @@ export default function (props: RuntimeParams<Data>) {
       }
     }
     setSelectedKeys([...selectedKeys]);
-    outputs[OutputIds.NODE_CLICK](selectedValues);
+    outputs[OutputIds.OnNodeClick](selectedValues);
   };
 
   /**
@@ -310,7 +336,7 @@ export default function (props: RuntimeParams<Data>) {
         break;
     }
 
-    outputs[OutputIds.ON_DROP_DONE]({
+    outputs[OutputIds.OnDropDone]({
       dragNodeInfo,
       dropNodeInfo,
       flag: dropFlag
