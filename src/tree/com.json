@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.3",
+  "version": "1.0.31",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -44,17 +44,6 @@
       }
     },
     {
-      "id": "checkedValues",
-      "title": "设置勾选项",
-      "schema": {
-        "type": "array",
-        "items": {
-          "title": "字段名",
-          "type": "string"
-        }
-      }
-    },
-    {
       "id": "nodeData",
       "title": "更新节点数据",
       "schema": {
@@ -82,6 +71,36 @@
       "desc": "输入字符串，高亮展示匹配的树节点"
     },
     {
+      "id": "filter",
+      "title": "过滤",
+      "schema": {
+        "type": "string"
+      },
+      "desc": "输入字符串，筛选匹配的树节点"
+    },
+    {
+      "id": "setSelectedKeys",
+      "title": "设置选中项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "设置树形结构中选中的节点"
+    },
+    {
+      "id": "checkedValues",
+      "title": "设置勾选项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "title": "字段名",
+          "type": "string"
+        }
+      }
+    },
+    {
       "id": "disableCheckbox",
       "title": "禁用勾选",
       "schema": {
@@ -106,6 +125,61 @@
       }
     },
     {
+      "id": "setDragConfig",
+      "title": "设置拖拽功能",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "draggable": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string",
+                "value": "custom"
+              }
+            ]
+          },
+          "draggableScript": {
+            "type": "string"
+          },
+          "allowDrop": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string",
+                "value": "custom"
+              }
+            ]
+          },
+          "allowDropScript": {
+            "type": "string"
+          },
+          "useDropScope": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "boolean",
+                "value": false
+              },
+              {
+                "type": "string",
+                "value": "parent"
+              }
+            ]
+          },
+          "dropScopeMessage": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
       "id": "addTips",
       "title": "设置添加提示文案",
       "schema": {
@@ -114,25 +188,6 @@
           "type": "string"
         }
       }
-    },
-    {
-      "id": "setSelectedKeys",
-      "title": "设置选中项",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "desc": "设置树形结构中选中的节点"
-    },
-    {
-      "id": "filter",
-      "title": "过滤",
-      "schema": {
-        "type": "string"
-      },
-      "desc": "输入字符串，筛选匹配的树节点"
     }
   ],
   "outputs": [
@@ -234,6 +289,13 @@
             "type": "boolean"
           }
         }
+      }
+    },
+    {
+      "id": "onDropDone",
+      "title": "拖拽完成",
+      "schema": {
+        "type": "object"
       }
     }
   ]

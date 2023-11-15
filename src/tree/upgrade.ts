@@ -1,4 +1,6 @@
+import { InputIds, OutputIds } from "./constants";
 import { Data, ValueType } from "./types";
+import { refreshSchema } from "./utils";
 
 export default function ({
   data,
@@ -157,6 +159,72 @@ export default function ({
   }
 
   //=========== v1.0.25 end ===============
+
+  /**
+    * @description v1.0.31 feat: 支持 动态配置拖拽 
+    */
+
+  if (!input.get(InputIds.SetDragConfig)) {
+    input.add(InputIds.SetDragConfig, '设置拖拽功能', {
+      type: 'object',
+      properties: {
+        draggable: {
+          type: 'enum',
+          items: [
+            {
+              type: 'boolean',
+            },
+            {
+              type: 'string',
+              value: 'custom',
+            },
+          ],
+        },
+        draggableScript: {
+          type: 'string',
+        },
+        allowDrop: {
+          type: 'enum',
+          items: [
+            {
+              type: 'boolean',
+            },
+            {
+              type: 'string',
+              value: 'custom',
+            },
+          ],
+        },
+        allowDropScript: {
+          type: 'string',
+        },
+        useDropScope: {
+          type: 'enum',
+          items: [
+            {
+              type: 'boolean',
+              value: false,
+            },
+            {
+              type: 'string',
+              value: 'parent',
+            },
+          ],
+        },
+        dropScopeMessage: {
+          type: 'string',
+        },
+      },
+    });
+  }
+  if (!output.get(OutputIds.OnDropDone)) {
+    output.add(OutputIds.OnDropDone, '拖拽完成', {
+      type: 'object',
+    });
+    refreshSchema({ data, input, output } as any);
+  }
+
+  //=========== v1.0.31 end ===============
 
   return true;
 }
