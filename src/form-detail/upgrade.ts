@@ -55,5 +55,10 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
     data.mobileColumn = 1
   }
 
+  // 1.0.15 右上角操作区插槽
+  if (typeof data.showExtra === 'undefined') {
+    data.showExtra = false
+  }
+
   return true;
 }

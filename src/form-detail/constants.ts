@@ -83,8 +83,9 @@ export interface Data {
   useSlotProps?: boolean;
   rawData: any;
   inputSchema: any;
-  autoWidth?: boolean
-  globalLabelStyle: React.CSSProperties
+  autoWidth?: boolean;
+  globalLabelStyle: React.CSSProperties;
+  showExtra: boolean; // 右上角操作区域
 }
 
 export const InputIds = {
@@ -95,5 +96,6 @@ export const InputIds = {
 };
 
 export const ScopeSlotIds = {
-  Content: 'content'
+  Content: 'content',
+  UpperRightArea: 'upperRightArea'
 }

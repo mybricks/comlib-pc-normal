@@ -1,4 +1,4 @@
-import { Data, InputIds, TypeEnum } from '../constants';
+import { Data, InputIds, ScopeSlotIds, TypeEnum } from '../constants';
 import { createItem, updateIOSchema } from './utils';
 import { updateScopeIOSchema } from './item/baseEditor';
 
@@ -41,6 +41,24 @@ export const BaseEditor = [
       },
       set({ data }: EditorResult<Data>, value: string) {
         data.title = value;
+      }
+    }
+  },
+  {
+    title: '右上角操作区',
+    type: 'Switch',
+    description: '开启后，支持在描述列表右上角自定义内容',
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return !!data.showExtra;
+      },
+      set({ data, slot, input }: EditorResult<Data>, value: boolean) {
+        if (value) {
+          slot.add(ScopeSlotIds.UpperRightArea, '右上角操作区');
+        } else {
+          slot.remove(ScopeSlotIds.UpperRightArea);
+        }
+        data.showExtra = value;
       }
     }
   },
