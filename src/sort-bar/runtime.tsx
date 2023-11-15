@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons'
-import css from './runtime.less'
+import React, { useEffect, useState } from 'react';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import css from './runtime.less';
 
 export interface Children {
-  key: string
-  content: string
-  fieldName: string
-  order: 'disorder' | 'ascend' | 'descend'
+  key: string;
+  content: string;
+  fieldName: string;
+  order: 'disorder' | 'ascend' | 'descend';
 }
 
 /**
@@ -16,8 +16,8 @@ export interface Children {
  */
 
 export interface Data {
-  children: Children[]
-  isSettingsSubmit: boolean
+  children: Children[];
+  isSettingsSubmit: boolean;
 }
 
 export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
@@ -25,19 +25,19 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       inputs['inputSettings']((val) => {
-        data.children = val
-      })
+        data.children = val;
+      });
     }
-  }, [])
+  }, []);
 
   //点击改变升降序函数
   const onClick = (e) => {
     if (e.order === 'disorder') {
-      e.order = 'ascend'
+      e.order = 'ascend';
     } else if (e.order === 'ascend') {
-      e.order = 'descend'
+      e.order = 'descend';
     } else if (e.order === 'descend') {
-      e.order = 'disorder'
+      e.order = 'disorder';
     }
 
     //点击触发整体输出
@@ -48,20 +48,20 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           current: {
             content: e.content,
             filedName: e.fieldName,
-            order: e.order,
+            order: e.order
           },
           //全量排序数据
           sorter: data.children.map((val) => {
             return {
               content: val.content,
               filedName: val.fieldName,
-              order: val.order,
-            }
-          }),
-        })
+              order: val.order
+            };
+          })
+        });
       }
     }
-  }
+  };
 
   //可决定主动提交，整体输出
   useEffect(() => {
@@ -75,13 +75,13 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             return {
               content: val.content,
               filedName: val.fieldName,
-              order: val.order,
-            }
-          }),
-        })
+              order: val.order
+            };
+          })
+        });
       }
     }
-  }, [])
+  }, []);
 
   const SortRender = () => {
     //点击改变升降序函数，输出函数
@@ -96,30 +96,26 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
               key={list.key}
             >
               <div className={css.inner}>
-                <div className={css.content}>{list.content}</div>
+                <div className={css.content}>{env.i18n(list.content)}</div>
                 <div className={css.arr}>
                   <CaretUpOutlined
                     className={
-                      list.order === 'ascend'
-                        ? `${css.arrUp} ${css.active}`
-                        : `${css.arrUp}`
+                      list.order === 'ascend' ? `${css.arrUp} ${css.active}` : `${css.arrUp}`
                     }
                   />
                   <CaretDownOutlined
                     className={
-                      list.order === 'descend'
-                        ? `${css.arrDown} ${css.active}`
-                        : `${css.arrUp}`
+                      list.order === 'descend' ? `${css.arrDown} ${css.active}` : `${css.arrUp}`
                     }
                   />
                 </div>
               </div>
             </div>
-          )
+          );
         })}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -131,5 +127,5 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
         <p className={css.suggestion}>在编辑栏中点击“添加”</p>
       )}
     </div>
-  )
+  );
 }

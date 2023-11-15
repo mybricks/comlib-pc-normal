@@ -107,6 +107,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '自定义开关关闭时, 可编辑提示内容',
           ifVisible({ data }: EditorResult<Data>) {
             return !data.isCustom;
@@ -241,6 +244,9 @@ export default {
               {
                 title: '选项标签',
                 type: 'textarea',
+                options: {
+                  locale: true
+                },
                 value: 'label'
               },
               {
@@ -342,6 +348,9 @@ export default {
           {
             title: '选项标签',
             type: 'Text',
+            options: {
+              locale: true
+            },
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
                 return get(data, focusArea, 'menuItem', 'label');
