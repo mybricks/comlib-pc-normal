@@ -55,13 +55,15 @@ export function Init({
     nonbreaking_force_tab: true,
     convert_urls: false,  //url不转换
     relative_urls: false, //转换为相对地址
-    skin: `oxide`,
-    theme: 'silver',
+    // skin: `oxide`,
+    skin: false,
+    // theme: 'silver',
     setup: setUp,
     init_instance_callback: function (editor) {
       initCB && initCB(editor);
     },
     readonly,
+    content_css: '',
     content_style: readonly
       ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
       : `p {margin: 0px; border:0px ; padding: 0px;}`,
