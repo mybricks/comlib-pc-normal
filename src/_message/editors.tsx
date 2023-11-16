@@ -26,6 +26,9 @@ export default {
       ifVisible({ data }: EditorResult<Data>) {
         return !data.isExternal;
       },
+      options: {
+        locale: true
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.content;

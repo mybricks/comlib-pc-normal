@@ -298,11 +298,11 @@ export default function (props: RuntimeParams<Data>) {
       case 'parent':
         if (dropFlag === 0 && dropNode[keyFieldName] !== dragNodeParent?.[keyFieldName]) {
           // 拖拽到dropNode的第一个子节点
-          message.error(data.dropScopeMessage);
+          message.error(env.i18n(data.dropScopeMessage));
           return;
         }
         if (dropFlag !== 0 && dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
-          message.error(data.dropScopeMessage);
+          message.error(env.i18n(data.dropScopeMessage));
           return;
         }
         break;

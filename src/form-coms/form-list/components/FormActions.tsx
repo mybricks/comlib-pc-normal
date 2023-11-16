@@ -131,7 +131,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
           >
             <Space size={iconConfig?.gutter || 8}>
               {iconConfig?.location === LocationEnum.FRONT ? icon : void 0}
-              {item.title}
+              {env.i18n(item.title)}
               {iconConfig?.location === LocationEnum.BACK ? icon : void 0}
             </Space>
           </Button>

@@ -11,6 +11,7 @@ interface Props {
   item: any;
   field: any;
   slots: any;
+  env: any;
 }
 
 const JSXWrapper = ({ com }) => {
@@ -18,7 +19,7 @@ const JSXWrapper = ({ com }) => {
 };
 
 const FormItem = (props: Props) => {
-  const { com, item, field, data, slots } = props;
+  const { com, item, field, data, slots, env } = props;
 
   const margin = [...item.inlineMargin];
 
@@ -47,12 +48,18 @@ const FormItem = (props: Props) => {
       <Form.Item
         {...field}
         {...config}
-        label={showLabel ? <label style={{ ...item?.labelStyle }}>{item?.label}</label> : void 0}
+        label={
+          showLabel ? (
+            <label style={{ ...item?.labelStyle }}>{env.i18n(item?.label)}</label>
+          ) : (
+            void 0
+          )
+        }
         name={field ? [field.name, item?.name] : item?.name}
         required={item?.required}
         validateStatus={item?.validateStatus?.[field.name]}
         help={item?.help?.[field.name]}
-        tooltip={item?.tooltip}
+        tooltip={env.i18n(item?.tooltip)}
         style={style}
       >
         <JSXWrapper com={com} />
@@ -64,7 +71,7 @@ const FormItem = (props: Props) => {
       {item.description && (
         <div className={css.formItemDesc}>
           <Form.Item noStyle>
-            <span style={item.descriptionStyle}>{item.description}</span>
+            <span style={item.descriptionStyle}>{env.i18n(item.description)}</span>
           </Form.Item>
         </div>
       )}
