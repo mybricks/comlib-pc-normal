@@ -41,7 +41,7 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
       }}
     >
       <Panel
-        header={data.isCustomTitle ? slots[SlotIds.Title].render() : data.title}
+        header={data.isCustomTitle ? slots[SlotIds.Title].render() : env.i18n(data.title)}
         key={defaultKey}
         forceRender
         extra={data.useExtra && slots[SlotIds.Extra] ? slots[SlotIds.Extra].render() : null}
