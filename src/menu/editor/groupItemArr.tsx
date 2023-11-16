@@ -43,7 +43,8 @@ export const groupItemArr = (props: EditorResult<Data>) => {
               type: 'TextArea',
               value: 'title',
               options: {
-                autoSize: { maxRows: 1 }
+                autoSize: { maxRows: 1 },
+                locale: true
               }
             },
             {

@@ -32,7 +32,7 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
     return content !== '' ? (
       <div
         style={{ whiteSpace: 'pre-wrap' }}
-        dangerouslySetInnerHTML={{ __html: content.replace('\\n', '<br/>') }}
+        dangerouslySetInnerHTML={{ __html: env.i18n(content).replace('\\n', '<br/>') }}
       />
     ) : null;
   };
