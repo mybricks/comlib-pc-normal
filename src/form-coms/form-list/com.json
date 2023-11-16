@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-list",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "可以动态增加、删除的组合表单项，数据格式为数组",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",
@@ -87,8 +87,8 @@
     },
     {
       "id": "setValidateInfo",
-      "title": "设置校验状态",
-      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
       "schema": {
         "type": "object",
         "properties": {

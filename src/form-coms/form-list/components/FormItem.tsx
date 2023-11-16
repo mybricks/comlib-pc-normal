@@ -23,7 +23,8 @@ const FormItem = (props: Props) => {
   const margin = [...item.inlineMargin];
 
   const style: React.CSSProperties = {
-    margin: margin.map(String).map(unitConversion).join(' ')
+    margin: margin.map(String).map(unitConversion).join(' '),
+    flexWrap: 'nowrap'
   };
   // const whiteSpace =
   //   item?.labelAutoWrap === 'default'
