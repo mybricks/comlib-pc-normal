@@ -74,7 +74,9 @@ export default function (props: RuntimeParams<Data>) {
   const description = (
     <>
       <div>
-        {data.showInfo && env.i18n(decodeURIComponent(data.content))}
+        {data.showInfo && typeof data.content === 'string'
+          ? decodeURIComponent(data.content)
+          : env.i18n(data.content)}
         {data.useContentSlot && slots[SlotIds.DescSlot].render()}
       </div>
     </>
@@ -91,7 +93,11 @@ export default function (props: RuntimeParams<Data>) {
         style={{
           color: colorObj[data.type]
         }}
-        message={env.i18n(decodeURIComponent(data.message))}
+        message={
+          typeof data.message === 'string'
+            ? decodeURIComponent(data.message)
+            : env.i18n(data.message)
+        }
         type={data.type}
         showIcon={data.showIcon}
         //void 0表示去除掉该配置项
