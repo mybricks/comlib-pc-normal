@@ -223,8 +223,8 @@ export default {
           get({ data, focusArea }: Result) {
             return get(data, focusArea, 'btnId', 'title');
           },
-          set({ data, focusArea, input, output }: Result, value: string) {
-            if (typeof value !== 'string' || value.trim() === '') {
+          set({ data, focusArea, input, output, env }: Result, value: string) {
+            if (typeof env.i18n(value) !== 'string' || env.i18n(value).trim() === '') {
               throw new Error('请输入正确的按钮标题');
             }
             const res = get(data, focusArea, 'btnId', 'obj', (index) => {

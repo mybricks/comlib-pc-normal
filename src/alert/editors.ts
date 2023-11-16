@@ -105,10 +105,18 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return decodeURIComponent(data.message);
+              if(typeof data.message !== 'string'){
+                return data.message
+              }else{
+                return decodeURIComponent(data.message);
+              }
             },
             set({ data }: EditorResult<Data>, value: string) {
-              data.message = encodeURIComponent(value);
+              if(typeof value !== 'string'){
+                data.message = value
+              }else{
+                data.message = encodeURIComponent(value);
+              }
             }
           }
         },
@@ -123,12 +131,23 @@ export default {
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.showInfo;
           },
+          options: {
+            locale: true
+          },
           value: {
             get({ data }: EditorResult<Data>) {
-              return decodeURIComponent(data.content);
+              if(typeof data.content !== 'string'){
+                return data.content
+              }else{
+                return decodeURIComponent(data.content);
+              }
             },
             set({ data }: EditorResult<Data>, value: string) {
-              data.content = encodeURIComponent(value);
+              if(typeof value !== 'string'){
+                data.content = value
+              }else{
+                data.content = encodeURIComponent(value);
+              }
             }
           }
         }),
