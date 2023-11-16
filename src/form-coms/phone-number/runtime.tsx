@@ -13,6 +13,7 @@ export interface Data {
     disabled: boolean;
     addonBefore: string;
     addonAfter: string;
+    placeholder: string;
   };
 }
 
@@ -118,10 +119,17 @@ export default function ({
     });
   }, []);
 
+  const inputConfig = {
+    ...data.config,
+    placeholder: env.i18n(data.config.placeholder),
+    addonBefore: env.i18n(data.config.addonBefore),
+    addonAfter: env.i18n(data.config.addonAfter)
+  };
+
   let jsx = (
     <Input
       type="text"
-      {...data.config}
+      {...inputConfig}
       value={data.value}
       readOnly={!!edit}
       onChange={changeValue}

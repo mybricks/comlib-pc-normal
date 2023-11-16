@@ -5,9 +5,9 @@ export default {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
@@ -82,7 +82,6 @@ export default {
         type: 'ArrayCheckbox',
         options: {
           checkField: 'status',
-
           visibleField: 'visible',
           getTitle,
           items: [
@@ -92,6 +91,9 @@ export default {
               value: 'message',
               ifVisible(item: any, index: number) {
                 return item.key === RuleKeys.REQUIRED;
+              },
+              options: {
+                locale: true
               }
             },
             {
@@ -160,10 +162,10 @@ export default {
             }
           }
         ]
-      },
-    ]
+      }
+    ];
   }
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

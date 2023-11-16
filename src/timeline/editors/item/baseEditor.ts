@@ -11,6 +11,9 @@ const BaseEditor = [
       {
         title: '标题',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
@@ -27,6 +30,9 @@ const BaseEditor = [
       {
         title: '副标题',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;
@@ -43,6 +49,9 @@ const BaseEditor = [
       {
         title: '描述',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             if (!focusArea) return;

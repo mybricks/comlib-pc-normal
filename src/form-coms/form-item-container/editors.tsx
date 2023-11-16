@@ -73,6 +73,9 @@ export default {
               title: '提示文字',
               type: 'Text',
               value: 'message',
+              options: {
+                locale: true
+              },
               ifVisible(item: any, index: number) {
                 return item.key === RuleKeys.REQUIRED;
               }

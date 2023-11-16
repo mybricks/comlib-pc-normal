@@ -68,7 +68,7 @@ export default function ({
       height: data.style.height,
       toolbar: data.toolbar?.join(' '),
       isFS: false,
-      placeholder: data.placeholder
+      placeholder: env.i18n(data.placeholder)
     });
   }, []);
 
@@ -87,7 +87,7 @@ export default function ({
       selector,
       height: data.style.height,
       isFS,
-      placeholder: data.placeholder,
+      placeholder: env.i18n(data.placeholder),
       customIconsId,
       setUp: (editor: any) => {
         if (data.toolbar.includes('uploadimage')) {
@@ -288,7 +288,7 @@ export default function ({
                 height: data.style.height,
                 toolbar: data.toolbar.join(' '),
                 isFS: true,
-                placeholder: data.placeholder
+                placeholder: env.i18n(data.placeholder)
               });
             }
           }}

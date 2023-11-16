@@ -32,6 +32,9 @@ export const BaseEditor = [
   {
     title: '标题',
     type: 'text',
+    options: {
+      locale: true
+    },
     ifVisible({ data }: EditorResult<Data>) {
       return data.showTitle;
     },
