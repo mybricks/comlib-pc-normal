@@ -74,15 +74,16 @@ export default {
           set({ data, input, output }, val: boolean) {
             data.customUpload = val;
             if (val) {
-              input.add('uploadResponse', '上传响应', {
-                type: 'object',
-                properties: {
-                  url: {
-                    title: 'url',
-                    type: 'string'
+              !input.get('uploadResponse') &&
+                input.add('uploadResponse', '上传响应', {
+                  type: 'object',
+                  properties: {
+                    url: {
+                      title: 'url',
+                      type: 'string'
+                    }
                   }
-                }
-              });
+                });
               output.add('upload', '上传', {
                 type: 'object',
                 properties: {
