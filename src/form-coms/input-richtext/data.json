@@ -16,7 +16,7 @@
     "uploadimage"
   ],
   "disabled": false,
-  "customUpload": false,
+  "customUpload": true,
   "placeholder": "请输入内容",
   "rules": []
 }

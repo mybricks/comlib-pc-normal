@@ -100,19 +100,6 @@
           }
         }
       }
-    },
-    {
-      "id": "uploadResponse",
-      "title": "上传响应",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "title": "url",
-            "type": "string"
-          }
-        }
-      }
     }
   ],
   "outputs": [
