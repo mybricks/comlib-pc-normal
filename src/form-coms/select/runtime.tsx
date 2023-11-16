@@ -204,14 +204,11 @@ export default function Runtime({
 
   useEffect(() => {
     const isNumberString = new RegExp(/^\d*$/);
-    if (isNumberString.test(data.maxHeight)) {
-      ref.current?.style.setProperty(
-        '--select--selection-overflow-max-height',
-        data.maxHeight + 'px'
-      );
-    } else {
-      ref.current?.style.setProperty('--select--selection-overflow-max-height', data.maxHeight);
+    let maxHeight = data.maxHeight == '0' ? null : data.maxHeight;
+    if (maxHeight && isNumberString.test(maxHeight)) {
+      maxHeight = maxHeight + 'px';
     }
+    ref.current?.style.setProperty('--select--selection-overflow-max-height', maxHeight);
   }, [data.maxHeight]);
 
   const onValidateTrigger = (type: string) => {
