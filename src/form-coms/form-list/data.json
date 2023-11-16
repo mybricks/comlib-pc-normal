@@ -29,15 +29,17 @@
     ],
     "items": [
       {
-        "title": "添加",
+        "title": "添加一项",
         "isDefault": true,
         "visible": true,
         "outputId": "add",
         "key": "add",
-        "size": "middle",
+        "type": "link",
+        "size": "small",
         "displayExpression": "{item.isLast || item.listLength == 0}",
         "iconConfig": {
-          "src": false,
+          "src": "inner",
+          "innerIcon": "PlusCircleOutlined",
           "gutter": 8,
           "location": "front"
         }
@@ -47,11 +49,14 @@
         "isDefault": true,
         "visible": true,
         "outputId": "remove",
+        "type": "link",
         "key": "remove",
-        "size": "middle",
+        "size": "small",
+        "danger": true,
         "displayExpression": "{item.listLength !== 0}",
         "iconConfig": {
-          "src": false,
+          "src": "inner",
+          "innerIcon": "MinusCircleOutlined",
           "gutter": 8,
           "location": "front"
         }
