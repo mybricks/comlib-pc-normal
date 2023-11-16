@@ -13,6 +13,9 @@ export default {
         title: '提示内容',
         type: 'text',
         description: '该提示内容会在值为空时显示',
+        options: {
+          locale: true
+        },
         value: {
           get({ data }: EditorResult<Data>) {
             return data.aceConfig.placeholder;
@@ -117,6 +120,9 @@ export default {
                   title: '提示文字',
                   type: 'Text',
                   value: 'message',
+                  options: {
+                    locale: true
+                  },
                   ifVisible(item: any, index: number) {
                     return item.key === RuleKeys.REQUIRED;
                   }

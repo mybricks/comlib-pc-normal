@@ -79,7 +79,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
           labelNode = (
             <div style={{ display: 'inline-flex', alignItems: 'center' }}>
               <span style={{ marginRight: 5 }}>{labelNode}</span>
-              <Tooltip title={labelDesc}>
+              <Tooltip title={env.i18n(labelDesc)}>
                 <InfoCircleOutlined />
               </Tooltip>
             </div>
