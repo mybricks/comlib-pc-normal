@@ -64,7 +64,8 @@ export default {
             type: 'TextArea',
             value: 'title',
             options: {
-              autoSize: { maxRows: 1 }
+              autoSize: { maxRows: 1 },
+              locale: true
             }
           },
           {
@@ -163,6 +164,9 @@ export default {
       {
         title: '标题',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get(props: EditorResult<Data>) {
             return getMenuItem(props, 'title');

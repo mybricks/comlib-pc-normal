@@ -11,6 +11,9 @@ export default {
         {
           title: '名称',
           type: 'Text',
+          options: {
+            locale: true
+          },
           value: {
             get({}: EditorResult<Data>) {
               return item?.name;
@@ -72,7 +75,8 @@ export default {
           title: '文字提示',
           type: 'TextArea',
           options: {
-            placeholder: 'tab标题的文字提示，不填写则不显示'
+            placeholder: 'tab标题的文字提示，不填写则不显示',
+            locale: true
           },
           value: {
             get({}: EditorResult<Data>) {

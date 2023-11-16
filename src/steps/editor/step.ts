@@ -12,6 +12,9 @@ export default {
         {
           title: '标题',
           type: 'Text',
+          options: {
+            locale: true
+          },
           value: {
             get({ }: EditorResult<Data>) {
               return stepItem.title;
@@ -24,6 +27,9 @@ export default {
         {
           title: '子标题',
           type: 'Text',
+          options: {
+            locale: true
+          },
           value: {
             get({ }: EditorResult<Data>) {
               return stepItem.subTitle??'';
@@ -59,7 +65,10 @@ export default {
         },
         {
           title: '描述',
-          type: 'Text',
+          type: 'textArea',
+          options: {
+            locale: true
+          },
           ifVisible({ data }: EditorResult<Data>) {
             return !!data.steps.showDesc && !stepItem.useCustomDesc;
           },
