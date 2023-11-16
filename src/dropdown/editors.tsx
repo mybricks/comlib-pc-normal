@@ -101,7 +101,7 @@ export default {
         }
       }
     ],
-    items: ({ data }: EditorResult<Data>, ...cate) => {
+    items: ({ data, env }: EditorResult<Data>, ...cate) => {
       cate[0].title = '常规';
       cate[0].items = [
         {
@@ -226,7 +226,7 @@ export default {
           description: '选项配置跳转链接，可不填',
           options: {
             getTitle: ({ label }) => {
-              return label;
+              return env.i18n(label);
             },
             onAdd: () => {
               const defaultOption = {
