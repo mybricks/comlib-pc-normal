@@ -259,9 +259,7 @@ export default function Runtime({
         value={data.value}
         onChange={onChange}
         onBlur={onBlur}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? env?.canvasElement : document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
         maxTagCount={data.maxTagCount}
         dropdownClassName={id}
         open={env.design ? true : void 0}

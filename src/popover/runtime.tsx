@@ -60,9 +60,7 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
         maxWidth: window.screen.availWidth,
         maxHeight: window.screen.availHeight
       }}
-      getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? env?.canvasElement : document.body
-      }
+      getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       destroyTooltipOnHide
     >
       <div className={styles.wrap}>{slots.carrier?.render({ style: { cursor: 'pointer' } })}</div>
