@@ -3,6 +3,8 @@ import './tinymce/tinymce.min.js';
 import './tinymce/themes/silver/theme.min.js';
 import './tinymce/icons/default/icons.min.js';
 import './tinymce/skins/ui/oxide/skin.min.css';
+import './tinymce/skins/ui/oxide/content.min.css';
+import './tinymce/skins/content/default/content.min.css';
 
 import './tinymce/plugins/link/plugin.min.js';
 import './tinymce/plugins/lists/plugin.min.js';
