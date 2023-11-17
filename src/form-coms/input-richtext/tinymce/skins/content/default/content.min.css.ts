@@ -4,6 +4,8 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  */
+// 注原本是css文件
+export default `
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
     'Open Sans', 'Helvetica Neue', sans-serif;
@@ -59,3 +61,4 @@ code {
   margin-right: 1.5rem;
   padding-right: 1rem;
 }
+`;
