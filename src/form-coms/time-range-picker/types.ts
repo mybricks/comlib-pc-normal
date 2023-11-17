@@ -1,5 +1,5 @@
 export interface Data {
-  placeholder?: [string, string]
+  placeholder: [string, string]
   disabled?: boolean
   rules: any[],
   format: string,

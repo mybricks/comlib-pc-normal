@@ -190,7 +190,7 @@ export default function ({
     <ConfigProvider locale={env.vars?.locale}>
       <div className={styles.wrap}>
         <TimePicker.RangePicker
-          placeholder={placeholder}
+          placeholder={[env.i18n(placeholder[0]), env.i18n(placeholder[1])]}
           value={value}
           format={_format}
           allowClear

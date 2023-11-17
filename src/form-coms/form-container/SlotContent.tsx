@@ -49,6 +49,7 @@ const SlotContent = (props) => {
             com={com}
             item={item}
             isMobile={isMobile}
+            env={env}
             // field={props?.field}
           />
         ) : (

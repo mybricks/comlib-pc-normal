@@ -170,6 +170,7 @@ export default function ({
         ref={inputRef}
         {...data.config}
         // value={data.value}
+        placeholder={env.i18n(data.config.placeholder)}
         value={value}
         readOnly={!!edit}
         {...sizeConfig}

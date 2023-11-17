@@ -405,6 +405,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           }}
           value={value}
           {...data.config}
+          placeholder={env.i18n(data.config.placeholder)}
           dateRender={data.useCustomDateCell ? customDateRender : undefined}
           showTime={getShowTime()}
           onChange={onChange}

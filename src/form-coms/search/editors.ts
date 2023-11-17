@@ -232,13 +232,16 @@ export default {
         ]
       }
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
       catalog[0].items = [
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -278,6 +281,9 @@ export default {
         {
           title: '确认按钮内容',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '按钮内文字',
           ifVisible({ data }) {
             return !!data.isenterButton;
@@ -294,6 +300,9 @@ export default {
         {
           title: '前置标签',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '带标签的 input，设置前置标签',
           value: {
             get({ data }) {
@@ -354,7 +363,7 @@ export default {
           },
           options: {
             getTitle: ({ label, checked }) => {
-              return `${label}${checked ? ': 默认值' : ''}`;
+              return `${env.i18n(label)}${checked ? ': 默认值' : ''}`;
             },
             onAdd: () => {
               const defaultOption = {
@@ -379,6 +388,9 @@ export default {
               {
                 title: '选项标签',
                 type: 'textarea',
+                options: {
+                  locale: true
+                },
                 value: 'label'
               },
               {
@@ -446,6 +458,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

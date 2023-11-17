@@ -116,7 +116,7 @@ export default {
         ]
       },
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
       catalog[0].items = [
@@ -139,7 +139,7 @@ export default {
           type: 'array',
           options: {
             getTitle: ({ label, checked }) => {
-              return `${label}${checked ? ': 默认值' : ''}`;
+              return `${env.i18n(label)}${checked ? ': 默认值' : ''}`;
             },
             onAdd: () => {
               const value = uuid('_', 2);
@@ -165,6 +165,9 @@ export default {
               {
                 title: '选项标签',
                 type: 'textarea',
+                options: {
+                  locale: true
+                },
                 value: 'label'
               },
               {
@@ -214,6 +217,7 @@ export default {
                 const checked = formItemVal !== undefined && option.value === formItemVal;
                 return {
                   ...option,
+                  label: option.label,
                   checked
                 };
               });
@@ -312,6 +316,9 @@ export default {
                 title: '提示文字',
                 type: 'Text',
                 value: 'message',
+                options: {
+                  locale: true
+                },
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;
                 }

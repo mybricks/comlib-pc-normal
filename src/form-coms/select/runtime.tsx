@@ -3,7 +3,7 @@ import { Select, Spin } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
 import css from './runtime.less';
-import { typeCheck } from '../../utils';
+import { typeCheck, i18nFn } from '../../utils';
 import { InputIds, OutputIds, ValidateTriggerType } from '../types';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
@@ -14,7 +14,7 @@ const DefaultOptionKey = '_id';
  * 计算表单项的输出值
  * @params data 组件数据
  */
-const getOutputValue = (data) => {
+const getOutputValue = (data, env) => {
   const getOutputValuefromValue = (val, index?) => {
     let result = val;
     if (val == null) return result;
@@ -23,13 +23,16 @@ const getOutputValue = (data) => {
       const { value, label } = option;
       result = {
         value,
-        label
+        label: env.i18n(label)
       };
     }
     if (data.outputValueType === 'option') {
       const { [DefaultOptionKey]: id, ...res } =
         data.config.options.find((i) => i.value === val) || {};
-      result = res;
+      result = {
+        ...res,
+        label: env.i18n(res.label)
+      };
     }
     return result;
   };
@@ -92,7 +95,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            const outputValue = getOutputValue(data);
+            const outputValue = getOutputValue(data, env);
             outputs[OutputIds.OnValidate](outputValue);
           } else {
             outputRels['returnValidate'](r);
@@ -104,7 +107,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      const outputValue = getOutputValue(data);
+      const outputValue = getOutputValue(data, env);
       outputRels['returnValue'](outputValue);
     });
 
@@ -126,7 +129,7 @@ export default function Runtime({
             data.value = '';
           }
           data.value = val;
-          const outputValue = getOutputValue(data);
+          const outputValue = getOutputValue(data, env);
           outputs[OutputIds.OnInitial](outputValue);
         }
       });
@@ -219,7 +222,7 @@ export default function Runtime({
       data.value = '';
     }
     data.value = value;
-    const outputValue = getOutputValue(data);
+    const outputValue = getOutputValue(data, env);
     onChangeForFc(parentSlot, { id: id, value: outputValue, name });
     outputs['onChange'](outputValue);
   }, []);
@@ -230,7 +233,7 @@ export default function Runtime({
   }, []);
 
   const onBlur = useCallback((e) => {
-    const outputValue = getOutputValue(data);
+    const outputValue = getOutputValue(data, env);
     onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](outputValue);
   }, []);
@@ -253,9 +256,10 @@ export default function Runtime({
     <div className={css.select} ref={ref} id="area">
       <Select
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         labelInValue={false}
         showArrow={data.config.showArrow}
-        options={env.edit ? data.staticOptions : data.config.options}
+        options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.config.options, env)}
         value={data.value}
         onChange={onChange}
         onBlur={onBlur}

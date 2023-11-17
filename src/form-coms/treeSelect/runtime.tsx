@@ -264,6 +264,7 @@ export default function Runtime({
       <TreeSelect
         treeIcon
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : void 0}

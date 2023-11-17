@@ -3,7 +3,7 @@ import { uuid } from '../../../utils'
 import visibleOpt from '../../../components/editorRender/visibleOpt'
 import { outputIds } from '../constants'
 
-export const actionsEditor = (data: Data, output) => {
+export const actionsEditor = (data: Data, output, env) => {
   return {
     title: '操作区',
     items: [
@@ -158,7 +158,7 @@ export const actionsEditor = (data: Data, output) => {
           editable: false,
           customOptRender: visibleOpt,
           getTitle: (item) => {
-            return item?.title;
+            return env.i18n(item?.title);
           },
           onAdd: (_id) => {
             const outputId = uuid()

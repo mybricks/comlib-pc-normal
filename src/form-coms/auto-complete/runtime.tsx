@@ -7,6 +7,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
 import { InputIds } from '../types';
+import { i18nFn } from '../../utils';
 
 export interface Option {
   value: string;
@@ -151,6 +152,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <div className={css.autoComplete}>
       <AutoComplete
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         value={data.value}
         onChange={onChange}
         filterOption={data.isFilter}
@@ -158,7 +160,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onBlur={onBlur}
         onSelect={onSelect}
         onSearch={data.isOnSearch ? onSearch : void 0}
-        options={env.edit ? data.staticOptions : data.options}
+        options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.options, env)}
       />
     </div>
   );

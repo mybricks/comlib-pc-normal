@@ -152,7 +152,7 @@ export default function Runtime({
                     color: data.value === item.value ? activeFontColor : ''
                   }}
                 >
-                  {label}
+                  {env.i18n(label)}
                 </Radio>
               );
             })}
@@ -181,7 +181,7 @@ export default function Runtime({
               checked={item.checked}
               style={{ marginRight: 8, color: data.value === item.value ? activeFontColor : '' }}
             >
-              {label}
+              {env.i18n(label)}
             </Radio>
           );
         })}

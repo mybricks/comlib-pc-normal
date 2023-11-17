@@ -95,7 +95,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         let isValid = false;
         if (Array.isArray(nameList)) {
           nameList.forEach((name) => {
-            const item = data.items.find((item) => (item.name || item.label) === name);
+            const item = data.items.find((item) => item.name === name);
             if (item) {
               isValid = true;
               const input = getFromItemInputEvent(item, childrenInputs);
@@ -166,7 +166,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const { item, isFormItem } = getFormItem(data, { id, name });
 
       if (item && isFormItem) {
-        const fieldsValue = { [item.name || item.label]: value };
+        const fieldsValue = { [item.name]: value };
 
         formContext.current.store = { ...formContext.current.store, ...fieldsValue };
 
@@ -255,7 +255,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const setDisabled = (nameList?: string[]) => {
     data.items.forEach((item) => {
-      if (!nameList || nameList.includes(item.name || item.label)) {
+      if (!nameList || nameList.includes(item.name)) {
         const input = getFromItemInputEvent(item, childrenInputs);
         input?.setDisabled && input?.setDisabled();
       }
@@ -264,7 +264,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const setEnabled = (nameList?: string[]) => {
     data.items.forEach((item) => {
-      if (!nameList || nameList.includes(item.name || item.label)) {
+      if (!nameList || nameList.includes(item.name)) {
         const input = getFromItemInputEvent(item, childrenInputs);
         input?.setEnabled && input?.setEnabled();
       }
@@ -285,7 +285,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return;
         }
 
-        const formItemIndex = data.items.findIndex((item) => (item.name || item.label) === name);
+        const formItemIndex = data.items.findIndex((item) => item.name === name);
         if (formItemIndex < 0) {
           console.warn(`${title}: 设置表单项配置【${name}】不存在`);
           return;
@@ -371,7 +371,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
               value = {
-                name: item.name || item.label,
+                name: item.name,
                 value: val
               };
 
@@ -504,14 +504,14 @@ const validateForInput = (
     if (cb) {
       cb({
         ...validateInfo,
-        name: item.name || item.label
+        name: item.name
       });
     }
   });
 };
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
-  const item = formItems.find((item) => (item.name || item.label) === name);
+  const item = formItems.find((item) => item.name === name);
 
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs);
@@ -526,9 +526,7 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values)
       }
     } else {
       console.warn(
-        `FormItem Input Not Found, FormItem Name: ${
-          item.name || item.label
-        }, 可能存在脏数据 请联系开发人员`
+        `FormItem Input Not Found, FormItem Name: ${item.name}, 可能存在脏数据 请联系开发人员`
       );
     }
   }
