@@ -361,9 +361,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           onCalendarChange={(dates) => setDates(dates)}
           onOpenChange={onOpenChange}
           allowEmpty={emptyArr}
-          getPopupContainer={(triggerNode: HTMLElement) =>
-            edit || debug ? env?.canvasElement : document.body
-          }
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           open={env.design ? true : void 0}
           dropdownClassName={`${id} ${css.rangePicker}`}
           {...disabledDateTime}
