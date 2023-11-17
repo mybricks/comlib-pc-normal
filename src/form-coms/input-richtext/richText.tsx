@@ -5,7 +5,7 @@ import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
 import { uuid } from '../../utils';
-import { loadPkg } from '../../utils/loadPkg';
+// import { loadPkg } from '../../utils/loadPkg';
 import { validateTrigger } from '../form-container/models/validate';
 import { EnvContext } from './context';
 import { Data } from './types';
@@ -15,6 +15,8 @@ import { Spin, message } from 'antd';
 import css from './richText.less';
 import { InputIds, OutputIds } from '../types';
 import useUpload from './hooks/use-upload';
+
+import './tinymceImports';
 
 // 自定义icon_id
 const customIconsId: string = '_pcEditor_customIcons_' + uuid();
@@ -64,7 +66,8 @@ export default function ({
   const { upload } = useUpload(inputs, outputs);
 
   const Load: () => void = useCallback(async () => {
-    await loadPkg(tinymceCDN, 'tinyMCE');
+    // 不再使用CDN
+    // await loadPkg(tinymceCDN, 'tinyMCE');
     addCustomIcons();
     TinymceInit({
       target: textareaRef.current,
