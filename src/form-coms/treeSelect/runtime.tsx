@@ -282,9 +282,7 @@ export default function Runtime({
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
         dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       >
         {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
       </TreeSelect>

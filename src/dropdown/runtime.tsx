@@ -57,9 +57,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         placement={data.placement}
         arrow
         visible={(edit && data.isChildCustom) || env.design ? true : edit ? false : void 0}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit ? triggerNode : debug ? env?.canvasElement : env.container || document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
         overlayStyle={{ minWidth: data.width }}
         trigger={[data.trigger || 'hover']}
       >
