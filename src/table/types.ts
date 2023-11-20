@@ -190,7 +190,7 @@ export interface Data {
   enableRowFocus: boolean,
   focusRowStyle: any,
   domainModel: {
-    entity: any
+    entity?: any
   },
   // 是否默认展开所有行
   defaultExpandAllRows: boolean,

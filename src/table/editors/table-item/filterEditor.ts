@@ -32,9 +32,13 @@ export const addFilterIO = ({ data, output, input }: Props) => {
   }
   if (!event4) {
     input.add(InputIds.SET_FILTER, '设置筛选数据', Schemas.Object);
+    output.add(OutputIds.SET_FILTER, '筛选数据', Schemas.Object);
+    input.get(InputIds.SET_FILTER).setRels([OutputIds.SET_FILTER]);
   }
   if (!event5) {
     input.add(InputIds.SET_FILTER_INPUT, '设置筛选项', Schemas.Object);
+    output.add(OutputIds.SET_FILTER_INPUT, '筛选项', Schemas.Object);
+    input.get(InputIds.SET_FILTER_INPUT).setRels([OutputIds.SET_FILTER_INPUT]);
   }
   if (!event6) {
     output.add(OutputIds.FILTER_CLICK, '点击筛选', Schemas.Object);
