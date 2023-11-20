@@ -1,7 +1,7 @@
 import { InputIds } from '../../constants';
 import { Schemas } from '../../schema';
 import { Data } from '../../types';
-import { OutputIds } from '../../constants'
+import { OutputIds } from '../../constants';
 
 const DynamicTitleEditor = [
   {
@@ -12,12 +12,16 @@ const DynamicTitleEditor = [
       get({ data }: EditorResult<Data>) {
         return data.useDynamicTitle;
       },
-      set({ data, input }: EditorResult<Data>, value: boolean) {
+      set({ data, input, output }: EditorResult<Data>, value: boolean) {
         const hasEvent = input.get(InputIds.SET_SHOW_TitleS);
+        const hasEvent1 = output.get(InputIds.SET_SHOW_TitleS);
         if (value) {
           !hasEvent && input.add(InputIds.SET_SHOW_TitleS, `设置表头`, Schemas.SET_SHOW_TitleS);
+          !hasEvent1 && output.add(InputIds.SET_SHOW_TitleS, `表头`, Schemas.SET_SHOW_TitleS);
+          input.get(InputIds.SET_SHOW_TitleS).setRels([OutputIds.SET_SHOW_TitleS]);
         } else {
           hasEvent && input.remove(InputIds.SET_SHOW_TitleS);
+          hasEvent1 && output.remove(InputIds.SET_SHOW_TitleS);
         }
         data.useDynamicTitle = value;
       }

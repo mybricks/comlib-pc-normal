@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -25,6 +25,9 @@
       "schema": {
         "type": "array"
       },
+      "rels": [
+        "dataSource"
+      ],
       "desc": "设置表格数据"
     },
     {
@@ -44,6 +47,9 @@
       "schema": {
         "type": "any"
       },
+      "rels": [
+        "startLoading"
+      ],
       "desc": "设置表格为loading状态"
     },
     {
@@ -52,6 +58,9 @@
       "schema": {
         "type": "any"
       },
+      "rels": [
+        "endLoading"
+      ],
       "desc": "关闭表格loading状态"
     }
   ],
@@ -68,6 +77,27 @@
       "title": "列结构变化",
       "schema": {
         "type": "array"
+      }
+    },
+    {
+      "id": "dataSource",
+      "title": "数据源",
+      "schema": {
+        "type": "array"
+      }
+    },
+    {
+      "id": "startLoading",
+      "title": "开启loading后",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "endLoading",
+      "title": "关闭loading后",
+      "schema": {
+        "type": "any"
       }
     }
   ]

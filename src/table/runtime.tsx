@@ -88,6 +88,14 @@ export default function (props: RuntimeParams<Data>) {
     setFilterMap(res);
   };
 
+  // IO串行处理
+  const handleOutputFn = (relOutputs: { [x: string]: any }, OutputId: string, val: any) => {
+    const outputFn = relOutputs?.[OutputId] || outputs[OutputId];
+    if (outputFn) {
+      outputFn(val);
+    }
+  };
+
   useEffect(() => {
     initFilterMap();
     if (runtime) {
@@ -97,56 +105,62 @@ export default function (props: RuntimeParams<Data>) {
       }
 
       // 设置数据源
-      inputs[InputIds.SET_DATA_SOURCE]((ds: any) => {
+      inputs[InputIds.SET_DATA_SOURCE]((ds: any, relOutputs: any) => {
         setTableData(ds);
         setLoading(false);
+        handleOutputFn(relOutputs, OutputIds.SET_DATA_SOURCE, ds);
       });
 
       // 表格loading
-      inputs[InputIds.START_LOADING](() => {
+      inputs[InputIds.START_LOADING]((val: any, relOutputs: any) => {
         setLoading(true);
+        handleOutputFn(relOutputs, OutputIds.START_LOADING, val);
       });
-      inputs[InputIds.END_LOADING](() => {
+      inputs[InputIds.END_LOADING]((val: any, relOutputs: any) => {
         setLoading(false);
+        handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
       });
 
       // 清空勾选
-      inputs[InputIds.CLEAR_ROW_SELECTION](() => {
+      inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
         setSelectedRowKeys([]);
+        handleOutputFn(relOutputs, OutputIds.CLEAR_ROW_SELECTION, val);
       });
 
       // 获取筛选数据
       inputs[InputIds.GET_FILTER] &&
-        inputs[InputIds.GET_FILTER]((val, relOutputs) => {
+        inputs[InputIds.GET_FILTER]((val: any, relOutputs: any) => {
           relOutputs[OutputIds.GET_FILTER](data.filterParams);
         });
       // 设置筛选数据
       inputs[InputIds.SET_FILTER] &&
-        inputs[InputIds.SET_FILTER]((val) => {
+        inputs[InputIds.SET_FILTER]((val: any, relOutputs: any) => {
           data.filterParams = {
             ...data.filterParams,
             ...val
           };
+          handleOutputFn(relOutputs, OutputIds.SET_FILTER, data.filterParams);
         });
 
       // 获取排序数据
       inputs[InputIds.GET_SORT] &&
-        inputs[InputIds.GET_SORT]((val, relOutputs) => {
+        inputs[InputIds.GET_SORT]((val: any, relOutputs: any) => {
           relOutputs[OutputIds.GET_SORT](data.sortParams);
         });
       // 设置排序数据
       inputs[InputIds.SET_SORT] &&
-        inputs[InputIds.SET_SORT]((val) => {
+        inputs[InputIds.SET_SORT]((val: any, relOutputs: any) => {
           const { order, id } = val || {};
           data.sortParams = {
             order,
             id
           };
+          handleOutputFn(relOutputs, OutputIds.SET_SORT, data.sortParams);
         });
 
       // 设置表格高度
       inputs[InputIds.TABLE_HEIGHT] &&
-        inputs[InputIds.TABLE_HEIGHT]((val) => {
+        inputs[InputIds.TABLE_HEIGHT]((val: any, relOutputs: any) => {
           const { maxScrollHeight, tableHeight } = val || {};
           if (typeof maxScrollHeight !== 'undefined') {
             data.scroll.y = unitConversion(maxScrollHeight);
@@ -154,16 +168,18 @@ export default function (props: RuntimeParams<Data>) {
           if (typeof tableHeight !== 'undefined') {
             data.fixedHeight = unitConversion(tableHeight);
           }
+          handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
 
       // 总结栏数据
-      inputs[InputIds.SUMMARY_COLUMN]((val) => {
+      inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
         setSummaryColumnData(val);
+        handleOutputFn(relOutputs, OutputIds.SUMMARY_COLUMN, val);
       });
 
       // 动态设置显示列
       if (data.useDynamicColumn && inputs[InputIds.SET_SHOW_COLUMNS]) {
-        inputs[InputIds.SET_SHOW_COLUMNS]((ds) => {
+        inputs[InputIds.SET_SHOW_COLUMNS]((ds: any, relOutputs: any) => {
           const showColumnList = ds?.filter?.((item) => item && typeof item === 'string') || [];
           data.columns = (data.columns || []).map((item) => {
             let visible = item.visible;
@@ -178,12 +194,13 @@ export default function (props: RuntimeParams<Data>) {
               visible
             };
           });
+          handleOutputFn(relOutputs, OutputIds.SET_SHOW_COLUMNS, data.columns);
         });
       }
 
       // 动态设置表头
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
-        inputs[InputIds.SET_SHOW_TitleS]((val) => {
+        inputs[InputIds.SET_SHOW_TitleS]((val: any, relOutputs: any) => {
           // 需要保留的列
           const previousDataIndex = val
             .filter((item) => item.usePrevious)
@@ -192,6 +209,7 @@ export default function (props: RuntimeParams<Data>) {
             .filter((item) => !item.usePrevious)
             .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
           initFilterMap();
+          handleOutputFn(relOutputs, OutputIds.SET_SHOW_TitleS, data.columns);
         });
       }
     }
@@ -251,8 +269,9 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
     // 开启关闭所有展开项
-    inputs[InputIds.EnableAllExpandedRows]((enable) => {
+    inputs[InputIds.EnableAllExpandedRows]((enable: boolean, relOutputs: any) => {
       setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
+      handleOutputFn(relOutputs, OutputIds.EnableAllExpandedRows, enable);
     });
   }, [realShowDataSource]);
 
@@ -271,7 +290,7 @@ export default function (props: RuntimeParams<Data>) {
         });
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
-        inputs[InputIds.SET_ROW_SELECTION]((val) => {
+        inputs[InputIds.SET_ROW_SELECTION]((val: any, relOutputs: any) => {
           // 时机延后，保证同时设置行选中和数据源时能生效
           setTimeout(() => {
             const newSelectedRowKeys: string[] = [];
@@ -288,6 +307,7 @@ export default function (props: RuntimeParams<Data>) {
               }
             });
             setSelectedRowKeys(newSelectedRowKeys);
+            handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
           }, 0);
         });
       }
@@ -296,11 +316,12 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       // 动态设置筛选数据源
-      inputs[InputIds.SET_FILTER_INPUT]((ds) => {
+      inputs[InputIds.SET_FILTER_INPUT]((ds: any, relOutputs: any) => {
         setFilterMap({
           ...filterMap,
           ...ds
         });
+        handleOutputFn(relOutputs, OutputIds.SET_FILTER_INPUT, data.filterParams);
       });
     }
   }, [filterMap]);
