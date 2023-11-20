@@ -139,6 +139,8 @@ const QueryFilter = (props: QueryFilterProps) => {
       );
     }
   });
+  // 表单项总宽度超出一行时显示展开/收起按钮
+  const showCollapseButton = (idx + 1) * span >= 24;
 
   return (
     <div className={styles.slotInlineWrapper}>
@@ -151,7 +153,13 @@ const QueryFilter = (props: QueryFilterProps) => {
             label={data.config?.layout === 'vertical' ? ' ' : ''}
           >
             <Space wrap data-form-actions>
-              <CollapseButton collapsed={collapsed} setCollapsed={setCollapsed} outputs={outputs} />
+              {showCollapseButton && (
+                <CollapseButton
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                  outputs={outputs}
+                />
+              )}
               {data.actions.items.map((item) => {
                 if (env?.runtime && item.permission?.id) {
                   if (env.hasPermission(item.permission?.id)) {
