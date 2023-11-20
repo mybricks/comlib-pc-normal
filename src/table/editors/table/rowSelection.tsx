@@ -46,13 +46,18 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
 
             output.add(OutputIds.ROW_SELECTION, '勾选事件', Schemas.Object);
             output.add(OutputIds.GET_ROW_SELECTION, '勾选数据', Schemas.Object);
+            output.add(OutputIds.CLEAR_ROW_SELECTION, '清空勾选后', Schemas.Void);
             input.add(InputIds.CLEAR_ROW_SELECTION, '清空勾选', Schemas.Void);
             input.add(InputIds.GET_ROW_SELECTION, '输出勾选数据', Schemas.Void);
             input.get(InputIds.GET_ROW_SELECTION).setRels([OutputIds.GET_ROW_SELECTION]);
+            input.get(InputIds.CLEAR_ROW_SELECTION).setRels([OutputIds.CLEAR_ROW_SELECTION]);
             setDataSchema({ data, input, output, slot, ...res });
           } else {
             if (output.get(OutputIds.GET_ROW_SELECTION)) {
               output.remove(OutputIds.GET_ROW_SELECTION);
+            }
+            if (output.get(OutputIds.CLEAR_ROW_SELECTION)) {
+              output.remove(OutputIds.CLEAR_ROW_SELECTION);
             }
             if (input.get(InputIds.CLEAR_ROW_SELECTION)) {
               input.remove(InputIds.CLEAR_ROW_SELECTION);
@@ -207,12 +212,15 @@ const getRowSelectionEditor = (props: EditorResult<Data>) => {
             get({ data }: EditorResult<Data>) {
               return data.useSetSelectedRowKeys;
             },
-            set({ data, input }: EditorResult<Data>, value: boolean) {
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
               data.useSetSelectedRowKeys = value;
               if (value) {
                 input.add(InputIds.SET_ROW_SELECTION, '设置勾选项', Schemas.SET_ROW_SELECTION);
+                output.add(OutputIds.SET_ROW_SELECTION, '勾选项', Schemas.SET_ROW_SELECTION);
+                input.get(InputIds.SET_ROW_SELECTION).setRels([OutputIds.SET_ROW_SELECTION]);
               } else {
                 input.remove(InputIds.SET_ROW_SELECTION);
+                output.remove(InputIds.SET_ROW_SELECTION);
               }
             }
           }

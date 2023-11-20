@@ -262,16 +262,22 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data.paginationConfig.isDynamic;
             },
-            set({ data, input }: EditorResult<Data>, value: boolean) {
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
               data.paginationConfig.isDynamic = value;
               const event1 = input.get(InputIds.SetDisable);
               const event2 = input.get(InputIds.SetDisable);
               if (value) {
                 !event1 && input.add(InputIds.SetDisable, '禁用分页器', Schemas.Any);
+                !event1 && output.add(OutputIds.SetDisable, '禁用分页器后', Schemas.Any);
+                !event1 &&  input.get(InputIds.SetDisable).setRels([OutputIds.SetDisable]);
                 !event2 && input.add(InputIds.SetEnable, '启用分页器', Schemas.Any);
+                !event2 && output.add(OutputIds.SetEnable, '启用分页器后', Schemas.Any);
+                !event2 && input.get(InputIds.SetEnable).setRels([OutputIds.SetEnable]);
               } else {
                 event1 && input.remove(InputIds.SetDisable);
+                event1 && output.remove(OutputIds.SetDisable);
                 event2 && input.remove(InputIds.SetEnable);
+                event2 && output.remove(OutputIds.SetEnable);
               }
             }
           }

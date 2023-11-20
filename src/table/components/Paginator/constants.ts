@@ -55,7 +55,11 @@ export interface Data {
 export const OutputIds = {
   PageChange: 'pageChange',
   GetPageInfo: 'getPageInfo',
-  SetPageNumFinish: 'setPageNumFinish'
+  SetPageNumFinish: 'setPageNumFinish',
+  // 新增对应串行输出
+  SetTotal: 'setTotal',
+  SetDisable: 'setDisable',
+  SetEnable: 'setEnable',
 };
 export const InputIds = {
   SetEnable: 'setEnable',

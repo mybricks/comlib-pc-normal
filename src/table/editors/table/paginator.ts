@@ -28,17 +28,18 @@ export default [
         data.usePagination = value;
         if (value) {
           input.add(InputIds.SetTotal, '设置数据总数', { type: 'number' });
-
+          output.add(InputIds.SetTotal, '设置数据总数完成', { type: 'number' });
+          input.get(InputIds.SetTotal).setRels([OutputIds.SetTotal]);
           input.add(InputIds.SetPageNum, '设置当前页码', { type: 'number' });
           output.add(OutputIds.SetPageNumFinish, '设置页码完成', { type: 'number' });
           input.get(InputIds.SetPageNum).setRels([OutputIds.SetPageNumFinish]);
-
           input.add(InputIds.GetPageInfo, '获取分页数据', { type: 'any' });
           output.add(OutputIds.GetPageInfo, '分页数据', PageSchema);
           input.get(InputIds.GetPageInfo).setRels([OutputIds.GetPageInfo]);
           output.add(OutputIds.PageChange, '点击分页', PageSchema);
         } else {
           input.remove(InputIds.SetTotal);
+          output.remove(OutputIds.SetTotal);
           input.remove(InputIds.SetPageNum);
           output.remove(OutputIds.SetPageNumFinish);
           input.remove(InputIds.GetPageInfo);

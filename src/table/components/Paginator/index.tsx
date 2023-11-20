@@ -40,31 +40,42 @@ export default (props: Props) => {
     }
   };
 
+  // IO串行处理
+  const handleOutputFn = (relOutputs: { [x: string]: any }, OutputId: string, val: any) => {
+    const outputFn = relOutputs?.[OutputId] || outputs[OutputId];
+    if (outputFn) {
+      outputFn(val);
+    }
+  };
+
   useEffect(() => {
     if (env.runtime) {
       data.total = 0;
       data.current = 1;
-      inputs[InputIds.SetTotal]((val: number) => {
+      inputs[InputIds.SetTotal]((val: number, relOutputs: any) => {
         if (typeof val === 'number') {
           data.total = val;
         }
+        handleOutputFn(relOutputs, OutputIds.SetTotal, val);
       });
-      inputs[InputIds.SetPageNum]((val, relOutputs) => {
+      inputs[InputIds.SetPageNum]((val: number, relOutputs: any) => {
         setPageNum(val);
         data.currentPage.pageNum = val;
         relOutputs[OutputIds.SetPageNumFinish]?.(val);
       });
-      inputs[InputIds.GetPageInfo]((val, relOutputs) => {
+      inputs[InputIds.GetPageInfo]((val: any, relOutputs: any) => {
         relOutputs[OutputIds.GetPageInfo](data.currentPage);
       });
 
       inputs[InputIds.SetDisable] &&
-        inputs[InputIds.SetDisable](() => {
+        inputs[InputIds.SetDisable]((val: any, relOutputs: any) => {
           data.disabled = true;
+          handleOutputFn(relOutputs, OutputIds.SetDisable, val);
         });
       inputs[InputIds.SetEnable] &&
-        inputs[InputIds.SetEnable](() => {
+        inputs[InputIds.SetEnable]((val: any, relOutputs: any) => {
           data.disabled = false;
+          handleOutputFn(relOutputs, OutputIds.SetEnable, val);
         });
     }
   }, []);

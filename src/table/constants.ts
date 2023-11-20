@@ -94,6 +94,21 @@ export const OutputIds = {
   ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData',
   COLUMNS_CHANGE: 'columnsChange',
+
+  // 新增对应串行输出
+  SET_DATA_SOURCE: 'dataSource',
+  START_LOADING: 'startLoading',
+  END_LOADING: 'endLoading',
+  CLEAR_ROW_SELECTION: 'clearRowSelection',
+  SET_FILTER: 'setFilter',
+  SET_SORT: 'setSorter',
+  TABLE_HEIGHT: 'tableHeight',
+  SUMMARY_COLUMN: 'summaryColumn',
+  SET_SHOW_COLUMNS: 'showColumns',
+  SET_SHOW_TitleS: 'showTitles',
+  SET_ROW_SELECTION: 'setRowSelectedKeys',
+  SET_FILTER_INPUT: 'filterInput',
+  EnableAllExpandedRows: 'enableAllExpandedRows',
 };
 
 export const DefaultRowKey = '_uuid';
