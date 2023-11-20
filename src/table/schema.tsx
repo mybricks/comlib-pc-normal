@@ -390,6 +390,12 @@ export const Schemas = {
   Number: {
     type: 'number'
   },
+  String: {
+    type: 'string'
+  },
+  Boolean: {
+    type: 'boolean'
+  },
   Array: {
     type: 'array'
   },
