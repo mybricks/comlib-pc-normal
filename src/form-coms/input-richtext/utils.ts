@@ -1,3 +1,6 @@
+import contentMinCss from './tinymce/skins/ui/oxide/content.min.css';
+import defalutContentMinCss from './tinymce/skins/content/default/content.min.css';
+
 interface InitProps {
   readonly?: boolean;
   isFS: boolean;
@@ -64,11 +67,14 @@ export function Init({
     },
     readonly,
     content_css: '',
-    content_style: readonly
-      ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
-      : `p {margin: 0px; border:0px ; padding: 0px;}`,
+    content_style:
+      contentMinCss +
+      defalutContentMinCss +
+      (readonly
+        ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
+        : `p {margin: 0px; border:0px ; padding: 0px;}`),
     placeholder
-    });
+  });
 }
 
 export function getWindowVal(key: string) {
