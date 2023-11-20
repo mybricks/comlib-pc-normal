@@ -269,7 +269,7 @@ export default {
               if (value) {
                 !event1 && input.add(InputIds.SetDisable, '禁用分页器', Schemas.Any);
                 !event1 && output.add(OutputIds.SetDisable, '禁用分页器后', Schemas.Any);
-                !event1 &&  input.get(InputIds.SetDisable).setRels([OutputIds.SetDisable]);
+                !event1 && input.get(InputIds.SetDisable).setRels([OutputIds.SetDisable]);
                 !event2 && input.add(InputIds.SetEnable, '启用分页器', Schemas.Any);
                 !event2 && output.add(OutputIds.SetEnable, '启用分页器后', Schemas.Any);
                 !event2 && input.get(InputIds.SetEnable).setRels([OutputIds.SetEnable]);

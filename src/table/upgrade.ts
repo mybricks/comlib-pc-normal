@@ -207,26 +207,38 @@ export default function ({
     InputId: any,
     OutputId: any,
     OutputTitle: any,
-    Schema: any = {
-      type: 'any'
-    }
+    Schema: any = Schemas.Any
   ) => {
     const Input = input.get(InputId);
     const OutPut = output.get(OutputId);
     if (Input) {
       if (!OutPut) {
-        output.add(InputId, OutputTitle, Schema);
+        output.add(OutputId, OutputTitle, Schema);
       }
       if (!Input.rels) {
         Input.setRels([OutputId]);
       }
     }
   };
-  setRels(InputIds.SET_DATA_SOURCE, OutputIds.SET_DATA_SOURCE, '数据源', {
-    type: 'array'
-  });
+  setRels(InputIds.SET_DATA_SOURCE, OutputIds.SET_DATA_SOURCE, '数据源', Schemas.Array);
   setRels(InputIds.START_LOADING, OutputIds.START_LOADING, '开启loading后');
   setRels(InputIds.END_LOADING, OutputIds.END_LOADING, '关闭loading后');
+
+  setRels(InputIds.CLEAR_ROW_SELECTION, OutputIds.CLEAR_ROW_SELECTION, '清空勾选后', Schemas.Void);
+  setRels(InputIds.SET_FILTER, OutputIds.SET_FILTER, '筛选数据', Schemas.Object);
+  setRels(InputIds.SET_SORT, OutputIds.SET_SORT, '排序数据', Schemas.SORTER);
+  setRels(InputIds.TABLE_HEIGHT, OutputIds.TABLE_HEIGHT, '表格高度', Schemas.TABLE_HEIGHT);
+  setRels(InputIds.SUMMARY_COLUMN, OutputIds.SUMMARY_COLUMN, '总结栏数据', Schemas.String);
+  setRels(InputIds.SET_SHOW_COLUMNS, OutputIds.SET_SHOW_COLUMNS, '显示列', Schemas.SET_SHOW_COLUMNS);
+  setRels(InputIds.SET_SHOW_TitleS, OutputIds.SET_SHOW_TitleS, '表头', Schemas.SET_SHOW_TitleS);
+  setRels(InputIds.SET_ROW_SELECTION, OutputIds.SET_ROW_SELECTION, '勾选项', Schemas.SET_ROW_SELECTION);
+  setRels(InputIds.SET_FILTER_INPUT, OutputIds.SET_FILTER_INPUT, '筛选项', Schemas.Object);
+  setRels(InputIds.EnableAllExpandedRows, OutputIds.EnableAllExpandedRows, '开启关闭所有展开项', Schemas.Boolean);
+
+  setRels(PaginatorInputIds.SetTotal, PaginatorOutputIds.SetTotal, '设置数据总数完成', Schemas.Number);
+  setRels(PaginatorInputIds.SetDisable, PaginatorOutputIds.SetDisable, '禁用分页器后');
+  setRels(PaginatorInputIds.SetEnable, PaginatorOutputIds.SetEnable, '启用分页器后');
+
   //=========== v1.1.1 end ===============
   return true;
 }
