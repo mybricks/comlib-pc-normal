@@ -12,7 +12,7 @@ export default function MyComponent({
   outputs,
   slots
 }: RuntimeParams<Data>) {
-  const { runtime } = env;
+  const { edit, runtime } = env;
   const { documentTitle, closeScene, closable, useFooter, width } = data;
   const componentRef = useRef(null);
 
@@ -64,7 +64,7 @@ export default function MyComponent({
       mask={!env.edit}
       footer={!useFooter ? null : undefined}
       closable={closable}
-      getContainer={!env.edit as false}
+      getContainer={!(edit || runtime.debug) ? () => env?.canvasElement || document.body : void 0}
     >
       {data.useTop && slots?.[SlotIds.TOPWORKSPACE] && (
         <div>{slots?.[SlotIds.TOPWORKSPACE].render()}</div>

@@ -117,7 +117,7 @@ export default function ImgModal({
           </div>
         ]}
         onCancel={onClose}
-        getContainer={() => ref.current as HTMLDivElement}
+        getContainer={() => env?.canvasElement || document.body}
         zIndex={1002}
       >
         <div

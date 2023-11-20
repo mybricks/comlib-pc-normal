@@ -48,9 +48,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
         maxWidth: window.screen.availWidth,
         maxHeight: window.screen.availHeight
       }}
-      getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? env?.canvasElement : document.body
-      }
+      getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       destroyTooltipOnHide
       {...rest}
       onConfirm={onConfirm}
