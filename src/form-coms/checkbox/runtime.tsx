@@ -184,7 +184,7 @@ export default function Runtime({
       ...opt,
       label: (
         <span style={{ color: data.value?.includes(opt.value) ? activeFontColor : '' }}>
-          {opt.label}
+          {env.i18n(opt.label)}
         </span>
       )
     };
@@ -208,7 +208,7 @@ export default function Runtime({
           checked={checkAll}
           disabled={data.config.disabled}
         >
-          {data.checkAllText}
+          {env.i18n(data.checkAllText)}
         </Checkbox>
       )}
       <Checkbox.Group

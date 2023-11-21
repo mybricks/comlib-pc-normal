@@ -160,7 +160,7 @@ export default function ({
     <ConfigProvider locale={env.vars?.locale}>
       <div ref={wrapperRef} className={styles.wrap}>
         <TimePicker
-          placeholder={placeholder}
+          placeholder={env.i18n(placeholder)}
           value={value}
           format={_format}
           disabled={disabled}

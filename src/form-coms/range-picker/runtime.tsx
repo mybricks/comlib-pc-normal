@@ -25,7 +25,7 @@ export interface Data {
   ranges: any[];
   config: {
     disabled: boolean;
-    placeholder: undefined | [string, string];
+    placeholder: [string, string];
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
   dateType: 'array' | 'string';
@@ -52,7 +52,7 @@ export const formatRangeOptions = (list, env: Env) => {
         const [num1, num2] = numList;
         const startDate = moment().add(-num1, type).startOf(type);
         const endDate = moment().add(num2, type).endOf(type);
-        res[title] = [startDate, endDate];
+        res[env.i18n(title)] = [startDate, endDate];
       }
       if (value && Array.isArray(value)) {
         res[label] = value.map((item) => moment(item));
@@ -355,6 +355,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         <RangePicker
           value={value}
           {...data.config}
+          placeholder={[env.i18n(data.config.placeholder[0]), env.i18n(data.config.placeholder[1])]}
           ranges={data.useRanges ? rangeOptions : []}
           showTime={getShowTime()}
           onChange={onChange}

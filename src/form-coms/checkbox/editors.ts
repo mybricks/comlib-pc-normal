@@ -115,7 +115,7 @@ export default {
         ]
       }
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
       catalog[0].items = [
@@ -148,6 +148,9 @@ export default {
         {
           title: '全选框标签',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '修改全选框的文案',
           ifVisible({ data }: EditorResult<Data>) {
             return data.checkAll;
@@ -167,7 +170,7 @@ export default {
           type: 'array',
           options: {
             getTitle: ({ label, checked }) => {
-              return `${label}${checked ? ': 默认值' : ''}`;
+              return `${env.i18n(label)}${checked ? ': 默认值' : ''}`;
             },
             onAdd: () => {
               const value = uuid('_', 2);
@@ -193,6 +196,9 @@ export default {
               {
                 title: '选项标签',
                 type: 'textarea',
+                options: {
+                  locale: true
+                },
                 value: 'label'
               },
               {
@@ -271,6 +277,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

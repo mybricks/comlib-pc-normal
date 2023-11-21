@@ -191,6 +191,9 @@ export default {
             {
               title: '上传按钮文案',
               type: 'Text',
+              options: {
+                locale: true
+              },
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.config.buttonText;

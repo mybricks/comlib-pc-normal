@@ -312,7 +312,7 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
 
   /**
      * @description v1.4.10 , 新增 收起/展开表单项 输出项
-     */
+  */
 
   if (data.layoutType === 'QueryFilter' && !output.get(outputIds.ON_COLLAPSE)) {
     const schema = {
@@ -323,6 +323,15 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   }
 
   //=========== v1.4.10 end ===============
+
+  /**
+    * @description v1.4.15 , 兼容表单项无name，用label替换
+  */
+  data.items.forEach((item)=>{
+    if(item.name === undefined){
+      item.name = item.label;
+    }
+  })
 
   return true;
 }

@@ -170,6 +170,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         {...data.config}
         {...NumberProps}
         {...ParserProps}
+        placeholder={env.i18n(data.config.placeholder)}
+        addonBefore={env.i18n(data.config.addonBefore)}
+        addonAfter={env.i18n(data.config.addonAfter)}
         onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}

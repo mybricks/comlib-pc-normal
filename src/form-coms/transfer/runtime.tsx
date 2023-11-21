@@ -145,7 +145,7 @@ export default function ({
     <ConfigProvider locale={env.vars?.locale}>
       <Transfer
         className={styles.transfer}
-        titles={titles}
+        titles={[env.i18n(titles[0]), env.i18n(titles[1])]}
         dataSource={_dataSource}
         targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
         showSearch={showSearch}

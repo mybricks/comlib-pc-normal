@@ -117,6 +117,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={data.value}
         options={options}
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         multiple={data.isMultiple}
         onChange={onChange}
         open={env.design ? true : void 0}

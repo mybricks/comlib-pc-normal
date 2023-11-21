@@ -356,20 +356,20 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     const pictureButton = (
       <div>
         <PlusOutlined />
-        <div style={{ marginTop: 8 }}>{buttonText}</div>
+        <div style={{ marginTop: 8 }}>{env.i18n(buttonText)}</div>
       </div>
     );
 
     const normalButton = (
       <Button icon={<UploadOutlined />} disabled={disabled}>
-        {buttonText}
+        {env.i18n(buttonText)}
       </Button>
     );
 
     const draggerButton = (
       <>
         <p className="ant-upload-drag-icon">{Icons && Icons[uploadIcon]?.render()}</p>
-        <p className="ant-upload-text">{buttonText}</p>
+        <p className="ant-upload-text">{env.i18n(buttonText)}</p>
       </>
     );
 

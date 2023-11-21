@@ -31,7 +31,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
                   >
                     {Icon}
                   </span>
-                  {option.label}
+                  {env.i18n(option.label)}
                 </a>
               </Menu.Item>
             );
@@ -64,7 +64,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         {data.isCustom === false ? (
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              {data.content}
+              {env.i18n(data.content)}
               <DownOutlined />
             </Space>
           </a>

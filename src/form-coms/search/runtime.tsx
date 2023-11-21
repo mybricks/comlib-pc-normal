@@ -5,6 +5,7 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { inputIds, outputIds } from '../form-container/constants';
+import { i18nFn } from '../../utils';
 export interface Data {
   options: any[];
   rules: any[];
@@ -168,7 +169,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           <Select
             style={{ width: data.selectWidth }}
             value={data.initValue}
-            options={data.staticOptions}
+            options={i18nFn(data.staticOptions, env)}
             onChange={onChange}
           ></Select>
           <Search
@@ -179,8 +180,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
             onSearch={onSearch}
             onBlur={onBlur}
             value={value}
-            enterButton={data.isenterButton ? context : void 0}
+            enterButton={data.isenterButton ? env.i18n(context) : void 0}
             {...data.config}
+            placeholder={env.i18n(data.config.placeholder)}
+            addonBefore={env.i18n(data.config.addonBefore)}
           ></Search>
         </Input.Group>
       </div>
@@ -194,8 +197,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onSearch={onSearch}
         onBlur={onBlur}
         value={value}
-        enterButton={data.isenterButton ? context : void 0}
+        enterButton={data.isenterButton ? env.i18n(context) : void 0}
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
+        addonBefore={env.i18n(data.config.addonBefore)}
       ></Search>
     </div>
   ) : (
