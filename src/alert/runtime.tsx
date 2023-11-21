@@ -74,9 +74,11 @@ export default function (props: RuntimeParams<Data>) {
   const description = (
     <>
       <div>
-        {data.showInfo && typeof data.content === 'string'
-          ? decodeURIComponent(data.content)
-          : env.i18n(data.content)}
+        {data.showInfo
+          ? typeof data.content === 'string'
+            ? decodeURIComponent(data.content)
+            : env.i18n(data.content)
+          : ''}
         {data.useContentSlot && slots[SlotIds.DescSlot].render()}
       </div>
     </>
