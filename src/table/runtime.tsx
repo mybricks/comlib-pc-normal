@@ -112,20 +112,23 @@ export default function (props: RuntimeParams<Data>) {
       });
 
       // 表格loading
-      inputs[InputIds.START_LOADING]((val: any, relOutputs: any) => {
-        setLoading(true);
-        handleOutputFn(relOutputs, OutputIds.START_LOADING, val);
-      });
-      inputs[InputIds.END_LOADING]((val: any, relOutputs: any) => {
-        setLoading(false);
-        handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
-      });
+      inputs[InputIds.START_LOADING] &&
+        inputs[InputIds.START_LOADING]((val: any, relOutputs: any) => {
+          setLoading(true);
+          handleOutputFn(relOutputs, OutputIds.START_LOADING, val);
+        });
+      inputs[InputIds.END_LOADING] &&
+        inputs[InputIds.END_LOADING]((val: any, relOutputs: any) => {
+          setLoading(false);
+          handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
+        });
 
       // 清空勾选
-      inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
-        setSelectedRowKeys([]);
-        handleOutputFn(relOutputs, OutputIds.CLEAR_ROW_SELECTION, val);
-      });
+      inputs[InputIds.CLEAR_ROW_SELECTION] &&
+        inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
+          setSelectedRowKeys([]);
+          handleOutputFn(relOutputs, OutputIds.CLEAR_ROW_SELECTION, val);
+        });
 
       // 获取筛选数据
       inputs[InputIds.GET_FILTER] &&
@@ -172,10 +175,11 @@ export default function (props: RuntimeParams<Data>) {
         });
 
       // 总结栏数据
-      inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
-        setSummaryColumnData(val);
-        handleOutputFn(relOutputs, OutputIds.SUMMARY_COLUMN, val);
-      });
+      inputs[InputIds.SUMMARY_COLUMN] &&
+        inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
+          setSummaryColumnData(val);
+          handleOutputFn(relOutputs, OutputIds.SUMMARY_COLUMN, val);
+        });
 
       // 动态设置显示列
       if (data.useDynamicColumn && inputs[InputIds.SET_SHOW_COLUMNS]) {
@@ -269,10 +273,11 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
     // 开启关闭所有展开项
-    inputs[InputIds.EnableAllExpandedRows]((enable: boolean, relOutputs: any) => {
-      setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
-      handleOutputFn(relOutputs, OutputIds.EnableAllExpandedRows, enable);
-    });
+    inputs[InputIds.EnableAllExpandedRows] &&
+      inputs[InputIds.EnableAllExpandedRows]((enable: boolean, relOutputs: any) => {
+        setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
+        handleOutputFn(relOutputs, OutputIds.EnableAllExpandedRows, enable);
+      });
   }, [realShowDataSource]);
 
   useEffect(() => {
@@ -290,39 +295,42 @@ export default function (props: RuntimeParams<Data>) {
         });
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
-        inputs[InputIds.SET_ROW_SELECTION]((val: any, relOutputs: any) => {
-          // 时机延后，保证同时设置行选中和数据源时能生效
-          setTimeout(() => {
-            const newSelectedRowKeys: string[] = [];
-            const newSelectedRows: any[] = [];
-            (Array.isArray(val) ? val : [val]).forEach((selected) => {
-              // 目前行rowKey数据
-              const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
-              const tempItem = dataSourceRef.current.find(
-                (item) => targetRowKeyVal === item[rowKey]
-              );
-              if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
-                newSelectedRows.push(tempItem);
-                newSelectedRowKeys.push(targetRowKeyVal);
-              }
-            });
-            setSelectedRowKeys(newSelectedRowKeys);
-            handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
-          }, 0);
-        });
+        inputs[InputIds.SET_ROW_SELECTION] &&
+          inputs[InputIds.SET_ROW_SELECTION]((val: any, relOutputs: any) => {
+            // 时机延后，保证同时设置行选中和数据源时能生效
+            setTimeout(() => {
+              const newSelectedRowKeys: string[] = [];
+              const newSelectedRows: any[] = [];
+              (Array.isArray(val) ? val : [val]).forEach((selected) => {
+                // 目前行rowKey数据
+                const targetRowKeyVal =
+                  typeof selected === 'object' ? selected?.[rowKey] : selected;
+                const tempItem = dataSourceRef.current.find(
+                  (item) => targetRowKeyVal === item[rowKey]
+                );
+                if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
+                  newSelectedRows.push(tempItem);
+                  newSelectedRowKeys.push(targetRowKeyVal);
+                }
+              });
+              setSelectedRowKeys(newSelectedRowKeys);
+              handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
+            }, 0);
+          });
       }
     }
   }, [dataSource, rowKey]);
   useEffect(() => {
     if (env.runtime) {
       // 动态设置筛选数据源
-      inputs[InputIds.SET_FILTER_INPUT]((ds: any, relOutputs: any) => {
-        setFilterMap({
-          ...filterMap,
-          ...ds
+      inputs[InputIds.SET_FILTER_INPUT] &&
+        inputs[InputIds.SET_FILTER_INPUT]((ds: any, relOutputs: any) => {
+          setFilterMap({
+            ...filterMap,
+            ...ds
+          });
+          handleOutputFn(relOutputs, OutputIds.SET_FILTER_INPUT, data.filterParams);
         });
-        handleOutputFn(relOutputs, OutputIds.SET_FILTER_INPUT, data.filterParams);
-      });
     }
   }, [filterMap]);
   useEffect(() => {
