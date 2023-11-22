@@ -289,17 +289,17 @@ export function setValuesForInput({
   data: Data,
 }) {
   const { value: values, items: formItems } = data;
-
+  const actionType = data.userAction.type;
+  data.userAction.type = '';
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
       if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
-      setValuesOfChild({ data, childrenStore, key, value });
+      setValuesOfChild({ data, childrenStore, key, value, actionType });
     });
     resolve(1);
   })
     .then(v => {
-      data.userAction.type = '';
       data.userAction.startIndex = -1;
     })
     .catch(e => console.error(e));
@@ -314,16 +314,19 @@ export function setValuesOfChild({
   childrenStore,
   key,
   value,
+  actionType
 }: {
   data: Data,
   childrenStore: ChildrenStore,
   key?: React.Key,
   value,
+  actionType: string
 }) {
   const { items: formItems } = data;
   // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
   let extraAction = '';
-  const inputId = data.userAction.type === 'add' ? InputIds.SetInitialValue : data.userAction.type;
+  const inputId = actionType === 'add' ? InputIds.SetInitialValue : actionType;
+
   if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(inputId)
     && data.disabled) {
     extraAction = InputIds.SetDisabled;

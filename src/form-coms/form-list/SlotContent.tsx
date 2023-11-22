@@ -86,14 +86,16 @@ const SlotContent = (
           isChildrenStoreValid({ data, childrenStore, comCount }) &&
           data.userAction.type
         ) {
+          const actionType = data.userAction.type;
           switch (data.userAction.type) {
             case 'add':
             case 'init':
+              data.userAction.type = '';
               const temp = deepCopy(data.userAction.value);
               const key = data.userAction.key;
 
               if (temp) {
-                setValuesOfChild({ data, childrenStore, key, value: temp });
+                setValuesOfChild({ data, childrenStore, key, value: temp, actionType });
               }
               const initValue = temp || {};
               const index = data.userAction.index;
@@ -103,7 +105,6 @@ const SlotContent = (
                 data.value = [initValue];
               }
               changeValue({ data, id, outputs, parentSlot, name: props.name });
-              data.userAction.type = '';
               data.userAction.index = -1;
               data.userAction.key = -1;
               data.userAction.value = undefined;
