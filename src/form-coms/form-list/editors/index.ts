@@ -1,13 +1,19 @@
-import { message } from 'antd'
-import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types'
-import { ButtonType } from 'antd/es/button/button'
-import { actionsEditor } from './actions'
-import { SlotIds } from '../constants'
-import { refreshSchema } from '../schema'
-import { RuleKeys } from '../../../form-coms/utils/validator'
-import { outputIds } from '../../form-container/constants'
-import { fieldNameCheck, getFormItem, getFormItemProp, isShowLabel, setFormItemProps } from '../utils'
-import { StylesEditor } from './stylesEditor'
+import { message } from 'antd';
+import { Data, FormItemColonType, LabelWidthType, FormItems } from '../types';
+import { ButtonType } from 'antd/es/button/button';
+import { actionsEditor } from './actions';
+import { SlotIds } from '../constants';
+import { refreshSchema } from '../schema';
+import { RuleKeys } from '../../../form-coms/utils/validator';
+import { outputIds } from '../../form-container/constants';
+import {
+  fieldNameCheck,
+  getFormItem,
+  getFormItemProp,
+  isShowLabel,
+  setFormItemProps
+} from '../utils';
+import { StylesEditor } from './stylesEditor';
 
 export const defaultRules = [
   {
@@ -37,19 +43,19 @@ export const defaultRules = [
     key: RuleKeys.CUSTOM_EVENT,
     status: false,
     visible: true,
-    title: '自定义校验',
+    title: '自定义校验'
   }
 ];
 
 /** 操作项显隐表达式提示片段 */
 const getSuggestions = (data: Data) => {
-  const valueSuggestion = data.items.map(item => {
+  const valueSuggestion = data.items.map((item) => {
     return {
       label: item.name || item.label,
       insertText: item.name || item.label,
-      detail: `${item.name || item.label}字段值`,
-    }
-  })
+      detail: `${item.name || item.label}字段值`
+    };
+  });
   return [
     {
       label: 'item',
@@ -81,11 +87,11 @@ const getSuggestions = (data: Data) => {
           insertText: `value`,
           detail: `当前项的值`,
           properties: valueSuggestion
-        },
+        }
       ]
-    },
+    }
   ];
-}
+};
 
 export default {
   '@resize': {
@@ -96,13 +102,13 @@ export default {
   },
   '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
     if (curSlot.id === SlotIds.FormItems) {
-      const { id, inputDefs, outputDefs, name } = child
-      const item = data.items.find(item => item.id === id)
-      const com = outputDefs.find(item => item.id === 'returnValue')
+      const { id, inputDefs, outputDefs, name } = child;
+      const item = data.items.find((item) => item.id === id);
+      const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {
         // 表单项
         if (item) {
-          item.schema = com.schema
+          item.schema = com.schema;
         } else {
           data.nameCount++;
           data.items.push({
@@ -124,7 +130,7 @@ export default {
               fontSize: '12px',
               fontWeight: 400,
               color: 'rgba(0, 0, 0, 0.45)',
-              fontStyle: 'normal',
+              fontStyle: 'normal'
             },
             labelStyle: {
               lineHeight: '14px',
@@ -132,13 +138,13 @@ export default {
               fontSize: '14px',
               fontWeight: 400,
               color: 'rgba(0, 0, 0, 0.85)',
-              fontStyle: 'normal',
+              fontStyle: 'normal'
             },
             inlineMargin: [0, 16, 24, 0],
-            visible: true,
-          })
+            visible: true
+          });
         }
-        refreshSchema({ data, inputs, outputs, slots })
+        refreshSchema({ data, inputs, outputs, slots });
       } else {
         data.additionalItems.push({
           id,
@@ -150,18 +156,18 @@ export default {
     }
   },
   '@childRemove'({ data, inputs, outputs, logs, slots }, { id, name, title }) {
-    data.items = data.items.filter(item => item.comName !== name);
+    data.items = data.items.filter((item) => item.comName !== name);
 
-    data.additionalItems = data.additionalItems?.filter(item => item.comName !== name);
+    data.additionalItems = data.additionalItems?.filter((item) => item.comName !== name);
 
-    refreshSchema({ data, inputs, outputs, slots })
+    refreshSchema({ data, inputs, outputs, slots });
   },
   '@parentUpdated'({ id, name, data, parent }, { schema }) {
     if (schema === 'mybricks.normal-pc.form-container/form-item') {
       // parent['@_setFormItem']({id, schema: { type: 'object', properties: {} }})
-      data.isFormItem = true
+      data.isFormItem = true;
     } else {
-      data.isFormItem = false
+      data.isFormItem = false;
     }
   },
   ':root': {
@@ -188,7 +194,7 @@ export default {
             data.listItemMargin = value;
           }
         }
-      },
+      }
     ],
     items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
       cate1.items = [
@@ -222,24 +228,25 @@ export default {
             {
               title: '每行列数',
               type: 'Slider',
-              description: '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
+              description:
+                '每行的表单项个数，可以实现平均分布各表单项及操作项，仅对“宽度配置”为“24栅格”的表单项及操作项生效',
               options: [{ max: 6, min: 1, steps: 1, formatter: '个/行' }],
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.formItemColumn
+                  return data.formItemColumn;
                 },
                 set({ data }: EditorResult<Data>, value: number) {
                   data.formItemColumn = value;
-                  data.actions.span = (24 / value);
-                  data.items.forEach(item => {
-                    item.span = (24 / value);
+                  data.actions.span = 24 / value;
+                  data.items.forEach((item) => {
+                    item.span = 24 / value;
                   });
                   data.additionalItems?.forEach((item) => {
                     item.span = 24 / value;
                   });
                 }
               }
-            },
+            }
             // {
             //   title: '表单项',
             //   items: [
@@ -271,15 +278,15 @@ export default {
               },
               options: [
                 { label: '固定像素', value: 'px' },
-                { label: '24 栅格', value: 'span' },
+                { label: '24 栅格', value: 'span' }
               ],
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.labelWidthType
+                  return data.labelWidthType;
                 },
                 set({ data }: EditorResult<Data>, value: LabelWidthType) {
-                  data.labelWidthType = value
-                },
+                  data.labelWidthType = value;
+                }
               }
             },
             {
@@ -287,14 +294,14 @@ export default {
               type: 'inputNumber',
               options: [{ min: 1 }],
               ifVisible({ data }: EditorResult<Data>) {
-                return data.showLabel && data.labelWidthType === 'px'
+                return data.showLabel && data.labelWidthType === 'px';
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return [data.labelWidth]
+                  return [data.labelWidth];
                 },
                 set({ data }: EditorResult<Data>, value: number) {
-                  data.labelWidth = value[0]
+                  data.labelWidth = value[0];
                 }
               }
             },
@@ -303,14 +310,14 @@ export default {
               type: 'Slider',
               options: [{ max: 24, min: 1, steps: 1, formatter: '格' }],
               ifVisible({ data }: EditorResult<Data>) {
-                return data.showLabel && data.labelWidthType === 'span'
+                return data.showLabel && data.labelWidthType === 'span';
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.labelCol
+                  return data.labelCol;
                 },
                 set({ data }: EditorResult<Data>, value: number) {
-                  data.labelCol = value
+                  data.labelCol = value;
                 }
               }
             },
@@ -322,11 +329,11 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.formItemConfig?.colon
+                  return data.formItemConfig?.colon;
                 },
                 set({ data }: EditorResult<Data>, value: boolean) {
-                  data.formItemConfig.colon = value
-                },
+                  data.formItemConfig.colon = value;
+                }
               }
             },
             {
@@ -341,13 +348,13 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.formItemConfig?.labelAlign
+                  return data.formItemConfig?.labelAlign;
                 },
                 set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                  data.formItemConfig.labelAlign = value
-                },
+                  data.formItemConfig.labelAlign = value;
+                }
               }
-            },
+            }
           ]
         },
         // {
@@ -385,10 +392,10 @@ export default {
           description: '提交时收集被隐藏的表单项字段并进行校验',
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.submitHiddenFields
+              return data.submitHiddenFields;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.submitHiddenFields = val
+              data.submitHiddenFields = val;
             }
           }
         },
@@ -428,6 +435,9 @@ export default {
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;
+                },
+                options: {
+                  locale: true
                 }
               },
               {
@@ -499,7 +509,7 @@ export default {
         }
       ];
       cate2.title = '操作区';
-      cate2.items = actionsEditor(data, output)
+      cate2.items = actionsEditor(data, output);
     }
   },
   ':child(mybricks.normal-pc.form-container/form-item)': {
@@ -511,7 +521,7 @@ export default {
         options: [
           { label: '是', value: true },
           { label: '否', value: false },
-          { label: '跟随容器配置', value: 'default' },
+          { label: '跟随容器配置', value: 'default' }
         ],
         value: {
           get({ id, name, data }: EditorResult<Data>) {
@@ -527,6 +537,9 @@ export default {
         type: 'text',
         ifVisible({ id, name, data }: EditorResult<Data>) {
           return isShowLabel({ data, com: { id, name } });
+        },
+        options: {
+          locale: true
         },
         value: {
           get({ id, name, data }: EditorResult<Data>) {
@@ -545,53 +558,62 @@ export default {
             const { item } = getFormItem(data, { id, name }) || {};
             return item?.name || item?.label;
           },
-          set({ id, name, data, focusArea, input, output, slots }: EditorResult<Data>, val: string) {
+          set(
+            { id, name, data, focusArea, input, output, slots }: EditorResult<Data>,
+            val: string
+          ) {
             val = val.trim();
             if (!val) {
-              return message.warn('字段名不能为空')
+              return message.warn('字段名不能为空');
             }
 
-            const item = data.items.find(item => item.id === id)
+            const item = data.items.find((item) => item.id === id);
 
             if (item && item.name !== val) {
               if (fieldNameCheck(data, val)) {
-                return message.warn('字段名不能重复')
+                return message.warn('字段名不能重复');
               }
-              item.name = val
+              item.name = val;
 
-              refreshSchema({ data, inputs: input, outputs: output, slots })
+              refreshSchema({ data, inputs: input, outputs: output, slots });
             }
           }
         }
       },
       {
-        title: "标题提示",
-        type: "Text",
+        title: '标题提示',
+        type: 'Text',
         ifVisible({ id, name, data }: EditorResult<Data>) {
           return isShowLabel({ data, com: { id, name } });
         },
-        description: "展示在标题后面的悬浮提示内容",
+        options: {
+          locale: true
+        },
+        description: '展示在标题后面的悬浮提示内容',
         value: {
           get({ id, name, data }: EditorResult<Data>) {
             return getFormItemProp({ data, com: { name, id } }, 'tooltip');
           },
           set({ id, name, data }: EditorResult<Data>, value: string) {
             setFormItemProps({ data, com: { name, id } }, 'tooltip', value);
-          },
-        },
+          }
+        }
       },
       {
-        title: "提示语",
-        type: "Text",
-        description: "展示在表单项下方的提示内容",
+        title: '提示语',
+        type: 'Text',
+        description: '展示在表单项下方的提示内容',
+        options: {
+          locale: true
+        },
         value: {
           get({ id, name, data }: EditorResult<Data>) {
             return getFormItemProp({ data, com: { name, id } }, 'description');
           },
           set({ id, name, data }: EditorResult<Data>, value: string) {
             setFormItemProps({ data, com: { name, id } }, 'description', value);
-          },
-        },
+          }
+        }
       },
       {
         title: '样式',
@@ -616,7 +638,7 @@ export default {
               set({ data, name, id, inputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, com: { name, id } }, 'widthOption', value);
               }
-            },
+            }
           },
           {
             title: '宽度配置(共24格)',
@@ -626,8 +648,8 @@ export default {
                 max: 24,
                 min: 1,
                 step: 1,
-                formatter: '/24',
-              },
+                formatter: '/24'
+              }
             ],
             ifVisible({ data, name, id }: EditorResult<Data>) {
               return getFormItemProp({ data, com: { name, id } }, 'widthOption') !== 'px';
@@ -639,7 +661,7 @@ export default {
               set({ data, name, id }: EditorResult<Data>, value: number) {
                 setFormItemProps({ data, com: { name, id } }, 'span', value);
               }
-            },
+            }
           },
           {
             title: '宽度配置(px)',
@@ -653,17 +675,21 @@ export default {
             value: {
               get({ data, name, id }: EditorResult<Data>) {
                 return getFormItemProp({ data, com: { name, id } }, 'width');
-
               },
               set({ data, name, id }: EditorResult<Data>, value: number) {
                 setFormItemProps({ data, com: { name, id } }, 'width', value);
               }
-            },
+            }
           },
           {
             title: '边距',
             type: 'inputNumber',
-            options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
+            options: [
+              { min: 0, title: '上' },
+              { min: 0, title: '右' },
+              { min: 0, title: '下' },
+              { min: 0, title: '左' }
+            ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
                 return getFormItemProp({ data, com: { name, id } }, 'inlineMargin');
@@ -680,7 +706,7 @@ export default {
               set({ id, name, data }: EditorResult<Data>) {
                 const { item: curItem } = getFormItem(data, { name, id }) || {};
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
-                data.items.forEach(item => item.inlineMargin = [...margin]);
+                data.items.forEach((item) => (item.inlineMargin = [...margin]));
                 data.actions.inlinePadding = [...margin];
               }
             }
@@ -714,7 +740,7 @@ export default {
             options: [
               { label: '左对齐', value: 'left' },
               { label: '右对齐', value: 'right' },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器配置', value: 'default' }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
@@ -735,7 +761,7 @@ export default {
             options: [
               { label: '显示', value: true },
               { label: '隐藏', value: false },
-              { label: '跟随容器配置', value: 'default' },
+              { label: '跟随容器配置', value: 'default' }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
@@ -747,16 +773,16 @@ export default {
             }
           },
           {
-            title: "标题样式",
-            type: "Style",
+            title: '标题样式',
+            type: 'Style',
             options: ['font'],
             ifVisible({ id, name, data }: EditorResult<Data>) {
               return isShowLabel({ data, com: { id, name } });
             },
-            description: "表单项标题的字体样式",
+            description: '表单项标题的字体样式',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id);
+                const item = data.items.find((item) => item.id === id);
                 if (!item?.labelStyle) {
                   setFormItemProps({ data, com: { name, id } }, 'labelStyle', {
                     lineHeight: '14px',
@@ -764,7 +790,7 @@ export default {
                     fontSize: '14px',
                     fontWeight: 400,
                     color: 'rgba(0, 0, 0, 0.85)',
-                    fontStyle: 'normal',
+                    fontStyle: 'normal'
                   });
                 }
                 return item?.labelStyle;
@@ -772,8 +798,8 @@ export default {
               set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
                 setFormItemProps({ data, com: { name, id } }, 'labelStyle', style);
-              },
-            },
+              }
+            }
           },
           {
             title: '标题样式应用所有表单项',
@@ -790,20 +816,20 @@ export default {
                   fontSize: '14px',
                   fontWeight: 400,
                   color: 'rgba(0, 0, 0, 0.85)',
-                  fontStyle: 'normal',
+                  fontStyle: 'normal'
                 };
-                data.items.forEach(item => item.labelStyle = labelStyle);
+                data.items.forEach((item) => (item.labelStyle = labelStyle));
               }
             }
           },
           {
-            title: "提示语样式",
-            type: "Style",
+            title: '提示语样式',
+            type: 'Style',
             options: ['font'],
-            description: "表单项提示语的字体样式",
+            description: '表单项提示语的字体样式',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
-                const item = data.items.find(item => item.id === id);
+                const item = data.items.find((item) => item.id === id);
                 if (!item?.descriptionStyle) {
                   setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', {
                     whiteSpace: 'pre-wrap',
@@ -812,7 +838,7 @@ export default {
                     fontSize: '12px',
                     fontWeight: 400,
                     color: 'rgba(0, 0, 0, 0.45)',
-                    fontStyle: 'normal',
+                    fontStyle: 'normal'
                   });
                 }
                 return item?.descriptionStyle;
@@ -820,8 +846,8 @@ export default {
               set({ id, name, data }: EditorResult<Data>, value: any) {
                 const { styleEditorUnfold, ...style } = value;
                 setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', style);
-              },
-            },
+              }
+            }
           },
           {
             title: '提示语样式应用所有表单项',
@@ -836,9 +862,9 @@ export default {
                   fontSize: '12px',
                   fontWeight: 400,
                   color: 'rgba(0, 0, 0, 0.45)',
-                  fontStyle: 'normal',
+                  fontStyle: 'normal'
                 };
-                data.items.forEach(item => item.descriptionStyle = descriptionStyle);
+                data.items.forEach((item) => (item.descriptionStyle = descriptionStyle));
               }
             }
           },
@@ -855,7 +881,7 @@ export default {
             }
           }
         ]
-      },
+      }
     ]
   },
   ':child(mybricks.normal-pc.form-container/form-addition-container)': {
@@ -953,7 +979,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]`;
@@ -966,7 +992,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"] .anticon`;
@@ -979,7 +1005,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"] .ant-image-img`;
@@ -992,7 +1018,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]`;
@@ -1005,7 +1031,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:hover`;
@@ -1018,7 +1044,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:hover .anticon`;
@@ -1031,7 +1057,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:hover .ant-image-img`;
@@ -1044,7 +1070,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:active`;
@@ -1057,7 +1083,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:active .anticon`;
@@ -1070,7 +1096,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"]:active .ant-image-img`;
@@ -1083,10 +1109,10 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
-              return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled]`
+              return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled]`;
             }
           },
           {
@@ -1096,7 +1122,7 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled] .anticon`;
@@ -1109,19 +1135,19 @@ export default {
             target({ focusArea, data }) {
               if (!focusArea) return;
               const comId = focusArea.dataset['formActionsItem'];
-              const btn = data.actions.items.find(item => item.key === comId);
+              const btn = data.actions.items.find((item) => item.key === comId);
 
               if (!btn) return;
               return `button[data-form-actions-item="${btn.key}"].ant-btn[disabled] .ant-image-img`;
             }
-          },
+          }
         ]
       }
     ],
     items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2) => {
       if (!focusArea) return;
       const comId = focusArea.dataset['formActionsItem'];
-      const btn = data.actions.items.find(item => item.key === comId);
+      const btn = data.actions.items.find((item) => item.key === comId);
 
       if (!btn) return;
 
@@ -1132,10 +1158,10 @@ export default {
           type: 'Switch',
           value: {
             get({ data }: EditorResult<Data>) {
-              return btn.visible
+              return btn.visible;
             },
-            set({ data, }: EditorResult<Data>, val) {
-              btn.visible = val
+            set({ data }: EditorResult<Data>, val) {
+              btn.visible = val;
             }
           }
         },
@@ -1144,27 +1170,30 @@ export default {
           type: 'expression',
           options: {
             suggestions: getSuggestions(data),
-            placeholder: `例：{item.index < 4}`,
+            placeholder: `例：{item.index < 4}`
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return btn.displayExpression
+              return btn.displayExpression;
             },
-            set({ data, }: EditorResult<Data>, val: string) {
-              btn.displayExpression = val
+            set({ data }: EditorResult<Data>, val: string) {
+              btn.displayExpression = val;
             }
           }
         },
         {
           title: '标题',
           type: 'text',
+          options: {
+            locale: true
+          },
           value: {
-            get({ data, }: EditorResult<Data>) {
-              return btn.title
+            get({ data }: EditorResult<Data>) {
+              return btn.title;
             },
             set({ data, output }: EditorResult<Data>, val) {
-              btn.title = val
-              output.setTitle(btn.outputId, `点击${btn.title}`)
+              btn.title = val;
+              output.setTitle(btn.outputId, `点击${btn.title}`);
             }
           }
         },
@@ -1174,11 +1203,11 @@ export default {
             {
               title: '点击',
               type: '_event',
-              options({ data, }) {
+              options({ data }) {
                 return {
-                  outputId: btn.outputId,
+                  outputId: btn.outputId
                   // slotId: SlotIds.FormItems
-                }
+                };
               }
             }
           ]
@@ -1186,20 +1215,20 @@ export default {
         {
           title: '删除',
           type: 'Button',
-          ifVisible({ data, }) {
-            return !btn?.isDefault
+          ifVisible({ data }) {
+            return !btn?.isDefault;
           },
           value: {
             set({ data, output, focusArea }: EditorResult<Data>) {
-              const actions = data.actions.items
-              const itemId = focusArea.dataset['formActionsItem']
-              const index = actions.findIndex(item => item.key === itemId)
+              const actions = data.actions.items;
+              const itemId = focusArea.dataset['formActionsItem'];
+              const index = actions.findIndex((item) => item.key === itemId);
 
-              output.remove(btn.outputId)
-              data.actions.items.splice(index, 1)
+              output.remove(btn.outputId);
+              data.actions.items.splice(index, 1);
             }
           }
-        },
+        }
       ];
 
       // cate2.title = '样式';
@@ -1208,6 +1237,5 @@ export default {
       //   ...IconEditor(btn),
       // ];
     }
-
   }
-}
+};

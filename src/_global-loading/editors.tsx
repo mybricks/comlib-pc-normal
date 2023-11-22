@@ -29,6 +29,9 @@ export default {
       title: 'Loading文案',
       type: 'text',
       description: '可以通过逻辑连线，动态传入Loading文案',
+      options: {
+        locale: true
+      },
       ifVisible({ data }: EditorResult<Data>) {
         return !data.closeLoading;
       },

@@ -7,18 +7,16 @@ export default {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
     catalog[0].items = [
       {
         title: '评分总数',
         type: 'Inputnumber',
-        options: [
-          { min:0 },
-        ],
+        options: [{ min: 0 }],
         description: '设置的评分数, 默认是5',
         value: {
           get({ data }) {
@@ -32,9 +30,7 @@ export default {
       {
         title: '默认值',
         type: 'Inputnumber',
-        options: [
-          { min:0 },
-        ],
+        options: [{ min: 0 }],
         description: '初始设置的评分,只允许设置0-count, 以0.5为步长',
         value: {
           get({ data }) {
@@ -102,14 +98,17 @@ export default {
         ifVisible({ data }) {
           return data.isChoose && data.choose === 'font';
         },
+        options: {
+          locale: true
+        },
         value: {
           get({ data }) {
-            return data.font
+            return data.font;
           },
           set({ data }, value: string) {
-            data.font = value
-          },
-        },
+            data.font = value;
+          }
+        }
       },
       {
         title: '选择图标',
@@ -155,6 +154,9 @@ export default {
               title: '提示文字',
               type: 'Text',
               value: 'message',
+              options: {
+                locale: true
+              },
               ifVisible(item: any, index: number) {
                 return item.key === RuleKeys.REQUIRED;
               }
@@ -225,10 +227,10 @@ export default {
             }
           }
         ]
-      },
-    ]
+      }
+    ];
   }
-}
+};
 
 const getTitle = (item: any, index: number) => {
   const { key, title, numericalLimit, regExr } = item;

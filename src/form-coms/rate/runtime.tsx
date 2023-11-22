@@ -122,7 +122,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         character={
           data.isChoose && (data.choose === 'font' || 'icon')
             ? data.choose === 'font'
-              ? data.font
+              ? env.i18n(data.font)
               : btnItemR({ icon: data.icon })
             : void 0
         }

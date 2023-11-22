@@ -56,6 +56,9 @@ export const BaseEditor = [
       return showLabel;
     },
     type: 'Text',
+    options: {
+      locale: true
+    },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
@@ -78,6 +81,9 @@ export const BaseEditor = [
   {
     title: '标签说明',
     type: 'text',
+    options: {
+      locale: true
+    },
     ifVisible({ data, focusArea }: EditorResult<Data>) {
       if (!focusArea) return;
       const { showLabel = true } = data.items[getEleIdx({ data, focusArea })];
@@ -119,6 +125,9 @@ export const BaseEditor = [
   {
     title: '默认值',
     type: 'Text',
+    options: {
+      locale: true
+    },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;

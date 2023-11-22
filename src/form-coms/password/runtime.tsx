@@ -128,7 +128,7 @@ export default function ({
   return (
     <Input.Password
       allowClear
-      placeholder={placeholder}
+      placeholder={env.i18n(placeholder)}
       value={value}
       disabled={disabled}
       onChange={onChange}

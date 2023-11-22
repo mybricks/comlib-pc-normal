@@ -51,7 +51,7 @@ const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => 
         }
       } else {
         try {
-          open(content);
+          open(env.i18n(content));
         } catch (e) {
           console.error('目前该设置,Message组件仅支持传入静态配置内容', e);
         }
