@@ -110,6 +110,36 @@
           }
         }
       }
+    },
+    {
+      "id": "addField",
+      "title": "添加一项",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeField",
+      "title": "删除一项",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "number"
+          },
+          "index": {
+            "type": "number"
+          }
+        }
+      }
     }
   ],
   "outputs": [

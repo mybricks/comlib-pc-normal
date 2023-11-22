@@ -10,8 +10,8 @@ import {
 } from './utils';
 import { deepCopy, typeCheck } from '../../utils';
 import { RuleKeys, validateFormItem } from '../utils/validator';
-import { ActionsWrapper, addField } from './components/FormActions';
-import { SlotIds, SlotInputIds } from './constants';
+import { ActionsWrapper, addField, removeField } from './components/FormActions';
+import { SlotIds, SlotInputIds, InputIds as SelfInputIds } from './constants';
 import { InputIds, OutputIds } from '../types';
 import { inputIds, outputIds } from '../form-container/constants';
 import { defaultRules } from './editors';
@@ -137,6 +137,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
       }
+    });
+
+    // 新增一项
+    inputs[SelfInputIds.AddField]?.((val) => {
+      addField({ data }, val);
+    });
+    // 删除一项
+    inputs[SelfInputIds.RemoveField]?.((val) => {
+      const { index, key } = val;
+      const fieldIndex = typeof index === 'number' ? index : data.fields.length;
+      const field = {
+        name: fieldIndex,
+        key
+      };
+      removeField({ ...props, childrenStore, field, fieldIndex });
     });
   }, []);
 

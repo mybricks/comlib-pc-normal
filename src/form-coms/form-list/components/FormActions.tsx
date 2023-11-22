@@ -3,7 +3,7 @@ import { Form, Button, Image, Col, Space, FormListOperation, FormListFieldData }
 import * as Icons from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { Action, Data, LocationEnum } from '../types';
-import { unitConversion } from '../../../utils';
+import { deepCopy, unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
 import css from '../styles.less';
@@ -17,17 +17,24 @@ export interface FormListActionsProps {
 }
 
 /** 添加一行 */
-export const addField = ({ data }: { data: Data }) => {
+export const addField = ({ data }: { data: Data }, options?) => {
+  const { index = -1, value } = options || {};
   const { fields } = data;
   data.MaxKey = data.MaxKey + 1;
-  fields.push({
-    name: fields.length,
+  const fieldName = index >= 0 ? index : fields.length;
+  const newField = {
+    name: fieldName,
     key: data.MaxKey
-  });
+  };
+  fields.splice(fieldName, 0, newField);
+  data.userAction.type = 'add';
+  data.userAction.value = deepCopy(value);
+  data.userAction.index = fieldName;
+  data.userAction.key = data.MaxKey;
 };
 
 /** 删除一行 */
-const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
+export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
   const { fields } = data;
 
@@ -86,7 +93,6 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
     if (env.edit) return;
     if (item.key === 'add') {
       addField({ data });
-      data.userAction.type = 'add';
       outputs[item.key] &&
         outputs[item.key]({
           nextIndex: data.fields.length - 1,

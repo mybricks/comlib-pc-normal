@@ -289,45 +289,59 @@ export function setValuesForInput({
   data: Data,
 }) {
   const { value: values, items: formItems } = data;
-  const inputId = data.userAction.type;
-  data.userAction.type = '';
-
-  // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
-  let extraAction = '';
-  if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(inputId)
-    && data.disabled) {
-    extraAction = InputIds.SetDisabled;
-  }
 
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
       if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
-
-      const names = inputId === 'add'
-        ? Object.keys(value)
-        : data.items.map(item => item.name);
-
-      names.forEach((name) => {
-        const item = formItems.find((item) => (item.name || item.label) === name);
-        if (item && key !== undefined) {
-          const { inputs, index } = childrenStore[key][item.comName];
-          if (isObject(value[name])) {
-            inputs[inputId] && inputs[inputId]({ ...value[name] });
-          } else {
-            inputs[inputId] && inputs[inputId](value[name]);
-          }
-          extraAction
-            && inputs[extraAction]
-            && inputs[extraAction]();
-        }
-      });
-
+      setValuesOfChild({ data, childrenStore, key, value });
     });
     resolve(1);
   })
     .then(v => {
+      data.userAction.type = '';
       data.userAction.startIndex = -1;
     })
     .catch(e => console.error(e));
+};
+
+/**
+ * 数据绑定：设置某一项数据
+ * @param {Data, ChildrenStore, inputId} 
+ */
+export function setValuesOfChild({
+  data,
+  childrenStore,
+  key,
+  value,
+}: {
+  data: Data,
+  childrenStore: ChildrenStore,
+  key?: React.Key,
+  value,
+}) {
+  const { items: formItems } = data;
+  // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
+  let extraAction = '';
+  const inputId = data.userAction.type === 'add' ? InputIds.SetInitialValue : data.userAction.type;
+  if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(inputId)
+    && data.disabled) {
+    extraAction = InputIds.SetDisabled;
+  }
+
+  const names = data.userAction.type === 'add'
+    ? Object.keys(value)
+    : data.items.map(item => item.name);
+  if (key !== undefined) {
+    names.forEach((name) => {
+      const item = formItems.find((item) => (item.name || item.label) === name);
+      if (item) {
+        const { inputs, index } = childrenStore[key][item.comName];
+        inputs[inputId] && inputs[inputId](deepCopy(value[name]));
+        extraAction
+          && inputs[extraAction]
+          && inputs[extraAction]();
+      }
+    });
+  }
 };

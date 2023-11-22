@@ -115,7 +115,8 @@ export interface Data {
    */
   userAction: {
     type: string;
-    index?: number;
+    index: number;
+    key: React.Key;
     value?: {};
     startIndex: number;
   }
