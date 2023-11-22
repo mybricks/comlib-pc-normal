@@ -36,22 +36,20 @@ export const addField = ({ data }: { data: Data }, options?) => {
 /** 删除一行 */
 export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
-  const { fields } = data;
 
-  fields.splice(field.name, 1);
   data.value?.splice(field.name, 1);
-  // 更新name
-  fields.forEach((field, index) => {
-    if (field.name !== index) {
-      data.fields[index] = {
-        ...field,
+  // 删除当前field，更新name
+  data.fields = data.fields
+    .filter((i) => i.key !== field.key)
+    .map((i, index) => {
+      return {
+        ...i,
         name: index
       };
-    }
-  });
+    });
   childrenStore[field.key] = undefined;
-  data.userAction.type = InputIds.SetInitialValue;
-  data.userAction.startIndex = field.name;
+  // data.userAction.type = InputIds.SetInitialValue;
+  // data.userAction.startIndex = field.name;
 
   changeValue({ data, id, outputs, parentSlot, name: props.name });
 };

@@ -21,7 +21,6 @@ const SlotContent = (
 ) => {
   const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
     props;
-
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
@@ -148,7 +147,7 @@ const SlotContent = (
         return (
           <>
             {jsx}
-            {actions}
+            {env.edit && actions}
           </>
         );
       },
@@ -156,11 +155,15 @@ const SlotContent = (
       style: data.slotStyle,
       key: field.key
     });
-  }, [data.slotStyle, data.fields[field.name]]);
+  }, [data.slotStyle, field.name, field.key]);
+  /**
+   * , [data.slotStyle, data.value?.[field.name], field.name, field.key]);
+   */
 
   return (
     <Row key={field.key} className="form-list-item">
       {content}
+      {!env.edit && actions}
     </Row>
   );
 };
