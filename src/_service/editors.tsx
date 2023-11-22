@@ -169,14 +169,14 @@ export default {
               editor: {
                 type: '_connectorSelect'
               }
-            })
+            });
           } else {
-            configs.remove('dynamicConfig')
+            configs.remove('dynamicConfig');
           }
           data.showDynamicConfig = showDynamicConfig;
         }
       }
-    },
+    }
   ]
 };
 
