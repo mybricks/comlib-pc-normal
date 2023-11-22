@@ -29,13 +29,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
   // }, [data.initLength]);
 
   useLayoutEffect(() => {
+    data.userAction = {
+      type: '',
+      startIndex: -1
+    };
     // 设置值
     inputs[InputIds.SetValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
         changeValue({ data, id, outputs, parentSlot, name: props.name });
         const changeLength = generateFields(data);
-        data.currentAction = InputIds.SetValue;
+        data.userAction.type = InputIds.SetValue;
         // changeLength < 0时，不会触发已有的列表项刷新
         changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
@@ -49,7 +53,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.value = value;
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         const changeLength = generateFields(data);
-        data.currentAction = InputIds.SetInitialValue;
+        data.userAction.type = InputIds.SetInitialValue;
         // changeLength < 0时，不会触发已有的列表项刷新
         changeLength <= 0 && setValuesForInput({ data, childrenStore });
       } else {
@@ -72,14 +76,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //设置禁用
     inputs['setDisabled'](() => {
       data.disabled = true;
-      data.currentAction = InputIds.SetDisabled;
+      data.userAction.type = InputIds.SetDisabled;
       setValuesForInput({ data, childrenStore });
     });
 
     //设置启用
     inputs['setEnabled'](() => {
       data.disabled = false;
-      data.currentAction = InputIds.SetEnabled;
+      data.userAction.type = InputIds.SetEnabled;
       setValuesForInput({ data, childrenStore });
     }, []);
 
@@ -87,11 +91,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['isEnable']((val) => {
       if (val === true) {
         data.disabled = false;
-        data.currentAction = InputIds.SetEnabled;
+        data.userAction.type = InputIds.SetEnabled;
         setValuesForInput({ data, childrenStore });
       } else {
         data.disabled = true;
-        data.currentAction = InputIds.SetDisabled;
+        data.userAction.type = InputIds.SetDisabled;
         setValuesForInput({ data, childrenStore });
       }
     });
@@ -140,7 +144,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 值更新
     slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
       // 只有在用户操作触发时才收集更新值
-      !data.currentAction &&
+      !data.userAction.type &&
         updateValue({ ...props, childrenStore, childId: id, childName: name, value });
     });
   }

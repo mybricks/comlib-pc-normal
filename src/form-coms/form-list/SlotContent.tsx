@@ -78,12 +78,12 @@ const SlotContent = (
         if (
           field.name === data.fields.length - 1 &&
           isChildrenStoreValid({ data, childrenStore, comCount }) &&
-          data.currentAction
+          data.userAction.type
         ) {
-          switch (data.currentAction) {
+          switch (data.userAction.type) {
             case 'add':
             case 'init':
-              data.currentAction = '';
+              data.userAction.type = '';
               // 计算新增项默认值
               const initValue = {};
               new Promise((resolve, reject) => {

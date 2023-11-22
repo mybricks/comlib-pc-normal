@@ -43,8 +43,8 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
     }
   });
   childrenStore[field.key] = undefined;
-  data.currentAction = InputIds.SetInitialValue;
-  data.startIndex = field.name;
+  data.userAction.type = InputIds.SetInitialValue;
+  data.userAction.startIndex = field.name;
 
   changeValue({ data, id, outputs, parentSlot, name: props.name });
 };
@@ -86,7 +86,7 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
     if (env.edit) return;
     if (item.key === 'add') {
       addField({ data });
-      data.currentAction = 'add';
+      data.userAction.type = 'add';
       outputs[item.key] &&
         outputs[item.key]({
           nextIndex: data.fields.length - 1,

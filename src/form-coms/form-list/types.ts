@@ -111,9 +111,14 @@ export interface Data {
    */
   initLength: number
   /**
-   * 当前触发的输入项id
+   * 用户操作
    */
-  currentAction: string;
+  userAction: {
+    type: string;
+    index?: number;
+    value?: {};
+    startIndex: number;
+  }
   /**
    * 需要初始化的列表项索引
    */

@@ -232,7 +232,7 @@ export function onValidateTrigger({ parentSlot, id, name }) {
  */
 export function changeValue({ id, outputs, parentSlot, name, data }) {
   const { value } = data;
-  if (data.currentAction === 'init') {
+  if (data.userAction.type === 'init') {
     outputs[OutputIds.OnInitial](deepCopy(value));
   } else {
     outputs[OutputIds.OnChange](deepCopy(value));
@@ -289,8 +289,8 @@ export function setValuesForInput({
   data: Data,
 }) {
   const { value: values, items: formItems } = data;
-  const inputId = data.currentAction;
-  data.currentAction = '';
+  const inputId = data.userAction.type;
+  data.userAction.type = '';
 
   // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
   let extraAction = '';
@@ -301,7 +301,7 @@ export function setValuesForInput({
 
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
-      if (data.startIndex > valIndex) return;
+      if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
 
       const names = inputId === 'add'
@@ -327,7 +327,7 @@ export function setValuesForInput({
     resolve(1);
   })
     .then(v => {
-      data.startIndex = -1;
+      data.userAction.startIndex = -1;
     })
     .catch(e => console.error(e));
 };
