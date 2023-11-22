@@ -1,4 +1,4 @@
-import { BtnItemDataSetKey } from '../../constants';
+import { BtnItemDataSetKey, SlotItemDataSetKey } from '../../constants';
 import { AlignEnum, Data } from '../../types';
 import IndexEditor from './indexEditor';
 import DynamicEventEditor from './dynamicEventEditor';
@@ -78,6 +78,16 @@ const itemEditor = {
 
       return {
         title: '按钮'
+      };
+    }
+  },
+  [`[${SlotItemDataSetKey}]`]: {
+    items: ({}: EditorResult<Data>, cate1) => {
+      cate1.title = '常规';
+      cate1.items = [...IndexEditor];
+
+      return {
+        title: '自定义插槽'
       };
     }
   }

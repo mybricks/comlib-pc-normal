@@ -7,7 +7,7 @@ export const getNewBtn = (): BtnItem => {
     key,
     text: '按钮',
     showText: true,
-    dataType: "number",
+    dataType: 'number',
     outVal: 0,
     inVal: '',
     isCustom: false,
@@ -19,7 +19,8 @@ export const getNewBtn = (): BtnItem => {
     style: {
       height: 'auto',
       width: 'auto'
-    }
+    },
+    isSlot: false
   };
 };
 

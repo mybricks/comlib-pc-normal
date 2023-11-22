@@ -7,7 +7,7 @@ import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
 import { checkIfMobile } from '../utils';
 
-export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
+export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.runtime) {
@@ -150,7 +150,9 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
               disabled={todo === 'disable' ? true : item.disabled}
               onClick={() => onClick(item)}
             >
-              {renderTextAndIcon(item)}
+              {!item.isSlot
+                ? renderTextAndIcon(item)
+                : slots?.[item.key] && slots?.[item.key].render({ key: item.key })}
             </Menu.Item>
           );
         })}
@@ -171,22 +173,29 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     return btnList.map((item) => {
       const todo = getWhatToDoWithoutPermission(item.permission?.id);
       if (item.hidden || todo === 'hide') return;
-      const { type, danger, size, shape, disabled, isCustom, loading } = item;
+
+      const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key } = item;
       return (
-        <div key={item.key} data-btn-idx={item.key} className={css.button}>
-          <Button
-            type={type as any}
-            danger={danger}
-            size={size}
-            shape={shape}
-            disabled={todo === 'disable' ? true : disabled}
-            onClick={() => onClick(item)}
-            onDoubleClick={() => onDoubleClick(item)}
-            loading={loading}
-            block={true}
-          >
-            {renderBtnContext(item)}
-          </Button>
+        <div key={key} className={css.button} data-btn-idx={item.key}>
+          {!isSlot ? (
+            <Button
+              type={type as any}
+              danger={danger}
+              size={size}
+              shape={shape}
+              disabled={todo === 'disable' ? true : disabled}
+              onClick={() => onClick(item)}
+              onDoubleClick={() => onDoubleClick(item)}
+              loading={loading}
+              block={true}
+            >
+              {renderBtnContext(item)}
+            </Button>
+          ) : (
+            <div className={css.emptyWrap} data-slot-idx={item.key}>
+              {slots?.[key] && slots?.[key].render({ key })}
+            </div>
+          )}
         </div>
       );
     });
