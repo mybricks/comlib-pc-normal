@@ -30,7 +30,6 @@ export const addField = ({ data }: { data: Data }) => {
 const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
 
-  // console.log([...data.fields], 'before------------')
   // 更新name
   data.fields = data.fields
     .filter((i) => i.key !== field.key)
@@ -40,7 +39,6 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
         name: index
       };
     });
-  // console.log([...data.fields], 'after------------')
   childrenStore[field.key] = undefined;
   data.value?.splice(field.name, 1);
   // data.currentAction = InputIds.SetInitialValue;
@@ -84,7 +82,6 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
 
   const onClick = (item: Action) => {
     if (env.edit) return;
-    console.log('onClick', currentField, item);
     if (item.key === 'add') {
       addField({ data });
       data.currentAction = 'add';
