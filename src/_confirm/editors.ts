@@ -97,16 +97,12 @@ export default {
         formatter: 'px'
       }
     }),
-    {
-      title: '底部按钮',
-      items: [
-        Editor<Data>('确定按钮文案', EditorType.Text, 'okText'),
-        Editor<Data>('取消按钮文案', EditorType.Text, 'cancelText', {
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'confirm';
-          }
-        })
-      ]
-    }
+    {},
+    Editor<Data>('确定按钮文案', EditorType.Text, 'okText'),
+    Editor<Data>('取消按钮文案', EditorType.Text, 'cancelText', {
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.type === 'confirm';
+      }
+    })
   ]
 };

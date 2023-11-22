@@ -16,6 +16,7 @@ interface FormItemInputsProps {
     setDisabled?: () => void
     setEnabled?: () => void
     onChange?: (val) => void
+    setIsEnabled?: (val) => void
   }
   parentSlot?: any
 }
@@ -27,7 +28,8 @@ const formItemInputIds = {
   RESET_VALUE: 'resetValue',
   VALIDATE: 'validate',
   SET_DISABLED: 'setDisabled',
-  SET_ENABLED: 'setEnabled'
+  SET_ENABLED: 'setEnabled',
+  IS_ENABL: 'isEnable'
 }
 
 const formItemOutputIds = {
@@ -115,6 +117,15 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     inputs[formItemInputIds.SET_ENABLED] && inputs[formItemInputIds.SET_ENABLED](() => {
       if (configs?.setEnabled) {
         configs?.setEnabled()
+      }
+    });
+
+    /**
+     * @description 设置启用/禁用
+     */
+    inputs[formItemInputIds.IS_ENABL] && inputs[formItemInputIds.IS_ENABL]((val) => {
+      if (configs?.setIsEnabled) {
+        configs?.setIsEnabled(val)
       }
     });
 

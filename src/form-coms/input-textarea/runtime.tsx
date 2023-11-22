@@ -66,6 +66,13 @@ export default function ({
       setEnabled() {
         data.config.disabled = false;
       },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
+      },
       validate(model, outputRels) {
         validateFormItem({
           value: data.value,
@@ -163,6 +170,7 @@ export default function ({
         ref={inputRef}
         {...data.config}
         // value={data.value}
+        placeholder={env.i18n(data.config.placeholder)}
         value={value}
         readOnly={!!edit}
         {...sizeConfig}

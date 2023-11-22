@@ -1,5 +1,6 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
+import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   /**
@@ -15,18 +16,18 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
           items: [
             {
               type: 'string',
-              value: 'success',
+              value: 'success'
             },
             {
               type: 'string',
-              value: 'error',
-            },
-          ],
+              value: 'error'
+            }
+          ]
         },
         help: {
-          type: 'string',
-        },
-      },
+          type: 'string'
+        }
+      }
     });
   }
   if (!output.get(outputIds.ON_VALIDATE)) {
@@ -34,18 +35,34 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
       type: 'string'
     });
   }
-  const cutomRule = data.rules?.find(
-    (i) => i.key === RuleKeys.CUSTOM_EVENT
-  );
+  const cutomRule = data.rules?.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
   if (data.rules?.length && !cutomRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,
       visible: true,
-      title: '自定义校验',
+      title: '自定义校验'
     });
   }
   //=========== v1.1.0 end ===============
+
+  /**
+   * @description v1.1.4 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: 'boolean'
+    });
+  }
+  //=========== v1.1.4 end ===============
+
+  /**
+   * @description v1.1.5 新增启用/禁用 输入项
+   */
+  if (!Reflect.has(data, 'customUpload')) {
+    data.customUpload = false;
+  }
+  //=========== v1.1.5 end ===============
 
   return true;
 }

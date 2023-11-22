@@ -13,6 +13,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.title;

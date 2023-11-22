@@ -29,7 +29,7 @@ export default {
   '@init': ({ style }) => {
     style.width = '100%'
   },
-  ':root' ({data}: EditorResult<{ type }>, ...catalog) {
+  ':root' ({data, env}: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
     catalog[1].title = '高级';
 
@@ -38,6 +38,9 @@ export default {
         title: '提示内容',
         type: 'Text',
         description: '该提示内容会在值为空时显示',
+        options: {
+          locale: true
+        },
         value: {
           get({ data }) {
             return data.config.placeholder;
@@ -91,7 +94,7 @@ export default {
         type: 'array',
         options: {
           getTitle: ({ label }) => {
-            return label;
+            return env.i18n(label);
           },
           onAdd: () => {
             const defaultOption = {
@@ -105,6 +108,9 @@ export default {
             {
               title: '选项标签',
               type: 'textarea',
+              options: {
+                locale: true
+              },
               value: 'label'
             },
             {
@@ -139,6 +145,9 @@ export default {
             {
               title: '提示文字',
               type: 'Text',
+              options: {
+                locale: true
+              },
               value: 'message',
               ifVisible(item: any, index: number) {
                 return item.key === RuleKeys.REQUIRED;

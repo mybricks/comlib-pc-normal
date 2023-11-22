@@ -2,7 +2,7 @@
   "title": "置底工具栏",
   "enable": true,
   "namespace": "mybricks.bottom-bar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "置底工具栏",
   "author": "MyBricks",
   "author_name": "MyBricks",

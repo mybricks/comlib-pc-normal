@@ -250,7 +250,7 @@ export default {
         ]
       },
     ],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[1].title = '高级';
 
@@ -258,6 +258,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -368,8 +371,8 @@ export default {
           title: '静态选项配置',
           type: 'array',
           options: {
-            getTitle: ({ label, checked }) => {
-              return `${label}${checked ? ': 默认值' : ''}`;
+            getTitle: ({ label, checked}) => {
+              return `${env.i18n(label)}${checked ? ': 默认值' : ''}`;
             },
             onAdd: () => {
               const value = uuid('_', 2);
@@ -393,6 +396,9 @@ export default {
               {
                 title: '选项标签',
                 type: 'textarea',
+                options: {
+                  locale: true
+                },
                 value: 'label'
               },
               {
@@ -409,7 +415,7 @@ export default {
               initParams(data);
               return data.staticOptions;
             },
-            set({ data, focusArea }: EditorResult<Data>, options: Option[]) {
+            set({ data, focusArea, env }: EditorResult<Data>, options: Option[]) {
               const initValue: any = [];
               options.forEach(({ checked, value, label }) => {
                 if (checked) initValue.push(value);
@@ -505,6 +511,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

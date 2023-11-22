@@ -1,6 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({
   data,
@@ -122,6 +123,7 @@ export default function ({
   if(typeof data.formatMap === "undefined"){
     data.formatMap = {
       "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
       "周": encodeURIComponent("YYYY-wo"),
       "月份": encodeURIComponent("YYYY-MM"),
       "季度": encodeURIComponent("YYYY-\\QQ"),
@@ -142,6 +144,27 @@ export default function ({
   if(input.get("setOpen")?.title === "打开隐藏面板" ) {
     input.setTitle("setOpen", "打开日期选择面板");
   }
+
+  if(typeof data.formatMap['日期+时间'] === "undefined"){
+    data.formatMap = {
+      "日期": data.formatMap['日期'],
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": data.formatMap['周'],
+      "月份": data.formatMap['月份'],
+      "季度": data.formatMap['季度'],
+      "年份": data.formatMap['年份'],
+    }
+  }
+
+  /**
+   * @description v1.1.8 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.8 end ===============
   
   return true;
 }

@@ -440,6 +440,27 @@ export default {
               target: `.ant-pagination-item.ant-pagination-item-active a`
             },
             {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } },
+                'BoxShadow'
+              ],
+              target: `.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector`
+            },
+            {
+              title: '标签展开-条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;
+              },
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: `.ant-select-single.ant-select-open .ant-select-selection-item`
+            },
+            {
               title: '条数选择标签',
               ifVisible({ data }: EditorResult<Data>) {
                 return data.showSizeChanger && data.size !== SizeTypeEnum.Simple;

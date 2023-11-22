@@ -39,7 +39,7 @@ function ColumnRender(props: ColumnRenderProps) {
   }, [data.columns, colKey]);
 
   const value = useMemo(() => {
-    let oriValue = props.value ?? null;
+    let oriValue = props.value;
 
     if (columnItem?.formatData && !env.edit) {
       // 格式化数据时，如果是表达式传入index、行数据、当前cell数据
@@ -55,7 +55,7 @@ function ColumnRender(props: ColumnRenderProps) {
       oriValue = genFormatting(columnItem.formatData)(valueToBeFormat);
     }
 
-    // 如果是插槽，则不转成自负
+    // 如果是插槽，则不转成字符串
     if (columnItem.contentType === ContentTypeEnum.SlotItem) {
       return oriValue;
     }
@@ -64,11 +64,12 @@ function ColumnRender(props: ColumnRenderProps) {
 
     try {
       value =
-        value && ['object', 'function', 'boolean'].includes(typeof value)
+        value !== null && ['object', 'function', 'boolean'].includes(typeof value)
           ? JSON.stringify(value)
           : value;
     } catch (e) {
       console.error('JSON.stringify失败', value, e);
+      return value;
     }
     return value;
   }, [props.value, columnItem.formatData, columnItem.contentType, record, index, env.edit]);

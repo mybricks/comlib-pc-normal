@@ -23,8 +23,8 @@ const JSXWrapper = (props: FormControlProps) => {
   return com.jsx;
 };
 
-const FormItem = (props: FormItemProps) => {
-  const { com, item, data, slots, isMobile } = props;
+const FormItem = (props) => {
+  const { com, item, data, slots, isMobile, env } = props;
   const layout = data.config?.layout || data.layout;
   const formColon = data.config?.colon || data.colon;
 
@@ -38,6 +38,10 @@ const FormItem = (props: FormItemProps) => {
   const colon = item?.colon === 'default' ? formColon : item.colon;
 
   const labelAlign = item?.labelAlign === 'default' ? data.config.labelAlign : item.labelAlign;
+  const labelCol =
+    item?.labelWidthType === 'default'
+      ? void 0
+      : { flex: `0 0 ${item.labelWidth ? item.labelWidth : 98}px` };
 
   const whiteSpace =
     item?.labelAutoWrap === 'default'
@@ -55,15 +59,16 @@ const FormItem = (props: FormItemProps) => {
         item?.hiddenLabel || (isMobile && item?.label?.trim()?.length === 0) ? (
           void 0
         ) : (
-          <label style={{ ...item?.labelStyle, whiteSpace }}>{item?.label}</label>
+          <label style={{ ...item?.labelStyle, whiteSpace }}>{env.i18n(item?.label)}</label>
         )
       }
+      labelCol={labelCol}
       labelAlign={labelAlign}
       name={item?.name}
       required={item?.required}
       validateStatus={item?.validateStatus}
       help={item?.help}
-      tooltip={item?.tooltip}
+      tooltip={env.i18n(item?.tooltip)}
       colon={!!item?.label && colon}
       hidden={item?.hidden}
     >
@@ -81,7 +86,7 @@ const FormItem = (props: FormItemProps) => {
       {item.description && (
         <div className={css.formItemDesc}>
           <Form.Item noStyle>
-            <span style={item.descriptionStyle}>{item.description}</span>
+            <span style={item.descriptionStyle}>{env.i18n(item.description)}</span>
           </Form.Item>
         </div>
       )}

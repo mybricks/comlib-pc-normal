@@ -31,7 +31,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
                   >
                     {Icon}
                   </span>
-                  {option.label}
+                  {env.i18n(option.label)}
                 </a>
               </Menu.Item>
             );
@@ -57,16 +57,14 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         placement={data.placement}
         arrow
         visible={(edit && data.isChildCustom) || env.design ? true : edit ? false : void 0}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit ? triggerNode : debug ? env?.canvasElement : env.container || document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
         overlayStyle={{ minWidth: data.width }}
         trigger={[data.trigger || 'hover']}
       >
         {data.isCustom === false ? (
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              {data.content}
+              {env.i18n(data.content)}
               <DownOutlined />
             </Space>
           </a>

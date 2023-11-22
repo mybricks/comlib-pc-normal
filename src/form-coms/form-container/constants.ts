@@ -14,6 +14,7 @@ export const inputIds = {
   //禁用/启用
   SetDisable: 'setDisable',
   SetEnable: 'setEnable',
+  IsEnable: 'isEnable',
 
   //显示/隐藏
   SetHidden: 'setHidden',
@@ -95,6 +96,10 @@ export const formItemPropsSchema = {
   //   ],
   //   title: '边距'
   // },
+  labelWidth: {
+    type: 'number',
+    title: '标题自定义宽度'
+  },
   labelAutoWrap: {
     type: 'boolean',
     title: '标题是否换行'

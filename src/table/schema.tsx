@@ -185,6 +185,14 @@ function setOutputsSchema(dataSchema, { output }: Props) {
       properties: dataSchema
     }
   });
+  output.get(OutputIds.SET_DATA_SOURCE)?.setSchema?.({
+    title: '表格数据',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: dataSchema
+    }
+  });
 }
 
 // 设置筛选数据schema
@@ -248,6 +256,8 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
   output.get(OutputIds.FILTER)?.setSchema(schema1);
   output.get(OutputIds.GET_FILTER)?.setSchema(schema1);
   output.get(OutputIds.FILTER_CLICK)?.setSchema(schema3);
+  output.get(OutputIds.SET_FILTER)?.setSchema(schema1);
+  output.get(OutputIds.SET_FILTER_INPUT)?.setSchema(schema2);
   input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
@@ -379,6 +389,12 @@ export const Schemas = {
   },
   Number: {
     type: 'number'
+  },
+  String: {
+    type: 'string'
+  },
+  Boolean: {
+    type: 'boolean'
   },
   Array: {
     type: 'array'

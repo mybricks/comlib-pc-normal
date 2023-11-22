@@ -3,7 +3,14 @@ import moment from 'moment';
 import { Table, Empty, ConfigProvider, Image } from 'antd';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
-import { InputIds, OutputIds, SlotIds, TEMPLATE_RENDER_KEY, DefaultRowKey } from './constants';
+import {
+  InputIds,
+  OutputIds,
+  SlotIds,
+  TEMPLATE_RENDER_KEY,
+  DefaultRowKey,
+  DefaultOnRowScript
+} from './constants';
 import zhCN from 'antd/es/locale/zh_CN';
 
 import {
@@ -31,6 +38,7 @@ import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
 import { unitConversion } from '../utils';
+import { runJs } from '../../package/com-utils';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -38,7 +46,6 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const dataSourceRef = useRef(dataSource);
@@ -46,7 +53,6 @@ export default function (props: RuntimeParams<Data>) {
   const [filterMap, setFilterMap] = useState<any>({});
   const [focusRowIndex, setFocusRowIndex] = useState(null);
   const [focusCellinfo, setFocusCellinfo] = useState<any>(null);
-
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
@@ -57,6 +63,10 @@ export default function (props: RuntimeParams<Data>) {
   const rowKey = data.rowKey || DefaultRowKey;
 
   const ref = useRef<HTMLDivElement>(null);
+
+  const selectedRows = useMemo(() => {
+    return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
+  }, [dataSource, selectedRowKeys, rowKey]);
 
   const initFilterMap = () => {
     let res = {};
@@ -78,6 +88,14 @@ export default function (props: RuntimeParams<Data>) {
     setFilterMap(res);
   };
 
+  // IO串行处理
+  const handleOutputFn = (relOutputs: { [x: string]: any }, OutputId: string, val: any) => {
+    const outputFn = relOutputs?.[OutputId] || outputs[OutputId];
+    if (outputFn) {
+      outputFn(val);
+    }
+  };
+
   useEffect(() => {
     initFilterMap();
     if (runtime) {
@@ -87,57 +105,65 @@ export default function (props: RuntimeParams<Data>) {
       }
 
       // 设置数据源
-      inputs[InputIds.SET_DATA_SOURCE]((ds: any) => {
+      inputs[InputIds.SET_DATA_SOURCE]((ds: any, relOutputs: any) => {
         setTableData(ds);
         setLoading(false);
+        handleOutputFn(relOutputs, OutputIds.SET_DATA_SOURCE, ds);
       });
 
       // 表格loading
-      inputs[InputIds.START_LOADING](() => {
-        setLoading(true);
-      });
-      inputs[InputIds.END_LOADING](() => {
-        setLoading(false);
-      });
+      inputs[InputIds.START_LOADING] &&
+        inputs[InputIds.START_LOADING]((val: any, relOutputs: any) => {
+          setLoading(true);
+          handleOutputFn(relOutputs, OutputIds.START_LOADING, val);
+        });
+      inputs[InputIds.END_LOADING] &&
+        inputs[InputIds.END_LOADING]((val: any, relOutputs: any) => {
+          setLoading(false);
+          handleOutputFn(relOutputs, OutputIds.END_LOADING, val);
+        });
 
       // 清空勾选
-      inputs[InputIds.CLEAR_ROW_SELECTION](() => {
-        setSelectedRowKeys([]);
-        setSelectedRows([]);
-      });
+      inputs[InputIds.CLEAR_ROW_SELECTION] &&
+        inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
+          setSelectedRowKeys([]);
+          handleOutputFn(relOutputs, OutputIds.CLEAR_ROW_SELECTION, val);
+        });
 
       // 获取筛选数据
       inputs[InputIds.GET_FILTER] &&
-        inputs[InputIds.GET_FILTER]((val, relOutputs) => {
+        inputs[InputIds.GET_FILTER]((val: any, relOutputs: any) => {
           relOutputs[OutputIds.GET_FILTER](data.filterParams);
         });
       // 设置筛选数据
       inputs[InputIds.SET_FILTER] &&
-        inputs[InputIds.SET_FILTER]((val) => {
+        inputs[InputIds.SET_FILTER]((val: any, relOutputs: any) => {
           data.filterParams = {
             ...data.filterParams,
             ...val
           };
+          handleOutputFn(relOutputs, OutputIds.SET_FILTER, data.filterParams);
         });
 
       // 获取排序数据
       inputs[InputIds.GET_SORT] &&
-        inputs[InputIds.GET_SORT]((val, relOutputs) => {
+        inputs[InputIds.GET_SORT]((val: any, relOutputs: any) => {
           relOutputs[OutputIds.GET_SORT](data.sortParams);
         });
       // 设置排序数据
       inputs[InputIds.SET_SORT] &&
-        inputs[InputIds.SET_SORT]((val) => {
+        inputs[InputIds.SET_SORT]((val: any, relOutputs: any) => {
           const { order, id } = val || {};
           data.sortParams = {
             order,
             id
           };
+          handleOutputFn(relOutputs, OutputIds.SET_SORT, data.sortParams);
         });
 
       // 设置表格高度
       inputs[InputIds.TABLE_HEIGHT] &&
-        inputs[InputIds.TABLE_HEIGHT]((val) => {
+        inputs[InputIds.TABLE_HEIGHT]((val: any, relOutputs: any) => {
           const { maxScrollHeight, tableHeight } = val || {};
           if (typeof maxScrollHeight !== 'undefined') {
             data.scroll.y = unitConversion(maxScrollHeight);
@@ -145,16 +171,19 @@ export default function (props: RuntimeParams<Data>) {
           if (typeof tableHeight !== 'undefined') {
             data.fixedHeight = unitConversion(tableHeight);
           }
+          handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
 
       // 总结栏数据
-      inputs[InputIds.SUMMARY_COLUMN]((val) => {
-        setSummaryColumnData(val);
-      });
+      inputs[InputIds.SUMMARY_COLUMN] &&
+        inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
+          setSummaryColumnData(val);
+          handleOutputFn(relOutputs, OutputIds.SUMMARY_COLUMN, val);
+        });
 
       // 动态设置显示列
       if (data.useDynamicColumn && inputs[InputIds.SET_SHOW_COLUMNS]) {
-        inputs[InputIds.SET_SHOW_COLUMNS]((ds) => {
+        inputs[InputIds.SET_SHOW_COLUMNS]((ds: any, relOutputs: any) => {
           const showColumnList = ds?.filter?.((item) => item && typeof item === 'string') || [];
           data.columns = (data.columns || []).map((item) => {
             let visible = item.visible;
@@ -169,12 +198,13 @@ export default function (props: RuntimeParams<Data>) {
               visible
             };
           });
+          handleOutputFn(relOutputs, OutputIds.SET_SHOW_COLUMNS, data.columns);
         });
       }
 
       // 动态设置表头
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
-        inputs[InputIds.SET_SHOW_TitleS]((val) => {
+        inputs[InputIds.SET_SHOW_TitleS]((val: any, relOutputs: any) => {
           // 需要保留的列
           const previousDataIndex = val
             .filter((item) => item.usePrevious)
@@ -183,6 +213,7 @@ export default function (props: RuntimeParams<Data>) {
             .filter((item) => !item.usePrevious)
             .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
           initFilterMap();
+          handleOutputFn(relOutputs, OutputIds.SET_SHOW_TitleS, data.columns);
         });
       }
     }
@@ -195,15 +226,14 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.scroll.y, data.fixedHeader]);
 
-  const getSelectedRows = useCallback((dataSource, selectedRowKeys) => {
-    let rowObj = {};
-    for (let key of selectedRowKeys) {
-      let curItem = dataSource.find((item) => item[rowKey] === key);
-      rowObj[key] == curItem;
+  useEffect(() => {
+    const target = ref.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
+    if (target && data.fixedHeader && !!data.fixedHeight) {
+      target.style.minHeight = typeof data.scroll.y === 'string' ? data.scroll.y : '';
+    } else if (target) {
+      target.style.minHeight = '';
     }
-
-    return Object.values(rowObj) as any[];
-  }, []);
+  }, [data.fixedHeight, data.fixedHeader, data.scroll.y]);
 
   // 更新某一行数据
   const editTableData = useCallback(
@@ -221,12 +251,10 @@ export default function (props: RuntimeParams<Data>) {
           ...tempValue, // 需要保留类似rowKey的数据
           ...value
         };
-        const selectedRows = getSelectedRows(newDataSource, selectedRowKeys);
-        setSelectedRows(selectedRows);
         setDataSource(newDataSource);
       }
     },
-    [getSelectedRows, dataSource, selectedRowKeys]
+    [dataSource]
   );
   useEffect(() => {
     // 监听插槽输出数据
@@ -245,9 +273,11 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (!env.runtime || !data.useExpand) return;
     // 开启关闭所有展开项
-    inputs[InputIds.EnableAllExpandedRows]((enable) => {
-      setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
-    });
+    inputs[InputIds.EnableAllExpandedRows] &&
+      inputs[InputIds.EnableAllExpandedRows]((enable: boolean, relOutputs: any) => {
+        setExpandedRowKeys(enable ? realShowDataSource.map((item) => item[rowKey]) : []);
+        handleOutputFn(relOutputs, OutputIds.EnableAllExpandedRows, enable);
+      });
   }, [realShowDataSource]);
 
   useEffect(() => {
@@ -265,38 +295,42 @@ export default function (props: RuntimeParams<Data>) {
         });
       // 动态设置勾选项
       if (data.useSetSelectedRowKeys) {
-        inputs[InputIds.SET_ROW_SELECTION]((val) => {
-          // 时机延后，保证同时设置行选中和数据源时能生效
-          setTimeout(() => {
-            const newSelectedRowKeys: string[] = [];
-            const newSelectedRows: any[] = [];
-            (Array.isArray(val) ? val : [val]).forEach((selected) => {
-              // 目前行rowKey数据
-              const targetRowKeyVal = typeof selected === 'object' ? selected?.[rowKey] : selected;
-              const tempItem = dataSourceRef.current.find(
-                (item) => targetRowKeyVal === item[rowKey]
-              );
-              if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
-                newSelectedRows.push(tempItem);
-                newSelectedRowKeys.push(targetRowKeyVal);
-              }
-            });
-            setSelectedRowKeys(newSelectedRowKeys);
-            setSelectedRows(newSelectedRows);
-          }, 0);
-        });
+        inputs[InputIds.SET_ROW_SELECTION] &&
+          inputs[InputIds.SET_ROW_SELECTION]((val: any, relOutputs: any) => {
+            // 时机延后，保证同时设置行选中和数据源时能生效
+            setTimeout(() => {
+              const newSelectedRowKeys: string[] = [];
+              const newSelectedRows: any[] = [];
+              (Array.isArray(val) ? val : [val]).forEach((selected) => {
+                // 目前行rowKey数据
+                const targetRowKeyVal =
+                  typeof selected === 'object' ? selected?.[rowKey] : selected;
+                const tempItem = dataSourceRef.current.find(
+                  (item) => targetRowKeyVal === item[rowKey]
+                );
+                if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
+                  newSelectedRows.push(tempItem);
+                  newSelectedRowKeys.push(targetRowKeyVal);
+                }
+              });
+              setSelectedRowKeys(newSelectedRowKeys);
+              handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
+            }, 0);
+          });
       }
     }
   }, [dataSource, rowKey]);
   useEffect(() => {
     if (env.runtime) {
       // 动态设置筛选数据源
-      inputs[InputIds.SET_FILTER_INPUT]((ds) => {
-        setFilterMap({
-          ...filterMap,
-          ...ds
+      inputs[InputIds.SET_FILTER_INPUT] &&
+        inputs[InputIds.SET_FILTER_INPUT]((ds: any, relOutputs: any) => {
+          setFilterMap({
+            ...filterMap,
+            ...ds
+          });
+          handleOutputFn(relOutputs, OutputIds.SET_FILTER_INPUT, data.filterParams);
         });
-      });
     }
   }, [filterMap]);
   useEffect(() => {
@@ -311,26 +345,6 @@ export default function (props: RuntimeParams<Data>) {
         });
     }
   }, [selectedRows, selectedRowKeys]);
-
-  // useEffect(() => {
-  //   if (env.runtime) {
-  //     setSelectedRows((row) => {
-  //       let rowObj = Object.values(row).reduce((res, item) => {
-  //         res[item[rowKey]] = item;
-  //         return res;
-  //       }, {});
-
-  //       for (let key of selectedRowKeys) {
-  //         let curItem = dataSource.find((item) => item[rowKey] === key);
-  //         if (rowObj[key] && curItem) {
-  //           rowObj[key] == curItem;
-  //         }
-  //       }
-
-  //       return Object.values(rowObj);
-  //     });
-  //   }
-  // }, [dataSource, selectedRowKeys]);
 
   // 前端分页逻辑
   const filterDataSourceBySortAndFilter = () => {
@@ -600,7 +614,6 @@ export default function (props: RuntimeParams<Data>) {
         selectedRows = selectedRows.slice(0, data.rowSelectionLimit);
         selectedRowKeys = selectedRowKeys.slice(0, data.rowSelectionLimit);
       }
-      setSelectedRows(selectedRows);
       setSelectedRowKeys(selectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows,
@@ -716,7 +729,6 @@ export default function (props: RuntimeParams<Data>) {
         }
       }
       newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
-      setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows: newSelectedRows,
@@ -729,6 +741,14 @@ export default function (props: RuntimeParams<Data>) {
   const onRow = useCallback(
     (_record, index) => {
       const { [DefaultRowKey]: _, ...record } = _record;
+      let props = {};
+      if (data?.enableOnRow && !env.edit) {
+        if (!data.onRowScript) {
+          data.onRowScript = DefaultOnRowScript;
+        }
+        props = runJs(data?.onRowScript, [_record, index]);
+      }
+
       return {
         onClick: (e) => {
           if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
@@ -748,7 +768,8 @@ export default function (props: RuntimeParams<Data>) {
           if (data.enableRowFocus) {
             setFocusRowIndex(index === focusRowIndex ? null : index);
           }
-        }
+        },
+        ...props
       };
     },
     [focusRowIndex, setCurrentSelectRows]

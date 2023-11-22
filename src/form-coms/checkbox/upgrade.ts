@@ -1,4 +1,5 @@
 import { InputIds, OutputIds } from '../types';
+import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
 
@@ -86,6 +87,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.1.0 end ===============
 
   input.add('setActiveFontColor', '设置激活选项字体的颜色', { type: "string" });
+
+  /**
+   * @description v1.1.4 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.4 end ===============
 
   return true;
 }

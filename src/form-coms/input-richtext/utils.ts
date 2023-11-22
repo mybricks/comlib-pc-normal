@@ -1,7 +1,10 @@
+import contentMinCss from './tinymce/skins/ui/oxide/content.min.css';
+import defalutContentMinCss from './tinymce/skins/content/default/content.min.css';
+
 interface InitProps {
   readonly?: boolean;
   isFS: boolean;
-  selector: string;
+  selector?: string;
   customIconsId: string;
   height: number | string;
   toolbar: string;
@@ -55,18 +58,23 @@ export function Init({
     nonbreaking_force_tab: true,
     convert_urls: false,  //url不转换
     relative_urls: false, //转换为相对地址
-    skin: `oxide`,
-    theme: 'silver',
+    // skin: `oxide`,
+    skin: false,
+    // theme: 'silver',
     setup: setUp,
     init_instance_callback: function (editor) {
       initCB && initCB(editor);
     },
     readonly,
-    content_style: readonly
-      ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
-      : `p {margin: 0px; border:0px ; padding: 0px;}`,
+    content_css: '',
+    content_style:
+      contentMinCss +
+      defalutContentMinCss +
+      (readonly
+        ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
+        : `p {margin: 0px; border:0px ; padding: 0px;}`),
     placeholder
-    });
+  });
 }
 
 export function getWindowVal(key: string) {

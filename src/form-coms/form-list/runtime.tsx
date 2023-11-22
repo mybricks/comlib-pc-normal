@@ -84,6 +84,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
       setValuesForInput({ data, childrenStore });
     }, []);
 
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.disabled = false;
+        data.currentAction = InputIds.SetEnabled;
+        setValuesForInput({ data, childrenStore });
+      } else {
+        data.disabled = true;
+        data.currentAction = InputIds.SetDisabled;
+        setValuesForInput({ data, childrenStore });
+      }
+    });
+
     // 校验
     inputs['validate']((model, outputRels) => {
       // 校验子项

@@ -26,16 +26,17 @@ const SlotContent = (
         );
       },
       wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
-        // console.log(field, '-------------wrap-----------------');
         let comCount = comAray?.length;
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let { item, isFormItem } = getFormItem(data, com);
             if (!item) return;
             const visible = com.style.display !== 'none';
-            // 非表单项不收集inputs
-            if (!isFormItem) comCount--;
-            // 表单项收集inputs
+            // 非表单项不收集childrenStore
+            if (!isFormItem) {
+              comCount--;
+            }
+            // 表单项收集childrenStore
             if (field && isFormItem) {
               const { key, name } = field;
               if (!childrenStore[key]) {

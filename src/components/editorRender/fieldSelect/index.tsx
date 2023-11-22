@@ -2,10 +2,10 @@
  * 使用树形选择器完成字段映射
  */
 import React, { useCallback, useState } from 'react';
-import { Tag, Input, TreeSelect, Button } from 'antd';
+import { Tag, Input, TreeSelect, Select, Button } from 'antd';
 import classnames from 'classnames';
 import css from './index.less';
-
+const { Option } = Select;
 const typeMap = {
   array: '列表',
   object: '对象',
@@ -65,41 +65,47 @@ export default function Tree({ editConfig }: any) {
       editConfig.value.set(val);
     }
   }, []);
+  const isSelect = useTreeSelect && !!options?.length;
 
   return (
     <div className={classnames(css.wrap, 'fangzhou-theme')}>
-      {useTreeSelect && !!options?.length ? (
-        <TreeSelect
-          defaultValue={value}
-          className={css.treeSelect}
-          treeData={options}
-          onChange={onChange}
-          showSearch
-          treeDefaultExpandAll
-          placeholder={placeholder}
-          disabled={disabled}
-        />
-      ) : (
-        <Input
-          className={css.input}
-          defaultValue={value}
-          onBlur={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          disabled={disabled}
-        />
-      )}
-      {!!options?.length ? (
-        <Button
+      <Input.Group compact>
+        <Select
           size="small"
-          onClick={() => {
-            setUseTreeSelect(!useTreeSelect);
-          }}
-          className={css.btn}
-          disabled={disabled}
+          onChange={(val) => setUseTreeSelect(val === 'select')}
+          style={{ width: '65px' }}
+          defaultValue={isSelect ? 'select' : 'input'}
         >
-          {useTreeSelect ? '选择' : '输入'}
-        </Button>
-      ) : null}
+          <Option value="input">输入</Option>
+          <Option value="select">选择</Option>
+        </Select>
+        {isSelect ? (
+          <TreeSelect
+            defaultValue={value}
+            treeData={options}
+            size="small"
+            onChange={onChange}
+            showSearch
+            treeDefaultExpandAll
+            placeholder={placeholder}
+            disabled={disabled}
+            style={{
+              width: 'calc(100% - 65px)'
+            }}
+          />
+        ) : (
+          <Input
+            defaultValue={value}
+            onBlur={(e) => onChange(e.target.value)}
+            placeholder={placeholder}
+            disabled={disabled}
+            size="small"
+            style={{
+              width: 'calc(100% - 65px)'
+            }}
+          />
+        )}
+      </Input.Group>
     </div>
   );
 }

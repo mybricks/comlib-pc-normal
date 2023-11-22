@@ -1,7 +1,7 @@
 {
   "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -61,6 +61,7 @@
     {
       "id": "setOptions",
       "title": "设置数据源",
+      "desc": "设置树选择的下拉选项列表",
       "schema": {
         "type": "array",
         "items": {
@@ -134,6 +135,13 @@
       "title": "设置启用",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

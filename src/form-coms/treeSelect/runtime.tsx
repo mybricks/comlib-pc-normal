@@ -116,6 +116,16 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.config.disabled = false;
+      } else {
+        data.config.disabled = true;
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {
@@ -254,6 +264,7 @@ export default function Runtime({
       <TreeSelect
         treeIcon
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : void 0}
@@ -272,9 +283,7 @@ export default function Runtime({
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
         dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       >
         {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
       </TreeSelect>

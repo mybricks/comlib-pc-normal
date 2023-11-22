@@ -74,11 +74,12 @@ export default {
             id,
             comName: name,
             schema: com.schema,
-            name: '',
+            name: `表单项${nowC}`,
             label: `表单项${nowC}`,
             widthOption: 'span',
             span: 24 / data.formItemColumn,
             colon: 'default',
+            labelWidthType: 'default',
             labelAlign: 'default',
             labelAutoWrap: 'default',
             hiddenLabel: false,
@@ -203,7 +204,7 @@ export default {
         target: '.ant-form'
       }
     ],
-    items: ({ data, output }: EditorResult<Data>, cate1, cate2) => {
+    items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {
       cate1.items = [
         {
           title: '类型',
@@ -470,8 +471,8 @@ export default {
       ];
 
       if (!data.isFormItem) {
-        cate2.title = actionsEditor(data, output).title;
-        cate2.items = actionsEditor(data, output).items;
+        cate2.title = actionsEditor(data, output, env).title;
+        cate2.items = actionsEditor(data, output, env).items;
       }
     }
   },
@@ -494,6 +495,9 @@ export default {
       {
         title: '标题',
         type: 'text',
+        options: {
+          locale: true
+        },
         ifVisible({ id, data, name }: EditorResult<Data>) {
           return !getFormItemProp({ data, id, name }, 'hiddenLabel');
         },
@@ -525,7 +529,7 @@ export default {
           get({ id, data, name }: EditorResult<Data>) {
             const { item } = getFormItem(data, { id, name });
 
-            return item?.name || item?.label;
+            return item?.name;
           },
           set({ id, data, name, input, output, slots }: EditorResult<Data>, val: string) {
             const { item } = getFormItem(data, { id, name });
@@ -535,10 +539,10 @@ export default {
               refreshSchema({ data, inputs: input, outputs: output, slots });
             }
 
-            // val = val.trim();
-            // if (!val) {
-            //   return message.warn('字段名不能为空');
-            // }
+            val = val.trim();
+            if (!val) {
+              return message.warn('字段名不能为空');
+            }
 
             // const {item} = getFormItem(data, { id, name });
 
@@ -682,6 +686,9 @@ export default {
       {
         title: '标题提示',
         type: 'Text',
+        options: {
+          locale: true
+        },
         ifVisible({ id, name, data }: EditorResult<Data>) {
           return !getFormItemProp({ data, id, name }, 'hiddenLabel');
         },
@@ -698,6 +705,9 @@ export default {
       {
         title: '提示语',
         type: 'Text',
+        options: {
+          locale: true
+        },
         description: '展示在表单项下方的提示内容',
         value: {
           get({ id, name, data }: EditorResult<Data>) {
@@ -846,6 +856,43 @@ export default {
                 const margin = curItem?.inlineMargin || [0, 16, 24, 0];
                 data.items.forEach((item) => (item.inlineMargin = [...margin]));
                 data.actions.inlinePadding = [...margin];
+              }
+            }
+          },
+          {
+            title: '标题宽度',
+            type: 'Radio',
+            ifVisible({ id, name, data }: EditorResult<Data>) {
+              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+            },
+            options: [
+              { label: '自定义', value: 'custom' },
+              { label: '跟随容器', value: 'default' }
+            ],
+            value: {
+              get({ id, name, data }: EditorResult<Data>) {
+                return getFormItemProp({ data, id, name }, 'labelWidthType');
+              },
+              set({ id, name, data }: EditorResult<Data>, value: boolean) {
+                setFormItemProps({ data, id, name }, 'labelWidthType', value);
+              }
+            }
+          },
+          {
+            type: 'inputNumber',
+            options: [{ min: 1, width: 100, formatter: 'px' }],
+            ifVisible({ data, id, name }: EditorResult<Data>) {
+              return (
+                !getFormItemProp({ data, id, name }, 'hiddenLabel') &&
+                getFormItemProp({ data, id, name }, 'labelWidthType') === 'custom'
+              );
+            },
+            value: {
+              get({ data, id, name }: EditorResult<Data>) {
+                return [getFormItemProp({ data, id, name }, 'labelWidth') || data.labelWidth];
+              },
+              set({ data, id, name }: EditorResult<Data>, value: number[]) {
+                setFormItemProps({ data, id, name }, 'labelWidth', value[0]);
               }
             }
           },
@@ -1119,9 +1166,9 @@ export default {
   },
   '[data-form-actions]': {
     title: '操作区',
-    items: ({ data, output }: EditorResult<Data>, cate1) => {
-      cate1.title = actionsEditor(data, output).title;
-      cate1.items = actionsEditor(data, output).items;
+    items: ({ data, output, env }: EditorResult<Data>, cate1) => {
+      cate1.title = actionsEditor(data, output, env).title;
+      cate1.items = actionsEditor(data, output, env).items;
     }
   },
   '[data-form-actions-item]': {
@@ -1214,6 +1261,9 @@ export default {
           {
             title: '标题',
             type: 'text',
+            options: {
+              locale: true
+            },
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
                 const comId = focusArea.dataset.formActionsItem as string;

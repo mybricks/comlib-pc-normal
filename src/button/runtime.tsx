@@ -11,9 +11,10 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //如果data.dataType是'external'的
   useEffect(() => {
     if (env.runtime) {
-      inputs['external']((ds: any) => {
-        data.inVal = ds;
-      });
+      inputs?.['external'] &&
+        inputs['external']((ds: any) => {
+          data.inVal = ds;
+        });
       inputs['dynamicTitle']((val: any) => {
         if (Object.prototype.toString.call(val) === '[object Function]') {
           val = String(val);

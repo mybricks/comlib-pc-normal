@@ -5,6 +5,34 @@ export default {
   '@resize': {
     options: ['width']
   },
+  '@init'({ data, input, output }) {
+    input.add('uploadResponse', '上传响应', {
+      type: 'object',
+      properties: {
+        url: {
+          title: 'url',
+          type: 'string'
+        }
+      }
+    });
+    output.add('upload', '上传', {
+      type: 'object',
+      properties: {
+        file: {
+          title: '文件数据',
+          type: 'any'
+        },
+        file_name: {
+          title: '文件名称',
+          type: 'string'
+        },
+        file_type: {
+          title: '文件类型',
+          type: 'string'
+        }
+      }
+    });
+  },
   ':root'({ data }: EditorResult<{ type }>, ...catalog) {
     catalog[0].title = '常规';
 
@@ -32,6 +60,51 @@ export default {
           },
           set({ data }, val: boolean) {
             data.disabled = val;
+          }
+        }
+      },
+      {
+        title: '自定义上传',
+        type: 'switch',
+        description: '是否自定义上传逻辑',
+        value: {
+          get({ data }) {
+            return data.customUpload;
+          },
+          set({ data, input, output }, val: boolean) {
+            data.customUpload = val;
+            if (val) {
+              !input.get('uploadResponse') &&
+                input.add('uploadResponse', '上传响应', {
+                  type: 'object',
+                  properties: {
+                    url: {
+                      title: 'url',
+                      type: 'string'
+                    }
+                  }
+                });
+              output.add('upload', '上传', {
+                type: 'object',
+                properties: {
+                  file: {
+                    title: '文件数据',
+                    type: 'any'
+                  },
+                  file_name: {
+                    title: '文件名称',
+                    type: 'string'
+                  },
+                  file_type: {
+                    title: '文件类型',
+                    type: 'string'
+                  }
+                }
+              });
+            } else {
+              input.remove('uploadResponse');
+              output.remove('upload');
+            }
           }
         }
       },
@@ -70,10 +143,10 @@ export default {
                 label: '图片上传',
                 value: 'uploadimage'
               },
-              // {
-              //   label: '视频上传',
-              //   value: 'uploadVideo',
-              // },
+              {
+                label: '视频上传',
+                value: 'uploadVideo'
+              },
               {
                 label: '下划线',
                 value: 'underline'
@@ -235,6 +308,16 @@ export default {
             type: '_event',
             options: {
               outputId: 'onChange'
+            }
+          },
+          {
+            title: '上传',
+            type: '_event',
+            options: {
+              outputId: 'upload'
+            },
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.customUpload;
             }
           }
         ]

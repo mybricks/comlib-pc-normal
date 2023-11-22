@@ -82,5 +82,31 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.0 end ===============
 
+  /**
+   * @description v1.1.1 新增最大最小值配置
+   */
+  if(typeof data.isMax === "undefined"){
+    data.isMax = false
+  }
+  if(typeof data.isMin === "undefined"){
+    data.isMin = false
+  }
+  if(typeof data.max === "undefined"){
+    data.max = 100
+  }
+  if(typeof data.min === "undefined"){
+    data.min = 0
+  }
+
+  /**
+   * @description v1.1.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.3 end ===============
+
   return true;
 }

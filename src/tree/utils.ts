@@ -232,13 +232,17 @@ export const getParentKey = (key, tree, keyFieldName: string) => {
  * @param keyFieldName 标识字段
  * @param titleFieldName 标题字段
  */
-export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }) => {
+export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }, parentKey = '0') => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
+    if (node[keyFieldName] == null) {
+      const id = parentKey + '-' + i;
+      node[keyFieldName] = id;
+    }
     const { [keyFieldName]: key, [titleFieldName]: title } = node;
     dataList.push({ key, title });
     if (node.children) {
-      generateList(node.children, dataList, { keyFieldName, titleFieldName });
+      generateList(node.children, dataList, { keyFieldName, titleFieldName }, key);
     }
   }
 };
@@ -373,8 +377,8 @@ export const refreshSchema = (props: EditorResult<Data>) => {
     }
   };
 
-  input.get(InputIds.SET_TREE_DATA).setSchema(treeDataSchema);
-  output.get(OutputIds.ON_DROP_DONE)?.setSchema({
+  input.get(InputIds.SetTreeData).setSchema(treeDataSchema);
+  output.get(OutputIds.OnDropDone)?.setSchema({
     type: 'object',
     properties: {
       dropNodeInfo: nodeInfoSchema,
@@ -388,11 +392,11 @@ export const refreshSchema = (props: EditorResult<Data>) => {
 
   switch (data.valueType) {
     case ValueType.TREE_NODE:
-      output.get(OutputIds.NODE_CLICK).setSchema(treeDataSchema);
-      output.get(OutputIds.ON_CHECK)?.setSchema(treeDataSchema);
+      output.get(OutputIds.OnNodeClick).setSchema(treeDataSchema);
+      output.get(OutputIds.OnCheck)?.setSchema(treeDataSchema);
       break;
     default:
-      output.get(OutputIds.NODE_CLICK).setSchema(stringArraySchema);
-      output.get(OutputIds.ON_CHECK)?.setSchema(stringArraySchema);
+      output.get(OutputIds.OnNodeClick).setSchema(stringArraySchema);
+      output.get(OutputIds.OnCheck)?.setSchema(stringArraySchema);
   }
 }

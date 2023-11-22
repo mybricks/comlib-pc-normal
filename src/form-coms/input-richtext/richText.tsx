@@ -5,7 +5,7 @@ import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
 import { uuid } from '../../utils';
-import { loadPkg } from '../../utils/loadPkg';
+// import { loadPkg } from '../../utils/loadPkg';
 import { validateTrigger } from '../form-container/models/validate';
 import { EnvContext } from './context';
 import { Data } from './types';
@@ -14,6 +14,9 @@ import { Spin, message } from 'antd';
 
 import css from './richText.less';
 import { InputIds, OutputIds } from '../types';
+import useUpload from './hooks/use-upload';
+
+import './tinymceImports';
 
 // 自定义icon_id
 const customIconsId: string = '_pcEditor_customIcons_' + uuid();
@@ -60,12 +63,15 @@ export default function ({
 
   const textareaRef = useRef(null);
 
+  const { upload } = useUpload(inputs, outputs);
+
   const Load: () => void = useCallback(async () => {
-    await loadPkg(tinymceCDN, 'tinyMCE');
+    // 不再使用CDN
+    // await loadPkg(tinymceCDN, 'tinyMCE');
     addCustomIcons();
     TinymceInit({
       target: textareaRef.current,
-      height: data.style.height,
+      height: data.style.height!,
       toolbar: data.toolbar?.join(' '),
       isFS: false,
       placeholder: data.placeholder
@@ -85,7 +91,7 @@ export default function ({
       target,
       toolbar: data.toolbar?.join(' '),
       selector,
-      height: data.style.height,
+      height: data.style.height!,
       isFS,
       placeholder: data.placeholder,
       customIconsId,
@@ -95,7 +101,7 @@ export default function ({
             click: (type: string) => {
               switch (type) {
                 case 'uploadimage':
-                  if (!env.uploadFile) {
+                  if (!env.uploadFile && !data.customUpload) {
                     const log = '【富文本输入】： 环境变量 env.uploadFile 方法未实现';
                     message.error(log);
                     logger.error(log);
@@ -109,6 +115,12 @@ export default function ({
                   });
                   break;
                 case 'uploadVideo':
+                  if (!env.uploadFile && !data.customUpload) {
+                    const log = '【富文本输入】： 环境变量 env.uploadFile 方法未实现';
+                    message.error(log);
+                    logger.error(log);
+                    return;
+                  }
                   setModalVisible(true);
                   setUploadModel({
                     title: '上传视频',
@@ -270,6 +282,8 @@ export default function ({
         uploadModel={uploadModel}
         onClose={onModalClose}
         visible={modalVisible}
+        upload={upload}
+        customUpload={data.customUpload}
       />
     );
   }, [modalVisible, uploadModel]);
@@ -285,7 +299,7 @@ export default function ({
             if (!tinyMCE.editors[tinymceFSId]) {
               TinymceInit({
                 target: node,
-                height: data.style.height,
+                height: data.style.height!,
                 toolbar: data.toolbar.join(' '),
                 isFS: true,
                 placeholder: data.placeholder
@@ -343,6 +357,16 @@ export default function ({
     inputs['setEnabled'](() => {
       data.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.disabled = false;
+      } else {
+        data.disabled = true;
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {

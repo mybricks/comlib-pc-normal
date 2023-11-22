@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.23",
+  "version": "1.0.25",
   "description": "上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -108,6 +108,13 @@
     {
       "id": "setEnabled",
       "title": "设置启用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
       "schema": {
         "type": "boolean"
       }

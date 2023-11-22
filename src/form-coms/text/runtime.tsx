@@ -22,6 +22,7 @@ export interface Data {
     showCount: boolean;
     maxLength?: number;
     size?: 'large' | 'middle' | 'small';
+    placeholder?: string;
   };
   src: false | 'inner' | 'custom';
   innerIcon: string;
@@ -59,6 +60,13 @@ export default function (props: RuntimeParams<Data>) {
       },
       setEnabled() {
         data.config.disabled = false;
+      },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
       },
       validate(model, relOutput) {
         validateFormItem({
@@ -149,6 +157,9 @@ export default function (props: RuntimeParams<Data>) {
       ref={inputRef}
       type="text"
       {...data.config}
+      placeholder={env.i18n(data.config.placeholder)}
+      addonBefore={env.i18n(data.config.addonBefore)}
+      addonAfter={env.i18n(data.config.addonAfter)}
       value={data.value}
       readOnly={!!edit}
       onChange={changeValue}

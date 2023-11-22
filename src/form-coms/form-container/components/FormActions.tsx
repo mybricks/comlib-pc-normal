@@ -13,6 +13,7 @@ interface Props {
 }
 
 const FormActions = (props: Props) => {
+  const { env } = props;
   const { actions, layout, formItemColumn, config } = props.data;
 
   const onClick = (item) => {
@@ -58,7 +59,7 @@ const FormActions = (props: Props) => {
             onClick={() => onClick(item)}
             disabled={item.disabled || config.disabled}
           >
-            {item.title}
+            {env.i18n(item.title)}
           </Button>
         );
       })}

@@ -19,6 +19,7 @@ const renderTreeNode = (
   props: RuntimeParams<Data>,
   setExpandedKeys,
   treeData: TreeData[],
+  filteredKeys: React.Key[],
   depth,
   parent
 ) => {
@@ -81,7 +82,10 @@ const renderTreeNode = (
     return flag;
   };
 
-  const hasAddNode = data.addable && (!data.maxDepth || depth < data.maxDepth);
+  const hasAddNode =
+    data.addable &&
+    (!data.maxDepth || depth < data.maxDepth) &&
+    treeData.some((node) => filteredKeys.includes(node[keyFieldName]));
   const lastTreeNode = treeData[treeData.length - 1];
   const addNodeKey = `${parent[keyFieldName]}-${lastTreeNode?.[keyFieldName]}`;
   return (
@@ -108,6 +112,7 @@ const renderTreeNode = (
 
         return (
           <TreeNode
+            {...item}
             key={item[keyFieldName]}
             className={css.treeNode}
             data-tree-node-id={item[keyFieldName]}
@@ -116,8 +121,18 @@ const renderTreeNode = (
             title={renderTitle(props, item, outputItem, depth === 0)}
             disableCheckbox={item.disableCheckbox}
             checkable={checkable}
+            style={{
+              display: filteredKeys.includes(item[keyFieldName]) ? void 0 : 'none'
+            }}
           >
-            {renderTreeNode(props, setExpandedKeys, item[childrenFieldName] || [], depth + 1, item)}
+            {renderTreeNode(
+              props,
+              setExpandedKeys,
+              item[childrenFieldName] || [],
+              filteredKeys,
+              depth + 1,
+              item
+            )}
           </TreeNode>
         );
       })}

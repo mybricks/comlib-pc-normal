@@ -3,7 +3,6 @@ import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { typeCheck, uuid } from '../utils';
 import {
-  pretreatTreeData,
   setCheckboxStatus,
   generateList,
   updateNodeData,
@@ -15,7 +14,7 @@ import {
   traverseTree
 } from './utils';
 import { Data, TreeData } from './types';
-import { OutputIds } from './constants';
+import { DragConfigKeys, InputIds, OutputIds } from './constants';
 import TreeNode from './Components/TreeNode';
 import css from './style.less';
 
@@ -28,7 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   );
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const treeKeys = useRef<any>(null);
+  const treeKeys = useRef<{ key: string; title: string }[]>([]);
 
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
   const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
@@ -37,9 +36,17 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
+  /** 更新key数组和expandedKeys */
   useEffect(() => {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+    data.expandedKeys = [];
+    data.checkedKeys = [];
+    setCheckedKeys([]);
+    if (data.defaultExpandAll) {
+      data.expandedKeys = treeKeys.current.map((i) => i.key);
+    }
+    setExpandedKeys([...data.expandedKeys]);
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -77,8 +84,8 @@ export default function (props: RuntimeParams<Data>) {
         }
       }
     });
-    const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
-    return filteredTreeData;
+    // const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
+    return filterKeys;
   }, []);
 
   /**
@@ -101,16 +108,12 @@ export default function (props: RuntimeParams<Data>) {
         inputs['outParentKeys']((value) => {
           if (typeof value === 'boolean') data.outParentKeys = value;
         });
+
+      // 设置数据源
       inputs['treeData'] &&
         inputs['treeData']((value: TreeData[]) => {
           if (value && Array.isArray(value)) {
-            data.expandedKeys = [];
-            data.treeData = pretreatTreeData({
-              treeData: [...value],
-              data,
-              defaultExpandAll: data.defaultExpandAll
-            });
-            setExpandedKeys([...data.expandedKeys]);
+            data.treeData = [...value];
           } else {
             data.treeData = [];
           }
@@ -119,34 +122,41 @@ export default function (props: RuntimeParams<Data>) {
       inputs['nodeData'] &&
         inputs['nodeData']((nodeData: TreeData) => {
           if (typeCheck(nodeData, 'OBJECT')) {
-            data.treeData = [
-              ...updateNodeData(
-                data.treeData,
-                pretreatTreeData({
-                  treeData: [nodeData],
-                  data,
-                  defaultExpandAll: data.defaultExpandAll
-                })[0],
-                keyFieldName
-              )
-            ];
+            data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
           }
         });
+
       // 搜索
       inputs['searchValue'] &&
         inputs['searchValue']((searchValue: string) => {
           search(searchValue);
         });
-      // 自定义添加提示文案
-      inputs['addTips'] &&
-        inputs['addTips']((ds: string[]) => {
-          Array.isArray(ds)
-            ? (data.addTips = ds)
-            : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
+
+      // 过滤
+      inputs['filter'] &&
+        inputs['filter']((filterValue: string) => {
+          data.filterValue = filterValue;
         });
+
+      // 设置选中项
+      inputs.setSelectedKeys &&
+        inputs.setSelectedKeys((keys: Array<string>) => {
+          if (!Array.isArray(keys)) {
+            return onError('设置选中项参数是数组');
+          }
+          setSelectedKeys(keys);
+          const selectedValues = outputNodeValues(
+            data.treeData,
+            keys,
+            keyFieldName,
+            data.valueType
+          );
+          outputs[OutputIds.OnNodeClick](selectedValues);
+        });
+
       // 设置勾选项
       inputs['checkedValues'] &&
         inputs['checkedValues']((value: []) => {
@@ -169,26 +179,33 @@ export default function (props: RuntimeParams<Data>) {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
         });
 
-      // 设置选中项
-      inputs.setSelectedKeys &&
-        inputs.setSelectedKeys((keys: Array<string>) => {
-          if (!Array.isArray(keys)) {
-            return onError('设置选中项参数是数组');
+      // 设置拖拽功能
+      inputs[InputIds.SetDragConfig] &&
+        inputs[InputIds.SetDragConfig]((ds: object) => {
+          let config = {
+            draggable: false,
+            allowDrop: true,
+            useDropScope: false
+          };
+          if (typeof ds === 'boolean') {
+            config.draggable = ds;
+          } else if (typeCheck(ds, 'object')) {
+            config = {
+              ...config,
+              ...ds
+            };
           }
-          setSelectedKeys(keys);
-          const selectedValues = outputNodeValues(
-            data.treeData,
-            keys,
-            keyFieldName,
-            data.valueType
-          );
-          outputs[OutputIds.NODE_CLICK](selectedValues);
+          DragConfigKeys.forEach((key) => {
+            config[key] != null && (data[key] = config[key]);
+          });
         });
 
-      // 过滤
-      inputs['filter'] &&
-        inputs['filter']((filterValue: string) => {
-          data.filterValue = filterValue;
+      // 自定义添加提示文案
+      inputs['addTips'] &&
+        inputs['addTips']((ds: string[]) => {
+          Array.isArray(ds)
+            ? (data.addTips = ds)
+            : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
         });
     }
   }, []);
@@ -215,7 +232,7 @@ export default function (props: RuntimeParams<Data>) {
     if (data.useCheckEvent) {
       const resultKeys =
         data.outParentKeys || data.checkStrictly ? checked : excludeParentKeys(data, checked);
-      outputs[OutputIds.ON_CHECK](
+      outputs[OutputIds.OnCheck](
         outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
       );
     }
@@ -252,7 +269,7 @@ export default function (props: RuntimeParams<Data>) {
       }
     }
     setSelectedKeys([...selectedKeys]);
-    outputs[OutputIds.NODE_CLICK](selectedValues);
+    outputs[OutputIds.OnNodeClick](selectedValues);
   };
 
   /**
@@ -319,7 +336,7 @@ export default function (props: RuntimeParams<Data>) {
         break;
     }
 
-    outputs[OutputIds.ON_DROP_DONE]({
+    outputs[OutputIds.OnDropDone]({
       dragNodeInfo,
       dropNodeInfo,
       flag: dropFlag
@@ -344,12 +361,13 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
-  const treeData = useMemo(() => {
-    return data.filterValue ? filter() : data.treeData;
-  }, [data.filterValue, data.treeData]);
+  const filteredKeys = useMemo(() => {
+    return data.filterValue ? filter() : treeKeys.current.map((i) => i.key);
+  }, [data.filterValue, treeKeys.current]);
+
   const isEmpty = useMemo(() => {
-    return treeData?.length === 0;
-  }, [treeData.length]);
+    return filteredKeys.length === 0;
+  }, [filteredKeys.length]);
 
   return (
     <div
@@ -390,7 +408,7 @@ export default function (props: RuntimeParams<Data>) {
           onDrop={onDrop}
           blockNode
         >
-          {TreeNode(props, setExpandedKeys, treeData || [], 0, { key: rootKey })}
+          {TreeNode(props, setExpandedKeys, data.treeData || [], filteredKeys, 0, { key: rootKey })}
         </Tree>
       )}
     </div>

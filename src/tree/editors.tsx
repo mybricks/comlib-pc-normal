@@ -454,7 +454,7 @@ export default {
               type: '_Event',
               options: () => {
                 return {
-                  outputId: OutputIds.NODE_CLICK
+                  outputId: OutputIds.OnNodeClick
                 };
               }
             }
@@ -549,7 +549,7 @@ export default {
                 },
                 set(props: EditorResult<Data>, val) {
                   if (val) {
-                    output.add(OutputIds.ON_CHECK, '勾选事件', {
+                    output.add(OutputIds.OnCheck, '勾选事件', {
                       title: '勾选项数据',
                       type: 'array',
                       items: {
@@ -558,7 +558,7 @@ export default {
                     });
                     refreshSchema(props);
                   } else {
-                    output.remove(OutputIds.ON_CHECK);
+                    output.remove(OutputIds.OnCheck);
                   }
                   data.useCheckEvent = val;
                 }
@@ -572,7 +572,7 @@ export default {
               },
               options: () => {
                 return {
-                  outputId: OutputIds.ON_CHECK
+                  outputId: OutputIds.OnCheck
                 };
               }
             },
@@ -651,16 +651,8 @@ export default {
                 },
                 set(props: EditorResult<Data>, value: boolean | 'custom') {
                   data.draggable = value;
-                  if (!!data.draggable) {
-                    if (data.allowDrop === undefined) {
-                      data.allowDrop = true;
-                    }
-                    output.add(OutputIds.ON_DROP_DONE, '拖拽完成', {
-                      type: 'object'
-                    });
-                    refreshSchema(props);
-                  } else {
-                    output.remove(OutputIds.ON_DROP_DONE);
+                  if (!!data.draggable && data.allowDrop === undefined) {
+                    data.allowDrop = true;
                   }
                 }
               }
@@ -780,12 +772,9 @@ export default {
             {
               title: '拖拽完成',
               type: '_Event',
-              ifVisible({ data }: EditorResult<Data>) {
-                return !!data.draggable;
-              },
               options: () => {
                 return {
-                  outputId: OutputIds.ON_DROP_DONE
+                  outputId: OutputIds.OnDropDone
                 };
               }
             }

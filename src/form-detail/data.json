@@ -9,5 +9,6 @@
   "mobileColumn": 3,
   "items": [],
   "colon": true,
-  "autoWidth": true
+  "autoWidth": true,
+  "showExtra": false
 }

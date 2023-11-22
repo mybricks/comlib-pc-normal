@@ -280,7 +280,7 @@ export const createStyleForTableContent = () => [
       return !!data.columns.length;
     },
     options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
-    target: ({ id }) => `table tbody>tr>td.ant-table-cell-row-hover[data-table-column-id]${getFilterSelector(id)}`
+    target: ({ id }) => `table tbody>tr:hover>td${getFilterSelector(id)}`
   },
   {
     title: '选中单元格',

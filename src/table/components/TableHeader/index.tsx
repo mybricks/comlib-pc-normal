@@ -63,7 +63,7 @@ export default (props: Props): JSX.Element | null => {
       {(useTopRowSelection || data.useHeaderOperationSlot || data.useColumnSetting) && (
         <div className={classnames(css.actionBtnsWrap, css.width100)}>
           {/* 渲染顶部操作按钮 */}
-          <div>{useTopRowSelection && RenderBatchBtns(props)}</div>
+          {useTopRowSelection && RenderBatchBtns(props)}
           <div className={classnames(css.width100, css.flex, css.flexRowReverse)}>
             {/* 渲染工作区tools */}
             {data.useColumnSetting && (

@@ -1,4 +1,4 @@
-import { Data } from './constants';
+import { Data, OutputIds } from './constants';
 import { getFilterSelector } from '../utils/cssSelector'
 import { isEmptyObject } from '../utils'
 
@@ -6,6 +6,7 @@ export default function ({
   id,
   data,
   slot,
+  output,
   setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   //1.0.2 ->1.0.3，去除 { "id": "extra", "title": "卡片操作容器" }
@@ -52,5 +53,14 @@ export default function ({
     setDeclaredStyle(`.card > .ant-card${getFilterSelector(id)}`, data.borderStyle);
     data.borderStyle = {}
   }
+
+  /**
+   * @description v1.0.12 -> v1.0.13 新增双击事件
+   */
+  if(data.useClick) {
+    output.setTitle(OutputIds.Click, '单击');
+    output.add(OutputIds.DoubleClick, '双击', { type: 'number' });
+  }
+  
   return true;
 }

@@ -1,5 +1,5 @@
 import { Data } from '../../types';
-import { OutputIds } from '../../constants';
+import { DefaultOnRowScript, OutputIds, SlotIds } from '../../constants';
 import { Schemas, setDataSchema } from '../../schema';
 export default {
   title: '行操作',
@@ -92,6 +92,50 @@ export default {
         return {
           outputId: OutputIds.ROW_DOUBLE_CLICK
         };
+      }
+    },
+    {
+      title: '行属性设置',
+      type: 'switch',
+      description: '开启后可以根据行数据动态设置行样式和其他属性',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.enableOnRow;
+        },
+        set({ data, output, slot, ...res }: EditorResult<Data>, value: boolean) {
+          data.enableOnRow = value;
+        }
+      }
+    },
+    {
+      title: '行属性设置脚本',
+      type: 'code',
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.enableOnRow;
+      },
+      options: {
+        language: 'javascript',
+        enableFullscreen: false,
+        title: '行属性设置脚本',
+        width: 600,
+        minimap: {
+          enabled: false
+        },
+        babel: true,
+        eslint: {
+          parserOptions: {
+            ecmaVersion: '2020',
+            sourceType: 'module'
+          }
+        }
+      },
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.onRowScript || DefaultOnRowScript;
+        },
+        set({ data, output }: EditorResult<Data>, value: string) {
+          data.onRowScript = value;
+        }
       }
     },
     {
