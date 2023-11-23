@@ -19,7 +19,7 @@ import TreeNode from './Components/TreeNode';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, onError } = props;
+  const { env, data, inputs, outputs, onError, logger, title } = props;
 
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
@@ -215,6 +215,16 @@ export default function (props: RuntimeParams<Data>) {
           });
         });
 
+      // 设置展开深度
+      inputs[InputIds.SetOpenDepth] &&
+        inputs[InputIds.SetOpenDepth]((depth) => {
+          if (typeof depth === 'number') {
+            data.openDepth = depth;
+          } else {
+            logger.warn(`${title}:【设置展开深度】输入数据应该是数字`);
+          }
+        });
+
       // 自定义添加提示文案
       inputs['addTips'] &&
         inputs['addTips']((ds: string[]) => {
@@ -390,7 +400,7 @@ export default function (props: RuntimeParams<Data>) {
       style={{
         maxHeight: isEmpty ? void 0 : data.scrollHeight,
         height: isEmpty ? data.scrollHeight : void 0,
-        overflowY: 'scroll'
+        overflowY: data.scrollHeight ? 'scroll' : void 0
       }}
     >
       {isEmpty ? (

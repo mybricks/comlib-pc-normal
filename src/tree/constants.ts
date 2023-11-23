@@ -8,6 +8,7 @@ export const InputIds = {
   SetDisableCheckbox: 'disableCheckbox',
   SetEnableCheckbox: 'enableCheckbox',
   SetDragConfig: 'setDragConfig',
+  SetOpenDepth: 'setOpenDepth',
   SetAddTips: 'addTips',
 }
 
