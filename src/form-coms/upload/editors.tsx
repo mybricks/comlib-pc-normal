@@ -221,13 +221,34 @@ export default {
             {
               title: '上传文件限制类型',
               type: 'Select',
-              description: '允许上传的文件类型,无选择则不限制',
+              description: '允许上传的文件类型,无选择则不限制；可自定义输入，标准格式如“.json”',
               options: {
                 mode: 'tags',
                 options: [
-                  { label: 'Excel文件', value: '.xlsx,.xls,.xlsm' },
+                  { label: 'Word文档', value: '.doc,.docx' },
+                  { label: 'Excel电子表格', value: '.xlsx,.xls,.xlsm' },
+                  { label: 'PowerPoint演示文稿', value: '.pptx,.ppt' },
+                  { label: 'PDF文档', value: '.pdf' },
+                  { label: 'HTML网页文件', value: '.html' },
+                  { label: 'CSS样式表文件', value: '.css' },
+                  { label: 'Less样式表文件', value: '.less' },
+                  { label: 'JS脚本文件', value: '.js' },
+                  { label: 'XML数据文件', value: '.xml' },
+                  { abel: 'JSON文件', value: '.json' },
+                  { label: 'Markdown文件', value: '.md' },
+                  { label: 'SQL数据库文件', value: '.sql' },
+                  { label: 'MDB数据库文件', value: '.mdb' },
+                  { label: 'zip压缩文件', value: '.zip' },
+                  { label: 'rar压缩文件', value: '.rar' },
+                  { label: 'Mp3音频文件', value: '.map3' },
+                  { label: 'Mp4视频文件', value: '.map4' },
+                  { label: 'Avi视频文件', value: '.avi' },
+                  { label: 'Mov视频文件', value: '.mov' },
                   { label: 'JPG图片', value: '.jpg,.jpeg' },
-                  { label: 'PNG图片', value: '.png' }
+                  { label: 'PNG图片', value: '.png' },
+                  { label: 'SVG图片', value: '.svg' },
+                  { label: 'GIF图片', value: '.gif' },
+                  { label: 'Tiff图片', value: '.tiff' }
                 ],
                 multiple: true
               },
