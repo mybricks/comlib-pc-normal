@@ -226,5 +226,16 @@ export default function ({
 
   //=========== v1.0.31 end ===============
 
+  /**
+    * @description v1.0.32 增加 展开深度openDepth 配置项
+    */
+
+  if (typeof data.openDepth !== "number") {
+    data.openDepth = data.defaultExpandAll ? -1 : 0;
+    data.defaultExpandAll = undefined;
+  }
+
+  //=========== v1.0.32 end ===============
+
   return true;
 }

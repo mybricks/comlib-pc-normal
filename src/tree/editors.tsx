@@ -363,14 +363,16 @@ export default {
               }
             },
             {
-              title: '默认展开',
-              type: 'switch',
+              title: '默认展开深度',
+              type: 'InputNumber',
+              description: '0表示全部折叠, -1表示全部展开',
+              options: [{ min: -1, max: 20, width: 100 }],
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.defaultExpandAll;
+                  return [data.openDepth];
                 },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.defaultExpandAll = value;
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.openDepth = value[0];
                 }
               }
             },
@@ -423,8 +425,7 @@ export default {
               type: 'Text',
               description: '自定义描述内容',
               options: {
-                placeholder: '自定义描述内容',
-                locale: true
+                placeholder: '自定义描述内容'
               },
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -756,8 +757,7 @@ export default {
               title: '禁止放置提示语',
               type: 'text',
               options: {
-                placeholder: '不满足放置范围限制时的提示语',
-                locale: true
+                placeholder: '不满足放置范围限制时的提示语'
               },
               ifVisible({ data }: EditorResult<Data>) {
                 return !!data.useDropScope;
@@ -1011,9 +1011,6 @@ export default {
       {
         title: '标题',
         type: 'text',
-        options: {
-          locale: true
-        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             return getItemProp({

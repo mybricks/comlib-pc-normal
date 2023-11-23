@@ -27,7 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   );
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const treeKeys = useRef<{ key: string; title: string }[]>([]);
+  const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
 
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
   const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
@@ -36,18 +36,33 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
-  /** 更新key数组和expandedKeys */
+  /** 更新默认展开节点 */
+  const getDefaultExpandKeys = useCallback(() => {
+    const keys: React.Key[] = [];
+    treeKeys.current.map((i) => {
+      if (data.openDepth < 0) {
+        keys.push(i.key);
+      } else if (i.depth < data.openDepth) {
+        keys.push(i.key);
+      }
+    });
+    return keys;
+  }, []);
+
+  /** 更新key数组 */
   useEffect(() => {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+  }, [data.treeData]);
+
+  /** 更新checkedKeys expandedKeys */
+  useEffect(() => {
     data.expandedKeys = [];
     data.checkedKeys = [];
     setCheckedKeys([]);
-    if (data.defaultExpandAll) {
-      data.expandedKeys = treeKeys.current.map((i) => i.key);
-    }
-    setExpandedKeys([...data.expandedKeys]);
-  }, [data.treeData]);
+    data.expandedKeys = getDefaultExpandKeys();
+    setExpandedKeys(data.expandedKeys);
+  }, [data.openDepth, treeKeys.current]);
 
   /** 按标签搜索，高亮展示树节点
    * @param searchValue 搜索值
@@ -298,11 +313,11 @@ export default function (props: RuntimeParams<Data>) {
       case 'parent':
         if (dropFlag === 0 && dropNode[keyFieldName] !== dragNodeParent?.[keyFieldName]) {
           // 拖拽到dropNode的第一个子节点
-          message.error(env.i18n(data.dropScopeMessage));
+          message.error(data.dropScopeMessage);
           return;
         }
         if (dropFlag !== 0 && dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
-          message.error(env.i18n(data.dropScopeMessage));
+          message.error(data.dropScopeMessage);
           return;
         }
         break;
