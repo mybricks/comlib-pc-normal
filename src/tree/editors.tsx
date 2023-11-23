@@ -425,7 +425,8 @@ export default {
               type: 'Text',
               description: '自定义描述内容',
               options: {
-                placeholder: '自定义描述内容'
+                placeholder: '自定义描述内容',
+                locale: true
               },
               value: {
                 get({ data }: EditorResult<Data>) {
@@ -757,7 +758,8 @@ export default {
               title: '禁止放置提示语',
               type: 'text',
               options: {
-                placeholder: '不满足放置范围限制时的提示语'
+                placeholder: '不满足放置范围限制时的提示语',
+                locale: true
               },
               ifVisible({ data }: EditorResult<Data>) {
                 return !!data.useDropScope;
@@ -1011,6 +1013,9 @@ export default {
       {
         title: '标题',
         type: 'text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             return getItemProp({
