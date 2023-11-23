@@ -226,5 +226,21 @@ export default function ({
 
   //=========== v1.0.31 end ===============
 
+  /**
+    * @description v1.0.33 增加 展开深度openDepth 配置项、setOpenDepth设置展开深度 输入项
+    */
+
+  if (typeof data.openDepth !== "number") {
+    data.openDepth = data.defaultExpandAll ? -1 : 0;
+    data.defaultExpandAll = undefined;
+  }
+  if (!input.get(InputIds.SetOpenDepth)) {
+    input.add(InputIds.SetOpenDepth, '设置展开深度', {
+      type: 'number'
+    });
+  }
+
+  //=========== v1.0.33 end ===============
+
   return true;
 }

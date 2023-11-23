@@ -19,7 +19,7 @@ import TreeNode from './Components/TreeNode';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, onError } = props;
+  const { env, data, inputs, outputs, onError, logger, title } = props;
 
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
@@ -27,7 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   );
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const treeKeys = useRef<{ key: string; title: string }[]>([]);
+  const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
 
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
   const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
@@ -36,18 +36,33 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
-  /** 更新key数组和expandedKeys */
+  /** 更新默认展开节点 */
+  const getDefaultExpandKeys = useCallback(() => {
+    const keys: React.Key[] = [];
+    treeKeys.current.map((i) => {
+      if (data.openDepth < 0) {
+        keys.push(i.key);
+      } else if (i.depth < data.openDepth) {
+        keys.push(i.key);
+      }
+    });
+    return keys;
+  }, []);
+
+  /** 更新key数组 */
   useEffect(() => {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+  }, [data.treeData]);
+
+  /** 更新checkedKeys expandedKeys */
+  useEffect(() => {
     data.expandedKeys = [];
     data.checkedKeys = [];
     setCheckedKeys([]);
-    if (data.defaultExpandAll) {
-      data.expandedKeys = treeKeys.current.map((i) => i.key);
-    }
-    setExpandedKeys([...data.expandedKeys]);
-  }, [data.treeData]);
+    data.expandedKeys = getDefaultExpandKeys();
+    setExpandedKeys(data.expandedKeys);
+  }, [data.openDepth, treeKeys.current]);
 
   /** 按标签搜索，高亮展示树节点
    * @param searchValue 搜索值
@@ -198,6 +213,16 @@ export default function (props: RuntimeParams<Data>) {
           DragConfigKeys.forEach((key) => {
             config[key] != null && (data[key] = config[key]);
           });
+        });
+
+      // 设置展开深度
+      inputs[InputIds.SetOpenDepth] &&
+        inputs[InputIds.SetOpenDepth]((depth) => {
+          if (typeof depth === 'number') {
+            data.openDepth = depth;
+          } else {
+            logger.warn(`${title}:【设置展开深度】输入数据应该是数字`);
+          }
         });
 
       // 自定义添加提示文案
@@ -375,7 +400,7 @@ export default function (props: RuntimeParams<Data>) {
       style={{
         maxHeight: isEmpty ? void 0 : data.scrollHeight,
         height: isEmpty ? data.scrollHeight : void 0,
-        overflowY: 'scroll'
+        overflowY: data.scrollHeight ? 'scroll' : void 0
       }}
     >
       {isEmpty ? (

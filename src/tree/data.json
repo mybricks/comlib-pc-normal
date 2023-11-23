@@ -42,7 +42,7 @@
   "showLine": false,
   "disableCheckbox": false,
   "outParentNode": false,
-  "defaultExpandAll": true,
+  "openDepth": -1,
   "titleEllipsis": true,
   "actionsShowWay": "default",
   "expandedKeys": [

@@ -363,14 +363,16 @@ export default {
               }
             },
             {
-              title: '默认展开',
-              type: 'switch',
+              title: '默认展开深度',
+              type: 'InputNumber',
+              description: '0表示全部折叠, -1表示全部展开',
+              options: [{ min: -1, max: 20, width: 100 }],
               value: {
                 get({ data }: EditorResult<Data>) {
-                  return data.defaultExpandAll;
+                  return [data.openDepth];
                 },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.defaultExpandAll = value;
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.openDepth = value[0];
                 }
               }
             },

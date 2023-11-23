@@ -232,7 +232,7 @@ export const getParentKey = (key, tree, keyFieldName: string) => {
  * @param keyFieldName 标识字段
  * @param titleFieldName 标题字段
  */
-export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }, parentKey = '0') => {
+export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }, parentKey = '0', depth = 0) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
     if (node[keyFieldName] == null) {
@@ -240,9 +240,9 @@ export const generateList = (treeData, dataList, { keyFieldName, titleFieldName 
       node[keyFieldName] = id;
     }
     const { [keyFieldName]: key, [titleFieldName]: title } = node;
-    dataList.push({ key, title });
+    dataList.push({ key, title, depth });
     if (node.children) {
-      generateList(node.children, dataList, { keyFieldName, titleFieldName }, key);
+      generateList(node.children, dataList, { keyFieldName, titleFieldName }, key, depth + 1);
     }
   }
 };

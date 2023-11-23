@@ -45,7 +45,11 @@ export interface Data {
   jsonData: string;
   isEditing: string;
   isAdding: string;
-  defaultExpandAll: boolean;
+  /**
+   * @deprecated 于版本 1.0.32 被弃用
+   */
+  defaultExpandAll?: boolean;
+  openDepth: number;
   treeData: TreeData[];
   checkable: boolean | 'custom';
   checkedKeys: any[];
