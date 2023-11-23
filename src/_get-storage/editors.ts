@@ -1,5 +1,5 @@
 import { uuid } from '../utils';
-import type { Data, PickType } from './types';
+import { EnumStorage, type Data, type PickType } from './types';
 
 
 const createPick = ({ itemKey } = { itemKey: 'key' }) => {
@@ -48,6 +48,23 @@ export default {
   ':root': ({ data }: EditorResult<Data>, cate1) => {
     cate1.title = '取值配置';
     cate1.items = [
+      {
+        title: '取值方式',
+        type: 'select',
+        description: '选择从localStorage或sessionStorage中取值',
+        options: [
+          { label: 'localStorage', value: EnumStorage.LOCAL },
+          { label: 'sessionStorage', value: EnumStorage.SESSION },
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.storageType;
+          },
+          set({ data, output }: EditorResult<Data>, val: EnumStorage) {
+            data.storageType = val
+          }
+        }
+      },
       {
         title: '取值列表',
         type: 'array',

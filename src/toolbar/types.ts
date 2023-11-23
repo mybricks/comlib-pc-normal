@@ -96,7 +96,10 @@ export interface BtnItem {
   useDynamicLoading: boolean;
 
   // 是否是危险按钮
-  danger?: boolean
+  danger?: boolean;
+
+  // 是否插槽
+  isSlot?: boolean;
 }
 
 /**
