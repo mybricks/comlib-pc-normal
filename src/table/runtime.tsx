@@ -205,13 +205,15 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置表头
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
         inputs[InputIds.SET_SHOW_TitleS]((val: any, relOutputs: any) => {
-          // 需要保留的列
-          const previousDataIndex = val
-            .filter((item) => item.usePrevious)
-            .map((item) => item.dataIndex);
-          data.columns = val
-            .filter((item) => !item.usePrevious)
-            .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
+          const newCols = val.map((item) => {
+            if (item.usePrevious) {
+              const previousCol = data.columns.find((i) => i.dataIndex === item.dataIndex) || null;
+              return previousCol || item;
+            } else {
+              return item;
+            }
+          });
+          data.columns = newCols;
           initFilterMap();
           handleOutputFn(relOutputs, OutputIds.SET_SHOW_TitleS, data.columns);
         });
