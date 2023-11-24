@@ -96,7 +96,7 @@ export default function (props: RuntimeParams<Data>) {
       ref={ref}
       className={`${css.container} root`}
       style={{
-        position: useFixed ? 'fixed' : void 0,
+        position: useFixed ? 'fixed' : 'static',
         cursor: useClick ? 'pointer' : '',
         ...legacyStyle,
         ...dynamicStyle
