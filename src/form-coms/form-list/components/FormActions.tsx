@@ -27,6 +27,13 @@ export const addField = ({ data }: { data: Data }, options?) => {
     key: data.MaxKey
   };
   fields.splice(fieldName, 0, newField);
+  // 更新name
+  data.fields = fields.map((i, index) => {
+    return {
+      ...i,
+      name: index
+    };
+  });
   data.userAction.type = 'add';
   data.userAction.value = deepCopy(value);
   data.userAction.index = fieldName;

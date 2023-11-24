@@ -31,6 +31,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     data.userAction = {
       type: '',
+      index: -1,
+      key: -1,
+      value: undefined,
       startIndex: -1
     };
     // 设置值

@@ -331,8 +331,7 @@ export function setValuesOfChild({
     && data.disabled) {
     extraAction = InputIds.SetDisabled;
   }
-
-  const names = data.userAction.type === 'add'
+  const names = actionType === 'add'
     ? Object.keys(value)
     : data.items.map(item => item.name);
   if (key !== undefined) {
