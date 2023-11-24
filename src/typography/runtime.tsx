@@ -54,10 +54,10 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
   //2、动态设置颜色且该子项被激活时，设置动态颜色
   const fontStyle = {
     color: isUnity
-      ? isSet && item.style.color
+      ? isSet && item.style && item.style.color
         ? item.style.color
         : 'unset'
-      : isSet && item.style.color
+      : item.style && item.style.color
       ? item.style.color
       : void 0,
     fontSize: isUnity
