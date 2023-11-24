@@ -32,7 +32,8 @@ const LoadingEditor = [
     type: 'Text',
     description: 'loading文案',
     options: {
-      placeholder: 'loading文案'
+      placeholder: 'loading文案',
+      locale: true,
     },
     ifVisible({ data }) {
       return data.useLoading;

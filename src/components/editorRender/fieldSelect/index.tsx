@@ -2,7 +2,7 @@
  * 使用树形选择器完成字段映射
  */
 import React, { useCallback, useState } from 'react';
-import { Tag, Input, TreeSelect, Select, Button } from 'antd';
+import { Input, TreeSelect, Select } from 'antd';
 import classnames from 'classnames';
 import css from './index.less';
 const { Option } = Select;
@@ -61,6 +61,11 @@ export default function Tree({ editConfig }: any) {
   const [useTreeSelect, setUseTreeSelect] = useState(isUseSelect(options, value));
 
   const onChange = useCallback((val) => {
+    if (val === '') {
+      message.warn(`字段不能为空！`);
+      editConfig.value.set(value);
+      return;
+    }
     if (value !== val) {
       editConfig.value.set(val);
     }

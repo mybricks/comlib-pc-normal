@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
-import { Table, Empty, ConfigProvider, Image } from 'antd';
+import { Table, Empty, Image } from 'antd';
+import ConfigProvider from '../components/ConfigProvider';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import {
@@ -700,9 +701,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // 设计态数据mock
-  const defaultDataSource = useMemo(() => {
-    return getDefaultDataSource(data.columns, rowKey);
-  }, [data.columns, rowKey]);
+  const defaultDataSource = getDefaultDataSource(data.columns, rowKey, env);
 
   const setCurrentSelectRows = useCallback(
     (_record) => {
@@ -821,13 +820,16 @@ export default function (props: RuntimeParams<Data>) {
   const customizeRenderEmpty = () => (
     <div className={`emptyNormal ${css.emptyNormal}`}>
       <Image src={data.image} className={`emptyImage ${css.emptyImage}`} preview={false} />
-      <p className={`emptyDescription ${css.emptyDescription}`}>{data.description}</p>
+      <p className={`emptyDescription ${css.emptyDescription}`}>{env.i18n(data.description)}</p>
     </div>
   );
 
   return (
     <div ref={ref}>
-      <ConfigProvider locale={zhCN} renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}>
+      <ConfigProvider
+        locale={env.vars?.locale}
+        renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
+      >
         <TableContext.Provider value={contextValue}>
           <div className={css.table}>
             <TableHeader
@@ -847,7 +849,7 @@ export default function (props: RuntimeParams<Data>) {
                 }}
                 dataSource={edit ? defaultDataSource : realShowDataSource}
                 loading={{
-                  tip: data.loadingTip,
+                  tip: env.i18n(data.loadingTip),
                   spinning: loading
                 }}
                 onRow={onRow}

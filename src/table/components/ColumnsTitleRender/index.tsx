@@ -42,8 +42,8 @@ export default ({
   focusCellinfo
 }: Props) => {
   const renderTtl = (cItem: IColumn) => {
-    const title = cItem.title;
-    const tip = cItem.tip;
+    const title = env.i18n(cItem.title);
+    const tip = env.i18n(cItem.tip);
     return cItem.hasTip ? (
       <div>
         <span style={{ marginRight: '6px' }}>{title}</span>

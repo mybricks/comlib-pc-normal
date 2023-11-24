@@ -42,10 +42,10 @@ export const getColumnItemInfo = (
 };
 
 export const getNewColumn = (data?: Data) => {
+  const title = data ? `列${data?.columns?.length + 1}` : '新增'
   const obj: IColumn = {
-    title: data ? `列${data?.columns?.length + 1}` : '新增',
-    dataIndex: '',
-    // dataIndex: `${uuid()}`,
+    title,
+    dataIndex: title,
     width: 140,
     key: uuid(),
     contentType: ContentTypeEnum.Text,
@@ -107,14 +107,14 @@ export const formatDataSource = (dataSource, rowKey) => {
   });
 };
 // 编辑态默认值
-export const getDefaultDataSource = (columns: IColumn[], rowKey) => {
+export const getDefaultDataSource = (columns: IColumn[], rowKey, env) => {
   const mockData = {
     [rowKey]: uuid()
   };
   const setDefaultDataSource = (columns) => {
     if (Array.isArray(columns)) {
       columns.forEach((item) => {
-        let defaultValue: any = `${item.title}1`;
+        let defaultValue: any = `${env.i18n(item.title)}1`;
         if (item.contentType === 'group') {
           setDefaultDataSource(item.children);
           return;
@@ -124,7 +124,7 @@ export const getDefaultDataSource = (columns: IColumn[], rowKey) => {
           setPath(mockData, item.dataIndex.join('.'), defaultValue, false);
         } else {
           mockData[item.key] = defaultValue;
-          mockData[item.dataIndex || item.title] = defaultValue;
+          mockData[item.dataIndex] = defaultValue;
         }
       });
     }
@@ -218,7 +218,7 @@ export function formatColumnItemDataIndex(item: IColumn) {
   if (item.dataIndex) {
     return item.dataIndex;
   }
-  let titleDataIndex: string | string[] = item.title
+  let titleDataIndex: string | string[] = (item.title || '')
     .split('')
     .filter((val) => /[\u4e00-\u9fa5A-Za-z0-9\._]/.test(val))
     .join('')

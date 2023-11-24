@@ -33,7 +33,8 @@ export const emptyEditor = [
     type: 'Text',
     description: '自定义描述内容',
     options: {
-      placeholder: '自定义描述内容'
+      placeholder: '自定义描述内容',
+      locale: true
     },
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.isEmpty;
@@ -50,10 +51,10 @@ export const emptyEditor = [
 ];
 
 export const emptyStyleEditor = {
-  items:[
+  items: [
     {
       title: '空状态图片',
-      options: ['size','border', { type: 'background', config: { disableBackgroundImage: true } }],
+      options: ['size', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
       target: ['.ant-empty-image > svg', '.emptyImage']
     },
     {
