@@ -194,11 +194,6 @@ export default ({
         onClick:
           data.enableCellClick || data.enableCellFocus
             ? () => {
-                // if (isFocus) {
-                //   data.focusCellinfo = null;
-                // } else {
-                //   data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
-                // }
                 setFocusCellinfo(
                   isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
                 );

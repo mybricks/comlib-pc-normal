@@ -67,7 +67,9 @@ export const InputIds = {
   // 总结栏输入数据
   SUMMARY_COLUMN: 'summaryColumn',
 
-  TABLE_HEIGHT: 'tableHeight'
+  TABLE_HEIGHT: 'tableHeight',
+  // 动态修改列属性
+  CHANGE_COLS_ATTR: 'changeColsAttr'
 };
 export const OutputIds = {
   // 输出勾选项
@@ -109,6 +111,7 @@ export const OutputIds = {
   SET_ROW_SELECTION: 'setRowSelectedKeys',
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',
+  CHANGE_COLS_ATTR: 'changeColsAttr'
 };
 
 export const DefaultRowKey = '_uuid';

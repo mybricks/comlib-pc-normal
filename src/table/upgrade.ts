@@ -231,6 +231,7 @@ export default function ({
   setRels(InputIds.SUMMARY_COLUMN, OutputIds.SUMMARY_COLUMN, '总结栏数据', Schemas.String);
   setRels(InputIds.SET_SHOW_COLUMNS, OutputIds.SET_SHOW_COLUMNS, '显示列', Schemas.SET_SHOW_COLUMNS);
   setRels(InputIds.SET_SHOW_TitleS, OutputIds.SET_SHOW_TitleS, '表头', Schemas.SET_SHOW_TitleS);
+  setRels(InputIds.CHANGE_COLS_ATTR, OutputIds.CHANGE_COLS_ATTR, '列属性', Schemas.CHANGE_COLS_ATTR);
   setRels(InputIds.SET_ROW_SELECTION, OutputIds.SET_ROW_SELECTION, '勾选项', Schemas.SET_ROW_SELECTION);
   setRels(InputIds.SET_FILTER_INPUT, OutputIds.SET_FILTER_INPUT, '筛选项', Schemas.Object);
   setRels(InputIds.EnableAllExpandedRows, OutputIds.EnableAllExpandedRows, '开启关闭所有展开项', Schemas.Boolean);

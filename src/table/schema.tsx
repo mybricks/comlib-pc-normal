@@ -464,6 +464,26 @@ export const Schemas = {
       }
     }
   },
+  CHANGE_COLS_ATTR: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string'
+        },
+        dataIndex: {
+          type: 'string'
+        },
+        visible: {
+          type: 'boolean'
+        },
+        width: {
+          type: 'number'
+        }
+      }
+    }
+  },
   ROW_CLICK: {
     type: 'object',
     properties: {

@@ -102,6 +102,9 @@ export default {
         {
           title: '内容',
           type: 'textarea',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.content;

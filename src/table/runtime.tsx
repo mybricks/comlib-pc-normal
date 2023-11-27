@@ -219,6 +219,26 @@ export default function (props: RuntimeParams<Data>) {
           handleOutputFn(relOutputs, OutputIds.SET_SHOW_TitleS, data.columns);
         });
       }
+      // 动态修改列
+      if (data.enableDynamicChangeCols && inputs[InputIds.CHANGE_COLS_ATTR]) {
+        inputs[InputIds.CHANGE_COLS_ATTR]((val: any, relOutputs: any) => {
+          const newCols = data.columns.map((item) => {
+            const { dataIndex } = item;
+            const matchedVal = val.find((v) => v.dataIndex === dataIndex);
+            let newItem = { ...item };
+            if (matchedVal) {
+              newItem = {
+                ...newItem,
+                ...matchedVal
+              };
+            }
+            return newItem;
+          });
+          data.columns = newCols;
+          initFilterMap();
+          handleOutputFn(relOutputs, OutputIds.CHANGE_COLS_ATTR, data.columns);
+        });
+      }
     }
   }, []);
 
