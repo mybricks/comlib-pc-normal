@@ -170,33 +170,37 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     if (!btnList.length) {
       return null;
     }
+    const { allShape, allSize, allType, allDanger } = data;
     return btnList.map((item) => {
       const todo = getWhatToDoWithoutPermission(item.permission?.id);
       if (item.hidden || todo === 'hide') return;
 
       const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key } = item;
+
       return (
-        <div key={key} className={css.button} data-btn-idx={item.key}>
+        <>
           {!isSlot ? (
-            <Button
-              type={type as any}
-              danger={danger}
-              size={size}
-              shape={shape}
-              disabled={todo === 'disable' ? true : disabled}
-              onClick={() => onClick(item)}
-              onDoubleClick={() => onDoubleClick(item)}
-              loading={loading}
-              block={true}
-            >
-              {renderBtnContext(item)}
-            </Button>
+            <div key={key} className={css.button} data-btn-idx={item.key}>
+              <Button
+                type={(type as any) || allType}
+                danger={typeof danger !== 'undefined' ? danger : allDanger}
+                size={size || allSize}
+                shape={shape || allShape}
+                disabled={todo === 'disable' ? true : disabled}
+                onClick={() => onClick(item)}
+                onDoubleClick={() => onDoubleClick(item)}
+                loading={loading}
+                block={true}
+              >
+                {renderBtnContext(item)}
+              </Button>
+            </div>
           ) : (
             <div className={css.emptyWrap} data-slot-idx={item.key}>
               {slots?.[key] && slots?.[key].render({ key })}
             </div>
           )}
-        </div>
+        </>
       );
     });
   };

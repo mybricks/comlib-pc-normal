@@ -118,4 +118,9 @@ export interface Data {
   useEllipses?: boolean;
   maxShowNumber?: number;
 
+  // 工具条整体样式配置
+  allShape?: ShapeEnum;
+  allSize?: SizeEnum;
+  allType?: TypeEnum;
+  allDanger?: boolean;
 }
