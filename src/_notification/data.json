@@ -1,0 +1,10 @@
+{
+  "type": "info",
+  "showTitle": true,
+  "message": "消息提示标题",
+  "description": "消息提示内容",
+  "duration": 3,
+  "placement": "topRight",
+  "top": 24,
+  "bottom": 24
+}

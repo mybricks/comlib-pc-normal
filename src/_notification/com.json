@@ -1,0 +1,43 @@
+{
+  "title": "通知提醒",
+  "namespace": "mybricks.normal-pc.notification",
+  "version": "1.0.0",
+  "description": "在系统四个角显示通知提醒信息",
+  "author": "mybricks",
+  "author_name": "MyBricks",
+  "rtType": "js",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "open",
+      "title": "弹出",
+      "rels": [
+        "close"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "close",
+      "title": "关闭",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

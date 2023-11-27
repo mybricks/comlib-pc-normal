@@ -117,6 +117,7 @@
     "./src/_code-segment/com.json",
     "./src/_confirm/com.json",
     "./src/_message/com.json",
+    "./src/_notification/com.json",
     "./src/_page-router/com.json",
     "./src/_props/com.json",
     "./src/_env-var/com.json",
