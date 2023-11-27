@@ -33,6 +33,9 @@ export default {
         {
           title: '文本',
           type: 'textarea',
+          options: {
+            locale: true
+          },
           description: '支持动态输入, 为空时展示链接',
           value: {
             get({ data }: EditorResult<Data>) {
