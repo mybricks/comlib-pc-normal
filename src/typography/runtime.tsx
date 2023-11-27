@@ -23,9 +23,9 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
     style = item.style;
   }
   const itemContent = env.edit
-    ? env.i18n(`${item.content}`)
+    ? env.i18n(item.content)
     : item.src === 1
-    ? env.i18n(`${item.content}`)
+    ? env.i18n(item.content)
     : '';
   //文本、链接等点击事件
   const textClick = () => {
