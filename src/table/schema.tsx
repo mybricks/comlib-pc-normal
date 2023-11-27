@@ -97,40 +97,41 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
 }
 
 // 数据源schema
-function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
-  if (data.usePagination && !data.paginationConfig?.useFrontPage) {
-    input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
-      title: '数据列表',
-      type: 'object',
-      properties: {
-        dataSource: {
+function setDataSourceSchema(dataSchema: object, { input, data, output }: Props) {
+  const TableDataSchema =
+    data.usePagination && !data.paginationConfig?.useFrontPage
+      ? {
+          title: '数据列表',
+          type: 'object',
+          properties: {
+            dataSource: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: dataSchema
+              }
+            },
+            total: {
+              type: 'number'
+            },
+            pageSize: {
+              type: 'number'
+            },
+            pageNum: {
+              type: 'number'
+            }
+          }
+        }
+      : {
+          title: '数据列表',
           type: 'array',
           items: {
             type: 'object',
             properties: dataSchema
           }
-        },
-        total: {
-          type: 'number'
-        },
-        pageSize: {
-          type: 'number'
-        },
-        pageNum: {
-          type: 'number'
-        }
-      }
-    });
-  } else {
-    input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
-      title: '数据列表',
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: dataSchema
-      }
-    });
-  }
+        };
+  input.get(InputIds.SET_DATA_SOURCE)?.setSchema(TableDataSchema);
+  output.get(OutputIds.SET_DATA_SOURCE)?.setSchema?.(TableDataSchema);
 }
 
 // 输出节点schema
@@ -178,14 +179,6 @@ function setOutputsSchema(dataSchema, { output }: Props) {
     }
   });
   output.get(OutputIds.GET_TABLE_DATA)?.setSchema?.({
-    title: '表格数据',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: dataSchema
-    }
-  });
-  output.get(OutputIds.SET_DATA_SOURCE)?.setSchema?.({
     title: '表格数据',
     type: 'array',
     items: {
