@@ -36,8 +36,14 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
-  /** 更新默认展开节点 */
-  const getDefaultExpandKeys = useCallback(() => {
+  /** 重置checkedKeys */
+  const clearCheckedKeys = useCallback(() => {
+    data.checkedKeys = [];
+    setCheckedKeys([]);
+  }, []);
+
+  /** 更新expandedKeys */
+  const updateExpandedKeys = useCallback(() => {
     const keys: React.Key[] = [];
     treeKeys.current.map((i) => {
       if (data.openDepth < 0) {
@@ -46,23 +52,21 @@ export default function (props: RuntimeParams<Data>) {
         keys.push(i.key);
       }
     });
-    return keys;
+    data.expandedKeys = keys;
+    setExpandedKeys(keys);
   }, []);
 
-  /** 更新key数组 */
+  /** 更新treeKeys */
   useEffect(() => {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+    clearCheckedKeys();
   }, [data.treeData]);
 
-  /** 更新checkedKeys expandedKeys */
+  /** 更新key数组 */
   useEffect(() => {
-    data.expandedKeys = [];
-    data.checkedKeys = [];
-    setCheckedKeys([]);
-    data.expandedKeys = getDefaultExpandKeys();
-    setExpandedKeys(data.expandedKeys);
-  }, [data.openDepth, treeKeys.current]);
+    updateExpandedKeys();
+  }, [data.treeData, data.openDepth]);
 
   /** 按标签搜索，高亮展示树节点
    * @param searchValue 搜索值
