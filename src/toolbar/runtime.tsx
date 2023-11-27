@@ -173,7 +173,7 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
     const { allShape, allSize, allType, allDanger } = data;
     return btnList.map((item) => {
       const todo = getWhatToDoWithoutPermission(item.permission?.id);
-      if (item.hidden || todo === 'hide') return;
+      if (todo === 'hide') return;
 
       const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key } = item;
 
@@ -207,7 +207,11 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
 
   const normalBtnList = (data.btnList || [])
     .filter(
-      (item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide' || item.hidden)
+      (item) =>
+        !(
+          getWhatToDoWithoutPermission(item.permission?.id) === 'hide' ||
+          (item?.hidden && env.runtime)
+        )
     )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx < data.maxShowNumber : true
@@ -215,7 +219,11 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
 
   const ellipsisBtnList = (data.btnList || [])
     .filter(
-      (item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide' || item.hidden)
+      (item) =>
+        !(
+          getWhatToDoWithoutPermission(item.permission?.id) === 'hide' ||
+          (item?.hidden && env.runtime)
+        )
     )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx >= data.maxShowNumber : false
