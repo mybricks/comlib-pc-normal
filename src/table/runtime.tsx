@@ -818,7 +818,12 @@ export default function (props: RuntimeParams<Data>) {
   }, [slots]);
 
   const customizeRenderEmpty = () => (
-    <div className={`emptyNormal ${css.emptyNormal}`}>
+    <div
+      className={css.emptyNormal}
+      style={{
+        height: data.fixedHeader ? `calc(${data.fixedHeight} - 144px` : ''
+      }}
+    >
       <Image src={data.image} className={`emptyImage ${css.emptyImage}`} preview={false} />
       <p className={`emptyDescription ${css.emptyDescription}`}>{env.i18n(data.description)}</p>
     </div>
