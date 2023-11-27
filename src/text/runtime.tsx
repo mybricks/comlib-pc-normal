@@ -13,7 +13,7 @@ import {
 
 const { Text, Paragraph } = Typography;
 
-export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
+export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
   const [dynamicStyle, setDynamicStyle] = useState<CSSProperties>({});
   useEffect(() => {
     inputs[InputIds.SetContent]((value: string) => {
@@ -55,7 +55,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
           ellipsis={data.ellipsis || {}}
           data-item-type="root"
         >
-          {data.content || ''}
+          {env.i18n(data.content || '')}
         </Paragraph>
       ) : (
         <Text
@@ -71,7 +71,7 @@ export default ({ data, inputs, outputs }: RuntimeParams<Data>) => {
           ellipsis={data.ellipsis || {}}
           data-item-type="root"
         >
-          {data.content || ''}
+          {env.i18n(data.content || '')}
         </Text>
       )}
     </div>

@@ -389,6 +389,9 @@ export default {
       {
         title: '静态文本内容',
         type: 'Textarea',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }) {
             if (!focusArea) return;
@@ -513,6 +516,9 @@ export default {
       {
         title: '标签内容',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }) {
             if (!focusArea) return;

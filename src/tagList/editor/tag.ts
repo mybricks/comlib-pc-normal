@@ -22,6 +22,9 @@ export default {
             {
               title: '标签内容',
               type: 'text',
+              options: {
+                locale: true,
+              },
               value: {
                 get({}: EditorResult<Data>) {
                   return tag.content;

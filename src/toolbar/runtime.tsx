@@ -185,7 +185,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
             loading={loading}
             block={true}
           >
-            {renderBtnContext(item)}
+            {renderBtnContext({ ...item, text: env.i18n(item.text) })}
           </Button>
         </div>
       );
