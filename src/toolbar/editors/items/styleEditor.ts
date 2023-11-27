@@ -17,7 +17,7 @@ const StyleEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        return item.size || SizeEnum.Middle;
+        return item.size || data.allSize || SizeEnum.Middle;
       },
       set({ data, focusArea }: EditorResult<Data>, value: SizeEnum) {
         if (!focusArea) return;
@@ -46,7 +46,7 @@ const StyleEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        return item.type || TypeEnum.Default;
+        return item.type || data.allType || TypeEnum.Default;
       },
       set({ data, focusArea }: EditorResult<Data>, value: TypeEnum) {
         if (!focusArea) return;
@@ -62,7 +62,7 @@ const StyleEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        return item.danger;
+        return typeof item.danger !== 'undefined' ? item.danger : data.allDanger;
       },
       set({ data, focusArea }: EditorResult<Data>, value: boolean) {
         if (!focusArea) return;
@@ -85,7 +85,7 @@ const StyleEditor = [
       get({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        return item.shape || ShapeEnum.Default;
+        return item.shape || data.allShape || ShapeEnum.Default;
       },
       set({ data, focusArea }: EditorResult<Data>, value: ShapeEnum) {
         if (!focusArea) return;

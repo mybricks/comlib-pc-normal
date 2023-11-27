@@ -46,7 +46,7 @@ const IndexEditor = [
     value: {
       set({ data, output, input, focusArea, removePermission }: EditorResult<Data>) {
         if (!focusArea) return;
-        const { item, index } = getBtnItemInfo(data, focusArea);
+        const { item, index } = getBtnItemInfo(data, focusArea, Object.keys(focusArea.dataset)[0]);
         item.permission?.id && removePermission(item.permission?.id);
         output.remove(item.key);
         input.remove(`${InputIds.SetBtnText}_${item.key}`);
