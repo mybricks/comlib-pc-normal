@@ -31,7 +31,7 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
             ...finalOptions,
             ...connectorConfig,
             onResponseInterception: response => {
-              outputs[OUTPUT_ID.HEADERS](response.headers || {});
+              outputs[OUTPUT_ID.HEADERS]?.(response.headers || {});
             }
           }
         )
