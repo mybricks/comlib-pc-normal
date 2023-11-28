@@ -135,10 +135,10 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
         const icon = getBtnIcon(item);
         const permission = getBtnPermission(env, item.permission?.id);
 
+        if (item.visible === false) {
+          return null;
+        }
         if (!env.edit) {
-          if (item.visible === false) {
-            return null;
-          }
           if (permission === 'hide') {
             return null;
           }
