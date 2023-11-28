@@ -50,10 +50,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs,
     configs: {
       setValue(val) {
-        data.value = val;
+        changeValue(val);
       },
       setInitialValue(val) {
-        data.value = val;
+        changeValue(val);
       },
       returnValue(output) {
         output(data.value);
@@ -125,9 +125,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const onChange = (value) => {
+  const changeValue = (value) => {
     data.value = value;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  };
+
+  const onChange = (value) => {
+    changeValue(value);
     outputs['onChange'](value);
   };
 
