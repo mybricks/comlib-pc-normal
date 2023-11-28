@@ -52,6 +52,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         setEnabled() {
           data.config.disabled = false;
         },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
         validate(model, outputRels) {
           validateFormItem({
             value: value,
@@ -115,7 +122,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         character={
           data.isChoose && (data.choose === 'font' || 'icon')
             ? data.choose === 'font'
-              ? data.font
+              ? env.i18n(data.font)
               : btnItemR({ icon: data.icon })
             : void 0
         }

@@ -66,21 +66,25 @@ export default function Runtime({
 
     inputs['setValue']((val) => {
       if (data.config.multiple) {
-        Array.isArray(val) ? onChange(val) : logger.error(`树选择的值应为数组格式`);
-      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
+        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
+          ? changeValue(val)
+          : logger.error(`${title}【设置值】参数应为数组格式`);
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
       } else {
-        logger.error(`树选择的值应为基本类型`);
+        logger.error(`${title}【设置值】参数应为基本类型`);
       }
     });
 
     inputs['setInitialValue']((val) => {
       if (data.config.multiple) {
-        Array.isArray(val) ? onInit(val) : logger.error(`树选择的值应为数组格式`);
-      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'UNDEFINED'])) {
+        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
+          ? onInit(val)
+          : logger.error(`${title}【设置初始值】参数应为数组格式`);
+      } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
       } else {
-        logger.error(`树选择的值应为基本类型`);
+        logger.error(`${title}【设置初始值】参数应为基本类型`);
       }
     });
 
@@ -112,6 +116,16 @@ export default function Runtime({
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.config.disabled = false;
+      } else {
+        data.config.disabled = true;
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {
@@ -168,6 +182,9 @@ export default function Runtime({
   }, []);
 
   const onInit = useCallback((value) => {
+    if (value === undefined) {
+      data.value = '';
+    }
     data.value = value;
     outputs[OutputIds.OnInitial](value);
   }, []);
@@ -229,6 +246,8 @@ export default function Runtime({
             <TreeNode
               key={item[data.valueFieldName || 'value']}
               {...item}
+              label={item[data.labelFieldName || 'label']}
+              value={item[data.valueFieldName || 'value']}
               title={item[data.labelFieldName || 'label']}
               icon={getNodeIcon(outputItem, data, onError)}
             >
@@ -245,6 +264,7 @@ export default function Runtime({
       <TreeSelect
         treeIcon
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         showSearch={data.config.showSearch}
         showArrow={data.config.showArrow}
         treeDefaultExpandAll={env.design ? true : void 0}
@@ -263,9 +283,7 @@ export default function Runtime({
         onChange={onChange}
         treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
         dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          env.edit || env.runtime.debug ? env?.canvasElement : env.container || document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       >
         {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
       </TreeSelect>

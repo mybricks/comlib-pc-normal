@@ -145,8 +145,8 @@ export default {
           }
         },
         value: {
-          get({ data }: EditorResult<Data>) {
-            return data.items || [];
+          get({ data, env }: EditorResult<Data>) {
+            return data.items.map((item) => ({ ...item, content: env.i18n(item.content) })) || [];
           },
           set({ data }: EditorResult<Data>, val: any[]) {
             data.items = val;
@@ -389,6 +389,9 @@ export default {
       {
         title: '静态文本内容',
         type: 'Textarea',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }) {
             if (!focusArea) return;
@@ -513,6 +516,9 @@ export default {
       {
         title: '标签内容',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }) {
             if (!focusArea) return;

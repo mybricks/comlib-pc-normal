@@ -229,6 +229,15 @@ export default {
                 target: '.ant-select-disabled .ant-select-selector .ant-select-selection-placeholder'
               },
               {
+                title: '选项',
+                options: [
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                global: true,
+                target: `.{id} .ant-select-tree .ant-select-tree-treenode.ant-select-tree-treenode-disabled span.ant-select-tree-node-content-wrapper`
+              },
+              {
                 title: '勾选框',
                 options: [
                   { type: 'border', config: { useImportant: true } },
@@ -248,6 +257,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }: EditorResult<Data>) {
@@ -334,6 +346,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

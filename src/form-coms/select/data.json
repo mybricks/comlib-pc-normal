@@ -9,6 +9,9 @@
     "optionFilterProp": "label",
     "showArrow": "true"
   },
+  "validateTrigger": [
+    "onChange"
+  ],
   "maxTagCount": "",
   "staticOptions": [],
   "dropdownSearchOption": false,

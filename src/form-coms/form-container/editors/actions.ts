@@ -1,8 +1,9 @@
 import { Data, LabelWidthType } from '../types'
 import { uuid } from '../../../utils'
 import visibleOpt from '../../../components/editorRender/visibleOpt'
+import { outputIds } from '../constants'
 
-export const actionsEditor = (data: Data, output) => {
+export const actionsEditor = (data: Data, output, env) => {
   return {
     title: '操作区',
     items: [
@@ -138,6 +139,16 @@ export const actionsEditor = (data: Data, output) => {
         }
       },
       {
+        title: '收起/展开表单项',
+        type: '_Event',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.layoutType === 'QueryFilter'
+        },
+        options: {
+          outputId: outputIds.ON_COLLAPSE
+        }
+      },
+      {
         title: '操作列表',
         description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
         type: 'array',
@@ -147,7 +158,7 @@ export const actionsEditor = (data: Data, output) => {
           editable: false,
           customOptRender: visibleOpt,
           getTitle: (item) => {
-            return item?.title;
+            return env.i18n(item?.title);
           },
           onAdd: (_id) => {
             const outputId = uuid()

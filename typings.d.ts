@@ -118,3 +118,7 @@ type StyleModeType<T> = Partial<{
   domTarget: string;
   options: Array<string | { type: string; config: Record<string, any> }>;
 }>;
+
+declare interface Window {
+  ace: any
+}

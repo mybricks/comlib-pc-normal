@@ -1,4 +1,5 @@
 import { inputIds, outputIds } from '../form-container/constants';
+import { ValidateTriggerType } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
 import { InputIds } from '../types';
@@ -50,7 +51,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
    */
 
   if (!input.get(inputIds.SET_VALIDATE_INFO)) {
-    input.add(inputIds.SET_VALIDATE_INFO, '设置校验状态', {
+    input.add(inputIds.SET_VALIDATE_INFO, '设置校验结果', {
       type: 'object',
       properties: {
         validateStatus: {
@@ -91,7 +92,27 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   //=========== v1.3.0 end ===============
 
+  /**
+   * @description v1.3.2 新增 校验触发时机 配置项
+   */
+
+  if (!data.validateTrigger) {
+    data.validateTrigger = [ValidateTriggerType.OnBlur, ValidateTriggerType.OnPressEnter];
+  }
+
+  //=========== v1.3.2 end ===============
+
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+
+  /**
+   * @description v1.3.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.3.3 end ===============
 
   return true;
 }

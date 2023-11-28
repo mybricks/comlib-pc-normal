@@ -59,14 +59,14 @@ export const defaultRules = [
 // }
 
 export const ruleFnMap = {
-  [RuleKeys.REQUIRED]: ({ value, message, failed, successed }) => {
+  [RuleKeys.REQUIRED]: ({ value, message, failed, successed, env }) => {
     if (!value && ![0, false].includes(value)) {
-      return failed(message)
+      return failed(env.i18n(message))
       // return messageFn(i18nString(message, env, { label, name, value }));
     }
     // hack
     if (Array.isArray(value) && value.length < 1) {
-      return failed(message)
+      return failed(env.i18n(message))
     }
     // if (Array.isArray(value) && ['treeSelect', 'cascader', 'tagsSelect', 'multipleSelect', 'checkbox'].includes(type) && value.length < 1) {
     //   return messageFn(i18nString(message, env, { label, name, value }));
@@ -109,17 +109,17 @@ export const ruleFnMap = {
   [RuleKeys.CODE_VALIDATOR]: ({ validateCode, args, env }) => {
     return runJs(validateCode, args, { env });
   },
-  [RuleKeys.Email_VALIDATOR]: ({ value, message, failed, successed }) => {
+  [RuleKeys.Email_VALIDATOR]: ({ value, message, failed, successed, env }) => {
     let reg = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$");
     if (!reg.test(value)) {
-      return failed(message)
+      return failed(env.i18n(message))
     }
     return successed()
   },
-  [RuleKeys.PHONE_NUMBER_VALIDATOR]: ({ value, message, failed, successed }) => {
+  [RuleKeys.PHONE_NUMBER_VALIDATOR]: ({ value, message, failed, successed, env }) => {
     let reg = new RegExp("^1\\d{10}$");
     if (!reg.test(value)) {
-      return failed(message)
+      return failed(env.i18n(message))
     }
     return successed()
   },

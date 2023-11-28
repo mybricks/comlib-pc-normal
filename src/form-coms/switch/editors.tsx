@@ -150,6 +150,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

@@ -14,25 +14,28 @@ const SlotContent = (
 ) => {
   const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
     props;
-
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
         const { item, isFormItem } = getFormItem(data, com);
 
         return isFormItem ? (
-          <FormItem data={data} slots={slots} com={com} item={item} field={field} />
+          <FormItem data={data} slots={slots} com={com} item={item} field={field} env={env} />
         ) : (
           <>{com.jsx}</>
         );
       },
       wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
-        const comCount = comAray?.length;
+        let comCount = comAray?.length;
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let { item, isFormItem } = getFormItem(data, com);
             if (!item) return;
             const visible = com.style.display !== 'none';
+            // 非表单项不收集childrenStore
+            if (!isFormItem) {
+              comCount--;
+            }
             // 表单项收集childrenStore
             if (field && isFormItem) {
               const { key, name } = field;
@@ -119,7 +122,7 @@ const SlotContent = (
         return (
           <>
             {jsx}
-            {actions}
+            {env.edit && actions}
           </>
         );
       },
@@ -127,11 +130,15 @@ const SlotContent = (
       style: data.slotStyle,
       key: field.key
     });
-  }, [data.slotStyle, data.fields[field.name]]);
+  }, [data.slotStyle, field.name, field.key]);
+  /**
+   * , [data.slotStyle, data.value?.[field.name], field.name, field.key]);
+   */
 
   return (
     <Row key={field.key} className="form-list-item">
       {content}
+      {!env.edit && actions}
     </Row>
   );
 };

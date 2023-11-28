@@ -262,16 +262,22 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data.paginationConfig.isDynamic;
             },
-            set({ data, input }: EditorResult<Data>, value: boolean) {
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
               data.paginationConfig.isDynamic = value;
               const event1 = input.get(InputIds.SetDisable);
               const event2 = input.get(InputIds.SetDisable);
               if (value) {
                 !event1 && input.add(InputIds.SetDisable, '禁用分页器', Schemas.Any);
+                !event1 && output.add(OutputIds.SetDisable, '禁用分页器后', Schemas.Any);
+                !event1 && input.get(InputIds.SetDisable).setRels([OutputIds.SetDisable]);
                 !event2 && input.add(InputIds.SetEnable, '启用分页器', Schemas.Any);
+                !event2 && output.add(OutputIds.SetEnable, '启用分页器后', Schemas.Any);
+                !event2 && input.get(InputIds.SetEnable).setRels([OutputIds.SetEnable]);
               } else {
                 event1 && input.remove(InputIds.SetDisable);
+                event1 && output.remove(OutputIds.SetDisable);
                 event2 && input.remove(InputIds.SetEnable);
+                event2 && output.remove(OutputIds.SetEnable);
               }
             }
           }
@@ -501,6 +507,35 @@ export default {
               target: `.ant-pagination-item.ant-pagination-item-active a`
             },
             {
+              title: '条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } },
+                'BoxShadow'
+              ],
+              target: `.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector`
+            },
+            {
+              title: '标签展开-条数选择',
+              ifVisible({ data }: EditorResult<Data>) {
+                return (
+                  data.paginationConfig.showSizeChanger &&
+                  data.paginationConfig.size !== SizeTypeEnum.Simple
+                );
+              },
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+              ],
+              target: `.ant-select-single.ant-select-open .ant-select-selection-item`
+            },
+            {
               title: '条数选择标签',
               ifVisible({ data }: EditorResult<Data>) {
                 return (
@@ -520,11 +555,15 @@ export default {
             {
               title: '跳转输入框',
               ifVisible({ data }: EditorResult<Data>) {
-                return data.paginationConfig.size === SizeTypeEnum.Simple;
+                return data.paginationConfig.size !== SizeTypeEnum.Simple;
               },
-              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-              target: `.ant-pagination-simple .ant-pagination-simple-pager input:focus`,
-              domTarget: `.ant-pagination-simple .ant-pagination-simple-pager input`
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } }, 
+                'BoxShadow',
+              ],
+              target: `.ant-pagination-options-quick-jumper input:focus`
             }
           ]),
           ...catelogEditors('禁用', [

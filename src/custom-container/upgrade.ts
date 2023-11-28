@@ -1,5 +1,5 @@
 import { Data, SlotIds, InputIds } from './constants';
-import { getFilterSelector } from '../utils/cssSelector';
+import { getFilterSelector, getFilterSelectorWithId, getLegacyDeclaredStyle } from '../utils/cssSelector';
 import { isEmptyObject } from '../utils';
 
 export default function ({
@@ -58,20 +58,16 @@ export default function ({
     delete data.useOverflowUnset;
   }
 
-  const preStyle = getDeclaredStyle(`.root${getFilterSelector(id)}`);
-  const preHoverStyle = getDeclaredStyle(`.root:hover${getFilterSelector(id)}`);
+  const legacyStyle = getLegacyDeclaredStyle(getDeclaredStyle, [`.root${getFilterSelector(id)}`, `.root${getFilterSelectorWithId(id)}`])
+  const legacyHoverStyle = getLegacyDeclaredStyle(getDeclaredStyle, [`.root:hover${getFilterSelector(id)}`, `.root:hover${getFilterSelectorWithId(id)}`])
 
-  let css: React.CSSProperties = {}, hoverCss: React.CSSProperties = {};
-  
-  if (preStyle) {
-    css = { ...preStyle.css };
-    removeDeclaredStyle(`.root${getFilterSelector(id)}`);
-    setDeclaredStyle('> .root', css);
+  if(legacyStyle) {
+    removeDeclaredStyle(legacyStyle.selector)
+    setDeclaredStyle('> .root', {...legacyStyle.css});
   }
-  if (preHoverStyle) {
-    hoverCss = { ...preHoverStyle.css };
-    removeDeclaredStyle(`.root:hover${getFilterSelector(id)}`);
-    setDeclaredStyle('> .root:hover', hoverCss);
+  if(legacyHoverStyle){
+    removeDeclaredStyle(legacyHoverStyle.selector)
+    setDeclaredStyle('> .root:hover', {...legacyHoverStyle.css})
   }
 
   if (!input.get(InputIds.SetStyle)) {

@@ -1,4 +1,4 @@
-import { InputIds, SlotIds } from '../../constants';
+import { InputIds, OutputIds, SlotIds } from '../../constants';
 import { Data } from '../../types';
 import { getDefaultDataSchema, getTableSchema, Schemas, setDataSchema } from '../../schema';
 import Tree from '../../../components/editorRender/fieldSelect';
@@ -15,9 +15,13 @@ const expandEditor = [
           get({ data }: EditorResult<Data>) {
             return data.useExpand;
           },
-          set({ data, inputs, slot, ...res }: EditorResult<Data>, value: boolean) {
+          set({ data, inputs, slot, outputs, ...res }: EditorResult<Data>, value: boolean) {
             if (value) {
               inputs.add(InputIds.EnableAllExpandedRows, '开启关闭所有展开项', { type: 'boolean' });
+              outputs.add(OutputIds.EnableAllExpandedRows, '开启关闭所有展开项', {
+                type: 'boolean'
+              });
+              inputs.get(InputIds.EnableAllExpandedRows).setRels([OutputIds.EnableAllExpandedRows]);
               slot.add({ id: SlotIds.EXPAND_CONTENT, title: `展开内容`, type: 'scope' });
               if (data.expandDataIndex) {
                 slot
@@ -30,10 +34,11 @@ const expandEditor = [
               slot
                 .get(SlotIds.EXPAND_CONTENT)
                 .inputs.add(InputIds.INDEX, '当前行序号', Schemas.Number);
-              setDataSchema({ data, slot, inputs, ...res });
+              setDataSchema({ data, slot, inputs, outputs, ...res });
             } else {
               slot.remove(SlotIds.EXPAND_CONTENT);
               inputs.remove(InputIds.EnableAllExpandedRows);
+              outputs.remove(OutputIds.EnableAllExpandedRows);
             }
             data.useExpand = value;
           }

@@ -1,7 +1,7 @@
 {
   "title": "下拉框",
   "namespace": "mybricks.normal-pc.select",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "description": "下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -65,6 +65,7 @@
     {
       "id": "setOptions",
       "title": "设置数据源",
+      "desc": "设置下拉框的下拉选项列表",
       "schema": {
         "type": "array",
         "items": {
@@ -105,6 +106,13 @@
       }
     },
     {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
       "id": "setLoading",
       "title": "设置加载中状态",
       "schema": {
@@ -121,8 +129,8 @@
     },
     {
       "id": "setValidateInfo",
-      "title": "设置校验状态",
-      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
       "schema": {
         "type": "object",
         "properties": {

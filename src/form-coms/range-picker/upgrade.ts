@@ -2,6 +2,7 @@ import { DateType, InputIds, OutputIds, TimeDateLimitItem } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { refreshSchema } from './editors';
 import { Data } from './runtime';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({
   data,
@@ -180,6 +181,16 @@ export default function ({
     });
   }
   //=========== v1.1.0 end ===============
+
+  /**
+   * @description v1.1.2 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.2 end ===============
 
   return true;
 }

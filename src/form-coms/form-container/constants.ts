@@ -14,6 +14,7 @@ export const inputIds = {
   //禁用/启用
   SetDisable: 'setDisable',
   SetEnable: 'setEnable',
+  IsEnable: 'isEnable',
 
   //显示/隐藏
   SetHidden: 'setHidden',
@@ -29,7 +30,8 @@ export const outputIds = {
   ON_MERGE_FINISH: 'onMergeFinish',
   ON_VALUES_CHANGE: 'onValuesChange',
   RETURN_VALUES: 'returnValues',
-  ON_VALIDATE: 'onValidate'
+  ON_VALIDATE: 'onValidate',
+  ON_COLLAPSE: 'onCollapse',
 }
 
 export const slotInputIds = {
@@ -94,6 +96,10 @@ export const formItemPropsSchema = {
   //   ],
   //   title: '边距'
   // },
+  labelWidth: {
+    type: 'number',
+    title: '标题自定义宽度'
+  },
   labelAutoWrap: {
     type: 'boolean',
     title: '标题是否换行'
@@ -109,6 +115,18 @@ export const formItemPropsSchema = {
   required: {
     type: 'boolean',
     title: '必填样式'
+  },
+  labelStyle: {
+    type: 'object',
+    title: '标签样式'
+  },
+  descriptionStyle: {
+    type: 'object',
+    title: '提示语样式'
+  },
+  disabled: {
+    type: 'boolean',
+    title: '是否禁用'
   },
   // visible: {
   //   type: 'boolean',

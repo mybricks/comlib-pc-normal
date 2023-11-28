@@ -40,7 +40,7 @@ const NoAutoRender = (dataSource: any, data: Data, slots) => {
   return (
     <div className={css.noflexContainer}>
       {dataSource.map(({ [rowKey]: key, index: index, item: item }) => (
-        <div key={key} style={{ width: '100%', margin: `0 ${gutter[0]}px 0 0` }}>
+        <div key={key} style={{ width: data.itemWidth, margin: `0 ${gutter[0]}px 0 0` }}>
           {slots['item'].render({
             inputValues: {
               itemData: item,
@@ -64,7 +64,7 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
         <div
           key={key}
           className={css.scrollBox}
-          style={{ width: '100%', margin: `0 ${gutter[0]}px 0 0` }}
+          style={{ width: data.itemWidth, margin: `0 ${gutter[0]}px 0 0` }}
         >
           {slots['item'].render({
             inputValues: {

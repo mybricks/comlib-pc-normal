@@ -60,7 +60,7 @@ export default function ({
   );
 
   const setTarget = (val) => {
-    if (!Array.isArray(val)) {
+    if (!Array.isArray(val) && val !== null && val !== undefined) {
       message.error('穿梭框目标值必须是数组类型');
       return;
     }
@@ -91,6 +91,13 @@ export default function ({
         },
         setEnabled() {
           data.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.disabled = false;
+          } else if (val === false) {
+            data.disabled = true;
+          }
         },
         validate
       }
@@ -138,9 +145,9 @@ export default function ({
     <ConfigProvider locale={env.vars?.locale}>
       <Transfer
         className={styles.transfer}
-        titles={titles}
+        titles={[env.i18n(titles[0]), env.i18n(titles[1])]}
         dataSource={_dataSource}
-        targetKeys={targetKeys}
+        targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
         showSearch={showSearch}
         showSelectAll
         oneWay={oneWay}

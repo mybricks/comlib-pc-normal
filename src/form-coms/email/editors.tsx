@@ -50,6 +50,9 @@ export default {
           title: '提示内容',
           type: 'Text',
           description: '该提示内容会在值为空时显示',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }) {
               return data.config.placeholder;
@@ -76,6 +79,9 @@ export default {
           title: '前置标签',
           type: 'text',
           description: '带标签的 input，设置前置标签',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }) {
               return data.config.addonBefore;
@@ -89,6 +95,9 @@ export default {
           title: '后置标签',
           type: 'text',
           description: '带标签的 input，设置后置标签',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }) {
               return data.config.addonAfter;
@@ -173,6 +182,9 @@ export default {
                 title: '提示文字',
                 type: 'Text',
                 value: 'message',
+                options: {
+                  locale: true
+                },
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;
                 }

@@ -24,12 +24,12 @@ export default {
       //连接时拿到传递过来的inputValue的schema，给到确认和取消
       //可以包含确认和其余类型
       const outputSchema =
-        ((fromPin.schema?.type === 'object') && (fromPin.schema?.properties?.outputValue !== undefined))
+        fromPin.schema?.type === 'object' && fromPin.schema?.properties?.outputValue !== undefined
           ? fromPin.schema?.properties?.outputValue
           : fromPin.schema;
       output.get(OutputIds.Ok).setSchema(outputSchema);
 
-      if(output.get(OutputIds.Cancel)){
+      if (output.get(OutputIds.Cancel)) {
         output.get(OutputIds.Cancel).setSchema(outputSchema);
       }
     }
@@ -37,7 +37,7 @@ export default {
   '@inputDisConnected'({ output }, fromPin, toPin) {
     if (toPin.id === InputIds.Open) {
       output.get(OutputIds.Ok).setSchema(Schemas.Any);
-      if(output.get(OutputIds.Cancel)){
+      if (output.get(OutputIds.Cancel)) {
         output.get(OutputIds.Cancel).setSchema(Schemas.Any);
       }
     }
@@ -53,9 +53,9 @@ export default {
           data.type = val;
           setDescByData({ data, setDesc });
           const cancelSchema = output.get(OutputIds.Ok).schema;
-          if(data.type === 'confirm'){
+          if (data.type === 'confirm') {
             output.add(OutputIds.Cancel, '取消', cancelSchema);
-          }else{
+          } else {
             output.remove(OutputIds.Cancel);
           }
         }
@@ -73,6 +73,9 @@ export default {
       ifVisible({ data }: EditorResult<Data>) {
         return data.showTitle;
       },
+      options: {
+        locale: true
+      },
       value: {
         set({ data, setDesc }: EditorResult<Data>, val: string) {
           data.title = val;
@@ -81,6 +84,9 @@ export default {
       }
     }),
     Editor<Data>('详情', EditorType.TextArea, 'content', {
+      options: {
+        locale: true
+      },
       value: {
         set({ data, setDesc }: EditorResult<Data>, val: string) {
           data.content = val;
@@ -97,16 +103,19 @@ export default {
         formatter: 'px'
       }
     }),
-    {
-      title: '底部按钮',
-      items: [
-        Editor<Data>('确定按钮文案', EditorType.Text, 'okText'),
-        Editor<Data>('取消按钮文案', EditorType.Text, 'cancelText', {
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.type === 'confirm';
-          }
-        })
-      ]
-    }
+    {},
+    Editor<Data>('确定按钮文案', EditorType.Text, 'okText', {
+      options: {
+        locale: true
+      }
+    }),
+    Editor<Data>('取消按钮文案', EditorType.Text, 'cancelText', {
+      ifVisible({ data }: EditorResult<Data>) {
+        return data.type === 'confirm';
+      },
+      options: {
+        locale: true
+      }
+    })
   ]
 };

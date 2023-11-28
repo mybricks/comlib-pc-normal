@@ -148,3 +148,18 @@ export const differObject = (obj, baseObj) => {
   });
   return difference;
 }
+
+export const i18nFn = (opts, env) => {
+  if(opts && Array.isArray(opts)){
+    let newOpts = opts.map((opt)=>{
+      return {
+        ...opt,
+        label: env.i18n(opt.label)
+      }
+    })
+    return newOpts;
+  }else{
+    return opts
+  }
+  
+}

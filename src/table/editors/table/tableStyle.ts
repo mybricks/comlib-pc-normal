@@ -1,4 +1,5 @@
-import { DefaultHeadStyle, DefaultContentStyle } from '../../../table/constants';
+import { InputIds, OutputIds } from '../../constants';
+import { Schemas } from '../../schema';
 import { unitConversion } from '../../../utils';
 import { isEqual } from 'lodash';
 import { Data, SizeEnum } from '../../types';
@@ -45,8 +46,19 @@ const tableStyleEditor = {
         get({ data }: EditorResult<Data>) {
           return data.fixedHeader;
         },
-        set({ data }: EditorResult<Data>, value: boolean) {
+        set({ data, input, output }: EditorResult<Data>, value: boolean) {
           data.fixedHeader = value;
+          const event1 = input.get(InputIds.TABLE_HEIGHT);
+          const event2 = output.get(InputIds.TABLE_HEIGHT);
+          if (value) {
+            !event1 && input.add(InputIds.TABLE_HEIGHT, '设置表格高度', Schemas.TABLE_HEIGHT);
+            !event2 && output.add(OutputIds.TABLE_HEIGHT, '表格高度', Schemas.TABLE_HEIGHT);
+            
+            input.get(InputIds.TABLE_HEIGHT).setRels([OutputIds.TABLE_HEIGHT]);
+          } else {
+            event1 && input.remove(InputIds.TABLE_HEIGHT);
+            event2 && output.remove(OutputIds.TABLE_HEIGHT);
+          }
         }
       }
     },
@@ -75,7 +87,7 @@ const tableStyleEditor = {
         get({ data }: EditorResult<Data>) {
           return data.fixedHeight;
         },
-        set({ data }: EditorResult<Data>, val: string) {
+        set({ data, input }: EditorResult<Data>, val: string) {
           data.fixedHeight = unitConversion(val);
         }
       }

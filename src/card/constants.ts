@@ -32,7 +32,8 @@ export interface Item {
 }
 
 export const OutputIds = {
-  Click: 'click'
+  Click: 'click',
+  DoubleClick: 'doubleClick',
 };
 
 export const InputIds = {

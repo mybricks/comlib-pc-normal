@@ -52,13 +52,16 @@ export default {
   },
   ':root': {
     style: [...styleEditor],
-    items: ({ data }: EditorResult<{ type }>, ...catalog) => {
+    items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
       catalog[0].items = [
         {
           title: '前置提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -72,6 +75,9 @@ export default {
         {
           title: '后置提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -151,7 +157,7 @@ export default {
                   if (!item.title) {
                     item.title = `预设范围${index + 1}`;
                   }
-                  return item.title;
+                  return env.i18n(item.title);
                 },
                 onAdd: (_id: string) => {
                   const actionItem = {
@@ -166,7 +172,8 @@ export default {
                     title: '名称',
                     type: 'Textarea',
                     options: {
-                      autoSize: { maxRows: 1 }
+                      autoSize: { maxRows: 1 },
+                      locale: true
                     },
                     value: 'title'
                   },
@@ -189,8 +196,8 @@ export default {
                     type: 'InputNumber',
                     value: 'numList',
                     options: [
-                      { title: '前', min: -1000, max: 1000, width: 100 },
-                      { title: '后', min: -1000, max: 1000, width: 100 }
+                      { title: '前', width: 100 },
+                      { title: '后', width: 100 }
                     ]
                   }
                 ]
@@ -267,6 +274,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

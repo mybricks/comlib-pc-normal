@@ -3,27 +3,29 @@ import { Data, InputIds, OutputIds } from './constants';
 import css from './runtime.less';
 import { checkIfMobile } from '../utils';
 
-const createFakeDom = (root: { appendChild: (arg0: HTMLDivElement) => void; }) => {
+const createFakeDom = (root: { appendChild: (arg0: HTMLDivElement) => void }) => {
   const div = document.createElement('div');
   root?.appendChild(div);
-  return div
-}
+  return div;
+};
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   const { type, showTitle } = data;
-  const isMobile = checkIfMobile(env)
-  const root = createFakeDom(env?.canvasElement || document.body)
-  // console.log(`env?.canvasElement`, env?.canvasElement)
+  const isMobile = checkIfMobile(env);
+  const root = createFakeDom(env?.canvasElement || document.body);
   const open = (onOk: () => void, onCancel: () => void) => {
     Modal[type]({
       ...data,
-      width: isMobile ? '100%' : '520px',
+      width: isMobile ? '100%' : data.width || 520,
       className: isMobile ? css.mobileWrap : css.modalWrap,
-      title: showTitle ? data.title : undefined,
+      title: showTitle ? env.i18n(data.title) : undefined,
+      content: env.i18n(data.content),
+      okText: env.i18n(data.okText),
+      cancelText: env.i18n(data.cancelText),
       onCancel,
       onOk,
       getContainer() {
-        return root
-      },
+        return root;
+      }
     });
   };
 

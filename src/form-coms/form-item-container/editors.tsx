@@ -1,6 +1,6 @@
 import { RuleKeys, defaultRules } from '../utils/validator';
 import { InputIds, OutputIds } from '../types';
-import { SlotIds, SlotInputIds } from './constants';
+import { SlotIds, SlotInputIds, SlotOutputIds } from './constants';
 import { Data } from './types';
 import { outputIds } from '../form-container/constants';
 
@@ -54,6 +54,7 @@ export default {
             output.get(OutputIds.ReturnValue).setSchema(value);
             output.get(OutputIds.OnValidate).setSchema(value);
             slot.get(SlotIds.FormItem).inputs.get(SlotInputIds.CurValue).setSchema(value);
+            slot.get(SlotIds.FormItem).outputs.get(SlotOutputIds.SetCurValue).setSchema(value);
           }
         }
       },
@@ -72,6 +73,9 @@ export default {
               title: '提示文字',
               type: 'Text',
               value: 'message',
+              options: {
+                locale: true
+              },
               ifVisible(item: any, index: number) {
                 return item.key === RuleKeys.REQUIRED;
               }

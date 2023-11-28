@@ -25,7 +25,7 @@ export interface Data {
   ranges: any[];
   config: {
     disabled: boolean;
-    placeholder: undefined | [string, string];
+    placeholder: [string, string];
     picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
   };
   dateType: 'array' | 'string';
@@ -52,7 +52,7 @@ export const formatRangeOptions = (list, env: Env) => {
         const [num1, num2] = numList;
         const startDate = moment().add(-num1, type).startOf(type);
         const endDate = moment().add(num2, type).endOf(type);
-        res[title] = [startDate, endDate];
+        res[env.i18n(title)] = [startDate, endDate];
       }
       if (value && Array.isArray(value)) {
         res[label] = value.map((item) => moment(item));
@@ -157,7 +157,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return data;
         });
         setValue(val);
-        onChange(val);
+        let transValue;
+        if (!Array.isArray(val)) {
+          if (val === null || val === undefined) {
+            transValue = val;
+          } else {
+            transValue = null;
+          }
+        } else {
+          transValue = val.map((item, index) => {
+            return transCalculation(item, data.contentType, props, index);
+          });
+          if (data.dateType !== 'array') {
+            transValue = transValue[0] + `${data.splitChart}` + transValue[1];
+          }
+        }
+        outputs['onChange'](transValue);
+      }
+      if (val === undefined || val === null) {
+        setValue(val);
+        outputs['onChange'](val);
       }
     });
 
@@ -185,6 +204,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }
           }
           outputs[OutputIds.OnInitial](transValue);
+        }
+        if (val === undefined || val === null) {
+          setValue(val);
+          outputs[OutputIds.OnInitial](val);
         }
       });
 
@@ -225,7 +248,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['getValue']((val, outputRels) => {
       let transValue;
       if (!Array.isArray(value)) {
-        transValue = null;
+        if (value === undefined || value === null) {
+          transValue = value;
+        } else {
+          transValue = null;
+        }
       } else {
         transValue = value.map((item, index) => {
           return transCalculation(item, data.contentType, props, index);
@@ -251,6 +278,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['setEnabled'](() => {
       data.config.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.config.disabled = false;
+      } else {
+        data.config.disabled = true;
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {
@@ -267,7 +304,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     setValue(value);
     let transValue;
     if (!Array.isArray(value)) {
-      transValue = null;
+      if (value === null || value === undefined) {
+        transValue = value;
+      } else {
+        transValue = null;
+      }
     } else {
       transValue = value.map((item, index) => {
         return transCalculation(item, data.contentType, props, index);
@@ -314,15 +355,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
         <RangePicker
           value={value}
           {...data.config}
+          placeholder={[env.i18n(data.config.placeholder[0]), env.i18n(data.config.placeholder[1])]}
           ranges={data.useRanges ? rangeOptions : []}
           showTime={getShowTime()}
           onChange={onChange}
           onCalendarChange={(dates) => setDates(dates)}
           onOpenChange={onOpenChange}
           allowEmpty={emptyArr}
-          getPopupContainer={(triggerNode: HTMLElement) =>
-            edit || debug ? env?.canvasElement : document.body
-          }
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           open={env.design ? true : void 0}
           dropdownClassName={`${id} ${css.rangePicker}`}
           {...disabledDateTime}

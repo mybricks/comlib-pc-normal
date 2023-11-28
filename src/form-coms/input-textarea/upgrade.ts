@@ -74,5 +74,25 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
 
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
+  /**
+   * @description v1.1.1 --> v1.1.2 新增回车事件
+  */
+  if(!output.get('onPressEnter')){
+    output.add('onPressEnter', '按下回车', {
+      type: 'string'
+    })
+  }
+  //=========== v1.1.2 end ===============
+
+  /**
+   * @description v1.1.3 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.3 end ===============
+
   return true;
 }

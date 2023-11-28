@@ -56,6 +56,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
       setEnabled() {
         data.config.disabled = false;
       },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
+      },
       validate(model, outputRels) {
         validateFormItem({
           value: data.value,
@@ -110,13 +117,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         value={data.value}
         options={options}
         {...data.config}
+        placeholder={env.i18n(data.config.placeholder)}
         multiple={data.isMultiple}
         onChange={onChange}
         open={env.design ? true : void 0}
         dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) =>
-          edit || debug ? env?.canvasElement : env.container || document.body
-        }
+        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       />
     </div>
   );

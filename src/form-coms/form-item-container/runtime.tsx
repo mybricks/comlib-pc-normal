@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
-import { SlotIds } from './constants';
+import { SlotIds, SlotInputIds, SlotOutputIds } from './constants';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { Data } from './types';
 import { inputIds, outputIds } from '../form-container/constants';
@@ -19,16 +19,22 @@ export default function (props: RuntimeParams<Data>) {
 
     inputs['setValue']((val) => {
       data.value = val;
-      slots[SlotIds.FormItem].inputs['curValue'](data.value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
       onChangeForFc(parentSlot, { id: props.id, value: val, name });
       outputs['onChange'](val);
-      onValidateTrigger();
     });
 
     inputs['setInitialValue']((val) => {
       data.value = val;
-      slots[SlotIds.FormItem].inputs['curValue'](data.value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
       outputs[OutputIds.OnInitial](val);
+    });
+
+    // 设置表单项值
+    slots[SlotIds.FormItem].outputs[SlotOutputIds.SetCurValue]?.((val) => {
+      data.value = val;
+      onChangeForFc(parentSlot, { id: props.id, value: val, name });
+      onValidateTrigger();
     });
 
     inputs['validate']((model, outputRels) => {
@@ -59,7 +65,7 @@ export default function (props: RuntimeParams<Data>) {
 
     inputs['resetValue'](() => {
       data.value = void 0;
-      slots[SlotIds.FormItem].inputs['curValue'](data.value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
     });
 
     //设置禁用
@@ -75,6 +81,19 @@ export default function (props: RuntimeParams<Data>) {
       slots[SlotIds.FormItem].inputs['onEnabled'](val);
       setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
     }, []);
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.disabled = false;
+        slots[SlotIds.FormItem].inputs['onEnabled'](val);
+        setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
+      } else {
+        data.disabled = true;
+        slots[SlotIds.FormItem].inputs['onDisabled'](val);
+        setValuesForInput({ data, actionId: InputIds.SetDisabled, val });
+      }
+    });
 
     // 设置校验状态
     inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {

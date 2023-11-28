@@ -7,7 +7,7 @@ import { BtnItem, Data, LocationEnum } from './types';
 import css from './style.less';
 import { checkIfMobile } from '../utils';
 
-export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
+export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
   const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.runtime) {
@@ -150,7 +150,9 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
               disabled={todo === 'disable' ? true : item.disabled}
               onClick={() => onClick(item)}
             >
-              {renderTextAndIcon(item)}
+              {!item.isSlot
+                ? renderTextAndIcon(item)
+                : slots?.[item.key] && slots?.[item.key].render({ key: item.key })}
             </Menu.Item>
           );
         })}
@@ -168,33 +170,48 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
     if (!btnList.length) {
       return null;
     }
+    const { allShape, allSize, allType, allDanger } = data;
     return btnList.map((item) => {
       const todo = getWhatToDoWithoutPermission(item.permission?.id);
-      if (item.hidden || todo === 'hide') return;
-      const { type, danger, size, shape, disabled, isCustom, loading } = item;
+      if (todo === 'hide') return;
+
+      const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key } = item;
+
       return (
-        <div key={item.key} data-btn-idx={item.key} className={css.button}>
-          <Button
-            type={type as any}
-            danger={danger}
-            size={size}
-            shape={shape}
-            disabled={todo === 'disable' ? true : disabled}
-            onClick={() => onClick(item)}
-            onDoubleClick={() => onDoubleClick(item)}
-            loading={loading}
-            block={true}
-          >
-            {renderBtnContext(item)}
-          </Button>
-        </div>
+        <>
+          {!isSlot ? (
+            <div key={key} className={css.button} data-btn-idx={item.key}>
+              <Button
+                type={(type as any) || allType}
+                danger={typeof danger !== 'undefined' ? danger : allDanger}
+                size={size || allSize}
+                shape={shape || allShape}
+                disabled={todo === 'disable' ? true : disabled}
+                onClick={() => onClick(item)}
+                onDoubleClick={() => onDoubleClick(item)}
+                loading={loading}
+                block={true}
+              >
+                {renderBtnContext({ ...item, text: env.i18n(item.text) })}
+              </Button>
+            </div>
+          ) : (
+            <div className={css.emptyWrap} data-slot-idx={item.key}>
+              {slots?.[key] && slots?.[key].render({ key })}
+            </div>
+          )}
+        </>
       );
     });
   };
 
   const normalBtnList = (data.btnList || [])
     .filter(
-      (item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide' || item.hidden)
+      (item) =>
+        !(
+          getWhatToDoWithoutPermission(item.permission?.id) === 'hide' ||
+          (item?.hidden && env.runtime)
+        )
     )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx < data.maxShowNumber : true
@@ -202,7 +219,11 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
 
   const ellipsisBtnList = (data.btnList || [])
     .filter(
-      (item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide' || item.hidden)
+      (item) =>
+        !(
+          getWhatToDoWithoutPermission(item.permission?.id) === 'hide' ||
+          (item?.hidden && env.runtime)
+        )
     )
     .filter((item, idx) =>
       env.runtime && data.useEllipses && data.maxShowNumber ? idx >= data.maxShowNumber : false
@@ -210,7 +231,7 @@ export default ({ env, data, inputs, outputs }: RuntimeParams<Data>) => {
 
   return (
     <div
-      className={`${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
+      className={`mybricks-toolbar ${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
       style={{
         justifyContent: data.layout,
         gap: isMobile ? '8px 4px' : `${data.spaceSize?.[1]}px ${data.spaceSize?.[0]}px`,

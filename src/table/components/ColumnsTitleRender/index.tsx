@@ -21,7 +21,6 @@ const { Column, ColumnGroup } = Table;
 interface Props {
   env: Env;
   data: Data;
-  slots: any;
   outputs: any;
   dataSource: any;
   filterMap: any;
@@ -30,10 +29,10 @@ interface Props {
   focusCellinfo: any;
   setFocusCellinfo: any;
 }
+
 export default ({
   env,
   data,
-  slots,
   dataSource,
   outputs,
   filterMap,
@@ -43,8 +42,8 @@ export default ({
   focusCellinfo
 }: Props) => {
   const renderTtl = (cItem: IColumn) => {
-    const title = cItem.title;
-    const tip = cItem.tip;
+    const title = env.i18n(cItem.title);
+    const tip = env.i18n(cItem.tip);
     return cItem.hasTip ? (
       <div>
         <span style={{ marginRight: '6px' }}>{title}</span>
@@ -73,7 +72,7 @@ export default ({
         <ColumnGroup
           key={`group_${cItem.dataIndex}`}
           title={renderTtl(cItem)}
-          align={cItem.align || AlignEnum.Left}
+          align={cItem.align}
           onHeaderCell={(): any => {
             return {
               'data-table-th-idx': cItem.key,
@@ -195,11 +194,6 @@ export default ({
         onClick:
           data.enableCellClick || data.enableCellFocus
             ? () => {
-                // if (isFocus) {
-                //   data.focusCellinfo = null;
-                // } else {
-                //   data.focusCellinfo = { focusRecord: record, dataIndex: cItem.dataIndex };
-                // }
                 setFocusCellinfo(
                   isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
                 );
@@ -217,6 +211,10 @@ export default ({
       return res;
     };
 
+    const filters = filterMap[`${cItem.dataIndex}`]?.map((item) => ({
+      text: item.text,
+      value: item.value
+    }));
     return (
       <Column
         {...(cItem as any)}
@@ -227,11 +225,10 @@ export default ({
         filterMultiple={cItem.filter?.filterType !== FilterTypeEnum.Single}
         render={(text, record, index) => {
           return renderCell({
-            columnItem: cItem,
+            colKey: cItem.key,
             value: cItem.dataIndex ? text : '',
             record,
             index,
-            slots,
             data
           });
         }}
@@ -243,10 +240,7 @@ export default ({
         showSorterTooltip={false}
         sortOrder={data?.sortParams?.id === `${cItem.dataIndex}` ? data?.sortParams?.order : null}
         sorter={sorter}
-        filters={filterMap[`${cItem.dataIndex}`]?.map((item) => ({
-          text: item.text,
-          value: item.value
-        }))}
+        filters={filters}
         filteredValue={data?.filterParams?.[`${cItem.dataIndex}`] || null}
         onFilter={onFilter}
         onCell={onCell}

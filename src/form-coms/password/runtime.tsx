@@ -63,6 +63,13 @@ export default function ({
         setEnabled() {
           data.disabled = false;
         },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.disabled = false;
+          } else if (val === false) {
+            data.disabled = true;
+          }
+        },
         validate(model, outputRels) {
           validateFormItem({
             value: value,
@@ -121,7 +128,7 @@ export default function ({
   return (
     <Input.Password
       allowClear
-      placeholder={placeholder}
+      placeholder={env.i18n(placeholder)}
       value={value}
       disabled={disabled}
       onChange={onChange}

@@ -69,7 +69,7 @@ export default function ({
     (val) => {
       try {
         if (!val) {
-          setValue(void 0);
+          setValue(val);
           return;
         }
         let formatVal: Moment;
@@ -107,6 +107,13 @@ export default function ({
         },
         setEnabled() {
           data.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.disabled = false;
+          } else if (val === false) {
+            data.disabled = true;
+          }
         },
         validate
       }
@@ -153,14 +160,12 @@ export default function ({
     <ConfigProvider locale={env.vars?.locale}>
       <div ref={wrapperRef} className={styles.wrap}>
         <TimePicker
-          placeholder={placeholder}
+          placeholder={env.i18n(placeholder)}
           value={value}
           format={_format}
           disabled={disabled}
           allowClear
-          getPopupContainer={(triggerNode: HTMLElement) =>
-            edit || debug ? env?.canvasElement : document.body
-          }
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           open={env.design ? true : void 0}
           popupClassName={id}
           onChange={onChange}

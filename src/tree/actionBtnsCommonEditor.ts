@@ -9,7 +9,26 @@ export const commonActionBtnsEditor = (data, output) => {
     },
     items: [
       {
-        title: '操作列表',
+        title: '显示方式',
+        type: 'Radio',
+        options: [
+          { label: '常态显示', value: 'default' },
+          { label: '悬浮显示', value: 'hover' }
+        ],
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.useActions;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.actionsShowWay;
+          },
+          set({ data }: EditorResult<Data>, value: 'default' | 'hover') {
+            data.actionsShowWay = value
+          },
+        }
+      },
+      {
+        title: '按钮列表',
         description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
         type: 'array',
         options: {
@@ -33,9 +52,9 @@ export const commonActionBtnsEditor = (data, output) => {
         }
       },
       {
-        title: '省略展示',
+        title: '超出省略展示',
         type: 'Switch',
-        description: '省略样式在调试/预览/发布生效',
+        description: '配置按钮的最大显示个数，实现省略样式。省略样式在调试/预览/发布生效',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.ellipsisActionBtnsConfig.useEllipsis;
@@ -46,7 +65,7 @@ export const commonActionBtnsEditor = (data, output) => {
         }
       },
       {
-        title: '省略显示样式',
+        title: '省略按钮弹出方式',
         type: 'radio',
         options: [
           { label: '点击', value: 'click' },
@@ -65,7 +84,7 @@ export const commonActionBtnsEditor = (data, output) => {
         }
       },
       {
-        title: '超过时省略',
+        title: '最大显示按钮数',
         type: 'Inputnumber',
         ifVisible({ data, }: EditorResult<Data>) {
           return data.ellipsisActionBtnsConfig.useEllipsis;

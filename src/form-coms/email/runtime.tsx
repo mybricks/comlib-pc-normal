@@ -16,6 +16,7 @@ export interface Data {
     addonAfter: string;
     showCount: boolean;
     maxLength?: number;
+    placeholder: string;
   };
 }
 
@@ -47,6 +48,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
       },
       setEnabled() {
         data.config.disabled = false;
+      },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
       },
       validate(model, outputRels) {
         validateFormItem({
@@ -102,10 +110,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
+  const inputConfig = {
+    ...data.config,
+    placeholder: env.i18n(data.config.placeholder),
+    addonBefore: env.i18n(data.config.addonBefore),
+    addonAfter: env.i18n(data.config.addonAfter)
+  };
+
   let jsx = (
     <Input
       type="text"
-      {...data.config}
+      {...inputConfig}
       value={data.value}
       readOnly={!!edit}
       onChange={changeValue}

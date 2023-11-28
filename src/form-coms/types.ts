@@ -52,4 +52,11 @@ export const DateType = {
   Week: "weeks",
   Month: "months",
   Year: "years",
+};
+
+export const ValidateTriggerType = {
+  OnInit: "onInit",
+  OnChange: "onChange",
+  OnBlur: "onBlur",
+  OnPressEnter: "onPressEnter",
 }; 

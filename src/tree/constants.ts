@@ -1,9 +1,21 @@
 export const InputIds = {
-  SET_TREE_DATA: 'treeData'
+  SetTreeData: 'treeData',
+  SetNodeData: 'nodeData',
+  SetSearchValue: 'searchValue',
+  SetFilterValue: 'filter',
+  SetSelectedKeys: 'setSelectedKeys',
+  SetCheckedKeys: 'checkedValues',
+  SetDisableCheckbox: 'disableCheckbox',
+  SetEnableCheckbox: 'enableCheckbox',
+  SetDragConfig: 'setDragConfig',
+  SetOpenDepth: 'setOpenDepth',
+  SetAddTips: 'addTips',
 }
 
 export const OutputIds = {
-  ON_DROP_DONE: 'onDropDone',
-  NODE_CLICK: 'click',
-  ON_CHECK: 'check'
+  OnDropDone: 'onDropDone',
+  OnNodeClick: 'click',
+  OnCheck: 'check'
 }
+
+export const DragConfigKeys = ['draggable', 'draggableScript', 'allowDrop', 'allowDropScript', 'useDropScope', 'dropScopeMessage'];

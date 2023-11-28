@@ -1,7 +1,7 @@
 import { inputIds, outputIds } from "../form-container/constants";
 import { InputIds } from "../types";
 import { RuleKeys } from "../utils/validator";
-import { SlotIds } from "./constants";
+import { SlotIds, SlotInputIds, SlotOutputIds } from "./constants";
 
 export default function ({ data, input, output, slot }: UpgradeParams<any>): boolean {
   const valueSchema = {
@@ -96,6 +96,26 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   }
   //=========== v1.1.0 end ===============
 
+  /** 
+    * @description v1.1.1 增加作用域输入：设置表单项值
+    */
+  if (!slot.get(SlotIds.FormItem).outputs.get(SlotOutputIds.SetCurValue)) {
+    slot.get(SlotIds.FormItem)
+      .inputs.get(SlotInputIds.CurValue).setTitle('表单项值');
+    slot.get(SlotIds.FormItem)
+      .outputs.add(SlotOutputIds.SetCurValue, '设置表单项值', data.valueSchema || valueSchema);
+  }
+  //=========== v1.1.1 end ===============
+
+  /**
+   * @description v1.1.2 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.2 end ===============
 
   return true;
 }

@@ -6,14 +6,16 @@ import styles from './index.less';
 interface Props {
   collapsed?: boolean;
   setCollapsed: (collapse: boolean) => void;
+  outputs: any;
 }
 
 const CollapseButton: React.FC<Props> = (props) => {
-  const { collapsed, setCollapsed } = props;
+  const { collapsed, setCollapsed, outputs } = props;
   // const [collapsed, setCollapsed] = useState(false)
 
   const onClick = () => {
     setCollapsed(!collapsed);
+    outputs['onCollapse'] && outputs['onCollapse'](collapsed);
   };
 
   const icon = useMemo(() => {

@@ -1,4 +1,5 @@
 import { InputIds, OutputIds } from '../types';
+import { inputIds, outputIds } from '../form-container/constants';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './constants';
 
@@ -52,6 +53,16 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
 
   //=========== v1.1.0 end ===============
+  
+  /**
+   * @description v1.1.1 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.1 end ===============
 
   return true;
 }

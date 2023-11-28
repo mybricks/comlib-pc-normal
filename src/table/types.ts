@@ -64,6 +64,8 @@ export interface IColumn {
   contentStyle: any;
   hasTip?: boolean;
   tip?: string;
+  // 省略展示
+  ellipsis: any;
 
   sorter?: Sorter;
   filter?: Filter;
@@ -188,7 +190,7 @@ export interface Data {
   enableRowFocus: boolean,
   focusRowStyle: any,
   domainModel: {
-    entity: any
+    entity?: any
   },
   // 是否默认展开所有行
   defaultExpandAllRows: boolean,
@@ -199,6 +201,7 @@ export interface Data {
   summaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
   summaryColumnContentSchema: object, // 总结栏内容Schema
   enbaleRowMerge?: boolean,
+  enableOnRow?: boolean,
   rowMergeConfig?: {
     // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
     mergeByField: string,
@@ -208,4 +211,15 @@ export interface Data {
   fixedHeight?: string | number
 
   mergeCheckboxColumn?: boolean; // 合并勾选栏
+
+  //是否自定义空状态
+  isEmpty: boolean;
+  //自定义描述内容
+  description: string;
+  //是否自定义图片
+  //isImage: boolean;
+  //图片地址
+  image: string;
+  onRowScript: string;
+  enableDynamicChangeCols: boolean; // 动态修改列属性
 }

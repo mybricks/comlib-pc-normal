@@ -63,18 +63,18 @@ export default function (props: RuntimeParams<Data>) {
       <>
         <div>
           <span data-type="title" className={css.title}>
-            {title}
+            {env.i18n(title)}
           </span>
           {subTitle && (
             <span data-type="subTitle" className={css.subTitle}>
               {' '}
-              {subTitle}
+              {env.i18n(subTitle)}
             </span>
           )}
         </div>
         {description && (
           <div data-type="desc" className={css.desc}>
-            {description}
+            {env.i18n(description)}
           </div>
         )}
       </>

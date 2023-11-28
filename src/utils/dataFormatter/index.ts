@@ -5,6 +5,7 @@ import keyMapFormatter from './formatters/keyMap'
 import noneFormatter from './formatters/none'
 import timeTemplateFormatter from './formatters/timeTemplate'
 import { Params, TFormatterInfo, TFormatterRef, TformattersValue } from './types'
+import { isEmpty } from "../types";
 
 
 // 内置的格式器，用户可以直接指定名称来引入
@@ -89,14 +90,7 @@ const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params[
     })),
     value: {
       get(info) {
-        let data = accessor?.get(info)
-        if (!data) {
-          data = {
-            formatterName: noneFormatter.name,
-            values: {}
-          }
-          accessor.set(info, data)
-        }
+        let data = accessor?.get(info) || {}
         return data?.formatterName || noneFormatter.name
       },
       set(info, v) {
@@ -110,13 +104,51 @@ const createFormatterSelector = (formatters: TFormatterInfo[], accessor: Params[
 }
 
 const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>) => {
-
   const realFormatters = genRealFormatterInfos(formatters || [])
   const editors = realFormatters.map(item => convertFormatter2Editor(item, value))
 
   return {
     title,
     items: [
+      {
+        title: '空值处理',
+        type: 'Switch',
+        description: '开启后，可将输入值为undefined、null、空字符串转换成预期值',
+        value: {
+          get(info) {
+            const values = value?.get(info) || {}
+            return values?.['nullValueHandling'] || false;
+          },
+          set(info, switchValue: boolean) {
+            const values = value?.get(info) || {}
+            values['nullValueHandling'] = switchValue
+            value.set(info, values)
+          }
+        }
+      },
+      {
+        title: '空值处理',
+        type: 'Text',
+        description: '设置将输入值为undefined、null、空字符串转换成的预期值',
+        ifVisible(info) {
+          const values = value?.get(info) || {}
+          return values?.['nullValueHandling'] || false;
+        },
+        value: {
+          get(info) {
+            const values = value?.get(info) || {}
+            if (typeof values?.['nullValueHandlingValue'] === 'undefined') {
+              values['nullValueHandlingValue'] = '';
+            }
+            return values?.['nullValueHandlingValue'];
+          },
+          set(info, textValue: string) {
+            const values = value?.get(info) || {}
+            values['nullValueHandlingValue'] = textValue
+            value.set(info, values)
+          }
+        }
+      },
       createFormatterSelector(realFormatters.map(item => item.formatter), value),
       ...(editors.filter(item => !!item))
     ]
@@ -125,7 +157,12 @@ const createDataFormatEditor = <I, O>({ title, formatters, value }: Params<I, O>
 
 // 用于组件内部通过格式器的配置获取当前格式化函数
 export const genFormatting = (formatData: TformattersValue) => {
-  const { formatterName = 'NONE', values } = formatData || {}
+  const {
+    formatterName = 'NONE',
+    values = {},
+    nullValueHandling = false,
+    nullValueHandlingValue = ''
+  } = formatData || {};
   const formatter: TFormatterInfo = builtInFormatters[formatterName]
   if (!formatter) {
     throw new Error(`找不到名为${formatterName}的格式器`)
@@ -134,7 +171,9 @@ export const genFormatting = (formatData: TformattersValue) => {
 
   const formatting = v => {
     try {
-      return formatter?.genFormatting(editValue)(v)
+      return isEmpty(v) && nullValueHandling
+        ? nullValueHandlingValue
+        : formatter?.genFormatting(editValue)(v);
     } catch (e) {
       console.error(`[${formatterName}]:格式转化错误, 格式器参数为`, editValue, `待转化数据为`, v)
     }

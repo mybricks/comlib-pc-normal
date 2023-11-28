@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
+// import { useResizeObserver } from '../hooks/useResizeObserver';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -67,6 +68,28 @@ export default function (props: RuntimeParams<Data>) {
     return res;
   };
 
+  const slotStyle = useMemo(() => {
+    const minHeight = dynamicStyle?.minHeight || legacyStyle?.minHeight;
+    const maxHeight = dynamicStyle?.maxHeight || legacyStyle?.maxHeight;
+    const minWidth = dynamicStyle?.minWidth || legacyStyle?.minWidth;
+    const maxWidth = dynamicStyle?.maxWidth || legacyStyle?.maxWidth;
+    return {
+      ...(data.slotStyle || {}),
+      minHeight,
+      maxHeight,
+      minWidth,
+      maxWidth
+    };
+  }, [dynamicStyle, legacyStyle, data.slotStyle]);
+
+  // useResizeObserver(ref, (entries) => {
+  //   if (!ref.current) return;
+  //   if (env.edit || env.runtime?.debug) {
+  //     const { contentRect } = entries[0];
+  //     ref.current.style.height = `${contentRect.height}px`;
+  //   }
+  // });
+
   return (
     <div
       id={data?.id}
@@ -84,7 +107,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       }}
     >
-      {slots[SlotIds.Content].render({ style: data.slotStyle })}
+      {slots[SlotIds.Content].render({ style: slotStyle })}
     </div>
   );
 }

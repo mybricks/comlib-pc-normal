@@ -13,7 +13,7 @@ export const MaxHeightEditor = {
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.legacyStyle?.minWidth;
+          return data.legacyStyle?.minWidth ?? 0;
         },
         set({ data }: EditorResult<Data>, value: string) {
           data.legacyStyle = {
@@ -32,7 +32,7 @@ export const MaxHeightEditor = {
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.legacyStyle?.minHeight;
+          return data.legacyStyle?.minHeight ?? 0;
         },
         set({ data }: EditorResult<Data>, value: string) {
           data.legacyStyle = {
@@ -51,7 +51,7 @@ export const MaxHeightEditor = {
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.legacyStyle?.maxWidth;
+          return data.legacyStyle?.maxWidth ?? '100%';
         },
         set({ data }: EditorResult<Data>, value: string) {
           data.legacyStyle = {
@@ -70,7 +70,7 @@ export const MaxHeightEditor = {
       },
       value: {
         get({ data }: EditorResult<Data>) {
-          return data.legacyStyle?.maxHeight;
+          return data.legacyStyle?.maxHeight ?? '100%';
         },
         set({ data }: EditorResult<Data>, value: string) {
           data.legacyStyle = {

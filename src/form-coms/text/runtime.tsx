@@ -3,16 +3,17 @@ import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode } from
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { inputIds, outputIds } from '../form-container/constants';
 import useFormItemInputs from '../form-container/models/FormItem';
-import { validateTrigger } from '../form-container/models/validate';
+import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less';
-import { InputIds } from '../types';
+import { InputIds, ValidateTriggerType } from '../types';
 
 export interface Data {
   value: string | undefined;
   rules: any[];
+  validateTrigger: string[];
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -21,6 +22,7 @@ export interface Data {
     showCount: boolean;
     maxLength?: number;
     size?: 'large' | 'middle' | 'small';
+    placeholder?: string;
   };
   src: false | 'inner' | 'custom';
   innerIcon: string;
@@ -58,6 +60,13 @@ export default function (props: RuntimeParams<Data>) {
       },
       setEnabled() {
         data.config.disabled = false;
+      },
+      setIsEnabled(val) {
+        if (val === true) {
+          data.config.disabled = false;
+        } else if (val === false) {
+          data.config.disabled = true;
+        }
       },
       validate(model, relOutput) {
         validateFormItem({
@@ -97,8 +106,9 @@ export default function (props: RuntimeParams<Data>) {
     });
   }, []);
 
-  const onValidateTrigger = () => {
-    validateTrigger(parentSlot, { id: props.id, name: props.name });
+  const onValidateTrigger = (type: string) => {
+    data.validateTrigger?.includes(type) &&
+      debounceValidateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
   const changeValue = useCallback((e) => {
@@ -106,17 +116,18 @@ export default function (props: RuntimeParams<Data>) {
     data.value = value;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
     outputs['onChange'](value);
+    onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger();
+    onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](value);
   }, []);
 
   const onPressEnter = useCallback((e) => {
     const value = e.target.value;
-    onValidateTrigger();
+    onValidateTrigger(ValidateTriggerType.OnPressEnter);
     outputs['onPressEnter'](value);
   }, []);
 
@@ -146,6 +157,9 @@ export default function (props: RuntimeParams<Data>) {
       ref={inputRef}
       type="text"
       {...data.config}
+      placeholder={env.i18n(data.config.placeholder)}
+      addonBefore={env.i18n(data.config.addonBefore)}
+      addonAfter={env.i18n(data.config.addonAfter)}
       value={data.value}
       readOnly={!!edit}
       onChange={changeValue}

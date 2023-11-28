@@ -1,7 +1,7 @@
 {
   "title": "加载中",
   "namespace": "mybricks.normal-pc.spin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "用于页面和区块的加载中状态",
   "author": "MyBricks",
   "author_name": "MyBricks",

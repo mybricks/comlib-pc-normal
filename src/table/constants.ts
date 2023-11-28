@@ -65,7 +65,11 @@ export const InputIds = {
   EnableAllExpandedRows: 'enableAllExpandedRows',
 
   // 总结栏输入数据
-  SUMMARY_COLUMN: 'summaryColumn'
+  SUMMARY_COLUMN: 'summaryColumn',
+
+  TABLE_HEIGHT: 'tableHeight',
+  // 动态修改列属性
+  CHANGE_COLS_ATTR: 'changeColsAttr'
 };
 export const OutputIds = {
   // 输出勾选项
@@ -92,9 +96,36 @@ export const OutputIds = {
   ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData',
   COLUMNS_CHANGE: 'columnsChange',
+
+  // 新增对应串行输出
+  SET_DATA_SOURCE: 'dataSource',
+  START_LOADING: 'startLoading',
+  END_LOADING: 'endLoading',
+  CLEAR_ROW_SELECTION: 'clearRowSelection',
+  SET_FILTER: 'setFilter',
+  SET_SORT: 'setSorter',
+  TABLE_HEIGHT: 'tableHeight',
+  SUMMARY_COLUMN: 'summaryColumn',
+  SET_SHOW_COLUMNS: 'showColumns',
+  SET_SHOW_TitleS: 'showTitles',
+  SET_ROW_SELECTION: 'setRowSelectedKeys',
+  SET_FILTER_INPUT: 'filterInput',
+  EnableAllExpandedRows: 'enableAllExpandedRows',
+  CHANGE_COLS_ATTR: 'changeColsAttr'
 };
 
 export const DefaultRowKey = '_uuid';
 
 export const DefaultHeadStyle = { color: '#1f1f1f', background: '#f5f7f9' };
 export const DefaultContentStyle = { color: '#434343' };
+
+export const DefaultOnRowScript = `/**
+ * 输入参数：
+ *  - 当前行数据:  record
+ *  - 当前行号：   index
+ **/
+(record, index) => {
+  return {
+    style: {}
+  }
+}`

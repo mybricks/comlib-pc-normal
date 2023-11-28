@@ -41,6 +41,8 @@ export interface FormItems {
   help?: string
   tooltip?: string
   labelStyle?: {}
+  labelWidthType?: 'custom' | 'default'
+  labelWidth?: number
   labelAlign?: 'left' | 'right' | 'default'
   labelAutoWrap?: boolean | 'default'
   hiddenLabel?: boolean
@@ -50,6 +52,7 @@ export interface FormItems {
   width: number
   inlineMargin?: number[]
   slotAfter?: string
+  disabled?: boolean
   /**
    * 表单项收起时隐藏，不影响提交数据
    */

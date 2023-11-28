@@ -22,6 +22,9 @@ export default {
         {
           title: '图片描述',
           type: 'Text',
+          options: {
+            locale: true
+          },
           value: {
             get({ data }: EditorResult<Data>) {
               return data.alt;

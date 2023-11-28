@@ -221,7 +221,22 @@ export default {
       },
       {
         catelog: "默认",
+        title: '底部横线',
+        options: ['border'],
+        target: '.ant-tabs-top>.ant-tabs-nav:before',
+      },
+      {
+        catelog: "默认",
         ...createStyleForBar()
+      },
+      {
+        catelog: 'Hover',
+        title: '标签',
+        options: [
+          { type: 'font', config: { disableTextAlign: true } },
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
+        target: '.ant-tabs-tab:hover'
       },
       {
         catelog: "激活",

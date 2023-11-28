@@ -10,11 +10,11 @@ import React, {
 import { Form } from 'antd';
 import { Data, FormControlInputId, FormItems } from './types';
 import SlotContent from './SlotContent';
-import { getLabelCol, isObject, setFormItemsProps, getFormItem } from './utils';
+import { getLabelCol, isObject, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
-import { checkIfMobile } from '../../utils';
+import { checkIfMobile, typeCheck } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 
 type FormControlInputRels = {
@@ -95,7 +95,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         let isValid = false;
         if (Array.isArray(nameList)) {
           nameList.forEach((name) => {
-            const item = data.items.find((item) => (item.name || item.label) === name);
+            const item = data.items.find((item) => item.name === name);
             if (item) {
               isValid = true;
               const input = getFromItemInputEvent(item, childrenInputs);
@@ -159,14 +159,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
-      setFormItemsProps(val, { data });
+      setFormItemsProps(val);
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
       const { item, isFormItem } = getFormItem(data, { id, name });
 
       if (item && isFormItem) {
-        const fieldsValue = { [item.name || item.label]: value };
+        const fieldsValue = { [item.name]: value };
 
         formContext.current.store = { ...formContext.current.store, ...fieldsValue };
 
@@ -253,18 +253,68 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
-  const setDisabled = () => {
+  const setDisabled = (nameList?: string[]) => {
     data.items.forEach((item) => {
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.setDisabled && input?.setDisabled();
+      if (!nameList || nameList.includes(item.name)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.setDisabled && input?.setDisabled();
+      }
     });
   };
 
-  const setEnabled = () => {
+  const setEnabled = (nameList?: string[]) => {
     data.items.forEach((item) => {
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.setEnabled && input?.setEnabled();
+      if (!nameList || nameList.includes(item.name)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.setEnabled && input?.setEnabled();
+      }
     });
+  };
+
+  /**
+   * 设置表单项公共配置
+   * @param formItemsProps 表单项配置对象
+   */
+  const setFormItemsProps = (formItemsProps: { string: FormItems }) => {
+    if (typeCheck(formItemsProps, ['Object'])) {
+      const disableFormList: string[] = [];
+      const enableFormList: string[] = [];
+      Object.entries(formItemsProps).map(([name, props]) => {
+        if (!typeCheck(props, ['Object'])) {
+          console.warn(`${title}: 设置表单项【${name}】配置不是对象类型`);
+          return;
+        }
+
+        const formItemIndex = data.items.findIndex((item) => item.name === name);
+        if (formItemIndex < 0) {
+          console.warn(`${title}: 设置表单项配置【${name}】不存在`);
+          return;
+        }
+
+        const formItem = data.items[formItemIndex];
+        const newFormItem = { ...props };
+
+        // 禁用、启用
+        if (typeof newFormItem.disabled === 'boolean') {
+          (newFormItem.disabled ? disableFormList : enableFormList).push(name);
+        }
+        // 标题样式、提示语样式
+        const { descriptionStyle = {}, labelStyle = {} } = formItem;
+        const newLabelStyle = newFormItem.labelStyle || {};
+        const newDescriptionStyle = newFormItem.descriptionStyle || {};
+
+        const temp = {
+          ...formItem,
+          ...props,
+          labelStyle: { ...labelStyle, ...newLabelStyle },
+          descriptionStyle: { ...descriptionStyle, ...newDescriptionStyle }
+        };
+        data.items[formItemIndex] = temp;
+      });
+      // 触发批量禁用、启用
+      disableFormList.length && setDisabled(disableFormList);
+      enableFormList.length && setEnabled(enableFormList);
+    }
   };
 
   const validate = useCallback(() => {
@@ -321,7 +371,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             input?.getValue().returnValue((val, key) => {
               //调用所有表单项的 getValue/returnValue
               value = {
-                name: item.name || item.label,
+                name: item.name,
                 value: val
               };
 
@@ -454,14 +504,14 @@ const validateForInput = (
     if (cb) {
       cb({
         ...validateInfo,
-        name: item.name || item.label
+        name: item.name
       });
     }
   });
 };
 
 const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
-  const item = formItems.find((item) => (item.name || item.label) === name);
+  const item = formItems.find((item) => item.name === name);
 
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs);
@@ -476,9 +526,7 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values)
       }
     } else {
       console.warn(
-        `FormItem Input Not Found, FormItem Name: ${
-          item.name || item.label
-        }, 可能存在脏数据 请联系开发人员`
+        `FormItem Input Not Found, FormItem Name: ${item.name}, 可能存在脏数据 请联系开发人员`
       );
     }
   }

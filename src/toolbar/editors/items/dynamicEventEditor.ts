@@ -110,6 +110,27 @@ const DynamicEventEditor = [
         item.useDynamicHidden = value;
       }
     }
+  },
+  {
+    title: '默认显示/隐藏',
+    type: 'Switch',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      if (!focusArea) return;
+      const { item } = getBtnItemInfo(data, focusArea);
+      return !!item.useDynamicHidden;
+    },
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        return typeof item.hidden !== 'undefined' ? !item.hidden : true;
+      },
+      set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        item.hidden = !value;
+      }
+    }
   }
 ];
 

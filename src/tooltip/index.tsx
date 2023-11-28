@@ -21,13 +21,11 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
       title={() => (
         <div
           style={{ whiteSpace: 'pre-wrap' }}
-          dangerouslySetInnerHTML={{ __html: title.replace('\\n', '<br/>') }}
+          dangerouslySetInnerHTML={{ __html: env.i18n(title).replace('\\n', '<br/>') }}
         />
       )}
       trigger={trigger}
-      getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? env?.canvasElement : document.body
-      }
+      getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       destroyTooltipOnHide
     >
       <div>{slots.carrier?.render()}</div>

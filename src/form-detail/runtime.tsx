@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Descriptions, Tooltip, Typography } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Data, InputIds, TypeEnum } from './constants';
+import { Data, InputIds, ScopeSlotIds, TypeEnum } from './constants';
 import css from './runtime.less';
 import { isObject } from 'lodash';
 import { checkIfMobile } from '../utils';
@@ -9,7 +9,7 @@ import { checkIfMobile } from '../utils';
 const { Text } = Typography;
 
 export default function ({ env, data, inputs, slots, outputs, onError }: RuntimeParams<Data>) {
-  const { size, title, showTitle, layout, bordered, colon } = data || {};
+  const { size, title, showTitle, layout, bordered, colon, showExtra } = data || {};
   const isMobile = checkIfMobile(env);
   const column = isMobile ? data.mobileColumn : data.column;
   // 后置操作渲染
@@ -79,7 +79,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
           labelNode = (
             <div style={{ display: 'inline-flex', alignItems: 'center' }}>
               <span style={{ marginRight: 5 }}>{labelNode}</span>
-              <Tooltip title={labelDesc}>
+              <Tooltip title={env.i18n(labelDesc)}>
                 <InfoCircleOutlined />
               </Tooltip>
             </div>
@@ -129,6 +129,12 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
     }
   }, [data]);
 
+  const extraRender = showExtra ? (
+    <div className={css.emptyWrap}> {slots[ScopeSlotIds.UpperRightArea].render()}</div>
+  ) : (
+    void 0
+  );
+
   return (
     <Descriptions
       title={showTitle ? env.i18n(title) : undefined}
@@ -138,6 +144,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
       bordered={bordered}
       colon={colon}
       className={css.des}
+      extra={extraRender}
     >
       {renderItems()}
     </Descriptions>

@@ -28,12 +28,15 @@ const addSorterIO = ({ data, output, input }: Props) => {
     }
     if (!event4) {
       input.add(InputIds.SET_SORT, '设置排序数据', Schemas.SORTER);
+      output.add(OutputIds.SET_SORT, '排序数据', Schemas.SORTER);
+      input.get(InputIds.SET_SORT).setRels([OutputIds.SET_SORT]);
     }
   } else {
     event1 && output.remove(OutputIds.SORTER);
     event2 && output.remove(OutputIds.GET_SORT);
     event3 && input.remove(InputIds.GET_SORT);
     event4 && input.remove(InputIds.SET_SORT);
+    event4 && output.remove(OutputIds.SET_SORT);
   }
 };
 

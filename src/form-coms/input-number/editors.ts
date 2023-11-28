@@ -28,6 +28,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -41,6 +44,9 @@ export default {
         {
           title: '前置标签',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '带标签的 input，设置前置标签',
           value: {
             get({ data }) {
@@ -54,6 +60,9 @@ export default {
         {
           title: '后置标签',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '带标签的 input，设置后置标签',
           value: {
             get({ data }) {
@@ -159,6 +168,68 @@ export default {
           }
         },
         {
+          title: '最大值限制',
+          type: 'switch',
+          description: '开启后, 有最大值限制',
+          value: {
+            get({ data }) {
+              return data.isMax;
+            },
+            set({ data }, value: string) {
+              data.isMax = value;
+            }
+          }
+        },
+        {
+          title: '最大值',
+          type: 'inputNumber',
+          ifVisible({ data }) {
+            return !!data.isMax;
+          },
+          options: [
+            { width: 200 },
+          ],
+          value: {
+            get({ data }) {
+              return [data.max] || [100];
+            },
+            set({ data }, value: number[]) {
+              data.max = value[0];
+            }
+          }
+        },
+        {
+          title: '最小值限制',
+          type: 'switch',
+          description: '开启后, 有最大值限制',
+          value: {
+            get({ data }) {
+              return data.isMin;
+            },
+            set({ data }, value: string) {
+              data.isMin = value;
+            }
+          }
+        },
+        {
+          title: '最小值',
+          type: 'inputNumber',
+          ifVisible({ data }) {
+            return !!data.isMin;
+          },
+          options: [
+            { width: 200 },
+          ],
+          value: {
+            get({ data }) {
+              return [data.min] || [0];
+            },
+            set({ data }, value: number[]) {
+              data.min = value[0];
+            }
+          }
+        },
+        {
           title: '校验规则',
           description: '提供快捷校验配置',
           type: 'ArrayCheckbox',
@@ -171,6 +242,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

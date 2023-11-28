@@ -5,7 +5,7 @@ import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
 import { Init, getWindowVal } from './utils';
 import { uuid } from '../../utils';
-import { loadPkg } from '../../utils/loadPkg';
+// import { loadPkg } from '../../utils/loadPkg';
 import { validateTrigger } from '../form-container/models/validate';
 import { EnvContext } from './context';
 import { Data } from './types';
@@ -14,6 +14,9 @@ import { Spin, message } from 'antd';
 
 import css from './richText.less';
 import { InputIds, OutputIds } from '../types';
+import useUpload from './hooks/use-upload';
+
+import './tinymceImports';
 
 // 自定义icon_id
 const customIconsId: string = '_pcEditor_customIcons_' + uuid();
@@ -56,18 +59,22 @@ export default function ({
     type: 'image',
     url: ''
   });
+  const [value, setValue] = useState<any>();
 
   const textareaRef = useRef(null);
 
+  const { upload } = useUpload(inputs, outputs);
+
   const Load: () => void = useCallback(async () => {
-    await loadPkg(tinymceCDN, 'tinyMCE');
+    // 不再使用CDN
+    // await loadPkg(tinymceCDN, 'tinyMCE');
     addCustomIcons();
     TinymceInit({
       target: textareaRef.current,
-      height: data.style.height,
+      height: data.style.height!,
       toolbar: data.toolbar?.join(' '),
       isFS: false,
-      placeholder: data.placeholder
+      placeholder: env.i18n(data.placeholder)
     });
   }, []);
 
@@ -84,9 +91,9 @@ export default function ({
       target,
       toolbar: data.toolbar?.join(' '),
       selector,
-      height: data.style.height,
+      height: data.style.height!,
       isFS,
-      placeholder: data.placeholder,
+      placeholder: env.i18n(data.placeholder),
       customIconsId,
       setUp: (editor: any) => {
         if (data.toolbar.includes('uploadimage')) {
@@ -94,7 +101,7 @@ export default function ({
             click: (type: string) => {
               switch (type) {
                 case 'uploadimage':
-                  if (!env.uploadFile) {
+                  if (!env.uploadFile && !data.customUpload) {
                     const log = '【富文本输入】： 环境变量 env.uploadFile 方法未实现';
                     message.error(log);
                     logger.error(log);
@@ -108,6 +115,12 @@ export default function ({
                   });
                   break;
                 case 'uploadVideo':
+                  if (!env.uploadFile && !data.customUpload) {
+                    const log = '【富文本输入】： 环境变量 env.uploadFile 方法未实现';
+                    message.error(log);
+                    logger.error(log);
+                    return;
+                  }
                   setModalVisible(true);
                   setUploadModel({
                     title: '上传视频',
@@ -140,17 +153,27 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val) => {
-          if (val !== undefined) {
+          if (val !== undefined && val !== null) {
             editor.setContent(val);
             valueRef.current = val;
+            setValue(val);
+            outputs['onChange'](val);
+          } else {
+            setValue(val);
+            editor.setContent('');
             outputs['onChange'](val);
           }
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any) => {
-          if (val !== undefined) {
+          if (val !== undefined && val !== null) {
             editor.setContent(val);
             valueRef.current = val;
+            setValue(val);
+            outputs['onInitial'](val);
+          } else {
+            setValue(val);
+            editor.setContent('');
             outputs['onInitial'](val);
           }
         });
@@ -183,6 +206,7 @@ export default function ({
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
+    setValue(valueRef.current);
     onValidateTrigger();
     outputs['onBlur'](valueRef.current);
   }, []);
@@ -198,6 +222,7 @@ export default function ({
     const content = tinymceInstance?.getContent({ format: 't' });
 
     valueRef.current = content.trim() || '';
+    setValue(valueRef.current);
     onChangeForFc(parentSlot, { id: id, name: name, value: valueRef.current });
     outputs['onChange'](valueRef.current);
   }, []);
@@ -257,6 +282,8 @@ export default function ({
         uploadModel={uploadModel}
         onClose={onModalClose}
         visible={modalVisible}
+        upload={upload}
+        customUpload={data.customUpload}
       />
     );
   }, [modalVisible, uploadModel]);
@@ -272,10 +299,10 @@ export default function ({
             if (!tinyMCE.editors[tinymceFSId]) {
               TinymceInit({
                 target: node,
-                height: data.style.height,
+                height: data.style.height!,
                 toolbar: data.toolbar.join(' '),
                 isFS: true,
-                placeholder: data.placeholder
+                placeholder: env.i18n(data.placeholder)
               });
             }
           }}
@@ -315,7 +342,11 @@ export default function ({
 
     //4. 获取值
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](valueRef.current);
+      if (value !== undefined && value !== null) {
+        outputRels['returnValue'](valueRef.current);
+      } else {
+        outputRels['returnValue'](value);
+      }
     });
 
     //6. 设置禁用
@@ -326,13 +357,23 @@ export default function ({
     inputs['setEnabled'](() => {
       data.disabled = false;
     });
+
+    //设置启用/禁用
+    inputs['isEnable']((val) => {
+      if (val === true) {
+        data.disabled = false;
+      } else {
+        data.disabled = true;
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
       }
     });
-  }, []);
+  }, [value]);
 
   return (
     <EnvContext.Provider value={{ env }}>

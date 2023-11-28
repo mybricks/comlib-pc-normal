@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, ReactNode } from 'react';
 import classnames from 'classnames';
-import { Tabs, Tooltip } from 'antd';
+import { Tabs, Tooltip, Badge } from 'antd';
 import { Data, InputIds, OutputIds, SlotIds } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
@@ -222,6 +222,29 @@ export default function ({
     actionMap[action](targetKey);
   };
 
+  const renderInfo = (item) => {
+    const tabName = env.i18n(item.name);
+    return item.infoType === 'icon' ? (
+      <Badge
+        count={item.num}
+        offset={item.offset}
+        size={item.size}
+        status={item.status}
+        showZero={item.showZero}
+      >
+        <span>
+          {item.showIcon ? chooseIcon({ icon: item.icon }) : null}
+          {tabName}
+        </span>
+      </Badge>
+    ) : (
+      <span>
+        {item.showIcon ? chooseIcon({ icon: item.icon }) : null}
+        {item.num === void 0 ? tabName : `${tabName} (${item.num})`}
+      </span>
+    );
+  };
+
   const renderItems = () => {
     return (
       <>
@@ -236,14 +259,7 @@ export default function ({
           }
           return (
             <TabPane
-              tab={
-                <Tooltip title={env.i18n(item.tooltipText)}>
-                  <span>
-                    {item.showIcon ? chooseIcon({ icon: item.icon }) : null}
-                    {item.num === void 0 ? tabName : `${tabName} (${item.num})`}
-                  </span>
-                </Tooltip>
-              }
+              tab={<Tooltip title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
               key={item.key}
               closable={!!item.closable}
             >

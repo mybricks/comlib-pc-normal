@@ -23,20 +23,20 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
     style = item.style;
   }
   const itemContent = env.edit
-    ? env.i18n(`${item.content}`)
+    ? env.i18n(item.content)
     : item.src === 1
-    ? env.i18n(`${item.content}`)
+    ? env.i18n(item.content)
     : '';
   //文本、链接等点击事件
   const textClick = () => {
     if (item.click && !isSet && env.runtime) {
-      outputs[item.key](item.outputContent || item.content || '');
+      outputs[item.key](item.outputContent || env.i18n(item.content) || '');
     }
     if (env.runtime) {
       outputs['click']({
         values: {
           key: rowKey !== '' ? item.key : void 0,
-          content: item.content || '',
+          content: env.i18n(item.content) || '',
           type: item.type,
           link: item.link || ''
         },
@@ -54,11 +54,11 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
   //2、动态设置颜色且该子项被激活时，设置动态颜色
   const fontStyle = {
     color: isUnity
-      ? isSet && item.style?.color
-        ? item.style?.color
+      ? isSet && item.style && item.style.color
+        ? item.style.color
         : 'unset'
-      : isSet && item.style?.color
-      ? item.style?.color
+      : item.style && item.style.color
+      ? item.style.color
       : void 0,
     fontSize: isUnity
       ? isSet && item.style?.fontSize
@@ -286,7 +286,8 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
       inputs[`${item.key}-append`]((ds: any) => {
         item.src = 1;
         if (typeCheck(ds, ['string', 'number'])) {
-          item.content = item.content === '[外部获取]' ? `${ds}` : `${item.content || ''}${ds}`;
+          item.content =
+            item.content === '[外部获取]' ? `${ds}` : `${env.i18n(item.content) || ''}${ds}`;
         }
       });
     });

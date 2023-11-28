@@ -1,6 +1,7 @@
 import { SizeEnum } from "./types";
 
 export const BtnItemDataSetKey = 'data-btn-idx';
+export const SlotItemDataSetKey = 'data-slot-idx';
 
 export const InputIds = {
   SetDisable: 'setDisable',

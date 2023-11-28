@@ -20,6 +20,9 @@ export default {
             {
               title: '数据源标题',
               type: 'text',
+              options: {
+                locale: true
+              },
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.titles ? data.titles[0] : '源数据';
@@ -35,6 +38,9 @@ export default {
             {
               title: '目标数据标题',
               type: 'text',
+              options: {
+                locale: true
+              },
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.titles ? data.titles[1] : '目标数据';
@@ -159,6 +165,9 @@ export default {
                   {
                     title: '提示文字',
                     type: 'Text',
+                    options: {
+                      locale: true
+                    },
                     value: 'message',
                     ifVisible(item: any, index: number) {
                       return item.key === RuleKeys.REQUIRED;

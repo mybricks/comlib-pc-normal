@@ -1,6 +1,7 @@
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys } from '../utils/validator';
 import { Data } from './runtime';
+import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({
   data,
@@ -73,5 +74,97 @@ export default function ({
 
   input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
 
+  /**
+   * @description v1.1.1->1.1.2 新增 显示清除图标、动态配置选择类型输入
+   */
+  if (typeof data.config.allowClear === "undefined") {
+    data.config.allowClear = true;
+  };
+
+  const dateSchema = {
+    type: "enum",
+    items: [
+      {
+        type: "string",
+        value: "date"
+      },
+      {
+        type: "string",
+        value: "week"
+      },
+      {
+        type: "string",
+        value: "month"
+      },
+      {
+        type: "string",
+        value: "quarter"
+      },
+      {
+        type: "string",
+        value: "year"
+      }
+    ]
+  };
+  if (!input.get('setDateType')) {
+    input.add('setDateType', '设置日期选择类型', dateSchema);
+  }
+  //=========== v1.1.2 end ===============
+  /**
+   * @description v1.1.1 => v1.1.2 升级，新增 useCustomPanelHeader、useCustomPanelFooter 字段
+   */
+  if(!Reflect.has(data, 'useCustomPanelHeader')) data.useCustomPanelHeader = false;
+  if(!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
+  if(!Reflect.has(data, 'controlled')) data.controlled = false;
+
+  /**
+   * @description v1.1.2 => v1.1.3 升级，新增 formatMap 字段
+   */
+  if(typeof data.formatMap === "undefined"){
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
+  }
+
+  /**
+   * @description v1.1.3 => v1.1.4 升级，新增 isWeekNumber 字段
+  */
+  if(typeof data.isWeekNumber === "undefined"){
+    data.isWeekNumber = false
+  }
+
+  /**
+   * @description v1.1.4 => v1.1.5 升级，修改 setOpen 的文案
+   */
+  if(input.get("setOpen")?.title === "打开隐藏面板" ) {
+    input.setTitle("setOpen", "打开日期选择面板");
+  }
+
+  if(typeof data.formatMap['日期+时间'] === "undefined"){
+    data.formatMap = {
+      "日期": data.formatMap['日期'],
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": data.formatMap['周'],
+      "月份": data.formatMap['月份'],
+      "季度": data.formatMap['季度'],
+      "年份": data.formatMap['年份'],
+    }
+  }
+
+  /**
+   * @description v1.1.8 新增启用/禁用 输入项
+   */
+  if (!input.get(inputIds.IsEnable)) {
+    input.add(inputIds.IsEnable, '启用/禁用', {
+      type: "boolean"
+    });
+  }
+  //=========== v1.1.8 end ===============
+  
   return true;
 }

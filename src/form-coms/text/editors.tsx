@@ -2,6 +2,7 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { createrCatelogEditor } from '../utils';
 import { outputIds } from '../form-container/constants';
 import { Data } from './runtime';
+import { ValidateTriggerType } from '../types';
 
 export default {
   '@resize': {
@@ -196,6 +197,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -222,6 +226,9 @@ export default {
         {
           title: '前置标签',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '带标签的 input，设置前置标签',
           value: {
             get({ data }) {
@@ -235,6 +242,9 @@ export default {
         {
           title: '后置标签',
           type: 'text',
+          options: {
+            locale: true
+          },
           description: '带标签的 input，设置后置标签',
           value: {
             get({ data }) {
@@ -286,6 +296,28 @@ export default {
           }
         },
         {
+          title: '校验触发时机',
+          type: 'Select',
+          description: '配置校验触发的时机',
+          options: {
+            mode: 'tags',
+            multiple: true,
+            options: [
+              { label: '值变化', value: ValidateTriggerType.OnChange },
+              { label: '失去焦点', value: ValidateTriggerType.OnBlur },
+              { label: '按下回车', value: ValidateTriggerType.OnPressEnter }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.validateTrigger;
+            },
+            set({ data }: EditorResult<Data>, value: string[]) {
+              data.validateTrigger = value;
+            }
+          }
+        },
+        {
           title: '校验规则',
           description: '提供快捷校验配置',
           type: 'ArrayCheckbox',
@@ -308,6 +340,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;

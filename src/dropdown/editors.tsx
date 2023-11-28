@@ -101,12 +101,15 @@ export default {
         }
       }
     ],
-    items: ({ data }: EditorResult<Data>, ...cate) => {
+    items: ({ data, env }: EditorResult<Data>, ...cate) => {
       cate[0].title = '常规';
       cate[0].items = [
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '自定义开关关闭时, 可编辑提示内容',
           ifVisible({ data }: EditorResult<Data>) {
             return !data.isCustom;
@@ -223,7 +226,7 @@ export default {
           description: '选项配置跳转链接，可不填',
           options: {
             getTitle: ({ label }) => {
-              return label;
+              return env.i18n(label);
             },
             onAdd: () => {
               const defaultOption = {
@@ -241,6 +244,9 @@ export default {
               {
                 title: '选项标签',
                 type: 'textarea',
+                options: {
+                  locale: true
+                },
                 value: 'label'
               },
               {
@@ -342,6 +348,9 @@ export default {
           {
             title: '选项标签',
             type: 'Text',
+            options: {
+              locale: true
+            },
             value: {
               get({ data, focusArea }: EditorResult<Data>) {
                 return get(data, focusArea, 'menuItem', 'label');

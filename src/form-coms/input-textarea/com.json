@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.input-textarea",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "description": "文本域",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_44zp5y.91531f9e6ba88161.png",
@@ -76,6 +76,13 @@
       }
     },
     {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
       "id": "setColor",
       "title": "设置字体颜色",
       "desc": "设置文本域里字体的颜色",
@@ -128,6 +135,13 @@
     {
       "id": "onBlur",
       "title": "失去焦点",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onPressEnter",
+      "title": "按下回车",
       "schema": {
         "type": "string"
       }

@@ -1,13 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Popover } from 'antd';
 import { Data } from './constants';
 import { isString } from '../utils';
 import styles from './index.less';
 
-export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) {
+export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<Data>) {
   const { title, content, placement, trigger, useTitleSlot, useContentSlot } = data;
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
+  const popoverRef = useRef(null);
   inputs['_title']((val) => {
     if (isString(val)) {
       data.title = val;
@@ -24,6 +25,14 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
     }
   });
 
+  /** display self */
+  useEffect(() => {
+    if (edit) return;
+    if (style.display === 'none') {
+      popoverRef.current.onClick();
+    }
+  }, [style.display]);
+
   const visible = useMemo(() => {
     return env.edit && (useTitleSlot || useContentSlot) ? true : undefined;
   }, [useTitleSlot, useContentSlot]);
@@ -39,6 +48,7 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
 
   return (
     <Popover
+      ref={popoverRef}
       defaultVisible={!!edit && (useTitleSlot || useContentSlot)}
       placement={placement}
       title={useTitleSlot ? slots['title']?.render() : renderWrapText(title as string)}
@@ -50,12 +60,10 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
         maxWidth: window.screen.availWidth,
         maxHeight: window.screen.availHeight
       }}
-      getPopupContainer={(triggerNode: HTMLElement) =>
-        edit || debug ? env?.canvasElement : document.body
-      }
+      getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       destroyTooltipOnHide
     >
-      <div className={styles.wrap}>{slots.carrier?.render()}</div>
+      <div className={styles.wrap}>{slots.carrier?.render({ style: { cursor: 'pointer' } })}</div>
     </Popover>
   );
 }

@@ -97,40 +97,41 @@ function getColumnsDataSchema(schemaObj: object, { data }: Props) {
 }
 
 // 数据源schema
-function setDataSourceSchema(dataSchema: object, { input, data }: Props) {
-  if (data.usePagination && !data.paginationConfig?.useFrontPage) {
-    input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
-      title: '数据列表',
-      type: 'object',
-      properties: {
-        dataSource: {
+function setDataSourceSchema(dataSchema: object, { input, data, output }: Props) {
+  const TableDataSchema =
+    data.usePagination && !data.paginationConfig?.useFrontPage
+      ? {
+          title: '数据列表',
+          type: 'object',
+          properties: {
+            dataSource: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: dataSchema
+              }
+            },
+            total: {
+              type: 'number'
+            },
+            pageSize: {
+              type: 'number'
+            },
+            pageNum: {
+              type: 'number'
+            }
+          }
+        }
+      : {
+          title: '数据列表',
           type: 'array',
           items: {
             type: 'object',
             properties: dataSchema
           }
-        },
-        total: {
-          type: 'number'
-        },
-        pageSize: {
-          type: 'number'
-        },
-        pageNum: {
-          type: 'number'
-        }
-      }
-    });
-  } else {
-    input.get(InputIds.SET_DATA_SOURCE)?.setSchema({
-      title: '数据列表',
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: dataSchema
-      }
-    });
-  }
+        };
+  input.get(InputIds.SET_DATA_SOURCE)?.setSchema(TableDataSchema);
+  output.get(OutputIds.SET_DATA_SOURCE)?.setSchema?.(TableDataSchema);
 }
 
 // 输出节点schema
@@ -248,6 +249,8 @@ function setFilterSchema(schemaObj, { data, input, output }: Props) {
   output.get(OutputIds.FILTER)?.setSchema(schema1);
   output.get(OutputIds.GET_FILTER)?.setSchema(schema1);
   output.get(OutputIds.FILTER_CLICK)?.setSchema(schema3);
+  output.get(OutputIds.SET_FILTER)?.setSchema(schema1);
+  output.get(OutputIds.SET_FILTER_INPUT)?.setSchema(schema2);
   input.get(InputIds.SET_FILTER)?.setSchema(schema1);
   input.get(InputIds.SET_FILTER_INPUT)?.setSchema(schema2);
 }
@@ -380,6 +383,12 @@ export const Schemas = {
   Number: {
     type: 'number'
   },
+  String: {
+    type: 'string'
+  },
+  Boolean: {
+    type: 'boolean'
+  },
   Array: {
     type: 'array'
   },
@@ -455,6 +464,26 @@ export const Schemas = {
       }
     }
   },
+  CHANGE_COLS_ATTR: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string'
+        },
+        dataIndex: {
+          type: 'string'
+        },
+        visible: {
+          type: 'boolean'
+        },
+        width: {
+          type: 'number'
+        }
+      }
+    }
+  },
   ROW_CLICK: {
     type: 'object',
     properties: {
@@ -480,6 +509,17 @@ export const Schemas = {
       },
       isFocus: {
         type: 'boolean'
+      }
+    }
+  },
+  TABLE_HEIGHT: {
+    type: 'object',
+    properties: {
+      maxScrollHeight: {
+        type: 'string'
+      },
+      tableHeight: {
+        type: 'string'
       }
     }
   }

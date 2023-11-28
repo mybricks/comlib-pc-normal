@@ -1,0 +1,56 @@
+.treeNode {
+  :global {
+    .ant-tree-node-content-wrapper {
+      min-width: 0;
+    }
+
+    .ant-btn {
+      padding: 4px 5px;
+      margin: 0px 5px;
+    }
+  }
+
+  .normalWrap {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .ellipsisWrap {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    width: fit-content;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+
+  .wrapper {
+    display: flex;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  .action-btns {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .action-btns_dynamic {
+    display: none;
+  }
+}
+
+.treeNode:hover {
+  .action-btns_dynamic {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

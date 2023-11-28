@@ -24,8 +24,16 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@init': ({ style }) => {
+  '@init': ({ style, data }) => {
     style.width = '100%';
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
   },
   ':root': {
     style: [...styleEditor],
@@ -36,6 +44,9 @@ export default {
         {
           title: '提示内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           description: '该提示内容会在值为空时显示',
           value: {
             get({ data }) {
@@ -43,6 +54,19 @@ export default {
             },
             set({ data }, value: string) {
               data.config.placeholder = value;
+            }
+          }
+        },
+        {
+          title: '显示清除图标',
+          type: 'switch',
+          description: '可以点击清除图标删除内容',
+          value: {
+            get({ data }) {
+              return data.config.allowClear;
+            },
+            set({ data }, value: boolean) {
+              data.config.allowClear = value;
             }
           }
         },
@@ -87,6 +111,22 @@ export default {
             },
             set({ data }, value: boolean) {
               data.showTime = value;
+            }
+          }
+        },
+        {
+          title: '周号隐藏',
+          type: 'Switch',
+          description: '开启后，日期选择类型为周时，周号隐藏',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.config.picker === 'week';
+          },
+          value:{
+            get({ data }) {
+              return data.isWeekNumber;
+            },
+            set({ data }, value: boolean) {
+              data.isWeekNumber = value;
             }
           }
         },
@@ -194,6 +234,9 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
+                options: {
+                  locale: true
+                },
                 value: 'message',
                 ifVisible(item: any, index: number) {
                   return item.key === RuleKeys.REQUIRED;
@@ -246,6 +289,62 @@ export default {
           options: {
             outputId: OutputIds.OnValidate
           }
+        },
+        {
+          title: '日期展示格式',
+          items: [
+            {
+              title: '格式化目标',
+              type: 'Map',
+              description:
+                '日期格式化模板 YYYY:年份 MM:月份 DD:日 dd:星期 HH:24小时制 hh:12小时制 mm:分 ss:秒',
+              options: {
+                notaddel: true,
+                noteditkey: true
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  if(data.formatMap && Object.keys(data.formatMap).length === 6){
+                    let newValueArr = Object.keys(data.formatMap).map((key,index)=>{
+                      return decodeURIComponent(data.formatMap[key]);
+                    })
+                    let newValue = {
+                      "日期": newValueArr[0],
+                      "日期+时间": newValueArr[1],
+                      "周": newValueArr[2],
+                      "月份": newValueArr[3],
+                      "季度": newValueArr[4],
+                      "年份": newValueArr[5]
+                    }
+                    return newValue
+                  }else{
+                    return {
+                      "日期": "YYYY-MM-DD",
+                      "日期+时间": "YYYY-MM-DD HH:mm:ss",
+                      "周": "YYYY-wo",
+                      "月份": "YYYY-MM",
+                      "季度": "YYYY-\\QQ",
+                      "年份": "YYYY"
+                    };
+                  }
+                },
+                set({ data }: EditorResult<Data>, value: any) {
+                  let newValueArr = Object.keys(value).map((key,index)=>{
+                    return encodeURIComponent(value[key]);
+                  })
+                  let newValue = {
+                    "日期": newValueArr[0],
+                    "日期+时间": newValueArr[1],
+                    "周": newValueArr[2],
+                    "月份": newValueArr[3],
+                    "季度": newValueArr[4],
+                    "年份": newValueArr[5]
+                  }
+                  data.formatMap = newValue;
+                }
+              }
+            }
+          ]
         },
         {
           title: '输出数据处理',
@@ -341,12 +440,49 @@ export default {
               data.useCustomDateCell = value;
             }
           }
-        }, {
-          title: '隐藏日期面板',
+        },
+        {
+          title: '开启日期选择面板顶部插槽',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.useCustomPanelHeader;
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                data.hideDatePanel = false
+                slot.add({ id: SlotIds.DatePanelHeader, title: '插槽', type: 'scope' });
+              } else {
+                slot.remove(SlotIds.DatePanelHeader);
+              }
+              data.useCustomPanelHeader = value;
+            }
+          }
+        },
+        {
+          title: '开启日期选择面板底部插槽',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.useCustomPanelFooter;
+            },
+            set({ data, slot }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                data.hideDatePanel = false
+                slot.add({ id: SlotIds.DatePanelFooter, title: '插槽', type: 'scope' });
+              } else {
+                slot.remove(SlotIds.DatePanelFooter);
+              }
+              data.useCustomPanelFooter = value;
+            }
+          }
+        },
+        {
+          title: '隐藏日期选择面板',
           description: '仅在搭建时生效',
           type: 'Switch',
           ifVisible({ data }: EditorResult<Data>) {
-            return data.useCustomDateCell;
+            return data.useCustomDateCell || data.useCustomPanelHeader || data.useCustomPanelFooter;
           },
           value: {
             get({ data }) {
@@ -356,7 +492,39 @@ export default {
               data.hideDatePanel = value
             }
           }
-        }
+        },
+        {
+          title: '日期选择面板受控',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.controlled || false
+            },
+            set({ data, inputs }: EditorResult<Data>, value: boolean) {
+              data.controlled = value
+              if(value) {
+                inputs.add("setOpen", "打开日期选择面板", { type: "boolean" })
+              } else {
+                inputs.remove("setOpen")
+              }
+            }
+          }
+        },
+        {
+          title: '点击日期选择面板外部关闭',
+          type: 'Switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.controlled;
+          },
+          value: {
+            get({ data }) {
+              return data.closeWhenClickOutOfPanel || false;
+            },
+            set({ data, inputs }: EditorResult<Data>, value: boolean) {
+              data.closeWhenClickOutOfPanel = value
+            }
+          }
+        },
       ];
     }
   }
