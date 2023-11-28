@@ -149,8 +149,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
     // 删除一项
     inputs[SelfInputIds.RemoveField]?.((val) => {
-      const { index, key } = val;
+      const { index } = val || {};
+      let key = val?.key;
       const fieldIndex = typeof index === 'number' ? index : data.fields.length;
+      if (!key) {
+        key = data.fields[fieldIndex].key;
+      }
       const field = {
         name: fieldIndex,
         key
