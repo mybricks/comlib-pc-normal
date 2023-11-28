@@ -1,5 +1,5 @@
 const defaultSchema = { type: 'any' };
-import { INPUT_ID } from './const';
+import { INPUT_ID, OUTPUT_ID } from './const';
 
 export default {
   '@init': ({ data, setDesc, setAutoRun, isAutoRun }) => {
@@ -77,6 +77,24 @@ export default {
           updateIO({ input, output }, connector);
 
           setDesc(`已选择：${data.connector.title}`);
+        }
+      }
+    },
+    {
+      title: '输出请求头(Headers)',
+      type: 'switch',
+      value: {
+        get({ data }) {
+          return data.outputHeaders;
+        },
+        set({ data, output }, use: boolean) {
+          if (use) {
+            output.add(OUTPUT_ID.HEADERS, '请求头输出项', { type: 'object', properties: {} });
+            data.outputHeaders = true;
+          } else {
+            output.remove(OUTPUT_ID.HEADERS);
+            data.outputHeaders = false;
+          }
         }
       }
     },
