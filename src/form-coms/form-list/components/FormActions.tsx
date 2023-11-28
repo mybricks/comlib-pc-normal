@@ -3,7 +3,7 @@ import { Form, Button, Image, Col, Space, FormListOperation, FormListFieldData }
 import * as Icons from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { Action, Data, LocationEnum } from '../types';
-import { unitConversion } from '../../../utils';
+import { deepCopy, unitConversion } from '../../../utils';
 import { changeValue } from '../utils';
 import { InputIds } from '../../../form-coms/types';
 import css from '../styles.less';
@@ -17,20 +17,35 @@ export interface FormListActionsProps {
 }
 
 /** 添加一行 */
-export const addField = ({ data }: { data: Data }) => {
+export const addField = ({ data }: { data: Data }, options?) => {
+  const { index = -1, value } = options || {};
   const { fields } = data;
   data.MaxKey = data.MaxKey + 1;
-  fields.push({
-    name: fields.length,
+  const fieldName = index >= 0 ? index : fields.length;
+  const newField = {
+    name: fieldName,
     key: data.MaxKey
+  };
+  fields.splice(fieldName, 0, newField);
+  // 更新name
+  data.fields = fields.map((i, index) => {
+    return {
+      ...i,
+      name: index
+    };
   });
+  data.userAction.type = 'add';
+  data.userAction.value = deepCopy(value);
+  data.userAction.index = fieldName;
+  data.userAction.key = data.MaxKey;
 };
 
 /** 删除一行 */
-const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
+export const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, id, outputs, parentSlot, field, childrenStore } = props;
 
-  // 更新name
+  data.value?.splice(field.name, 1);
+  // 删除当前field，更新name
   data.fields = data.fields
     .filter((i) => i.key !== field.key)
     .map((i, index) => {
@@ -40,9 +55,8 @@ const removeField = (props: RuntimeParams<Data> & FormListActionsProps) => {
       };
     });
   childrenStore[field.key] = undefined;
-  data.value?.splice(field.name, 1);
-  // data.currentAction = InputIds.SetInitialValue;
-  // data.startIndex = field.name;
+  // data.userAction.type = InputIds.SetInitialValue;
+  // data.userAction.startIndex = field.name;
 
   changeValue({ data, id, outputs, parentSlot, name: props.name });
 };
@@ -71,6 +85,18 @@ const getDynamicDisplay = (btn: Action, field, extralParams, onError?): boolean 
   return dynamicDisplay;
 };
 
+/**
+ * 计算操作权限
+ * @param btn 按钮
+ */
+const getBtnPermission = (env, key?: string): 'none' | 'hide' | 'disable' => {
+  const hasPermission = !(env.runtime && key && !env?.hasPermission(key));
+  if (hasPermission) return 'none';
+
+  // TODO: 等后续「无权限时」字段开放后，将返回值按类型返回
+  return 'hide';
+};
+
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, env, field, outputs, fieldIndex } = props;
 
@@ -84,7 +110,6 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
     if (env.edit) return;
     if (item.key === 'add') {
       addField({ data });
-      data.currentAction = 'add';
       outputs[item.key] &&
         outputs[item.key]({
           nextIndex: data.fields.length - 1,
@@ -108,10 +133,15 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
       {data.actions.items.map((item) => {
         const { iconConfig, ...res } = item;
         const icon = getBtnIcon(item);
+        const permission = getBtnPermission(env, item.permission?.id);
+
         if (item.visible === false) {
           return null;
         }
         if (!env.edit) {
+          if (permission === 'hide') {
+            return null;
+          }
           const dynamicDisplay = getDynamicDisplay(
             item,
             currentField,

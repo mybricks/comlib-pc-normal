@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-list",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.2.6",
+  "version": "1.2.8",
   "description": "可以动态增加、删除的组合表单项，数据格式为数组",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",
@@ -107,6 +107,38 @@
           },
           "help": {
             "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "addField",
+      "title": "添加一项",
+      "desc": "默认在末尾添加一项, 支持指定位置(从0开始)和默认值",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeField",
+      "title": "删除一项",
+      "desc": "默认删除最后一项, 支持指定位置(从0开始)删除",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "number"
+          },
+          "index": {
+            "type": "number"
           }
         }
       }

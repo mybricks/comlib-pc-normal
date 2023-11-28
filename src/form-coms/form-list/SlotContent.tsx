@@ -1,9 +1,16 @@
 import React, { ReactElement, useEffect, useMemo } from 'react';
 import { Col, FormListFieldData, Row } from 'antd';
+import { deepCopy } from '../../utils';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
 import { ChildrenStore, Data } from './types';
-import { changeValue, getFormItem, isChildrenStoreValid, setValuesForInput } from './utils';
+import {
+  changeValue,
+  getFormItem,
+  isChildrenStoreValid,
+  setValuesForInput,
+  setValuesOfChild
+} from './utils';
 
 const SlotContent = (
   props: RuntimeParams<Data> & {
@@ -77,42 +84,61 @@ const SlotContent = (
         if (
           field.name === data.fields.length - 1 &&
           isChildrenStoreValid({ data, childrenStore, comCount }) &&
-          data.currentAction
+          data.userAction.type
         ) {
-          switch (data.currentAction) {
+          const actionType = data.userAction.type;
+          switch (data.userAction.type) {
             case 'add':
             case 'init':
-              data.currentAction = '';
+              data.userAction.type = '';
+              const temp = deepCopy(data.userAction.value);
+              const key = data.userAction.key;
+
+              if (temp) {
+                setValuesOfChild({ data, childrenStore, key, value: temp, actionType });
+              }
+              const initValue = temp || {};
+              const index = data.userAction.index;
+              if (Array.isArray(data.value)) {
+                data.value.splice(index, 0, initValue);
+              } else {
+                data.value = [initValue];
+              }
+              changeValue({ data, id, outputs, parentSlot, name: props.name });
+              data.userAction.index = -1;
+              data.userAction.key = -1;
+              data.userAction.value = undefined;
               // 计算新增项默认值
-              const initValue = {};
-              new Promise((resolve, reject) => {
-                data.items.forEach((item) => {
-                  const { id, name, comName, label } = item;
-                  const { inputs, visible } = childrenStore[field.key][comName];
-                  if (!data.submitHiddenFields && !visible) return;
-                  inputs.getValue().returnValue((val) => {
-                    initValue[name || label] = val;
-                  });
-                });
-                resolve(initValue);
-              })
-                .then((initValue) => {
-                  if (Array.isArray(data.value)) {
-                    data.value.push(initValue);
-                  } else {
-                    data.value = [initValue];
-                  }
-                  changeValue({ data, id, outputs, parentSlot, name: props.name });
-                })
-                .catch((e) => {
-                  console.error('计算默认值失败: ' + e);
-                  if (Array.isArray(data.value)) {
-                    data.value.push({});
-                  } else {
-                    data.value = [{}];
-                  }
-                  changeValue({ data, id, outputs, parentSlot, name: props.name });
-                });
+              // const initValue = {};
+              // new Promise((resolve, reject) => {
+              //   data.items.forEach((item) => {
+              //     const { id, name, comName, label } = item;
+              //     const { inputs, visible } = childrenStore[field.key][comName];
+              //     if (!data.submitHiddenFields && !visible) return;
+              //     inputs.getValue().returnValue((val) => {
+              //       initValue[name || label] = val;
+              //     });
+              //   });
+              //   resolve(initValue);
+              // })
+              //   .then((initValue) => {
+              //     data.userAction.value = undefined;
+              //     if (Array.isArray(data.value)) {
+              //       data.value.push(initValue);
+              //     } else {
+              //       data.value = [initValue];
+              //     }
+              //     changeValue({ data, id, outputs, parentSlot, name: props.name });
+              //   })
+              //   .catch((e) => {
+              //     console.error('计算默认值失败: ' + e);
+              //     if (Array.isArray(data.value)) {
+              //       data.value.push({});
+              //     } else {
+              //       data.value = [{}];
+              //     }
+              //     changeValue({ data, id, outputs, parentSlot, name: props.name });
+              //   });
               break;
             default:
               setValuesForInput({ data, childrenStore });
