@@ -142,12 +142,12 @@ export default function Runtime({
       data.value = [];
       data.value = checkedValue;
     }
+    onChangeForFc(parentSlot, { id, name, value: checkedValue });
   }, []);
 
   // 多选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id, name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
