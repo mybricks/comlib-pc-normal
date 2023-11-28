@@ -70,7 +70,7 @@ export default function (props: RuntimeParams<Data>) {
   const search = useCallback((searchValue: string) => {
     data.searchValue = searchValue;
     const searchedKeys = treeKeys.current.map((item) => {
-      if (filterMethods.byTitle(item)) {
+      if (item.title?.indexOf(data.searchValue) > -1) {
         return getParentKey(item.key, data.treeData, keyFieldName);
       }
       return null;
@@ -100,6 +100,7 @@ export default function (props: RuntimeParams<Data>) {
       }
     });
     // const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
+    setExpandedKeys(filterKeys);
     return filterKeys;
   }, []);
 
