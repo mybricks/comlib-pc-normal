@@ -28,7 +28,7 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   return (
     <div className={css.container}>
       <Image
-        alt={alt}
+        alt={env.i18n(alt)}
         src={src}
         width="100%"
         height="100%"

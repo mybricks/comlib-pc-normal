@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
-import { Table, Empty, ConfigProvider, Image } from 'antd';
+import { Table, Empty, Image } from 'antd';
+import ConfigProvider from '../components/ConfigProvider';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
 import {
@@ -205,15 +206,37 @@ export default function (props: RuntimeParams<Data>) {
       // 动态设置表头
       if (data.useDynamicTitle && inputs[InputIds.SET_SHOW_TitleS]) {
         inputs[InputIds.SET_SHOW_TitleS]((val: any, relOutputs: any) => {
-          // 需要保留的列
-          const previousDataIndex = val
-            .filter((item) => item.usePrevious)
-            .map((item) => item.dataIndex);
-          data.columns = val
-            .filter((item) => !item.usePrevious)
-            .concat(data.columns.filter((item) => previousDataIndex.includes(item.dataIndex)));
+          const newCols = val.map((item) => {
+            if (item.usePrevious) {
+              const previousCol = data.columns.find((i) => i.dataIndex === item.dataIndex) || null;
+              return previousCol || item;
+            } else {
+              return item;
+            }
+          });
+          data.columns = newCols;
           initFilterMap();
           handleOutputFn(relOutputs, OutputIds.SET_SHOW_TitleS, data.columns);
+        });
+      }
+      // 动态修改列
+      if (data.enableDynamicChangeCols && inputs[InputIds.CHANGE_COLS_ATTR]) {
+        inputs[InputIds.CHANGE_COLS_ATTR]((val: any, relOutputs: any) => {
+          const newCols = data.columns.map((item) => {
+            const { dataIndex } = item;
+            const matchedVal = val.find((v) => v.dataIndex === dataIndex);
+            let newItem = { ...item };
+            if (matchedVal) {
+              newItem = {
+                ...newItem,
+                ...matchedVal
+              };
+            }
+            return newItem;
+          });
+          data.columns = newCols;
+          initFilterMap();
+          handleOutputFn(relOutputs, OutputIds.CHANGE_COLS_ATTR, data.columns);
         });
       }
     }
@@ -698,9 +721,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   // 设计态数据mock
-  const defaultDataSource = useMemo(() => {
-    return getDefaultDataSource(data.columns, rowKey);
-  }, [data.columns, rowKey]);
+  const defaultDataSource = getDefaultDataSource(data.columns, rowKey, env);
 
   const setCurrentSelectRows = useCallback(
     (_record) => {
@@ -817,15 +838,23 @@ export default function (props: RuntimeParams<Data>) {
   }, [slots]);
 
   const customizeRenderEmpty = () => (
-    <div className={`emptyNormal ${css.emptyNormal}`}>
+    <div
+      className={css.emptyNormal}
+      style={{
+        height: data.fixedHeader ? `calc(${data.fixedHeight} - 144px` : ''
+      }}
+    >
       <Image src={data.image} className={`emptyImage ${css.emptyImage}`} preview={false} />
-      <p className={`emptyDescription ${css.emptyDescription}`}>{data.description}</p>
+      <p className={`emptyDescription ${css.emptyDescription}`}>{env.i18n(data.description)}</p>
     </div>
   );
 
   return (
     <div ref={ref}>
-      <ConfigProvider locale={zhCN} renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}>
+      <ConfigProvider
+        locale={env.vars?.locale}
+        renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
+      >
         <TableContext.Provider value={contextValue}>
           <div className={css.table}>
             <TableHeader
@@ -845,7 +874,7 @@ export default function (props: RuntimeParams<Data>) {
                 }}
                 dataSource={edit ? defaultDataSource : realShowDataSource}
                 loading={{
-                  tip: data.loadingTip,
+                  tip: env.i18n(data.loadingTip),
                   spinning: loading
                 }}
                 onRow={onRow}

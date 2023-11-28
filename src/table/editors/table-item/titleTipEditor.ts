@@ -21,6 +21,9 @@ const TitleTipEditor = {
     {
       title: '提示文案',
       type: 'Textarea',
+      options: {
+        locale: true
+      },
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         return getColumnItem(data, focusArea).hasTip;

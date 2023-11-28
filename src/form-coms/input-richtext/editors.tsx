@@ -41,6 +41,9 @@ export default {
         title: '提示内容',
         type: 'text',
         description: '该提示内容会在值为空时提示',
+        options: {
+          locale: true
+        },
         value: {
           get({ data }) {
             return data.placeholder;
@@ -236,6 +239,9 @@ export default {
               value: 'message',
               ifVisible(item: any, index: number) {
                 return item.key === RuleKeys.REQUIRED;
+              },
+              options: {
+                locale: true
               }
             },
             {

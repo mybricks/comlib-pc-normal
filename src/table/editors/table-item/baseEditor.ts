@@ -24,6 +24,9 @@ const createBaseEditor = ({ data }) => ({
     {
       title: '列名',
       type: 'Text',
+      options: {
+        locale: true
+      },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;

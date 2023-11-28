@@ -19,7 +19,7 @@ import TreeNode from './Components/TreeNode';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, onError } = props;
+  const { env, data, inputs, outputs, onError, logger, title } = props;
 
   const [checkedKeys, setCheckedKeys] = useState(data.checkedKeys);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
@@ -27,7 +27,7 @@ export default function (props: RuntimeParams<Data>) {
   );
   const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const treeKeys = useRef<{ key: string; title: string }[]>([]);
+  const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
 
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
   const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
@@ -36,17 +36,32 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
-  /** 更新key数组和expandedKeys */
+  /** 重置checkedKeys */
+  const clearCheckedKeys = useCallback(() => {
+    data.checkedKeys = [];
+    setCheckedKeys([]);
+  }, []);
+
+  /** 更新expandedKeys */
+  const updateExpandedKeys = useCallback(() => {
+    const keys: React.Key[] = [];
+    treeKeys.current.map((i) => {
+      if (data.openDepth < 0) {
+        keys.push(i.key);
+      } else if (i.depth < data.openDepth) {
+        keys.push(i.key);
+      }
+    });
+    data.expandedKeys = keys;
+    setExpandedKeys(keys);
+  }, []);
+
+  /** 更新treeKeys */
   useEffect(() => {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
-    data.expandedKeys = [];
-    data.checkedKeys = [];
-    setCheckedKeys([]);
-    if (data.defaultExpandAll) {
-      data.expandedKeys = treeKeys.current.map((i) => i.key);
-    }
-    setExpandedKeys([...data.expandedKeys]);
+    clearCheckedKeys();
+    updateExpandedKeys();
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -200,6 +215,17 @@ export default function (props: RuntimeParams<Data>) {
           });
         });
 
+      // 设置展开深度
+      inputs[InputIds.SetOpenDepth] &&
+        inputs[InputIds.SetOpenDepth]((depth) => {
+          if (typeof depth === 'number') {
+            data.openDepth = depth;
+          } else {
+            logger.warn(`${title}:【设置展开深度】输入数据应该是数字`);
+          }
+          updateExpandedKeys();
+        });
+
       // 自定义添加提示文案
       inputs['addTips'] &&
         inputs['addTips']((ds: string[]) => {
@@ -298,11 +324,11 @@ export default function (props: RuntimeParams<Data>) {
       case 'parent':
         if (dropFlag === 0 && dropNode[keyFieldName] !== dragNodeParent?.[keyFieldName]) {
           // 拖拽到dropNode的第一个子节点
-          message.error(data.dropScopeMessage);
+          message.error(env.i18n(data.dropScopeMessage));
           return;
         }
         if (dropFlag !== 0 && dragNodeParent?.[keyFieldName] !== dropNodeParent?.[keyFieldName]) {
-          message.error(data.dropScopeMessage);
+          message.error(env.i18n(data.dropScopeMessage));
           return;
         }
         break;
@@ -375,7 +401,7 @@ export default function (props: RuntimeParams<Data>) {
       style={{
         maxHeight: isEmpty ? void 0 : data.scrollHeight,
         height: isEmpty ? data.scrollHeight : void 0,
-        overflowY: 'scroll'
+        overflowY: data.scrollHeight ? 'scroll' : void 0
       }}
     >
       {isEmpty ? (

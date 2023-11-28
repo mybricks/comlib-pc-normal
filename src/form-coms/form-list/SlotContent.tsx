@@ -27,7 +27,7 @@ const SlotContent = (
         const { item, isFormItem } = getFormItem(data, com);
 
         return isFormItem ? (
-          <FormItem data={data} slots={slots} com={com} item={item} field={field} />
+          <FormItem data={data} slots={slots} com={com} item={item} field={field} env={env} />
         ) : (
           <>{com.jsx}</>
         );

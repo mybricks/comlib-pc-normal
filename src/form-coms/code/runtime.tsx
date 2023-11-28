@@ -100,14 +100,14 @@ export default function ({
     <CodeEditor
       value={value}
       onChange={onChange}
-      config={data.aceConfig}
+      config={{ ...data.aceConfig, placeholder: env.i18n(data.aceConfig.placeholder) }}
       readOnly={data.readOnly}
     />
   ) : (
     <Input.TextArea
       value={value}
       rows={data.aceConfig.minLines}
-      placeholder={data.aceConfig.placeholder}
+      placeholder={env.i18n(data.aceConfig.placeholder)}
       readOnly={true}
     />
   );

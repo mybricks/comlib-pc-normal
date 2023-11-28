@@ -35,7 +35,10 @@ export default function FilterColumnRender({ data, env, dataSource, outputs }) {
   const treeData = useMemo(() => {
     return [...data.columns].reduce(
       (tree, item) => {
-        const newItem = { ...item };
+        const newItem = {
+          ...item,
+          title: env.i18n(item.title)
+        };
         // 用_id表示表格原始的key，
         newItem.key = item._id;
         if (item.fixed === 'left') {

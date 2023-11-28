@@ -26,6 +26,29 @@ const DynamicTitleEditor = [
         data.useDynamicTitle = value;
       }
     }
+  },
+  {
+    title: '动态修改列属性',
+    description: '开启后, 支持通过逻辑连线, 动态修改已有列的显隐、标题、字段和宽度',
+    type: 'switch',
+    value: {
+      get({ data }: EditorResult<Data>) {
+        return data.enableDynamicChangeCols;
+      },
+      set({ data, input, output }: EditorResult<Data>, value: boolean) {
+        const hasEvent = input.get(InputIds.CHANGE_COLS_ATTR);
+        const hasEvent1 = output.get(InputIds.CHANGE_COLS_ATTR);
+        if (value) {
+          !hasEvent && input.add(InputIds.CHANGE_COLS_ATTR, `修改列属性`, Schemas.CHANGE_COLS_ATTR);
+          !hasEvent1 && output.add(InputIds.CHANGE_COLS_ATTR, `列属性`, Schemas.CHANGE_COLS_ATTR);
+          input.get(InputIds.CHANGE_COLS_ATTR).setRels([OutputIds.CHANGE_COLS_ATTR]);
+        } else {
+          hasEvent && input.remove(InputIds.CHANGE_COLS_ATTR);
+          hasEvent1 && output.remove(InputIds.CHANGE_COLS_ATTR);
+        }
+        data.enableDynamicChangeCols = value;
+      }
+    }
   }
 ];
 

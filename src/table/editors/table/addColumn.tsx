@@ -3,6 +3,7 @@ import visibleOpt from '../../../components/editorRender/visibleOpt';
 import { setDataSchema } from '../../schema';
 import { ContentTypeEnum, Data, IColumn, TableLayoutEnum, WidthTypeEnum } from '../../types';
 import { getNewColumn, setColumns } from '../../utils';
+import { message } from 'antd';
 
 const ColorMap = {
   number: {
@@ -27,7 +28,7 @@ const ColorMap = {
   }
 };
 
-const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
+const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
   return {
     title: '列',
     items: [
@@ -77,7 +78,7 @@ const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
                   <span style={{ color }}>{text}</span>
                   <span>
                     【{item.width === WidthTypeEnum.Auto ? '自适应' : `${item.width}px`}】
-                    {item.title}
+                    {env.i18n(item.title)}
                     {path ? `(${path})` : ''}
                   </span>
                 </>
@@ -87,7 +88,7 @@ const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
                 <>
                   <span style={{ color }}>{text}</span>
                   <span>
-                    【隐藏】{item.title}({path})
+                    【隐藏】{env.i18n(item.title)}({path})
                   </span>
                 </>
               );
@@ -100,6 +101,9 @@ const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
             {
               title: '列名',
               type: 'Text',
+              options: {
+                locale: true
+              },
               value: 'title'
             },
             {
@@ -147,6 +151,12 @@ const getAddColumnEditor = ({ data }: EditorResult<Data>) => {
             ];
           },
           set({ data, output, input, slot, ...res }: EditorResult<Data>, val: IColumn[]) {
+            for (let item of val) {
+              if (item.dataIndex === '') {
+                item.dataIndex = item.title;
+                message.warn(`字段不能为空！`);
+              }
+            }
             const cols = val.map((item) => ({
               ...item,
               width: item.isAutoWidth

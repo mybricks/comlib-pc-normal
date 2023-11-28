@@ -1,4 +1,4 @@
-import { Data } from './types';
+import { Data, EnumStorage } from './types';
 
 export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>) {
   data.picks.map(({ id, itemKey }) => {
@@ -8,7 +8,10 @@ export default function ({ data, inputs, outputs, onError }: RuntimeParams<Data>
       return;
     }
 
-    let res = localStorage.getItem(itemKey)
+    let res = data.storageType === EnumStorage.SESSION
+      ? sessionStorage.getItem(itemKey)
+      : localStorage.getItem(itemKey)
+
     try {
       if (res !== null) {
         res = JSON.parse(res)

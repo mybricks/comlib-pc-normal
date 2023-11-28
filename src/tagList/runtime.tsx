@@ -154,7 +154,7 @@ const DefaultTag = ({
             onClose={() => onTagClose(index, tag)}
             icon={Icons && Icons[icon as string]?.render()}
           >
-            <span style={getTagStyle(data)}>{content}</span>
+            <span style={getTagStyle(data)}>{env.i18n(content)}</span>
           </Tag>
         );
       })}
@@ -195,7 +195,7 @@ const CheckTag = ({
             checked={checked as boolean}
             onChange={() => onTagChange(index)}
           >
-            <span style={getTagStyle(data)}>{content}</span>
+            <span style={getTagStyle(data)}>{env.i18n(content)}</span>
           </Tag.CheckableTag>
         );
       })}

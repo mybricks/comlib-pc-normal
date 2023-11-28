@@ -220,5 +220,6 @@ export interface Data {
   //isImage: boolean;
   //图片地址
   image: string;
-  onRowScript: string
+  onRowScript: string;
+  enableDynamicChangeCols: boolean; // 动态修改列属性
 }
