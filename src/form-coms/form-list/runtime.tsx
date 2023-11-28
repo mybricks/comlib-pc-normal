@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useLayoutEffect, useEffect, useRef } from 'react';
 import { ChildrenStore, Data } from './types';
 import SlotContent from './SlotContent';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import {
   updateValue,
   generateFields,
@@ -40,7 +41,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetValue]((value) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
-        changeValue({ data, id, outputs, parentSlot, name: props.name });
+        outputs[OutputIds.OnChange](deepCopy(data.value));
+        onChangeForFc(parentSlot, { id, value, name: props.name });
         const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetValue;
         // changeLength < 0时，不会触发已有的列表项刷新
@@ -55,6 +57,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
         outputs[OutputIds.OnInitial](deepCopy(data.value));
+        onChangeForFc(parentSlot, { id, value, name: props.name });
         const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetInitialValue;
         // changeLength < 0时，不会触发已有的列表项刷新
