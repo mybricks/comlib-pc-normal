@@ -85,6 +85,18 @@ const getDynamicDisplay = (btn: Action, field, extralParams, onError?): boolean 
   return dynamicDisplay;
 };
 
+/**
+ * 计算操作权限
+ * @param btn 按钮
+ */
+const getBtnPermission = (env, key?: string): 'none' | 'hide' | 'disable' => {
+  const hasPermission = !(env.runtime && key && !env?.hasPermission({ key }));
+  if (hasPermission) return 'none';
+
+  // TODO: 等后续「无权限时」字段开放后，将返回值按类型返回
+  return 'hide';
+};
+
 const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
   const { data, env, field, outputs, fieldIndex } = props;
 
@@ -121,10 +133,15 @@ const Actions = (props: RuntimeParams<Data> & FormListActionsProps) => {
       {data.actions.items.map((item) => {
         const { iconConfig, ...res } = item;
         const icon = getBtnIcon(item);
-        if (item.visible === false) {
-          return null;
-        }
+        const permission = getBtnPermission(env, item.permission?.id);
+
         if (!env.edit) {
+          if (item.visible === false) {
+            return null;
+          }
+          if (permission === 'hide') {
+            return null;
+          }
           const dynamicDisplay = getDynamicDisplay(
             item,
             currentField,

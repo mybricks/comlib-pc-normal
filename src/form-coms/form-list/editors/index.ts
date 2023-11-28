@@ -1144,7 +1144,7 @@ export default {
         ]
       }
     ],
-    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2) => {
+    items: ({ data, output, focusArea }: EditorResult<Data>, cate1, cate2, cate3) => {
       if (!focusArea) return;
       const comId = focusArea.dataset['formActionsItem'];
       const btn = data.actions.items.find((item) => item.key === comId);
@@ -1231,10 +1231,31 @@ export default {
         }
       ];
 
-      // cate2.title = '样式';
-      // cate2.items = [
+      cate2.title = '高级';
+      cate2.items = [
+        {
+          title: '权限信息配置',
+          description: '权限信息配置',
+          type: '_permission',
+          options: {
+            placeholder: '不填写，默认无权限校验'
+          },
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return btn.permission;
+            },
+            set({ data, focusArea }: EditorResult<Data>, value: { id: string, register: () => void }) {
+              btn.permission = { id: value.id };
+              console.log(value.register())
+            }
+          }
+        },
+      ];
+
+      // cate3.title = '样式';
+      // cate3.items = [
       //   ...StyleEditor(btn),
-      //   ...IconEditor(btn),
+      //   ...IconEditor(btn)
       // ];
     }
   }

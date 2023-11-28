@@ -31,7 +31,11 @@ export interface Action {
     // 图标位置
     location: LocationEnum;
   }
-
+  /** 权限配置 */
+  permission?: {
+    id: string,
+    type?: string;
+  }
 }
 
 interface Actions {
