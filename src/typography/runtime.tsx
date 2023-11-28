@@ -75,7 +75,7 @@ const itemRender = ({ data: item, outputs, env, isSet, isUnity, padding, rowKey 
       ? item.style.fontWeight
       : void 0
   };
-  if (!itemContent) return null;
+  if (itemContent == null) return null;
   switch (item.type) {
     case 'Text':
       return (
