@@ -1246,7 +1246,7 @@ export default {
             },
             set({ data, focusArea }: EditorResult<Data>, value: { id: string, register: () => void }) {
               btn.permission = { id: value.id };
-              console.log(value.register())
+              value.register();
             }
           }
         },

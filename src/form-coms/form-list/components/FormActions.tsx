@@ -90,7 +90,7 @@ const getDynamicDisplay = (btn: Action, field, extralParams, onError?): boolean 
  * @param btn 按钮
  */
 const getBtnPermission = (env, key?: string): 'none' | 'hide' | 'disable' => {
-  const hasPermission = !(env.runtime && key && !env?.hasPermission({ key }));
+  const hasPermission = !(env.runtime && key && !env?.hasPermission(key));
   if (hasPermission) return 'none';
 
   // TODO: 等后续「无权限时」字段开放后，将返回值按类型返回
