@@ -61,12 +61,8 @@ export default function (props: RuntimeParams<Data>) {
     treeKeys.current = [];
     generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
     clearCheckedKeys();
-  }, [data.treeData]);
-
-  /** 更新key数组 */
-  useEffect(() => {
     updateExpandedKeys();
-  }, [data.treeData, data.openDepth]);
+  }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
    * @param searchValue 搜索值
@@ -227,6 +223,7 @@ export default function (props: RuntimeParams<Data>) {
           } else {
             logger.warn(`${title}:【设置展开深度】输入数据应该是数字`);
           }
+          updateExpandedKeys();
         });
 
       // 自定义添加提示文案
