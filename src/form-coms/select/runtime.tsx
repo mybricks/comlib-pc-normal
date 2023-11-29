@@ -115,8 +115,8 @@ export default function Runtime({
       if (!typeCheck(val, valueTypeCheck.type)) {
         logger.warn(valueTypeCheck.message);
       } else {
-        changeValue(val);
-        // data.value = val;
+        const outputValue = changeValue(val);
+        outputs[OutputIds.OnChange](outputValue);
       }
     });
 
@@ -125,18 +125,13 @@ export default function Runtime({
         if (!typeCheck(val, valueTypeCheck.type)) {
           logger.warn(valueTypeCheck.message);
         } else {
-          if (val == undefined) {
-            data.value = '';
-          }
-          data.value = val;
-          const outputValue = getOutputValue(data, env);
+          const outputValue = changeValue(val);
           outputs[OutputIds.OnInitial](outputValue);
         }
       });
 
     inputs['resetValue'](() => {
-      data.value = '';
-      data.value = void 0;
+      changeValue(void 0);
     });
 
     inputs['setOptions']((ds) => {
@@ -156,9 +151,12 @@ export default function Runtime({
           }
         });
         if (updateValue) {
-          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode))
-            data.value = newValArray;
-          if (!data.config.mode || data.config.mode === 'default') data.value = newVal;
+          if (data.config.mode && ['tags', 'multiple'].includes(data.config.mode)) {
+            changeValue(newValArray);
+          }
+          if (!data.config.mode || data.config.mode === 'default') {
+            changeValue(newVal);
+          }
         }
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
@@ -217,6 +215,7 @@ export default function Runtime({
   const onValidateTrigger = (type: string) => {
     data.validateTrigger?.includes(type) && debounceValidateTrigger(parentSlot, { id, name });
   };
+
   const changeValue = useCallback((value) => {
     if (value == undefined) {
       data.value = '';
@@ -224,11 +223,12 @@ export default function Runtime({
     data.value = value;
     const outputValue = getOutputValue(data, env);
     onChangeForFc(parentSlot, { id: id, value: outputValue, name });
-    outputs['onChange'](outputValue);
+    return outputValue;
   }, []);
 
   const onChange = useCallback((val) => {
-    changeValue(val);
+    const outputValue = changeValue(val);
+    outputs['onChange'](outputValue);
     onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
 
