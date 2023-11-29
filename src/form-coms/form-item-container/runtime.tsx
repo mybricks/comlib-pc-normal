@@ -18,22 +18,21 @@ export default function (props: RuntimeParams<Data>) {
     }
 
     inputs['setValue']((val) => {
-      data.value = val;
+      changeValue(val);
       slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
-      onChangeForFc(parentSlot, { id: props.id, value: val, name });
       outputs['onChange'](val);
     });
 
     inputs['setInitialValue']((val) => {
-      data.value = val;
+      changeValue(val);
       slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
       outputs[OutputIds.OnInitial](val);
     });
 
     // 设置表单项值
     slots[SlotIds.FormItem].outputs[SlotOutputIds.SetCurValue]?.((val) => {
-      data.value = val;
-      onChangeForFc(parentSlot, { id: props.id, value: val, name });
+      changeValue(val);
+      outputs['onChange'](val);
       onValidateTrigger();
     });
 
@@ -102,6 +101,11 @@ export default function (props: RuntimeParams<Data>) {
       }
     });
   }, []);
+
+  const changeValue = (val) => {
+    data.value = val;
+    onChangeForFc(parentSlot, { id: props.id, value: val, name });
+  };
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
