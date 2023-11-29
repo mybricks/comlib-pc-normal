@@ -44,16 +44,16 @@ export default function (props: RuntimeParams<Data>) {
     outputs,
     configs: {
       setValue(val) {
-        data.value = val;
+        changeValue(val);
       },
       setInitialValue(val) {
-        data.value = val;
+        changeValue(val);
       },
       returnValue(output) {
         output(data.value);
       },
       resetValue() {
-        data.value = void 0;
+        changeValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -111,10 +111,14 @@ export default function (props: RuntimeParams<Data>) {
       debounceValidateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
+  const changeValue = useCallback((value) => {
     data.value = value;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const value = e.target.value;
+    changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
@@ -162,7 +166,7 @@ export default function (props: RuntimeParams<Data>) {
       addonAfter={env.i18n(data.config.addonAfter)}
       value={data.value}
       readOnly={!!edit}
-      onChange={changeValue}
+      onChange={onChange}
       onBlur={onBlur}
       onPressEnter={onPressEnter}
       //size={'large'}
