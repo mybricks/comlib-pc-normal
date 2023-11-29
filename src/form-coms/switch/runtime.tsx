@@ -37,16 +37,16 @@ export default function ({
     name,
     configs: {
       setValue(val) {
-        data.config.checked = val;
+        changeValue(val);
       },
       setInitialValue(val) {
-        data.config.checked = val;
+        changeValue(val);
       },
       returnValue(output) {
         output(data.config.checked);
       },
       resetValue() {
-        data.config.checked = false;
+        changeValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -103,6 +103,11 @@ export default function ({
     if (env.edit) return;
     data.config.checked = checked;
     onChangeForFc(parentSlot, { id: id, value: checked, name: name });
+  }, []);
+
+  const onChange = useCallback((checked) => {
+    if (env.edit) return;
+    changeValue(checked);
     onValidateTrigger();
     outputs['onChange'](checked);
   }, []);
@@ -111,7 +116,7 @@ export default function ({
     <div>
       <Switch
         {...data.config}
-        onChange={changeValue}
+        onChange={onChange}
         // onBlur={onBlur}
       />
     </div>
