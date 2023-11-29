@@ -321,11 +321,12 @@ export function setValuesOfChild({
   key?: React.Key,
   value,
   actionType: string
-}) {
+}, cb?) {
   const { items: formItems } = data;
   // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
   let extraAction = '';
   const inputId = actionType === 'add' ? InputIds.SetInitialValue : actionType;
+  const inputDoneId = inputId + 'Done';
 
   if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(inputId)
     && data.disabled) {
@@ -335,11 +336,17 @@ export function setValuesOfChild({
     ? Object.keys(value)
     : data.items.map(item => item.name);
   if (key !== undefined) {
-    names.forEach((name) => {
+    names.forEach((name, inx) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
+      const isLast = inx === names.length - 1;
       if (item) {
         const { inputs, index } = childrenStore[key][item.comName];
-        inputs[inputId] && inputs[inputId](deepCopy(value[name]));
+        inputs[inputId] && inputs[inputId](deepCopy(value[name]))
+        [inputDoneId]?.(val => {
+          if (isLast) {
+            cb?.();
+          }
+        });
         extraAction
           && inputs[extraAction]
           && inputs[extraAction]();

@@ -106,14 +106,18 @@ const SlotContent = (
               } else {
                 data.value = [{}];
               }
+              const cb = () => {
+                changeValue({ data, id, outputs, parentSlot, name: props.name });
+                data.userAction.index = -1;
+                data.userAction.key = -1;
+                data.userAction.value = undefined;
+              };
               if (temp) {
                 console.log(deepCopy(temp), key, '-------temp-------');
-                setValuesOfChild({ data, childrenStore, key, value: temp, actionType });
+                setValuesOfChild({ data, childrenStore, key, value: temp, actionType }, cb);
+              } else {
+                cb();
               }
-              changeValue({ data, id, outputs, parentSlot, name: props.name });
-              data.userAction.index = -1;
-              data.userAction.key = -1;
-              data.userAction.value = undefined;
               // 计算新增项默认值
               // const initValue = {};
               // new Promise((resolve, reject) => {
