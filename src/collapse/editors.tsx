@@ -8,7 +8,7 @@ export default {
   ':root': ({}, cate1, cate2) => {
     cate1.title = '常规';
     cate1.items = [
-      Editor<Data>('标题', EditorType.Text, 'title'),
+      Editor<Data>('标题', EditorType.Text, 'title', { options: { locale: true } }),
       {
         title: '开启自定义标题',
         type: 'Switch',

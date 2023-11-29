@@ -319,7 +319,7 @@ export default {
       ];
       cate1.title = '常规';
       cate1.items = [
-        Editor<Data>('标题内容', EditorType.Text, 'title'),
+        Editor<Data>('标题内容', EditorType.Text, 'title', { options: { locale: true } }),
         {
           title: '开启卡片右上角操作',
           type: 'Switch',

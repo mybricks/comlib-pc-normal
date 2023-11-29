@@ -32,6 +32,9 @@ export default {
         {
           title: '标题',
           type: 'Text',
+          options: {
+            locale: true
+          },
           ifVisible({ data }: EditorResult<Data>) {
             return !data.useTitleSlot;
           },
@@ -65,6 +68,9 @@ export default {
         {
           title: '内容',
           type: 'Text',
+          options: {
+            locale: true
+          },
           ifVisible({ data }: EditorResult<Data>) {
             return !data.useContentSlot;
           },
