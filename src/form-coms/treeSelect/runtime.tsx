@@ -66,11 +66,15 @@ export default function Runtime({
 
     inputs['setValue']((val) => {
       if (data.config.multiple) {
-        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
-          ? changeValue(val)
-          : logger.error(`${title}【设置值】参数应为数组格式`);
+        if (typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])) {
+          changeValue(val);
+          outputs[OutputIds.OnChange](val);
+        } else {
+          logger.error(`${title}【设置值】参数应为数组格式`);
+        }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
+        outputs[OutputIds.OnChange](val);
       } else {
         logger.error(`${title}【设置值】参数应为基本类型`);
       }
@@ -89,7 +93,7 @@ export default function Runtime({
     });
 
     inputs['resetValue'](() => {
-      data.value = void 0;
+      changeValue(void 0);
     });
 
     inputs['setOptions']((ds) => {
@@ -173,11 +177,11 @@ export default function Runtime({
     }
     data.value = value;
     onChangeForFc(parentSlot, { id, value, name });
-    outputs[OutputIds.OnChange](value);
   }, []);
 
   const onChange = useCallback((value) => {
     changeValue(value);
+    outputs[OutputIds.OnChange](value);
     onValidateTrigger();
   }, []);
 
@@ -185,7 +189,7 @@ export default function Runtime({
     if (value === undefined) {
       data.value = '';
     }
-    data.value = value;
+    changeValue(value);
     outputs[OutputIds.OnInitial](value);
   }, []);
 
