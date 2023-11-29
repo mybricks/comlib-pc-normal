@@ -39,16 +39,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       outputs,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
           output(value);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
@@ -103,9 +103,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const onChange = (value) => {
+  const changeValue = (value) => {
     setValue(value);
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  };
+
+  const onChange = (value) => {
+    changeValue(value);
     outputs['onChange'](value);
   };
 

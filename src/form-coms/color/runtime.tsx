@@ -100,7 +100,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
     //5. 重置值
     inputs['resetValue'](() => {
-      data.color = void 0;
+      changeValue(void 0);
     });
 
     //6. 设置禁用

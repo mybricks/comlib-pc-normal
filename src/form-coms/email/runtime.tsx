@@ -41,7 +41,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         output(data.value);
       },
       resetValue() {
-        data.value = void 0;
+        changeValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -100,7 +100,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
-    data.value = value;
+    changeValue(value);
     onValidateTrigger();
     // onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](value);

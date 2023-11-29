@@ -154,7 +154,7 @@ export default function Runtime({
 
   // 全选框监听事件
   const onCheckAllChange = (e) => {
-    data.value = e.target.checked ? data.config.options.map((item) => item.value) : [];
+    changeValue(e.target.checked ? data.config.options.map((item) => item.value) : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
     onChangeForFc(parentSlot, { id, name, value: data.value });

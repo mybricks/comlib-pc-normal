@@ -63,7 +63,7 @@ export default function ({
           output(value);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.readOnly = true;

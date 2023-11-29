@@ -237,7 +237,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   //重置，
   inputs['resetValue'](() => {
-    setValue(void 0);
+    changeValue(void 0);
   });
   //设置禁用
   inputs['setDisabled'](() => {

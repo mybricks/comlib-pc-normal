@@ -59,7 +59,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         output(data.value);
       },
       resetValue() {
-        data.value = '';
+        changeValue('');
       },
       setDisabled() {
         data.config.disabled = true;
