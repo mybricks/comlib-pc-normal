@@ -17,14 +17,16 @@ export default function (props: RuntimeParams<Data>) {
       data.childrenInputs = {};
     }
 
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, outputRels) => {
       changeValue(val);
+      outputRels['setValueDone'](val);
       slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
       outputs['onChange'](val);
     });
 
-    inputs['setInitialValue']((val) => {
+    inputs['setInitialValue']((val, outputRels) => {
       changeValue(val);
+      outputRels['setInitialValueDone'](val);
       slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
       outputs[OutputIds.OnInitial](val);
     });
@@ -62,42 +64,48 @@ export default function (props: RuntimeParams<Data>) {
       outputRels['returnValue'](data.value);
     });
 
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, outputRels) => {
       data.value = void 0;
       slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
+      outputRels['resetValueDone']();
     });
 
     //设置禁用
-    inputs['setDisabled']((val) => {
+    inputs['setDisabled']((val, outputRels) => {
       data.disabled = true;
       slots[SlotIds.FormItem].inputs['onDisabled'](val);
+      outputRels['setDisabledDone'](val);
       setValuesForInput({ data, actionId: InputIds.SetDisabled, val });
     });
 
     //设置启用
-    inputs['setEnabled']((val) => {
+    inputs['setEnabled']((val, outputRels) => {
       data.disabled = false;
       slots[SlotIds.FormItem].inputs['onEnabled'](val);
+      outputRels['setEnabledDone'](val);
       setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
     }, []);
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.disabled = false;
         slots[SlotIds.FormItem].inputs['onEnabled'](val);
+        outputRels['isEnableDone'](val);
         setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
       } else {
         data.disabled = true;
         slots[SlotIds.FormItem].inputs['onDisabled'](val);
+        outputRels['isEnableDone'](val);
         setValuesForInput({ data, actionId: InputIds.SetDisabled, val });
       }
     });
 
     // 设置校验状态
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, outputRels) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
       }
     });
   }, []);

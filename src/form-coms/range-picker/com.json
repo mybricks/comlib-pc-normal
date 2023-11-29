@@ -29,7 +29,10 @@
             "type": "number"
           }
         ]
-      }
+      },
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -45,7 +48,10 @@
             "type": "number"
           }
         ]
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -75,28 +81,40 @@
       "desc": "清空日期范围选择的值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -122,7 +140,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -202,6 +223,89 @@
             "type": "number"
           }
         ]
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "tuple",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
       }
     }
   ],

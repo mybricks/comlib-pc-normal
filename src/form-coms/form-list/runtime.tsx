@@ -38,11 +38,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
       startIndex: -1
     };
     // 设置值
-    inputs[InputIds.SetValue]((value) => {
+    inputs[InputIds.SetValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
         outputs[OutputIds.OnChange](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
+        outputRels['setValueDone'](value);
+        changeValue({ data, id, outputs, parentSlot, name: props.name });
         const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetValue;
         // changeLength < 0时，不会触发已有的列表项刷新
@@ -53,9 +55,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     // 设置初始值
-    inputs[InputIds.SetInitialValue]((value) => {
+    inputs[InputIds.SetInitialValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
+        outputRels['setInitialValueDone'](value);
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
         const changeLength = generateFields(data);
@@ -74,37 +77,42 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     // 重置值
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, outputRels) => {
       data.value = [];
       onChangeForFc(parentSlot, { id, value: [], name: props.name });
       data.fields = [];
       data.MaxKey = -1;
+      outputRels['resetValueDone']();
     });
 
     //设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, outputRels) => {
       data.disabled = true;
       data.userAction.type = InputIds.SetDisabled;
       setValuesForInput({ data, childrenStore });
+      outputRels['setDisabledDone']();
     });
 
     //设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, outputRels) => {
       data.disabled = false;
       data.userAction.type = InputIds.SetEnabled;
       setValuesForInput({ data, childrenStore });
+      outputRels['setEnabledDone']();
     }, []);
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.disabled = false;
         data.userAction.type = InputIds.SetEnabled;
         setValuesForInput({ data, childrenStore });
+        outputRels['isEnableDone'](val);
       } else {
         data.disabled = true;
         data.userAction.type = InputIds.SetDisabled;
         setValuesForInput({ data, childrenStore });
+        outputRels['isEnableDone'](val);
       }
     });
 
@@ -141,29 +149,35 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     // 设置校验信息
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, outputRels) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
       }
     });
 
     // 新增一项
-    inputs[SelfInputIds.AddField]?.((val) => {
+    inputs[SelfInputIds.AddField]?.((val, relOutputs) => {
       addField({ data }, val);
+      relOutputs['addFieldDone'](val);
     });
     // 删除一项
-    inputs[SelfInputIds.RemoveField]?.((val) => {
+    inputs[SelfInputIds.RemoveField]?.((val, relOutputs) => {
+      if (!data.fields.length) {
+        return;
+      }
       const { index } = val || {};
       let key = val?.key;
-      const fieldIndex = typeof index === 'number' ? index : data.fields.length;
+      const fieldIndex = typeof index === 'number' ? index : data.fields.length - 1;
       if (!key) {
-        key = data.fields[fieldIndex].key;
+        key = data.fields[fieldIndex]?.key;
       }
       const field = {
         name: fieldIndex,
         key
       };
       removeField({ ...props, childrenStore, field, fieldIndex });
+      relOutputs['removeFieldDone'](val);
     });
   }, []);
 

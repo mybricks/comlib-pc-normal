@@ -100,10 +100,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
   useEffect(() => {
     //输入数据源
-    inputs['setOptions']((value) => {
+    inputs['setOptions']((value, relOutputs) => {
       if (Array.isArray(value) && value.every((item) => 'value' in item)) {
         if (value.every((item) => 'value' in item)) {
           data.options = value;
+          relOutputs['setOptionsDone'](value);
         } else {
           console.error('数据源缺少value字段');
           logger.error('数据源缺少value字段');
@@ -114,9 +115,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
     // 设置校验状态
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

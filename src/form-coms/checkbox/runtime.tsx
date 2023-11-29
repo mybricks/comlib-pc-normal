@@ -51,51 +51,59 @@ export default function Runtime({
       outputRels['returnValue'](data.value);
     });
 
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, outputRels) => {
       if (!typeCheck(val, ['Array', 'Undefined', 'NULL'])) {
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
+        outputRels['setValueDone'](val);
         outputs['onChange'](data.value);
       }
     });
 
     inputs['setInitialValue'] &&
-      inputs['setInitialValue']((val) => {
+      inputs['setInitialValue']((val, outputRels) => {
         if (!typeCheck(val, ['Array', 'Undefined', 'NULL'])) {
           logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
+          outputRels['setInitialValueDone'](val);
           outputs[OutputIds.OnInitial](val);
         }
       });
 
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, outputRels) => {
       changeValue(undefined);
+      outputRels['resetValueDone']();
     });
 
     //设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
+      outputRels['setDisabledDone']();
     });
     //设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
+      outputRels['setEnabledDone']();
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
+        outputRels['isEnableDone'](val);
       } else {
         data.config.disabled = true;
+        outputRels['isEnableDone'](val);
       }
     });
 
     //设置数据源
-    inputs['setOptions']((ds) => {
+    inputs['setOptions']((ds, outputRels) => {
       if (Array.isArray(ds)) {
         data.config.options = [...ds];
+        outputRels['setOptionsDone'](ds);
         let newValArray: any[] = [];
         ds.map((item) => {
           const { checked, value } = item;
@@ -109,16 +117,18 @@ export default function Runtime({
       }
     });
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
 
     // 设置激活选项字体的颜色
-    inputs['setActiveFontColor']((color: string) => {
+    inputs['setActiveFontColor']((color: string, relOutputs) => {
       if (typeof color === 'string') {
         setActiveFontColor(color);
+        relOutputs['setActiveFontColorDone'](color);
       }
     });
   }, []);

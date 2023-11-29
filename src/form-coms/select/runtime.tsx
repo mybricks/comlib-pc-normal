@@ -111,32 +111,36 @@ export default function Runtime({
       outputRels['returnValue'](outputValue);
     });
 
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, relOutputs) => {
       if (!typeCheck(val, valueTypeCheck.type)) {
         logger.warn(valueTypeCheck.message);
       } else {
         const outputValue = changeValue(val);
+        relOutputs['setValueDone'](val);
         outputs[OutputIds.OnChange](outputValue);
       }
     });
 
     inputs['setInitialValue'] &&
-      inputs['setInitialValue']((val) => {
+      inputs['setInitialValue']((val, relOutputs) => {
         if (!typeCheck(val, valueTypeCheck.type)) {
           logger.warn(valueTypeCheck.message);
         } else {
           const outputValue = changeValue(val);
+          relOutputs['setInitialValueDone'](val);
           outputs[OutputIds.OnInitial](outputValue);
         }
       });
 
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, relOutputs) => {
       changeValue(void 0);
+      relOutputs['resetValueDone']();
     });
 
-    inputs['setOptions']((ds) => {
+    inputs['setOptions']((ds, relOutputs) => {
       if (Array.isArray(ds)) {
         data.config.options = [...ds];
+        relOutputs['setOptionsDone'](ds);
 
         //计算值更新
         let newValArray: any[] = [],
@@ -164,42 +168,49 @@ export default function Runtime({
       setFetching(false);
     });
 
-    inputs['setLoading']((val: boolean) => {
+    inputs['setLoading']((val: boolean, relOutputs) => {
       data.config = {
         ...data.config,
         loading: val
       };
+      relOutputs['setLoadingDone'](val);
     });
 
     //设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
+      relOutputs['setDisabledDone']();
     });
     //设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
+      relOutputs['setEnabledDone']();
     });
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
+        relOutputs['isEnableDone'](val);
       } else {
         data.config.disabled = true;
+        relOutputs['isEnableDone'](val);
       }
     });
 
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
     // 设置下拉框字体颜色
-    inputs[InputIds.SetColor]((color: string) => {
+    inputs[InputIds.SetColor]((color: string, relOutputs) => {
       const target = ref.current?.querySelector?.('.ant-select-selection-item') as HTMLSpanElement;
       if (target) {
         target.style.color = typeof color === 'string' ? color : '';
       }
+      relOutputs['setColorDone'](color);
     });
   }, []);
 

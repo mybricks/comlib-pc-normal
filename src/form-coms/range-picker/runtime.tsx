@@ -146,10 +146,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     //设置值
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, relOutputs) => {
       //时间戳转换
       if (val && Array.isArray(val)) {
         //如果是输入的值不合规范，即会输出[null, null]
+        let initVal = val;
         val = val.map((item) => {
           const num = Number(item);
           const result: any = isNaN(num) ? moment(item) : moment(num);
@@ -157,6 +158,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return data;
         });
         const transValue = changeValue(val);
+        relOutputs['setValueDone'](initVal);
         outputs['onChange'](transValue);
       }
       if (val === undefined || val === null) {
@@ -166,7 +168,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     inputs['setInitialValue'] &&
-      inputs['setInitialValue']((val) => {
+      inputs['setInitialValue']((val, relOutputs) => {
+        let initVal = val;
         //时间戳转换
         if (val && Array.isArray(val)) {
           //如果是输入的值不合规范，即会输出[null, null]
@@ -177,6 +180,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             return data;
           });
           const transValue = changeValue(val);
+          relOutputs['setInitialValueDone'](initVal);
           outputs[OutputIds.OnInitial](transValue);
         }
         if (val === undefined || val === null) {
@@ -241,31 +245,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     //重置
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, relOutputs) => {
       changeValue(void 0);
+      relOutputs['resetValueDone']();
     });
     //设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
+      relOutputs['setDisabledDone']();
     });
     //设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
+      relOutputs['setEnabledDone']();
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
+        relOutputs['isEnableDone'](val);
       } else {
         data.config.disabled = true;
+        relOutputs['isEnableDone'](val);
       }
     });
 
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

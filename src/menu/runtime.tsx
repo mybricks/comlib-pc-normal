@@ -46,7 +46,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
       const temp = findMenuItem(dataSource, selectedKey[0]);
       const { key, _key, title, menuType, value } = temp || {};
       relOutputs[OutputIds.GetActiveItem]({
-        title: title,
+        title: env.i18n(title),
         key: _key,
         menuType: menuType,
         value: value ? value : void 0
@@ -61,7 +61,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     const { key, _key, menuType, title, value } = clickItem;
     if (env.runtime) {
       outputs[OutputIds.ClickMenu]({
-        title: title,
+        title: env.i18n(title),
         key: key,
         menuType: menuType,
         value: value ? value : void 0
@@ -72,10 +72,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //子菜单的点击事件
   const menuOnClick = (e) => {
     const clickItem = findMenuItem(dataSource, e.key);
-    const { key, _key, ...res } = clickItem;
+    const { key, _key, title, ...res } = clickItem;
     if (env.runtime && key && !isSet) {
       outputs[_key]({
         ...res,
+        title: env.i18n(title),
         key: key
       });
     }
@@ -88,8 +89,10 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   };
 
   const renderMenuItems = (ds: MenuItem[]) => {
+    console.log(ds);
     return (ds || []).map((item) => {
-      const { key, children, menuType, title, useIcon, icon } = item || {};
+      const { key, children, menuType, useIcon, icon } = item || {};
+      const title = env.i18n(item.title);
       //分组菜单
       if (menuType === MenuTypeEnum.Group) {
         return (

@@ -135,6 +135,9 @@ export default {
       {
         title: '名称',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           get({ data, focusArea }: EditorResult<Data>) {
             return findConfig({ data, focusArea }, 'label');

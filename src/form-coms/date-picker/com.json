@@ -21,7 +21,10 @@
       "desc": "设置日期选择的值，并触发值变化事件输出",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -29,7 +32,10 @@
       "desc": "设置日期选择的初始值，并触发初始化事件输出",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -59,28 +65,40 @@
       "desc": "清空日期选择的值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -106,14 +124,20 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     },
     {
       "id": "disabledDate",
       "title": "禁用特定日期",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "disabledDateDone"
+      ]
     },
     {
       "id": "setColor",
@@ -121,7 +145,10 @@
       "desc": "设置日期选择框里字体的颜色",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setColorDone"
+      ]
     },
     {
       "id": "setDateType",
@@ -151,7 +178,10 @@
             "value": "year"
           }
         ]
-      }
+      },
+      "rels": [
+        "setDateTypeDone"
+      ]
     }
   ],
   "outputs": [
@@ -199,6 +229,116 @@
       "title": "值输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "disabledDateDone",
+      "title": "禁用特定日期完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setDateTypeDone",
+      "title": "设置日期选择类型完成",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "date"
+          },
+          {
+            "type": "string",
+            "value": "week"
+          },
+          {
+            "type": "string",
+            "value": "month"
+          },
+          {
+            "type": "string",
+            "value": "quarter"
+          },
+          {
+            "type": "string",
+            "value": "year"
+          }
+        ]
       }
     }
   ],
