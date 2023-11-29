@@ -38,13 +38,7 @@ export default function Runtime({
         output(data.value);
       },
       resetValue() {
-        // 迂回重置视图
-        data.value = 0;
-        data.singleValue = 0;
-        data.rangeValue = [0, 0];
-        data.value = void 0;
-        data.singleValue = void 0;
-        data.rangeValue = void 0;
+        changeValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -96,7 +90,16 @@ export default function Runtime({
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });
   };
+
   const changeValue = useCallback((val) => {
+    if (val === undefined) {
+      // 迂回重置视图
+      data.value = 0;
+      data.singleValue = 0;
+      data.rangeValue = [0, 0];
+      data.singleValue = void 0;
+      data.rangeValue = void 0;
+    }
     data.value = val;
     if (typeCheck(val, 'number')) {
       data.singleValue = val;
@@ -104,15 +107,16 @@ export default function Runtime({
     if (typeCheck(val, 'array')) {
       data.rangeValue = val;
     }
+    onChangeForFc(parentSlot, { id: id, value: val, name });
   }, []);
+
   const onChange = useCallback((val) => {
     changeValue(val);
-    onChangeForFc(parentSlot, { id: id, value: val, name });
     outputs['onChange'](val);
   }, []);
+
   const onAfterChange = useCallback((val) => {
     changeValue(val);
-    onChangeForFc(parentSlot, { id: id, value: val, name });
     outputs['onChange'](val);
     onValidateTrigger();
   }, []);
