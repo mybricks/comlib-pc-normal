@@ -149,7 +149,7 @@ export function validateForInput(
 export function getValue({ data, childrenStore, childId, childName, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, childName?: string, value?: any }) {
   return new Promise<any>((resolve, reject) => {
     let count = 0;
-    const allValues: { [k in string]: any }[] = [];
+    const values = deepCopy(data.value) || [];
     /** 子表单项值变化 */
     const changedValue = {
       index: -1,
@@ -171,12 +171,9 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
         }
 
         const formItemName = name || label;
-        if (!allValues[index]) {
-          allValues[index] = {};
-        }
         inputs?.getValue().returnValue((val) => {
-          allValues[index][formItemName] = val;
-          if (id === childId && data.value && JSON.stringify(data.value[index][formItemName]) !== JSON.stringify(val)) {
+          console.log(values, index, val, '--------对比-------------')
+          if (id === childId && values && JSON.stringify(values[index]?.[formItemName]) !== JSON.stringify(val)) {
             changedValue.name = formItemName;
             changedValue.index = index;
             changedValue.inputs = inputs;
@@ -187,32 +184,27 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       count++;
       if (count == data.fields.length) {
         resolve({
-          allValues,
+          allValues: values,
           changedValue
         });
       }
     });
     resolve({
-      allValues,
+      allValues: values,
       changedValue
     });
   }).then(({
     allValues,
     changedValue
   }) => {
-    if (data.value?.[changedValue.index]) {
-      const { index, name, value, item, inputs } = changedValue;
-      data.value[index] = {
-        ...data.value[index],
-        [name]: value
-      };
-      data.value[index][name] = value;
-      // data.currentAction = InputIds.SetInitialValue;
-      // data.indexList = [index];
-      validateForInput({ item, index, inputs });
-    } else {
-      data.value = allValues;
-    }
+    console.log(allValues, changedValue, '-------getValue----------')
+    const { index, name, value, item, inputs } = changedValue;
+    allValues[index] = {
+      ...allValues[index],
+      [name]: value
+    };
+    validateForInput({ item, index, inputs });
+    data.value = allValues;
   }).catch(e => {
     console.error('收集值失败，原因：' + e);
   });

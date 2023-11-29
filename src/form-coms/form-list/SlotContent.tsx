@@ -54,6 +54,12 @@ const SlotContent = (
                 index: name,
                 visible
               };
+              console.log(
+                deepCopy(childrenStore),
+                com,
+                field,
+                '---------收集childrenStore----------'
+              );
             }
 
             const { widthOption, span, width } = item;
@@ -94,15 +100,15 @@ const SlotContent = (
               const temp = deepCopy(data.userAction.value);
               const key = data.userAction.key;
 
-              if (temp) {
-                setValuesOfChild({ data, childrenStore, key, value: temp, actionType });
-              }
-              const initValue = temp || {};
-              const index = data.userAction.index;
               if (Array.isArray(data.value)) {
-                data.value.splice(index, 0, initValue);
+                const index = data.userAction.index;
+                data.value.splice(index, 0, {});
               } else {
-                data.value = [initValue];
+                data.value = [{}];
+              }
+              if (temp) {
+                console.log(deepCopy(temp), key, '-------temp-------');
+                setValuesOfChild({ data, childrenStore, key, value: temp, actionType });
               }
               changeValue({ data, id, outputs, parentSlot, name: props.name });
               data.userAction.index = -1;
