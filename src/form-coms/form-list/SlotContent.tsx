@@ -21,6 +21,7 @@ const SlotContent = (
 ) => {
   const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
     props;
+  console.log(field, '----------------field----------------');
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
@@ -34,6 +35,7 @@ const SlotContent = (
       },
       wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
         let comCount = comAray?.length;
+        console.log(field, '----------------wrap----------------');
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let { item, isFormItem } = getFormItem(data, com);
@@ -54,12 +56,6 @@ const SlotContent = (
                 index: name,
                 visible
               };
-              console.log(
-                deepCopy(childrenStore),
-                com,
-                field,
-                '---------收集childrenStore----------'
-              );
             }
 
             const { widthOption, span, width } = item;
@@ -113,42 +109,10 @@ const SlotContent = (
                 data.userAction.value = undefined;
               };
               if (temp) {
-                console.log(deepCopy(temp), key, '-------temp-------');
                 setValuesOfChild({ data, childrenStore, key, value: temp, actionType }, cb);
               } else {
                 cb();
               }
-              // 计算新增项默认值
-              // const initValue = {};
-              // new Promise((resolve, reject) => {
-              //   data.items.forEach((item) => {
-              //     const { id, name, comName, label } = item;
-              //     const { inputs, visible } = childrenStore[field.key][comName];
-              //     if (!data.submitHiddenFields && !visible) return;
-              //     inputs.getValue().returnValue((val) => {
-              //       initValue[name || label] = val;
-              //     });
-              //   });
-              //   resolve(initValue);
-              // })
-              //   .then((initValue) => {
-              //     data.userAction.value = undefined;
-              //     if (Array.isArray(data.value)) {
-              //       data.value.push(initValue);
-              //     } else {
-              //       data.value = [initValue];
-              //     }
-              //     changeValue({ data, id, outputs, parentSlot, name: props.name });
-              //   })
-              //   .catch((e) => {
-              //     console.error('计算默认值失败: ' + e);
-              //     if (Array.isArray(data.value)) {
-              //       data.value.push({});
-              //     } else {
-              //       data.value = [{}];
-              //     }
-              //     changeValue({ data, id, outputs, parentSlot, name: props.name });
-              //   });
               break;
             default:
               setValuesForInput({ data, childrenStore });
