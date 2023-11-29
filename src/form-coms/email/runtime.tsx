@@ -32,10 +32,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs,
     configs: {
       setValue(val) {
-        data.value = val;
+        changeValue(val);
       },
       setInitialValue(val) {
-        data.value = val;
+        changeValue(val);
       },
       returnValue(output) {
         output(data.value);
@@ -87,10 +87,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //   validateTrigger(parentSlot, { id: props.id, name: props.name });
   // };
 
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
+  const changeValue = useCallback((value) => {
     data.value = value;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const value = e.target.value;
+    changeValue(value);
     outputs['onChange'](value);
   }, []);
 
@@ -123,7 +127,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       {...inputConfig}
       value={data.value}
       readOnly={!!edit}
-      onChange={changeValue}
+      onChange={onChange}
       onBlur={onBlur}
     />
   );
