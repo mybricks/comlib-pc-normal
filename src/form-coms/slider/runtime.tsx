@@ -85,9 +85,10 @@ export default function Runtime({
   });
   useEffect(() => {
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

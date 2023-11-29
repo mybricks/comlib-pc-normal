@@ -94,14 +94,17 @@ export default function (props: RuntimeParams<Data>) {
   });
 
   useLayoutEffect(() => {
-    inputs[InputIds.SetColor]((color: string) => {
+    inputs[InputIds.SetColor]((color: string, relOutputs) => {
       if (inputRef.current?.input) {
-        inputRef.current.input.style.color = typeof color === 'string' ? color : '';
+        let outputColor = typeof color === 'string' ? color : '';
+        inputRef.current.input.style.color = outputColor;
+        relOutputs['setColorDone'](outputColor);
       }
     });
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

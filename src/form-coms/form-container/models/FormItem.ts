@@ -45,9 +45,12 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 设置值
      */
-    inputs[formItemInputIds.SET_VALUE] && inputs[formItemInputIds.SET_VALUE]((val) => {
+    inputs[formItemInputIds.SET_VALUE] && inputs[formItemInputIds.SET_VALUE]((val, relOutputs) => {
       if (configs?.setValue) {
-        configs.setValue(val)
+        configs.setValue(val);
+        if(relOutputs['setValueDone']){
+          relOutputs['setValueDone'](val);
+        }
       }
 
       // 触发onchange
@@ -65,10 +68,14 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 设置初始化
      */
-    inputs[formItemInputIds.SET_INITIAL_VALUE] && inputs[formItemInputIds.SET_INITIAL_VALUE]((val) => {
+    inputs[formItemInputIds.SET_INITIAL_VALUE] && inputs[formItemInputIds.SET_INITIAL_VALUE]((val, relOutputs) => {
       if (configs?.setInitialValue) {
-        configs.setInitialValue(val)
+        configs.setInitialValue(val);
+        if(relOutputs['setInitialValueDone']){
+          relOutputs['setInitialValueDone'](val);
+        }
       }
+
       outputs[formItemOutputIds.ON_INITIAL](val);
     });
 
@@ -85,10 +92,13 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 重置
      */
-    inputs[formItemInputIds.RESET_VALUE] && inputs[formItemInputIds.RESET_VALUE](() => {
+    inputs[formItemInputIds.RESET_VALUE] && inputs[formItemInputIds.RESET_VALUE]((_, relOutputs) => {
       // data.value = void 0;
       if (configs?.resetValue) {
-        configs.resetValue()
+        configs.resetValue();
+        if(relOutputs['resetValueDone']){
+          relOutputs['resetValueDone']();
+        }
       }
     });
 
@@ -104,9 +114,13 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 设置禁用
      */
-    inputs[formItemInputIds.SET_DISABLED] && inputs[formItemInputIds.SET_DISABLED](() => {
+    inputs[formItemInputIds.SET_DISABLED] && inputs[formItemInputIds.SET_DISABLED]((_, relOutputs) => {
       if (configs?.setDisabled) {
-        configs.setDisabled()
+        configs.setDisabled();
+        if(relOutputs['setDisabledDone']){
+          relOutputs['setDisabledDone']();
+        }
+        
       }
 
     });
@@ -114,18 +128,24 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
     /**
      * @description 设置启用
      */
-    inputs[formItemInputIds.SET_ENABLED] && inputs[formItemInputIds.SET_ENABLED](() => {
+    inputs[formItemInputIds.SET_ENABLED] && inputs[formItemInputIds.SET_ENABLED]((_, relOutputs) => {
       if (configs?.setEnabled) {
-        configs?.setEnabled()
+        configs?.setEnabled();
+        if(relOutputs['setEnabledDone']){
+          relOutputs['setEnabledDone']();
+        }
       }
     });
 
     /**
      * @description 设置启用/禁用
      */
-    inputs[formItemInputIds.IS_ENABL] && inputs[formItemInputIds.IS_ENABL]((val) => {
+    inputs[formItemInputIds.IS_ENABL] && inputs[formItemInputIds.IS_ENABL]((val, relOutputs) => {
       if (configs?.setIsEnabled) {
-        configs?.setIsEnabled(val)
+        configs?.setIsEnabled(val);
+        if(relOutputs['isEnableDone']){
+          relOutputs['isEnableDone'](val);
+        }
       }
     });
 

@@ -118,9 +118,10 @@ export default function ({
   }, []);
 
   useEffect(() => {
-    inputs['setValidateInfo']((info: object) => {
+    inputs['setValidateInfo']((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

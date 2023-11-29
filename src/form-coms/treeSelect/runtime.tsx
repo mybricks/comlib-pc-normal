@@ -64,82 +64,93 @@ export default function Runtime({
       outputRels['returnValue'](data.value);
     });
 
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, outputRels) => {
       if (data.config.multiple) {
         typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
           ? changeValue(val)
           : logger.error(`${title}【设置值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
+        outputRels['setValueDone'](val);
       } else {
         logger.error(`${title}【设置值】参数应为基本类型`);
       }
     });
 
-    inputs['setInitialValue']((val) => {
+    inputs['setInitialValue']((val, outputRels) => {
       if (data.config.multiple) {
         typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
           ? onInit(val)
           : logger.error(`${title}【设置初始值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
+        outputRels['setInitialValueDone'](val);
       } else {
         logger.error(`${title}【设置初始值】参数应为基本类型`);
       }
     });
 
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, outputRels) => {
       data.value = void 0;
+      outputRels['resetValueDone']();
     });
 
-    inputs['setOptions']((ds) => {
+    inputs['setOptions']((ds, outputRels) => {
       if (Array.isArray(ds)) {
         data.options = ds;
+        outputRels['setOptionsDone'](ds);
         setExpandedKeys(getDefaultExpandKeys());
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
     });
 
-    inputs['setLoading']((val: boolean) => {
+    inputs['setLoading']((val: boolean, outputRels) => {
       data.config = {
         ...data.config,
         loading: val
       };
+      outputRels['setLoadingDone'](val);
     });
 
     //设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
+      outputRels['setDisabledDone']();
     });
     //设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
+      outputRels['setEnabledDone']();
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
+        outputRels['isEnableDone'](val);
       } else {
         data.config.disabled = true;
+        outputRels['isEnableDone'](val);
       }
     });
 
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, outputRels) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
       }
     });
     // 设置下拉框字体颜色
-    inputs[InputIds.SetColor]((color: string) => {
+    inputs[InputIds.SetColor]((color: string, outputRels) => {
       const target = wrapperRef.current?.querySelector(
         '.ant-select-selection-item'
       ) as HTMLSpanElement;
       if (typeof color === 'string' && target) {
         target.style.color = color;
       }
+      outputRels['setColorDone'](color);
     });
   }, []);
 
@@ -150,7 +161,7 @@ export default function Runtime({
   }, []);
 
   useEffect(() => {
-    inputs['setLoadData']((val) => {
+    inputs['setLoadData']((val, relOutputs) => {
       if (!data.useLoadData) {
         return;
       }
@@ -158,6 +169,7 @@ export default function Runtime({
       const { node, resolve } = curNode.current as any;
 
       data.options = setTreeDataForLoadData(data, node, data.options, val);
+      relOutputs['setLoadDataDone'](val);
       setTreeLoadKeys(uniq([...treeLoadedKeys, node.key]));
       resolve();
     });

@@ -105,7 +105,7 @@ export default function ({
     [targetKeys]
   );
 
-  inputs['setSource']((dataSource) => {
+  inputs['setSource']((dataSource, relOutputs) => {
     if (!Array.isArray(dataSource)) {
       message.error('数据源必须是数组类型');
       return;
@@ -115,11 +115,13 @@ export default function ({
       return;
     }
     data.dataSource = dataSource;
+    relOutputs['setSourceDone'](dataSource);
   });
   // 设置校验状态
-  inputs[InputIds.SetValidateInfo]((info: object) => {
+  inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
     if (validateRelOuputRef.current) {
       validateRelOuputRef.current(info);
+      relOutputs['setValidateInfoDone'](info);
     }
   });
 

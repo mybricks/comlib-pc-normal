@@ -114,5 +114,103 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.3.3 end ===============
 
+  /**
+   * @description v1.3.5 新增 对应关联输出项
+   */
+  //1、设置值
+  if (!output.get(outputIds.setValueDone)) {
+    output.add(outputIds.setValueDone, '设置值完成', { type: 'string' });
+  }
+  if (output.get(outputIds.setValueDone) &&
+    input.get(inputIds.setValue) &&
+    !input.get(inputIds.setValue)?.rels?.includes(outputIds.setValueDone)) {
+    input.get(inputIds.setValue).setRels([outputIds.setValueDone]);
+  }
+  //2、设置初始值
+  if (!output.get(outputIds.setInitialValueDone)) {
+    output.add(outputIds.setInitialValueDone, '设置初始值完成', { type: 'string' });
+  }
+  if (output.get(outputIds.setInitialValueDone) &&
+    input.get(inputIds.setInitialValue) &&
+    !input.get(inputIds.setInitialValue)?.rels?.includes(outputIds.setInitialValueDone)) {
+    input.get(inputIds.setInitialValue).setRels([outputIds.setInitialValueDone]);
+  }
+  //3、重置值
+  if (!output.get(outputIds.resetValueDone)) {
+    output.add(outputIds.resetValueDone, '重置完成', { type: "any" });
+  }
+  if (output.get(outputIds.resetValueDone) &&
+    input.get(inputIds.resetValue) &&
+    !input.get(inputIds.resetValue)?.rels?.includes(outputIds.resetValueDone)) {
+    input.get(inputIds.resetValue).setRels([outputIds.resetValueDone]);
+  }
+  //4、设置禁用
+  if (!output.get(outputIds.setDisabledDone)) {
+    output.add(outputIds.setDisabledDone, '禁用完成', { type: "any" });
+  }
+  if (output.get(outputIds.setDisabledDone) &&
+    input.get(inputIds.SET_DISABLED) &&
+    !input.get(inputIds.SET_DISABLED)?.rels?.includes(outputIds.setDisabledDone)) {
+    input.get(inputIds.SET_DISABLED).setRels([outputIds.setDisabledDone]);
+  }
+  //5、设置启用
+  if (!output.get(outputIds.setEnabledDone)) {
+    output.add(outputIds.setEnabledDone, '启用完成', { type: "any" });
+  }
+  if (output.get(outputIds.setEnabledDone) &&
+    input.get(inputIds.SET_ENABLED) &&
+    !input.get(inputIds.SET_ENABLED)?.rels?.includes(outputIds.setEnabledDone)) {
+    input.get(inputIds.SET_ENABLED).setRels([outputIds.setEnabledDone]);
+  }
+  //6、启用/禁用isEnable
+  if (!output.get(outputIds.isEnableDone)) {
+    output.add(outputIds.isEnableDone, '启用/禁用完成', { type: "boolean" });
+  }
+  if (output.get(outputIds.isEnableDone) &&
+    input.get(inputIds.IsEnable) &&
+    !input.get(inputIds.IsEnable)?.rels?.includes(outputIds.isEnableDone)) {
+    input.get(inputIds.IsEnable).setRels([outputIds.isEnableDone]);
+  }
+  //7、设置字体颜色
+  if (!output.get(outputIds.setColorDone)) {
+    output.add(outputIds.setColorDone, '设置字体颜色完成', { type: "string" });
+  }
+  if (output.get(outputIds.setColorDone) &&
+    input.get('setColor') &&
+    !input.get('setColor')?.rels?.includes(outputIds.setColorDone)) {
+    input.get('setColor').setRels([outputIds.setColorDone]);
+  }
+  //8、设置校验结果
+  const infoSchema = {
+    "type": "object",
+    "properties": {
+      "validateStatus": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "success"
+          },
+          {
+            "type": "string",
+            "value": "error"
+          }
+        ]
+      },
+      "help": {
+        "type": "string"
+      }
+    }
+  }
+  if (!output.get(outputIds.setValidateInfoDone)) {
+    output.add(outputIds.setValidateInfoDone, '设置校验结果完成', infoSchema);
+  }
+  if (output.get(outputIds.setValidateInfoDone) &&
+    input.get(inputIds.SET_VALIDATE_INFO) &&
+    !input.get(inputIds.SET_VALIDATE_INFO)?.rels?.includes(outputIds.setValidateInfoDone)) {
+    input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
+  }
+  //=========== v1.3.5 end ===============
+
   return true;
 }

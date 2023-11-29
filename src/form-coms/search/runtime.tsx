@@ -104,9 +104,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   useEffect(() => {
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

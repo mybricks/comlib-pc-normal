@@ -69,14 +69,16 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   } = data.config;
 
   useLayoutEffect(() => {
-    inputs['setValue']((val: UploadFile[]) => {
+    inputs['setValue']((val: UploadFile[], relOutputs) => {
       fileListRef.current = val;
       setFileList(val);
+      relOutputs['setValueDone'](val);
     });
     inputs['setInitialValue'] &&
-      inputs['setInitialValue']((val) => {
+      inputs['setInitialValue']((val, relOutputs) => {
         setFileList(val);
         fileListRef.current = val;
+        relOutputs['setInitialValueDone'](val);
         outputs[OutputIds.OnInitial](val);
       });
     inputs['validate']((model, outputRels) => {
@@ -97,33 +99,40 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
       outputRels['returnValue'](fileListRef.current);
     });
 
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, relOutputs) => {
       setFileList([]);
+      relOutputs['resetValueDone']();
     });
 
     //设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
+      relOutputs['setDisabledDone']();
     });
     //设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
+      relOutputs['setEnabledDone']();
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
+        relOutputs['isEnableDone'](val);
       } else {
         data.config.disabled = true;
+        relOutputs['isEnableDone'](val);
       }
     });
 
-    inputs['uploadDone']((file: any) => {
+    inputs['uploadDone']((file: any, relOutputs) => {
       onUploadComplete(file);
+      relOutputs['uploadComplete'](file);
     });
-    inputs['remove']((file: any) => {
+    inputs['remove']((file: any, relOutputs) => {
       onRemoveFile(file?.uid ? file : removeFileRef.current || {});
+      relOutputs['removeDone'](file);
     });
   }, []);
 

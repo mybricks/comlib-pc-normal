@@ -127,35 +127,39 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   useLayoutEffect(() => {
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, relOutputs) => {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
-      val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
-      setValue(val);
+      let newVal =
+        val === null ? null : !result?._isValid || val === undefined ? undefined : result;
+      setValue(newVal);
+      relOutputs['setValueDone'](val);
       let transValue;
-      if (val === null || val === undefined) {
-        transValue = val;
+      if (newVal === null || newVal === undefined) {
+        transValue = newVal;
       } else {
-        transValue = transCalculation(val, data.contentType, props);
+        transValue = transCalculation(newVal, data.contentType, props);
       }
       outputs['onChange'](transValue);
     });
 
     inputs['setInitialValue'] &&
-      inputs['setInitialValue']((val) => {
+      inputs['setInitialValue']((val, relOutputs) => {
         //时间戳转换
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
         // 为null设置为null
-        val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
-        setValue(val);
+        let newVal =
+          val === null ? null : !result?._isValid || val === undefined ? undefined : result;
+        setValue(newVal);
+        relOutputs['setInitialValueDone'](val);
         //自定义转换
         let transValue;
-        if (val === null || val === undefined) {
-          transValue = val;
+        if (newVal === null || newVal === undefined) {
+          transValue = newVal;
         } else {
-          transValue = transCalculation(val, data.contentType, props);
+          transValue = transCalculation(newVal, data.contentType, props);
         }
         outputs[OutputIds.OnInitial](transValue);
       });
@@ -191,9 +195,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         });
     });
 
-    inputs['disabledDate']((val) => {
+    inputs['disabledDate']((val, outputRels) => {
       if (typeof val === 'function') {
         data.disabledDate = val;
+        outputRels['disabledDateDone'](val);
       }
     });
 
@@ -210,9 +215,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
 
     // 设置校验状态
-    inputs[CommonInputIds.SetValidateInfo]((info: object) => {
+    inputs[CommonInputIds.SetValidateInfo]((info: object, outputRels) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
       }
     });
   }, [value]);
@@ -227,20 +233,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, [data.config.picker, data.showTime]);
 
   //设置日期选择类型
-  inputs['setDateType']((val) => {
+  inputs['setDateType']((val, outputRels) => {
     const dateType = ['date', 'week', 'month', 'quarter', 'year'];
     if (dateType.includes(val)) {
       data.config.picker = val;
+      outputRels['setDateTypeDone'](val);
     } else {
       message.error('日期类型不正确');
     }
   });
 
   useLayoutEffect(() => {
-    inputs[CommonInputIds.SetColor]((color: string) => {
+    inputs[CommonInputIds.SetColor]((color: string, outputRels) => {
       const target = wrapperRef.current?.querySelector?.('input');
       if (target) {
         target.style.color = typeof color === 'string' ? color : '';
+        outputRels['setColorDone'](color);
       }
     });
     inputs[InputIds.SetOpen]?.((open: boolean) => {
@@ -249,24 +257,29 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   //重置，
-  inputs['resetValue'](() => {
+  inputs['resetValue']((_, relOutputs) => {
     setValue(void 0);
+    relOutputs['resetValueDone']();
   });
   //设置禁用
-  inputs['setDisabled'](() => {
+  inputs['setDisabled']((_, relOutputs) => {
     data.config.disabled = true;
+    relOutputs['setDisabledDone']();
   });
   //设置启用
-  inputs['setEnabled'](() => {
+  inputs['setEnabled']((_, relOutputs) => {
     data.config.disabled = false;
+    relOutputs['setEnabledDone']();
   });
 
   //设置启用/禁用
-  inputs['isEnable']((val) => {
+  inputs['isEnable']((val, relOutputs) => {
     if (val === true) {
       data.config.disabled = false;
+      relOutputs['isEnableDone'](val);
     } else {
       data.config.disabled = true;
+      relOutputs['isEnableDone'](val);
     }
   });
 
