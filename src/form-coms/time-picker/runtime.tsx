@@ -69,7 +69,7 @@ export default function ({
     (val) => {
       try {
         if (!val) {
-          setValue(val);
+          changeValue(val);
           return;
         }
         let formatVal: Moment;
@@ -79,7 +79,7 @@ export default function ({
           formatVal = moment(Number(val));
         }
         if (!formatVal.isValid()) throw Error('params error');
-        setValue(formatVal);
+        changeValue(formatVal);
       } catch (error) {
         onError('时间数据格式错误');
       }
@@ -100,7 +100,7 @@ export default function ({
           output(getValue(value));
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -148,10 +148,14 @@ export default function ({
     [format, customFormat]
   );
 
-  const onChange = (time: Moment | null, timeString: string) => {
+  const changeValue = (time: Moment | null | undefined) => {
     setValue(time);
     const value = getValue(time);
     onChangeForFc(parentSlot, { id, name, value });
+    return value;
+  };
+  const onChange = (time: Moment | null, timeString: string) => {
+    const value = changeValue(time);
     outputs['onChange'](value);
     validateTrigger(parentSlot, { id, name });
   };
