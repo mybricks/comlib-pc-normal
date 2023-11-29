@@ -39,7 +39,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useLayoutEffect(() => {
     //1.设置值
     inputs['setValue']((val) => {
-      data.color = val;
+      changeValue(val);
       switch (data.colorType) {
         case 'rgb':
           outputs['onChange'](data.color);
@@ -54,7 +54,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //2.设置初始值
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val) => {
-        data.color = val;
+        changeValue(val);
         switch (data.colorType) {
           case 'rgb':
             outputs['onInitial'](data.color);
@@ -132,20 +132,30 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
-  const onChangeComplete = (e) => {
-    data.color = e;
+  const changeValue = (val) => {
+    data.color = val;
     //值变化
     switch (data.colorType) {
       case 'rgb':
         onChangeForFc(parentSlot, { id: props.id, name: name, value: data.color });
-        outputs['onChange'](data.color);
         break;
       case 'hex':
         onChangeForFc(parentSlot, { id: props.id, name: name, value: rgbToHex(data.color) });
+        break;
+    }
+  };
+
+  const onChangeComplete = (e) => {
+    changeValue(e);
+    //值变化
+    switch (data.colorType) {
+      case 'rgb':
+        outputs['onChange'](data.color);
+        break;
+      case 'hex':
         outputs['onChange'](rgbToHex(data.color));
         break;
     }
-    //onValidateTrigger(ValidateTriggerType.OnChange);
     onValidateTrigger();
   };
 
