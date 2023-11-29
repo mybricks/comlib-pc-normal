@@ -175,6 +175,7 @@ export default function ActionBtns({
       return (
         <Button
           type={type}
+          size="small"
           style={{
             ...btn.style
           }}

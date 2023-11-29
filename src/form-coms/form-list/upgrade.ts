@@ -2,6 +2,7 @@ import { inputIds, outputIds } from "../form-container/constants";
 import { RuleKeys } from "../utils/validator";
 import { getItemSchema } from "./schema";
 import { Data, LocationEnum, SizeEnum } from "./types";
+import { InputIds as SelfInputIds } from './constants';
 
 export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
 
@@ -132,6 +133,37 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     });
   }
   //=========== v1.2.3 end ===============
+
+  /**
+   * @description v1.2.6 新增 添加一项、删除一项 输入项
+   */
+  if (!input.get(SelfInputIds.AddField)) {
+    input.add(SelfInputIds.AddField, '新增一项', {
+      type: 'object',
+      properties: {
+        index: {
+          type: 'number',
+        },
+        value: {
+          type: 'object',
+        },
+      },
+    });
+  }
+  if (!input.get(SelfInputIds.RemoveField)) {
+    input.add(SelfInputIds.RemoveField, '删除一项', {
+      type: 'object',
+      properties: {
+        key: {
+          type: 'number',
+        },
+        index: {
+          type: 'number',
+        },
+      },
+    });
+  }
+  //=========== v1.2.6 end ===============
 
   return true;
 }

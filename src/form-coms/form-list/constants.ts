@@ -13,6 +13,11 @@ export const OutputIds = {
   ON_CLICK_REMOVE: 'remove',
 };
 
+export const InputIds = {
+  AddField: 'addField',
+  RemoveField: 'removeField',
+};
+
 export const labelWidthTypes = {
   SPAN: 'span',
   PX: 'px'

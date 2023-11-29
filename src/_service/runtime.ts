@@ -1,4 +1,4 @@
-import { INPUT_ID, PARAMS_READY, READY, URL_READY } from './const';
+import { INPUT_ID, OUTPUT_ID, PARAMS_READY, READY, URL_READY } from './const';
 
 function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = {}) {
 	const { runtime } = env;
@@ -24,7 +24,17 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
       }
 
       env
-        .callConnector(finalConnector, curParams, { ...finalOptions, ...connectorConfig })
+        .callConnector(
+          finalConnector,
+          curParams,
+          {
+            ...finalOptions,
+            ...connectorConfig,
+            onResponseInterception: response => {
+              outputs[OUTPUT_ID.HEADERS]?.(response.headers || {});
+            }
+          }
+        )
         .then((val) => {
 	        if (curParams.showToplLog && typeof val === 'object' && val !== null && val.__ORIGIN_RESPONSE__) {
 		        (val.__ORIGIN_RESPONSE__?.logStack || []).map(log => {
