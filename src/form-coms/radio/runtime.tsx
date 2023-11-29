@@ -29,23 +29,16 @@ export default function Runtime({
     outputs,
     configs: {
       setValue(val) {
-        if (val === undefined) {
-          data.value = '';
-        }
-        data.value = val;
+        changeValue(val);
       },
       setInitialValue(val) {
-        if (val === undefined) {
-          data.value = '';
-        }
-        data.value = val;
+        changeValue(val);
       },
       returnValue(output) {
         output(data.value);
       },
       resetValue() {
-        data.value = '';
-        data.value = void 0;
+        changeValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -96,7 +89,7 @@ export default function Runtime({
           }
         });
         if (typeof newVal !== 'undefined') {
-          data.value = newVal;
+          changeValue(newVal);
         }
         data.config.options = ds;
       } else {
@@ -120,10 +113,17 @@ export default function Runtime({
     validateTrigger(parentSlot, { id, name });
   };
 
-  const onChange = useCallback((e) => {
-    const { value } = e.target;
+  const changeValue = useCallback((value) => {
+    if (value === undefined) {
+      data.value = '';
+    }
     data.value = value;
     onChangeForFc(parentSlot, { id: id, value, name });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const { value } = e.target;
+    changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
