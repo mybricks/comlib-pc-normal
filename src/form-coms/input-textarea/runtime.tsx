@@ -46,19 +46,16 @@ export default function ({
     outputs,
     configs: {
       setValue(val) {
-        // data.value = val;
-        setValue(val);
+        changeValue(val);
       },
       setInitialValue(val) {
-        // data.value = val;
-        setValue(val);
+        changeValue(val);
       },
       returnValue(output) {
         output(data.value);
       },
       resetValue() {
-        // data.value = void 0;
-        setValue(void 0);
+        changeValue(void 0);
       },
       setDisabled() {
         data.config.disabled = true;
@@ -127,19 +124,21 @@ export default function ({
     validateTrigger(parentSlot, { id: id, name: name });
   };
 
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
-    // data.value = value;
+  const changeValue = useCallback((value) => {
     setValue(value);
     onChangeForFc(parentSlot, { id: id, name: name, value });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const value = e.target.value;
+    changeValue(value);
     outputs['onChange'](value);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
+    changeValue(value);
     onValidateTrigger();
-    // data.value = value;
-    setValue(value);
     outputs['onBlur'](value);
   }, []);
 
@@ -174,7 +173,7 @@ export default function ({
         value={value}
         readOnly={!!edit}
         {...sizeConfig}
-        onChange={changeValue}
+        onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
       />
