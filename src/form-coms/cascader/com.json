@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "级联选择",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
@@ -24,7 +24,10 @@
         "items": {
           "type": "any"
         }
-      }
+      },
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -35,7 +38,10 @@
         "items": {
           "type": "any"
         }
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -65,28 +71,40 @@
       "desc": "清空级联选择的值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setOptions",
@@ -120,7 +138,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "setOptionsDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -146,7 +167,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -197,6 +221,112 @@
       "title": "值输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setOptionsDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "title": "输入数据源数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "title": "值",
+              "type": "any"
+            },
+            "label": {
+              "title": "名称",
+              "type": "string"
+            },
+            "disabled": {
+              "title": "禁用",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
       }
     }
   ],

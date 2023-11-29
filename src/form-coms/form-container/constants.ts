@@ -19,6 +19,10 @@ export const inputIds = {
   //显示/隐藏
   SetHidden: 'setHidden',
   SetShow: 'setShow',
+
+  setValue: 'setValue',
+  setInitialValue: 'setInitialValue',
+  resetValue: 'resetValue'
 }
 
 export const outputIds = {
@@ -32,6 +36,16 @@ export const outputIds = {
   RETURN_VALUES: 'returnValues',
   ON_VALIDATE: 'onValidate',
   ON_COLLAPSE: 'onCollapse',
+
+  setValueDone: "setValueDone",
+  setInitialValueDone: "setInitialValueDone",
+  resetValueDone: "resetValueDone",
+  setDisabledDone: "setDisabledDone",
+  setEnabledDone: "setEnabledDone",
+  isEnableDone: "isEnableDone",
+  setColorDone: "setColorDone",
+  setOptionsDone: "setOptionsDone",
+  setValidateInfoDone: "setValidateInfoDone"
 }
 
 export const slotInputIds = {

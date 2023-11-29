@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.transfer",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "组件描述",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -39,7 +39,10 @@
           }
         }
       },
-      "desc": "给穿梭框设置数据源"
+      "desc": "给穿梭框设置数据源",
+      "rels": [
+        "setSourceDone"
+      ]
     },
     {
       "id": "setValue",
@@ -50,7 +53,10 @@
           "type": "string"
         }
       },
-      "desc": "给穿梭框设置目标值"
+      "desc": "给穿梭框设置目标值",
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -61,7 +67,10 @@
         "items": {
           "type": "string"
         }
-      }
+      },
+      "rels": [
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "getValue",
@@ -80,7 +89,10 @@
       "schema": {
         "type": "any"
       },
-      "desc": "重置穿梭框目标值"
+      "desc": "重置穿梭框目标值",
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -98,7 +110,10 @@
       "schema": {
         "type": "any"
       },
-      "desc": "禁用穿梭框组件"
+      "desc": "禁用穿梭框组件",
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
@@ -106,14 +121,20 @@
       "schema": {
         "type": "any"
       },
-      "desc": "启用穿梭框组件"
+      "desc": "启用穿梭框组件",
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -139,7 +160,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -224,6 +248,103 @@
           },
           "help": {
             "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setSourceDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
             "type": "string"
           }
         }

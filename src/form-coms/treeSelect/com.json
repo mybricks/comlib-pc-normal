@@ -1,7 +1,7 @@
 {
   "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -18,7 +18,10 @@
       "desc": "设置树选择的值，并触发值变化事件输出",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -26,7 +29,10 @@
       "desc": "设置树选择的初始值，并触发初始化事件输出",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -56,7 +62,10 @@
       "desc": "清空树选择的值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setOptions",
@@ -89,7 +98,10 @@
             }
           }
         }
-      }
+      },
+      "rels":[
+        "setOptionsDone"
+      ]
     },
     {
       "id": "setLoadData",
@@ -121,35 +133,50 @@
             }
           }
         }
-      }
+      },
+      "rels":[
+        "setLoadDataDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "setDisabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels":[
+        "isEnableDone"
+      ]
     },
     {
       "id": "setLoading",
       "title": "设置加载中状态",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels":[
+        "setLoadingDone"
+      ]
     },
     {
       "id": "setColor",
@@ -157,7 +184,10 @@
       "desc": "设置下拉框里字体的颜色",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels":[
+        "setColorDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -183,7 +213,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -245,6 +278,151 @@
           },
           "value": {
             "title": "值",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setOptionsDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setLoadDataDone",
+      "title": "设置异步加载数据完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            },
+            "isLeaf": {
+              "title": "是否叶子节点",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setLoadingDone",
+      "title": "设置加载中状态完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
             "type": "string"
           }
         }

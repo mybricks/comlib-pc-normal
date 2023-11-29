@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.auto-complete",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "自动完成是一个带提示的文本输入框, 用户可以自由输入, 关键词是辅助输入",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0fcijz.b5f0933284f32e40.png",
@@ -21,7 +21,10 @@
       "desc": "设置自动完成的值，并触发值变化事件输出",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -29,7 +32,10 @@
       "desc": "设置自动完成的初始值，并触发初始化事件输出",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -59,28 +65,40 @@
       "desc": "清空自动完成的值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setColor",
@@ -88,7 +106,10 @@
       "desc": "设置输入框字体颜色",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setColorDone"
+      ]
     },
     {
       "id": "setOptions",
@@ -110,7 +131,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "setOptionsDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -136,7 +160,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -198,6 +225,101 @@
       "title": "值输出",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setOptionsDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "title": "输入数据源数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
       }
     }
   ],

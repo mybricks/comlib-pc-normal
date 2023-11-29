@@ -103,18 +103,20 @@ export default function ({
      * @description 设置字体颜色
      */
     inputs[InputIds.SetColor] &&
-      inputs[InputIds.SetColor]((color) => {
+      inputs[InputIds.SetColor]((color, relOutputs) => {
         if (inputRef?.current?.resizableTextArea?.textArea) {
           inputRef.current.resizableTextArea.textArea.style.color = color;
+          relOutputs['setColorDone'](color);
         }
       });
   }, []);
 
   useEffect(() => {
     // 设置校验状态
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

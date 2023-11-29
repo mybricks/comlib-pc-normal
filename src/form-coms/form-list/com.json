@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-list",
   "author": "ZhuLin",
   "author_name": "朱琳",
-  "version": "1.2.8",
+  "version": "1.2.7",
   "description": "可以动态增加、删除的组合表单项，数据格式为数组",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_h8a6ri.049184f3eb513d6c.png",
@@ -21,7 +21,10 @@
         "items": {
           "type": "object"
         }
-      }
+      },
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -32,7 +35,10 @@
         "items": {
           "type": "object"
         }
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -62,28 +68,40 @@
       "desc": "清空表单项的值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -109,7 +127,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     },
     {
       "id": "addField",
@@ -125,7 +146,10 @@
             "type": "object"
           }
         }
-      }
+      },
+      "rels": [
+        "addFieldDone"
+      ]
     },
     {
       "id": "removeField",
@@ -141,7 +165,10 @@
             "type": "number"
           }
         }
-      }
+      },
+      "rels": [
+        "removeFieldDone"
+      ]
     }
   ],
   "outputs": [
@@ -236,6 +263,103 @@
           },
           "key": {
             "title": "当前项标识",
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验结果完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "addFieldDone",
+      "title": "添加一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeFieldDone",
+      "title": "删除一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "number"
+          },
+          "index": {
             "type": "number"
           }
         }

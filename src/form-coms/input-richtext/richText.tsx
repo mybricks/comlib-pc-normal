@@ -152,35 +152,40 @@ export default function ({
       },
       initCB: (editor) => {
         //1、设置值
-        inputs['setValue']((val) => {
+        inputs['setValue']((val, relOutputs) => {
           if (val !== undefined && val !== null) {
             editor.setContent(val);
             valueRef.current = val;
             setValue(val);
+            relOutputs['setValueDone'](val);
             outputs['onChange'](val);
           } else {
             setValue(val);
             editor.setContent('');
+            relOutputs['setValueDone'](val);
             outputs['onChange'](val);
           }
         });
         //2、设置初始值
-        inputs['setInitialValue']((val: any) => {
+        inputs['setInitialValue']((val: any, relOutputs) => {
           if (val !== undefined && val !== null) {
             editor.setContent(val);
             valueRef.current = val;
             setValue(val);
+            relOutputs['setInitialValueDone'](val);
             outputs['onInitial'](val);
           } else {
             setValue(val);
             editor.setContent('');
+            relOutputs['setInitialValueDone'](val);
             outputs['onInitial'](val);
           }
         });
         //5. 重置值
-        inputs['resetValue'](() => {
+        inputs['resetValue']((_, relOutputs) => {
           editor.setContent('');
           valueRef.current = '';
+          relOutputs['resetValueDone']();
         });
         editor.setContent(valueRef.current);
         if (loading) {
@@ -350,27 +355,32 @@ export default function ({
     });
 
     //6. 设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, relOutputs) => {
       data.disabled = true;
+      relOutputs['setDisabledDone']();
     });
     //7. 设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, relOutputs) => {
       data.disabled = false;
+      relOutputs['setEnabledDone']();
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.disabled = false;
+        relOutputs['isEnableDone']();
       } else {
         data.disabled = true;
+        relOutputs['isEnableDone']();
       }
     });
 
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, [value]);

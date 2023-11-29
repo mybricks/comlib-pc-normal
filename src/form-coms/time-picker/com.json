@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "时间选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -22,7 +22,10 @@
       "schema": {
         "type": "number"
       },
-      "desc": "设置时间"
+      "desc": "设置时间",
+      "rels": [
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -30,7 +33,10 @@
       "schema": {
         "type": "number"
       },
-      "desc": "设置时间选择框初始值"
+      "desc": "设置时间选择框初始值",
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "getValue",
@@ -49,7 +55,10 @@
       "schema": {
         "type": "any"
       },
-      "desc": "重置时间"
+      "desc": "重置时间",
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -67,7 +76,10 @@
       "schema": {
         "type": "any"
       },
-      "desc": "禁用时间选择框"
+      "desc": "禁用时间选择框",
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
@@ -75,14 +87,20 @@
       "schema": {
         "type": "any"
       },
-      "desc": "启用时间选择框"
+      "desc": "启用时间选择框",
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "setColor",
@@ -90,7 +108,10 @@
       "desc": "设置时间选择框里字体的颜色",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setColorDone"
+      ]
     },
     {
       "id": "setValidateInfo",
@@ -116,7 +137,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setValidateInfoDone"
+      ]
     }
   ],
   "outputs": [
@@ -164,6 +188,80 @@
       "title": "值更新",
       "schema": {
         "type": "number"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
       }
     }
   ],

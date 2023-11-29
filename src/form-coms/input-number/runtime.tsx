@@ -92,9 +92,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     // 设置校验状态
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

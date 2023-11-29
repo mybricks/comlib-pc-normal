@@ -38,30 +38,34 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     //1.设置值
-    inputs['setValue']((val) => {
+    inputs['setValue']((val, relOutputs) => {
       data.color = val;
       switch (data.colorType) {
         case 'rgb':
           outputs['onChange'](data.color);
+          relOutputs['setValueDone'](data.color);
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
         case 'hex':
           outputs['onChange'](rgbToHex(data.color));
+          relOutputs['setValueDone'](data.color);
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
       }
     });
     //2.设置初始值
     inputs['setInitialValue'] &&
-      inputs['setInitialValue']((val) => {
+      inputs['setInitialValue']((val, relOutputs) => {
         data.color = val;
         switch (data.colorType) {
           case 'rgb':
             outputs['onInitial'](data.color);
+            relOutputs['setInitialValueDone'](data.color);
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
           case 'hex':
             outputs['onInitial'](rgbToHex(data.color));
+            relOutputs['setInitialValueDone'](data.color);
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
         }
@@ -99,24 +103,29 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
     //5. 重置值
-    inputs['resetValue'](() => {
+    inputs['resetValue']((_, outputRels) => {
       data.color = void 0;
+      outputRels['resetValueDone']();
     });
 
     //6. 设置禁用
-    inputs['setDisabled'](() => {
+    inputs['setDisabled']((_, outputRels) => {
       data.disabled = true;
+      outputRels['setDisabledDone']();
     });
     //7. 设置启用
-    inputs['setEnabled'](() => {
+    inputs['setEnabled']((_, outputRels) => {
       data.disabled = false;
+      outputRels['setEnabledDone']();
     });
     //8. 设置启用/禁用
-    inputs['isEnable']((val) => {
+    inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.disabled = false;
+        outputRels['isEnableDone'](val);
       } else {
         data.disabled = true;
+        outputRels['isEnableDone'](val);
       }
     });
   }, []);
@@ -161,10 +170,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   useEffect(() => {
-    inputs['setValidateInfo']((info: object) => {
+    inputs['setValidateInfo']((info: object, outputRels) => {
       //console.log('validateRelOuputRef.current',validateRelOuputRef)
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
       }
     });
   }, []);

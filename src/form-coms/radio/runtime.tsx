@@ -104,15 +104,17 @@ export default function Runtime({
       }
     });
     // 设置校验状态
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object) => {
+    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
 
     // 设置激活选项字体的颜色
-    inputs['setActiveFontColor']((color: string) => {
+    inputs['setActiveFontColor']((color: string, relOutputs) => {
       setActiveFontColor(color);
+      relOutputs['setActiveFontColorDone'](color);
     });
   }, []);
 

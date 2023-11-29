@@ -89,13 +89,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
   });
   useEffect(() => {
     //输入数据源
-    inputs['setOptions']((value) => {
+    inputs['setOptions']((value, relOutputs) => {
       setOptions(value);
+      relOutputs['setOptionsDone'](value);
     });
     // 设置校验状态
-    inputs[InputIds.SetValidateInfo]((info: object) => {
+    inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        relOutputs['setValidateInfoDone'](info);
       }
     });
   }, []);

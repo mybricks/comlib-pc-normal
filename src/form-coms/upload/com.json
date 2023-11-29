@@ -41,7 +41,10 @@
             }
           }
         }
-      }
+      },
+      "rels":[
+        "setValueDone"
+      ]
     },
     {
       "id": "setInitialValue",
@@ -69,7 +72,10 @@
             }
           }
         }
-      }
+      },
+      "rels":[
+        "setInitialValueDone"
+      ]
     },
     {
       "id": "validate",
@@ -96,28 +102,40 @@
       "title": "重置值",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels":[
+        "resetValueDone"
+      ]
     },
     {
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "setDisabledDone"
+      ]
     },
     {
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "setEnabledDone"
+      ]
     },
     {
       "id": "isEnable",
       "title": "启用/禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "isEnableDone"
+      ]
     },
     {
       "id": "uploadDone",
@@ -141,7 +159,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "uploadComplete"
+      ]
     },
     {
       "id": "remove",
@@ -156,7 +177,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "removeDone"
+      ]
     }
   ],
   "outputs": [
@@ -260,6 +284,127 @@
             "type": "number"
           },
           "response": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "percent": {
+              "type": "number"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "uploadComplete",
+      "title": "上传完成后",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeDone",
+      "title": "删除文件完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
             "type": "string"
           }
         }

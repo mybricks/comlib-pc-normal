@@ -103,9 +103,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   useEffect(() => {
-    inputs['setValidateInfo']((info: object) => {
+    inputs['setValidateInfo']((info: object, outputRels) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
+        outputRels['setValidateInfoDone'](info);
       }
     });
   }, []);
