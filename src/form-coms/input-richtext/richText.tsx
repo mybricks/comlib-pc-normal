@@ -153,34 +153,20 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val) => {
-          if (val !== undefined && val !== null) {
-            editor.setContent(val);
-            valueRef.current = val;
-            setValue(val);
-            outputs['onChange'](val);
-          } else {
-            setValue(val);
-            editor.setContent('');
-            outputs['onChange'](val);
-          }
+          editor.setContent('');
+          changeValue(val);
+          outputs['onChange'](val);
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any) => {
-          if (val !== undefined && val !== null) {
-            editor.setContent(val);
-            valueRef.current = val;
-            setValue(val);
-            outputs['onInitial'](val);
-          } else {
-            setValue(val);
-            editor.setContent('');
-            outputs['onInitial'](val);
-          }
+          editor.setContent('');
+          changeValue(val);
+          outputs['onInitial'](val);
         });
         //5. 重置值
         inputs['resetValue'](() => {
           editor.setContent('');
-          valueRef.current = '';
+          changeValue('');
         });
         editor.setContent(valueRef.current);
         if (loading) {
@@ -205,10 +191,19 @@ export default function ({
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    valueRef.current = content.trim() || '';
-    setValue(valueRef.current);
+    changeValue(content.trim() || '');
+
     onValidateTrigger();
     outputs['onBlur'](valueRef.current);
+  }, []);
+
+  // 值变化
+  const changeValue = useCallback((content) => {
+    if (content !== undefined && content !== null) {
+      valueRef.current = content;
+    }
+    setValue(valueRef.current);
+    onChangeForFc(parentSlot, { id: id, name: name, value: content.trim() });
   }, []);
 
   //值变化
@@ -221,9 +216,8 @@ export default function ({
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    valueRef.current = content.trim() || '';
-    setValue(valueRef.current);
-    onChangeForFc(parentSlot, { id: id, name: name, value: valueRef.current });
+    changeValue(content.trim() || '');
+
     outputs['onChange'](valueRef.current);
   }, []);
 
