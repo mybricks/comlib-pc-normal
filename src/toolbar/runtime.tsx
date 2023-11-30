@@ -177,30 +177,26 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
 
       const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key } = item;
 
-      return (
-        <>
-          {!isSlot ? (
-            <div key={key} className={css.button} data-btn-idx={item.key}>
-              <Button
-                type={(type as any) || allType}
-                danger={typeof danger !== 'undefined' ? danger : allDanger}
-                size={size || allSize}
-                shape={shape || allShape}
-                disabled={todo === 'disable' ? true : disabled}
-                onClick={() => onClick(item)}
-                onDoubleClick={() => onDoubleClick(item)}
-                loading={loading}
-                block={true}
-              >
-                {renderBtnContext({ ...item, text: env.i18n(item.text) })}
-              </Button>
-            </div>
-          ) : (
-            <div className={css.emptyWrap} data-slot-idx={item.key}>
-              {slots?.[key] && slots?.[key].render({ key })}
-            </div>
-          )}
-        </>
+      return !isSlot ? (
+        <div key={key} className={css.button} data-btn-idx={item.key}>
+          <Button
+            type={(type as any) || allType}
+            danger={typeof danger !== 'undefined' ? danger : allDanger}
+            size={size || allSize}
+            shape={shape || allShape}
+            disabled={todo === 'disable' ? true : disabled}
+            onClick={() => onClick(item)}
+            onDoubleClick={() => onDoubleClick(item)}
+            loading={loading}
+            block={true}
+          >
+            {renderBtnContext({ ...item, text: env.i18n(item.text) })}
+          </Button>
+        </div>
+      ) : (
+        <div className={css.emptyWrap} data-slot-idx={item.key}>
+          {slots?.[key] && slots?.[key].render({ key })}
+        </div>
       );
     });
   };
