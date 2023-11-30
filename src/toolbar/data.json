@@ -8,10 +8,7 @@
       "outVal": 0,
       "inVal": "",
       "isCustom": false,
-      "contentSize": [
-        14,
-        14
-      ],
+      "contentSize": [14, 14],
       "iconDistance": 8,
       "src": "",
       "loading": false,
@@ -19,12 +16,10 @@
       "style": {
         "height": "auto",
         "width": "auto"
-      }
+      },
+      "useIcon": false
     }
   ],
   "layout": "flex-start",
-  "spaceSize": [
-    4,
-    4
-  ]
+  "spaceSize": [4, 4]
 }
