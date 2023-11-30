@@ -4,7 +4,7 @@ import { uuid } from '../utils';
 
 export default (props: RuntimeParams<Data>) => {
   const { data, inputs, env } = props;
-  const { runtime, edit, canvasElement } = env;
+  const { runtime, edit, i18n, canvasElement } = env;
   const { type, message, showTitle, description, duration, placement, top, bottom } = data;
 
   const openNotification = (onClose: () => void, val: any) => {
@@ -15,8 +15,8 @@ export default (props: RuntimeParams<Data>) => {
       duration,
       placement,
       key: uuid(),
-      description: val?.content || description,
-      message: showTitle && (val?.title || message),
+      description: val?.content || i18n(description),
+      message: showTitle && (val?.title || i18n(message)),
       getContainer: !(edit || runtime.debug) ? () => canvasElement || document.body : void 0
     });
   };
