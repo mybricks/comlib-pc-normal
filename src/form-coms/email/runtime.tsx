@@ -24,60 +24,64 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const { edit } = env;
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState();
 
-  useFormItemInputs({
-    id: props.id,
-    name: props.name,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        changeValue(val);
-      },
-      setInitialValue(val) {
-        changeValue(val);
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        changeValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs['onValidate'](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs['onValidate'](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
@@ -88,7 +92,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   // };
 
   const changeValue = useCallback((value) => {
-    data.value = value;
+    setValue(value);
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
   }, []);
 
@@ -126,7 +130,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     <Input
       type="text"
       {...inputConfig}
-      value={data.value}
+      value={value}
       readOnly={!!edit}
       onChange={onChange}
       onBlur={onBlur}
