@@ -12,6 +12,7 @@ interface OnChangeProps {
  * @description 通知容器进行校验
  */
 const onChange = (parentSlot: any, { id, name, value }: OnChangeProps) => {
+  console.log(parentSlot, value, '-----onChange-----')
   parentSlot?._inputs[slotInputIds.ON_CHANGE]?.({ id, name, value })
 }
 

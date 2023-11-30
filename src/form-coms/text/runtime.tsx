@@ -116,6 +116,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const changeValue = useCallback((value) => {
     data.value = value;
+    console.log('changeValue');
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
   }, []);
 
