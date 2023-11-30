@@ -131,11 +131,12 @@ export default function ({
   });
 
   useLayoutEffect(() => {
-    inputs[InputIds.SetColor]((color: string) => {
+    inputs[InputIds.SetColor]((color: string, relOutputs) => {
       const target = wrapperRef.current?.querySelector?.('input');
       if (target) {
         target.style.color = typeof color === 'string' ? color : '';
       }
+      relOutputs['setColorDone'](color);
     });
   }, []);
 

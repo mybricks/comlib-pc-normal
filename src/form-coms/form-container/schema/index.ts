@@ -61,7 +61,15 @@ function refreshSchema({ data, inputs, outputs, slots }) {
   })
 
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
-  inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema)
+  inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema);
+
+  if(outputs.get('setInitialValuesDone')){
+    outputs.get('setInitialValuesDone').setSchema(schema);
+  }
+
+  if(outputs.get('setFieldsValue')){
+    outputs.get('setFieldsValue').setSchema(schema);
+  }
 
   const contentSlot = slots?.get('content')
 
@@ -80,9 +88,12 @@ function refreshParamsSchema(data, outputs) {
   outputs.get(outputIds.ON_MERGE_FINISH).setSchema(schema)
 }
 
-function refreshFormItemPropsSchema({ data, inputs }) {
+function refreshFormItemPropsSchema({ data, inputs, outputs }) {
   const formItemPropsSchema = getFormItemPropsSchema(data)
   inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
+  if(outputs.get('setFormItemsPropsDone')){
+    outputs.get('setFormItemsPropsDone').setSchema(formItemPropsSchema);
+  }
 }
 
-export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema, refreshFormItemPropsSchema }
+export { refreshSchema, refreshParamsSchema, getFormItemPropsSchema, refreshFormItemPropsSchema, getSubmitSchema }

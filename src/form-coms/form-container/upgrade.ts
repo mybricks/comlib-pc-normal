@@ -1,6 +1,6 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
-import { getFormItemPropsSchema } from './schema'
+import { getFormItemPropsSchema, getSubmitSchema } from './schema'
 
 export default function ({ data, input, output, slot, children }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
@@ -332,6 +332,64 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
       item.name = item.label;
     }
   })
+
+  /**
+    * @description v1.4.18 , 表单容器添加关联输出项
+  */
+  //1、设置表单数据完成
+  if (!output.get("setInitialValuesDone")) {
+    output.add("setInitialValuesDone", '设置表单数据完成', getSubmitSchema(data));
+  }
+  if (output.get("setInitialValuesDone") &&
+    input.get("setInitialValues") &&
+    !input.get("setInitialValues")?.rels?.includes("setInitialValuesDone")) {
+    input.get("setInitialValues").setRels(["setInitialValuesDone"]);
+  }
+  //2、设置表单数据（触发值变化）完成
+  if (!output.get("setFieldsValueDone")) {
+    output.add("setFieldsValueDone", '设置表单数据（触发值变化）完成', getSubmitSchema(data));
+  }
+  if (output.get("setFieldsValueDone") &&
+    input.get("setFieldsValue") &&
+    !input.get("setFieldsValue")?.rels?.includes("setFieldsValueDone")) {
+    input.get("setFieldsValue").setRels(["setFieldsValueDone"]);
+  }
+  //3、设置禁用完成，setDisabledDone
+  if (!output.get("setDisabledDone")) {
+    output.add("setDisabledDone", '设置禁用完成', { type: 'any' });
+  }
+  if (output.get("setDisabledDone") &&
+    input.get("setDisabled") &&
+    !input.get("setDisabled")?.rels?.includes("setDisabledDone")) {
+    input.get("setDisabled").setRels(["setDisabledDone"]);
+  }
+  //4、设置启用完成，setEnabledDone
+  if (!output.get("setEnabledDone")) {
+    output.add("setEnabledDone", '设置启用完成', { type: 'any' });
+  }
+  if (output.get("setEnabledDone") &&
+    input.get("setEnabled") &&
+    !input.get("setEnabled")?.rels?.includes("setEnabledDone")) {
+    input.get("setEnabled").setRels(["setEnabledDone"]);
+  }
+  //5、校验表单项完成 validateFieldsDone
+  if (!output.get("validateFieldsDone")) {
+    output.add("validateFieldsDone", '设置启用完成', { type: "boolean" });
+  }
+  if (output.get("validateFieldsDone") &&
+    input.get("validateFields") &&
+    !input.get("validateFields")?.rels?.includes("validateFieldsDone")) {
+    input.get("validateFields").setRels(["validateFieldsDone"]);
+  }
+  //6、设置表单项配置 setFormItemsPropsDone
+  if (!output.get("setFormItemsPropsDone")) {
+    output.add("setFormItemsPropsDone", '设置表单项配置完成', getFormItemPropsSchema(data));
+  }
+  if (output.get("setFormItemsPropsDone") &&
+    input.get("setFormItemsProps") &&
+    !input.get("setFormItemsProps")?.rels?.includes("setFormItemsPropsDone")) {
+    input.get("setFormItemsProps").setRels(["setFormItemsPropsDone"]);
+  }
 
   return true;
 }

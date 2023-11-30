@@ -90,8 +90,10 @@ export default {
     }),
     Editor<Data>('弹出位置', EditorType.Select, 'placement', {
       options: [
+        { value: PlacementEnum.top, label: '正上方' },
         { value: PlacementEnum.topLeft, label: '左上方' },
         { value: PlacementEnum.topRight, label: '右上方' },
+        { value: PlacementEnum.bottom, label: '正下方' },
         { value: PlacementEnum.bottomLeft, label: '左下方' },
         { value: PlacementEnum.bottomRight, label: '右下方' }
       ],
@@ -104,8 +106,8 @@ export default {
     Editor<Data>('上边距', EditorType.Number, 'top', {
       options: [{ min: 0, max: 2000, width: 1 }],
       ifVisible({ data }: EditorResult<Data>) {
-        return (
-          data.placement === PlacementEnum.topLeft || data.placement === PlacementEnum.topRight
+        return [PlacementEnum.topLeft, PlacementEnum.topRight, PlacementEnum.top].includes(
+          data.placement
         );
       },
       description: '消息从顶部弹出时，距离顶部的位置，单位像素',
@@ -118,9 +120,8 @@ export default {
     Editor<Data>('下边距', EditorType.Number, 'bottom', {
       options: [{ min: 0, max: 2000, width: 1 }],
       ifVisible({ data }: EditorResult<Data>) {
-        return (
-          data.placement === PlacementEnum.bottomLeft ||
-          data.placement === PlacementEnum.bottomRight
+        return [PlacementEnum.bottomLeft, PlacementEnum.bottomRight, PlacementEnum.bottom].includes(
+          data.placement
         );
       },
       description: '消息从底部弹出时，距离底部的位置，单位像素',

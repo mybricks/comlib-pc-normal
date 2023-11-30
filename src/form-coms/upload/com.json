@@ -111,7 +111,7 @@
       "id": "setDisabled",
       "title": "设置禁用",
       "schema": {
-        "type": "boolean"
+        "type": "any"
       },
       "rels": [
         "setDisabledDone"
@@ -121,7 +121,7 @@
       "id": "setEnabled",
       "title": "设置启用",
       "schema": {
-        "type": "boolean"
+        "type": "any"
       },
       "rels": [
         "setEnabledDone"

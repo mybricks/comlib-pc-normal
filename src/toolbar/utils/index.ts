@@ -20,7 +20,8 @@ export const getNewBtn = (): BtnItem => {
       height: 'auto',
       width: 'auto'
     },
-    isSlot: false
+    isSlot: false,
+    useIcon: false
   };
 };
 
