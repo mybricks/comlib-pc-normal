@@ -10,6 +10,8 @@ export interface Data {
 }
 
 export enum PlacementEnum {
+  top = 'top',
+  bottom = 'bottom',
   topLeft = 'topLeft',
   topRight = 'topRight',
   bottomLeft = 'bottomLeft',
