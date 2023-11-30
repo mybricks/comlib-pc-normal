@@ -6,7 +6,7 @@ import { TypeEnum } from '../constants';
 
 export default {
   '@init'({ style }) {
-    style.width = 64;
+    style.width = 'fit-content';
     style.height = 32;
   },
   '@resize': {
@@ -16,17 +16,6 @@ export default {
     style: [
       ...styleEditor,
       {
-        //title:'SAAA',
-        // catelogChange: {
-        //   value: {
-        //     get({ data, focusArea }) {
-        //
-        //     },
-        //     set({ data, focusArea, catelog }) {
-        //
-        //     }
-        //   }
-        // },
         items: [
           {
             title: '按钮样式',
