@@ -1,5 +1,5 @@
 import { Form, Input, InputRef, Image } from 'antd';
-import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode, useEffect } from 'react';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { inputIds, outputIds } from '../form-container/constants';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -35,63 +35,67 @@ export default function (props: RuntimeParams<Data>) {
 
   const inputRef = useRef<InputRef>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState();
 
-  useFormItemInputs({
-    id: props.id,
-    name: props.name,
-    parentSlot,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        changeValue(val);
-      },
-      setInitialValue(val) {
-        changeValue(val);
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        changeValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      parentSlot,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, relOutput) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = relOutput;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              relOutput(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, relOutput) {
+          validateFormItem({
+            value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            relOutput(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = relOutput;
+                outputs[outputIds.ON_VALIDATE](value);
+              } else {
+                relOutput(r);
+              }
+            })
+            .catch((e) => {
+              relOutput(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     inputs[InputIds.SetColor]((color: string, relOutputs) => {
@@ -115,8 +119,7 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   const changeValue = useCallback((value) => {
-    data.value = value;
-    console.log('changeValue');
+    setValue(value);
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
   }, []);
 
@@ -168,7 +171,7 @@ export default function (props: RuntimeParams<Data>) {
       placeholder={env.i18n(data.config.placeholder)}
       addonBefore={env.i18n(data.config.addonBefore)}
       addonAfter={env.i18n(data.config.addonAfter)}
-      value={data.value}
+      value={value}
       readOnly={!!edit}
       onChange={onChange}
       onBlur={onBlur}
