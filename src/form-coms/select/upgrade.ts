@@ -222,7 +222,7 @@ export default function ({
    */
   //1、设置值
   if (!output.get(outputIds.setValueDone)) {
-    output.add(outputIds.setValueDone, '设置值完成', { type: 'number' });
+    output.add(outputIds.setValueDone, '设置值完成', { type: 'string' });
   }
   if (output.get(outputIds.setValueDone) &&
     input.get(inputIds.setValue) &&
@@ -231,7 +231,7 @@ export default function ({
   }
   //2、设置初始值
   if (!output.get(outputIds.setInitialValueDone)) {
-    output.add(outputIds.setInitialValueDone, '设置初始值完成', { type: 'number' });
+    output.add(outputIds.setInitialValueDone, '设置初始值完成', { type: 'string' });
   }
   if (output.get(outputIds.setInitialValueDone) &&
     input.get(inputIds.setInitialValue) &&
@@ -282,7 +282,7 @@ export default function ({
   }
   //5、设置禁用
   if (!output.get(outputIds.setDisabledDone)) {
-    output.add(outputIds.setDisabledDone, '只读完成', { type: "any" });
+    output.add(outputIds.setDisabledDone, '禁用完成', { type: "any" });
   }
   if (output.get(outputIds.setDisabledDone) &&
     input.get(inputIds.SET_DISABLED) &&
@@ -300,7 +300,7 @@ export default function ({
   }
   //7、启用/禁用isEnable
   if (!output.get(outputIds.isEnableDone)) {
-    output.add(outputIds.isEnableDone, '启用/只读完成', { type: "boolean" });
+    output.add(outputIds.isEnableDone, '启用/禁用完成', { type: "boolean" });
   }
   if (output.get(outputIds.isEnableDone) &&
     input.get(inputIds.IsEnable) &&

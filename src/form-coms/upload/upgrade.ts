@@ -194,6 +194,16 @@ export default function ({ input, output, slot, data }): boolean {
   /**
    * @description v1.0.27 新增关联输出项
    */
+  if(input.get('setDisabled').schema.type === 'boolean'){
+    input.get('setDisabled').setSchema({
+      type: 'any'
+    })
+  }
+  if(input.get('setEnabled').schema.type === 'boolean'){
+    input.get('setEnabled').setSchema({
+      type: 'any'
+    })
+  }
   //1、设置值
   const initValueSchema = {
     "type": "array",
