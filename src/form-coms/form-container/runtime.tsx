@@ -45,15 +45,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useLayoutEffect(() => {
     if (env.runtime) {
-      inputs[inputIds.SET_FIELDS_VALUE]((val) => {
+      //设置表单数据，触发值变化
+      inputs[inputIds.SET_FIELDS_VALUE]((val, relOutputs) => {
         // resetFields();
         setFieldsValue(val);
         slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+        relOutputs['setFieldsValueDone'](val);
       });
 
-      inputs[inputIds.SET_INITIAL_VALUES]((val) => {
+      //设置表单初始化数据
+      inputs[inputIds.SET_INITIAL_VALUES]((val, relOutputs) => {
         setInitialValues(val);
         slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+        relOutputs['setInitialValuesDone'](val);
       });
 
       inputs['resetFields']((val, outputRels) => {
@@ -79,18 +83,20 @@ export default function Runtime(props: RuntimeParams<Data>) {
         });
       });
 
-      inputs[inputIds.SET_DISABLED](() => {
+      inputs[inputIds.SET_DISABLED]((_, relOutputs) => {
         data.config.disabled = true;
         setDisabled();
+        relOutputs['setDisabledDone']();
       });
 
-      inputs[inputIds.SET_ENABLED](() => {
+      inputs[inputIds.SET_ENABLED]((_, relOutputs) => {
         data.config.disabled = false;
         setEnabled();
+        relOutputs['setEnabledDone']();
       });
 
       // 校验字段
-      inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[]) => {
+      inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[], relOutputs) => {
         if (typeof nameList === 'string') nameList = [nameList];
         let isValid = false;
         if (Array.isArray(nameList)) {
@@ -113,6 +119,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           logger.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
           console.warn(`${title}[校验表单项]无效: 请输入合法的字段数组`);
         }
+        relOutputs['validateFieldsDone'](isValid);
       });
 
       //------ For 表单项私有 start ---------
@@ -158,8 +165,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   }, []);
 
   if (env.runtime) {
-    inputs[inputIds.SET_FORM_ITEMS_PROPS]((val) => {
+    inputs[inputIds.SET_FORM_ITEMS_PROPS]((val, relOutputs) => {
       setFormItemsProps(val);
+      relOutputs['setFormItemsPropsDone'](val);
     });
 
     slots['content']._inputs[slotInputIds.ON_CHANGE](({ id, name, value }) => {
