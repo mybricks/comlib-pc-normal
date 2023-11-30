@@ -184,7 +184,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   if (env.runtime) {
     // 值更新
     slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
-      console.log(id, name, value, data.userAction.type, '------------onCHange----------');
       // 只有在用户操作触发时才收集更新值
       !data.userAction.type &&
         updateValue({ ...props, childrenStore, childId: id, childName: name, value });

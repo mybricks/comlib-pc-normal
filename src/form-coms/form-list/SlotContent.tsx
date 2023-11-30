@@ -21,7 +21,6 @@ const SlotContent = (
 ) => {
   const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
     props;
-  console.log(field, '----------------field----------------');
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
@@ -35,7 +34,6 @@ const SlotContent = (
       },
       wrap(comAray: { id; jsx; name; def; inputs; outputs; style }[]) {
         let comCount = comAray?.length;
-        console.log(field, '----------------wrap----------------');
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             let { item, isFormItem } = getFormItem(data, com);
