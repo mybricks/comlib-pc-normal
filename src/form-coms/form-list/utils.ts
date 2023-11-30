@@ -158,41 +158,39 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       inputs: {},
       item: {}
     };
-    Object.keys(childrenStore).forEach((key) => {
-      if (!childrenStore[key]) return;
+    if (Object.keys(childrenStore).length) {
+      Object.keys(childrenStore).forEach((key) => {
+        if (!childrenStore[key]) return;
 
-      data.items.forEach(item => {
-        const { id, name, comName, label } = item;
-        const { index, inputs, visible } = childrenStore[key][comName];
-
-        // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
-        if (!data.submitHiddenFields && !visible) {
-          return;
-        }
-
-        const formItemName = name || label;
-        inputs?.getValue().returnValue((val) => {
-          console.log(values, index, val, '--------对比-------------')
-          if (id === childId && values && JSON.stringify(values[index]?.[formItemName]) !== JSON.stringify(val)) {
-            changedValue.name = formItemName;
-            changedValue.index = index;
-            changedValue.inputs = inputs;
-            changedValue.item = item;
+        data.items.forEach((item) => {
+          const { id, name, comName, label } = item;
+          const { index, inputs, visible } = childrenStore[key][comName];
+          // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
+          if (!data.submitHiddenFields && !visible) {
+            return;
           }
+
+          const formItemName = name || label;
+          inputs?.getValue().returnValue((val) => {
+            if (id === childId && values && JSON.stringify(values[index]?.[formItemName]) !== JSON.stringify(val)) {
+              changedValue.name = formItemName;
+              changedValue.index = index;
+              changedValue.inputs = inputs;
+              changedValue.item = item;
+              resolve({
+                allValues: values,
+                changedValue
+              });
+            }
+          });
         });
       });
-      count++;
-      if (count == data.fields.length) {
-        resolve({
-          allValues: values,
-          changedValue
-        });
-      }
-    });
-    resolve({
-      allValues: values,
-      changedValue
-    });
+    } else {
+      resolve({
+        allValues: values,
+        changedValue
+      });
+    }
   }).then(({
     allValues,
     changedValue

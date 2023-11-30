@@ -83,15 +83,12 @@ const SlotContent = (
         });
 
         // childrenStore收集完成后的处理
-        if (
-          field.name === data.fields.length - 1 &&
-          isChildrenStoreValid({ data, childrenStore, comCount }) &&
-          data.userAction.type
-        ) {
+        if (isChildrenStoreValid({ data, childrenStore, comCount }) && data.userAction.type) {
           const actionType = data.userAction.type;
           switch (data.userAction.type) {
             case 'add':
             case 'init':
+              if (data.userAction.key !== field.key) return;
               data.userAction.type = '';
               const temp = deepCopy(data.userAction.value);
               const key = data.userAction.key;
