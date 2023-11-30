@@ -96,7 +96,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
                     type: "Select",
                     value: "type",
                     ifVisible(item) {
-                        return item.title === '起始日期禁选';
+                        return item.title === '起始日期禁用';
                     },
                     options: baseDateOptions,
                 },
@@ -105,7 +105,7 @@ export const DisabledDateTimeEditor = (componentType: PickerComponentType) => [
                     type: "Select",
                     value: "type",
                     ifVisible(item) {
-                        return item.title === '结束日期禁选';
+                        return item.title === '结束日期禁用';
                     },
                     options: [
                         { label: "起始日期", value: DateType.Custom },
