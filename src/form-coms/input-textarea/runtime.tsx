@@ -39,61 +39,64 @@ export default function ({
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOuputRef = useRef<any>(null);
 
-  useFormItemInputs({
-    id: id,
-    name: name,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        changeValue(val);
-      },
-      setInitialValue(val) {
-        changeValue(val);
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        changeValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: id,
+      name: name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     /**
@@ -117,10 +120,6 @@ export default function ({
       }
     });
   }, []);
-
-  useEffect(() => {
-    data.value = value;
-  }, [value]);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
@@ -170,7 +169,6 @@ export default function ({
       <Input.TextArea
         ref={inputRef}
         {...data.config}
-        // value={data.value}
         placeholder={env.i18n(data.config.placeholder)}
         value={value}
         readOnly={!!edit}
