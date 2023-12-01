@@ -27,6 +27,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState<any>();
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
@@ -37,9 +38,13 @@ export default function Runtime({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    setValue(data.value);
+  }, [data.value]);
+
+  useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value,
         env,
         model,
         rules: data.rules
@@ -50,7 +55,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](data.value);
+            outputs[OutputIds.OnValidate](value);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -61,7 +66,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      outputRels['returnValue'](value);
     });
 
     inputs['setValue']((val, outputRels) => {
@@ -156,7 +161,7 @@ export default function Runtime({
       }
       outputRels['setColorDone'](color);
     });
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -185,9 +190,9 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value === undefined) {
-      data.value = '';
+      setValue('');
     }
-    data.value = value;
+    setValue(value);
     onChangeForFc(parentSlot, { id, value, name });
   }, []);
 
@@ -198,9 +203,6 @@ export default function Runtime({
   }, []);
 
   const onInit = useCallback((value) => {
-    if (value === undefined) {
-      data.value = '';
-    }
     changeValue(value);
     outputs[OutputIds.OnInitial](value);
   }, []);
@@ -293,7 +295,7 @@ export default function Runtime({
         maxTagCount={data.config.maxTagCount}
         treeNodeFilterProp={data.config.treeNodeFilterProp}
         open={env.design ? true : void 0}
-        value={data.value}
+        value={value}
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={fieldNames}
         onChange={onChange}
