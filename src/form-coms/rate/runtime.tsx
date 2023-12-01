@@ -27,9 +27,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<number>(data.config.defaultValue);
   const validateRelOuputRef = useRef<any>(null);
+
   useLayoutEffect(() => {
-    setValue(data.config.defaultValue);
+    changeValue(data.config.defaultValue);
   }, [data.config.defaultValue]);
+
   useFormItemInputs(
     {
       inputs,

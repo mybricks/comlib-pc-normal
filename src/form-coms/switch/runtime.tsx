@@ -35,6 +35,7 @@ export default function ({
 
   useLayoutEffect(() => {
     setChecked(data.config.checked);
+    onChangeForFc(parentSlot, { id: id, value: data.config.checked, name: name });
   }, [data.config.checked]);
 
   useFormItemInputs({
