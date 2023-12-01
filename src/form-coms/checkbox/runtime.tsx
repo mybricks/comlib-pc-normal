@@ -117,7 +117,7 @@ export default function Runtime({
             newValArray.push(value);
           }
         });
-        newValArray.length ? setValue(newValArray) : void 0;
+        newValArray.length ? changeValue(newValArray) : void 0;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
