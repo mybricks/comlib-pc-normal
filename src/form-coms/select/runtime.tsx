@@ -14,7 +14,7 @@ const DefaultOptionKey = '_id';
  * 计算表单项的输出值
  * @params data 组件数据
  */
-const getOutputValue = (data, env) => {
+const getOutputValue = (data, env, value) => {
   const getOutputValuefromValue = (val, index?) => {
     let result = val;
     if (val == null) return result;
@@ -37,7 +37,7 @@ const getOutputValue = (data, env) => {
     return result;
   };
 
-  let outputValue: any = data.value;
+  let outputValue: any = value;
   if (Array.isArray(outputValue)) {
     outputValue = outputValue.map(getOutputValuefromValue);
   } else {
@@ -62,6 +62,7 @@ export default function Runtime({
   const [fetching, setFetching] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState<any>(data.value);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -82,9 +83,13 @@ export default function Runtime({
   }, [data.config.mode, data.config.labelInValue]);
 
   useLayoutEffect(() => {
+    changeValue(data.value);
+  }, [data.value]);
+
+  useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value,
         env,
         model,
         rules: data.rules
@@ -95,7 +100,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            const outputValue = getOutputValue(data, env);
+            const outputValue = getOutputValue(data, env, value);
             outputs[OutputIds.OnValidate](outputValue);
           } else {
             outputRels['returnValidate'](r);
@@ -107,7 +112,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      const outputValue = getOutputValue(data, env);
+      const outputValue = getOutputValue(data, env, value);
       outputRels['returnValue'](outputValue);
     });
 
@@ -226,7 +231,7 @@ export default function Runtime({
       }
       relOutputs['setColorDone'](color);
     });
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     const isNumberString = new RegExp(/^\d*$/);
@@ -243,10 +248,10 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value == undefined) {
-      data.value = '';
+      setValue('');
     }
-    data.value = value;
-    const outputValue = getOutputValue(data, env);
+    setValue(value);
+    const outputValue = getOutputValue(data, env, value);
     onChangeForFc(parentSlot, { id: id, value: outputValue, name });
     return outputValue;
   }, []);
@@ -258,7 +263,7 @@ export default function Runtime({
   }, []);
 
   const onBlur = useCallback((e) => {
-    const outputValue = getOutputValue(data, env);
+    const outputValue = getOutputValue(data, env, value);
     onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](outputValue);
   }, []);
@@ -285,7 +290,7 @@ export default function Runtime({
         labelInValue={false}
         showArrow={data.config.showArrow}
         options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.config.options, env)}
-        value={data.value}
+        value={value}
         onChange={onChange}
         onBlur={onBlur}
         getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}

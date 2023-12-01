@@ -85,10 +85,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.value = [];
       onChangeForFc(parentSlot, { id, value: [], name: props.name });
       data.fields = [];
-      data.MaxKey = -1;
-      if (outputRels['resetValueDone']) {
-        outputRels['resetValueDone']();
-      }
+      // data.MaxKey = -1;
+      outputRels['resetValueDone']();
     });
 
     //设置禁用

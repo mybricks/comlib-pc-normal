@@ -171,10 +171,9 @@ export default function ({
         });
         //5. 重置值
         inputs['resetValue']((_, relOutputs) => {
-          changeValue('');
-          if (relOutputs['resetValueDone']) {
-            relOutputs['resetValueDone']();
-          }
+          editor.setContent('');
+          changeValue(void 0);
+          relOutputs['resetValueDone']();
         });
         editor.setContent(valueRef.current);
         if (loading) {
@@ -210,8 +209,8 @@ export default function ({
     if (content !== undefined && content !== null) {
       valueRef.current = content;
     }
-    setValue(valueRef.current);
-    onChangeForFc(parentSlot, { id: id, name: name, value: content.trim() });
+    setValue(content?.trim());
+    onChangeForFc(parentSlot, { id: id, name: name, value: content?.trim() });
   }, []);
 
   //值变化
