@@ -4,6 +4,7 @@ export const InputIds = {
   SetSearchValue: 'searchValue',
   SetFilterValue: 'filter',
   SetSelectedKeys: 'setSelectedKeys',
+  SetExpandedKeys: 'setExpandedKeys',
   SetCheckedKeys: 'checkedValues',
   SetDisableCheckbox: 'disableCheckbox',
   SetEnableCheckbox: 'enableCheckbox',

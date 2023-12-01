@@ -80,14 +80,25 @@
     },
     {
       "id": "setSelectedKeys",
-      "title": "设置选中项",
+      "title": "设置选中节点",
       "schema": {
         "type": "array",
         "items": {
           "type": "string"
         }
       },
-      "desc": "设置树形结构中选中的节点"
+      "desc": "输入节点key数组, 设置树形结构中选中的节点"
+    },
+    {
+      "id": "setExpandedKeys",
+      "title": "设置展开节点",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "desc": "输入节点key数组, 设置树形结构中展开的节点列表"
     },
     {
       "id": "setOpenDepth",
