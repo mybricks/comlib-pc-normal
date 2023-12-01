@@ -50,12 +50,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       switch (data.colorType) {
         case 'rgb':
           outputs['onChange'](color);
-          relOutputs['setValueDone'](color);
+          if (relOutputs['setValueDone']) {
+            relOutputs['setValueDone'](color);
+          }
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
         case 'hex':
           outputs['onChange'](rgbToHex(color));
-          relOutputs['setValueDone'](color);
+          if (relOutputs['setValueDone']) {
+            relOutputs['setValueDone'](color);
+          }
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
       }
@@ -67,11 +71,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         switch (data.colorType) {
           case 'rgb':
             outputs['onInitial'](color);
-            relOutputs['setInitialValueDone'](color);
+            if (relOutputs['setInitialValueDone']) {
+              relOutputs['setInitialValueDone'](color);
+            }
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
           case 'hex':
             outputs['onInitial'](rgbToHex(color));
+            if (relOutputs['setInitialValueDone']) {
+              relOutputs['setInitialValueDone'](color);
+            }
             relOutputs['setInitialValueDone'](color);
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
@@ -112,27 +121,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //5. 重置值
     inputs['resetValue']((_, outputRels) => {
       changeValue(void 0);
-      outputRels['resetValueDone']();
+      if (outputRels['resetValueDone']) {
+        outputRels['resetValueDone']();
+      }
     });
 
     //6. 设置禁用
     inputs['setDisabled']((_, outputRels) => {
       data.disabled = true;
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
     //7. 设置启用
     inputs['setEnabled']((_, outputRels) => {
       data.disabled = false;
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     });
     //8. 设置启用/禁用
     inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.disabled = false;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.disabled = true;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
   }, [color]);
