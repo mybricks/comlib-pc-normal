@@ -149,7 +149,7 @@ export function validateForInput(
 export function getValue({ data, childrenStore, childId, childName, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, childName?: string, value?: any }) {
   return new Promise<any>((resolve, reject) => {
     let count = 0;
-    const allValues: { [k in string]: any }[] = [];
+    const values = deepCopy(data.value) || [];
     /** 子表单项值变化 */
     const changedValue = {
       index: -1,
@@ -158,61 +158,51 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       inputs: {},
       item: {}
     };
-    Object.keys(childrenStore).forEach((key) => {
-      if (!childrenStore[key]) return;
+    if (Object.keys(childrenStore).length) {
+      Object.keys(childrenStore).forEach((key) => {
+        if (!childrenStore[key]) return;
 
-      data.items.forEach(item => {
-        const { id, name, comName, label } = item;
-        const { index, inputs, visible } = childrenStore[key][comName];
-
-        // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
-        if (!data.submitHiddenFields && !visible) {
-          return;
-        }
-
-        const formItemName = name || label;
-        if (!allValues[index]) {
-          allValues[index] = {};
-        }
-        inputs?.getValue().returnValue((val) => {
-          allValues[index][formItemName] = val;
-          if (id === childId && data.value && JSON.stringify(data.value[index][formItemName]) !== JSON.stringify(val)) {
-            changedValue.name = formItemName;
-            changedValue.index = index;
-            changedValue.inputs = inputs;
-            changedValue.item = item;
+        data.items.forEach((item) => {
+          const { id, name, comName, label } = item;
+          const { index, inputs, visible } = childrenStore[key][comName];
+          // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
+          if (!data.submitHiddenFields && !visible) {
+            return;
           }
+
+          const formItemName = name || label;
+          inputs?.getValue().returnValue((val) => {
+            if (id === childId && values && JSON.stringify(values[index]?.[formItemName]) !== JSON.stringify(val)) {
+              changedValue.name = formItemName;
+              changedValue.index = index;
+              changedValue.inputs = inputs;
+              changedValue.item = item;
+              resolve({
+                allValues: values,
+                changedValue
+              });
+            }
+          });
         });
       });
-      count++;
-      if (count == data.fields.length) {
-        resolve({
-          allValues,
-          changedValue
-        });
-      }
-    });
-    resolve({
-      allValues,
-      changedValue
-    });
+    } else {
+      resolve({
+        allValues: values,
+        changedValue
+      });
+    }
   }).then(({
     allValues,
     changedValue
   }) => {
-    if (data.value?.[changedValue.index]) {
-      const { index, name, value, item, inputs } = changedValue;
-      data.value[index] = {
-        ...data.value[index],
-        [name]: value
-      };
-      data.value[index][name] = value;
-      // data.currentAction = InputIds.SetInitialValue;
-      // data.indexList = [index];
-      validateForInput({ item, index, inputs });
-    } else {
-      data.value = allValues;
-    }
+    const { index, name, value, item, inputs } = changedValue;
+    if (index < 0) return;
+    allValues[index] = {
+      ...allValues[index],
+      [name]: value
+    };
+    validateForInput({ item, index, inputs });
+    data.value = allValues;
   }).catch(e => {
     console.error('收集值失败，原因：' + e);
   });
@@ -292,13 +282,6 @@ export function setValuesForInput({
   const actionType = data.userAction.type;
   data.userAction.type = '';
 
-  // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
-  let extraAction = '';
-  if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(actionType)
-    && data.disabled) {
-    extraAction = InputIds.SetDisabled;
-  }
-
   new Promise((resolve, reject) => {
     values?.forEach((value, valIndex) => {
       if (data.userAction.startIndex > valIndex) return;
@@ -329,25 +312,30 @@ export function setValuesOfChild({
   key?: React.Key,
   value,
   actionType: string
-}) {
+}, cb?) {
   const { items: formItems } = data;
   // 当设置值/设置初始值/重置值时，需要注意保证各列表项的禁用状态
   let extraAction = '';
   const inputId = actionType === 'add' ? InputIds.SetInitialValue : actionType;
+  const inputDoneId = inputId + 'Done';
 
   if ([InputIds.SetValue, InputIds.SetInitialValue, InputIds.ResetValue].includes(inputId)
     && data.disabled) {
     extraAction = InputIds.SetDisabled;
   }
-  const names = actionType === 'add'
-    ? Object.keys(value)
-    : data.items.map(item => item.name);
+  const names = data.items.map(item => item.name);
   if (key !== undefined) {
-    names.forEach((name) => {
+    names.forEach((name, inx) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
+      const isLast = inx === names.length - 1;
       if (item) {
         const { inputs, index } = childrenStore[key][item.comName];
-        inputs[inputId] && inputs[inputId](deepCopy(value[name]));
+        inputs[inputId] && inputs[inputId](deepCopy(value[name]))
+        [inputDoneId]?.(val => {
+          if (isLast) {
+            cb?.();
+          }
+        });
         extraAction
           && inputs[extraAction]
           && inputs[extraAction]();

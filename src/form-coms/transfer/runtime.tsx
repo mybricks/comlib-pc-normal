@@ -64,7 +64,7 @@ export default function ({
       message.error('穿梭框目标值必须是数组类型');
       return;
     }
-    setTargetKeys(val);
+    changeValue(val);
   };
 
   const getTransferValue = useCallback(() => {
@@ -84,7 +84,7 @@ export default function ({
           output(getTransferValue());
         },
         resetValue() {
-          setTargetKeys(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -129,9 +129,13 @@ export default function ({
     validateTrigger(parentSlot, { id, name: name });
   };
 
-  const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
+  const changeValue = (targetKeys: string[] | undefined) => {
     setTargetKeys(targetKeys);
     onChangeForFc(parentSlot, { id, name, value: targetKeys });
+  };
+
+  const onChange = (targetKeys: string[], direction, moveKeys: string[]) => {
+    changeValue(targetKeys);
     onValidateTrigger();
     outputs['onChange'](targetKeys);
   };

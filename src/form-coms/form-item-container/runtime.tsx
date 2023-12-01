@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useState, useLayoutEffect, useRef } from 'react';
 import { validateTrigger } from '../form-container/models/validate';
 import { InputIds, OutputIds } from '../types';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -11,6 +11,7 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, name, style } =
     props;
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState();
 
   useLayoutEffect(() => {
     if (!data.childrenInputs) {
@@ -18,30 +19,29 @@ export default function (props: RuntimeParams<Data>) {
     }
 
     inputs['setValue']((val, outputRels) => {
-      data.value = val;
+      changeValue(val);
       outputRels['setValueDone'](val);
-      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
-      onChangeForFc(parentSlot, { id: props.id, value: val, name });
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
       outputs['onChange'](val);
     });
 
     inputs['setInitialValue']((val, outputRels) => {
-      data.value = val;
+      changeValue(val);
       outputRels['setInitialValueDone'](val);
-      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
       outputs[OutputIds.OnInitial](val);
     });
 
     // 设置表单项值
     slots[SlotIds.FormItem].outputs[SlotOutputIds.SetCurValue]?.((val) => {
-      data.value = val;
-      onChangeForFc(parentSlot, { id: props.id, value: val, name });
+      changeValue(val);
+      outputs['onChange'](val);
       onValidateTrigger();
     });
 
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value,
         env,
         model,
         rules: data.rules
@@ -52,7 +52,7 @@ export default function (props: RuntimeParams<Data>) {
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[outputIds.ON_VALIDATE](data.value);
+            outputs[outputIds.ON_VALIDATE](value);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -62,12 +62,12 @@ export default function (props: RuntimeParams<Data>) {
         });
     });
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      outputRels['returnValue'](value);
     });
 
     inputs['resetValue']((_, outputRels) => {
-      data.value = void 0;
-      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](data.value);
+      changeValue(void 0);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
       outputRels['resetValueDone']();
     });
 
@@ -109,7 +109,12 @@ export default function (props: RuntimeParams<Data>) {
         outputRels['setValidateInfoDone'](info);
       }
     });
-  }, []);
+  }, [value]);
+
+  const changeValue = (val) => {
+    setValue(val);
+    onChangeForFc(parentSlot, { id: props.id, value: val, name });
+  };
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id, name });

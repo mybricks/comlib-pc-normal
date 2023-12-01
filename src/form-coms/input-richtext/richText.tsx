@@ -153,38 +153,21 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val, relOutputs) => {
-          if (val !== undefined && val !== null) {
-            editor.setContent(val);
-            valueRef.current = val;
-            setValue(val);
-            relOutputs['setValueDone'](val);
-            outputs['onChange'](val);
-          } else {
-            setValue(val);
-            editor.setContent('');
-            relOutputs['setValueDone'](val);
-            outputs['onChange'](val);
-          }
+          editor.setContent('');
+          changeValue(val);
+          relOutputs['setValueDone'](val);
+          outputs['onChange'](val);
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any, relOutputs) => {
-          if (val !== undefined && val !== null) {
-            editor.setContent(val);
-            valueRef.current = val;
-            setValue(val);
-            relOutputs['setInitialValueDone'](val);
-            outputs['onInitial'](val);
-          } else {
-            setValue(val);
-            editor.setContent('');
-            relOutputs['setInitialValueDone'](val);
-            outputs['onInitial'](val);
-          }
+          editor.setContent('');
+          changeValue(val);
+          relOutputs['setInitialValueDone'](val);
+          outputs['onInitial'](val);
         });
         //5. 重置值
         inputs['resetValue']((_, relOutputs) => {
-          editor.setContent('');
-          valueRef.current = '';
+          changeValue('');
           relOutputs['resetValueDone']();
         });
         editor.setContent(valueRef.current);
@@ -210,10 +193,19 @@ export default function ({
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    valueRef.current = content.trim() || '';
-    setValue(valueRef.current);
+    changeValue(content.trim() || '');
+
     onValidateTrigger();
     outputs['onBlur'](valueRef.current);
+  }, []);
+
+  // 值变化
+  const changeValue = useCallback((content) => {
+    if (content !== undefined && content !== null) {
+      valueRef.current = content;
+    }
+    setValue(valueRef.current);
+    onChangeForFc(parentSlot, { id: id, name: name, value: content.trim() });
   }, []);
 
   //值变化
@@ -226,9 +218,8 @@ export default function ({
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    valueRef.current = content.trim() || '';
-    setValue(valueRef.current);
-    onChangeForFc(parentSlot, { id: id, name: name, value: valueRef.current });
+    changeValue(content.trim() || '');
+
     outputs['onChange'](valueRef.current);
   }, []);
 

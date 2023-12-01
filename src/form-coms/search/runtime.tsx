@@ -52,16 +52,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       name,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
           output(value);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
@@ -116,22 +116,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
-  //值更新
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
+  const changeValue = useCallback((value) => {
     setValue(value);
     if (data.isSelect) {
       onChangeForFc(parentSlot, { id: id, name: name, value: [data.initValue, value] });
-      outputs['onChange']([data.initValue, value]);
     } else {
       onChangeForFc(parentSlot, { id: id, name: name, value });
-      outputs['onChange'](value);
     }
   }, []);
 
-  const onChange = (val) => {
-    changeSelectValue(val);
-  };
+  //值更新
+  const onChange = useCallback((e) => {
+    const value = e.target.value;
+    changeValue(value);
+    if (data.isSelect) {
+      outputs['onChange']([data.initValue, value]);
+    } else {
+      outputs['onChange'](value);
+    }
+  }, []);
 
   const changeSelectValue = (val) => {
     if (val === undefined) {
@@ -171,13 +174,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
             style={{ width: data.selectWidth }}
             value={data.initValue}
             options={i18nFn(data.staticOptions, env)}
-            onChange={onChange}
+            onChange={changeSelectValue}
           ></Select>
           <Search
             style={{
               width: `calc(100% - ${data.selectWidth})`
             }}
-            onChange={changeValue}
+            onChange={onChange}
             onSearch={onSearch}
             onBlur={onBlur}
             value={value}
@@ -194,7 +197,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return !data.isSelect ? (
     <div>
       <Search
-        onChange={changeValue}
+        onChange={onChange}
         onSearch={onSearch}
         onBlur={onBlur}
         value={value}

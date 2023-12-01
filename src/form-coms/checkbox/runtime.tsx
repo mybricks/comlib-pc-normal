@@ -152,19 +152,19 @@ export default function Runtime({
       data.value = [];
       data.value = checkedValue;
     }
+    onChangeForFc(parentSlot, { id, name, value: checkedValue });
   }, []);
 
   // 多选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id, name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
 
   // 全选框监听事件
   const onCheckAllChange = (e) => {
-    data.value = e.target.checked ? data.config.options.map((item) => item.value) : [];
+    changeValue(e.target.checked ? data.config.options.map((item) => item.value) : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
     onChangeForFc(parentSlot, { id, name, value: data.value });

@@ -53,13 +53,17 @@ export default function ({
       inputs,
       outputs,
       configs: {
-        setValue: setValue,
-        setInitialValue: setValue,
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
         returnValue(output) {
           output(value);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.readOnly = true;
@@ -90,9 +94,13 @@ export default function ({
     });
   }, []);
 
-  const onChange = (value: string) => {
+  const changeValue = (value) => {
     setValue(value);
     onChangeForFc(parentSlot, { id, name, value });
+  };
+
+  const onChange = (value: string) => {
+    changeValue(value);
     outputs.onChange(value);
     validateTrigger(parentSlot, { id, name });
   };

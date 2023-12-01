@@ -94,18 +94,18 @@ export default function ({
     try {
       const initValue = formatValue(val) as [Moment, Moment];
       if (val === null || val === undefined) {
-        setValue(val);
+        changeValue(val);
         return;
       }
       if (isDefaultInput(initValue)) {
-        setValue(initValue);
+        changeValue(initValue);
       }
       if (!isValidInput(initValue)) {
-        setValue(initValue);
+        changeValue(initValue);
         return;
       }
       if (isValidRange(initValue, 'moment')) {
-        setValue(initValue);
+        changeValue(initValue);
       } else {
         onError('开始时间必须小于结束时间');
       }
@@ -127,7 +127,7 @@ export default function ({
           output(getValue(value));
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -176,11 +176,18 @@ export default function ({
     [outFormat, splitChar, format, customFormat]
   );
 
-  const onChange = useCallback(
-    (values, formatString: [string, string]) => {
+  const changeValue = useCallback(
+    (values) => {
       setValue(values);
       const formatValue = getValue(values);
       onChangeForFc(parentSlot, { id, name, value: formatValue });
+      return formatValue;
+    },
+    [outFormat, splitChar]
+  );
+  const onChange = useCallback(
+    (values, formatString: [string, string]) => {
+      const formatValue = changeValue(values);
       outputs['onChange'](formatValue);
       validateTrigger(parentSlot, { id, name });
     },
