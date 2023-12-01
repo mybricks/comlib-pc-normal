@@ -6,7 +6,6 @@
     "关闭时": ""
   },
   "config": {
-    "disabled": false,
-    "checked": false
+    "disabled": false
   }
 }

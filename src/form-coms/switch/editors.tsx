@@ -94,7 +94,7 @@ export default {
           ],
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.config.checked;
+              return data.config.checked || false;
             },
             set({ data }: EditorResult<Data>, value: boolean) {
               data.config.checked = value;
