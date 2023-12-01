@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { InputNumber, Slider, Row, Col } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -23,60 +23,67 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    name,
-    configs: {
-      setValue(val) {
-        changeValue(val);
-      },
-      setInitialValue(val) {
-        changeValue(val);
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        changeValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  const [value, setValue] = useState<any>();
+  const [singleValue, setSingleValue] = useState<any>();
+  const [rangeValue, setRangeValue] = useState<any>();
+
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      name,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[OutputIds.OnValidate](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[OutputIds.OnValidate](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value, singleValue, rangeValue]
+  );
   useEffect(() => {
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
@@ -95,18 +102,18 @@ export default function Runtime({
   const changeValue = useCallback((val) => {
     if (val === undefined) {
       // 迂回重置视图
-      data.value = 0;
-      data.singleValue = 0;
-      data.rangeValue = [0, 0];
-      data.singleValue = void 0;
-      data.rangeValue = void 0;
+      setValue(0);
+      setSingleValue(0);
+      setRangeValue([0, 0]);
+      setSingleValue(void 0);
+      setRangeValue(void 0);
     }
-    data.value = val;
+    setValue(val);
     if (typeCheck(val, 'number')) {
-      data.singleValue = val;
+      setSingleValue(val);
     }
     if (typeCheck(val, 'array')) {
-      data.rangeValue = val;
+      setRangeValue(val);
     }
     onChangeForFc(parentSlot, { id: id, value: val, name });
   }, []);
@@ -136,7 +143,7 @@ export default function Runtime({
     max: data.config.max
   };
   const inputNumberProps: InputNumberProps = {
-    value: data.singleValue,
+    value: singleValue,
     min: data.config.min,
     max: data.config.max,
     disabled: data.config.disabled,
@@ -152,14 +159,14 @@ export default function Runtime({
       {...commonProps}
       className={css.antSliderHorizontal}
       range={data.config.range || true}
-      value={data.rangeValue}
+      value={rangeValue}
     />
   ) : !data.useInput ? (
-    <Slider {...commonProps} className={css.antSliderHorizontal} value={data.singleValue} />
+    <Slider {...commonProps} className={css.antSliderHorizontal} value={singleValue} />
   ) : (
     <Row>
       <Col span={data.sliderSpan}>
-        <Slider {...commonProps} className={css.antSliderHorizontal} value={data.singleValue} />
+        <Slider {...commonProps} className={css.antSliderHorizontal} value={singleValue} />
       </Col>
       <Col className={css.inputCol} span={data.inputSpan}>
         <InputNumber {...inputNumberProps} />
