@@ -43,7 +43,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.value = value;
         outputs[OutputIds.OnChange](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
-        outputRels['setValueDone']?.(value);
+        if (outputRels['setValueDone']) {
+          outputRels['setValueDone']?.(value);
+        }
         changeValue({ data, id, outputs, parentSlot, name: props.name });
         const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetValue;
@@ -58,7 +60,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetInitialValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
-        outputRels['setInitialValueDone']?.(value);
+        if (outputRels['setInitialValueDone']) {
+          outputRels['setInitialValueDone']?.(value);
+        }
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
         const changeLength = generateFields(data);
@@ -82,7 +86,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       onChangeForFc(parentSlot, { id, value: [], name: props.name });
       data.fields = [];
       data.MaxKey = -1;
-      outputRels['resetValueDone']();
+      if (outputRels['resetValueDone']) {
+        outputRels['resetValueDone']();
+      }
     });
 
     //设置禁用
@@ -90,7 +96,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.disabled = true;
       data.userAction.type = InputIds.SetDisabled;
       setValuesForInput({ data, childrenStore });
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
 
     //设置启用
@@ -98,7 +106,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.disabled = false;
       data.userAction.type = InputIds.SetEnabled;
       setValuesForInput({ data, childrenStore });
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     }, []);
 
     //设置启用/禁用
@@ -107,12 +117,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.disabled = false;
         data.userAction.type = InputIds.SetEnabled;
         setValuesForInput({ data, childrenStore });
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.disabled = true;
         data.userAction.type = InputIds.SetDisabled;
         setValuesForInput({ data, childrenStore });
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
 

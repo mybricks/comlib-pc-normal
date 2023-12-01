@@ -155,20 +155,26 @@ export default function ({
         inputs['setValue']((val, relOutputs) => {
           editor.setContent('');
           changeValue(val);
-          relOutputs['setValueDone'](val);
+          if (relOutputs['setValueDone']) {
+            relOutputs['setValueDone'](val);
+          }
           outputs['onChange'](val);
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any, relOutputs) => {
           editor.setContent('');
           changeValue(val);
-          relOutputs['setInitialValueDone'](val);
+          if (relOutputs['setInitialValueDone']) {
+            relOutputs['setInitialValueDone'](val);
+          }
           outputs['onInitial'](val);
         });
         //5. 重置值
         inputs['resetValue']((_, relOutputs) => {
           changeValue('');
-          relOutputs['resetValueDone']();
+          if (relOutputs['resetValueDone']) {
+            relOutputs['resetValueDone']();
+          }
         });
         editor.setContent(valueRef.current);
         if (loading) {
@@ -348,22 +354,30 @@ export default function ({
     //6. 设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //7. 设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.disabled = false;
-        relOutputs['isEnableDone']();
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone']();
+        }
       } else {
         data.disabled = true;
-        relOutputs['isEnableDone']();
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone']();
+        }
       }
     });
 

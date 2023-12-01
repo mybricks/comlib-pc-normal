@@ -133,7 +133,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       const result: any = isNaN(num) ? moment(val) : moment(num);
       val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
       const transValue = changeValue(val);
-      relOutputs['setValueDone'](val);
+      if (relOutputs['setValueDone']) {
+        relOutputs['setValueDone'](val);
+      }
       outputs['onChange'](transValue);
     });
 
@@ -145,7 +147,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         // 为null设置为null
         val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
         const transValue = changeValue(val);
-        relOutputs['setInitialValueDone'](val);
+        if (relOutputs['setInitialValueDone']) {
+          relOutputs['setInitialValueDone'](val);
+        }
         outputs[OutputIds.OnInitial](transValue);
       });
 
@@ -244,27 +248,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //重置，
   inputs['resetValue']((_, relOutputs) => {
     changeValue(void 0);
-    relOutputs['resetValueDone']();
+    if (relOutputs['resetValueDone']) {
+      relOutputs['resetValueDone']();
+    }
   });
   //设置禁用
   inputs['setDisabled']((_, relOutputs) => {
     data.config.disabled = true;
-    relOutputs['setDisabledDone']();
+    if (relOutputs['setDisabledDone']) {
+      relOutputs['setDisabledDone']();
+    }
   });
   //设置启用
   inputs['setEnabled']((_, relOutputs) => {
     data.config.disabled = false;
-    relOutputs['setEnabledDone']();
+    if (relOutputs['setEnabledDone']) {
+      relOutputs['setEnabledDone']();
+    }
   });
 
   //设置启用/禁用
   inputs['isEnable']((val, relOutputs) => {
     if (val === true) {
       data.config.disabled = false;
-      relOutputs['isEnableDone'](val);
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['isEnableDone'](val);
+      }
     } else {
       data.config.disabled = true;
-      relOutputs['isEnableDone'](val);
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['isEnableDone'](val);
+      }
     }
   });
 

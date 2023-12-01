@@ -72,13 +72,17 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     inputs['setValue']((val: UploadFile[], relOutputs) => {
       fileListRef.current = val;
       setFileList(val);
-      relOutputs['setValueDone'](val);
+      if (relOutputs['setValueDone']) {
+        relOutputs['setValueDone'](val);
+      }
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val, relOutputs) => {
         setFileList(val);
         fileListRef.current = val;
-        relOutputs['setInitialValueDone'](val);
+        if (relOutputs['setInitialValueDone']) {
+          relOutputs['setInitialValueDone'](val);
+        }
         outputs[OutputIds.OnInitial](val);
       });
     inputs['validate']((model, outputRels) => {
@@ -101,28 +105,38 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
     inputs['resetValue']((_, relOutputs) => {
       setFileList([]);
-      relOutputs['resetValueDone']();
+      if (relOutputs['resetValueDone']) {
+        relOutputs['resetValueDone']();
+      }
     });
 
     //设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       }
     });
 
