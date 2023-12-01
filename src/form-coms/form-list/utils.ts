@@ -323,9 +323,7 @@ export function setValuesOfChild({
     && data.disabled) {
     extraAction = InputIds.SetDisabled;
   }
-  const names = actionType === 'add'
-    ? Object.keys(value)
-    : data.items.map(item => item.name);
+  const names = data.items.map(item => item.name);
   if (key !== undefined) {
     names.forEach((name, inx) => {
       const item = formItems.find((item) => (item.name || item.label) === name);

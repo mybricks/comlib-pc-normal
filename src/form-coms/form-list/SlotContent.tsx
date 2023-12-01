@@ -103,11 +103,7 @@ const SlotContent = (
                 data.userAction.key = -1;
                 data.userAction.value = undefined;
               };
-              if (temp) {
-                setValuesOfChild({ data, childrenStore, key, value: temp, actionType }, cb);
-              } else {
-                cb();
-              }
+              setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
               break;
             default:
               setValuesForInput({ data, childrenStore });
