@@ -43,7 +43,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.value = value;
         outputs[OutputIds.OnChange](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
-        outputRels['setValueDone'](value);
+        outputRels['setValueDone']?.(value);
         changeValue({ data, id, outputs, parentSlot, name: props.name });
         const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetValue;
@@ -58,7 +58,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs[InputIds.SetInitialValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
         data.value = value;
-        outputRels['setInitialValueDone'](value);
+        outputRels['setInitialValueDone']?.(value);
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
         const changeLength = generateFields(data);
