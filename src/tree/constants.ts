@@ -10,6 +10,7 @@ export const InputIds = {
   SetDragConfig: 'setDragConfig',
   SetOpenDepth: 'setOpenDepth',
   SetAddTips: 'addTips',
+  GetCheckedKeys: 'submit'
 }
 
 export const OutputIds = {

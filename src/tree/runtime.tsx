@@ -15,7 +15,7 @@ import {
 } from './utils';
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds } from './constants';
-import TreeNode from './Components/TreeNode';
+import TreeNode from './Components/TreeNode/index';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -240,11 +240,12 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     const resultKeys =
       data.outParentKeys || data.checkStrictly ? checkedKeys : excludeParentKeys(data, checkedKeys);
-    inputs['submit']((val, relOutputs) => {
-      relOutputs['submit'](
-        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
-      );
-    });
+    inputs['submit'] &&
+      inputs['submit']((val, relOutputs) => {
+        relOutputs['submit'](
+          outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+        );
+      });
   }, [checkedKeys]);
 
   /**

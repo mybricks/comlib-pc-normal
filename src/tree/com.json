@@ -90,38 +90,11 @@
       "desc": "设置树形结构中选中的节点"
     },
     {
-      "id": "checkedValues",
-      "title": "设置勾选项",
+      "id": "setOpenDepth",
+      "title": "设置展开深度",
+      "desc": "设置树的展开深度: 0表示全部折叠, -1表示全部展开",
       "schema": {
-        "type": "array",
-        "items": {
-          "title": "字段名",
-          "type": "string"
-        }
-      }
-    },
-    {
-      "id": "disableCheckbox",
-      "title": "禁用勾选",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "enableCheckbox",
-      "title": "启用勾选",
-      "schema": {
-        "type": "any"
-      }
-    },
-    {
-      "id": "submit",
-      "title": "获取勾选项数据",
-      "rels": [
-        "submit"
-      ],
-      "schema": {
-        "type": "any"
+        "type": "number"
       }
     },
     {
@@ -176,24 +149,6 @@
           "dropScopeMessage": {
             "type": "string"
           }
-        }
-      }
-    },
-    {
-      "id": "setOpenDepth",
-      "title": "设置展开深度",
-      "desc": "设置树的展开深度: 0表示全部折叠, -1表示全部展开",
-      "schema": {
-        "type": "number"
-      }
-    },
-    {
-      "id": "addTips",
-      "title": "设置添加提示文案",
-      "schema": {
-        "type": "array",
-        "items": {
-          "type": "string"
         }
       }
     }

@@ -11,7 +11,7 @@ import {
   IconType,
   ValueType
 } from './types';
-import { OutputIds } from './constants';
+import { InputIds, OutputIds } from './constants';
 import {
   getNodeSuggestions,
   refreshSchema,
@@ -515,8 +515,48 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.checkable;
                 },
-                set({ data }: EditorResult<Data>, value: boolean | 'custom') {
+                set({ data, input }: EditorResult<Data>, value: boolean | 'custom') {
                   data.checkable = value;
+                  if (value && !input.get(InputIds.SetCheckedKeys)) {
+                    input.add({
+                      id: InputIds.SetCheckedKeys,
+                      title: '设置勾选项',
+                      schema: {
+                        type: 'array',
+                        items: {
+                          title: '字段名',
+                          type: 'string'
+                        }
+                      }
+                    });
+                    input.add({
+                      id: InputIds.GetCheckedKeys,
+                      title: '获取勾选项数据',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+                    input.get(InputIds.GetCheckedKeys).setRels([InputIds.GetCheckedKeys]);
+                    input.add({
+                      id: InputIds.SetDisableCheckbox,
+                      title: '禁用勾选框',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+                    input.add({
+                      id: InputIds.SetEnableCheckbox,
+                      title: '启用勾选框',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+                  } else {
+                    input.remove(InputIds.SetCheckedKeys);
+                    input.remove(InputIds.GetCheckedKeys);
+                    input.remove(InputIds.SetDisableCheckbox);
+                    input.remove(InputIds.SetEnableCheckbox);
+                  }
                 }
               }
             },
@@ -945,15 +985,25 @@ export default {
             },
             commonActionBtnsEditor(data, output),
             {
-              title: '添加节点',
+              title: '可添加节点',
               description: '开启后，树组件支持添加节点功能',
               type: 'Switch',
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.addable;
                 },
-                set({ data }: EditorResult<Data>, value: boolean) {
+                set({ data, input }: EditorResult<Data>, value: boolean) {
                   data.addable = value;
+                  if (value) {
+                    input.add('addTips', '设置添加提示文案', {
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    });
+                  } else {
+                    input.remove('addTips');
+                  }
                 }
               }
             },
