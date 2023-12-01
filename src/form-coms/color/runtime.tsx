@@ -38,11 +38,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const [color, setColor] = useState(data.color);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setColor(data.color);
   }, [data.color]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     //1.设置值
     inputs['setValue']((val, relOutputs) => {
       setColor(val);
