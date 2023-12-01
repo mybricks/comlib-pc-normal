@@ -23,10 +23,16 @@ export default function Runtime({
   const [activeFontColor, setActiveFontColor] = useState('');
   const [single, setSingle] = useState<boolean>(false);
 
+  const [value, setValue] = useState<any>(data.value);
+
+  useLayoutEffect(() => {
+    setValue(data.value);
+  }, [data.value]);
+
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value: value,
         env,
         model,
         rules: data.rules
@@ -37,7 +43,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](data.value);
+            outputs[OutputIds.OnValidate](value);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -48,7 +54,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      outputRels['returnValue'](value);
     });
 
     inputs['setValue']((val, outputRels) => {
@@ -57,7 +63,7 @@ export default function Runtime({
       } else {
         changeValue(val);
         outputRels['setValueDone'](val);
-        outputs['onChange'](data.value);
+        outputs['onChange'](value);
       }
     });
 
@@ -111,7 +117,7 @@ export default function Runtime({
             newValArray.push(value);
           }
         });
-        newValArray.length ? (data.value = newValArray) : void 0;
+        newValArray.length ? setValue(newValArray) : void 0;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
@@ -145,12 +151,12 @@ export default function Runtime({
     if (Array.isArray(checkedValue)) {
       setIndeterminate(!!checkedValue.length && checkedValue.length < data.config.options.length);
       setCheckAll(checkedValue.length === data.config.options.length);
-      data.value = checkedValue;
+      setValue(checkedValue);
     } else {
       setIndeterminate(false);
       setCheckAll(false);
-      data.value = [];
-      data.value = checkedValue;
+      setValue([]);
+      setValue(checkedValue);
     }
     onChangeForFc(parentSlot, { id, name, value: checkedValue });
   }, []);
@@ -167,8 +173,8 @@ export default function Runtime({
     changeValue(e.target.checked ? data.config.options.map((item) => item.value) : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
-    onChangeForFc(parentSlot, { id, name, value: data.value });
-    outputs['onChange'](data.value);
+    onChangeForFc(parentSlot, { id, name, value: value });
+    outputs['onChange'](value);
     onValidateTrigger();
   };
   if (data.renderError) {
@@ -193,7 +199,7 @@ export default function Runtime({
     return {
       ...opt,
       label: (
-        <span style={{ color: data.value?.includes(opt.value) ? activeFontColor : '' }}>
+        <span style={{ color: value?.includes(opt.value) ? activeFontColor : '' }}>
           {env.i18n(opt.label)}
         </span>
       )
@@ -225,7 +231,7 @@ export default function Runtime({
         style={checkboxGroup}
         {...data.config}
         options={newOptions}
-        value={data.value}
+        value={value}
         onChange={onChange}
       />
     </div>

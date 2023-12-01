@@ -1,5 +1,5 @@
 import { Switch, SwitchProps } from 'antd';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useLayoutEffect } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { validateTrigger } from '../form-container/models/validate';
@@ -31,6 +31,12 @@ export default function ({
   const { edit } = env;
   const validateRelOuputRef = useRef<any>(null);
 
+  const [checked, setChecked] = useState<any>(data.config.checked);
+
+  useLayoutEffect(() => {
+    setChecked(data.config.checked);
+  }, [data.config.checked]);
+
   useFormItemInputs({
     inputs,
     outputs,
@@ -43,7 +49,7 @@ export default function ({
         changeValue(val);
       },
       returnValue(output) {
-        output(data.config.checked);
+        output(checked);
       },
       resetValue() {
         changeValue(void 0);
@@ -63,7 +69,7 @@ export default function ({
       },
       validate(model, outputRels) {
         validateFormItem({
-          value: data.config.checked,
+          value: checked,
           env,
           model,
           rules: data.rules
@@ -74,7 +80,7 @@ export default function ({
             );
             if (cutomRule?.status) {
               validateRelOuputRef.current = outputRels;
-              outputs[OutputIds.OnValidate](data.config.checked);
+              outputs[OutputIds.OnValidate](checked);
             } else {
               outputRels(r);
             }
@@ -102,7 +108,7 @@ export default function ({
 
   const changeValue = useCallback((checked) => {
     if (env.edit) return;
-    data.config.checked = checked;
+    setChecked(checked);
     onChangeForFc(parentSlot, { id: id, value: checked, name: name });
   }, []);
 
@@ -117,6 +123,7 @@ export default function ({
     <div>
       <Switch
         {...data.config}
+        checked={checked}
         onChange={onChange}
         // onBlur={onBlur}
       />

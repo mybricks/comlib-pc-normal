@@ -21,62 +21,70 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
+  const [value, setValue] = useState<any>();
 
-  useFormItemInputs({
-    name,
-    id,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        changeValue(val);
-      },
-      setInitialValue(val) {
-        changeValue(val);
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        changeValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useLayoutEffect(() => {
+    setValue(data.value);
+  }, [data.value]);
+
+  useFormItemInputs(
+    {
+      name,
+      id,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
@@ -117,9 +125,9 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value === undefined) {
-      data.value = '';
+      setValue('');
     }
-    data.value = value;
+    setValue(value);
     onChangeForFc(parentSlot, { id: id, value, name });
   }, []);
 
@@ -137,7 +145,7 @@ export default function Runtime({
           optionType={data.enableButtonStyle ? 'button' : 'default'}
           buttonStyle={data.buttonStyle}
           disabled={data.config.disabled}
-          value={data.value}
+          value={value}
           onChange={onChange}
         >
           <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
@@ -151,7 +159,7 @@ export default function Runtime({
                   checked={item.checked}
                   style={{
                     marginRight: 8,
-                    color: data.value === item.value ? activeFontColor : ''
+                    color: value === item.value ? activeFontColor : ''
                   }}
                 >
                   {env.i18n(label)}
@@ -170,7 +178,7 @@ export default function Runtime({
         optionType={data.enableButtonStyle ? 'button' : 'default'}
         buttonStyle={data.buttonStyle}
         {...data.config}
-        value={data.value}
+        value={value}
         onChange={onChange}
       >
         {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
@@ -181,7 +189,7 @@ export default function Runtime({
               value={item.value}
               disabled={item.disabled}
               checked={item.checked}
-              style={{ marginRight: 8, color: data.value === item.value ? activeFontColor : '' }}
+              style={{ marginRight: 8, color: value === item.value ? activeFontColor : '' }}
             >
               {env.i18n(label)}
             </Radio>
