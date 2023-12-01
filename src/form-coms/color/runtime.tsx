@@ -36,20 +36,26 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [isShow, setIsShow] = useState<boolean>(false);
   const validateRelOuputRef = useRef<any>(null);
 
+  const [color, setColor] = useState(data.color);
+
+  useLayoutEffect(() => {
+    setColor(data.color);
+  }, [data.color]);
+
   useLayoutEffect(() => {
     //1.设置值
     inputs['setValue']((val, relOutputs) => {
-      data.color = val;
+      setColor(val);
       changeValue(val);
       switch (data.colorType) {
         case 'rgb':
-          outputs['onChange'](data.color);
-          relOutputs['setValueDone'](data.color);
+          outputs['onChange'](color);
+          relOutputs['setValueDone'](color);
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
         case 'hex':
-          outputs['onChange'](rgbToHex(data.color));
-          relOutputs['setValueDone'](data.color);
+          outputs['onChange'](rgbToHex(color));
+          relOutputs['setValueDone'](color);
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
       }
@@ -60,13 +66,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         changeValue(val);
         switch (data.colorType) {
           case 'rgb':
-            outputs['onInitial'](data.color);
-            relOutputs['setInitialValueDone'](data.color);
+            outputs['onInitial'](color);
+            relOutputs['setInitialValueDone'](color);
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
           case 'hex':
-            outputs['onInitial'](rgbToHex(data.color));
-            relOutputs['setInitialValueDone'](data.color);
+            outputs['onInitial'](rgbToHex(color));
+            relOutputs['setInitialValueDone'](color);
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
         }
@@ -74,7 +80,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //3.校验
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.color,
+        value: color,
         env,
         model,
         rules: data.rules
@@ -83,7 +89,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs['onValidate'](data.color);
+            outputs['onValidate'](color);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -96,10 +102,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['getValue']((val, outputRels) => {
       switch (data.colorType) {
         case 'rgb':
-          outputRels['returnValue'](data.color);
+          outputRels['returnValue'](color);
           break;
         case 'hex':
-          outputRels['returnValue'](rgbToHex(data.color));
+          outputRels['returnValue'](rgbToHex(color));
           break;
       }
     });
@@ -129,7 +135,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         outputRels['isEnableDone'](val);
       }
     });
-  }, []);
+  }, [color]);
 
   const onClick = (e) => {
     e.stopPropagation();
@@ -143,14 +149,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const changeValue = (val) => {
-    data.color = val;
+    setColor(val);
     //值变化
     switch (data.colorType) {
       case 'rgb':
-        onChangeForFc(parentSlot, { id: props.id, name: name, value: data.color });
+        onChangeForFc(parentSlot, { id: props.id, name: name, value: val });
         break;
       case 'hex':
-        onChangeForFc(parentSlot, { id: props.id, name: name, value: rgbToHex(data.color) });
+        onChangeForFc(parentSlot, { id: props.id, name: name, value: rgbToHex(val) });
         break;
     }
   };
@@ -160,10 +166,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //值变化
     switch (data.colorType) {
       case 'rgb':
-        outputs['onChange'](data.color);
+        outputs['onChange'](color);
         break;
       case 'hex':
-        outputs['onChange'](rgbToHex(data.color));
+        outputs['onChange'](rgbToHex(color));
         break;
     }
     onValidateTrigger();
@@ -182,7 +188,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     inputs['setValidateInfo']((info: object, outputRels) => {
-      //console.log('validateRelOuputRef.current',validateRelOuputRef)
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
         outputRels['setValidateInfoDone'](info);
@@ -197,7 +202,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         className={css.block}
         style={{
           width: data.width,
-          backgroundColor: data.color,
+          backgroundColor: color || '#000000',
           cursor: data.disabled ? 'not-allowed' : void 0
         }}
       >
@@ -206,7 +211,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         ></div>
       </div>
       <div className={css.colorPicker} onClick={colorOnClick}>
-        {isShow ? <ColorPicker color={data.color} onChangeComplete={onChangeComplete} /> : void 0}
+        {isShow ? (
+          <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
+        ) : (
+          void 0
+        )}
       </div>
     </div>
   );
