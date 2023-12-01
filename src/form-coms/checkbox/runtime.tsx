@@ -26,7 +26,7 @@ export default function Runtime({
   const [value, setValue] = useState<any>(data.value);
 
   useLayoutEffect(() => {
-    setValue(data.value);
+    changeValue(data.value);
   }, [data.value]);
 
   useLayoutEffect(() => {

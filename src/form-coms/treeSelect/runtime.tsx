@@ -38,10 +38,6 @@ export default function Runtime({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    setValue(data.value);
-  }, [data.value]);
-
-  useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
         value,

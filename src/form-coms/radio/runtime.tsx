@@ -24,7 +24,7 @@ export default function Runtime({
   const [value, setValue] = useState<any>();
 
   useLayoutEffect(() => {
-    setValue(data.value);
+    changeValue(data.value);
   }, [data.value]);
 
   useFormItemInputs(

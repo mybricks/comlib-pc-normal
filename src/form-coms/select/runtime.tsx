@@ -83,7 +83,7 @@ export default function Runtime({
   }, [data.config.mode, data.config.labelInValue]);
 
   useLayoutEffect(() => {
-    setValue(data.value);
+    changeValue(data.value);
   }, [data.value]);
 
   useLayoutEffect(() => {

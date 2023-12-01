@@ -39,7 +39,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [color, setColor] = useState(data.color);
 
   useLayoutEffect(() => {
-    setColor(data.color);
+    changeValue(data.color);
   }, [data.color]);
 
   useLayoutEffect(() => {

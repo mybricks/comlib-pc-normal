@@ -61,7 +61,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           output(value);
         },
         resetValue() {
-          changeValue('');
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
