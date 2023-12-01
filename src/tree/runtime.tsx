@@ -15,7 +15,7 @@ import {
 } from './utils';
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds } from './constants';
-import TreeNode from './Components/TreeNode';
+import TreeNode from './Components/TreeNode/index';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -157,11 +157,11 @@ export default function (props: RuntimeParams<Data>) {
           data.filterValue = filterValue;
         });
 
-      // 设置选中项
+      // 设置选中节点
       inputs.setSelectedKeys &&
-        inputs.setSelectedKeys((keys: Array<string>) => {
+        inputs.setSelectedKeys((keys: Array<string> = []) => {
           if (!Array.isArray(keys)) {
-            return onError('设置选中项参数是数组');
+            return onError('设置选中节点参数是数组');
           }
           setSelectedKeys(keys);
           const selectedValues = outputNodeValues(
@@ -171,6 +171,16 @@ export default function (props: RuntimeParams<Data>) {
             data.valueType
           );
           outputs[OutputIds.OnNodeClick](selectedValues);
+        });
+
+      // 设置展开节点
+      inputs.setExpandedKeys &&
+        inputs.setExpandedKeys((keys: Array<string> = []) => {
+          if (!Array.isArray(keys)) {
+            return onError('设置展开节点参数是数组');
+          }
+          data.expandedKeys = keys;
+          setExpandedKeys(keys);
         });
 
       // 设置勾选项
@@ -240,11 +250,12 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     const resultKeys =
       data.outParentKeys || data.checkStrictly ? checkedKeys : excludeParentKeys(data, checkedKeys);
-    inputs['submit']((val, relOutputs) => {
-      relOutputs['submit'](
-        outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
-      );
-    });
+    inputs['submit'] &&
+      inputs['submit']((val, relOutputs) => {
+        relOutputs['submit'](
+          outputNodeValues(data.treeData, resultKeys, keyFieldName, data.valueType)
+        );
+      });
   }, [checkedKeys]);
 
   /**

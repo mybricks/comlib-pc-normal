@@ -75,7 +75,9 @@ export default function Runtime({
         }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
-        outputRels['setValueDone'](val);
+        if (outputRels['setValueDone']) {
+          outputRels['setValueDone'](val);
+        }
         outputs[OutputIds.OnChange](val);
       } else {
         logger.error(`${title}【设置值】参数应为基本类型`);
@@ -89,7 +91,9 @@ export default function Runtime({
           : logger.error(`${title}【设置初始值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
-        outputRels['setInitialValueDone'](val);
+        if (outputRels['setInitialValueDone']) {
+          outputRels['setInitialValueDone'](val);
+        }
       } else {
         logger.error(`${title}【设置初始值】参数应为基本类型`);
       }
@@ -97,7 +101,9 @@ export default function Runtime({
 
     inputs['resetValue']((_, outputRels) => {
       changeValue(void 0);
-      outputRels['resetValueDone']();
+      if (outputRels['resetValueDone']) {
+        outputRels['resetValueDone']();
+      }
     });
 
     inputs['setOptions']((ds, outputRels) => {
@@ -121,22 +127,30 @@ export default function Runtime({
     //设置禁用
     inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
 

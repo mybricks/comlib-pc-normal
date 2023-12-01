@@ -73,35 +73,47 @@ export default function Runtime({
           logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
-          outputRels['setInitialValueDone'](val);
+          if (outputRels['setInitialValueDone']) {
+            outputRels['setInitialValueDone'](val);
+          }
           outputs[OutputIds.OnInitial](val);
         }
       });
 
     inputs['resetValue']((_, outputRels) => {
       changeValue(undefined);
-      outputRels['resetValueDone']();
+      if (outputRels['resetValueDone']()) {
+        outputRels['resetValueDone']();
+      }
     });
 
     //设置禁用
     inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
 

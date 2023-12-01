@@ -121,7 +121,9 @@ export default function Runtime({
         logger.warn(valueTypeCheck.message);
       } else {
         const outputValue = changeValue(val);
-        relOutputs['setValueDone'](val);
+        if (relOutputs['setValueDone']) {
+          relOutputs['setValueDone'](val);
+        }
         outputs[OutputIds.OnChange](outputValue);
       }
     });
@@ -132,14 +134,18 @@ export default function Runtime({
           logger.warn(valueTypeCheck.message);
         } else {
           const outputValue = changeValue(val);
-          relOutputs['setInitialValueDone'](val);
+          if (relOutputs['setInitialValueDone']) {
+            relOutputs['setInitialValueDone'](val);
+          }
           outputs[OutputIds.OnInitial](outputValue);
         }
       });
 
     inputs['resetValue']((_, relOutputs) => {
       changeValue(void 0);
-      relOutputs['resetValueDone']();
+      if (relOutputs['resetValueDone']) {
+        relOutputs['resetValueDone']();
+      }
     });
 
     inputs['setOptions']((ds, relOutputs) => {
@@ -184,21 +190,29 @@ export default function Runtime({
     //设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       }
     });
 

@@ -68,14 +68,18 @@ export default function (props: RuntimeParams<Data>) {
     inputs['resetValue']((_, outputRels) => {
       changeValue(void 0);
       slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
-      outputRels['resetValueDone']();
+      if (outputRels['resetValueDone']) {
+        outputRels['resetValueDone']();
+      }
     });
 
     //设置禁用
     inputs['setDisabled']((val, outputRels) => {
       data.disabled = true;
       slots[SlotIds.FormItem].inputs['onDisabled'](val);
-      outputRels['setDisabledDone'](val);
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone'](val);
+      }
       setValuesForInput({ data, actionId: InputIds.SetDisabled, val });
     });
 
@@ -83,7 +87,9 @@ export default function (props: RuntimeParams<Data>) {
     inputs['setEnabled']((val, outputRels) => {
       data.disabled = false;
       slots[SlotIds.FormItem].inputs['onEnabled'](val);
-      outputRels['setEnabledDone'](val);
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone'](val);
+      }
       setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
     }, []);
 
@@ -92,12 +98,16 @@ export default function (props: RuntimeParams<Data>) {
       if (val === true) {
         data.disabled = false;
         slots[SlotIds.FormItem].inputs['onEnabled'](val);
-        outputRels['isEnableDone'](val);
+        if (outputRels['setEnabledDone']) {
+          outputRels['isEnableDone'](val);
+        }
         setValuesForInput({ data, actionId: InputIds.SetEnabled, val });
       } else {
         data.disabled = true;
         slots[SlotIds.FormItem].inputs['onDisabled'](val);
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
         setValuesForInput({ data, actionId: InputIds.SetDisabled, val });
       }
     });

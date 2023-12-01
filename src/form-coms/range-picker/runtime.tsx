@@ -158,7 +158,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
           return data;
         });
         const transValue = changeValue(val);
-        relOutputs['setValueDone'](initVal);
+        if (relOutputs['setValueDone']) {
+          relOutputs['setValueDone'](initVal);
+        }
         outputs['onChange'](transValue);
       }
       if (val === undefined || val === null) {
@@ -180,7 +182,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
             return data;
           });
           const transValue = changeValue(val);
-          relOutputs['setInitialValueDone'](initVal);
+          if (relOutputs['setInitialValueDone']) {
+            relOutputs['setInitialValueDone'](initVal);
+          }
           outputs[OutputIds.OnInitial](transValue);
         }
         if (val === undefined || val === null) {
@@ -247,27 +251,37 @@ export default function Runtime(props: RuntimeParams<Data>) {
     //重置
     inputs['resetValue']((_, relOutputs) => {
       changeValue(void 0);
-      relOutputs['resetValueDone']();
+      if (relOutputs['resetValueDone']) {
+        relOutputs['resetValueDone']();
+      }
     });
     //设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       }
     });
 
