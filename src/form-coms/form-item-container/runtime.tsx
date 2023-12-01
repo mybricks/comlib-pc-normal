@@ -21,14 +21,14 @@ export default function (props: RuntimeParams<Data>) {
     inputs['setValue']((val, outputRels) => {
       changeValue(val);
       outputRels['setValueDone'](val);
-      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](val);
       outputs['onChange'](val);
     });
 
     inputs['setInitialValue']((val, outputRels) => {
       changeValue(val);
       outputRels['setInitialValueDone'](val);
-      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](val);
       outputs[OutputIds.OnInitial](val);
     });
 
