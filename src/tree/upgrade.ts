@@ -242,5 +242,15 @@ export default function ({
 
   //=========== v1.0.33 end ===============
 
+  /**
+    * @description v1.0.38 增加 setExpandedKeys设置展开节点 输入项
+    */
+
+  if (!input.get(InputIds.SetExpandedKeys)) {
+    input.add(InputIds.SetExpandedKeys, '设置展开节点', { type: 'array', items: { type: 'string' } });
+  }
+
+  //=========== v1.0.38 end ===============
+
   return true;
 }
