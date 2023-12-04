@@ -287,13 +287,18 @@ export function setValuesForInput({
 }) {
   const { value: values, items: formItems } = data;
   const actionType = data.userAction.type;
-  data.userAction.type = '';
-
   new Promise((resolve, reject) => {
+    let count = 0;
+    const cb = ((count) => {
+      count++;
+      if (count === values?.length) {
+        data.userAction.type = '';
+      }
+    })(count);
     values?.forEach((value, valIndex) => {
       if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
-      setValuesOfChild({ data, childrenStore, key, value, actionType });
+      setValuesOfChild({ data, childrenStore, key, value, actionType }, cb);
     });
     resolve(1);
   })
