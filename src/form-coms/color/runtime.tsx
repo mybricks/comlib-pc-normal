@@ -81,7 +81,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
             if (relOutputs['setInitialValueDone']) {
               relOutputs['setInitialValueDone'](color);
             }
-            relOutputs['setInitialValueDone'](color);
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
         }

@@ -62,7 +62,7 @@ export default function Runtime({
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
-        outputRels['setValueDone'](val);
+        outputRels['setValueDone']?.(val);
         outputs['onChange'](value);
       }
     });
@@ -189,6 +189,15 @@ export default function Runtime({
     outputs['onChange'](value);
     onValidateTrigger();
   };
+
+  useEffect(() => {
+    if (options.length === 1 && options[0].label === '' && !data.checkAll) {
+      setSingle(true);
+    } else {
+      setSingle(false);
+    }
+  }, [data.staticOptions, data.config.options, data.checkAll]);
+
   if (data.renderError) {
     return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
   }
@@ -217,14 +226,6 @@ export default function Runtime({
       )
     };
   });
-
-  useEffect(() => {
-    if (options.length === 1 && options[0].label === '' && !data.checkAll) {
-      setSingle(true);
-    } else {
-      setSingle(false);
-    }
-  }, [data.staticOptions, data.config.options, data.checkAll]);
 
   return (
     <div className={css.checkbox} style={single ? singlebox : void 0}>
