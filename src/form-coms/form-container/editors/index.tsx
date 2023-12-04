@@ -1112,7 +1112,6 @@ export default {
               },
               set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, id, name }, 'widthOption', value);
-                refreshFormItemPropsSchema({ data, inputs });
               }
             }
           },
