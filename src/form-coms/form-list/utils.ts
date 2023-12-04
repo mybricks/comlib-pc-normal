@@ -149,7 +149,7 @@ export function validateForInput(
 export function getValue({ data, childrenStore, childId, childName, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, childName?: string, value?: any }) {
   return new Promise<any>((resolve, reject) => {
     let count = 0;
-    const values = deepCopy(data.value) || [];
+    const allValues: any[] = [];
     /** 子表单项值变化 */
     const changedValue = {
       index: -1,
@@ -158,6 +158,7 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       inputs: {},
       item: {}
     };
+
     if (Object.keys(childrenStore).length) {
       Object.keys(childrenStore).forEach((key) => {
         if (!childrenStore[key]) return;
@@ -169,16 +170,22 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
           if (!data.submitHiddenFields && !visible) {
             return;
           }
-
+          if (!allValues[index]) {
+            allValues[index] = {};
+          }
           const formItemName = name || label;
           inputs?.getValue().returnValue((val) => {
-            if (id === childId && values && JSON.stringify(values[index]?.[formItemName]) !== JSON.stringify(val)) {
+            allValues[index][formItemName] = val;
+            count++;
+            if (id === childId && data.value && JSON.stringify(data.value[index]?.[formItemName]) !== JSON.stringify(val)) {
               changedValue.name = formItemName;
               changedValue.index = index;
               changedValue.inputs = inputs;
               changedValue.item = item;
+            }
+            if (count === data.value?.length) {
               resolve({
-                allValues: values,
+                allValues,
                 changedValue
               });
             }
@@ -187,7 +194,7 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       });
     } else {
       resolve({
-        allValues: values,
+        allValues: data.value,
         changedValue
       });
     }
