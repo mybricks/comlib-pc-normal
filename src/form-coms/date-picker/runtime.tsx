@@ -59,6 +59,7 @@ const typeMap = {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
   const [value, setValue] = useState();
+  const [_, forchUpdate] = useState();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -187,6 +188,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['disabledDate']((val, outputRels) => {
       if (typeof val === 'function') {
         data.disabledDate = val;
+        forchUpdate(0);
         outputRels['disabledDateDone'](val);
       }
     });
