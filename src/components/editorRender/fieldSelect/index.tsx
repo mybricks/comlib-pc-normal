@@ -2,7 +2,7 @@
  * 使用树形选择器完成字段映射
  */
 import React, { useCallback, useState } from 'react';
-import { Input, TreeSelect, Select } from 'antd';
+import { Input, TreeSelect, Select, message } from 'antd';
 import classnames from 'classnames';
 import css from './index.less';
 const { Option } = Select;
