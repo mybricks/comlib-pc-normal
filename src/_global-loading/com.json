@@ -10,12 +10,23 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "open",
       "title": "打开",
+      "rels": ["finish"],
       "schema": {
         "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "schema": {
+        "type": "follow"
       }
     }
   ]
