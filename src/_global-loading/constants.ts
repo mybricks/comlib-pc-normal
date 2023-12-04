@@ -16,3 +16,7 @@ export const InputIds = {
   Open: 'open',
   Close: 'close'
 };
+
+export const OutputIds = {
+  Finish: 'finish'
+}

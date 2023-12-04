@@ -8,6 +8,6 @@
     "fontSize": 14
   },
   "maskStyle": {
-    "background": "url() center top / 100% 100% no-repeat,rgba(0,0,0,0.02)"
+    "background": "url() center top / 100% 100% no-repeat,rgba(0,0,0,0.2)"
   }
 }

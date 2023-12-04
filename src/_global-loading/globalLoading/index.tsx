@@ -18,13 +18,8 @@ export const GlobalLoading = {
    *  @param spinProps spin属性
    *  @returns 关闭全局loading回调
    */
-  open: (
-    ladingText?: string,
-    spinProps?: SpinProps,
-    targetDOM: HTMLElement = document.body,
-    debugRuntime?: boolean
-  ) => {
-    let globalLoading = getGlobalLoading(debugRuntime);
+  open: (ladingText?: string, spinProps?: SpinProps, targetDOM: HTMLElement = document.body) => {
+    let globalLoading = getGlobalLoading(targetDOM);
     if (!!globalLoading) {
       return;
     }
@@ -41,8 +36,8 @@ export const GlobalLoading = {
     return GlobalLoading.close;
   },
   /** 关闭全局loading */
-  close: (debugRuntime: boolean) => {
-    let globalLoading = getGlobalLoading(debugRuntime);
+  close: (canvasElement: HTMLElement) => {
+    let globalLoading = getGlobalLoading(canvasElement);
     if (!!globalLoading) {
       globalLoading?.remove();
       divEle = null;
