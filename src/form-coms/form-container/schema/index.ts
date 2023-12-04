@@ -63,11 +63,11 @@ function refreshSchema({ data, inputs, outputs, slots }) {
   inputs.get(inputIds.SET_FIELDS_VALUE).setSchema(schema)
   inputs.get(inputIds.SET_INITIAL_VALUES).setSchema(schema);
 
-  if(outputs.get('setInitialValuesDone')){
+  if (outputs.get('setInitialValuesDone')) {
     outputs.get('setInitialValuesDone').setSchema(schema);
   }
 
-  if(outputs.get('setFieldsValue')){
+  if (outputs.get('setFieldsValue')) {
     outputs.get('setFieldsValue').setSchema(schema);
   }
 
@@ -76,7 +76,7 @@ function refreshSchema({ data, inputs, outputs, slots }) {
   contentSlot.inputs.get(slotInputIds.SET_FIELDS_VALUE).setSchema(schema)
 
   refreshParamsSchema(data, outputs)
-  refreshFormItemPropsSchema({ data, inputs })
+  refreshFormItemPropsSchema({ data, inputs, outputs })
 }
 
 function refreshParamsSchema(data, outputs) {
@@ -91,7 +91,7 @@ function refreshParamsSchema(data, outputs) {
 function refreshFormItemPropsSchema({ data, inputs, outputs }) {
   const formItemPropsSchema = getFormItemPropsSchema(data)
   inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
-  if(outputs.get('setFormItemsPropsDone')){
+  if (outputs.get('setFormItemsPropsDone')) {
     outputs.get('setFormItemsPropsDone').setSchema(formItemPropsSchema);
   }
 }
