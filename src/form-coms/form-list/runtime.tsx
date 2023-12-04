@@ -85,7 +85,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.value = [];
       onChangeForFc(parentSlot, { id, value: [], name: props.name });
       data.fields = [];
-      // data.MaxKey = -1;
+      data.MaxKey = -1;
+      Object.keys(childrenStore).forEach((key) => {
+        Reflect.deleteProperty(childrenStore, key);
+      });
       outputRels['resetValueDone']();
     });
 
