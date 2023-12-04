@@ -28,6 +28,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<number>(data.config.defaultValue);
   const validateRelOuputRef = useRef<any>(null);
 
+  useLayoutEffect(() => {
+    changeValue(data.config.defaultValue);
+  }, [data.config.defaultValue]);
+
   useFormItemInputs(
     {
       inputs,
@@ -35,16 +39,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       name,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
           output(value);
         },
         resetValue() {
-          setValue(0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
@@ -100,10 +104,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id, name: name });
   };
 
-  //1、值变化
-  const onChange = useCallback((value) => {
+  const changeValue = useCallback((value) => {
     setValue(value);
     onChangeForFc(parentSlot, { id: id, name: name, value });
+  }, []);
+
+  //1、值变化
+  const onChange = useCallback((value) => {
+    changeValue(value);
     onValidateTrigger();
     outputs['onChange'](value);
   }, []);

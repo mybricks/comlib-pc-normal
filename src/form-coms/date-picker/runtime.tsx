@@ -59,6 +59,7 @@ const typeMap = {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
   const [value, setValue] = useState();
+  const [_, forchUpdate] = useState(0);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -131,15 +132,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //时间戳转换
       const num = Number(val);
       const result: any = isNaN(num) ? moment(val) : moment(num);
-      let newVal =
-        val === null ? null : !result?._isValid || val === undefined ? undefined : result;
-      setValue(newVal);
-      relOutputs['setValueDone'](val);
-      let transValue;
-      if (newVal === null || newVal === undefined) {
-        transValue = newVal;
-      } else {
-        transValue = transCalculation(newVal, data.contentType, props);
+      val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
+      const transValue = changeValue(val);
+      if (relOutputs['setValueDone']) {
+        relOutputs['setValueDone'](val);
       }
       outputs['onChange'](transValue);
     });
@@ -150,16 +146,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const num = Number(val);
         const result: any = isNaN(num) ? moment(val) : moment(num);
         // 为null设置为null
-        let newVal =
-          val === null ? null : !result?._isValid || val === undefined ? undefined : result;
-        setValue(newVal);
-        relOutputs['setInitialValueDone'](val);
-        //自定义转换
-        let transValue;
-        if (newVal === null || newVal === undefined) {
-          transValue = newVal;
-        } else {
-          transValue = transCalculation(newVal, data.contentType, props);
+        val = val === null ? null : !result?._isValid || val === undefined ? undefined : result;
+        const transValue = changeValue(val);
+        if (relOutputs['setInitialValueDone']) {
+          relOutputs['setInitialValueDone'](val);
         }
         outputs[OutputIds.OnInitial](transValue);
       });
@@ -198,8 +188,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     inputs['disabledDate']((val, outputRels) => {
       if (typeof val === 'function') {
         data.disabledDate = val;
-        outputRels['disabledDateDone'](val);
+      } else {
+        data.disabledDate = void 0;
       }
+      forchUpdate((count) => count + 1);
+      // forchUpdate(0);
+      outputRels['disabledDateDone'](val);
     });
 
     inputs['getValue']((val, outputRels) => {
@@ -258,28 +252,38 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   //重置，
   inputs['resetValue']((_, relOutputs) => {
-    setValue(void 0);
-    relOutputs['resetValueDone']();
+    changeValue(void 0);
+    if (relOutputs['resetValueDone']) {
+      relOutputs['resetValueDone']();
+    }
   });
   //设置禁用
   inputs['setDisabled']((_, relOutputs) => {
     data.config.disabled = true;
-    relOutputs['setDisabledDone']();
+    if (relOutputs['setDisabledDone']) {
+      relOutputs['setDisabledDone']();
+    }
   });
   //设置启用
   inputs['setEnabled']((_, relOutputs) => {
     data.config.disabled = false;
-    relOutputs['setEnabledDone']();
+    if (relOutputs['setEnabledDone']) {
+      relOutputs['setEnabledDone']();
+    }
   });
 
   //设置启用/禁用
   inputs['isEnable']((val, relOutputs) => {
     if (val === true) {
       data.config.disabled = false;
-      relOutputs['isEnableDone'](val);
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['isEnableDone'](val);
+      }
     } else {
       data.config.disabled = true;
-      relOutputs['isEnableDone'](val);
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['isEnableDone'](val);
+      }
     }
   });
 
@@ -287,7 +291,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
-  const onChange = (value) => {
+  const changeValue = (value) => {
+    setValue(value);
     //自定义转换
     let transValue;
     if (value === null || value === undefined) {
@@ -295,8 +300,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     } else {
       transValue = transCalculation(value, data.contentType, props);
     }
-    setValue(value);
     onChangeForFc(parentSlot, { id: props.id, name: name, value: transValue });
+    return transValue;
+  };
+
+  const onChange = (value) => {
+    const transValue = changeValue(value);
     outputs['onChange'](transValue);
     onValidateTrigger();
   };

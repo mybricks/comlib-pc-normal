@@ -31,62 +31,66 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
+  const [value, setValue] = useState();
 
-  useFormItemInputs({
-    id: props.id,
-    name: props.name,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        data.value = val;
-      },
-      setInitialValue(val) {
-        data.value = val;
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        data.value = [];
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[OutputIds.OnValidate](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[OutputIds.OnValidate](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
   useEffect(() => {
     //输入数据源
     inputs['setOptions']((value, relOutputs) => {
@@ -106,9 +110,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const onChange = (value) => {
-    data.value = value;
+  const changeValue = (value) => {
+    setValue(value);
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  };
+
+  const onChange = (value) => {
+    changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger();
   };
@@ -116,7 +124,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return (
     <div className={css.cascader}>
       <Cascader
-        value={data.value}
+        value={value}
         options={options}
         {...data.config}
         placeholder={env.i18n(data.config.placeholder)}

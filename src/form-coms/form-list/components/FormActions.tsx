@@ -26,6 +26,10 @@ export const addField = ({ data }: { data: Data }, options?) => {
     name: fieldName,
     key: data.MaxKey
   };
+  data.userAction.type = 'add';
+  data.userAction.value = deepCopy(value);
+  data.userAction.index = fieldName;
+  data.userAction.key = data.MaxKey;
   fields.splice(fieldName, 0, newField);
   // 更新name
   data.fields = fields.map((i, index) => {
@@ -34,10 +38,6 @@ export const addField = ({ data }: { data: Data }, options?) => {
       name: index
     };
   });
-  data.userAction.type = 'add';
-  data.userAction.value = deepCopy(value);
-  data.userAction.index = fieldName;
-  data.userAction.key = data.MaxKey;
 };
 
 /** 删除一行 */

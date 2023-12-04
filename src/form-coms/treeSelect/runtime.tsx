@@ -27,6 +27,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState<any>();
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
@@ -39,7 +40,7 @@ export default function Runtime({
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value,
         env,
         model,
         rules: data.rules
@@ -50,7 +51,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](data.value);
+            outputs[OutputIds.OnValidate](value);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -61,17 +62,23 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      outputRels['returnValue'](value);
     });
 
     inputs['setValue']((val, outputRels) => {
       if (data.config.multiple) {
-        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
-          ? changeValue(val)
-          : logger.error(`${title}【设置值】参数应为数组格式`);
+        if (typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])) {
+          changeValue(val);
+          outputs[OutputIds.OnChange](val);
+        } else {
+          logger.error(`${title}【设置值】参数应为数组格式`);
+        }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
-        outputRels['setValueDone'](val);
+        if (outputRels['setValueDone']) {
+          outputRels['setValueDone'](val);
+        }
+        outputs[OutputIds.OnChange](val);
       } else {
         logger.error(`${title}【设置值】参数应为基本类型`);
       }
@@ -84,15 +91,19 @@ export default function Runtime({
           : logger.error(`${title}【设置初始值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
-        outputRels['setInitialValueDone'](val);
+        if (outputRels['setInitialValueDone']) {
+          outputRels['setInitialValueDone'](val);
+        }
       } else {
         logger.error(`${title}【设置初始值】参数应为基本类型`);
       }
     });
 
     inputs['resetValue']((_, outputRels) => {
-      data.value = void 0;
-      outputRels['resetValueDone']();
+      changeValue(void 0);
+      if (outputRels['resetValueDone']) {
+        outputRels['resetValueDone']();
+      }
     });
 
     inputs['setOptions']((ds, outputRels) => {
@@ -116,22 +127,30 @@ export default function Runtime({
     //设置禁用
     inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
 
@@ -152,7 +171,7 @@ export default function Runtime({
       }
       outputRels['setColorDone'](color);
     });
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -181,23 +200,20 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value === undefined) {
-      data.value = '';
+      setValue('');
     }
-    data.value = value;
+    setValue(value);
     onChangeForFc(parentSlot, { id, value, name });
-    outputs[OutputIds.OnChange](value);
   }, []);
 
   const onChange = useCallback((value) => {
     changeValue(value);
+    outputs[OutputIds.OnChange](value);
     onValidateTrigger();
   }, []);
 
   const onInit = useCallback((value) => {
-    if (value === undefined) {
-      data.value = '';
-    }
-    data.value = value;
+    changeValue(value);
     outputs[OutputIds.OnInitial](value);
   }, []);
 
@@ -289,7 +305,7 @@ export default function Runtime({
         maxTagCount={data.config.maxTagCount}
         treeNodeFilterProp={data.config.treeNodeFilterProp}
         open={env.design ? true : void 0}
-        value={data.value}
+        value={value}
         loadData={data.useLoadData ? onLoadData : undefined}
         fieldNames={fieldNames}
         onChange={onChange}

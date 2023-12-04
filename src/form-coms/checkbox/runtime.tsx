@@ -23,10 +23,16 @@ export default function Runtime({
   const [activeFontColor, setActiveFontColor] = useState('');
   const [single, setSingle] = useState<boolean>(false);
 
+  const [value, setValue] = useState<any>(data.value);
+
+  useLayoutEffect(() => {
+    changeValue(data.value);
+  }, [data.value]);
+
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value: value,
         env,
         model,
         rules: data.rules
@@ -37,7 +43,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](data.value);
+            outputs[OutputIds.OnValidate](value);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -48,7 +54,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      outputRels['returnValue'](value);
     });
 
     inputs['setValue']((val, outputRels) => {
@@ -56,8 +62,8 @@ export default function Runtime({
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
-        outputRels['setValueDone'](val);
-        outputs['onChange'](data.value);
+        outputRels['setValueDone']?.(val);
+        outputs['onChange'](value);
       }
     });
 
@@ -67,35 +73,47 @@ export default function Runtime({
           logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
-          outputRels['setInitialValueDone'](val);
+          if (outputRels['setInitialValueDone']) {
+            outputRels['setInitialValueDone'](val);
+          }
           outputs[OutputIds.OnInitial](val);
         }
       });
 
     inputs['resetValue']((_, outputRels) => {
       changeValue(undefined);
-      outputRels['resetValueDone']();
+      if (outputRels['resetValueDone']()) {
+        outputRels['resetValueDone']();
+      }
     });
 
     //设置禁用
     inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
 
@@ -111,7 +129,7 @@ export default function Runtime({
             newValArray.push(value);
           }
         });
-        newValArray.length ? (data.value = newValArray) : void 0;
+        newValArray.length ? changeValue(newValArray) : void 0;
       } else {
         logger.warn(`${title}组件:【设置数据源】参数必须是{label, value}数组！`);
       }
@@ -131,7 +149,7 @@ export default function Runtime({
         relOutputs['setActiveFontColorDone'](color);
       }
     });
-  }, []);
+  }, [value]);
 
   const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
@@ -145,32 +163,41 @@ export default function Runtime({
     if (Array.isArray(checkedValue)) {
       setIndeterminate(!!checkedValue.length && checkedValue.length < data.config.options.length);
       setCheckAll(checkedValue.length === data.config.options.length);
-      data.value = checkedValue;
+      setValue(checkedValue);
     } else {
       setIndeterminate(false);
       setCheckAll(false);
-      data.value = [];
-      data.value = checkedValue;
+      setValue([]);
+      setValue(checkedValue);
     }
+    onChangeForFc(parentSlot, { id, name, value: checkedValue });
   }, []);
 
   // 多选框组监听事件
   const onChange = useCallback((checkedValue) => {
     changeValue(checkedValue);
-    onChangeForFc(parentSlot, { id, name, value: checkedValue });
     outputs['onChange'](checkedValue);
     onValidateTrigger();
   }, []);
 
   // 全选框监听事件
   const onCheckAllChange = (e) => {
-    data.value = e.target.checked ? data.config.options.map((item) => item.value) : [];
+    changeValue(e.target.checked ? data.config.options.map((item) => item.value) : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
-    onChangeForFc(parentSlot, { id, name, value: data.value });
-    outputs['onChange'](data.value);
+    onChangeForFc(parentSlot, { id, name, value: value });
+    outputs['onChange'](value);
     onValidateTrigger();
   };
+
+  useEffect(() => {
+    if (options.length === 1 && options[0].label === '' && !data.checkAll) {
+      setSingle(true);
+    } else {
+      setSingle(false);
+    }
+  }, [data.staticOptions, data.config.options, data.checkAll]);
+
   if (data.renderError) {
     return <Alert message={`${title}渲染错误：存在选项值未定义！`} type="error" />;
   }
@@ -193,20 +220,12 @@ export default function Runtime({
     return {
       ...opt,
       label: (
-        <span style={{ color: data.value?.includes(opt.value) ? activeFontColor : '' }}>
+        <span style={{ color: value?.includes(opt.value) ? activeFontColor : '' }}>
           {env.i18n(opt.label)}
         </span>
       )
     };
   });
-
-  useEffect(() => {
-    if (options.length === 1 && options[0].label === '' && !data.checkAll) {
-      setSingle(true);
-    } else {
-      setSingle(false);
-    }
-  }, [data.staticOptions, data.config.options, data.checkAll]);
 
   return (
     <div className={css.checkbox} style={single ? singlebox : void 0}>
@@ -225,7 +244,7 @@ export default function Runtime({
         style={checkboxGroup}
         {...data.config}
         options={newOptions}
-        value={data.value}
+        value={value}
         onChange={onChange}
       />
     </div>

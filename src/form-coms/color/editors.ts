@@ -17,7 +17,7 @@ export default {
         description: '设置默认颜色',
         value: {
           get({ data }) {
-            return data.color;
+            return data.color || "#000000";
           },
           set({ data }, value: string) {
             data.color = value;

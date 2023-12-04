@@ -157,27 +157,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
           let data = !result?._isValid ? undefined : result;
           return data;
         });
-        setValue(val);
-        relOutputs['setValueDone'](initVal);
-        let transValue;
-        if (!Array.isArray(val)) {
-          if (val === null || val === undefined) {
-            transValue = val;
-          } else {
-            transValue = null;
-          }
-        } else {
-          transValue = val.map((item, index) => {
-            return transCalculation(item, data.contentType, props, index);
-          });
-          if (data.dateType !== 'array') {
-            transValue = transValue[0] + `${data.splitChart}` + transValue[1];
-          }
+        const transValue = changeValue(val);
+        if (relOutputs['setValueDone']) {
+          relOutputs['setValueDone'](initVal);
         }
         outputs['onChange'](transValue);
       }
       if (val === undefined || val === null) {
-        setValue(val);
+        changeValue(val);
         outputs['onChange'](val);
       }
     });
@@ -194,23 +181,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
             let data = !result?._isValid ? undefined : result;
             return data;
           });
-          setValue(val);
-          relOutputs['setInitialValueDone'](initVal);
-          let transValue;
-          if (!Array.isArray(value)) {
-            transValue = null;
-          } else {
-            transValue = value.map((item, index) => {
-              return transCalculation(item, data.contentType, props, index);
-            });
-            if (data.dateType !== 'array') {
-              transValue = transValue[0] + `${data.splitChart}` + transValue[1];
-            }
+          const transValue = changeValue(val);
+          if (relOutputs['setInitialValueDone']) {
+            relOutputs['setInitialValueDone'](initVal);
           }
           outputs[OutputIds.OnInitial](transValue);
         }
         if (val === undefined || val === null) {
-          setValue(val);
+          changeValue(val);
           outputs[OutputIds.OnInitial](val);
         }
       });
@@ -272,28 +250,38 @@ export default function Runtime(props: RuntimeParams<Data>) {
   useEffect(() => {
     //重置
     inputs['resetValue']((_, relOutputs) => {
-      setValue(void 0);
-      relOutputs['resetValueDone']();
+      changeValue(void 0);
+      if (relOutputs['resetValueDone']) {
+        relOutputs['resetValueDone']();
+      }
     });
     //设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       }
     });
 
@@ -310,7 +298,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
-  const onChange = (value) => {
+  const changeValue = (value) => {
     setValue(value);
     let transValue;
     if (!Array.isArray(value)) {
@@ -328,6 +316,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     }
     onChangeForFc(parentSlot, { id: id, name: name, value: transValue });
+    return transValue;
+  };
+
+  const onChange = (value) => {
+    const transValue = changeValue(value);
     outputs['onChange'](transValue);
     onValidateTrigger();
   };

@@ -153,38 +153,26 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val, relOutputs) => {
-          if (val !== undefined && val !== null) {
-            editor.setContent(val);
-            valueRef.current = val;
-            setValue(val);
+          editor.setContent('');
+          changeValue(val);
+          if (relOutputs['setValueDone']) {
             relOutputs['setValueDone'](val);
-            outputs['onChange'](val);
-          } else {
-            setValue(val);
-            editor.setContent('');
-            relOutputs['setValueDone'](val);
-            outputs['onChange'](val);
           }
+          outputs['onChange'](val);
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any, relOutputs) => {
-          if (val !== undefined && val !== null) {
-            editor.setContent(val);
-            valueRef.current = val;
-            setValue(val);
+          editor.setContent('');
+          changeValue(val);
+          if (relOutputs['setInitialValueDone']) {
             relOutputs['setInitialValueDone'](val);
-            outputs['onInitial'](val);
-          } else {
-            setValue(val);
-            editor.setContent('');
-            relOutputs['setInitialValueDone'](val);
-            outputs['onInitial'](val);
           }
+          outputs['onInitial'](val);
         });
         //5. 重置值
         inputs['resetValue']((_, relOutputs) => {
           editor.setContent('');
-          valueRef.current = '';
+          changeValue(void 0);
           relOutputs['resetValueDone']();
         });
         editor.setContent(valueRef.current);
@@ -210,10 +198,19 @@ export default function ({
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    valueRef.current = content.trim() || '';
-    setValue(valueRef.current);
+    changeValue(content.trim() || '');
+
     onValidateTrigger();
     outputs['onBlur'](valueRef.current);
+  }, []);
+
+  // 值变化
+  const changeValue = useCallback((content) => {
+    if (content !== undefined && content !== null) {
+      valueRef.current = content;
+    }
+    setValue(content?.trim());
+    onChangeForFc(parentSlot, { id: id, name: name, value: content?.trim() });
   }, []);
 
   //值变化
@@ -226,9 +223,8 @@ export default function ({
 
     const content = tinymceInstance?.getContent({ format: 't' });
 
-    valueRef.current = content.trim() || '';
-    setValue(valueRef.current);
-    onChangeForFc(parentSlot, { id: id, name: name, value: valueRef.current });
+    changeValue(content.trim() || '');
+
     outputs['onChange'](valueRef.current);
   }, []);
 
@@ -357,22 +353,30 @@ export default function ({
     //6. 设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //7. 设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.disabled = false;
-        relOutputs['isEnableDone']();
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone']();
+        }
       } else {
         data.disabled = true;
-        relOutputs['isEnableDone']();
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone']();
+        }
       }
     });
 

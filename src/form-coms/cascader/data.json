@@ -4,7 +4,6 @@
   "isMultiple": false,
   "maxTagCountType": "isResponsive",
   "rules": [],
-  "value": null,
   "config": {
     "allowClear": true,
     "placeholder": "请选择",

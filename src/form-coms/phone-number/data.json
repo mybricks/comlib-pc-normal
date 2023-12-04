@@ -1,5 +1,4 @@
 {
-  "value": "",
   "rules": [],
   "validateTrigger": [
     "onBlur",

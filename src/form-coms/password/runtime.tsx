@@ -46,16 +46,16 @@ export default function ({
       outputs,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
           output(getValue());
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -104,10 +104,14 @@ export default function ({
 
   const getValue = useCallback(() => value, [value]);
 
-  const onChange = (e) => {
-    const _value = e.target.value;
+  const changeValue = (_value) => {
     setValue(_value);
     onChangeForFc(parentSlot, { id, name, value: _value });
+  };
+
+  const onChange = (e) => {
+    const _value = e.target.value;
+    changeValue(_value);
     outputs['onChange'](_value);
   };
 

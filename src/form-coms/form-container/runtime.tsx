@@ -14,7 +14,7 @@ import { getLabelCol, isObject, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
-import { checkIfMobile, typeCheck } from '../../utils';
+import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 
 type FormControlInputRels = {
@@ -78,9 +78,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
 
       inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
-        getValue().then((v) => {
-          outputRels[outputIds.RETURN_VALUES](v);
-        });
+        outputRels[outputIds.RETURN_VALUES](deepCopy(formContext.current.store));
       });
 
       inputs[inputIds.SET_DISABLED]((_, relOutputs) => {
@@ -363,44 +361,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  const getValue = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      const formItems = getFormItems(data, childrenInputs);
-
-      Promise.all(
-        formItems.map((item) => {
-          // const id = item.id;
-          // const input = childrenInputs[id];
-          const input = getFromItemInputEvent(item, childrenInputs);
-
-          return new Promise((resolve, reject) => {
-            let value = {};
-
-            input?.getValue().returnValue((val, key) => {
-              //调用所有表单项的 getValue/returnValue
-              value = {
-                name: item.name,
-                value: val
-              };
-
-              resolve(value);
-            });
-          });
-        })
-      )
-        .then((values) => {
-          const rtn = {};
-
-          values.forEach((item: any) => {
-            rtn[item.name] = item.value;
-          });
-
-          resolve({ ...rtn });
-        })
-        .catch((e) => reject(e));
-    });
-  }, []);
-
   const submit = (outputRels?: any) => {
     submitMethod(outputIds.ON_FINISH, outputRels);
   };
@@ -408,31 +368,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        getValue()
-          .then((values: any) => {
-            let res = { ...values, ...params };
+        let res = { ...formContext.current.store, ...params };
 
-            if (
-              data.domainModel?.entity?.fieldAry?.length > 0 &&
-              data.domainModel?.isQuery &&
-              data.domainModel?.type === 'domain'
-            ) {
-              // 领域模型数据处理
-              res = {
-                values: { ...res },
-                fieldsRules: { ...data.domainModel.queryFieldRules }
-              };
-            }
+        if (
+          data.domainModel?.entity?.fieldAry?.length > 0 &&
+          data.domainModel?.isQuery &&
+          data.domainModel?.type === 'domain'
+        ) {
+          // 领域模型数据处理
+          res = {
+            values: { ...res },
+            fieldsRules: { ...data.domainModel.queryFieldRules }
+          };
+        }
 
-            if (outputRels) {
-              outputRels[outputId](res);
-            } else {
-              outputs[outputId](res);
-            }
-          })
-          .catch((e) => {
-            console.log('收集表单项值失败', e);
-          });
+        if (outputRels) {
+          outputRels[outputId](res);
+        } else {
+          outputs[outputId](res);
+        }
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;

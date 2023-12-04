@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.10",
+  "version": "1.1.13",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -33,7 +33,7 @@
       "schema": {
         "type": "string"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -66,7 +66,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },

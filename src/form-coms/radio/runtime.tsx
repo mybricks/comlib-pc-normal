@@ -21,69 +21,70 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
+  const [value, setValue] = useState<any>();
 
-  useFormItemInputs({
-    name,
-    id,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        if (val === undefined) {
-          data.value = '';
-        }
-        data.value = val;
-      },
-      setInitialValue(val) {
-        if (val === undefined) {
-          data.value = '';
-        }
-        data.value = val;
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        data.value = '';
-        data.value = void 0;
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useLayoutEffect(() => {
+    changeValue(data.value);
+  }, [data.value]);
+
+  useFormItemInputs(
+    {
+      name,
+      id,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(value);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: value,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](value);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
@@ -96,7 +97,7 @@ export default function Runtime({
           }
         });
         if (typeof newVal !== 'undefined') {
-          data.value = newVal;
+          changeValue(newVal);
         }
         data.config.options = ds;
       } else {
@@ -122,10 +123,17 @@ export default function Runtime({
     validateTrigger(parentSlot, { id, name });
   };
 
+  const changeValue = useCallback((value) => {
+    if (value === undefined) {
+      setValue('');
+    }
+    setValue(value);
+    onChangeForFc(parentSlot, { id: id, value, name });
+  }, []);
+
   const onChange = useCallback((e) => {
     const { value } = e.target;
-    data.value = value;
-    onChangeForFc(parentSlot, { id: id, value, name });
+    changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
@@ -137,7 +145,7 @@ export default function Runtime({
           optionType={data.enableButtonStyle ? 'button' : 'default'}
           buttonStyle={data.buttonStyle}
           disabled={data.config.disabled}
-          value={data.value}
+          value={value}
           onChange={onChange}
         >
           <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
@@ -151,7 +159,7 @@ export default function Runtime({
                   checked={item.checked}
                   style={{
                     marginRight: 8,
-                    color: data.value === item.value ? activeFontColor : ''
+                    color: value === item.value ? activeFontColor : ''
                   }}
                 >
                   {env.i18n(label)}
@@ -170,7 +178,7 @@ export default function Runtime({
         optionType={data.enableButtonStyle ? 'button' : 'default'}
         buttonStyle={data.buttonStyle}
         {...data.config}
-        value={data.value}
+        value={value}
         onChange={onChange}
       >
         {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
@@ -181,7 +189,7 @@ export default function Runtime({
               value={item.value}
               disabled={item.disabled}
               checked={item.checked}
-              style={{ marginRight: 8, color: data.value === item.value ? activeFontColor : '' }}
+              style={{ marginRight: 8, color: value === item.value ? activeFontColor : '' }}
             >
               {env.i18n(label)}
             </Radio>
