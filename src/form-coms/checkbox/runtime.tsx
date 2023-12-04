@@ -149,7 +149,7 @@ export default function Runtime({
         relOutputs['setActiveFontColorDone'](color);
       }
     });
-  }, []);
+  }, [value]);
 
   const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
