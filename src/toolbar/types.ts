@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from 'react';
 
 export enum LocationEnum {
   FRONT = 'front',
@@ -32,8 +32,8 @@ export enum TypeEnum {
 }
 
 export type FzCSSProperties = CSSProperties & {
-  styleEditorUnfold: boolean
-}
+  styleEditorUnfold: boolean;
+};
 export interface BtnItem {
   // 唯一标识
   key: string;
@@ -41,6 +41,8 @@ export interface BtnItem {
   text: string;
   // 动态设置按钮文字
   useDynamicText?: boolean;
+  // 动态设置按钮部分样式
+  useDynamicStyle?: boolean;
 
   // 形状
   shape?: ShapeEnum;

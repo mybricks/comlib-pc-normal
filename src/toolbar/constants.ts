@@ -1,4 +1,4 @@
-import { SizeEnum } from "./types";
+import { SizeEnum } from './types';
 
 export const BtnItemDataSetKey = 'data-btn-idx';
 export const SlotItemDataSetKey = 'data-slot-idx';
@@ -14,6 +14,8 @@ export const InputIds = {
 
   SetBtnOpenLoading: 'setBtnOpenLoading',
   SetBtnCloseLoading: 'setBtnCloseLoading',
+
+  SetBtnStyle: 'SetBtnStyle'
 };
 
 export const OutputIds = {
@@ -32,11 +34,20 @@ export const Schemas = {
   },
   Number: {
     type: 'number'
+  },
+  Style: {
+    type: 'object',
+    properties: {
+      color: {
+        title: '字体颜色',
+        type: 'string'
+      }
+    }
   }
 };
 
 export const SizeHeightMap = {
   [SizeEnum.Small]: '24px',
   [SizeEnum.Middle]: '32px',
-  [SizeEnum.Large]: '40px',
-}
+  [SizeEnum.Large]: '40px'
+};
