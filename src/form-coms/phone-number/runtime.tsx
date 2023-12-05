@@ -31,6 +31,7 @@ export default function ({
   const { edit } = env;
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
+  const valueRef = useRef<any>(null);
 
   useFormItemInputs(
     {
@@ -45,7 +46,7 @@ export default function ({
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -65,7 +66,7 @@ export default function ({
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -74,7 +75,7 @@ export default function ({
               const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs['onValidate'](value);
+                outputs['onValidate'](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -95,28 +96,29 @@ export default function ({
     validateTrigger(parentSlot, { id, name });
   };
 
-  const changeValue = useCallback((value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: id, value, name });
+  const changeValue = useCallback((val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: id, value: val, name });
   }, []);
 
   const onChange = useCallback((e) => {
-    const value = e.target.value;
-    changeValue(value);
-    outputs['onChange'](value);
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onChange'](val);
   }, []);
 
   const onBlur = useCallback((e) => {
-    const value = e.target.value;
-    changeValue(value);
-    outputs['onBlur'](value);
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onBlur'](val);
     onValidateTrigger();
   }, []);
 
   const onPressEnter = useCallback((e) => {
-    const value = e.target.value;
+    const val = e.target.value;
     onValidateTrigger();
-    outputs['onPressEnter'](value);
+    outputs['onPressEnter'](val);
   }, []);
 
   useEffect(() => {
