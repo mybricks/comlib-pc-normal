@@ -19,11 +19,12 @@ export default function ({
 }: RuntimeParams<Data>) {
   const [value, setValue] = useState<string>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>(null);
 
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -34,7 +35,7 @@ export default function ({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels;
-            outputs[OutputIds.OnValidate](value);
+            outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels(r);
           }
@@ -60,7 +61,7 @@ export default function ({
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -94,14 +95,15 @@ export default function ({
     });
   }, []);
 
-  const changeValue = (value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id, name, value });
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id, name, value: val });
   };
 
-  const onChange = (value: string) => {
-    changeValue(value);
-    outputs.onChange(value);
+  const onChange = (val: string) => {
+    changeValue(val);
+    outputs.onChange(val);
     validateTrigger(parentSlot, { id, name });
   };
 
