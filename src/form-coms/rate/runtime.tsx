@@ -27,6 +27,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<number>(data.config.defaultValue);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>(null);
 
   useLayoutEffect(() => {
     changeValue(data.config.defaultValue);
@@ -45,7 +46,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -65,7 +66,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value: value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -76,7 +77,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[OutputIds.OnValidate](value);
+                outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -106,6 +107,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const changeValue = useCallback((value) => {
     setValue(value);
+    valueRef.current = value;
     onChangeForFc(parentSlot, { id: id, name: name, value });
   }, []);
 
