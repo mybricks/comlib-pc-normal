@@ -32,9 +32,12 @@ export default function ({
   const validateRelOuputRef = useRef<any>(null);
 
   const [checked, setChecked] = useState<any>(data.config.checked);
+  const valueRef = useRef<any>(data.config.checked);
 
   useLayoutEffect(() => {
-    setChecked(data.config.checked);
+    if (env.edit || data.config.checked !== undefined) {
+      setChecked(data.config.checked);
+    }
     onChangeForFc(parentSlot, { id: id, value: data.config.checked, name: name });
   }, [data.config.checked]);
 
@@ -51,7 +54,7 @@ export default function ({
           changeValue(val);
         },
         returnValue(output) {
-          output(checked);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -71,7 +74,7 @@ export default function ({
         },
         validate(model, outputRels) {
           validateFormItem({
-            value: checked,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -82,7 +85,7 @@ export default function ({
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[OutputIds.OnValidate](checked);
+                outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -113,6 +116,7 @@ export default function ({
   const changeValue = useCallback((checked) => {
     if (env.edit) return;
     setChecked(checked);
+    valueRef.current = checked;
     onChangeForFc(parentSlot, { id: id, value: checked, name: name });
   }, []);
 

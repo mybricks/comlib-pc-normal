@@ -65,6 +65,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');
@@ -156,7 +157,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -170,10 +171,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
             let transValue;
             //1.null是从日期选择框不选日期的情况；
             //2.undefined是手动设置值为空或者不正确的情况
-            if (value === null || value === undefined) {
+            if (valueRef.current === null || valueRef.current === undefined) {
               transValue = undefined;
             } else {
-              transValue = transCalculation(value, data.contentType, props);
+              transValue = transCalculation(valueRef.current, data.contentType, props);
             }
             outputs[OutputIds.OnValidate](transValue);
           } else {
@@ -200,10 +201,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       let transValue;
       //1.null是从日期选择框不选日期的情况；
       //2.undefined是手动设置值为空或者不正确的情况
-      if (value === null || value === undefined) {
-        transValue = value;
+      if (valueRef.current === null || valueRef.current === undefined) {
+        transValue = valueRef.current;
       } else {
-        transValue = transCalculation(value, data.contentType, props);
+        transValue = transCalculation(valueRef.current, data.contentType, props);
       }
       outputRels['returnValue'](transValue);
     });
@@ -291,14 +292,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
-  const changeValue = (value) => {
-    setValue(value);
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
     //自定义转换
     let transValue;
-    if (value === null || value === undefined) {
-      transValue = value;
+    if (val === null || val === undefined) {
+      transValue = val;
     } else {
-      transValue = transCalculation(value, data.contentType, props);
+      transValue = transCalculation(val, data.contentType, props);
     }
     onChangeForFc(parentSlot, { id: props.id, name: name, value: transValue });
     return transValue;

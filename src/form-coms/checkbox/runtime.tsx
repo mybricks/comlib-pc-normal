@@ -22,17 +22,18 @@ export default function Runtime({
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
   const [single, setSingle] = useState<boolean>(false);
+  const valueRef = useRef<any>(data.value);
 
   const [value, setValue] = useState<any>(data.value);
 
   useLayoutEffect(() => {
-    changeValue(data.value);
+    if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -43,7 +44,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](value);
+            outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -54,7 +55,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value);
+      outputRels['returnValue'](valueRef.current);
     });
 
     inputs['setValue']((val, outputRels) => {
@@ -63,7 +64,7 @@ export default function Runtime({
       } else {
         changeValue(val);
         outputRels['setValueDone']?.(val);
-        outputs['onChange'](value);
+        outputs['onChange'](val);
       }
     });
 
@@ -164,11 +165,13 @@ export default function Runtime({
       setIndeterminate(!!checkedValue.length && checkedValue.length < data.config.options.length);
       setCheckAll(checkedValue.length === data.config.options.length);
       setValue(checkedValue);
+      valueRef.current = checkedValue;
     } else {
       setIndeterminate(false);
       setCheckAll(false);
       setValue([]);
       setValue(checkedValue);
+      valueRef.current = checkedValue;
     }
     onChangeForFc(parentSlot, { id, name, value: checkedValue });
   }, []);
@@ -185,8 +188,8 @@ export default function Runtime({
     changeValue(e.target.checked ? data.config.options.map((item) => item.value) : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
-    onChangeForFc(parentSlot, { id, name, value: value });
-    outputs['onChange'](value);
+    onChangeForFc(parentSlot, { id, name, value: valueRef.current });
+    outputs['onChange'](valueRef.current);
     onValidateTrigger();
   };
 
@@ -220,7 +223,7 @@ export default function Runtime({
     return {
       ...opt,
       label: (
-        <span style={{ color: value?.includes(opt.value) ? activeFontColor : '' }}>
+        <span style={{ color: valueRef.current?.includes(opt.value) ? activeFontColor : '' }}>
           {env.i18n(opt.label)}
         </span>
       )

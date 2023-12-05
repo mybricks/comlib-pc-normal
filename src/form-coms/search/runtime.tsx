@@ -36,6 +36,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useEffect(() => {
     if (data.isenterButton && data.enterButton !== '') {
@@ -58,7 +59,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -78,7 +79,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -89,7 +90,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -118,6 +119,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const changeValue = useCallback((value) => {
     setValue(value);
+    valueRef.current = value;
     if (data.isSelect) {
       onChangeForFc(parentSlot, { id: id, name: name, value: [data.initValue, value] });
     } else {
@@ -141,8 +143,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.initValue = '';
     }
     data.initValue = val;
-    onChangeForFc(parentSlot, { id: id, value: [val, value], name });
-    outputs['onChange']([val, value]);
+    onChangeForFc(parentSlot, { id: id, value: [val, valueRef.current], name });
+    outputs['onChange']([val, valueRef.current]);
   };
 
   //搜索

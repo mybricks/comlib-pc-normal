@@ -29,6 +29,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id } = props;
   const [options, setOptions] = useState(env.design ? mockData : []);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const [value, setValue] = useState();
@@ -47,7 +48,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -67,7 +68,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -78,7 +79,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[OutputIds.OnValidate](value);
+                outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -93,9 +94,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
   useEffect(() => {
     //输入数据源
-    inputs['setOptions']((value, relOutputs) => {
-      setOptions(value);
-      relOutputs['setOptionsDone'](value);
+    inputs['setOptions']((opts, relOutputs) => {
+      setOptions(opts);
+      relOutputs['setOptionsDone'](opts);
     });
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
@@ -110,14 +111,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = (value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   };
 
-  const onChange = (value) => {
-    changeValue(value);
-    outputs['onChange'](value);
+  const onChange = (val) => {
+    changeValue(val);
+    outputs['onChange'](val);
     onValidateTrigger();
   };
 

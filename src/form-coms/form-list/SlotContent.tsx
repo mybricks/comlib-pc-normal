@@ -45,7 +45,8 @@ const SlotContent = (
             }
             // 表单项收集childrenStore
             if (field && isFormItem) {
-              const { key, name } = field;
+              const { key } = field;
+              const name = data.fields.find((f) => f.key === key)?.name;
               if (!childrenStore[key]) {
                 childrenStore[key] = {};
               }
@@ -104,7 +105,7 @@ const SlotContent = (
                 data.userAction.value = undefined;
               };
               if (temp) {
-                setValuesOfChild({ data, childrenStore, key, value: temp, actionType }, cb);
+                setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
               } else {
                 cb();
               }

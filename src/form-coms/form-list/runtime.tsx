@@ -28,7 +28,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
   // let initLength = useMemo(() => {
   //   return data.initLength;
   // }, [data.initLength]);
-
+  const resetForm = useCallback(() => {
+    data.value = [];
+    data.fields = [];
+    data.MaxKey = -1;
+    Object.keys(childrenStore).forEach((key) => {
+      Reflect.deleteProperty(childrenStore, key);
+    });
+  }, []);
   useLayoutEffect(() => {
     data.userAction = {
       type: '',
@@ -40,16 +47,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 设置值
     inputs[InputIds.SetValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
+        resetForm();
         data.value = value;
         onChangeForFc(parentSlot, { id, value, name: props.name });
         if (outputRels['setValueDone']) {
           outputRels['setValueDone']?.(value);
         }
         changeValue({ data, id, outputs, parentSlot, name: props.name });
-        const changeLength = generateFields(data);
+        generateFields(data);
         data.userAction.type = InputIds.SetValue;
-        // changeLength < 0时，不会触发已有的列表项刷新
-        changeLength <= 0 && setValuesForInput({ data, childrenStore });
+        data.userAction.key = -2;
       } else {
         logger.error(title + '[设置值]: 类型不合法');
       }
@@ -58,16 +65,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 设置初始值
     inputs[InputIds.SetInitialValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
+        resetForm();
         data.value = value;
         if (outputRels['setInitialValueDone']) {
           outputRels['setInitialValueDone']?.(value);
         }
         outputs[OutputIds.OnInitial](deepCopy(data.value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
-        const changeLength = generateFields(data);
+        generateFields(data);
         data.userAction.type = InputIds.SetInitialValue;
-        // changeLength < 0时，不会触发已有的列表项刷新
-        changeLength <= 0 && setValuesForInput({ data, childrenStore });
+        data.userAction.key = -2;
       } else {
         logger.error(title + '[设置初始值]: 类型不合法');
       }
@@ -81,13 +88,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 重置值
     inputs['resetValue']((_, outputRels) => {
-      data.value = [];
+      resetForm();
       onChangeForFc(parentSlot, { id, value: [], name: props.name });
-      data.fields = [];
-      data.MaxKey = -1;
-      Object.keys(childrenStore).forEach((key) => {
-        Reflect.deleteProperty(childrenStore, key);
-      });
       outputRels['resetValueDone']();
     });
 
@@ -195,15 +197,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  if (env.runtime) {
-    // 值更新
-    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
-      // 只有在用户操作触发时才收集更新值
-      !data.userAction.type &&
-        data.userAction.key < 0 &&
-        updateValue({ ...props, childrenStore, childId: id, childName: name, value });
-    });
-  }
+  useEffect(() => {
+    if (env.runtime) {
+      // 值更新
+      slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
+        // 只有在用户操作触发时才收集更新值
+        !data.userAction.type &&
+          data.userAction.key === -1 &&
+          updateValue({ ...props, childrenStore, childId: id, childName: name, value });
+      });
+    }
+  }, []);
 
   // useEffect(() => {
   //   // 初始化

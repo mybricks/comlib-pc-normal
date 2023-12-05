@@ -175,7 +175,7 @@ export default function ({
           changeValue(void 0);
           relOutputs['resetValueDone']();
         });
-        editor.setContent(valueRef.current);
+        editor.setContent(valueRef.current || '');
         if (loading) {
           setTimeout(() => {
             setLoading(false);
@@ -207,9 +207,9 @@ export default function ({
   // 值变化
   const changeValue = useCallback((content) => {
     if (content !== undefined && content !== null) {
-      valueRef.current = content;
+      setValue(content?.trim());
     }
-    setValue(content?.trim());
+    valueRef.current = content;
     onChangeForFc(parentSlot, { id: id, name: name, value: content?.trim() });
   }, []);
 
@@ -343,11 +343,7 @@ export default function ({
 
     //4. 获取值
     inputs['getValue']((val, outputRels) => {
-      if (value !== undefined && value !== null) {
-        outputRels['returnValue'](valueRef.current);
-      } else {
-        outputRels['returnValue'](value);
-      }
+      outputRels['returnValue'](valueRef.current);
     });
 
     //6. 设置禁用

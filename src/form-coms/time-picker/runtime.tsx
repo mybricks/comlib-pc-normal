@@ -29,11 +29,12 @@ export default function ({
   const [value, setValue] = useState<Moment | null>();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value: value?.valueOf(),
+        value: valueRef.current?.valueOf(),
         env,
         model,
         rules: data.rules
@@ -44,7 +45,7 @@ export default function ({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels;
-            outputs[OutputIds.OnValidate](getValue(value));
+            outputs[OutputIds.OnValidate](getValue(valueRef.current));
           } else {
             outputRels(r);
           }
@@ -97,7 +98,7 @@ export default function ({
         setValue: setTimestamp,
         setInitialValue: setTimestamp,
         returnValue(output) {
-          output(getValue(value));
+          output(getValue(valueRef.current));
         },
         resetValue() {
           changeValue(void 0);
@@ -152,6 +153,7 @@ export default function ({
 
   const changeValue = (time: Moment | null | undefined) => {
     setValue(time);
+    valueRef.current = time;
     const value = getValue(time);
     onChangeForFc(parentSlot, { id, name, value });
     return value;

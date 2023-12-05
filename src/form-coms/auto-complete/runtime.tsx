@@ -32,6 +32,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, logger } = props;
 
   const inputRef = useRef<InputRef>(null);
+  const valueRef = useRef<any>();
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
 
@@ -58,7 +59,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -78,7 +79,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -89,7 +90,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -131,9 +132,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = (value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   };
 
   const onChange = (value) => {

@@ -12,6 +12,7 @@ export default function (props: RuntimeParams<Data>) {
     props;
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
+  const valueRef = useRef<any>();
 
   useLayoutEffect(() => {
     if (!data.childrenInputs) {
@@ -41,7 +42,7 @@ export default function (props: RuntimeParams<Data>) {
 
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -52,7 +53,7 @@ export default function (props: RuntimeParams<Data>) {
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[outputIds.ON_VALIDATE](value);
+            outputs[outputIds.ON_VALIDATE](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -62,12 +63,12 @@ export default function (props: RuntimeParams<Data>) {
         });
     });
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value);
+      outputRels['returnValue'](valueRef.current);
     });
 
     inputs['resetValue']((_, outputRels) => {
       changeValue(void 0);
-      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](value);
+      slots[SlotIds.FormItem].inputs[SlotInputIds.CurValue](valueRef.current);
       if (outputRels['resetValueDone']) {
         outputRels['resetValueDone']();
       }
@@ -123,6 +124,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const changeValue = (val) => {
     setValue(val);
+    valueRef.current = val;
     onChangeForFc(parentSlot, { id: props.id, value: val, name });
   };
 

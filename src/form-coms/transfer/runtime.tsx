@@ -32,11 +32,12 @@ export default function ({
 
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>([]);
 
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value: targetKeys,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -68,7 +69,7 @@ export default function ({
   };
 
   const getTransferValue = useCallback(() => {
-    return targetKeys;
+    return valueRef.current;
   }, [targetKeys]);
 
   useFormItemInputs(
@@ -131,6 +132,7 @@ export default function ({
 
   const changeValue = (targetKeys: string[] | undefined) => {
     setTargetKeys(targetKeys);
+    valueRef.current = targetKeys;
     onChangeForFc(parentSlot, { id, name, value: targetKeys });
   };
 

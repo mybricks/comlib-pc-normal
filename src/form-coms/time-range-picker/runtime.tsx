@@ -24,6 +24,7 @@ export default function ({
   const { placeholder, disabled, format, customFormat, outFormat, splitChar } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;
@@ -34,7 +35,9 @@ export default function ({
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value: value ? [value[0].valueOf(), value[1].valueOf()] : [],
+        value: valueRef.current
+          ? [valueRef.current[0].valueOf(), valueRef.current[1].valueOf()]
+          : [],
         env,
         model,
         rules: data.rules
@@ -45,7 +48,7 @@ export default function ({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels;
-            outputs[OutputIds.OnValidate](getValue(value));
+            outputs[OutputIds.OnValidate](getValue(valueRef.current));
           } else {
             outputRels(r);
           }
@@ -124,7 +127,7 @@ export default function ({
         setValue: setTimestampRange,
         setInitialValue: setTimestampRange,
         returnValue(output) {
-          output(getValue(value));
+          output(getValue(valueRef.current));
         },
         resetValue() {
           changeValue(void 0);
@@ -179,6 +182,7 @@ export default function ({
   const changeValue = useCallback(
     (values) => {
       setValue(values);
+      valueRef.current = values;
       const formatValue = getValue(values);
       onChangeForFc(parentSlot, { id, name, value: formatValue });
       return formatValue;

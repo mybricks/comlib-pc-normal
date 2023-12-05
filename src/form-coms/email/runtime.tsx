@@ -25,6 +25,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { edit } = env;
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
+  const valueRef = useRef<any>();
 
   useFormItemInputs(
     {
@@ -40,7 +41,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -60,7 +61,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -69,7 +70,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs['onValidate'](value);
+                outputs['onValidate'](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -91,23 +92,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //   validateTrigger(parentSlot, { id: props.id, name: props.name });
   // };
 
-  const changeValue = useCallback((value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  const changeValue = useCallback((val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   }, []);
 
   const onChange = useCallback((e) => {
-    const value = e.target.value;
-    changeValue(value);
-    outputs['onChange'](value);
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onChange'](val);
   }, []);
 
   const onBlur = useCallback((e) => {
-    const value = e.target.value;
-    changeValue(value);
+    const val = e.target.value;
+    changeValue(val);
     onValidateTrigger();
     // onValidateTrigger(ValidateTriggerType.OnBlur);
-    outputs['onBlur'](value);
+    outputs['onBlur'](val);
   }, []);
 
   useEffect(() => {
