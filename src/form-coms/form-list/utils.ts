@@ -148,8 +148,6 @@ export function validateForInput(
  */
 export function getValue({ data, childrenStore, childId, childName, value }: { data: Data, childrenStore: ChildrenStore, childId?: string, childName?: string, value?: any }) {
   return new Promise<any>((resolve, reject) => {
-    let count = 0;
-    const allValues: any[] = [];
     /** 子表单项值变化 */
     const changedValue = {
       index: -1,
@@ -160,6 +158,8 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
     };
 
     if (Object.keys(childrenStore).length) {
+      let count = 0;
+      const allValues: any[] = [];
       Object.keys(childrenStore).forEach((key) => {
         if (!childrenStore[key]) return;
 
@@ -204,10 +204,6 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
   }) => {
     const { index, name, value, item, inputs } = changedValue;
     if (index < 0) return;
-    allValues[index] = {
-      ...allValues[index],
-      [name]: value
-    };
     validateForInput({ item, index, inputs });
     data.value = allValues;
   }).catch(e => {
