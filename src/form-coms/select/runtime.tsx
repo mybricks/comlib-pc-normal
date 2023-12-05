@@ -63,6 +63,7 @@ export default function Runtime({
   const ref = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState<any>(data.value);
+  const valueRef = useRef<any>(null);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -89,7 +90,7 @@ export default function Runtime({
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -100,7 +101,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            const outputValue = getOutputValue(data, env, value);
+            const outputValue = getOutputValue(data, env, valueRef.current);
             outputs[OutputIds.OnValidate](outputValue);
           } else {
             outputRels['returnValidate'](r);
@@ -112,7 +113,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      const outputValue = getOutputValue(data, env, value);
+      const outputValue = getOutputValue(data, env, valueRef.current);
       outputRels['returnValue'](outputValue);
     });
 
@@ -251,6 +252,7 @@ export default function Runtime({
       setValue('');
     }
     setValue(value);
+    valueRef.current = value;
     const outputValue = getOutputValue(data, env, value);
     onChangeForFc(parentSlot, { id: id, value: outputValue, name });
     return outputValue;
@@ -263,7 +265,7 @@ export default function Runtime({
   }, []);
 
   const onBlur = useCallback((e) => {
-    const outputValue = getOutputValue(data, env, value);
+    const outputValue = getOutputValue(data, env, valueRef.current);
     onValidateTrigger(ValidateTriggerType.OnBlur);
     outputs['onBlur'](outputValue);
   }, []);
