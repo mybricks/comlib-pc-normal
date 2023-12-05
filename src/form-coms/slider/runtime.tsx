@@ -26,6 +26,7 @@ export default function Runtime({
   const [value, setValue] = useState<any>();
   const [singleValue, setSingleValue] = useState<any>();
   const [rangeValue, setRangeValue] = useState<any>();
+  const valueRef = useRef<any>(null);
 
   useFormItemInputs(
     {
@@ -40,7 +41,7 @@ export default function Runtime({
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -60,7 +61,7 @@ export default function Runtime({
         },
         validate(model, outputRels) {
           validateFormItem({
-            value: value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -71,7 +72,7 @@ export default function Runtime({
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[OutputIds.OnValidate](value);
+                outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -109,6 +110,7 @@ export default function Runtime({
       setRangeValue(void 0);
     }
     setValue(val);
+    valueRef.current = val;
     if (typeCheck(val, 'number')) {
       setSingleValue(val);
     }
