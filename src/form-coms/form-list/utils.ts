@@ -6,6 +6,7 @@ import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { debounce } from 'lodash';
 import { addField } from './components/FormActions';
 import { deepCopy } from '../../utils';
+import { FormListFieldData } from 'antd';
 
 /**
  * 计算标签宽度
@@ -162,7 +163,7 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       const allValues: any[] = [];
       Object.keys(childrenStore).forEach((key) => {
         if (!childrenStore[key]) return;
-
+        
         data.items.forEach((item) => {
           const { id, name, comName, label } = item;
           const { index, inputs, visible } = childrenStore[key][comName];
@@ -257,17 +258,18 @@ export function updateValue(props: (RuntimeParams<Data> & { childrenStore: any, 
  * @param data 
  */
 export function generateFields(data: Data) {
-  const newLength = (data.value || []).length;
-  const oldLength = data.fields.length;
-  const changeLength = newLength - oldLength;
-  if (changeLength < 0) {
-    data.fields.splice(newLength, -changeLength);
-  } else {
-    new Array(changeLength).fill(null).map((_, index) => {
-      addField({ data });
+  const length = (data.value || []).length;
+  if (length > 0) {
+    const addedFileds: FormListFieldData[] = [];
+    new Array(length).fill(null).map((_, index) => {
+      data.MaxKey = data.MaxKey + 1;
+      addedFileds.push({
+        name: index,
+        key: data.MaxKey
+      })
     });
+    data.fields = addedFileds;
   }
-  return changeLength;
 };
 
 /**
@@ -284,19 +286,17 @@ export function setValuesForInput({
   const { value: values, items: formItems } = data;
   const actionType = data.userAction.type;
   new Promise((resolve, reject) => {
-    let count = 0;
-    const cb = ((count) => {
-      count++;
-      if (count === values?.length) {
-        data.userAction.type = '';
-      }
-    })(count);
+    const cb = () => {
+      data.userAction.type = '';
+      data.userAction.key = -1;
+      resolve(1);
+    }
     values?.forEach((value, valIndex) => {
       if (data.userAction.startIndex > valIndex) return;
       const key = data.fields.find(field => field.name === valIndex)?.key;
-      setValuesOfChild({ data, childrenStore, key, value, actionType }, cb);
+      const isLast = (valIndex === values.length - 1);
+      setValuesOfChild({ data, childrenStore, key, value, actionType }, isLast ? cb : void 0);
     });
-    resolve(1);
   })
     .then(v => {
       data.userAction.startIndex = -1;
@@ -335,7 +335,7 @@ export function setValuesOfChild({
   if (key !== undefined) {
     names.forEach((name, inx) => {
       const item = formItems.find((item) => (item.name || item.label) === name);
-      const isLast = inx === names.length - 1;
+      const isLast = (inx === names.length - 1);
       if (item) {
         const { inputs, index } = childrenStore[key][item.comName];
         inputs[inputId] && inputs[inputId](deepCopy(value[name]))
