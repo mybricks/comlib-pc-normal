@@ -131,12 +131,7 @@
     "./src/_pinyin/com.json",
     "./src/_post-message/com.json",
     "./src/_get-storage/com.json",
-    "./src/_receive-message/com.json",
-    "../comlib-basic/src/_type-change/com.json",
-    "../comlib-basic/src/popup/com.json",
-    "../comlib-basic/src/_muilt-inputJs/com.json",
-    "../comlib-basic/src/_schema-simulator/com.json",
-    "../comlib-basic/src/grid/com.json"
+    "./src/_receive-message/com.json"
   ],
   "externals": [
     {
