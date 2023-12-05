@@ -35,7 +35,9 @@ export default function ({
   const valueRef = useRef<any>(null);
 
   useLayoutEffect(() => {
-    setChecked(data.config.checked);
+    if (env.edit || data.config.checked !== undefined) {
+      setChecked(data.config.checked);
+    }
     onChangeForFc(parentSlot, { id: id, value: data.config.checked, name: name });
   }, [data.config.checked]);
 

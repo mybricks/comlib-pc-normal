@@ -40,7 +40,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [color, setColor] = useState(data.color);
 
   useLayoutEffect(() => {
-    changeValue(data.color);
+    if (env.edit || data.color !== undefined) changeValue(data.color);
   }, [data.color]);
 
   useLayoutEffect(() => {

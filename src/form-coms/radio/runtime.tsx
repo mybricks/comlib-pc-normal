@@ -21,11 +21,11 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
-  const [value, setValue] = useState<any>();
+  const [value, setValue] = useState<any>(data.value);
   const valueRef = useRef<any>(null);
 
   useLayoutEffect(() => {
-    changeValue(data.value);
+    if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);
 
   useFormItemInputs(

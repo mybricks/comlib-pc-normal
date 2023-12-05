@@ -84,7 +84,7 @@ export default function Runtime({
   }, [data.config.mode, data.config.labelInValue]);
 
   useLayoutEffect(() => {
-    changeValue(data.value);
+    if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);
 
   useLayoutEffect(() => {
