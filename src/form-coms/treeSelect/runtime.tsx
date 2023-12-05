@@ -36,11 +36,12 @@ export default function Runtime({
     children: 'children'
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const valueRef = useRef<any>(null);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -51,7 +52,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](value);
+            outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -62,7 +63,7 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](value);
+      outputRels['returnValue'](valueRef.current);
     });
 
     inputs['setValue']((val, outputRels) => {
@@ -202,6 +203,7 @@ export default function Runtime({
     if (value === undefined) {
       setValue('');
     }
+    valueRef.current = value;
     setValue(value);
     onChangeForFc(parentSlot, { id, value, name });
   }, []);
