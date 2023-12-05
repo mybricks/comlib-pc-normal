@@ -38,6 +38,7 @@ export default function ({
 
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>(null);
 
   useFormItemInputs(
     {
@@ -53,7 +54,7 @@ export default function ({
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -73,7 +74,7 @@ export default function ({
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -84,7 +85,7 @@ export default function ({
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -125,15 +126,16 @@ export default function ({
     validateTrigger(parentSlot, { id: id, name: name });
   };
 
-  const changeValue = useCallback((value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: id, name: name, value });
+  const changeValue = useCallback((val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: id, name: name, value: val });
   }, []);
 
   const onChange = useCallback((e) => {
-    const value = e.target.value;
-    changeValue(value);
-    outputs['onChange'](value);
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onChange'](val);
   }, []);
 
   const onBlur = useCallback((e) => {
