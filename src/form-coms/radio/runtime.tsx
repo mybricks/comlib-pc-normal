@@ -22,6 +22,7 @@ export default function Runtime({
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
   const [value, setValue] = useState<any>();
+  const valueRef = useRef<any>(null);
 
   useLayoutEffect(() => {
     changeValue(data.value);
@@ -41,7 +42,7 @@ export default function Runtime({
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -61,7 +62,7 @@ export default function Runtime({
         },
         validate(model, outputRels) {
           validateFormItem({
-            value: value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -72,7 +73,7 @@ export default function Runtime({
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -123,12 +124,13 @@ export default function Runtime({
     validateTrigger(parentSlot, { id, name });
   };
 
-  const changeValue = useCallback((value) => {
-    if (value === undefined) {
+  const changeValue = useCallback((val) => {
+    if (val === undefined) {
       setValue('');
     }
-    setValue(value);
-    onChangeForFc(parentSlot, { id: id, value, name });
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: id, value: val, name });
   }, []);
 
   const onChange = useCallback((e) => {
