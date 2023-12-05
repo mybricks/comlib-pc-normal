@@ -93,9 +93,9 @@ const SlotContent = (
 
               if (Array.isArray(data.value)) {
                 const index = data.userAction.index;
-                data.value.splice(index, 0, {});
+                data.value.splice(index, 0, temp || {});
               } else {
-                data.value = [{}];
+                data.value = [temp || {}];
               }
               const cb = () => {
                 changeValue({ data, id, outputs, parentSlot, name: props.name });

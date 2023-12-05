@@ -30,14 +30,19 @@ export const addField = ({ data }: { data: Data }, options?) => {
   data.userAction.value = deepCopy(value);
   data.userAction.index = fieldName;
   data.userAction.key = data.MaxKey;
-  fields.splice(fieldName, 0, newField);
-  // 更新name
-  data.fields = fields.map((i, index) => {
-    return {
-      ...i,
-      name: index
-    };
+  const newFields: FormListFieldData[] = [];
+  new Array(fields.length + 1).fill(null).forEach((_, inx) => {
+    let newF = fields[inx > fieldName && inx > 0 ? inx - 1 : inx];
+    if (inx === fieldName) {
+      newF = newField;
+    }
+    if (inx > fieldName) {
+      newF.name = newF.name + 1;
+    }
+    newFields.push(newF);
   });
+  // 更新name
+  data.fields = newFields;
 };
 
 /** 删除一行 */
