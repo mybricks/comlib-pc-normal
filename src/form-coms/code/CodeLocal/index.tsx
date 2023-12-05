@@ -30,7 +30,7 @@ const Formatter = {
 };
 
 const CodeEditor = (
-  { value, config, readOnly, onChange = () => {}, onBlur = () => {} }: EditorProps,
+  { value, config, valueRef, readOnly, onChange = () => {}, onBlur = () => {} }: EditorProps,
   ref: any
 ) => {
   const {
@@ -59,11 +59,12 @@ const CodeEditor = (
   );
 
   // 格式化代码逻辑
-  const formatterCode = async () => {
+  const formatterCode = async (val) => {
     if (Formatter[language]) {
       const { Fn } = Formatter[language];
-      editor.current?.setValue(Fn(editor.current?.getValue()));
+      editor.current?.setValue(Fn(val));
     } else {
+      editor.current?.setValue(val);
       supportFormat && beautifyRef.current?.beautify?.(editor.current?.session);
     }
   };
@@ -97,7 +98,7 @@ const CodeEditor = (
       name: '代码格式化',
       bindKey: { win: 'Shift-Alt-F', mac: 'Shift-Alt-F' },
       exec: function () {
-        formatterCode();
+        formatterCode(valueRef.current);
       },
       readOnly: false
     });
@@ -110,8 +111,8 @@ const CodeEditor = (
 
   // 点击事件
   const onClick = useCallback(() => {
-    formatterCode();
-  }, []);
+    formatterCode(valueRef.current);
+  }, [value]);
 
   // 粘贴事件
   const onPaste = useCallback(() => {
@@ -134,16 +135,15 @@ const CodeEditor = (
   }, [readOnly]);
 
   useEffect(() => {
-    if (editor.current && value !== editor.current.getValue()) {
+    if (editor.current && valueRef.current !== editor.current.getValue()) {
       const val =
-        'string' === typeof value
-          ? value
-          : value === undefined || value === null
+        'string' === typeof valueRef.current
+          ? valueRef.current
+          : valueRef.current === undefined || valueRef.current === null
           ? ''
-          : JSON.stringify(value);
-      editor.current.setValue(val);
+          : JSON.stringify(valueRef.current);
       editor.current.clearSelection();
-      supportFormat && beautifyRef.current.beautify(editor.current.session);
+      supportFormat && formatterCode(val);
     }
   }, [value]);
 

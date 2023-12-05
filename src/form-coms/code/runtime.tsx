@@ -111,6 +111,7 @@ export default function ({
     <CodeEditor
       value={value}
       onChange={onChange}
+      valueRef={valueRef}
       config={{ ...data.aceConfig, placeholder: env.i18n(data.aceConfig.placeholder) }}
       readOnly={data.readOnly}
     />
