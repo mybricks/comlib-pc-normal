@@ -90,9 +90,10 @@ function refreshParamsSchema(data, outputs) {
 
 function refreshFormItemPropsSchema({ data, inputs, outputs }) {
   const formItemPropsSchema = getFormItemPropsSchema(data)
-  inputs.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
-  if (outputs.get('setFormItemsPropsDone')) {
-    outputs.get('setFormItemsPropsDone').setSchema(formItemPropsSchema);
+  inputs?.get(inputIds.SET_FORM_ITEMS_PROPS).setSchema(formItemPropsSchema)
+
+  if (outputs?.get('setFormItemsPropsDone')) {
+    outputs?.get('setFormItemsPropsDone').setSchema(formItemPropsSchema);
   }
 }
 
