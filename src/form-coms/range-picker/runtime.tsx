@@ -68,6 +68,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const validateRelOuputRef = useRef<any>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
+  const valueRef = useRef<any>(null);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -195,7 +196,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -207,10 +208,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
             let transValue;
-            if (!Array.isArray(value)) {
+            if (!Array.isArray(valueRef.current)) {
               transValue = null;
             } else {
-              transValue = value.map((item, index) => {
+              transValue = valueRef.current.map((item, index) => {
                 return transCalculation(item, data.contentType, props, index);
               });
               if (data.dateType !== 'array') {
@@ -229,14 +230,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     inputs['getValue']((val, outputRels) => {
       let transValue;
-      if (!Array.isArray(value)) {
-        if (value === undefined || value === null) {
-          transValue = value;
+      if (!Array.isArray(valueRef.current)) {
+        if (valueRef.current === undefined || valueRef.current === null) {
+          transValue = valueRef.current;
         } else {
           transValue = null;
         }
       } else {
-        transValue = value.map((item, index) => {
+        transValue = valueRef.current.map((item, index) => {
           return transCalculation(item, data.contentType, props, index);
         });
         if (data.dateType !== 'array') {
@@ -300,6 +301,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const changeValue = (value) => {
     setValue(value);
+    valueRef.current = value;
     let transValue;
     if (!Array.isArray(value)) {
       if (value === null || value === undefined) {
