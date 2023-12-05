@@ -9,7 +9,6 @@
     "lint-staged": "npx lint-staged --allow-empty"
   },
   "pre-commit": [
-    "checkFile",
     "lint-staged"
   ],
   "repository": {

@@ -68,7 +68,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
   const validateRelOuputRef = useRef<any>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);

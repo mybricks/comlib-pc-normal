@@ -32,7 +32,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, logger } = props;
 
   const inputRef = useRef<InputRef>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
 

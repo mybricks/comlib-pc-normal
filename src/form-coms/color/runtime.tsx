@@ -35,7 +35,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name } = props;
   const [isShow, setIsShow] = useState<boolean>(false);
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.color);
 
   const [color, setColor] = useState(data.color);
 

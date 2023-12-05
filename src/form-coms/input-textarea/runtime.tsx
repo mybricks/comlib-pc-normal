@@ -38,7 +38,7 @@ export default function ({
 
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useFormItemInputs(
     {

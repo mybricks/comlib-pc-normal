@@ -22,7 +22,7 @@ export default function Runtime({
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
   const [value, setValue] = useState<any>(data.value);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.value);
 
   useLayoutEffect(() => {
     if (env.edit || data.value !== undefined) changeValue(data.value);

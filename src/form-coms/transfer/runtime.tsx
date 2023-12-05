@@ -32,7 +32,7 @@ export default function ({
 
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>([]);
 
   const validate = useCallback(
     (model, outputRels) => {

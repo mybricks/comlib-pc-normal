@@ -65,7 +65,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');

@@ -26,7 +26,7 @@ export default function Runtime({
   const [value, setValue] = useState<any>();
   const [singleValue, setSingleValue] = useState<any>();
   const [rangeValue, setRangeValue] = useState<any>();
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useFormItemInputs(
     {

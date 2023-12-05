@@ -32,7 +32,7 @@ export default function ({
   const validateRelOuputRef = useRef<any>(null);
 
   const [checked, setChecked] = useState<any>(data.config.checked);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.config.checked);
 
   useLayoutEffect(() => {
     if (env.edit || data.config.checked !== undefined) {

@@ -25,7 +25,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { edit } = env;
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useFormItemInputs(
     {

@@ -36,7 +36,7 @@ export default function Runtime({
     children: 'children'
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {

@@ -22,7 +22,7 @@ export default function Runtime({
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
   const [single, setSingle] = useState<boolean>(false);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.value);
 
   const [value, setValue] = useState<any>(data.value);
 
