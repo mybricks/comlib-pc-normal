@@ -163,7 +163,7 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
       const allValues: any[] = [];
       Object.keys(childrenStore).forEach((key) => {
         if (!childrenStore[key]) return;
-        
+
         data.items.forEach((item) => {
           const { id, name, comName, label } = item;
           const { index, inputs, visible } = childrenStore[key][comName];
@@ -285,9 +285,9 @@ export function setValuesForInput({
 }) {
   const { value: values, items: formItems } = data;
   const actionType = data.userAction.type;
+  data.userAction.type = '';
   new Promise((resolve, reject) => {
     const cb = () => {
-      data.userAction.type = '';
       data.userAction.key = -1;
       resolve(1);
     }
