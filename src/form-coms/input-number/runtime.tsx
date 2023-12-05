@@ -30,6 +30,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<string | number>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>(null);
 
   useFormItemInputs(
     {
@@ -45,7 +46,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
           changeValue(void 0);
@@ -65,7 +66,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -76,7 +77,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -104,20 +105,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = (value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   };
 
-  const onChange = (value) => {
-    changeValue(value);
-    outputs['onChange'](value);
+  const onChange = (val) => {
+    changeValue(val);
+    outputs['onChange'](val);
   };
 
   const onBlur = useCallback(
     (e) => {
       onValidateTrigger();
-      outputs['onBlur'](value);
+      outputs['onBlur'](valueRef.current);
     },
     [value]
   );
@@ -125,7 +127,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onPressEnter = useCallback(
     (e) => {
       onValidateTrigger();
-      outputs['onPressEnter'](value);
+      outputs['onPressEnter'](valueRef.current);
     },
     [value]
   );
