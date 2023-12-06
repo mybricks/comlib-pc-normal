@@ -29,7 +29,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id } = props;
   const [options, setOptions] = useState(env.design ? mockData : []);
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const [value, setValue] = useState();

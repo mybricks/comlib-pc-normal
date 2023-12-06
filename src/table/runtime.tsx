@@ -337,6 +337,12 @@ export default function (props: RuntimeParams<Data>) {
                 }
               });
               setSelectedRowKeys(newSelectedRowKeys);
+              if (typeof outputs?.[OutputIds.ROW_SELECTION] === 'function') {
+                outputs[OutputIds.ROW_SELECTION]({
+                  selectedRows: newSelectedRows,
+                  selectedRowKeys: newSelectedRowKeys
+                });
+              }
               handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
             }, 0);
           });

@@ -32,10 +32,12 @@ export default function ({
   const validateRelOuputRef = useRef<any>(null);
 
   const [checked, setChecked] = useState<any>(data.config.checked);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.config.checked);
 
   useLayoutEffect(() => {
-    setChecked(data.config.checked);
+    if (env.edit || data.config.checked !== undefined) {
+      setChecked(data.config.checked);
+    }
     onChangeForFc(parentSlot, { id: id, value: data.config.checked, name: name });
   }, [data.config.checked]);
 

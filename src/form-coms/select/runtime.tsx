@@ -63,7 +63,7 @@ export default function Runtime({
   const ref = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState<any>(data.value);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.value);
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -84,7 +84,7 @@ export default function Runtime({
   }, [data.config.mode, data.config.labelInValue]);
 
   useLayoutEffect(() => {
-    changeValue(data.value);
+    if (env.edit || data.value !== undefined) changeValue(data.value);
   }, [data.value]);
 
   useLayoutEffect(() => {

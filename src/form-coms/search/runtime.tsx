@@ -36,7 +36,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useEffect(() => {
     if (data.isenterButton && data.enterButton !== '') {

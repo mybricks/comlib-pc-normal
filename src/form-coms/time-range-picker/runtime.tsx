@@ -24,7 +24,7 @@ export default function ({
   const { placeholder, disabled, format, customFormat, outFormat, splitChar } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;

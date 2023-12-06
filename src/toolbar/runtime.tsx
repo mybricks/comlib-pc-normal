@@ -36,6 +36,9 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
         inputs[`${InputIds.SetBtnCloseLoading}_${key}`]?.(() => {
           item.loading = false;
         });
+        inputs[`${InputIds.SetBtnStyle}_${key}`]?.((val: any) => {
+          item.style = { ...(item.style || {}), ...(val || {}) };
+        });
       });
     }
   }, []);
@@ -175,7 +178,7 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
       const todo = getWhatToDoWithoutPermission(item.permission?.id);
       if (todo === 'hide') return;
 
-      const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key } = item;
+      const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key, style } = item;
 
       return !isSlot ? (
         <div key={key} className={css.button} data-btn-idx={item.key}>
@@ -189,6 +192,7 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
             onDoubleClick={() => onDoubleClick(item)}
             loading={loading}
             block={true}
+            style={style || {}}
           >
             {renderBtnContext({ ...item, text: env.i18n(item.text) })}
           </Button>

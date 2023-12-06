@@ -29,7 +29,7 @@ export default function ({
   const [value, setValue] = useState<Moment | null>();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const validate = useCallback(
     (model, outputRels) => {

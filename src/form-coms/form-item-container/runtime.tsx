@@ -12,7 +12,7 @@ export default function (props: RuntimeParams<Data>) {
     props;
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useLayoutEffect(() => {
     if (!data.childrenInputs) {

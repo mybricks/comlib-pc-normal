@@ -19,7 +19,7 @@ export default function ({
 }: RuntimeParams<Data>) {
   const [value, setValue] = useState<string>();
   const validateRelOuputRef = useRef<any>(null);
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const validate = useCallback(
     (model, outputRels) => {

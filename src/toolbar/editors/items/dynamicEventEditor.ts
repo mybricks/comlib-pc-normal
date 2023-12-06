@@ -56,6 +56,30 @@ const DynamicEventEditor = [
     }
   },
   {
+    title: '动态设置按钮样式',
+    type: 'Switch',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        return item.useDynamicStyle;
+      },
+      set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        const eventKey = `${InputIds.SetBtnStyle}_${item.key}`;
+
+        const event = input.get(eventKey);
+        if (value) {
+          !event && input.add(eventKey, `设置${item.text}样式`, Schemas.Style);
+        } else {
+          event && input.remove(eventKey);
+        }
+        item.useDynamicStyle = value;
+      }
+    }
+  },
+  {
     title: '动态启用/禁用',
     type: 'Switch',
     value: {

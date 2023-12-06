@@ -36,7 +36,7 @@ export default function (props: RuntimeParams<Data>) {
   const inputRef = useRef<InputRef>(null);
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
-  const valueRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useFormItemInputs(
     {
