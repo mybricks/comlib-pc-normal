@@ -48,16 +48,18 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //设置表单数据，触发值变化
       inputs[inputIds.SET_FIELDS_VALUE]((val, relOutputs) => {
         // resetFields();
-        setFieldsValue(val);
-        slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
-        relOutputs['setFieldsValueDone'](val);
+        setFieldsValue(val, () => {
+          slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+          relOutputs['setFieldsValueDone'](val);
+        });
       });
 
       //设置表单初始化数据
       inputs[inputIds.SET_INITIAL_VALUES]((val, relOutputs) => {
-        setInitialValues(val);
-        slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
-        relOutputs['setInitialValuesDone'](val);
+        setInitialValues(val, () => {
+          slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+          relOutputs['setInitialValuesDone'](val);
+        });
       });
 
       inputs['resetFields']((val, outputRels) => {
@@ -224,22 +226,32 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //   }
   // }, [data.domainModel.entity, slots])
 
-  const setFieldsValue = (val) => {
+  const setFieldsValue = (val, cb?) => {
     if (val) {
-      Object.keys(val).forEach((key) => {
-        setValuesForInput({ childrenInputs, formItems: data.items, name: key }, 'setValue', val);
+      const length = Object.keys(val).length - 1;
+      Object.keys(val).forEach((key, inx) => {
+        const isLast = inx === length;
+        setValuesForInput(
+          { childrenInputs, formItems: data.items, name: key },
+          'setValue',
+          val,
+          isLast ? cb : void 0
+        );
       });
     }
   };
 
-  const setInitialValues = (val) => {
+  const setInitialValues = (val, cb?) => {
     try {
       if (val) {
-        Object.keys(val).forEach((key) => {
+        const length = Object.keys(val).length - 1;
+        Object.keys(val).forEach((key, inx) => {
+          const isLast = inx === length;
           setValuesForInput(
             { childrenInputs, formItems: data.items, name: key },
             'setInitialValue',
-            val
+            val,
+            isLast ? cb : void 0
           );
         });
       }
@@ -472,8 +484,9 @@ const validateForInput = (
   });
 };
 
-const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
+const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values, cb?) => {
   const item = formItems.find((item) => item.name === name);
+  const inputDoneId = inputId + 'Done';
 
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs);
@@ -484,7 +497,10 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values)
           input?.[inputId]?.({ ...values[name] });
         }
       } else {
-        input[inputId] && input[inputId](values[name]);
+        input[inputId] &&
+          input[inputId](values[name])[inputDoneId]?.((val) => {
+            cb?.();
+          });
       }
     } else {
       console.warn(
