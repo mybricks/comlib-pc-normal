@@ -40,7 +40,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     data.userAction = {
       type: '',
       index: -1,
-      key: -1,
+      key: -2,
       value: undefined,
       startIndex: -1
     };
