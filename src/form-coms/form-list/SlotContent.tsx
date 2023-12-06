@@ -22,6 +22,7 @@ const SlotContent = (
   const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
     props;
   const content = useMemo(() => {
+    console.log(field, '=======field in content=======');
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
         const { item, isFormItem } = getFormItem(data, com);
@@ -46,6 +47,7 @@ const SlotContent = (
             // 表单项收集childrenStore
             if (field && isFormItem) {
               const { key } = field;
+              console.log(field, '=======field in wrap=======');
               const name = data.fields.find((f) => f.key === key)?.name;
               if (!childrenStore[key]) {
                 childrenStore[key] = {};
