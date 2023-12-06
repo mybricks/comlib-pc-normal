@@ -1,6 +1,7 @@
 export interface Data {
   picks: Array<PickType>,
-  storageType: EnumStorage
+  storageType: EnumStorage,
+  runImmediate: boolean
 }
 
 export type PickType = {
