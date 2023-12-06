@@ -226,15 +226,29 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //   }
   // }, [data.domainModel.entity, slots])
 
+  const objectFilter = (val) => {
+    const newObj = {};
+    if (typeCheck(val, 'object') && Object.keys(val).length > 0) {
+      Object.entries(val).forEach(([key, value]) => {
+        const item = data.items.find((item) => item.name === key);
+        if (item) {
+          newObj[key] = value;
+        }
+      });
+    }
+    return newObj;
+  };
+
   const setFieldsValue = (val, cb?) => {
-    if (val) {
-      const length = Object.keys(val).length - 1;
-      Object.keys(val).forEach((key, inx) => {
+    const formData = objectFilter(val);
+    if (Object.keys(formData).length > 0) {
+      const length = Object.keys(formData).length - 1;
+      Object.keys(formData).forEach((key, inx) => {
         const isLast = inx === length;
         setValuesForInput(
           { childrenInputs, formItems: data.items, name: key },
           'setValue',
-          val,
+          formData,
           isLast ? cb : void 0
         );
       });
@@ -245,14 +259,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const setInitialValues = (val, cb?) => {
     try {
-      if (val) {
-        const length = Object.keys(val).length - 1;
-        Object.keys(val).forEach((key, inx) => {
+      const formData = objectFilter(val);
+      if (Object.keys(formData).length > 0) {
+        const length = Object.keys(formData).length - 1;
+        Object.keys(formData).forEach((key, inx) => {
           const isLast = inx === length;
           setValuesForInput(
             { childrenInputs, formItems: data.items, name: key },
             'setInitialValue',
-            val,
+            formData,
             isLast ? cb : void 0
           );
         });
