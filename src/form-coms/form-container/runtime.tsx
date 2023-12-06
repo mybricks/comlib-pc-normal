@@ -238,6 +238,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
           isLast ? cb : void 0
         );
       });
+    } else {
+      cb();
     }
   };
 
@@ -254,8 +256,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             isLast ? cb : void 0
           );
         });
+      } else {
+        cb();
       }
     } catch (e) {
+      cb();
       console.error(e);
     }
   };
