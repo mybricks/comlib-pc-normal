@@ -108,6 +108,28 @@ const DynamicEventEditor = [
     }
   },
   {
+    title: '默认禁用',
+    description: '开启后默认禁用',
+    ifVisible({ data, focusArea }: EditorResult<Data>) {
+      if (!focusArea) return;
+      const { item } = getBtnItemInfo(data, focusArea);
+      return !!item.useDynamicDisabled;
+    },
+    type: 'Switch',
+    value: {
+      get({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        return item.disabled;
+      },
+      set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+        if (!focusArea) return;
+        const { item } = getBtnItemInfo(data, focusArea);
+        item.disabled = value;
+      }
+    }
+  },
+  {
     title: '动态显示/隐藏',
     type: 'Switch',
     value: {
