@@ -3,6 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import * as Icons from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { validateFormItem } from '../utils/validator';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 import css from './runtime.less';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
@@ -48,7 +49,16 @@ interface Window {
   };
 }
 
-export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  inputs,
+  outputs,
+  slots,
+  parentSlot,
+  id,
+  name
+}: RuntimeParams<Data>) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
@@ -70,16 +80,14 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   useLayoutEffect(() => {
     inputs['setValue']((val: UploadFile[], relOutputs) => {
-      fileListRef.current = val;
-      setFileList(val);
+      changeFileList(val);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
       }
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val, relOutputs) => {
-        setFileList(val);
-        fileListRef.current = val;
+        changeFileList(val);
         if (relOutputs['setInitialValueDone']) {
           relOutputs['setInitialValueDone'](val);
         }
@@ -104,7 +112,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     });
 
     inputs['resetValue']((_, relOutputs) => {
-      setFileList([]);
+      changeFileList([]);
       if (relOutputs['resetValueDone']) {
         relOutputs['resetValueDone']();
       }
@@ -150,9 +158,14 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     });
   }, []);
 
+  const changeFileList = useCallback((newFileList) => {
+    fileListRef.current = newFileList;
+    setFileList(newFileList);
+    onChangeForFc(parentSlot, { id, value: newFileList, name });
+  }, []);
+
   const onRemoveFile = useCallback((file) => {
-    fileListRef.current = fileListRef.current.filter((item) => item.uid !== file.uid);
-    setFileList((list) => list.filter((item) => item.uid !== file.uid));
+    changeFileList(fileListRef.current.filter((item) => item.uid !== file.uid));
   }, []);
 
   const formatCompleteFile = (res: UploadFileList, tempList: UploadFileList[]) => {
@@ -196,7 +209,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     list.forEach((item) => {
       formatCompleteFile(item, fileListRef.current);
     });
-    setFileList([...fileListRef.current]);
+    changeFileList([...fileListRef.current]);
   };
 
   // 文件数据格式化
@@ -229,14 +242,14 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
           onUploadComplete(res);
         })
         .catch(() => {
-          setFileList([]);
+          changeFileList([]);
         });
     } else {
       const formData = new FormData();
       fileList.forEach((file) => {
         formData.append(fileKey, file);
       });
-      fileListRef.current = onFormatFileList(fileList);
+      changeFileList(onFormatFileList(fileList));
       outputs.upload(formData);
     }
   };
@@ -314,8 +327,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   const onRemove = (file) => {
     if (!data.config.useCustomRemove) {
-      fileListRef.current = fileListRef.current.filter(({ uid }) => file.uid !== uid);
-      setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
+      changeFileList(fileListRef.current.filter(({ uid }) => file.uid !== uid));
       return true;
     }
     removeFileRef.current = file;
