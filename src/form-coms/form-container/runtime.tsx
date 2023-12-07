@@ -63,8 +63,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
 
       inputs['resetFields']((val, outputRels) => {
-        resetFields();
-        outputRels['onResetFinish']();
+        const cb = () => {
+          outputRels['onResetFinish']();
+        };
+        resetFields(cb);
       });
 
       inputs[inputIds.SUBMIT]((val, outputRels) => {
@@ -280,15 +282,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
-  const resetFields = () => {
-    data.items.forEach((item) => {
-      // const id = item.id;
-      // const input = childrenInputs[id];
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.resetValue();
-      item.validateStatus = undefined;
-      item.help = undefined;
-    });
+  const resetFields = (cb) => {
+    try {
+      data.items.forEach((item, index) => {
+        // const id = item.id;
+        // const input = childrenInputs[id];
+        const isLast = index === data.items.length - 1;
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.resetValue().resetValueDone(() => {
+          item.validateStatus = undefined;
+          item.help = undefined;
+          if (isLast) cb?.();
+        });
+      });
+    } catch {
+      cb?.();
+    }
   };
 
   const setDisabled = (nameList?: string[]) => {
