@@ -283,17 +283,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const resetFields = (cb) => {
-    data.items.forEach((item, index) => {
-      // const id = item.id;
-      // const input = childrenInputs[id];
-      const isLast = index === data.items.length - 1;
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.resetValue().resetValueDone(() => {
-        item.validateStatus = undefined;
-        item.help = undefined;
-        if (isLast) cb?.();
+    try {
+      data.items.forEach((item, index) => {
+        // const id = item.id;
+        // const input = childrenInputs[id];
+        const isLast = index === data.items.length - 1;
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.resetValue().resetValueDone(() => {
+          item.validateStatus = undefined;
+          item.help = undefined;
+          if (isLast) cb?.();
+        });
       });
-    });
+    } catch {
+      cb?.();
+    }
   };
 
   const setDisabled = (nameList?: string[]) => {
