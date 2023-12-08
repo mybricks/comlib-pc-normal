@@ -1,6 +1,6 @@
-/** 
+/**
  * 使用 dump 并打开预览页
- * 
+ *
  * TODO: 优化导入 dump 的方式
  */
 export function dumpPreview(dump: Record<string, unknown>) {
@@ -29,4 +29,26 @@ export function dumpPreview(dump: Record<string, unknown>) {
   cy.contains('预览').click();
 
   cy.visit('http://localhost:8080/preview.html');
+}
+
+/**
+ * 生成 ID Log
+ */
+export function generateCheckpointIDLog(id: string) {
+  return `---check--- ${id} ---`;
+}
+
+/**
+ * 解析 ID Log
+ */
+export function analysisCheckpointIDLog(log: string) {
+  const templateString = log;
+
+  // 使用正则表达式匹配占位符和其中的ID
+  const matchResult = templateString.match(/---check---\s*([^-\s]+)\s*---/);
+
+  // 提取匹配到的ID
+  const templateID = matchResult && matchResult[1];
+
+  return templateID
 }
