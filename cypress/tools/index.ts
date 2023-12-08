@@ -1,4 +1,8 @@
-/** 使用 dump 并打开预览页 */
+/** 
+ * 使用 dump 并打开预览页
+ * 
+ * TODO: 优化导入 dump 的方式
+ */
 export function dumpPreview(dump: Record<string, unknown>) {
   // 加载空白页面
   cy.visit('http://localhost:8080');
