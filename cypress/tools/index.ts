@@ -30,3 +30,15 @@ export function dumpPreview(dump: Record<string, unknown>) {
 
   cy.visit('http://localhost:8080/preview.html');
 }
+
+/**
+ * 判断事件触发是否符合预期
+ * @param expected 预期的事件触发ID列表
+ * @example
+ * eventCheck(['单击', '双击'])
+ */
+export function eventCheck(expected: string[]) {
+  cy.window().then((win) => {
+    expect(win.checklist).to.deep.eq(expected);
+  });
+}
