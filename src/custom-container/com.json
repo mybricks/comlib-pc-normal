@@ -1,7 +1,7 @@
 {
   "title": "自定义容器",
   "namespace": "mybricks.normal-pc.custom-container",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "自定义容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -28,6 +28,14 @@
           }
         }
       }
+    },
+    {
+      "id": "scrollTo",
+      "title": "滚动到",
+      "schema": {
+        "type": "number"
+      },
+      "desc": "使得自定义容器内部滚动到指定位置,传递非数字滚动到底部"
     }
   ]
 }

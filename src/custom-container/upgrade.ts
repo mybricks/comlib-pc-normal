@@ -81,5 +81,9 @@ export default function ({
     });
   }
 
+  if (!input.get(InputIds.ScrollTo)) {
+    input.add(InputIds.ScrollTo, '滚动到', { type: 'number' });
+  } 
+
   return true;
 }
