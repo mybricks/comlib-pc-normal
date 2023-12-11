@@ -21,3 +21,30 @@ export const OutputIds = {
 }
 
 export const DragConfigKeys = ['draggable', 'draggableScript', 'allowDrop', 'allowDropScript', 'useDropScope', 'dropScopeMessage'];
+
+export const placeholderTreeData = [
+  {
+    title: '0(搭建态占位数据)',
+    key: '0',
+    children: [
+      {
+        title: '0-0',
+        key: '0-0',
+        children: [
+          {
+            title: '0-0-1',
+            key: '0-0-1',
+          },
+          {
+            title: '0-0-2',
+            key: '0-0-2',
+          },
+        ],
+      },
+      {
+        title: '0-1',
+        key: '0-1',
+      },
+    ],
+  }
+]
