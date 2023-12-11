@@ -252,5 +252,19 @@ export default function ({
 
   //=========== v1.0.38 end ===============
 
+  /**
+    * @description v1.0.40 静态数据配置重构, 增加搭建态占位模式
+    */
+
+  if (data.useStaticData === undefined) {
+    data.useStaticData = true;
+  }
+  if (!data.staticData) {
+    data.staticData = encodeURIComponent(JSON.stringify(data.treeData, null, 2));
+    data.treeData = [];
+  }
+
+  //=========== v1.0.40 end ===============
+
   return true;
 }
