@@ -19,6 +19,7 @@ const rowKey = '_itemKey';
 export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   let { grid, useLoading, useGetDataSource } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
+  const [originDataSource, setOriginDataSource] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   const isMobile = checkIfMobile(env);
@@ -53,6 +54,7 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v) => {
         if (Array.isArray(v)) {
+          setOriginDataSource(v);
           const ds = v.map((item, index) => ({
             item,
             [rowKey]: data.rowKey === '' ? uuid() : item[data.rowKey] || uuid(),
@@ -87,8 +89,10 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
         {/* 当前项数据和索引 */}
         {slots['item'].render({
           inputValues: {
+            index,
             itemData: item,
-            index: index
+            originDataSource,
+            length: dataSource.length
           },
           key: key
         })}
@@ -181,10 +185,10 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   if (data.isAuto === true && data.isCustom === false) {
     return loading ? (
       <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-        {AutoRender(dataSource, data, slots)}
+        {AutoRender(dataSource, data, slots, originDataSource)}
       </Spin>
     ) : (
-      AutoRender(dataSource, data, slots)
+      AutoRender(dataSource, data, slots, originDataSource)
     );
   }
   //2、 换行，列数自定义
@@ -216,8 +220,10 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
             <SortableItem key={key} index={index}>
               {slots['item'].render({
                 inputValues: {
+                  index,
                   itemData: item,
-                  index
+                  originDataSource,
+                  length: dataSource.length
                 },
                 key
               })}
@@ -256,13 +262,13 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
   else if (data.isAuto === false) {
     return loading ? (
       <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-        {data.isScroll} ? {NoAutoScrollRender(dataSource, data, slots)} :{' '}
-        {NoAutoRender(dataSource, data, slots)}
+        {data.isScroll} ? {NoAutoScrollRender(dataSource, data, slots, originDataSource)} :{' '}
+        {NoAutoRender(dataSource, data, slots, originDataSource)}
       </Spin>
     ) : data.isScroll ? (
-      NoAutoScrollRender(dataSource, data, slots)
+      NoAutoScrollRender(dataSource, data, slots, originDataSource)
     ) : (
-      NoAutoRender(dataSource, data, slots)
+      NoAutoRender(dataSource, data, slots, originDataSource)
     );
   }
 };

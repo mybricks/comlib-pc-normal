@@ -9,6 +9,7 @@ export default {
         itemSchema = fromPin.schema.items;
         input.get('dataSource').setSchema(fromPin.schema);
         slots.get('item').inputs.get('itemData').setSchema(itemSchema);
+        slots.get('item').inputs.get('originDataSource')?.setSchema(fromPin.schema);
       }
     }
   },

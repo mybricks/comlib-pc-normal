@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -49,6 +49,26 @@
           "desc": "当前项展示的序号",
           "schema": {
             "type": "number"
+          }
+        },
+        {
+          "id": "length",
+          "title": "列表数据个数",
+          "desc": "输入的列表数据个数(数组长度)",
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "id": "originDataSource",
+          "title": "列表数据",
+          "desc": "输入的列表数据",
+          "schema": {
+            "type": "array",
+            "items": {
+              "title": "列项数据",
+              "type": "any"
+            }
           }
         }
       ]

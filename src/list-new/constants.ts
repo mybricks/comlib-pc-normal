@@ -67,4 +67,3 @@ export interface Data {
   //断点配置
   customOptions: Option[];
 }
-
