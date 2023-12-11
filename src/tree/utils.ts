@@ -64,12 +64,12 @@ export const traverseTree = ({
   data: Data;
   targetKey: string;
   isEdit?: boolean;
-}): { parent?: TreeData, index: number, node: TreeData } | null => {
+}): { parent: TreeData, index: number, node: TreeData } | null => {
   const { treeData, } = data;
   const keyFieldName = isEdit ? 'key' : data.keyFieldName || 'key';
 
   if (!treeData || treeData.length === 0) return null;
-  const searchTree = (treeNode: TreeData, index: number, parent?: TreeData) => {
+  const searchTree = (treeNode: TreeData, index: number, parent: TreeData) => {
     if (treeNode[keyFieldName] === targetKey) {
       return {
         parent,
@@ -86,7 +86,7 @@ export const traverseTree = ({
   };
 
   for (let i = 0; i < treeData.length; i++) {
-    const result = searchTree(treeData[i], i);
+    const result = searchTree(treeData[i], i, { children: data.treeData });
     if (result) return result;
   }
   return null;
