@@ -121,7 +121,7 @@ export default {
           ifVisible({ data }: EditorResult<Data>) {
             return data.config.picker === 'week';
           },
-          value:{
+          value: {
             get({ data }) {
               return data.isWeekNumber;
             },
@@ -304,8 +304,8 @@ export default {
               },
               value: {
                 get({ data }: EditorResult<Data>) {
-                  if(data.formatMap && Object.keys(data.formatMap).length === 6){
-                    let newValueArr = Object.keys(data.formatMap).map((key,index)=>{
+                  if (data.formatMap && Object.keys(data.formatMap).length === 6) {
+                    let newValueArr = Object.keys(data.formatMap).map((key, index) => {
                       return decodeURIComponent(data.formatMap[key]);
                     })
                     let newValue = {
@@ -317,7 +317,7 @@ export default {
                       "年份": newValueArr[5]
                     }
                     return newValue
-                  }else{
+                  } else {
                     return {
                       "日期": "YYYY-MM-DD",
                       "日期+时间": "YYYY-MM-DD HH:mm:ss",
@@ -329,7 +329,7 @@ export default {
                   }
                 },
                 set({ data }: EditorResult<Data>, value: any) {
-                  let newValueArr = Object.keys(value).map((key,index)=>{
+                  let newValueArr = Object.keys(value).map((key, index) => {
                     return encodeURIComponent(value[key]);
                   })
                   let newValue = {
@@ -413,6 +413,13 @@ export default {
 
       catalog[1].title = '高级';
       catalog[1].items = [
+        {
+          title: '日期面板切换事件',
+          type: '_event',
+          options: {
+            outputId: 'onPanelChange'
+          }
+        },
         {
           title: '开启日期插槽',
           type: 'Switch',
@@ -502,7 +509,7 @@ export default {
             },
             set({ data, inputs }: EditorResult<Data>, value: boolean) {
               data.controlled = value
-              if(value) {
+              if (value) {
                 inputs.add("setOpen", "打开日期选择面板", { type: "boolean" })
               } else {
                 inputs.remove("setOpen")
