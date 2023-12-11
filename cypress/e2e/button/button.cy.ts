@@ -1,7 +1,7 @@
 import dump from './dump.json';
 import { dumpPreview, eventCheck } from '../../tools';
 
-describe('按钮事件测试', () => {
+describe('按钮测试', () => {
   beforeEach(() => {
     dumpPreview(dump);
   });
@@ -14,5 +14,9 @@ describe('按钮事件测试', () => {
     cy.contains('button', '双击按钮').dblclick();
 
     eventCheck(['单击', '双击']);
+  });
+
+  it('截图比对', () => {
+    cy.compareSnapshot("按钮");
   });
 });

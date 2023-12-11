@@ -6,7 +6,8 @@
   "scripts": {
     "start": "mybricks dev",
     "checkFile": "mybricks checkFile",
-    "lint-staged": "npx lint-staged --allow-empty"
+    "lint-staged": "npx lint-staged --allow-empty",
+    "test": "npx cypress open"
   },
   "pre-commit": [
     "checkFile",
@@ -43,6 +44,7 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "cypress": "^13.6.1",
+    "cypress-image-diff-js": "^1.0.0",
     "lint-staged": "^13.0.3",
     "pre-commit": "^1.2.2",
     "prettier": "^2.7.1",
