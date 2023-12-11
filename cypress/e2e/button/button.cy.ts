@@ -6,7 +6,7 @@ describe('按钮事件测试', () => {
     dumpPreview(dump);
   });
 
-  it('各种事件检查', () => {
+  it('各种事件触发检查', () => {
     // 找到包含文本“单击按钮”的按钮组件并单击
     cy.contains('button', '单击按钮').click();
 

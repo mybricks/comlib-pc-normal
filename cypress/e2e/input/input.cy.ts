@@ -6,7 +6,7 @@ describe('按钮事件测试', () => {
     dumpPreview(dump);
   });
 
-  it('各种事件检查', () => {
+  it('各种事件触发检查', () => {
     // 找到输入框输入 test 并按下回车
     cy.get('.ant-input-affix-wrapper .ant-input')
       .click()
