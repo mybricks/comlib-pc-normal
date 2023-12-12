@@ -4,10 +4,12 @@ import { cloneDeep } from 'lodash';
  * 使用 dump 并打开预览页
  *
  * TODO: 优化导入 dump 的方式
+ * 最好是有 dump => toJSON 的函数，这样就不用到搭建页面获取 toJSON 了
  */
 export function dumpPreview(dump: Record<string, unknown>) {
   // 加载空白页面
   cy.visit('http://localhost:8080');
+
   cy.get('[data-mybricks-tip*=调试工具]').click();
 
   // 使用 navigator.clipboard.writeText 将内容复制到剪切板
