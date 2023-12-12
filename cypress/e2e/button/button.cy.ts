@@ -1,7 +1,7 @@
 import dump from './dump.json';
 import { dumpPreview, eventCheck } from '../../tools';
 
-describe('按钮测试', () => {
+describe('按钮', () => {
   beforeEach(() => {
     dumpPreview(dump);
   });
@@ -13,10 +13,19 @@ describe('按钮测试', () => {
     // 找到包含文本“双击按钮”的按钮组件并双击
     cy.contains('button', '双击按钮').dblclick();
 
-    eventCheck(['单击', '双击']);
+    eventCheck([
+      {
+        id: '单击',
+        value: 0
+      },
+      {
+        id: '双击',
+        value: 0
+      }
+    ]);
   });
 
   it('截图比对', () => {
-    cy.compareSnapshot("按钮");
+    cy.compareSnapshot('按钮');
   });
 });

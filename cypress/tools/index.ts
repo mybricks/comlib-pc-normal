@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 /**
  * 使用 dump 并打开预览页
  *
@@ -35,10 +37,45 @@ export function dumpPreview(dump: Record<string, unknown>) {
  * 判断事件触发是否符合预期
  * @param expected 预期的事件触发ID列表
  * @example
- * eventCheck(['单击', '双击'])
+ * [
+ *   {
+ *     id: '单击',
+ *     value: 0
+ *   },
+ *   {
+ *     id: '双击',
+ *     value: 0
+ *   }
+ * ]
+ * 可以直接从控制台复制 checklist 对象来作为参数
  */
-export function eventCheck(expected: string[]) {
+export function eventCheck(expected: Window['checklist']) {
+  const _expected = convertFunctionsToStrings(cloneDeep(expected));
+
   cy.window().then((win) => {
-    expect(win.checklist).to.deep.eq(expected);
+    const _checklist = convertFunctionsToStrings(cloneDeep(win.checklist));
+    expect(_checklist).to.deep.eq(_expected);
   });
+}
+
+/**
+ * 把对象中所有的函数转换为字符串表示
+ * @param obj 要处理的对象
+ */
+function convertFunctionsToStrings(obj: unknown) {
+  // 如果 obj 是函数，将其转换为字符串表示
+  if (typeof obj === 'function') {
+    return obj.toString();
+  }
+
+  // 如果 obj 是对象，递归处理对象的所有属性
+  if (typeof obj === 'object') {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        obj[key] = convertFunctionsToStrings(obj[key]);
+      }
+    }
+  }
+
+  return obj;
 }

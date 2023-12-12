@@ -1,7 +1,7 @@
 import dump from './dump.json';
 import { dumpPreview, eventCheck } from '../../tools';
 
-describe('按钮事件测试', () => {
+describe('文本框', () => {
   beforeEach(() => {
     dumpPreview(dump);
   });
@@ -14,7 +14,36 @@ describe('按钮事件测试', () => {
       .should('have.value', 'test')
       .blur();
 
-    eventCheck(['值初始化', '值更新', '值更新', '值更新', '值更新', '按下回车', '失去焦点']);
+    eventCheck([
+      {
+        id: '值初始化',
+        value: undefined
+      },
+      {
+        id: '值更新',
+        value: 't'
+      },
+      {
+        id: '值更新',
+        value: 'te'
+      },
+      {
+        id: '值更新',
+        value: 'tes'
+      },
+      {
+        id: '值更新',
+        value: 'test'
+      },
+      {
+        id: '按下回车',
+        value: 'test'
+      },
+      {
+        id: '失去焦点',
+        value: 'test'
+      }
+    ]);
   });
 
   it('截图比对', () => {

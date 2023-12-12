@@ -1,4 +1,3 @@
 interface Window {
-  checklist: string[];
+  checklist: { id: string; value: unknown }[];
 }
-
