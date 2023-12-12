@@ -1,9 +1,9 @@
-import dump from './dump.json';
-import { dumpPreview, eventCheck } from '../../tools';
+import toJSON from './toJSON.json';
+import { toJSONPreview, eventCheck } from '../../tools';
 
 describe('按钮', () => {
   beforeEach(() => {
-    dumpPreview(dump);
+    toJSONPreview(toJSON);
   });
 
   it('各种事件触发检查', () => {

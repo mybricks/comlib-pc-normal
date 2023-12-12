@@ -36,6 +36,18 @@ export function dumpPreview(dump: Record<string, unknown>) {
 }
 
 /**
+ * 使用 toJSON 并打开预览页
+ */
+export function toJSONPreview(toJSON: Record<string, unknown>) {
+  // 加载空白页面
+  cy.visit('http://localhost:8080');
+
+  cy.window().then((win) => win.localStorage.setItem('--preview--', JSON.stringify(toJSON)));
+
+  cy.visit('http://localhost:8080/preview.html');
+}
+
+/**
  * 判断事件触发是否符合预期
  * @param expected 预期的事件触发ID列表
  * @example
