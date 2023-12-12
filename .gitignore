@@ -10,4 +10,5 @@ package-lock.json
 yarn.lock
 .idea/
 
+cypress-visual-report
 cypress-visual-screenshots
