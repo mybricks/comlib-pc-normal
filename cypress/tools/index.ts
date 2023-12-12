@@ -6,8 +6,6 @@ import { cloneDeep } from 'lodash';
  * TODO: 优化导入 dump 的方式
  */
 export function dumpPreview(dump: Record<string, unknown>) {
-  cy.viewport(1200, 800)
-  
   // 加载空白页面
   cy.visit('http://localhost:8080');
   cy.get('[data-mybricks-tip*=调试工具]').click();
