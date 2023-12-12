@@ -1,6 +1,6 @@
 {
   "name": "@mybricks/comlib-pc-normal",
-  "version": "1.4.45",
+  "version": "1.4.46",
   "description": "通用PC组件库",
   "main": "index.js",
   "scripts": {
