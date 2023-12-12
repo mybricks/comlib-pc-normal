@@ -7,7 +7,8 @@
     "start": "mybricks dev",
     "checkFile": "mybricks checkFile",
     "lint-staged": "npx lint-staged --allow-empty",
-    "test": "npx cypress open"
+    "test:dev": "npx cypress open",
+    "test": "npx cypress run"
   },
   "pre-commit": [
     "checkFile",
