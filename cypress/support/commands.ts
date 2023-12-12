@@ -14,30 +14,7 @@ declare global {
         testThreshold?: number,
         retryOptions?: Partial<typeof RecurseDefaults>
       ): Chainable<Element>;
-
-      /**
-       * 等待，直到满足判断条件
-       * @param cb 判断条件
-       * @example cy.waitForWindow((win) => win.checklist.length === 5)
-       */
-      waitForWindow(cb: (win: Cypress.AUTWindow) => boolean): void;
     }
   }
 }
 compareSnapshotCommand();
-
-// cypress/support/commands.js
-
-Cypress.Commands.add('waitForWindow', (cb: (win: Cypress.AUTWindow) => boolean) => {
-  cy.window().should((win) => {
-    return new Cypress.Promise((resolve) => {
-      if (cb(win)) {
-        resolve();
-      } else {
-        setTimeout(() => {
-          resolve();
-        }, 300);
-      }
-    });
-  });
-});
