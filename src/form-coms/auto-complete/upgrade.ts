@@ -1,6 +1,6 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { InputIds } from '../types';
-import { RuleKeys } from '../utils/validator';
+import { RuleKeys, LengthRules, mergeRules } from '../utils/validator';
 import { Data } from './runtime';
 
 const valueSchema = {
@@ -29,7 +29,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   };
   input.get('setOptions').setSchema(dataSourceSchema);
 
-  data.staticOptions.map((item) => {
+  data.staticOptions?.map((item) => {
     if (!item.label) {
       item.label = item.value
     }
@@ -227,6 +227,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.3 end ===============
+
+  data.rules = mergeRules(LengthRules, data.rules);
   
   return true;
 }

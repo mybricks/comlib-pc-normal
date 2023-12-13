@@ -1,5 +1,5 @@
 import { inputIds, outputIds } from '../form-container/constants';
-import { RuleKeys } from '../utils/validator';
+import { RuleKeys, ValueRules, mergeRules } from '../utils/validator';
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -196,6 +196,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.5 end ===============
+
+  data.rules = mergeRules(ValueRules, data.rules)
 
   return true;
 }
