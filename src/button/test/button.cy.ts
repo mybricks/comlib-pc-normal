@@ -1,5 +1,5 @@
 import toJSON from './toJSON.json';
-import { toJSONPreview, eventCheck } from '../../tools';
+import { toJSONPreview, eventCheck } from '@/../cypress/tools';
 
 describe('按钮', () => {
   beforeEach(() => {

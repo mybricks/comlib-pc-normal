@@ -6,7 +6,8 @@
   "namespace": "mybricks.normal-pc",
   "comAry": [
     "./cypress/materials/_checkpoint/com.json",
-
+    "./cypress/materials/_multi-inputJs/com.json",
+    
     {
       "title": "基础",
       "comAry": [

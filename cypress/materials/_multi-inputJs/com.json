@@ -1,0 +1,35 @@
+{
+  "title": "JS计算(测试用)",
+  "namespace": "mybricks.test._muilt-inputJs",
+  "version": "1.0.0",
+  "description": "JS计算",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "rtType": "js-autorun",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "inputValue0",
+          "title": "参数0",
+          "type": "follow"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output0",
+      "title": "输出项0",
+      "schema": {
+        "type": "number"
+      },
+      "editable": true
+    }
+  ]
+}
