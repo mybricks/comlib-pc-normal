@@ -113,14 +113,14 @@ export default function ({
   /**
    * @description v1.1.1 => v1.1.2 升级，新增 useCustomPanelHeader、useCustomPanelFooter 字段
    */
-  if(!Reflect.has(data, 'useCustomPanelHeader')) data.useCustomPanelHeader = false;
-  if(!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
-  if(!Reflect.has(data, 'controlled')) data.controlled = false;
+  if (!Reflect.has(data, 'useCustomPanelHeader')) data.useCustomPanelHeader = false;
+  if (!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
+  if (!Reflect.has(data, 'controlled')) data.controlled = false;
 
   /**
    * @description v1.1.2 => v1.1.3 升级，新增 formatMap 字段
    */
-  if(typeof data.formatMap === "undefined"){
+  if (typeof data.formatMap === "undefined") {
     data.formatMap = {
       "日期": encodeURIComponent("YYYY-MM-DD"),
       "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
@@ -134,18 +134,18 @@ export default function ({
   /**
    * @description v1.1.3 => v1.1.4 升级，新增 isWeekNumber 字段
   */
-  if(typeof data.isWeekNumber === "undefined"){
+  if (typeof data.isWeekNumber === "undefined") {
     data.isWeekNumber = false
   }
 
   /**
    * @description v1.1.4 => v1.1.5 升级，修改 setOpen 的文案
    */
-  if(input.get("setOpen")?.title === "打开隐藏面板" ) {
+  if (input.get("setOpen")?.title === "打开隐藏面板") {
     input.setTitle("setOpen", "打开日期选择面板");
   }
 
-  if(typeof data.formatMap['日期+时间'] === "undefined"){
+  if (typeof data.formatMap['日期+时间'] === "undefined") {
     data.formatMap = {
       "日期": data.formatMap['日期'],
       "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
@@ -306,6 +306,26 @@ export default function ({
     input.get('setDateType').setRels(["setDateTypeDone"]);
   }
   //=========== v1.1.10 end ===============
-  
+
+  /**
+  * @description v1.1.15 新增 日期面板切换 输出项 
+  */
+  if (!output.get('onPanelChange')) {
+    output.add('onPanelChange', '日期面板切换', {
+      type: 'object',
+      properties: {
+        value: {
+          title: '日期',
+          type: 'string',
+        },
+        mode: {
+          title: '日期选择类型',
+          type: 'string',
+        },
+      },
+    });
+  }
+  //=========== v1.1.15 end ===============
+
   return true;
 }

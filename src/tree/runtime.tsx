@@ -14,7 +14,7 @@ import {
   traverseTree
 } from './utils';
 import { Data, TreeData } from './types';
-import { DragConfigKeys, InputIds, OutputIds } from './constants';
+import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
 import TreeNode from './Components/TreeNode/index';
 import css from './style.less';
 
@@ -36,6 +36,23 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
+  const updateDefaultTreeData = useCallback(() => {
+    let treeData: TreeData[] = data.treeData;
+    const jsonString = decodeURIComponent(data.staticData);
+    try {
+      const jsonData = JSON.parse(jsonString);
+      treeData = jsonData;
+    } catch {
+      console.error('静态数据格式错误');
+    }
+    if (env.edit && data.useStaticData === false) {
+      treeData = placeholderTreeData;
+    } else if (env.runtime && data.useStaticData === false) {
+      treeData = [];
+    }
+    return treeData;
+  }, []);
+
   /** 重置checkedKeys */
   const clearCheckedKeys = useCallback(() => {
     data.checkedKeys = [];
@@ -55,6 +72,10 @@ export default function (props: RuntimeParams<Data>) {
     data.expandedKeys = keys;
     setExpandedKeys(keys);
   }, []);
+
+  useEffect(() => {
+    data.treeData = updateDefaultTreeData();
+  }, [data.useStaticData, data.staticData]);
 
   /** 更新treeKeys */
   useEffect(() => {
@@ -347,12 +368,7 @@ export default function (props: RuntimeParams<Data>) {
     }
 
     // 删除原来的节点
-    if (!dragNodeParent) {
-      data.treeData.splice(dragNodeIndex, 1);
-    } else {
-      dragNodeParent.children?.splice(dragNodeIndex, 1);
-    }
-
+    dragNodeParent.children?.splice(dragNodeIndex, 1);
     switch (dropFlag) {
       // 移动到dropNode下面的第一个子级
       case 0:
@@ -365,7 +381,15 @@ export default function (props: RuntimeParams<Data>) {
 
       // 移动到和dropNode平级，在其后面
       case 1:
-        dropNodeParent?.children?.splice(dropNodeIndex + 1, 0, dragNode);
+        let newInx = dropNodeIndex;
+        if (
+          dragNodeParent?.[keyFieldName] === dropNodeParent?.[keyFieldName] &&
+          dragNodeIndex < dropNodeIndex
+        ) {
+          // 同一父节点，移动到dropNode后面时，由于dragNode已被删除，index需要减1
+          newInx--;
+        }
+        dropNodeParent.children?.splice(newInx + 1, 0, dragNode);
         break;
 
       // 移动到和dropNode平级，在其前面

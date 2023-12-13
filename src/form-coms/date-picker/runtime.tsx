@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { DatePicker, message } from 'antd';
+import { DatePicker, DatePickerProps, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -311,6 +311,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
     outputs['onChange'](transValue);
     onValidateTrigger();
   };
+  const onPanelChange: DatePickerProps['onPanelChange'] = (value, mode) => {
+    outputs['onPanelChange']({ value, mode });
+  };
 
   const getShowTime = () => {
     if (!data.showTime || typeof data.showTime === 'boolean') {
@@ -433,6 +436,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           dateRender={data.useCustomDateCell ? customDateRender : undefined}
           showTime={getShowTime()}
           onChange={onChange}
+          onPanelChange={onPanelChange}
           disabledDate={data.disabledDate || disabledDateConfig}
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
           dropdownClassName={`

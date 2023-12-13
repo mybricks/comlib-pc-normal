@@ -108,6 +108,7 @@ export const formatDataSource = (dataSource, rowKey) => {
 };
 // 编辑态默认值
 export const getDefaultDataSource = (columns: IColumn[], rowKey, env) => {
+  if (env.runtime) return [];
   const mockData = {
     [rowKey]: uuid()
   };

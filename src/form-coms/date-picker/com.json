@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -102,8 +102,8 @@
     },
     {
       "id": "setValidateInfo",
-      "title": "设置校验状态",
-      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
       "schema": {
         "type": "object",
         "properties": {
@@ -339,6 +339,23 @@
             "value": "year"
           }
         ]
+      }
+    },
+    {
+      "id": "onPanelChange",
+      "title": "日期面板切换",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "日期",
+            "type": "string"
+          },
+          "mode": {
+            "title": "日期选择类型",
+            "type": "string"
+          }
+        }
       }
     }
   ],

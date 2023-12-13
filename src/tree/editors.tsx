@@ -12,85 +12,9 @@ import {
   ValueType
 } from './types';
 import { InputIds, OutputIds } from './constants';
-import {
-  getNodeSuggestions,
-  refreshSchema,
-  pretreatTreeData,
-  setCheckboxStatus,
-  traverseTree
-} from './utils';
-
-const buildNewNode = (uuid: string) => {
-  return {
-    title: uuid,
-    value: uuid,
-    key: uuid,
-    children: []
-  } as TreeData;
-};
-
-const getItemProp = ({
-  data,
-  focusArea,
-  dataset,
-  val,
-  isParent = false
-}: {
-  data: Data;
-  focusArea: any;
-  dataset: any;
-  val: string;
-  isParent?: boolean;
-}) => {
-  if (!focusArea) return;
-  const key: string = focusArea.dataset[dataset];
-  const { node, parent } =
-    traverseTree({
-      data,
-      targetKey: key,
-      isEdit: true
-    }) || {};
-  const item = isParent ? parent : node;
-  if (val === 'obj') return item;
-  else return item[val];
-};
-
-const moveNode = ({ data, focusArea, isDown }: { data: Data; focusArea: any; isDown: boolean }) => {
-  const key: string = focusArea.dataset['treeNodeId'];
-  const keyFieldName = 'key';
-  const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
-  if (index !== -1) {
-    const target = data.treeData.splice(index, 1)[0];
-    if (isDown) {
-      data.treeData.splice(index + 1, 0, target);
-    } else {
-      data.treeData.splice(index - 1, 0, target);
-    }
-  } else {
-    const parent: TreeData = getItemProp({
-      data,
-      focusArea,
-      dataset: 'treeNodeId',
-      val: 'obj',
-      isParent: true
-    });
-    if (parent && parent.children) {
-      const chileIndex = parent.children.findIndex((item) => item[keyFieldName] === key);
-      const child = parent.children.splice(chileIndex, 1)[0];
-      if (isDown) {
-        parent.children.splice(chileIndex + 1, 0, child);
-      } else {
-        parent.children.splice(chileIndex - 1, 0, child);
-      }
-    }
-  }
-};
+import { getNodeSuggestions, refreshSchema, setCheckboxStatus } from './utils';
 
 export default {
-  '@init': ({ data }: EditorResult<Data>) => {
-    pretreatTreeData({ treeData: data.treeData, data, defaultExpandAll: true });
-    setCheckboxStatus({ treeData: data.treeData, value: false });
-  },
   '@resize': {
     options: ['width']
   },
@@ -440,16 +364,6 @@ export default {
           ]
         },
         {
-          title: '添加节点',
-          type: 'button',
-          value: {
-            set({ data }: EditorResult<Data>) {
-              const newChildNode = buildNewNode(uuid());
-              data.treeData.push(newChildNode);
-            }
-          }
-        },
-        {
           title: '事件',
           items: [
             {
@@ -462,6 +376,40 @@ export default {
               }
             }
           ]
+        },
+        {
+          title: '使用静态数据源',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useStaticData;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.useStaticData = value;
+            }
+          }
+        },
+        {
+          type: 'Code',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useStaticData;
+          },
+          options: {
+            title: '树组件的默认数据',
+            language: 'json',
+            width: 600,
+            minimap: {
+              enabled: false
+            }
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.staticData;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.staticData = value;
+            }
+          }
         }
       ];
       cate[1].items = [
@@ -1059,200 +1007,7 @@ export default {
         }
       }
     ],
-    items: [
-      {
-        title: '标题',
-        type: 'text',
-        options: {
-          locale: true
-        },
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'title'
-            });
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            const item = getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'obj'
-            });
-            item.title = value;
-          }
-        }
-      },
-      {
-        title: '值',
-        type: 'text',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'value'
-            });
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: string) {
-            const item = getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'obj'
-            });
-            item.value = value;
-          }
-        }
-      },
-      {
-        title: '添加子节点',
-        type: 'button',
-        value: {
-          set({ data, focusArea }: EditorResult<Data>) {
-            const target: TreeData = getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'obj'
-            });
-
-            const newChildNode = buildNewNode(uuid());
-            if (target.children) {
-              target.children.push(newChildNode);
-            } else {
-              target.children = [newChildNode];
-            }
-          }
-        }
-      },
-      {
-        title: '上移',
-        type: 'button',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const key: string = focusArea.dataset['treeNodeId'];
-          const keyFieldName = 'key';
-          const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
-          if (index === 0) {
-            return false;
-          }
-          if (index === -1) {
-            const parent: TreeData = getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'obj',
-              isParent: true
-            });
-            if (parent && parent.children?.[0]?.[keyFieldName] === key) return false;
-          }
-          return true;
-        },
-        value: {
-          set({ data, focusArea }: EditorResult<Data>) {
-            moveNode({ data, focusArea, isDown: false });
-          }
-        }
-      },
-      {
-        title: '下移',
-        type: 'button',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const key: string = focusArea.dataset['treeNodeId'];
-          const keyFieldName = 'key';
-          const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
-          if (index === data.treeData.length - 1) {
-            return false;
-          }
-          if (index === -1) {
-            const parent: TreeData = getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'obj',
-              isParent: true
-            });
-            if (parent && parent.children?.[parent.children.length - 1]?.[keyFieldName] === key)
-              return false;
-          }
-          return true;
-        },
-        value: {
-          set({ data, focusArea }: EditorResult<Data>) {
-            moveNode({ data, focusArea, isDown: true });
-          }
-        }
-      },
-      {
-        title: '删除节点',
-        type: 'button',
-        value: {
-          set({ data, focusArea }: EditorResult<Data>) {
-            const key: string = focusArea.dataset['treeNodeId'];
-            const keyFieldName = 'key';
-            const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
-            if (index !== -1) {
-              data.treeData.splice(index, 1);
-            } else {
-              const parent: TreeData = getItemProp({
-                data,
-                focusArea,
-                dataset: 'treeNodeId',
-                val: 'obj',
-                isParent: true
-              });
-              if (Array.isArray(parent.children)) {
-                const index = parent.children.findIndex((item) => item[keyFieldName] === key);
-                index !== -1 && parent.children.splice(index, 1);
-              }
-            }
-          }
-        }
-      },
-      {
-        title: '删除所有子节点',
-        type: 'button',
-        ifVisible({ data, focusArea }: EditorResult<Data>) {
-          const keyFieldName = 'key';
-          const key: string = focusArea.dataset['treeNodeId'];
-          const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
-          let target: TreeData;
-          if (index !== -1) {
-            target = data.treeData[index];
-          } else {
-            target = getItemProp({
-              data,
-              focusArea,
-              dataset: 'treeNodeId',
-              val: 'obj'
-            });
-          }
-          return target && target.children && target.children.length > 0;
-        },
-        value: {
-          set({ data, focusArea }: EditorResult<Data>) {
-            const keyFieldName = 'key';
-            const key: string = focusArea.dataset['treeNodeId'];
-            const index = data.treeData.findIndex((item) => item[keyFieldName] === key);
-            if (index !== -1) {
-              data.treeData[index].children = [];
-            } else {
-              const target: TreeData = getItemProp({
-                data,
-                focusArea,
-                dataset: 'treeNodeId',
-                val: 'obj'
-              });
-              if (target && target.children) target.children = [];
-            }
-          }
-        }
-      }
-    ]
+    items: []
   },
   '[data-action-btns]': actionBtnsEditor,
   '[data-btn-id]': {

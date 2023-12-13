@@ -63,8 +63,10 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
 
       inputs['resetFields']((val, outputRels) => {
-        resetFields();
-        outputRels['onResetFinish']();
+        const cb = () => {
+          outputRels['onResetFinish']();
+        };
+        resetFields(cb);
       });
 
       inputs[inputIds.SUBMIT]((val, outputRels) => {
@@ -80,7 +82,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
 
       inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
-        outputRels[outputIds.RETURN_VALUES](deepCopy(formContext.current.store));
+        const store = getFieldsValue(data, formContext.current.store, childrenInputs);
+        outputRels[outputIds.RETURN_VALUES](store);
       });
 
       inputs[inputIds.SET_DISABLED]((_, relOutputs) => {
@@ -280,15 +283,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   };
 
-  const resetFields = () => {
-    data.items.forEach((item) => {
-      // const id = item.id;
-      // const input = childrenInputs[id];
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.resetValue();
-      item.validateStatus = undefined;
-      item.help = undefined;
-    });
+  const resetFields = (cb) => {
+    try {
+      data.items.forEach((item, index) => {
+        // const id = item.id;
+        // const input = childrenInputs[id];
+        const isLast = index === data.items.length - 1;
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.resetValue().resetValueDone(() => {
+          item.validateStatus = undefined;
+          item.help = undefined;
+          if (isLast) cb?.();
+        });
+      });
+    } catch {
+      cb?.();
+    }
   };
 
   const setDisabled = (nameList?: string[]) => {
@@ -357,6 +367,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
+      /** 过滤隐藏表单项 */
       const formItems = getFormItems(data, childrenInputs);
 
       Promise.all(
@@ -400,7 +411,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        let res = { ...formContext.current.store, ...params };
+        const store = getFieldsValue(data, formContext.current.store, childrenInputs);
+
+        let res = { ...store, ...params };
 
         if (
           data.domainModel?.entity?.fieldAry?.length > 0 &&
@@ -482,6 +495,27 @@ const getFormItems = (data: Data, childrenInputs) => {
   }
 
   return formItems;
+};
+
+/**
+ * @description 过滤表单数据
+ */
+const getFieldsValue = (data: Data, store: {}, childrenInputs) => {
+  let result = {};
+
+  const formItems = getFormItems(data, childrenInputs);
+
+  if (data.submitHiddenFields) {
+    result = deepCopy(store);
+  } else {
+    formItems.forEach((item) => {
+      if (item.visible) {
+        result[item.name] = store[item.name];
+      }
+    });
+  }
+
+  return result;
 };
 
 /**
