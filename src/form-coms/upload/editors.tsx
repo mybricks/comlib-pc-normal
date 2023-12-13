@@ -77,9 +77,41 @@ export default {
         }
       },
       {
+        title: '隐藏图标',
+        type: 'switch',
+        description: '是否隐藏图标，默认不隐藏',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'dragger';
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.hideIcon;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.hideIcon = value;
+          }
+        }
+      },
+      {
         title: '背景',
-        options: ['background'],
+        options: ['background', 'border'],
         target: ['.ant-upload', '.ant-btn']
+      },
+      {
+        title: '图标样式配置',
+        options: ['font'],
+        target: '.ant-btn .anticon',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'text' || data.config.listType === 'picture';
+        }
+      },
+      {
+        title: '文案样式配置',
+        options: ['font'],
+        target: '.ant-btn>.anticon+span',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'text' || data.config.listType === 'picture';
+        }
       },
       {
         title: '图标样式配置',
@@ -95,6 +127,22 @@ export default {
         target: '.ant-upload > div > div',
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.listType === 'picture-card';
+        }
+      },
+      {
+        title: '图标样式配置',
+        options: ['font'],
+        target: '.ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'dragger';
+        }
+      },
+      {
+        title: '文案样式配置',
+        options: ['font'],
+        target: '.ant-upload.ant-upload-drag p.ant-upload-text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'dragger';
         }
       },
       uploadEditors
