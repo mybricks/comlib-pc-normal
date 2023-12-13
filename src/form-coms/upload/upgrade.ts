@@ -315,5 +315,13 @@ export default function ({ input, output, slot, data }): boolean {
   }  
   //=========== v1.0.27 end ===============
 
+  
+  /**
+   * @description v1.0.30 新增hideIcon
+  */
+  if(typeof data.hideIcon === "undefined"){
+    data.hideIcon = false;
+  };
+  //=========== v1.0.30 end ===============
   return true;
 }
