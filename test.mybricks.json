@@ -7,6 +7,7 @@
   "comAry": [
     "./cypress/materials/_checkpoint/com.json",
     "./cypress/materials/_multi-inputJs/com.json",
+    "./cypress/materials/toolbar/com.json",
     
     {
       "title": "基础",

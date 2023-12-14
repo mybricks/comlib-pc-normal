@@ -16,8 +16,11 @@ describe('文本框', () => {
 
     eventCheck([
       {
-        id: '值初始化',
-        value: undefined
+        id: '校验',
+        value: {
+          validateStatus: 'error',
+          help: '内容不能为空'
+        }
       },
       {
         id: '值更新',
