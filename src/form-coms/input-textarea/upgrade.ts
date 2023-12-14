@@ -1,6 +1,6 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { InputIds } from '../types';
-import { RuleKeys } from '../utils/validator';
+import { RuleKeys, mergeRules, LengthRules } from '../utils/validator';
 import { Data } from './runtime';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -192,5 +192,6 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.5 end ===============
 
+  data.rules = mergeRules(LengthRules, data.rules);
   return true;
 }

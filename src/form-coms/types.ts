@@ -12,6 +12,7 @@ export interface Option {
   key?: string | number;
   disabled?: boolean;
   checked: boolean;
+  _id?: string;
 }
 
 export const InputIds = {

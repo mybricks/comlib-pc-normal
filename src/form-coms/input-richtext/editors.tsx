@@ -1,5 +1,11 @@
 import { OutputIds } from '../types';
-import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import {
+  RuleKeys,
+  defaultValidatorExample,
+  ExpRules,
+  showMessage,
+  getTitle
+} from '../utils/validator';
 import { Data } from './types';
 export default {
   '@resize': {
@@ -238,10 +244,18 @@ export default {
               type: 'Text',
               value: 'message',
               ifVisible(item: any, index: number) {
-                return item.key === RuleKeys.REQUIRED;
+                return showMessage(item.key);
               },
               options: {
                 locale: true
+              }
+            },
+            {
+              title: '正则表达式',
+              type: 'Text',
+              value: 'regExr',
+              ifVisible(item: any, index: number) {
+                return item.key === RuleKeys.REG_EXP;
               }
             },
             {
@@ -272,7 +286,7 @@ export default {
         },
         value: {
           get({ data }) {
-            return data.rules.length > 0 ? data.rules : defaultRules;
+            return data.rules.length > 0 ? data.rules : ExpRules;
           },
           set({ data }, value: any) {
             data.rules = value;
@@ -283,9 +297,7 @@ export default {
         title: '校验触发事件',
         type: '_event',
         ifVisible({ data }: EditorResult<Data>) {
-          const cutomRule = (data.rules || defaultRules).find(
-            (i) => i.key === RuleKeys.CUSTOM_EVENT
-          );
+          const cutomRule = (data.rules || ExpRules).find((i) => i.key === RuleKeys.CUSTOM_EVENT);
           return !!cutomRule?.status;
         },
         options: {
@@ -330,9 +342,4 @@ export default {
       }
     ];
   }
-};
-
-const getTitle = (item: any, index: number) => {
-  const { key, title, numericalLimit, regExr } = item;
-  return title;
 };
