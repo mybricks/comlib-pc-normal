@@ -78,7 +78,7 @@ const FormItem = (props) => {
         </div>
         {item.slotAfter && (
           <div className={css.formItemSlotAfter}>
-            {<Form.Item noStyle>{slots[item.slotAfter]?.render()}</Form.Item>}
+            {<Form.Item noStyle>{slots[item.slotAfter]?.render({ scope: com.scope })}</Form.Item>}
           </div>
         )}
       </div>
