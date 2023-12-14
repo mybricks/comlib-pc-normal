@@ -9,38 +9,50 @@ interface Result {
 }
 
 export default {
-  ':root': [
-    {
-      title: '加载图标大小',
-      type: 'Select',
-      options: [
-        { label: '大', value: 'large' },
-        { label: '中', value: 'default' },
-        { label: '小', value: 'small' }
-      ],
-      value: {
-        get({ data }: Result) {
-          return data.size || 'default';
-        },
-        set({ data }: Result, value: SpinSize) {
-          data.size = value;
+  ':root': {
+    style: [
+      {
+        title: '背景色',
+        options: ['opacity'],
+        target: 'div > div.ant-spin-container.ant-spin-blur:after',
+        initValue: {
+          opacity: 0.4
         }
       }
-    },
-    {
-      title: '描述文案',
-      type: 'Text',
-      options: {
-        locale: true
+    ],
+    items: [
+      {
+        title: '加载图标大小',
+        type: 'Select',
+        options: [
+          { label: '大', value: 'large' },
+          { label: '中', value: 'default' },
+          { label: '小', value: 'small' }
+        ],
+        value: {
+          get({ data }: Result) {
+            return data.size || 'default';
+          },
+          set({ data }: Result, value: SpinSize) {
+            data.size = value;
+          }
+        }
       },
-      value: {
-        get({ data }: Result) {
-          return data.tip || '加载中';
+      {
+        title: '描述文案',
+        type: 'Text',
+        options: {
+          locale: true
         },
-        set({ data }: Result, value: string) {
-          data.tip = value;
+        value: {
+          get({ data }: Result) {
+            return data.tip || '加载中';
+          },
+          set({ data }: Result, value: string) {
+            data.tip = value;
+          }
         }
       }
-    }
-  ]
+    ]
+  }
 };
