@@ -1,5 +1,5 @@
 import { inputIds, outputIds } from '../form-container/constants';
-import { RuleKeys } from '../utils/validator';
+import { RuleKeys, ExpRules, mergeRules } from '../utils/validator';
 import { Data } from './types';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
@@ -153,5 +153,6 @@ if (output.get(outputIds.setValidateInfoDone) &&
 }
   //=========== v1.1.9 end ===============
 
+  data.rules = mergeRules(ExpRules, data.rules);
   return true;
 }

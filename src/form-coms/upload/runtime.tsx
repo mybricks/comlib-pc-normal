@@ -40,6 +40,7 @@ export interface Data {
   imageSize: number[];
   customUpload: boolean;
   fileClick: boolean;
+  hideIcon: boolean;
 }
 
 interface Window {
@@ -403,7 +404,9 @@ export default function ({
 
     const draggerButton = (
       <>
-        <p className="ant-upload-drag-icon">{Icons && Icons[uploadIcon]?.render()}</p>
+        <p className="ant-upload-drag-icon" style={{ display: data.hideIcon ? 'none' : void 0 }}>
+          {Icons && Icons[uploadIcon]?.render()}
+        </p>
         <p className="ant-upload-text">{env.i18n(buttonText)}</p>
       </>
     );
@@ -497,6 +500,7 @@ export default function ({
             ? false
             : { showPreviewIcon: usePreview }
         }
+        //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
