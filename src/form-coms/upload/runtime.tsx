@@ -414,10 +414,8 @@ export default function ({
       'picture-card': pictureButton,
       dragger: draggerButton
     };
-    if (!fileCount || (Array.isArray(fileList) && fileList.length < fileCount)) {
-      return uploadButton[listType];
-    }
-    return null;
+
+    return uploadButton[listType];
   };
 
   const setUploadStyle = (node: HTMLElement) => {
