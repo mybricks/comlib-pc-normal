@@ -8,10 +8,21 @@ describe('对象取值', () => {
 
   it('检查', () => {
     cy.window().should((win) => {
-      expect(win.checklist.length).eq(5);
+      expect(win.checklist.length).eq(6);
     });
 
     eventCheck([
+      {
+        id: '输入数据',
+        value: {
+          a: '() => {}',
+          b: 2.2,
+          c: false,
+          d: {
+            aa: '?'
+          }
+        }
+      },
       {
         id: 'a',
         value: '() => {}'

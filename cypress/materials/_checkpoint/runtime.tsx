@@ -15,6 +15,8 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<IData>) {
         }
       ];
       console.log(`window.checklist: `, window.checklist);
+
+      outputs['export'](value);
     });
   }
 }

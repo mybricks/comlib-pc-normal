@@ -13,6 +13,13 @@ describe('按钮', () => {
     // 找到包含文本“双击按钮”的按钮组件并双击
     cy.contains('button', '双击按钮').dblclick();
 
+    // 判断动态修改标题是否成功
+    cy.contains('button', "动态修改标题(修改后)")
+
+    // 判断动态设置禁用是否成功
+    cy.contains('button', '动态设置禁用').should('be.disabled')
+
+    // 判断事件是否按照预期触发了
     eventCheck([
       {
         id: '单击',
