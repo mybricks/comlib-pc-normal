@@ -7,15 +7,12 @@ interface transformReturns {
 }
 type FuncType = (code: string, scope: Record<string, any>) => transformReturns;
 
-const getCodeFunc = (code: string, scope: Record<string, any>) => {
-  const fn = eval(code);
-  return fn(scope);
-};
-
-export const createElement: FuncType = (code, scope = {}) => {
-  const transformCode = transform(code.trim().replace(/;$/, ''));
-  return { transformCode, node: getCodeFunc(transformCode, scope) };
-};
+const removeSemicolon = (text: string): string => {
+  while (text.trim().endsWith(';')) {
+    text = text.slice(0, text.length - 1)
+  }
+  return text
+}
 
 const transform = (code: string) => {
   const options = {
@@ -38,4 +35,14 @@ const transform = (code: string) => {
   }
 };
 
-export { transform };
+const getReactNode = (code: string, scope: Record<string, any>) => {
+  const fn = eval(code);
+  return fn(scope);
+};
+ 
+const createElement: FuncType = (code, scope = {}) => {
+  const transformCode = transform(removeSemicolon(code));
+  return { transformCode, node: getReactNode(transformCode, scope) };
+};
+
+export { createElement };

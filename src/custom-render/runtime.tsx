@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import * as antd from 'antd';
 import * as icons from '@ant-design/icons';
-import debounce from 'lodash/debounce';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { Data } from './types';
 import { createElement } from './transform';
@@ -24,7 +23,6 @@ const Component = ({ code, scope }: { code: string; scope: Record<string, any> }
       return error?.toString();
     }
   }, [code, scope]);
-  console.log(scope);
   return (
     <ErrorBoundary key={code} fallback={<ErrorStatus />}>
       {React.isValidElement(ReactNode) ? ReactNode : <ErrorStatus>{ReactNode}</ErrorStatus>}
