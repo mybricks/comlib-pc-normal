@@ -33,13 +33,13 @@ export default {
           {
             title: '默认',
             catelog: '默认',
-            options: ['font'],
+            options: ['font', 'border', 'padding'],
             target: '[data-item-type="root"]'
           },
           {
             title: 'Hover',
             catelog: 'Hover',
-            options: ['font'],
+            options: ['font', 'border', 'padding'],
             target: '[data-item-type="root"]:hover',
             domTarget: '[data-item-type="root"]'
           }
