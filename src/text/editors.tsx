@@ -33,13 +33,23 @@ export default {
           {
             title: '默认',
             catelog: '默认',
-            options: ['font', 'border', 'padding'],
+            options: [
+              'font',
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
             target: '[data-item-type="root"]'
           },
           {
             title: 'Hover',
             catelog: 'Hover',
-            options: ['font', 'border', 'padding'],
+            options: [
+              'font',
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
             target: '[data-item-type="root"]:hover',
             domTarget: '[data-item-type="root"]'
           }
