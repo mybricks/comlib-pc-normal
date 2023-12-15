@@ -12,7 +12,8 @@
   },
   "pre-commit": [
     "checkFile",
-    "lint-staged"
+    "lint-staged",
+    "cy:run"
   ],
   "repository": {
     "type": "git",
