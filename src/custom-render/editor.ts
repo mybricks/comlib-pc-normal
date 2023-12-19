@@ -1,7 +1,17 @@
 import { Data, IOEvent } from './types';
-import { DefaultCode, Comment } from './constants';
+import { DefaultCode, Comments } from './constants';
 import { uuid } from '../utils'
+import { genLibTypes } from './transform'
 export default {
+  async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
+    data.extraLib = await genLibTypes(fromPin.schema)
+  },
+  async '@inputUpdated'({ data, input }: EditorResult<Data>, updatePin) {
+    data.extraLib = await genLibTypes(updatePin.schema)
+  },
+  async '@inputDisConnected'({ data, input }: EditorResult<Data>, fromPin, toPin) {
+    data.extraLib = await genLibTypes({type: 'null'})
+  },
   ':root': {
     items({ data, env }: EditorResult<Data>, ...catalog) {
       catalog[0].title = '配置';
@@ -25,9 +35,10 @@ export default {
             babel: {
               presets: ['env', 'react']
             },
-            comments: Comment,
+            comments: Comments,
             autoSave: false,
-            immediatelySet: true
+            immediatelySet: true,
+            extraLib: data.extraLib
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -83,12 +94,12 @@ export default {
             items: [
               {
                 title: 'ID',
-                type: 'textarea',
+                type: 'text',
                 value: 'key'
               },
               {
                 title: '名称',
-                type: 'textarea',
+                type: 'text',
                 value: 'label'
               }
             ]

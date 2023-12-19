@@ -1,11 +1,8 @@
 import * as Babel from '@babel/standalone';
-import type { ReactNode } from 'react';
+import * as SchemaToTypes from "./json-schema-to-typescript";
+import { ParamsType } from './constants'
 
-interface transformReturns {
-  transformCode: string;
-  node: ReactNode;
-}
-type FuncType = (code: string, scope: Record<string, any>) => transformReturns;
+type FuncType = (code: string) => Function;
 
 const transform = (code: string) => {
   const options = {
@@ -28,14 +25,25 @@ const transform = (code: string) => {
   }
 };
 
-const getReactNode = (code: string, scope: Record<string, any>) => {
-  const fn = eval(code);
-  return fn(scope);
-};
- 
-const createElement: FuncType = (code, scope = {}) => {
+const createElement: FuncType = (code) => {
   const transformCode = transform(code.trim().replace(/;$/, ''));
-  return { transformCode, node: getReactNode(transformCode, scope) };
+  return eval(transformCode);
 };
 
-export { createElement };
+const genLibTypes = async (schema: Record<string, any>) => {
+  schema.title = 'props'
+  const propTypes = await SchemaToTypes.compile(schema, "", {
+    bannerComment: "",
+    unknownAny: false,
+    format: false,
+  }).then((ts) => {
+    return ts.replace("export ", "");
+  });
+  return `
+    ${propTypes}\n
+    ${ParamsType}
+  `;
+};
+
+
+export { createElement, genLibTypes };

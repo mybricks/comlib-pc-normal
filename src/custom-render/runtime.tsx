@@ -17,15 +17,18 @@ const ErrorStatus = ({ children = null }: { children?: any }) => (
 const Component = ({ code, scope }: { code: string; scope: Record<string, any> }) => {
   const ReactNode = useMemo(() => {
     try {
-      const { node } = createElement(code, scope);
-      return node;
+      return createElement(code);
     } catch (error) {
       return error?.toString();
     }
   }, [code, scope]);
   return (
     <ErrorBoundary key={code} fallback={<ErrorStatus />}>
-      {React.isValidElement(ReactNode) ? ReactNode : <ErrorStatus>{ReactNode}</ErrorStatus>}
+      {typeof ReactNode === 'function' ? (
+        <ReactNode {...scope} />
+      ) : (
+        <ErrorStatus>{ReactNode}</ErrorStatus>
+      )}
     </ErrorBoundary>
   );
 };
@@ -45,7 +48,7 @@ export default ({ data, inputs, env, outputs, logger }: RuntimeParams<Data>) => 
   return (
     <Component
       code={decodeURIComponent(componentCode ?? DefaultCode)}
-      scope={{ props: props ?? staticProps, context: { React, antd, icons, env }, events: outputs }}
+      scope={{ props: props ?? staticProps, inject: { React, antd, icons, env }, events: outputs }}
     />
   );
 };
