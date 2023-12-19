@@ -137,7 +137,11 @@ export function validateForInput(
     item.validateStatus[index] = validateInfo?.validateStatus;
     item.help[index] = validateInfo?.help;
     if (cb) {
-      cb(validateInfo);
+      cb({
+        ...validateInfo,
+        index,
+        subName: item.name
+      });
     }
   });
 };

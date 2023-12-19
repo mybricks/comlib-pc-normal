@@ -248,12 +248,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       Promise.all(allPromise)
         .then((values) => {
           let rtn = false;
-          values.forEach((item, index) => {
+          values.forEach((item) => {
             if (item.validateStatus !== 'success') {
-              reject({
-                ...item,
-                index
-              });
+              reject(item);
             }
           });
 
