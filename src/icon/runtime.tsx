@@ -37,6 +37,7 @@ export default function ({ env, data, outputs }: RuntimeParams<Data>) {
             : undefined
       }}
       onClick={onClick}
+      data-item-type="icon"
     >
       {btnItemR({ icon: data.icon })}
     </div>
