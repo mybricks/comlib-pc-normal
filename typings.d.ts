@@ -113,6 +113,8 @@ type AnyMap = {
 
 type StyleModeType<T> = Partial<{
   title: string;
+  catelog?: string;
+  ifVisible?: any;
   initValue: CSSProperties;
   target: string | ((props: EditorResult<T>) => string) | undefined;
   domTarget: string;
