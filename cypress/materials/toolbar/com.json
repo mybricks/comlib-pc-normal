@@ -1,0 +1,33 @@
+{
+  "title": "工具条(测试用)",
+  "namespace": "mybricks.test.toolbar",
+  "version": "1.0.0",
+  "description": "工具条(测试用)",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors/index.ts",
+  "upgrade": "./upgrade.ts",
+  "target": {
+    "toReact": "./toReact.ts"
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "id": "btn0",
+      "title": "单击按钮0",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "doubleClick_btn0",
+      "title": "双击按钮0",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ]
+}

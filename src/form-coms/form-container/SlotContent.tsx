@@ -39,7 +39,7 @@ const SlotContent = (props) => {
 
   const content = useMemo(() => {
     return slots['content'].render({
-      itemWrap(com: { id; jsx; name }) {
+      itemWrap(com: { id; jsx; name; scope }) {
         // todo name
         const { item, isFormItem } = getFormItem(data, com);
         return isFormItem ? (

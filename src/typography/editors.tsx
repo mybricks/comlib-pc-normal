@@ -186,7 +186,7 @@ export default {
               oldcontent: '文本',
               textType: '',
               stylePadding: [0, 0],
-              style: { ...defaultStyle }
+              style: {}
             });
           }
         }

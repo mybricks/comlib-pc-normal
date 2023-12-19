@@ -1,6 +1,7 @@
 import { Data } from '../../types';
 import { DefaultOnRowScript, OutputIds, SlotIds } from '../../constants';
 import { Schemas, setDataSchema } from '../../schema';
+import { InputIds } from '../../constants';
 export default {
   title: '行操作',
   items: [
@@ -145,11 +146,19 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.enableRowFocus;
         },
-        set({ data, output }: EditorResult<Data>, value: boolean) {
+        set({ data, output, input }: EditorResult<Data>, value: boolean) {
           if (value && !data.focusRowStyle) {
             data.focusRowStyle = {
               background: '#dedede'
             };
+          }
+          if (value) {
+            input.add(InputIds.SET_FOCUS_ROW, '设置选中行序号', Schemas.SET_FOCUS_ROW);
+            output.add(OutputIds.SET_FOCUS_ROW, '设置选中行之后', Schemas.SET_FOCUS_ROW);
+            input.get(InputIds.SET_FOCUS_ROW).setRels([OutputIds.SET_FOCUS_ROW]);
+          } else {
+            input.remove(InputIds.SET_FOCUS_ROW);
+            output.remove(InputIds.SET_FOCUS_ROW);
           }
           data.enableRowFocus = value;
         }

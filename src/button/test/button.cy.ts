@@ -1,18 +1,25 @@
-import toJSON from './toJSON.json';
+import toJSON_各种事件触发检查 from './case-各种事件触发检查/toJSON.json';
+import toJSON_各种静态配置检查 from './case-各种静态配置检查/toJSON.json';
 import { toJSONPreview, eventCheck } from '@/../cypress/tools';
 
 describe('按钮', () => {
-  beforeEach(() => {
-    toJSONPreview(toJSON);
-  });
-
   it('各种事件触发检查', () => {
+    // 加载测试页面
+    toJSONPreview(toJSON_各种事件触发检查);
+
     // 找到包含文本“单击按钮”的按钮组件并单击
     cy.contains('button', '单击按钮').click();
 
     // 找到包含文本“双击按钮”的按钮组件并双击
     cy.contains('button', '双击按钮').dblclick();
 
+    // 判断动态修改标题是否成功
+    cy.contains('button', '动态修改标题(修改后)');
+
+    // 判断动态设置禁用是否成功
+    cy.contains('button', '动态设置禁用').should('be.disabled');
+
+    // 判断事件是否按照预期触发了
     eventCheck([
       {
         id: '单击',
@@ -23,9 +30,16 @@ describe('按钮', () => {
         value: 0
       }
     ]);
+
+    // 截图对比
+    cy.compareSnapshot('按钮_各种事件触发检查');
   });
 
-  it('截图比对', () => {
-    cy.compareSnapshot('按钮');
+  it('各种静态配置检查', () => {
+    // 加载测试页面
+    toJSONPreview(toJSON_各种静态配置检查);
+
+    // 截图对比
+    cy.compareSnapshot('按钮_各种静态配置检查');
   });
 });
