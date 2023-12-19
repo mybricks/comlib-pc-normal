@@ -110,7 +110,8 @@
         "./src/dropdown/com.json",
         "./src/sort-bar/com.json",
         "./src/video/com.json",
-        "./src/print/com.json"
+        "./src/print/com.json",
+        "./src/custom-render/com.json"
       ]
     },
     "./src/_muilt-inputJs/com.json",
