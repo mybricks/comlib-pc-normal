@@ -160,6 +160,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             });
         })
         .catch((e) => {
+          outputRels['returnValidate'](e);
           console.log('校验失败', e);
         });
     });
@@ -247,9 +248,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
       Promise.all(allPromise)
         .then((values) => {
           let rtn = false;
-          values.forEach((item) => {
+          values.forEach((item, index) => {
             if (item.validateStatus !== 'success') {
-              reject(item);
+              reject({
+                ...item,
+                index
+              });
             }
           });
 
