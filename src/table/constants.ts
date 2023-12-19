@@ -18,6 +18,8 @@ export const InputIds = {
   CLEAR_ROW_SELECTION: 'clearRowSelection',
   // 设置勾选项
   SET_ROW_SELECTION: 'setRowSelectedKeys',
+  // 设置选中行
+  SET_FOCUS_ROW: 'setFocusRow',
 
   // 设置数据源
   SET_DATA_SOURCE: 'dataSource',
@@ -109,6 +111,7 @@ export const OutputIds = {
   SET_SHOW_COLUMNS: 'showColumns',
   SET_SHOW_TitleS: 'showTitles',
   SET_ROW_SELECTION: 'setRowSelectedKeys',
+  SET_FOCUS_ROW: 'setFocusRow',
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',
   CHANGE_COLS_ATTR: 'changeColsAttr'

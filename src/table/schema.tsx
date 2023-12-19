@@ -399,6 +399,10 @@ export const Schemas = {
       type: 'string'
     }
   },
+  SET_FOCUS_ROW: {
+    title: '选中行序号',
+    type: 'number'
+  },
   SORTER: {
     type: 'object',
     properties: {
