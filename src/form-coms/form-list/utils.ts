@@ -171,10 +171,6 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
         data.items.forEach((item) => {
           const { id, name, comName, label } = item;
           const { index, inputs, visible } = childrenStore[key][comName];
-          // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
-          if (!data.submitHiddenFields && !visible) {
-            return;
-          }
           if (!allValues[index]) {
             allValues[index] = {};
           }
