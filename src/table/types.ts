@@ -37,7 +37,7 @@ export interface Filter {
   enable?: boolean;
   type?: FilterTypeEnum;
   options?: any[];
-  hideFilterDropdown?: boolean
+  hideFilterDropdown?: boolean;
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
 }
@@ -80,8 +80,11 @@ export interface IColumn {
   keepDataIndex?: boolean;
   dataSchema?: any;
 
-  formatData?: TformattersValue,
-  colMergeScirpt?: string,
+  formatData?: TformattersValue;
+  colMergeScirpt?: string;
+
+  // 带排序列表头对齐方式
+  sorterAlign?: AlignEnum;
 }
 
 export enum SizeEnum {
@@ -141,7 +144,7 @@ export interface Data {
   // 使用勾选
   useRowSelection: boolean;
   // 点击行触发勾选
-  enableRowClickSelection: boolean,
+  enableRowClickSelection: boolean;
   // 勾选类型
   selectionType: RowSelectionTypeEnum;
   // 勾选操作区位置
@@ -187,28 +190,28 @@ export interface Data {
   enableRowDoubleClick?: boolean;
   enableCellClick?: boolean;
   enableCellFocus?: boolean;
-  enableRowFocus: boolean,
-  focusRowStyle: any,
+  enableRowFocus: boolean;
+  focusRowStyle: any;
   domainModel: {
-    entity?: any
-  },
+    entity?: any;
+  };
   // 是否默认展开所有行
-  defaultExpandAllRows: boolean,
+  defaultExpandAllRows: boolean;
 
-  useSummaryColumn: boolean, // 是否开启总结栏
-  summaryColumnTitle: string, // 总结栏 title
-  summaryCellTitleCol: number, // 总结栏 title col
-  summaryColumnContentType: 'text' | 'slotItem', // 总结栏内容类型
-  summaryColumnContentSchema: object, // 总结栏内容Schema
-  enbaleRowMerge?: boolean,
-  enableOnRow?: boolean,
+  useSummaryColumn: boolean; // 是否开启总结栏
+  summaryColumnTitle: string; // 总结栏 title
+  summaryCellTitleCol: number; // 总结栏 title col
+  summaryColumnContentType: 'text' | 'slotItem'; // 总结栏内容类型
+  summaryColumnContentSchema: object; // 总结栏内容Schema
+  enbaleRowMerge?: boolean;
+  enableOnRow?: boolean;
   rowMergeConfig?: {
     // 合并规则，当连续的几行中，该列的值一样时，合并符合要求的行
-    mergeByField: string,
+    mergeByField: string;
     // 返回true，表示对应的列不能合并
-    excludeFields?: string[]
-  },
-  fixedHeight?: string | number
+    excludeFields?: string[];
+  };
+  fixedHeight?: string | number;
 
   mergeCheckboxColumn?: boolean; // 合并勾选栏
 
