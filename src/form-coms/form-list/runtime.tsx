@@ -70,7 +70,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         if (outputRels['setInitialValueDone']) {
           outputRels['setInitialValueDone']?.(value);
         }
-        outputs[OutputIds.OnInitial](deepCopy(data.value));
+        outputs[OutputIds.OnInitial](deepCopy(value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
         generateFields(data);
         data.userAction.type = InputIds.SetInitialValue;
@@ -82,7 +82,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 获取值
     inputs['getValue']((val, outputRels) => {
-      const value = deepCopy(data.value);
+      const value = getValue();
       outputRels['returnValue'](value);
     });
 
@@ -160,6 +160,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             });
         })
         .catch((e) => {
+          outputRels['returnValidate'](e);
           console.log('校验失败', e);
         });
     });
@@ -257,6 +258,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
         })
         .catch((e) => reject(e));
     });
+  }, []);
+
+  const getValue = useCallback(() => {
+    const values: {}[] = [];
+    data.fields.forEach((field) => {
+      const { name, key } = field;
+      if (!values[name]) {
+        values[name] = {};
+      }
+      const fieldFormItems = childrenStore[key];
+      data.items.map((item) => {
+        const { visible } = fieldFormItems[item.comName];
+        if (data.submitHiddenFields || visible) {
+          values[name][item.name] = data.value?.[name]?.[item.name];
+        }
+      });
+    });
+    return values;
   }, []);
 
   const field = useMemo(() => {
