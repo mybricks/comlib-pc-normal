@@ -26,6 +26,8 @@ export default {
               presets: ['env', 'react']
             },
             comments: Comment,
+            autoSave: false,
+            immediatelySet: true
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -46,7 +48,9 @@ export default {
             width: 600,
             minimap: {
               enabled: false
-            }
+            },
+            autoSave: false,
+            immediatelySet: true
           },
           value: {
             get({ data }: EditorResult<Data>) {

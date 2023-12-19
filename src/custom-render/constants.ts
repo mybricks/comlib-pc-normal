@@ -4,6 +4,8 @@ export const Comment = `
    ajax: Fetch;
    // 发送网络请求
    callService: (serviceId: string, params: Object) => Promise<any>;
+   // 多语言
+   i18n: (text: string) => string
    // vars内置方法
    vars: {
     // 获取URL参数
@@ -44,3 +46,21 @@ export const Comment = `
 export const DefaultCode = `({ props, context, events }) => {
   return <div>自定义渲染</div>;
 }`;
+
+export const ContextTypes =  `
+/// <reference types="https://unpkg.com/browse/@types/react@17.0.73/index.d.ts" />
+declare interface Params = {
+  renderer: {
+    React: React;
+    env: {
+      ajax: Fetch;
+      callService: (serviceId: string, params: Object) => Promise<any>;
+      i18n: (text: string) => string;
+      vars: {
+        getQuery: () => object;
+      }
+    }
+  },
+  events: Record<string, Function>
+}
+`

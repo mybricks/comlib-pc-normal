@@ -8,4 +8,5 @@ export interface Data {
   props?: string;
   componentCode: string;
   events?: Array<IOEvent>;
+  extraLib?: string
 }

@@ -7,7 +7,7 @@ import { createElement } from './transform';
 import { DefaultCode } from './constants';
 
 const ErrorStatus = ({ children = null }: { children?: any }) => (
-  <div style={{ color: 'red', fontSize: 16 }}>
+  <div style={{ color: 'red' }}>
     自定义渲染错误
     <br />
     {children}
