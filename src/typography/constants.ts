@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 export type Align =
   | 'auto'
   | 'horizontal-start'
@@ -38,7 +39,7 @@ export interface Item {
   layout?: 'horizontal' | 'vertical';
   column?: number;
   stylePadding?: number[];
-  style: {
+  style?: {
     [prop: string]: string | number;
   };
   click?: boolean;
@@ -54,15 +55,13 @@ export interface Data {
   margin: number;
   items: Item[];
   flexStyle?: any;
-  style?: {
-    [prop: string]: string;
-  };
+  style: CSSProperties;
   itemList: Item[];
 
   //是否统一样式
   isUnity: boolean;
   //统一间距
-  padding: [number,number];
+  padding: [number, number];
   //唯一标识
-  rowKey: string
+  rowKey: string;
 }
