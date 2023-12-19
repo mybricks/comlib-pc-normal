@@ -42,7 +42,7 @@ export const Comments = `
         <Button type="primary" onClick={onClick}>按钮<RightOutlined /></Button>
         <h3>按钮被点击了\{num}次</h3>
         <h3>props</h3>
-        <div dangerouslySetInnerHTML={{__html: JSON.stringify(props??{})}}/>
+        <div dangerouslySetInnerHTML={{__html: JSON.stringify(props??{}, null, 2)}}/>
        </div>
     );
  }
@@ -59,11 +59,11 @@ export const DefaultCode = `({ props, inject, events }: Params) => {
 
 const ReactType =  `\/\/\/ <reference types="https://unpkg.com/browse/@types/react@17.0.73/index.d.ts" />`
 
-export const ParamsType =  `
+export const getParamsType = (propsTypeName: string = 'any') =>  `
 declare interface Params = {
-  props: Props;
+  props: ${propsTypeName};
   inject: {
-    React: Record<string, any>;
+    React: typeof React;
     antd: Record<string, any>;
     icons: Record<string, any>;
     env: {

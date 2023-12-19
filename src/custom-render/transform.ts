@@ -1,6 +1,6 @@
 import * as Babel from '@babel/standalone';
 import * as SchemaToTypes from "./json-schema-to-typescript";
-import { ParamsType } from './constants'
+import { getParamsType } from './constants'
 
 type FuncType = (code: string) => Function;
 
@@ -31,7 +31,7 @@ const createElement: FuncType = (code) => {
 };
 
 const genLibTypes = async (schema: Record<string, any>) => {
-  schema.title = 'props'
+  schema.title = 'Props'
   const propTypes = await SchemaToTypes.compile(schema, "", {
     bannerComment: "",
     unknownAny: false,
@@ -41,7 +41,7 @@ const genLibTypes = async (schema: Record<string, any>) => {
   });
   return `
     ${propTypes}\n
-    ${ParamsType}
+    ${getParamsType('Props')}
   `;
 };
 

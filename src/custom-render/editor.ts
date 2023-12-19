@@ -1,8 +1,11 @@
 import { Data, IOEvent } from './types';
-import { DefaultCode, Comments } from './constants';
+import { DefaultCode, Comments, getParamsType } from './constants';
 import { uuid } from '../utils'
 import { genLibTypes } from './transform'
 export default {
+  '@init': ({ style, data }) => {
+    data.extraLib = getParamsType()
+  },
   async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
     data.extraLib = await genLibTypes(fromPin.schema)
   },
