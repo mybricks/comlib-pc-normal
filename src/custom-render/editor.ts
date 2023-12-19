@@ -3,8 +3,9 @@ import { DefaultCode, Comments, getParamsType } from './constants';
 import { uuid } from '../utils'
 import { genLibTypes } from './transform'
 export default {
-  '@init': ({ style, data }) => {
+  '@init': ({ style, data }: EditorResult<Data>) => {
     data.extraLib = getParamsType()
+    data.componentCode = encodeURIComponent(DefaultCode)
   },
   async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
     data.extraLib = await genLibTypes(fromPin.schema)
@@ -45,7 +46,7 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.componentCode ?? DefaultCode;
+              return data.componentCode;
             },
             set({ data }: EditorResult<Data>, val: string) {
               data.componentCode = val;

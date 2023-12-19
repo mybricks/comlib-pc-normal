@@ -4,7 +4,6 @@ import * as icons from '@ant-design/icons';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { Data } from './types';
 import { createElement } from './transform';
-import { DefaultCode } from './constants';
 
 const ErrorStatus = ({ children = null }: { children?: any }) => (
   <div style={{ color: 'red' }}>
@@ -47,7 +46,7 @@ export default ({ data, inputs, env, outputs, logger }: RuntimeParams<Data>) => 
   });
   return (
     <Component
-      code={decodeURIComponent(componentCode ?? DefaultCode)}
+      code={decodeURIComponent(componentCode)}
       scope={{ props: props ?? staticProps, inject: { React, antd, icons, env }, events: outputs }}
     />
   );
