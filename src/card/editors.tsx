@@ -45,6 +45,42 @@ export default {
         options: SizeOptions
       }),
       {
+        title: '内容区高度自定义',
+        type: 'switch',
+        description: '开启后,可自定义卡片内容容器高度,超出内容滚动',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isHeight;
+          },
+          set({ data, style }: EditorResult<Data>, value: boolean) {
+            if (value) {
+              style.height = 'auto';
+            }
+            data.isHeight = value;
+          }
+        }
+      },
+      {
+        title: '内容区高度',
+        type: 'text',
+        description: '卡片内容的自定义高度',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isHeight;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return String(data.height) || '200px';
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            if (/^\d+$/.test(value)) {
+              data.height = `${value}px`;
+            } else {
+              data.height = value;
+            }
+          }
+        }
+      },
+      {
         title: '内边距',
         type: 'text',
         description: '卡片内容的内边距',
@@ -319,7 +355,33 @@ export default {
       ];
       cate1.title = '常规';
       cate1.items = [
-        Editor<Data>('标题内容', EditorType.Text, 'title', { options: { locale: true } }),
+        {
+          title: '标题内容',
+          type: 'Text',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.showTitle;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.title;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.title = value;
+            }
+          }
+        },
+        {
+          title: '显示标题',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.showTitle || true;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.showTitle = value;
+            }
+          }
+        },
         {
           title: '开启卡片右上角操作',
           type: 'Switch',
