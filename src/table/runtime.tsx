@@ -46,7 +46,7 @@ import useElementHeight from './hooks/use-element-height';
 export const TableContext = createContext<any>({ slots: {} });
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, inputs, outputs, slots } = props;
+  const { env, data, inputs, outputs, slots, style } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,25 +69,28 @@ export default function (props: RuntimeParams<Data>) {
   const headerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
 
-  const [parentHeight, parentHeightAttr] = useParentHeight(ref);
+  const [parentHeight] = useParentHeight(ref);
   const [headerHeight] = useElementHeight(headerRef);
   const [footerHeight] = useElementHeight(footerRef);
 
-  /** 表格高度 */
+  /** 高度配置为「适应内容」时，表示使用老的高度方案 */
+  const isUseOldHeight = style.height === 'auto';
+
+  /** 表格高度，此为新高度方案，替代 fixedHeight */
   const tableHeight = (() => {
-    if (parentHeightAttr === 'auto') return '';
+    if (isUseOldHeight) return data.fixedHeader ? data.fixedHeight : '';
     const headerPadding = headerHeight === 0 ? 0 : 16;
     const footerPadding = footerHeight === 0 ? 0 : 16;
     return parentHeight - headerHeight - headerPadding - footerHeight - footerPadding;
-  })(); //data.fixedHeader ? data.fixedHeight : ''
+  })();
 
-  /** 滚动区域高度 */
+  /** 滚动区域高度，此为新高度方案，替代 scrollHeight */
   const scrollHeight = (() => {
-    if (parentHeightAttr === 'auto') return void 0;
+    if (isUseOldHeight) return data.scroll.y ? data.scroll.y : void 0;
     // Tip: 这里逻辑和实际消费处匹配，undefined 的结果为 true
     const _showHeader = data.showHeader === false ? false : true;
     return (tableHeight as number) - (_showHeader ? 48 : 0);
-  })(); //data.scroll.y ? data.scroll.y : void 0
+  })();
 
   const selectedRows = useMemo(() => {
     return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
@@ -194,7 +197,8 @@ export default function (props: RuntimeParams<Data>) {
             data.scroll.y = unitConversion(maxScrollHeight);
           }
           if (typeof tableHeight !== 'undefined') {
-            data.fixedHeight = unitConversion(tableHeight);
+            if (isUseOldHeight) data.fixedHeight = unitConversion(tableHeight);
+            else style.height = parseInt(tableHeight);
           }
           handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });
@@ -268,6 +272,12 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     const target = ref.current?.querySelector?.('.ant-table-placeholder') as HTMLSpanElement;
+
+    if (!isUseOldHeight) {
+      if (target) target.style.height = '';
+      return;
+    }
+
     if (target && data.fixedHeader) {
       target.style.height = typeof data.scroll.y === 'string' ? data.scroll.y : '';
     }
@@ -275,12 +285,18 @@ export default function (props: RuntimeParams<Data>) {
 
   useEffect(() => {
     const target = ref.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
+
+    if (!isUseOldHeight) {
+      if (target) target.style.minHeight = '';
+      return;
+    }
+
     if (target && data.fixedHeader && !!data.fixedHeight) {
       target.style.minHeight = typeof data.scroll.y === 'string' ? data.scroll.y : '';
     } else if (target) {
       target.style.minHeight = '';
     }
-  }, [data.fixedHeight, data.fixedHeader, data.scroll.y]);
+  }, [isUseOldHeight, data.fixedHeight, data.fixedHeader, data.scroll.y]);
 
   // 更新某一行数据
   const editTableData = useCallback(

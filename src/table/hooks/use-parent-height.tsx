@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react';
 function useParentHeight(ref: React.RefObject<HTMLElement>) {
   /** 父容器高度px数字 */
   const [height, setHeight] = useState(0);
-  /** 父容器高度，带单位 */
-  const [heightAttr, setHeightAttr] = useState('0px');
 
   /** 监听并获取父容器高度px数字 */
   useEffect(() => {
@@ -29,32 +27,7 @@ function useParentHeight(ref: React.RefObject<HTMLElement>) {
     }
   }, [ref]);
 
-  /** 监听并获取父容器高度，带单位 */
-  useEffect(() => {
-    const element = ref.current;
-    if (element && element.parentElement) {
-      const updateHeight = () => {
-        setHeightAttr(element.parentElement!.style.height);
-      };
-
-      const mutationObserver = new MutationObserver((mutations) => {
-        for (let mutation of mutations) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-            updateHeight();
-          }
-        }
-      });
-
-      updateHeight();
-      mutationObserver.observe(element.parentElement, { attributes: true });
-
-      return () => {
-        mutationObserver.disconnect();
-      };
-    }
-  }, [ref]);
-
-  return [height, heightAttr] as [number, string];
+  return [height] as [number];
 }
 
 export default useParentHeight;
