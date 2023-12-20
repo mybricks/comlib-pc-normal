@@ -10,7 +10,18 @@ const CursorType = {
 };
 export default (props: RuntimeParams<Data>) => {
   const { data, slots, inputs, env, outputs } = props;
-  const { title, useExtra, bordered, size, style, hoverable, useClick, isAction } = data;
+  const {
+    title,
+    useExtra,
+    bordered,
+    size,
+    style,
+    hoverable,
+    useClick,
+    isAction,
+    isHeight,
+    height
+  } = data;
 
   const isMobile = checkIfMobile(env);
 
@@ -56,17 +67,17 @@ export default (props: RuntimeParams<Data>) => {
   return (
     <div className={`${css.card} card`}>
       <Card
-        title={env.i18n(title)}
+        title={data.showTitle ? env.i18n(title) : ''}
         size={isMobile ? 'small' : size}
         bodyStyle={{
           padding: isMobile ? '12px' : data.padding,
-          height: title !== '' ? `calc(100% - ${data.padding}*2)` : '100%'
+          height: isHeight ? height : '100%'
         }}
         bordered={bordered}
         style={{
-          ...style,
           cursor: data.cursor ? CursorType.Pointer : CursorType.Default,
-          height: '100%'
+          height: isHeight ? void 0 : props.style.height,
+          overflow: isHeight ? void 0 : 'scroll'
         }}
         extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
         hoverable={hoverable}
@@ -76,8 +87,8 @@ export default (props: RuntimeParams<Data>) => {
       >
         <div
           style={{
-            overflowY: props.style.height !== 'auto' ? 'auto' : void 0,
-            overflowX: props.style.width !== 'auto' ? 'auto' : void 0
+            overflowY: data.isHeight && env.runtime ? 'auto' : 'hidden',
+            overflowX: typeof props.style.width === 'number' ? 'auto' : void 0
           }}
           className={css.containerCard}
         >
