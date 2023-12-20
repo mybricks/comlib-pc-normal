@@ -76,7 +76,7 @@ const FormItem = (props) => {
       {item.description && (
         <div className={css.formItemDesc}>
           <Form.Item noStyle>
-            <span style={item.descriptionStyle}>{env.i18n(item.description)}</span>
+            <span>{env.i18n(item.description)}</span>
           </Form.Item>
         </div>
       )}

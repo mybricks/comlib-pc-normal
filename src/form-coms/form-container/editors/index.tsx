@@ -233,6 +233,14 @@ export default {
           }
         ],
         target: `.ant-form-item > div.ant-col.ant-form-item-label`
+      },
+      {
+        title: '公共提示语样式',
+        catelog: '默认',
+        options: ['font'],
+        target: ({ comId, comName, ...arg }) => {
+          return `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
+        }
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {
@@ -536,6 +544,13 @@ export default {
           }
         ],
         target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`
+      },
+      {
+        title: '提示语样式',
+        options: ['font'],
+        target: ({ comId, comName, ...arg }) => {
+          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
+        }
       }
     ],
     items: [

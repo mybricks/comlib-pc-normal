@@ -88,22 +88,25 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     whiteSpace: 'pre-wrap',
     lineHeight: '12px',
     letterSpacing: '0px',
-    fontSize: '12px',
+    fontSize: '14px',
     fontWeight: 400,
     color: 'rgba(0, 0, 0, 0.45)',
     fontStyle: 'normal'
   };
   let isAllSameLabelStyle,
     whiteSpaceAllSame,
-    labelAlignAllSame;
+    labelAlignAllSame,
+    isAllSameDescriptionStyle;
   if (data.config.labelAlign) {
     /** 标题字体、换行样式处理 */
+    // 1. 比较所有表单项的换行样式是否都是跟随容器
     whiteSpaceAllSame = data.items.every(item => item?.labelAutoWrap === 'default');
-    // 比较所有表单项的标题样式和默认样式的区别，如果一致，说明可以转化为表单上的公共样式
+    // 2. 比较所有表单项的标题样式和默认样式的区别，
     const labelStyleCompareResult = uniqBy(data.items
       .map(item => {
         return pick(item.labelStyle, Object.keys(defaultLabelStyle));
       }), JSON.stringify);
+    // 3.1 只存在一个样式时，表示可以转化为表单上的公共样式
     if (labelStyleCompareResult.length === 1
       && Object.keys(labelStyleCompareResult[0]).length
       && whiteSpaceAllSame) {
@@ -127,6 +130,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         setDeclaredStyle(selector, { ...style });
       }
     } else {
+      // 3.2 否则，在表单项中设置样式
       isAllSameLabelStyle = false;
     }
     /** 标题对齐样式处理 */
@@ -135,6 +139,35 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       // 表单的公共标题对齐方式选择器
       const selector = `.ant-form-item > div.ant-col.ant-form-item-label`;
       setDeclaredStyle(selector, { textAlign: data.config.labelAlign });
+    }
+    /** 提示语样式处理 */
+    // 1. 比较所有表单项的提示语样式和默认样式的区别
+    const descriptionStyleCompareResult = uniqBy(data.items
+      .map(item => {
+        return pick(item.descriptionStyle, Object.keys(defaultDescriptionStyle));
+      }), JSON.stringify);
+    // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
+    if (descriptionStyleCompareResult.length === 1
+      && Object.keys(labelStyleCompareResult[0]).length) {
+      isAllSameDescriptionStyle = true;
+      let hasUnique = false;
+      const style: React.CSSProperties = {};
+      // 表单的公共提示语样式选择器
+      const selector = `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
+      Object.entries(defaultDescriptionStyle).map(([key, value]) => {
+        if (value !== descriptionStyleCompareResult[0][key]) {
+          style[key] = descriptionStyleCompareResult[0][key];
+          hasUnique = true;
+        }
+      });
+      if (hasUnique) {
+        console.log(style, 'style')
+        // 将计算出来的公共配置样式，设置到表单上
+        setDeclaredStyle(selector, { ...style });
+      }
+    } else {
+      // 2.2 否则，在表单项中设置样式
+      isAllSameDescriptionStyle = false;
     }
   }
   //=========== v1.4.27 end ===============
@@ -221,6 +254,23 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         // 表单的公共标题对齐方式选择器
         const selector = `.${item.id} .ant-form-item > div.ant-col.ant-form-item-label`;
         setDeclaredStyle(selector, { textAlign: item.labelAlign });
+      }
+      if (!isAllSameDescriptionStyle
+        && item.descriptionStyle) {
+        const selector = `.${item.id} .ant-form-item > .ant-form-item-control > div > div > div`;
+
+        const style: React.CSSProperties = {};
+        let hasUnique = false;
+        Object.entries(defaultDescriptionStyle).forEach(([key, value]) => {
+          if (value !== item.descriptionStyle[key]) {
+            style[key] = item.descriptionStyle[key];
+            hasUnique = true;
+          }
+        })
+        if (hasUnique) {
+          setDeclaredStyle(selector, style);
+        }
+        item.descriptionStyle = void 0;
       }
     }
   });
