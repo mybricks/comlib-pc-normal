@@ -5,11 +5,10 @@ import { toJSONPreview, eventCheck } from '@/../cypress/tools';
  * 如果有复杂的场景，可以单独一个 it，甚至单独一个 toJSON
  */
 describe('文本框', () => {
-  beforeEach(() => {
-    toJSONPreview(toJSON);
-  });
-
   it('各种 output 检查', () => {
+    // 加载测试页面
+    toJSONPreview(toJSON);
+
     // 找到输入框输入 test 并按下回车，结果通过 eventCheck 来判断
     cy.get('[placeholder=事件检查]')
       .click()
@@ -54,6 +53,9 @@ describe('文本框', () => {
   });
 
   it('各种 input 检查', () => {
+    // 加载测试页面
+    toJSONPreview(toJSON);
+
     // 测试设置值、设置初始值
     cy.get('[placeholder=设置值]').should('have.value', '[设置值]');
     cy.get('[placeholder=设置初始值]').should('have.value', '[设置初始值]');
@@ -105,9 +107,7 @@ describe('文本框', () => {
 
     cy.contains('button', '启用2').click();
     cy.get('[placeholder=禁用、启用]').should('not.be.disabled');
-  });
 
-  it('截图比对', () => {
-    cy.compareSnapshot('文本框');
+    cy.compareSnapshot('文本框_各种input检查');
   });
 });

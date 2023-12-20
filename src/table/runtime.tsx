@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
-import { Table, Empty, Image } from 'antd';
+import { Table, Empty, Image, message } from 'antd';
 import ConfigProvider from '../components/ConfigProvider';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
@@ -54,7 +54,7 @@ export default function (props: RuntimeParams<Data>) {
   const dataSourceRef = useRef(dataSource);
   dataSourceRef.current = dataSource;
   const [filterMap, setFilterMap] = useState<any>({});
-  const [focusRowIndex, setFocusRowIndex] = useState(null);
+  const [focusRowIndex, setFocusRowIndex] = useState<number>(null as any);
   const [focusCellinfo, setFocusCellinfo] = useState<any>(null);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // 前端分页后表格数据
@@ -386,6 +386,18 @@ export default function (props: RuntimeParams<Data>) {
               handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
             }, 0);
           });
+      }
+      // 设置选中行序号
+      if (data.enableRowFocus) {
+        inputs[InputIds.SET_FOCUS_ROW] &&
+          inputs[InputIds.SET_FOCUS_ROW]((val: any, relOutputs: any) => {
+            if (typeof val !== 'number') {
+              message.error(`行序号必须是数字`);
+              return;
+            }
+            setFocusRowIndex(val);
+            handleOutputFn(relOutputs, OutputIds.SET_FOCUS_ROW, val);
+          }, 0);
       }
     }
   }, [dataSource, rowKey]);

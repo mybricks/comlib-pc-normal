@@ -9,14 +9,12 @@ export const StyleEditor = [
     type: 'Slider',
     options({ data, focusArea }: EditorResult<Data>) {
       const max = data.column - getSpanCount({ data, focusArea });
-      return [
-        {
-          max,
-          min: 1,
-          steps: 1,
-          formatter: `/${max}`
-        }
-      ];
+      return {
+        max,
+        min: 1,
+        steps: 1,
+        formatter: `/${max}`
+      }
     },
     value: {
       get({ data, focusArea }: EditorResult<Data>) {

@@ -296,11 +296,12 @@ export const createStyleForTableContent = () => [
   },
 ]
 
-export const createStyleForColumnContent = ({ target }: StyleModeType<Data>) => ({
+export const createStyleForColumnContent = ({ target, ...others }: StyleModeType<Data>) => ({
   title: '内容',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   ifVisible({ data }: EditorResult<Data>) {
     return !!data.columns.length;
   },
-  target
+  target,
+  ...(others || {})
 });
