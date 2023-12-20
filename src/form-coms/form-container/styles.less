@@ -13,6 +13,10 @@
     .ant-form-item-label-wrap {
       overflow: hidden;
     }
+
+    .ant-form-inline .ant-form-item > .ant-form-item-control {
+      min-width: 0;
+    }
   }
 }
 
@@ -24,10 +28,12 @@
     width: 100%;
     flex: 1;
   }
+
   .formItemSlotAfter {
     display: flex;
     align-items: center;
     margin-left: 12px;
+
     & > div {
       // hack slot style
       height: auto !important;
@@ -55,6 +61,7 @@
     position: absolute;
     width: 100%;
     margin-top: 24px;
+
     &.onlyone {
       margin-top: 54px;
     }
