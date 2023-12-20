@@ -25,10 +25,7 @@ export default {
     style.height = 'auto';
   },
   '@resize': {
-    options: [
-      'width'
-      // 'height'
-    ]
+    options: ['width', 'height']
   },
   ':root': {
     style: [
@@ -48,20 +45,23 @@ export default {
         options: SizeOptions
       }),
       {
-        title: '内容高度自定义',
+        title: '内容区高度自定义',
         type: 'switch',
-        description: '开启后,可自定义卡片内容容器高度',
+        description: '开启后,可自定义卡片内容容器高度,超出内容滚动',
         value: {
           get({ data }: EditorResult<Data>) {
             return data.isHeight;
           },
-          set({ data }: EditorResult<Data>, value: boolean) {
+          set({ data, style }: EditorResult<Data>, value: boolean) {
+            if (value) {
+              style.height = 'auto';
+            }
             data.isHeight = value;
           }
         }
       },
       {
-        title: '内容区域高度',
+        title: '内容区高度',
         type: 'text',
         description: '卡片内容的自定义高度',
         ifVisible({ data }: EditorResult<Data>) {

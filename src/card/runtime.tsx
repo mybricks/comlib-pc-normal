@@ -75,7 +75,9 @@ export default (props: RuntimeParams<Data>) => {
         }}
         bordered={bordered}
         style={{
-          cursor: data.cursor ? CursorType.Pointer : CursorType.Default
+          cursor: data.cursor ? CursorType.Pointer : CursorType.Default,
+          height: isHeight ? void 0 : props.style.height,
+          overflow: isHeight ? void 0 : 'scroll'
         }}
         extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
         hoverable={hoverable}
@@ -85,7 +87,7 @@ export default (props: RuntimeParams<Data>) => {
       >
         <div
           style={{
-            overflowY: env.runtime ? (data.isHeight ? 'auto' : void 0) : 'hidden',
+            overflowY: data.isHeight && env.runtime ? 'auto' : 'hidden',
             overflowX: typeof props.style.width === 'number' ? 'auto' : void 0
           }}
           className={css.containerCard}

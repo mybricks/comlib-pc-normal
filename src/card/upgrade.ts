@@ -76,7 +76,7 @@ export default function ({
   }
   if(typeof data.height === "undefined"){
     if(style.height === 'auto'){
-      data.height = "200px"
+      data.height = "80px"
     }else if(typeof style.height === 'number'){
       data.height = style.height - (data.title === '' ? 0 : 57 )+ 'px';
       style.height = 'auto';
