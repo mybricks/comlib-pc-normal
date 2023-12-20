@@ -100,7 +100,7 @@ const CodeEditor = (
       exec: function () {
         formatterCode(valueRef.current);
       },
-      readOnly: false
+      readOnly
     });
     return editor;
   };
@@ -127,8 +127,8 @@ const CodeEditor = (
 
   useEffect(() => {
     const { language, ...options } = config ?? {};
-    editor.current?.setOptions(options);
-  }, [config]);
+    editor.current?.setOptions({...options, readOnly});
+  }, [config, readOnly]);
 
   useEffect(() => {
     editor.current?.setReadOnly(readOnly);
