@@ -1,5 +1,5 @@
 import * as Babel from '@babel/standalone';
-import * as SchemaToTypes from "./json-schema-to-typescript";
+import * as SchemaToTypes from "../../package/json-schema-to-typescript";
 import { getParamsType } from './constants'
 
 type FuncType = (code: string) => Function;

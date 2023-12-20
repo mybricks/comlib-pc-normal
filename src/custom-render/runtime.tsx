@@ -47,7 +47,7 @@ export default ({ data, inputs, env, outputs, logger }: RuntimeParams<Data>) => 
   return (
     <Component
       code={decodeURIComponent(componentCode)}
-      scope={{ props: props ?? staticProps, inject: { React, antd, icons, env }, events: outputs }}
+      scope={{ props: props ?? staticProps, inject: { React, antd, icons }, events: outputs }}
     />
   );
 };

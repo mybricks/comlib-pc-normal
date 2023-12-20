@@ -1,17 +1,4 @@
 export const Comments = `
- interface env {
-   // ajax网络请求
-   ajax: Fetch;
-   // 发送网络请求
-   callService: (serviceId: string, params: Object) => Promise<any>;
-   // 多语言
-   i18n: (text: string) => string
-   // vars内置方法
-   vars: {
-    // 获取URL参数
-     getQuery: () => object;
-   }
- }
  interface Inject {
    //React
    React: React;
@@ -19,8 +6,6 @@ export const Comments = `
    antd: antd;
    //antd icons
    icons: @ant-design/icons;
-   //组件环境方法
-   env: env
  }
  /**
   * @param props 组件数据
@@ -66,14 +51,6 @@ declare interface Params = {
     React: typeof React;
     antd: Record<string, any>;
     icons: Record<string, any>;
-    env: {
-      ajax: Fetch;
-      callService: (serviceId: string, params: Object) => Promise<any>;
-      i18n: (text: string) => string;
-      vars: {
-        getQuery: () => object;
-      }
-    }
   };
   events: Record<string, Function>
 }
