@@ -14,10 +14,11 @@ interface Props {
   dataSource: any[];
   selectedRows: any[];
   selectedRowKeys: string[];
+  headerRef: React.RefObject<HTMLDivElement>;
 }
 
 export default (props: Props): JSX.Element | null => {
-  const { data, slots, env, dataSource, outputs } = props;
+  const { data, slots, env, dataSource, outputs, headerRef } = props;
 
   // 顶部显示批量操作按钮
   const useTopRowSelection =
@@ -48,6 +49,7 @@ export default (props: Props): JSX.Element | null => {
 
   return (
     <div
+      ref={headerRef}
       data-table-header-container
       className={classnames(
         css.headerContainer,

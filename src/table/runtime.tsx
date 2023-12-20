@@ -40,6 +40,8 @@ import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
 import { unitConversion } from '../utils';
 import { runJs } from '../../package/com-utils';
+import useParentHeight from './hooks/use-parent-height';
+import useElementHeight from './hooks/use-element-height';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -64,6 +66,28 @@ export default function (props: RuntimeParams<Data>) {
   const rowKey = data.rowKey || DefaultRowKey;
 
   const ref = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  const [parentHeight, parentHeightAttr] = useParentHeight(ref);
+  const [headerHeight] = useElementHeight(headerRef);
+  const [footerHeight] = useElementHeight(footerRef);
+
+  /** 表格高度 */
+  const tableHeight = (() => {
+    if (parentHeightAttr === 'auto') return '';
+    const headerPadding = headerHeight === 0 ? 0 : 16;
+    const footerPadding = footerHeight === 0 ? 0 : 16;
+    return parentHeight - headerHeight - headerPadding - footerHeight - footerPadding;
+  })(); //data.fixedHeader ? data.fixedHeight : ''
+
+  /** 滚动区域高度 */
+  const scrollHeight = (() => {
+    if (parentHeightAttr === 'auto') return void 0;
+    // Tip: 这里逻辑和实际消费处匹配，undefined 的结果为 true
+    const _showHeader = data.showHeader === false ? false : true;
+    return (tableHeight as number) - (_showHeader ? 48 : 0);
+  })(); //data.scroll.y ? data.scroll.y : void 0
 
   const selectedRows = useMemo(() => {
     return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
@@ -864,6 +888,7 @@ export default function (props: RuntimeParams<Data>) {
         <TableContext.Provider value={contextValue}>
           <div className={css.table}>
             <TableHeader
+              headerRef={headerRef}
               env={env}
               data={data}
               dataSource={dataSource}
@@ -876,7 +901,7 @@ export default function (props: RuntimeParams<Data>) {
               <Table
                 style={{
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
-                  height: data.fixedHeader ? data.fixedHeight : ''
+                  height: tableHeight
                 }}
                 dataSource={edit ? defaultDataSource : realShowDataSource}
                 loading={{
@@ -900,7 +925,7 @@ export default function (props: RuntimeParams<Data>) {
                 }}
                 scroll={{
                   x: '100%',
-                  y: data.scroll.y ? data.scroll.y : void 0
+                  y: scrollHeight
                 }}
                 summary={
                   data.useSummaryColumn
@@ -955,6 +980,7 @@ export default function (props: RuntimeParams<Data>) {
               <Empty description="请添加列或连接数据源" className={css.emptyWrap} />
             )}
             <TableFooter
+              footerRef={footerRef}
               env={env}
               parentSlot={props.parentSlot}
               data={data}

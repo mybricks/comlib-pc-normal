@@ -14,10 +14,11 @@ interface Props {
   outputs: any;
   selectedRows: any[];
   selectedRowKeys: string[];
+  footerRef: React.RefObject<HTMLDivElement>;
 }
 
 export default (props: Props): JSX.Element => {
-  const { data, env, inputs, outputs } = props;
+  const { data, env, inputs, outputs, footerRef } = props;
 
   const useBottomRowSelection =
     data.useRowSelection &&
@@ -26,6 +27,7 @@ export default (props: Props): JSX.Element => {
 
   return (
     <div
+      ref={footerRef}
       className={classnames(
         css.footerContainer,
         (useBottomRowSelection || data.usePagination) && css.marginTop

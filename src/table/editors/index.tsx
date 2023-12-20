@@ -127,7 +127,7 @@ export default {
     }
   },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
