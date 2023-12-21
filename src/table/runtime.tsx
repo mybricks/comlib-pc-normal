@@ -898,7 +898,10 @@ export default function (props: RuntimeParams<Data>) {
     <div
       className={css.emptyNormal}
       style={{
-        height: data.fixedHeader ? `calc(${data.fixedHeight} - 144px` : ''
+        height: (() => {
+          if (isUseOldHeight) return data.fixedHeader ? `calc(${data.fixedHeight} - 144px` : '';
+          return (scrollHeight as number) - 98;
+        })()
       }}
     >
       <Image src={data.image} className={`emptyImage ${css.emptyImage}`} preview={false} />
