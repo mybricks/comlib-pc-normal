@@ -198,7 +198,6 @@ export default function (props: RuntimeParams<Data>) {
           }
           if (typeof tableHeight !== 'undefined') {
             if (isUseOldHeight) data.fixedHeight = unitConversion(tableHeight);
-            else style.height = parseInt(tableHeight);
           }
           handleOutputFn(relOutputs, OutputIds.TABLE_HEIGHT, val);
         });

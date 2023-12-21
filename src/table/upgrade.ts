@@ -18,7 +18,8 @@ export default function ({
   id,
   slot,
   output,
-  input
+  input,
+  style
 }: UpgradeParams<Data>): boolean {
   /**
    * @description v1.0.22 支持领域模型
@@ -241,5 +242,13 @@ export default function ({
   setRels(PaginatorInputIds.SetEnable, PaginatorOutputIds.SetEnable, '启用分页器后');
 
   //=========== v1.1.1 end ===============
+
+  /**
+   * @description v1.1.13 -> 1.1.14 开启表格高度配置
+   */
+  if(style.height === void 0) {
+    style.height = 'auto';
+  }
+
   return true;
 }
