@@ -7,6 +7,8 @@ import { inputIds, outputIds } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
 import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
+import iconEditor from './iconEditor';
+import { createrCatelogEditor } from '../../utils/index';
 
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
@@ -1219,22 +1221,58 @@ export default {
           }
         }
       },
+      ...iconEditor,
       {
-        title: '默认',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-        }
-      },
-      {
-        title: 'Hover',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
-        },
-        domTarget({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-        }
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"] .icon`;
+                }
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                catelog: 'Hover',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
+                },
+                domTarget({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover .icon`;
+                }
+              }
+            ]
+          })
+        ]
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {

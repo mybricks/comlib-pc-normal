@@ -391,5 +391,22 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     input.get("setFormItemsProps").setRels(["setFormItemsPropsDone"]);
   }
 
+  /**
+    * @description v1.4.31 => v1.4.32, 操作项增加图标
+  */
+  data.actions.items?.forEach(act => {
+    if (act && act.useIcon === undefined) {
+      act.useIcon = false;
+    }
+    if (act && act.iconDistance === undefined) {
+      act.iconDistance = 8;
+    }
+    if (act && act.icon === undefined) {
+      act.icon = "HomeOutlined";
+    }
+    if (act && act.iconLocation === undefined) {
+      act.iconLocation = "front";
+    }
+  })
   return true;
 }
