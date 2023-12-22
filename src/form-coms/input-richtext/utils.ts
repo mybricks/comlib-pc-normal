@@ -153,7 +153,8 @@ const optionMappings = [
   ['帮助', 'help'],
   ['剪切', 'cut'],
   ['复制', 'copy'],
-  ['全选', 'selectall']
+  ['全选', 'selectall'],
+  ['统计', 'wordcount']
 ];
 
 export const toolbarOptions = optionMappings.map(([label, value]) => ({ label, value }));
