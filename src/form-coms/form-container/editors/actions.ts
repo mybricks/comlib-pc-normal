@@ -171,7 +171,11 @@ export const actionsEditor = (data: Data, output, env) => {
               visible: true,
               disabled: false,
               useDynamicDisabled: false,
-              useDynamicHidden: false
+              useDynamicHidden: false,
+              useIcon: false,
+              iconDistance: 8,
+              icon: "HomeOutlined",
+              iconLocation: "front"
             }
             output.add(outputId, `点击${title}`, { type: 'any' })
             data.actions.items.push(item)
