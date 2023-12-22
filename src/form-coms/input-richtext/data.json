@@ -4,6 +4,9 @@
   },
   "displayEditbar": true,
   "toolbar": [
+    "undo",
+    "redo",
+    "styleselect",
     "fontselect",
     "fontsizeselect",
     "italic",
@@ -12,8 +15,12 @@
     "alignleft",
     "aligncenter",
     "alignright",
+    "lineheight",
+    "outdent",
+    "indent",
     "link",
-    "uploadimage"
+    "uploadimage",
+    "textpattern"
   ],
   "disabled": false,
   "customUpload": true,

@@ -7,6 +7,7 @@ import {
   getTitle
 } from '../utils/validator';
 import { Data } from './types';
+import { toolbarOptions } from './utils';
 export default {
   '@resize': {
     options: ['width']
@@ -139,68 +140,7 @@ export default {
         },
         options() {
           return {
-            options: [
-              {
-                label: '超链接',
-                value: 'link'
-              },
-              {
-                label: '表格',
-                value: 'table'
-              },
-              {
-                label: '图片上传',
-                value: 'uploadimage'
-              },
-              {
-                label: '视频上传',
-                value: 'uploadVideo'
-              },
-              {
-                label: '下划线',
-                value: 'underline'
-              },
-              {
-                label: '字体',
-                value: 'fontselect'
-              },
-              {
-                label: '删除线',
-                value: 'strikethrough'
-              },
-              {
-                label: '加粗',
-                value: 'bold'
-              },
-              {
-                label: '左对齐',
-                value: 'alignleft'
-              },
-              {
-                label: '居中',
-                value: 'aligncenter'
-              },
-              {
-                label: '右对齐',
-                value: 'alignright'
-              },
-              {
-                label: '字体大小',
-                value: 'fontsizeselect'
-              },
-              {
-                label: '斜体',
-                value: 'italic'
-              },
-              {
-                label: '文本颜色',
-                value: 'forecolor'
-              },
-              {
-                label: '背景色',
-                value: 'backcolor'
-              }
-            ],
+            options: toolbarOptions,
             mode: 'multiple'
           };
         },
