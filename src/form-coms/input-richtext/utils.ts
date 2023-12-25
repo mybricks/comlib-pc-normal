@@ -45,7 +45,8 @@ export function Init({
     'textpattern',
     'advlist',
     'code',
-    'codesample'
+    'codesample',
+    'letterspacing'
   ];
 
   tinyMCE.init({
@@ -63,6 +64,7 @@ export function Init({
     font_formats: `系统字体=sans-serif;微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;黑体=SimHei,sans-serif;黑体-简=Heiti SC,sans-serif;宋体=Simsun,serif;仿宋体=FangSong,serif;楷体=KaiTi;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;`,
     fullpage_default_font_size: '12px',
     nonbreaking_force_tab: true,
+    letterspacing_formats: `0 0.5pt 1pt 1.5pt 2pt 3pt`,
     textpattern_patterns: [
       { start: '*', end: '*', format: 'italic' },
       { start: '**', end: '**', format: 'bold' },
@@ -121,6 +123,7 @@ const optionMappings = [
   ['字体', 'fontselect'],
   ['字体大小', 'fontsizeselect'],
   ['行高', 'lineheight'],
+  ['字间距', 'letterspacing'],
   ['文本颜色', 'forecolor'],
   ['背景色', 'backcolor'],
   ['清除格式', 'removeformat'],
@@ -131,6 +134,7 @@ const optionMappings = [
   ['左对齐', 'alignleft'],
   ['居中', 'aligncenter'],
   ['右对齐', 'alignright'],
+  ['两端对齐', 'alignjustify'],
 
   // 缩进相关
   ['增加缩进', 'indent'],

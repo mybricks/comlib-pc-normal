@@ -15,6 +15,7 @@
     "alignleft",
     "aligncenter",
     "alignright",
+    "alignjustify",
     "lineheight",
     "outdent",
     "indent",
