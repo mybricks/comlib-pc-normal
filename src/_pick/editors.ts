@@ -80,7 +80,7 @@ export default {
           editable: true,
           draggable: false,
           getTitle(item) {
-            return `${item.title}[${item.key}]`;
+            return `${item.title}[${item.expression}]`;
           },
           onAdd() {
             return createPick();
