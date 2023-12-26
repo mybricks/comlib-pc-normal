@@ -270,34 +270,90 @@ export default {
 
     style: [
       {
-        title: '编辑器',
-        type: 'Style',
-        options: {
-          plugins: ['SIZE']
-        },
-        value: {
-          get({ data }) {
-            return { ...data.style, height: data.style.height || '200px' };
+        items: [
+          {
+            title: '编辑器',
+            type: 'Style',
+            catelog: '默认',
+            options: {
+              plugins: ['SIZE']
+            },
+            value: {
+              get({ data }) {
+                return { ...data.style, height: data.style.height || '200px' };
+              },
+              set({ data }, val: {}) {
+                data.style = val || {};
+              }
+            }
           },
-          set({ data }, val: {}) {
-            data.style = val || {};
+          {
+            title: '编辑器',
+            catelog: '默认',
+            options: ['border'],
+            target: '.tox-tinymce'
+          },
+          {
+            title: '工具栏',
+            catelog: '默认',
+            options: [{ type: 'background', config: { disableBackgroundImage: true } }, , 'border'],
+            target: '.tox-toolbar-overlord .tox-toolbar__primary'
+          },
+          {
+            title: '工具栏按钮',
+            catelog: '默认',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.tox .tox-tbtn:not(.tox-tbtn--disabled)'
+          },
+          {
+            title: '工具栏按钮',
+            catelog: '默认',
+            options: ['size'],
+            target: '.tox .tox-tbtn'
+          },
+          {
+            title: '工具栏按钮',
+            catelog: '激活',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.tox .tox-tbtn.tox-tbtn--enabled'
+          },
+          {
+            title: '工具栏按钮',
+            catelog: 'Hover',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.tox .tox-tbtn:hover'
+          },
+          {
+            title: '工具栏按钮',
+            catelog: '禁用',
+            options: [
+              { type: 'font', config: { disableTextAlign: true } },
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.tox .tox-tbtn.tox-tbtn--disabled'
+          },
+          {
+            title: '工具栏下拉按钮',
+            catelog: '默认',
+            options: ['size'],
+            target: '.tox .tox-tbtn.tox-tbtn--select:not(.tox-tbtn--bespoke)'
+          },
+          {
+            title: '工具栏长按钮',
+            catelog: '默认',
+            options: ['size'],
+            target: '.tox .tox-tbtn.tox-tbtn--select.tox-tbtn--bespoke'
           }
-        }
-      },
-      {
-        title: '编辑器',
-        options: ['border'],
-        target: '.tox-tinymce'
-      },
-      {
-        title: '工具栏',
-        options: ['background'],
-        target: '.tox-toolbar-overlord .tox-toolbar__primary'
-      },
-      {
-        title: '工具栏按钮',
-        options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: '.tox :not(svg):not(rect)'
+        ]
       }
     ]
   }
