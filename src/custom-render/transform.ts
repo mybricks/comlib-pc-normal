@@ -28,7 +28,12 @@ const transform = (code: string) => {
 };
 
 const createElement: FuncType = (code) => {
-  const transformCode = transform(code.trim().replace(/;$/, ''));
+  if(code.includes('var%20_RTFN_')) {
+    return eval(decodeURIComponent(code))
+  }
+  code = `var _RTFN_ = ${code.trim().replace(/;$/, '')} `;
+  let transformCode = transform(code);
+  transformCode = `(function() {\n${transformCode}\nreturn _RTFN_; })()`
   return eval(transformCode);
 };
 
