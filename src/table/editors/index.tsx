@@ -65,6 +65,9 @@ export function getColumnsFromSchema(schema: any) {
 }
 
 export default {
+  '@init': ({ style, data }) => {
+    style.height = 'auto';
+  },
   '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
     if (schema === 'mybricks.domain-pc.crud/table') {
       if (data?.domainModel?.entity && data.columns?.length === 0) {
