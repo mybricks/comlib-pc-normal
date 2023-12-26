@@ -383,7 +383,7 @@ export default function (props: RuntimeParams<Data>) {
                 });
               }
               handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
-            }, 0);
+            }, 200);
           });
       }
       // 设置选中行序号
