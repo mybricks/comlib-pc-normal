@@ -80,27 +80,27 @@ export default {
             span: 24 / data.formItemColumn,
             colon: 'default',
             labelWidthType: 'default',
-            labelAlign: 'default',
-            labelAutoWrap: 'default',
+            // labelAlign: 'default',
+            // labelAutoWrap: 'default',
             hiddenLabel: false,
-            descriptionStyle: {
-              whiteSpace: 'pre-wrap',
-              lineHeight: '12px',
-              letterSpacing: '0px',
-              fontSize: '12px',
-              fontWeight: 400,
-              color: 'rgba(0, 0, 0, 0.45)',
-              fontStyle: 'normal'
-            },
-            labelStyle: {
-              lineHeight: '14px',
-              letterSpacing: '0px',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'rgba(0, 0, 0, 0.85)',
-              fontStyle: 'normal'
-            },
-            inlineMargin: [0, 16, 24, 0],
+            // descriptionStyle: {
+            //   whiteSpace: 'pre-wrap',
+            //   lineHeight: '12px',
+            //   letterSpacing: '0px',
+            //   fontSize: '12px',
+            //   fontWeight: 400,
+            //   color: 'rgba(0, 0, 0, 0.45)',
+            //   fontStyle: 'normal'
+            // },
+            // labelStyle: {
+            //   lineHeight: '14px',
+            //   letterSpacing: '0px',
+            //   fontSize: '14px',
+            //   fontWeight: 400,
+            //   color: 'rgba(0, 0, 0, 0.85)',
+            //   fontStyle: 'normal'
+            // },
+            // inlineMargin: [0, 16, 24, 0],
             visible: true,
             hidden: false
           });
@@ -238,9 +238,7 @@ export default {
         title: '公共提示语样式',
         catelog: '默认',
         options: ['font'],
-        target: ({ comId, comName, ...arg }) => {
-          return `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
-        }
+        target: `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {

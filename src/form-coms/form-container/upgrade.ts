@@ -133,13 +133,15 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       // 3.2 否则，在表单项中设置样式
       isAllSameLabelStyle = false;
     }
+
     /** 标题对齐样式处理 */
     labelAlignAllSame = data.items.every(item => item?.labelAlign === 'default');
     if (labelAlignAllSame) {
       // 表单的公共标题对齐方式选择器
       const selector = `.ant-form-item > div.ant-col.ant-form-item-label`;
-      setDeclaredStyle(selector, { textAlign: data.config.labelAlign });
+      setDeclaredStyle(selector, { textAlign: 'left' });
     }
+
     /** 提示语样式处理 */
     // 1. 比较所有表单项的提示语样式和默认样式的区别
     const descriptionStyleCompareResult = uniqBy(data.items
@@ -230,7 +232,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     if (data.config.labelAlign) {
       if (!isAllSameLabelStyle
         && item.labelStyle) {
-        const selector = `.${item.id} div.ant-col.ant-form-item-label > label > label`;
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
 
         const style: React.CSSProperties = {};
         let hasUnique = false;
@@ -252,12 +254,12 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }
       if (item?.labelAlign !== 'default') {
         // 表单的公共标题对齐方式选择器
-        const selector = `.${item.id} .ant-form-item > div.ant-col.ant-form-item-label`;
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
         setDeclaredStyle(selector, { textAlign: item.labelAlign });
       }
       if (!isAllSameDescriptionStyle
         && item.descriptionStyle) {
-        const selector = `.${item.id} .ant-form-item > .ant-form-item-control > div > div > div`;
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
 
         const style: React.CSSProperties = {};
         let hasUnique = false;
