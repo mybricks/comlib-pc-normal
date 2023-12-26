@@ -1,6 +1,5 @@
-import * as Babel from '@babel/standalone';
-import * as SchemaToTypes from "../../package/json-schema-to-typescript";
-import { getParamsType } from './constants'
+import * as SchemaToTypes from '../../package/json-schema-to-typescript';
+import { getParamsType } from './constants';
 
 type FuncType = (code: string) => Function;
 
@@ -19,7 +18,10 @@ const transform = (code: string) => {
     ]
   };
   try {
-    return Babel.transform(code, options).code;
+    if (!window.Babel) {
+      throw Error('Babel was not found in window');
+    }
+    return window.Babel.transform(code, options).code;
   } catch (error) {
     throw error;
   }
@@ -31,13 +33,13 @@ const createElement: FuncType = (code) => {
 };
 
 const genLibTypes = async (schema: Record<string, any>) => {
-  schema.title = 'Props'
-  const propTypes = await SchemaToTypes.compile(schema, "", {
-    bannerComment: "",
+  schema.title = 'Props';
+  const propTypes = await SchemaToTypes.compile(schema, '', {
+    bannerComment: '',
     unknownAny: false,
-    format: false,
+    format: false
   }).then((ts) => {
-    return ts.replace("export ", "");
+    return ts.replace('export ', '');
   });
   return `
     ${propTypes}\n

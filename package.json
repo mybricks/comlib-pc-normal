@@ -27,7 +27,6 @@
   "homepage": "https://github.com/visualbricks/comlib-pc-normal#readme",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@babel/standalone": "^7.23.6",
     "@mybricks/color-picker": "^1.0.7",
     "antd": "^4.18.5",
     "flv.js": "^1.6.2",
