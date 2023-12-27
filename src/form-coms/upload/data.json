@@ -19,5 +19,10 @@
   "customUpload": true,
   "fileClick": false,
   "hideIcon": false,
-  "isEditable": true
+  "isEditable": true,
+  "isCustomIcon": false,
+  "textIcon": "UploadOutlined",
+  "picIcon": "UploadOutlined",
+  "picCardIcon": "PlusOutlined",
+  "dragIcon": "InboxOutlined"
 }

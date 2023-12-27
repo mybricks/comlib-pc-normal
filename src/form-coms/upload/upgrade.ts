@@ -342,5 +342,26 @@ export default function ({ input, output, slot, data }): boolean {
   }
   //=========== v1.0.32 end ===============
 
+  /**
+   * @description v1.0.33 新增 自定义图标配置
+   */
+  if(typeof data.isCustomIcon === 'undefined'){
+    data.isCustomIcon = false;
+  }
+  if(typeof data.textIcon === 'undefined'){
+    data.textIcon = "UploadOutlined";
+  }
+  if(typeof data.picIcon === 'undefined'){
+    data.picIcon = "UploadOutlined";
+  }
+  if(typeof data.picCardIcon === 'undefined'){
+    data.picCardIcon = "PlusOutlined";
+  }
+  if(typeof data.dragIcon === 'undefined'){
+    data.dragIcon = "InboxOutlined";
+  }
+
+  //=========== v1.0.33 end ===============
+
   return true;
 }

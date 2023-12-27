@@ -42,6 +42,11 @@ export interface Data {
   fileClick: boolean;
   hideIcon: boolean;
   isEditable: boolean;
+  isCustomIcon: boolean;
+  textIcon: string;
+  picIcon: string;
+  picCardIcon: string;
+  dragIcon: string
 }
 
 interface Window {
@@ -404,13 +409,19 @@ export default function ({
   const renderUploadText = () => {
     const pictureButton = (
       <div>
-        <PlusOutlined />
+        {data.hideIcon ? void 0 : Icons && Icons[data.picCardIcon]?.render() }
         <div style={{ marginTop: 8 }}>{env.i18n(buttonText)}</div>
       </div>
     );
 
     const normalButton = (
-      <Button icon={<UploadOutlined />} disabled={disabled}>
+      <Button icon={data.hideIcon ?void 0 : Icons && Icons[data.textIcon]?.render()} disabled={disabled}>
+        {env.i18n(buttonText)}
+      </Button>
+    );
+
+    const picButton = (
+      <Button icon={data.hideIcon ?void 0 : Icons && Icons[data.picIcon]?.render()} disabled={disabled}>
         {env.i18n(buttonText)}
       </Button>
     );
@@ -418,7 +429,7 @@ export default function ({
     const draggerButton = (
       <>
         <p className="ant-upload-drag-icon" style={{ display: data.hideIcon ? 'none' : void 0 }}>
-          {Icons && Icons[uploadIcon]?.render()}
+          {Icons && Icons[data.dragIcon]?.render()}
         </p>
         <p className="ant-upload-text">{env.i18n(buttonText)}</p>
       </>
@@ -426,7 +437,7 @@ export default function ({
 
     const uploadButton = {
       text: normalButton,
-      picture: normalButton,
+      picture: picButton,
       'picture-card': pictureButton,
       dragger: draggerButton
     };
