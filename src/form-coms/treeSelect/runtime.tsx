@@ -155,6 +155,14 @@ export default function Runtime({
       }
     });
 
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, outputRels) => {
       if (validateRelOuputRef.current) {
@@ -291,7 +299,7 @@ export default function Runtime({
 
   return (
     <div ref={wrapperRef} className={css.select}>
-      <TreeSelect
+      {data.isEditable ? <TreeSelect
         treeIcon
         {...data.config}
         placeholder={env.i18n(data.config.placeholder)}
@@ -316,7 +324,7 @@ export default function Runtime({
         getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
       >
         {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
-      </TreeSelect>
+      </TreeSelect> : Array.isArray(value) ? value.join(',') : value}
     </div>
   );
 }
