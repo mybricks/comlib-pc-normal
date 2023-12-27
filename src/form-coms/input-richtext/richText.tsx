@@ -190,7 +190,7 @@ export default function ({
   };
   //失去焦点
   const update = useCallback((bool) => {
-    const tinyMCE = getWindowVal('tinyMCE');
+    const tinyMCE = getWindowVal('myTinyMce');
     if (!tinyMCE) return;
 
     const tinymceInstance =
@@ -215,7 +215,7 @@ export default function ({
 
   //值变化
   const change = useCallback((bool) => {
-    const tinyMCE = getWindowVal('tinyMCE');
+    const tinyMCE = getWindowVal('myTinyMce');
     if (!tinyMCE) return;
 
     const tinymceInstance =
@@ -231,7 +231,7 @@ export default function ({
   useEffect(() => {
     Load();
     return () => {
-      const tinyMCE = getWindowVal('tinyMCE');
+      const tinyMCE = getWindowVal('myTinyMce');
       tinyMCE &&
         [tinymceId, tinymceFSId].forEach((id) => {
           tinyMCE.editors[id]?.remove();
@@ -294,7 +294,7 @@ export default function ({
       <div>
         <textarea
           ref={(node) => {
-            const tinyMCE = getWindowVal('tinyMCE');
+            const tinyMCE = getWindowVal('myTinyMce');
             if (!tinyMCE) return;
 
             if (!tinyMCE.editors[tinymceFSId]) {
@@ -403,7 +403,7 @@ export default function ({
 }
 
 function addCustomIcons(): void {
-  const tinyMCE = getWindowVal('tinyMCE');
+  const tinyMCE = getWindowVal('myTinyMce');
   if (!tinyMCE) return;
   const { IconManager } = tinyMCE;
   if (!IconManager.has(customIconsId)) {

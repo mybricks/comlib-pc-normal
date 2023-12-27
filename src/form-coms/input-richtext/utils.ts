@@ -1,5 +1,6 @@
 import contentMinCss from './tinymce/skins/ui/oxide/content.min.css';
 import defalutContentMinCss from './tinymce/skins/content/default/content.min.css';
+// 作用于iframe,所以使用该方式引入 因为skin,theme会按相对路径寻找,为本地化就关闭,再直接引入skin和theme
 
 interface InitProps {
   readonly?: boolean;
@@ -25,7 +26,7 @@ export function Init({
   setUp,
   initCB
 }: InitProps) {
-  const tinyMCE = getWindowVal('tinyMCE');
+  const tinyMCE = getWindowVal('myTinyMce');
   if (!tinyMCE) return;
 
   const plugins: string[] = [
@@ -56,7 +57,7 @@ export function Init({
     menubar: false,
     branding: false,
     statusbar: false,
-    icons: (window as any).tinyMCE?.IconManager.has(customIconsId) ? customIconsId : '',
+    icons: window.myTinymce?.IconManager.has(customIconsId) ? customIconsId : '',
     plugins,
     toolbar,
     language: 'zh_CN',

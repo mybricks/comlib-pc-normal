@@ -1,33 +1,32 @@
 export default function uploadimage(props) {
-  const { click, editor } = props 
-  const global = (window).tinyMCE.util.Tools.resolve('tinymce.PluginManager');
+  const { click, editor } = props;
+  const global = window.myTinymce.util.Tools.resolve('myTinymce.PluginManager');
 
-  function selectLocalImages(editor) {		
-    click('uploadimage')
+  function selectLocalImages(editor) {
+    click('uploadimage');
   }
 
   function selectLocalFullScreen(editor) {
-    click('customfullscreen')
+    click('customfullscreen');
   }
 
   function selectLocalFullScreenExit(editor) {
-    click('customfullscreenexit')
+    click('customfullscreenexit');
   }
-
 
   const register$1 = function (editor) {
     editor.ui.registry.addButton('uploadimage', {
       icon: 'image',
       tooltip: '上传图片',
       onAction: function () {
-        selectLocalImages(editor)
+        selectLocalImages(editor);
       }
     });
     editor.ui.registry.addMenuItem('uploadimage', {
       icon: 'image',
       text: '上传图片',
       onAction: function () {
-        selectLocalImages(editor)
+        selectLocalImages(editor);
       }
     });
 
@@ -50,28 +49,28 @@ export default function uploadimage(props) {
       icon: 'fullscreen',
       tooltip: '展开',
       onAction: function () {
-        selectLocalFullScreen(editor)
+        selectLocalFullScreen(editor);
       }
     });
     editor.ui.registry.addMenuItem('customfullscreen', {
       icon: 'fullscreen',
       text: '展开',
       onAction: function () {
-        selectLocalFullScreen(editor)
+        selectLocalFullScreen(editor);
       }
     });
     editor.ui.registry.addButton('customfullscreenexit', {
       icon: 'fullscreenexit',
       tooltip: '收起',
       onAction: function () {
-        selectLocalFullScreenExit(editor)
+        selectLocalFullScreenExit(editor);
       }
     });
     editor.ui.registry.addMenuItem('customfullscreenexit', {
       icon: 'fullscreenexit',
       text: '收起',
       onAction: function () {
-        selectLocalFullScreenExit(editor)
+        selectLocalFullScreenExit(editor);
       }
     });
     // editor.ui.registry.addButton('customlink', {
@@ -90,32 +89,29 @@ export default function uploadimage(props) {
     // });
   };
 
-  function Plugin () {
-    global.add('uploadimage', function (editor) {        
-    });
-    global.add('customfullscreen', function (editor) {        
-    });
-    global.add('customfullscreenexit', function (editor) {        
-    });
+  function Plugin() {
+    global.add('uploadimage', function (editor) {});
+    global.add('customfullscreen', function (editor) {});
+    global.add('customfullscreenexit', function (editor) {});
     global.add('uploadVideo', () => {});
   }
 
   Plugin();
 
   register$1(editor);
-  
+
   return {
     setUrl: (modal) => {
       if (editor) {
         const dom = editor.dom;
         const { type, url } = modal;
         if (type === 'image') {
-          editor.insertContent(dom.createHTML('img', { src: url, style: "max-width: 100%;"}))
+          editor.insertContent(dom.createHTML('img', { src: url, style: 'max-width: 100%;' }));
         }
         if (type === 'video') {
-          editor.insertContent(dom.createHTML('video', { src: url, controls: true }))
+          editor.insertContent(dom.createHTML('video', { src: url, controls: true }));
         }
       }
     }
-  }
+  };
 }
