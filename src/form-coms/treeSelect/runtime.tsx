@@ -208,7 +208,8 @@ export default function Runtime({
     onChangeForFc(parentSlot, { id, value, name });
   }, []);
 
-  const onChange = useCallback((value) => {
+  const onChange: TreeSelectProps['onChange'] = useCallback((_, label, extra) => {
+    const value = extra.triggerValue;
     changeValue(value);
     outputs[OutputIds.OnChange](value);
     onValidateTrigger();
