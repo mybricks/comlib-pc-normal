@@ -22,5 +22,6 @@
   ],
   "checkAll": false,
   "layout": "horizontal",
-  "checkAllText": "全选"
+  "checkAllText": "全选",
+  "isEditable": true
 }

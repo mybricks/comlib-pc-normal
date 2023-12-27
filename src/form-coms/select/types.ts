@@ -23,4 +23,5 @@ export interface Data {
   dropdownSearchOption: boolean;
   outputValueType: 'value' | 'labelInValue' | 'option';
   validateTrigger: string[];
+  isEditable: boolean;
 }

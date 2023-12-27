@@ -13,4 +13,5 @@ export interface Data {
     options: any[];
     renderError?: boolean;
     layout: 'vertical' | 'horizontal';
+    isEditable: boolean;
 }

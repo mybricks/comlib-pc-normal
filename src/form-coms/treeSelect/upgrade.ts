@@ -337,5 +337,19 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.2.7 end ===============
 
+  /**
+   * @description v1.2.11 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  if (typeof data.isEditable === 'undefined') {
+    data.isEditable = true;
+  }
+  //=========== v1.2.11 end ===============
   return true;
 }

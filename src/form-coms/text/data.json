@@ -16,5 +16,6 @@
     "size": "middle"
   },
   "src": false,
-  "innerIcon": "HomeOutlined"
+  "innerIcon": "HomeOutlined",
+  "isEditable": true
 }

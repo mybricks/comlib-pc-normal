@@ -28,6 +28,8 @@ export interface Data {
   src: false | 'inner' | 'custom';
   innerIcon: string;
   customIcon: string;
+
+  isEditable: boolean;
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -71,6 +73,9 @@ export default function (props: RuntimeParams<Data>) {
           } else if (val === false) {
             data.config.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate(model, relOutput) {
           validateFormItem({
@@ -171,7 +176,7 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.innerIcon, data.customIcon]);
 
-  let jsx = (
+  let jsx = data.isEditable ? (
     <Input
       ref={inputRef}
       type="text"
@@ -187,6 +192,8 @@ export default function (props: RuntimeParams<Data>) {
       //size={'large'}
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
+  ) : (
+    <div>{value}</div>
   );
 
   return <div className={css.fiText}>{jsx}</div>;

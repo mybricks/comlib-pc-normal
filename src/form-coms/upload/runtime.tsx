@@ -41,6 +41,7 @@ export interface Data {
   customUpload: boolean;
   fileClick: boolean;
   hideIcon: boolean;
+  isEditable: boolean;
 }
 
 interface Window {
@@ -146,6 +147,14 @@ export default function ({
         if (relOutputs['isEnableDone']) {
           relOutputs['isEnableDone'](val);
         }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
       }
     });
 
@@ -327,13 +336,17 @@ export default function ({
   }, []);
 
   const onRemove = (file) => {
-    if (!data.config.useCustomRemove) {
-      changeFileList(fileListRef.current.filter(({ uid }) => file.uid !== uid));
-      return true;
+    if (data.isEditable === false) {
+      return false;
+    } else {
+      if (!data.config.useCustomRemove) {
+        changeFileList(fileListRef.current.filter(({ uid }) => file.uid !== uid));
+        return true;
+      }
+      removeFileRef.current = file;
+      outputs.remove(file);
+      return false;
     }
-    removeFileRef.current = file;
-    outputs.remove(file);
-    return false;
   };
 
   const onPreview = (file) => {
@@ -506,8 +519,10 @@ export default function ({
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
-        ) : (
+        ) : data.isEditable ? (
           renderUploadText()
+        ) : (
+          ''
         )}
       </UploadNode>
     </div>

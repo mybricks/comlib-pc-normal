@@ -23,6 +23,7 @@ export interface Data {
     changeOnSelect: boolean;
     showSearch: boolean;
   };
+  isEditable: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -65,6 +66,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
           } else if (val === false) {
             data.config.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate(model, outputRels) {
           validateFormItem({
@@ -125,17 +129,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     <div className={css.cascader}>
-      <Cascader
-        value={value}
-        options={options}
-        {...data.config}
-        placeholder={env.i18n(data.config.placeholder)}
-        multiple={data.isMultiple}
-        onChange={onChange}
-        open={env.design ? true : void 0}
-        dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-      />
+      {data.isEditable ? (
+        <Cascader
+          value={value}
+          options={options}
+          {...data.config}
+          placeholder={env.i18n(data.config.placeholder)}
+          multiple={data.isMultiple}
+          onChange={onChange}
+          open={env.design ? true : void 0}
+          dropdownClassName={id}
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+        />
+      ) : Array.isArray(value) ? (
+        value.join(',')
+      ) : (
+        value
+      )}
     </div>
   );
 }

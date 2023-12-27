@@ -99,6 +99,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         relOutputs['setEnabledDone']();
       });
 
+      inputs[inputIds.isEditable]((val, relOutputs) => {
+        data.isEditable = val;
+        setIsEditable(val);
+        relOutputs['isReadOnlyDone'](val);
+      });
+
       // 校验字段
       inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[], relOutputs) => {
         if (typeof nameList === 'string') nameList = [nameList];
@@ -316,6 +322,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (!nameList || nameList.includes(item.name)) {
         const input = getFromItemInputEvent(item, childrenInputs);
         input?.setEnabled && input?.setEnabled();
+      }
+    });
+  };
+
+  const setIsEditable = (val, nameList?: string[]) => {
+    data.items.forEach((item) => {
+      if (!nameList || nameList.includes(item.name)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.isEditable && input?.isEditable(val);
       }
     });
   };

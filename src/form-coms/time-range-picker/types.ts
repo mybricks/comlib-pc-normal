@@ -5,5 +5,6 @@ export interface Data {
   format: string,
   customFormat: string,
   outFormat: 'array' | 'string',
-  splitChar: string
+  splitChar: string,
+  isEditable: boolean
 }

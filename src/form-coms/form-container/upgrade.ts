@@ -408,5 +408,17 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
       act.iconLocation = "front";
     }
   })
+
+  /**
+   * @description v1.4.33 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  //=========== v1.4.33 end ===============
   return true;
 }
