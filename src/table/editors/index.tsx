@@ -17,6 +17,7 @@ import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
 import SummaryColumn from './table/summaryColumn';
+import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
 import { emptyEditor, emptyStyleEditor } from './table/empty';
@@ -153,6 +154,7 @@ export default {
         ...ExpandEditor,
         rowOperationEditor,
         rowMerge,
+        ...ScrollToFirstRowEditor,
         ...SummaryColumn,
         ...DynamicColumnEditor,
         ...DynamicTitleEditor,

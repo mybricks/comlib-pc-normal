@@ -15,10 +15,11 @@ interface Props {
   selectedRows: any[];
   selectedRowKeys: string[];
   footerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
 export default (props: Props): JSX.Element => {
-  const { data, env, inputs, outputs, footerRef } = props;
+  const { data, env, inputs, outputs, footerRef, containerRef } = props;
 
   const useBottomRowSelection =
     data.useRowSelection &&
@@ -48,6 +49,10 @@ export default (props: Props): JSX.Element => {
             data={data.paginationConfig}
             inputs={inputs}
             outputs={outputs}
+            containerRef={containerRef}
+            config={{
+              scrollToFirstRowOnChange: data.scroll.scrollToFirstRowOnChange
+            }}
           />
         </div>
       )}

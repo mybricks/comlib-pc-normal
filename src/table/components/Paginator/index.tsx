@@ -10,9 +10,11 @@ interface Props {
   inputs: any;
   outputs: any;
   parentSlot: any;
+  containerRef: React.RefObject<HTMLDivElement>;
+  config: any;
 }
 export default (props: Props) => {
-  const { data, inputs, outputs, env } = props;
+  const { data, inputs, outputs, env, containerRef, config } = props;
   const {
     total,
     text,
@@ -27,6 +29,8 @@ export default (props: Props) => {
     pageSizeOptions,
     hideOnSinglePage
   } = data;
+
+  const target = containerRef?.current?.querySelector?.('div.ant-table-body') as HTMLDivElement;
 
   const isMobile = checkIfMobile(env);
   const setPageNum = (pageNum: number) => {
@@ -86,6 +90,9 @@ export default (props: Props) => {
         pageNum,
         pageSize
       };
+      if (config.scrollToFirstRowOnChange) {
+        target.scrollTop = 0;
+      }
       setPageSize(pageSize);
       setPageNum(pageNum);
       outputs[OutputIds.PageChange](data.currentPage);

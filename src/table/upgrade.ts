@@ -246,7 +246,7 @@ export default function ({
   /**
    * @description v1.1.13 -> 1.1.14 开启表格高度配置
    */
-  if(style.height === void 0) {
+  if (style.height === void 0) {
     style.height = 'auto';
   }
 
