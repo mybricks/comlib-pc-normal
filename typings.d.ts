@@ -3,14 +3,14 @@ declare module '*.less' {
   export = resource;
 }
 
-declare module "*.svg" {
+declare module '*.svg' {
   const resource: any;
   export = resource;
 }
 
 interface Env {
-  ajax: (url: string, opt: Record<string, any>) => Promise<any>
-  events: any[]
+  ajax: (url: string, opt: Record<string, any>) => Promise<any>;
+  events: any[];
   vars?: {
     getQuery: () => any;
     getExecuteEnv?: () => any;
@@ -18,76 +18,82 @@ interface Env {
     getCookies: () => any;
     getRouter: () => Record<string, Function>;
     locale: string | number | symbol | undefined;
-  },
-  hasPermission: (id: string) => boolean
-  [x: string]: any
+  };
+  hasPermission: (id: string) => boolean;
+  [x: string]: any;
 }
 interface RuntimeParams<T> {
   /** 组件ID **/
-  id: string
-  name: string
-  data: T
-  env: Env
-  _env: any
-  style: any
+  id: string;
+  name: string;
+  data: T;
+  env: Env;
+  _env: any;
+  style: any;
   slots: {
     [key: string]: {
-      render: (props?: { wrap?: any, inputValues?: any, key?: number | string, style?: React.CSSProperties, outputs?: { [key: string]: Function } }) => React.ReactNode
-      inputs: any
-      [key: string]: any
-    }
-  }
-  inputs: any
-  outputs: any
-  _inputs: any
-  _outputs: any
-  logger: any
-  createPortal: any
+      render: (props?: {
+        wrap?: any;
+        inputValues?: any;
+        key?: number | string;
+        style?: React.CSSProperties;
+        outputs?: { [key: string]: Function };
+      }) => React.ReactNode;
+      inputs: any;
+      [key: string]: any;
+    };
+  };
+  inputs: any;
+  outputs: any;
+  _inputs: any;
+  _outputs: any;
+  logger: any;
+  createPortal: any;
   /** 父容器插槽 **/
-  parentSlot: any
-  title?: string
-  onError: (params: Error | string) => null
+  parentSlot: any;
+  title?: string;
+  onError: (params: Error | string) => null;
 }
 
 interface EditorResult<T> {
-  id: string
-  name: string
-  data: T
-  focusArea: any
-  output: any
-  input: any
-  inputs: any
-  outputs: any
-  slot: any,
-  diagram: any
-  style: React.CSSProperties
-  catelog: any
-  slots?: any
-  env: Env
-  setAutoRun: (auto?: boolean) => void
-  isAutoRun: () => boolean
-  setDesc: (desc?: string) => void
+  id: string;
+  name: string;
+  data: T;
+  focusArea: any;
+  output: any;
+  input: any;
+  inputs: any;
+  outputs: any;
+  slot: any;
+  diagram: any;
+  style: React.CSSProperties;
+  catelog: any;
+  slots?: any;
+  env: Env;
+  setAutoRun: (auto?: boolean) => void;
+  isAutoRun: () => boolean;
+  setDesc: (desc?: string) => void;
   /** 获取子组件data，引擎 v1.2.69 **/
-  getChildByName: (name: string) => any
-  removePermission: (id:string) => void;
+  getChildByName: (name: string) => any;
+  removePermission: (id: string) => void;
 }
 
 interface UpgradeParams<T> {
-  id: string
-  data: T
-  output: any
-  input: any
-  slot: any
-  style: any
-  setAutoRun: (auto?: boolean) => void
-  isAutoRun: () => boolean
-  setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
-  getDeclaredStyle: (selector: string) => ({selector: string, css: React.CSSProperties})
-  removeDeclaredStyle: (selector: string) => void
+  id: string;
+  data: T;
+  output: any;
+  input: any;
+  slot: any;
+  style: any;
+  setAutoRun: (auto?: boolean) => void;
+  isAutoRun: () => boolean;
+  setDeclaredStyle: (selector: string, style: React.CSSProperties) => void;
+  getDeclaredStyle: (selector: string) => { selector: string; css: React.CSSProperties };
+  removeDeclaredStyle: (selector: string) => void;
   config: {
     get: (id: string) => ConfigInstance;
-  }
-  children: any
+  };
+  children: any;
   /**
    * 注册权限信息
    * @param options 权限相关信息
@@ -104,12 +110,12 @@ type ConfigInstance = {
   setBinding: (binding: string) => void;
   setSchema: (schema: Record<string, any>) => void;
   setTitle: (title: string) => void;
-  remove: () => void
-}
+  remove: () => void;
+};
 
 type AnyMap = {
-  [key in string | number]: any
-}
+  [key in string | number]: any;
+};
 
 type StyleModeType<T> = Partial<{
   title: string;
@@ -122,6 +128,7 @@ type StyleModeType<T> = Partial<{
 }>;
 
 declare interface Window {
-  ace: any
-  Babel: any
+  ace: any;
+  Babel: any;
+  myTinymce: any; // Tinymce
 }
