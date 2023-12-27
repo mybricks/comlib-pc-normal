@@ -955,7 +955,8 @@ export default function (props: RuntimeParams<Data>) {
                 }}
                 scroll={{
                   x: '100%',
-                  y: scrollHeight
+                  y: scrollHeight,
+                  scrollToFirstRowOnChange: data.scroll.scrollToFirstRowOnChange
                 }}
                 summary={
                   data.useSummaryColumn
@@ -1011,6 +1012,7 @@ export default function (props: RuntimeParams<Data>) {
             )}
             <TableFooter
               footerRef={footerRef}
+              containerRef={ref}
               env={env}
               parentSlot={props.parentSlot}
               data={data}
