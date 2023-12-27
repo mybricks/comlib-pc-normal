@@ -1,3 +1,4 @@
 {
-  "outputSchema": { "type": "any" }
+  "outputSchema": { "type": "any" },
+  "useExternalUrl": false
 }

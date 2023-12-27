@@ -1,5 +1,5 @@
 const defaultSchema = { type: 'any' };
-import { INPUT_ID, OUTPUT_ID } from './const';
+import { OUTPUT_ID } from './const';
 
 export default {
   '@init': ({ data, setDesc, setAutoRun, isAutoRun }) => {
@@ -94,31 +94,6 @@ export default {
           } else {
             output.remove(OUTPUT_ID.HEADERS);
             data.outputHeaders = false;
-          }
-        }
-      }
-    },
-    {
-      title: '配置服务地址',
-      type: 'switch',
-      ifVisible({ data }) {
-        return !data.immediate;
-      },
-      value: {
-        get({ input }) {
-          return input.get(INPUT_ID.SET_URL) !== void 0;
-        },
-        set({ data, input }, use: boolean) {
-          const callPin = input.get('call');
-          if (use) {
-            input.add(INPUT_ID.SET_URL, '设置服务地址', { type: 'string' });
-            if (!callPin) {
-              input.add('call', '调用', { type: 'object' });
-            }
-            data.useExternalUrl = true;
-          } else {
-            input.remove(INPUT_ID.SET_URL);
-            data.useExternalUrl = false;
           }
         }
       }
