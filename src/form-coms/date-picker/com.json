@@ -103,7 +103,7 @@
     {
       "id": "isEditable",
       "title": "设置编辑/只读",
-      "desc": "设置表单项只读态",
+      "desc": "设置表单项编辑/只读态",
       "schema": {
         "type": "boolean"
       },
