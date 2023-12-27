@@ -1,4 +1,4 @@
-import { INPUT_ID, OUTPUT_ID, PARAMS_READY, READY, URL_READY } from './const';
+import { OUTPUT_ID, PARAMS_READY, READY } from './const';
 
 function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = {}) {
 	const { runtime } = env;
@@ -81,13 +81,6 @@ export default function ({ env, data, inputs, outputs, logger }) {
         data.callReady |= data.useExternalUrl ? PARAMS_READY : READY;
         curParams = params;
         call({ env, data, logger, params: typeof params === 'object' ? params : {}, outputs });
-      });
-      inputs[INPUT_ID.SET_URL]((url: string) => {
-        if (url && typeof url === 'string') {
-          data.connectorConfig.url = url;
-        }
-        data.callReady |= URL_READY;
-        call({ env, data, logger, outputs, params: curParams });
       });
     }
   }
