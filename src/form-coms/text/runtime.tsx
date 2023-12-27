@@ -14,6 +14,7 @@ export interface Data {
   value: string | undefined;
   rules: any[];
   validateTrigger: string[];
+  isTrim: boolean;
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -119,14 +120,19 @@ export default function (props: RuntimeParams<Data>) {
       debounceValidateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = useCallback((val) => {
+  const formatter = useCallback((oriVal) => {
+    return data.isTrim ? oriVal?.trim() : oriVal;
+  }, []);
+
+  const changeValue = useCallback((oriVal) => {
+    const val = formatter(oriVal);
     setValue(val);
     valueRef.current = val;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   }, []);
 
   const onChange = useCallback((e) => {
-    const value = e.target.value;
+    const value = formatter(e.target.value);
     changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger(ValidateTriggerType.OnChange);
