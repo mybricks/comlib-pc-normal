@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -99,6 +99,17 @@
       },
       "rels": [
         "isEnableDone"
+      ]
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
       ]
     },
     {
@@ -236,6 +247,13 @@
       "title": "启用完成",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

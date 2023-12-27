@@ -61,5 +61,6 @@
   },
   "dateType": "array",
   "splitChart": "-",
-  "emptyRules": []
+  "emptyRules": [],
+  "isEditable": true
 }

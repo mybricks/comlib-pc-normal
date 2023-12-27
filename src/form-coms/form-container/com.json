@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-container",
   "author": "ZhuPengqiang",
   "author_name": "朱鹏强",
-  "version": "1.4.32",
+  "version": "1.4.33",
   "description": "表单容器",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_0k26mn.32244798eef642c8.png",
@@ -107,6 +107,17 @@
         "setEnabledDone"
       ],
       "desc": "启用表单项及操作项"
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单编辑/只读",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
+      ]
     },
     {
       "id": "validateFields",
@@ -259,6 +270,14 @@
       "title": "设置启用完成",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "desc": "设置表单编辑/只读完成",
+      "schema": {
+        "type": "boolean"
       }
     },
     {

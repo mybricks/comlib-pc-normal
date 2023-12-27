@@ -18,5 +18,6 @@
   ],
   "customUpload": true,
   "fileClick": false,
-  "hideIcon": false
+  "hideIcon": false,
+  "isEditable": true
 }

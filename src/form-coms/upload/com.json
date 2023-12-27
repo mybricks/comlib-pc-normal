@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.upload",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "上传",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_bj3zsx.0442800137cf236a.png",
@@ -135,6 +135,17 @@
       },
       "rels": [
         "isEnableDone"
+      ]
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
       ]
     },
     {
@@ -367,6 +378,13 @@
     {
       "id": "isEnableDone",
       "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
       "schema": {
         "type": "boolean"
       }

@@ -11,4 +11,5 @@ export interface Data {
   enableButtonStyle: boolean;
   buttonStyle: 'outline' | 'solid';
   layout: 'vertical' | 'horizontal';
+  isEditable: boolean;
 }

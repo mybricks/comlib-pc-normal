@@ -60,6 +60,9 @@ export default function Runtime({
             data.config.disabled = true;
           }
         },
+        setIsEditable(val) {
+          data.isEditable = val;
+        },
         validate(model, outputRels) {
           validateFormItem({
             value: valueRef.current,
@@ -143,6 +146,44 @@ export default function Runtime({
   const renderRadio = () => {
     return (
       <div className={css.radio}>
+        {data.isEditable ? (
+          <Radio.Group
+            optionType={data.enableButtonStyle ? 'button' : 'default'}
+            buttonStyle={data.buttonStyle}
+            disabled={data.config.disabled}
+            value={value}
+            onChange={onChange}
+          >
+            <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+              {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+                const label = item.label;
+                return (
+                  <Radio
+                    key={item.key}
+                    value={item.value}
+                    disabled={item.disabled}
+                    checked={item.checked}
+                    style={{
+                      marginRight: 8,
+                      color: value === item.value ? activeFontColor : ''
+                    }}
+                  >
+                    {env.i18n(label)}
+                  </Radio>
+                );
+              })}
+            </Space>
+          </Radio.Group>
+        ) : (
+          value
+        )}
+      </div>
+    );
+  };
+
+  return data.enableButtonStyle ? (
+    <div>
+      {data.isEditable ? (
         <Radio.Group
           optionType={data.enableButtonStyle ? 'button' : 'default'}
           buttonStyle={data.buttonStyle}
@@ -150,54 +191,24 @@ export default function Runtime({
           value={value}
           onChange={onChange}
         >
-          <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
-            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-              const label = item.label;
-              return (
-                <Radio
-                  key={item.key}
-                  value={item.value}
-                  disabled={item.disabled}
-                  checked={item.checked}
-                  style={{
-                    marginRight: 8,
-                    color: value === item.value ? activeFontColor : ''
-                  }}
-                >
-                  {env.i18n(label)}
-                </Radio>
-              );
-            })}
-          </Space>
+          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+            const label = item.label;
+            return (
+              <Radio
+                key={item.value}
+                value={item.value}
+                disabled={item.disabled}
+                checked={item.checked}
+                style={{ marginRight: 8, color: value === item.value ? activeFontColor : '' }}
+              >
+                {env.i18n(label)}
+              </Radio>
+            );
+          })}
         </Radio.Group>
-      </div>
-    );
-  };
-
-  return data.enableButtonStyle ? (
-    <div>
-      <Radio.Group
-        optionType={data.enableButtonStyle ? 'button' : 'default'}
-        buttonStyle={data.buttonStyle}
-        {...data.config}
-        value={value}
-        onChange={onChange}
-      >
-        {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-          const label = item.label;
-          return (
-            <Radio
-              key={item.value}
-              value={item.value}
-              disabled={item.disabled}
-              checked={item.checked}
-              style={{ marginRight: 8, color: value === item.value ? activeFontColor : '' }}
-            >
-              {env.i18n(label)}
-            </Radio>
-          );
-        })}
-      </Radio.Group>
+      ) : (
+        value
+      )}
     </div>
   ) : (
     renderRadio()

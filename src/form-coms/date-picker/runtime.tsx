@@ -45,6 +45,7 @@ export interface Data {
     年份: string;
   };
   isWeekNumber: boolean;
+  isEditable: boolean;
 }
 
 const typeMap = {
@@ -73,57 +74,61 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
     let transValue;
-    switch (type) {
-      //1. 年-月-日 时:分:秒
-      case 'Y-MM-DD HH:mm:ss':
-        transValue = moment(val).format('YYYY-MM-DD HH:mm:ss');
-        break;
-      //2. 年-月-日 时:分
-      case 'Y-MM-DD HH:mm':
-        transValue = moment(val).format('Y-MM-DD HH:mm');
-        break;
-      //3. 年-月-日
-      case 'Y-MM-DD':
-        transValue = moment(val).format('Y-MM-DD');
-        break;
-      //4. 年-月
-      case 'Y-MM':
-        transValue = moment(val).format('Y-MM');
-        break;
-      //5. 年
-      case 'Y':
-        transValue = moment(val).format('Y');
-        break;
-      //6. 时间戳
-      case 'timeStamp':
-        transValue = Number(val);
-        break;
-      //7. 自定义
-      case 'custom':
-        let customDate = moment(val).format(props.data.formatter);
-        if (customDate.indexOf('Su')) {
-          customDate = customDate.replace('Su', '天');
-        }
-        if (customDate.indexOf('Mo')) {
-          customDate = customDate.replace('Mo', '一');
-        }
-        if (customDate.indexOf('Tu')) {
-          customDate = customDate.replace('Tu', '二');
-        }
-        if (customDate.indexOf('We')) {
-          customDate = customDate.replace('We', '三');
-        }
-        if (customDate.indexOf('Th')) {
-          customDate = customDate.replace('Th', '四');
-        }
-        if (customDate.indexOf('Fr')) {
-          customDate = customDate.replace('Fr', '五');
-        }
-        if (customDate.indexOf('Sa')) {
-          customDate = customDate.replace('Sa', '六');
-        }
-        transValue = customDate;
-        break;
+    if (val) {
+      switch (type) {
+        //1. 年-月-日 时:分:秒
+        case 'Y-MM-DD HH:mm:ss':
+          transValue = moment(val).format('YYYY-MM-DD HH:mm:ss');
+          break;
+        //2. 年-月-日 时:分
+        case 'Y-MM-DD HH:mm':
+          transValue = moment(val).format('Y-MM-DD HH:mm');
+          break;
+        //3. 年-月-日
+        case 'Y-MM-DD':
+          transValue = moment(val).format('Y-MM-DD');
+          break;
+        //4. 年-月
+        case 'Y-MM':
+          transValue = moment(val).format('Y-MM');
+          break;
+        //5. 年
+        case 'Y':
+          transValue = moment(val).format('Y');
+          break;
+        //6. 时间戳
+        case 'timeStamp':
+          transValue = Number(val);
+          break;
+        //7. 自定义
+        case 'custom':
+          let customDate = moment(val).format(props.data.formatter);
+          if (customDate.indexOf('Su')) {
+            customDate = customDate.replace('Su', '天');
+          }
+          if (customDate.indexOf('Mo')) {
+            customDate = customDate.replace('Mo', '一');
+          }
+          if (customDate.indexOf('Tu')) {
+            customDate = customDate.replace('Tu', '二');
+          }
+          if (customDate.indexOf('We')) {
+            customDate = customDate.replace('We', '三');
+          }
+          if (customDate.indexOf('Th')) {
+            customDate = customDate.replace('Th', '四');
+          }
+          if (customDate.indexOf('Fr')) {
+            customDate = customDate.replace('Fr', '五');
+          }
+          if (customDate.indexOf('Sa')) {
+            customDate = customDate.replace('Sa', '六');
+          }
+          transValue = customDate;
+          break;
+        default:
+          transValue = moment(val).format(type);
+      }
     }
     return transValue;
   };
@@ -288,6 +293,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   });
 
+  //设置编辑/只读
+  inputs['isEditable']((val, relOutputs) => {
+    data.isEditable = val;
+    if (relOutputs['isEditableDone']) {
+      relOutputs['isEditableDone'](val);
+    }
+  });
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
@@ -417,44 +430,48 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={css.datePicker} ref={wrapperRef}>
-        <DatePicker
-          panelRender={(originPanel) => {
-            return (
-              <div ref={dropdownWrapperRef}>
-                {data.useCustomPanelHeader &&
-                  slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
-                {originPanel}
-                {data.useCustomPanelFooter &&
-                  slots[SlotIds.DatePanelFooter].render({ title: '底部插槽' })}
-              </div>
-            );
-          }}
-          value={value}
-          {...data.config}
-          placeholder={env.i18n(data.config.placeholder)}
-          dateRender={data.useCustomDateCell ? customDateRender : undefined}
-          showTime={getShowTime()}
-          onChange={onChange}
-          onPanelChange={onPanelChange}
-          disabledDate={data.disabledDate || disabledDateConfig}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          dropdownClassName={`
+      {data.isEditable ? (
+        <div className={css.datePicker} ref={wrapperRef}>
+          <DatePicker
+            panelRender={(originPanel) => {
+              return (
+                <div ref={dropdownWrapperRef}>
+                  {data.useCustomPanelHeader &&
+                    slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
+                  {originPanel}
+                  {data.useCustomPanelFooter &&
+                    slots[SlotIds.DatePanelFooter].render({ title: '底部插槽' })}
+                </div>
+              );
+            }}
+            value={value}
+            {...data.config}
+            placeholder={env.i18n(data.config.placeholder)}
+            dateRender={data.useCustomDateCell ? customDateRender : undefined}
+            showTime={getShowTime()}
+            onChange={onChange}
+            onPanelChange={onPanelChange}
+            disabledDate={data.disabledDate || disabledDateConfig}
+            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            dropdownClassName={`
           ${id} 
           ${css.datePicker} 
           ${data.useCustomDateCell ? css.slotContainer : ''}
           ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
-          open={finalOpen}
-          format={
-            data.config.picker && data.formatMap
-              ? decodeURIComponent(data.formatMap[typeMap[type]])
-              : void 0
-          }
-          onClick={() => {
-            if (runtime && data.controlled && !open) setOpen(true);
-          }}
-        />
-      </div>
+            open={finalOpen}
+            format={
+              data.config.picker && data.formatMap
+                ? decodeURIComponent(data.formatMap[typeMap[type]])
+                : void 0
+            }
+            onClick={() => {
+              if (runtime && data.controlled && !open) setOpen(true);
+            }}
+          />
+        </div>
+      ) : (
+        transCalculation(value, decodeURIComponent(data.formatMap[typeMap[type]]), props)
+      )}
     </ConfigProvider>
   );
 }

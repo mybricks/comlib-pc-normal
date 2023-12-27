@@ -118,6 +118,14 @@ export default function Runtime({
       }
     });
 
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
+      }
+    });
+
     //设置数据源
     inputs['setOptions']((ds, outputRels) => {
       if (Array.isArray(ds)) {
@@ -232,24 +240,32 @@ export default function Runtime({
 
   return (
     <div className={css.checkbox} style={single ? singlebox : void 0}>
-      {data.checkAll && (
-        <Checkbox
-          style={checkboxStyle}
-          indeterminate={indeterminate}
-          onChange={onCheckAllChange}
-          checked={checkAll}
-          disabled={data.config.disabled}
-        >
-          {env.i18n(data.checkAllText)}
-        </Checkbox>
+      {data.isEditable
+        ? data.checkAll && (
+            <Checkbox
+              style={checkboxStyle}
+              indeterminate={indeterminate}
+              onChange={onCheckAllChange}
+              checked={checkAll}
+              disabled={data.config.disabled}
+            >
+              {env.i18n(data.checkAllText)}
+            </Checkbox>
+          )
+        : void 0}
+      {data.isEditable ? (
+        <Checkbox.Group
+          style={checkboxGroup}
+          {...data.config}
+          options={newOptions}
+          value={value}
+          onChange={onChange}
+        />
+      ) : Array.isArray(value) ? (
+        value.join(',')
+      ) : (
+        value
       )}
-      <Checkbox.Group
-        style={checkboxGroup}
-        {...data.config}
-        options={newOptions}
-        value={value}
-        onChange={onChange}
-      />
     </div>
   );
 }

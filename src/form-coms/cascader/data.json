@@ -11,5 +11,6 @@
     "maxTagCount": "responsive",
     "changeOnSelect": false,
     "showSearch": false
-  }
+  },
+  "isEditable": true
 }

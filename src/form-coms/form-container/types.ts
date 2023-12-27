@@ -136,6 +136,11 @@ export interface Data {
   config: FormProps
 
   /**
+   * 表单项可编辑/只读
+   */
+  isEditable: boolean
+
+  /**
    * 合并参数 Schema
    */
   paramsSchema: any

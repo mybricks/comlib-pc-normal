@@ -323,5 +323,24 @@ export default function ({ input, output, slot, data }): boolean {
     data.hideIcon = false;
   };
   //=========== v1.0.30 end ===============
+
+
+  /**
+   * @description v1.0.32 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (output.get(outputIds.isEditableDone) &&
+    input.get(inputIds.isEditable) &&
+    !input.get(inputIds.isEditable)?.rels?.includes(outputIds.isEditableDone)) {
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+
+  if (typeof data.isEditable === 'undefined') {
+    data.isEditable = true;
+  }
+  //=========== v1.0.32 end ===============
+
   return true;
 }

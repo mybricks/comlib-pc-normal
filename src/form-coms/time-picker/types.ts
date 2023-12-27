@@ -3,5 +3,6 @@ export interface Data {
   disabled?: boolean
   rules: any[],
   format: string,
-  customFormat: string
+  customFormat: string,
+  isEditable: boolean
 }
