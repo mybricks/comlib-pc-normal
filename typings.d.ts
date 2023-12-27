@@ -123,4 +123,5 @@ type StyleModeType<T> = Partial<{
 
 declare interface Window {
   ace: any
+  Babel: any
 }
