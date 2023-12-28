@@ -1012,7 +1012,7 @@ export default function (props: RuntimeParams<Data>) {
             )}
             <TableFooter
               footerRef={footerRef}
-              containerRef={ref}
+              containerRef={scrollHeight === undefined ? void 0 : ref}
               env={env}
               parentSlot={props.parentSlot}
               data={data}

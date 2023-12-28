@@ -10,7 +10,7 @@ interface Props {
   inputs: any;
   outputs: any;
   parentSlot: any;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement>;
   config: any;
 }
 export default (props: Props) => {
@@ -90,7 +90,7 @@ export default (props: Props) => {
         pageNum,
         pageSize
       };
-      if (config.scrollToFirstRowOnChange) {
+      if (config.scrollToFirstRowOnChange && containerRef) {
         target.scrollTop = 0;
       }
       setPageSize(pageSize);

@@ -15,7 +15,7 @@ interface Props {
   selectedRows: any[];
   selectedRowKeys: string[];
   footerRef: React.RefObject<HTMLDivElement>;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement>;
 }
 
 export default (props: Props): JSX.Element => {
