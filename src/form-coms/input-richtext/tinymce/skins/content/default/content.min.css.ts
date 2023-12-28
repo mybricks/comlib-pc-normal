@@ -6,11 +6,15 @@
  */
 // 注原本是css文件,作用于iframe,所以使用该方式引入
 export default `
+html {
+  height: 100%;
+}
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
     'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.4;
   margin: 1rem;
+  height: calc(100% - 1rem);
 }
 table {
   border-collapse: collapse;
