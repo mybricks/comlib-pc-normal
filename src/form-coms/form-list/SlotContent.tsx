@@ -82,7 +82,11 @@ const SlotContent = (
         });
 
         // childrenStore收集完成后的处理
-        if (isChildrenStoreValid({ data, childrenStore, comCount }) && data.userAction.type) {
+        if (
+          env.runtime &&
+          isChildrenStoreValid({ data, childrenStore, comCount }) &&
+          data.userAction.type
+        ) {
           const actionType = data.userAction.type;
           switch (data.userAction.type) {
             case 'add':
