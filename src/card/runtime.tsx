@@ -77,7 +77,7 @@ export default (props: RuntimeParams<Data>) => {
         style={{
           cursor: data.cursor ? CursorType.Pointer : CursorType.Default,
           height: isHeight ? void 0 : props.style.height,
-          overflow: isHeight ? void 0 : 'scroll'
+          overflow: isHeight ? void 0 : 'auto'
         }}
         extra={useExtra ? slots[SlotIds.Extra]?.render() : undefined}
         hoverable={hoverable}
