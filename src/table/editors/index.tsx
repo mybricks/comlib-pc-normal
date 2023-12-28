@@ -29,6 +29,7 @@ import {
 } from '../components/Paginator/constants';
 import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
+import lazyLoad from './table/lazyLoad';
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -154,6 +155,7 @@ export default {
         ...ExpandEditor,
         rowOperationEditor,
         rowMerge,
+        ...lazyLoad,
         ...ScrollToFirstRowEditor,
         ...SummaryColumn,
         ...DynamicColumnEditor,
