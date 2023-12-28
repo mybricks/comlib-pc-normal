@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Button, Dropdown, Menu, Space, Image } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { EllipsisOutlined } from '@ant-design/icons';
@@ -8,11 +8,25 @@ import css from './style.less';
 import { checkIfMobile } from '../utils';
 
 export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const isMobile = checkIfMobile(env);
   useEffect(() => {
     if (env.runtime) {
       (data.btnList || []).forEach((item) => {
         const { key } = item;
+
+        const btn = wrapperRef.current!.querySelector(
+          `div[data-btn-key="${key}"]`
+        ) as HTMLDivElement;
+
+        // 初始化按钮动态隐藏逻辑，默认隐藏的按钮先隐藏了
+        if (item.hidden) {
+          if (btn?.style) btn.style.display = 'none';
+        } else {
+          if (btn?.style) btn.style.display = 'block';
+        }
+
         inputs[`${InputIds.SetBtnText}_${key}`]?.((val: string) => {
           if (val && typeof val === 'string') {
             item.text = val;
@@ -24,10 +38,14 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
         inputs[`${InputIds.SetEnable}_${key}`]?.(() => {
           item.disabled = false;
         });
+        // 动态隐藏按钮通过 style.display = 'none' 实现，防止出现初始化时先渲染后再隐藏的问题
         inputs[`${InputIds.SetHidden}_${key}`]?.(() => {
+          if (btn?.style) btn.style.display = 'none';
           item.hidden = true;
         });
+        // 动态显示按钮通过 style.display = 'block' 实现，防止出现初始化时先隐藏后再出现的问题
         inputs[`${InputIds.SetVisible}_${key}`]?.(() => {
+          if (btn?.style) btn.style.display = 'block';
           item.hidden = false;
         });
         inputs[`${InputIds.SetBtnOpenLoading}_${key}`]?.(() => {
@@ -181,7 +199,7 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
       const { type, danger, size, shape, disabled, isCustom, loading, isSlot, key, style } = item;
 
       return !isSlot ? (
-        <div key={key} className={css.button} data-btn-idx={item.key}>
+        <div key={key} className={css.button} data-btn-idx={item.key} data-btn-key={item.key}>
           <Button
             type={(type as any) || allType}
             danger={typeof danger !== 'undefined' ? danger : allDanger}
@@ -198,24 +216,37 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
           </Button>
         </div>
       ) : (
-        <div className={css.emptyWrap} data-slot-idx={item.key}>
+        <div className={css.emptyWrap} data-slot-idx={item.key} data-btn-key={item.key}>
           {slots?.[key] && slots?.[key].render({ key })}
         </div>
       );
     });
   };
 
+  // 动态隐藏按钮通过 style.display = 'none' 实现，所以需要将动态隐藏的按钮（即 item.hidden === true）的按钮不用 filter 掉
   const normalBtnList = (data.btnList || [])
-    .filter(
-      (item) =>
-        !(
-          getWhatToDoWithoutPermission(item.permission?.id) === 'hide' ||
-          (item?.hidden && env.runtime)
-        )
-    )
-    .filter((item, idx) =>
-      env.runtime && data.useEllipses && data.maxShowNumber ? idx < data.maxShowNumber : true
-    );
+    .filter((item) => !(getWhatToDoWithoutPermission(item.permission?.id) === 'hide'))
+    .reduce(
+      (pre, item) => {
+        // 非运行时或者没有设置最大显示数量时，全量展示
+        if (!(env.runtime && data.useEllipses && data.maxShowNumber)) {
+          pre.btnList.push(item);
+          return pre;
+        }
+
+        // 非隐藏按钮的数量小于最大显示数量时，将按钮添加到展示列表中
+        if (pre.btnCount < data.maxShowNumber) pre.btnList?.push?.(item);
+
+        if (!item?.hidden) pre.btnCount++;
+
+        return pre;
+      },
+      {
+        btnList: [] as BtnItem[],
+        // 非隐藏按钮的数量
+        btnCount: 0
+      }
+    ).btnList;
 
   const ellipsisBtnList = (data.btnList || [])
     .filter(
@@ -231,6 +262,7 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
 
   return (
     <div
+      ref={wrapperRef}
       className={`mybricks-toolbar ${css.toolbar} ${isMobile ? css.mobileToolbar : ''}`}
       style={{
         justifyContent: data.layout,

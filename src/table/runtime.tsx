@@ -42,6 +42,7 @@ import { unitConversion } from '../utils';
 import { runJs } from '../../package/com-utils';
 import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
+import useDemandDataSource from './hooks/use-demand-data-source';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -909,6 +910,15 @@ export default function (props: RuntimeParams<Data>) {
     </div>
   );
 
+  /**
+   * 按需加载表格数据
+   * 以达到加速首屏加载的目的
+   */
+  const demandDataSource =
+    data.lazyLoad && !isUseOldHeight && env.runtime
+      ? useDemandDataSource(realShowDataSource, ref)
+      : realShowDataSource;
+
   return (
     <div ref={ref}>
       <ConfigProvider
@@ -933,7 +943,7 @@ export default function (props: RuntimeParams<Data>) {
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
                 }}
-                dataSource={edit ? defaultDataSource : realShowDataSource}
+                dataSource={edit ? defaultDataSource : demandDataSource}
                 loading={{
                   tip: env.i18n(data.loadingTip),
                   spinning: loading
