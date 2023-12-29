@@ -108,6 +108,18 @@ export default {
           }
         },
         {
+          title: '标签页隐藏时是否渲染',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.forceRender;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.forceRender = value;
+            }
+          }
+        },
+        {
           title: '动态设置显示tab',
           type: 'Switch',
           value: {

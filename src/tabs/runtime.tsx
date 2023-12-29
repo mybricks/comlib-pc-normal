@@ -262,6 +262,7 @@ export default function ({
               tab={<Tooltip title={env.i18n(item.tooltipText)}>{renderInfo(item)}</Tooltip>}
               key={item.key}
               closable={!!item.closable}
+              forceRender={!!data.forceRender}
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
