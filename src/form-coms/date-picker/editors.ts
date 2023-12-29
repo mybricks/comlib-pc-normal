@@ -103,6 +103,18 @@ export default {
           }
         },
         {
+          title: '默认面板日期',
+          type: 'Text',
+          value: {
+            get({ data }) {
+              return data.defaultPickerValue;
+            },
+            set({ data }, value: string) {
+              data.defaultPickerValue = value;
+            }
+          }
+        },
+        {
           title: '时间选择',
           type: 'Switch',
           value: {
