@@ -915,7 +915,7 @@ export default function (props: RuntimeParams<Data>) {
    * 以达到加速首屏加载的目的
    */
   const demandDataSource =
-    data.lazyLoad && !isUseOldHeight && env.runtime
+    data.lazyLoad && env.runtime && (!isUseOldHeight || (data.fixedHeader && data.scroll.y))
       ? useDemandDataSource(realShowDataSource, ref)
       : realShowDataSource;
 
