@@ -27,12 +27,9 @@ export interface Data {
   useCustomPanelFooter: boolean;
   controlled: boolean;
   closeWhenClickOutOfPanel: boolean;
-  config: {
-    disabled: boolean;
-    placeholder: string;
-    picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
-    allowClear: boolean;
-  };
+  /** @description 1.1.17 默认面板日期 */
+  defaultPickerValue: string;
+  config: DatePickerProps;
   useDisabledDate: 'default' | 'static';
   hideDatePanel: boolean;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
@@ -46,6 +43,7 @@ export interface Data {
   };
   isWeekNumber: boolean;
   isEditable: boolean;
+  disabledDate: DatePickerProps['disabledDate'];
 }
 
 const typeMap = {
@@ -427,6 +425,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       };
     }
   }, [finalOpen]);
+
+  useEffect(() => {
+    const defaultPickerValue = moment(data.defaultPickerValue);
+    if (defaultPickerValue.isValid()) {
+      data.config.defaultPickerValue = defaultPickerValue;
+    } else {
+      data.config.defaultPickerValue = undefined;
+    }
+  }, [data.defaultPickerValue]);
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
