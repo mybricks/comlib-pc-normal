@@ -197,6 +197,41 @@ export default {
       cate[1].title = '高级';
       cate[0].items = [
         {
+          title: '使用静态数据源',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.useStaticData;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.useStaticData = value;
+            }
+          }
+        },
+        {
+          type: 'Code',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.useStaticData;
+          },
+          options: {
+            title: '编辑静态数据',
+            language: 'json',
+            width: 600,
+            minimap: {
+              enabled: false
+            },
+            displayType: 'button'
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.staticData;
+            },
+            set({ data }: EditorResult<Data>, value: string) {
+              data.staticData = value;
+            }
+          }
+        },
+        {
           title: '配置',
           items: [
             {
@@ -376,40 +411,6 @@ export default {
               }
             }
           ]
-        },
-        {
-          title: '使用静态数据源',
-          type: 'Switch',
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.useStaticData;
-            },
-            set({ data }: EditorResult<Data>, value: boolean) {
-              data.useStaticData = value;
-            }
-          }
-        },
-        {
-          type: 'Code',
-          ifVisible({ data }: EditorResult<Data>) {
-            return data.useStaticData;
-          },
-          options: {
-            title: '树组件的默认数据',
-            language: 'json',
-            width: 600,
-            minimap: {
-              enabled: false
-            }
-          },
-          value: {
-            get({ data }: EditorResult<Data>) {
-              return data.staticData;
-            },
-            set({ data }: EditorResult<Data>, value: string) {
-              data.staticData = value;
-            }
-          }
         }
       ];
       cate[1].items = [
