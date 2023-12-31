@@ -61,4 +61,30 @@ code {
   margin-right: 1.5rem;
   padding-right: 1rem;
 }
+
+.attachment {
+  cursor: pointer !important;
+}
+.upload_error {
+  background: #FFE5E0;
+  border: 1px solid #EA644A;
+}
+.attachment > img {
+  width: 16px;
+  vertical-align: middle;
+  padding-right:4px;
+}
+.attachment > svg {
+  width: 16px;
+  vertical-align: middle;
+  padding-right:4px;
+}
+.attachment > a {
+  text-decoration: none;
+  vertical-align: middle;
+}
+.attachment > span {
+  vertical-align: middle;
+  padding-right:4px;
+}
 `;
