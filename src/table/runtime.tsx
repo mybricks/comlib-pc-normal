@@ -95,7 +95,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const selectedRows = useMemo(() => {
     return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
-  }, [dataSource, selectedRowKeys, rowKey]);
+  }, [selectedRowKeys, rowKey]);
 
   const initFilterMap = () => {
     let res = {};
