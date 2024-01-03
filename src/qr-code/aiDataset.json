@@ -1,9 +1,9 @@
 {
   "链接": {
-    "Q": "将链接设置为https://-conference.org",
+    "Q": "将链接设置为https://-hook.info",
     "A": {
       "data": {
-        "link": "https://-conference.org"
+        "link": "https://-hook.info"
       }
     }
   },
@@ -27,23 +27,23 @@
   ],
   "Logo": [
     {
-      "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=6648732460253184",
+      "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=7496542306959360",
       "A": {
         "data": {
           "icon": {
-            "url": "https://loremflickr.com/34/34?lock=6648732460253184"
+            "url": "https://loremflickr.com/34/34?lock=7496542306959360"
           },
           "hasIcon": true
         }
       }
     },
     {
-      "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=6648732460253184",
+      "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=7496542306959360",
       "A": {
         "data": {
           "icon": {
-            "width": 69,
-            "height": 28
+            "width": 88,
+            "height": 96
           },
           "hasIcon": true
         }

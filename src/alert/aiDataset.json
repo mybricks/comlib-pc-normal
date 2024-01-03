@@ -1,9 +1,9 @@
 {
   "标题": {
-    "Q": "将标题设置为LEsgyNlWzr",
+    "Q": "将标题设置为SpMDNgLBla",
     "A": {
       "data": {
-        "message": "LEsgyNlWzr"
+        "message": "SpMDNgLBla"
       }
     }
   },
@@ -114,10 +114,10 @@
     }
   ],
   "辅助介绍文案": {
-    "Q": "将警告提示的辅助介绍文案设置为UCynVfHlOB",
+    "Q": "将警告提示的辅助介绍文案设置为DfZcBsvLgO",
     "A": {
       "data": {
-        "content": "UCynVfHlOB"
+        "content": "DfZcBsvLgO"
       }
     }
   },
@@ -157,21 +157,21 @@
       }
     },
     {
-      "Q": "将警告提示的固定宽度设置为6742757353717763",
+      "Q": "将警告提示的固定宽度设置为573969512005641",
       "A": {
         "data": {
           "openWidth": true,
-          "width": 6742757353717763
+          "width": 573969512005641
         }
       }
     }
   ],
   "百分比宽度": {
-    "Q": "将警告提示的百分比宽度设置为27",
+    "Q": "将警告提示的百分比宽度设置为18",
     "A": {
       "data": {
         "openWidth": false,
-        "percentWidth": 27
+        "percentWidth": 18
       }
     }
   }

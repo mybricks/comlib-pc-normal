@@ -1,9 +1,9 @@
 {
   "视频链接": {
-    "Q": "将视频链接设置为https://-cytokine.name/",
+    "Q": "将视频链接设置为https://-tone.com/",
     "A": {
       "data": {
-        "src": "https://-cytokine.name/"
+        "src": "https://-tone.com/"
       }
     }
   },
@@ -64,10 +64,10 @@
     }
   ],
   "封面": {
-    "Q": "将封面设置为https://loremflickr.com/640/480?lock=4118641171759104",
+    "Q": "将封面设置为https://loremflickr.com/640/480?lock=3750060848316416",
     "A": {
       "data": {
-        "src": "https://loremflickr.com/640/480?lock=4118641171759104"
+        "src": "https://loremflickr.com/640/480?lock=3750060848316416"
       }
     }
   },
