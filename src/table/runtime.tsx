@@ -77,6 +77,15 @@ export default function (props: RuntimeParams<Data>) {
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
   const isUseOldHeight = style.height === 'auto';
 
+  /**
+   * 按需加载表格数据
+   * 以达到加速首屏加载的目的
+   */
+  const demandDataSource =
+    data.lazyLoad && env.runtime && (!isUseOldHeight || (data.fixedHeader && data.scroll.y))
+      ? useDemandDataSource(realShowDataSource, ref)
+      : realShowDataSource;
+
   /** 表格高度，此为新高度方案，替代 fixedHeight */
   const tableHeight = (() => {
     if (isUseOldHeight) return data.fixedHeader ? data.fixedHeight : '';
@@ -635,6 +644,24 @@ export default function (props: RuntimeParams<Data>) {
     selectedRowKeys,
     preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: any[], selectedRows: any[]) => {
+      /** 兼容懒加载场景下的全选、全不选逻辑 start */
+      {
+        // 如果是全选
+        if (selectedRowKeys.length === demandDataSource.length) {
+          selectedRowKeys = realShowDataSource.map((rowData) => rowData[rowKey]);
+        }
+        // 如果是全部取消选中
+        if (selectedRows.filter((row) => !!row).length === 0) {
+          selectedRowKeys = [];
+        }
+        const selectedRowKeysMap = selectedRowKeys.reduce((pre, cur) => {
+          pre[cur] = true;
+          return pre;
+        }, {});
+        selectedRows = realShowDataSource.filter((rowData) => selectedRowKeysMap[rowData[rowKey]]);
+      }
+      /** 兼容懒加载场景下的全选、全不选逻辑 end */
+
       if (
         data.rowMergeConfig &&
         data.mergeCheckboxColumn &&
@@ -909,15 +936,6 @@ export default function (props: RuntimeParams<Data>) {
       <p className={`emptyDescription ${css.emptyDescription}`}>{env.i18n(data.description)}</p>
     </div>
   );
-
-  /**
-   * 按需加载表格数据
-   * 以达到加速首屏加载的目的
-   */
-  const demandDataSource =
-    data.lazyLoad && env.runtime && (!isUseOldHeight || (data.fixedHeader && data.scroll.y))
-      ? useDemandDataSource(realShowDataSource, ref)
-      : realShowDataSource;
 
   return (
     <div ref={ref}>
