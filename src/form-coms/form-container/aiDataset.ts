@@ -8,12 +8,11 @@ export default defineDataSet((utils) => {
     { label: '普通表单', value: 'Form' },
     { label: '查询表单', value: 'QueryFilter' }
   ];
-
   result.push(
     ...typeOptions.map((item) => ({
       Q: `将表单类型设置为${item.label}`,
       A: {
-        layoutType: item.value
+        data: { layoutType: item.value }
       }
     }))
   );
@@ -23,22 +22,17 @@ export default defineDataSet((utils) => {
     ...utils.options.switch().map((item) => ({
       Q: `将默认折叠表单项设置为${item.label}`,
       A: {
-        layoutType: 'QueryFilter',
-        defaultCollapsed: item.value
+        data: { layoutType: 'QueryFilter', defaultCollapsed: item.value }
       }
     }))
   );
 
   // ======================== 提交隐藏表单项 ========================
-  const submitHiddenFieldsOptions = [
-    { label: '是', value: true },
-    { label: '否', value: false }
-  ];
   result.push(
     ...utils.options.switch().map((item) => ({
       Q: `将提交隐藏表单项设置为${item.label}`,
       A: {
-        submitHiddenFields: item.value
+        data: { submitHiddenFields: item.value }
       }
     }))
   );
@@ -56,18 +50,21 @@ export default defineDataSet((utils) => {
     ...fieldsLayoutOptions.map((item) => ({
       Q: `将表单项布局类型设置为${item.label}`,
       A: {
-        config: { layout: item.value }
+        data: {
+          config: { layout: item.value }
+        }
       }
     }))
   );
 
   // ======================== 表单项布局-表单项宽度 ========================
-  const fieldWidths = Array.from({ length: 24 }, (_, i) => i + 1);
   result.push(
-    ...fieldWidths.map((item) => ({
+    ...utils.options.slider({ min: 1, max: 24 }).map((item) => ({
       Q: `将表单项宽度设置为${item}/24`,
       A: {
-        config: { span: item, actions: { align: 'right' } }
+        data: {
+          config: { span: item, actions: { align: 'right' } }
+        }
       }
     }))
   );
@@ -81,31 +78,32 @@ export default defineDataSet((utils) => {
     ...titleWithTypeOptions.map((item) => ({
       Q: `将标题宽度类型设置为${item.label}`,
       A: {
-        labelWidthType: item.value
+        data: {
+          labelWidthType: item.value
+        }
       }
     }))
   );
 
   // ======================== 标题宽度(px) ========================
-  const titleWidthsPx = Array.from({ length: 8 }, (_, i) => utils.number.int({ min: 1, max: 400 }));
   result.push(
-    ...titleWidthsPx.map((item) => ({
+    ...utils.options.slider({ min: 1, max: 400 }).map((item) => ({
       Q: `将标题宽度设置为${item}px`,
       A: {
-        labelWidthType: 'px',
-        labelWidth: item
+        data: { labelWidthType: 'px', labelWidth: item }
       }
     }))
   );
 
   // ======================== 标题宽度(栅格) ========================
-  const titleWidthsSpan = Array.from({ length: 24 }, (_, i) => i + 1);
   result.push(
-    ...titleWidthsSpan.map((item) => ({
+    ...utils.options.slider({ min: 1, max: 24 }).map((item) => ({
       Q: `将标题宽度设置为${item}格`,
       A: {
-        labelWidthType: 'span',
-        labelCol: item
+        data: {
+          labelWidthType: 'span',
+          labelCol: item
+        }
       }
     }))
   );
@@ -115,8 +113,10 @@ export default defineDataSet((utils) => {
     ...utils.options.switch().map((item) => ({
       Q: `将标题显示冒号设置为${item.label}`,
       A: {
-        config: {
-          colon: item.value
+        data: {
+          config: {
+            colon: item.value
+          }
         }
       }
     }))
@@ -127,8 +127,10 @@ export default defineDataSet((utils) => {
     ...utils.options.switch().map((item) => ({
       Q: `将标题自动换行设置为${item.label}`,
       A: {
-        config: {
-          labelWrap: item.value
+        data: {
+          config: {
+            labelWrap: item.value
+          }
         }
       }
     }))
@@ -143,8 +145,10 @@ export default defineDataSet((utils) => {
     ...alignOptions.map((item) => ({
       Q: `将标题对齐方式设置为${item.label}`,
       A: {
-        config: {
-          labelAlign: item.value
+        data: {
+          config: {
+            labelAlign: item.value
+          }
         }
       }
     }))
