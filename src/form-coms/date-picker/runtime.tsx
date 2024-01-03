@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { DatePicker, DatePickerProps, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -426,12 +426,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   }, [finalOpen]);
 
-  useEffect(() => {
+  const defaultPickerValue = useMemo(() => {
     const defaultPickerValue = moment(data.defaultPickerValue);
     if (defaultPickerValue.isValid()) {
-      data.config.defaultPickerValue = defaultPickerValue;
+      return defaultPickerValue;
     } else {
-      data.config.defaultPickerValue = undefined;
+      return void 0;
     }
   }, [data.defaultPickerValue]);
 
@@ -453,6 +453,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             }}
             value={value}
             {...data.config}
+            defaultPickerValue={defaultPickerValue}
             placeholder={env.i18n(data.config.placeholder)}
             dateRender={data.useCustomDateCell ? customDateRender : undefined}
             showTime={getShowTime()}
