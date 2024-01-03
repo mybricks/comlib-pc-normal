@@ -2,11 +2,6 @@
 import { defineDataSet } from "ai-dataset";
 import { Data, ShapeEnum, SizeEnum, TypeEnum } from './constants';
 
-
-
-const spaceMap = {
-  "水平": [4, 4], "垂直": [4, 4]
-}
 const sizeMap = {
   "大": SizeEnum.Large,
   "中等": SizeEnum.Middle,
@@ -31,7 +26,7 @@ export default defineDataSet((utils)  => {
     let text = utils.string.alpha(10)
 
     result['文字标题'] = {
-      "Q": `将按钮的文字标题设置为${text}`,
+      "Q": `将文字标题设置为${text}`,
       "A": {
         "text": text,
         "asMapArea": false
@@ -39,7 +34,7 @@ export default defineDataSet((utils)  => {
     }
 
     result['作为热区使用'] =[true, false].map(item => ({
-      "Q": `将按钮的作为热区使用设置为${item? '开启':'关闭'}`,
+      "Q": `将作为热区使用设置为${item? '开启':'关闭'}`,
       "A": {
         "asMapArea": item,
       }
@@ -48,7 +43,7 @@ export default defineDataSet((utils)  => {
     result['尺寸'] =[] 
     for(let key in sizeMap) {
       result['尺寸'].push({
-        "Q": `将按钮的尺寸设置为${key}`,
+        "Q": `将尺寸设置为${key}`,
         "A": {
           "size": sizeMap[key]
         }
@@ -58,7 +53,7 @@ export default defineDataSet((utils)  => {
     result['风格'] =[] 
     for(let key in btnTypeMap) {
       result['风格'].push({
-        "Q": `将按钮的风格设置为${key}`,
+        "Q": `将风格设置为${key}`,
         "A": {
           "allType": btnTypeMap[key]
         }
@@ -66,7 +61,7 @@ export default defineDataSet((utils)  => {
     }
 
     result['危险按钮'] =[true, false].map(item => ({
-      "Q": `将按钮的危险按钮设置为${item? '开启':'关闭'}`,
+      "Q": `将危险按钮设置为${item? '开启':'关闭'}`,
       "A": {
         "danger": item,
       }
@@ -75,7 +70,7 @@ export default defineDataSet((utils)  => {
     result['形状'] =[] 
     for(let key in shapeMap) {
       result['形状'].push({
-        "Q": `将按钮的按钮形状设置为${key}`,
+        "Q": `将按钮形状设置为${key}`,
         "A": {
           "allShape": shapeMap[key]
         }

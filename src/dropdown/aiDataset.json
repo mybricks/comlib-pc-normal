@@ -1,0 +1,94 @@
+{
+  "提示内容": {
+    "Q": "将提示内容设置为ITJxBIpwmM",
+    "A": {
+      "content": "ITJxBIpwmM"
+    }
+  },
+  "自定义": [
+    {
+      "Q": "将自定义设置为开启",
+      "A": {
+        "isCustom": true
+      }
+    },
+    {
+      "Q": "将自定义设置为关闭",
+      "A": {
+        "isCustom": false
+      }
+    }
+  ],
+  "子项配置": [
+    {
+      "Q": "将子项配置设置为开启",
+      "A": {
+        "isChildCustom": true
+      }
+    },
+    {
+      "Q": "将子项配置设置为关闭",
+      "A": {
+        "isChildCustom": false
+      }
+    }
+  ],
+  "触发方式": [
+    {
+      "Q": "将触发方式设置为悬浮",
+      "A": {
+        "trigger": "hover"
+      }
+    },
+    {
+      "Q": "将触发方式设置为点击",
+      "A": {
+        "trigger": "click"
+      }
+    }
+  ],
+  "弹出位置": [
+    {
+      "Q": "将弹出位置设置为左下方",
+      "A": {
+        "placement": "bottomLeft"
+      }
+    },
+    {
+      "Q": "将弹出位置设置为中下方",
+      "A": {
+        "placement": "bottomCenter"
+      }
+    },
+    {
+      "Q": "将弹出位置设置为右下方",
+      "A": {
+        "placement": "bottomRight"
+      }
+    },
+    {
+      "Q": "将弹出位置设置为左上方",
+      "A": {
+        "placement": "topLeft"
+      }
+    },
+    {
+      "Q": "将弹出位置设置为中上方",
+      "A": {
+        "placement": "topCenter"
+      }
+    },
+    {
+      "Q": "将弹出位置设置为右上方",
+      "A": {
+        "placement": "topRight"
+      }
+    }
+  ],
+  "宽度": {
+    "Q": "将宽度设置为xGVXeygKkJ",
+    "A": {
+      "width": "xGVXeygKkJ"
+    }
+  }
+}

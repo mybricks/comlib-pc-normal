@@ -1,7 +1,8 @@
 
 import { defineDataSet } from "ai-dataset";
 import { Data, ShapeEnum, SizeEnum, TypeEnum, AlignEnum } from './types';
-
+import { getNewBtn } from "./utils";
+import { sizeMap, shapeMap, btnTypeMap } from "src/button/constants";
 const layoutMap = {
   "居左": AlignEnum.FlexStart,
   "居中": AlignEnum.Center,
@@ -11,44 +12,26 @@ const layoutMap = {
 const spaceMap = {
   "水平": [4, 4], "垂直": [4, 4]
 }
-const sizeMap = {
-  "大": SizeEnum.Large,
-  "中等": SizeEnum.Middle,
-  "小": SizeEnum.Small
-}
 
-const btnTypeMap = {
-  '主按钮': TypeEnum.Primary,
-  '次按钮': TypeEnum.Default,
-  '虚线按钮': TypeEnum.Dashed,
-  '链接按钮': TypeEnum.Link,
-  '文字按钮': TypeEnum.Text
-}
-
-const shapeMap = {
-  '默认': ShapeEnum.Default,
-  '(椭)圆': ShapeEnum.Circle,
-  '圆角矩形': ShapeEnum.Round
-}
 export default defineDataSet((utils)  => { 
     const result = {}
-    let content = utils.string.alpha(20)
     result['对齐方式'] =[] 
     
     for(let key in layoutMap) {
       result['对齐方式'].push({
-        "Q": `将工具条的对齐方式设置为${key}`,
+        "Q": `将对齐方式设置为${key}`,
         "A": {
           "layout": layoutMap[key]
         }
       })
     }
     result['间距'] = []
-    const horSpace= utils.number.int({min: 0})
-    const verSpace= utils.number.int({min: 0})
+    const horSpace= utils.number.int({ min: 0, max: 300 })
+    const verSpace= utils.number.int({ min: 0, max: 300 })
+    // TODO:wf, 水平垂直一起改
     for(let key in spaceMap) {
       result['间距'].push({
-        "Q": `将工具条的${spaceMap[key]}间距设置为${key}`,
+        "Q": `将${spaceMap[key]}间距设置为${key}`,
         "A": {
           "spaceSize": [horSpace, verSpace],
         }
@@ -58,7 +41,7 @@ export default defineDataSet((utils)  => {
     result['尺寸'] =[] 
     for(let key in sizeMap) {
       result['尺寸'].push({
-        "Q": `将工具条的尺寸设置为${key}`,
+        "Q": `将尺寸设置为${key}`,
         "A": {
           "allSize": sizeMap[key]
         }
@@ -68,7 +51,7 @@ export default defineDataSet((utils)  => {
     result['风格'] =[] 
     for(let key in btnTypeMap) {
       result['风格'].push({
-        "Q": `将工具条的按钮风格设置为${key}`,
+        "Q": `将按钮风格设置为${key}`,
         "A": {
           "allType": btnTypeMap[key]
         }
@@ -76,7 +59,7 @@ export default defineDataSet((utils)  => {
     }
 
     result['危险按钮'] =[true, false].map(item => ({
-      "Q": `将工具条的危险按钮设置为${item? '开启':'关闭'}`,
+      "Q": `将危险按钮设置为${item? '开启':'关闭'}`,
       "A": {
         "allDanger": item,
       }
@@ -85,7 +68,7 @@ export default defineDataSet((utils)  => {
     result['形状'] =[] 
     for(let key in shapeMap) {
       result['形状'].push({
-        "Q": `将工具条的按钮形状设置为${key}`,
+        "Q": `将按钮形状设置为${key}`,
         "A": {
           "allShape": shapeMap[key]
         }
@@ -94,17 +77,106 @@ export default defineDataSet((utils)  => {
     const maxNumber = utils.number.int({min: 0})
     
     result['最大显示数量'] = {
-      "Q": `将工具条的最大显示数量设置为${maxNumber}`,
+      "Q": `将最大显示数量设置为${maxNumber}`,
       "A": {
         "maxShowNumber": maxNumber,
       }
     }
     result['省略'] =[true, false].map(item => ({
-      "Q": `将工具条的省略配置设置为${item? '开启':'关闭'}`,
+      "Q": `将省略设置为${item? '开启':'关闭'}`,
       "A": {
         "useEllipses": item,
       }
     })) 
+
+    /** 动态添加部分 */
+    let num = utils.number.int({ max: 10 })
+    let btnArr = new Array(num).fill(0).map(i => getNewBtn())
+    result['添加按钮'] = {
+      "Q": `添加${num}个按钮`,
+      "A": {
+        "btnList": btnArr,
+      }
+    }
+
+    let num2 = utils.number.int({ max: 10 })
+    let btnArr2 = new Array(num).fill(0).map(i => ({ ...getNewBtn(), text: `自定义插槽${utils.string.sample(5)}`, isSlot: true }))
+    result['添加插槽'] = {
+      "Q": `添加${num2}个插槽`,
+      "A": {
+        "btnList": btnArr2,
+      }
+    }
+
+    /** 更改工具条内某个按钮的属性 */
+    const index = utils.number.int({ max: 10})
+    let btnText = utils.string.alpha(10)
+    // 按钮名称text, 风格 type，尺寸 size
+    result['名称'] = {
+      "Q": `将第${index}个按钮的名称设置为${btnText}`,
+      /** TODO:wf,确认A描述,以下几个同样的更改 */
+      "A": {
+        btnList: {
+          index: index,
+          data: {
+            "text": btnText
+          }
+        }
+      }
+    }
+    result['尺寸'] = []
+    for(let key in sizeMap) {
+      result['尺寸'].push({
+        "Q": `将第${index}个按钮的尺寸设置为${key}`,
+        "A": {
+          btnList: {
+            index: index,
+            data: {
+              "size": sizeMap[key]
+            }
+          }
+        }
+      })
+    }
+    result['风格'] = []
+    for(let key in sizeMap) {
+      result['风格'].push({
+        "Q": `将第${index}个按钮的风格设置为${key}`,
+        "A": {
+          btnList: {
+            index: index,
+            data: {
+              "size": sizeMap[key]
+            }
+          }
+        }
+      })
+    }
+    result['危险按钮'] = {
+      "Q": `将第${index}个按钮设置为危险按钮`,
+      "A": {
+        btnList: {
+          index: index,
+          data: {
+            "danger": true
+          }
+        }
+      }
+    }
+    for(let key in shapeMap) {
+      result['形状'].push({
+        "Q": `将第${index}个按钮的形状设置为${key}`,
+        "A": {
+          btnList: {
+            index: index,
+            data: {
+              "shape": shapeMap[key]
+            }
+          }
+        }
+      })
+    }
+    // TODO
 
     return result
   }

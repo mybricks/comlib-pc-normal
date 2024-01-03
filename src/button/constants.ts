@@ -73,3 +73,25 @@ export enum TypeEnum {
   Danger = 'danger',
   ALink = 'a'
 }
+
+
+/** 尺寸映射 */
+export const sizeMap = {
+  "大": SizeEnum.Large,
+  "中等": SizeEnum.Middle,
+  "小": SizeEnum.Small
+}
+/** 按钮类型映射 */
+export const btnTypeMap = {
+  '主按钮': TypeEnum.Primary,
+  '次按钮': TypeEnum.Default,
+  '虚线按钮': TypeEnum.Dashed,
+  '链接按钮': TypeEnum.Link,
+  '文字按钮': TypeEnum.Text
+}
+/** 按钮形状映射 */
+export const shapeMap = {
+  '默认': ShapeEnum.Default,
+  '(椭)圆': ShapeEnum.Circle,
+  '圆角矩形': ShapeEnum.Round
+}

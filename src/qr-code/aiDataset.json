@@ -1,0 +1,43 @@
+{
+  "链接": {
+    "Q": "将链接设置为https://-slate.info",
+    "A": {
+      "link": "https://-slate.info"
+    }
+  },
+  "支持Logo": [
+    {
+      "Q": "将支持logo设置为开启",
+      "A": {
+        "hasIcon": true
+      }
+    },
+    {
+      "Q": "将支持logo设置为关闭",
+      "A": {
+        "hasIcon": false
+      }
+    }
+  ],
+  "Logo": [
+    {
+      "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=7751028535459840",
+      "A": {
+        "icon": {
+          "url": "https://loremflickr.com/34/34?lock=7751028535459840"
+        },
+        "hasIcon": true
+      }
+    },
+    {
+      "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=7751028535459840",
+      "A": {
+        "icon": {
+          "width": 98,
+          "height": 96
+        },
+        "hasIcon": true
+      }
+    }
+  ]
+}

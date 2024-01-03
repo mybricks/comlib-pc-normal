@@ -22,28 +22,27 @@ export default defineDataSet((utils)  => {
 
     const content = utils.string.alpha(10)
     const url = utils.internet.url()
-    const isChoose = utils.datatype.boolean()
     const icon = utils.string.alpha(10)
     result['内容'] = {
-      "Q": `将链接文字内容为${content}`,
+      "Q": `将文字内容为${content}`,
       "A": {
         "content": `${content}`,
       }
     }
     result['链接'] = {
-      "Q": `将链接的地址/url设置为${url}`,
+      "Q": `将地址/url设置为${url}`,
       "A": {
         "url": `${url}`,
       }
     }
     result['图标自定义'] = [true, false].map(item => ({
-      "Q": `将链接的图标自定义设置为${item? '开启':'关闭'}`,
+      "Q": `将图标自定义设置为${item? '开启':'关闭'}`,
       "A": {
         "isChoose": item,
       }
     })) 
     result['选择图标'] = {
-      "Q": `将链接的图标设置为${icon}`,
+      "Q": `将图标设置为${icon}`,
       "A": {
         "icon": `${icon}`,
       }
@@ -52,7 +51,7 @@ export default defineDataSet((utils)  => {
     result['图标位置'] = []
     for(let key in iconPosOptionsMap) {
       result['图标位置'].push({
-        "Q": `将链接的图标位置设置为${key}`,
+        "Q": `将图标位置设置为${key}`,
         "A": {
           "location": `${iconPosOptionsMap[key]}`,
         }
@@ -63,7 +62,7 @@ export default defineDataSet((utils)  => {
     result['跳转方式'] = []
     for(let key in routeTypeOptionsMap) {
       result['图标位置'].push({
-        "Q": `将链接的跳转方式设置为${key}`,
+        "Q": `将跳转方式设置为${key}`,
         "A": {
           "routeType": routeTypeOptionsMap[key],
         }
