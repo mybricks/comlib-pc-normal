@@ -6,7 +6,9 @@ export default defineDataSet((utils) => {
     {
       Q: `自定义标题`,
       A: {
-        useTitleSlot: true
+        data: {
+          useTitleSlot: true
+        }
       }
     }
   ];
@@ -16,8 +18,10 @@ export default defineDataSet((utils) => {
     {
       Q: `将标题设置为${title}`,
       A: {
-        useTitleSlot: false,
-        title
+        data: {
+          useTitleSlot: false,
+          title
+        }
       }
     }
   ];
@@ -26,7 +30,9 @@ export default defineDataSet((utils) => {
     {
       Q: `自定义内容`,
       A: {
-        useContentSlot: true
+        data: {
+          useContentSlot: true
+        }
       }
     }
   ];
@@ -36,8 +42,10 @@ export default defineDataSet((utils) => {
     {
       Q: `将内容设置为${content}`,
       A: {
-        useContentSlot: false,
-        content
+        data: {
+          useContentSlot: false,
+          content
+        }
       }
     }
   ];
@@ -59,7 +67,9 @@ export default defineDataSet((utils) => {
   result['触发方式'] = triggerOptions.map((item) => ({
     Q: `将触发方式设置为${item.label}`,
     A: {
-      textAlign: item.value
+      data: {
+        textAlign: item.value
+      }
     }
   }));
 
@@ -97,13 +107,14 @@ export default defineDataSet((utils) => {
       value: 'right'
     }
   ];
-
   result['方向'] = placementOptions.map((item) => ({
     Q: `将方向设置为${item.label}`,
     A: {
-      placement: item.value
+      data: {
+        placement: item.value
+      }
     }
   }));
 
-  return result
+  return result;
 });

@@ -8,7 +8,9 @@ export default defineDataSet((utils) => {
     {
       Q: `将标题设置为${title}`,
       A: {
-        title
+        data: {
+          title
+        }
       }
     }
   ];
@@ -18,7 +20,9 @@ export default defineDataSet((utils) => {
     {
       Q: `将确认按钮文字设置为${okText}`,
       A: {
-        okText
+        data: {
+          okText
+        }
       }
     }
   ];
@@ -28,7 +32,9 @@ export default defineDataSet((utils) => {
     {
       Q: `将取消按钮文字设置为${cancelText}`,
       A: {
-        cancelText
+        data: {
+          cancelText
+        }
       }
     }
   ];
@@ -37,7 +43,9 @@ export default defineDataSet((utils) => {
     {
       Q: `不显示取消按钮`,
       A: {
-        showCancel: false
+        data: {
+          showCancel: false
+        }
       }
     }
   ];

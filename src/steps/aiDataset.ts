@@ -11,8 +11,10 @@ export default defineDataSet((utils) => {
   result['类型'] = typeOptions.map((item) => ({
     Q: `将类型设置为${item.label}`,
     A: {
-      steps: {
-        type: item.value
+      data: {
+        steps: {
+          type: item.value
+        }
       }
     }
   }));
@@ -24,8 +26,10 @@ export default defineDataSet((utils) => {
   result['尺寸'] = sizeOptions.map((item) => ({
     Q: `将尺寸设置为${item.label}`,
     A: {
-      steps: {
-        size: item.value
+      data: {
+        steps: {
+          size: item.value
+        }
       }
     }
   }));
@@ -37,8 +41,10 @@ export default defineDataSet((utils) => {
   result['方向'] = directionOptions.map((item) => ({
     Q: `将方向设置为${item.label}`,
     A: {
-      steps: {
-        direction: item.value
+      data: {
+        steps: {
+          direction: item.value
+        }
       }
     }
   }));
@@ -47,8 +53,10 @@ export default defineDataSet((utils) => {
     {
       Q: `显示描述`,
       A: {
-        steps: {
-          showDesc: true
+        data: {
+          steps: {
+            showDesc: true
+          }
         }
       }
     }
@@ -58,8 +66,10 @@ export default defineDataSet((utils) => {
     {
       Q: `关闭点击切换`,
       A: {
-        steps: {
-          canClick: false
+        data: {
+          steps: {
+            canClick: false
+          }
         }
       }
     }
@@ -69,8 +79,10 @@ export default defineDataSet((utils) => {
     {
       Q: `打开操作栏`,
       A: {
-        toolbar: {
-          showActions: true
+        data: {
+          toolbar: {
+            showActions: true
+          }
         }
       }
     }
@@ -93,8 +105,10 @@ export default defineDataSet((utils) => {
   result['按钮组'] = btnsOptions.map((item) => ({
     Q: `将按钮组设置为${item.label}`,
     A: {
-      toolbar: {
-        btns: [item.value]
+      data: {
+        toolbar: {
+          btns: [item.value]
+        }
       }
     }
   }));

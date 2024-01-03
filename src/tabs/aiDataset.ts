@@ -10,7 +10,9 @@ export default defineDataSet((utils) => {
   result['外观'] = typeOptions.map((item) => ({
     Q: `设置为${item.label}风格`,
     A: {
-      type: item.value
+      data: {
+        type: item.value
+      }
     }
   }));
 
@@ -23,7 +25,9 @@ export default defineDataSet((utils) => {
   result['标签位置'] = tabPositionOptions.map((item) => ({
     Q: `将标签位置设置为${item.label}`,
     A: {
-      tabPosition: item.value
+      data: {
+        tabPosition: item.value
+      }
     }
   }));
 
@@ -31,7 +35,9 @@ export default defineDataSet((utils) => {
     {
       Q: `将标签居中`,
       A: {
-        centered: true
+        data: {
+          centered: true
+        }
       }
     }
   ];
@@ -40,7 +46,9 @@ export default defineDataSet((utils) => {
     {
       Q: `禁止点击切换`,
       A: {
-        prohibitClick: true
+        data: {
+          prohibitClick: true
+        }
       }
     }
   ];
@@ -49,7 +57,9 @@ export default defineDataSet((utils) => {
     {
       Q: `动态设置显示tab`,
       A: {
-        useDynamicTab: true
+        data: {
+          useDynamicTab: true
+        }
       }
     }
   ];
@@ -58,7 +68,9 @@ export default defineDataSet((utils) => {
     {
       Q: `隐藏插槽占位`,
       A: {
-        hideSlots: true
+        data: {
+          hideSlots: true
+        }
       }
     }
   ];
@@ -67,7 +79,9 @@ export default defineDataSet((utils) => {
     {
       Q: `在左侧显示额外内容`,
       A: {
-        useLeftExtra: true
+        data: {
+          useLeftExtra: true
+        }
       }
     }
   ];
@@ -76,7 +90,9 @@ export default defineDataSet((utils) => {
     {
       Q: `在右侧显示额外内容`,
       A: {
-        useRigthExtra: true
+        data: {
+          useRigthExtra: true
+        }
       }
     }
   ];

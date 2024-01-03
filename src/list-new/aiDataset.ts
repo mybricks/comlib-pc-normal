@@ -7,7 +7,9 @@ export default defineDataSet((utils) => {
     {
       Q: `打开响应式布局`,
       A: {
-        isResponsive: true
+        data: {
+          isResponsive: true
+        }
       }
     }
   ];
@@ -16,8 +18,10 @@ export default defineDataSet((utils) => {
     {
       Q: `自定义断点`,
       A: {
-        isResponsive: true,
-        isCustomPoints: true
+        data: {
+          isResponsive: true,
+          isCustomPoints: true
+        }
       }
     }
   ];
@@ -31,8 +35,10 @@ export default defineDataSet((utils) => {
     .map(({ value }) => ({
       Q: `将左右间隔设置为${value}，上下间隔设置为${value}`,
       A: {
-        grid: {
-          gutter: [value, value]
+        data: {
+          grid: {
+            gutter: [value, value]
+          }
         }
       }
     }));
@@ -41,7 +47,9 @@ export default defineDataSet((utils) => {
     {
       Q: `开启获取列表数据`,
       A: {
-        useGetDataSource: true
+        data: {
+          useGetDataSource: true
+        }
       }
     }
   ];
@@ -50,7 +58,9 @@ export default defineDataSet((utils) => {
     {
       Q: `开启loading`,
       A: {
-        useLoading: true
+        data: {
+          useLoading: true
+        }
       }
     }
   ];
@@ -60,8 +70,10 @@ export default defineDataSet((utils) => {
     {
       Q: `将加载中文案设置为${loadingTip}`,
       A: {
-        useLoading: true,
-        loadingTip
+        data: {
+          useLoading: true,
+          loadingTip
+        }
       }
     }
   ];

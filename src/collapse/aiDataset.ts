@@ -8,7 +8,7 @@ export default defineDataSet((utils) => {
     {
       Q: `将标题设置为${title}`,
       A: {
-        title
+        data: { title }
       }
     }
   ];
@@ -17,7 +17,9 @@ export default defineDataSet((utils) => {
     {
       Q: `开启自定义标题`,
       A: {
-        isCustomTitle: true
+        data: {
+          isCustomTitle: true
+        }
       }
     }
   ];
@@ -26,7 +28,9 @@ export default defineDataSet((utils) => {
     {
       Q: `默认展开`,
       A: {
-        expanded: true
+        data: {
+          expanded: true
+        }
       }
     }
   ];
@@ -35,7 +39,9 @@ export default defineDataSet((utils) => {
     {
       Q: `打开额外操作`,
       A: {
-        useExtra: true
+        data: {
+          useExtra: true
+        }
       }
     }
   ];
