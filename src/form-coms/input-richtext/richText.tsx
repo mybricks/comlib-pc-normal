@@ -153,8 +153,8 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val, relOutputs) => {
-          editor.setContent('');
           changeValue(val);
+          editor.setContent(valueRef.current || '');
           if (relOutputs['setValueDone']) {
             relOutputs['setValueDone'](val);
           }
@@ -162,8 +162,8 @@ export default function ({
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any, relOutputs) => {
-          editor.setContent('');
           changeValue(val);
+          editor.setContent(valueRef.current || '');
           if (relOutputs['setInitialValueDone']) {
             relOutputs['setInitialValueDone'](val);
           }
