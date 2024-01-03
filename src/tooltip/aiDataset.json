@@ -1,0 +1,100 @@
+{
+  "提示内容": {
+    "Q": "将提示内容设置为UFWBCFNjto",
+    "A": {
+      "title": "UFWBCFNjto"
+    }
+  },
+  "触发方式": [
+    {
+      "Q": "将触发方式设置为悬浮",
+      "A": {
+        "data": {
+          "trigger": "hover"
+        }
+      }
+    },
+    {
+      "Q": "将触发方式设置为点击",
+      "A": {
+        "data": {
+          "trigger": "click"
+        }
+      }
+    },
+    {
+      "Q": "将触发方式设置为聚焦",
+      "A": {
+        "data": {
+          "trigger": "focus"
+        }
+      }
+    }
+  ],
+  "方向": [
+    {
+      "Q": "将方向设置为左上",
+      "A": {
+        "data": {
+          "placement": "leftTop"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为上",
+      "A": {
+        "data": {
+          "placement": "top"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为右上",
+      "A": {
+        "data": {
+          "placement": "rightTop"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为左下",
+      "A": {
+        "data": {
+          "placement": "leftBottom"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为下",
+      "A": {
+        "data": {
+          "placement": "bottom"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为右下",
+      "A": {
+        "data": {
+          "placement": "rightBottom"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为左",
+      "A": {
+        "data": {
+          "placement": "left"
+        }
+      }
+    },
+    {
+      "Q": "将方向设置为右",
+      "A": {
+        "data": {
+          "placement": "right"
+        }
+      }
+    }
+  ]
+}

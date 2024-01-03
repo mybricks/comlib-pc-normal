@@ -1,31 +1,34 @@
 
 import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils)  => { 
-    const result = {}
-    let text = utils.string.alpha(10)
-    /**   临时注释icon */ 
-    // const icon = utils.string.alpha(12)
-    // result['选择图标'] = {
-    //   "Q": `将图标icon设置为${icon}`,
-    //   "A": {
-    //     "icon": icon
-    //   }
-    // }
+  const result = {}
+  let text = utils.string.alpha(10)
+  /**   临时注释icon */ 
+  // const icon = utils.string.alpha(12)
+  // result['选择图标'] = {
+  //   "Q": `将图标icon设置为${icon}`,
+  //   "A": {
+  //     "icon": icon
+  //   }
+  // }
 
-    const color = utils.color.rgb()
-    result['颜色'] = {
-      "Q": `将颜色设置为${color}`,
-      "A": {
+  const color = utils.color.rgb()
+  result['颜色'] = {
+    "Q": `将颜色设置为${color}`,
+    "A": {
+      "data": {
         "color": color
       }
     }
-    const size = utils.number.int({ min: 10})
-    result['尺寸'] = {
-      "Q": `将尺寸设置为${size}`,
-      "A": {
+  }
+  const size = utils.number.int({ min: 10})
+  result['尺寸'] = {
+    "Q": `将尺寸设置为${size}`,
+    "A": {
+      data: {
         "size": size
       }
     }
-    return result
   }
-)
+  return result
+})

@@ -1,21 +1,27 @@
 {
   "提示内容": {
-    "Q": "将提示内容设置为ITJxBIpwmM",
+    "Q": "将提示内容设置为eMesccwWRv",
     "A": {
-      "content": "ITJxBIpwmM"
+      "data": {
+        "content": "eMesccwWRv"
+      }
     }
   },
   "自定义": [
     {
       "Q": "将自定义设置为开启",
       "A": {
-        "isCustom": true
+        "data": {
+          "isCustom": true
+        }
       }
     },
     {
       "Q": "将自定义设置为关闭",
       "A": {
-        "isCustom": false
+        "data": {
+          "isCustom": false
+        }
       }
     }
   ],
@@ -23,13 +29,17 @@
     {
       "Q": "将子项配置设置为开启",
       "A": {
-        "isChildCustom": true
+        "data": {
+          "isChildCustom": true
+        }
       }
     },
     {
       "Q": "将子项配置设置为关闭",
       "A": {
-        "isChildCustom": false
+        "data": {
+          "isChildCustom": false
+        }
       }
     }
   ],
@@ -37,13 +47,17 @@
     {
       "Q": "将触发方式设置为悬浮",
       "A": {
-        "trigger": "hover"
+        "data": {
+          "trigger": "hover"
+        }
       }
     },
     {
       "Q": "将触发方式设置为点击",
       "A": {
-        "trigger": "click"
+        "data": {
+          "trigger": "click"
+        }
       }
     }
   ],
@@ -51,44 +65,58 @@
     {
       "Q": "将弹出位置设置为左下方",
       "A": {
-        "placement": "bottomLeft"
+        "data": {
+          "placement": "bottomLeft"
+        }
       }
     },
     {
       "Q": "将弹出位置设置为中下方",
       "A": {
-        "placement": "bottomCenter"
+        "data": {
+          "placement": "bottomCenter"
+        }
       }
     },
     {
       "Q": "将弹出位置设置为右下方",
       "A": {
-        "placement": "bottomRight"
+        "data": {
+          "placement": "bottomRight"
+        }
       }
     },
     {
       "Q": "将弹出位置设置为左上方",
       "A": {
-        "placement": "topLeft"
+        "data": {
+          "placement": "topLeft"
+        }
       }
     },
     {
       "Q": "将弹出位置设置为中上方",
       "A": {
-        "placement": "topCenter"
+        "data": {
+          "placement": "topCenter"
+        }
       }
     },
     {
       "Q": "将弹出位置设置为右上方",
       "A": {
-        "placement": "topRight"
+        "data": {
+          "placement": "topRight"
+        }
       }
     }
   ],
   "宽度": {
-    "Q": "将宽度设置为xGVXeygKkJ",
+    "Q": "将宽度设置为TUuxJWkKeU",
     "A": {
-      "width": "xGVXeygKkJ"
+      "data": {
+        "width": "TUuxJWkKeU"
+      }
     }
   }
 }

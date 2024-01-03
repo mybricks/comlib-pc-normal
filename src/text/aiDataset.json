@@ -1,30 +1,38 @@
 {
   "内容": {
-    "Q": "将内容设置为YgBnXGsuRV",
+    "Q": "将内容设置为hCnYzPyAEf",
     "A": {
-      "content": "YgBnXGsuRV"
+      "data": {
+        "content": "hCnYzPyAEf"
+      }
     }
   },
   "文本溢出/省略": [
     {
       "Q": "将文本溢出/省略设置为开启",
       "A": {
-        "isEllipsis": true
+        "data": {
+          "isEllipsis": true
+        }
       }
     },
     {
       "Q": "将文本溢出/省略设置为关闭",
       "A": {
-        "isEllipsis": false
+        "data": {
+          "isEllipsis": false
+        }
       }
     }
   ],
   "最大显示行数": {
-    "Q": "将最大显示行数设置为6140227561193472",
+    "Q": "将最大显示行数设置为4718245982502912",
     "A": {
-      "isEllipsis": true,
-      "ellipsis": {
-        "rows": "6140227561193472"
+      "data": {
+        "isEllipsis": true,
+        "ellipsis": {
+          "rows": "4718245982502912"
+        }
       }
     }
   }

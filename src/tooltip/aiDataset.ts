@@ -32,7 +32,9 @@ export default defineDataSet((utils)  => {
     result['触发方式'].push({
       "Q": `将触发方式设置为${key}`,
       "A": {
-        "trigger": triggerMap[key],
+        "data": {
+          "trigger": triggerMap[key],
+        }
       }
     })
   }
@@ -42,7 +44,9 @@ export default defineDataSet((utils)  => {
     result['方向'].push({
       "Q": `将方向设置为${key}`,
       "A": {
-        "placement": placementMap[key],
+        "data": {
+          "placement": placementMap[key],
+        }
       }
     })
   }

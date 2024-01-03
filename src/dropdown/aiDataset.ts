@@ -20,7 +20,9 @@ export default defineDataSet((utils)  => {
   result['提示内容'] = {
     "Q": `将提示内容设置为${title}`,
     "A": {
-      "content": title,
+      "data": {
+        "content": title,
+      }
     }
   }
 
@@ -28,14 +30,18 @@ export default defineDataSet((utils)  => {
   result['自定义'] = [true, false].map(item => ({
     "Q": `将自定义设置为${item? '开启':'关闭'}`,
     "A": {
-      "isCustom": item
+      "data": {
+        "isCustom": item
+      }
     }
   })) 
 
   result['子项配置'] = [true, false].map(item => ({
     "Q": `将子项配置设置为${item? '开启':'关闭'}`,
     "A": {
-      "isChildCustom": item
+      "data": {
+        "isChildCustom": item
+      }
     }
   })) 
 
@@ -44,7 +50,9 @@ export default defineDataSet((utils)  => {
     result['触发方式'].push({
       "Q": `将触发方式设置为${key}`,
       "A": {
-        "trigger": triggerMap[key],
+        "data": {
+          "trigger": triggerMap[key],
+        }
       }
     })
   }
@@ -54,7 +62,9 @@ export default defineDataSet((utils)  => {
     result['弹出位置'].push({
       "Q": `将弹出位置设置为${key}`,
       "A": {
-        "placement": placementMap[key],
+        "data": {
+          "placement": placementMap[key],
+        }
       }
     })
   }
@@ -63,7 +73,9 @@ export default defineDataSet((utils)  => {
   result['宽度'] = {
     "Q": `将宽度设置为${width}`,
     "A": {
-      "width": /^\d+$/.test(width) ? `${width}px` : width,
+      "data": {
+        "width": /^\d+$/.test(width) ? `${width}px` : width,
+      }
     }
   }
 

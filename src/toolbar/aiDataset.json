@@ -3,19 +3,25 @@
     {
       "Q": "将对齐方式设置为居左",
       "A": {
-        "layout": "flex-start"
+        "data": {
+          "layout": "flex-start"
+        }
       }
     },
     {
       "Q": "将对齐方式设置为居中",
       "A": {
-        "layout": "center"
+        "data": {
+          "layout": "center"
+        }
       }
     },
     {
       "Q": "将对齐方式设置为居右",
       "A": {
-        "layout": "flex-end"
+        "data": {
+          "layout": "flex-end"
+        }
       }
     }
   ],
@@ -23,19 +29,23 @@
     {
       "Q": "将4,4间距设置为水平",
       "A": {
-        "spaceSize": [
-          116,
-          103
-        ]
+        "data": {
+          "spaceSize": [
+            235,
+            243
+          ]
+        }
       }
     },
     {
       "Q": "将4,4间距设置为垂直",
       "A": {
-        "spaceSize": [
-          116,
-          103
-        ]
+        "data": {
+          "spaceSize": [
+            235,
+            243
+          ]
+        }
       }
     }
   ],
@@ -43,19 +53,25 @@
     {
       "Q": "将尺寸设置为大",
       "A": {
-        "allSize": "large"
+        "data": {
+          "allSize": "large"
+        }
       }
     },
     {
       "Q": "将尺寸设置为中等",
       "A": {
-        "allSize": "middle"
+        "data": {
+          "allSize": "middle"
+        }
       }
     },
     {
       "Q": "将尺寸设置为小",
       "A": {
-        "allSize": "small"
+        "data": {
+          "allSize": "small"
+        }
       }
     }
   ],
@@ -63,31 +79,41 @@
     {
       "Q": "将按钮风格设置为主按钮",
       "A": {
-        "allType": "primary"
+        "data": {
+          "allType": "primary"
+        }
       }
     },
     {
       "Q": "将按钮风格设置为次按钮",
       "A": {
-        "allType": "default"
+        "data": {
+          "allType": "default"
+        }
       }
     },
     {
       "Q": "将按钮风格设置为虚线按钮",
       "A": {
-        "allType": "dashed"
+        "data": {
+          "allType": "dashed"
+        }
       }
     },
     {
       "Q": "将按钮风格设置为链接按钮",
       "A": {
-        "allType": "link"
+        "data": {
+          "allType": "link"
+        }
       }
     },
     {
       "Q": "将按钮风格设置为文字按钮",
       "A": {
-        "allType": "text"
+        "data": {
+          "allType": "text"
+        }
       }
     }
   ],
@@ -95,13 +121,17 @@
     {
       "Q": "将危险按钮设置为开启",
       "A": {
-        "allDanger": true
+        "data": {
+          "allDanger": true
+        }
       }
     },
     {
       "Q": "将危险按钮设置为关闭",
       "A": {
-        "allDanger": false
+        "data": {
+          "allDanger": false
+        }
       }
     }
   ],
@@ -109,52 +139,268 @@
     {
       "Q": "将按钮形状设置为默认",
       "A": {
-        "allShape": "default"
+        "data": {
+          "allShape": "default"
+        }
       }
     },
     {
       "Q": "将按钮形状设置为(椭)圆",
       "A": {
-        "allShape": "circle"
+        "data": {
+          "allShape": "circle"
+        }
       }
     },
     {
       "Q": "将按钮形状设置为圆角矩形",
       "A": {
-        "allShape": "round"
+        "data": {
+          "allShape": "round"
+        }
       }
     }
   ],
   "最大显示数量": {
-    "Q": "将最大显示数量设置为4250650865041408",
+    "Q": "将最大显示数量设置为2539707705589760",
     "A": {
-      "maxShowNumber": 4250650865041408
+      "data": {
+        "maxShowNumber": 2539707705589760
+      }
     }
   },
   "省略": [
     {
       "Q": "将省略设置为开启",
       "A": {
-        "useEllipses": true
+        "data": {
+          "useEllipses": true
+        }
       }
     },
     {
       "Q": "将省略设置为关闭",
       "A": {
-        "useEllipses": false
+        "data": {
+          "useEllipses": false
+        }
       }
     }
   ],
-  "添加按钮": {
-    "Q": "添加0个按钮",
-    "A": {
-      "btnList": []
-    }
-  },
   "添加插槽": {
-    "Q": "添加3个插槽",
+    "Q": "添加2个插槽",
     "A": {
-      "btnList": []
+      "data": {
+        "btnList": [
+          {
+            "key": "u_6d598f",
+            "text": "自定义插槽gN3N2",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_m7zwa9",
+            "text": "自定义插槽$1]Y<",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_d82pet",
+            "text": "自定义插槽,}H`o",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_atbdyh",
+            "text": "自定义插槽##0NS",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_iikm2x",
+            "text": "自定义插槽!yu[W",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_3xjd82",
+            "text": "自定义插槽\\KiS7",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_rpwabh",
+            "text": "自定义插槽,7K#:",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_kj7t0h",
+            "text": "自定义插槽X-==]",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          },
+          {
+            "key": "u_7dh2by",
+            "text": "自定义插槽5(3-Z",
+            "showText": true,
+            "dataType": "number",
+            "outVal": 0,
+            "inVal": "",
+            "isCustom": false,
+            "src": "",
+            "contentSize": [
+              14,
+              14
+            ],
+            "iconDistance": 8,
+            "loading": false,
+            "useDynamicLoading": false,
+            "style": {
+              "height": "auto",
+              "width": "auto"
+            },
+            "isSlot": true,
+            "useIcon": false
+          }
+        ]
+      }
     }
   }
 }

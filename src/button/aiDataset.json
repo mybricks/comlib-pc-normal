@@ -1,22 +1,28 @@
 {
   "文字标题": {
-    "Q": "将文字标题设置为UJFwwcqqpN",
+    "Q": "将文字标题设置为ADrxfueyLI",
     "A": {
-      "text": "UJFwwcqqpN",
-      "asMapArea": false
+      "data": {
+        "text": "ADrxfueyLI",
+        "asMapArea": false
+      }
     }
   },
   "作为热区使用": [
     {
       "Q": "将作为热区使用设置为开启",
       "A": {
-        "asMapArea": true
+        "data": {
+          "asMapArea": true
+        }
       }
     },
     {
       "Q": "将作为热区使用设置为关闭",
       "A": {
-        "asMapArea": false
+        "data": {
+          "asMapArea": false
+        }
       }
     }
   ],
@@ -24,19 +30,25 @@
     {
       "Q": "将尺寸设置为大",
       "A": {
-        "size": "large"
+        "data": {
+          "size": "large"
+        }
       }
     },
     {
       "Q": "将尺寸设置为中等",
       "A": {
-        "size": "middle"
+        "data": {
+          "size": "middle"
+        }
       }
     },
     {
       "Q": "将尺寸设置为小",
       "A": {
-        "size": "small"
+        "data": {
+          "size": "small"
+        }
       }
     }
   ],
@@ -44,31 +56,41 @@
     {
       "Q": "将风格设置为主按钮",
       "A": {
-        "allType": "primary"
+        "data": {
+          "allType": "primary"
+        }
       }
     },
     {
       "Q": "将风格设置为次按钮",
       "A": {
-        "allType": "default"
+        "data": {
+          "allType": "default"
+        }
       }
     },
     {
       "Q": "将风格设置为虚线按钮",
       "A": {
-        "allType": "dashed"
+        "data": {
+          "allType": "dashed"
+        }
       }
     },
     {
       "Q": "将风格设置为链接按钮",
       "A": {
-        "allType": "link"
+        "data": {
+          "allType": "link"
+        }
       }
     },
     {
       "Q": "将风格设置为文字按钮",
       "A": {
-        "allType": "text"
+        "data": {
+          "allType": "text"
+        }
       }
     }
   ],
@@ -76,13 +98,17 @@
     {
       "Q": "将危险按钮设置为开启",
       "A": {
-        "danger": true
+        "data": {
+          "danger": true
+        }
       }
     },
     {
       "Q": "将危险按钮设置为关闭",
       "A": {
-        "danger": false
+        "data": {
+          "danger": false
+        }
       }
     }
   ],
@@ -90,19 +116,25 @@
     {
       "Q": "将按钮形状设置为默认",
       "A": {
-        "allShape": "default"
+        "data": {
+          "allShape": "default"
+        }
       }
     },
     {
       "Q": "将按钮形状设置为(椭)圆",
       "A": {
-        "allShape": "circle"
+        "data": {
+          "allShape": "circle"
+        }
       }
     },
     {
       "Q": "将按钮形状设置为圆角矩形",
       "A": {
-        "allShape": "round"
+        "data": {
+          "allShape": "round"
+        }
       }
     }
   ]

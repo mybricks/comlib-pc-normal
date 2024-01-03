@@ -13,7 +13,9 @@ export default defineDataSet((utils)  => {
   result['标题'] = {
     "Q": `将标题设置为${message}`,
     "A": {
-      "message": message,
+      "data": {
+        "message": message,
+      }
     }
   }
 
@@ -22,7 +24,9 @@ export default defineDataSet((utils)  => {
     result['类型'].push({
       "Q": `将类型设置为${key}`,
       "A": {
-        "type": typesMap[key],
+        "data": {
+          "type": typesMap[key],
+        }
       }
     })
   }
@@ -30,38 +34,50 @@ export default defineDataSet((utils)  => {
   result['关闭按钮'] = [true, false].map(item => ({
     "Q": `将关闭按钮设置为${item? '开启':'关闭'}`,
     "A": {
-      "closable": item
+      "data": {
+        "closable": item
+      }
     }
   })) 
   result['顶部公告'] = [true, false].map(item => ({
     "Q": `将顶部公告设置为${item? '开启':'关闭'}`,
     "A": {
-      "banner": item
+      "data": {
+        "banner": item
+      }
     }
   })) 
   result['辅助图标'] = [true, false].map(item => ({
     "Q": `将辅助图标设置为${item? '开启':'关闭'}`,
     "A": {
-      "showIcon": item
+      "data": {
+        "showIcon": item
+      }
     }
   })) 
   result['辅助介绍'] = [true, false].map(item => ({
     "Q": `将辅助介绍设置为${item? '开启':'关闭'}`,
     "A": {
-      "showInfo": item
+      "data": {
+        "showInfo": item
+      }
     }
   })) 
   const content = utils.string.alpha(10)
   result['辅助介绍文案'] = {
     "Q": `将警告提示的辅助介绍文案设置为${content}`,
     "A": {
-      "content": `${content}`,
+      "data": {
+        "content": `${content}`,
+      }
     }
   }
   result['图标自定义'] = [true, false].map(item => ({
     "Q": `将警告提示的图标自定义设置为${item? '开启':'关闭'}`,
     "A": {
-      "isChoose": item
+      "data": {
+        "isChoose": item
+      }
     }
   }))
   /**   临时注释icon */ 
@@ -78,7 +94,9 @@ export default defineDataSet((utils)  => {
   result['固定宽度'] = [true, false].map(item => ({
     "Q": `将警告提示的固定宽度设置为${item? '开启':'关闭'}`,
     "A": {
-      "openWidth": item,
+      "data": {
+        "openWidth": item,
+      }
     }
   })) 
   
@@ -86,8 +104,10 @@ export default defineDataSet((utils)  => {
   result['固定宽度'].push({
     "Q": `将警告提示的固定宽度设置为${width}`,
     "A": {
-      "openWidth": true,
-      "width": width
+      data: {
+        "openWidth": true,
+        "width": width,
+      }
     }
   })
 
@@ -95,8 +115,10 @@ export default defineDataSet((utils)  => {
   result['百分比宽度'] = {
     "Q": `将警告提示的百分比宽度设置为${percentWidth}`,
     "A": {
-      "openWidth": false,
-      "percentWidth": percentWidth
+      "data": {
+        "openWidth": false,
+        "percentWidth": percentWidth
+      }
     }
   }
   return result

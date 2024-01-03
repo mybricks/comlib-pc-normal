@@ -16,7 +16,9 @@ export default defineDataSet((utils)  => {
   result['标题'] = {
     "Q": `将标题设置为${title}`,
     "A": {
-      "title": title,
+      "data": {
+        "title": title,
+      }
     }
   }
 
@@ -24,7 +26,9 @@ export default defineDataSet((utils)  => {
   result['副标题'] = {
     "Q": `将副标题设置为${subtitle}`,
     "A": {
-      "subtitle": subtitle,
+      "data": {
+        "subtitle": subtitle,
+      }
     }
   }
 
@@ -33,7 +37,9 @@ export default defineDataSet((utils)  => {
     result['状态'].push({
       "Q": `将状态设置为${key}`,
       "A": {
-        "status": statusMap[key],
+        "data": {
+          "status": statusMap[key],
+        }
       }
     })
   }

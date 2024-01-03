@@ -14,27 +14,35 @@ export default defineDataSet((utils)  => {
     result['视频链接'] = {
       "Q": `将视频链接设置为${url}`,
       "A": {
-        "src": url,
+        "data": {
+          "src": url,
+        }
       }
     }
     result['自动播放'] =[true, false].map(item => ({
       "Q": `将自动播放设置为${item? '开启':'关闭'}`,
       "A": {
-        "autoplay": item,
-        "muted": item
+        "data": {
+          "autoplay": item,
+          "muted": item
+        }
       }
     }))
     result['控制栏'] =[true, false].map(item => ({
       "Q": `将控制栏设置为${item? '开启':'关闭'}`,
       "A": {
-        "controls": item,
+        "data": {
+          "controls": item,
+        }
       }
     }))
     
     result['循环播放'] =[true, false].map(item => ({
       "Q": `将循环播放设置为${item? '开启':'关闭'}`,
       "A": {
-        "controls": item,
+        "data": {
+          "loop": item,
+        }
       }
     }))
 
@@ -42,7 +50,9 @@ export default defineDataSet((utils)  => {
     result['封面'] = {
       "Q": `将封面设置为${poster}`,
       "A": {
-        "src": poster,
+        "data": {
+          "src": poster,
+        }
       }
     }
 
@@ -51,7 +61,9 @@ export default defineDataSet((utils)  => {
       result['比例'].push({
         "Q": `将比例设置为${key}`,
         "A": {
-          "fit": fitMap[key]
+          "data": {
+            "fit": fitMap[key]
+          }
         }
       })
     }

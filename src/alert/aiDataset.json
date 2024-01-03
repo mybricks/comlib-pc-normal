@@ -1,33 +1,43 @@
 {
   "标题": {
-    "Q": "将标题设置为ITfstjbVxX",
+    "Q": "将标题设置为LEsgyNlWzr",
     "A": {
-      "message": "ITfstjbVxX"
+      "data": {
+        "message": "LEsgyNlWzr"
+      }
     }
   },
   "类型": [
     {
       "Q": "将类型设置为默认",
       "A": {
-        "type": "info"
+        "data": {
+          "type": "info"
+        }
       }
     },
     {
       "Q": "将类型设置为成功",
       "A": {
-        "type": "success"
+        "data": {
+          "type": "success"
+        }
       }
     },
     {
       "Q": "将类型设置为错误",
       "A": {
-        "type": "error"
+        "data": {
+          "type": "error"
+        }
       }
     },
     {
       "Q": "将类型设置为警告",
       "A": {
-        "type": "warning"
+        "data": {
+          "type": "warning"
+        }
       }
     }
   ],
@@ -35,13 +45,17 @@
     {
       "Q": "将关闭按钮设置为开启",
       "A": {
-        "closable": true
+        "data": {
+          "closable": true
+        }
       }
     },
     {
       "Q": "将关闭按钮设置为关闭",
       "A": {
-        "closable": false
+        "data": {
+          "closable": false
+        }
       }
     }
   ],
@@ -49,13 +63,17 @@
     {
       "Q": "将顶部公告设置为开启",
       "A": {
-        "banner": true
+        "data": {
+          "banner": true
+        }
       }
     },
     {
       "Q": "将顶部公告设置为关闭",
       "A": {
-        "banner": false
+        "data": {
+          "banner": false
+        }
       }
     }
   ],
@@ -63,13 +81,17 @@
     {
       "Q": "将辅助图标设置为开启",
       "A": {
-        "showIcon": true
+        "data": {
+          "showIcon": true
+        }
       }
     },
     {
       "Q": "将辅助图标设置为关闭",
       "A": {
-        "showIcon": false
+        "data": {
+          "showIcon": false
+        }
       }
     }
   ],
@@ -77,33 +99,43 @@
     {
       "Q": "将辅助介绍设置为开启",
       "A": {
-        "showInfo": true
+        "data": {
+          "showInfo": true
+        }
       }
     },
     {
       "Q": "将辅助介绍设置为关闭",
       "A": {
-        "showInfo": false
+        "data": {
+          "showInfo": false
+        }
       }
     }
   ],
   "辅助介绍文案": {
-    "Q": "将警告提示的辅助介绍文案设置为dPFrgflxOq",
+    "Q": "将警告提示的辅助介绍文案设置为UCynVfHlOB",
     "A": {
-      "content": "dPFrgflxOq"
+      "data": {
+        "content": "UCynVfHlOB"
+      }
     }
   },
   "图标自定义": [
     {
       "Q": "将警告提示的图标自定义设置为开启",
       "A": {
-        "isChoose": true
+        "data": {
+          "isChoose": true
+        }
       }
     },
     {
       "Q": "将警告提示的图标自定义设置为关闭",
       "A": {
-        "isChoose": false
+        "data": {
+          "isChoose": false
+        }
       }
     }
   ],
@@ -111,28 +143,36 @@
     {
       "Q": "将警告提示的固定宽度设置为开启",
       "A": {
-        "openWidth": true
+        "data": {
+          "openWidth": true
+        }
       }
     },
     {
       "Q": "将警告提示的固定宽度设置为关闭",
       "A": {
-        "openWidth": false
+        "data": {
+          "openWidth": false
+        }
       }
     },
     {
-      "Q": "将警告提示的固定宽度设置为3822363093237766",
+      "Q": "将警告提示的固定宽度设置为6742757353717763",
       "A": {
-        "openWidth": true,
-        "width": 3822363093237766
+        "data": {
+          "openWidth": true,
+          "width": 6742757353717763
+        }
       }
     }
   ],
   "百分比宽度": {
-    "Q": "将警告提示的百分比宽度设置为21",
+    "Q": "将警告提示的百分比宽度设置为27",
     "A": {
-      "openWidth": false,
-      "percentWidth": 21
+      "data": {
+        "openWidth": false,
+        "percentWidth": 27
+      }
     }
   }
 }
