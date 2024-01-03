@@ -108,74 +108,74 @@ export default defineDataSet((utils)  => {
       }
     }
 
+    /** TODO:wf,确认A描述 */
     /** 更改工具条内某个按钮的属性 */
     const index = utils.number.int({ max: 10})
     let btnText = utils.string.alpha(10)
     // 按钮名称text, 风格 type，尺寸 size
-    result['名称'] = {
-      "Q": `将第${index}个按钮的名称设置为${btnText}`,
-      /** TODO:wf,确认A描述,以下几个同样的更改 */
-      "A": {
-        btnList: {
-          index: index,
-          data: {
-            "text": btnText
-          }
-        }
-      }
-    }
-    result['尺寸'] = []
-    for(let key in sizeMap) {
-      result['尺寸'].push({
-        "Q": `将第${index}个按钮的尺寸设置为${key}`,
-        "A": {
-          btnList: {
-            index: index,
-            data: {
-              "size": sizeMap[key]
-            }
-          }
-        }
-      })
-    }
-    result['风格'] = []
-    for(let key in sizeMap) {
-      result['风格'].push({
-        "Q": `将第${index}个按钮的风格设置为${key}`,
-        "A": {
-          btnList: {
-            index: index,
-            data: {
-              "size": sizeMap[key]
-            }
-          }
-        }
-      })
-    }
-    result['危险按钮'] = {
-      "Q": `将第${index}个按钮设置为危险按钮`,
-      "A": {
-        btnList: {
-          index: index,
-          data: {
-            "danger": true
-          }
-        }
-      }
-    }
-    for(let key in shapeMap) {
-      result['形状'].push({
-        "Q": `将第${index}个按钮的形状设置为${key}`,
-        "A": {
-          btnList: {
-            index: index,
-            data: {
-              "shape": shapeMap[key]
-            }
-          }
-        }
-      })
-    }
+    // result['名称'] = {
+    //   "Q": `将第${index}个按钮的名称设置为${btnText}`,
+    //   "A": {
+    //     btnList: {
+    //       index: index,
+    //       data: {
+    //         "text": btnText
+    //       }
+    //     }
+    //   }
+    // }
+    // result['尺寸'] = []
+    // for(let key in sizeMap) {
+    //   result['尺寸'].push({
+    //     "Q": `将第${index}个按钮的尺寸设置为${key}`,
+    //     "A": {
+    //       btnList: {
+    //         index: index,
+    //         data: {
+    //           "size": sizeMap[key]
+    //         }
+    //       }
+    //     }
+    //   })
+    // }
+    // result['风格'] = []
+    // for(let key in sizeMap) {
+    //   result['风格'].push({
+    //     "Q": `将第${index}个按钮的风格设置为${key}`,
+    //     "A": {
+    //       btnList: {
+    //         index: index,
+    //         data: {
+    //           "size": sizeMap[key]
+    //         }
+    //       }
+    //     }
+    //   })
+    // }
+    // result['危险按钮'] = {
+    //   "Q": `将第${index}个按钮设置为危险按钮`,
+    //   "A": {
+    //     btnList: {
+    //       index: index,
+    //       data: {
+    //         "danger": true
+    //       }
+    //     }
+    //   }
+    // }
+    // for(let key in shapeMap) {
+    //   result['形状'].push({
+    //     "Q": `将第${index}个按钮的形状设置为${key}`,
+    //     "A": {
+    //       btnList: {
+    //         index: index,
+    //         data: {
+    //           "shape": shapeMap[key]
+    //         }
+    //       }
+    //     }
+    //   })
+    // }
     // TODO
 
     return result

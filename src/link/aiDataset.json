@@ -1,14 +1,14 @@
 {
   "内容": {
-    "Q": "将链接文字内容为dNipZmsBTv",
+    "Q": "将文字内容为FliSVqWpIW",
     "A": {
-      "content": "dNipZmsBTv"
+      "content": "FliSVqWpIW"
     }
   },
   "链接": {
-    "Q": "将地址/url设置为https://-breakfast.net",
+    "Q": "将地址/url设置为https://-headache.name",
     "A": {
-      "url": "https://-breakfast.net"
+      "url": "https://-headache.name"
     }
   },
   "图标自定义": [
@@ -25,12 +25,6 @@
       }
     }
   ],
-  "选择图标": {
-    "Q": "将图标设置为hEmgyiGGga",
-    "A": {
-      "icon": "hEmgyiGGga"
-    }
-  },
   "图标位置": [
     {
       "Q": "将图标位置设置为位于文字前",

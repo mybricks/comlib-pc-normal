@@ -24,8 +24,8 @@
       "Q": "将4,4间距设置为水平",
       "A": {
         "spaceSize": [
-          158,
-          241
+          116,
+          103
         ]
       }
     },
@@ -33,79 +33,61 @@
       "Q": "将4,4间距设置为垂直",
       "A": {
         "spaceSize": [
-          158,
-          241
+          116,
+          103
         ]
       }
     }
   ],
   "尺寸": [
     {
-      "Q": "将第7个按钮的尺寸设置为大",
+      "Q": "将尺寸设置为大",
       "A": {
-        "btnList": {
-          "index": 7,
-          "data": {
-            "size": "large"
-          }
-        }
+        "allSize": "large"
       }
     },
     {
-      "Q": "将第7个按钮的尺寸设置为中等",
+      "Q": "将尺寸设置为中等",
       "A": {
-        "btnList": {
-          "index": 7,
-          "data": {
-            "size": "middle"
-          }
-        }
+        "allSize": "middle"
       }
     },
     {
-      "Q": "将第7个按钮的尺寸设置为小",
+      "Q": "将尺寸设置为小",
       "A": {
-        "btnList": {
-          "index": 7,
-          "data": {
-            "size": "small"
-          }
-        }
+        "allSize": "small"
       }
     }
   ],
   "风格": [
     {
-      "Q": "将第7个按钮的风格设置为大",
+      "Q": "将按钮风格设置为主按钮",
       "A": {
-        "btnList": {
-          "index": 7,
-          "data": {
-            "size": "large"
-          }
-        }
+        "allType": "primary"
       }
     },
     {
-      "Q": "将第7个按钮的风格设置为中等",
+      "Q": "将按钮风格设置为次按钮",
       "A": {
-        "btnList": {
-          "index": 7,
-          "data": {
-            "size": "middle"
-          }
-        }
+        "allType": "default"
       }
     },
     {
-      "Q": "将第7个按钮的风格设置为小",
+      "Q": "将按钮风格设置为虚线按钮",
       "A": {
-        "btnList": {
-          "index": 7,
-          "data": {
-            "size": "small"
-          }
-        }
+        "allType": "dashed"
+      }
+    },
+    {
+      "Q": "将按钮风格设置为链接按钮",
+      "A": {
+        "allType": "link"
+      }
+    },
+    {
+      "Q": "将按钮风格设置为文字按钮",
+      "A": {
+        "allType": "text"
       }
     }
   ],
@@ -144,9 +126,9 @@
     }
   ],
   "最大显示数量": {
-    "Q": "将最大显示数量设置为659645855170560",
+    "Q": "将最大显示数量设置为4250650865041408",
     "A": {
-      "maxShowNumber": 659645855170560
+      "maxShowNumber": 4250650865041408
     }
   },
   "省略": [
@@ -164,258 +146,15 @@
     }
   ],
   "添加按钮": {
-    "Q": "添加5个按钮",
+    "Q": "添加0个按钮",
     "A": {
-      "btnList": [
-        {
-          "key": "u_jr017b",
-          "text": "按钮",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": false,
-          "useIcon": false
-        },
-        {
-          "key": "u_d85pfs",
-          "text": "按钮",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": false,
-          "useIcon": false
-        },
-        {
-          "key": "u_yifcm4",
-          "text": "按钮",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": false,
-          "useIcon": false
-        },
-        {
-          "key": "u_5fpm5m",
-          "text": "按钮",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": false,
-          "useIcon": false
-        },
-        {
-          "key": "u_6chzjd",
-          "text": "按钮",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": false,
-          "useIcon": false
-        }
-      ]
+      "btnList": []
     }
   },
   "添加插槽": {
-    "Q": "添加4个插槽",
+    "Q": "添加3个插槽",
     "A": {
-      "btnList": [
-        {
-          "key": "u_4ddrff",
-          "text": "自定义插槽.AT#W",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": true,
-          "useIcon": false
-        },
-        {
-          "key": "u_hxse88",
-          "text": "自定义插槽U@Ma{",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": true,
-          "useIcon": false
-        },
-        {
-          "key": "u_3e7pnz",
-          "text": "自定义插槽\"dJ_v",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": true,
-          "useIcon": false
-        },
-        {
-          "key": "u_2i1rnr",
-          "text": "自定义插槽Lh9h=",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": true,
-          "useIcon": false
-        },
-        {
-          "key": "u_hpss5k",
-          "text": "自定义插槽=Z`0E",
-          "showText": true,
-          "dataType": "number",
-          "outVal": 0,
-          "inVal": "",
-          "isCustom": false,
-          "src": "",
-          "contentSize": [
-            14,
-            14
-          ],
-          "iconDistance": 8,
-          "loading": false,
-          "useDynamicLoading": false,
-          "style": {
-            "height": "auto",
-            "width": "auto"
-          },
-          "isSlot": true,
-          "useIcon": false
-        }
-      ]
-    }
-  },
-  "名称": {
-    "Q": "将第7个按钮的名称设置为vGeLaCCqKD",
-    "A": {
-      "btnList": {
-        "index": 7,
-        "data": {
-          "text": "vGeLaCCqKD"
-        }
-      }
+      "btnList": []
     }
   }
 }
