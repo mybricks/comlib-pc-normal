@@ -1,35 +1,29 @@
 
-export default function({Util}) {
+import { defineDataSet } from "ai-dataset";
+export default defineDataSet((utils)  => {
   const result = {}
-
-  const mayBeBooleanEnumMap = {
-    '开启': true,
-    '打开': true,
-    '开': true,
-    true: true,
-    '关闭': false,
-    '关': false,
-    false: false,
-  }
+  const content = utils.string.alpha(10)
   result['内容'] = {
-    "Q": "文本输入框如何设置内容为 @string",
+    "Q": `文本输入框如何设置内容为${content}`,
     "A": {
-      "content": "{0}",
+      "content": `${content}`,
     }
   }
+  let isEllipsis = utils.datatype.boolean()
   result['文本溢出/省略'] = {
-    "Q": "将文本输入框的‘文本溢出/省略’ 设置为 @boolean",
+    "Q": `将文本输入框的‘文本溢出/省略’ 设置为${isEllipsis}`,
     "A": {
-      "isEllipsis": "{0}",
+      "isEllipsis": `${isEllipsis}`,
     }
   }
+  const maxRow = utils.number.int()
   result['最大显示行数'] = {
-    "Q": "将文本输入框的最大显示行数设置为 @number",
+    "Q": `将文本输入框的最大显示行数设置为${maxRow}`,
     "A": {
       "isEllipsis": true,
-      "ellipsis": { rows: '{0}' }
+      "ellipsis": { rows: `${maxRow}` }
     }
   }
 
   return result
-}
+})
