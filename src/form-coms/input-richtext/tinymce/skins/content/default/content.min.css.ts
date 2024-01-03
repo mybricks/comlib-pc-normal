@@ -6,11 +6,15 @@
  */
 // 注原本是css文件,作用于iframe,所以使用该方式引入
 export default `
+html {
+  height: 100%;
+}
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
     'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.4;
   margin: 1rem;
+  height: calc(100% - 1rem);
 }
 table {
   border-collapse: collapse;
@@ -60,5 +64,31 @@ code {
   border-right: 2px solid #ccc;
   margin-right: 1.5rem;
   padding-right: 1rem;
+}
+
+.attachment {
+  cursor: pointer !important;
+}
+.upload_error {
+  background: #FFE5E0;
+  border: 1px solid #EA644A;
+}
+.attachment > img {
+  width: 16px;
+  vertical-align: middle;
+  padding-right:4px;
+}
+.attachment > svg {
+  width: 16px;
+  vertical-align: middle;
+  padding-right:4px;
+}
+.attachment > a {
+  text-decoration: none;
+  vertical-align: middle;
+}
+.attachment > span {
+  vertical-align: middle;
+  padding-right:4px;
 }
 `;

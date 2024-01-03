@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 export interface UploadParams {
   file: File;
   file_name: string;
-  file_type: 'image' | 'video';
+  file_type: 'image' | 'video' | string;
 }
 
 export interface UploadFn {

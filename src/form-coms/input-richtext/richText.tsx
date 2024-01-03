@@ -78,6 +78,44 @@ export default function ({
     });
   }, []);
 
+  const attachment_upload_handler = useCallback(
+    async (file: File, successCallback, failureCallback, progressCallback) => {
+      // TODO progressCallback返回进度函数,需配合后端
+      const fileData = {
+        file,
+        file_name: file.name,
+        file_type: file.type
+      };
+
+      const uploadFile = async () => {
+        if (data.customUpload) {
+          return upload(fileData);
+        } else if (env?.uploadFile) {
+          return env.uploadFile(fileData);
+        } else {
+          console.error('env.uploadFile未实现');
+          throw new Error('无有效的上传方法');
+        }
+      };
+
+      try {
+        const res = await uploadFile().catch((error) => {
+          throw new Error(`附件上传失败: ${error.message}`);
+        });
+
+        const url = res?.url;
+        if (!url) {
+          throw new Error('附件上传返回为空');
+        }
+
+        successCallback(url);
+      } catch (error: any) {
+        failureCallback(error.message);
+      }
+    },
+    []
+  );
+
   const TinymceInit: (cfg: {
     selector?: string;
     height: string | number;
@@ -153,8 +191,8 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val, relOutputs) => {
-          editor.setContent('');
           changeValue(val);
+          editor.setContent(valueRef.current || '');
           if (relOutputs['setValueDone']) {
             relOutputs['setValueDone'](val);
           }
@@ -162,8 +200,8 @@ export default function ({
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any, relOutputs) => {
-          editor.setContent('');
           changeValue(val);
+          editor.setContent(valueRef.current || '');
           if (relOutputs['setInitialValueDone']) {
             relOutputs['setInitialValueDone'](val);
           }
@@ -181,7 +219,8 @@ export default function ({
             setLoading(false);
           }, 50);
         }
-      }
+      },
+      attachment_upload_handler
     });
   }, []);
 
