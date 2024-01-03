@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+export { default as enhancedIt } from './enhanced-it';
 
 /**
  * 使用 dump 并打开预览页

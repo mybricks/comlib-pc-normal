@@ -1,9 +1,9 @@
 import toJSON_各种事件触发检查 from './case-各种事件触发检查/toJSON.json';
 import toJSON_各种静态配置检查 from './case-各种静态配置检查/toJSON.json';
-import { toJSONPreview, eventCheck } from '@/../cypress/tools';
+import { toJSONPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 describe('按钮', () => {
-  it('各种事件触发检查', () => {
+  enhancedIt('各种事件触发检查', () => {
     // 加载测试页面
     toJSONPreview(toJSON_各种事件触发检查);
 
@@ -35,7 +35,7 @@ describe('按钮', () => {
     cy.compareSnapshot('按钮_各种事件触发检查');
   });
 
-  it('各种静态配置检查', () => {
+  enhancedIt('各种静态配置检查', () => {
     // 加载测试页面
     toJSONPreview(toJSON_各种静态配置检查);
 
