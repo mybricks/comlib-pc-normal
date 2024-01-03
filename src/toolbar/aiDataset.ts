@@ -30,17 +30,17 @@ export default defineDataSet((utils)  => {
   result['间距'] = []
   const horSpace= utils.number.int({ min: 0, max: 300 })
   const verSpace= utils.number.int({ min: 0, max: 300 })
-  // TODO:wf, 水平垂直一起改
-  for(let key in spaceMap) {
-    result['间距'].push({
-      "Q": `将${spaceMap[key]}间距设置为${key}`,
-      "A": {
-        data: {
-          "spaceSize": [horSpace, verSpace],
-        }
-      }
-    })
-  }
+  // TODO:wf, 是否水平垂直一起改
+  // for(let key in spaceMap) {
+  //   result['间距'].push({
+  //     "Q": `将${spaceMap[key]}间距设置为${key}`,
+  //     "A": {
+  //       data: {
+  //         "spaceSize": [horSpace, verSpace],
+  //       }
+  //     }
+  //   })
+  // }
 
   result['尺寸'] =[] 
   for(let key in sizeMap) {
