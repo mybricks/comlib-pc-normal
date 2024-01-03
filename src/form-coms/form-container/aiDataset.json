@@ -1,0 +1,612 @@
+[
+  {
+    "Q": "将表单类型设置为普通表单",
+    "A": {
+      "layoutType": "Form"
+    }
+  },
+  {
+    "Q": "将表单类型设置为查询表单",
+    "A": {
+      "layoutType": "QueryFilter"
+    }
+  },
+  {
+    "Q": "将默认折叠表单项设置为是",
+    "A": {
+      "layoutType": "QueryFilter",
+      "defaultCollapsed": true
+    }
+  },
+  {
+    "Q": "将默认折叠表单项设置为否",
+    "A": {
+      "layoutType": "QueryFilter",
+      "defaultCollapsed": false
+    }
+  },
+  {
+    "Q": "将提交隐藏表单项设置为是",
+    "A": {
+      "submitHiddenFields": true
+    }
+  },
+  {
+    "Q": "将提交隐藏表单项设置为否",
+    "A": {
+      "submitHiddenFields": false
+    }
+  },
+  {
+    "Q": "将表单项布局类型设置为水平",
+    "A": {
+      "config": {
+        "layout": "horizontal"
+      }
+    }
+  },
+  {
+    "Q": "将表单项布局类型设置为垂直",
+    "A": {
+      "config": {
+        "layout": "vertical"
+      }
+    }
+  },
+  {
+    "Q": "将表单项布局类型设置为内联",
+    "A": {
+      "config": {
+        "layout": "inline"
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为1/24",
+    "A": {
+      "config": {
+        "span": 1,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为2/24",
+    "A": {
+      "config": {
+        "span": 2,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为3/24",
+    "A": {
+      "config": {
+        "span": 3,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为4/24",
+    "A": {
+      "config": {
+        "span": 4,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为5/24",
+    "A": {
+      "config": {
+        "span": 5,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为6/24",
+    "A": {
+      "config": {
+        "span": 6,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为7/24",
+    "A": {
+      "config": {
+        "span": 7,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为8/24",
+    "A": {
+      "config": {
+        "span": 8,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为9/24",
+    "A": {
+      "config": {
+        "span": 9,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为10/24",
+    "A": {
+      "config": {
+        "span": 10,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为11/24",
+    "A": {
+      "config": {
+        "span": 11,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为12/24",
+    "A": {
+      "config": {
+        "span": 12,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为13/24",
+    "A": {
+      "config": {
+        "span": 13,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为14/24",
+    "A": {
+      "config": {
+        "span": 14,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为15/24",
+    "A": {
+      "config": {
+        "span": 15,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为16/24",
+    "A": {
+      "config": {
+        "span": 16,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为17/24",
+    "A": {
+      "config": {
+        "span": 17,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为18/24",
+    "A": {
+      "config": {
+        "span": 18,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为19/24",
+    "A": {
+      "config": {
+        "span": 19,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为20/24",
+    "A": {
+      "config": {
+        "span": 20,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为21/24",
+    "A": {
+      "config": {
+        "span": 21,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为22/24",
+    "A": {
+      "config": {
+        "span": 22,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为23/24",
+    "A": {
+      "config": {
+        "span": 23,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为24/24",
+    "A": {
+      "config": {
+        "span": 24,
+        "actions": {
+          "align": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将标题宽度类型设置为固定像素",
+    "A": {
+      "labelWidthType": "px"
+    }
+  },
+  {
+    "Q": "将标题宽度类型设置为24 栅格",
+    "A": {
+      "labelWidthType": "span"
+    }
+  },
+  {
+    "Q": "将标题宽度设置为193px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 193
+    }
+  },
+  {
+    "Q": "将标题宽度设置为16px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 16
+    }
+  },
+  {
+    "Q": "将标题宽度设置为34px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 34
+    }
+  },
+  {
+    "Q": "将标题宽度设置为333px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 333
+    }
+  },
+  {
+    "Q": "将标题宽度设置为367px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 367
+    }
+  },
+  {
+    "Q": "将标题宽度设置为89px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 89
+    }
+  },
+  {
+    "Q": "将标题宽度设置为356px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 356
+    }
+  },
+  {
+    "Q": "将标题宽度设置为91px",
+    "A": {
+      "labelWidthType": "px",
+      "labelWidth": 91
+    }
+  },
+  {
+    "Q": "将标题宽度设置为1格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 1
+    }
+  },
+  {
+    "Q": "将标题宽度设置为2格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 2
+    }
+  },
+  {
+    "Q": "将标题宽度设置为3格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 3
+    }
+  },
+  {
+    "Q": "将标题宽度设置为4格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 4
+    }
+  },
+  {
+    "Q": "将标题宽度设置为5格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 5
+    }
+  },
+  {
+    "Q": "将标题宽度设置为6格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 6
+    }
+  },
+  {
+    "Q": "将标题宽度设置为7格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 7
+    }
+  },
+  {
+    "Q": "将标题宽度设置为8格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 8
+    }
+  },
+  {
+    "Q": "将标题宽度设置为9格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 9
+    }
+  },
+  {
+    "Q": "将标题宽度设置为10格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 10
+    }
+  },
+  {
+    "Q": "将标题宽度设置为11格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 11
+    }
+  },
+  {
+    "Q": "将标题宽度设置为12格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 12
+    }
+  },
+  {
+    "Q": "将标题宽度设置为13格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 13
+    }
+  },
+  {
+    "Q": "将标题宽度设置为14格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 14
+    }
+  },
+  {
+    "Q": "将标题宽度设置为15格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 15
+    }
+  },
+  {
+    "Q": "将标题宽度设置为16格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 16
+    }
+  },
+  {
+    "Q": "将标题宽度设置为17格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 17
+    }
+  },
+  {
+    "Q": "将标题宽度设置为18格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 18
+    }
+  },
+  {
+    "Q": "将标题宽度设置为19格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 19
+    }
+  },
+  {
+    "Q": "将标题宽度设置为20格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 20
+    }
+  },
+  {
+    "Q": "将标题宽度设置为21格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 21
+    }
+  },
+  {
+    "Q": "将标题宽度设置为22格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 22
+    }
+  },
+  {
+    "Q": "将标题宽度设置为23格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 23
+    }
+  },
+  {
+    "Q": "将标题宽度设置为24格",
+    "A": {
+      "labelWidthType": "span",
+      "labelCol": 24
+    }
+  },
+  {
+    "Q": "将标题显示冒号设置为是",
+    "A": {
+      "config": {
+        "colon": true
+      }
+    }
+  },
+  {
+    "Q": "将标题显示冒号设置为否",
+    "A": {
+      "config": {
+        "colon": false
+      }
+    }
+  },
+  {
+    "Q": "将标题自动换行设置为是",
+    "A": {
+      "config": {
+        "labelWrap": true
+      }
+    }
+  },
+  {
+    "Q": "将标题自动换行设置为否",
+    "A": {
+      "config": {
+        "labelWrap": false
+      }
+    }
+  },
+  {
+    "Q": "将标题对齐方式设置为左对齐",
+    "A": {
+      "config": {
+        "labelAlign": "left"
+      }
+    }
+  },
+  {
+    "Q": "将标题对齐方式设置为右对齐",
+    "A": {
+      "config": {
+        "labelAlign": "right"
+      }
+    }
+  }
+]
