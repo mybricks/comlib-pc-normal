@@ -1,0 +1,72 @@
+{
+  "视频链接": {
+    "Q": "将视频链接设置为https://-slaw.biz/",
+    "A": {
+      "src": "https://-slaw.biz/"
+    }
+  },
+  "自动播放": [
+    {
+      "Q": "将自动播放设置为开启",
+      "A": {
+        "autoplay": true,
+        "muted": true
+      }
+    },
+    {
+      "Q": "将自动播放设置为关闭",
+      "A": {
+        "autoplay": false,
+        "muted": false
+      }
+    }
+  ],
+  "控制栏": [
+    {
+      "Q": "将控制栏设置为开启",
+      "A": {
+        "controls": true
+      }
+    },
+    {
+      "Q": "将控制栏设置为关闭",
+      "A": {
+        "controls": false
+      }
+    }
+  ],
+  "循环播放": [
+    {
+      "Q": "将循环播放设置为开启",
+      "A": {
+        "controls": true
+      }
+    },
+    {
+      "Q": "将循环播放设置为关闭",
+      "A": {
+        "controls": false
+      }
+    }
+  ],
+  "封面": {
+    "Q": "将封面设置为https://picsum.photos/seed/RXQTNW4D/640/480",
+    "A": {
+      "src": "https://picsum.photos/seed/RXQTNW4D/640/480"
+    }
+  },
+  "比例": [
+    {
+      "Q": "将比例设置为保持比例",
+      "A": {
+        "fit": "contain"
+      }
+    },
+    {
+      "Q": "将比例设置为充满",
+      "A": {
+        "fit": "fill"
+      }
+    }
+  ]
+}

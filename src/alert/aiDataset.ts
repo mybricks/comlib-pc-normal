@@ -74,22 +74,6 @@ export default defineDataSet((utils)  => {
     }
   }
 
-  result['选择图标'] = {
-    "Q": `将警告提示的图标设置为${icon}`,
-    "A": {
-      "icon": `${icon}`,
-      "isChoose": true,
-      "showIcon": true
-    }
-  }
-  result['选择图标'] = {
-    "Q": `将警告提示的图标设置为${icon}`,
-    "A": {
-      "icon": `${icon}`,
-      "isChoose": true,
-      "showIcon": true
-    }
-  }
   result['固定宽度'] = [true, false].map(item => ({
     "Q": `将警告提示的固定宽度设置为${item? '开启':'关闭'}`,
     "A": {
@@ -106,7 +90,7 @@ export default defineDataSet((utils)  => {
     }
   })
 
-  const percentWidth = utils.number.int({ min: 10 })
+  const percentWidth = utils.number.int({ min: 10, max: 100 })
   result['百分比宽度'] = {
     "Q": `将警告提示的百分比宽度设置为${percentWidth}`,
     "A": {

@@ -1,19 +1,19 @@
 {
   "对齐方式": [
     {
-      "Q": "将工具条的对齐方式设置为居左",
+      "Q": "将对齐方式设置为居左",
       "A": {
         "layout": "flex-start"
       }
     },
     {
-      "Q": "将工具条的对齐方式设置为居中",
+      "Q": "将对齐方式设置为居中",
       "A": {
         "layout": "center"
       }
     },
     {
-      "Q": "将工具条的对齐方式设置为居右",
+      "Q": "将对齐方式设置为居右",
       "A": {
         "layout": "flex-end"
       }
@@ -21,85 +21,103 @@
   ],
   "间距": [
     {
-      "Q": "将工具条的4,4间距设置为水平",
+      "Q": "将4,4间距设置为水平",
       "A": {
         "spaceSize": [
-          1276681333506048,
-          4642974598168576
+          158,
+          241
         ]
       }
     },
     {
-      "Q": "将工具条的4,4间距设置为垂直",
+      "Q": "将4,4间距设置为垂直",
       "A": {
         "spaceSize": [
-          1276681333506048,
-          4642974598168576
+          158,
+          241
         ]
       }
     }
   ],
   "尺寸": [
     {
-      "Q": "将工具条的尺寸设置为大",
+      "Q": "将第7个按钮的尺寸设置为大",
       "A": {
-        "allSize": "large"
+        "btnList": {
+          "index": 7,
+          "data": {
+            "size": "large"
+          }
+        }
       }
     },
     {
-      "Q": "将工具条的尺寸设置为中等",
+      "Q": "将第7个按钮的尺寸设置为中等",
       "A": {
-        "allSize": "middle"
+        "btnList": {
+          "index": 7,
+          "data": {
+            "size": "middle"
+          }
+        }
       }
     },
     {
-      "Q": "将工具条的尺寸设置为小",
+      "Q": "将第7个按钮的尺寸设置为小",
       "A": {
-        "allSize": "small"
+        "btnList": {
+          "index": 7,
+          "data": {
+            "size": "small"
+          }
+        }
       }
     }
   ],
   "风格": [
     {
-      "Q": "将工具条的按钮风格设置为主按钮",
+      "Q": "将第7个按钮的风格设置为大",
       "A": {
-        "allType": "primary"
+        "btnList": {
+          "index": 7,
+          "data": {
+            "size": "large"
+          }
+        }
       }
     },
     {
-      "Q": "将工具条的按钮风格设置为次按钮",
+      "Q": "将第7个按钮的风格设置为中等",
       "A": {
-        "allType": "default"
+        "btnList": {
+          "index": 7,
+          "data": {
+            "size": "middle"
+          }
+        }
       }
     },
     {
-      "Q": "将工具条的按钮风格设置为虚线按钮",
+      "Q": "将第7个按钮的风格设置为小",
       "A": {
-        "allType": "dashed"
-      }
-    },
-    {
-      "Q": "将工具条的按钮风格设置为链接按钮",
-      "A": {
-        "allType": "link"
-      }
-    },
-    {
-      "Q": "将工具条的按钮风格设置为文字按钮",
-      "A": {
-        "allType": "text"
+        "btnList": {
+          "index": 7,
+          "data": {
+            "size": "small"
+          }
+        }
       }
     }
   ],
   "危险按钮": [
     {
-      "Q": "将工具条的危险按钮设置为开启",
+      "Q": "将危险按钮设置为开启",
       "A": {
         "allDanger": true
       }
     },
     {
-      "Q": "将工具条的危险按钮设置为关闭",
+      "Q": "将危险按钮设置为关闭",
       "A": {
         "allDanger": false
       }
@@ -107,48 +125,297 @@
   ],
   "形状": [
     {
-      "Q": "将工具条的按钮形状设置为默认",
+      "Q": "将按钮形状设置为默认",
       "A": {
         "allShape": "default"
       }
     },
     {
-      "Q": "将工具条的按钮形状设置为(椭)圆",
+      "Q": "将按钮形状设置为(椭)圆",
       "A": {
         "allShape": "circle"
       }
     },
     {
-      "Q": "将工具条的按钮形状设置为圆角矩形",
+      "Q": "将按钮形状设置为圆角矩形",
       "A": {
         "allShape": "round"
       }
     }
   ],
   "最大显示数量": {
-    "Q": "将工具条的最大显示数量设置为2370563062366208",
+    "Q": "将最大显示数量设置为659645855170560",
     "A": {
-      "maxShowNumber": 2370563062366208
+      "maxShowNumber": 659645855170560
     }
   },
   "省略": [
     {
-      "Q": "将工具条的省略配置设置为开启",
+      "Q": "将省略设置为开启",
       "A": {
         "useEllipses": true
       }
     },
     {
-      "Q": "将工具条的省略配置设置为关闭",
+      "Q": "将省略设置为关闭",
       "A": {
         "useEllipses": false
       }
     }
   ],
-  "容错图像占位符": {
-    "Q": "将图片的容错图像占位符设置为https://loremflickr.com/50/50?lock=5376354319073280",
+  "添加按钮": {
+    "Q": "添加5个按钮",
     "A": {
-      "fallbackImgSrc": "https://loremflickr.com/50/50?lock=5376354319073280"
+      "btnList": [
+        {
+          "key": "u_jr017b",
+          "text": "按钮",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": false,
+          "useIcon": false
+        },
+        {
+          "key": "u_d85pfs",
+          "text": "按钮",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": false,
+          "useIcon": false
+        },
+        {
+          "key": "u_yifcm4",
+          "text": "按钮",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": false,
+          "useIcon": false
+        },
+        {
+          "key": "u_5fpm5m",
+          "text": "按钮",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": false,
+          "useIcon": false
+        },
+        {
+          "key": "u_6chzjd",
+          "text": "按钮",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": false,
+          "useIcon": false
+        }
+      ]
+    }
+  },
+  "添加插槽": {
+    "Q": "添加4个插槽",
+    "A": {
+      "btnList": [
+        {
+          "key": "u_4ddrff",
+          "text": "自定义插槽.AT#W",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": true,
+          "useIcon": false
+        },
+        {
+          "key": "u_hxse88",
+          "text": "自定义插槽U@Ma{",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": true,
+          "useIcon": false
+        },
+        {
+          "key": "u_3e7pnz",
+          "text": "自定义插槽\"dJ_v",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": true,
+          "useIcon": false
+        },
+        {
+          "key": "u_2i1rnr",
+          "text": "自定义插槽Lh9h=",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": true,
+          "useIcon": false
+        },
+        {
+          "key": "u_hpss5k",
+          "text": "自定义插槽=Z`0E",
+          "showText": true,
+          "dataType": "number",
+          "outVal": 0,
+          "inVal": "",
+          "isCustom": false,
+          "src": "",
+          "contentSize": [
+            14,
+            14
+          ],
+          "iconDistance": 8,
+          "loading": false,
+          "useDynamicLoading": false,
+          "style": {
+            "height": "auto",
+            "width": "auto"
+          },
+          "isSlot": true,
+          "useIcon": false
+        }
+      ]
+    }
+  },
+  "名称": {
+    "Q": "将第7个按钮的名称设置为vGeLaCCqKD",
+    "A": {
+      "btnList": {
+        "index": 7,
+        "data": {
+          "text": "vGeLaCCqKD"
+        }
+      }
     }
   }
 }

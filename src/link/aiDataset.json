@@ -1,73 +1,81 @@
 {
   "内容": {
-    "Q": "将链接文字内容为hDBYZCdjIZ",
+    "Q": "将链接文字内容为dNipZmsBTv",
     "A": {
-      "content": "hDBYZCdjIZ"
+      "content": "dNipZmsBTv"
     }
   },
   "链接": {
-    "Q": "将链接的地址/url设置为https://-middle.org",
+    "Q": "将地址/url设置为https://-breakfast.net",
     "A": {
-      "url": "https://-middle.org"
+      "url": "https://-breakfast.net"
     }
   },
-  "图标自定义": {
-    "Q": "将链接的图标自定义设置为true",
-    "A": {
-      "isChoose": "true"
+  "图标自定义": [
+    {
+      "Q": "将图标自定义设置为开启",
+      "A": {
+        "isChoose": true
+      }
+    },
+    {
+      "Q": "将图标自定义设置为关闭",
+      "A": {
+        "isChoose": false
+      }
     }
-  },
+  ],
   "选择图标": {
-    "Q": "将链接的图标设置为SwrtyKVMyS",
+    "Q": "将图标设置为hEmgyiGGga",
     "A": {
-      "icon": "SwrtyKVMyS"
+      "icon": "hEmgyiGGga"
     }
   },
   "图标位置": [
     {
-      "Q": "将链接的图标位置设置为位于文字前",
+      "Q": "将图标位置设置为位于文字前",
       "A": {
         "location": "front"
       }
     },
     {
-      "Q": "将链接的图标位置设置为位于文字后",
+      "Q": "将图标位置设置为位于文字后",
       "A": {
         "location": "back"
       }
     },
     {
-      "Q": "将链接的跳转方式设置为路由跳转",
+      "Q": "将跳转方式设置为路由跳转",
       "A": {
         "routeType": "push"
       }
     },
     {
-      "Q": "将链接的跳转方式设置为重定向",
+      "Q": "将跳转方式设置为重定向",
       "A": {
         "routeType": "redirect"
       }
     },
     {
-      "Q": "将链接的跳转方式设置为新标签页",
+      "Q": "将跳转方式设置为新标签页",
       "A": {
         "routeType": "openTab"
       }
     },
     {
-      "Q": "将链接的跳转方式设置为返回",
+      "Q": "将跳转方式设置为返回",
       "A": {
         "routeType": "back"
       }
     },
     {
-      "Q": "将链接的跳转方式设置为前进",
+      "Q": "将跳转方式设置为前进",
       "A": {
         "routeType": "forward"
       }
     },
     {
-      "Q": "将链接的跳转方式设置为自定义",
+      "Q": "将跳转方式设置为自定义",
       "A": {
         "routeType": "customEvent"
       }

@@ -6,14 +6,14 @@ export default defineDataSet((utils)  => {
   const message = utils.string.alpha(10)
   const url = utils.internet.url()
   result['链接'] = {
-    "Q": `将二维码的链接设置为${url}`,
+    "Q": `将链接设置为${url}`,
     "A": {
       "link": url,
     }
   }
 
   result['支持Logo'] = [true, false].map(item => ({
-    "Q": `将二维码的支持logo设置为${item? '开启':'关闭'}`,
+    "Q": `将支持logo设置为${item? '开启':'关闭'}`,
     "A": {
       "hasIcon": item
     }
@@ -22,7 +22,7 @@ export default defineDataSet((utils)  => {
   result['Logo'] = []
   const iconUrl = utils.image.url({ width: 34, height: 34 })
   result['Logo'].push({
-    "Q": `将二维码的Logo图片地址设置为${iconUrl}`,
+    "Q": `将Logo图片地址设置为${iconUrl}`,
     "A": {
       "icon": {
         url: iconUrl
@@ -33,7 +33,7 @@ export default defineDataSet((utils)  => {
   const widthPer = utils.number.int({ min: 0, max: 100 })
   const heightPer = utils.number.int({ min: 0, max: 100 })
   result['Logo'].push({
-    "Q": `将二维码的Logo图片尺寸设置为${iconUrl}`,
+    "Q": `将Logo图片尺寸设置为${iconUrl}`,
     "A": {
       "icon": {
         width: widthPer,

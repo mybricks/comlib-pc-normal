@@ -14,7 +14,7 @@ export default defineDataSet((utils)  => {
   const url = utils.internet.url()
   const title = utils.string.alpha(10)
   result['标题'] = {
-    "Q": `将结果页的标题设置为${title}`,
+    "Q": `将标题设置为${title}`,
     "A": {
       "title": title,
     }
@@ -22,7 +22,7 @@ export default defineDataSet((utils)  => {
 
   const subtitle = utils.string.alpha(10)
   result['副标题'] = {
-    "Q": `将结果页的副标题设置为${subtitle}`,
+    "Q": `将副标题设置为${subtitle}`,
     "A": {
       "subtitle": subtitle,
     }
@@ -31,7 +31,7 @@ export default defineDataSet((utils)  => {
   result['状态'] =[] 
   for(let key in statusMap) {
     result['状态'].push({
-      "Q": `将结果页的状态设置为${key}`,
+      "Q": `将状态设置为${key}`,
       "A": {
         "status": statusMap[key],
       }
