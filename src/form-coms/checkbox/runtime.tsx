@@ -214,7 +214,7 @@ export default function Runtime({
   }
 
   const checkboxStyle = {
-    paddingBottom: data.layout === 'vertical' ? '8px' : void 0
+    marginBottom: data.layout === 'vertical' ? '8px' : void 0
   };
 
   const checkboxGroup = {
@@ -239,7 +239,7 @@ export default function Runtime({
   });
 
   return (
-    <div className={css.checkbox} style={single ? singlebox : void 0}>
+    <div className={`${css.checkbox} checkbox`} style={single ? singlebox : void 0}>
       {data.isEditable
         ? data.checkAll && (
             <Checkbox
