@@ -1,42 +1,52 @@
 {
   "链接": {
-    "Q": "将链接设置为https://-slate.info",
+    "Q": "将链接设置为https://-hook.info",
     "A": {
-      "link": "https://-slate.info"
+      "data": {
+        "link": "https://-hook.info"
+      }
     }
   },
   "支持Logo": [
     {
       "Q": "将支持logo设置为开启",
       "A": {
-        "hasIcon": true
+        "data": {
+          "hasIcon": true
+        }
       }
     },
     {
       "Q": "将支持logo设置为关闭",
       "A": {
-        "hasIcon": false
+        "data": {
+          "hasIcon": false
+        }
       }
     }
   ],
   "Logo": [
     {
-      "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=7751028535459840",
+      "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=7496542306959360",
       "A": {
-        "icon": {
-          "url": "https://loremflickr.com/34/34?lock=7751028535459840"
-        },
-        "hasIcon": true
+        "data": {
+          "icon": {
+            "url": "https://loremflickr.com/34/34?lock=7496542306959360"
+          },
+          "hasIcon": true
+        }
       }
     },
     {
-      "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=7751028535459840",
+      "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=7496542306959360",
       "A": {
-        "icon": {
-          "width": 98,
-          "height": 96
-        },
-        "hasIcon": true
+        "data": {
+          "icon": {
+            "width": 88,
+            "height": 96
+          },
+          "hasIcon": true
+        }
       }
     }
   ]

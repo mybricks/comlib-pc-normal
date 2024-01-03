@@ -3,24 +3,30 @@
     {
       "Q": "将全局样式设置为开启",
       "A": {
-        "isUnity": true
+        "data": {
+          "isUnity": true
+        }
       }
     },
     {
       "Q": "将全局样式设置为关闭",
       "A": {
-        "isUnity": false
+        "data": {
+          "isUnity": false
+        }
       }
     }
   ],
   "间距": {
-    "Q": "将全局样式的间距设置为左91右63",
+    "Q": "将全局样式的间距设置为左73右29",
     "A": {
-      "isUnity": true,
-      "padding": [
-        91,
-        63
-      ]
+      "data": {
+        "isUnity": true,
+        "padding": [
+          73,
+          29
+        ]
+      }
     }
   },
   "水平对齐方式": [
@@ -50,9 +56,11 @@
     }
   ],
   "动态数据唯一标识": {
-    "Q": "将动态数据唯一标识设置为oGChj",
+    "Q": "将动态数据唯一标识设置为jFrYZ",
     "A": {
-      "rowKey": "oGChj"
+      "data": {
+        "rowKey": "jFrYZ"
+      }
     }
   }
 }

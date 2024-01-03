@@ -1,0 +1,3117 @@
+[
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将类型设置为默认",
+    "A": {
+      "data": {
+        "type": "info"
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将类型设置为成功",
+    "A": {
+      "data": {
+        "type": "success"
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将类型设置为错误",
+    "A": {
+      "data": {
+        "type": "error"
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将类型设置为警告",
+    "A": {
+      "data": {
+        "type": "warning"
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将关闭按钮设置为开启",
+    "A": {
+      "data": {
+        "closable": true
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将关闭按钮设置为关闭",
+    "A": {
+      "data": {
+        "closable": false
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将顶部公告设置为开启",
+    "A": {
+      "data": {
+        "banner": true
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将顶部公告设置为关闭",
+    "A": {
+      "data": {
+        "banner": false
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将辅助图标设置为开启",
+    "A": {
+      "data": {
+        "showIcon": true
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将辅助图标设置为关闭",
+    "A": {
+      "data": {
+        "showIcon": false
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将辅助介绍设置为开启",
+    "A": {
+      "data": {
+        "showInfo": true
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将辅助介绍设置为关闭",
+    "A": {
+      "data": {
+        "showInfo": false
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将警告提示的图标自定义设置为开启",
+    "A": {
+      "data": {
+        "isChoose": true
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将警告提示的图标自定义设置为关闭",
+    "A": {
+      "data": {
+        "isChoose": false
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将警告提示的固定宽度设置为开启",
+    "A": {
+      "data": {
+        "openWidth": true
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将警告提示的固定宽度设置为关闭",
+    "A": {
+      "data": {
+        "openWidth": false
+      }
+    }
+  },
+  {
+    "title": "警告提示",
+    "namespace": "mybricks.normal-pc.alert",
+    "Q": "将警告提示的固定宽度设置为573969512005641",
+    "A": {
+      "data": {
+        "openWidth": true,
+        "width": 573969512005641
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将作为热区使用设置为开启",
+    "A": {
+      "data": {
+        "asMapArea": true
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将作为热区使用设置为关闭",
+    "A": {
+      "data": {
+        "asMapArea": false
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将尺寸设置为大",
+    "A": {
+      "data": {
+        "size": "large"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将尺寸设置为中等",
+    "A": {
+      "data": {
+        "size": "middle"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将尺寸设置为小",
+    "A": {
+      "data": {
+        "size": "small"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将风格设置为主按钮",
+    "A": {
+      "data": {
+        "allType": "primary"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将风格设置为次按钮",
+    "A": {
+      "data": {
+        "allType": "default"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将风格设置为虚线按钮",
+    "A": {
+      "data": {
+        "allType": "dashed"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将风格设置为链接按钮",
+    "A": {
+      "data": {
+        "allType": "link"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将风格设置为文字按钮",
+    "A": {
+      "data": {
+        "allType": "text"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将危险按钮设置为开启",
+    "A": {
+      "data": {
+        "danger": true
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将危险按钮设置为关闭",
+    "A": {
+      "data": {
+        "danger": false
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将按钮形状设置为默认",
+    "A": {
+      "data": {
+        "allShape": "default"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将按钮形状设置为(椭)圆",
+    "A": {
+      "data": {
+        "allShape": "circle"
+      }
+    }
+  },
+  {
+    "title": "按钮",
+    "namespace": "mybricks.normal-pc.custom-button",
+    "Q": "将按钮形状设置为圆角矩形",
+    "A": {
+      "data": {
+        "allShape": "round"
+      }
+    }
+  },
+  {
+    "title": "折叠面板",
+    "namespace": "mybricks.normal-pc.collapse",
+    "Q": "将标题设置为rXAHf",
+    "A": {
+      "title": "rXAHf"
+    }
+  },
+  {
+    "title": "折叠面板",
+    "namespace": "mybricks.normal-pc.collapse",
+    "Q": "开启自定义标题",
+    "A": {
+      "isCustomTitle": true
+    }
+  },
+  {
+    "title": "折叠面板",
+    "namespace": "mybricks.normal-pc.collapse",
+    "Q": "默认展开",
+    "A": {
+      "expanded": true
+    }
+  },
+  {
+    "title": "折叠面板",
+    "namespace": "mybricks.normal-pc.collapse",
+    "Q": "打开额外操作",
+    "A": {
+      "useExtra": true
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "如何设置分割符为/",
+    "A": {
+      "data": {
+        "separator": "/"
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "如何设置分割符为>",
+    "A": {
+      "data": {
+        "separator": ">"
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "如何设置分割符为自定义",
+    "A": {
+      "data": {
+        "separator": "custom"
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为0px",
+    "A": {
+      "data": {
+        "padding": 0
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为5px",
+    "A": {
+      "data": {
+        "padding": 5
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为10px",
+    "A": {
+      "data": {
+        "padding": 10
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为15px",
+    "A": {
+      "data": {
+        "padding": 15
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为20px",
+    "A": {
+      "data": {
+        "padding": 20
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为25px",
+    "A": {
+      "data": {
+        "padding": 25
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为30px",
+    "A": {
+      "data": {
+        "padding": 30
+      }
+    }
+  },
+  {
+    "title": "面包屑",
+    "namespace": "mybricks.normal-pc.breadcrumb",
+    "Q": "将内边距设置为35px",
+    "A": {
+      "data": {
+        "padding": 35
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将图标自定义设置为开启",
+    "A": {
+      "data": {
+        "isChoose": true
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将图标自定义设置为关闭",
+    "A": {
+      "data": {
+        "isChoose": false
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将图标位置设置为位于文字前",
+    "A": {
+      "data": {
+        "location": "front"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将图标位置设置为位于文字后",
+    "A": {
+      "data": {
+        "location": "back"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将跳转方式设置为路由跳转",
+    "A": {
+      "data": {
+        "routeType": "push"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将跳转方式设置为重定向",
+    "A": {
+      "data": {
+        "routeType": "redirect"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将跳转方式设置为新标签页",
+    "A": {
+      "data": {
+        "routeType": "openTab"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将跳转方式设置为返回",
+    "A": {
+      "data": {
+        "routeType": "back"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将跳转方式设置为前进",
+    "A": {
+      "data": {
+        "routeType": "forward"
+      }
+    }
+  },
+  {
+    "title": "链接",
+    "namespace": "mybricks.normal-pc.link",
+    "Q": "将跳转方式设置为自定义",
+    "A": {
+      "data": {
+        "routeType": "customEvent"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将自定义设置为开启",
+    "A": {
+      "data": {
+        "isCustom": true
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将自定义设置为关闭",
+    "A": {
+      "data": {
+        "isCustom": false
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将子项配置设置为开启",
+    "A": {
+      "data": {
+        "isChildCustom": true
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将子项配置设置为关闭",
+    "A": {
+      "data": {
+        "isChildCustom": false
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将触发方式设置为悬浮",
+    "A": {
+      "data": {
+        "trigger": "hover"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将触发方式设置为点击",
+    "A": {
+      "data": {
+        "trigger": "click"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将弹出位置设置为左下方",
+    "A": {
+      "data": {
+        "placement": "bottomLeft"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将弹出位置设置为中下方",
+    "A": {
+      "data": {
+        "placement": "bottomCenter"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将弹出位置设置为右下方",
+    "A": {
+      "data": {
+        "placement": "bottomRight"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将弹出位置设置为左上方",
+    "A": {
+      "data": {
+        "placement": "topLeft"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将弹出位置设置为中上方",
+    "A": {
+      "data": {
+        "placement": "topCenter"
+      }
+    }
+  },
+  {
+    "title": "下拉菜单",
+    "namespace": "mybricks.normal-pc.dropdown",
+    "Q": "将弹出位置设置为右上方",
+    "A": {
+      "data": {
+        "placement": "topRight"
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "打开响应式布局",
+    "A": {
+      "isResponsive": true
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "自定义断点",
+    "A": {
+      "isResponsive": true,
+      "isCustomPoints": true
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为300，上下间隔设置为300",
+    "A": {
+      "grid": {
+        "gutter": [
+          300,
+          300
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为600，上下间隔设置为600",
+    "A": {
+      "grid": {
+        "gutter": [
+          600,
+          600
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为500，上下间隔设置为500",
+    "A": {
+      "grid": {
+        "gutter": [
+          500,
+          500
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为400，上下间隔设置为400",
+    "A": {
+      "grid": {
+        "gutter": [
+          400,
+          400
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为900，上下间隔设置为900",
+    "A": {
+      "grid": {
+        "gutter": [
+          900,
+          900
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为300，上下间隔设置为300",
+    "A": {
+      "grid": {
+        "gutter": [
+          300,
+          300
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为300，上下间隔设置为300",
+    "A": {
+      "grid": {
+        "gutter": [
+          300,
+          300
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将左右间隔设置为700，上下间隔设置为700",
+    "A": {
+      "grid": {
+        "gutter": [
+          700,
+          700
+        ]
+      }
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "开启获取列表数据",
+    "A": {
+      "useGetDataSource": true
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "开启loading",
+    "A": {
+      "useLoading": true
+    }
+  },
+  {
+    "title": "列表容器",
+    "namespace": "mybricks.normal-pc.list-new",
+    "Q": "将加载中文案设置为zVZUN",
+    "A": {
+      "useLoading": true,
+      "loadingTip": "zVZUN"
+    }
+  },
+  {
+    "title": "导航菜单",
+    "namespace": "mybricks.normal-pc.menu",
+    "Q": "将样式设置为水平",
+    "A": {
+      "data": {
+        "mode": "horizontal"
+      }
+    }
+  },
+  {
+    "title": "导航菜单",
+    "namespace": "mybricks.normal-pc.menu",
+    "Q": "将样式设置为垂直",
+    "A": {
+      "data": {
+        "mode": "vertical"
+      }
+    }
+  },
+  {
+    "title": "导航菜单",
+    "namespace": "mybricks.normal-pc.menu",
+    "Q": "将样式设置为内联",
+    "A": {
+      "data": {
+        "mode": "inline"
+      }
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "自定义标题",
+    "A": {
+      "useTitleSlot": true
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将标题设置为CmMIL",
+    "A": {
+      "useTitleSlot": false,
+      "title": "CmMIL"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "自定义内容",
+    "A": {
+      "useContentSlot": true
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将内容设置为MpcOP",
+    "A": {
+      "useContentSlot": false,
+      "content": "MpcOP"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将触发方式设置为悬浮",
+    "A": {
+      "textAlign": "hover"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将触发方式设置为点击",
+    "A": {
+      "textAlign": "click"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将触发方式设置为聚焦",
+    "A": {
+      "textAlign": "focus"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为左上",
+    "A": {
+      "placement": "leftTop"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为上",
+    "A": {
+      "placement": "top"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为右上",
+    "A": {
+      "placement": "rightTop"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为左下",
+    "A": {
+      "placement": "leftBottom"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为下",
+    "A": {
+      "placement": "bottom"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为右下",
+    "A": {
+      "placement": "rightBottom"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为左",
+    "A": {
+      "placement": "left"
+    }
+  },
+  {
+    "title": "气泡",
+    "namespace": "mybricks.normal-pc.popover",
+    "Q": "将方向设置为右",
+    "A": {
+      "placement": "right"
+    }
+  },
+  {
+    "title": "结果页",
+    "namespace": "mybricks.normal-pc.result",
+    "Q": "将状态设置为成功",
+    "A": {
+      "data": {
+        "status": "success"
+      }
+    }
+  },
+  {
+    "title": "结果页",
+    "namespace": "mybricks.normal-pc.result",
+    "Q": "将状态设置为错误",
+    "A": {
+      "data": {
+        "status": "error"
+      }
+    }
+  },
+  {
+    "title": "结果页",
+    "namespace": "mybricks.normal-pc.result",
+    "Q": "将状态设置为信息",
+    "A": {
+      "data": {
+        "status": "info"
+      }
+    }
+  },
+  {
+    "title": "结果页",
+    "namespace": "mybricks.normal-pc.result",
+    "Q": "将状态设置为警告",
+    "A": {
+      "data": {
+        "status": "warning"
+      }
+    }
+  },
+  {
+    "title": "二维码",
+    "namespace": "mybricks.normal-pc.qr-code",
+    "Q": "将支持logo设置为开启",
+    "A": {
+      "data": {
+        "hasIcon": true
+      }
+    }
+  },
+  {
+    "title": "二维码",
+    "namespace": "mybricks.normal-pc.qr-code",
+    "Q": "将支持logo设置为关闭",
+    "A": {
+      "data": {
+        "hasIcon": false
+      }
+    }
+  },
+  {
+    "title": "二维码",
+    "namespace": "mybricks.normal-pc.qr-code",
+    "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=7496542306959360",
+    "A": {
+      "data": {
+        "icon": {
+          "url": "https://loremflickr.com/34/34?lock=7496542306959360"
+        },
+        "hasIcon": true
+      }
+    }
+  },
+  {
+    "title": "二维码",
+    "namespace": "mybricks.normal-pc.qr-code",
+    "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=7496542306959360",
+    "A": {
+      "data": {
+        "icon": {
+          "width": 88,
+          "height": 96
+        },
+        "hasIcon": true
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将位置设置为居左",
+    "A": {
+      "data": {
+        "align": "flex-start"
+      },
+      "style": {
+        "width": 1024
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将位置设置为center",
+    "A": {
+      "data": {
+        "align": "居中"
+      },
+      "style": {
+        "width": 1024
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将位置设置为flex-end",
+    "A": {
+      "data": {
+        "align": "居右"
+      },
+      "style": {
+        "width": 1024
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将尺寸设置为正常",
+    "A": {
+      "data": {
+        "size": "default"
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将尺寸设置为小",
+    "A": {
+      "data": {
+        "size": "small"
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将尺寸设置为简单模式",
+    "A": {
+      "data": {
+        "size": "simple"
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将前置说明文字设置为'共 {total} 条结果'",
+    "A": {
+      "data": {
+        "size": "default",
+        "text": "共 {total} 条结果"
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将前置说明文字设置为'{total} 条数据'",
+    "A": {
+      "data": {
+        "size": "default",
+        "text": "{total} 条数据"
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将前置说明文字设置为'总数： {total}'",
+    "A": {
+      "data": {
+        "size": "default",
+        "text": "总数： {total}"
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将跳页功能设置为开启",
+    "A": {
+      "data": {
+        "size": "default",
+        "showQuickJumper": true
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将跳页功能设置为关闭",
+    "A": {
+      "data": {
+        "size": "default",
+        "showQuickJumper": false
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将条数选择功能设置为开启",
+    "A": {
+      "data": {
+        "size": "default",
+        "showSizeChanger": true
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将条数选择功能设置为关闭",
+    "A": {
+      "data": {
+        "size": "default",
+        "showSizeChanger": false
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将页面条数选项列表设置为10、20、50、100",
+    "A": {
+      "data": {
+        "size": "default",
+        "showSizeChanger": true,
+        "pageSizeOptions": [
+          10,
+          20,
+          50,
+          100
+        ]
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "将页面条数选项列表设置为10、20、50、70、100",
+    "A": {
+      "data": {
+        "size": "default",
+        "showSizeChanger": true,
+        "pageSizeOptions": [
+          10,
+          20,
+          50,
+          70,
+          100
+        ]
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "当页数为1时隐藏分页器",
+    "A": {
+      "data": {
+        "size": "simple",
+        "hideOnSinglePage": true
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "当页数为1时隐藏分页器",
+    "A": {
+      "data": {
+        "showSizeChanger": false,
+        "hideOnSinglePage": true
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "当页数为1时不隐藏分页器",
+    "A": {
+      "data": {
+        "size": "simple",
+        "hideOnSinglePage": false
+      }
+    }
+  },
+  {
+    "title": "分页器",
+    "namespace": "mybricks.normal-pc.paginator",
+    "Q": "当页数为1时不隐藏分页器",
+    "A": {
+      "data": {
+        "showSizeChanger": false,
+        "hideOnSinglePage": false
+      }
+    }
+  },
+  {
+    "title": "图片",
+    "namespace": "mybricks.normal-pc.single-image",
+    "Q": "将支持容错处理设置为开启",
+    "A": {
+      "data": {
+        "isUnuseFallbackity": true
+      }
+    }
+  },
+  {
+    "title": "图片",
+    "namespace": "mybricks.normal-pc.single-image",
+    "Q": "将支持容错处理设置为关闭",
+    "A": {
+      "data": {
+        "isUnuseFallbackity": false
+      }
+    }
+  },
+  {
+    "title": "加载中",
+    "namespace": "mybricks.normal-pc.spin",
+    "Q": "将加载图标大小设置为大",
+    "A": {
+      "data": {
+        "size": "large"
+      }
+    }
+  },
+  {
+    "title": "加载中",
+    "namespace": "mybricks.normal-pc.spin",
+    "Q": "将加载图标大小设置为中",
+    "A": {
+      "data": {
+        "size": "default"
+      }
+    }
+  },
+  {
+    "title": "加载中",
+    "namespace": "mybricks.normal-pc.spin",
+    "Q": "将加载图标大小设置为小",
+    "A": {
+      "data": {
+        "size": "small"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将类型设置为默认",
+    "A": {
+      "steps": {
+        "type": "default"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将类型设置为导航类型",
+    "A": {
+      "steps": {
+        "type": "navigation"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将类型设置为点状类型",
+    "A": {
+      "steps": {
+        "type": "dotted"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将尺寸设置为默认",
+    "A": {
+      "steps": {
+        "size": "default"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将尺寸设置为迷你",
+    "A": {
+      "steps": {
+        "size": "small"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将方向设置为水平",
+    "A": {
+      "steps": {
+        "direction": "horizontal"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将方向设置为竖直",
+    "A": {
+      "steps": {
+        "direction": "vertical"
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "显示描述",
+    "A": {
+      "steps": {
+        "showDesc": true
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "关闭点击切换",
+    "A": {
+      "steps": {
+        "canClick": false
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "打开操作栏",
+    "A": {
+      "toolbar": {
+        "showActions": true
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将按钮组设置为上一步",
+    "A": {
+      "toolbar": {
+        "btns": [
+          "previous"
+        ]
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将按钮组设置为下一步",
+    "A": {
+      "toolbar": {
+        "btns": [
+          "next"
+        ]
+      }
+    }
+  },
+  {
+    "title": "步骤条",
+    "namespace": "mybricks.normal-pc.steps",
+    "Q": "将按钮组设置为提交",
+    "A": {
+      "toolbar": {
+        "btns": [
+          "submit"
+        ]
+      }
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "设置为卡片风格",
+    "A": {
+      "type": "card"
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "设置为简约风格",
+    "A": {
+      "type": "line"
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "将标签位置设置为上",
+    "A": {
+      "tabPosition": "top"
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "将标签位置设置为左",
+    "A": {
+      "tabPosition": "left"
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "将标签位置设置为右",
+    "A": {
+      "tabPosition": "right"
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "将标签位置设置为下",
+    "A": {
+      "tabPosition": "bottom"
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "将标签居中",
+    "A": {
+      "centered": true
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "禁止点击切换",
+    "A": {
+      "prohibitClick": true
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "动态设置显示tab",
+    "A": {
+      "useDynamicTab": true
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "隐藏插槽占位",
+    "A": {
+      "hideSlots": true
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "在左侧显示额外内容",
+    "A": {
+      "useLeftExtra": true
+    }
+  },
+  {
+    "title": "标签页",
+    "namespace": "mybricks.normal-pc.tabs",
+    "Q": "在右侧显示额外内容",
+    "A": {
+      "useRigthExtra": true
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将方向设置为水平",
+    "A": {
+      "data": {
+        "direction": "horizontal"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将方向设置为垂直",
+    "A": {
+      "data": {
+        "direction": "vertical"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将类型设置为默认",
+    "A": {
+      "data": {
+        "type": "default"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将类型设置为成功",
+    "A": {
+      "data": {
+        "type": "success"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将类型设置为进行中",
+    "A": {
+      "data": {
+        "type": "processing"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将类型设置为警告",
+    "A": {
+      "data": {
+        "type": "warning"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将类型设置为失败",
+    "A": {
+      "data": {
+        "type": "error"
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将可关闭设置为开启",
+    "A": {
+      "data": {
+        "closeAble": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将可关闭设置为关闭",
+    "A": {
+      "data": {
+        "closeAble": false
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将可新增设置为开启",
+    "A": {
+      "data": {
+        "appendAble": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将可新增设置为关闭",
+    "A": {
+      "data": {
+        "appendAble": false
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将显示新增按钮设置为开启",
+    "A": {
+      "data": {
+        "useAppendBtn": true,
+        "appendAble": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将显示新增按钮设置为关闭",
+    "A": {
+      "data": {
+        "useAppendBtn": false,
+        "appendAble": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将可选择属性设置为开启",
+    "A": {
+      "data": {
+        "checkable": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将可选择属性设置为关闭",
+    "A": {
+      "data": {
+        "checkable": false
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将动态数据设置为开启",
+    "A": {
+      "data": {
+        "dynamic": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将动态数据设置为关闭",
+    "A": {
+      "data": {
+        "dynamic": false
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将文本溢出/省略设置为开启",
+    "A": {
+      "data": {
+        "isEllipsis": true
+      }
+    }
+  },
+  {
+    "title": "标签列表",
+    "namespace": "mybricks.normal-pc.tagList",
+    "Q": "将文本溢出/省略设置为关闭",
+    "A": {
+      "data": {
+        "isEllipsis": false
+      }
+    }
+  },
+  {
+    "title": "文本",
+    "namespace": "mybricks.normal-pc.text",
+    "Q": "将文本溢出/省略设置为开启",
+    "A": {
+      "data": {
+        "isEllipsis": true
+      }
+    }
+  },
+  {
+    "title": "文本",
+    "namespace": "mybricks.normal-pc.text",
+    "Q": "将文本溢出/省略设置为关闭",
+    "A": {
+      "data": {
+        "isEllipsis": false
+      }
+    }
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography",
+    "Q": "将全局样式设置为开启",
+    "A": {
+      "data": {
+        "isUnity": true
+      }
+    }
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography",
+    "Q": "将全局样式设置为关闭",
+    "A": {
+      "data": {
+        "isUnity": false
+      }
+    }
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography",
+    "Q": "将水平对齐方式设置为左对齐",
+    "A": {
+      "style": {
+        "textAlign": "left"
+      }
+    }
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography",
+    "Q": "将水平对齐方式设置为居中对齐",
+    "A": {
+      "style": {
+        "textAlign": "center"
+      }
+    }
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography",
+    "Q": "将水平对齐方式设置为右对齐",
+    "A": {
+      "style": {
+        "textAlign": "right"
+      }
+    }
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography"
+  },
+  {
+    "title": "文本排版",
+    "namespace": "mybricks.normal-pc.typography"
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将自动播放设置为开启",
+    "A": {
+      "data": {
+        "autoplay": true,
+        "muted": true
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将自动播放设置为关闭",
+    "A": {
+      "data": {
+        "autoplay": false,
+        "muted": false
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将控制栏设置为开启",
+    "A": {
+      "data": {
+        "controls": true
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将控制栏设置为关闭",
+    "A": {
+      "data": {
+        "controls": false
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将循环播放设置为开启",
+    "A": {
+      "data": {
+        "loop": true
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将循环播放设置为关闭",
+    "A": {
+      "data": {
+        "loop": false
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将比例设置为保持比例",
+    "A": {
+      "data": {
+        "fit": "contain"
+      }
+    }
+  },
+  {
+    "title": "播放器",
+    "namespace": "mybricks.normal-pc.video",
+    "Q": "将比例设置为充满",
+    "A": {
+      "data": {
+        "fit": "fill"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将对齐方式设置为居左",
+    "A": {
+      "data": {
+        "layout": "flex-start"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将对齐方式设置为居中",
+    "A": {
+      "data": {
+        "layout": "center"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将对齐方式设置为居右",
+    "A": {
+      "data": {
+        "layout": "flex-end"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将4,4间距设置为水平",
+    "A": {
+      "data": {
+        "spaceSize": [
+          42,
+          73
+        ]
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将4,4间距设置为垂直",
+    "A": {
+      "data": {
+        "spaceSize": [
+          42,
+          73
+        ]
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将尺寸设置为大",
+    "A": {
+      "data": {
+        "allSize": "large"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将尺寸设置为中等",
+    "A": {
+      "data": {
+        "allSize": "middle"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将尺寸设置为小",
+    "A": {
+      "data": {
+        "allSize": "small"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮风格设置为主按钮",
+    "A": {
+      "data": {
+        "allType": "primary"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮风格设置为次按钮",
+    "A": {
+      "data": {
+        "allType": "default"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮风格设置为虚线按钮",
+    "A": {
+      "data": {
+        "allType": "dashed"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮风格设置为链接按钮",
+    "A": {
+      "data": {
+        "allType": "link"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮风格设置为文字按钮",
+    "A": {
+      "data": {
+        "allType": "text"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将危险按钮设置为开启",
+    "A": {
+      "data": {
+        "allDanger": true
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将危险按钮设置为关闭",
+    "A": {
+      "data": {
+        "allDanger": false
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮形状设置为默认",
+    "A": {
+      "data": {
+        "allShape": "default"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮形状设置为(椭)圆",
+    "A": {
+      "data": {
+        "allShape": "circle"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将按钮形状设置为圆角矩形",
+    "A": {
+      "data": {
+        "allShape": "round"
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将省略设置为开启",
+    "A": {
+      "data": {
+        "useEllipses": true
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "Q": "将省略设置为关闭",
+    "A": {
+      "data": {
+        "useEllipses": false
+      }
+    }
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_d3nper",
+    "text": "自定义插槽^jtN0",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_6tx53b",
+    "text": "自定义插槽TvCl}",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_1ykmyz",
+    "text": "自定义插槽HMGP@",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_mj1mat",
+    "text": "自定义插槽=/eu^",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_8jrkrb",
+    "text": "自定义插槽QVxCS",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_8fzi8r",
+    "text": "自定义插槽&O<PT",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_idbpm1",
+    "text": "自定义插槽-%IEP",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_7bpa5x",
+    "text": "自定义插槽{q<]i",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_001ctd",
+    "text": "自定义插槽h0Qda",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "工具条",
+    "namespace": "mybricks.normal-pc.toolbar",
+    "key": "u_prt21r",
+    "text": "自定义插槽9`N;Y",
+    "showText": true,
+    "dataType": "number",
+    "outVal": 0,
+    "inVal": "",
+    "isCustom": false,
+    "src": "",
+    "contentSize": [
+      14,
+      14
+    ],
+    "iconDistance": 8,
+    "loading": false,
+    "useDynamicLoading": false,
+    "style": {
+      "height": "auto",
+      "width": "auto"
+    },
+    "isSlot": true,
+    "useIcon": false
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将触发方式设置为悬浮",
+    "A": {
+      "data": {
+        "trigger": "hover"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将触发方式设置为点击",
+    "A": {
+      "data": {
+        "trigger": "click"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将触发方式设置为聚焦",
+    "A": {
+      "data": {
+        "trigger": "focus"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为左上",
+    "A": {
+      "data": {
+        "placement": "leftTop"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为上",
+    "A": {
+      "data": {
+        "placement": "top"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为右上",
+    "A": {
+      "data": {
+        "placement": "rightTop"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为左下",
+    "A": {
+      "data": {
+        "placement": "leftBottom"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为下",
+    "A": {
+      "data": {
+        "placement": "bottom"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为右下",
+    "A": {
+      "data": {
+        "placement": "rightBottom"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为左",
+    "A": {
+      "data": {
+        "placement": "left"
+      }
+    }
+  },
+  {
+    "title": "文字提示",
+    "namespace": "mybricks.normal-pc.tooltip",
+    "Q": "将方向设置为右",
+    "A": {
+      "data": {
+        "placement": "right"
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单类型设置为普通表单",
+    "A": {
+      "data": {
+        "layoutType": "Form"
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单类型设置为查询表单",
+    "A": {
+      "data": {
+        "layoutType": "QueryFilter"
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将默认折叠表单项设置为开启",
+    "A": {
+      "data": {
+        "layoutType": "QueryFilter",
+        "defaultCollapsed": true
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将默认折叠表单项设置为关闭",
+    "A": {
+      "data": {
+        "layoutType": "QueryFilter",
+        "defaultCollapsed": false
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将提交隐藏表单项设置为开启",
+    "A": {
+      "data": {
+        "submitHiddenFields": true
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将提交隐藏表单项设置为关闭",
+    "A": {
+      "data": {
+        "submitHiddenFields": false
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项布局类型设置为水平",
+    "A": {
+      "data": {
+        "config": {
+          "layout": "horizontal"
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项布局类型设置为垂直",
+    "A": {
+      "data": {
+        "config": {
+          "layout": "vertical"
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项布局类型设置为内联",
+    "A": {
+      "data": {
+        "config": {
+          "layout": "inline"
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为9/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 9,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为1/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 1,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为1/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 1,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为12/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 12,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为1/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 1,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为9/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 9,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为4/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 4,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将表单项宽度设置为23/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 23,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度类型设置为固定像素",
+    "A": {
+      "data": {
+        "labelWidthType": "px"
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度类型设置为24 栅格",
+    "A": {
+      "data": {
+        "labelWidthType": "span"
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为24px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 24
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为160px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 160
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为217px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 217
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为72px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 72
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为395px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 395
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为258px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 258
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为87px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 87
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为2px",
+    "A": {
+      "data": {
+        "labelWidthType": "px",
+        "labelWidth": 2
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为19格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 19
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为20格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 20
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为21格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 21
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为9格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 9
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为20格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 20
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为14格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 14
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为22格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 22
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题宽度设置为1格",
+    "A": {
+      "data": {
+        "labelWidthType": "span",
+        "labelCol": 1
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题显示冒号设置为开启",
+    "A": {
+      "data": {
+        "config": {
+          "colon": true
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题显示冒号设置为关闭",
+    "A": {
+      "data": {
+        "config": {
+          "colon": false
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题自动换行设置为开启",
+    "A": {
+      "data": {
+        "config": {
+          "labelWrap": true
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题自动换行设置为关闭",
+    "A": {
+      "data": {
+        "config": {
+          "labelWrap": false
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题对齐方式设置为左对齐",
+    "A": {
+      "data": {
+        "config": {
+          "labelAlign": "left"
+        }
+      }
+    }
+  },
+  {
+    "title": "表单容器",
+    "namespace": "mybricks.normal-pc.form-container",
+    "Q": "将标题对齐方式设置为右对齐",
+    "A": {
+      "data": {
+        "config": {
+          "labelAlign": "right"
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为2",
+    "A": {
+      "data": {
+        "formItemColumn": 2,
+        "actions": {
+          "span": 12
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为2",
+    "A": {
+      "data": {
+        "formItemColumn": 2,
+        "actions": {
+          "span": 12
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为1",
+    "A": {
+      "data": {
+        "formItemColumn": 1,
+        "actions": {
+          "span": 24
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为4",
+    "A": {
+      "data": {
+        "formItemColumn": 4,
+        "actions": {
+          "span": 6
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为1",
+    "A": {
+      "data": {
+        "formItemColumn": 1,
+        "actions": {
+          "span": 24
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为5",
+    "A": {
+      "data": {
+        "formItemColumn": 5,
+        "actions": {
+          "span": 4.8
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为2",
+    "A": {
+      "data": {
+        "formItemColumn": 2,
+        "actions": {
+          "span": 12
+        }
+      }
+    }
+  },
+  {
+    "title": "动态表单项",
+    "namespace": "mybricks.normal-pc.form-list",
+    "Q": "将每行的表单项数量设置为2",
+    "A": {
+      "data": {
+        "formItemColumn": 2,
+        "actions": {
+          "span": 12
+        }
+      }
+    }
+  },
+  {
+    "title": "气泡确认框",
+    "namespace": "mybricks.normal-pc.popconfirm",
+    "Q": "将标题设置为DYkLL",
+    "A": {
+      "title": "DYkLL"
+    }
+  },
+  {
+    "title": "气泡确认框",
+    "namespace": "mybricks.normal-pc.popconfirm",
+    "Q": "将确认按钮文字设置为BjdGy",
+    "A": {
+      "okText": "BjdGy"
+    }
+  },
+  {
+    "title": "气泡确认框",
+    "namespace": "mybricks.normal-pc.popconfirm",
+    "Q": "将取消按钮文字设置为Xqdov",
+    "A": {
+      "cancelText": "Xqdov"
+    }
+  },
+  {
+    "title": "气泡确认框",
+    "namespace": "mybricks.normal-pc.popconfirm",
+    "Q": "不显示取消按钮",
+    "A": {
+      "showCancel": false
+    }
+  }
+]

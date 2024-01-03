@@ -1,27 +1,35 @@
 {
   "内容": {
-    "Q": "将文字内容为FliSVqWpIW",
+    "Q": "将文字内容为wJwSAStjqZ",
     "A": {
-      "content": "FliSVqWpIW"
+      "data": {
+        "content": "wJwSAStjqZ"
+      }
     }
   },
   "链接": {
-    "Q": "将地址/url设置为https://-headache.name",
+    "Q": "将地址/url设置为https://-parenting.net",
     "A": {
-      "url": "https://-headache.name"
+      "data": {
+        "url": "https://-parenting.net"
+      }
     }
   },
   "图标自定义": [
     {
       "Q": "将图标自定义设置为开启",
       "A": {
-        "isChoose": true
+        "data": {
+          "isChoose": true
+        }
       }
     },
     {
       "Q": "将图标自定义设置为关闭",
       "A": {
-        "isChoose": false
+        "data": {
+          "isChoose": false
+        }
       }
     }
   ],
@@ -29,49 +37,65 @@
     {
       "Q": "将图标位置设置为位于文字前",
       "A": {
-        "location": "front"
+        "data": {
+          "location": "front"
+        }
       }
     },
     {
       "Q": "将图标位置设置为位于文字后",
       "A": {
-        "location": "back"
+        "data": {
+          "location": "back"
+        }
       }
     },
     {
       "Q": "将跳转方式设置为路由跳转",
       "A": {
-        "routeType": "push"
+        "data": {
+          "routeType": "push"
+        }
       }
     },
     {
       "Q": "将跳转方式设置为重定向",
       "A": {
-        "routeType": "redirect"
+        "data": {
+          "routeType": "redirect"
+        }
       }
     },
     {
       "Q": "将跳转方式设置为新标签页",
       "A": {
-        "routeType": "openTab"
+        "data": {
+          "routeType": "openTab"
+        }
       }
     },
     {
       "Q": "将跳转方式设置为返回",
       "A": {
-        "routeType": "back"
+        "data": {
+          "routeType": "back"
+        }
       }
     },
     {
       "Q": "将跳转方式设置为前进",
       "A": {
-        "routeType": "forward"
+        "data": {
+          "routeType": "forward"
+        }
       }
     },
     {
       "Q": "将跳转方式设置为自定义",
       "A": {
-        "routeType": "customEvent"
+        "data": {
+          "routeType": "customEvent"
+        }
       }
     }
   ],

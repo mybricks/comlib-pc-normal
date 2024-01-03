@@ -8,14 +8,18 @@ export default defineDataSet((utils)  => {
   result['链接'] = {
     "Q": `将链接设置为${url}`,
     "A": {
-      "link": url,
+      "data": {
+        "link": url,
+      }
     }
   }
 
   result['支持Logo'] = [true, false].map(item => ({
     "Q": `将支持logo设置为${item? '开启':'关闭'}`,
     "A": {
-      "hasIcon": item
+      "data": {
+        "hasIcon": item
+      }
     }
   })) 
 
@@ -24,10 +28,12 @@ export default defineDataSet((utils)  => {
   result['Logo'].push({
     "Q": `将Logo图片地址设置为${iconUrl}`,
     "A": {
-      "icon": {
-        url: iconUrl
-      },
-      "hasIcon": true
+      "data": {
+        "icon": {
+          "url": iconUrl
+        },
+        "hasIcon": true
+      }
     }
   }) 
   const widthPer = utils.number.int({ min: 0, max: 100 })
@@ -35,11 +41,13 @@ export default defineDataSet((utils)  => {
   result['Logo'].push({
     "Q": `将Logo图片尺寸设置为${iconUrl}`,
     "A": {
-      "icon": {
-        width: widthPer,
-        height: heightPer
-      },
-      "hasIcon": true
+      "data": {
+        "icon": {
+          width: widthPer,
+          height: heightPer
+        },
+        "hasIcon": true
+      }
     }
   }) 
 

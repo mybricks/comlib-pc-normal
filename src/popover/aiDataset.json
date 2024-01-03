@@ -1,0 +1,106 @@
+{
+  "标题自定义": [
+    {
+      "Q": "自定义标题",
+      "A": {
+        "useTitleSlot": true
+      }
+    }
+  ],
+  "标题": [
+    {
+      "Q": "将标题设置为CmMIL",
+      "A": {
+        "useTitleSlot": false,
+        "title": "CmMIL"
+      }
+    }
+  ],
+  "内容自定义": [
+    {
+      "Q": "自定义内容",
+      "A": {
+        "useContentSlot": true
+      }
+    }
+  ],
+  "内容": [
+    {
+      "Q": "将内容设置为MpcOP",
+      "A": {
+        "useContentSlot": false,
+        "content": "MpcOP"
+      }
+    }
+  ],
+  "触发方式": [
+    {
+      "Q": "将触发方式设置为悬浮",
+      "A": {
+        "textAlign": "hover"
+      }
+    },
+    {
+      "Q": "将触发方式设置为点击",
+      "A": {
+        "textAlign": "click"
+      }
+    },
+    {
+      "Q": "将触发方式设置为聚焦",
+      "A": {
+        "textAlign": "focus"
+      }
+    }
+  ],
+  "方向": [
+    {
+      "Q": "将方向设置为左上",
+      "A": {
+        "placement": "leftTop"
+      }
+    },
+    {
+      "Q": "将方向设置为上",
+      "A": {
+        "placement": "top"
+      }
+    },
+    {
+      "Q": "将方向设置为右上",
+      "A": {
+        "placement": "rightTop"
+      }
+    },
+    {
+      "Q": "将方向设置为左下",
+      "A": {
+        "placement": "leftBottom"
+      }
+    },
+    {
+      "Q": "将方向设置为下",
+      "A": {
+        "placement": "bottom"
+      }
+    },
+    {
+      "Q": "将方向设置为右下",
+      "A": {
+        "placement": "rightBottom"
+      }
+    },
+    {
+      "Q": "将方向设置为左",
+      "A": {
+        "placement": "left"
+      }
+    },
+    {
+      "Q": "将方向设置为右",
+      "A": {
+        "placement": "right"
+      }
+    }
+  ]
+}

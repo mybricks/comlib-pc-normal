@@ -26,19 +26,25 @@ export default defineDataSet((utils)  => {
     result['内容'] = {
       "Q": `将文字内容为${content}`,
       "A": {
-        "content": `${content}`,
+        "data": {
+          "content": `${content}`,
+        }
       }
     }
     result['链接'] = {
       "Q": `将地址/url设置为${url}`,
       "A": {
-        "url": `${url}`,
+        "data": {
+          "url": `${url}`,
+        }
       }
     }
     result['图标自定义'] = [true, false].map(item => ({
       "Q": `将图标自定义设置为${item? '开启':'关闭'}`,
       "A": {
-        "isChoose": item,
+        "data": {
+          "isChoose": item,
+        }
       }
     })) 
     /**   临时注释icon */ 
@@ -54,7 +60,9 @@ export default defineDataSet((utils)  => {
       result['图标位置'].push({
         "Q": `将图标位置设置为${key}`,
         "A": {
-          "location": `${iconPosOptionsMap[key]}`,
+          "data": {
+            "location": `${iconPosOptionsMap[key]}`,
+          }
         }
       })
     }
@@ -65,7 +73,9 @@ export default defineDataSet((utils)  => {
       result['图标位置'].push({
         "Q": `将跳转方式设置为${key}`,
         "A": {
-          "routeType": routeTypeOptionsMap[key],
+          "data": {
+            "routeType": routeTypeOptionsMap[key],
+          }
         }
       })
     }

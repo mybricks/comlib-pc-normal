@@ -1,23 +1,29 @@
 {
   "视频链接": {
-    "Q": "将视频链接设置为https://-slaw.biz/",
+    "Q": "将视频链接设置为https://-tone.com/",
     "A": {
-      "src": "https://-slaw.biz/"
+      "data": {
+        "src": "https://-tone.com/"
+      }
     }
   },
   "自动播放": [
     {
       "Q": "将自动播放设置为开启",
       "A": {
-        "autoplay": true,
-        "muted": true
+        "data": {
+          "autoplay": true,
+          "muted": true
+        }
       }
     },
     {
       "Q": "将自动播放设置为关闭",
       "A": {
-        "autoplay": false,
-        "muted": false
+        "data": {
+          "autoplay": false,
+          "muted": false
+        }
       }
     }
   ],
@@ -25,13 +31,17 @@
     {
       "Q": "将控制栏设置为开启",
       "A": {
-        "controls": true
+        "data": {
+          "controls": true
+        }
       }
     },
     {
       "Q": "将控制栏设置为关闭",
       "A": {
-        "controls": false
+        "data": {
+          "controls": false
+        }
       }
     }
   ],
@@ -39,33 +49,43 @@
     {
       "Q": "将循环播放设置为开启",
       "A": {
-        "controls": true
+        "data": {
+          "loop": true
+        }
       }
     },
     {
       "Q": "将循环播放设置为关闭",
       "A": {
-        "controls": false
+        "data": {
+          "loop": false
+        }
       }
     }
   ],
   "封面": {
-    "Q": "将封面设置为https://picsum.photos/seed/RXQTNW4D/640/480",
+    "Q": "将封面设置为https://loremflickr.com/640/480?lock=3750060848316416",
     "A": {
-      "src": "https://picsum.photos/seed/RXQTNW4D/640/480"
+      "data": {
+        "src": "https://loremflickr.com/640/480?lock=3750060848316416"
+      }
     }
   },
   "比例": [
     {
       "Q": "将比例设置为保持比例",
       "A": {
-        "fit": "contain"
+        "data": {
+          "fit": "contain"
+        }
       }
     },
     {
       "Q": "将比例设置为充满",
       "A": {
-        "fit": "fill"
+        "data": {
+          "fit": "fill"
+        }
       }
     }
   ]

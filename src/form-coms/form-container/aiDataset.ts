@@ -60,10 +60,10 @@ export default defineDataSet((utils) => {
   // ======================== 表单项布局-表单项宽度 ========================
   result.push(
     ...utils.options.slider({ min: 1, max: 24 }).map((item) => ({
-      Q: `将表单项宽度设置为${item}/24`,
+      Q: `将表单项宽度设置为${item.value}/24`,
       A: {
         data: {
-          config: { span: item, actions: { align: 'right' } }
+          config: { span: item.value, actions: { align: 'right' } }
         }
       }
     }))
@@ -88,9 +88,9 @@ export default defineDataSet((utils) => {
   // ======================== 标题宽度(px) ========================
   result.push(
     ...utils.options.slider({ min: 1, max: 400 }).map((item) => ({
-      Q: `将标题宽度设置为${item}px`,
+      Q: `将标题宽度设置为${item.value}px`,
       A: {
-        data: { labelWidthType: 'px', labelWidth: item }
+        data: { labelWidthType: 'px', labelWidth: item.value }
       }
     }))
   );
@@ -98,11 +98,11 @@ export default defineDataSet((utils) => {
   // ======================== 标题宽度(栅格) ========================
   result.push(
     ...utils.options.slider({ min: 1, max: 24 }).map((item) => ({
-      Q: `将标题宽度设置为${item}格`,
+      Q: `将标题宽度设置为${item.value}格`,
       A: {
         data: {
           labelWidthType: 'span',
-          labelCol: item
+          labelCol: item.value
         }
       }
     }))

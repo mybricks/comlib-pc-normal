@@ -3,13 +3,17 @@
     {
       "Q": "将方向设置为水平",
       "A": {
-        "direction": "horizontal"
+        "data": {
+          "direction": "horizontal"
+        }
       }
     },
     {
       "Q": "将方向设置为垂直",
       "A": {
-        "direction": "vertical"
+        "data": {
+          "direction": "vertical"
+        }
       }
     }
   ],
@@ -17,66 +21,67 @@
     {
       "Q": "将类型设置为默认",
       "A": {
-        "type": "default",
-        "tags": {
-          "color": "default"
+        "data": {
+          "type": "default"
         }
       }
     },
     {
       "Q": "将类型设置为成功",
       "A": {
-        "type": "success",
-        "tags": {
-          "color": "success"
+        "data": {
+          "type": "success"
         }
       }
     },
     {
       "Q": "将类型设置为进行中",
       "A": {
-        "type": "processing",
-        "tags": {
-          "color": "processing"
+        "data": {
+          "type": "processing"
         }
       }
     },
     {
       "Q": "将类型设置为警告",
       "A": {
-        "type": "warning",
-        "tags": {
-          "color": "warning"
+        "data": {
+          "type": "warning"
         }
       }
     },
     {
       "Q": "将类型设置为失败",
       "A": {
-        "type": "error",
-        "tags": {
-          "color": "error"
+        "data": {
+          "type": "error"
         }
       }
     }
   ],
   "标签间距": {
-    "Q": "将间距设置为4802950113263616",
+    "Q": "将间距设置为8089706017325056",
     "A": {
-      "size": 4802950113263616
+      "data": {
+        "size": 8089706017325056
+      }
     }
   },
   "可关闭": [
     {
-      "Q": "将可关闭处理设置为开启",
+      "Q": "将可关闭设置为开启",
       "A": {
-        "closeAble": true
+        "data": {
+          "closeAble": true
+        }
       }
     },
     {
-      "Q": "将可关闭处理设置为关闭",
+      "Q": "将可关闭设置为关闭",
       "A": {
-        "closeAble": false
+        "data": {
+          "closeAble": false
+        }
       }
     }
   ],
@@ -84,13 +89,17 @@
     {
       "Q": "将可新增设置为开启",
       "A": {
-        "appendAble": true
+        "data": {
+          "appendAble": true
+        }
       }
     },
     {
       "Q": "将可新增设置为关闭",
       "A": {
-        "appendAble": false
+        "data": {
+          "appendAble": false
+        }
       }
     }
   ],
@@ -98,15 +107,19 @@
     {
       "Q": "将显示新增按钮设置为开启",
       "A": {
-        "useAppendBtn": true,
-        "appendAble": true
+        "data": {
+          "useAppendBtn": true,
+          "appendAble": true
+        }
       }
     },
     {
       "Q": "将显示新增按钮设置为关闭",
       "A": {
-        "useAppendBtn": false,
-        "appendAble": true
+        "data": {
+          "useAppendBtn": false,
+          "appendAble": true
+        }
       }
     }
   ],
@@ -114,13 +127,17 @@
     {
       "Q": "将可选择属性设置为开启",
       "A": {
-        "checkable": true
+        "data": {
+          "checkable": true
+        }
       }
     },
     {
       "Q": "将可选择属性设置为关闭",
       "A": {
-        "checkable": false
+        "data": {
+          "checkable": false
+        }
       }
     }
   ],
@@ -128,13 +145,17 @@
     {
       "Q": "将动态数据设置为开启",
       "A": {
-        "dynamic": true
+        "data": {
+          "dynamic": true
+        }
       }
     },
     {
       "Q": "将动态数据设置为关闭",
       "A": {
-        "dynamic": false
+        "data": {
+          "dynamic": false
+        }
       }
     }
   ],
@@ -142,22 +163,28 @@
     {
       "Q": "将文本溢出/省略设置为开启",
       "A": {
-        "isEllipsis": true
+        "data": {
+          "isEllipsis": true
+        }
       }
     },
     {
       "Q": "将文本溢出/省略设置为关闭",
       "A": {
-        "isEllipsis": false
+        "data": {
+          "isEllipsis": false
+        }
       }
     }
   ],
   "最大显示宽度": {
-    "Q": "将最大显示宽度设置为2633575774027797",
+    "Q": "将最大显示宽度设置为5722611577257995",
     "A": {
-      "isEllipsis": true,
-      "ellipse": {
-        "maxWidth": 2633575774027797
+      "data": {
+        "isEllipsis": true,
+        "ellipse": {
+          "maxWidth": 5722611577257995
+        }
       }
     }
   }

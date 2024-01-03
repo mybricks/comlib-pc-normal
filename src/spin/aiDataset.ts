@@ -12,7 +12,9 @@ export default defineDataSet((utils)  => {
   result['描述文案'] = {
     "Q": `将描述文案设置为${tip}`,
     "A": {
-      "tip": tip,
+      "data": {
+        "tip": tip,
+      }
     }
   }
 
@@ -21,7 +23,9 @@ export default defineDataSet((utils)  => {
     result['加载图标大小'].push({
       "Q": `将加载图标大小设置为${key}`,
       "A": {
-        "size": sizeMap[key],
+        "data": {
+          "size": sizeMap[key],
+        }
       }
     })
   }
