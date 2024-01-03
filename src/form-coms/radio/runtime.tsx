@@ -145,7 +145,7 @@ export default function Runtime({
 
   const renderRadio = () => {
     return (
-      <div className={css.radio}>
+      <div className={`${css.radio} radio`}>
         {data.isEditable ? (
           <Radio.Group
             optionType={data.enableButtonStyle ? 'button' : 'default'}
@@ -182,7 +182,7 @@ export default function Runtime({
   };
 
   return data.enableButtonStyle ? (
-    <div>
+    <div className="radio">
       {data.isEditable ? (
         <Radio.Group
           optionType={data.enableButtonStyle ? 'button' : 'default'}
@@ -199,7 +199,7 @@ export default function Runtime({
                 value={item.value}
                 disabled={item.disabled}
                 checked={item.checked}
-                style={{ marginRight: 8, color: value === item.value ? activeFontColor : '' }}
+                style={{ color: value === item.value ? activeFontColor : '' }}
               >
                 {env.i18n(label)}
               </Radio>

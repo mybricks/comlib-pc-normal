@@ -93,6 +93,23 @@ const column = {
           return selector;
         }
       },
+      {
+        title: '分割线',
+        catelog: '默认',
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+        ifVisible({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return !!data.columns.length && !(item && item.sorter?.enable);
+        },
+        target: ({ data, focusArea, id }: EditorResult<Data>) => {
+          const { tableThIdx } = focusArea.dataset;
+          const selector = `table thead tr th[data-table-th-idx="${tableThIdx}"]${getFilterSelector(
+            id
+          )}::before`;
+          return selector;
+        }
+      },
       // createStyleForHead({
       //   target({ data, focusArea, id }: EditorResult<Data>) {
       //     const { tableThIdx } = focusArea.dataset;
