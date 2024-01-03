@@ -1,12 +1,8 @@
 
 import { defineDataSet } from "ai-dataset";
-import { Data, ShapeEnum, SizeEnum, TypeEnum, AlignEnum } from './types';
+import { Data, ShapeEnum, SizeEnum, TypeEnum } from './constants';
 
-const layoutMap = {
-  "居左": AlignEnum.FlexStart,
-  "居中": AlignEnum.Center,
-  "居右": AlignEnum.FlexEnd
-}
+
 
 const spaceMap = {
   "水平": [4, 4], "垂直": [4, 4]
@@ -48,16 +44,6 @@ export default defineDataSet((utils)  => {
         "asMapArea": item,
       }
     })) 
-    result['对齐方式'] =[] 
-    
-    for(let key in layoutMap) {
-      result['对齐方式'].push({
-        "Q": `将按钮的对齐方式设置为${key}`,
-        "A": {
-          "layout": layoutMap[key]
-        }
-      })
-    }
 
     result['尺寸'] =[] 
     for(let key in sizeMap) {

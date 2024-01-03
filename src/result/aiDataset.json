@@ -1,0 +1,40 @@
+{
+  "标题": {
+    "Q": "将结果页的标题设置为KRXEGnbqlv",
+    "A": {
+      "title": "KRXEGnbqlv"
+    }
+  },
+  "副标题": {
+    "Q": "将结果页的副标题设置为tuRHlqeKTb",
+    "A": {
+      "subtitle": "tuRHlqeKTb"
+    }
+  },
+  "状态": [
+    {
+      "Q": "将结果页的状态设置为成功",
+      "A": {
+        "status": "success"
+      }
+    },
+    {
+      "Q": "将结果页的状态设置为错误",
+      "A": {
+        "status": "error"
+      }
+    },
+    {
+      "Q": "将结果页的状态设置为信息",
+      "A": {
+        "status": "info"
+      }
+    },
+    {
+      "Q": "将结果页的状态设置为警告",
+      "A": {
+        "status": "warning"
+      }
+    }
+  ]
+}
