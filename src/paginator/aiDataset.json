@@ -1,0 +1,216 @@
+{
+  "位置": [
+    {
+      "Q": "将位置设置为居左",
+      "A": {
+        "data": {
+          "align": "flex-start"
+        },
+        "style": {
+          "width": 1024
+        }
+      }
+    },
+    {
+      "Q": "将位置设置为center",
+      "A": {
+        "data": {
+          "align": "居中"
+        },
+        "style": {
+          "width": 1024
+        }
+      }
+    },
+    {
+      "Q": "将位置设置为flex-end",
+      "A": {
+        "data": {
+          "align": "居右"
+        },
+        "style": {
+          "width": 1024
+        }
+      }
+    }
+  ],
+  "尺寸": [
+    {
+      "Q": "将尺寸设置为正常",
+      "A": {
+        "data": {
+          "size": "default"
+        }
+      }
+    },
+    {
+      "Q": "将尺寸设置为小",
+      "A": {
+        "data": {
+          "size": "small"
+        }
+      }
+    },
+    {
+      "Q": "将尺寸设置为简单模式",
+      "A": {
+        "data": {
+          "size": "simple"
+        }
+      }
+    }
+  ],
+  "默认每页显示条数": {
+    "Q": "将默认每页显示条数设置为pageSize",
+    "A": {
+      "data": {
+        "defaultPageSize": 265,
+        "currentPage": {
+          "pageNum": 1,
+          "pageSize": 265
+        }
+      }
+    }
+  },
+  "前置说明文字": [
+    {
+      "Q": "将前置说明文字设置为'共 {total} 条结果'",
+      "A": {
+        "data": {
+          "size": "default",
+          "text": "共 {total} 条结果"
+        }
+      }
+    },
+    {
+      "Q": "将前置说明文字设置为'{total} 条数据'",
+      "A": {
+        "data": {
+          "size": "default",
+          "text": "{total} 条数据"
+        }
+      }
+    },
+    {
+      "Q": "将前置说明文字设置为'总数： {total}'",
+      "A": {
+        "data": {
+          "size": "default",
+          "text": "总数： {total}"
+        }
+      }
+    }
+  ],
+  "跳页功能": [
+    {
+      "Q": "将跳页功能设置为是",
+      "A": {
+        "data": {
+          "size": "default",
+          "showQuickJumper": true
+        }
+      }
+    },
+    {
+      "Q": "将跳页功能设置为否",
+      "A": {
+        "data": {
+          "size": "default",
+          "showQuickJumper": false
+        }
+      }
+    }
+  ],
+  "条数选择功能": [
+    {
+      "Q": "将条数选择功能设置为是",
+      "A": {
+        "data": {
+          "size": "default",
+          "showSizeChanger": true
+        }
+      }
+    },
+    {
+      "Q": "将条数选择功能设置为否",
+      "A": {
+        "data": {
+          "size": "default",
+          "showSizeChanger": false
+        }
+      }
+    }
+  ],
+  "条数配置": [
+    {
+      "Q": "将页面条数选项列表设置为10、20、50、100",
+      "A": {
+        "data": {
+          "size": "default",
+          "showSizeChanger": true,
+          "pageSizeOptions": [
+            10,
+            20,
+            50,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "Q": "将页面条数选项列表设置为10、20、50、70、100",
+      "A": {
+        "data": {
+          "size": "default",
+          "showSizeChanger": true,
+          "pageSizeOptions": [
+            10,
+            20,
+            50,
+            70,
+            100
+          ]
+        }
+      }
+    }
+  ],
+  "页数为1时隐藏分页器": [
+    {
+      "Q": "当页数为1时隐藏分页器",
+      "A": {
+        "data": {
+          "size": "simple",
+          "hideOnSinglePage": true
+        }
+      }
+    },
+    {
+      "Q": "当页数为1时隐藏分页器",
+      "A": {
+        "data": {
+          "showSizeChanger": false,
+          "hideOnSinglePage": true
+        }
+      }
+    },
+    {
+      "Q": "当页数为1时不隐藏分页器",
+      "A": {
+        "data": {
+          "size": "simple",
+          "hideOnSinglePage": false
+        }
+      }
+    },
+    {
+      "Q": "当页数为1时不隐藏分页器",
+      "A": {
+        "data": {
+          "showSizeChanger": false,
+          "hideOnSinglePage": false
+        }
+      }
+    }
+  ],
+  "动态启用/禁用": []
+}
