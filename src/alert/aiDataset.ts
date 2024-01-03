@@ -63,16 +63,17 @@ export default defineDataSet((utils)  => {
     "A": {
       "isChoose": item
     }
-  })) 
-  const icon = utils.string.alpha(10)
-  result['选择图标'] = {
-    "Q": `将警告提示的图标设置为${icon}`,
-    "A": {
-      "icon": `${icon}`,
-      "isChoose": true,
-      "showIcon": true
-    }
-  }
+  }))
+  /**   临时注释icon */ 
+  // const icon = utils.string.alpha(10)
+  // result['选择图标'] = {
+  //   "Q": `将警告提示的图标设置为${icon}`,
+  //   "A": {
+  //     "icon": `${icon}`,
+  //     "isChoose": true,
+  //     "showIcon": true
+  //   }
+  // }
 
   result['固定宽度'] = [true, false].map(item => ({
     "Q": `将警告提示的固定宽度设置为${item? '开启':'关闭'}`,

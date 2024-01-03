@@ -1,8 +1,8 @@
 {
   "标题": {
-    "Q": "将标题设置为QJQJDdyPFX",
+    "Q": "将标题设置为ITfstjbVxX",
     "A": {
-      "message": "QJQJDdyPFX"
+      "message": "ITfstjbVxX"
     }
   },
   "类型": [
@@ -88,9 +88,9 @@
     }
   ],
   "辅助介绍文案": {
-    "Q": "将警告提示的辅助介绍文案设置为AqAwwTwcNZ",
+    "Q": "将警告提示的辅助介绍文案设置为dPFrgflxOq",
     "A": {
-      "content": "AqAwwTwcNZ"
+      "content": "dPFrgflxOq"
     }
   },
   "图标自定义": [
@@ -107,14 +107,6 @@
       }
     }
   ],
-  "选择图标": {
-    "Q": "将警告提示的图标设置为CpUWfhtzEq",
-    "A": {
-      "icon": "CpUWfhtzEq",
-      "isChoose": true,
-      "showIcon": true
-    }
-  },
   "固定宽度": [
     {
       "Q": "将警告提示的固定宽度设置为开启",
@@ -129,18 +121,18 @@
       }
     },
     {
-      "Q": "将警告提示的固定宽度设置为2086051686383623",
+      "Q": "将警告提示的固定宽度设置为3822363093237766",
       "A": {
         "openWidth": true,
-        "width": 2086051686383623
+        "width": 3822363093237766
       }
     }
   ],
   "百分比宽度": {
-    "Q": "将警告提示的百分比宽度设置为1223732779548680",
+    "Q": "将警告提示的百分比宽度设置为21",
     "A": {
       "openWidth": false,
-      "percentWidth": 1223732779548680
+      "percentWidth": 21
     }
   }
 }

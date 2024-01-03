@@ -108,62 +108,63 @@ export default defineDataSet((utils)  => {
     }
 
     /** 标签项变更 */
+    /** TODO:wf,确认A描述 */
     const content = utils.string.alpha(10)
     const index = utils.number.int({ max: 10})
-    result['标签内容'] = {
-      "Q": `将标签列表第${index}个标签的标签内容设置为${content}`,
-      /** TODO:wf,确认A描述 */
-      "A": {
-        tags: {
-          index: index,
-          data: {
-            "content": content
-          }
-        }
-      }
-    }
-    result['标签项类型'] = {
-      "Q": `将标签列表第${index}个标签的标签类型设置为${content}`,
-      /** TODO:wf,确认A描述 */
-      "A": {
-        tags: {
-          index: index,
-          data: {
-            "content": content
-          }
-        }
-      }
-    }
+    // result['标签内容'] = {
+    //   "Q": `将标签列表第${index}个标签的标签内容设置为${content}`,
+    //   "A": {
+    //     tags: {
+    //       index: index,
+    //       data: {
+    //         "content": content
+    //       }
+    //     }
+    //   }
+    // }
+    // result['标签项类型'] = {
+    //   "Q": `将标签列表第${index}个标签的标签类型设置为${content}`,
+    //   /** TODO:wf,确认A描述 */
+    //   "A": {
+    //     tags: {
+    //       index: index,
+    //       data: {
+    //         "content": content
+    //       }
+    //     }
+    //   }
+    // }
 
     /** 标签项类型，title 和标签列表类型重复;更改标签项-类型-title */
-    result['标签项类型'] =[] 
-    for(let key in tagsTypeMap) {
-      result['标签项类型'].push({
-        "Q": `将第${index}个标签的标签类型设置为${key}`,
-        "A": {
-          tags: {
-            index: index,
-            data: {
-              "color": tagsTypeMap[key]
-            }
-          }
-        }
-      })
-    }
+    // result['标签项类型'] =[] 
+    // for(let key in tagsTypeMap) {
+    //   result['标签项类型'].push({
+    //     "Q": `将第${index}个标签的标签类型设置为${key}`,
+    //     "A": {
+    //       tags: {
+    //         index: index,
+    //         data: {
+    //           "color": tagsTypeMap[key]
+    //         }
+    //       }
+    //     }
+    //   })
+    // }
 
-    const icon = utils.string.alpha(10)
-    result['图标'] = {
-      "Q": `将第${index}个标签的图标设置为${icon}`,
-      /** TODO:wf,确认A描述 */
-      "A": {
-        tags: {
-          index: index,
-          data: {
-            "icon": icon
-          }
-        }
-      }
-    } 
+      /**   临时注释icon */ 
+    // const icon = utils.string.alpha(10)
+    // result['图标'] = {
+    //   "Q": `将第${index}个标签的图标设置为${icon}`,
+    //   /** TODO:wf,确认A描述 */
+    //   "A": {
+    //     tags: {
+    //       index: index,
+    //       data: {
+    //         "icon": icon
+    //       }
+    //     }
+    //   }
+    // } 
     // TODO:wf,标签项的前移，后移，删除
     return result
   }

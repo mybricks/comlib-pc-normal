@@ -3,13 +3,14 @@ import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils)  => { 
     const result = {}
     let text = utils.string.alpha(10)
-    const icon = utils.string.alpha(12)
-    result['选择图标'] = {
-      "Q": `将图标icon设置为${icon}`,
-      "A": {
-        "icon": icon
-      }
-    }
+    /**   临时注释icon */ 
+    // const icon = utils.string.alpha(12)
+    // result['选择图标'] = {
+    //   "Q": `将图标icon设置为${icon}`,
+    //   "A": {
+    //     "icon": icon
+    //   }
+    // }
 
     const color = utils.color.rgb()
     result['颜色'] = {

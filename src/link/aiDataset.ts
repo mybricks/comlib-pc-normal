@@ -41,12 +41,13 @@ export default defineDataSet((utils)  => {
         "isChoose": item,
       }
     })) 
-    result['选择图标'] = {
-      "Q": `将图标设置为${icon}`,
-      "A": {
-        "icon": `${icon}`,
-      }
-    }
+    /**   临时注释icon */ 
+    // result['选择图标'] = {
+    //   "Q": `将图标设置为${icon}`,
+    //   "A": {
+    //     "icon": `${icon}`,
+    //   }
+    // }
   
     result['图标位置'] = []
     for(let key in iconPosOptionsMap) {
