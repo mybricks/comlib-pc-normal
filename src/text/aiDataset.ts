@@ -9,13 +9,12 @@ export default defineDataSet((utils)  => {
       "content": `${content}`,
     }
   }
-  let isEllipsis = utils.datatype.boolean()
-  result['文本溢出/省略'] = {
-    "Q": `将文本输入框的‘文本溢出/省略’ 设置为${isEllipsis}`,
+  result['文本溢出/省略'] = [true, false].map(item => ({
+    "Q": `将文本输入框的文本溢出/省略设置为${item? '开启':'关闭'}`,
     "A": {
-      "isEllipsis": `${isEllipsis}`,
+      "isEllipsis": item,
     }
-  }
+  })) 
   const maxRow = utils.number.int()
   result['最大显示行数'] = {
     "Q": `将文本输入框的最大显示行数设置为${maxRow}`,

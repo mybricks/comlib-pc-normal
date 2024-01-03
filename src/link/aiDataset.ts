@@ -19,17 +19,7 @@ const routeTypeOptionsMap = {
 
 export default defineDataSet((utils)  => { 
     const result = {}
-  
-  
-    const mayBeBooleanEnumMap = {
-      '开启': true,
-      '打开': true,
-      '开': true,
-      true: true,
-      '关闭': false,
-      '关': false,
-      false: false,
-    }
+
     const content = utils.string.alpha(10)
     const url = utils.internet.url()
     const isChoose = utils.datatype.boolean()
@@ -46,12 +36,12 @@ export default defineDataSet((utils)  => {
         "url": `${url}`,
       }
     }
-    result['图标自定义'] = {
-      "Q": `将链接的图标自定义设置为${isChoose}`,
+    result['图标自定义'] = [true, false].map(item => ({
+      "Q": `将链接的图标自定义设置为${item? '开启':'关闭'}`,
       "A": {
-        "isChoose": `${isChoose}`,
+        "isChoose": item,
       }
-    }
+    })) 
     result['选择图标'] = {
       "Q": `将链接的图标设置为${icon}`,
       "A": {
