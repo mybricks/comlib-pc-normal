@@ -1,0 +1,36 @@
+{
+  "链接地址": {
+    "Q": "将链接地址设置为https://-twist.name/",
+    "A": {
+      "data": {
+        "url": "https://-twist.name/"
+      }
+    }
+  },
+  "使用srcDoc": [
+    {
+      "Q": "将使用srcDoc设置为开启",
+      "A": {
+        "data": {
+          "useSrcDoc": true
+        }
+      }
+    },
+    {
+      "Q": "将使用srcDoc设置为关闭",
+      "A": {
+        "data": {
+          "useSrcDoc": false
+        }
+      }
+    }
+  ],
+  "ID": {
+    "Q": "将ID设置为uxzNZ",
+    "A": {
+      "data": {
+        "id": "uxzNZ"
+      }
+    }
+  }
+}
