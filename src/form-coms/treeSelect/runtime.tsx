@@ -72,16 +72,16 @@ export default function Runtime({
           changeValue(val);
           outputs[OutputIds.OnChange](val);
         } else {
-          logger.error(`${title}【设置值】参数应为数组格式`);
+          logger.warn(`${title}【设置值】参数应为数组格式`);
         }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
-        if (outputRels['setValueDone']) {
-          outputRels['setValueDone'](val);
-        }
         outputs[OutputIds.OnChange](val);
       } else {
-        logger.error(`${title}【设置值】参数应为基本类型`);
+        logger.warn(`${title}【设置值】参数应为基本类型`);
+      }
+      if (outputRels['setValueDone']) {
+        outputRels['setValueDone'](val);
       }
     });
 
@@ -89,14 +89,14 @@ export default function Runtime({
       if (data.config.multiple) {
         typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
           ? onInit(val)
-          : logger.error(`${title}【设置初始值】参数应为数组格式`);
+          : logger.warn(`${title}【设置初始值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
-        if (outputRels['setInitialValueDone']) {
-          outputRels['setInitialValueDone'](val);
-        }
       } else {
-        logger.error(`${title}【设置初始值】参数应为基本类型`);
+        logger.warn(`${title}【设置初始值】参数应为基本类型`);
+      }
+      if (outputRels['setInitialValueDone']) {
+        outputRels['setInitialValueDone'](val);
       }
     });
 
@@ -299,32 +299,38 @@ export default function Runtime({
 
   return (
     <div ref={wrapperRef} className={css.select}>
-      {data.isEditable ? <TreeSelect
-        treeIcon
-        {...data.config}
-        placeholder={env.i18n(data.config.placeholder)}
-        showSearch={data.config.showSearch}
-        showArrow={data.config.showArrow}
-        treeDefaultExpandAll={env.design ? true : void 0}
-        treeExpandedKeys={expandedKeys}
-        onTreeExpand={onExpand}
-        switcherIcon={(props) => getIcon(data.switcherIcon, props)}
-        multiple={data.config.multiple}
-        treeCheckable={data.config.treeCheckable}
-        showCheckedStrategy={data.config.showCheckedStrategy}
-        maxTagCount={data.config.maxTagCount}
-        treeNodeFilterProp={data.config.treeNodeFilterProp}
-        open={env.design ? true : void 0}
-        value={value}
-        loadData={data.useLoadData ? onLoadData : undefined}
-        fieldNames={fieldNames}
-        onChange={onChange}
-        treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
-        dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-      >
-        {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
-      </TreeSelect> : Array.isArray(value) ? value.join(',') : value}
+      {data.isEditable ? (
+        <TreeSelect
+          treeIcon
+          {...data.config}
+          placeholder={env.i18n(data.config.placeholder)}
+          showSearch={data.config.showSearch}
+          showArrow={data.config.showArrow}
+          treeDefaultExpandAll={env.design ? true : void 0}
+          treeExpandedKeys={expandedKeys}
+          onTreeExpand={onExpand}
+          switcherIcon={(props) => getIcon(data.switcherIcon, props)}
+          multiple={data.config.multiple}
+          treeCheckable={data.config.treeCheckable}
+          showCheckedStrategy={data.config.showCheckedStrategy}
+          maxTagCount={data.config.maxTagCount}
+          treeNodeFilterProp={data.config.treeNodeFilterProp}
+          open={env.design ? true : void 0}
+          value={value}
+          loadData={data.useLoadData ? onLoadData : undefined}
+          fieldNames={fieldNames}
+          onChange={onChange}
+          treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
+          dropdownClassName={id}
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+        >
+          {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
+        </TreeSelect>
+      ) : Array.isArray(value) ? (
+        value.join(',')
+      ) : (
+        value
+      )}
     </div>
   );
 }

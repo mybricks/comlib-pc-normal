@@ -127,7 +127,7 @@ const CodeEditor = (
 
   useEffect(() => {
     const { language, ...options } = config ?? {};
-    editor.current?.setOptions({...options, readOnly});
+    editor.current?.setOptions({ ...options, readOnly });
   }, [config, readOnly]);
 
   useEffect(() => {
