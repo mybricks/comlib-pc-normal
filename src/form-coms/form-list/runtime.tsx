@@ -75,8 +75,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
       } else {
         logger.error(title + '[设置初始值]: 类型不合法');
       }
-      if (outputRels['setValueDone']) {
-        outputRels['setValueDone']?.(value);
+      if (outputRels['setInitialValueDone']) {
+        outputRels['setInitialValueDone']?.(value);
       }
     });
 
