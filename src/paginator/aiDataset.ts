@@ -25,7 +25,7 @@ export default defineDataSet((utils) => {
     };
   });
   const pageSize = utils.number.int({ min: 0, max: 1000 });
-  result['默认每页显示条数'] = {
+  result['默认每页显示条数'] = [{
     Q: `将默认每页显示条数设置为pageSize`,
     A: {
       data: {
@@ -36,7 +36,7 @@ export default defineDataSet((utils) => {
         }
       },
     },
-  };
+  }];
   result['前置说明文字'] = ['共 {total} 条结果', '{total} 条数据', '总数： {total}'].map(key => {
     return {
       Q: `将前置说明文字设置为'${key}'`,

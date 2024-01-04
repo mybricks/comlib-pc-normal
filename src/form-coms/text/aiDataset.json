@@ -1,0 +1,52 @@
+[
+  {
+    "Q": "将尺寸设置为宽",
+    "A": {
+      "data": {
+        "config": {
+          "size": "large"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将尺寸设置为中",
+    "A": {
+      "data": {
+        "config": {
+          "size": "middle"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将尺寸设置为窄",
+    "A": {
+      "data": {
+        "config": {
+          "size": "small"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将图标来源设置为内置图标库",
+    "A": {
+      "data": {
+        "config": {
+          "iconSource": "inner"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将图标来源设置为自定义上传",
+    "A": {
+      "data": {
+        "config": {
+          "iconSource": "custom"
+        }
+      }
+    }
+  }
+]
