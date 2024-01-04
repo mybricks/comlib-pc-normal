@@ -1,11 +1,44 @@
 [
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "将每行的表单项数量设置为1",
     "A": {
       "data": {
-        "formItemColumn": 2,
+        "formItemColumn": 1,
         "actions": {
-          "span": 12
+          "span": 24
+        }
+      }
+    }
+  },
+  {
+    "Q": "将每行的表单项数量设置为5",
+    "A": {
+      "data": {
+        "formItemColumn": 5,
+        "actions": {
+          "span": 4.8
+        }
+      }
+    }
+  },
+  {
+    "Q": "将每行的表单项数量设置为3",
+    "A": {
+      "data": {
+        "formItemColumn": 3,
+        "actions": {
+          "span": 8
+        }
+      }
+    }
+  },
+  {
+    "Q": "将每行的表单项数量设置为1",
+    "A": {
+      "data": {
+        "formItemColumn": 1,
+        "actions": {
+          "span": 24
         }
       }
     }
@@ -44,46 +77,267 @@
     }
   },
   {
-    "Q": "将每行的表单项数量设置为1",
+    "Q": "将每行的表单项数量设置为3",
     "A": {
       "data": {
-        "formItemColumn": 1,
+        "formItemColumn": 3,
         "actions": {
-          "span": 24
+          "span": 8
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为5",
+    "Q": "默认开启子项标题的显示",
     "A": {
       "data": {
-        "formItemColumn": 5,
-        "actions": {
-          "span": 4.8
+        "showTitle": true
+      }
+    }
+  },
+  {
+    "Q": "默认关闭子项标题的显示",
+    "A": {
+      "data": {
+        "showTitle": false
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度类型设置为固定像素",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px"
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度类型设置为24 栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span"
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为180px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 180
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为108px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 108
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为14px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 14
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为168px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 168
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为25px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 25
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为136px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 136
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为17px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 17
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为34px",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "px",
+        "labelWidth": 34
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为2个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 2
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为15个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 15
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为3个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 3
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为18个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 18
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为22个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 22
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为8个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 8
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为15个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 15
+      }
+    }
+  },
+  {
+    "Q": "将子项标题宽度设置为11个栅格",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "labelWidthType": "span",
+        "labelWidth": 11
+      }
+    }
+  },
+  {
+    "Q": "默认开启子项标题后的冒号",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "formItemConfig": {
+          "colon": true
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "默认关闭子项标题后的冒号",
     "A": {
       "data": {
-        "formItemColumn": 2,
-        "actions": {
-          "span": 12
+        "showTitle": true,
+        "formItemConfig": {
+          "colon": false
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "将子项标题对齐方式设置为左对齐",
     "A": {
       "data": {
-        "formItemColumn": 2,
-        "actions": {
-          "span": 12
+        "showTitle": true,
+        "formItemConfig": {
+          "labelAlign": "left"
         }
+      }
+    }
+  },
+  {
+    "Q": "将子项标题对齐方式设置为右对齐",
+    "A": {
+      "data": {
+        "showTitle": true,
+        "formItemConfig": {
+          "labelAlign": "right"
+        }
+      }
+    }
+  },
+  {
+    "Q": "提交时隐藏表单项",
+    "A": {
+      "data": {
+        "hideSubmitItems": true
+      }
+    }
+  },
+  {
+    "Q": "提交时显示表单项",
+    "A": {
+      "data": {
+        "hideSubmitItems": false
       }
     }
   }
