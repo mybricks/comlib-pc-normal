@@ -63,9 +63,9 @@ export default function Runtime({
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
-        outputRels['setValueDone']?.(val);
         outputs['onChange'](val);
       }
+      outputRels['setValueDone']?.(val);
     });
 
     inputs['setInitialValue'] &&
@@ -74,10 +74,10 @@ export default function Runtime({
           logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
-          if (outputRels['setInitialValueDone']) {
-            outputRels['setInitialValueDone'](val);
-          }
           outputs[OutputIds.OnInitial](val);
+        }
+        if (outputRels['setInitialValueDone']) {
+          outputRels['setInitialValueDone'](val);
         }
       });
 
