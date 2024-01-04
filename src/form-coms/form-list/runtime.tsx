@@ -52,13 +52,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.userAction.type = InputIds.SetValue;
         data.userAction.key = -2;
         onChangeForFc(parentSlot, { id, value, name: props.name });
-        if (outputRels['setValueDone']) {
-          outputRels['setValueDone']?.(value);
-        }
         changeValue({ data, id, outputs, parentSlot, name: props.name });
         generateFields(data);
       } else {
         logger.error(title + '[设置值]: 类型不合法');
+      }
+      if (outputRels['setValueDone']) {
+        outputRels['setValueDone']?.(value);
       }
     });
 
@@ -69,14 +69,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.value = value;
         data.userAction.type = InputIds.SetInitialValue;
         data.userAction.key = -2;
-        if (outputRels['setInitialValueDone']) {
-          outputRels['setInitialValueDone']?.(value);
-        }
         outputs[OutputIds.OnInitial](deepCopy(value));
         onChangeForFc(parentSlot, { id, value, name: props.name });
         generateFields(data);
       } else {
         logger.error(title + '[设置初始值]: 类型不合法');
+      }
+      if (outputRels['setValueDone']) {
+        outputRels['setValueDone']?.(value);
       }
     });
 
