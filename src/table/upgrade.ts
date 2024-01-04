@@ -250,5 +250,11 @@ export default function ({
     style.height = 'auto';
   }
 
+  if (data?.enableRowFocus) {
+    input.add(InputIds.SET_FOCUS_ROW, '设置选中行序号', Schemas.SET_FOCUS_ROW);
+    output.add(OutputIds.SET_FOCUS_ROW, '设置选中行之后', Schemas.SET_FOCUS_ROW);
+    input.get(InputIds.SET_FOCUS_ROW).setRels([OutputIds.SET_FOCUS_ROW]);
+  }
+
   return true;
 }
