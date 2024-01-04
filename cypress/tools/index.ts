@@ -1,6 +1,10 @@
 import { cloneDeep } from 'lodash';
 export { default as enhancedIt } from './enhanced-it';
 
+export function getPort() {
+  return Cypress.env('port') || 8080;
+}
+
 /**
  * 使用 dump 并打开预览页
  *
@@ -9,7 +13,7 @@ export { default as enhancedIt } from './enhanced-it';
  */
 export function dumpPreview(dump: Record<string, unknown>) {
   // 加载空白页面
-  cy.visit('http://localhost:8080');
+  cy.visit(`http://localhost:${getPort()}`);
 
   cy.get('[data-mybricks-tip*=调试工具]').click();
 
@@ -33,7 +37,7 @@ export function dumpPreview(dump: Record<string, unknown>) {
 
   cy.contains('预览').click();
 
-  cy.visit('http://localhost:8080/preview.html');
+  cy.visit(`http://localhost:${getPort()}/preview.html`);
 }
 
 /**
@@ -41,11 +45,11 @@ export function dumpPreview(dump: Record<string, unknown>) {
  */
 export function toJSONPreview(toJSON: Record<string, unknown>) {
   // 加载空白页面
-  cy.visit('http://localhost:8080');
+  cy.visit(`http://localhost:${getPort()}`);
 
   cy.window().then((win) => win.localStorage.setItem('--preview--', JSON.stringify(toJSON)));
 
-  cy.visit('http://localhost:8080/preview.html');
+  cy.visit(`http://localhost:${getPort()}/preview.html`);
 }
 
 /**
