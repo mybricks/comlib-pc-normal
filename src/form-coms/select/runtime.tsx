@@ -122,10 +122,10 @@ export default function Runtime({
         logger.warn(valueTypeCheck.message);
       } else {
         const outputValue = changeValue(val);
-        if (relOutputs['setValueDone']) {
-          relOutputs['setValueDone'](val);
-        }
         outputs[OutputIds.OnChange](outputValue);
+      }
+      if (relOutputs['setValueDone']) {
+        relOutputs['setValueDone'](val);
       }
     });
 
@@ -135,10 +135,10 @@ export default function Runtime({
           logger.warn(valueTypeCheck.message);
         } else {
           const outputValue = changeValue(val);
-          if (relOutputs['setInitialValueDone']) {
-            relOutputs['setInitialValueDone'](val);
-          }
           outputs[OutputIds.OnInitial](outputValue);
+        }
+        if (relOutputs['setInitialValueDone']) {
+          relOutputs['setInitialValueDone'](val);
         }
       });
 
