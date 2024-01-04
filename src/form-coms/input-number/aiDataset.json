@@ -1,0 +1,710 @@
+[
+  {
+    "Q": "值为空时提示\"Trepide atrox virtus decens mollitia.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Trepide atrox virtus decens mollitia."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Accusator ipsa terror utpote colo.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Accusator ipsa terror utpote colo."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Acsi atqui tergum aufero thema amita claustrum tollo theca.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Acsi atqui tergum aufero thema amita claustrum tollo theca."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Animi arbitro certus cedo socius demitto officiis defleo custodia.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Animi arbitro certus cedo socius demitto officiis defleo custodia."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Victoria texo cetera vere cum.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Victoria texo cetera vere cum."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Arguo deleniti inventore ex vitiosus.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Arguo deleniti inventore ex vitiosus."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Tergiversatio creptio canis ars victus textilis totus sunt bene.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Tergiversatio creptio canis ars victus textilis totus sunt bene."
+        }
+      }
+    }
+  },
+  {
+    "Q": "值为空时提示\"Theca solus quis.\"",
+    "A": {
+      "data": {
+        "config": {
+          "placeholder": "Theca solus quis."
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"aequitas\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "aequitas"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"tremo\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "tremo"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"deporto\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "deporto"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"magnam\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "magnam"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"statua\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "statua"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"apto\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "apto"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"attollo\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "attollo"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将前置标签设置为\"fugiat\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonBefore": "fugiat"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"tabella\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "tabella"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"nulla\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "nulla"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"auctor\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "auctor"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"ver\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "ver"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"ad\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "ad"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"velit\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "velit"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"thema\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "thema"
+        }
+      }
+    }
+  },
+  {
+    "Q": "将后置标签设置为\"auctor\"",
+    "A": {
+      "data": {
+        "config": {
+          "addonAfter": "auctor"
+        }
+      }
+    }
+  },
+  {
+    "Q": "开启禁用状态",
+    "A": {
+      "data": {
+        "config": {
+          "disabled": {
+            "label": "开启",
+            "value": true
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "关闭禁用状态",
+    "A": {
+      "data": {
+        "config": {
+          "disabled": {
+            "label": "关闭",
+            "value": false
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为4",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 4
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为0",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 0
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为4",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 4
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为8",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 8
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为2",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 2
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为8",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 8
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为9",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 9
+        }
+      }
+    }
+  },
+  {
+    "Q": "数值精度设置为4",
+    "A": {
+      "data": {
+        "config": {
+          "precision": 4
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为35",
+    "A": {
+      "data": {
+        "config": {
+          "step": 35
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为82",
+    "A": {
+      "data": {
+        "config": {
+          "step": 82
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为42",
+    "A": {
+      "data": {
+        "config": {
+          "step": 42
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为91",
+    "A": {
+      "data": {
+        "config": {
+          "step": 91
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为22",
+    "A": {
+      "data": {
+        "config": {
+          "step": 22
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为16",
+    "A": {
+      "data": {
+        "config": {
+          "step": 16
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为77",
+    "A": {
+      "data": {
+        "config": {
+          "step": 77
+        }
+      }
+    }
+  },
+  {
+    "Q": "步长设置为90",
+    "A": {
+      "data": {
+        "config": {
+          "step": 90
+        }
+      }
+    }
+  },
+  {
+    "Q": "开启格式化展示",
+    "A": {
+      "data": {
+        "isFormatter": true
+      }
+    }
+  },
+  {
+    "Q": "关闭格式化展示",
+    "A": {
+      "data": {
+        "isFormatter": false
+      }
+    }
+  },
+  {
+    "Q": "设置格式化前缀字符",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "charPostion": "prefix"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化后缀字符",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "charPostion": "suffix"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"volutabrum\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "volutabrum"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"arca\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "arca"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"arbor\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "arbor"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"utrum\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "utrum"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"cervus\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "cervus"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"audax\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "audax"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"cunae\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "cunae"
+      }
+    }
+  },
+  {
+    "Q": "设置格式化字符为\"totidem\"",
+    "A": {
+      "data": {
+        "isFormatter": true,
+        "character": "totidem"
+      }
+    }
+  },
+  {
+    "Q": "开启最大值限制",
+    "A": {
+      "data": {
+        "isMax": true
+      }
+    }
+  },
+  {
+    "Q": "关闭最大值限制",
+    "A": {
+      "data": {
+        "isMax": false
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为-41",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": -41
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为164",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": 164
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为37",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": 37
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为118",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": 118
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为-26",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": -26
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为-178",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": -178
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为74",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": 74
+      }
+    }
+  },
+  {
+    "Q": "将最大值设置为-31",
+    "A": {
+      "data": {
+        "isMax": true,
+        "max": -31
+      }
+    }
+  },
+  {
+    "Q": "开启最小值限制",
+    "A": {
+      "data": {
+        "isMin": true
+      }
+    }
+  },
+  {
+    "Q": "关闭最小值限制",
+    "A": {
+      "data": {
+        "isMin": false
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为-9",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": -9
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为-157",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": -157
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为61",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": 61
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为-186",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": -186
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为46",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": 46
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为28",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": 28
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为-96",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": -96
+      }
+    }
+  },
+  {
+    "Q": "将最小值设置为-72",
+    "A": {
+      "data": {
+        "isMin": true,
+        "min": -72
+      }
+    }
+  }
+]
