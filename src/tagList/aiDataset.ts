@@ -13,11 +13,11 @@ const tagsTypeMap = {
   '警告': 'warning',
   '失败': 'error'
 }
-export default defineDataSet((utils)  => { 
+export default defineDataSet((utils) => {
   const result = {}
 
-  result['方向'] =[] 
-  for(let key in directionMap) {
+  result['方向'] = []
+  for (let key in directionMap) {
     result['方向'].push({
       "Q": `将方向设置为${key}`,
       "A": {
@@ -26,10 +26,10 @@ export default defineDataSet((utils)  => {
         }
       }
     })
-  } 
+  }
 
-  result['类型'] =[] 
-  for(let key in tagsTypeMap) {
+  result['类型'] = []
+  for (let key in tagsTypeMap) {
     result['类型'].push({
       "Q": `将类型设置为${key}`,
       "A": {
@@ -37,33 +37,33 @@ export default defineDataSet((utils)  => {
           "type": tagsTypeMap[key],
           // TODO:,wf
           // "tags": { color: tagsTypeMap[key] }
-        } 
+        }
       }
     })
   }
 
-  const size = utils.number.int({min: 0})
-  result['标签间距'] = {
+  const size = utils.number.int({ min: 0, max: 100 })
+  result['标签间距'] = [{
     "Q": `将间距设置为${size}`,
     "A": {
       "data": {
         "size": size
       }
     }
-  }
+  }]
 
   result['可关闭'] = [true, false].map(item => ({
-    "Q": `将可关闭设置为${item? '开启':'关闭'}`,
+    "Q": `将可关闭设置为${item ? '开启' : '关闭'}`,
     "A": {
       "data": {
         "closeAble": item
       }
     }
-  })) 
+  }))
 
 
   result['可新增'] = [true, false].map(item => ({
-    "Q": `将可新增设置为${item? '开启':'关闭'}`,
+    "Q": `将可新增设置为${item ? '开启' : '关闭'}`,
     "A": {
       "data": {
         "appendAble": item
@@ -71,8 +71,8 @@ export default defineDataSet((utils)  => {
     }
   }))
 
-  result['显示新增按钮'] =  [true, false].map(item => ({
-    "Q": `将显示新增按钮设置为${item? '开启':'关闭'}`,
+  result['显示新增按钮'] = [true, false].map(item => ({
+    "Q": `将显示新增按钮设置为${item ? '开启' : '关闭'}`,
     "A": {
       "data": {
         "useAppendBtn": item,
@@ -81,50 +81,50 @@ export default defineDataSet((utils)  => {
     }
   }))
 
-  result['可选择'] =[true, false].map(item => ({
-    "Q": `将可选择属性设置为${item? '开启':'关闭'}`,
+  result['可选择'] = [true, false].map(item => ({
+    "Q": `将可选择属性设置为${item ? '开启' : '关闭'}`,
     "A": {
       "data": {
-        "checkable": item 
+        "checkable": item
       }
     }
   }))
 
-  result['动态数据'] =[true, false].map(item => ({
-    "Q": `将动态数据设置为${item? '开启':'关闭'}`,
+  result['动态数据'] = [true, false].map(item => ({
+    "Q": `将动态数据设置为${item ? '开启' : '关闭'}`,
     "A": {
       "data": {
-        "dynamic": item 
+        "dynamic": item
       }
     }
   }))
 
   result['文本溢出/省略'] = [true, false].map(item => ({
-    "Q": `将文本溢出/省略设置为${item? '开启':'关闭'}`,
+    "Q": `将文本溢出/省略设置为${item ? '开启' : '关闭'}`,
     "A": {
       "data": {
-        "isEllipsis": item ,
+        "isEllipsis": item,
       }
     }
   }))
-  
+
   let maxWidth = utils.number.int({ min: 30 })
-  result['最大显示宽度'] = {
+  result['最大显示宽度'] = [{
     "Q": `将最大显示宽度设置为${maxWidth}`,
     "A": {
       "data": {
-        "isEllipsis": true ,
+        "isEllipsis": true,
         'ellipse': {
           "maxWidth": maxWidth
         }
       }
     }
-  }
+  }]
 
   /** 标签项变更 */
   /** TODO:wf,确认A描述 */
   const content = utils.string.alpha(10)
-  const index = utils.number.int({ max: 10})
+  const index = utils.number.int({ max: 10 })
   // result['标签内容'] = {
   //   "Q": `将标签列表第${index}个标签的标签内容设置为${content}`,
   //   "A": {
@@ -165,7 +165,7 @@ export default defineDataSet((utils)  => {
   //   })
   // }
 
-    /**   临时注释icon */ 
+  /**   临时注释icon */
   // const icon = utils.string.alpha(10)
   // result['图标'] = {
   //   "Q": `将第${index}个标签的图标设置为${icon}`,
@@ -181,5 +181,5 @@ export default defineDataSet((utils)  => {
   // } 
   // TODO:wf,标签项的前移，后移，删除
   return result
-  }
+}
 )

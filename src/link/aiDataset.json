@@ -1,20 +1,24 @@
 {
-  "内容": {
-    "Q": "将文字内容为wJwSAStjqZ",
-    "A": {
-      "data": {
-        "content": "wJwSAStjqZ"
+  "内容": [
+    {
+      "Q": "将文字内容设置为ChXVhioeak",
+      "A": {
+        "data": {
+          "content": "ChXVhioeak"
+        }
       }
     }
-  },
-  "链接": {
-    "Q": "将地址/url设置为https://-parenting.net",
-    "A": {
-      "data": {
-        "url": "https://-parenting.net"
+  ],
+  "链接": [
+    {
+      "Q": "将地址/url设置为https://-realization.net",
+      "A": {
+        "data": {
+          "url": "https://-realization.net"
+        }
       }
     }
-  },
+  ],
   "图标自定义": [
     {
       "Q": "将图标自定义设置为开启",

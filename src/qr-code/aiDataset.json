@@ -1,12 +1,14 @@
 {
-  "链接": {
-    "Q": "将链接设置为https://-hook.info",
-    "A": {
-      "data": {
-        "link": "https://-hook.info"
+  "链接": [
+    {
+      "Q": "将链接设置为https://-willow.biz/",
+      "A": {
+        "data": {
+          "link": "https://-willow.biz/"
+        }
       }
     }
-  },
+  ],
   "支持Logo": [
     {
       "Q": "将支持logo设置为开启",
@@ -27,23 +29,23 @@
   ],
   "Logo": [
     {
-      "Q": "将Logo图片地址设置为https://loremflickr.com/34/34?lock=7496542306959360",
+      "Q": "将Logo图片地址设置为https://picsum.photos/seed/uWiMW/34/34",
       "A": {
         "data": {
           "icon": {
-            "url": "https://loremflickr.com/34/34?lock=7496542306959360"
+            "url": "https://picsum.photos/seed/uWiMW/34/34"
           },
           "hasIcon": true
         }
       }
     },
     {
-      "Q": "将Logo图片尺寸设置为https://loremflickr.com/34/34?lock=7496542306959360",
+      "Q": "将Logo图片尺寸设置为https://picsum.photos/seed/uWiMW/34/34",
       "A": {
         "data": {
           "icon": {
-            "width": 88,
-            "height": 96
+            "width": 45,
+            "height": 18
           },
           "hasIcon": true
         }

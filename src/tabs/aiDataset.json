@@ -3,13 +3,17 @@
     {
       "Q": "设置为卡片风格",
       "A": {
-        "type": "card"
+        "data": {
+          "type": "card"
+        }
       }
     },
     {
       "Q": "设置为简约风格",
       "A": {
-        "type": "line"
+        "data": {
+          "type": "line"
+        }
       }
     }
   ],
@@ -17,25 +21,33 @@
     {
       "Q": "将标签位置设置为上",
       "A": {
-        "tabPosition": "top"
+        "data": {
+          "tabPosition": "top"
+        }
       }
     },
     {
       "Q": "将标签位置设置为左",
       "A": {
-        "tabPosition": "left"
+        "data": {
+          "tabPosition": "left"
+        }
       }
     },
     {
       "Q": "将标签位置设置为右",
       "A": {
-        "tabPosition": "right"
+        "data": {
+          "tabPosition": "right"
+        }
       }
     },
     {
       "Q": "将标签位置设置为下",
       "A": {
-        "tabPosition": "bottom"
+        "data": {
+          "tabPosition": "bottom"
+        }
       }
     }
   ],
@@ -43,7 +55,9 @@
     {
       "Q": "将标签居中",
       "A": {
-        "centered": true
+        "data": {
+          "centered": true
+        }
       }
     }
   ],
@@ -51,7 +65,9 @@
     {
       "Q": "禁止点击切换",
       "A": {
-        "prohibitClick": true
+        "data": {
+          "prohibitClick": true
+        }
       }
     }
   ],
@@ -59,7 +75,9 @@
     {
       "Q": "动态设置显示tab",
       "A": {
-        "useDynamicTab": true
+        "data": {
+          "useDynamicTab": true
+        }
       }
     }
   ],
@@ -67,7 +85,9 @@
     {
       "Q": "隐藏插槽占位",
       "A": {
-        "hideSlots": true
+        "data": {
+          "hideSlots": true
+        }
       }
     }
   ],
@@ -75,7 +95,9 @@
     {
       "Q": "在左侧显示额外内容",
       "A": {
-        "useLeftExtra": true
+        "data": {
+          "useLeftExtra": true
+        }
       }
     }
   ],
@@ -83,7 +105,9 @@
     {
       "Q": "在右侧显示额外内容",
       "A": {
-        "useRigthExtra": true
+        "data": {
+          "useRigthExtra": true
+        }
       }
     }
   ]

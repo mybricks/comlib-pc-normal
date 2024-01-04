@@ -3,16 +3,20 @@
     {
       "Q": "自定义标题",
       "A": {
-        "useTitleSlot": true
+        "data": {
+          "useTitleSlot": true
+        }
       }
     }
   ],
   "标题": [
     {
-      "Q": "将标题设置为CmMIL",
+      "Q": "将标题设置为KJyZK",
       "A": {
-        "useTitleSlot": false,
-        "title": "CmMIL"
+        "data": {
+          "useTitleSlot": false,
+          "title": "KJyZK"
+        }
       }
     }
   ],
@@ -20,16 +24,20 @@
     {
       "Q": "自定义内容",
       "A": {
-        "useContentSlot": true
+        "data": {
+          "useContentSlot": true
+        }
       }
     }
   ],
   "内容": [
     {
-      "Q": "将内容设置为MpcOP",
+      "Q": "将内容设置为QPiWP",
       "A": {
-        "useContentSlot": false,
-        "content": "MpcOP"
+        "data": {
+          "useContentSlot": false,
+          "content": "QPiWP"
+        }
       }
     }
   ],
@@ -37,19 +45,25 @@
     {
       "Q": "将触发方式设置为悬浮",
       "A": {
-        "textAlign": "hover"
+        "data": {
+          "textAlign": "hover"
+        }
       }
     },
     {
       "Q": "将触发方式设置为点击",
       "A": {
-        "textAlign": "click"
+        "data": {
+          "textAlign": "click"
+        }
       }
     },
     {
       "Q": "将触发方式设置为聚焦",
       "A": {
-        "textAlign": "focus"
+        "data": {
+          "textAlign": "focus"
+        }
       }
     }
   ],
@@ -57,49 +71,65 @@
     {
       "Q": "将方向设置为左上",
       "A": {
-        "placement": "leftTop"
+        "data": {
+          "placement": "leftTop"
+        }
       }
     },
     {
       "Q": "将方向设置为上",
       "A": {
-        "placement": "top"
+        "data": {
+          "placement": "top"
+        }
       }
     },
     {
       "Q": "将方向设置为右上",
       "A": {
-        "placement": "rightTop"
+        "data": {
+          "placement": "rightTop"
+        }
       }
     },
     {
       "Q": "将方向设置为左下",
       "A": {
-        "placement": "leftBottom"
+        "data": {
+          "placement": "leftBottom"
+        }
       }
     },
     {
       "Q": "将方向设置为下",
       "A": {
-        "placement": "bottom"
+        "data": {
+          "placement": "bottom"
+        }
       }
     },
     {
       "Q": "将方向设置为右下",
       "A": {
-        "placement": "rightBottom"
+        "data": {
+          "placement": "rightBottom"
+        }
       }
     },
     {
       "Q": "将方向设置为左",
       "A": {
-        "placement": "left"
+        "data": {
+          "placement": "left"
+        }
       }
     },
     {
       "Q": "将方向设置为右",
       "A": {
-        "placement": "right"
+        "data": {
+          "placement": "right"
+        }
       }
     }
   ]

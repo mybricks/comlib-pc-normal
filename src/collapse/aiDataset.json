@@ -1,9 +1,11 @@
 {
   "标题": [
     {
-      "Q": "将标题设置为rXAHf",
+      "Q": "将标题设置为SFubd",
       "A": {
-        "title": "rXAHf"
+        "data": {
+          "title": "SFubd"
+        }
       }
     }
   ],
@@ -11,7 +13,9 @@
     {
       "Q": "开启自定义标题",
       "A": {
-        "isCustomTitle": true
+        "data": {
+          "isCustomTitle": true
+        }
       }
     }
   ],
@@ -19,7 +23,9 @@
     {
       "Q": "默认展开",
       "A": {
-        "expanded": true
+        "data": {
+          "expanded": true
+        }
       }
     }
   ],
@@ -27,7 +33,9 @@
     {
       "Q": "打开额外操作",
       "A": {
-        "useExtra": true
+        "data": {
+          "useExtra": true
+        }
       }
     }
   ]

@@ -1,10 +1,12 @@
 {
-  "提示内容": {
-    "Q": "将提示内容设置为RJLUccMQSh",
-    "A": {
-      "title": "RJLUccMQSh"
+  "提示内容": [
+    {
+      "Q": "将提示内容设置为VPjmXYTECb",
+      "A": {
+        "title": "VPjmXYTECb"
+      }
     }
-  },
+  ],
   "触发方式": [
     {
       "Q": "将触发方式设置为悬浮",

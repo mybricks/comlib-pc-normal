@@ -80,84 +80,6 @@
     }
   },
   {
-    "Q": "将表单项宽度设置为9/24",
-    "A": {
-      "data": {
-        "config": {
-          "span": 9,
-          "actions": {
-            "align": "right"
-          }
-        }
-      }
-    }
-  },
-  {
-    "Q": "将表单项宽度设置为1/24",
-    "A": {
-      "data": {
-        "config": {
-          "span": 1,
-          "actions": {
-            "align": "right"
-          }
-        }
-      }
-    }
-  },
-  {
-    "Q": "将表单项宽度设置为1/24",
-    "A": {
-      "data": {
-        "config": {
-          "span": 1,
-          "actions": {
-            "align": "right"
-          }
-        }
-      }
-    }
-  },
-  {
-    "Q": "将表单项宽度设置为12/24",
-    "A": {
-      "data": {
-        "config": {
-          "span": 12,
-          "actions": {
-            "align": "right"
-          }
-        }
-      }
-    }
-  },
-  {
-    "Q": "将表单项宽度设置为1/24",
-    "A": {
-      "data": {
-        "config": {
-          "span": 1,
-          "actions": {
-            "align": "right"
-          }
-        }
-      }
-    }
-  },
-  {
-    "Q": "将表单项宽度设置为9/24",
-    "A": {
-      "data": {
-        "config": {
-          "span": 9,
-          "actions": {
-            "align": "right"
-          }
-        }
-      }
-    }
-  },
-  {
     "Q": "将表单项宽度设置为4/24",
     "A": {
       "data": {
@@ -171,11 +93,89 @@
     }
   },
   {
-    "Q": "将表单项宽度设置为23/24",
+    "Q": "将表单项宽度设置为18/24",
     "A": {
       "data": {
         "config": {
-          "span": 23,
+          "span": 18,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为6/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 6,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为10/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 10,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为18/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 18,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为10/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 10,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为17/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 17,
+          "actions": {
+            "align": "right"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Q": "将表单项宽度设置为12/24",
+    "A": {
+      "data": {
+        "config": {
+          "span": 12,
           "actions": {
             "align": "right"
           }
@@ -200,128 +200,128 @@
     }
   },
   {
-    "Q": "将标题宽度设置为24px",
+    "Q": "将标题宽度设置为20px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 24
+        "labelWidth": 20
       }
     }
   },
   {
-    "Q": "将标题宽度设置为160px",
+    "Q": "将标题宽度设置为1px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 160
+        "labelWidth": 1
       }
     }
   },
   {
-    "Q": "将标题宽度设置为217px",
+    "Q": "将标题宽度设置为374px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 217
+        "labelWidth": 374
       }
     }
   },
   {
-    "Q": "将标题宽度设置为72px",
+    "Q": "将标题宽度设置为4px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 72
+        "labelWidth": 4
       }
     }
   },
   {
-    "Q": "将标题宽度设置为395px",
+    "Q": "将标题宽度设置为382px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 395
+        "labelWidth": 382
       }
     }
   },
   {
-    "Q": "将标题宽度设置为258px",
+    "Q": "将标题宽度设置为261px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 258
+        "labelWidth": 261
       }
     }
   },
   {
-    "Q": "将标题宽度设置为87px",
+    "Q": "将标题宽度设置为349px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 87
+        "labelWidth": 349
       }
     }
   },
   {
-    "Q": "将标题宽度设置为2px",
+    "Q": "将标题宽度设置为342px",
     "A": {
       "data": {
         "labelWidthType": "px",
-        "labelWidth": 2
+        "labelWidth": 342
       }
     }
   },
   {
-    "Q": "将标题宽度设置为19格",
+    "Q": "将标题宽度设置为15格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 19
+        "labelCol": 15
       }
     }
   },
   {
-    "Q": "将标题宽度设置为20格",
+    "Q": "将标题宽度设置为1格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 20
+        "labelCol": 1
       }
     }
   },
   {
-    "Q": "将标题宽度设置为21格",
+    "Q": "将标题宽度设置为10格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 21
+        "labelCol": 10
       }
     }
   },
   {
-    "Q": "将标题宽度设置为9格",
+    "Q": "将标题宽度设置为17格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 9
+        "labelCol": 17
       }
     }
   },
   {
-    "Q": "将标题宽度设置为20格",
+    "Q": "将标题宽度设置为24格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 20
+        "labelCol": 24
       }
     }
   },
   {
-    "Q": "将标题宽度设置为14格",
+    "Q": "将标题宽度设置为7格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 14
+        "labelCol": 7
       }
     }
   },
@@ -335,11 +335,11 @@
     }
   },
   {
-    "Q": "将标题宽度设置为1格",
+    "Q": "将标题宽度设置为4格",
     "A": {
       "data": {
         "labelWidthType": "span",
-        "labelCol": 1
+        "labelCol": 4
       }
     }
   },

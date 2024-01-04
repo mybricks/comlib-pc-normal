@@ -1,10 +1,12 @@
 {
-  "内容": {
-    "Q": "将内容设置为iDxtJnJEnvjUeyaRakRQ",
-    "A": {
-      "data": {
-        "content": "iDxtJnJEnvjUeyaRakRQ"
+  "内容": [
+    {
+      "Q": "将内容设置为YAQNSTgSFuSPzNTZKZrt",
+      "A": {
+        "data": {
+          "content": "YAQNSTgSFuSPzNTZKZrt"
+        }
       }
     }
-  }
+  ]
 }

@@ -3,24 +3,30 @@
     {
       "Q": "将类型设置为默认",
       "A": {
-        "steps": {
-          "type": "default"
+        "data": {
+          "steps": {
+            "type": "default"
+          }
         }
       }
     },
     {
       "Q": "将类型设置为导航类型",
       "A": {
-        "steps": {
-          "type": "navigation"
+        "data": {
+          "steps": {
+            "type": "navigation"
+          }
         }
       }
     },
     {
       "Q": "将类型设置为点状类型",
       "A": {
-        "steps": {
-          "type": "dotted"
+        "data": {
+          "steps": {
+            "type": "dotted"
+          }
         }
       }
     }
@@ -29,16 +35,20 @@
     {
       "Q": "将尺寸设置为默认",
       "A": {
-        "steps": {
-          "size": "default"
+        "data": {
+          "steps": {
+            "size": "default"
+          }
         }
       }
     },
     {
       "Q": "将尺寸设置为迷你",
       "A": {
-        "steps": {
-          "size": "small"
+        "data": {
+          "steps": {
+            "size": "small"
+          }
         }
       }
     }
@@ -47,80 +57,392 @@
     {
       "Q": "将方向设置为水平",
       "A": {
-        "steps": {
-          "direction": "horizontal"
+        "data": {
+          "steps": {
+            "direction": "horizontal"
+          }
         }
       }
     },
     {
       "Q": "将方向设置为竖直",
       "A": {
-        "steps": {
-          "direction": "vertical"
+        "data": {
+          "steps": {
+            "direction": "vertical"
+          }
         }
       }
     }
   ],
   "描述": [
     {
-      "Q": "显示描述",
+      "Q": "开启描述信息展示功能",
       "A": {
-        "steps": {
-          "showDesc": true
+        "data": {
+          "steps": {
+            "showDesc": true
+          }
+        }
+      }
+    },
+    {
+      "Q": "关闭描述信息展示功能",
+      "A": {
+        "data": {
+          "steps": {
+            "showDesc": false
+          }
         }
       }
     }
   ],
   "点击切换": [
     {
-      "Q": "关闭点击切换",
+      "Q": "开启点击切换功能",
       "A": {
-        "steps": {
-          "canClick": false
+        "data": {
+          "steps": {
+            "canClick": true
+          }
+        }
+      }
+    },
+    {
+      "Q": "关闭点击切换功能",
+      "A": {
+        "data": {
+          "steps": {
+            "canClick": false
+          }
         }
       }
     }
   ],
   "操作栏": [
     {
-      "Q": "打开操作栏",
+      "Q": "开启操作栏区域",
       "A": {
-        "toolbar": {
-          "showActions": true
+        "data": {
+          "toolbar": {
+            "showActions": true
+          }
+        }
+      }
+    },
+    {
+      "Q": "关闭操作栏区域",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": false
+          }
         }
       }
     }
   ],
   "按钮组": [
     {
-      "Q": "将按钮组设置为上一步",
+      "Q": "操作栏按钮组设置包含上一步",
       "A": {
-        "toolbar": {
-          "btns": [
-            "previous"
-          ]
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "previous"
+            ]
+          }
         }
       }
     },
     {
-      "Q": "将按钮组设置为下一步",
+      "Q": "操作栏按钮组设置包含下一步",
       "A": {
-        "toolbar": {
-          "btns": [
-            "next"
-          ]
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "next"
+            ]
+          }
         }
       }
     },
     {
-      "Q": "将按钮组设置为提交",
+      "Q": "操作栏按钮组设置包含提交",
       "A": {
-        "toolbar": {
-          "btns": [
-            "submit"
-          ]
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "submit"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "Q": "操作栏按钮组设置包含上一步、下一步",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "previous",
+              "next"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "Q": "操作栏按钮组设置包含上一步、提交",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "previous",
+              "submit"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "Q": "操作栏按钮组设置包含下一步、提交",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "next",
+              "submit"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "Q": "操作栏按钮组设置包含上一步、下一步、提交",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "btns": [
+              "previous",
+              "next",
+              "submit"
+            ]
+          }
         }
       }
     }
-  ]
+  ],
+  "隐藏插槽占位": [
+    {
+      "Q": "开启隐藏插槽占位的开关",
+      "A": {
+        "data": {
+          "hideSlots": true
+        }
+      }
+    },
+    {
+      "Q": "关闭隐藏插槽占位的开关",
+      "A": {
+        "data": {
+          "hideSlots": false
+        }
+      }
+    }
+  ],
+  "操作栏的对齐方式": [
+    {
+      "Q": "将操作栏的对齐方式设置为左对齐",
+      "A": {
+        "data": {
+          "toolbar": {
+            "actionAlign": "flex-start"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的对齐方式设置为居中",
+      "A": {
+        "data": {
+          "toolbar": {
+            "actionAlign": "center"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的对齐方式设置为右对齐",
+      "A": {
+        "data": {
+          "toolbar": {
+            "actionAlign": "flex-end"
+          }
+        }
+      }
+    }
+  ],
+  "操作栏的置底开关": [
+    {
+      "Q": "开启操作栏置底的开关",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "fixed": true
+          }
+        }
+      }
+    },
+    {
+      "Q": "关闭操作栏置底的开关",
+      "A": {
+        "data": {
+          "toolbar": {
+            "showActions": true,
+            "fixed": false
+          }
+        }
+      }
+    }
+  ],
+  "操作栏的底部距离": [
+    {
+      "Q": "将操作栏的底部距离设置为18",
+      "A": {
+        "data": {
+          "toolbar": {
+            "fixed": true,
+            "bottom": 18
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的底部距离设置为10",
+      "A": {
+        "data": {
+          "toolbar": {
+            "fixed": true,
+            "bottom": 10
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的底部距离设置为92",
+      "A": {
+        "data": {
+          "toolbar": {
+            "fixed": true,
+            "bottom": 92
+          }
+        }
+      }
+    }
+  ],
+  "操作栏的主按钮文案": [
+    {
+      "Q": "将操作栏的主按钮文案设置为dhDXby",
+      "A": {
+        "data": {
+          "toolbar": {
+            "primaryBtnText": "dhDXby"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的主按钮文案设置为tvCNgq",
+      "A": {
+        "data": {
+          "toolbar": {
+            "primaryBtnText": "tvCNgq"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的主按钮文案设置为QLmmjE",
+      "A": {
+        "data": {
+          "toolbar": {
+            "primaryBtnText": "QLmmjE"
+          }
+        }
+      }
+    }
+  ],
+  "操作栏的上一步按钮文案": [
+    {
+      "Q": "将操作栏的上一步按钮文案设置为Oovwpg",
+      "A": {
+        "data": {
+          "toolbar": {
+            "secondBtnText": "Oovwpg"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的上一步按钮文案设置为sJFEng",
+      "A": {
+        "data": {
+          "toolbar": {
+            "secondBtnText": "sJFEng"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的上一步按钮文案设置为diSAno",
+      "A": {
+        "data": {
+          "toolbar": {
+            "secondBtnText": "diSAno"
+          }
+        }
+      }
+    }
+  ],
+  "操作栏的提交按钮文案": [
+    {
+      "Q": "将操作栏的提交按钮文案设置为ghVreX",
+      "A": {
+        "data": {
+          "toolbar": {
+            "submitText": "ghVreX"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的提交按钮文案设置为RCgSVK",
+      "A": {
+        "data": {
+          "toolbar": {
+            "submitText": "RCgSVK"
+          }
+        }
+      }
+    },
+    {
+      "Q": "将操作栏的提交按钮文案设置为CHGGdY",
+      "A": {
+        "data": {
+          "toolbar": {
+            "submitText": "CHGGdY"
+          }
+        }
+      }
+    }
+  ],
+  "步骤": []
 }

@@ -17,18 +17,18 @@ const placementMap = {
   '左': 'left',
   '右': 'right'
 }
-export default defineDataSet((utils)  => {
+export default defineDataSet((utils) => {
   const result = {}
   const title = utils.string.alpha(10)
-  result['提示内容'] = {
+  result['提示内容'] = [{
     "Q": `将提示内容设置为${title}`,
     "A": {
       "title": title,
     }
-  }
+  }]
 
-  result['触发方式'] =[] 
-  for(let key in triggerMap) {
+  result['触发方式'] = []
+  for (let key in triggerMap) {
     result['触发方式'].push({
       "Q": `将触发方式设置为${key}`,
       "A": {
@@ -40,7 +40,7 @@ export default defineDataSet((utils)  => {
   }
 
   result['方向'] = []
-  for(let key in placementMap) {
+  for (let key in placementMap) {
     result['方向'].push({
       "Q": `将方向设置为${key}`,
       "A": {

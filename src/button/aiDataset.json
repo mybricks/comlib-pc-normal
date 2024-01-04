@@ -1,13 +1,15 @@
 {
-  "文字标题": {
-    "Q": "将文字标题设置为vMlTERZPCp",
-    "A": {
-      "data": {
-        "text": "vMlTERZPCp",
-        "asMapArea": false
+  "文字标题": [
+    {
+      "Q": "将文字标题设置为QkTDUrkCtq",
+      "A": {
+        "data": {
+          "text": "QkTDUrkCtq",
+          "asMapArea": false
+        }
       }
     }
-  },
+  ],
   "作为热区使用": [
     {
       "Q": "将作为热区使用设置为开启",

@@ -1,25 +1,31 @@
 {
   "标题": [
     {
-      "Q": "将标题设置为DYkLL",
+      "Q": "将标题设置为wDOSH",
       "A": {
-        "title": "DYkLL"
+        "data": {
+          "title": "wDOSH"
+        }
       }
     }
   ],
   "确认按钮文字": [
     {
-      "Q": "将确认按钮文字设置为BjdGy",
+      "Q": "将确认按钮文字设置为mDGxA",
       "A": {
-        "okText": "BjdGy"
+        "data": {
+          "okText": "mDGxA"
+        }
       }
     }
   ],
   "取消按钮文字": [
     {
-      "Q": "将取消按钮文字设置为Xqdov",
+      "Q": "将取消按钮文字设置为dxuDC",
       "A": {
-        "cancelText": "Xqdov"
+        "data": {
+          "cancelText": "dxuDC"
+        }
       }
     }
   ],
@@ -27,7 +33,9 @@
     {
       "Q": "不显示取消按钮",
       "A": {
-        "showCancel": false
+        "data": {
+          "showCancel": false
+        }
       }
     }
   ]

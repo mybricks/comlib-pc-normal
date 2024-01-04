@@ -26,11 +26,11 @@
     }
   ],
   "自定义分割符": {
-    "Q": "将分割符设置为w",
+    "Q": "将分割符设置为B",
     "A": {
       "data": {
         "separator": "custom",
-        "customSeparator": "w"
+        "customSeparator": "B"
       }
     }
   },

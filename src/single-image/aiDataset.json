@@ -1,28 +1,34 @@
 {
-  "图片描述": {
-    "Q": "将图片描述设置为jKgxuAAFjrWWfVeJWRdB",
-    "A": {
-      "data": {
-        "content": "jKgxuAAFjrWWfVeJWRdB"
+  "图片描述": [
+    {
+      "Q": "将图片描述设置为RHLxCIpARtCyJERYfcLu",
+      "A": {
+        "data": {
+          "content": "RHLxCIpARtCyJERYfcLu"
+        }
       }
     }
-  },
-  "图片地址": {
-    "Q": "将图片地址设置为https://loremflickr.com/50/50?lock=5733835918540800",
-    "A": {
-      "data": {
-        "src": "https://loremflickr.com/50/50?lock=5733835918540800"
+  ],
+  "图片地址": [
+    {
+      "Q": "将图片地址设置为https://loremflickr.com/50/50?lock=6429836023169024",
+      "A": {
+        "data": {
+          "src": "https://loremflickr.com/50/50?lock=6429836023169024"
+        }
       }
     }
-  },
-  "预览图片地址": {
-    "Q": "将预览图片地址设置为https://loremflickr.com/50/50?lock=5733835918540800",
-    "A": {
-      "data": {
-        "previewImgSrc": "https://loremflickr.com/50/50?lock=5733835918540800"
+  ],
+  "预览图片地址": [
+    {
+      "Q": "将预览图片地址设置为https://loremflickr.com/50/50?lock=6429836023169024",
+      "A": {
+        "data": {
+          "previewImgSrc": "https://loremflickr.com/50/50?lock=6429836023169024"
+        }
       }
     }
-  },
+  ],
   "支持容错处理": [
     {
       "Q": "将支持容错处理设置为开启",
@@ -41,12 +47,14 @@
       }
     }
   ],
-  "容错图像占位符": {
-    "Q": "将容错图像占位符设置为https://loremflickr.com/50/50?lock=3857580724060160",
-    "A": {
-      "data": {
-        "fallbackImgSrc": "https://loremflickr.com/50/50?lock=3857580724060160"
+  "容错图像占位符": [
+    {
+      "Q": "将容错图像占位符设置为https://loremflickr.com/50/50?lock=6587713528528896",
+      "A": {
+        "data": {
+          "fallbackImgSrc": "https://loremflickr.com/50/50?lock=6587713528528896"
+        }
       }
     }
-  }
+  ]
 }

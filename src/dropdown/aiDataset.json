@@ -1,12 +1,14 @@
 {
-  "提示内容": {
-    "Q": "将提示内容设置为sPUJYuVHYP",
-    "A": {
-      "data": {
-        "content": "sPUJYuVHYP"
+  "提示内容": [
+    {
+      "Q": "将提示内容设置为AUWWLhLTrW",
+      "A": {
+        "data": {
+          "content": "AUWWLhLTrW"
+        }
       }
     }
-  },
+  ],
   "自定义": [
     {
       "Q": "将自定义设置为开启",
@@ -111,12 +113,14 @@
       }
     }
   ],
-  "宽度": {
-    "Q": "将宽度设置为NJzeVcyhZN",
-    "A": {
-      "data": {
-        "width": "NJzeVcyhZN"
+  "宽度": [
+    {
+      "Q": "将宽度设置为mRYtgdFghZ",
+      "A": {
+        "data": {
+          "width": "mRYtgdFghZ"
+        }
       }
     }
-  }
+  ]
 }

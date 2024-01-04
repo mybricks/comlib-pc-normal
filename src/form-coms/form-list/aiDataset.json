@@ -1,33 +1,33 @@
 [
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "将每行的表单项数量设置为6",
     "A": {
       "data": {
-        "formItemColumn": 2,
+        "formItemColumn": 6,
         "actions": {
-          "span": 12
+          "span": 4
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "将每行的表单项数量设置为5",
     "A": {
       "data": {
-        "formItemColumn": 2,
+        "formItemColumn": 5,
         "actions": {
-          "span": 12
+          "span": 4.8
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为1",
+    "Q": "将每行的表单项数量设置为3",
     "A": {
       "data": {
-        "formItemColumn": 1,
+        "formItemColumn": 3,
         "actions": {
-          "span": 24
+          "span": 8
         }
       }
     }
@@ -55,34 +55,34 @@
     }
   },
   {
-    "Q": "将每行的表单项数量设置为5",
+    "Q": "将每行的表单项数量设置为1",
     "A": {
       "data": {
-        "formItemColumn": 5,
+        "formItemColumn": 1,
         "actions": {
-          "span": 4.8
+          "span": 24
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "将每行的表单项数量设置为6",
     "A": {
       "data": {
-        "formItemColumn": 2,
+        "formItemColumn": 6,
         "actions": {
-          "span": 12
+          "span": 4
         }
       }
     }
   },
   {
-    "Q": "将每行的表单项数量设置为2",
+    "Q": "将每行的表单项数量设置为6",
     "A": {
       "data": {
-        "formItemColumn": 2,
+        "formItemColumn": 6,
         "actions": {
-          "span": 12
+          "span": 4
         }
       }
     }

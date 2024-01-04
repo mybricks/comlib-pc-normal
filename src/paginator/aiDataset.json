@@ -64,10 +64,10 @@
     "Q": "将默认每页显示条数设置为pageSize",
     "A": {
       "data": {
-        "defaultPageSize": 379,
+        "defaultPageSize": 24,
         "currentPage": {
           "pageNum": 1,
-          "pageSize": 379
+          "pageSize": 24
         }
       }
     }
