@@ -140,10 +140,10 @@
   ],
   "最大显示数量": [
     {
-      "Q": "将最大显示数量设置为8042058958766080",
+      "Q": "将最大显示数量设置为4213962346332160",
       "A": {
         "data": {
-          "maxShowNumber": 8042058958766080
+          "maxShowNumber": 4213962346332160
         }
       }
     }
@@ -168,13 +168,13 @@
   ],
   "添加插槽": [
     {
-      "Q": "添加7个插槽",
+      "Q": "添加4个插槽",
       "A": {
         "data": {
           "btnList": [
             {
-              "key": "u_d5mx7x",
-              "text": "自定义插槽I/4PO",
+              "key": "u_c50n3m",
+              "text": "自定义插槽nFWPC",
               "showText": true,
               "dataType": "number",
               "outVal": 0,
@@ -196,8 +196,8 @@
               "useIcon": false
             },
             {
-              "key": "u_jyyrrk",
-              "text": "自定义插槽qv_3x",
+              "key": "u_hzrrc8",
+              "text": "自定义插槽gnjBh",
               "showText": true,
               "dataType": "number",
               "outVal": 0,
@@ -219,8 +219,8 @@
               "useIcon": false
             },
             {
-              "key": "u_i4r05i",
-              "text": "自定义插槽+fy*Q",
+              "key": "u_y1hfzb",
+              "text": "自定义插槽HkDHR",
               "showText": true,
               "dataType": "number",
               "outVal": 0,
@@ -242,77 +242,8 @@
               "useIcon": false
             },
             {
-              "key": "u_dsxdww",
-              "text": "自定义插槽GyRFH",
-              "showText": true,
-              "dataType": "number",
-              "outVal": 0,
-              "inVal": "",
-              "isCustom": false,
-              "src": "",
-              "contentSize": [
-                14,
-                14
-              ],
-              "iconDistance": 8,
-              "loading": false,
-              "useDynamicLoading": false,
-              "style": {
-                "height": "auto",
-                "width": "auto"
-              },
-              "isSlot": true,
-              "useIcon": false
-            },
-            {
-              "key": "u_2x0snf",
-              "text": "自定义插槽pCL!r",
-              "showText": true,
-              "dataType": "number",
-              "outVal": 0,
-              "inVal": "",
-              "isCustom": false,
-              "src": "",
-              "contentSize": [
-                14,
-                14
-              ],
-              "iconDistance": 8,
-              "loading": false,
-              "useDynamicLoading": false,
-              "style": {
-                "height": "auto",
-                "width": "auto"
-              },
-              "isSlot": true,
-              "useIcon": false
-            },
-            {
-              "key": "u_9k035m",
-              "text": "自定义插槽X>[,+",
-              "showText": true,
-              "dataType": "number",
-              "outVal": 0,
-              "inVal": "",
-              "isCustom": false,
-              "src": "",
-              "contentSize": [
-                14,
-                14
-              ],
-              "iconDistance": 8,
-              "loading": false,
-              "useDynamicLoading": false,
-              "style": {
-                "height": "auto",
-                "width": "auto"
-              },
-              "isSlot": true,
-              "useIcon": false
-            },
-            {
-              "key": "u_5f2h7h",
-              "text": "自定义插槽SG0<c",
+              "key": "u_w6mp8w",
+              "text": "自定义插槽dJozX",
               "showText": true,
               "dataType": "number",
               "outVal": 0,

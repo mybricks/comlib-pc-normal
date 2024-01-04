@@ -118,7 +118,7 @@ export default defineDataSet((utils) => {
   // }
 
   let num2 = utils.number.int({ max: 10 })
-  let btnArr2 = new Array(num2).fill(0).map(i => ({ ...getNewBtn(), text: `自定义插槽${utils.string.sample(5)}`, isSlot: true }))
+  let btnArr2 = new Array(num2).fill(0).map(i => ({ ...getNewBtn(), text: `自定义插槽${utils.string.alpha(5)}`, isSlot: true }))
   result['添加插槽'] = [{
     "Q": `添加${num2}个插槽`,
     "A": {
