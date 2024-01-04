@@ -28,7 +28,7 @@ const transform = (code: string) => {
 };
 
 const createElement: FuncType = (code) => {
-  if(code.includes('var%20_RTFN_')) {
+  if(code.includes('var _RTFN_')) {
     return eval(decodeURIComponent(code))
   }
   code = `var _RTFN_ = ${code.trim().replace(/;$/, '')} `;
