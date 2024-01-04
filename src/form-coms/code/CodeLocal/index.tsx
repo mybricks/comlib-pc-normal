@@ -142,8 +142,8 @@ const CodeEditor = (
           : valueRef.current === undefined || valueRef.current === null
           ? ''
           : JSON.stringify(valueRef.current);
-      editor.current.clearSelection();
       supportFormat && formatterCode(val);
+      editor.current.clearSelection();
     }
   }, [value]);
 
