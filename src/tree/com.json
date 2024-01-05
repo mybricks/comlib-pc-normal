@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -165,6 +165,34 @@
     }
   ],
   "outputs": [
+    {
+      "id": "onChange",
+      "title": "数据变化",
+      "schema": {
+        "title": "树组件数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "title": "标题",
+              "type": "string"
+            },
+            "key": {
+              "title": "字段名",
+              "type": "string"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
     {
       "id": "submit",
       "title": "勾选项数据输出",
