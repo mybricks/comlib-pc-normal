@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
-import { typeCheck, uuid } from '../utils';
+import { deepCopy, typeCheck, uuid } from '../utils';
 import {
   setCheckboxStatus,
   generateList,
@@ -154,12 +154,14 @@ export default function (props: RuntimeParams<Data>) {
           } else {
             data.treeData = [];
           }
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       // 更新节点数据
       inputs['nodeData'] &&
         inputs['nodeData']((nodeData: TreeData) => {
           if (typeCheck(nodeData, 'OBJECT')) {
             data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
+            outputs[OutputIds.OnChange](deepCopy(data.treeData));
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
@@ -220,10 +222,12 @@ export default function (props: RuntimeParams<Data>) {
       inputs['disableCheckbox'] &&
         inputs['disableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: true })];
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       inputs['enableCheckbox'] &&
         inputs['enableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
 
       // 设置拖拽功能
@@ -264,6 +268,12 @@ export default function (props: RuntimeParams<Data>) {
           Array.isArray(ds)
             ? (data.addTips = ds)
             : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
+        });
+
+      /** @description 1.0.42 获取组件数据 */
+      inputs[InputIds.GetTreeData] &&
+        inputs[InputIds.GetTreeData]((_, relOutput) => {
+          relOutput[OutputIds.ReturnTreeData](deepCopy(data.treeData));
         });
     }
   }, []);
@@ -401,8 +411,11 @@ export default function (props: RuntimeParams<Data>) {
     outputs[OutputIds.OnDropDone]({
       dragNodeInfo,
       dropNodeInfo,
-      flag: dropFlag
+      flag: dropFlag,
+      treeData: data.treeData
     });
+
+    outputs[OutputIds.OnChange](deepCopy(data.treeData));
   };
 
   /**

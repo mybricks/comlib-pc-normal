@@ -46,7 +46,7 @@ export interface Data {
   textIcon: string;
   picIcon: string;
   picCardIcon: string;
-  dragIcon: string
+  dragIcon: string;
 }
 
 interface Window {
@@ -409,19 +409,25 @@ export default function ({
   const renderUploadText = () => {
     const pictureButton = (
       <div>
-        {data.hideIcon ? void 0 : Icons && Icons[data.picCardIcon]?.render() }
+        {data.hideIcon ? void 0 : Icons && Icons[data.picCardIcon]?.render()}
         <div style={{ marginTop: 8 }}>{env.i18n(buttonText)}</div>
       </div>
     );
 
     const normalButton = (
-      <Button icon={data.hideIcon ?void 0 : Icons && Icons[data.textIcon]?.render()} disabled={disabled}>
+      <Button
+        icon={data.hideIcon ? void 0 : Icons && Icons[data.textIcon]?.render()}
+        disabled={disabled}
+      >
         {env.i18n(buttonText)}
       </Button>
     );
 
     const picButton = (
-      <Button icon={data.hideIcon ?void 0 : Icons && Icons[data.picIcon]?.render()} disabled={disabled}>
+      <Button
+        icon={data.hideIcon ? void 0 : Icons && Icons[data.picIcon]?.render()}
+        disabled={disabled}
+      >
         {env.i18n(buttonText)}
       </Button>
     );
