@@ -292,14 +292,25 @@ export default function ({
   //=========== v1.0.40 end ===============
 
   /**
-   * @description v1.0.41 增加 onChange数据变化 输出项
+   * @description v1.0.42 增加 onChange数据变化 输出项
    */
 
   if (!output.get(OutputIds.OnChange)) {
     output.add(OutputIds.OnChange, '数据变化', treeDataSchema);
   }
-
-  //=========== v1.0.41 end ===============
+  if (!input.get(InputIds.GetTreeData)) {
+    input.add(InputIds.GetTreeData, '获取数据', {
+      type: 'any'
+    });
+  }
+  if (!output.get(OutputIds.ReturnTreeData)) {
+    output.add(OutputIds.ReturnTreeData, '数据输出', treeDataSchema);
+  }
+  const getTreeDataPin = input.get(InputIds.GetTreeData)
+  if (!getTreeDataPin.rels) {
+    getTreeDataPin.setRels([OutputIds.ReturnTreeData]);
+  }
+  //=========== v1.0.42 end ===============
 
   return true;
 }

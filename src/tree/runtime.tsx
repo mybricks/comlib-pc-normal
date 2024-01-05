@@ -269,6 +269,12 @@ export default function (props: RuntimeParams<Data>) {
             ? (data.addTips = ds)
             : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
         });
+
+      /** @description 1.0.42 获取组件数据 */
+      inputs[InputIds.GetTreeData] &&
+        inputs[InputIds.GetTreeData]((_, relOutput) => {
+          relOutput[OutputIds.ReturnTreeData](deepCopy(data.treeData));
+        });
     }
   }, []);
 
