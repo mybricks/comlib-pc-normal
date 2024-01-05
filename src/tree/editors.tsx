@@ -460,6 +460,15 @@ export default {
                   outputId: OutputIds.OnNodeClick
                 };
               }
+            },
+            {
+              title: '数据变化',
+              type: '_Event',
+              options: () => {
+                return {
+                  outputId: OutputIds.OnChange
+                };
+              }
             }
           ]
         }

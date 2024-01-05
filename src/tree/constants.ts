@@ -15,7 +15,9 @@ export const InputIds = {
 }
 
 export const OutputIds = {
+  OnChange: 'onChange',
   OnDropDone: 'onDropDone',
+  AddNodeDone: 'addNodeDone',
   OnNodeClick: 'click',
   OnCheck: 'check'
 }

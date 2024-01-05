@@ -130,8 +130,10 @@ export default function (props: RuntimeParams<Data>) {
         inputs['treeData']((value: TreeData[]) => {
           if (value && Array.isArray(value)) {
             data.treeData = [...value];
+            outputs[OutputIds.OnChange](data.treeData);
           } else {
             data.treeData = [];
+            outputs[OutputIds.OnChange](data.treeData);
           }
         });
       // 更新节点数据
@@ -139,6 +141,7 @@ export default function (props: RuntimeParams<Data>) {
         inputs['nodeData']((nodeData: TreeData) => {
           if (typeCheck(nodeData, 'OBJECT')) {
             data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
+            outputs[OutputIds.OnChange](data.treeData);
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
@@ -199,10 +202,12 @@ export default function (props: RuntimeParams<Data>) {
       inputs['disableCheckbox'] &&
         inputs['disableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: true })];
+          outputs[OutputIds.OnChange](data.treeData);
         });
       inputs['enableCheckbox'] &&
         inputs['enableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
+          outputs[OutputIds.OnChange](data.treeData);
         });
 
       // 设置拖拽功能
@@ -380,6 +385,8 @@ export default function (props: RuntimeParams<Data>) {
       flag: dropFlag,
       treeData: data.treeData
     });
+
+    outputs[OutputIds.OnChange](data.treeData);
   };
 
   /**

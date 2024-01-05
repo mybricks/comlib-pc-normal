@@ -2,8 +2,9 @@ import React from 'react';
 import * as Icons from '@ant-design/icons';
 import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from '../../types';
 import { ExpressionSandbox } from '../../../../package/com-utils';
+import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from '../../types';
+import { OutputIds } from '../../constants';
 import css from './style.less';
 
 export default function ActionBtns({
@@ -75,6 +76,7 @@ export default function ActionBtns({
         data.treeData = deleteNode(treeData, record[keyFieldName]).filter(
           (def) => !!def
         ) as TreeData[];
+        outputs[OutputIds.OnChange](data.treeData);
       }
       outputs[id](outputItem);
     }

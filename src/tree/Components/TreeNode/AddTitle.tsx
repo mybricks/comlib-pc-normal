@@ -1,6 +1,7 @@
 import React from 'react';
 import { Data } from '../../types';
 import { Input } from 'antd';
+import { InputIds, OutputIds } from '../../constants';
 
 /**
  * 添加节点渲染
@@ -66,7 +67,8 @@ export const renderAddTitle = (
             data.expandedKeys.push(item[keyFieldName]);
             setExpandedKeys([...data.expandedKeys]);
           }
-          outputs['addNodeDone']({ node, parent: item.parent });
+          outputs[OutputIds.AddNodeDone]({ node, parent: item.parent });
+          outputs[OutputIds.OnChange](data.treeData);
         }}
         placeholder={item.placeholder}
       />
