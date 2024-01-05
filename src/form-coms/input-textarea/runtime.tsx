@@ -20,6 +20,8 @@ export interface Data {
   };
   minRows?: number;
   maxRows?: number;
+
+  isEditable: boolean;
 }
 
 export default function ({
@@ -38,65 +40,69 @@ export default function ({
 
   const inputRef = useRef<TextAreaRef>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
-  useFormItemInputs({
-    id: id,
-    name: name,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        // data.value = val;
-        setValue(val);
-      },
-      setInitialValue(val) {
-        // data.value = val;
-        setValue(val);
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        // data.value = void 0;
-        setValue(void 0);
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: id,
+      name: name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     /**
@@ -121,27 +127,26 @@ export default function ({
     });
   }, []);
 
-  useEffect(() => {
-    data.value = value;
-  }, [value]);
-
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: id, name: name });
   };
 
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
-    // data.value = value;
-    setValue(value);
-    onChangeForFc(parentSlot, { id: id, name: name, value });
-    outputs['onChange'](value);
+  const changeValue = useCallback((val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: id, name: name, value: val });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onChange'](val);
   }, []);
 
   const onBlur = useCallback((e) => {
     const value = e.target.value;
+    changeValue(value);
     onValidateTrigger();
-    // data.value = value;
-    setValue(value);
     outputs['onBlur'](value);
   }, []);
 
@@ -166,20 +171,21 @@ export default function ({
     };
   }, [env.edit, data.minRows, data.maxRows]);
 
-  return (
+  return data.isEditable ? (
     <div>
       <Input.TextArea
         ref={inputRef}
         {...data.config}
-        // value={data.value}
         placeholder={env.i18n(data.config.placeholder)}
         value={value}
         readOnly={!!edit}
         {...sizeConfig}
-        onChange={changeValue}
+        onChange={onChange}
         onBlur={onBlur}
         onPressEnter={onPressEnter}
       />
     </div>
+  ) : (
+    <span style={{ whiteSpace: 'pre-wrap' }}>{value}</span>
   );
 }

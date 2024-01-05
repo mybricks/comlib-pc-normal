@@ -24,12 +24,14 @@ export interface Data {
   isMax: boolean;
   min: number;
   max: number;
+  isEditable: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const [value, setValue] = useState<string | number>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useFormItemInputs(
     {
@@ -39,16 +41,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       outputs,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
@@ -63,9 +65,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
             data.config.disabled = true;
           }
         },
+        setIsEditable(val) {
+          data.isEditable = val;
+        },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -76,7 +81,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -104,16 +109,21 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const onChange = (value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
-    outputs['onChange'](value);
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
+  };
+
+  const onChange = (val) => {
+    changeValue(val);
+    outputs['onChange'](val);
   };
 
   const onBlur = useCallback(
     (e) => {
       onValidateTrigger();
-      outputs['onBlur'](value);
+      outputs['onBlur'](valueRef.current);
     },
     [value]
   );
@@ -121,7 +131,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const onPressEnter = useCallback(
     (e) => {
       onValidateTrigger();
-      outputs['onPressEnter'](value);
+      outputs['onPressEnter'](valueRef.current);
     },
     [value]
   );
@@ -164,7 +174,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
   }, [value, data.character, data.isFormatter]);
 
-  return (
+  return data.isEditable ? (
     <div className={css.inputNumber}>
       <InputNumber<string | number>
         value={value}
@@ -181,5 +191,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         max={data.isMax ? data.max : void 0}
       />
     </div>
+  ) : (
+    <div>{value}</div>
   );
 }

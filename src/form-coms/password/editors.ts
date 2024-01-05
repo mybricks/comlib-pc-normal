@@ -1,5 +1,5 @@
 import { Data } from './types';
-import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
+import { RuleKeys, LengthRules, showMessage, getTitle } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
 import { ValidateTriggerType } from '../types';
 
@@ -177,7 +177,33 @@ export default {
                       locale: true
                     },
                     ifVisible(item: any, index: number) {
-                      return item.key === RuleKeys.REQUIRED;
+                      return showMessage(item.key);
+                    }
+                  },
+                  {
+                    title: '正则表达式',
+                    type: 'Text',
+                    value: 'regExr',
+                    ifVisible(item: any, index: number) {
+                      return item.key === RuleKeys.REG_EXP;
+                    }
+                  },
+                  {
+                    title: '最小长度',
+                    type: 'inputNumber',
+                    value: 'limitMinLength',
+                    options: [{ min: 0, max: 10000, width: 100 }],
+                    ifVisible(item: any, index: number) {
+                      return item.key === RuleKeys.MIN_LENGTH;
+                    }
+                  },
+                  {
+                    title: '最大长度',
+                    type: 'inputNumber',
+                    value: 'limitMaxLength',
+                    options: [{ min: 0, max: Infinity, width: 100 }],
+                    ifVisible(item: any, index: number) {
+                      return item.key === RuleKeys.MAX_LENGTH;
                     }
                   },
                   {
@@ -208,7 +234,7 @@ export default {
               },
               value: {
                 get({ data }) {
-                  return data.rules.length > 0 ? data.rules : defaultRules;
+                  return data.rules.length > 0 ? data.rules : LengthRules;
                 },
                 set({ data }, value: any) {
                   data.rules = value;
@@ -221,7 +247,7 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const cutomRule = (data.rules || LengthRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
             return !!cutomRule?.status;

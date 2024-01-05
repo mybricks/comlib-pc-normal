@@ -31,6 +31,22 @@ export default {
                   'opacity'
                 ],
                 target: '.ant-checkbox-inner'
+              },
+              {
+                title: '全选框',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.checkbox > .ant-checkbox-wrapper'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-checkbox-group .ant-checkbox-group-item'
               }
             ]
           }),
@@ -46,6 +62,22 @@ export default {
                 ],
                 target: '.ant-checkbox:hover .ant-checkbox-inner',
                 domTarget: '.ant-checkbox-inner'
+              },
+              {
+                title: '全选框',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.checkbox > .ant-checkbox-wrapper:hover'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-checkbox-group .ant-checkbox-group-item:hover'
               }
             ]
           }),
@@ -75,6 +107,22 @@ export default {
                   }
                 ],
                 target: '.ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner:after'
+              },
+              {
+                title: '全选框',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.checkbox > .ant-checkbox-wrapper-checked'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-checkbox-group .ant-checkbox-wrapper-checked'
               }
             ]
           }),
@@ -109,6 +157,22 @@ export default {
                   }
                 ],
                 target: '.ant-checkbox.ant-checkbox-disabled .ant-checkbox-inner:after'
+              },
+              {
+                title: '全选框',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.checkbox > .ant-checkbox-wrapper-disabled'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-checkbox-group>.ant-checkbox-wrapper-disabled'
               }
             ]
           })

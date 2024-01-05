@@ -27,6 +27,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState<any>();
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
@@ -35,11 +36,12 @@ export default function Runtime({
     children: 'children'
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const valueRef = useRef<any>();
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
-        value: data.value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -50,7 +52,7 @@ export default function Runtime({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels['returnValidate'];
-            outputs[OutputIds.OnValidate](data.value);
+            outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
           }
@@ -61,19 +63,25 @@ export default function Runtime({
     });
 
     inputs['getValue']((val, outputRels) => {
-      outputRels['returnValue'](data.value);
+      outputRels['returnValue'](valueRef.current);
     });
 
     inputs['setValue']((val, outputRels) => {
       if (data.config.multiple) {
-        typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
-          ? changeValue(val)
-          : logger.error(`${title}【设置值】参数应为数组格式`);
+        if (typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])) {
+          changeValue(val);
+          outputs[OutputIds.OnChange](val);
+        } else {
+          logger.warn(`${title}【设置值】参数应为数组格式`);
+        }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
-        outputRels['setValueDone'](val);
+        outputs[OutputIds.OnChange](val);
       } else {
-        logger.error(`${title}【设置值】参数应为基本类型`);
+        logger.warn(`${title}【设置值】参数应为基本类型`);
+      }
+      if (outputRels['setValueDone']) {
+        outputRels['setValueDone'](val);
       }
     });
 
@@ -81,18 +89,22 @@ export default function Runtime({
       if (data.config.multiple) {
         typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
           ? onInit(val)
-          : logger.error(`${title}【设置初始值】参数应为数组格式`);
+          : logger.warn(`${title}【设置初始值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
-        outputRels['setInitialValueDone'](val);
       } else {
-        logger.error(`${title}【设置初始值】参数应为基本类型`);
+        logger.warn(`${title}【设置初始值】参数应为基本类型`);
+      }
+      if (outputRels['setInitialValueDone']) {
+        outputRels['setInitialValueDone'](val);
       }
     });
 
     inputs['resetValue']((_, outputRels) => {
-      data.value = void 0;
-      outputRels['resetValueDone']();
+      changeValue(void 0);
+      if (outputRels['resetValueDone']) {
+        outputRels['resetValueDone']();
+      }
     });
 
     inputs['setOptions']((ds, outputRels) => {
@@ -116,22 +128,38 @@ export default function Runtime({
     //设置禁用
     inputs['setDisabled']((_, outputRels) => {
       data.config.disabled = true;
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, outputRels) => {
       data.config.disabled = false;
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, outputRels) => {
       if (val === true) {
         data.config.disabled = false;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
       }
     });
 
@@ -152,7 +180,7 @@ export default function Runtime({
       }
       outputRels['setColorDone'](color);
     });
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -181,23 +209,21 @@ export default function Runtime({
 
   const changeValue = useCallback((value) => {
     if (value === undefined) {
-      data.value = '';
+      setValue('');
     }
-    data.value = value;
+    valueRef.current = value;
+    setValue(value);
     onChangeForFc(parentSlot, { id, value, name });
-    outputs[OutputIds.OnChange](value);
   }, []);
 
   const onChange = useCallback((value) => {
     changeValue(value);
+    outputs[OutputIds.OnChange](value);
     onValidateTrigger();
   }, []);
 
   const onInit = useCallback((value) => {
-    if (value === undefined) {
-      data.value = '';
-    }
-    data.value = value;
+    changeValue(value);
     outputs[OutputIds.OnInitial](value);
   }, []);
 
@@ -273,32 +299,38 @@ export default function Runtime({
 
   return (
     <div ref={wrapperRef} className={css.select}>
-      <TreeSelect
-        treeIcon
-        {...data.config}
-        placeholder={env.i18n(data.config.placeholder)}
-        showSearch={data.config.showSearch}
-        showArrow={data.config.showArrow}
-        treeDefaultExpandAll={env.design ? true : void 0}
-        treeExpandedKeys={expandedKeys}
-        onTreeExpand={onExpand}
-        switcherIcon={(props) => getIcon(data.switcherIcon, props)}
-        multiple={data.config.multiple}
-        treeCheckable={data.config.treeCheckable}
-        showCheckedStrategy={data.config.showCheckedStrategy}
-        maxTagCount={data.config.maxTagCount}
-        treeNodeFilterProp={data.config.treeNodeFilterProp}
-        open={env.design ? true : void 0}
-        value={data.value}
-        loadData={data.useLoadData ? onLoadData : undefined}
-        fieldNames={fieldNames}
-        onChange={onChange}
-        treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
-        dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-      >
-        {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
-      </TreeSelect>
+      {data.isEditable ? (
+        <TreeSelect
+          treeIcon
+          {...data.config}
+          placeholder={env.i18n(data.config.placeholder)}
+          showSearch={data.config.showSearch}
+          showArrow={data.config.showArrow}
+          treeDefaultExpandAll={env.design ? true : void 0}
+          treeExpandedKeys={expandedKeys}
+          onTreeExpand={onExpand}
+          switcherIcon={(props) => getIcon(data.switcherIcon, props)}
+          multiple={data.config.multiple}
+          treeCheckable={data.config.treeCheckable}
+          showCheckedStrategy={data.config.showCheckedStrategy}
+          maxTagCount={data.config.maxTagCount}
+          treeNodeFilterProp={data.config.treeNodeFilterProp}
+          open={env.design ? true : void 0}
+          value={value}
+          loadData={data.useLoadData ? onLoadData : undefined}
+          fieldNames={fieldNames}
+          onChange={onChange}
+          treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
+          dropdownClassName={id}
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+        >
+          {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
+        </TreeSelect>
+      ) : Array.isArray(value) ? (
+        value.join(',')
+      ) : (
+        value
+      )}
     </div>
   );
 }

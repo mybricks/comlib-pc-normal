@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
 import { validateFormItem, RuleKeys } from '../utils/validator';
@@ -30,59 +30,64 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { edit } = env;
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState();
+  const valueRef = useRef<any>();
 
-  useFormItemInputs({
-    inputs,
-    outputs,
-    name,
-    configs: {
-      setValue(val) {
-        data.value = val;
-      },
-      setInitialValue(val) {
-        data.value = val;
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        data.value = void 0;
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      inputs,
+      outputs,
+      name,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs['onValidate'](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs['onValidate'](valueRef.current);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   // const onValidateTrigger = (type: string) => {
   //   data.validateTrigger?.includes(type) && validateTrigger(parentSlot, { id, name });
@@ -91,24 +96,29 @@ export default function ({
     validateTrigger(parentSlot, { id, name });
   };
 
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
-    data.value = value;
-    onChangeForFc(parentSlot, { id: id, value, name });
-    outputs['onChange'](value);
+  const changeValue = useCallback((val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: id, value: val, name });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onChange'](val);
   }, []);
 
   const onBlur = useCallback((e) => {
-    const value = e.target.value;
-    data.value = value;
-    outputs['onBlur'](value);
+    const val = e.target.value;
+    changeValue(val);
+    outputs['onBlur'](val);
     onValidateTrigger();
   }, []);
 
   const onPressEnter = useCallback((e) => {
-    const value = e.target.value;
+    const val = e.target.value;
     onValidateTrigger();
-    outputs['onPressEnter'](value);
+    outputs['onPressEnter'](val);
   }, []);
 
   useEffect(() => {
@@ -131,9 +141,9 @@ export default function ({
     <Input
       type="text"
       {...inputConfig}
-      value={data.value}
+      value={value}
       readOnly={!!edit}
-      onChange={changeValue}
+      onChange={onChange}
       onBlur={onBlur}
       onPressEnter={onPressEnter}
     />

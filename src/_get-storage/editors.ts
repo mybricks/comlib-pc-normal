@@ -1,12 +1,11 @@
 import { uuid } from '../utils';
 import { EnumStorage, type Data, type PickType } from './types';
 
-
 const createPick = ({ itemKey } = { itemKey: 'key' }) => {
   const id = uuid();
   return {
     id,
-    itemKey,
+    itemKey
   };
 };
 
@@ -16,8 +15,8 @@ const updateOutput = (data: Data, output) => {
     if (!pick) {
       output.remove(port.id);
     } else {
-      const { id, itemKey } = pick
-      output.setTitle(id, itemKey)
+      const { id, itemKey } = pick;
+      output.setTitle(id, itemKey);
     }
   });
   data.picks.forEach((item) => {
@@ -45,6 +44,13 @@ export default {
   '@pinRemoved'({ data, output }) {
     updatePicks(data, output);
   },
+  '@init': ({ data, setAutoRun, isAutoRun }: EditorResult<Data>) => {
+    const autoRun = isAutoRun ? isAutoRun() : false;
+    if (autoRun || data.runImmediate) {
+      setAutoRun(true);
+      data.runImmediate = true;
+    }
+  },
   ':root': ({ data }: EditorResult<Data>, cate1) => {
     cate1.title = '取值配置';
     cate1.items = [
@@ -54,14 +60,14 @@ export default {
         description: '选择从localStorage或sessionStorage中取值',
         options: [
           { label: 'localStorage', value: EnumStorage.LOCAL },
-          { label: 'sessionStorage', value: EnumStorage.SESSION },
+          { label: 'sessionStorage', value: EnumStorage.SESSION }
         ],
         value: {
           get({ data }: EditorResult<Data>) {
             return data.storageType;
           },
           set({ data, output }: EditorResult<Data>, val: EnumStorage) {
-            data.storageType = val
+            data.storageType = val;
           }
         }
       },
@@ -77,7 +83,7 @@ export default {
             return `${item.itemKey}`;
           },
           onAdd() {
-            return createPick();
+            return createPick({ itemKey: 'key' + data.picks.length });
           },
           items: [
             {
@@ -85,7 +91,7 @@ export default {
               type: 'text',
               value: 'itemKey',
               options: {
-                placeholder: '输入要获取的key',
+                placeholder: '输入要获取的key'
               }
             }
           ]

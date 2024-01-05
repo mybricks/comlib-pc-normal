@@ -19,11 +19,12 @@ export default function ({
 }: RuntimeParams<Data>) {
   const [value, setValue] = useState<string>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -34,7 +35,7 @@ export default function ({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels;
-            outputs[OutputIds.OnValidate](value);
+            outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels(r);
           }
@@ -53,13 +54,17 @@ export default function ({
       inputs,
       outputs,
       configs: {
-        setValue: setValue,
-        setInitialValue: setValue,
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.readOnly = true;
@@ -90,10 +95,15 @@ export default function ({
     });
   }, []);
 
-  const onChange = (value: string) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id, name, value });
-    outputs.onChange(value);
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id, name, value: val });
+  };
+
+  const onChange = (val: string) => {
+    changeValue(val);
+    outputs.onChange(val);
     validateTrigger(parentSlot, { id, name });
   };
 
@@ -101,6 +111,7 @@ export default function ({
     <CodeEditor
       value={value}
       onChange={onChange}
+      valueRef={valueRef}
       config={{ ...data.aceConfig, placeholder: env.i18n(data.aceConfig.placeholder) }}
       readOnly={data.readOnly}
     />

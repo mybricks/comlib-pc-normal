@@ -42,6 +42,9 @@ const tableStyleEditor = {
       title: '固定表头',
       type: 'Switch',
       description: '设置表头固定，只滚动数据行。必须同时设置【每一列的宽度】',
+      ifVisible({ style }: EditorResult<Data>) {
+        return style.height === 'auto';
+      },
       value: {
         get({ data }: EditorResult<Data>) {
           return data.fixedHeader;
@@ -53,7 +56,7 @@ const tableStyleEditor = {
           if (value) {
             !event1 && input.add(InputIds.TABLE_HEIGHT, '设置表格高度', Schemas.TABLE_HEIGHT);
             !event2 && output.add(OutputIds.TABLE_HEIGHT, '表格高度', Schemas.TABLE_HEIGHT);
-            
+
             input.get(InputIds.TABLE_HEIGHT).setRels([OutputIds.TABLE_HEIGHT]);
           } else {
             event1 && input.remove(InputIds.TABLE_HEIGHT);
@@ -65,8 +68,8 @@ const tableStyleEditor = {
     {
       title: '可滚动最大高度',
       type: 'Text',
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.fixedHeader;
+      ifVisible({ data, style }: EditorResult<Data>) {
+        return data.fixedHeader && style.height === 'auto';
       },
       value: {
         get({ data }: EditorResult<Data>) {
@@ -80,8 +83,8 @@ const tableStyleEditor = {
     {
       title: '固定高度',
       type: 'text',
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.fixedHeader;
+      ifVisible({ data, style }: EditorResult<Data>) {
+        return data.fixedHeader && style.height === 'auto';
       },
       value: {
         get({ data }: EditorResult<Data>) {
@@ -119,7 +122,7 @@ const tableStyleEditor = {
         return data.enableStripe;
       },
       options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-      target: ({ id }) => `table tbody tr.mybricks-table-row-double td${getFilterSelector(id)}`,
+      target: ({ id }) => `table tbody tr.mybricks-table-row-double td${getFilterSelector(id)}`
     },
     {
       title: '单元格选中状态',

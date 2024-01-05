@@ -1,4 +1,4 @@
-import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle } from '../utils/validator';
 import { Data } from './runtime';
 
 export default {
@@ -6,7 +6,7 @@ export default {
     options: ['width']
   },
   '@init': ({ style }) => {
-    style.width = '100%'
+    style.width = '100%';
   },
   ':root': {
     style: [
@@ -14,7 +14,7 @@ export default {
         title: '默认样式',
         options: ['border'],
         target: '.ant-input-number'
-      },
+      }
       // {
       //   title: '激活样式',
       //   options: ['border'],
@@ -89,12 +89,12 @@ export default {
         {
           title: '数值精度',
           description: '精确到小数点后几位',
-          type: "Slider",
+          type: 'Slider',
           options: {
             max: 10,
             min: 0,
             steps: 1,
-            formatter: "/10",
+            formatter: '/10'
           },
           value: {
             get({ data }) {
@@ -140,15 +140,15 @@ export default {
           },
           options: [
             { label: '前缀', value: 'prefix' },
-            { label: '后缀', value: 'suffix' },
+            { label: '后缀', value: 'suffix' }
           ],
           value: {
             get({ data }) {
               return data.charPostion;
             },
             set({ data }, value: string) {
-              data.charPostion = value
-            },
+              data.charPostion = value;
+            }
           }
         },
         {
@@ -186,9 +186,7 @@ export default {
           ifVisible({ data }) {
             return !!data.isMax;
           },
-          options: [
-            { width: 200 },
-          ],
+          options: [{ width: 200 }],
           value: {
             get({ data }) {
               return [data.max] || [100];
@@ -217,9 +215,7 @@ export default {
           ifVisible({ data }) {
             return !!data.isMin;
           },
-          options: [
-            { width: 200 },
-          ],
+          options: [{ width: 200 }],
           value: {
             get({ data }) {
               return [data.min] || [0];
@@ -235,7 +231,6 @@ export default {
           type: 'ArrayCheckbox',
           options: {
             checkField: 'status',
-
             visibleField: 'visible',
             getTitle,
             items: [
@@ -247,7 +242,51 @@ export default {
                 },
                 value: 'message',
                 ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.REQUIRED;
+                  return showMessage(item.key);
+                }
+              },
+              {
+                title: '正则表达式',
+                type: 'Text',
+                value: 'regExr',
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REG_EXP;
+                }
+              },
+              {
+                title: '最小长度',
+                type: 'inputNumber',
+                value: 'limitMinLength',
+                options: [{ min: 0, max: 10000, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MIN_LENGTH;
+                }
+              },
+              {
+                title: '最大长度',
+                type: 'inputNumber',
+                value: 'limitMaxLength',
+                options: [{ min: 0, max: Infinity, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MAX_LENGTH;
+                }
+              },
+              {
+                title: '最大值',
+                type: 'inputNumber',
+                value: 'limitMaxValue',
+                options: [{ min: 0, max: Infinity, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MAX;
+                }
+              },
+              {
+                title: '最小值',
+                type: 'inputNumber',
+                value: 'limitMinValue',
+                options: [{ min: -Infinity, max: 10000, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MIN;
                 }
               },
               {
@@ -278,7 +317,7 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? data.rules : defaultRules;
+              return data.rules.length > 0 ? data.rules : ValueRules;
             },
             set({ data }, value: any) {
               data.rules = value;
@@ -289,7 +328,7 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const cutomRule = (data.rules || ValueRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
             return !!cutomRule?.status;
@@ -330,13 +369,8 @@ export default {
               }
             }
           ]
-        },
-      ]
+        }
+      ];
     }
   }
-}
-
-const getTitle = (item: any, index: number) => {
-  const { key, title, numericalLimit, regExr } = item;
-  return title;
 };

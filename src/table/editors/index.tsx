@@ -17,6 +17,7 @@ import DynamicColumnEditor from './table/dynamicColumn';
 import DynamicTitleEditor from './table/dynamicTitle';
 import rowOperationEditor from './table/rowOperation';
 import SummaryColumn from './table/summaryColumn';
+import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
 import { emptyEditor, emptyStyleEditor } from './table/empty';
@@ -28,6 +29,7 @@ import {
 } from '../components/Paginator/constants';
 import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
+import lazyLoad from './table/lazyLoad';
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -65,6 +67,9 @@ export function getColumnsFromSchema(schema: any) {
 }
 
 export default {
+  '@init': ({ style, data }) => {
+    style.height = 'auto';
+  },
   '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
     if (schema === 'mybricks.domain-pc.crud/table') {
       if (data?.domainModel?.entity && data.columns?.length === 0) {
@@ -127,7 +132,7 @@ export default {
     }
   },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     items: (props: EditorResult<Data>, ...cateAry) => {
@@ -150,6 +155,8 @@ export default {
         ...ExpandEditor,
         rowOperationEditor,
         rowMerge,
+        ...lazyLoad,
+        ...ScrollToFirstRowEditor,
         ...SummaryColumn,
         ...DynamicColumnEditor,
         ...DynamicTitleEditor,

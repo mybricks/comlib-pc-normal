@@ -17,6 +17,7 @@ interface FormItemInputsProps {
     setEnabled?: () => void
     onChange?: (val) => void
     setIsEnabled?: (val) => void
+    setIsEditable?: (val) => void
   }
   parentSlot?: any
 }
@@ -29,7 +30,8 @@ const formItemInputIds = {
   VALIDATE: 'validate',
   SET_DISABLED: 'setDisabled',
   SET_ENABLED: 'setEnabled',
-  IS_ENABL: 'isEnable'
+  IS_ENABL: 'isEnable',
+  IS_EDITABLE: 'isEditable'
 }
 
 const formItemOutputIds = {
@@ -120,9 +122,7 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
         if(relOutputs['setDisabledDone']){
           relOutputs['setDisabledDone']();
         }
-        
       }
-
     });
 
     /**
@@ -149,6 +149,17 @@ const useFormItemInputs = ({ inputs, outputs, configs, parentSlot, id, name }: F
       }
     });
 
+    /**
+     * @description 设置编辑/只读
+     */
+    inputs[formItemInputIds.IS_EDITABLE] && inputs[formItemInputIds.IS_EDITABLE]((val, relOutputs) => {
+      if (configs?.setIsEditable) {
+        configs?.setIsEditable(val);
+        if(relOutputs['isEditableDone']){
+          relOutputs['isEditableDone'](val);
+        }
+      }
+    });
   }, deps ? deps : [])
 
   return

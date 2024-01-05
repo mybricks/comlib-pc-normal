@@ -45,7 +45,8 @@ const SlotContent = (
             }
             // 表单项收集childrenStore
             if (field && isFormItem) {
-              const { key, name } = field;
+              const { key } = field;
+              const name = data.fields.find((f) => f.key === key)?.name;
               if (!childrenStore[key]) {
                 childrenStore[key] = {};
               }
@@ -82,7 +83,7 @@ const SlotContent = (
 
         // childrenStore收集完成后的处理
         if (
-          field.name === data.fields.length - 1 &&
+          env.runtime &&
           isChildrenStoreValid({ data, childrenStore, comCount }) &&
           data.userAction.type
         ) {
@@ -90,55 +91,28 @@ const SlotContent = (
           switch (data.userAction.type) {
             case 'add':
             case 'init':
+              if (data.userAction.key !== field.key) return;
               data.userAction.type = '';
               const temp = deepCopy(data.userAction.value);
               const key = data.userAction.key;
 
-              if (temp) {
-                setValuesOfChild({ data, childrenStore, key, value: temp, actionType });
-              }
-              const initValue = temp || {};
-              const index = data.userAction.index;
               if (Array.isArray(data.value)) {
-                data.value.splice(index, 0, initValue);
+                const index = data.userAction.index;
+                data.value.splice(index, 0, temp || {});
               } else {
-                data.value = [initValue];
+                data.value = [temp || {}];
               }
-              changeValue({ data, id, outputs, parentSlot, name: props.name });
-              data.userAction.index = -1;
-              data.userAction.key = -1;
-              data.userAction.value = undefined;
-              // 计算新增项默认值
-              // const initValue = {};
-              // new Promise((resolve, reject) => {
-              //   data.items.forEach((item) => {
-              //     const { id, name, comName, label } = item;
-              //     const { inputs, visible } = childrenStore[field.key][comName];
-              //     if (!data.submitHiddenFields && !visible) return;
-              //     inputs.getValue().returnValue((val) => {
-              //       initValue[name || label] = val;
-              //     });
-              //   });
-              //   resolve(initValue);
-              // })
-              //   .then((initValue) => {
-              //     data.userAction.value = undefined;
-              //     if (Array.isArray(data.value)) {
-              //       data.value.push(initValue);
-              //     } else {
-              //       data.value = [initValue];
-              //     }
-              //     changeValue({ data, id, outputs, parentSlot, name: props.name });
-              //   })
-              //   .catch((e) => {
-              //     console.error('计算默认值失败: ' + e);
-              //     if (Array.isArray(data.value)) {
-              //       data.value.push({});
-              //     } else {
-              //       data.value = [{}];
-              //     }
-              //     changeValue({ data, id, outputs, parentSlot, name: props.name });
-              //   });
+              const cb = () => {
+                changeValue({ data, id, outputs, parentSlot, name: props.name });
+                data.userAction.index = -1;
+                data.userAction.key = -1;
+                data.userAction.value = undefined;
+              };
+              if (temp) {
+                setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
+              } else {
+                cb();
+              }
               break;
             default:
               setValuesForInput({ data, childrenStore });

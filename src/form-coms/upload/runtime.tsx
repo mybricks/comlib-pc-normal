@@ -3,6 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import * as Icons from '@ant-design/icons';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { validateFormItem } from '../utils/validator';
+import { onChange as onChangeForFc } from '../form-container/models/onChange';
 
 import css from './runtime.less';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
@@ -39,6 +40,13 @@ export interface Data {
   imageSize: number[];
   customUpload: boolean;
   fileClick: boolean;
+  hideIcon: boolean;
+  isEditable: boolean;
+  isCustomIcon: boolean;
+  textIcon: string;
+  picIcon: string;
+  picCardIcon: string;
+  dragIcon: string;
 }
 
 interface Window {
@@ -48,7 +56,16 @@ interface Window {
   };
 }
 
-export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
+export default function ({
+  env,
+  data,
+  inputs,
+  outputs,
+  slots,
+  parentSlot,
+  id,
+  name
+}: RuntimeParams<Data>) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const fileListRef = useRef<UploadFile[]>([]);
   const removeFileRef = useRef<UploadFile>();
@@ -70,15 +87,17 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
 
   useLayoutEffect(() => {
     inputs['setValue']((val: UploadFile[], relOutputs) => {
-      fileListRef.current = val;
-      setFileList(val);
-      relOutputs['setValueDone'](val);
+      changeFileList(val);
+      if (relOutputs['setValueDone']) {
+        relOutputs['setValueDone'](val);
+      }
     });
     inputs['setInitialValue'] &&
       inputs['setInitialValue']((val, relOutputs) => {
-        setFileList(val);
-        fileListRef.current = val;
-        relOutputs['setInitialValueDone'](val);
+        changeFileList(val);
+        if (relOutputs['setInitialValueDone']) {
+          relOutputs['setInitialValueDone'](val);
+        }
         outputs[OutputIds.OnInitial](val);
       });
     inputs['validate']((model, outputRels) => {
@@ -100,29 +119,47 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     });
 
     inputs['resetValue']((_, relOutputs) => {
-      setFileList([]);
-      relOutputs['resetValueDone']();
+      changeFileList([]);
+      if (relOutputs['resetValueDone']) {
+        relOutputs['resetValueDone']();
+      }
     });
 
     //设置禁用
     inputs['setDisabled']((_, relOutputs) => {
       data.config.disabled = true;
-      relOutputs['setDisabledDone']();
+      if (relOutputs['setDisabledDone']) {
+        relOutputs['setDisabledDone']();
+      }
     });
     //设置启用
     inputs['setEnabled']((_, relOutputs) => {
       data.config.disabled = false;
-      relOutputs['setEnabledDone']();
+      if (relOutputs['setEnabledDone']) {
+        relOutputs['setEnabledDone']();
+      }
     });
 
     //设置启用/禁用
     inputs['isEnable']((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
       } else {
         data.config.disabled = true;
-        relOutputs['isEnableDone'](val);
+        if (relOutputs['isEnableDone']) {
+          relOutputs['isEnableDone'](val);
+        }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
       }
     });
 
@@ -136,9 +173,14 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     });
   }, []);
 
+  const changeFileList = useCallback((newFileList) => {
+    fileListRef.current = newFileList;
+    setFileList(newFileList);
+    onChangeForFc(parentSlot, { id, value: newFileList, name });
+  }, []);
+
   const onRemoveFile = useCallback((file) => {
-    fileListRef.current = fileListRef.current.filter((item) => item.uid !== file.uid);
-    setFileList((list) => list.filter((item) => item.uid !== file.uid));
+    changeFileList(fileListRef.current.filter((item) => item.uid !== file.uid));
   }, []);
 
   const formatCompleteFile = (res: UploadFileList, tempList: UploadFileList[]) => {
@@ -182,7 +224,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
     list.forEach((item) => {
       formatCompleteFile(item, fileListRef.current);
     });
-    setFileList([...fileListRef.current]);
+    changeFileList([...fileListRef.current]);
   };
 
   // 文件数据格式化
@@ -215,14 +257,14 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
           onUploadComplete(res);
         })
         .catch(() => {
-          setFileList([]);
+          changeFileList([]);
         });
     } else {
       const formData = new FormData();
       fileList.forEach((file) => {
         formData.append(fileKey, file);
       });
-      fileListRef.current = onFormatFileList(fileList);
+      changeFileList(onFormatFileList(fileList));
       outputs.upload(formData);
     }
   };
@@ -299,14 +341,17 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   }, []);
 
   const onRemove = (file) => {
-    if (!data.config.useCustomRemove) {
-      fileListRef.current = fileListRef.current.filter(({ uid }) => file.uid !== uid);
-      setFileList((list) => list.filter(({ uid }) => file.uid !== uid));
-      return true;
+    if (data.isEditable === false) {
+      return false;
+    } else {
+      if (!data.config.useCustomRemove) {
+        changeFileList(fileListRef.current.filter(({ uid }) => file.uid !== uid));
+        return true;
+      }
+      removeFileRef.current = file;
+      outputs.remove(file);
+      return false;
     }
-    removeFileRef.current = file;
-    outputs.remove(file);
-    return false;
   };
 
   const onPreview = (file) => {
@@ -364,34 +409,46 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   const renderUploadText = () => {
     const pictureButton = (
       <div>
-        <PlusOutlined />
+        {data.hideIcon ? void 0 : Icons && Icons[data.picCardIcon]?.render()}
         <div style={{ marginTop: 8 }}>{env.i18n(buttonText)}</div>
       </div>
     );
 
     const normalButton = (
-      <Button icon={<UploadOutlined />} disabled={disabled}>
+      <Button
+        icon={data.hideIcon ? void 0 : Icons && Icons[data.textIcon]?.render()}
+        disabled={disabled}
+      >
+        {env.i18n(buttonText)}
+      </Button>
+    );
+
+    const picButton = (
+      <Button
+        icon={data.hideIcon ? void 0 : Icons && Icons[data.picIcon]?.render()}
+        disabled={disabled}
+      >
         {env.i18n(buttonText)}
       </Button>
     );
 
     const draggerButton = (
       <>
-        <p className="ant-upload-drag-icon">{Icons && Icons[uploadIcon]?.render()}</p>
+        <p className="ant-upload-drag-icon" style={{ display: data.hideIcon ? 'none' : void 0 }}>
+          {Icons && Icons[data.dragIcon]?.render()}
+        </p>
         <p className="ant-upload-text">{env.i18n(buttonText)}</p>
       </>
     );
 
     const uploadButton = {
       text: normalButton,
-      picture: normalButton,
+      picture: picButton,
       'picture-card': pictureButton,
       dragger: draggerButton
     };
-    if (!fileCount || (Array.isArray(fileList) && fileList.length < fileCount)) {
-      return uploadButton[listType];
-    }
-    return null;
+
+    return uploadButton[listType];
   };
 
   const setUploadStyle = (node: HTMLElement) => {
@@ -473,13 +530,16 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
             ? false
             : { showPreviewIcon: usePreview }
         }
+        //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
-        ) : (
+        ) : data.isEditable ? (
           renderUploadText()
+        ) : (
+          ''
         )}
       </UploadNode>
     </div>

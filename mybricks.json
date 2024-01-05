@@ -113,7 +113,8 @@
           "./src/video/com.json",
           "./src/progress/com.json",
           "./src/print/com.json",
-          "./src/popconfirm/com.json"
+          "./src/popconfirm/com.json",
+          "./src/custom-render/com.json"
         ]
       },
       "./src/_code-segment/com.json",
@@ -228,7 +229,8 @@
           "./src/sort-bar/com.json",
           "./src/video/com.json",
           "./src/print/com.json",
-          "./src/popconfirm/com.json"
+          "./src/popconfirm/com.json",
+          "./src/custom-render/com.json"
         ]
       },
       "./src/_code-segment/com.json",

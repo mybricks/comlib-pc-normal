@@ -23,5 +23,6 @@
   },
   "layout": "horizontal",
   "enableButtonStyle": false,
-  "buttonStyle": "outline"
+  "buttonStyle": "outline",
+  "isEditable": true
 }

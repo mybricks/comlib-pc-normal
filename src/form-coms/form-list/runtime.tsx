@@ -28,59 +28,68 @@ export default function Runtime(props: RuntimeParams<Data>) {
   // let initLength = useMemo(() => {
   //   return data.initLength;
   // }, [data.initLength]);
-
+  const resetForm = useCallback(() => {
+    data.value = [];
+    data.fields = [];
+    data.MaxKey = -1;
+    Object.keys(childrenStore).forEach((key) => {
+      Reflect.deleteProperty(childrenStore, key);
+    });
+  }, []);
   useLayoutEffect(() => {
     data.userAction = {
       type: '',
       index: -1,
-      key: -1,
+      key: -2,
       value: undefined,
       startIndex: -1
     };
     // 设置值
     inputs[InputIds.SetValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
+        resetForm();
         data.value = value;
-        outputs[OutputIds.OnChange](deepCopy(data.value));
-        onChangeForFc(parentSlot, { id, value, name: props.name });
-        outputRels['setValueDone'](value);
-        changeValue({ data, id, outputs, parentSlot, name: props.name });
-        const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetValue;
-        // changeLength < 0时，不会触发已有的列表项刷新
-        changeLength <= 0 && setValuesForInput({ data, childrenStore });
+        data.userAction.key = -2;
+        onChangeForFc(parentSlot, { id, value, name: props.name });
+        changeValue({ data, id, outputs, parentSlot, name: props.name });
+        generateFields(data);
       } else {
         logger.error(title + '[设置值]: 类型不合法');
+      }
+      if (outputRels['setValueDone']) {
+        outputRels['setValueDone']?.(value);
       }
     });
 
     // 设置初始值
     inputs[InputIds.SetInitialValue]((value, outputRels) => {
       if (typeCheck(value, ['Array', 'Undefined', 'NULL'])) {
+        resetForm();
         data.value = value;
-        outputRels['setInitialValueDone'](value);
-        outputs[OutputIds.OnInitial](deepCopy(data.value));
-        onChangeForFc(parentSlot, { id, value, name: props.name });
-        const changeLength = generateFields(data);
         data.userAction.type = InputIds.SetInitialValue;
-        // changeLength < 0时，不会触发已有的列表项刷新
-        changeLength <= 0 && setValuesForInput({ data, childrenStore });
+        data.userAction.key = -2;
+        outputs[OutputIds.OnInitial](deepCopy(value));
+        onChangeForFc(parentSlot, { id, value, name: props.name });
+        generateFields(data);
       } else {
         logger.error(title + '[设置初始值]: 类型不合法');
+      }
+      if (outputRels['setInitialValueDone']) {
+        outputRels['setInitialValueDone']?.(value);
       }
     });
 
     // 获取值
     inputs['getValue']((val, outputRels) => {
-      const value = deepCopy(data.value);
+      const value = getValue();
       outputRels['returnValue'](value);
     });
 
     // 重置值
     inputs['resetValue']((_, outputRels) => {
-      data.value = [];
-      data.fields = [];
-      data.MaxKey = -1;
+      resetForm();
+      onChangeForFc(parentSlot, { id, value: [], name: props.name });
       outputRels['resetValueDone']();
     });
 
@@ -89,7 +98,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.disabled = true;
       data.userAction.type = InputIds.SetDisabled;
       setValuesForInput({ data, childrenStore });
-      outputRels['setDisabledDone']();
+      if (outputRels['setDisabledDone']) {
+        outputRels['setDisabledDone']();
+      }
     });
 
     //设置启用
@@ -97,7 +108,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       data.disabled = false;
       data.userAction.type = InputIds.SetEnabled;
       setValuesForInput({ data, childrenStore });
-      outputRels['setEnabledDone']();
+      if (outputRels['setEnabledDone']) {
+        outputRels['setEnabledDone']();
+      }
     }, []);
 
     //设置启用/禁用
@@ -106,12 +119,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.disabled = false;
         data.userAction.type = InputIds.SetEnabled;
         setValuesForInput({ data, childrenStore });
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       } else {
         data.disabled = true;
         data.userAction.type = InputIds.SetDisabled;
         setValuesForInput({ data, childrenStore });
-        outputRels['isEnableDone'](val);
+        if (outputRels['isEnableDone']) {
+          outputRels['isEnableDone'](val);
+        }
       }
     });
 
@@ -143,6 +160,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             });
         })
         .catch((e) => {
+          outputRels['returnValidate'](e);
           console.log('校验失败', e);
         });
     });
@@ -180,14 +198,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  if (env.runtime) {
-    // 值更新
-    slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
-      // 只有在用户操作触发时才收集更新值
-      !data.userAction.type &&
-        updateValue({ ...props, childrenStore, childId: id, childName: name, value });
-    });
-  }
+  useEffect(() => {
+    if (env.runtime) {
+      // 值更新
+      slots[SlotIds.FormItems]._inputs[SlotInputIds.ON_CHANGE](({ id, name, value }) => {
+        // 只有在用户操作触发时才收集更新值
+        !data.userAction.type &&
+          data.userAction.key === -1 &&
+          updateValue({ ...props, childrenStore, childId: id, childName: name, value });
+      });
+    }
+  }, []);
 
   // useEffect(() => {
   //   // 初始化
@@ -237,6 +258,24 @@ export default function Runtime(props: RuntimeParams<Data>) {
         })
         .catch((e) => reject(e));
     });
+  }, []);
+
+  const getValue = useCallback(() => {
+    const values: {}[] = [];
+    data.fields.forEach((field) => {
+      const { name, key } = field;
+      if (!values[name]) {
+        values[name] = {};
+      }
+      const fieldFormItems = childrenStore[key];
+      data.items.map((item) => {
+        const { visible } = fieldFormItems[item.comName];
+        if (data.submitHiddenFields || visible) {
+          values[name][item.name] = data.value?.[name]?.[item.name];
+        }
+      });
+    });
+    return values;
   }, []);
 
   const field = useMemo(() => {

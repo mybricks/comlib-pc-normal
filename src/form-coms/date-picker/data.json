@@ -12,5 +12,6 @@
     "picker": "date",
     "allowClear": true
   },
-  "isWeekNumber": false
+  "isWeekNumber": false,
+  "isEditable": true
 }

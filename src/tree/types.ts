@@ -124,6 +124,14 @@ export interface Data {
   image: string;
   /** 可滚动高度 */
   scrollHeight: string;
+  /**
+   * @description 组件版本: 1.0.40
+   */
+  useStaticData: boolean;
+  /**
+   * @description 组件版本: 1.0.40
+   */
+  staticData: string;
 }
 
 export interface TreeData {

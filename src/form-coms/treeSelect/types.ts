@@ -23,7 +23,8 @@ export interface Data {
   // 默认展开深度
   openDepth: number,
   // 展开图标配置
-  switcherIcon: IconType
+  switcherIcon: IconType,
+  isEditable: boolean
 }
 
 export type IconSrcType = false | 'custom' | 'inner';

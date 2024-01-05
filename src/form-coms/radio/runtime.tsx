@@ -21,69 +21,74 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
+  const [value, setValue] = useState<any>(data.value);
+  const valueRef = useRef<any>(data.value);
 
-  useFormItemInputs({
-    name,
-    id,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        if (val === undefined) {
-          data.value = '';
-        }
-        data.value = val;
-      },
-      setInitialValue(val) {
-        if (val === undefined) {
-          data.value = '';
-        }
-        data.value = val;
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        data.value = '';
-        data.value = void 0;
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useLayoutEffect(() => {
+    if (env.edit || data.value !== undefined) changeValue(data.value);
+  }, [data.value]);
+
+  useFormItemInputs(
+    {
+      name,
+      id,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     inputs['setOptions']((ds) => {
@@ -96,7 +101,7 @@ export default function Runtime({
           }
         });
         if (typeof newVal !== 'undefined') {
-          data.value = newVal;
+          changeValue(newVal);
         }
         data.config.options = ds;
       } else {
@@ -122,72 +127,88 @@ export default function Runtime({
     validateTrigger(parentSlot, { id, name });
   };
 
+  const changeValue = useCallback((val) => {
+    if (val === undefined) {
+      setValue('');
+    }
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: id, value: val, name });
+  }, []);
+
   const onChange = useCallback((e) => {
     const { value } = e.target;
-    data.value = value;
-    onChangeForFc(parentSlot, { id: id, value, name });
+    changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger();
   }, []);
 
   const renderRadio = () => {
     return (
-      <div className={css.radio}>
-        <Radio.Group
-          optionType={data.enableButtonStyle ? 'button' : 'default'}
-          buttonStyle={data.buttonStyle}
-          disabled={data.config.disabled}
-          value={data.value}
-          onChange={onChange}
-        >
-          <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
-            {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-              const label = item.label;
-              return (
-                <Radio
-                  key={item.key}
-                  value={item.value}
-                  disabled={item.disabled}
-                  checked={item.checked}
-                  style={{
-                    marginRight: 8,
-                    color: data.value === item.value ? activeFontColor : ''
-                  }}
-                >
-                  {env.i18n(label)}
-                </Radio>
-              );
-            })}
-          </Space>
-        </Radio.Group>
+      <div className={`${css.radio} radio`}>
+        {data.isEditable ? (
+          <Radio.Group
+            optionType={data.enableButtonStyle ? 'button' : 'default'}
+            buttonStyle={data.buttonStyle}
+            disabled={data.config.disabled}
+            value={value}
+            onChange={onChange}
+          >
+            <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
+              {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+                const label = item.label;
+                return (
+                  <Radio
+                    key={item.key}
+                    value={item.value}
+                    disabled={item.disabled}
+                    checked={item.checked}
+                    style={{
+                      marginRight: 8,
+                      color: value === item.value ? activeFontColor : ''
+                    }}
+                  >
+                    {env.i18n(label)}
+                  </Radio>
+                );
+              })}
+            </Space>
+          </Radio.Group>
+        ) : (
+          value
+        )}
       </div>
     );
   };
 
   return data.enableButtonStyle ? (
-    <div>
-      <Radio.Group
-        optionType={data.enableButtonStyle ? 'button' : 'default'}
-        buttonStyle={data.buttonStyle}
-        {...data.config}
-        value={data.value}
-        onChange={onChange}
-      >
-        {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
-          const label = item.label;
-          return (
-            <Radio
-              key={item.value}
-              value={item.value}
-              disabled={item.disabled}
-              checked={item.checked}
-              style={{ marginRight: 8, color: data.value === item.value ? activeFontColor : '' }}
-            >
-              {env.i18n(label)}
-            </Radio>
-          );
-        })}
-      </Radio.Group>
+    <div className="radio">
+      {data.isEditable ? (
+        <Radio.Group
+          optionType={data.enableButtonStyle ? 'button' : 'default'}
+          buttonStyle={data.buttonStyle}
+          disabled={data.config.disabled}
+          value={value}
+          onChange={onChange}
+        >
+          {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
+            const label = item.label;
+            return (
+              <Radio
+                key={item.value}
+                value={item.value}
+                disabled={item.disabled}
+                checked={item.checked}
+                style={{ color: value === item.value ? activeFontColor : '' }}
+              >
+                {env.i18n(label)}
+              </Radio>
+            );
+          })}
+        </Radio.Group>
+      ) : (
+        value
+      )}
     </div>
   ) : (
     renderRadio()

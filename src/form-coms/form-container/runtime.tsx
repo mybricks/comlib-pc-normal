@@ -14,7 +14,7 @@ import { getLabelCol, isObject, getFormItem } from './utils';
 import { slotInputIds, inputIds, outputIds } from './constants';
 import { ValidateInfo } from '../types';
 import css from './styles.less';
-import { checkIfMobile, typeCheck } from '../../utils';
+import { checkIfMobile, typeCheck, deepCopy } from '../../utils';
 import { NamePath } from 'antd/lib/form/interface';
 
 type FormControlInputRels = {
@@ -48,21 +48,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
       //设置表单数据，触发值变化
       inputs[inputIds.SET_FIELDS_VALUE]((val, relOutputs) => {
         // resetFields();
-        setFieldsValue(val);
-        slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
-        relOutputs['setFieldsValueDone'](val);
+        setFieldsValue(val, () => {
+          slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+          relOutputs['setFieldsValueDone'](val);
+        });
       });
 
       //设置表单初始化数据
       inputs[inputIds.SET_INITIAL_VALUES]((val, relOutputs) => {
-        setInitialValues(val);
-        slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
-        relOutputs['setInitialValuesDone'](val);
+        setInitialValues(val, () => {
+          slots['content'].inputs[slotInputIds.SET_FIELDS_VALUE](val);
+          relOutputs['setInitialValuesDone'](val);
+        });
       });
 
       inputs['resetFields']((val, outputRels) => {
-        resetFields();
-        outputRels['onResetFinish']();
+        const cb = () => {
+          outputRels['onResetFinish']();
+        };
+        resetFields(cb);
       });
 
       inputs[inputIds.SUBMIT]((val, outputRels) => {
@@ -93,6 +97,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.config.disabled = false;
         setEnabled();
         relOutputs['setEnabledDone']();
+      });
+
+      inputs[inputIds.isEditable]((val, relOutputs) => {
+        data.isEditable = val;
+        setIsEditable(val);
+        relOutputs['isReadOnlyDone'](val);
       });
 
       // 校验字段
@@ -226,39 +236,76 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //   }
   // }, [data.domainModel.entity, slots])
 
-  const setFieldsValue = (val) => {
-    if (val) {
-      Object.keys(val).forEach((key) => {
-        setValuesForInput({ childrenInputs, formItems: data.items, name: key }, 'setValue', val);
+  const objectFilter = (val) => {
+    const newObj = {};
+    if (typeCheck(val, 'object') && Object.keys(val).length > 0) {
+      Object.entries(val).forEach(([key, value]) => {
+        const item = data.items.find((item) => item.name === key);
+        if (item) {
+          newObj[key] = value;
+        }
       });
+    }
+    return newObj;
+  };
+
+  const setFieldsValue = (val, cb?) => {
+    const formData = objectFilter(val);
+    if (Object.keys(formData).length > 0) {
+      const length = Object.keys(formData).length - 1;
+      Object.keys(formData).forEach((key, inx) => {
+        const isLast = inx === length;
+        setValuesForInput(
+          { childrenInputs, formItems: data.items, name: key },
+          'setValue',
+          formData,
+          isLast ? cb : void 0
+        );
+      });
+    } else {
+      cb();
     }
   };
 
-  const setInitialValues = (val) => {
+  const setInitialValues = (val, cb?) => {
     try {
-      if (val) {
-        Object.keys(val).forEach((key) => {
+      const formData = objectFilter(val);
+      if (Object.keys(formData).length > 0) {
+        const length = Object.keys(formData).length - 1;
+        Object.keys(formData).forEach((key, inx) => {
+          const isLast = inx === length;
           setValuesForInput(
             { childrenInputs, formItems: data.items, name: key },
             'setInitialValue',
-            val
+            formData,
+            isLast ? cb : void 0
           );
         });
+      } else {
+        cb();
       }
     } catch (e) {
+      cb();
       console.error(e);
     }
   };
 
-  const resetFields = () => {
-    data.items.forEach((item) => {
-      // const id = item.id;
-      // const input = childrenInputs[id];
-      const input = getFromItemInputEvent(item, childrenInputs);
-      input?.resetValue();
-      item.validateStatus = undefined;
-      item.help = undefined;
-    });
+  const resetFields = (cb) => {
+    try {
+      data.items.forEach((item, index) => {
+        // const id = item.id;
+        // const input = childrenInputs[id];
+        const isLast = index === data.items.length - 1;
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.resetValue().resetValueDone(() => {
+          item.validateStatus = undefined;
+          item.help = undefined;
+          if (isLast) cb?.();
+        });
+      });
+    } catch {
+      cb?.();
+    }
   };
 
   const setDisabled = (nameList?: string[]) => {
@@ -275,6 +322,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if (!nameList || nameList.includes(item.name)) {
         const input = getFromItemInputEvent(item, childrenInputs);
         input?.setEnabled && input?.setEnabled();
+      }
+    });
+  };
+
+  const setIsEditable = (val, nameList?: string[]) => {
+    data.items.forEach((item) => {
+      if (!nameList || nameList.includes(item.name)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.isEditable && input?.isEditable(val);
       }
     });
   };
@@ -327,6 +383,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
+      /** 过滤隐藏表单项 */
       const formItems = getFormItems(data, childrenInputs);
 
       Promise.all(
@@ -499,6 +556,27 @@ const getFormItems = (data: Data, childrenInputs) => {
 };
 
 /**
+ * @description 过滤表单数据
+ */
+const getFieldsValue = (data: Data, store: {}, childrenInputs) => {
+  let result = {};
+
+  const formItems = getFormItems(data, childrenInputs);
+
+  if (data.submitHiddenFields) {
+    result = deepCopy(store);
+  } else {
+    formItems.forEach((item) => {
+      if (item.visible) {
+        result[item.name] = store[item.name];
+      }
+    });
+  }
+
+  return result;
+};
+
+/**
  * @description 触发表单项校验，并更新校验结果
  */
 const validateForInput = (
@@ -507,8 +585,11 @@ const validateForInput = (
 ): void => {
   const item = model?.curFormItem;
   input?.validate(model).returnValidate((validateInfo) => {
-    item.validateStatus = validateInfo?.validateStatus;
-    item.help = validateInfo?.help;
+    // 存在index, 表示校验失败项是动态表单项的子项
+    if (validateInfo.index === undefined) {
+      item.validateStatus = validateInfo?.validateStatus;
+      item.help = validateInfo?.help;
+    }
     if (cb) {
       cb({
         ...validateInfo,
@@ -518,8 +599,9 @@ const validateForInput = (
   });
 };
 
-const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values) => {
+const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values, cb?) => {
   const item = formItems.find((item) => item.name === name);
+  const inputDoneId = inputId + 'Done';
 
   if (item) {
     const input = getFromItemInputEvent(item, childrenInputs);
@@ -530,7 +612,10 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values)
           input?.[inputId]?.({ ...values[name] });
         }
       } else {
-        input[inputId] && input[inputId](values[name]);
+        input[inputId] &&
+          input[inputId](values[name])[inputDoneId]?.((val) => {
+            cb?.();
+          });
       }
     } else {
       console.warn(

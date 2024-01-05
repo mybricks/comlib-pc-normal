@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.date-picker",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.10",
+  "version": "1.1.18",
   "description": "日期选择框",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
@@ -33,7 +33,7 @@
       "schema": {
         "type": "string"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -66,7 +66,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
@@ -101,9 +101,20 @@
       ]
     },
     {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "isEditableDone"
+      ]
+    },
+    {
       "id": "setValidateInfo",
-      "title": "设置校验状态",
-      "desc": "设置表单项的校验状态和校验失败提示文案",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
       "schema": {
         "type": "object",
         "properties": {
@@ -274,6 +285,13 @@
       }
     },
     {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
       "id": "setValidateInfoDone",
       "title": "设置校验状态完成",
       "schema": {
@@ -339,6 +357,23 @@
             "value": "year"
           }
         ]
+      }
+    },
+    {
+      "id": "onPanelChange",
+      "title": "日期面板切换",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "日期",
+            "type": "string"
+          },
+          "mode": {
+            "title": "日期选择类型",
+            "type": "string"
+          }
+        }
       }
     }
   ],

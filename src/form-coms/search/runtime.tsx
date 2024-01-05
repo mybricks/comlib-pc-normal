@@ -36,6 +36,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   useEffect(() => {
     if (data.isenterButton && data.enterButton !== '') {
@@ -52,16 +53,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       name,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
@@ -78,7 +79,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -89,7 +90,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[outputIds.ON_VALIDATE](value);
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -116,30 +117,34 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
 
-  //值更新
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
+  const changeValue = useCallback((value) => {
     setValue(value);
+    valueRef.current = value;
     if (data.isSelect) {
       onChangeForFc(parentSlot, { id: id, name: name, value: [data.initValue, value] });
-      outputs['onChange']([data.initValue, value]);
     } else {
       onChangeForFc(parentSlot, { id: id, name: name, value });
-      outputs['onChange'](value);
     }
   }, []);
 
-  const onChange = (val) => {
-    changeSelectValue(val);
-  };
+  //值更新
+  const onChange = useCallback((e) => {
+    const value = e.target.value;
+    changeValue(value);
+    if (data.isSelect) {
+      outputs['onChange']([data.initValue, value]);
+    } else {
+      outputs['onChange'](value);
+    }
+  }, []);
 
   const changeSelectValue = (val) => {
     if (val === undefined) {
       data.initValue = '';
     }
     data.initValue = val;
-    onChangeForFc(parentSlot, { id: id, value: [val, value], name });
-    outputs['onChange']([val, value]);
+    onChangeForFc(parentSlot, { id: id, value: [val, valueRef.current], name });
+    outputs['onChange']([val, valueRef.current]);
   };
 
   //搜索
@@ -171,13 +176,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
             style={{ width: data.selectWidth }}
             value={data.initValue}
             options={i18nFn(data.staticOptions, env)}
-            onChange={onChange}
+            onChange={changeSelectValue}
           ></Select>
           <Search
             style={{
               width: `calc(100% - ${data.selectWidth})`
             }}
-            onChange={changeValue}
+            onChange={onChange}
             onSearch={onSearch}
             onBlur={onBlur}
             value={value}
@@ -194,7 +199,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return !data.isSelect ? (
     <div>
       <Search
-        onChange={changeValue}
+        onChange={onChange}
         onSearch={onSearch}
         onBlur={onBlur}
         value={value}

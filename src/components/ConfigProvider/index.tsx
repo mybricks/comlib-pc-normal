@@ -17,8 +17,10 @@ const LocaleProvider = ({
     const lang = localeArr.pop()?.toUpperCase();
     return localeArr.concat(['_', lang as string]).join('');
   }, [locale]);
+
+  const localLib = localeMap?.[antdLocaleKey] || localeMap?.['zh_CN'];
   return (
-    <ConfigProvider locale={localeMap?.[antdLocaleKey]?.default} {...rest}>
+    <ConfigProvider locale={localLib?.default} {...rest}>
       {children}
     </ConfigProvider>
   );

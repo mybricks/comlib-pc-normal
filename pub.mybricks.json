@@ -110,7 +110,8 @@
         "./src/dropdown/com.json",
         "./src/sort-bar/com.json",
         "./src/video/com.json",
-        "./src/print/com.json"
+        "./src/print/com.json",
+        "./src/custom-render/com.json"
       ]
     },
     "./src/_muilt-inputJs/com.json",
@@ -152,5 +153,6 @@
         "https://f2.eckwai.com/udata/pkg/eshop/fangzhou/pub/pkg/antd-4.21.6/locale/zh_CN.js"
       ]
     }
-  ]
+  ],
+  "tags": "react"
 }

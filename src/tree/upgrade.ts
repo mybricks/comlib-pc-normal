@@ -278,14 +278,28 @@ export default function ({
   //=========== v1.0.38 end ===============
 
   /**
-    * @description v1.0.39 增加 onChange数据变化 输出项
+    * @description v1.0.40 静态数据配置重构, 增加搭建态占位模式
     */
+
+  if (data.useStaticData === undefined) {
+    data.useStaticData = true;
+  }
+  if (!data.staticData) {
+    data.staticData = encodeURIComponent(JSON.stringify(data.treeData, null, 2));
+    data.treeData = [];
+  }
+
+  //=========== v1.0.40 end ===============
+
+  /**
+   * @description v1.0.41 增加 onChange数据变化 输出项
+   */
 
   if (!output.get(OutputIds.OnChange)) {
     output.add(OutputIds.OnChange, '数据变化', treeDataSchema);
   }
 
-  //=========== v1.0.39 end ===============
+  //=========== v1.0.41 end ===============
 
   return true;
 }

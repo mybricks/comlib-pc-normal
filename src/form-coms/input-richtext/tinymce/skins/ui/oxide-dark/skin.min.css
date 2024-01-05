@@ -2723,7 +2723,6 @@ body.tox-dialog__disable-scroll {
 }
 .tox .tox-tbtn svg {
   display: block;
-  fill: #fff;
 }
 .tox .tox-tbtn.tox-tbtn-more {
   padding-left: 5px;

@@ -24,6 +24,7 @@ export default function ({
   const { placeholder, disabled, format, customFormat, outFormat, splitChar } = data;
   const [value, setValue] = useState<[Moment, Moment]>();
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const _format = useMemo(() => {
     if (format === 'custom') return customFormat;
@@ -34,7 +35,9 @@ export default function ({
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value: value ? [value[0].valueOf(), value[1].valueOf()] : [],
+        value: valueRef.current
+          ? [valueRef.current[0].valueOf(), valueRef.current[1].valueOf()]
+          : [],
         env,
         model,
         rules: data.rules
@@ -45,7 +48,7 @@ export default function ({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels;
-            outputs[OutputIds.OnValidate](getValue(value));
+            outputs[OutputIds.OnValidate](getValue(valueRef.current));
           } else {
             outputRels(r);
           }
@@ -94,18 +97,18 @@ export default function ({
     try {
       const initValue = formatValue(val) as [Moment, Moment];
       if (val === null || val === undefined) {
-        setValue(val);
+        changeValue(val);
         return;
       }
       if (isDefaultInput(initValue)) {
-        setValue(initValue);
+        changeValue(initValue);
       }
       if (!isValidInput(initValue)) {
-        setValue(initValue);
+        changeValue(initValue);
         return;
       }
       if (isValidRange(initValue, 'moment')) {
-        setValue(initValue);
+        changeValue(initValue);
       } else {
         onError('开始时间必须小于结束时间');
       }
@@ -124,10 +127,10 @@ export default function ({
         setValue: setTimestampRange,
         setInitialValue: setTimestampRange,
         returnValue(output) {
-          output(getValue(value));
+          output(getValue(valueRef.current));
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -141,6 +144,9 @@ export default function ({
           } else if (val === false) {
             data.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate
       }
@@ -176,31 +182,52 @@ export default function ({
     [outFormat, splitChar, format, customFormat]
   );
 
-  const onChange = useCallback(
-    (values, formatString: [string, string]) => {
+  const changeValue = useCallback(
+    (values) => {
       setValue(values);
+      valueRef.current = values;
       const formatValue = getValue(values);
       onChangeForFc(parentSlot, { id, name, value: formatValue });
+      return formatValue;
+    },
+    [outFormat, splitChar]
+  );
+  const onChange = useCallback(
+    (values, formatString: [string, string]) => {
+      const formatValue = changeValue(values);
       outputs['onChange'](formatValue);
       validateTrigger(parentSlot, { id, name });
     },
     [outFormat, splitChar]
   );
 
+  const transCalculation = (val) => {
+    if (!val) return val;
+    if (format === 'timeStamp') return val.format('HH:mm:ss');
+    if (format === 'custom') return val.format(customFormat);
+    return val.format(format);
+  };
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div className={styles.wrap}>
-        <TimePicker.RangePicker
-          placeholder={[env.i18n(placeholder[0]), env.i18n(placeholder[1])]}
-          value={value}
-          format={_format}
-          allowClear
-          disabled={disabled}
-          onChange={onChange}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          open={env.design ? true : void 0}
-          popupClassName={id}
-        />
+        {data.isEditable ? (
+          <TimePicker.RangePicker
+            placeholder={[env.i18n(placeholder[0]), env.i18n(placeholder[1])]}
+            value={value}
+            format={_format}
+            allowClear
+            disabled={disabled}
+            onChange={onChange}
+            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            open={env.design ? true : void 0}
+            popupClassName={id}
+          />
+        ) : Array.isArray(value) ? (
+          value.map((item) => transCalculation(item)).join(splitChar)
+        ) : (
+          ''
+        )}
       </div>
     </ConfigProvider>
   );

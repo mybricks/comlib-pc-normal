@@ -1,4 +1,4 @@
-import { RuleKeys, defaultValidatorExample } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, showMessage, getTitle } from '../utils/validator';
 import { ValidateTriggerType } from '../types';
 
 export const emailRules = [
@@ -8,6 +8,37 @@ export const emailRules = [
     visible: true,
     title: '必填',
     message: '内容不能为空'
+  },
+  {
+    key: RuleKeys.Email_VALIDATOR,
+    status: true,
+    visible: false,
+    title: '邮箱校验',
+    message: '邮箱不符合格式要求'
+  },
+  {
+    key: RuleKeys.REG_EXP,
+    status: false,
+    visible: true,
+    title: '正则校验',
+    message: '内容不能为空',
+    regExr: `^(?!(null|undefined|)$).+`
+  },
+  {
+    key: RuleKeys.MIN_LENGTH,
+    status: false,
+    visible: true,
+    title: '最小长度校验',
+    message: '邮箱长度不能小于指定值',
+    limitMinLength: [2]
+  },
+  {
+    key: RuleKeys.MAX_LENGTH,
+    status: false,
+    visible: true,
+    title: '最大长度校验',
+    message: '邮箱长度不能大于指定值',
+    limitMaxLength: [1000]
   },
   {
     key: RuleKeys.CODE_VALIDATOR,
@@ -21,13 +52,6 @@ export const emailRules = [
     status: false,
     visible: true,
     title: '自定义校验'
-  },
-  {
-    key: RuleKeys.Email_VALIDATOR,
-    status: true,
-    visible: false,
-    title: '邮箱校验',
-    message: '邮箱不符合格式要求'
   }
 ];
 
@@ -181,12 +205,38 @@ export default {
               {
                 title: '提示文字',
                 type: 'Text',
-                value: 'message',
                 options: {
                   locale: true
                 },
+                value: 'message',
                 ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.REQUIRED;
+                  return showMessage(item.key);
+                }
+              },
+              {
+                title: '正则校验',
+                type: 'Text',
+                value: 'regExr',
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REG_EXP;
+                }
+              },
+              {
+                title: '最小长度',
+                type: 'inputNumber',
+                value: 'limitMinLength',
+                options: [{ min: 0, max: 10000, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MIN_LENGTH;
+                }
+              },
+              {
+                title: '最大长度',
+                type: 'inputNumber',
+                value: 'limitMaxLength',
+                options: [{ min: 0, max: Infinity, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MAX_LENGTH;
                 }
               },
               {
@@ -268,15 +318,4 @@ export default {
       ];
     }
   }
-};
-
-const getTitle = (item: any, index: number) => {
-  const { key, title, numericalLimit, regExr } = item;
-  // let detail;
-  // if (key === RuleKeys.REG_EXP) {
-  //   detail = regExpressions.find(({ value }) => value === regExr)?.label;
-  // } else if ([RuleKeys.MIN, RuleKeys.MAX, RuleKeys.MIN_LENGTH, RuleKeys.MAX_LENGTH].includes(key)) {
-  //   detail = Array.isArray(numericalLimit) ? numericalLimit[0] || '0' : '0';
-  // }
-  return title;
 };

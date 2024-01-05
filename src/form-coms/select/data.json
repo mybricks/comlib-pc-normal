@@ -15,5 +15,6 @@
   "maxTagCount": "",
   "staticOptions": [],
   "dropdownSearchOption": false,
-  "outputValueType": "value"
+  "outputValueType": "value",
+  "isEditable": true
 }

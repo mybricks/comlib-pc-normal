@@ -7,6 +7,8 @@ import { inputIds, outputIds } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
 import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
+import iconEditor from './iconEditor';
+import { createrCatelogEditor } from '../../utils/index';
 
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
@@ -766,9 +768,9 @@ export default {
               get({ data, name, id }: EditorResult<Data>) {
                 return getFormItemProp({ data, id, name }, 'widthOption');
               },
-              set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
+              set({ data, id, name, inputs, outputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, id, name }, 'widthOption', value);
-                refreshFormItemPropsSchema({ data, inputs });
+                refreshFormItemPropsSchema({ data, inputs, outputs });
               }
             }
           },
@@ -1112,7 +1114,6 @@ export default {
               },
               set({ data, id, name, inputs }: EditorResult<Data>, value: LabelWidthType) {
                 setFormItemProps({ data, id, name }, 'widthOption', value);
-                refreshFormItemPropsSchema({ data, inputs });
               }
             }
           },
@@ -1220,22 +1221,58 @@ export default {
           }
         }
       },
+      ...iconEditor,
       {
-        title: '默认',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-        }
-      },
-      {
-        title: 'Hover',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
-        },
-        domTarget({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-        }
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"] .icon`;
+                }
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                catelog: 'Hover',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
+                },
+                domTarget({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover .icon`;
+                }
+              }
+            ]
+          })
+        ]
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {

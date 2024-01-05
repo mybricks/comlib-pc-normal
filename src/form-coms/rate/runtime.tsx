@@ -27,6 +27,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<number>(data.config.defaultValue);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>(data.config.defaultValue);
+
+  useLayoutEffect(() => {
+    if (env.edit || data.config.defaultValue !== undefined) changeValue(data.config.defaultValue);
+  }, [data.config.defaultValue]);
 
   useFormItemInputs(
     {
@@ -35,16 +40,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
       name,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
-          output(value);
+          output(valueRef.current);
         },
         resetValue() {
-          setValue(0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.config.disabled = true;
@@ -61,7 +66,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         },
         validate(model, outputRels) {
           validateFormItem({
-            value: value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -72,7 +77,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               );
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs[OutputIds.OnValidate](value);
+                outputs[OutputIds.OnValidate](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -100,10 +105,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id, name: name });
   };
 
+  const changeValue = useCallback((value) => {
+    setValue(value);
+    valueRef.current = value;
+    onChangeForFc(parentSlot, { id: id, name: name, value });
+  }, []);
+
   //1、值变化
   const onChange = useCallback((value) => {
-    setValue(value);
-    onChangeForFc(parentSlot, { id: id, name: name, value });
+    changeValue(value);
     onValidateTrigger();
     outputs['onChange'](value);
   }, []);

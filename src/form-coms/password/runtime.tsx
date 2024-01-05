@@ -19,10 +19,12 @@ export default function ({
 }: RuntimeParams<Data>) {
   const { placeholder, disabled } = data;
   const [value, setValue] = useState<string>();
+  const valueRef = useRef<any>();
+
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value,
+        value: valueRef.current,
         env,
         model,
         rules: data.rules
@@ -46,16 +48,16 @@ export default function ({
       outputs,
       configs: {
         setValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         setInitialValue(val) {
-          setValue(val);
+          changeValue(val);
         },
         returnValue(output) {
           output(getValue());
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -72,7 +74,7 @@ export default function ({
         },
         validate(model, outputRels) {
           validateFormItem({
-            value: value,
+            value: valueRef.current,
             env,
             model,
             rules: data.rules
@@ -81,7 +83,7 @@ export default function ({
               const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
               if (cutomRule?.status) {
                 validateRelOuputRef.current = outputRels;
-                outputs['onValidate'](value);
+                outputs['onValidate'](valueRef.current);
               } else {
                 outputRels(r);
               }
@@ -102,12 +104,17 @@ export default function ({
     validateTrigger(parentSlot, { id, name });
   };
 
-  const getValue = useCallback(() => value, [value]);
+  const getValue = useCallback(() => valueRef.current, [value]);
+
+  const changeValue = (_value) => {
+    setValue(_value);
+    valueRef.current = _value;
+    onChangeForFc(parentSlot, { id, name, value: _value });
+  };
 
   const onChange = (e) => {
     const _value = e.target.value;
-    setValue(_value);
-    onChangeForFc(parentSlot, { id, name, value: _value });
+    changeValue(_value);
     outputs['onChange'](_value);
   };
 

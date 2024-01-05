@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useCallback, useRef, useLayoutEffect, useEffect, useState } from 'react';
 import { AutoComplete, Input, InputRef } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -32,7 +32,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, logger } = props;
 
   const inputRef = useRef<InputRef>(null);
+  const valueRef = useRef<any>();
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState();
 
   useLayoutEffect(() => {
     inputs[InputIds.SetColor]((color: string) => {
@@ -43,61 +45,64 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
-  useFormItemInputs({
-    id: props.id,
-    name: props.name,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        data.value = val;
-      },
-      setInitialValue(val) {
-        data.value = val;
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        data.value = '';
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, outputRels) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = outputRels;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              outputRels(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            outputRels(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
   useEffect(() => {
     //输入数据源
     inputs['setOptions']((value, relOutputs) => {
@@ -127,9 +132,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
     validateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
+  const changeValue = (val) => {
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
+  };
+
   const onChange = (value) => {
-    data.value = value;
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+    changeValue(value);
     outputs['onChange'](value);
   };
 
@@ -155,7 +165,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <AutoComplete
         {...data.config}
         placeholder={env.i18n(data.config.placeholder)}
-        value={data.value}
+        value={value}
         onChange={onChange}
         filterOption={data.isFilter}
         children={<Input ref={inputRef} />}

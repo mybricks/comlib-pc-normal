@@ -1,7 +1,8 @@
 import { Data } from './runtime';
 import { ValidateTriggerType } from '../types';
-import { RuleKeys } from '../utils/validator';
+import { RuleKeys, mergeRules } from '../utils/validator';
 import { inputIds, outputIds } from '../form-container/constants';
+import { emailRules } from './editors';
 
 export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
   const valueSchema = {
@@ -159,6 +160,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
   //=========== v1.1.3 end ===============
+
+  data.rules = mergeRules(emailRules, data.rules);
 
   return true;
 }

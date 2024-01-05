@@ -12,6 +12,7 @@ export type AceConfig = Partial<{
 
 export interface EditorProps {
   value: string | undefined;
+  valueRef: React.MutableRefObject<any>;
   onChange: (val: string) => void;
   onBlur?: (val: string) => void;
   readOnly?: boolean

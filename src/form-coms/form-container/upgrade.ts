@@ -391,5 +391,34 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     input.get("setFormItemsProps").setRels(["setFormItemsPropsDone"]);
   }
 
+  /**
+    * @description v1.4.31 => v1.4.32, 操作项增加图标
+  */
+  data.actions.items?.forEach(act => {
+    if (act && act.useIcon === undefined) {
+      act.useIcon = false;
+    }
+    if (act && act.iconDistance === undefined) {
+      act.iconDistance = 8;
+    }
+    if (act && act.icon === undefined) {
+      act.icon = "HomeOutlined";
+    }
+    if (act && act.iconLocation === undefined) {
+      act.iconLocation = "front";
+    }
+  })
+
+  /**
+   * @description v1.4.33 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  //=========== v1.4.33 end ===============
   return true;
 }

@@ -11,9 +11,28 @@ export default {
   ':root': {
     style: [
       {
-        title: '基本',
-        options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-        target: '.ant-image-img'
+        items: [
+          {
+            title: '默认',
+            catelog: '默认',
+            options: [
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.ant-image-img'
+          },
+          {
+            title: 'Hover',
+            catelog: 'Hover',
+            options: [
+              'border',
+              'padding',
+              { type: 'background', config: { disableBackgroundImage: true } }
+            ],
+            target: '.ant-image-img:hover'
+          }
+        ]
       }
     ],
     items: ({}: EditorResult<Data>, cate1) => {

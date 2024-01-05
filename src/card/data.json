@@ -22,5 +22,8 @@
       "name": "操作项1"
     }
   ],
-  "padding": "24px"
+  "padding": "24px",
+  "isHeight": false,
+  "height": "80px",
+  "showTitle": true
 }

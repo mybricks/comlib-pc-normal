@@ -1,6 +1,6 @@
 import { inputIds, outputIds } from '../form-container/constants';
 import { ValidateTriggerType } from '../types';
-import { RuleKeys } from '../utils/validator';
+import { RuleKeys, LengthRules, mergeRules } from '../utils/validator';
 import { Data } from './runtime';
 import { InputIds } from '../types';
 
@@ -212,5 +212,21 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.3.5 end ===============
 
+  data.rules = mergeRules(LengthRules, data.rules);
+
+  /**
+   * @description v1.3.10 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  if (typeof data.isEditable === 'undefined') {
+    data.isEditable = true;
+  }
+  //=========== v1.3.10 end ===============
   return true;
 }

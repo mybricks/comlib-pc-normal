@@ -29,11 +29,12 @@ export default function ({
   const [value, setValue] = useState<Moment | null>();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const valueRef = useRef<any>();
 
   const validate = useCallback(
     (model, outputRels) => {
       validateFormItem({
-        value: value?.valueOf(),
+        value: valueRef.current?.valueOf(),
         env,
         model,
         rules: data.rules
@@ -44,7 +45,7 @@ export default function ({
           );
           if (cutomRule?.status) {
             validateRelOuputRef.current = outputRels;
-            outputs[OutputIds.OnValidate](getValue(value));
+            outputs[OutputIds.OnValidate](getValue(valueRef.current));
           } else {
             outputRels(r);
           }
@@ -69,7 +70,7 @@ export default function ({
     (val) => {
       try {
         if (!val) {
-          setValue(val);
+          changeValue(val);
           return;
         }
         let formatVal: Moment;
@@ -79,13 +80,20 @@ export default function ({
           formatVal = moment(Number(val));
         }
         if (!formatVal.isValid()) throw Error('params error');
-        setValue(formatVal);
+        changeValue(formatVal);
       } catch (error) {
         onError('时间数据格式错误');
       }
     },
     [_format]
   );
+
+  const transCalculation = (val) => {
+    if (!val) return val;
+    if (format === 'timeStamp') return val.format('HH:mm:ss');
+    if (format === 'custom') return val.format(customFormat);
+    return val.format(format);
+  };
 
   useFormItemInputs(
     {
@@ -97,10 +105,10 @@ export default function ({
         setValue: setTimestamp,
         setInitialValue: setTimestamp,
         returnValue(output) {
-          output(getValue(value));
+          output(getValue(valueRef.current));
         },
         resetValue() {
-          setValue(void 0);
+          changeValue(void 0);
         },
         setDisabled() {
           data.disabled = true;
@@ -114,6 +122,9 @@ export default function ({
           } else if (val === false) {
             data.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate
       }
@@ -150,10 +161,15 @@ export default function ({
     [format, customFormat]
   );
 
-  const onChange = (time: Moment | null, timeString: string) => {
+  const changeValue = (time: Moment | null | undefined) => {
     setValue(time);
+    valueRef.current = time;
     const value = getValue(time);
     onChangeForFc(parentSlot, { id, name, value });
+    return value;
+  };
+  const onChange = (time: Moment | null, timeString: string) => {
+    const value = changeValue(time);
     outputs['onChange'](value);
     validateTrigger(parentSlot, { id, name });
   };
@@ -161,17 +177,21 @@ export default function ({
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div ref={wrapperRef} className={styles.wrap}>
-        <TimePicker
-          placeholder={env.i18n(placeholder)}
-          value={value}
-          format={_format}
-          disabled={disabled}
-          allowClear
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          open={env.design ? true : void 0}
-          popupClassName={id}
-          onChange={onChange}
-        />
+        {data.isEditable ? (
+          <TimePicker
+            placeholder={env.i18n(placeholder)}
+            value={value}
+            format={_format}
+            disabled={disabled}
+            allowClear
+            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            open={env.design ? true : void 0}
+            popupClassName={id}
+            onChange={onChange}
+          />
+        ) : (
+          transCalculation(value)
+        )}
       </div>
     </ConfigProvider>
   );

@@ -1,6 +1,6 @@
 import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
-interface Action {
+export interface Action {
   title: string
   loading?: boolean
   isDefault: boolean
@@ -16,6 +16,11 @@ interface Action {
   useDynamicHidden: boolean;
   useDynamicDisabled: boolean;
   disabled: boolean;
+
+  useIcon: boolean;
+  iconLocation: 'front' | 'back';
+  icon: string;
+  iconDistance: number;
 }
 
 interface Actions {
@@ -131,6 +136,11 @@ export interface Data {
   config: FormProps
 
   /**
+   * 表单项可编辑/只读
+   */
+  isEditable: boolean
+
+  /**
    * 合并参数 Schema
    */
   paramsSchema: any
@@ -183,3 +193,8 @@ export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetVa
 export type LayoutModel = "inline" | "row" | "column";
 
 export type FormItemColonType = true | false | "default";
+
+export enum LocationEnum {
+  FRONT = 'front',
+  BACK = 'back'
+}

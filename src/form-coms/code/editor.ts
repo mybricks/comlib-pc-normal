@@ -1,6 +1,6 @@
 import { setPath } from '../../utils/path';
 import { Data } from './constants';
-import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
+import { RuleKeys, ExpRules, getTitle, showMessage } from '../utils/validator';
 import { OutputIds } from '../types';
 export default {
   '@resize': {
@@ -119,12 +119,20 @@ export default {
                 {
                   title: '提示文字',
                   type: 'Text',
-                  value: 'message',
                   options: {
                     locale: true
                   },
+                  value: 'message',
                   ifVisible(item: any, index: number) {
-                    return item.key === RuleKeys.REQUIRED;
+                    return showMessage(item.key);
+                  }
+                },
+                {
+                  title: '正则表达式',
+                  type: 'Text',
+                  value: 'regExr',
+                  ifVisible(item: any, index: number) {
+                    return item.key === RuleKeys.REG_EXP;
                   }
                 },
                 {
@@ -155,7 +163,7 @@ export default {
             },
             value: {
               get({ data }) {
-                return data.rules.length > 0 ? data.rules : defaultRules;
+                return data.rules.length > 0 ? data.rules : ExpRules;
               },
               set({ data }, value: any) {
                 data.rules = value;
@@ -166,7 +174,7 @@ export default {
             title: '校验触发事件',
             type: '_event',
             ifVisible({ data }: EditorResult<Data>) {
-              const cutomRule = (data.rules || defaultRules).find(
+              const cutomRule = (data.rules || ExpRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
               return !!cutomRule?.status;

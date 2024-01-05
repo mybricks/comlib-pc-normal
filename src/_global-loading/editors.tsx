@@ -105,8 +105,9 @@ export default {
       }
     },
     {
-      title: '样式',
-      type: 'Character',
+      title: '文案',
+      type: 'style',
+      options: ['font'],
       ifVisible({ data }: EditorResult<Data>) {
         return !data.closeLoading;
       },

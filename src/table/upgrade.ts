@@ -18,7 +18,8 @@ export default function ({
   id,
   slot,
   output,
-  input
+  input,
+  style
 }: UpgradeParams<Data>): boolean {
   /**
    * @description v1.0.22 支持领域模型
@@ -241,5 +242,19 @@ export default function ({
   setRels(PaginatorInputIds.SetEnable, PaginatorOutputIds.SetEnable, '启用分页器后');
 
   //=========== v1.1.1 end ===============
+
+  /**
+   * @description v1.1.13 -> 1.1.14 开启表格高度配置
+   */
+  if (style.height === void 0) {
+    style.height = 'auto';
+  }
+
+  if (data?.enableRowFocus && !input.get(InputIds.SET_FOCUS_ROW)) {
+    input.add(InputIds.SET_FOCUS_ROW, '设置选中行序号', Schemas.SET_FOCUS_ROW);
+    output.add(OutputIds.SET_FOCUS_ROW, '设置选中行之后', Schemas.SET_FOCUS_ROW);
+    input.get(InputIds.SET_FOCUS_ROW).setRels([OutputIds.SET_FOCUS_ROW]);
+  }
+
   return true;
 }

@@ -1,4 +1,4 @@
-import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
+import { RuleKeys, defaultValidatorExample, LengthRules, showMessage, getTitle } from '../utils/validator';
 import { Data, Options } from './runtime';
 import { uuid } from '../../utils';
 import { createrCatelogEditor } from '../utils';
@@ -451,7 +451,6 @@ export default {
           type: 'ArrayCheckbox',
           options: {
             checkField: 'status',
-
             visibleField: 'visible',
             getTitle,
             items: [
@@ -463,7 +462,33 @@ export default {
                 },
                 value: 'message',
                 ifVisible(item: any, index: number) {
-                  return item.key === RuleKeys.REQUIRED;
+                  return showMessage(item.key);
+                }
+              },
+              {
+                title: '正则表达式',
+                type: 'Text',
+                value: 'regExr',
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REG_EXP;
+                }
+              },
+              {
+                title: '最小长度',
+                type: 'inputNumber',
+                value: 'limitMinLength',
+                options: [{ min: 0, max: 10000, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MIN_LENGTH;
+                }
+              },
+              {
+                title: '最大长度',
+                type: 'inputNumber',
+                value: 'limitMaxLength',
+                options: [{ min: 0, max: Infinity, width: 100 }],
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.MAX_LENGTH;
                 }
               },
               {
@@ -494,7 +519,7 @@ export default {
           },
           value: {
             get({ data }) {
-              return data.rules.length > 0 ? data.rules : defaultRules;
+              return data.rules.length > 0 ? data.rules : LengthRules;
             },
             set({ data }, value: any) {
               data.rules = value;
@@ -505,7 +530,7 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const cutomRule = (data.rules || LengthRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
             return !!cutomRule?.status;
@@ -550,9 +575,4 @@ export default {
       ];
     }
   }
-};
-
-const getTitle = (item: any, index: number) => {
-  const { key, title, numericalLimit, regExr } = item;
-  return title;
 };

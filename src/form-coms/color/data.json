@@ -1,5 +1,4 @@
 {
-  "color": "#000000",
   "rules": [],
   "validateTrigger": [
     "onChange"

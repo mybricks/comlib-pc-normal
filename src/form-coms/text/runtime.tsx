@@ -1,5 +1,5 @@
 import { Form, Input, InputRef, Image } from 'antd';
-import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState, ReactNode, useEffect } from 'react';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { inputIds, outputIds } from '../form-container/constants';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -14,6 +14,7 @@ export interface Data {
   value: string | undefined;
   rules: any[];
   validateTrigger: string[];
+  isTrim: boolean;
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -27,6 +28,8 @@ export interface Data {
   src: false | 'inner' | 'custom';
   innerIcon: string;
   customIcon: string;
+
+  isEditable: boolean;
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -35,63 +38,71 @@ export default function (props: RuntimeParams<Data>) {
 
   const inputRef = useRef<InputRef>(null);
   const validateRelOuputRef = useRef<any>(null);
+  const [value, setValue] = useState();
+  const valueRef = useRef<any>();
 
-  useFormItemInputs({
-    id: props.id,
-    name: props.name,
-    parentSlot,
-    inputs,
-    outputs,
-    configs: {
-      setValue(val) {
-        data.value = val;
-      },
-      setInitialValue(val) {
-        data.value = val;
-      },
-      returnValue(output) {
-        output(data.value);
-      },
-      resetValue() {
-        data.value = void 0;
-      },
-      setDisabled() {
-        data.config.disabled = true;
-      },
-      setEnabled() {
-        data.config.disabled = false;
-      },
-      setIsEnabled(val) {
-        if (val === true) {
-          data.config.disabled = false;
-        } else if (val === false) {
+  useFormItemInputs(
+    {
+      id: props.id,
+      name: props.name,
+      parentSlot,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
           data.config.disabled = true;
-        }
-      },
-      validate(model, relOutput) {
-        validateFormItem({
-          value: data.value,
-          env,
-          model,
-          rules: data.rules
-        })
-          .then((r) => {
-            const cutomRule = (data.rules || defaultRules).find(
-              (i) => i.key === RuleKeys.CUSTOM_EVENT
-            );
-            if (cutomRule?.status) {
-              validateRelOuputRef.current = relOutput;
-              outputs[outputIds.ON_VALIDATE](data.value);
-            } else {
-              relOutput(r);
-            }
+        },
+        setEnabled() {
+          data.config.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.config.disabled = false;
+          } else if (val === false) {
+            data.config.disabled = true;
+          }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
+        },
+        validate(model, relOutput) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
           })
-          .catch((e) => {
-            relOutput(e);
-          });
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = relOutput;
+                outputs[outputIds.ON_VALIDATE](valueRef.current);
+              } else {
+                relOutput(r);
+              }
+            })
+            .catch((e) => {
+              relOutput(e);
+            });
+        }
       }
-    }
-  });
+    },
+    [value]
+  );
 
   useLayoutEffect(() => {
     inputs[InputIds.SetColor]((color: string, relOutputs) => {
@@ -114,10 +125,20 @@ export default function (props: RuntimeParams<Data>) {
       debounceValidateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = useCallback((e) => {
-    const value = e.target.value;
-    data.value = value;
-    onChangeForFc(parentSlot, { id: props.id, name: props.name, value });
+  const formatter = useCallback((oriVal) => {
+    return data.isTrim ? oriVal?.trim() : oriVal;
+  }, []);
+
+  const changeValue = useCallback((oriVal) => {
+    const val = formatter(oriVal);
+    setValue(val);
+    valueRef.current = val;
+    onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
+  }, []);
+
+  const onChange = useCallback((e) => {
+    const value = formatter(e.target.value);
+    changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger(ValidateTriggerType.OnChange);
   }, []);
@@ -155,7 +176,7 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.innerIcon, data.customIcon]);
 
-  let jsx = (
+  let jsx = data.isEditable ? (
     <Input
       ref={inputRef}
       type="text"
@@ -163,14 +184,16 @@ export default function (props: RuntimeParams<Data>) {
       placeholder={env.i18n(data.config.placeholder)}
       addonBefore={env.i18n(data.config.addonBefore)}
       addonAfter={env.i18n(data.config.addonAfter)}
-      value={data.value}
+      value={value}
       readOnly={!!edit}
-      onChange={changeValue}
+      onChange={onChange}
       onBlur={onBlur}
       onPressEnter={onPressEnter}
       //size={'large'}
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
+  ) : (
+    <div>{value}</div>
   );
 
   return <div className={css.fiText}>{jsx}</div>;

@@ -38,9 +38,17 @@ export default function (props: RuntimeParams<Data>) {
         });
       }
 
-      inputs[InputIds.SetStyle]((style: React.CSSProperties) => {
-        setDynamicStyle(style);
-      });
+      inputs[InputIds.SetStyle] &&
+        inputs[InputIds.SetStyle]((style: React.CSSProperties) => {
+          setDynamicStyle(style);
+        });
+
+      inputs[InputIds.ScrollTo] &&
+        inputs[InputIds.ScrollTo]((val: number) => {
+          if (ref.current) {
+            ref.current.scrollTop = typeof val !== 'number' ? ref.current.scrollHeight : val;
+          }
+        });
     }
   }, []);
 

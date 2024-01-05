@@ -26,7 +26,11 @@
         "key": "submit",
         "useDynamicDisabled": false,
         "useDynamicHidden": false,
-        "disabled": false
+        "disabled": false,
+        "useIcon": false,
+        "iconDistance": 8,
+        "icon": "HomeOutlined",
+        "iconLocation": "front"
       },
       {
         "title": "取消",
@@ -36,7 +40,11 @@
         "key": "cancel",
         "useDynamicDisabled": false,
         "useDynamicHidden": false,
-        "disabled": false
+        "disabled": false,
+        "useIcon": false,
+        "iconDistance": 8,
+        "icon": "HomeOutlined",
+        "iconLocation": "front"
       }
     ]
   },
