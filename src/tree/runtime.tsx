@@ -377,7 +377,8 @@ export default function (props: RuntimeParams<Data>) {
     outputs[OutputIds.OnDropDone]({
       dragNodeInfo,
       dropNodeInfo,
-      flag: dropFlag
+      flag: dropFlag,
+      treeData: data.treeData
     });
   };
 

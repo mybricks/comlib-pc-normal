@@ -269,7 +269,121 @@
       "id": "onDropDone",
       "title": "拖拽完成",
       "schema": {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "dragNodeInfo": {
+            "title": "拖拽节点信息",
+            "type": "object",
+            "properties": {
+              "parent": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "title": "标题",
+                    "type": "string"
+                  },
+                  "key": {
+                    "title": "字段名",
+                    "type": "string"
+                  }
+                }
+              },
+              "node": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "title": "标题",
+                    "type": "string"
+                  },
+                  "key": {
+                    "title": "字段名",
+                    "type": "string"
+                  }
+                }
+              },
+              "index": {
+                "type": "number"
+              }
+            }
+          },
+          "dropNodeInfo": {
+            "title": "放置节点信息",
+            "type": "object",
+            "properties": {
+              "parent": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "title": "标题",
+                    "type": "string"
+                  },
+                  "key": {
+                    "title": "字段名",
+                    "type": "string"
+                  }
+                }
+              },
+              "node": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "title": "标题",
+                    "type": "string"
+                  },
+                  "key": {
+                    "title": "字段名",
+                    "type": "string"
+                  }
+                }
+              },
+              "index": {
+                "type": "number"
+              }
+            }
+          },
+          "flag": {
+            "title": "标识",
+            "type": "enum",
+            "items": [
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "number",
+                "value": 1
+              },
+              {
+                "type": "number",
+                "value": -1
+              }
+            ]
+          },
+          "treeData": {
+            "title": "拖拽后的树组件数据",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "title": "标题",
+                  "type": "string"
+                },
+                "key": {
+                  "title": "字段名",
+                  "type": "string"
+                },
+                "children": {
+                  "title": "子项",
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   ]
