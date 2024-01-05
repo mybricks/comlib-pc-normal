@@ -242,6 +242,12 @@ export default {
         ...createStyleForBar()
       },
       {
+        catelog: "默认",
+        title: "外边距",
+        options: ["margin"],
+        target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
+      },
+      {
         catelog: 'Hover',
         title: '标签',
         options: [
