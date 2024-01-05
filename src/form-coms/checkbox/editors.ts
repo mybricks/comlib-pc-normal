@@ -85,6 +85,11 @@ export default {
             catelog: '选中',
             items: [
               {
+                title: '选项标签',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked > span:nth-child(2)'
+              },
+              {
                 title: '选择框',
                 options: [
                   'border',
