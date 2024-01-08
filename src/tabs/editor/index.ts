@@ -232,6 +232,18 @@ export default {
         }),
       },
       {
+        catelog: '默认',
+        title: '标签头',
+        options: ['padding', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-tabs .ant-tabs-nav-wrap'
+      },
+      {
+        catelog: "默认",
+        title: "标签外边距",
+        options: ["margin"],
+        target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
+      },
+      {
         catelog: "默认",
         title: '底部横线',
         options: ['border'],
@@ -240,12 +252,6 @@ export default {
       {
         catelog: "默认",
         ...createStyleForBar()
-      },
-      {
-        catelog: "默认",
-        title: "外边距",
-        options: ["margin"],
-        target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
       },
       {
         catelog: 'Hover',
