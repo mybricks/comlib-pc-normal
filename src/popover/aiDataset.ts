@@ -68,7 +68,7 @@ export default defineDataSet((utils) => {
     Q: `将触发方式设置为${item.label}`,
     A: {
       data: {
-        textAlign: item.value
+        trigger: item.value
       }
     }
   }));
