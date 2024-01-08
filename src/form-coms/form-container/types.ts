@@ -146,9 +146,14 @@ export interface Data {
   paramsSchema: any
 
   /**
-   *  提交隐藏表单项 （隐藏表单项依旧参与校验与提交）
+   *  提交隐藏表单项
    */
   submitHiddenFields: boolean
+
+  /**
+   *  隐藏表单项字段是否校验
+   */
+  validateHiddenFields: boolean
 
 
   /**

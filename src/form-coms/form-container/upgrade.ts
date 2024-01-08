@@ -420,5 +420,15 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
   }
   //=========== v1.4.33 end ===============
+
+  /**
+   * @description v1.4.34 新增 提交校验隐藏字段是否校验配置
+   */
+  if (typeof data.validateHiddenFields === 'undefined') {
+    data.validateHiddenFields = true
+  }
+  //=========== v1.4.34 end ===============
+
+
   return true;
 }

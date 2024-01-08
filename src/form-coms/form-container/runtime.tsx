@@ -393,6 +393,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
+            if (data.validateHiddenFields && !item.visible) {
+              resolve({
+                validateStatus: 'success'
+              });
+            }
+
             validateForInput(
               {
                 input,
