@@ -153,7 +153,7 @@ function getVscodePluginDirPath() {
  */
 async function ensureDebugServerStart() {
   let port = await getDebugPort();
-  if (port) return port;
+  if (port) return { port, kill: () => {} };
 
   // 找到 .vscode 文件夹的路径
   const { dirPath, webpackConfigPath } = getVscodePluginDirPath();
