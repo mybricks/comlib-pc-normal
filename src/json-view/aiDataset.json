@@ -1,0 +1,117 @@
+{
+  "数据源": [
+    {
+      "Q": "将数据源设置为静态配置",
+      "A": {
+        "data": {
+          "type": "default"
+        }
+      }
+    },
+    {
+      "Q": "将数据源设置为动态输入(数组)",
+      "A": {
+        "data": {
+          "type": "array"
+        }
+      }
+    },
+    {
+      "Q": "将数据源设置为动态输入(对象)",
+      "A": {
+        "data": {
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "默认展开深度": [
+    {
+      "Q": "将默认展开深度设置为6",
+      "A": {
+        "data": {
+          "collapsed": 6
+        }
+      }
+    }
+  ],
+  "字符串长度限制": [
+    {
+      "Q": "将字符串长度限制设置为34",
+      "A": {
+        "data": {
+          "collapseStringsAfterLength": 34
+        }
+      }
+    }
+  ],
+  "大小标记": [
+    {
+      "Q": "将大小标记设置为开启",
+      "A": {
+        "data": {
+          "displayObjectSize": true
+        }
+      }
+    },
+    {
+      "Q": "将大小标记设置为关闭",
+      "A": {
+        "data": {
+          "displayObjectSize": false
+        }
+      }
+    }
+  ],
+  "单击节点复制": [
+    {
+      "Q": "将自定义进度值设置为开启",
+      "A": {
+        "data": {
+          "enableClipboard": true
+        }
+      }
+    },
+    {
+      "Q": "将自定义进度值设置为关闭",
+      "A": {
+        "data": {
+          "enableClipboard": false
+        }
+      }
+    }
+  ],
+  "复制节点数据键值对": [
+    {
+      "Q": "将复制节点数据键值对设置为开启",
+      "A": {
+        "data": {
+          "copyValueWithLabel": true,
+          "enaleClipboard": true
+        }
+      }
+    },
+    {
+      "Q": "将复制节点数据键值对设置为关闭",
+      "A": {
+        "data": {
+          "copyValueWithLabel": false
+        }
+      }
+    }
+  ],
+  "默认JSON数据": [
+    {
+      "Q": "将默认JSON数据设置为[object Object]",
+      "A": {
+        "data": {
+          "json": {
+            "image": "https://picsum.photos/seed/K5fgp79y/640/480",
+            "companyName": "宁南市苑博保险有限责任公司"
+          },
+          "dataSourceType": "default"
+        }
+      }
+    }
+  ]
+}

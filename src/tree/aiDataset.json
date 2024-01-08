@@ -1,0 +1,324 @@
+{
+  "显示连线": [
+    {
+      "Q": "将显示连线设置为开启",
+      "A": {
+        "data": {
+          "showLine": true
+        }
+      }
+    },
+    {
+      "Q": "将显示连线设置为关闭",
+      "A": {
+        "data": {
+          "showLine": false
+        }
+      }
+    }
+  ],
+  "可滚动高度": [
+    {
+      "Q": "将可滚动高度设置为63px",
+      "A": {
+        "data": {
+          "scrollHeight": "63px"
+        }
+      }
+    }
+  ],
+  "标题字段": [
+    {
+      "Q": "将标题字段设置为victus",
+      "A": {
+        "data": {
+          "titleFieldName": "victus"
+        }
+      }
+    }
+  ],
+  "标识字段": [
+    {
+      "Q": "将标识字段设置为adduco",
+      "A": {
+        "data": {
+          "keyFieldName": "adduco"
+        }
+      }
+    }
+  ],
+  "子节点字段": [
+    {
+      "Q": "将子节点字段设置为carmen",
+      "A": {
+        "data": {
+          "childrenFieldName": "carmen"
+        }
+      }
+    }
+  ],
+  "输出数据": [
+    {
+      "Q": "将输出数据设置为标识字段",
+      "A": {
+        "data": {
+          "valueType": "keyField"
+        }
+      }
+    },
+    {
+      "Q": "将输出数据设置为节点数据",
+      "A": {
+        "data": {
+          "valueType": "treeNode"
+        }
+      }
+    }
+  ],
+  "标题超出省略": [
+    {
+      "Q": "将标题超出省略设置为开启",
+      "A": {
+        "data": {
+          "titleEllipsis": true
+        }
+      }
+    },
+    {
+      "Q": "将标题超出省略设置为关闭",
+      "A": {
+        "data": {
+          "titleEllipsis": false
+        }
+      }
+    }
+  ],
+  "默认展开深度": [
+    {
+      "Q": "将默认展开深度设置为8",
+      "A": {
+        "data": {
+          "openDepth": 8
+        }
+      }
+    }
+  ],
+  "自定义空状态图片": [
+    {
+      "Q": "将自定义空状态图片设置为开启",
+      "A": {
+        "data": {
+          "isImage": true
+        }
+      }
+    },
+    {
+      "Q": "将自定义空状态图片设置为关闭",
+      "A": {
+        "data": {
+          "isImage": false
+        }
+      }
+    }
+  ],
+  "图片地址": [
+    {
+      "Q": "将图片地址设置为https://picsum.photos/seed/GYdHG0/640/480",
+      "A": {
+        "data": {
+          "image": "https://picsum.photos/seed/GYdHG0/640/480"
+        }
+      }
+    }
+  ],
+  "空状态文案": [
+    {
+      "Q": "将空状态文案设置为tracto",
+      "A": {
+        "data": {
+          "description": "tracto"
+        }
+      }
+    }
+  ],
+  "使用静态数据源": [
+    {
+      "Q": "将使用静态数据源设置为开启",
+      "A": {
+        "data": {
+          "useStaticData": true
+        }
+      }
+    },
+    {
+      "Q": "将使用静态数据源设置为关闭",
+      "A": {
+        "data": {
+          "useStaticData": false
+        }
+      }
+    }
+  ],
+  "过滤功能": {
+    "Q": "将过滤字段设置为",
+    "A": {
+      "data": {
+        "filterNames": [
+          null
+        ]
+      }
+    }
+  },
+  "勾选功能": [
+    {
+      "Q": "将勾选功能设置为不开启",
+      "A": {
+        "data": {
+          "checkable": false
+        }
+      }
+    },
+    {
+      "Q": "将勾选功能设置为全部节点",
+      "A": {
+        "data": {
+          "checkable": true
+        }
+      }
+    },
+    {
+      "Q": "将勾选功能设置为自定义节点",
+      "A": {
+        "data": {
+          "checkable": "custom"
+        }
+      }
+    }
+  ],
+  "拖拽功能": [
+    {
+      "Q": "将拖拽功能设置为不开启",
+      "A": {
+        "data": {
+          "checkable": false
+        }
+      }
+    },
+    {
+      "Q": "将拖拽功能设置为全部节点",
+      "A": {
+        "data": {
+          "checkable": true
+        }
+      }
+    },
+    {
+      "Q": "将拖拽功能设置为自定义节点",
+      "A": {
+        "data": {
+          "checkable": "custom"
+        }
+      }
+    }
+  ],
+  "支持放置": [
+    {
+      "Q": "将支持放置设置为不开启",
+      "A": {
+        "data": {
+          "checkable": false
+        }
+      }
+    },
+    {
+      "Q": "将支持放置设置为全部节点",
+      "A": {
+        "data": {
+          "checkable": true
+        }
+      }
+    },
+    {
+      "Q": "将支持放置设置为自定义节点",
+      "A": {
+        "data": {
+          "checkable": "custom"
+        }
+      }
+    }
+  ],
+  "放置范围限制": [
+    {
+      "Q": "将放置范围限制设置为任意",
+      "A": {
+        "data": {
+          "useDropScope": false
+        }
+      }
+    },
+    {
+      "Q": "将放置范围限制设置为当前父节点",
+      "A": {
+        "data": {
+          "useDropScope": "parent"
+        }
+      }
+    }
+  ],
+  "禁用勾选框": [
+    {
+      "Q": "将禁用勾选框设置为开启",
+      "A": {
+        "data": {
+          "disableCheckbox": true
+        }
+      }
+    },
+    {
+      "Q": "将禁用勾选框设置为关闭",
+      "A": {
+        "data": {
+          "disableCheckbox": false
+        }
+      }
+    }
+  ],
+  "父子节点勾选联动": [
+    {
+      "Q": "将全部节点下的父子节点勾选联动设置为开启",
+      "A": {
+        "data": {
+          "disableCheckbox": true,
+          "checkable": true
+        }
+      }
+    },
+    {
+      "Q": "将全部节点下的父子节点勾选联动设置为关闭",
+      "A": {
+        "data": {
+          "disableCheckbox": false,
+          "checkable": true
+        }
+      }
+    },
+    {
+      "Q": "将自定义节点下的父子节点勾选联动设置为开启",
+      "A": {
+        "data": {
+          "disableCheckbox": true,
+          "checkable": "custom"
+        }
+      }
+    },
+    {
+      "Q": "将自定义节点下的父子节点勾选联动设置为关闭",
+      "A": {
+        "data": {
+          "disableCheckbox": false,
+          "checkable": "custom"
+        }
+      }
+    }
+  ]
+}
