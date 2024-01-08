@@ -924,7 +924,6 @@ export default function (props: RuntimeParams<Data>) {
 
   const customizeRenderEmpty = () => (
     <div
-      className={css.emptyNormal}
       style={{
         height: (() => {
           if (isUseOldHeight) return data.fixedHeader ? `calc(${data.fixedHeight} - 144px` : '';
@@ -932,8 +931,10 @@ export default function (props: RuntimeParams<Data>) {
         })()
       }}
     >
-      <Image src={data.image} className={`emptyImage ${css.emptyImage}`} preview={false} />
-      <p className={`emptyDescription ${css.emptyDescription}`}>{env.i18n(data.description)}</p>
+      <Empty 
+        image={data.image || Empty.PRESENTED_IMAGE_SIMPLE}
+        description={env.i18n(data.description)}
+      />
     </div>
   );
 
@@ -941,7 +942,7 @@ export default function (props: RuntimeParams<Data>) {
     <div ref={ref}>
       <ConfigProvider
         locale={env.vars?.locale}
-        renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
+        renderEmpty = {data.isEmpty ? customizeRenderEmpty : void 0}
       >
         <TableContext.Provider value={contextValue}>
           <div className={css.table}>
