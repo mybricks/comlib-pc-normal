@@ -1,0 +1,8 @@
+{
+  "staticTime": 3600,
+  "immediate": true,
+  "isFormat": false,
+  "format": "HH:mm:ss",
+  "customFormat": "HH:mm:ss",
+  "useStop": false
+}
