@@ -357,13 +357,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         const { color = 'black', content = '', visible = true, style = {}} = customExtraTextRef.current(currentDate, today)
         return <div className="ant-picker-cell-inner">
         {currentDate.date()}
-        {runtime || currentDate.isSame(today, 'day')
-          ? <div style={{
+        <div style={{
             color,
             visibility: visible ? 'visible' : 'hidden',
             ...style,
           }}>{content}</div>
-          : null}
         </div>
       } else if (data.useCustomDateCell) {
         return (
@@ -382,7 +380,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         )
       }
 
-      return null
+      return <div className="ant-picker-cell-inner">
+      {currentDate.date()}
+      </div>
     },
     [data.useCustomDateCell, data.customExtraText]
   );
