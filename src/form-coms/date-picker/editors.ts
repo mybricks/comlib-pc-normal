@@ -461,6 +461,26 @@ export default {
           }
         },
         {
+          title: '动态设置日期文本',
+          description: '',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.customExtraText;
+            },
+            set({ data, input }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                const hasEvent = input.get(InputIds.ConfigExtraText);
+                !hasEvent && input.add(InputIds.ConfigExtraText, `自定义日期文本`, { type: 'any'});
+
+              } else {
+                input.remove(InputIds.ConfigExtraText);
+              }
+              data.customExtraText = value;
+            }
+          }
+        },
+        {
           title: '开启日期选择面板顶部插槽',
           type: 'Switch',
           value: {

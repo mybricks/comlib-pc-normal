@@ -7,5 +7,6 @@ export enum SlotIds {
 export enum InputIds {
   CurrentDate = 'currentDate',
   Today = 'Today',
-  SetOpen = 'setOpen'
+  SetOpen = 'setOpen',
+  ConfigExtraText = 'configExtraText'
 }
