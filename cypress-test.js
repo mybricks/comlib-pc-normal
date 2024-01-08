@@ -1,59 +1,18 @@
-const { execSync } = require('child_process');
-
+const { execSync, exec } = require('child_process');
 const axios = require('axios');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
-async function getDebugPort() {
-  let port = 8080;
-  let isFind = false;
-
-  for (let i = 0; i < 10; i++) {
-    try {
-      const response = await axios.get(`http://localhost:${port}/check-dev-server`);
-      const result = response.data;
-
-      if (
-        // 确保是 vscode 插件启动的调试服务
-        result.status === 'success' &&
-        // 确保是当前组件库的调试服务
-        result.config.namespace === 'mybricks.normal-pc' &&
-        // 确保是用 test.mybricks.json 启动的调试服务
-        result.config.comAry.includes('./cypress/materials/_checkpoint/com.json')
-      ) {
-        isFind = true;
-        break;
-      }
-
-      port++;
-    } catch (e) {}
-  }
-
-  if (isFind) return port;
-}
-
-function beautifulLog(msg, type = 'info') {
-  msg = `\n    ${msg}\n`;
-
-  switch (type) {
-    case 'info':
-      console.log('\x1b[34m%s\x1b[0m', msg);
-      break;
-    case 'error':
-      console.error('\x1b[31m%s\x1b[0m', msg);
-      break;
-    case 'success':
-      console.warn('\x1b[32m%s\x1b[0m', msg);
-      break;
-    default:
-      break;
-  }
-}
-
+/**
+ * 主函数
+ */
 async function main() {
-  const port = await getDebugPort();
+  const { port, kill } = await ensureDebugServerStart();
 
   if (!port) {
     beautifulLog('请先启动 vscode 调试, 且配置文件选择: test.mybricks.json', 'error');
-    return;
+    return kill();
   }
 
   // 执行git status命令获取修改过的文件列表
@@ -85,6 +44,145 @@ async function main() {
   } catch (e) {
     beautifulLog('有测试用例未通过，请检查！', 'error');
   }
+
+  kill();
 }
 
 main();
+
+/**
+ * 获取当前的 vscode debug 服务端口
+ */
+async function getDebugPort() {
+  let port = 8080;
+  let isFind = false;
+
+  for (let i = 0; i < 10; i++) {
+    try {
+      const response = await axios.get(`http://localhost:${port}/check-dev-server`);
+      const result = response.data;
+
+      if (
+        // 确保是 vscode 插件启动的调试服务
+        result.status === 'success' &&
+        // 确保是当前组件库的调试服务
+        result.config.namespace === 'mybricks.normal-pc' &&
+        // 确保是用 test.mybricks.json 启动的调试服务
+        result.config.comAry.includes('./cypress/materials/_checkpoint/com.json')
+      ) {
+        isFind = true;
+        break;
+      }
+
+      port++;
+    } catch (e) {}
+  }
+
+  if (isFind) return port;
+
+  return false;
+}
+
+/**
+ * 好看的控制台输出
+ */
+function beautifulLog(msg, type = 'info') {
+  msg = `\n    ${msg}\n`;
+
+  switch (type) {
+    case 'info':
+      console.log('\x1b[34m%s\x1b[0m', msg);
+      break;
+    case 'error':
+      console.error('\x1b[31m%s\x1b[0m', msg);
+      break;
+    case 'success':
+      console.warn('\x1b[32m%s\x1b[0m', msg);
+      break;
+    default:
+      break;
+  }
+}
+
+/**
+ * 获取 vscode 插件所在文件夹路径
+ */
+function getVscodePluginDirPath() {
+  const homedir = os.homedir();
+  const vscodeFolderPath = path.join(homedir, '.vscode/extensions');
+
+  // 同步读取文件夹内容
+  const files = fs.readdirSync(vscodeFolderPath);
+
+  let maxVersion = 0;
+  let maxVersionFile = '';
+
+  // 遍历文件夹中的所有文件和文件夹
+  files.forEach((file) => {
+    const regex = /^mybricks\.mybricks-(\d+\.\d+\.\d+)$/;
+    const match = file.match(regex);
+
+    if (match) {
+      const version = match[1];
+      const versionNumber = version
+        .split('.')
+        .map(Number)
+        .reduce((acc, val) => acc * 1000 + val, 0);
+
+      if (versionNumber > maxVersion) {
+        maxVersion = versionNumber;
+        maxVersionFile = file;
+      }
+    }
+  });
+
+  const dirPath = `${os.homedir()}/.vscode/extensions/${maxVersionFile}`;
+
+  return {
+    dirPath,
+    webpackConfigPath: `${dirPath}/_scripts/componentLibrary/dev/scripts/_devTemp/${String(
+      homedir + '/'
+    ).replace(/\//g, '_')}workspace_comlib_pc_normal_test_mybricks_json.js`
+  };
+}
+
+/**
+ * 检查 vscode debug 服务是否启动
+ * 如果没有启动，则启动调试服务
+ * @returns 调试服务端口号
+ */
+async function ensureDebugServerStart() {
+  let port = await getDebugPort();
+  if (port) return port;
+
+  // 找到 .vscode 文件夹的路径
+  const { dirPath, webpackConfigPath } = getVscodePluginDirPath();
+
+  const command = `npm run --prefix ${dirPath} dev:comlib ${webpackConfigPath}`;
+  beautifulLog(`执行命令：${command}`);
+  const serverProcess = exec(command, { stdio: 'ignore' });
+
+  port = await new Promise((res, rej) => {
+    const timeout = setTimeout(() => {
+      rej('vscode debug 服务启动超时!');
+      clearInterval(interval);
+    }, 30000);
+
+    const interval = setInterval(async () => {
+      const port = await getDebugPort();
+      if (port) {
+        res(port);
+        clearTimeout(timeout);
+        clearInterval(interval);
+      }
+    }, 1000);
+  }).catch((e) => {
+    beautifulLog(e, 'error');
+    return false;
+  });
+
+  return {
+    port,
+    kill: () => serverProcess.kill()
+  };
+}
