@@ -1,0 +1,130 @@
+{
+  "显示冒号": [
+    {
+      "Q": "将显示冒号设置为开启",
+      "A": {
+        "data": {
+          "colon": true
+        }
+      }
+    },
+    {
+      "Q": "将显示冒号设置为关闭",
+      "A": {
+        "data": {
+          "colon": false
+        }
+      }
+    }
+  ],
+  "显示标题": [
+    {
+      "Q": "将显示标题设置为开启",
+      "A": {
+        "data": {
+          "showTitle": true
+        }
+      }
+    },
+    {
+      "Q": "将显示标题设置为关闭",
+      "A": {
+        "data": {
+          "showTitle": false
+        }
+      }
+    }
+  ],
+  "标题": [
+    {
+      "Q": "将标题设置为attonbitus",
+      "A": {
+        "data": {
+          "title": "attonbitus",
+          "showTitle": true
+        }
+      }
+    }
+  ],
+  "右上角操作区": [
+    {
+      "Q": "将右上角操作区设置为开启",
+      "A": {
+        "data": {
+          "showExtra": true
+        }
+      }
+    },
+    {
+      "Q": "将右上角操作区设置为关闭",
+      "A": {
+        "data": {
+          "showExtra": false
+        }
+      }
+    }
+  ],
+  "列数": [
+    {
+      "Q": "将列数设置为10",
+      "A": {
+        "data": {
+          "column": 10
+        }
+      }
+    }
+  ],
+  "移动端列数": [
+    {
+      "Q": "将移动端列数设置为5",
+      "A": {
+        "data": {
+          "mobileColumn": 5
+        }
+      }
+    }
+  ],
+  "增加描述项": [
+    {
+      "Q": "添加2个描述项",
+      "A": {
+        "data": {
+          "items": [
+            {
+              "id": "u_ta5t9s",
+              "label": "描述项u_ta5t9s",
+              "key": "u_ta5t9s",
+              "showLabel": true,
+              "value": "fieldu_ta5t9s",
+              "span": 1,
+              "type": "text",
+              "direction": "horizontal",
+              "useSuffix": false,
+              "suffixBtnText": "查看更多",
+              "schema": {
+                "type": "string"
+              },
+              "labelDesc": ""
+            },
+            {
+              "id": "u_ksjcyd",
+              "label": "描述项u_ksjcyd",
+              "key": "u_ksjcyd",
+              "showLabel": true,
+              "value": "fieldu_ksjcyd",
+              "span": 1,
+              "type": "text",
+              "direction": "horizontal",
+              "useSuffix": false,
+              "suffixBtnText": "查看更多",
+              "schema": {
+                "type": "string"
+              },
+              "labelDesc": ""
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
