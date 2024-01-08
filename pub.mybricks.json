@@ -132,7 +132,8 @@
     "./src/_pinyin/com.json",
     "./src/_post-message/com.json",
     "./src/_get-storage/com.json",
-    "./src/_receive-message/com.json"
+    "./src/_receive-message/com.json",
+    "./src/_countdown/com.json"
   ],
   "externals": [
     {
