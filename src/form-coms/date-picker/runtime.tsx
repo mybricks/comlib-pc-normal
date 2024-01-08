@@ -29,6 +29,7 @@ export interface Data {
   closeWhenClickOutOfPanel: boolean;
   /** @description 1.1.17 默认面板日期 */
   defaultPickerValue: string;
+  customExtraText: boolean;
   config: DatePickerProps;
   useDisabledDate: 'default' | 'static';
   hideDatePanel: boolean;
@@ -65,6 +66,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+  const customExtraTextRef = useRef<any>(() => {})
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');
@@ -299,6 +301,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   });
 
+  useEffect(() => {
+    if(data.customExtraText) {
+      inputs[InputIds.ConfigExtraText]((val) => {
+        if(typeof val !== 'function') {
+          throw new Error(`请输入有效的函数！`)
+        }
+        customExtraTextRef.current = val
+      });
+    }
+  })
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
@@ -340,22 +353,38 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const customDateRender = useCallback(
     (currentDate, today) => {
-      return (
-        <div className="ant-picker-cell-inner">
-          {currentDate.date()}
-          {runtime || currentDate.isSame(today, 'day')
-            ? slots[SlotIds.DateCell].render({
-                inputValues: {
-                  [InputIds.CurrentDate]: currentDate,
-                  [InputIds.Today]: today
-                },
-                key: currentDate.valueOf()
-              })
-            : null}
+      if(data.customExtraText && typeof customExtraTextRef.current === 'function') {
+        const { color = 'black', content = '', visible = true, style = {}} = customExtraTextRef.current(currentDate, today)
+        return <div className="ant-picker-cell-inner">
+        {currentDate.date()}
+        <div style={{
+            color,
+            visibility: visible ? 'visible' : 'hidden',
+            ...style,
+          }}>{content}</div>
         </div>
-      );
+      } else if (data.useCustomDateCell) {
+        return (
+          <div className="ant-picker-cell-inner">
+            {currentDate.date()}
+            {runtime || currentDate.isSame(today, 'day')
+              ? slots[SlotIds.DateCell].render({
+                  inputValues: {
+                    [InputIds.CurrentDate]: currentDate,
+                    [InputIds.Today]: today
+                  },
+                  key: currentDate.valueOf()
+                })
+              : null}
+          </div>
+        )
+      }
+
+      return <div className="ant-picker-cell-inner">
+      {currentDate.date()}
+      </div>
     },
-    [data.useCustomDateCell]
+    [data.useCustomDateCell, data.customExtraText]
   );
 
   const disabledDateConfig = useCallback(
@@ -455,7 +484,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             {...data.config}
             defaultPickerValue={defaultPickerValue}
             placeholder={env.i18n(data.config.placeholder)}
-            dateRender={data.useCustomDateCell ? customDateRender : undefined}
+            dateRender={(data.useCustomDateCell || (data.customExtraText && typeof customExtraTextRef.current === 'function')) ? customDateRender : undefined}
             showTime={getShowTime()}
             onChange={onChange}
             onPanelChange={onPanelChange}

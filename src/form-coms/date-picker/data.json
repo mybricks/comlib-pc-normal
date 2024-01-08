@@ -13,5 +13,6 @@
     "allowClear": true
   },
   "isWeekNumber": false,
+  "customExtraText": false,
   "isEditable": true
 }
