@@ -103,7 +103,7 @@ export default defineDataSet((utils) => {
     { label: '自定义', value: 'custom' }
   ].map((item) => {
     return  {
-      Q: `将输出的数据设置成如下格式：${item.label}`,
+      Q: `将日期范围选择组件输出的数据设置成如下格式：${item.label}`,
       A: {
         data: {
           contentType: item.value
