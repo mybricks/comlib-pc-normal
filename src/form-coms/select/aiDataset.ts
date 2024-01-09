@@ -133,7 +133,7 @@ export default defineDataSet((utils) => {
         Q: `选项配置为${options.map((option) => `“${option}”`).join('、')}`,
         A: {
           data: {
-            options: options.map((option) => ({
+            staticOptions: options.map((option) => ({
               label: option,
               value: option
             }))
