@@ -79,7 +79,7 @@ export default defineDataSet((utils) => {
     }
   }]
 
-  result['文字'] = [{
+  result['颜色'] = [{
     "Q": `设置评分组件的颜色为 红色`,
     "A": {
       data: {
