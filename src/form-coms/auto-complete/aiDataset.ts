@@ -3,58 +3,58 @@ import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
 
-  result['显示标题'] = [{
-    "Q": `显示提示内容的标题`,
-    "A": {
-      data: {
-        hiddenLabel: false
-      }
-    }
-  }]
+  // result['显示标题'] = [{
+  //   "Q": `显示提示内容的标题`,
+  //   "A": {
+  //     data: {
+  //       hiddenLabel: false
+  //     }
+  //   }
+  // }]
 
-  const ts1 = utils.string.alpha(5)
-  result['标题'] = [{
-    "Q": `设置提示内容的标题为${ts1}`,
-    "A": {
-      data: {
-        hiddenLabel: false,
-        label: ts1
-      }
-    }
-  }]
+  // const ts1 = utils.string.alpha(5)
+  // result['标题'] = [{
+  //   "Q": `设置提示内容的标题为${ts1}`,
+  //   "A": {
+  //     data: {
+  //       hiddenLabel: false,
+  //       label: ts1
+  //     }
+  //   }
+  // }]
 
-  const ts2 = utils.string.alpha(5)
-  result['字段'] = [{
-    "Q": `设置提示内容的字段为${ts2}`,
-    "A": {
-      data: {
-        hiddenLabel: false,
-        value: ts2
-      }
-    }
-  }]
+  // const ts2 = utils.string.alpha(5)
+  // result['字段'] = [{
+  //   "Q": `设置提示内容的字段为${ts2}`,
+  //   "A": {
+  //     data: {
+  //       hiddenLabel: false,
+  //       value: ts2
+  //     }
+  //   }
+  // }]
 
-  const ts3 = utils.string.alpha(5)
-  result['标题提示'] = [{
-    "Q": `设置提示内容标题背后的悬浮提示内容为${ts3}`,
-    "A": {
-      data: {
-        hiddenLabel: false,
-        tooltip: ts3
-      }
-    }
-  }]
+  // const ts3 = utils.string.alpha(5)
+  // result['标题提示'] = [{
+  //   "Q": `设置提示内容标题背后的悬浮提示内容为${ts3}`,
+  //   "A": {
+  //     data: {
+  //       hiddenLabel: false,
+  //       tooltip: ts3
+  //     }
+  //   }
+  // }]
 
-  const ts4 = utils.string.alpha(5)
-  result['提示语'] = [{
-    "Q": `设置提示内容下方的提示内容为${ts4}`,
-    "A": {
-      data: {
-        hiddenLabel: false,
-        description: ts4
-      }
-    }
-  }]
+  // const ts4 = utils.string.alpha(5)
+  // result['提示语'] = [{
+  //   "Q": `设置提示内容下方的提示内容为${ts4}`,
+  //   "A": {
+  //     data: {
+  //       hiddenLabel: false,
+  //       description: ts4
+  //     }
+  //   }
+  // }]
   
   const ts5 = utils.string.alpha(5)
   result['提示内容'] = [{
