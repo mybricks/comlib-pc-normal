@@ -57,16 +57,14 @@ export default defineDataSet((utils) => {
   );
 
   // ======================== 插件选择 ========================
-  result.push(
-    ...utils.options.multipleSelect(toolbarOptions, 5).map((item) => ({
-      Q: `选择插件${item.map((item) => item.label).join('、')}`,
-      A: {
-        data: {
-          toolbar: item.map((item) => item.value)
-        }
+  result.push({
+    Q: `选择插件${toolbarOptions.map((item) => item.label).join('、')}`,
+    A: {
+      data: {
+        toolbar: toolbarOptions.map((item) => item.value)
       }
-    }))
-  );
+    }
+  });
 
   // ======================== 校验 ========================
   // TODO: src/form-coms/input-richtext/editors.tsx:159
