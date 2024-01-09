@@ -73,9 +73,9 @@ async function getDebugPort() {
         isFind = true;
         break;
       }
-
-      port++;
     } catch (e) {}
+
+    port++;
   }
 
   if (isFind) return port;
@@ -109,41 +109,51 @@ function beautifulLog(msg, type = 'info') {
  */
 function getVscodePluginDirPath() {
   const homedir = os.homedir();
-  const vscodeFolderPath = path.join(homedir, '.vscode/extensions');
 
-  // 同步读取文件夹内容
-  const files = fs.readdirSync(vscodeFolderPath);
+  /** vscode 插件所在文件夹 */
+  const dirPath = (() => {
+    const vscodeFolderPath = path.join(homedir, '.vscode/extensions');
+    // 同步读取文件夹内容
+    const files = fs.readdirSync(vscodeFolderPath);
 
-  let maxVersion = 0;
-  let maxVersionFile = '';
+    let maxVersion = 0;
+    let maxVersionFile = '';
 
-  // 遍历文件夹中的所有文件和文件夹
-  files.forEach((file) => {
-    const regex = /^mybricks\.mybricks-(\d+\.\d+\.\d+)$/;
-    const match = file.match(regex);
+    // 遍历文件夹中的所有文件和文件夹，找出
+    files.forEach((file) => {
+      const regex = /^mybricks\.mybricks-(\d+\.\d+\.\d+)$/;
+      const match = file.match(regex);
 
-    if (match) {
-      const version = match[1];
-      const versionNumber = version
-        .split('.')
-        .map(Number)
-        .reduce((acc, val) => acc * 1000 + val, 0);
+      if (match) {
+        const version = match[1];
+        const versionNumber = version
+          .split('.')
+          .map(Number)
+          .reduce((acc, val) => acc * 1000 + val, 0);
 
-      if (versionNumber > maxVersion) {
-        maxVersion = versionNumber;
-        maxVersionFile = file;
+        if (versionNumber > maxVersion) {
+          maxVersion = versionNumber;
+          maxVersionFile = file;
+        }
       }
-    }
-  });
+    });
 
-  const dirPath = `${os.homedir()}/.vscode/extensions/${maxVersionFile}`;
+    return `${os.homedir()}/.vscode/extensions/${maxVersionFile}`;
+  })();
 
-  return {
-    dirPath,
-    webpackConfigPath: `${dirPath}/_scripts/componentLibrary/dev/scripts/_devTemp/${String(
-      homedir + '/'
-    ).replace(/\//g, '_')}workspace_comlib_pc_normal_test_mybricks_json.js`
-  };
+  const webpackConfigPath = (() => {
+    const webpackConfigDirPath = path.join(
+      dirPath,
+      '_scripts/componentLibrary/dev/scripts/_devTemp/'
+    );
+    const files = fs.readdirSync(webpackConfigDirPath);
+
+    const file = files.find((file) => file.includes('comlib_pc_normal_test_mybricks_json.js'));
+
+    return path.join(webpackConfigDirPath, file);
+  })();
+
+  return { dirPath, webpackConfigPath };
 }
 
 /**
