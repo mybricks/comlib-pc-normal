@@ -50,6 +50,7 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, style } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const dataSourceRef = useRef(dataSource);
@@ -102,9 +103,9 @@ export default function (props: RuntimeParams<Data>) {
     return (tableHeight as number) - (_showHeader ? 48 : 0);
   })();
 
-  const selectedRows = useMemo(() => {
-    return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
-  }, [dataSource, selectedRowKeys, rowKey]);
+  // const selectedRows = useMemo(() => {
+  //   return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
+  // }, [dataSource, selectedRowKeys, rowKey]);
 
   const initFilterMap = () => {
     let res = {};
@@ -165,6 +166,7 @@ export default function (props: RuntimeParams<Data>) {
       inputs[InputIds.CLEAR_ROW_SELECTION] &&
         inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
           setSelectedRowKeys([]);
+          setSelectedRows([]);
           handleOutputFn(relOutputs, OutputIds.CLEAR_ROW_SELECTION, val);
         });
 
@@ -386,6 +388,7 @@ export default function (props: RuntimeParams<Data>) {
                 }
               });
               setSelectedRowKeys(newSelectedRowKeys);
+              setSelectedRows(newSelectedRows);
               if (typeof outputs?.[OutputIds.ROW_SELECTION] === 'function') {
                 outputs[OutputIds.ROW_SELECTION]({
                   selectedRows: newSelectedRows,
@@ -723,6 +726,7 @@ export default function (props: RuntimeParams<Data>) {
         selectedRowKeys = selectedRowKeys.slice(0, data.rowSelectionLimit);
       }
       setSelectedRowKeys(selectedRowKeys);
+      setSelectedRows(selectedRows);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows,
         selectedRowKeys
@@ -812,7 +816,7 @@ export default function (props: RuntimeParams<Data>) {
     (_record) => {
       const targetRowKeyVal = _record[rowKey];
       let newSelectedRows = [...selectedRows];
-      let newSelectedRowKeys: any = [];
+      let newSelectedRowKeys: Array<string> = [];
       // 多选情况下，如果没有超出限制就可以选择
       if (data.selectionType !== RowSelectionTypeEnum.Radio) {
         if (
@@ -835,13 +839,14 @@ export default function (props: RuntimeParams<Data>) {
         }
       }
       newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
+      setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows: newSelectedRows,
         selectedRowKeys: newSelectedRowKeys
       });
     },
-    [selectedRows, data.rowSelectionLimit, selectedRowKeys]
+    [selectedRows, data.rowSelectionLimit, selectedRowKeys, rowKey]
   );
 
   const onRow = useCallback(
@@ -931,7 +936,7 @@ export default function (props: RuntimeParams<Data>) {
         })()
       }}
     >
-      <Empty 
+      <Empty
         image={data.image || Empty.PRESENTED_IMAGE_SIMPLE}
         description={env.i18n(data.description)}
       />
@@ -942,7 +947,7 @@ export default function (props: RuntimeParams<Data>) {
     <div ref={ref}>
       <ConfigProvider
         locale={env.vars?.locale}
-        renderEmpty = {data.isEmpty ? customizeRenderEmpty : void 0}
+        renderEmpty={data.isEmpty ? customizeRenderEmpty : void 0}
       >
         <TableContext.Provider value={contextValue}>
           <div className={css.table}>
