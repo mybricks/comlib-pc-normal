@@ -648,7 +648,7 @@ export default function (props: RuntimeParams<Data>) {
     preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: any[], selectedRows: any[]) => {
       /** 兼容懒加载场景下的全选、全不选逻辑 start */
-      {
+      if (!!data?.lazyLoad) {
         // 如果是全选
         if (selectedRowKeys.length === demandDataSource.length) {
           selectedRowKeys = realShowDataSource.map((rowData) => rowData[rowKey]);
