@@ -64,7 +64,7 @@ export default defineDataSet((utils) => {
     }
   }]
 
-  result['分页'] = [{
+  result['每页条数'] = [{
     "Q": `开启穿梭框组件的分页功能,并设置每页显示20条数据`,
     "A": {
       data: {
@@ -76,27 +76,6 @@ export default defineDataSet((utils) => {
     }
   }]
 
-
-  const ts1 = utils.string.alpha(5)
-  result['文案'] = [{
-    "Q": `将开关组件开启时文案设置为${ts1}`,
-    "A": {
-      data: {
-        config: {
-          checkedChildren: ts1
-        }
-      }
-    }
-  },{
-    "Q": `将开关组件关闭时文案设置为${ts1}`,
-    "A": {
-      data: {
-        config: {
-          unCheckedChildren: ts1
-        }
-      }
-    }
-  }]
 
   return result
 })
