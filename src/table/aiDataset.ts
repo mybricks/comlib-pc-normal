@@ -21,7 +21,7 @@ export default defineDataSet((utils) => {
     { label: '按比例适配（无横向滚动条）', value: TableLayoutEnum.Auto }
   ];
   result['列宽分配'] = tableLayoutOptions.map((item) => ({
-    Q: `${item.label}`,
+    Q: `列宽分配：${item.label}`,
     A: {
       data: {
         tableLayout: item.value
@@ -49,10 +49,7 @@ export default defineDataSet((utils) => {
           ]
         }
       }
-    }
-  ];
-
-  result['列'] = [
+    },
     {
       Q: `添加一列，列名为A，字段为a，展示类型为普通文字，需要进行空值处理，列数据类型为字符串，开启内容省略展示（内容超出宽度后文本自动省略、不换行、以省略号结尾），自适应剩余宽度，将该列左固定，提示文案设置为abc`,
       A: {
@@ -77,10 +74,7 @@ export default defineDataSet((utils) => {
           ]
         }
       }
-    }
-  ];
-
-  result['列'] = [
+    },
     {
       Q: `添加一列，列名为B，字段为v，展示类型为普通文字，将日期格式化为时间戳，列数据类型为数字，开启内容省略展示（内容超出宽度后文本自动省略、不换行、以省略号结尾），宽度设置为200px`,
       A: {
@@ -105,10 +99,7 @@ export default defineDataSet((utils) => {
           ]
         }
       }
-    }
-  ];
-
-  result['列'] = [
+    },
     {
       Q: `添加一列用于展示总金额，将该列右固定，并按照数字大小排序`,
       A: {
