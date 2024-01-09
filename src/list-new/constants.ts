@@ -3,7 +3,12 @@ import { ListGridType } from 'antd/lib/list';
 export enum InputIds {
   DATA_SOURCE = 'dataSource',
   LOADING = 'loading',
-  GetDataSource = 'getdataSource'
+  GetDataSource = 'getdataSource',
+  AddItem = 'addItem',
+  RemoveItem = 'removeItem',
+  ChangeItem = 'changeItem',
+  MoveUp = 'moveUp',
+  MoveDown = 'moveDown'
 }
 export enum OutputIds {
   GetDataSource = 'getdataSource',

@@ -83,5 +83,59 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     ]
  }
 
+  /**
+    * @description v1.0.13->1.0.14 添加crud、上移、下移
+  */
+  //1、添加一项
+  const itemSchema = {
+    type: "object",
+    properties: {
+      index: {
+        type: "number"
+      },
+      value: {
+        type: "any"
+      }
+    }
+  };
+  if (!output.get('addItemDone')) {
+    output.add('addItemDone', '添加一项完成', itemSchema);
+  }
+  if (!input.get('addItem')) {
+    input.add('addItem', '添加一项', itemSchema);
+    input.get('addItem').setRels(['addItemDone']);
+  }
+  //2、删除一项
+  if (!output.get('removeItemDone')) {
+    output.add('removeItemDone', '删除一项完成', {type: 'number'});
+  }
+  if (!input.get('removeItem')) {
+    input.add('removeItem', '删除一项', {type: 'number'});
+    input.get('removeItem').setRels(['removeItemDone']);
+  }
+  //3、改动一项
+  if (!output.get('changeItemDone')) {
+    output.add('changeItemDone', '修改一项(根据index)', itemSchema);
+  }
+  if (!input.get('changeItem')) {
+    input.add('changeItem', '修改一项(根据index)完成', itemSchema);
+    input.get('changeItem').setRels(['changeItemDone']);
+  }
+  //4、上移
+  if (!output.get('moveUpDone')) {
+    output.add('moveUpDone', '上移完成', {type: 'number'});
+  }
+  if (!input.get('moveUp')) {
+    input.add('moveUp', '上移', {type: 'number'});
+    input.get('moveUp').setRels(['moveUpDone']);
+  }
+  //5、下移
+  if (!output.get('moveDownDone')) {
+    output.add('moveDownDone', '下移完成', {type: 'number'});
+  }
+  if (!input.get('moveDown')) {
+    input.add('moveDown', '下移', {type: 'number'});
+    input.get('moveDown').setRels(['moveDownDone']);
+  }
   return true;
 }
