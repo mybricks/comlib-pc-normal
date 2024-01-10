@@ -623,18 +623,23 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values,
             cb?.();
           });
       }
-    } else {
-      console.warn(
-        `FormItem Input Not Found, FormItem Name: ${item.name}, 可能存在脏数据 请联系开发人员`
-      );
     }
   }
 };
 
 const getFromItemInputEvent = (formItem, childrenInputs) => {
+  let input;
+
+  input = childrenInputs[formItem.id];
   if (formItem.comName) {
-    return childrenInputs[formItem.comName];
+    input = childrenInputs[formItem.comName];
   }
 
-  return childrenInputs[formItem.id];
+  if (!input) {
+    console.warn(
+      `FormItem Input Not Found, FormItem Name: ${formItem.name}, 可能存在脏数据 请联系开发人员`
+    );
+  }
+
+  return input;
 };
