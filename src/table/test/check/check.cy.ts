@@ -28,6 +28,16 @@ function clickButtonAndWaitForCheckbox(buttonText: string, checkboxSelector?: st
   }
 }
 
+// 点击全选/取消全选操作
+function toggleSelectAll() {
+  return cy.get('th.ant-table-cell.ant-table-selection-column label').click();
+}
+
+// 检查勾选事件
+function generateArray(length: number) {
+  return Array.from({ length }).map((_, index) => index);
+}
+
 describe('数据表格-勾选', () => {
   enhancedIt('各种 output 检查', () => {
     toJSONPreview(toJSON);
@@ -77,6 +87,26 @@ describe('数据表格-勾选', () => {
       { id: '输出勾选数据', value: [] },
       { id: '勾选事件', value: [0] },
       { id: '输出勾选数据', value: [0] }
+    ]);
+  });
+
+  enhancedIt('全选/全不选 检查', () => {
+    toJSONPreview(toJSON);
+
+    toggleSelectAll();
+    clickPaginationItem(2);
+    toggleSelectAll().click();
+    clickPaginationItem(1);
+    toggleSelectAll();
+    clickRow(5);
+    toggleSelectAll();
+    eventCheck([
+      { id: '勾选事件', value: generateArray(10) },
+      { id: '勾选事件', value: generateArray(20) },
+      { id: '勾选事件', value: generateArray(10) },
+      { id: '勾选事件', value: generateArray(0) },
+      { id: '勾选事件', value: [5] },
+      { id: '勾选事件', value: [5, 0, 1, 2, 3, 4, 6, 7, 8, 9] }
     ]);
   });
 });
