@@ -28,6 +28,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@mybricks/color-picker": "^1.0.7",
+    "@react-pdf/renderer": "^3.1.14",
     "antd": "^4.18.5",
     "flv.js": "^1.6.2",
     "hls.js": "^1.2.8",
