@@ -12,6 +12,7 @@ interface QueryFilterProps {
   comAray: { id; name; jsx; def; inputs; outputs; style }[];
   children?: React.ReactNode;
   isEmpty: boolean;
+  isVerticalModel: boolean;
   childrenInputs: any;
   env: any;
   submit: (outputId: string, outputRels?: any) => void;
@@ -19,7 +20,7 @@ interface QueryFilterProps {
 }
 
 const QueryFilter = (props: QueryFilterProps) => {
-  const { data, isEmpty, comAray, childrenInputs, env, submit, outputs } = props;
+  const { data, isEmpty, isVerticalModel, comAray, childrenInputs, env, submit, outputs } = props;
   const { align, inlinePadding } = data.actions;
 
   const [collapsed, setCollapsed] = useState(env.edit ? false : data.defaultCollapsed);
@@ -147,7 +148,17 @@ const QueryFilter = (props: QueryFilterProps) => {
       {doms}
 
       {data.actions.visible && (
-        <Col className={isEmpty ? styles.emptyHorActions : undefined} flex={1} style={actionStyle}>
+        <Col
+          className={
+            isEmpty
+              ? isVerticalModel
+                ? styles.emptyVerActions
+                : styles.emptyHorActions
+              : undefined
+          }
+          flex={1}
+          style={actionStyle}
+        >
           <Form.Item
             style={{ marginRight: 0 }}
             label={data.config?.layout === 'vertical' ? ' ' : ''}
