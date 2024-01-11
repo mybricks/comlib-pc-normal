@@ -110,7 +110,7 @@ export default function (props: RuntimeParams<Data>) {
   const filter = useCallback(() => {
     const filterKeys: React.Key[] = [];
     treeKeys.current.forEach((item) => {
-      if (data.filterNames.some((filterName) => filterMethods[filterName](item))) {
+      if (data.filterNames.some((filterName) => filterMethods(filterName)(item))) {
         let childKey = item.key;
         filterKeys.push(childKey);
         while (getParentKey(childKey, data.treeData, keyFieldName)) {
@@ -128,15 +128,21 @@ export default function (props: RuntimeParams<Data>) {
   /**
    * 过滤方法合集
    */
-  const filterMethods = useMemo(() => {
-    return {
-      byTitle: (node: TreeData) => {
-        return node.title?.indexOf(data.filterValue) > -1;
-      },
-      byKey: (node: TreeData) => {
-        return node.key?.indexOf(data.filterValue) > -1;
-      }
-    };
+  const filterMethods = useCallback((filterName) => {
+    switch (filterName) {
+      case 'byTitle':
+        return (node: TreeData) => {
+          return node.title?.indexOf(data.filterValue) > -1;
+        };
+      case 'byKey':
+        return (node: TreeData) => {
+          return node.key?.indexOf(data.filterValue) > -1;
+        };
+      default:
+        return (node: TreeData) => {
+          return node[filterName]?.indexOf(data.filterValue) > -1;
+        };
+    }
   }, []);
 
   useEffect(() => {
