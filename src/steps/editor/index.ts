@@ -2,7 +2,7 @@ import { uuid } from '../../utils';
 import { Data, Btn } from '../constants';
 import StepEditor from './step';
 import ActionEditor from './action';
-import { addSlot, addEventIO } from './util'
+import { addSlot, addEventIO, setDynamicStepsIO } from './util'
 
 const DefaultSchema = {
   type: 'any'
@@ -331,6 +331,34 @@ export default {
             set({ data }: EditorResult<Data>, value: boolean) {
               data.hideSlots = value;
             }
+          }
+        },
+        {
+          title: '动态步骤',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.dynamicSteps;
+            },
+            set(props: EditorResult<Data>, val: boolean) {
+              const { data } = props
+              data.dynamicSteps = val
+              setDynamicStepsIO(props, val)
+              data.hideSlots = val
+              data.toolbar.showActions = !val
+            }
+          }
+        },
+        {
+          title: '步骤改变',
+          type: '_Event',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !!data.dynamicSteps;
+          },
+          options: ({ data }) => {
+            return {
+              outputId: 'onStepChange'
+            };
           }
         },
         // {
