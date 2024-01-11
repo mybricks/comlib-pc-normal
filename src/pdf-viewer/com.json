@@ -1,0 +1,23 @@
+{
+  "title": "PDF预览",
+  "namespace": "mybricks.normal-pc.pdf-viewer",
+  "version": "1.0.0",
+  "description": "PDF预览",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "pdf",
+      "title": "PDF资料路径",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [],
+  "slots": []
+}
