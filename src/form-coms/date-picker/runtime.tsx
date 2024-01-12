@@ -45,9 +45,6 @@ export interface Data {
   isWeekNumber: boolean;
   isEditable: boolean;
   disabledDate: DatePickerProps['disabledDate'];
-  /** 下拉面板 */
-  isDropDownNotClose: boolean;
-  isDropDownFullWidth: boolean;
 }
 
 const typeMap = {
@@ -59,19 +56,29 @@ const typeMap = {
   year: '年份'
 };
 
-export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, name, id, slots, style } = props;
+/** 提供给高阶函数的各种参数 */
+export interface IHyperExtends {
+  hyperExtends?: {
+    wrapperHeight?: number;
+    wrapperRef?: React.RefObject<HTMLDivElement>;
+    dropdownClassName?: string;
+    fullOpen?: true;
+  };
+}
+
+export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
+  const { data, inputs, outputs, env, parentSlot, name, id, slots, hyperExtends = {} } = props;
+  const { wrapperHeight, wrapperRef: hyperWrapperRef, dropdownClassName, fullOpen } = hyperExtends;
   const [value, setValue] = useState();
   const [_, forchUpdate] = useState(0);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = hyperWrapperRef || useRef<HTMLDivElement>(null);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const valueRef = useRef<any>();
   const customExtraTextRef = useRef<any>(() => {});
 
-  /** 在下拉面板的 open 未受控时的 open 状态 */
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');
 
@@ -432,7 +439,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const finalOpen = (() => {
-    if (data.isDropDownNotClose) return true;
+    if (fullOpen) return true;
     if (runtime && data.controlled) {
       return open;
     }
@@ -478,111 +485,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   }, [data.defaultPickerValue]);
 
-  /**
-   * 获取下拉面板的 div DOM
-   */
-  function getDropDownDiv() {
-    let res = document.querySelector(`.drop_down_${id}`) as HTMLDivElement;
-    if (res) return res;
-
-    const allDropDown = document
-      .querySelector('#_mybricks-geo-webview_')
-      ?.shadowRoot?.querySelectorAll(`.drop_down_${id}`) as NodeListOf<HTMLDivElement>;
-
-    if (!allDropDown?.length) return;
-
-    if (!!env.runtime?.debug) {
-      for (let i = 0; i < allDropDown.length; i++) {
-        const node = allDropDown[i];
-        if (node.className.includes('__env_debug')) return node;
-      }
-    } else {
-      for (let i = 0; i < allDropDown.length; i++) {
-        const node = allDropDown[i];
-        if (node.className.includes('__env_edit')) return node;
-      }
-    }
-  }
-
-  /** 更新日期选择框 wrapper 的高度 */
-  const updateWrapperHeight = () => {
-    const dropDownDiv = getDropDownDiv();
-    const nextWrapperHeight = (() => {
-      const pickerInputHeight = wrapperRef.current
-        ?.querySelector('.ant-picker')
-        ?.getBoundingClientRect().height;
-
-      // 没有常态打开时，日期选择框的高度就是 input 的高度
-      if (data.isDropDownNotClose) {
-        return (pickerInputHeight || 0) + (dropDownDiv?.getBoundingClientRect().height || 0);
-      }
-
-      return pickerInputHeight;
-    })();
-    setWrapperHeight(nextWrapperHeight);
-  };
-
-  /** 在下拉面板的 open 未受控时的 open 状态 */
-  const [withoutControllOpen, setWithoutControllOpen] = useState(finalOpen);
-
-  /**
-   * 如果打开了配置「下拉面板宽度撑满」，在打开下拉面板时，将宽度配置为 datePicker 一样的宽度
-   */
-  useEffect(() => {
-    if (withoutControllOpen || finalOpen) {
-      // setTimeout 0 使得逻辑延后一个 tick，保证下拉面板已渲染
-      setTimeout(() => {
-        const dropDownDiv = getDropDownDiv();
-        if (data.isDropDownFullWidth) {
-          dropDownDiv?.style.setProperty(
-            '--date-picker-width',
-            `${wrapperRef.current?.getBoundingClientRect().width}px`
-          );
-        } else {
-          dropDownDiv?.style.setProperty('--date-picker-width', `fit-content`);
-        }
-      }, 0);
-    }
-  }, [
-    finalOpen,
-    !!env.edit && data.isDropDownFullWidth,
-    !!env.edit && withoutControllOpen,
-    !!env.edit && style.width,
-    !!env.edit && data.useCustomPanelHeader,
-    !!env.edit && data.useCustomPanelFooter
-  ]);
-
-  /** datePicker 容器高度 */
-  const [wrapperHeight, setWrapperHeight] = useState<number | undefined>(void 0);
-
-  /**
-   * 如果打开了配置「下拉面板常态展示」，在打开下拉面板时，使 datePicker 容器的高度包含下拉面板
-   */
-  useEffect(() => {
-    setTimeout(() => updateWrapperHeight(), 0);
-  }, [
-    finalOpen,
-    !!env.edit && data.isDropDownNotClose,
-    !!env.edit && withoutControllOpen,
-    // 会影响高度的配置都监听一下
-    !!env.edit && data.useCustomPanelHeader,
-    !!env.edit && data.useCustomPanelFooter,
-    !!env.edit && slots?.[SlotIds.DatePanelHeader]?.size,
-    !!env.edit && slots?.[SlotIds.DatePanelFooter]?.size,
-    !!env.edit && slots[SlotIds.DateCell]?.size,
-    !!env.edit && data.showTime,
-    !!env.edit && data.useCustomDateCell,
-    !!env.edit && data.config.picker
-  ]);
-
   return (
     <ConfigProvider locale={env.vars?.locale}>
       {data.isEditable ? (
         <div className={css.datePicker} ref={wrapperRef} style={{ height: wrapperHeight }}>
           <DatePicker
-            onOpenChange={(open) => {
-              setWithoutControllOpen(open);
-            }}
             panelRender={(originPanel) => {
               return (
                 <div ref={dropdownWrapperRef}>
@@ -609,20 +516,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             onPanelChange={onPanelChange}
             disabledDate={data.disabledDate || disabledDateConfig}
             getPopupContainer={(triggerNode: HTMLElement) => {
-              if (data.isDropDownNotClose) {
-                return wrapperRef.current;
-              }
+              if (fullOpen) return wrapperRef.current;
               return env?.canvasElement || document.body;
             }}
             dropdownClassName={`
-              drop_down_${id}
-              ${
-                data.isDropDownFullWidth
-                  ? css.datePickerDropDownFullWidth
-                  : css.datePickerDropDownNotFullWidth
-              }
-              ${data.isDropDownNotClose ? css.datePickerDropDownNotClose : ''}
-              ${!!env.runtime?.debug ? '__env_debug' : '__env_edit'}
+              ${dropdownClassName}
               ${id} 
               ${css.datePicker} 
               ${data.useCustomDateCell ? css.slotContainer : ''}
