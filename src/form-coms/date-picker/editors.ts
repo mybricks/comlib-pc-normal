@@ -115,6 +115,31 @@ export default {
           }
         },
         {
+          title: '下拉面板常态展示',
+          type: 'Switch',
+          description: '面板常态显示时，下拉面板会把高度撑开。',
+          value: {
+            get({ data }) {
+              return data.isDropDownNotClose;
+            },
+            set({ data }, value: boolean) {
+              data.isDropDownNotClose = value;
+            }
+          }
+        },
+        {
+          title: '下拉面板宽度撑满',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.isDropDownFullWidth;
+            },
+            set({ data }, value: boolean) {
+              data.isDropDownFullWidth = value;
+            }
+          }
+        },  
+        {
           title: '时间选择',
           type: 'Switch',
           value: {
