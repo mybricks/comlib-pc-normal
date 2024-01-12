@@ -1,4 +1,6 @@
 {
+  "name": "通用PC组件库（Vue）",
+  "version": "1.0.3",
   "debugger": "pc-spa",
   "componentType": "PC",
   "commitInfo": "update",
