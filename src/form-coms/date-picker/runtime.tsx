@@ -56,13 +56,24 @@ const typeMap = {
   year: '年份'
 };
 
-export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
+/** 提供给高阶函数的各种参数 */
+export interface IHyperExtends {
+  hyperExtends?: {
+    wrapperHeight?: number;
+    wrapperRef?: React.RefObject<HTMLDivElement>;
+    dropdownClassName?: string;
+    fullOpen?: true;
+  };
+}
+
+export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
+  const { data, inputs, outputs, env, parentSlot, name, id, slots, hyperExtends = {} } = props;
+  const { wrapperHeight, wrapperRef: hyperWrapperRef, dropdownClassName, fullOpen } = hyperExtends;
   const [value, setValue] = useState();
   const [_, forchUpdate] = useState(0);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = hyperWrapperRef || useRef<HTMLDivElement>(null);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const valueRef = useRef<any>();
@@ -356,14 +367,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
       if(data.customExtraText && typeof customExtraTextRef.current === 'function') {
         const { color = 'black', content = '', visible = true, style = {}} = customExtraTextRef.current(currentDate, today)
         return <div className="ant-picker-cell-inner">
-        {currentDate.date()}
-        <div style={{
-            color,
-            visibility: visible ? 'visible' : 'hidden',
-            ...style,
-          }}>{content}</div>
-        </div>
-      } else if (data.useCustomDateCell) {
+            {currentDate.date()}
+            <div style={{
+                color,
+                visibility: visible ? 'visible' : 'hidden',
+                ...style,
+              }}>{content}</div>
+          </div>
+              } else if (data.useCustomDateCell) {
         return (
           <div className="ant-picker-cell-inner">
             {currentDate.date()}
@@ -419,6 +430,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const finalOpen = (() => {
+    if (fullOpen) return true;
     if (runtime && data.controlled) {
       return open;
     }
@@ -467,7 +479,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   return (
     <ConfigProvider locale={env.vars?.locale}>
       {data.isEditable ? (
-        <div className={css.datePicker} ref={wrapperRef}>
+        <div className={css.datePicker} ref={wrapperRef} style={{ height: wrapperHeight }}>
           <DatePicker
             panelRender={(originPanel) => {
               return (
@@ -489,12 +501,16 @@ export default function Runtime(props: RuntimeParams<Data>) {
             onChange={onChange}
             onPanelChange={onPanelChange}
             disabledDate={data.disabledDate || disabledDateConfig}
-            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            getPopupContainer={(triggerNode: HTMLElement) => {
+              if (fullOpen) return wrapperRef.current;
+              return env?.canvasElement || document.body;
+            }}
             dropdownClassName={`
-          ${id} 
-          ${css.datePicker} 
-          ${data.useCustomDateCell ? css.slotContainer : ''}
-          ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
+              ${dropdownClassName}
+              ${id} 
+              ${css.datePicker} 
+              ${data.useCustomDateCell ? css.slotContainer : ''}
+              ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
             open={finalOpen}
             format={
               data.config.picker && data.formatMap
