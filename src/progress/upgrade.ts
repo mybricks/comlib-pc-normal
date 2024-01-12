@@ -1,6 +1,6 @@
 import { Data } from './constants';
 
-export default function ({ data }: UpgradeParams<Data>): boolean {
+export default function ({ data, input }: UpgradeParams<Data>): boolean {
   /**
    * @description v1.0.0 -> v1.0.1, 新增进度条线宽度、自定义内容表达式等
    */
@@ -23,6 +23,30 @@ export default function ({ data }: UpgradeParams<Data>): boolean {
 
   if (data?.formatFunction === undefined) {
     data.formatFunction = '';
+  }
+
+  if (input.get('setStatus')?.schema?.type !== 'enum') {
+    input.get('setStatus').setSchema({
+      type: 'enum',
+      items: [
+        {
+          type: 'string',
+          value: 'success'
+        },
+        {
+          type: 'string',
+          value: 'exception'
+        },
+        {
+          type: 'string',
+          value: 'normal'
+        },
+        {
+          type: 'string',
+          value: 'active'
+        }
+      ]
+    });
   }
 
   return true;

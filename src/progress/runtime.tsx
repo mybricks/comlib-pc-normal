@@ -2,6 +2,12 @@ import React, { useEffect } from 'react';
 import { Data } from './constants';
 import css from './runtime.less';
 import { Progress, Tooltip } from 'antd';
+import {
+  CheckCircleFilled,
+  CheckOutlined,
+  CloseCircleFilled,
+  CloseOutlined
+} from '@ant-design/icons';
 
 export default function ({ env, data, inputs }: RuntimeParams<Data>) {
   useEffect(() => {
@@ -24,6 +30,21 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
   // 调整因circleSize变化导致的内容字体
   // 自定义进度值
   const circleSizeFormat = (percent?: number, successPercent?: number): React.ReactNode => {
+    if (data.type === 'line') {
+      if (data.status === 'success') {
+        return <CheckCircleFilled />;
+      } else if (data.status === 'exception') {
+        return <CloseCircleFilled />;
+      }
+    }
+
+    if (data.type === 'circle' || data.type === 'dashboard') {
+      if (data.status === 'success') {
+        return <CheckOutlined />;
+      } else if (data.status === 'exception') {
+        return <CloseOutlined />;
+      }
+    }
     let percentFormat =
       data?.formatFunction && data?.isFormat && data?.isShow
         ? data.formatFunction.replace(/{([^}]+)}/g, `${percent}`)
