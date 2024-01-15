@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Pagination, ConfigProvider } from 'antd';
+import { Pagination } from 'antd';
+import ConfigProvider from '../components/ConfigProvider';
 import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
 import { checkIfMobile } from '../utils';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -76,7 +77,7 @@ export default (props: RuntimeParams<Data>) => {
       }}
       className={disabled ? 'paginationDisable' : undefined}
     >
-      <ConfigProvider locale={env.vars?.locale || zhCN}>
+      <ConfigProvider locale={env.vars?.locale}>
         <Pagination
           total={total}
           showTotal={totalText}
