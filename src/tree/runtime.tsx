@@ -115,6 +115,10 @@ export default function (props: RuntimeParams<Data>) {
         filterKeys.push(childKey);
         while (getParentKey(childKey, data.treeData, keyFieldName)) {
           const parentKey = getParentKey(childKey, data.treeData, keyFieldName);
+          if (parentKey === childKey) {
+            console.error(`树中存在标识重复的节点, 重复key: ${parentKey}`);
+            return;
+          }
           childKey = parentKey;
           filterKeys.push(parentKey);
         }
