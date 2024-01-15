@@ -65,10 +65,10 @@ export default defineDataSet((utils) => {
     }
   ];
 
-  const loadingTip = utils.string.alpha(5);
+  const loadingTip = utils.lorem.word({ length: { min: 0, max: 10 } });
   result['加载中文案'] = [
     {
-      Q: `将加载中文案设置为${loadingTip}`,
+      Q: `将加载中文案设置为“${loadingTip}”`,
       A: {
         data: {
           useLoading: true,

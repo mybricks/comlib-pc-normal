@@ -3,9 +3,9 @@ import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
 
-  const ts1 = utils.string.alpha(5)
+  const ts1 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['数据源标题'] = [{
-    "Q": `将穿梭框组件的数据源标题设置为${ts1}`,
+    "Q": `将穿梭框组件的数据源标题设置为“${ts1}”`,
     "A": {
       data: {
         titles: [ts1, '']
@@ -13,9 +13,9 @@ export default defineDataSet((utils) => {
     }
   }]
 
-  const ts2 = utils.string.alpha(5)
+  const ts2 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['目标数据标题'] = [{
-    "Q": `将穿梭框组件的目标数据标题设置为${ts2}`,
+    "Q": `将穿梭框组件的目标数据标题设置为“${ts2}”`,
     "A": {
       data: {
         titles: ['', ts2]

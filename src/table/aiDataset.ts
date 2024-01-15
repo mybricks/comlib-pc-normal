@@ -141,7 +141,7 @@ export default defineDataSet((utils) => {
     }
   ];
 
-  const rowKey = utils.string.alpha(5);
+  const rowKey = utils.lorem.word();
   result['行标识字段'] = [
     {
       Q: `将行标识字段设置为${rowKey}`,

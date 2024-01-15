@@ -16,11 +16,11 @@ export default defineDataSet((utils) => {
     };
   });
 
-  const customSeparator = utils.string.alpha(1);
+  const customSeparator = utils.string.symbol();
 
   result['自定义分割符'] = [
     {
-      Q: `将分割符设置为${customSeparator}`,
+      Q: `将分割符设置为“${customSeparator}”`,
       A: { data: { separator: 'custom', customSeparator } }
     }
   ];

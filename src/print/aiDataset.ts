@@ -11,9 +11,9 @@ export default defineDataSet((utils) => {
       }
     }
   }]
-  const documentTitle = utils.string.alpha(10)
+  const documentTitle = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['保存文件名'] = [{
-    "Q": `将保存文件名设置为${documentTitle}`,
+    "Q": `将保存文件名设置为“${documentTitle}”`,
     "A": {
       "data": {
         "documentTitle": `${documentTitle}`,

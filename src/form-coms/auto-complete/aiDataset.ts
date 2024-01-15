@@ -56,9 +56,9 @@ export default defineDataSet((utils) => {
   //   }
   // }]
   
-  const ts5 = utils.string.alpha(5)
+  const ts5 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['提示内容'] = [{
-    "Q": `将提示内容设置为${ts5}`,
+    "Q": `将提示内容设置为“${ts5}”`,
     "A": {
       data: {
         config: {

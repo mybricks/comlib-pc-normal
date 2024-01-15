@@ -2,7 +2,7 @@
 import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
-  const content = utils.string.alpha(10)
+  const content = utils.lorem.sentence()
   result['内容'] = [{
     "Q": `将内容设置为${content}`,
     "A": {

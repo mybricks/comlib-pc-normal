@@ -58,7 +58,7 @@ export default defineDataSet((utils) => {
       simpleTemplate('尺寸', key, { size: typeMap[key] }))
   }
 
-  const formatFunction = utils.string.alpha(10)
+  const formatFunction = utils.string.symbol()
   result['自定义进度值表达式'] = [simpleTemplate('自定义进度值表达式', formatFunction, {
     formatFunction,
     isShow: true,

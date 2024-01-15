@@ -13,7 +13,7 @@ export const simpleTemplate = (label, value, data) => {
 
 export const getNewItem = (utils) => {
   const id = uuid();
-  const random = utils.string.alpha(5)
+  const random = utils.lorem.word({ length: { min: 0, max: 5 } });
   const title = `节点-${random}`;
   return {
     id,

@@ -3,9 +3,9 @@ import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
 
-  const ts1 = utils.string.alpha(5)
+  const ts1 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['提示内容'] = [{
-    "Q": `设置时间选择框的提示内容为${ts1}`,
+    "Q": `设置时间选择框的提示内容为“${ts1}”`,
     "A": {
       data: {
         placeholder: ts1
