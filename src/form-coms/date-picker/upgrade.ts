@@ -34,7 +34,7 @@ export default function ({
    */
 
   if (!input.get(InputIds.SetValidateInfo)) {
-    input.add(InputIds.SetValidateInfo, '设置校验状态', {
+    input.add(InputIds.SetValidateInfo, '设置校验结果', {
       type: 'object',
       properties: {
         validateStatus: {
@@ -72,7 +72,13 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
-  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+  if (!input.get('disabledDate')) {
+    input.add('disabledDate', '禁用特定日期', { type: "any" });
+  }
+
+  if (!input.get(InputIds.SetColor)) {
+    input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+  }
 
   /**
    * @description v1.1.1->1.1.2 新增 显示清除图标、动态配置选择类型输入
@@ -246,7 +252,7 @@ export default function ({
     }
   }
   if (!output.get(outputIds.setValidateInfoDone)) {
-    output.add(outputIds.setValidateInfoDone, '设置校验状态完成', infoSchema);
+    output.add(outputIds.setValidateInfoDone, '设置校验结果完成', infoSchema);
   }
   if (output.get(outputIds.setValidateInfoDone) &&
     input.get(inputIds.SET_VALIDATE_INFO) &&
