@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { outputIds } from '../form-container/constants';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
@@ -64,6 +66,65 @@ export default function ({
   const textareaRef = useRef(null);
 
   const { upload } = useUpload(inputs, outputs);
+
+  useFormItemInputs(
+    {
+      id: id,
+      name: name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
+          data.disabled = true;
+        },
+        setEnabled() {
+          data.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.disabled = false;
+          } else if (val === false) {
+            data.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
+          })
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE] && outputs[outputIds.ON_VALIDATE](valueRef.current);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
+      }
+    },
+    [value]
+  );
 
   const Load: () => void = useCallback(async () => {
     // 不再使用CDN
