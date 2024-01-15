@@ -9,9 +9,9 @@ const typesMap = {
 }
 export default defineDataSet((utils) => {
   const result = {}
-  const message = utils.string.alpha(10)
+  const message = utils.lorem.word({ length: { min: 0, max: 10 } });
   result['标题'] = [{
-    "Q": `将标题设置为${message}`,
+    "Q": `将标题设置为“${message}”`,
     "A": {
       "data": {
         "message": message,
@@ -63,9 +63,9 @@ export default defineDataSet((utils) => {
       }
     }
   }))
-  const content = utils.string.alpha(10)
+  const content = utils.lorem.word({ length: { min: 0, max: 10 } });
   result['辅助介绍文案'] = [{
-    "Q": `将警告提示的辅助介绍文案设置为${content}`,
+    "Q": `将警告提示的辅助介绍文案设置为“${content}”`,
     "A": {
       "data": {
         "content": `${content}`,

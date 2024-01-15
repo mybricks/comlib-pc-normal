@@ -43,7 +43,7 @@ export default defineDataSet((utils) => {
     }
   }]
 
-  const parentId = utils.string.alpha(4)
+  const parentId = utils.lorem.word({ length: { min: 0, max: 10 } });
   result['自定义挂载父节点'] = [{
     Q: `将自定义挂载父节点设置为${parentId}`,
     A: {

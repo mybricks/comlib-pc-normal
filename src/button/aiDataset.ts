@@ -23,10 +23,10 @@ const shapeMap = {
 }
 export default defineDataSet((utils) => {
   const result = {}
-  let text = utils.string.alpha(10)
+  let text = utils.lorem.word({ length: { min: 0, max: 10 } });
 
   result['文字标题'] = [{
-    "Q": `将文字标题设置为${text}`,
+    "Q": `将文字标题设置为“${text}”`,
     "A": {
       "data": {
         "text": text,

@@ -118,7 +118,7 @@ export default defineDataSet((utils) => {
   // }
 
   let num2 = utils.number.int({ max: 10 })
-  let btnArr2 = new Array(num2).fill(0).map(i => ({ ...getNewBtn(), text: `自定义插槽${utils.string.alpha(5)}`, isSlot: true }))
+  let btnArr2 = new Array(num2).fill(0).map(i => ({ ...getNewBtn(), text: `自定义插槽${utils.lorem.word()}`, isSlot: true }))
   result['添加插槽'] = [{
     "Q": `添加${num2}个插槽`,
     "A": {
@@ -131,7 +131,7 @@ export default defineDataSet((utils) => {
   /** TODO:wf,确认A描述 */
   /** 更改工具条内某个按钮的属性 */
   const index = utils.number.int({ max: 10 })
-  let btnText = utils.string.alpha(10)
+  let btnText = utils.lorem.word({ length: { min: 0, max: 10 } });
   // 按钮名称text, 风格 type，尺寸 size
   // result['名称'] = {
   //   "Q": `将第${index}个按钮的名称设置为${btnText}`,

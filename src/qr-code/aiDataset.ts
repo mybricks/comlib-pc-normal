@@ -3,7 +3,6 @@ import { defineDataSet } from "ai-dataset";
 
 export default defineDataSet((utils) => {
   const result = {}
-  const message = utils.string.alpha(10)
   const url = utils.internet.url()
   result['链接'] = [{
     "Q": `将链接设置为${url}`,

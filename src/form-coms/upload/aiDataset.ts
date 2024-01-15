@@ -3,9 +3,9 @@ import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
 
-  const ts1 = utils.string.alpha(4)
+  const ts1 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['上传文件Key'] = [{
-    "Q": `将上传组件的上传文件key设置为${ts1}`,
+    "Q": `将上传组件的上传文件key设置为“${ts1}”`,
     "A": {
       data: {
         config: {
@@ -15,9 +15,9 @@ export default defineDataSet((utils) => {
     }
   }]
 
-  const ts2 = utils.string.alpha(5)
+  const ts2 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['上传按钮文案'] = [{
-    "Q": `将上传组件的上传按钮文案设置为${ts2}`,
+    "Q": `将上传组件的上传按钮文案设置为“${ts2}”`,
     "A": {
       data: {
         config: {

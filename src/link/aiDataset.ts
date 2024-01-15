@@ -20,11 +20,11 @@ const routeTypeOptionsMap = {
 export default defineDataSet((utils) => {
   const result = {}
 
-  const content = utils.string.alpha(10)
+  const content = utils.lorem.sentence()
   const url = utils.internet.url()
-  const icon = utils.string.alpha(10)
+
   result['内容'] = [{
-    "Q": `将文字内容设置为${content}`,
+    "Q": `将文字内容设置为“${content}”`,
     "A": {
       "data": {
         "content": `${content}`,

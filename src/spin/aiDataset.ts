@@ -8,7 +8,7 @@ const sizeMap = {
 }
 export default defineDataSet((utils) => {
   const result = {}
-  const tip = utils.string.alpha(10)
+  const tip = utils.lorem.sentence()
   result['描述文案'] = [{
     "Q": `将描述文案设置为${tip}`,
     "A": {

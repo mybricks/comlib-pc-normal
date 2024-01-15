@@ -21,9 +21,9 @@ export default defineDataSet((utils) => {
     }
   }))
 
-  const id = utils.string.alpha(5)
+  const id = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['ID'] = [{
-    "Q": `将ID设置为${id}`,
+    "Q": `将ID设置为“${id}”`,
     "A": {
       "data": {
         "id": id,

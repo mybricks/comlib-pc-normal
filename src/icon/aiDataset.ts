@@ -2,7 +2,7 @@
 import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
-  let text = utils.string.alpha(10)
+  // let text = utils.string.alpha(10)
   /**   临时注释icon */
   // const icon = utils.string.alpha(12)
   // result['选择图标'] = {

@@ -13,10 +13,10 @@ export default defineDataSet((utils) => {
     }
   ];
 
-  const title = utils.string.alpha(5);
+  const title = utils.lorem.word({ length: { min: 0, max: 5 } });
   result['标题'] = [
     {
-      Q: `将标题设置为${title}`,
+      Q: `将标题设置为“${title}”`,
       A: {
         data: {
           useTitleSlot: false,
@@ -37,10 +37,10 @@ export default defineDataSet((utils) => {
     }
   ];
 
-  const content = utils.string.alpha(5);
+  const content = utils.lorem.sentence();
   result['内容'] = [
     {
-      Q: `将内容设置为${content}`,
+      Q: `将内容设置为“${content}”`,
       A: {
         data: {
           useContentSlot: false,

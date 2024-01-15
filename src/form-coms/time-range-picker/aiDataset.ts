@@ -3,9 +3,9 @@ import { defineDataSet } from "ai-dataset";
 export default defineDataSet((utils) => {
   const result = {}
 
-  const ts1 = utils.string.alpha(5)
+  const ts1 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['前置提示内容'] = [{
-    "Q": `设置时间范围选择框的前置提示内容为${ts1}`,
+    "Q": `设置时间范围选择框的前置提示内容为“${ts1}”`,
     "A": {
       data: {
         placeholder: [ts1, '']
@@ -13,9 +13,9 @@ export default defineDataSet((utils) => {
     }
   }]
 
-  const ts2 = utils.string.alpha(5)
+  const ts2 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['后置提示内容'] = [{
-    "Q": `设置时间范围选择框的后置提示内容为${ts2}`,
+    "Q": `设置时间范围选择框的后置提示内容为“${ts2}”`,
     "A": {
       data: {
         placeholder: ['', ts2]

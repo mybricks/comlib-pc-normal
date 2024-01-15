@@ -106,21 +106,21 @@ export default defineDataSet((utils) => {
         A: { data: { toolbar: { fixed: true, bottom: item } } }
       };
     });
-  result['操作栏的主按钮文案'] = utils.repeat(() => utils.string.alpha(6))
+  result['操作栏的主按钮文案'] = utils.repeat(() => utils.lorem.word())
     .map((item) => {
       return {
         Q: `将操作栏的主按钮文案设置为${item}`,
         A: { data: { toolbar: { primaryBtnText: item } } }
       };
     });
-  result['操作栏的上一步按钮文案'] = utils.repeat(() => utils.string.alpha(6))
+  result['操作栏的上一步按钮文案'] = utils.repeat(() => utils.lorem.word())
     .map((item) => {
       return {
         Q: `将操作栏的上一步按钮文案设置为${item}`,
         A: { data: { toolbar: { secondBtnText: item } } }
       };
     });
-  result['操作栏的提交按钮文案'] = utils.repeat(() => utils.string.alpha(6))
+  result['操作栏的提交按钮文案'] = utils.repeat(() => utils.lorem.word())
     .map((item) => {
       return {
         Q: `将操作栏的提交按钮文案设置为${item}`,

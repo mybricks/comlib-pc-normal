@@ -35,9 +35,9 @@ export default defineDataSet((utils) => {
   }]
 
 
-  const ts1 = utils.string.alpha(5)
+  const ts1 = utils.lorem.word({ length: { min: 0, max: 10 } })
   result['文案'] = [{
-    "Q": `将开关组件开启时文案设置为${ts1}`,
+    "Q": `将开关组件开启时文案设置为“${ts1}”`,
     "A": {
       data: {
         config: {

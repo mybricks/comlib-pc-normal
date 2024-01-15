@@ -123,8 +123,8 @@ export default defineDataSet((utils) => {
 
   /** 标签项变更 */
   /** TODO:wf,确认A描述 */
-  const content = utils.string.alpha(10)
-  const index = utils.number.int({ max: 10 })
+  // const content = utils.string.alpha(10)
+  // const index = utils.number.int({ max: 10 })
   // result['标签内容'] = {
   //   "Q": `将标签列表第${index}个标签的标签内容设置为${content}`,
   //   "A": {

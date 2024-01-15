@@ -3,9 +3,9 @@ import { defineDataSet } from "ai-dataset";
 
 export default defineDataSet((utils) => {
   const result = {}
-  let content = utils.string.alpha(20)
+  let content = utils.lorem.sentence()
   result['图片描述'] = [{
-    "Q": `将图片描述设置为${content}`,
+    "Q": `将图片描述设置为“${content}”`,
     "A": {
       "data": {
         "content": content,

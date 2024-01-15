@@ -19,7 +19,7 @@ const placementMap = {
 }
 export default defineDataSet((utils) => {
   const result = {}
-  const title = utils.string.alpha(10)
+  const title = utils.lorem.sentence()
   result['提示内容'] = [{
     "Q": `将提示内容设置为${title}`,
     "A": {
