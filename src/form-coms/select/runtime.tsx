@@ -16,6 +16,7 @@ const DefaultOptionKey = '_id';
  */
 const getOutputValue = (data, env, value) => {
   const getOutputValuefromValue = (val, index?) => {
+    if (val?.value) val = val.value;
     let result = val;
     if (val == null) return result;
     if (data.config.labelInValue) {
