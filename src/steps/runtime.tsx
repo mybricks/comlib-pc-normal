@@ -227,7 +227,7 @@ export default function ({
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
-        className={`${css.stepsAction} ${isMobile ? css.mobilebtns : ''}`}
+        className={`step-toolbar ${css.stepsAction} ${isMobile ? css.mobilebtns : ''} ${data.toolbar.fixed? css['fixed-toolbar']:'' }`}
         data-item-type="stepActions"
         style={{
           justifyContent: data.toolbar.actionAlign,
