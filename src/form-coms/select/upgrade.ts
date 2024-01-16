@@ -381,7 +381,7 @@ export default function ({
     data.config.dropdownMatchSelectWidth = true;
   }
 
-  //=========== v1.1.11 end ===============ƒ
+  //=========== v1.1.11 end ===============
 
   return true;
 }
