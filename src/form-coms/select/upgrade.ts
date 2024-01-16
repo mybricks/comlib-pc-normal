@@ -373,5 +373,15 @@ export default function ({
   }
   //=========== v1.1.9 end ===============
 
+  /**
+     * @description v1.1.11 增加 下拉菜单和选择器同宽data.config.dropdownMatchSelectWidth 配置项
+     */
+
+  if (data.config.dropdownMatchSelectWidth === undefined) {
+    data.config.dropdownMatchSelectWidth = true;
+  }
+
+  //=========== v1.1.11 end ===============ƒ
+
   return true;
 }
