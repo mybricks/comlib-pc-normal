@@ -90,7 +90,7 @@
         "type": "any"
       },
       "desc": "重置穿梭框目标值",
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
