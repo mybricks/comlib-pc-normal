@@ -43,6 +43,15 @@ export default {
             target: '.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon'
           },
           {
+            title: '子步骤',
+            catelog: '默认',
+            options: [{ type: 'size', config: { disableWidth: true } }],
+            ifVisible({ data }: EditorResult<Data>) {
+              return data.steps.direction === 'vertical';
+            },
+            target: '.ant-steps-item'
+          },
+          {
             catelog: '完成态',
             title: '步骤连线（水平）',
             ifVisible({ data }: EditorResult<Data>) {
