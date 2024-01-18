@@ -99,6 +99,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         relOutputs['setEnabledDone']();
       });
 
+      inputs[inputIds.isEditable]((val, relOutputs) => {
+        data.isEditable = val;
+        setIsEditable(val);
+        relOutputs['isReadOnlyDone'](val);
+      });
+
       // 校验字段
       inputs[inputIds.VALIDATE_FIELDS]((nameList: NamePath[], relOutputs) => {
         if (typeof nameList === 'string') nameList = [nameList];
@@ -320,6 +326,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
+  const setIsEditable = (val, nameList?: string[]) => {
+    data.items.forEach((item) => {
+      if (!nameList || nameList.includes(item.name)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.isEditable && input?.isEditable(val);
+      }
+    });
+  };
+
   /**
    * 设置表单项公共配置
    * @param formItemsProps 表单项配置对象
@@ -378,16 +393,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
-            validateForInput(
-              {
-                input,
-                model: {
-                  curFormItem: item,
-                  ...formContext.current.store
-                }
-              },
-              resolve
-            );
+            if (data.submitHiddenFields && !data.validateHiddenFields && !item.visible) {
+              resolve({
+                validateStatus: 'success'
+              });
+            } else {
+              validateForInput(
+                {
+                  input,
+                  model: {
+                    curFormItem: item,
+                    ...formContext.current.store
+                  }
+                },
+                resolve
+              );
+            }
           });
         })
       )
@@ -490,7 +511,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <Fragment>
         {!data.isFormItem ? (
           <Form
-            className={slots['content'].size === 0 && env.edit ? css.empty : undefined}
+            className={
+              slots['content'].size === 0 && env.edit && data.actions.visible
+                ? css.empty
+                : undefined
+            }
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
@@ -602,18 +627,23 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values,
             cb?.();
           });
       }
-    } else {
-      console.warn(
-        `FormItem Input Not Found, FormItem Name: ${item.name}, 可能存在脏数据 请联系开发人员`
-      );
     }
   }
 };
 
 const getFromItemInputEvent = (formItem, childrenInputs) => {
+  let input;
+
+  input = childrenInputs[formItem.id];
   if (formItem.comName) {
-    return childrenInputs[formItem.comName];
+    input = childrenInputs[formItem.comName];
   }
 
-  return childrenInputs[formItem.id];
+  if (!input) {
+    console.warn(
+      `FormItem Input Not Found, FormItem Name: ${formItem.name}, 可能存在脏数据 请联系开发人员`
+    );
+  }
+
+  return input;
 };

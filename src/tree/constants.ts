@@ -11,13 +11,17 @@ export const InputIds = {
   SetDragConfig: 'setDragConfig',
   SetOpenDepth: 'setOpenDepth',
   SetAddTips: 'addTips',
-  GetCheckedKeys: 'submit'
+  GetCheckedKeys: 'submit',
+  GetTreeData: 'getTreeData'
 }
 
 export const OutputIds = {
+  OnChange: 'onChange',
   OnDropDone: 'onDropDone',
+  AddNodeDone: 'addNodeDone',
   OnNodeClick: 'click',
-  OnCheck: 'check'
+  OnCheck: 'check',
+  ReturnTreeData: 'returnTreeData'
 }
 
 export const DragConfigKeys = ['draggable', 'draggableScript', 'allowDrop', 'allowDropScript', 'useDropScope', 'dropScopeMessage'];

@@ -36,9 +36,7 @@ export default {
                 sourceType: 'module'
               }
             },
-            babel: {
-              presets: ['env', 'react']
-            },
+            babel: false,
             comments: Comments,
             autoSave: false,
             immediatelySet: true,

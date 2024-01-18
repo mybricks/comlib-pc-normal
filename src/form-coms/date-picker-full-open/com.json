@@ -1,0 +1,351 @@
+{
+  "title": "全开式日期选择器",
+  "namespace": "mybricks.normal-pc.date-picker-full-open",
+  "author": "jidan.wd",
+  "author_name": "jidan.wd",
+  "version": "1.0.0",
+  "description": "全开式日期选择器",
+  "icon": "./icon.svg",
+  "preview": "https://f2.eckwai.com/kos/nlav11092/u_taeb6n.f449835eb18b532c.png",
+  "data": "../date-picker/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../date-picker/editors.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置值",
+      "desc": "设置日期选择的值，并触发值变化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": ["setValueDone"]
+    },
+    {
+      "id": "setInitialValue",
+      "title": "设置初始值",
+      "desc": "设置日期选择的初始值，并触发初始化事件输出",
+      "schema": {
+        "type": "string"
+      },
+      "rels": ["setInitialValueDone"]
+    },
+    {
+      "id": "validate",
+      "title": "校验",
+      "desc": "触发日期选择的校验检查，并输出校验结果",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["returnValidate"]
+    },
+    {
+      "id": "getValue",
+      "title": "获取值",
+      "desc": "获取日期选择的值并输出",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["returnValue"]
+    },
+    {
+      "id": "resetValue",
+      "title": "重置值",
+      "desc": "清空日期选择的值",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["resetValueDone"]
+    },
+    {
+      "id": "setDisabled",
+      "title": "设置禁用",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["setDisabledDone"]
+    },
+    {
+      "id": "setEnabled",
+      "title": "设置启用",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["setEnabledDone"]
+    },
+    {
+      "id": "isEnable",
+      "title": "启用/禁用",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": ["isEnableDone"]
+    },
+    {
+      "id": "isEditable",
+      "title": "设置编辑/只读",
+      "desc": "设置表单项编辑/只读态",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": ["isEditableDone"]
+    },
+    {
+      "id": "setValidateInfo",
+      "title": "设置校验结果",
+      "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      },
+      "rels": ["setValidateInfoDone"]
+    },
+    {
+      "id": "disabledDate",
+      "title": "禁用特定日期",
+      "schema": {
+        "type": "any"
+      },
+      "rels": ["disabledDateDone"]
+    },
+    {
+      "id": "setColor",
+      "title": "设置字体颜色",
+      "desc": "设置日期选择框里字体的颜色",
+      "schema": {
+        "type": "string"
+      },
+      "rels": ["setColorDone"]
+    },
+    {
+      "id": "setDateType",
+      "title": "设置日期选择类型",
+      "desc": "设置日期选择类型",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "date"
+          },
+          {
+            "type": "string",
+            "value": "week"
+          },
+          {
+            "type": "string",
+            "value": "month"
+          },
+          {
+            "type": "string",
+            "value": "quarter"
+          },
+          {
+            "type": "string",
+            "value": "year"
+          }
+        ]
+      },
+      "rels": ["setDateTypeDone"]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onInitial",
+      "title": "值初始化",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "值更新",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "onValidate",
+      "title": "校验触发",
+      "schema": {
+        "title": "当前值",
+        "type": "string"
+      }
+    },
+    {
+      "id": "returnValidate",
+      "title": "校验结果",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "title": "校验状态",
+            "type": "string"
+          },
+          "help": {
+            "title": "校验提示",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "值输出",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setValueDone",
+      "title": "设置值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setInitialValueDone",
+      "title": "设置初始值完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "resetValueDone",
+      "title": "重置完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDisabledDone",
+      "title": "禁用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setEnabledDone",
+      "title": "启用完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "isEnableDone",
+      "title": "启用/禁用完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "isEditableDone",
+      "title": "设置编辑/只读完成",
+      "schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "id": "setValidateInfoDone",
+      "title": "设置校验状态完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validateStatus": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "string",
+                "value": "success"
+              },
+              {
+                "type": "string",
+                "value": "error"
+              }
+            ]
+          },
+          "help": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "disabledDateDone",
+      "title": "禁用特定日期完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setColorDone",
+      "title": "设置字体颜色完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "setDateTypeDone",
+      "title": "设置日期选择类型完成",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "date"
+          },
+          {
+            "type": "string",
+            "value": "week"
+          },
+          {
+            "type": "string",
+            "value": "month"
+          },
+          {
+            "type": "string",
+            "value": "quarter"
+          },
+          {
+            "type": "string",
+            "value": "year"
+          }
+        ]
+      }
+    },
+    {
+      "id": "onPanelChange",
+      "title": "日期面板切换",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "日期",
+            "type": "string"
+          },
+          "mode": {
+            "title": "日期选择类型",
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "schema": ["mybricks.normal-pc.form-container/form-item", "*"]
+}

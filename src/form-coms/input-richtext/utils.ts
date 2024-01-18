@@ -1,6 +1,6 @@
 import contentMinCss from './tinymce/skins/ui/oxide/content.min.css';
 import defalutContentMinCss from './tinymce/skins/content/default/content.min.css';
-
+// 作用于iframe,所以使用该方式引入 因为skin,theme会按相对路径寻找,为本地化就关闭,再直接引入skin和theme
 interface InitProps {
   readonly?: boolean;
   isFS: boolean;
@@ -12,6 +12,13 @@ interface InitProps {
   setUp: (...angs: any) => void;
   initCB: (...angs: any) => void;
   placeholder: string;
+  statusbar?: boolean; // 下方状态栏是否显示
+  attachment_upload_handler?: (
+    file: File,
+    successCallback: (arg0: string) => void,
+    failureCallback: (arg0: string) => void,
+    progressCallback: (arg0: string) => void
+  ) => void; // 附件上传方法
 }
 export function Init({
   selector,
@@ -23,9 +30,10 @@ export function Init({
   toolbar,
   placeholder,
   setUp,
-  initCB
+  initCB,
+  ...others
 }: InitProps) {
-  const tinyMCE = getWindowVal('tinyMCE');
+  const tinyMCE = getWindowVal('myTinyMce');
   if (!tinyMCE) return;
 
   const plugins: string[] = [
@@ -46,7 +54,8 @@ export function Init({
     'advlist',
     'code',
     'codesample',
-    'letterspacing'
+    'letterspacing',
+    'attachment'
   ];
 
   tinyMCE.init({
@@ -56,7 +65,7 @@ export function Init({
     menubar: false,
     branding: false,
     statusbar: false,
-    icons: (window as any).tinyMCE?.IconManager.has(customIconsId) ? customIconsId : '',
+    icons: window.myTinymce?.IconManager.has(customIconsId) ? customIconsId : '',
     plugins,
     toolbar,
     language: 'zh_CN',
@@ -97,7 +106,8 @@ export function Init({
       (readonly
         ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
         : `p {margin: 0px; border:0px ; padding: 0px;}`),
-    placeholder
+    placeholder,
+    ...(others || {})
   });
 }
 
@@ -143,6 +153,7 @@ const optionMappings = [
   // 媒体相关
   ['图片上传', 'uploadimage'],
   ['视频上传', 'uploadVideo'],
+  ['附件', 'attachment'],
   ['表格', 'table'],
   ['超链接', 'link'],
   ['代码块', 'codesample'],

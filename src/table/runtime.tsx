@@ -42,6 +42,7 @@ import { unitConversion } from '../utils';
 import { runJs } from '../../package/com-utils';
 import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
+import useDemandDataSource from './hooks/use-demand-data-source';
 
 export const TableContext = createContext<any>({ slots: {} });
 
@@ -49,6 +50,7 @@ export default function (props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, style } = props;
   const { runtime, edit } = env;
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const dataSourceRef = useRef(dataSource);
@@ -76,6 +78,15 @@ export default function (props: RuntimeParams<Data>) {
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
   const isUseOldHeight = style.height === 'auto';
 
+  /**
+   * 按需加载表格数据
+   * 以达到加速首屏加载的目的
+   */
+  const demandDataSource =
+    data.lazyLoad && env.runtime && (!isUseOldHeight || (data.fixedHeader && data.scroll.y))
+      ? useDemandDataSource(realShowDataSource, ref)
+      : realShowDataSource;
+
   /** 表格高度，此为新高度方案，替代 fixedHeight */
   const tableHeight = (() => {
     if (isUseOldHeight) return data.fixedHeader ? data.fixedHeight : '';
@@ -92,9 +103,9 @@ export default function (props: RuntimeParams<Data>) {
     return (tableHeight as number) - (_showHeader ? 48 : 0);
   })();
 
-  const selectedRows = useMemo(() => {
-    return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
-  }, [dataSource, selectedRowKeys, rowKey]);
+  // const selectedRows = useMemo(() => {
+  //   return dataSource.filter((item) => selectedRowKeys.includes(item[rowKey]));
+  // }, [dataSource, selectedRowKeys, rowKey]);
 
   const initFilterMap = () => {
     let res = {};
@@ -155,6 +166,7 @@ export default function (props: RuntimeParams<Data>) {
       inputs[InputIds.CLEAR_ROW_SELECTION] &&
         inputs[InputIds.CLEAR_ROW_SELECTION]((val: any, relOutputs: any) => {
           setSelectedRowKeys([]);
+          setSelectedRows([]);
           handleOutputFn(relOutputs, OutputIds.CLEAR_ROW_SELECTION, val);
         });
 
@@ -376,6 +388,7 @@ export default function (props: RuntimeParams<Data>) {
                 }
               });
               setSelectedRowKeys(newSelectedRowKeys);
+              setSelectedRows(newSelectedRows);
               if (typeof outputs?.[OutputIds.ROW_SELECTION] === 'function') {
                 outputs[OutputIds.ROW_SELECTION]({
                   selectedRows: newSelectedRows,
@@ -383,7 +396,7 @@ export default function (props: RuntimeParams<Data>) {
                 });
               }
               handleOutputFn(relOutputs, OutputIds.SET_ROW_SELECTION, data.filterParams);
-            }, 0);
+            }, 200);
           });
       }
       // 设置选中行序号
@@ -629,11 +642,62 @@ export default function (props: RuntimeParams<Data>) {
   // }, [env.runtime ? undefined : JSON.stringify({ filterMap, columns: data.columns })]);
   const renderColumnsWhenEdit = renderColumns;
 
+  const dataSourceKeysSet = new Set(realShowDataSource.map((row) => row[rowKey]));
+  const mergeAndFilterRows = useCallback(
+    (SelectedRowKeys: Array<string>) => {
+      // 创建选中行的映射，以优化查找性能
+      const selectedRowKeysMap = new Set(SelectedRowKeys);
+
+      // 合并勾选数据并根据id去重
+      const mergedRows = Array.from(
+        new Set([
+          ...selectedRows,
+          ...realShowDataSource.filter((rowData) => selectedRowKeysMap.has(rowData[rowKey]))
+        ])
+      );
+
+      return mergedRows;
+    },
+    [selectedRows, realShowDataSource, rowKey]
+  );
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {
-    selectedRowKeys,
+    selectedRowKeys: data.lazyLoad
+      ? selectedRowKeys.filter((key) => dataSourceKeysSet.has(key))
+      : selectedRowKeys,
     preserveSelectedRowKeys: true,
-    onChange: (selectedRowKeys: any[], selectedRows: any[]) => {
+    onChange: (SelectedRowKeys: any[], SelectedRows: any[], info: { type: string }) => {
+      /** 兼容懒加载场景下的全选、全不选逻辑 start */
+      if (data.lazyLoad) {
+        // 当前页所有key数组
+        const allPageKeys = Array.from(dataSourceKeysSet) || [];
+        if (info.type === 'all') {
+          // 全选逻辑 本次勾选的数据量大于切片数据量
+          if (SelectedRowKeys.length >= demandDataSource.length) {
+            SelectedRowKeys = Array.from(new Set([...selectedRowKeys, ...allPageKeys]));
+          }
+          // 取消全选 给出的SelectedRows全是undefined
+          if (SelectedRows.filter((row) => !!row).length === 0) {
+            SelectedRowKeys = selectedRowKeys.filter((item) => !allPageKeys.includes(item));
+          }
+        } else {
+          // 通过比较前后长度判断是否是反选
+          const isInvert =
+            selectedRowKeys.filter((key) => SelectedRowKeys.includes(key)).length ===
+            SelectedRowKeys.length;
+          if (isInvert) {
+            // 找到取消选择的再过滤掉原数据
+            const allCancel = allPageKeys.filter((item) => !SelectedRowKeys.includes(item));
+            SelectedRowKeys = selectedRowKeys.filter((item) => !allCancel.includes(item));
+          } else {
+            SelectedRowKeys = Array.from(new Set([...selectedRowKeys, ...SelectedRowKeys]));
+          }
+        }
+
+        SelectedRows = mergeAndFilterRows(SelectedRowKeys);
+      }
+      /** 兼容懒加载场景下的全选、全不选逻辑 end */
+
       if (
         data.rowMergeConfig &&
         data.mergeCheckboxColumn &&
@@ -643,7 +707,7 @@ export default function (props: RuntimeParams<Data>) {
         const result: any[] = [];
         const addedObjects = new Set();
 
-        for (const key of selectedRowKeys) {
+        for (const key of SelectedRowKeys) {
           // 找相应uuid数据
           const matchingObject = dataSource.find((obj) => obj[rowKey] === key);
           const matchingObjectIndex = dataSource.findIndex((obj) => obj[rowKey] === key);
@@ -686,18 +750,19 @@ export default function (props: RuntimeParams<Data>) {
             addedObjects.add(matchingObject[rowKey]);
           }
         }
-        selectedRows = result;
-        selectedRowKeys = result.map((item) => item[rowKey]);
+        SelectedRows = result;
+        SelectedRowKeys = result.map((item) => item[rowKey]);
       }
 
-      if (data.rowSelectionLimit && selectedRowKeys.length > data.rowSelectionLimit) {
-        selectedRows = selectedRows.slice(0, data.rowSelectionLimit);
-        selectedRowKeys = selectedRowKeys.slice(0, data.rowSelectionLimit);
+      if (data.rowSelectionLimit && SelectedRowKeys.length > data.rowSelectionLimit) {
+        SelectedRows = SelectedRows.slice(0, data.rowSelectionLimit);
+        SelectedRowKeys = SelectedRowKeys.slice(0, data.rowSelectionLimit);
       }
-      setSelectedRowKeys(selectedRowKeys);
+      setSelectedRowKeys(SelectedRowKeys);
+      setSelectedRows(SelectedRows);
       outputs[OutputIds.ROW_SELECTION]({
-        selectedRows,
-        selectedRowKeys
+        selectedRows: SelectedRows,
+        selectedRowKeys: SelectedRowKeys
       });
     },
     type:
@@ -783,8 +848,8 @@ export default function (props: RuntimeParams<Data>) {
   const setCurrentSelectRows = useCallback(
     (_record) => {
       const targetRowKeyVal = _record[rowKey];
-      let newSelectedRows = [...selectedRows];
-      let newSelectedRowKeys: any = [];
+      let newSelectedRows: Array<any> = [];
+      let newSelectedRowKeys: Array<string> = [...selectedRowKeys];
       // 多选情况下，如果没有超出限制就可以选择
       if (data.selectionType !== RowSelectionTypeEnum.Radio) {
         if (
@@ -792,10 +857,10 @@ export default function (props: RuntimeParams<Data>) {
           (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
           selectedRowKeys.includes(targetRowKeyVal)
         ) {
-          if (newSelectedRows.find((item) => item[rowKey] === targetRowKeyVal)) {
-            newSelectedRows = newSelectedRows.filter((item) => item[rowKey] !== targetRowKeyVal);
+          if (newSelectedRowKeys.find((item) => item === targetRowKeyVal) !== undefined) {
+            newSelectedRowKeys = newSelectedRowKeys.filter((item) => item !== targetRowKeyVal);
           } else {
-            newSelectedRows.push(_record);
+            newSelectedRowKeys.push(targetRowKeyVal);
           }
         }
       } else {
@@ -806,14 +871,15 @@ export default function (props: RuntimeParams<Data>) {
           newSelectedRows = [_record];
         }
       }
-      newSelectedRowKeys = newSelectedRows.map((item) => item[rowKey]);
+      newSelectedRows = mergeAndFilterRows(newSelectedRowKeys);
+      setSelectedRows(newSelectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       outputs[OutputIds.ROW_SELECTION]({
         selectedRows: newSelectedRows,
         selectedRowKeys: newSelectedRowKeys
       });
     },
-    [selectedRows, data.rowSelectionLimit, selectedRowKeys]
+    [selectedRows, data.rowSelectionLimit, selectedRowKeys, rowKey]
   );
 
   const onRow = useCallback(
@@ -896,7 +962,6 @@ export default function (props: RuntimeParams<Data>) {
 
   const customizeRenderEmpty = () => (
     <div
-      className={css.emptyNormal}
       style={{
         height: (() => {
           if (isUseOldHeight) return data.fixedHeader ? `calc(${data.fixedHeight} - 144px` : '';
@@ -904,8 +969,10 @@ export default function (props: RuntimeParams<Data>) {
         })()
       }}
     >
-      <Image src={data.image} className={`emptyImage ${css.emptyImage}`} preview={false} />
-      <p className={`emptyDescription ${css.emptyDescription}`}>{env.i18n(data.description)}</p>
+      <Empty
+        image={data.image || Empty.PRESENTED_IMAGE_SIMPLE}
+        description={env.i18n(data.description)}
+      />
     </div>
   );
 
@@ -933,7 +1000,7 @@ export default function (props: RuntimeParams<Data>) {
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
                 }}
-                dataSource={edit ? defaultDataSource : realShowDataSource}
+                dataSource={edit ? defaultDataSource : demandDataSource}
                 loading={{
                   tip: env.i18n(data.loadingTip),
                   spinning: loading
@@ -955,7 +1022,8 @@ export default function (props: RuntimeParams<Data>) {
                 }}
                 scroll={{
                   x: '100%',
-                  y: scrollHeight
+                  y: scrollHeight,
+                  scrollToFirstRowOnChange: data.scroll.scrollToFirstRowOnChange
                 }}
                 summary={
                   data.useSummaryColumn
@@ -1011,6 +1079,7 @@ export default function (props: RuntimeParams<Data>) {
             )}
             <TableFooter
               footerRef={footerRef}
+              containerRef={scrollHeight === undefined ? void 0 : ref}
               env={env}
               parentSlot={props.parentSlot}
               data={data}

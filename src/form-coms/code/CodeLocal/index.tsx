@@ -127,7 +127,7 @@ const CodeEditor = (
 
   useEffect(() => {
     const { language, ...options } = config ?? {};
-    editor.current?.setOptions({...options, readOnly});
+    editor.current?.setOptions({ ...options, readOnly });
   }, [config, readOnly]);
 
   useEffect(() => {
@@ -142,8 +142,8 @@ const CodeEditor = (
           : valueRef.current === undefined || valueRef.current === null
           ? ''
           : JSON.stringify(valueRef.current);
-      editor.current.clearSelection();
       supportFormat && formatterCode(val);
+      editor.current.clearSelection();
     }
   }, [value]);
 

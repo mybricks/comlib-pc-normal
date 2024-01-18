@@ -240,7 +240,7 @@ export const generateList = (treeData, dataList, { keyFieldName, titleFieldName 
       node[keyFieldName] = id;
     }
     const { [keyFieldName]: key, [titleFieldName]: title } = node;
-    dataList.push({ key, title, depth });
+    dataList.push({ ...node, key, title, depth });
     if (node.children) {
       generateList(node.children, dataList, { keyFieldName, titleFieldName }, key, depth + 1);
     }

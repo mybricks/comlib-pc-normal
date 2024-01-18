@@ -288,6 +288,19 @@ export default {
           }
         },
         {
+          title: '删除两端空白字符',
+          type: 'Switch',
+          description: '是否删除两端空白字符',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.isTrim;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.isTrim = value;
+            }
+          }
+        },
+        {
           title: '最大长度',
           type: 'InputNumber',
           description: '可输入的内容最大长度, -1 为不限制',

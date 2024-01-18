@@ -111,6 +111,7 @@ const SlotContent = (props) => {
               env={env}
               data={data}
               isEmpty={isEmpty}
+              isVerticalModel={isVerticalModel}
               comAray={comAray}
               outputs={outputs}
               submit={submit}

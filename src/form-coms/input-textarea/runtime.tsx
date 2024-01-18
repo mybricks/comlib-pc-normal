@@ -20,6 +20,8 @@ export interface Data {
   };
   minRows?: number;
   maxRows?: number;
+
+  isEditable: boolean;
 }
 
 export default function ({
@@ -71,6 +73,9 @@ export default function ({
           } else if (val === false) {
             data.config.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate(model, outputRels) {
           validateFormItem({
@@ -166,7 +171,7 @@ export default function ({
     };
   }, [env.edit, data.minRows, data.maxRows]);
 
-  return (
+  return data.isEditable ? (
     <div>
       <Input.TextArea
         ref={inputRef}
@@ -180,5 +185,7 @@ export default function ({
         onPressEnter={onPressEnter}
       />
     </div>
+  ) : (
+    <span style={{ whiteSpace: 'pre-wrap' }}>{value}</span>
   );
 }

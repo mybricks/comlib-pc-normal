@@ -358,5 +358,30 @@ export default function ({
   }
   //=========== v1.1.5 end ===============
 
+  /**
+   * @description v1.1.9 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  if (typeof data.isEditable === 'undefined') {
+    data.isEditable = true;
+  }
+  //=========== v1.1.9 end ===============
+
+  /**
+     * @description v1.1.11 增加 下拉菜单和选择器同宽data.config.dropdownMatchSelectWidth 配置项
+     */
+
+  if (data.config.dropdownMatchSelectWidth === undefined) {
+    data.config.dropdownMatchSelectWidth = true;
+  }
+
+  //=========== v1.1.11 end ===============ƒ
+
   return true;
 }

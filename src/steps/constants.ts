@@ -56,6 +56,7 @@ export interface Data {
   fullSubmit: boolean;
   useSubmitBtnLoading: boolean;
   hideSlots?: boolean;
+  dynamicSteps?: boolean
 }
 
 export const INTO = '_into';

@@ -24,6 +24,7 @@ export interface Data {
   isMax: boolean;
   min: number;
   max: number;
+  isEditable: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -63,6 +64,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
           } else if (val === false) {
             data.config.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate(model, outputRels) {
           validateFormItem({
@@ -170,7 +174,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     };
   }, [value, data.character, data.isFormatter]);
 
-  return (
+  return data.isEditable ? (
     <div className={css.inputNumber}>
       <InputNumber<string | number>
         value={value}
@@ -187,5 +191,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         max={data.isMax ? data.max : void 0}
       />
     </div>
+  ) : (
+    <div>{value}</div>
   );
 }

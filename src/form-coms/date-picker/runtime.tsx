@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { DatePicker, DatePickerProps, message } from 'antd';
 import moment, { Moment } from 'moment';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -27,12 +27,10 @@ export interface Data {
   useCustomPanelFooter: boolean;
   controlled: boolean;
   closeWhenClickOutOfPanel: boolean;
-  config: {
-    disabled: boolean;
-    placeholder: string;
-    picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
-    allowClear: boolean;
-  };
+  /** @description 1.1.17 默认面板日期 */
+  defaultPickerValue: string;
+  customExtraText: boolean;
+  config: DatePickerProps;
   useDisabledDate: 'default' | 'static';
   hideDatePanel: boolean;
   staticDisabledDate: [DisabledDateRule, DisabledDateRule];
@@ -45,6 +43,8 @@ export interface Data {
     年份: string;
   };
   isWeekNumber: boolean;
+  isEditable: boolean;
+  disabledDate: DatePickerProps['disabledDate'];
 }
 
 const typeMap = {
@@ -56,16 +56,28 @@ const typeMap = {
   year: '年份'
 };
 
-export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, name, id, slots } = props;
+/** 提供给高阶函数的各种参数 */
+export interface IHyperExtends {
+  hyperExtends?: {
+    wrapperHeight?: number;
+    wrapperRef?: React.RefObject<HTMLDivElement>;
+    dropdownClassName?: string;
+    fullOpen?: true;
+  };
+}
+
+export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
+  const { data, inputs, outputs, env, parentSlot, name, id, slots, hyperExtends = {} } = props;
+  const { wrapperHeight, wrapperRef: hyperWrapperRef, dropdownClassName, fullOpen } = hyperExtends;
   const [value, setValue] = useState();
   const [_, forchUpdate] = useState(0);
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = hyperWrapperRef || useRef<HTMLDivElement>(null);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const valueRef = useRef<any>();
+  const customExtraTextRef = useRef<any>(() => {})
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');
@@ -73,57 +85,61 @@ export default function Runtime(props: RuntimeParams<Data>) {
   //输出数据变形函数
   const transCalculation = (val, type, props) => {
     let transValue;
-    switch (type) {
-      //1. 年-月-日 时:分:秒
-      case 'Y-MM-DD HH:mm:ss':
-        transValue = moment(val).format('YYYY-MM-DD HH:mm:ss');
-        break;
-      //2. 年-月-日 时:分
-      case 'Y-MM-DD HH:mm':
-        transValue = moment(val).format('Y-MM-DD HH:mm');
-        break;
-      //3. 年-月-日
-      case 'Y-MM-DD':
-        transValue = moment(val).format('Y-MM-DD');
-        break;
-      //4. 年-月
-      case 'Y-MM':
-        transValue = moment(val).format('Y-MM');
-        break;
-      //5. 年
-      case 'Y':
-        transValue = moment(val).format('Y');
-        break;
-      //6. 时间戳
-      case 'timeStamp':
-        transValue = Number(val);
-        break;
-      //7. 自定义
-      case 'custom':
-        let customDate = moment(val).format(props.data.formatter);
-        if (customDate.indexOf('Su')) {
-          customDate = customDate.replace('Su', '天');
-        }
-        if (customDate.indexOf('Mo')) {
-          customDate = customDate.replace('Mo', '一');
-        }
-        if (customDate.indexOf('Tu')) {
-          customDate = customDate.replace('Tu', '二');
-        }
-        if (customDate.indexOf('We')) {
-          customDate = customDate.replace('We', '三');
-        }
-        if (customDate.indexOf('Th')) {
-          customDate = customDate.replace('Th', '四');
-        }
-        if (customDate.indexOf('Fr')) {
-          customDate = customDate.replace('Fr', '五');
-        }
-        if (customDate.indexOf('Sa')) {
-          customDate = customDate.replace('Sa', '六');
-        }
-        transValue = customDate;
-        break;
+    if (val) {
+      switch (type) {
+        //1. 年-月-日 时:分:秒
+        case 'Y-MM-DD HH:mm:ss':
+          transValue = moment(val).format('YYYY-MM-DD HH:mm:ss');
+          break;
+        //2. 年-月-日 时:分
+        case 'Y-MM-DD HH:mm':
+          transValue = moment(val).format('Y-MM-DD HH:mm');
+          break;
+        //3. 年-月-日
+        case 'Y-MM-DD':
+          transValue = moment(val).format('Y-MM-DD');
+          break;
+        //4. 年-月
+        case 'Y-MM':
+          transValue = moment(val).format('Y-MM');
+          break;
+        //5. 年
+        case 'Y':
+          transValue = moment(val).format('Y');
+          break;
+        //6. 时间戳
+        case 'timeStamp':
+          transValue = Number(val);
+          break;
+        //7. 自定义
+        case 'custom':
+          let customDate = moment(val).format(props.data.formatter);
+          if (customDate.indexOf('Su')) {
+            customDate = customDate.replace('Su', '天');
+          }
+          if (customDate.indexOf('Mo')) {
+            customDate = customDate.replace('Mo', '一');
+          }
+          if (customDate.indexOf('Tu')) {
+            customDate = customDate.replace('Tu', '二');
+          }
+          if (customDate.indexOf('We')) {
+            customDate = customDate.replace('We', '三');
+          }
+          if (customDate.indexOf('Th')) {
+            customDate = customDate.replace('Th', '四');
+          }
+          if (customDate.indexOf('Fr')) {
+            customDate = customDate.replace('Fr', '五');
+          }
+          if (customDate.indexOf('Sa')) {
+            customDate = customDate.replace('Sa', '六');
+          }
+          transValue = customDate;
+          break;
+        default:
+          transValue = moment(val).format(type);
+      }
     }
     return transValue;
   };
@@ -288,6 +304,25 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   });
 
+  //设置编辑/只读
+  inputs['isEditable']((val, relOutputs) => {
+    data.isEditable = val;
+    if (relOutputs['isEditableDone']) {
+      relOutputs['isEditableDone'](val);
+    }
+  });
+
+  useEffect(() => {
+    if(data.customExtraText) {
+      inputs[InputIds.ConfigExtraText]((val) => {
+        if(typeof val !== 'function') {
+          throw new Error(`请输入有效的函数！`)
+        }
+        customExtraTextRef.current = val
+      });
+    }
+  })
+
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
   };
@@ -329,22 +364,38 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const customDateRender = useCallback(
     (currentDate, today) => {
-      return (
-        <div className="ant-picker-cell-inner">
-          {currentDate.date()}
-          {runtime || currentDate.isSame(today, 'day')
-            ? slots[SlotIds.DateCell].render({
-                inputValues: {
-                  [InputIds.CurrentDate]: currentDate,
-                  [InputIds.Today]: today
-                },
-                key: currentDate.valueOf()
-              })
-            : null}
-        </div>
-      );
+      if(data.customExtraText && typeof customExtraTextRef.current === 'function') {
+        const { color = 'black', content = '', visible = true, style = {}} = customExtraTextRef.current(currentDate, today)
+        return <div className="ant-picker-cell-inner">
+            {currentDate.date()}
+            <div style={{
+                color,
+                visibility: visible ? 'visible' : 'hidden',
+                ...style,
+              }}>{content}</div>
+          </div>
+              } else if (data.useCustomDateCell) {
+        return (
+          <div className="ant-picker-cell-inner">
+            {currentDate.date()}
+            {runtime || currentDate.isSame(today, 'day')
+              ? slots[SlotIds.DateCell].render({
+                  inputValues: {
+                    [InputIds.CurrentDate]: currentDate,
+                    [InputIds.Today]: today
+                  },
+                  key: currentDate.valueOf()
+                })
+              : null}
+          </div>
+        )
+      }
+
+      return <div className="ant-picker-cell-inner">
+      {currentDate.date()}
+      </div>
     },
-    [data.useCustomDateCell]
+    [data.useCustomDateCell, data.customExtraText]
   );
 
   const disabledDateConfig = useCallback(
@@ -379,6 +430,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   );
 
   const finalOpen = (() => {
+    if (fullOpen) return true;
     if (runtime && data.controlled) {
       return open;
     }
@@ -415,46 +467,64 @@ export default function Runtime(props: RuntimeParams<Data>) {
     }
   }, [finalOpen]);
 
+  const defaultPickerValue = useMemo(() => {
+    const defaultPickerValue = moment(data.defaultPickerValue);
+    if (defaultPickerValue.isValid()) {
+      return defaultPickerValue;
+    } else {
+      return void 0;
+    }
+  }, [data.defaultPickerValue]);
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={css.datePicker} ref={wrapperRef}>
-        <DatePicker
-          panelRender={(originPanel) => {
-            return (
-              <div ref={dropdownWrapperRef}>
-                {data.useCustomPanelHeader &&
-                  slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
-                {originPanel}
-                {data.useCustomPanelFooter &&
-                  slots[SlotIds.DatePanelFooter].render({ title: '底部插槽' })}
-              </div>
-            );
-          }}
-          value={value}
-          {...data.config}
-          placeholder={env.i18n(data.config.placeholder)}
-          dateRender={data.useCustomDateCell ? customDateRender : undefined}
-          showTime={getShowTime()}
-          onChange={onChange}
-          onPanelChange={onPanelChange}
-          disabledDate={data.disabledDate || disabledDateConfig}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          dropdownClassName={`
-          ${id} 
-          ${css.datePicker} 
-          ${data.useCustomDateCell ? css.slotContainer : ''}
-          ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
-          open={finalOpen}
-          format={
-            data.config.picker && data.formatMap
-              ? decodeURIComponent(data.formatMap[typeMap[type]])
-              : void 0
-          }
-          onClick={() => {
-            if (runtime && data.controlled && !open) setOpen(true);
-          }}
-        />
-      </div>
+      {data.isEditable ? (
+        <div className={css.datePicker} ref={wrapperRef} style={{ height: wrapperHeight }}>
+          <DatePicker
+            panelRender={(originPanel) => {
+              return (
+                <div ref={dropdownWrapperRef}>
+                  {data.useCustomPanelHeader &&
+                    slots[SlotIds.DatePanelHeader].render({ title: '顶部插槽' })}
+                  {originPanel}
+                  {data.useCustomPanelFooter &&
+                    slots[SlotIds.DatePanelFooter].render({ title: '底部插槽' })}
+                </div>
+              );
+            }}
+            value={value}
+            {...data.config}
+            defaultPickerValue={defaultPickerValue}
+            placeholder={env.i18n(data.config.placeholder)}
+            dateRender={(data.useCustomDateCell || (data.customExtraText && typeof customExtraTextRef.current === 'function')) ? customDateRender : undefined}
+            showTime={getShowTime()}
+            onChange={onChange}
+            onPanelChange={onPanelChange}
+            disabledDate={data.disabledDate || disabledDateConfig}
+            getPopupContainer={(triggerNode: HTMLElement) => {
+              if (fullOpen) return wrapperRef.current;
+              return env?.canvasElement || document.body;
+            }}
+            dropdownClassName={`
+              ${dropdownClassName}
+              ${id} 
+              ${css.datePicker} 
+              ${data.useCustomDateCell ? css.slotContainer : ''}
+              ${data.isWeekNumber && data.config.picker === 'week' ? css.displayWeek : ''}`}
+            open={finalOpen}
+            format={
+              data.config.picker && data.formatMap
+                ? decodeURIComponent(data.formatMap[typeMap[type]])
+                : void 0
+            }
+            onClick={() => {
+              if (runtime && data.controlled && !open) setOpen(true);
+            }}
+          />
+        </div>
+      ) : (
+        transCalculation(value, decodeURIComponent(data.formatMap[typeMap[type]]), props)
+      )}
     </ConfigProvider>
   );
 }

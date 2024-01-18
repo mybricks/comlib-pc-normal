@@ -225,4 +225,7 @@ export interface Data {
   image: string;
   onRowScript: string;
   enableDynamicChangeCols: boolean; // 动态修改列属性
+
+  /** 表格数据懒加载 */
+  lazyLoad: boolean; 
 }

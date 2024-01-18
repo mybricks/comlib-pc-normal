@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
+import useFormItemInputs from '../form-container/models/FormItem';
+import { outputIds } from '../form-container/constants';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import ImgModal from './components/ImgModal';
 import uploadimage from './plugins/uploadimage';
@@ -65,6 +67,65 @@ export default function ({
 
   const { upload } = useUpload(inputs, outputs);
 
+  useFormItemInputs(
+    {
+      id: id,
+      name: name,
+      inputs,
+      outputs,
+      configs: {
+        setValue(val) {
+          changeValue(val);
+        },
+        setInitialValue(val) {
+          changeValue(val);
+        },
+        returnValue(output) {
+          output(valueRef.current);
+        },
+        resetValue() {
+          changeValue(void 0);
+        },
+        setDisabled() {
+          data.disabled = true;
+        },
+        setEnabled() {
+          data.disabled = false;
+        },
+        setIsEnabled(val) {
+          if (val === true) {
+            data.disabled = false;
+          } else if (val === false) {
+            data.disabled = true;
+          }
+        },
+        validate(model, outputRels) {
+          validateFormItem({
+            value: valueRef.current,
+            env,
+            model,
+            rules: data.rules
+          })
+            .then((r) => {
+              const cutomRule = (data.rules || defaultRules).find(
+                (i) => i.key === RuleKeys.CUSTOM_EVENT
+              );
+              if (cutomRule?.status) {
+                validateRelOuputRef.current = outputRels;
+                outputs[outputIds.ON_VALIDATE] && outputs[outputIds.ON_VALIDATE](valueRef.current);
+              } else {
+                outputRels(r);
+              }
+            })
+            .catch((e) => {
+              outputRels(e);
+            });
+        }
+      }
+    },
+    [value]
+  );
+
   const Load: () => void = useCallback(async () => {
     // 不再使用CDN
     // await loadPkg(tinymceCDN, 'tinyMCE');
@@ -77,6 +138,44 @@ export default function ({
       placeholder: env.i18n(data.placeholder)
     });
   }, []);
+
+  const attachment_upload_handler = useCallback(
+    async (file: File, successCallback, failureCallback, progressCallback) => {
+      // TODO progressCallback返回进度函数,需配合后端
+      const fileData = {
+        file,
+        file_name: file.name,
+        file_type: file.type
+      };
+
+      const uploadFile = async () => {
+        if (data.customUpload) {
+          return upload(fileData);
+        } else if (env?.uploadFile) {
+          return env.uploadFile(fileData);
+        } else {
+          console.error('env.uploadFile未实现');
+          throw new Error('无有效的上传方法');
+        }
+      };
+
+      try {
+        const res = await uploadFile().catch((error) => {
+          throw new Error(`附件上传失败: ${error.message}`);
+        });
+
+        const url = res?.url;
+        if (!url) {
+          throw new Error('附件上传返回为空');
+        }
+
+        successCallback(url);
+      } catch (error: any) {
+        failureCallback(error.message);
+      }
+    },
+    []
+  );
 
   const TinymceInit: (cfg: {
     selector?: string;
@@ -153,8 +252,8 @@ export default function ({
       initCB: (editor) => {
         //1、设置值
         inputs['setValue']((val, relOutputs) => {
-          editor.setContent('');
           changeValue(val);
+          editor.setContent(valueRef.current || '');
           if (relOutputs['setValueDone']) {
             relOutputs['setValueDone'](val);
           }
@@ -162,8 +261,8 @@ export default function ({
         });
         //2、设置初始值
         inputs['setInitialValue']((val: any, relOutputs) => {
-          editor.setContent('');
           changeValue(val);
+          editor.setContent(valueRef.current || '');
           if (relOutputs['setInitialValueDone']) {
             relOutputs['setInitialValueDone'](val);
           }
@@ -181,7 +280,8 @@ export default function ({
             setLoading(false);
           }, 50);
         }
-      }
+      },
+      attachment_upload_handler
     });
   }, []);
 
@@ -190,7 +290,7 @@ export default function ({
   };
   //失去焦点
   const update = useCallback((bool) => {
-    const tinyMCE = getWindowVal('tinyMCE');
+    const tinyMCE = getWindowVal('myTinyMce');
     if (!tinyMCE) return;
 
     const tinymceInstance =
@@ -215,7 +315,7 @@ export default function ({
 
   //值变化
   const change = useCallback((bool) => {
-    const tinyMCE = getWindowVal('tinyMCE');
+    const tinyMCE = getWindowVal('myTinyMce');
     if (!tinyMCE) return;
 
     const tinymceInstance =
@@ -231,7 +331,7 @@ export default function ({
   useEffect(() => {
     Load();
     return () => {
-      const tinyMCE = getWindowVal('tinyMCE');
+      const tinyMCE = getWindowVal('myTinyMce');
       tinyMCE &&
         [tinymceId, tinymceFSId].forEach((id) => {
           tinyMCE.editors[id]?.remove();
@@ -294,7 +394,7 @@ export default function ({
       <div>
         <textarea
           ref={(node) => {
-            const tinyMCE = getWindowVal('tinyMCE');
+            const tinyMCE = getWindowVal('myTinyMce');
             if (!tinyMCE) return;
 
             if (!tinyMCE.editors[tinymceFSId]) {
@@ -403,7 +503,7 @@ export default function ({
 }
 
 function addCustomIcons(): void {
-  const tinyMCE = getWindowVal('tinyMCE');
+  const tinyMCE = getWindowVal('myTinyMce');
   if (!tinyMCE) return;
   const { IconManager } = tinyMCE;
   if (!IconManager.has(customIconsId)) {

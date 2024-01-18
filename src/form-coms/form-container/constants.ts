@@ -22,7 +22,10 @@ export const inputIds = {
 
   setValue: 'setValue',
   setInitialValue: 'setInitialValue',
-  resetValue: 'resetValue'
+  resetValue: 'resetValue',
+
+  // 编辑/只读
+  isEditable: 'isEditable'
 }
 
 export const outputIds = {
@@ -45,7 +48,10 @@ export const outputIds = {
   isEnableDone: "isEnableDone",
   setColorDone: "setColorDone",
   setOptionsDone: "setOptionsDone",
-  setValidateInfoDone: "setValidateInfoDone"
+  setValidateInfoDone: "setValidateInfoDone",
+
+  // 编辑/只读
+  isEditableDone: "isEditableDone"
 }
 
 export const slotInputIds = {

@@ -9,5 +9,6 @@
     "maxLength": -1
   },
   "minRows": 3,
-  "maxRows": 6
+  "maxRows": 6,
+  "isEditable": true
 }

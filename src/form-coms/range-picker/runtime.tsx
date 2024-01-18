@@ -26,11 +26,12 @@ export interface Data {
   config: {
     disabled: boolean;
     placeholder: [string, string];
-    picker: 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
+    picker: 'date' | 'week' | 'month' | 'quarter' | 'year';
   };
   dateType: 'array' | 'string';
   splitChart: string;
   emptyRules: any[];
+  isEditable: boolean;
 }
 
 export const DateType = {
@@ -69,6 +70,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
   const valueRef = useRef<any>();
+  const [type, setType] = useState<string>('date');
 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
@@ -141,6 +143,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
         transValue = customDate;
         break;
+      default:
+        transValue = moment(val).format(type);
     }
     return transValue;
   };
@@ -286,6 +290,14 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
 
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
@@ -294,6 +306,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
       }
     });
   }, []);
+
+  //值展示类型
+  useEffect(() => {
+    if (data.config.picker === 'date' && data.showTime) {
+      setType('dateTime');
+    } else {
+      setType(data.config.picker || 'date');
+    }
+  }, [data.config.picker, data.showTime]);
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
@@ -354,25 +375,57 @@ export default function Runtime(props: RuntimeParams<Data>) {
       ? [!data.emptyRules[0].status, !data.emptyRules[1].status]
       : [false, false];
 
+  const transValue = Array.isArray(value)
+    ? value.map((item, index) => {
+        return transCalculation(item, decodeURIComponent(formatMap[typeMap[type]]), props, index);
+      })
+    : [];
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <div className={css.rangePicker}>
-        <RangePicker
-          value={value}
-          {...data.config}
-          placeholder={[env.i18n(data.config.placeholder[0]), env.i18n(data.config.placeholder[1])]}
-          ranges={data.useRanges ? rangeOptions : []}
-          showTime={getShowTime()}
-          onChange={onChange}
-          onCalendarChange={(dates) => setDates(dates)}
-          onOpenChange={onOpenChange}
-          allowEmpty={emptyArr}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          open={env.design ? true : void 0}
-          dropdownClassName={`${id} ${css.rangePicker}`}
-          {...disabledDateTime}
-        />
-      </div>
+      {data.isEditable ? (
+        <div className={css.rangePicker}>
+          <RangePicker
+            value={value}
+            {...data.config}
+            placeholder={[
+              env.i18n(data.config.placeholder[0]),
+              env.i18n(data.config.placeholder[1])
+            ]}
+            ranges={data.useRanges ? rangeOptions : []}
+            showTime={getShowTime()}
+            onChange={onChange}
+            onCalendarChange={(dates) => setDates(dates)}
+            onOpenChange={onOpenChange}
+            allowEmpty={emptyArr}
+            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            open={env.design ? true : void 0}
+            dropdownClassName={`${id} ${css.rangePicker}`}
+            {...disabledDateTime}
+          />
+        </div>
+      ) : (
+        <span style={{ whiteSpace: 'pre-wrap' }}>{transValue.join('-')}</span>
+      )}
     </ConfigProvider>
   );
 }
+
+// 展示时间处理
+const typeMap = {
+  date: '日期',
+  dateTime: '日期+时间',
+  week: '周',
+  month: '月份',
+  quarter: '季度',
+  year: '年份'
+};
+
+const formatMap = {
+  日期: encodeURIComponent('YYYY-MM-DD'),
+  '日期+时间': encodeURIComponent('YYYY-MM-DD HH:mm:ss'),
+  周: encodeURIComponent('YYYY-wo'),
+  月份: encodeURIComponent('YYYY-MM'),
+  季度: encodeURIComponent('YYYY-\\QQ'),
+  年份: encodeURIComponent('YYYY')
+};

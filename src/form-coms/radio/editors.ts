@@ -52,6 +52,21 @@ export default {
                 ],
                 target: '.ant-radio-inner'
               },
+              {
+                title: '整体',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.radio'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-space-item .ant-radio-wrapper'
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -67,6 +82,14 @@ export default {
                 target: '.ant-radio:hover .ant-radio-inner',
                 domTarget: '.ant-radio-inner'
               },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-space-item:hover .ant-radio-wrapper'
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -87,6 +110,14 @@ export default {
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-radio-inner:after'
               },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-space-item .ant-radio-wrapper.ant-radio-wrapper-checked'
+              }
             ]
           }),
           ...createrCatelogEditor({
@@ -110,6 +141,14 @@ export default {
                 title: '选择框中心',
                 options: [{ type: 'background', config: { disableBackgroundImage: true } }],
                 target: '.ant-radio.ant-radio-disabled .ant-radio-inner:after'
+              },
+              {
+                title: '选项',
+                options: [
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  'border'
+                ],
+                target: '.ant-space-item .ant-radio-wrapper.ant-radio-wrapper-disabled'
               }
             ]
           }),

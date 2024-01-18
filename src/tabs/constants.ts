@@ -57,7 +57,7 @@ export interface Data {
   useRigthExtra?: boolean;
   // 是否动态设置显示tab
   useDynamicTab?: boolean;
-  // 隐藏时渲染
+  /** @description 1.0.14 隐藏时渲染 */
   forceRender?: boolean;
 }
 

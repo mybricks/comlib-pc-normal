@@ -21,6 +21,7 @@ import './tinymce/plugins/lists/plugin.min.js';
 import './tinymce/plugins/code/plugin.min.js';
 import './tinymce/plugins/codesample/plugin.min.js';
 import './tinymce/plugins/letterspacing/plugin.min.js';
+import './tinymce/plugins/attachment/plugin.min.js';
 
 import './tinymce/plugins/fullscreen/plugin.min.js';
 import './tinymce/plugins/emoticons/plugin.min.js';

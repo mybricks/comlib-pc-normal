@@ -76,7 +76,7 @@ function ColumnRender(props: ColumnRenderProps) {
 
   switch (columnItem.contentType) {
     case ContentTypeEnum.Text:
-      if (columnItem.ellipsis) {
+      if (columnItem.ellipsis && String(value)?.trim()?.length > 0) {
         return (
           <Tooltip placement="topLeft" title={value}>
             <span className={css.ellipsisWrap}>{value}</span>

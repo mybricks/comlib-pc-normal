@@ -7,5 +7,6 @@
   "format": "timeStamp",
   "customFormat": "HH:mm:ss",
   "outFormat": "array",
-  "splitChar": "-"
+  "splitChar": "-",
+  "isEditable": true
 }

@@ -1,5 +1,13 @@
 # README
 
+## 说明
+
+### 本地化
+
+1. 由于富文本编辑器和富文本输入框之前的冲突,将原 5.7.1 版本修改
+   实例名: tinymce/tinyMce => myTinymce/myTinyMce
+2. 取消原本默认样式主题(会按照相对路径引入 bug), 直接打入
+
 ## 配置说明
 
 ```javascript

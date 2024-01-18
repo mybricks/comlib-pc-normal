@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.list-new",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -25,9 +25,132 @@
           "type": "any"
         }
       }
+    },
+    {
+      "id": "addItem",
+      "title": "添加一项",
+      "desc": "默认在末尾添加一项, 支持指定index(合理范围内)",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "any"
+          }
+        }
+      },
+      "rels": [
+        "addItemDone"
+      ]
+    },
+    {
+      "id": "removeItem",
+      "title": "删除一项",
+      "desc": "默认在末尾删除一项, 支持指定位置(合理范围内)",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "removeItemDone"
+      ]
+    },
+    {
+      "id": "changeItem",
+      "title": "修改一项(根据index)",
+      "desc": "根据index, 将对应value改为指定值",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "any"
+          }
+        }
+      },
+      "rels": [
+        "changeItemDone"
+      ]
+    },
+    {
+      "id": "moveUp",
+      "title": "上移",
+      "desc": "将指定位置的内容上移",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "moveUpDone"
+      ]
+    },
+    {
+      "id": "moveDown",
+      "title": "下移",
+      "desc": "将指定位置的内容下移",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "moveDownDone"
+      ]
     }
   ],
-  "outputs": [],
+  "outputs": [
+    {
+      "id": "addItemDone",
+      "title": "添加一项完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "id": "removeItemDone",
+      "title": "删除一项完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "changeItemDone",
+      "title": "修改一项(根据index)完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "value": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    {
+      "id": "moveUpDone",
+      "title": "上移完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "moveDownDone",
+      "title": "下移完成",
+      "schema": {
+        "type": "number"
+      }
+    }
+  ],
   "slots": [
     {
       "id": "item",

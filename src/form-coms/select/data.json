@@ -7,7 +7,8 @@
     "showSearch": true,
     "filterOption": true,
     "optionFilterProp": "label",
-    "showArrow": "true"
+    "showArrow": true,
+    "dropdownMatchSelectWidth": true
   },
   "validateTrigger": [
     "onChange"
@@ -15,5 +16,6 @@
   "maxTagCount": "",
   "staticOptions": [],
   "dropdownSearchOption": false,
-  "outputValueType": "value"
+  "outputValueType": "value",
+  "isEditable": true
 }

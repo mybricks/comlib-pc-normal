@@ -63,6 +63,7 @@
         "./src/form-coms/cascader/com.json",
         "./src/form-coms/treeSelect/com.json",
         "./src/form-coms/date-picker/com.json",
+        "./src/form-coms/date-picker-full-open/com.json",
         "./src/form-coms/range-picker/com.json",
         "./src/form-coms/time-picker/com.json",
         "./src/form-coms/time-range-picker/com.json",
@@ -110,8 +111,7 @@
         "./src/dropdown/com.json",
         "./src/sort-bar/com.json",
         "./src/video/com.json",
-        "./src/print/com.json",
-        "./src/custom-render/com.json"
+        "./src/print/com.json"
       ]
     },
     "./src/_muilt-inputJs/com.json",
@@ -132,7 +132,8 @@
     "./src/_pinyin/com.json",
     "./src/_post-message/com.json",
     "./src/_get-storage/com.json",
-    "./src/_receive-message/com.json"
+    "./src/_receive-message/com.json",
+    "./src/_countdown/com.json"
   ],
   "externals": [
     {

@@ -103,6 +103,18 @@ export default {
           }
         },
         {
+          title: '默认面板日期',
+          type: 'Text',
+          value: {
+            get({ data }) {
+              return data.defaultPickerValue;
+            },
+            set({ data }, value: string) {
+              data.defaultPickerValue = value;
+            }
+          }
+        },
+        {
           title: '时间选择',
           type: 'Switch',
           value: {
@@ -445,6 +457,26 @@ export default {
                 slot.remove(SlotIds.DateCell);
               }
               data.useCustomDateCell = value;
+            }
+          }
+        },
+        {
+          title: '动态设置日期文本',
+          description: '',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.customExtraText;
+            },
+            set({ data, input }: EditorResult<Data>, value: boolean) {
+              if (value) {
+                const hasEvent = input.get(InputIds.ConfigExtraText);
+                !hasEvent && input.add(InputIds.ConfigExtraText, `自定义日期文本`, { type: 'any'});
+
+              } else {
+                input.remove(InputIds.ConfigExtraText);
+              }
+              data.customExtraText = value;
             }
           }
         },

@@ -1,11 +1,11 @@
 import toJSON from './toJSON.json';
-import { toJSONPreview, eventCheck } from '@/../cypress/tools';
+import { toJSONPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 /**
  * 如果有复杂的场景，可以单独一个 it，甚至单独一个 toJSON
  */
 describe('文本框', () => {
-  it('各种 output 检查', () => {
+  enhancedIt('各种 output 检查', () => {
     // 加载测试页面
     toJSONPreview(toJSON);
 
@@ -52,7 +52,7 @@ describe('文本框', () => {
     ]);
   });
 
-  it('各种 input 检查', () => {
+  enhancedIt('各种 input 检查', () => {
     // 加载测试页面
     toJSONPreview(toJSON);
 

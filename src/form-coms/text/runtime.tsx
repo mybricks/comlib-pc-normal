@@ -14,6 +14,7 @@ export interface Data {
   value: string | undefined;
   rules: any[];
   validateTrigger: string[];
+  isTrim: boolean;
   config: {
     allowClear: boolean;
     disabled: boolean;
@@ -27,6 +28,8 @@ export interface Data {
   src: false | 'inner' | 'custom';
   innerIcon: string;
   customIcon: string;
+
+  isEditable: boolean;
 }
 
 export default function (props: RuntimeParams<Data>) {
@@ -70,6 +73,9 @@ export default function (props: RuntimeParams<Data>) {
           } else if (val === false) {
             data.config.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate(model, relOutput) {
           validateFormItem({
@@ -119,14 +125,19 @@ export default function (props: RuntimeParams<Data>) {
       debounceValidateTrigger(parentSlot, { id: props.id, name: props.name });
   };
 
-  const changeValue = useCallback((val) => {
+  const formatter = useCallback((oriVal) => {
+    return data.isTrim ? oriVal?.trim() : oriVal;
+  }, []);
+
+  const changeValue = useCallback((oriVal) => {
+    const val = formatter(oriVal);
     setValue(val);
     valueRef.current = val;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
   }, []);
 
   const onChange = useCallback((e) => {
-    const value = e.target.value;
+    const value = formatter(e.target.value);
     changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger(ValidateTriggerType.OnChange);
@@ -165,7 +176,7 @@ export default function (props: RuntimeParams<Data>) {
     }
   }, [data.innerIcon, data.customIcon]);
 
-  let jsx = (
+  let jsx = data.isEditable ? (
     <Input
       ref={inputRef}
       type="text"
@@ -181,6 +192,8 @@ export default function (props: RuntimeParams<Data>) {
       //size={'large'}
       suffix={data.src !== false ? renderSuffix() : void 0}
     />
+  ) : (
+    <div>{value}</div>
   );
 
   return <div className={css.fiText}>{jsx}</div>;

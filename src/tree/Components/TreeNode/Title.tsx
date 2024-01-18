@@ -2,7 +2,9 @@ import React, { CSSProperties, ReactNode } from 'react';
 import { Input, Image, Tooltip, TreeNodeProps } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
+import { deepCopy } from '../../../utils';
 import { Data, IconType, MODIFY_BTN_ID } from '../../types';
+import { InputIds, OutputIds } from '../../constants';
 import ActionBtns from './ActionBtn';
 import css from './style.less';
 
@@ -123,6 +125,7 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
           data.isEditing = '';
           const { [childrenFieldName]: children, ...res } = outputItem;
           outputs[MODIFY_BTN_ID](res);
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         }}
       />
     ),

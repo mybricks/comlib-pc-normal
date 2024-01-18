@@ -17,5 +17,6 @@
   "useLoadData": false,
   "labelFieldName": "",
   "valueFieldName": "",
-  "childrenFieldName": ""
+  "childrenFieldName": "",
+  "isEditable": true
 }

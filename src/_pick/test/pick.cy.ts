@@ -1,12 +1,12 @@
 import toJSON from './toJSON.json';
-import { toJSONPreview, eventCheck } from '@/../cypress/tools';
+import { toJSONPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 describe('对象取值', () => {
   beforeEach(() => {
     toJSONPreview(toJSON);
   });
 
-  it('检查', () => {
+  enhancedIt('检查', () => {
     cy.window().should((win) => {
       expect(win.checklist.length).eq(6);
     });
