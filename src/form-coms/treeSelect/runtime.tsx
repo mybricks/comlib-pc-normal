@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { uniq } from 'lodash';
-import { TreeNodeProps, TreeSelect, Image, TreeSelectProps } from 'antd';
+import { TreeNodeProps, TreeSelect, Image, TreeSelectProps, Spin } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
@@ -28,6 +28,8 @@ export default function Runtime({
   const curNode = useRef({});
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState<any>();
+  //fetching, 是否开启loading的开关
+  const [fetching, setFetching] = useState(false);
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
@@ -115,6 +117,7 @@ export default function Runtime({
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
+      setFetching(false);
     });
 
     inputs['setLoading']((val: boolean, outputRels) => {
@@ -241,6 +244,21 @@ export default function Runtime({
     });
   };
 
+  /** 搜索事件 */
+  const onSearch = (e) => {
+    //开启自定义搜索功能
+    if (data.customOnSearch) {
+      setFetching(true);
+      outputs['onSearch'](e);
+    }
+    //1、远程数据源
+    if (!e && data.customOnSearch === true) {
+      data.options = [];
+      setFetching(false);
+    }
+    //2、本地数据源, 不做处理
+  };
+
   /** 更新默认展开节点 */
   const getDefaultExpandKeys = useCallback(() => {
     const keys: React.Key[] = [];
@@ -320,9 +338,11 @@ export default function Runtime({
           loadData={data.useLoadData ? onLoadData : undefined}
           fieldNames={fieldNames}
           onChange={onChange}
+          onSearch={onSearch}
           treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
           dropdownClassName={id}
           getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+          notFoundContent={data.customOnSearch && fetching ? <Spin size="small" /> : void 0}
         >
           {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
         </TreeSelect>
