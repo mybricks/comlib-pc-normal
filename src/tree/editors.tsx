@@ -450,6 +450,28 @@ export default {
           ]
         },
         {
+          title: '禁用功能',
+          items: [
+            {
+              title: '节点禁用表达式',
+              description: `根据节点数据在运行时动态设置节点禁用的表达式，支持JS表达式语法, 例：{node.disabled}`,
+              type: 'expression',
+              options: {
+                placeholder: `例：{node.disabled} 节点disabled为true时禁用`,
+                suggestions
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disabledScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.disabledScript = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '勾选功能',
           items: [
             {
