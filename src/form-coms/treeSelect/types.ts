@@ -25,6 +25,8 @@ export interface Data {
   // 展开图标配置
   switcherIcon: IconType,
   isEditable: boolean
+  /** @description 1.2.13 是否使用搜索事件 */
+  customOnSearch: boolean;
 }
 
 export type IconSrcType = false | 'custom' | 'inner';
