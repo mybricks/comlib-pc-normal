@@ -1,5 +1,6 @@
 import { defineDataSet } from 'ai-dataset';
 import { SizeEnum, TableLayoutEnum } from './types';
+import { AlignTypeEnum, SizeTypeEnum } from './components/Paginator/constants';
 
 export default defineDataSet((utils) => {
   const result = {};
@@ -31,43 +32,189 @@ export default defineDataSet((utils) => {
 
   result['列'] = [
     {
-      Q: `添加两列，分别是姓名和性别，其中，性别要适应剩余宽度`,
+      Q: `添加字段（标题）为姓名的列`,
       A: {
         data: {
           columns: [
             {
               title: '姓名',
               dataIndex: 'name',
-              isAutoWidth: false,
               width: 140
-            },
-            {
-              title: '性别',
-              dataIndex: 'sex',
-              isAutoWidth: true
             }
           ]
         }
       }
     },
     {
-      Q: `添加一列，列名为A，字段为a，展示类型为普通文字，需要进行空值处理，列数据类型为字符串，开启内容省略展示（内容超出宽度后文本自动省略、不换行、以省略号结尾），自适应剩余宽度，将该列左固定，提示文案设置为abc`,
+      Q: `添加展示类型为普通文字的列`,
       A: {
         data: {
           columns: [
             {
-              title: 'A',
-              dataIndex: 'a',
-              contentType: 'text',
+              contentType: 'text'
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加自定义展示内容的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              contentType: 'slotItem'
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `当列的展示内容为自定义插槽时保留字段，使得可编辑当前列字段和传递列数据`,
+      A: {
+        data: {
+          columns: [
+            {
+              contentType: 'slotItem',
+              keepDataIndex: true
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加展示类型为分组的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              contentType: 'group'
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加对空值进行处理的列`,
+      A: {
+        data: {
+          columns: [
+            {
               formatData: {
-                formatterName: 'KEYMAP'
-              },
-              dataSchema: {
-                type: 'string'
-              },
-              ellipsis: true,
-              width: 'auto',
-              fixed: 'left',
+                formatterName: 'NONE',
+                nullValueHandling: true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加将输入值为undefined、null、空字符串转换成0的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              formatData: {
+                formatterName: 'NONE',
+                nullValueHandling: true,
+                nullValueHandlingValue: '0'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加内容省略展示（内容超出宽度后文本自动省略、不换行、以省略号结尾）的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              ellipsis: true
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加适应剩余宽度的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              width: 'auto'
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加宽度为50px的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              width: 50
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加正常显示、不固定的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              fixed: ''
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加左固定的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              fixed: 'left'
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加右固定的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              fixed: 'right'
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加有提示信息的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              hasTip: true
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加有提示信息并且提示文案为abc的列`,
+      A: {
+        data: {
+          columns: [
+            {
               hasTip: true,
               tip: 'abc'
             }
@@ -76,52 +223,208 @@ export default defineDataSet((utils) => {
       }
     },
     {
-      Q: `添加一列，列名为B，字段为v，展示类型为普通文字，将日期格式化为时间戳，列数据类型为数字，开启内容省略展示（内容超出宽度后文本自动省略、不换行、以省略号结尾），宽度设置为200px`,
+      Q: `添加有排序功能的列`,
       A: {
         data: {
           columns: [
             {
-              title: 'B',
-              dataIndex: 'v',
-              contentType: 'text',
-              formatData: {
-                formatterName: 'TIMETEMPLATE',
-                values: {
-                  TIMETEMPLATE: 'YYYY-MM-DD HH:mm:ss'
-                }
-              },
-              dataSchema: {
-                type: 'number'
-              },
-              ellipsis: true,
-              width: '200'
+              sorter: {
+                enable: true
+              }
             }
           ]
         }
       }
     },
     {
-      Q: `添加一列用于展示总金额，将该列右固定，并按照数字大小排序`,
+      Q: `添加根据字符长度排序的列`,
       A: {
         data: {
           columns: [
             {
-              title: '总金额',
-              dataIndex: 'totalAmount',
-              contentType: 'text',
-              formatData: {
-                formatterName: 'EXPRESSION',
-                values: {
-                  TIMETEMPLATE: '￥{value}'
-                }
-              },
-              dataSchema: {
-                type: 'number'
-              },
-              fixed: 'right',
+              sorter: {
+                enable: true,
+                type: 'length'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加根据数字大小排序的列`,
+      A: {
+        data: {
+          columns: [
+            {
               sorter: {
                 enable: true,
                 type: 'size'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加根据时间前后排序的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              sorter: {
+                enable: true,
+                type: 'date'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加自定义排序的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              sorter: {
+                enable: true,
+                type: 'request'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加使用筛选的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加使用筛选但隐藏筛选菜单的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                hideFilterDropdown: true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加筛选支持多选的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                filterType: 'multiple'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加筛选仅支持单选的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                filterType: 'single'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加通过接口获取筛选项来源的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                filterSource: 'request'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加本地定义筛选项来源的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                filterSource: 'local'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加包含自定义筛选项为筛选值为5的列（text为自定义筛选项的标题或条件，value为满足自定义筛选项条件的值）`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                filterSource: 'local',
+                options: [{ text: '=5', value: '5' }]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加筛选方式为本地筛选的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                type: 'local'
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      Q: `添加筛选方式为请求接口的列`,
+      A: {
+        data: {
+          columns: [
+            {
+              filter: {
+                enable: true,
+                type: 'request'
               }
             }
           ]
@@ -136,6 +439,149 @@ export default defineDataSet((utils) => {
       A: {
         data: {
           usePagination: true
+        }
+      }
+    }
+  ];
+
+  const paginationAlignOptions = [
+    {
+      label: '居左',
+      value: AlignTypeEnum.FlexStart
+    },
+    {
+      label: '居中',
+      value: AlignTypeEnum.Center
+    },
+    {
+      label: '居右',
+      value: AlignTypeEnum.FlexEnd
+    }
+  ];
+  const paginationSizeOptions = [
+    {
+      label: '正常',
+      value: SizeTypeEnum.Default
+    },
+    {
+      label: '小',
+      value: SizeTypeEnum.Small
+    },
+    {
+      label: '简单模式',
+      value: SizeTypeEnum.Simple
+    }
+  ];
+  result['分页'] = [
+    ...paginationAlignOptions.map((item) => ({
+      Q: `分页器的位置${item.label}`,
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            align: item.value
+          }
+        }
+      }
+    })),
+    ...paginationSizeOptions.map((item) => ({
+      Q: `将分页器的尺寸设置为${item.label}`,
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            size: item.value
+          }
+        }
+      }
+    })),
+    {
+      Q: '默认每页显示10条',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            defaultPageSize: 10
+          }
+        }
+      }
+    },
+    {
+      Q: '打开前端分页（自动根据当前页码/条目数分页展示）',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            useFrontPage: true
+          }
+        }
+      }
+    },
+    {
+      Q: '分页器前置展示‘共XX条结果’（格式：{start}表示当前页起始条目，{end}表示当前页结束条目，{total}表示总条目数）',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            text: '共 {total} 条结果'
+          }
+        }
+      }
+    },
+    {
+      Q: '打开跳页功能（支持直接输入页码跳转）',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            showQuickJumper: true
+          }
+        }
+      }
+    },
+    {
+      Q: '打开条数选择功能（打开该功能后，不再支持页数为1时隐藏功能）',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            showSizeChanger: true
+          }
+        }
+      }
+    },
+    {
+      Q: '配置条数切换器可选的条目数为10,20,50,100',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '20', '50', '100']
+          }
+        }
+      }
+    },
+    {
+      Q: '页数为1时隐藏分页器',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            showSizeChanger: false,
+            hideOnSinglePage: true
+          }
+        }
+      }
+    },
+    {
+      Q: '通过输入项动态启用或禁用分页器',
+      A: {
+        data: {
+          usePagination: true,
+          paginationConfig: {
+            isDynamic: true
+          }
         }
       }
     }
