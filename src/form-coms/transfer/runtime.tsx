@@ -151,19 +151,20 @@ export default function ({
 
   return (
     <ConfigProvider locale={env.vars?.locale}>
-      <Transfer
-        className={styles.transfer}
-        titles={[env.i18n(titles[0]), env.i18n(titles[1])]}
-        dataSource={_dataSource}
-        targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
-        showSearch={showSearch}
-        showSelectAll
-        oneWay={oneWay}
-        disabled={disabled}
-        render={renderItem}
-        pagination={showPagination && pagination}
-        onChange={onChange}
-      />
+        <Transfer
+          className={styles.transfer}
+          style={{height: style.height}}
+          titles={[env.i18n(titles[0]), env.i18n(titles[1])]}
+          dataSource={_dataSource}
+          targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}
+          showSearch={showSearch}
+          showSelectAll
+          oneWay={oneWay}
+          disabled={disabled}
+          render={renderItem}
+          pagination={showPagination && pagination}
+          onChange={onChange}
+        />
     </ConfigProvider>
   );
 }
