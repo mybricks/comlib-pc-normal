@@ -130,9 +130,15 @@ export default defineDataSet((utils) => {
     ...utils.repeat(() => {
       const options = utils.repeat(() => utils.word.noun(), 5);
       return {
-        Q: `选项配置为${options.map((option) => `“${option}”`).join('、')}`,
+        Q: `选择项配置为${options.map((option) => `“${option}”`).join('、')}`,
         A: {
           data: {
+            config: {
+              options: options.map((option) => ({
+                label: option,
+                value: option
+              }))
+            },
             staticOptions: options.map((option) => ({
               label: option,
               value: option
