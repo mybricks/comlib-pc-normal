@@ -183,7 +183,7 @@ export default function ({ data, input, output, style }: UpgradeParams<Data>): b
   //=========== v1.1.4 end ===============
 
   if(!style.height){
-    style.height = '200px';
+    style.height = 'auto';
   }
   return true;
 }
