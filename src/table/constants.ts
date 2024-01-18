@@ -97,6 +97,9 @@ export const OutputIds = {
   // 双击行触发
   ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData',
+  Row_Move_Up: 'rowMoveUp',
+  Row_Move_Down: 'rowMoveDown',
+  Remove_Row: 'removeRow',
   COLUMNS_CHANGE: 'columnsChange',
 
   // 新增对应串行输出
@@ -131,4 +134,4 @@ export const DefaultOnRowScript = `/**
   return {
     style: {}
   }
-}`
+}`;

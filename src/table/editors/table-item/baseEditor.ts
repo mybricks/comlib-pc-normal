@@ -16,7 +16,7 @@ const formatCode = encodeURIComponent(`
  **/
 ({ value, index, rowRecord }) => {
   return value
-}`)
+}`);
 
 const createBaseEditor = ({ data }) => ({
   title: '基础配置',
@@ -163,8 +163,10 @@ const createBaseEditor = ({ data }) => ({
                   type: 'any'
                 }
               }
-            }
-            );
+            });
+            slot.get(slotId).outputs.add(OutputIds.Row_Move_Up, '行上移', Schemas.Number);
+            slot.get(slotId).outputs.add(OutputIds.Row_Move_Down, '行下移', Schemas.Number);
+            slot.get(slotId).outputs.add(OutputIds.Remove_Row, '移除行', Schemas.Number);
           } else {
             if (slot.get(column.slotId)) {
               slot.remove(column.slotId);
@@ -180,50 +182,58 @@ const createBaseEditor = ({ data }) => ({
     createDataFormatEditor({
       title: '格式转化',
 
-      formatters: [{
-        formatter: 'KEYMAP'
-      }, {
-        formatter: 'EXPRESSION',
-        description: '表达式输出内容为字符串，在花括号内可以引用变量并进行简单处理',
-        options: {
-          placeholder: '如：当前是第{index+1}行，列数据为{value}, 行数据为{rowRecord}',
-          suggestions: [
-            {
-              label: 'value',
-              detail: '当前列数据',
-            },
-            {
-              label: 'rowRecord',
-              detail: '当前行数据',
-              properties: getSuggestionFromSchema({
-                type: 'object',
-                properties: getTableSchema({ data })
-              })
-            },
-            {
-              label: 'index',
-              detail: '当前行序号',
-            }
-          ]
+      formatters: [
+        {
+          formatter: 'KEYMAP'
+        },
+        {
+          formatter: 'EXPRESSION',
+          description: '表达式输出内容为字符串，在花括号内可以引用变量并进行简单处理',
+          options: {
+            placeholder: '如：当前是第{index+1}行，列数据为{value}, 行数据为{rowRecord}',
+            suggestions: [
+              {
+                label: 'value',
+                detail: '当前列数据'
+              },
+              {
+                label: 'rowRecord',
+                detail: '当前行数据',
+                properties: getSuggestionFromSchema({
+                  type: 'object',
+                  properties: getTableSchema({ data })
+                })
+              },
+              {
+                label: 'index',
+                detail: '当前行序号'
+              }
+            ]
+          }
+        },
+        {
+          formatter: 'TIMETEMPLATE',
+          defaultValue: 'YYYY-MM-DD HH:mm:ss'
+        },
+        {
+          formatter: 'CUSTOMTIME',
+          defaultValue: 'YYYY-MM-DD HH:mm:ss'
+        },
+        {
+          formatter: 'CUSTOMSCRIPT',
+          defaultValue: formatCode
         }
-      }, {
-        formatter: 'TIMETEMPLATE',
-        defaultValue: 'YYYY-MM-DD HH:mm:ss'
-      }, {
-        formatter: 'CUSTOMTIME',
-        defaultValue: 'YYYY-MM-DD HH:mm:ss'
-      }, {
-        formatter: 'CUSTOMSCRIPT',
-        defaultValue: formatCode
-      }],
+      ],
       value: {
         get({ data, focusArea }) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return item.formatData || {
-            formatterName: noneFormatter.name,
-            values: {}
-          }
+          return (
+            item.formatData || {
+              formatterName: noneFormatter.name,
+              values: {}
+            }
+          );
         },
         set({ data, focusArea }, value) {
           if (!focusArea) return;
@@ -256,26 +266,26 @@ const createBaseEditor = ({ data }) => ({
       }
     }
   ]
-})
+});
 
 function getSuggestionFromSchema(schema) {
   if (schema?.type?.toLowerCase() === 'object') {
     const res = Object.keys(schema.properties || {}).map((key) => {
       const suggestion = {
-        label: key,
+        label: key
       };
       if (!!schema.properties[key].properties) {
         //@ts-ignore
         suggestion.properties = getSuggestionFromSchema(schema.properties[key]);
       }
-      return suggestion
+      return suggestion;
     });
-    return res
+    return res;
   }
   if (schema?.type?.toLowerCase() === 'array') {
     return getSuggestionFromSchema(schema?.items);
   }
   return [];
-};
+}
 
 export default createBaseEditor;
