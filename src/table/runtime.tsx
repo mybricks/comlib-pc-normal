@@ -330,6 +330,29 @@ export default function (props: RuntimeParams<Data>) {
     },
     [dataSource]
   );
+  const handleMove = useCallback(
+    (index: number, direction = 'up') => {
+      index = Number(index);
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+
+      if (targetIndex >= 0 && targetIndex < dataSource.length) {
+        const newData = [...dataSource];
+        [newData[index], newData[targetIndex]] = [newData[targetIndex], newData[index]];
+        setDataSource(newData);
+      }
+    },
+    [dataSource]
+  );
+
+  const handleRemove = useCallback(
+    (index: number) => {
+      index = Number(index);
+      const newData = dataSource.filter((_, i) => i !== index);
+      setDataSource(newData);
+    },
+    [dataSource]
+  );
+
   useEffect(() => {
     // 监听插槽输出数据
     if (slots) {
@@ -340,6 +363,16 @@ export default function (props: RuntimeParams<Data>) {
             editTableData(val);
           });
         }
+        const bindOutput = (outputId: string, action: (index: number) => void) => {
+          const slotOutput = slots[slot]?.outputs[outputId];
+          if (slotOutput) {
+            slotOutput((index: number) => action(index));
+          }
+        };
+
+        bindOutput(OutputIds.Remove_Row, handleRemove);
+        bindOutput(OutputIds.Row_Move_Down, (index: number) => handleMove(index, 'down'));
+        bindOutput(OutputIds.Row_Move_Up, (index: number) => handleMove(index));
       });
     }
   }, [editTableData]);

@@ -68,20 +68,29 @@ export default function ({
   /*
    * 更新行数据 添加插槽列的新输出
    */
-  const addOutput = (slotId: any, outputId: string) => {
+  const addOutput = (
+    slotId: any,
+    outputId: string,
+    title = '更新行数据',
+    schema?: Record<string, any>
+  ) => {
     const slotItem = slot.get(slotId);
     if (slotItem && !slotItem.outputs.get(outputId)) {
-      slotItem.outputs.add(outputId, '更新行数据', {
-        type: 'object',
-        properties: {
-          index: {
-            type: 'number'
-          },
-          value: {
-            type: 'any'
+      slotItem.outputs.add(
+        outputId,
+        title,
+        schema || {
+          type: 'object',
+          properties: {
+            index: {
+              type: 'number'
+            },
+            value: {
+              type: 'any'
+            }
           }
         }
-      });
+      );
     }
   };
 
@@ -89,6 +98,9 @@ export default function ({
     columns.forEach((column) => {
       if (column.contentType === ContentTypeEnum.SlotItem && slot?.get(column.slotId)) {
         addOutput(column.slotId, OutputIds.Edit_Table_Data);
+        addOutput(column.slotId, OutputIds.Row_Move_Up, '行上移', Schemas.Number);
+        addOutput(column.slotId, OutputIds.Edit_Table_Data, '行下移', Schemas.Number);
+        addOutput(column.slotId, OutputIds.Edit_Table_Data, '行下移', Schemas.Number);
       }
       if (column.children) {
         UpdateColumnsOutput(column.children);
@@ -204,12 +216,7 @@ export default function ({
   /**
    * @description v1.1.0->1.1.1 feat 新增对应串行输出
    */
-  const setRels = (
-    InputId: any,
-    OutputId: any,
-    OutputTitle: any,
-    Schema: any = Schemas.Any
-  ) => {
+  const setRels = (InputId: any, OutputId: any, OutputTitle: any, Schema: any = Schemas.Any) => {
     const Input = input.get(InputId);
     const OutPut = output.get(OutputId);
     if (Input) {
@@ -230,14 +237,39 @@ export default function ({
   setRels(InputIds.SET_SORT, OutputIds.SET_SORT, '排序数据', Schemas.SORTER);
   setRels(InputIds.TABLE_HEIGHT, OutputIds.TABLE_HEIGHT, '表格高度', Schemas.TABLE_HEIGHT);
   setRels(InputIds.SUMMARY_COLUMN, OutputIds.SUMMARY_COLUMN, '总结栏数据', Schemas.String);
-  setRels(InputIds.SET_SHOW_COLUMNS, OutputIds.SET_SHOW_COLUMNS, '显示列', Schemas.SET_SHOW_COLUMNS);
+  setRels(
+    InputIds.SET_SHOW_COLUMNS,
+    OutputIds.SET_SHOW_COLUMNS,
+    '显示列',
+    Schemas.SET_SHOW_COLUMNS
+  );
   setRels(InputIds.SET_SHOW_TitleS, OutputIds.SET_SHOW_TitleS, '表头', Schemas.SET_SHOW_TitleS);
-  setRels(InputIds.CHANGE_COLS_ATTR, OutputIds.CHANGE_COLS_ATTR, '列属性', Schemas.CHANGE_COLS_ATTR);
-  setRels(InputIds.SET_ROW_SELECTION, OutputIds.SET_ROW_SELECTION, '勾选项', Schemas.SET_ROW_SELECTION);
+  setRels(
+    InputIds.CHANGE_COLS_ATTR,
+    OutputIds.CHANGE_COLS_ATTR,
+    '列属性',
+    Schemas.CHANGE_COLS_ATTR
+  );
+  setRels(
+    InputIds.SET_ROW_SELECTION,
+    OutputIds.SET_ROW_SELECTION,
+    '勾选项',
+    Schemas.SET_ROW_SELECTION
+  );
   setRels(InputIds.SET_FILTER_INPUT, OutputIds.SET_FILTER_INPUT, '筛选项', Schemas.Object);
-  setRels(InputIds.EnableAllExpandedRows, OutputIds.EnableAllExpandedRows, '开启关闭所有展开项', Schemas.Boolean);
+  setRels(
+    InputIds.EnableAllExpandedRows,
+    OutputIds.EnableAllExpandedRows,
+    '开启关闭所有展开项',
+    Schemas.Boolean
+  );
 
-  setRels(PaginatorInputIds.SetTotal, PaginatorOutputIds.SetTotal, '设置数据总数完成', Schemas.Number);
+  setRels(
+    PaginatorInputIds.SetTotal,
+    PaginatorOutputIds.SetTotal,
+    '设置数据总数完成',
+    Schemas.Number
+  );
   setRels(PaginatorInputIds.SetDisable, PaginatorOutputIds.SetDisable, '禁用分页器后');
   setRels(PaginatorInputIds.SetEnable, PaginatorOutputIds.SetEnable, '启用分页器后');
 
