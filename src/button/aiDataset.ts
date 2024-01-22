@@ -62,7 +62,7 @@ export default defineDataSet((utils) => {
       "Q": `将风格设置为${key}`,
       "A": {
         "data": {
-          "allType": btnTypeMap[key]
+          "type": btnTypeMap[key]
         }
       }
     })
@@ -83,7 +83,7 @@ export default defineDataSet((utils) => {
       "Q": `将按钮形状设置为${key}`,
       "A": {
         "data": {
-          "allShape": shapeMap[key]
+          "shape": shapeMap[key]
         }
       }
     })
