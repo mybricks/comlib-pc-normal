@@ -131,4 +131,5 @@ declare interface Window {
   ace: any;
   Babel: any;
   myTinymce: any; // Tinymce
+  jstt: any
 }
