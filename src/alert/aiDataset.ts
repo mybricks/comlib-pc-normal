@@ -32,38 +32,46 @@ export default defineDataSet((utils) => {
     });
   }
 
-  result['关闭按钮'] = {
-    Q: `启用关闭按钮`,
-    A: {
-      data: {
-        closable: true
+  result['关闭按钮'] = [
+    {
+      Q: `启用关闭按钮`,
+      A: {
+        data: {
+          closable: true
+        }
       }
     }
-  };
-  result['顶部公告'] = {
-    Q: `打开顶部公告`,
-    A: {
-      data: {
-        banner: true
+  ];
+  result['顶部公告'] = [
+    {
+      Q: `打开顶部公告`,
+      A: {
+        data: {
+          banner: true
+        }
       }
     }
-  };
-  result['辅助图标'] = {
-    Q: `打开辅助图标`,
-    A: {
-      data: {
-        showIcon: true
+  ];
+  result['辅助图标'] = [
+    {
+      Q: `打开辅助图标`,
+      A: {
+        data: {
+          showIcon: true
+        }
       }
     }
-  };
-  result['辅助介绍'] = {
-    Q: `打开辅助介绍`,
-    A: {
-      data: {
-        showInfo: true
+  ];
+  result['辅助介绍'] = [
+    {
+      Q: `打开辅助介绍`,
+      A: {
+        data: {
+          showInfo: true
+        }
       }
     }
-  };
+  ];
   const content = utils.lorem.word({ length: { min: 0, max: 10 } });
   result['辅助介绍文案'] = [
     {
@@ -76,14 +84,16 @@ export default defineDataSet((utils) => {
       }
     }
   ];
-  result['图标自定义'] = {
-    Q: `自定义图标`,
-    A: {
-      data: {
-        isChoose: true
+  result['图标自定义'] = [
+    {
+      Q: `自定义图标`,
+      A: {
+        data: {
+          isChoose: true
+        }
       }
     }
-  };
+  ];
   /**   临时注释icon */
   // const icon = utils.string.alpha(10)
   // result['选择图标'] = {
@@ -95,23 +105,27 @@ export default defineDataSet((utils) => {
   //   }
   // }
 
-  result['介绍文案插槽'] = {
-    Q: `打开介绍文案插槽（自定义介绍文案内容）`,
-    A: {
-      data: {
-        useContentSlot: true
+  result['介绍文案插槽'] = [
+    {
+      Q: `打开介绍文案插槽（自定义介绍文案内容）`,
+      A: {
+        data: {
+          useContentSlot: true
+        }
       }
     }
-  };
+  ];
 
-  result['固定宽度'] = {
-    Q: `将宽度设置为固定宽度`,
-    A: {
-      data: {
-        openWidth: true
+  result['固定宽度'] = [
+    {
+      Q: `将宽度设置为固定宽度`,
+      A: {
+        data: {
+          openWidth: true
+        }
       }
     }
-  };
+  ];
 
   result['固定宽度'].push({
     Q: `将固定宽度设置为400px`,
