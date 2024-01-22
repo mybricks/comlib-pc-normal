@@ -635,7 +635,7 @@ export default defineDataSet((utils) => {
 
   result['图片地址'] = [
     {
-      Q: `将图片地址设置为http://www.baidu.com`,
+      Q: `当没有数据时，显示url地址为http://www.baidu.com的图片`,
       A: {
         data: {
           isEmpty: true,
