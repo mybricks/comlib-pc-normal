@@ -1287,6 +1287,31 @@ export default {
                 }
               }
             ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '激活',
+            items: [
+              {
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active`;
+                },
+                domTarget({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active .icon`;
+                }
+              }
+            ]
           })
         ]
       }
