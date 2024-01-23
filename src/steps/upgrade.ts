@@ -13,5 +13,46 @@ export default function ({ input, output, data }: UpgradeParams<Data>): boolean 
       }
     });
 
+  /**
+   * @description v1.0.18 新增【设置步骤完成】关联输出项
+   */
+  const stepsSchema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string'
+        },
+        title: {
+          type: 'string'
+        },
+        subTitle: {
+          type: 'string'
+        },
+        description: {
+          type: 'string'
+        },
+        iconSrc: {
+          type: 'string'
+        },
+        iconSize: {
+          type: 'enum',
+          items: [
+            {
+              type: 'number'
+            },
+            {
+              type: 'number'
+            }
+          ]
+        }
+      }
+    }
+  };
+  if (input.get('setSteps') && !output.get('setStepsDone')) {
+    output.add('setStepsDone', '设置步骤完成', stepsSchema);
+    input.get('setSteps').setRels(['setStepsDone']);
+  }
   return true;
 }
