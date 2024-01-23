@@ -28,45 +28,51 @@ export const updateNextIOTitle = () => {};
 
 export const setDynamicStepsIO = (props: EditorResult<Data>, hasPower: boolean) => {
   const { input, output } = props;
-  if (!!hasPower) {
-    input.add('setSteps', '设置步骤', {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string'
-          },
-          title: {
-            type: 'string'
-          },
-          subTitle: {
-            type: 'string'
-          },
-          description: {
-            type: 'string'
-          },
-          iconSrc: {
-            type: 'string'
-          },
-          iconSize: {
-            type: 'enum',
-            items: [
-              {
-                type: 'number'
-              },
-              {
-                type: 'number'
-              }
-            ]
-          }
+  const stepsSchema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string'
+        },
+        title: {
+          type: 'string'
+        },
+        subTitle: {
+          type: 'string'
+        },
+        description: {
+          type: 'string'
+        },
+        iconSrc: {
+          type: 'string'
+        },
+        iconSize: {
+          type: 'enum',
+          items: [
+            {
+              type: 'number'
+            },
+            {
+              type: 'number'
+            }
+          ]
         }
       }
-    });
+    }
+  };
+  if (!!hasPower) {
+    input.add('setSteps', '设置步骤', stepsSchema);
+    output.add('setStepsDone', '设置步骤完成', stepsSchema);
+    input.get('setSteps').setRels(['setStepsDone']);
     output.add('onStepChange', '步骤改变', { type: 'number' });
   } else {
     if (input.get('setSteps')) {
       input.remove('setSteps');
+    }
+    if(output.get('setStepsDone')){
+      output.remove('setStepsDone');
     }
     if(output.get('onStepChange')){
       output.remove('onStepChange');

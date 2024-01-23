@@ -74,7 +74,7 @@ export default function ({
         });
 
       inputs['setSteps'] &&
-        inputs['setSteps']((val: Array<StepItem>) => {
+        inputs['setSteps']((val: Array<StepItem>, relOutputs) => {
           if (!Array.isArray(val)) {
             onError('【步骤条】步骤数据格式不对');
             return;
@@ -85,6 +85,7 @@ export default function ({
             }
             return item;
           });
+          relOutputs['setStepsDone'](val);
         });
 
       // stepAry.forEach(({ id }, index) => {
@@ -227,7 +228,9 @@ export default function ({
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
-        className={`step-toolbar ${css.stepsAction} ${isMobile ? css.mobilebtns : ''} ${data.toolbar.fixed? css['fixed-toolbar']:'' }`}
+        className={`step-toolbar ${css.stepsAction} ${isMobile ? css.mobilebtns : ''} ${
+          data.toolbar.fixed ? css['fixed-toolbar'] : ''
+        }`}
         data-item-type="stepActions"
         style={{
           justifyContent: data.toolbar.actionAlign,
@@ -253,7 +256,7 @@ export default function ({
     return data.dynamicSteps
       ? (stepIndex: number) => {
           data.current = stepIndex;
-          outputs?.onStepChange({...data.stepAry[stepIndex], index: stepIndex})
+          outputs?.onStepChange({ ...data.stepAry[stepIndex], index: stepIndex });
         }
       : void 0;
   }, [data.dynamicSteps]);
