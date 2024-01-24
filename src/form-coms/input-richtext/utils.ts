@@ -64,7 +64,6 @@ export function Init({
     height,
     menubar: false,
     branding: false,
-    statusbar: false,
     icons: window.myTinymce?.IconManager.has(customIconsId) ? customIconsId : '',
     plugins,
     toolbar,
@@ -156,6 +155,8 @@ const optionMappings = [
   ['附件', 'attachment'],
   ['表格', 'table'],
   ['超链接', 'link'],
+  ['解除链接', 'unlink'],
+  ['打开链接', 'openlink'],
   ['代码块', 'codesample'],
   ['表情', 'emoticons'],
 
@@ -173,3 +174,5 @@ const optionMappings = [
 ];
 
 export const toolbarOptions = optionMappings.map(([label, value]) => ({ label, value }));
+
+export const BtnItemDataSetKey = 'data-btn-idx';

@@ -25,5 +25,7 @@
   "disabled": false,
   "customUpload": true,
   "placeholder": "请输入内容",
-  "rules": []
+  "rules": [],
+  "icons": [],
+  "statusbar": false
 }
