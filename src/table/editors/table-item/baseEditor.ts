@@ -164,8 +164,8 @@ const createBaseEditor = ({ data }) => ({
                 }
               }
             });
-            slot.get(slotId).outputs.add(OutputIds.Row_Move_Up, '行上移', Schemas.Number);
-            slot.get(slotId).outputs.add(OutputIds.Row_Move_Down, '行下移', Schemas.Number);
+            slot.get(slotId).outputs.add(OutputIds.Row_Move_Up, '上移行', Schemas.Number);
+            slot.get(slotId).outputs.add(OutputIds.Row_Move_Down, '下移行', Schemas.Number);
             slot.get(slotId).outputs.add(OutputIds.Remove_Row, '移除行', Schemas.Number);
           } else {
             if (slot.get(column.slotId)) {
