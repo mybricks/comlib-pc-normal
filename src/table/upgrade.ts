@@ -98,9 +98,9 @@ export default function ({
     columns.forEach((column) => {
       if (column.contentType === ContentTypeEnum.SlotItem && slot?.get(column.slotId)) {
         addOutput(column.slotId, OutputIds.Edit_Table_Data);
-        addOutput(column.slotId, OutputIds.Row_Move_Up, '行上移', Schemas.Number);
-        addOutput(column.slotId, OutputIds.Edit_Table_Data, '行下移', Schemas.Number);
-        addOutput(column.slotId, OutputIds.Edit_Table_Data, '行下移', Schemas.Number);
+        addOutput(column.slotId, OutputIds.Row_Move_Up, '上移行', Schemas.Number);
+        addOutput(column.slotId, OutputIds.Row_Move_Down, '下移行', Schemas.Number);
+        addOutput(column.slotId, OutputIds.Remove_Row, '移除行', Schemas.Number);
       }
       if (column.children) {
         UpdateColumnsOutput(column.children);
