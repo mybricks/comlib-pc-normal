@@ -44,7 +44,7 @@ const FormItem = (props) => {
 
   return (
     <Form.Item
-      style={style}
+      // style={style}
       label={
         item?.hiddenLabel || (isMobile && item?.label?.trim()?.length === 0) ? (
           void 0

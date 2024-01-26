@@ -2,6 +2,7 @@ import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema, getSubmitSchema } from './schema'
 import { uniqBy, pick } from 'lodash';
+import { isEmptyObject, unitConversion } from '../../utils';
 
 export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
@@ -93,11 +94,14 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     color: 'rgba(0, 0, 0, 0.45)',
     fontStyle: 'normal'
   };
+  const defaultMargin = [0, 16, 24, 0];
   let isAllSameLabelStyle,
     whiteSpaceAllSame,
     labelAlignAllSame,
-    isAllSameDescriptionStyle;
+    isAllSameDescriptionStyle,
+    isAllMarginSame;
   if (data.config.labelAlign) {
+
     /** 标题字体、换行样式处理 */
     // 1. 比较所有表单项的换行样式是否都是跟随容器
     whiteSpaceAllSame = data.items.every(item => item?.labelAutoWrap === 'default');
@@ -108,7 +112,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }), JSON.stringify);
     // 3.1 只存在一个样式时，表示可以转化为表单上的公共样式
     if (labelStyleCompareResult.length === 1
-      && Object.keys(labelStyleCompareResult[0]).length
+      && !isEmptyObject(labelStyleCompareResult[0])
       && whiteSpaceAllSame) {
       isAllSameLabelStyle = true;
       let hasUnique = false;
@@ -150,7 +154,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }), JSON.stringify);
     // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
     if (descriptionStyleCompareResult.length === 1
-      && Object.keys(labelStyleCompareResult[0]).length) {
+      && !isEmptyObject(labelStyleCompareResult[0])) {
       isAllSameDescriptionStyle = true;
       let hasUnique = false;
       const style: React.CSSProperties = {};
@@ -171,7 +175,32 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       // 2.2 否则，在表单项中设置样式
       isAllSameDescriptionStyle = false;
     }
+
+    /** 边距样式处理 */
+    if ((data.config?.layout || data.layout) !== 'horizontal') {
+      // 1. 比较所有表单项的外边距和默认边距的差异
+      const marginCompareResult = uniqBy(data.items
+        .map(item => item.inlineMargin || [0, 16, 24, 0]), JSON.stringify);
+      console.log(marginCompareResult, 'marginCompareResult')
+      // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
+      if (marginCompareResult.length === 1) {
+        isAllMarginSame = true;
+        // 表单项的公共边距选择器
+        const selector = `div.ant-col:not(:last-child) div.ant-row.ant-form-item`;
+        setDeclaredStyle(selector, { margin: marginCompareResult[0]?.map(String).map(unitConversion).join(' ') });
+      } else {
+        // 2.2 否则，在表单项中设置样式
+        isAllMarginSame = false;
+      }
+    } else {
+      isAllMarginSame = true;
+    }
+    const actionMargin = (data.actions.inlinePadding || [0, 0, 0, 0]).map(String).map(unitConversion).join(' ');
+    // 操作项的边距选择器
+    const selector = `div.ant-col:not(:last-child) div.ant-row.ant-form-item`;
+    setDeclaredStyle(selector, { margin: actionMargin });
   }
+
   //=========== v1.4.27 end ===============
 
   data.items.forEach(item => {
@@ -186,9 +215,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     /**
      * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
      */
-    if (!item.inlineMargin) {
-      item.inlineMargin = [0, 16, 24, 0]
-    }
+    // if (!item.inlineMargin) {
+    //   item.inlineMargin = [0, 16, 24, 0]
+    // }
 
     /**
      * @description v1.1.10 表单项增加默认”显示冒号“配置；表单项字段trim
@@ -203,13 +232,13 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     /**
      * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
      */
-    if (item.labelAlign === undefined) {
-      item.labelAlign = 'default';
-    }
+    // if (item.labelAlign === undefined) {
+    //   item.labelAlign = 'default';
+    // }
 
-    if (item.labelAutoWrap === undefined) {
-      item.labelAutoWrap = 'default';
-    }
+    // if (item.labelAutoWrap === undefined) {
+    //   item.labelAutoWrap = 'default';
+    // }
 
     /**
      * @description v1.4.13 表单项增加"标题宽度"、自定义宽度 配置项
@@ -232,7 +261,12 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     if (data.config.labelAlign) {
       if (!isAllSameLabelStyle
         && item.labelStyle) {
+        // 表单项的标题字体选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
+        // const selector = [
+        //   `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`,
+        //   `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`,
+        // ];
 
         const style: React.CSSProperties = {};
         let hasUnique = false;
@@ -248,14 +282,15 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
             : 'nowrap';
         }
         if (hasUnique) {
-          setDeclaredStyle(selector, style);
+          console.log(style, selector, '这里是')
+          setDeclaredStyle(selector, style, void 0, true);
         }
         item.labelStyle = void 0;
       }
       if (item?.labelAlign !== 'default') {
-        // 表单的公共标题对齐方式选择器
+        // 表单项的标题对齐方式选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
-        setDeclaredStyle(selector, { textAlign: item.labelAlign });
+        setDeclaredStyle(selector, { textAlign: item.labelAlign }, void 0, true);
       }
       if (!isAllSameDescriptionStyle
         && item.descriptionStyle) {
@@ -273,6 +308,17 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
           setDeclaredStyle(selector, style);
         }
         item.descriptionStyle = void 0;
+      }
+      if (!isAllMarginSame
+        && item.inlineMargin) {
+        const selector = `.${item.id} div.ant-row.ant-form-item`;
+
+        const style: React.CSSProperties = {
+          margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
+        };
+        console.log(selector, style, 'item.margin')
+        setDeclaredStyle(selector, style);
+        item.inlineMargin = void 0;
       }
     }
   });
@@ -377,8 +423,8 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   //=========== v1.3.0 end ===============
 
   /**
- * @description v1.3.4 , 支持校验失败输出
- */
+  * @description v1.3.4 , 支持校验失败输出
+  */
   if (!output.get(outputIds.ON_SUBMIT_ERROR)) {
     output.add(outputIds.ON_SUBMIT_ERROR, '校验失败输出', {
       type: 'object',

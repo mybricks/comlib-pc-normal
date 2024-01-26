@@ -6,7 +6,7 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import * as Icons from '@ant-design/icons';
-
+import { difference } from 'lodash';
 import css from './runtime.less';
 import { InputIds, ValidateTriggerType } from '../types';
 
@@ -37,7 +37,24 @@ export default function (props: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
   const valueRef = useRef<any>();
-
+  const diff = (out, inn) => {
+    const outCom: any[] = [];
+    const innCom: any[] = [];
+    const getCom = (ori, res) => {
+      ori.map((i) => {
+        if (Array.isArray(i.comAry)) {
+          res.push(...i.comAry);
+        } else {
+          res.push(i);
+        }
+      });
+    };
+    getCom(out, outCom);
+    getCom(inn, innCom);
+    console.log('外网有内网没有', difference(outCom, innCom));
+    console.log('内网有外网没有', difference(innCom, outCom));
+  };
+  window._test = diff;
   useFormItemInputs(
     {
       id: props.id,
@@ -53,7 +70,7 @@ export default function (props: RuntimeParams<Data>) {
           changeValue(val);
         },
         returnValue(output) {
-          output(valueRef.current);
+          output(value);
         },
         resetValue() {
           changeValue(void 0);
@@ -126,7 +143,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   const onChange = useCallback((e) => {
-    const value = e.target.value;
+    const value = e.target.value.trim();
     changeValue(value);
     outputs['onChange'](value);
     onValidateTrigger(ValidateTriggerType.OnChange);

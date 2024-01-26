@@ -69,7 +69,7 @@ interface EditorResult<T> {
   setDesc: (desc?: string) => void
   /** 获取子组件data，引擎 v1.2.69 **/
   getChildByName: (name: string) => any
-  removePermission: (id:string) => void;
+  removePermission: (id: string) => void;
 }
 
 interface UpgradeParams<T> {
@@ -81,8 +81,8 @@ interface UpgradeParams<T> {
   style: any
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
-  setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
-  getDeclaredStyle: (selector: string) => ({selector: string, css: React.CSSProperties})
+  setDeclaredStyle: (selector: string, style: React.CSSProperties, global?, withParentComId?: boolean) => void
+  getDeclaredStyle: (selector: string) => ({ selector: string, css: React.CSSProperties })
   removeDeclaredStyle: (selector: string) => void
   config: {
     get: (id: string) => ConfigInstance;
