@@ -1,11 +1,16 @@
-import toJSON_各种事件触发检查 from './case-各种事件触发检查/toJSON.json';
-import toJSON_各种静态配置检查 from './case-各种静态配置检查/toJSON.json';
-import { toJSONPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
+import dump_各种事件触发检查 from './case-各种事件触发检查/dump.json';
+import dump_各种静态配置检查 from './case-各种静态配置检查/dump.json';
+import { dumpPreview, eventCheck, enhancedIt } from '@/../cypress/tools';
 
 describe('按钮', () => {
   enhancedIt('各种事件触发检查', () => {
     // 加载测试页面
-    toJSONPreview(toJSON_各种事件触发检查);
+    dumpPreview(dump_各种事件触发检查, [
+      {
+        selector: 'button',
+        text: '单击按钮'
+      }
+    ]);
 
     // 找到包含文本“单击按钮”的按钮组件并单击
     cy.contains('button', '单击按钮').click();
@@ -37,7 +42,12 @@ describe('按钮', () => {
 
   enhancedIt('各种静态配置检查', () => {
     // 加载测试页面
-    toJSONPreview(toJSON_各种静态配置检查);
+    dumpPreview(dump_各种静态配置检查, [
+      {
+        selector: 'button',
+        text: '按钮'
+      }
+    ]);
 
     // 截图对比
     cy.compareSnapshot('按钮_各种静态配置检查');

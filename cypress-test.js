@@ -33,6 +33,7 @@ async function main() {
   beautifulLog(`已修改的组件列表：${modifiedComponents.join(',')}`);
   beautifulLog('开始按需执行组件测试用例...');
 
+  let allPass = false;
   try {
     // 按需执行 Cypress 测试
     const command = `npx cypress run --env port=${port},check="${modifiedComponents.join(' ')}"`;
@@ -40,12 +41,16 @@ async function main() {
     execSync(command, {
       stdio: 'inherit'
     });
+
+    allPass = true;
     beautifulLog('测试通过！', 'success');
   } catch (e) {
+    allPass = false;
     beautifulLog('有测试用例未通过，请检查！', 'error');
   }
-
   kill();
+  if (allPass) process.exit(0);
+  else process.exit(1);
 }
 
 main();
