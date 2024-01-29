@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { Pagination } from 'antd';
+import ConfigProvider from '../components/ConfigProvider';
 import { Data, InputIds, OutputIds, SizeTypeEnum, templateRender } from './constants';
 import { checkIfMobile } from '../utils';
+import zhCN from 'antd/es/locale/zh_CN';
 
 export default (props: RuntimeParams<Data>) => {
   const { data, inputs, outputs, env } = props;
@@ -75,20 +77,22 @@ export default (props: RuntimeParams<Data>) => {
       }}
       className={disabled ? 'paginationDisable' : undefined}
     >
-      <Pagination
-        total={total}
-        showTotal={totalText}
-        current={current}
-        defaultPageSize={defaultPageSize}
-        size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
-        simple={isMobile || size === SizeTypeEnum.Simple}
-        showQuickJumper={showQuickJumper}
-        showSizeChanger={showSizeChanger}
-        pageSizeOptions={pageSizeOptions}
-        hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
-        onChange={onChange}
-        disabled={disabled}
-      />
+      <ConfigProvider locale={env.vars?.locale}>
+        <Pagination
+          total={total}
+          showTotal={totalText}
+          current={current}
+          defaultPageSize={defaultPageSize}
+          size={size === SizeTypeEnum.Simple ? SizeTypeEnum.Default : size}
+          simple={isMobile || size === SizeTypeEnum.Simple}
+          showQuickJumper={showQuickJumper}
+          showSizeChanger={showSizeChanger}
+          pageSizeOptions={pageSizeOptions}
+          hideOnSinglePage={env.edit || showSizeChanger ? false : hideOnSinglePage}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      </ConfigProvider>
     </div>
   );
 };

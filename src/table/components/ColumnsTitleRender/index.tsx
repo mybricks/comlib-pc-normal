@@ -246,7 +246,9 @@ export default ({
         onCell={onCell}
         onHeaderCell={(): any => {
           return {
-            'data-table-th-idx': cItem.key
+            'data-table-th-idx': cItem.key,
+            className:
+              sorter && cItem?.sorterAlign && `ant-table-column-sorter-${cItem?.sorterAlign}`
           };
         }}
       />

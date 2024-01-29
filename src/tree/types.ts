@@ -96,6 +96,8 @@ export interface Data {
   }
   removeConfirm: string;
   editInline?: boolean;
+  /** @description 1.0.45 动态禁用表达式 */
+  disabledScript?: string;
   /** 动态可勾选表达式 */
   checkableScript?: string;
   /** 拖拽 */
@@ -124,6 +126,14 @@ export interface Data {
   image: string;
   /** 可滚动高度 */
   scrollHeight: string;
+  /**
+   * @description 组件版本: 1.0.40
+   */
+  useStaticData: boolean;
+  /**
+   * @description 组件版本: 1.0.40
+   */
+  staticData: string;
 }
 
 export interface TreeData {

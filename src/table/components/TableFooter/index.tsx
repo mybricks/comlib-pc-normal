@@ -14,10 +14,12 @@ interface Props {
   outputs: any;
   selectedRows: any[];
   selectedRowKeys: string[];
+  footerRef: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement>;
 }
 
 export default (props: Props): JSX.Element => {
-  const { data, env, inputs, outputs } = props;
+  const { data, env, inputs, outputs, footerRef, containerRef } = props;
 
   const useBottomRowSelection =
     data.useRowSelection &&
@@ -26,6 +28,7 @@ export default (props: Props): JSX.Element => {
 
   return (
     <div
+      ref={footerRef}
       className={classnames(
         css.footerContainer,
         (useBottomRowSelection || data.usePagination) && css.marginTop
@@ -46,6 +49,10 @@ export default (props: Props): JSX.Element => {
             data={data.paginationConfig}
             inputs={inputs}
             outputs={outputs}
+            containerRef={containerRef}
+            config={{
+              scrollToFirstRowOnChange: data.scroll.scrollToFirstRowOnChange
+            }}
           />
         </div>
       )}

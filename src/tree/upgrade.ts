@@ -8,6 +8,31 @@ export default function ({
   output
 }: UpgradeParams<Data>): boolean {
 
+  const treeDataSchema = {
+    "title": "树组件数据",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "title": "标题",
+          "type": "string"
+        },
+        "key": {
+          "title": "字段名",
+          "type": "string"
+        },
+        "children": {
+          "title": "子项",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  };
+
   /**
   * @description v1.0.6 节点操作项支持省略样式配置
   */
@@ -251,6 +276,41 @@ export default function ({
   }
 
   //=========== v1.0.38 end ===============
+
+  /**
+    * @description v1.0.40 静态数据配置重构, 增加搭建态占位模式
+    */
+
+  if (data.useStaticData === undefined) {
+    data.useStaticData = true;
+  }
+  if (!data.staticData) {
+    data.staticData = encodeURIComponent(JSON.stringify(data.treeData, null, 2));
+    data.treeData = [];
+  }
+
+  //=========== v1.0.40 end ===============
+
+  /**
+   * @description v1.0.42 增加 getTreeData获取数据 输入项、onChange数据变化 returnTreeData数据输出 输出项
+   */
+
+  if (!output.get(OutputIds.OnChange)) {
+    output.add(OutputIds.OnChange, '数据变化', treeDataSchema);
+  }
+  if (!input.get(InputIds.GetTreeData)) {
+    input.add(InputIds.GetTreeData, '获取数据', {
+      type: 'any'
+    });
+  }
+  if (!output.get(OutputIds.ReturnTreeData)) {
+    output.add(OutputIds.ReturnTreeData, '数据输出', treeDataSchema);
+  }
+  const getTreeDataPin = input.get(InputIds.GetTreeData)
+  if (!getTreeDataPin.rels) {
+    getTreeDataPin.setRels([OutputIds.ReturnTreeData]);
+  }
+  //=========== v1.0.42 end ===============
 
   return true;
 }

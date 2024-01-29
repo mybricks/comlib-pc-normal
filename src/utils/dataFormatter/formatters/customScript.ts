@@ -8,22 +8,20 @@ const customScriptFormatter: TFormatterInfo = {
     return {
       type: 'code',
       options: {
-        options: {
-          babel: true,
-          comments: '',
-          theme: 'light',
-          minimap: {
-            enabled: false
-          },
-          lineNumbers: 'on',
-          eslint: {
-            parserOptions: {
-              ecmaVersion: '2020',
-              sourceType: 'module'
-            }
-          },
-          autoSave: false,
+        babel: true,
+        comments: '',
+        theme: 'light',
+        minimap: {
+          enabled: false
         },
+        lineNumbers: 'on',
+        eslint: {
+          parserOptions: {
+            ecmaVersion: '2020',
+            sourceType: 'module'
+          }
+        },
+        autoSave: false,
         ...options
       }
     }

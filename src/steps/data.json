@@ -25,7 +25,7 @@
     "secondBtnText": "上一步",
     "submitText": "提交",
     "btns": ["previous", "next", "submit"],
-    "bottom": 24
+    "bottom": 0
   },
   "fullSubmit": false
 }

@@ -7,6 +7,7 @@ export default function ({
   data,
   slot,
   output,
+  style,
   setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
   //1.0.2 ->1.0.3，去除 { "id": "extra", "title": "卡片操作容器" }
@@ -62,5 +63,24 @@ export default function ({
     output.add(OutputIds.DoubleClick, '双击', { type: 'number' });
   }
   
+  //1.0.14 -> 1.0.15
+  if(typeof data.showTitle === "undefined"){
+    data.showTitle = true
+  }
+  if(typeof data.isHeight === "undefined"){
+    if(style.height === 'auto'){
+      data.isHeight = false
+    }else{
+      data.isHeight = true
+    }
+  }
+  if(typeof data.height === "undefined"){
+    if(style.height === 'auto'){
+      data.height = "80px"
+    }else if(typeof style.height === 'number'){
+      data.height = style.height - (data.title === '' ? 0 : 57 )+ 'px';
+      style.height = 'auto';
+    }
+  }
   return true;
 }

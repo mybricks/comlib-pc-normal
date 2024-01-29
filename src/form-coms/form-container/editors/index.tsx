@@ -7,6 +7,8 @@ import { inputIds, outputIds } from '../constants';
 import { refreshSchema, refreshParamsSchema, refreshFormItemPropsSchema } from '../schema';
 import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
+import iconEditor from './iconEditor';
+import { createrCatelogEditor } from '../../utils/index';
 
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
@@ -298,15 +300,31 @@ export default {
           }
         },
         {
-          title: '提交隐藏表单项',
+          title: '提交隐藏表单项字段',
           type: 'Switch',
-          description: '提交时收集被隐藏的表单项字段并进行校验',
+          description: '提交时收集被隐藏的表单项字段',
           value: {
             get({ data }: EditorResult<Data>) {
               return data.submitHiddenFields;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
               data.submitHiddenFields = val;
+            }
+          }
+        },
+        {
+          title: '校验隐藏表单项字段',
+          type: 'Switch',
+          description: '提交隐藏表单项字段时，是否需要对隐藏字段进行校验，默认为 True 需要校验',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.submitHiddenFields;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.validateHiddenFields;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.validateHiddenFields = val;
             }
           }
         },
@@ -1125,22 +1143,83 @@ export default {
           }
         }
       },
+      ...iconEditor,
       {
-        title: '默认',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-        }
-      },
-      {
-        title: 'Hover',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
-        target({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
-        },
-        domTarget({ focusArea }) {
-          return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
-        }
+        items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"] .icon`;
+                }
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                catelog: 'Hover',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover`;
+                },
+                domTarget({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover .icon`;
+                }
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '激活',
+            items: [
+              {
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active`;
+                },
+                domTarget({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active .icon`;
+                }
+              }
+            ]
+          })
+        ]
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {

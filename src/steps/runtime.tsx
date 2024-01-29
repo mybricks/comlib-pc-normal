@@ -1,10 +1,10 @@
 import { Button, Steps } from 'antd';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
-import { Data, INTO, LEAVE, CLICK } from './constants';
+import { Data, INTO, LEAVE, CLICK, StepItem } from './constants';
 import { usePrevious } from '../utils/hooks';
 import css from './index.less';
-import { checkIfMobile } from '../utils';
+import { checkIfMobile, uuid } from '../utils';
 import * as Icons from '@ant-design/icons';
 
 const { Step } = Steps;
@@ -71,6 +71,21 @@ export default function ({
               item.hide = true;
             }
           });
+        });
+
+      inputs['setSteps'] &&
+        inputs['setSteps']((val: Array<StepItem>, relOutputs) => {
+          if (!Array.isArray(val)) {
+            onError('【步骤条】步骤数据格式不对');
+            return;
+          }
+          data.stepAry = val.map((item, index) => {
+            if (!item.id) {
+              item.id = `${uuid()}_${index}`;
+            }
+            return item;
+          });
+          relOutputs['setStepsDone'](val);
         });
 
       // stepAry.forEach(({ id }, index) => {
@@ -213,7 +228,9 @@ export default function ({
   const renderToolbar = () => {
     return data.toolbar.showActions ? (
       <div
-        className={`${css.stepsAction} ${isMobile ? css.mobilebtns : ''}`}
+        className={`step-toolbar ${css.stepsAction} ${isMobile ? css.mobilebtns : ''} ${
+          data.toolbar.fixed ? css['fixed-toolbar'] : ''
+        }`}
         data-item-type="stepActions"
         style={{
           justifyContent: data.toolbar.actionAlign,
@@ -235,6 +252,15 @@ export default function ({
     return { type, progressDot };
   }, [data.steps.type]);
 
+  const onChange = useCallback(() => {
+    return data.dynamicSteps
+      ? (stepIndex: number) => {
+          data.current = stepIndex;
+          outputs?.onStepChange({ ...data.stepAry[stepIndex], index: stepIndex });
+        }
+      : void 0;
+  }, [data.dynamicSteps]);
+
   return (
     <div className={css.stepbox}>
       <div
@@ -248,6 +274,7 @@ export default function ({
           type={type}
           progressDot={progressDot}
           direction={direction}
+          onChange={onChange()}
         >
           {stepAry.map((item, index) => {
             const emptyNode = <div style={{ lineHeight: 32 }} />;

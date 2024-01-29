@@ -137,7 +137,11 @@ export function validateForInput(
     item.validateStatus[index] = validateInfo?.validateStatus;
     item.help[index] = validateInfo?.help;
     if (cb) {
-      cb(validateInfo);
+      cb({
+        ...validateInfo,
+        index,
+        subName: item.name
+      });
     }
   });
 };
@@ -167,10 +171,6 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
         data.items.forEach((item) => {
           const { id, name, comName, label } = item;
           const { index, inputs, visible } = childrenStore[key][comName];
-          // 未开启“提交隐藏表单项” && 表单项隐藏，不再收集
-          if (!data.submitHiddenFields && !visible) {
-            return;
-          }
           if (!allValues[index]) {
             allValues[index] = {};
           }
@@ -178,7 +178,7 @@ export function getValue({ data, childrenStore, childId, childName, value }: { d
           inputs?.getValue().returnValue((val) => {
             allValues[index][formItemName] = val;
             count++;
-            if (id === childId && data.value && JSON.stringify(data.value[index]?.[formItemName]) !== JSON.stringify(val)) {
+            if (comName === childName && data.value && JSON.stringify(data.value[index]?.[formItemName]) !== JSON.stringify(val)) {
               changedValue.name = formItemName;
               changedValue.index = index;
               changedValue.inputs = inputs;

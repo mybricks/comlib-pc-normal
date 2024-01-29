@@ -1,0 +1,43 @@
+{
+  "title": "倒计时",
+  "namespace": "mybricks.normal-pc.countdown",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "用于倒计时场景",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "docs": "",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editor.ts",
+  "inputs": [
+    {
+      "id": "startCountdown",
+      "title": "开始倒计时",
+      "schema": {
+        "type": "number"
+      },
+      "rels": ["curTime", "timeOut"],
+      "desc": "单位秒 输入需要是数字或者能转换成数字的字符 否则会是默认设置的静态时间"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "residualTime",
+      "title": "剩余时间",
+      "schema": {
+        "type": "number"
+      },
+      "desc": "剩余时间 单位秒"
+    },
+    {
+      "id": "countdownOut",
+      "title": "倒计时结束",
+      "schema": {
+        "type": "number"
+      },
+      "desc": "包含剩余时间为0和主动停止倒计时情况"
+    }
+  ]
+}

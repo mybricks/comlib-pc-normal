@@ -15,6 +15,7 @@ export interface Data {
     [StatusEnum.unCheck]: string;
   };
   config: SwitchProps;
+  isEditable: boolean;
 }
 
 export default function ({
@@ -71,6 +72,9 @@ export default function ({
           } else if (val === false) {
             data.config.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate(model, outputRels) {
           validateFormItem({
@@ -129,12 +133,16 @@ export default function ({
 
   return (
     <div>
-      <Switch
-        {...data.config}
-        checked={checked}
-        onChange={onChange}
-        // onBlur={onBlur}
-      />
+      {data.isEditable ? (
+        <Switch
+          {...data.config}
+          checked={checked}
+          onChange={onChange}
+          // onBlur={onBlur}
+        />
+      ) : (
+        `${checked || false}`
+      )}
     </div>
   );
 }

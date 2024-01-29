@@ -16,6 +16,7 @@ const DefaultOptionKey = '_id';
  */
 const getOutputValue = (data, env, value) => {
   const getOutputValuefromValue = (val, index?) => {
+    if (val?.value) val = val.value;
     let result = val;
     if (val == null) return result;
     if (data.config.labelInValue) {
@@ -122,10 +123,10 @@ export default function Runtime({
         logger.warn(valueTypeCheck.message);
       } else {
         const outputValue = changeValue(val);
-        if (relOutputs['setValueDone']) {
-          relOutputs['setValueDone'](val);
-        }
         outputs[OutputIds.OnChange](outputValue);
+      }
+      if (relOutputs['setValueDone']) {
+        relOutputs['setValueDone'](val);
       }
     });
 
@@ -135,10 +136,10 @@ export default function Runtime({
           logger.warn(valueTypeCheck.message);
         } else {
           const outputValue = changeValue(val);
-          if (relOutputs['setInitialValueDone']) {
-            relOutputs['setInitialValueDone'](val);
-          }
           outputs[OutputIds.OnInitial](outputValue);
+        }
+        if (relOutputs['setInitialValueDone']) {
+          relOutputs['setInitialValueDone'](val);
         }
       });
 
@@ -217,6 +218,14 @@ export default function Runtime({
       }
     });
 
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
+      }
+    });
+
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
@@ -286,22 +295,26 @@ export default function Runtime({
 
   return (
     <div className={css.select} ref={ref} id="area">
-      <Select
-        {...data.config}
-        placeholder={env.i18n(data.config.placeholder)}
-        labelInValue={false}
-        showArrow={data.config.showArrow}
-        options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.config.options, env)}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-        maxTagCount={data.maxTagCount}
-        dropdownClassName={id}
-        open={env.design ? true : void 0}
-        onSearch={data.config.showSearch ? onSearch : void 0}
-        notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
-      />
+      {data.isEditable ? (
+        <Select
+          {...data.config}
+          placeholder={env.i18n(data.config.placeholder)}
+          labelInValue={false}
+          showArrow={data.config.showArrow}
+          options={env.edit ? i18nFn(data.staticOptions, env) : i18nFn(data.config.options, env)}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+          maxTagCount={data.maxTagCount}
+          dropdownClassName={id}
+          open={env.design ? true : void 0}
+          onSearch={data.config.showSearch ? onSearch : void 0}
+          notFoundContent={data.dropdownSearchOption && fetching ? <Spin size="small" /> : void 0}
+        />
+      ) : (
+        <div>{Array.isArray(value) ? value.join(',') : value}</div>
+      )}
     </div>
   );
 }

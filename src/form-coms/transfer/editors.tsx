@@ -4,10 +4,11 @@ import styleEditors from './styleEditors';
 import { OutputIds } from '../types';
 export default {
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   '@init': ({ style }) => {
     style.width = '100%';
+    style.height = 'auto';
   },
   ':root': {
     style: [...styleEditors],

@@ -100,7 +100,7 @@ const CodeEditor = (
       exec: function () {
         formatterCode(valueRef.current);
       },
-      readOnly: false
+      readOnly
     });
     return editor;
   };
@@ -127,8 +127,8 @@ const CodeEditor = (
 
   useEffect(() => {
     const { language, ...options } = config ?? {};
-    editor.current?.setOptions(options);
-  }, [config]);
+    editor.current?.setOptions({ ...options, readOnly });
+  }, [config, readOnly]);
 
   useEffect(() => {
     editor.current?.setReadOnly(readOnly);
@@ -142,8 +142,8 @@ const CodeEditor = (
           : valueRef.current === undefined || valueRef.current === null
           ? ''
           : JSON.stringify(valueRef.current);
-      editor.current.clearSelection();
       supportFormat && formatterCode(val);
+      editor.current.clearSelection();
     }
   }, [value]);
 

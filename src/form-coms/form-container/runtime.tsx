@@ -82,7 +82,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
       });
 
       inputs[inputIds.GET_FIELDS_VALUE]?.((val, outputRels) => {
-        outputRels[outputIds.RETURN_VALUES](deepCopy(formContext.current.store));
+        getValue().then((v) => {
+          outputRels[outputIds.RETURN_VALUES](v);
+        });
       });
 
       inputs[inputIds.SET_DISABLED]((_, relOutputs) => {
@@ -95,6 +97,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
         data.config.disabled = false;
         setEnabled();
         relOutputs['setEnabledDone']();
+      });
+
+      inputs[inputIds.isEditable]((val, relOutputs) => {
+        data.isEditable = val;
+        setIsEditable(val);
+        relOutputs['isReadOnlyDone'](val);
       });
 
       // 校验字段
@@ -318,6 +326,15 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   };
 
+  const setIsEditable = (val, nameList?: string[]) => {
+    data.items.forEach((item) => {
+      if (!nameList || nameList.includes(item.name)) {
+        const input = getFromItemInputEvent(item, childrenInputs);
+        input?.isEditable && input?.isEditable(val);
+      }
+    });
+  };
+
   /**
    * 设置表单项公共配置
    * @param formItemsProps 表单项配置对象
@@ -366,6 +383,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const validate = useCallback(() => {
     return new Promise((resolve, reject) => {
+      /** 过滤隐藏表单项 */
       const formItems = getFormItems(data, childrenInputs);
 
       Promise.all(
@@ -375,16 +393,22 @@ export default function Runtime(props: RuntimeParams<Data>) {
           const input = getFromItemInputEvent(item, childrenInputs);
 
           return new Promise((resolve, reject) => {
-            validateForInput(
-              {
-                input,
-                model: {
-                  curFormItem: item,
-                  ...formContext.current.store
-                }
-              },
-              resolve
-            );
+            if (data.submitHiddenFields && !data.validateHiddenFields && !item.visible) {
+              resolve({
+                validateStatus: 'success'
+              });
+            } else {
+              validateForInput(
+                {
+                  input,
+                  model: {
+                    curFormItem: item,
+                    ...formContext.current.store
+                  }
+                },
+                resolve
+              );
+            }
           });
         })
       )
@@ -402,6 +426,44 @@ export default function Runtime(props: RuntimeParams<Data>) {
     });
   }, []);
 
+  const getValue = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      const formItems = getFormItems(data, childrenInputs);
+
+      Promise.all(
+        formItems.map((item) => {
+          // const id = item.id;
+          // const input = childrenInputs[id];
+          const input = getFromItemInputEvent(item, childrenInputs);
+
+          return new Promise((resolve, reject) => {
+            let value = {};
+
+            input?.getValue().returnValue((val, key) => {
+              //调用所有表单项的 getValue/returnValue
+              value = {
+                name: item.name,
+                value: val
+              };
+
+              resolve(value);
+            });
+          });
+        })
+      )
+        .then((values) => {
+          const rtn = {};
+
+          values.forEach((item: any) => {
+            rtn[item.name] = item.value;
+          });
+
+          resolve({ ...rtn });
+        })
+        .catch((e) => reject(e));
+    });
+  }, []);
+
   const submit = (outputRels?: any) => {
     submitMethod(outputIds.ON_FINISH, outputRels);
   };
@@ -409,25 +471,31 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const submitMethod = (outputId: string, outputRels?: any, params?: any) => {
     validate()
       .then(() => {
-        let res = { ...formContext.current.store, ...params };
+        getValue()
+          .then((values: any) => {
+            let res = { ...values, ...params };
 
-        if (
-          data.domainModel?.entity?.fieldAry?.length > 0 &&
-          data.domainModel?.isQuery &&
-          data.domainModel?.type === 'domain'
-        ) {
-          // 领域模型数据处理
-          res = {
-            values: { ...res },
-            fieldsRules: { ...data.domainModel.queryFieldRules }
-          };
-        }
+            if (
+              data.domainModel?.entity?.fieldAry?.length > 0 &&
+              data.domainModel?.isQuery &&
+              data.domainModel?.type === 'domain'
+            ) {
+              // 领域模型数据处理
+              res = {
+                values: { ...res },
+                fieldsRules: { ...data.domainModel.queryFieldRules }
+              };
+            }
 
-        if (outputRels) {
-          outputRels[outputId](res);
-        } else {
-          outputs[outputId](res);
-        }
+            if (outputRels) {
+              outputRels[outputId](res);
+            } else {
+              outputs[outputId](res);
+            }
+          })
+          .catch((e) => {
+            console.log('收集表单项值失败', e);
+          });
       })
       .catch((e) => {
         const { validateStatus, ...other } = e;
@@ -443,7 +511,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
       <Fragment>
         {!data.isFormItem ? (
           <Form
-            className={slots['content'].size === 0 && env.edit ? css.empty : undefined}
+            className={
+              slots['content'].size === 0 && env.edit && data.actions.visible
+                ? css.empty
+                : undefined
+            }
             form={formRef}
             labelCol={
               (data.config?.layout || data.layout) === 'horizontal' ? getLabelCol(data) : undefined
@@ -494,6 +566,27 @@ const getFormItems = (data: Data, childrenInputs) => {
 };
 
 /**
+ * @description 过滤表单数据
+ */
+const getFieldsValue = (data: Data, store: {}, childrenInputs) => {
+  let result = {};
+
+  const formItems = getFormItems(data, childrenInputs);
+
+  if (data.submitHiddenFields) {
+    result = deepCopy(store);
+  } else {
+    formItems.forEach((item) => {
+      if (item.visible) {
+        result[item.name] = store[item.name];
+      }
+    });
+  }
+
+  return result;
+};
+
+/**
  * @description 触发表单项校验，并更新校验结果
  */
 const validateForInput = (
@@ -502,8 +595,11 @@ const validateForInput = (
 ): void => {
   const item = model?.curFormItem;
   input?.validate(model).returnValidate((validateInfo) => {
-    item.validateStatus = validateInfo?.validateStatus;
-    item.help = validateInfo?.help;
+    // 存在index, 表示校验失败项是动态表单项的子项
+    if (validateInfo.index === undefined) {
+      item.validateStatus = validateInfo?.validateStatus;
+      item.help = validateInfo?.help;
+    }
     if (cb) {
       cb({
         ...validateInfo,
@@ -531,18 +627,23 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values,
             cb?.();
           });
       }
-    } else {
-      console.warn(
-        `FormItem Input Not Found, FormItem Name: ${item.name}, 可能存在脏数据 请联系开发人员`
-      );
     }
   }
 };
 
 const getFromItemInputEvent = (formItem, childrenInputs) => {
+  let input;
+
+  input = childrenInputs[formItem.id];
   if (formItem.comName) {
-    return childrenInputs[formItem.comName];
+    input = childrenInputs[formItem.comName];
   }
 
-  return childrenInputs[formItem.id];
+  if (!input) {
+    console.warn(
+      `FormItem Input Not Found, FormItem Name: ${formItem.name}, 可能存在脏数据 请联系开发人员`
+    );
+  }
+
+  return input;
 };

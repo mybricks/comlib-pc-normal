@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
-import { typeCheck, uuid } from '../utils';
+import { deepCopy, typeCheck, uuid } from '../utils';
 import {
   setCheckboxStatus,
   generateList,
@@ -14,7 +14,7 @@ import {
   traverseTree
 } from './utils';
 import { Data, TreeData } from './types';
-import { DragConfigKeys, InputIds, OutputIds } from './constants';
+import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
 import TreeNode from './Components/TreeNode/index';
 import css from './style.less';
 
@@ -36,6 +36,23 @@ export default function (props: RuntimeParams<Data>) {
     return uuid();
   }, []);
 
+  const updateDefaultTreeData = useCallback(() => {
+    let treeData: TreeData[] = data.treeData;
+    const jsonString = decodeURIComponent(data.staticData);
+    try {
+      const jsonData = JSON.parse(jsonString);
+      treeData = jsonData;
+    } catch {
+      console.error('静态数据格式错误');
+    }
+    if (env.edit && data.useStaticData === false) {
+      treeData = placeholderTreeData;
+    } else if (env.runtime && data.useStaticData === false) {
+      treeData = [];
+    }
+    return treeData;
+  }, []);
+
   /** 重置checkedKeys */
   const clearCheckedKeys = useCallback(() => {
     data.checkedKeys = [];
@@ -55,6 +72,10 @@ export default function (props: RuntimeParams<Data>) {
     data.expandedKeys = keys;
     setExpandedKeys(keys);
   }, []);
+
+  useEffect(() => {
+    data.treeData = updateDefaultTreeData();
+  }, [data.useStaticData, data.staticData]);
 
   /** 更新treeKeys */
   useEffect(() => {
@@ -89,11 +110,15 @@ export default function (props: RuntimeParams<Data>) {
   const filter = useCallback(() => {
     const filterKeys: React.Key[] = [];
     treeKeys.current.forEach((item) => {
-      if (data.filterNames.some((filterName) => filterMethods[filterName](item))) {
+      if (data.filterNames.some((filterName) => filterMethods(filterName)(item))) {
         let childKey = item.key;
         filterKeys.push(childKey);
         while (getParentKey(childKey, data.treeData, keyFieldName)) {
           const parentKey = getParentKey(childKey, data.treeData, keyFieldName);
+          if (parentKey === childKey) {
+            console.error(`树中存在标识重复的节点, 重复key: ${parentKey}`);
+            return;
+          }
           childKey = parentKey;
           filterKeys.push(parentKey);
         }
@@ -107,15 +132,21 @@ export default function (props: RuntimeParams<Data>) {
   /**
    * 过滤方法合集
    */
-  const filterMethods = useMemo(() => {
-    return {
-      byTitle: (node: TreeData) => {
-        return node.title?.indexOf(data.filterValue) > -1;
-      },
-      byKey: (node: TreeData) => {
-        return node.key?.indexOf(data.filterValue) > -1;
-      }
-    };
+  const filterMethods = useCallback((filterName) => {
+    switch (filterName) {
+      case 'byTitle':
+        return (node: TreeData) => {
+          return node.title?.indexOf(data.filterValue) > -1;
+        };
+      case 'byKey':
+        return (node: TreeData) => {
+          return node.key?.indexOf(data.filterValue) > -1;
+        };
+      default:
+        return (node: TreeData) => {
+          return node[filterName]?.indexOf(data.filterValue) > -1;
+        };
+    }
   }, []);
 
   useEffect(() => {
@@ -133,12 +164,14 @@ export default function (props: RuntimeParams<Data>) {
           } else {
             data.treeData = [];
           }
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       // 更新节点数据
       inputs['nodeData'] &&
         inputs['nodeData']((nodeData: TreeData) => {
           if (typeCheck(nodeData, 'OBJECT')) {
             data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
+            outputs[OutputIds.OnChange](deepCopy(data.treeData));
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
@@ -199,10 +232,12 @@ export default function (props: RuntimeParams<Data>) {
       inputs['disableCheckbox'] &&
         inputs['disableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: true })];
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       inputs['enableCheckbox'] &&
         inputs['enableCheckbox']((value: any) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
 
       // 设置拖拽功能
@@ -243,6 +278,12 @@ export default function (props: RuntimeParams<Data>) {
           Array.isArray(ds)
             ? (data.addTips = ds)
             : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
+        });
+
+      /** @description 1.0.42 获取组件数据 */
+      inputs[InputIds.GetTreeData] &&
+        inputs[InputIds.GetTreeData]((_, relOutput) => {
+          relOutput[OutputIds.ReturnTreeData](deepCopy(data.treeData));
         });
     }
   }, []);
@@ -347,12 +388,7 @@ export default function (props: RuntimeParams<Data>) {
     }
 
     // 删除原来的节点
-    if (!dragNodeParent) {
-      data.treeData.splice(dragNodeIndex, 1);
-    } else {
-      dragNodeParent.children?.splice(dragNodeIndex, 1);
-    }
-
+    dragNodeParent.children?.splice(dragNodeIndex, 1);
     switch (dropFlag) {
       // 移动到dropNode下面的第一个子级
       case 0:
@@ -365,7 +401,15 @@ export default function (props: RuntimeParams<Data>) {
 
       // 移动到和dropNode平级，在其后面
       case 1:
-        dropNodeParent?.children?.splice(dropNodeIndex + 1, 0, dragNode);
+        let newInx = dropNodeIndex;
+        if (
+          dragNodeParent?.[keyFieldName] === dropNodeParent?.[keyFieldName] &&
+          dragNodeIndex < dropNodeIndex
+        ) {
+          // 同一父节点，移动到dropNode后面时，由于dragNode已被删除，index需要减1
+          newInx--;
+        }
+        dropNodeParent.children?.splice(newInx + 1, 0, dragNode);
         break;
 
       // 移动到和dropNode平级，在其前面
@@ -377,8 +421,11 @@ export default function (props: RuntimeParams<Data>) {
     outputs[OutputIds.OnDropDone]({
       dragNodeInfo,
       dropNodeInfo,
-      flag: dropFlag
+      flag: dropFlag,
+      treeData: data.treeData
     });
+
+    outputs[OutputIds.OnChange](deepCopy(data.treeData));
   };
 
   /**

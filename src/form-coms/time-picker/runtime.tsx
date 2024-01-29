@@ -88,6 +88,13 @@ export default function ({
     [_format]
   );
 
+  const transCalculation = (val) => {
+    if (!val) return val;
+    if (format === 'timeStamp') return val.format('HH:mm:ss');
+    if (format === 'custom') return val.format(customFormat);
+    return val.format(format);
+  };
+
   useFormItemInputs(
     {
       id,
@@ -115,6 +122,9 @@ export default function ({
           } else if (val === false) {
             data.disabled = true;
           }
+        },
+        setIsEditable(val) {
+          data.isEditable = val;
         },
         validate
       }
@@ -167,17 +177,21 @@ export default function ({
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div ref={wrapperRef} className={styles.wrap}>
-        <TimePicker
-          placeholder={env.i18n(placeholder)}
-          value={value}
-          format={_format}
-          disabled={disabled}
-          allowClear
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          open={env.design ? true : void 0}
-          popupClassName={id}
-          onChange={onChange}
-        />
+        {data.isEditable ? (
+          <TimePicker
+            placeholder={env.i18n(placeholder)}
+            value={value}
+            format={_format}
+            disabled={disabled}
+            allowClear
+            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            open={env.design ? true : void 0}
+            popupClassName={id}
+            onChange={onChange}
+          />
+        ) : (
+          transCalculation(value)
+        )}
       </div>
     </ConfigProvider>
   );

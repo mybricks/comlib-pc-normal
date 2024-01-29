@@ -145,6 +145,9 @@ export default function ({
             data.disabled = true;
           }
         },
+        setIsEditable(val) {
+          data.isEditable = val;
+        },
         validate
       }
     },
@@ -198,20 +201,33 @@ export default function ({
     [outFormat, splitChar]
   );
 
+  const transCalculation = (val) => {
+    if (!val) return val;
+    if (format === 'timeStamp') return val.format('HH:mm:ss');
+    if (format === 'custom') return val.format(customFormat);
+    return val.format(format);
+  };
+
   return (
     <ConfigProvider locale={env.vars?.locale}>
       <div className={styles.wrap}>
-        <TimePicker.RangePicker
-          placeholder={[env.i18n(placeholder[0]), env.i18n(placeholder[1])]}
-          value={value}
-          format={_format}
-          allowClear
-          disabled={disabled}
-          onChange={onChange}
-          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-          open={env.design ? true : void 0}
-          popupClassName={id}
-        />
+        {data.isEditable ? (
+          <TimePicker.RangePicker
+            placeholder={[env.i18n(placeholder[0]), env.i18n(placeholder[1])]}
+            value={value}
+            format={_format}
+            allowClear
+            disabled={disabled}
+            onChange={onChange}
+            getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+            open={env.design ? true : void 0}
+            popupClassName={id}
+          />
+        ) : Array.isArray(value) ? (
+          value.map((item) => transCalculation(item)).join(splitChar)
+        ) : (
+          ''
+        )}
       </div>
     </ConfigProvider>
   );

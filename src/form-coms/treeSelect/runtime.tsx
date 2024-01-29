@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { uniq } from 'lodash';
-import { TreeNodeProps, TreeSelect, Image, TreeSelectProps } from 'antd';
+import { TreeNodeProps, TreeSelect, Image, TreeSelectProps, Spin } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { typeCheck, uuid } from '../../utils';
@@ -28,6 +28,8 @@ export default function Runtime({
   const curNode = useRef({});
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState<any>();
+  //fetching, 是否开启loading的开关
+  const [fetching, setFetching] = useState(false);
   const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [fieldNames, setFieldNames] = useState<FieldNamesType>({
@@ -72,16 +74,16 @@ export default function Runtime({
           changeValue(val);
           outputs[OutputIds.OnChange](val);
         } else {
-          logger.error(`${title}【设置值】参数应为数组格式`);
+          logger.warn(`${title}【设置值】参数应为数组格式`);
         }
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         changeValue(val);
-        if (outputRels['setValueDone']) {
-          outputRels['setValueDone'](val);
-        }
         outputs[OutputIds.OnChange](val);
       } else {
-        logger.error(`${title}【设置值】参数应为基本类型`);
+        logger.warn(`${title}【设置值】参数应为基本类型`);
+      }
+      if (outputRels['setValueDone']) {
+        outputRels['setValueDone'](val);
       }
     });
 
@@ -89,14 +91,14 @@ export default function Runtime({
       if (data.config.multiple) {
         typeCheck(val, ['Array', 'NULL', 'UNDEFINED'])
           ? onInit(val)
-          : logger.error(`${title}【设置初始值】参数应为数组格式`);
+          : logger.warn(`${title}【设置初始值】参数应为数组格式`);
       } else if (typeCheck(val, ['NUMBER', 'BOOLEAN', 'STRING', 'NULL', 'UNDEFINED'])) {
         onInit(val);
-        if (outputRels['setInitialValueDone']) {
-          outputRels['setInitialValueDone'](val);
-        }
       } else {
-        logger.error(`${title}【设置初始值】参数应为基本类型`);
+        logger.warn(`${title}【设置初始值】参数应为基本类型`);
+      }
+      if (outputRels['setInitialValueDone']) {
+        outputRels['setInitialValueDone'](val);
       }
     });
 
@@ -115,6 +117,7 @@ export default function Runtime({
       } else {
         logger.warn(`组件 ${title} Invalid data: ${JSON.stringify(ds)}`);
       }
+      setFetching(false);
     });
 
     inputs['setLoading']((val: boolean, outputRels) => {
@@ -152,6 +155,14 @@ export default function Runtime({
         if (outputRels['isEnableDone']) {
           outputRels['isEnableDone'](val);
         }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
       }
     });
 
@@ -233,6 +244,21 @@ export default function Runtime({
     });
   };
 
+  /** 搜索事件 */
+  const onSearch = (e) => {
+    //开启自定义搜索功能
+    if (data.customOnSearch) {
+      setFetching(true);
+      outputs['onSearch'](e);
+    }
+    //1、远程数据源
+    if (!e && data.customOnSearch === true) {
+      data.options = [];
+      setFetching(false);
+    }
+    //2、本地数据源, 不做处理
+  };
+
   /** 更新默认展开节点 */
   const getDefaultExpandKeys = useCallback(() => {
     const keys: React.Key[] = [];
@@ -291,32 +317,40 @@ export default function Runtime({
 
   return (
     <div ref={wrapperRef} className={css.select}>
-      <TreeSelect
-        treeIcon
-        {...data.config}
-        placeholder={env.i18n(data.config.placeholder)}
-        showSearch={data.config.showSearch}
-        showArrow={data.config.showArrow}
-        treeDefaultExpandAll={env.design ? true : void 0}
-        treeExpandedKeys={expandedKeys}
-        onTreeExpand={onExpand}
-        switcherIcon={(props) => getIcon(data.switcherIcon, props)}
-        multiple={data.config.multiple}
-        treeCheckable={data.config.treeCheckable}
-        showCheckedStrategy={data.config.showCheckedStrategy}
-        maxTagCount={data.config.maxTagCount}
-        treeNodeFilterProp={data.config.treeNodeFilterProp}
-        open={env.design ? true : void 0}
-        value={value}
-        loadData={data.useLoadData ? onLoadData : undefined}
-        fieldNames={fieldNames}
-        onChange={onChange}
-        treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
-        dropdownClassName={id}
-        getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-      >
-        {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
-      </TreeSelect>
+      {data.isEditable ? (
+        <TreeSelect
+          treeIcon
+          {...data.config}
+          placeholder={env.i18n(data.config.placeholder)}
+          showSearch={data.config.showSearch}
+          showArrow={data.config.showArrow}
+          treeDefaultExpandAll={env.design ? true : void 0}
+          treeExpandedKeys={expandedKeys}
+          onTreeExpand={onExpand}
+          switcherIcon={(props) => getIcon(data.switcherIcon, props)}
+          multiple={data.config.multiple}
+          treeCheckable={data.config.treeCheckable}
+          showCheckedStrategy={data.config.showCheckedStrategy}
+          maxTagCount={data.config.maxTagCount}
+          treeNodeFilterProp={data.config.treeNodeFilterProp}
+          open={env.design ? true : void 0}
+          value={value}
+          loadData={data.useLoadData ? onLoadData : undefined}
+          fieldNames={fieldNames}
+          onChange={onChange}
+          onSearch={onSearch}
+          treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}
+          dropdownClassName={id}
+          getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
+          notFoundContent={data.customOnSearch && fetching ? <Spin size="small" /> : void 0}
+        >
+          {renderTreeNode(env.design ? (treeDataInDesign(data) as any) : data.options)}
+        </TreeSelect>
+      ) : Array.isArray(value) ? (
+        value.join(',')
+      ) : (
+        value
+      )}
     </div>
   );
 }

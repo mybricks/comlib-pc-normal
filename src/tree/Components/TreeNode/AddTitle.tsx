@@ -1,6 +1,8 @@
 import React from 'react';
+import { deepCopy } from '../../../utils';
 import { Data } from '../../types';
 import { Input } from 'antd';
+import { InputIds, OutputIds } from '../../constants';
 
 /**
  * 添加节点渲染
@@ -61,12 +63,14 @@ export const renderAddTitle = (
             Array.isArray(item.parent?.[childrenFieldName])
               ? item.parent?.[childrenFieldName].push(node)
               : (item.parent[childrenFieldName] = [node]);
+            data.treeData = [...data.treeData];
           }
           if (data.defaultExpandAll) {
             data.expandedKeys.push(item[keyFieldName]);
             setExpandedKeys([...data.expandedKeys]);
           }
-          outputs['addNodeDone']({ node, parent: item.parent });
+          outputs[OutputIds.AddNodeDone]({ node, parent: item.parent });
+          outputs[OutputIds.OnChange](deepCopy(data.treeData));
         }}
         placeholder={item.placeholder}
       />

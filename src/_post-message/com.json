@@ -1,14 +1,14 @@
 {
   "title": "postMessage发送",
   "namespace": "mybricks.normal-pc.post-message",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "向父子(iframe)页面发送消息",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
   "icon": "./icon.svg",
   "data": "./data.json",
-  "runtime": "./runtime.tsx",
+  "runtime": "./runtime.ts",
   "editors": "./editors.ts",
   "inputs": [
     {

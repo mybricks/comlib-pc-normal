@@ -77,9 +77,118 @@ export default {
         }
       },
       {
+        title: '隐藏图标',
+        type: 'switch',
+        description: '是否隐藏图标，默认不隐藏',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.hideIcon;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.hideIcon = value;
+          }
+        }
+      },
+      {
+        title: '自定义图标',
+        type: 'switch',
+        description: '是否自定义上传图标，开启后可自定义配置',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.hideIcon;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isCustomIcon;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.isCustomIcon = value;
+          }
+        }
+      },
+      {
+        title: '图标',
+        type: 'Icon',
+        description: '文字列表-图标',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isCustomIcon && data.config.listType === 'text' && !data.hideIcon;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.textIcon;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.textIcon = value;
+          }
+        }
+      },
+      {
+        title: '图标',
+        type: 'Icon',
+        description: '图片列表-图标',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isCustomIcon && data.config.listType === 'picture' && !data.hideIcon;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.picIcon;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.picIcon = value;
+          }
+        }
+      },
+      {
+        title: '图标',
+        type: 'Icon',
+        description: '图片卡片列表-图标',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isCustomIcon && data.config.listType === 'picture-card' && !data.hideIcon;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.picCardIcon;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.picCardIcon = value;
+          }
+        }
+      },
+      {
+        title: '图标',
+        type: 'Icon',
+        description: '拖拽上传-图标',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isCustomIcon && data.config.listType === 'dragger' && !data.hideIcon;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.dragIcon;
+          },
+          set({ data }: EditorResult<Data>, value: string) {
+            data.dragIcon = value;
+          }
+        }
+      },
+      {
         title: '背景',
-        options: ['background'],
+        options: ['background', 'border'],
         target: ['.ant-upload', '.ant-btn']
+      },
+      {
+        title: '图标样式配置',
+        options: ['font'],
+        target: '.ant-btn .anticon',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'text' || data.config.listType === 'picture';
+        }
+      },
+      {
+        title: '文案样式配置',
+        options: ['font'],
+        target: '.ant-btn>.anticon+span',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'text' || data.config.listType === 'picture';
+        }
       },
       {
         title: '图标样式配置',
@@ -95,6 +204,22 @@ export default {
         target: '.ant-upload > div > div',
         ifVisible({ data }: EditorResult<Data>) {
           return data.config.listType === 'picture-card';
+        }
+      },
+      {
+        title: '图标样式配置',
+        options: ['font'],
+        target: '.ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'dragger';
+        }
+      },
+      {
+        title: '文案样式配置',
+        options: ['font'],
+        target: '.ant-upload.ant-upload-drag p.ant-upload-text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.config.listType === 'dragger';
         }
       },
       uploadEditors

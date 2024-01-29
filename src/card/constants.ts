@@ -24,6 +24,9 @@ export interface Data {
   items: [Item];
   padding: string;
   inVal: any;
+  isHeight: boolean;
+  height: string;
+  showTitle: boolean;
 }
 
 export interface Item {

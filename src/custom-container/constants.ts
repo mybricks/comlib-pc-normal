@@ -4,6 +4,7 @@ export enum InputIds {
   ScrollIntoView = 'scrollInfoView',
   SetMaxHeight = 'setMaxHeight',
   SetStyle = 'setStyle',
+  ScrollTo = 'scrollTo'
 }
 export enum OutputIds {
   Click = 'click'

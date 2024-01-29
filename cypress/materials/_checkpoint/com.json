@@ -1,0 +1,33 @@
+{
+  "title": "检查点(测试用)",
+  "namespace": "mybricks.test.checkpoint",
+  "version": "1.0.1",
+  "rtType": "js",
+  "description": "检查点",
+  "author": "jidan.wd",
+  "author_name": "吴狄",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "inputs": [
+    {
+      "id": "check",
+      "title": "检查",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "export",
+      "title": "出口",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

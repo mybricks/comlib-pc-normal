@@ -108,6 +108,18 @@ export default {
           }
         },
         {
+          title: '标签页隐藏时是否渲染',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.forceRender;
+            },
+            set({ data }: EditorResult<Data>, value: boolean) {
+              data.forceRender = value;
+            }
+          }
+        },
+        {
           title: '动态设置显示tab',
           type: 'Switch',
           value: {
@@ -218,6 +230,18 @@ export default {
               id
             )}`
         }),
+      },
+      {
+        catelog: '默认',
+        title: '标签头',
+        options: ['padding', { type: 'background', config: { disableBackgroundImage: true } }],
+        target: '.ant-tabs .ant-tabs-nav-wrap'
+      },
+      {
+        catelog: "默认",
+        title: "标签外边距",
+        options: ["margin"],
+        target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
       },
       {
         catelog: "默认",

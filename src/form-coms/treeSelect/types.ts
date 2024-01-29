@@ -23,7 +23,10 @@ export interface Data {
   // 默认展开深度
   openDepth: number,
   // 展开图标配置
-  switcherIcon: IconType
+  switcherIcon: IconType,
+  isEditable: boolean
+  /** @description 1.2.13 是否使用搜索事件 */
+  customOnSearch: boolean;
 }
 
 export type IconSrcType = false | 'custom' | 'inner';

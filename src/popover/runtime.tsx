@@ -53,7 +53,7 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
       placement={placement}
       title={useTitleSlot ? slots['title']?.render() : renderWrapText(title as string)}
       content={useContentSlot ? slots['content']?.render() : renderWrapText(content as string)}
-      visible={visible}
+      // visible={visible}
       trigger={trigger}
       overlayClassName={id}
       overlayInnerStyle={{
@@ -61,7 +61,7 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
         maxHeight: window.screen.availHeight
       }}
       getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
-      destroyTooltipOnHide
+      // destroyTooltipOnHide
     >
       <div className={styles.wrap}>{slots.carrier?.render({ style: { cursor: 'pointer' } })}</div>
     </Popover>

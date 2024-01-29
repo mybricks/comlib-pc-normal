@@ -7,6 +7,7 @@ import css from './style.less';
 import { SortableList, SortableItem } from './sort';
 import { AutoRender, NoAutoRender, NoAutoScrollRender } from './render';
 import { debounce } from 'lodash';
+import { addItem, removeItem, changeItem, upMove, downMove } from './utils';
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
   const _array = array.slice();
@@ -16,7 +17,7 @@ const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {
 };
 
 const rowKey = '_itemKey';
-export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
+export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Data>) => {
   let { grid, useLoading, useGetDataSource } = data;
   const [dataSource, setDataSource] = useState<any[]>([...(data.dataSource || [])]);
   const [loading, setLoading] = useState(false);
@@ -79,6 +80,98 @@ export default ({ data, inputs, slots, env, outputs }: RuntimeParams<Data>) => {
       });
     }
   }, [dataSource]);
+  //添加一项
+  useEffect(() => {
+    if (env.runtime) {
+      inputs[InputIds.AddItem]((v, relOutputs) => {
+        let newDataSource = [...data.dataSource];
+        let len = newDataSource.length;
+        //判断在指定位置还是末尾
+        let judge = v.value !== undefined && v.index >= 0 && v.index < len;
+        newDataSource = addItem(newDataSource, len, v, data.rowKey, judge);
+
+        data.dataSource = newDataSource;
+        setDataSource(newDataSource);
+        relOutputs['addItemDone'](v);
+      });
+    }
+  }, []);
+
+  //删除一项
+  useEffect(() => {
+    if (env.runtime) {
+      inputs[InputIds.RemoveItem]((v, relOutputs) => {
+        let newDataSource = [...data.dataSource];
+        let len = newDataSource.length;
+        let judge = typeof v === 'number' && v >= 0 && v < len;
+        newDataSource = removeItem(newDataSource, v, judge, logger);
+
+        data.dataSource = newDataSource;
+        setDataSource(newDataSource);
+        relOutputs['removeItemDone'](v);
+      });
+    }
+  }, []);
+
+  //改动一项
+  useEffect(() => {
+    if (env.runtime) {
+      inputs[InputIds.ChangeItem]((v, relOutputs) => {
+        let newDataSource = [...data.dataSource];
+        let len = newDataSource.length;
+        let judge = typeof v.index === 'number' && v.index >= 0 && v.index < len;
+        //有index, 且index在合理范围内
+        if (judge) {
+          if (v.value !== undefined) {
+            newDataSource = changeItem(newDataSource, v, data.rowKey);
+            data.dataSource = newDataSource;
+            setDataSource(newDataSource);
+            relOutputs['changeItemDone'](v);
+          } else {
+            logger.error('未指定value（改动值）');
+          }
+        } else {
+          logger.error('未指定index（位置）或index不在合理范围内');
+        }
+      });
+    }
+  }, []);
+
+  //指定对应项上移
+  useEffect(() => {
+    if (env.runtime) {
+      inputs[InputIds.MoveUp]((v, relOutputs) => {
+        let newDataSource = [...data.dataSource];
+        let len = newDataSource.length;
+        if (typeof v === 'number' && v > 0 && v < len) {
+          newDataSource = upMove(newDataSource, v);
+          data.dataSource = newDataSource;
+          setDataSource(newDataSource);
+          relOutputs['moveUpDone'](v);
+        } else {
+          logger.error('指定index不在合理范围内');
+        }
+      });
+    }
+  }, []);
+
+  //指定对应项下移
+  useEffect(() => {
+    if (env.runtime) {
+      inputs[InputIds.MoveDown]((v, relOutputs) => {
+        let newDataSource = [...data.dataSource];
+        let len = newDataSource.length;
+        if (typeof v === 'number' && v >= 0 && v < len - 1) {
+          newDataSource = downMove(newDataSource, v);
+          data.dataSource = newDataSource;
+          setDataSource(newDataSource);
+          relOutputs['moveDownDone'](v);
+        } else {
+          logger.error('指定index不在合理范围内');
+        }
+      });
+    }
+  }, []);
 
   //换行，列数自定义
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {

@@ -20,6 +20,16 @@
     .ant-table-column-sorters {
       justify-content: unset;
     }
+    // 开启排序后表头对齐方式
+    .ant-table-column-sorter-center .ant-table-column-sorters {
+      justify-content: center;
+    }
+    .ant-table-column-sorter-right .ant-table-column-sorters {
+      justify-content: right;
+    }
+    .ant-table-column-sorter-left .ant-table-column-sorters {
+      justify-content: left;
+    }
 
     tr.mybricks-table-row-double {
       background: #fafafa;
@@ -33,26 +43,26 @@
 }
 
 .emptyWrap {
-  border: 1px dashed rgb(176, 176, 176);
-  margin: 0;
+  border: 1px solid #ccc;
+  margin: 0 !important;
 }
 
-.emptyNormal {
-  margin: 32px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+// .emptyNormal {
+//   margin: 32px 0;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// }
 
-.emptyImage {
-  height: 40px;
-  margin-bottom: 8px;
-}
+// .emptyImage {
+//   height: 40px;
+//   margin-bottom: 8px;
+// }
 
-.emptyDescription {
-  color: rgba(0, 0, 0, 0.25);
-  font-size: 14px;
-  line-height: 1.5717;
-  text-align: center;
-}
+// .emptyDescription {
+//   color: rgba(0, 0, 0, 0.25);
+//   font-size: 14px;
+//   line-height: 1.5717;
+//   text-align: center;
+// }

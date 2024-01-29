@@ -34,7 +34,7 @@ export default function ({
    */
 
   if (!input.get(InputIds.SetValidateInfo)) {
-    input.add(InputIds.SetValidateInfo, '设置校验状态', {
+    input.add(InputIds.SetValidateInfo, '设置校验结果', {
       type: 'object',
       properties: {
         validateStatus: {
@@ -72,7 +72,13 @@ export default function ({
   }
   //=========== v1.1.0 end ===============
 
-  input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+  if (!input.get('disabledDate')) {
+    input.add('disabledDate', '禁用特定日期', { type: "any" });
+  }
+
+  if (!input.get(InputIds.SetColor)) {
+    input.add(InputIds.SetColor, '设置字体颜色', { type: "string" });
+  }
 
   /**
    * @description v1.1.1->1.1.2 新增 显示清除图标、动态配置选择类型输入
@@ -113,14 +119,14 @@ export default function ({
   /**
    * @description v1.1.1 => v1.1.2 升级，新增 useCustomPanelHeader、useCustomPanelFooter 字段
    */
-  if(!Reflect.has(data, 'useCustomPanelHeader')) data.useCustomPanelHeader = false;
-  if(!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
-  if(!Reflect.has(data, 'controlled')) data.controlled = false;
+  if (!Reflect.has(data, 'useCustomPanelHeader')) data.useCustomPanelHeader = false;
+  if (!Reflect.has(data, 'useCustomPanelFooter')) data.useCustomPanelFooter = false;
+  if (!Reflect.has(data, 'controlled')) data.controlled = false;
 
   /**
    * @description v1.1.2 => v1.1.3 升级，新增 formatMap 字段
    */
-  if(typeof data.formatMap === "undefined"){
+  if (typeof data.formatMap === "undefined") {
     data.formatMap = {
       "日期": encodeURIComponent("YYYY-MM-DD"),
       "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
@@ -134,18 +140,18 @@ export default function ({
   /**
    * @description v1.1.3 => v1.1.4 升级，新增 isWeekNumber 字段
   */
-  if(typeof data.isWeekNumber === "undefined"){
+  if (typeof data.isWeekNumber === "undefined") {
     data.isWeekNumber = false
   }
 
   /**
    * @description v1.1.4 => v1.1.5 升级，修改 setOpen 的文案
    */
-  if(input.get("setOpen")?.title === "打开隐藏面板" ) {
+  if (input.get("setOpen")?.title === "打开隐藏面板") {
     input.setTitle("setOpen", "打开日期选择面板");
   }
 
-  if(typeof data.formatMap['日期+时间'] === "undefined"){
+  if (typeof data.formatMap['日期+时间'] === "undefined") {
     data.formatMap = {
       "日期": data.formatMap['日期'],
       "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
@@ -246,7 +252,7 @@ export default function ({
     }
   }
   if (!output.get(outputIds.setValidateInfoDone)) {
-    output.add(outputIds.setValidateInfoDone, '设置校验状态完成', infoSchema);
+    output.add(outputIds.setValidateInfoDone, '设置校验结果完成', infoSchema);
   }
   if (output.get(outputIds.setValidateInfoDone) &&
     input.get(inputIds.SET_VALIDATE_INFO) &&
@@ -306,6 +312,41 @@ export default function ({
     input.get('setDateType').setRels(["setDateTypeDone"]);
   }
   //=========== v1.1.10 end ===============
-  
+
+  /**
+  * @description v1.1.15 新增 日期面板切换 输出项 
+  */
+  if (!output.get('onPanelChange')) {
+    output.add('onPanelChange', '日期面板切换', {
+      type: 'object',
+      properties: {
+        value: {
+          title: '日期',
+          type: 'string',
+        },
+        mode: {
+          title: '日期选择类型',
+          type: 'string',
+        },
+      },
+    });
+  }
+  //=========== v1.1.15 end ===============
+
+  /**
+   * @description v1.3.16 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  if (typeof data.isEditable === 'undefined') {
+    data.isEditable = true;
+  }
+  //=========== v1.3.16 end ===============
+
   return true;
 }

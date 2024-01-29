@@ -18,6 +18,8 @@ export const InputIds = {
   CLEAR_ROW_SELECTION: 'clearRowSelection',
   // 设置勾选项
   SET_ROW_SELECTION: 'setRowSelectedKeys',
+  // 设置选中行
+  SET_FOCUS_ROW: 'setFocusRow',
 
   // 设置数据源
   SET_DATA_SOURCE: 'dataSource',
@@ -95,6 +97,9 @@ export const OutputIds = {
   // 双击行触发
   ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData',
+  Row_Move_Up: 'rowMoveUp',
+  Row_Move_Down: 'rowMoveDown',
+  Remove_Row: 'removeRow',
   COLUMNS_CHANGE: 'columnsChange',
 
   // 新增对应串行输出
@@ -109,6 +114,7 @@ export const OutputIds = {
   SET_SHOW_COLUMNS: 'showColumns',
   SET_SHOW_TitleS: 'showTitles',
   SET_ROW_SELECTION: 'setRowSelectedKeys',
+  SET_FOCUS_ROW: 'setFocusRow',
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',
   CHANGE_COLS_ATTR: 'changeColsAttr'
@@ -128,4 +134,4 @@ export const DefaultOnRowScript = `/**
   return {
     style: {}
   }
-}`
+}`;

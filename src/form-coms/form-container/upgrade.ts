@@ -75,7 +75,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
 
   /**
-   * @description v1.4.27 表单项style配置改造 part1: 计算公共样式
+   * @description v1.4.39 表单项style配置改造 part1: 计算公共样式
    */
   const defaultLabelStyle = {
     lineHeight: '14px',
@@ -215,7 +215,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     }
   }
 
-  //=========== v1.4.27 end ===============
+  //=========== v1.4.39 end ===============
 
   data.items.forEach(item => {
     /**
@@ -270,7 +270,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     //=========== v1.4.15 end ===============
 
     /**
-     * @description v1.4.27 表单项style配置改造 part2: 表单项样式升级
+     * @description v1.4.39 表单项style配置改造 part2: 表单项样式升级
      */
     if (data.config.labelAlign) {
       /** 标题字体、换行样式处理 */
@@ -342,7 +342,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       item.inlineMargin = void 0;
     }
   });
-  //=========== v1.4.27 end ===============
+  //=========== v1.4.39 end ===============
 
   // if (!input.get(inputIds.SET_DISABLED)) {
   //   input.add('setDisabled', '设置禁用', { type: 'any' });
@@ -609,10 +609,49 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
 
   /**
-     * @description v1.4.27 表单项style配置改造 part3
+     * @description v1.4.39 表单项style配置改造 part3
   */
   data.config.labelAlign = undefined;
-  //=========== v1.4.27 end ===============
+  //=========== v1.4.39 end ===============
+
+  /**
+    * @description v1.4.31 => v1.4.32, 操作项增加图标
+  */
+  data.actions.items?.forEach(act => {
+    if (act && act.useIcon === undefined) {
+      act.useIcon = false;
+    }
+    if (act && act.iconDistance === undefined) {
+      act.iconDistance = 8;
+    }
+    if (act && act.icon === undefined) {
+      act.icon = "HomeOutlined";
+    }
+    if (act && act.iconLocation === undefined) {
+      act.iconLocation = "front";
+    }
+  })
+
+  /**
+   * @description v1.4.33 新增 编辑/可读输入
+   */
+  if (!output.get(outputIds.isEditableDone)) {
+    output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
+  }
+  if (!input.get(inputIds.isEditable)) {
+    input.add(inputIds.isEditable, '设置编辑/只读', { type: 'boolean' });
+    input.get(inputIds.isEditable).setRels([outputIds.isEditableDone]);
+  }
+  //=========== v1.4.33 end ===============
+
+  /**
+   * @description v1.4.34 新增 提交校验隐藏字段是否校验配置
+   */
+  if (typeof data.validateHiddenFields === 'undefined') {
+    data.validateHiddenFields = true
+  }
+  //=========== v1.4.34 end ===============
+
 
   return true;
 }

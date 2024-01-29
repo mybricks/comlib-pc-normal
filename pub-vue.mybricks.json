@@ -1,0 +1,44 @@
+{
+  "name": "通用PC组件库（Vue）",
+  "version": "1.0.3",
+  "debugger": "pc-spa",
+  "componentType": "PC",
+  "commitInfo": "update",
+  "namespace": "mybricks.normal-pc-vue",
+  "comAry": [
+    "./src/_page-router/com.json",
+    "./src/_props/com.json",
+    "./src/_env-var/com.json",
+    "./src/_array-merge/com.json",
+    "./src/_query/com.json",
+    "./src/_events/com.json",
+    "./src/_service/com.json",
+    "./src/_pick/com.json",
+    "./src/_pinyin/com.json",
+    "./src/_post-message/com.json",
+    "./src/_get-storage/com.json",
+    "./src/_receive-message/com.json",
+    "./src/_countdown/com.json"
+  ],
+  "externals": [
+    {
+      "name": "@ant-design/icons",
+      "library": "icons",
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
+    },
+    {
+      "name": "antd",
+      "library": "antd",
+      "urls": [
+        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.css",
+        "https://assets.mybricks.world/pkg/moment-2.29.4/moment.min.js",
+        "https://assets.mybricks.world/pkg/moment-2.29.4/locale_zh-cn.js",
+        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.js",
+        "https://f2.eckwai.com/udata/pkg/eshop/fangzhou/pub/pkg/antd-4.21.6/locale/zh_CN.js"
+      ]
+    }
+  ],
+  "tags": "vue"
+}

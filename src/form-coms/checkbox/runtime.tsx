@@ -63,9 +63,9 @@ export default function Runtime({
         logger.warn(`${title}组件:【设置值】参数必须是数组！`);
       } else {
         changeValue(val);
-        outputRels['setValueDone']?.(val);
         outputs['onChange'](val);
       }
+      outputRels['setValueDone']?.(val);
     });
 
     inputs['setInitialValue'] &&
@@ -74,10 +74,10 @@ export default function Runtime({
           logger.warn(`${title}组件:【设置值】参数必须是数组！`);
         } else {
           changeValue(val);
-          if (outputRels['setInitialValueDone']) {
-            outputRels['setInitialValueDone'](val);
-          }
           outputs[OutputIds.OnInitial](val);
+        }
+        if (outputRels['setInitialValueDone']) {
+          outputRels['setInitialValueDone'](val);
         }
       });
 
@@ -115,6 +115,14 @@ export default function Runtime({
         if (outputRels['isEnableDone']) {
           outputRels['isEnableDone'](val);
         }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
       }
     });
 
@@ -206,7 +214,7 @@ export default function Runtime({
   }
 
   const checkboxStyle = {
-    paddingBottom: data.layout === 'vertical' ? '8px' : void 0
+    marginBottom: data.layout === 'vertical' ? '8px' : void 0
   };
 
   const checkboxGroup = {
@@ -231,25 +239,33 @@ export default function Runtime({
   });
 
   return (
-    <div className={css.checkbox} style={single ? singlebox : void 0}>
-      {data.checkAll && (
-        <Checkbox
-          style={checkboxStyle}
-          indeterminate={indeterminate}
-          onChange={onCheckAllChange}
-          checked={checkAll}
-          disabled={data.config.disabled}
-        >
-          {env.i18n(data.checkAllText)}
-        </Checkbox>
+    <div className={`${css.checkbox} checkbox`} style={single ? singlebox : void 0}>
+      {data.isEditable
+        ? data.checkAll && (
+            <Checkbox
+              style={checkboxStyle}
+              indeterminate={indeterminate}
+              onChange={onCheckAllChange}
+              checked={checkAll}
+              disabled={data.config.disabled}
+            >
+              {env.i18n(data.checkAllText)}
+            </Checkbox>
+          )
+        : void 0}
+      {data.isEditable ? (
+        <Checkbox.Group
+          style={checkboxGroup}
+          {...data.config}
+          options={newOptions}
+          value={value}
+          onChange={onChange}
+        />
+      ) : Array.isArray(value) ? (
+        value.join(',')
+      ) : (
+        value
       )}
-      <Checkbox.Group
-        style={checkboxGroup}
-        {...data.config}
-        options={newOptions}
-        value={value}
-        onChange={onChange}
-      />
     </div>
   );
 }

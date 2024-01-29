@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Form, Button, Row, Col, Space } from 'antd';
-import { Data } from '../types';
+import { Data, Action, LocationEnum } from '../types';
+import * as Icons from '@ant-design/icons';
 import { outputIds } from '../constants';
 import style from './formActions.less';
 
@@ -36,6 +37,34 @@ const FormActions = (props: Props) => {
   //   }
   // }, [layout])
 
+  const renderTextAndIcon = useCallback(
+    (item: Action) => {
+      const { useIcon, icon, iconLocation, iconDistance, title } = item;
+
+      const btnItemR = ({ icon }: { icon: any }) => {
+        const Icon = Icons && Icons[icon as string]?.render();
+        if (typeof Icon === 'undefined') {
+          return <div dangerouslySetInnerHTML={{ __html: icon }} />;
+        } else {
+          return <>{Icon}</>;
+        }
+      };
+
+      return (
+        <Space size={iconDistance}>
+          {useIcon && btnItemR({ icon: icon }) && iconLocation === LocationEnum.FRONT ? (
+            <span className={`icon ${style.icon}`}>{btnItemR({ icon: icon })}</span>
+          ) : null}
+          <span>{title}</span>
+          {useIcon && btnItemR({ icon: icon }) && iconLocation === LocationEnum.BACK ? (
+            <span className={`icon ${style.icon}`}>{btnItemR({ icon: icon })}</span>
+          ) : null}
+        </Space>
+      );
+    },
+    [actions]
+  );
+
   return (
     <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
@@ -59,7 +88,7 @@ const FormActions = (props: Props) => {
             onClick={() => onClick(item)}
             disabled={item.disabled || config.disabled}
           >
-            {env.i18n(item.title)}
+            {renderTextAndIcon({ ...item, title: env.i18n(item.title) })}
           </Button>
         );
       })}

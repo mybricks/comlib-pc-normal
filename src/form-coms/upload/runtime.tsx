@@ -40,6 +40,13 @@ export interface Data {
   imageSize: number[];
   customUpload: boolean;
   fileClick: boolean;
+  hideIcon: boolean;
+  isEditable: boolean;
+  isCustomIcon: boolean;
+  textIcon: string;
+  picIcon: string;
+  picCardIcon: string;
+  dragIcon: string;
 }
 
 interface Window {
@@ -145,6 +152,14 @@ export default function ({
         if (relOutputs['isEnableDone']) {
           relOutputs['isEnableDone'](val);
         }
+      }
+    });
+
+    //设置编辑/只读
+    inputs['isEditable']((val, relOutputs) => {
+      data.isEditable = val;
+      if (relOutputs['isEditableDone']) {
+        relOutputs['isEditableDone'](val);
       }
     });
 
@@ -326,13 +341,17 @@ export default function ({
   }, []);
 
   const onRemove = (file) => {
-    if (!data.config.useCustomRemove) {
-      changeFileList(fileListRef.current.filter(({ uid }) => file.uid !== uid));
-      return true;
+    if (data.isEditable === false) {
+      return false;
+    } else {
+      if (!data.config.useCustomRemove) {
+        changeFileList(fileListRef.current.filter(({ uid }) => file.uid !== uid));
+        return true;
+      }
+      removeFileRef.current = file;
+      outputs.remove(file);
+      return false;
     }
-    removeFileRef.current = file;
-    outputs.remove(file);
-    return false;
   };
 
   const onPreview = (file) => {
@@ -390,34 +409,46 @@ export default function ({
   const renderUploadText = () => {
     const pictureButton = (
       <div>
-        <PlusOutlined />
+        {data.hideIcon ? void 0 : Icons && Icons[data.picCardIcon]?.render()}
         <div style={{ marginTop: 8 }}>{env.i18n(buttonText)}</div>
       </div>
     );
 
     const normalButton = (
-      <Button icon={<UploadOutlined />} disabled={disabled}>
+      <Button
+        icon={data.hideIcon ? void 0 : Icons && Icons[data.textIcon]?.render()}
+        disabled={disabled}
+      >
+        {env.i18n(buttonText)}
+      </Button>
+    );
+
+    const picButton = (
+      <Button
+        icon={data.hideIcon ? void 0 : Icons && Icons[data.picIcon]?.render()}
+        disabled={disabled}
+      >
         {env.i18n(buttonText)}
       </Button>
     );
 
     const draggerButton = (
       <>
-        <p className="ant-upload-drag-icon">{Icons && Icons[uploadIcon]?.render()}</p>
+        <p className="ant-upload-drag-icon" style={{ display: data.hideIcon ? 'none' : void 0 }}>
+          {Icons && Icons[data.dragIcon]?.render()}
+        </p>
         <p className="ant-upload-text">{env.i18n(buttonText)}</p>
       </>
     );
 
     const uploadButton = {
       text: normalButton,
-      picture: normalButton,
+      picture: picButton,
       'picture-card': pictureButton,
       dragger: draggerButton
     };
-    if (!fileCount || (Array.isArray(fileList) && fileList.length < fileCount)) {
-      return uploadButton[listType];
-    }
-    return null;
+
+    return uploadButton[listType];
   };
 
   const setUploadStyle = (node: HTMLElement) => {
@@ -499,13 +530,16 @@ export default function ({
             ? false
             : { showPreviewIcon: usePreview }
         }
+        //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (
           <div>{slots['carrier'] && slots['carrier'].render()}</div>
-        ) : (
+        ) : data.isEditable ? (
           renderUploadText()
+        ) : (
+          ''
         )}
       </UploadNode>
     </div>

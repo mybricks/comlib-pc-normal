@@ -108,6 +108,7 @@ export const formatDataSource = (dataSource, rowKey) => {
 };
 // 编辑态默认值
 export const getDefaultDataSource = (columns: IColumn[], rowKey, env) => {
+  if (env.runtime) return [];
   const mockData = {
     [rowKey]: uuid()
   };
@@ -295,11 +296,12 @@ export const createStyleForTableContent = () => [
   },
 ]
 
-export const createStyleForColumnContent = ({ target }: StyleModeType<Data>) => ({
+export const createStyleForColumnContent = ({ target, ...others }: StyleModeType<Data>) => ({
   title: '内容',
   options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
   ifVisible({ data }: EditorResult<Data>) {
     return !!data.columns.length;
   },
-  target
+  target,
+  ...(others || {})
 });

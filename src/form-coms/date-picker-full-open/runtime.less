@@ -1,0 +1,29 @@
+.datePickerDropDownNotClose {
+  --date-picker-height: 32px;
+
+  position: relative !important;
+  left: 0 !important;
+  top: var(--date-picker-height) !important;
+}
+
+.datePickerDropDownFullWidth {
+  --date-picker-width: fit-content;
+  width: var(--date-picker-width);
+
+  :global(.ant-picker-panel) {
+    width: 100%;
+
+    :global(div) {
+      width: 100%;
+
+      :global(.ant-picker-content) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.datePickerDropDownNotFullWidth {
+  --date-picker-width: fit-content;
+  width: var(--date-picker-width);
+}

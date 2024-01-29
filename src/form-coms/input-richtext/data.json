@@ -4,6 +4,9 @@
   },
   "displayEditbar": true,
   "toolbar": [
+    "undo",
+    "redo",
+    "styleselect",
     "fontselect",
     "fontsizeselect",
     "italic",
@@ -12,11 +15,17 @@
     "alignleft",
     "aligncenter",
     "alignright",
+    "alignjustify",
+    "lineheight",
+    "outdent",
+    "indent",
     "link",
     "uploadimage"
   ],
   "disabled": false,
   "customUpload": true,
   "placeholder": "请输入内容",
-  "rules": []
+  "rules": [],
+  "icons": [],
+  "statusbar": false
 }
