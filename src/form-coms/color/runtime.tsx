@@ -229,7 +229,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           style={{ height: '22px', backgroundColor: data.disabled ? 'hsla(0,0%,100%,.8)' : void 0 }}
         ></div>
       </div>
-      <div className={css.colorPicker} onClick={colorOnClick}>
+      <div className={css.colorPicker} style={{ top: data.width }} onClick={colorOnClick}>
         {isShow ? (
           <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
         ) : (
