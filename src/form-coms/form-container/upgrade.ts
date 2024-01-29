@@ -27,10 +27,11 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
   /**
    * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
+   * v1.4.39 样式升级改造后废弃
    */
-  if (!data.actions.inlinePadding) {
-    data.actions.inlinePadding = [0, 0, 0, 0];
-  }
+  // if (!data.actions.inlinePadding) {
+  //   data.actions.inlinePadding = [0, 0, 0, 0];
+  // }
 
 
   /**
@@ -228,6 +229,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
     /**
      * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
+     * v1.4.39 样式升级改造后废弃
      */
     // if (!item.inlineMargin) {
     //   item.inlineMargin = [0, 16, 24, 0]
@@ -245,6 +247,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
     /**
      * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
+     * v1.4.39 样式升级改造后废弃
      */
     // if (item.labelAlign === undefined) {
     //   item.labelAlign = 'default';
