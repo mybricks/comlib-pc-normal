@@ -24,7 +24,11 @@ const InlineLayout = (props: InlineLayoutProps) => {
     <div className={styles.slotInlineWrapper}>
       {children}
       {data.actions.visible && (
-        <Col className={isEmpty ? styles.emptyHorActions : undefined} flex={1} style={actionStyle}>
+        <Col
+          className={`${isEmpty ? styles.emptyHorActions : ''} formAction`}
+          flex={1}
+          style={actionStyle}
+        >
           <Form.Item>{actions}</Form.Item>
         </Col>
       )}

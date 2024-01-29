@@ -75,7 +75,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
 
   /**
-   * @description v1.4.27 表单项style配置改造 part1
+   * @description v1.4.27 表单项style配置改造 part1: 计算公共样式
    */
   const defaultLabelStyle = {
     lineHeight: '14px',
@@ -94,15 +94,22 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     color: 'rgba(0, 0, 0, 0.45)',
     fontStyle: 'normal'
   };
-  const defaultMargin = [0, 16, 24, 0];
+  const defaultMargin = [0, 16, 24, 0],
+    defaultMarginStyle = {
+      marginTop: '0px',
+      marginRight: '16px',
+      marginBottom: '24px',
+      marginLeft: '0px'
+    };
   let isAllSameLabelStyle,
     whiteSpaceAllSame,
-    labelAlignAllSame,
     isAllSameDescriptionStyle,
     isAllMarginSame;
-  if (data.config.labelAlign) {
 
+  if (data.config.labelAlign) {
     /** 标题字体、换行样式处理 */
+    // 表单的公共标题样式选择器
+    const labelFontSelector = `.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
     // 1. 比较所有表单项的换行样式是否都是跟随容器
     whiteSpaceAllSame = data.items.every(item => item?.labelAutoWrap === 'default');
     // 2. 比较所有表单项的标题样式和默认样式的区别，
@@ -117,8 +124,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       isAllSameLabelStyle = true;
       let hasUnique = false;
       const style: React.CSSProperties = {};
-      // 表单的公共标题样式选择器
-      const selector = `.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
       Object.entries(defaultLabelStyle).map(([key, value]) => {
         if (value !== labelStyleCompareResult[0][key]) {
           style[key] = labelStyleCompareResult[0][key];
@@ -131,22 +136,24 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }
       if (hasUnique) {
         // 将计算出来的公共配置样式，设置到表单上
-        setDeclaredStyle(selector, { ...style });
+        setDeclaredStyle(labelFontSelector, { ...style });
+      } else {
+        setDeclaredStyle(labelFontSelector, defaultLabelStyle);
       }
     } else {
       // 3.2 否则，在表单项中设置样式
       isAllSameLabelStyle = false;
+      setDeclaredStyle(labelFontSelector, defaultLabelStyle);
     }
 
     /** 标题对齐样式处理 */
-    labelAlignAllSame = data.items.every(item => item?.labelAlign === 'default');
-    if (labelAlignAllSame) {
-      // 表单的公共标题对齐方式选择器
-      const selector = `.ant-form-item > div.ant-col.ant-form-item-label`;
-      setDeclaredStyle(selector, { textAlign: 'left' });
-    }
+    // 表单的公共标题对齐方式选择器
+    const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
+    setDeclaredStyle(labelAlignSelector, { textAlign: 'left' });
 
     /** 提示语样式处理 */
+    // 表单的公共提示语样式选择器
+    const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
     // 1. 比较所有表单项的提示语样式和默认样式的区别
     const descriptionStyleCompareResult = uniqBy(data.items
       .map(item => {
@@ -154,12 +161,10 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }), JSON.stringify);
     // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
     if (descriptionStyleCompareResult.length === 1
-      && !isEmptyObject(labelStyleCompareResult[0])) {
+      && !isEmptyObject(descriptionStyleCompareResult[0])) {
       isAllSameDescriptionStyle = true;
       let hasUnique = false;
       const style: React.CSSProperties = {};
-      // 表单的公共提示语样式选择器
-      const selector = `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
       Object.entries(defaultDescriptionStyle).map(([key, value]) => {
         if (value !== descriptionStyleCompareResult[0][key]) {
           style[key] = descriptionStyleCompareResult[0][key];
@@ -167,38 +172,47 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         }
       });
       if (hasUnique) {
-        console.log(style, 'style')
         // 将计算出来的公共配置样式，设置到表单上
-        setDeclaredStyle(selector, { ...style });
+        setDeclaredStyle(descSelector, { ...style });
+      } else {
+        setDeclaredStyle(descSelector, defaultDescriptionStyle);
       }
     } else {
       // 2.2 否则，在表单项中设置样式
       isAllSameDescriptionStyle = false;
+      setDeclaredStyle(descSelector, defaultDescriptionStyle);
     }
 
     /** 边距样式处理 */
+    // 1.操作项的边距选择器
+    const optMarginSelector = `div.ant-col.formAction div.ant-row.ant-form-item`;
+    const actionMargin = (data.actions.inlinePadding || [0, 0, 0, 0]).map(String).map(unitConversion).join(' ');
+    console.log(optMarginSelector, 'optMarginSelector')
+    setDeclaredStyle(optMarginSelector, { margin: actionMargin });
+    // 2.表单项的公共边距选择器
+    const marginSelector = `.ant-col:not(:last-child) .ant-form-item`;
     if ((data.config?.layout || data.layout) !== 'horizontal') {
       // 1. 比较所有表单项的外边距和默认边距的差异
       const marginCompareResult = uniqBy(data.items
-        .map(item => item.inlineMargin || [0, 16, 24, 0]), JSON.stringify);
-      console.log(marginCompareResult, 'marginCompareResult')
+        .map(item => item.inlineMargin || defaultMargin), JSON.stringify);
       // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
       if (marginCompareResult.length === 1) {
         isAllMarginSame = true;
-        // 表单项的公共边距选择器
-        const selector = `div.ant-col:not(:last-child) div.ant-row.ant-form-item`;
-        setDeclaredStyle(selector, { margin: marginCompareResult[0]?.map(String).map(unitConversion).join(' ') });
+        setDeclaredStyle(marginSelector, {
+          marginTop: String(marginCompareResult[0][0]) + 'px',
+          marginRight: String(marginCompareResult[0][1]) + 'px',
+          marginBottom: String(marginCompareResult[0][2]) + 'px',
+          marginLeft: String(marginCompareResult[0][3]) + 'px'
+        });
       } else {
-        // 2.2 否则，在表单项中设置样式
+        // 2.2 否则，表单项各自设置样式
+        setDeclaredStyle(marginSelector, defaultMarginStyle);
         isAllMarginSame = false;
       }
     } else {
       isAllMarginSame = true;
+      setDeclaredStyle(marginSelector, defaultMarginStyle);
     }
-    const actionMargin = (data.actions.inlinePadding || [0, 0, 0, 0]).map(String).map(unitConversion).join(' ');
-    // 操作项的边距选择器
-    const selector = `div.ant-col:not(:last-child) div.ant-row.ant-form-item`;
-    setDeclaredStyle(selector, { margin: actionMargin });
   }
 
   //=========== v1.4.27 end ===============
@@ -256,17 +270,14 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     //=========== v1.4.15 end ===============
 
     /**
-     * @description v1.4.27 表单项style配置改造 part2
+     * @description v1.4.27 表单项style配置改造 part2: 表单项样式升级
      */
     if (data.config.labelAlign) {
+      /** 标题字体、换行样式处理 */
       if (!isAllSameLabelStyle
         && item.labelStyle) {
         // 表单项的标题字体选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
-        // const selector = [
-        //   `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`,
-        //   `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`,
-        // ];
 
         const style: React.CSSProperties = {};
         let hasUnique = false;
@@ -282,18 +293,23 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
             : 'nowrap';
         }
         if (hasUnique) {
-          console.log(style, selector, '这里是')
-          setDeclaredStyle(selector, style, void 0, true);
+          setDeclaredStyle(selector, style);
         }
-        item.labelStyle = void 0;
       }
+      item.labelStyle = void 0;
+
+      /** 标题对齐方式处理 */
       if (item?.labelAlign !== 'default') {
         // 表单项的标题对齐方式选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
-        setDeclaredStyle(selector, { textAlign: item.labelAlign }, void 0, true);
+        setDeclaredStyle(selector, { textAlign: item.labelAlign });
       }
+      item.labelAlign = void 0;
+
+      /** 提示语样式处理 */
       if (!isAllSameDescriptionStyle
         && item.descriptionStyle) {
+        // 表单项的提示语样式选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
 
         const style: React.CSSProperties = {};
@@ -307,19 +323,23 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         if (hasUnique) {
           setDeclaredStyle(selector, style);
         }
-        item.descriptionStyle = void 0;
       }
+      item.descriptionStyle = void 0;
+
+      /** 边距样式处理 */
       if (!isAllMarginSame
         && item.inlineMargin) {
-        const selector = `.${item.id} div.ant-row.ant-form-item`;
-
-        const style: React.CSSProperties = {
-          margin: item.inlineMargin?.map(String).map(unitConversion).join(' ')
-        };
-        console.log(selector, style, 'item.margin')
-        setDeclaredStyle(selector, style);
-        item.inlineMargin = void 0;
+        if (JSON.stringify(defaultMargin) !== JSON.stringify(item.inlineMargin)) {
+          // 表单项的边距样式选择器
+          const selector = `.${item.id} div.ant-row.ant-form-item`;
+          const style: React.CSSProperties = {
+            margin: item.inlineMargin.map(String).map(unitConversion).join(' ')
+          };
+          console.log(selector, style, 'item.margin')
+          setDeclaredStyle(selector, style);
+        }
       }
+      item.inlineMargin = void 0;
     }
   });
   //=========== v1.4.27 end ===============

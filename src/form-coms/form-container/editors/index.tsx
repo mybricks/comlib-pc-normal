@@ -210,10 +210,13 @@ export default {
         title: '公共标题样式',
         catelog: '默认',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
-        target: [
-          `.ant-form-item > div.ant-col.ant-form-item-label > label > label`,
-          `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
-        ]
+        target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+      },
+      {
+        title: '公共冒号样式',
+        catelog: '默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
       },
       {
         title: '公共标题对齐方式',
@@ -244,13 +247,13 @@ export default {
         title: '公共表单项边距',
         catelog: '默认',
         options: ['margin'],
-        target: `div.ant-col:not(:last-child) div.ant-row.ant-form-item`
+        target: `.ant-col:not(:last-child) .ant-form-item`
       },
       {
         title: '操作项边距',
         catelog: '默认',
         options: ['margin'],
-        target: `div.ant-col:last-child div.ant-row.ant-form-item`
+        target: `div.ant-col.formAction div.ant-row.ant-form-item`
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {
@@ -532,11 +535,12 @@ export default {
       {
         title: '标题字体',
         options: [{ type: 'font', config: { disableTextAlign: true } }],
-        // target: [
-        //   `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`,
-        //   `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`
-        // ]
         target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+      },
+      {
+        title: '标题冒号',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`
       },
       {
         title: '标题对齐方式',
@@ -1064,7 +1068,7 @@ export default {
         title: '边距',
         catelog: '默认',
         options: ['margin'],
-        target: `div.ant-row.ant-form-item`
+        target: `div.ant-col.formAction div.ant-row.ant-form-item`
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1) => {

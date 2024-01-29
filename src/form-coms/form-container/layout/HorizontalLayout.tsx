@@ -36,7 +36,7 @@ const HorizontalLayout = (props: HorizontalLayoutProps) => {
       {children}
       {data.actions.visible && (
         <Col
-          className={isEmpty ? css.emptyHorActions : undefined}
+          className={`${isEmpty ? css.emptyHorActions : ''} formAction`}
           flex={getFlexValue()}
           style={{
             textAlign: data.actions.align
