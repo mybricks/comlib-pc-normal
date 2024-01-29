@@ -20,7 +20,7 @@ const catelogEditors = (catelog, editors) => {
 export default {
   '[data-table-pagination]': {
     title: '分页',
-    items: ({}: EditorResult<Data>, cate1, cate2) => {
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -560,7 +560,7 @@ export default {
               options: [
                 { type: 'font', config: { disableTextAlign: true } },
                 'border',
-                { type: 'background', config: { disableBackgroundImage: true } }, 
+                { type: 'background', config: { disableBackgroundImage: true } },
                 'BoxShadow',
               ],
               target: `.ant-pagination-options-quick-jumper input:focus`
