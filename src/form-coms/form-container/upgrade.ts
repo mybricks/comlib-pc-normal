@@ -612,12 +612,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
 
   /**
-     * @description v1.4.39 表单项style配置改造 part3
-  */
-  data.config.labelAlign = undefined;
-  //=========== v1.4.39 end ===============
-
-  /**
     * @description v1.4.31 => v1.4.32, 操作项增加图标
   */
   data.actions.items?.forEach(act => {
@@ -655,6 +649,12 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
   //=========== v1.4.34 end ===============
 
+  /**
+   * @description v1.4.39 表单项style配置改造 part3
+   */
+  data.config.labelAlign = undefined;
+  data.config.labelWrap = undefined;
+  //=========== v1.4.39 end ===============
 
   return true;
 }

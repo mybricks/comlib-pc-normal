@@ -36,6 +36,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
+  const [dynamicStyles, setDynamicStyle] = useState({});
 
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
@@ -176,7 +177,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val, relOutputs) => {
-      setFormItemsProps(val);
+      const formItemStyles = setFormItemsProps(val);
+      setDynamicStyle(formItemStyles);
       relOutputs['setFormItemsPropsDone'](val);
     });
 
@@ -339,11 +341,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
    * 设置表单项公共配置
    * @param formItemsProps 表单项配置对象
    */
-  const setFormItemsProps = (formItemsProps: { string: FormItems }) => {
+  const setFormItemsProps = (formItemsProps: { string: FormItems }): object => {
+    const formItemStyles = {};
     if (typeCheck(formItemsProps, ['Object'])) {
       const disableFormList: string[] = [];
       const enableFormList: string[] = [];
       Object.entries(formItemsProps).map(([name, props]) => {
+        formItemStyles[name] = {};
         if (!typeCheck(props, ['Object'])) {
           console.warn(`${title}: 设置表单项【${name}】配置不是对象类型`);
           return;
@@ -356,22 +360,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
 
         const formItem = data.items[formItemIndex];
-        const newFormItem = { ...props };
+        const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap, ...newFormItem } = props;
 
         // 禁用、启用
         if (typeof newFormItem.disabled === 'boolean') {
           (newFormItem.disabled ? disableFormList : enableFormList).push(name);
         }
         // 标题样式、提示语样式
-        const { descriptionStyle = {}, labelStyle = {} } = formItem;
-        const newLabelStyle = newFormItem.labelStyle || {};
-        const newDescriptionStyle = newFormItem.descriptionStyle || {};
+        formItemStyles[name] = {
+          labelStyle,
+          descriptionStyle,
+          labelAlign,
+          labelAutoWrap
+        };
 
         const temp = {
           ...formItem,
-          ...props,
-          labelStyle: { ...labelStyle, ...newLabelStyle },
-          descriptionStyle: { ...descriptionStyle, ...newDescriptionStyle }
+          ...props
         };
         data.items[formItemIndex] = temp;
       });
@@ -379,6 +384,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
       disableFormList.length && setDisabled(disableFormList);
       enableFormList.length && setEnabled(enableFormList);
     }
+    return formItemStyles;
   };
 
   const validate = useCallback(() => {
@@ -530,6 +536,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
               childrenInputs={childrenInputs}
               outputs={outputs}
               submit={submitMethod}
+              dynamicStyles={dynamicStyles}
             />
           </Form>
         ) : (
