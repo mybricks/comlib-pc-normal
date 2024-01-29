@@ -250,11 +250,13 @@ export default {
         catelog: '默认',
         options: ['margin'],
         target: `.ant-col:not(:last-child) .ant-form-item`,
-        ifVisible({ data }: EditorResult<Data>) {
+        ifVisible(e: EditorResult<Data>) {
+          console.log(e, '111');
+          const { data } = e;
           /**
            * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
            */
-          return !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery);
+          return !(data?.domainModel?.entity?.fieldAry?.length > 0 && data?.domainModel?.isQuery);
         }
       },
       {
