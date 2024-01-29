@@ -376,7 +376,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
         const temp = {
           ...formItem,
-          ...props
+          ...newFormItem
         };
         data.items[formItemIndex] = temp;
       });

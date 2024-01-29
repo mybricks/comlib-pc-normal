@@ -249,7 +249,13 @@ export default {
         title: '公共表单项边距',
         catelog: '默认',
         options: ['margin'],
-        target: `.ant-col:not(:last-child) .ant-form-item`
+        target: `.ant-col:not(:last-child) .ant-form-item`,
+        ifVisible({ data }: EditorResult<Data>) {
+          /**
+           * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+           */
+          return !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery);
+        }
       },
       {
         title: '操作项边距',
@@ -589,7 +595,13 @@ export default {
         title: '表单项边距',
         catelog: '默认',
         options: ['margin'],
-        target: `div.ant-row.ant-form-item`
+        target: `div.ant-row.ant-form-item`,
+        ifVisible({ data }: EditorResult<Data>) {
+          /**
+           * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+           */
+          return !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery);
+        }
       }
     ],
     items: [

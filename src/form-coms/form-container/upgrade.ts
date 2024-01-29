@@ -66,8 +66,8 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     data.config = {
       colon: data.colon || true,
       layout: data.layout,
-      labelWrap: false,
-      labelAlign: 'right',
+      // labelWrap: false,
+      // labelAlign: 'right',
       // disabled: false
     }
 
@@ -113,7 +113,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     const labelFontSelector = `.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
     // 1. 比较所有表单项的换行样式是否都是跟随容器
     whiteSpaceAllSame = data.items.every(item => item?.labelAutoWrap === 'default');
-    // 2. 比较所有表单项的标题样式和默认样式的区别，
+    // 2. 比较所有表单项的标题样式和默认样式的区别
     const labelStyleCompareResult = uniqBy(data.items
       .map(item => {
         return pick(item.labelStyle, Object.keys(defaultLabelStyle));
@@ -188,7 +188,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     // 1.操作项的边距选择器
     const optMarginSelector = `div.ant-col.formAction div.ant-row.ant-form-item`;
     const actionMargin = (data.actions.inlinePadding || [0, 0, 0, 0]).map(String).map(unitConversion).join(' ');
-    console.log(optMarginSelector, 'optMarginSelector')
     setDeclaredStyle(optMarginSelector, { margin: actionMargin });
     // 2.表单项的公共边距选择器
     const marginSelector = `.ant-col:not(:last-child) .ant-form-item`;
@@ -300,6 +299,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         }
       }
       item.labelStyle = void 0;
+      item.labelAutoWrap = void 0;
 
       /** 标题对齐方式处理 */
       if (item?.labelAlign !== 'default') {
@@ -338,7 +338,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
           const style: React.CSSProperties = {
             margin: item.inlineMargin.map(String).map(unitConversion).join(' ')
           };
-          console.log(selector, style, 'item.margin')
           setDeclaredStyle(selector, style);
         }
       }
@@ -552,6 +551,16 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   }
 
   //=========== v1.4.10 end ===============
+
+  /**
+    * @description v1.4.15 , 兼容表单项无name，用label替换
+  */
+  data.items.forEach((item) => {
+    if (item.name === '' || item.name === undefined) {
+      item.name = item.label;
+    }
+  })
+  //=========== v1.4.15 end ===============
 
   /**
     * @description v1.4.18 , 表单容器添加关联输出项
