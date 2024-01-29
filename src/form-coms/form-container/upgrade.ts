@@ -151,7 +151,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     // 表单的公共标题对齐方式选择器
     const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
     setDeclaredStyle(labelAlignSelector, {
-      textAlign: (data.config?.layout || data.layout) !== 'vertical' ? 'left' : 'right'
+      textAlign: (data.config?.layout || data.layout) === 'vertical' ? 'left' : 'right'
     });
 
     /** 提示语样式处理 */
