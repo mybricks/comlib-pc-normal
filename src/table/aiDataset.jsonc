@@ -56,7 +56,7 @@
   "selectionType": "'checkbox'|'radio'", // 选择类型
   "rowSelectionLimit": "number", // 最多选择限制
   "enableRowClickSelection": "boolean",
-  "rowSelectionPostion": "('top'|'bottom')[]|undefined", // 顶部或底部全局选择器
+  "rowSelectionPostion": "('top'|'bottom')[]|'undefined'", // 顶部或底部全局选择器
   "mergeCheckboxColumn": "boolean", // 合并后，勾选会输出合并前的多项数据，不支持单选合并，必须支持行合并后才能开启
   "isDisabledScript": "string", // "({row, rowIndex}) => boolean
   "useSetSelectedRowKeys": "boolean", // 禁止勾选的表达式（{}, =, <, >, ||, &&）, 例：{dataIndex} === 1
