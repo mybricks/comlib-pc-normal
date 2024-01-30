@@ -1,0 +1,7 @@
+{
+  "allSize": "'large' | 'middle' | 'small'", // 工具栏大小，默认为'middle'
+  "allType": "'default' | 'primary' | 'dashed' | 'danger' | 'link'", // 工具栏类型，默认为'default'
+  "allDanger": "boolean", // 是否为危险按钮，默认为false
+  "allShape": "'circle' | 'round' | 'default'", // 工具栏形状，默认为'default'
+  "btnList": "Array<{key: string, text: string, useDynamicText?: boolean, useDynamicStyle?: boolean, shape?: ShapeEnum, size?: SizeEnum, style: CSSProperties | false, type?: TypeEnum, useIcon?: boolean, icon?: string, showText?: boolean, iconLocation?: LocationEnum, iconDistance?: number, isCustom?: boolean, src?: string, contentSize: [number, number], permission?: { id: string }, useDynamicDisabled?: boolean, useDynamicHidden?: boolean， disabled?: boolean, hidden?: boolean, dataType: 'null' | 'number' | 'string' | 'object' | 'boolean' | 'external', outVal: any, inVal: any, loading: boolean, useDynamicLoading: boolean, danger?: boolean, isSlot?: boolean}>" // 按钮列表, key为唯一标识, text为文本, useDynamicText为是否使用动态文本, useDynamicStyle为是否使用动态样式, shape为形状, size为大小, style为样式, type为类型, useIcon为是否使用图标, icon为图标, showText为是否显示文本, iconLocation为图标位置, iconDistance为图标距离, isCustom为是否自定义, src为自定义图标地址, contentSize为自定义图标大小, permission为权限, useDynamicDisabled为是否使用动态禁用, useDynamicHidden为是否使用动态隐藏, disabled为禁用, hidden为隐藏, dataType为数据类型, outVal为输出值, inVal为输入值, loading为加载状态, useDynamicLoading为是否使用动态加载, danger为危险按钮, isSlot为是否使用插槽
+}

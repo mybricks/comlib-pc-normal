@@ -1,0 +1,5 @@
+{
+  "title": "string", // 提示内容
+  "trigger": "'hover' | 'click' | 'focus'", // 触发方式
+  "placement": "'leftTop' | 'top' | 'rightTop' | 'left' | 'right' | 'leftBottom' | 'bottom' | 'rightBottom'", // 提示框位置
+}
