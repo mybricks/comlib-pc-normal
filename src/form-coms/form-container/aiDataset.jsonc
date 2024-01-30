@@ -1,0 +1,14 @@
+{
+  "layoutType": "'Form'|'QueryFilter'",
+  "defaultCollapsed": "boolean", // 默认是否折叠表单项
+  "submitHiddenFields": "boolean",
+  "config.span": "number", // QueryFilter 时生效，表单项宽度，遵循 24 个栅格布局的规范，默认为 8
+  "config.formItemColumn": "number", // Form 时生效，每行表单项个数，最大 6 个
+  "config.layout": "'horizontal'|'vertical'|'inline'",
+  "config.colon": "boolean", // 是否显示 label 后面的冒号
+  "config.labelWrap": "boolean", // 是否换行显示 label
+  "config.labelAlign": "'left'|'right'", // label 对齐方式
+  "labelWidthType": "'px'|'span'", // label 宽度类型
+  "labelWidth": "number", // label 像素宽度，labelWidthType 为 px 时生效
+  "labelCol": "number", // label 栅格布局，栅格共有 24 个，labelWidthType 为 span 时生效
+}
