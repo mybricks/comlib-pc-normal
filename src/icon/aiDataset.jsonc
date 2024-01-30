@@ -1,0 +1,5 @@
+{
+  "icon": "string", // default: 'HomeOutlined'
+  "colorPicker": "string", // default: '#000'
+  "size": "string" // default: '32px'
+}

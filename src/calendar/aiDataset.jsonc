@@ -1,0 +1,7 @@
+{
+  "mode": "'month'|'year'", // default: 'month'
+  "useModeSwitch": "boolean", // default: true
+  "useMonthSelect": "boolean", // default: true
+  "useYearSelect": "boolean", // default: true
+  "useCustomDateCell": "boolean" // 是否开启自定义日期单元格
+}

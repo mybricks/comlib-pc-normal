@@ -1,0 +1,6 @@
+{
+  "layout": "'flex-start'|'center'|'flex-end'", // default: 'center'
+  "height": "number", // default: 64
+  "width": "string", // default: '100%'
+  "parentId": "string"
+}

@@ -1,0 +1,6 @@
+{
+  "showTitle": "boolean", 
+  "title": "string", // 标题。default: '卡片'
+  "useExtra": "boolean", // 是否开启额外信息插槽。default: false
+  "isAction": "boolean" // 开启操作区自定义
+}

@@ -1,0 +1,22 @@
+{
+  "tabList": "Array<{id: string, key: string, name: string}>", // 选项卡列表, id: 选项卡id, key: 选项卡key, name: 选项卡名称
+  "type": "'card' | 'line'", // 外观类型, card: 卡片, line: 简约
+  "tabPosition": "'top' | 'bottom' | 'left' | 'right'", // 标签位置, top: 顶部, bottom: 底部, left: 左侧, right: 右侧, 默认: top
+  "centered": "boolean", // 标签是否居中, 默认: false
+  "prohibitClick": "boolean", // 是否禁止点击, 默认: false
+  "useDynamicTab": "boolean", // 是否使用动态选项卡, 默认: false
+  "hideSlots": "boolean", // 隐藏插槽占位, 默认: false
+  "useLeftExtra": "boolean", // 是否使用左侧额外内容, 默认: false
+  "useRigthExtra": "boolean", // 是否使用右侧额外内容, 默认: false
+  "name": "string", // 选项卡名称
+  "showIcon": "boolean", // 是否显示图标, 默认: false
+  "icon": "string", // 图标, 默认是 BellOutlined
+  "tooltipText": "string", // 提示文本, tab标题的文字提示，不填写则不显示
+  "closable": "boolean", // 是否支持关闭, 默认: false
+  "dynamic": "boolean", // 是否支持动态通知显示, 默认: false
+  "infoType": "'text' | 'icon'", // 通知类型, text: 文本, icon: 图标, 默认: text, 只有 dynamic 为 true 时有效
+  "size": "'default' | 'small'", // 通知大小, 默认: default, 只有 dynamic 为 true 并且infoType为‘icon’时有效
+  "showZero": "boolean", // 当数值为 0 时，是否展示 Badge, 默认: false, 只有 dynamic 为 true 并且infoType为‘icon’时有效
+  "offset": "Array<number>", // 设置状态点的偏移量 [x, y], 默认: [0, 0], 只有 dynamic 为 true 并且infoType为‘icon’时有效
+  "status": "'success' | 'processing' | 'default' | 'error' | 'warning'", // 设置 Badge 为状态点, 默认: success, 只有 dynamic 为 true 并且infoType为‘icon’时有效
+}

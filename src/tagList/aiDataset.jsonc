@@ -1,0 +1,16 @@
+{
+  "tags": "Array<{key: string, content: string, color: 'default' | 'success' | 'processing' | 'warning' | 'error'}>", // 标签列表, key: 标签名, content: 标签内容, color: 标签颜色，dynamic必须是false才可生效
+  "direction": "'horizontal' | 'vertical'", // 标签方向, horizontal: 水平, vertical: 垂直, 默认值: horizontal
+  "type": "'default' | 'success' | 'processing' | 'warning' | 'error'", // 标签类型, default: 默认, success: 成功, processing: 处理中, warning: 警告, error: 错误, 默认值: default
+  "size": "number", // 标签间距, 默认值: 8
+  "dynamic": "boolean", // 是否动态标签, 默认值: false
+  "closeAble": "boolean", // 是否可关闭, 默认值: false
+  "appendAble": "boolean", // 是否可添加, 默认值: false
+  "useAppendBtn": "boolean", // 显示新增按钮, 默认值: false
+  "checkable": "boolean", // 是否可选中, 默认值: false
+  "content": "string", // 标签内容, 默认值: ''
+  "color": "'default' | 'success' | 'processing' | 'warning' | 'error'", // 标签颜色, default: 默认, success: 成功, processing: 处理中, warning: 警告, error: 错误, 默认值: default
+  "icon": "string", // 标签图标, 默认值: ''
+  "appendBtn.text": "string", // 新增按钮文本, 默认值: '新增'
+  "appendBtn.icon": "string", // 新增按钮图标
+}

@@ -1,0 +1,6 @@
+{
+  "title": "string", // default: '标题'
+  "isCustomTitle": "boolean", // 是否开启自定义插槽
+  "expanded": "boolean", // 默认是否展开
+  "useExtra": "boolean" // 是否开启额外信息插槽
+}

@@ -1,0 +1,9 @@
+{
+  "content": "string", // default: '下拉菜单'
+  "isCustom": "boolean", // 是否开启自定义标题插槽。default: false
+  "isChildCustom": "boolean", // 是否开启自定义子项插槽。default: false
+  "trigger": "'hover'|'click'", // default: 'hover'
+  "placement": "'bottomLeft'|'bottomCenter'|'bottomRight'|'topLeft'|'topCenter'|'topRight'", // default: 'bottomLeft'
+  "width": "string", // default: '100px'
+  "options": "Array<{ label: string, value: string, link: string, disabled: boolean, useIcon: boolean, icon: string }>" //  default: [ {"label": "选项1", "link": "","disabled": "true", "useIcon": false, "icon": "HomeOutlined", "key": "选项1"} ]
+}

@@ -1,0 +1,12 @@
+{
+  "asMapArea": "boolean", // 是否作为热区使用，反之为 button。default: false
+  "text": "string", // 标题，仅为 button 时生效。default: '按钮'
+  "useIcon": "boolean", // default: false
+  "isCustom": "boolean", // 自定义图标
+  "icon": "string", // 图标名称。default: 'HomeOutlined'
+  "src": "string", // 自定义图标路径。default: ''
+  "contentSize": "[number, number]", // 内容尺寸。default: [14, 14]
+  "showText": "boolean", // 是否显示文字。default: true
+  "iconLocation": "'front'|'back'", // 图标位置，showText 才能设置。default: 'front'
+  "iconDistance": "number" // 图标距离文字的距离。default: 8
+}
