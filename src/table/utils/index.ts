@@ -110,7 +110,7 @@ export const formatDataSource = (dataSource, rowKey) => {
 export const getDefaultDataSource = (columns: IColumn[], rowKey, env) => {
   if (env.runtime) return [];
   const mockData = {
-    [rowKey]: uuid()
+    [rowKey]: 'xxx'
   };
   const setDefaultDataSource = (columns) => {
     if (Array.isArray(columns)) {
