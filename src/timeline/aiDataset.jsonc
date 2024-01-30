@@ -1,0 +1,12 @@
+{
+  "mode": "'left' | 'alternate' | 'right'", // 内容位置
+  "reverse": "boolean", // 排序方式, true为正序，false为逆序
+  "supportCollapse": "boolean", // 是否支持展开收起
+  "defaultCollapse": "boolean", // 默认是否收起
+  "isDynamic": "boolean", // 是否动态加载
+  "useContentSlot": "boolean", // 是否自定义节点内容
+  "timelines": "Array<{id: string, title: string, color?: string, subTitle?: string, description?: string, position?: 'left' | 'right'}>", // 时间轴数据, id为唯一标识, title为标题, color为颜色, subTitle为副标题, description为描述, position为内容位置
+  "title": "string", // 标题
+  "subTitle": "string", // 副标题
+  "description": "string" // 描述
+}
