@@ -78,6 +78,11 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   /**
    * @description v1.4.39 表单项style配置改造 part1: 计算公共样式
    */
+  const layout = data.config?.layout || data.layout
+  const isInlineModel = layout === 'inline';
+  const isHorizontalModel = layout === 'horizontal';
+  const isVerticalModel = layout === 'vertical';
+
   const defaultLabelStyle = {
     lineHeight: '14px',
     letterSpacing: '0px',
@@ -137,6 +142,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }
       if (hasUnique) {
         // 将计算出来的公共配置样式，设置到表单上
+        if (style.fontSize) {
+          style.lineHeight = 1;
+        }
         setDeclaredStyle(labelFontSelector, { ...style });
       } else {
         setDeclaredStyle(labelFontSelector, defaultLabelStyle);
@@ -151,12 +159,12 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     // 表单的公共标题对齐方式选择器
     const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
     setDeclaredStyle(labelAlignSelector, {
-      textAlign: (data.config?.layout || data.layout) === 'vertical' ? 'left' : 'right'
+      textAlign: isVerticalModel ? 'left' : 'right'
     });
 
     /** 提示语样式处理 */
     // 表单的公共提示语样式选择器
-    const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
+    const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc`;
     // 1. 比较所有表单项的提示语样式和默认样式的区别
     const descriptionStyleCompareResult = uniqBy(data.items
       .map(item => {
@@ -176,6 +184,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       });
       if (hasUnique) {
         // 将计算出来的公共配置样式，设置到表单上
+        if (style.fontSize) {
+          style.lineHeight = 1;
+        }
         setDeclaredStyle(descSelector, { ...style });
       } else {
         setDeclaredStyle(descSelector, defaultDescriptionStyle);
@@ -188,12 +199,16 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
     /** 边距样式处理 */
     // 1.操作项的边距选择器
-    const optMarginSelector = `div.ant-col.formAction div.ant-row.ant-form-item`;
-    const actionMargin = (data.actions.inlinePadding || [0, 0, 0, 0]).map(String).map(unitConversion).join(' ');
-    setDeclaredStyle(optMarginSelector, { margin: actionMargin });
+    if (data.actions.inlinePadding && !isHorizontalModel) {
+      const optMarginSelector = `div.ant-col.formAction div.ant-row.ant-form-item`;
+      const actionMargin = (data.actions.inlinePadding).map(String).map(unitConversion).join(' ');
+      setDeclaredStyle(optMarginSelector, { margin: actionMargin });
+    }
+    data.actions.inlinePadding = void 0;
+
     // 2.表单项的公共边距选择器
     const marginSelector = `.ant-col:not(:last-child) .ant-form-item`;
-    if ((data.config?.layout || data.layout) !== 'horizontal') {
+    if (!isHorizontalModel) {
       // 1. 比较所有表单项的外边距和默认边距的差异
       const marginCompareResult = uniqBy(data.items
         .map(item => item.inlineMargin || defaultMargin), JSON.stringify);
@@ -297,6 +312,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
             : 'nowrap';
         }
         if (hasUnique) {
+          if (style.fontSize) {
+            style.lineHeight = 1;
+          }
           setDeclaredStyle(selector, style);
         }
       }
@@ -315,7 +333,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       if (!isAllSameDescriptionStyle
         && item.descriptionStyle) {
         // 表单项的提示语样式选择器
-        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc`;
 
         const style: React.CSSProperties = {};
         let hasUnique = false;
@@ -326,6 +344,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
           }
         })
         if (hasUnique) {
+          if (style.fontSize) {
+            style.lineHeight = 1;
+          }
           setDeclaredStyle(selector, style);
         }
       }

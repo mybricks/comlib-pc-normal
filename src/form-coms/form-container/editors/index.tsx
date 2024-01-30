@@ -243,7 +243,7 @@ export default {
         title: '公共提示语样式',
         catelog: '默认',
         options: ['font'],
-        target: `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`
+        target: `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc`
       },
       {
         title: '公共表单项边距',
@@ -588,7 +588,7 @@ export default {
         title: '提示语样式',
         options: ['font'],
         target: ({ comId, comName, ...arg }) => {
-          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div`;
+          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc`;
         }
       },
       {
