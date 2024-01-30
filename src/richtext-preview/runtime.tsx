@@ -12,8 +12,11 @@ export interface Data {
 
 export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
   inputs.content &&
-    inputs.content((val: string) => {
+    inputs.content((val: string, outputRels: { contentDone: (val: string) => void }) => {
       data.content = val;
+      if (outputRels['contentDone']) {
+        outputRels['contentDone'](val);
+      }
     });
   return <div className={css.html} dangerouslySetInnerHTML={{ __html: data.content || '' }}></div>;
 }
