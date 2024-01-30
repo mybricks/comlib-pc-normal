@@ -1,0 +1,16 @@
+{
+    "percent": "number", // 默认进度。默认值:50%
+    "isShow": "boolean", // 显示进度值。默认值:true
+    "isFormat": "boolean", // 自定义进度值，当isShow为true时可设置。默认值:false
+    "formatFunction": "string", // 进度值表达式，当isShow和isFormat同时为true时可设置。默认值:{percent}%
+    "type": "'line'|'circle'|'dashboard'", // 默认值:line
+    "size": "'default'|'small'", // 当type为line时可设置。默认值:default
+    "circleSize": "number", // 当type不为line时的尺寸。默认值:120
+    "strokeWidth": "number", // 进度条线宽度。默认值:6
+    "isSteps": "boolean", // 是否可配置步数，当type为line时可设置。默认值:false
+    "steps": "number", // 进度条总共步数，当type为line且isSteps为true时可设置。默认值:3
+    "status": "'success' | 'exception' | 'normal' | 'active'", // 默认值:normal
+    "isColor": "boolean", // 自定义颜色。默认值:false
+    "strokeColor": "string", // 完成分段颜色，当isColor为true时可设置。默认值:#1890ff
+    "trailColor": "string" // 未完成分段颜色，当isColor为true时可设置。默认值:#f3f3f3
+}

@@ -1,0 +1,11 @@
+{
+    "align": "'flex-start'|'center'|'flex-end'", // 位置，可以居左、居中、居右。默认值:flex-end
+    "size": "'default'|'small'|'simple'", // 默认值:default
+    "defaultPageSize": "number", // 默认值:10
+    "text": "string", // 前置说明文字，格式：{start}当前页起始条目，{end}当前页结束条目，{total}总条目数，当size不为simple时可设置。默认值:共 {total} 条结果
+    "showQuickJumper": "boolean", // 跳页功能，当size不为simple时可设置。默认值:false
+    "showSizeChanger": "boolean", // 条数选择功能，当size不为simple时可设置。默认值:false
+    "pageSizeOptions": "Array<string>", // 配置条数切换器可选的条目数，当showSizeChanger为true且size不为simple时可设置。默认值:["10","20","50","100"] 
+    "hideOnSinglePage": "boolean", // 页数为1时是否隐藏分页器，当showSizeChanger为false且size为simple时可设置。默认值:false
+    "isDynamic": "boolean" // 是否支持通过输入项动态启用或禁用分页器。默认值:false
+}

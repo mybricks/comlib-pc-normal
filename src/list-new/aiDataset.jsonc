@@ -1,0 +1,18 @@
+{
+    "isResponsive": "boolean", // 响应式布局。默认值:false
+    "isCustomPoints": "boolean", // 自定义断点，当isResponsive为true时可设置。默认值:false
+    "bootstrap": "[number,number,number,number,number,number]", // 断点列数，分别为 <576px 展示的列数; ≥576px 展示的列数; ≥768px 展示的列数; ≥992px 展示的列数; ≥1200px 展示的列数; ≥1600px 展示的列数，当isResponsive为true且isCustomPoints为false时可设置。默认值:[1,2,4,4,6,3]。
+    "customOptions": "Array<{point:number;relation:'≥'|'<';columns:number}>", // 自定义配置断点位置及列数，当isResponsive为true且isCustomPoints为true时可设置。默认值:[{"point":576,"relation":"<","columns":1},{"point":576,"relation":"≥","columns":2},{"point":768,"relation":"≥","columns":4},{"point":992,"relation":"≥","columns":4},{"point":1200,"relation":"≥","columns":6},{"point":1600,"relation":"≥","columns":3}]
+    "isAuto": "boolean", // 是否自动换行，当isResponsive为false时可设置。默认值:true
+    "layout":"'horizontal'|'vertical'", // 方向，当isCustom为false且isAuto为true且isResponsive为false时可设置。默认值:horizontal
+    "isScroll": "boolean", // 内容超出页面宽度后是否横向滚动，当isAuto和isResponsive同时为false时可设置。默认值:false
+    "itemWidth": "string", // 列表项宽度，支持px, %及计算值，当isAuto和isResponsive同时为false时可设置。默认值:100%
+    "isCustom": "boolean", // 是否自定义列数，当isAuto为true且isResponsive为false时可设置。默认值:false
+    "grid.column": "number", // 列数，当isAuto和isCustom同时为true且isResponsive为false时可设置。默认值:3
+    "grid.mobileColumn": "number", // 移动端列数，当isAuto和isCustom同时为true且isResponsive为false时可设置。默认值:1
+    "grid.gutter": "[number, number]", // 间隔，分别为列表项的左右间隔和上下间隔。默认值:[0, 16]
+    "canSort": "boolean", // 是否可拖拽排序，当isAuto和isCustom为true且grid.column为1且isResponsive为false时可设置。默认值:false
+    "useGetDataSource": "boolean", // 列表数据是否可获取
+    "useLoading": "boolean",
+    "loadingTip": "string"
+}

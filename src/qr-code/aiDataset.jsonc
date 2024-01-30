@@ -1,0 +1,7 @@
+{
+    "link": "string", // 默认值:https://www.baidu.com/
+    "hasIcon": "boolean", // 默认值:false
+    "icon.url": "string", // 默认值:https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/images/logo.b8d9b45951421ff5.jpeg
+    "icon.width": "string", // 图标的宽度，值为字符串，可以是百分比，像素值（单位px）和auto。默认值:20%
+    "icon.height": "string" // 图标的高度，值为字符串，可以是百分比，像素值（单位px）和auto。默认值:20%
+}

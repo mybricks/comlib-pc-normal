@@ -1,0 +1,7 @@
+{
+    "title": "string", // 默认值:这是一个确认框
+    "okText": "string", // 默认值:确认
+    "cancelText": "string", // 默认值:取消
+    "icon": "string", // 图标，值为antd组件库中的图标名。默认值:ExclamationCircle
+    "showCancel": "boolean" // 默认值:true
+}

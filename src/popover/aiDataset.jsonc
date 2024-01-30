@@ -1,0 +1,8 @@
+{
+    "useTitleSlot": "boolean", // 是否用自定义组件作为标题。默认值:false
+    "title": "string", // 当useTitleSlot为false时可设置。默认值:标题
+    "useContentSlot": "boolean", // 是否用自定义组件作为内容。默认值:false
+    "content": "string", // 当useContentSlot为false时可设置。默认值:这是一个气泡，请添加一个组件
+    "trigger": "'hover'|'click'|'focus'", // 默认值:hover
+    "placement": "'leftTop'|'top'|'rightTop'|'leftBottom'|'bottom'|'rightBottom'|'left'|'right'" //默认值:top
+}

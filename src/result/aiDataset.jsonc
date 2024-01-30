@@ -1,0 +1,5 @@
+{
+    "title": "string", // 默认值:标题
+    "subTitle": "string", // 默认值:副标题
+    "status": "'success'|'error'|'info'|'warning'" // 默认值:info
+}

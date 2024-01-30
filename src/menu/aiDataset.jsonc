@@ -1,0 +1,4 @@
+{
+    "mode": "'horizontal'|'vertical'|'inline'", // 样式。默认值:horizontal
+    "dataSource": "Array<{defaultActive: boolean; useIcon:boolean; icon:string; key: string; _key: string; menuType: 'menu'|'subMenu'; title: string}>" // 菜单项。默认值: [{  "defaultActive": true,  "key": "menu1",  "_key": "menu1",  "menuType": "menu",  "title": "菜单1"}]
+}
