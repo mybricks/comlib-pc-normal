@@ -1,4 +1,28 @@
 {
+  "columns[]": {
+    "title": "string", // 列名
+    "dataIndex": "string", // 字段，当contentType不为group时可设置
+    "contentType": "'text'|'slotItem'|'group'", // 列类型，可以是普通文字、自定义插槽、分组
+    "keepDataIndex": "boolean", // 当contentType为slotItem时，是否可编辑当前列字段和传递列数据
+    "formatData.nullValueHandling": "boolean", // 空值处理（是否将undefined、null、空字符串转换成预期值）
+    "formatData.nullValueHandlingValue": "string",
+    "formatData": "{formatterName: 'NONE'|'KEYMAP'|'EXPRESSION'|'TIMETEMPLATE'|'CUSTOMTIME'|'CUSTOMSCRIPT',values:{KEYMAP:object;EXPRESSION:string;TIMETEMPLATE:string;CUSTOMTIME:srtring;CUSTOMSCRIPT:string}}", // 数据格式化，formatterName表示格式化类型，可以是 保持原值、枚举映射、表达式、时间戳转化、自定义时间戳转化、自定义脚本，values为不同格式化类型对应的参数配置，枚举映射的值为键值对，其他格式化类型对应的值为字符串
+    "dataSchema": "{type:string}", // 列数据类型，type的值为ts类型，例如number、enum、object等，当 contentType为text 或 contentType为slotItem且keepDataIndex为true 时可设置
+    "ellipsis": "boolean", // 当contentType为text时，文本超出宽度后是否自动省略
+    "width": "number | 'auto'",
+    "fixed": "''|'left'|'right'", // 当contentType不为group且表格的tableLayout不为auto时，如何固定列
+    "hasTip": "boolean", // 是否显示提示
+    "tip": "string", // 提示文案
+    "visible": "boolean",
+    "sorter.enable": "boolean", // 是否使用排序
+    "sorter.type": "'length'|'size'|'date'|'request'", // 排序方式，分别为按照 字符长度、数字大小、时间前后、自定义 排序
+    "filter.enable": "boolean", // 是否使用筛选，当contentType为text或slotItem时可设置filter相关属性
+    "filter.hideFilterDropdown": "boolean", // 是否隐藏筛选菜单
+    "filter.filterType": "'multiple'|'single'", // 筛选类型
+    "filter.filterSource": "'local'|'request'", // 定义筛选项数据的来源方式，可以是本地定义、接口获取
+    "filter.options": "Array<{text:string;value:string}>", // 自定义筛选项，当filterSource不为request时可设置，类型为键值对数组，text为键，value为值
+    "filter.type": "'local'|'request'" // 筛选方式，可以是本地筛选、请求接口
+  },
 
   // HeaderEditor
   "useHeaderTitleSlot": "boolean", // 标题区插槽
@@ -12,13 +36,8 @@
   "scroll": "{y: number|'auto'}",
   "fixedHeight": "number|'auto'",
   "enableStripe": "boolean",
-  // TODO: 单行背景颜色
-
-  // TODO: 双行背景颜色
 
   "enableCellFocus": "boolean",
-
-  // TODO: createStyleForTableContent
 
   // getAddColumnEditor
   "showHeader": "boolean",
@@ -27,10 +46,6 @@
   // expandEditor
   "useExpand": "boolean", // 是否允许自定义行展开内容
   "defaultExpandAllRows": "boolean", // 是否默认展开所有行
-
-  // TODO: 展开字段
-
-  // TODO: EventEditor
 
   // LoadingEditor
   "useLoading": "boolean", // 是否支持动态设置 loading 状态
@@ -48,28 +63,6 @@
 
   // usePagination
   "usePagination": "boolean", // 是否支持分页
-  "title": "string", // 列名
-  "dataIndex": "string", // 字段，当contentType不为group时可设置
-  "contentType": "'text'|'slotItem'|'group'", // 列类型，可以是普通文字、自定义插槽、分组
-  "keepDataIndex": "boolean", // 当contentType为slotItem时，是否可编辑当前列字段和传递列数据
-  "formatData.nullValueHandling": "boolean", // 空值处理（是否将undefined、null、空字符串转换成预期值）
-  "formatData.nullValueHandlingValue": "string",
-  "formatData": "{formatterName: 'NONE'|'KEYMAP'|'EXPRESSION'|'TIMETEMPLATE'|'CUSTOMTIME'|'CUSTOMSCRIPT',values:{KEYMAP:object;EXPRESSION:string;TIMETEMPLATE:string;CUSTOMTIME:srtring;CUSTOMSCRIPT:string}}", // 数据格式化，formatterName表示格式化类型，可以是 保持原值、枚举映射、表达式、时间戳转化、自定义时间戳转化、自定义脚本，values为不同格式化类型对应的参数配置，枚举映射的值为键值对，其他格式化类型对应的值为字符串
-  "dataSchema": "{type:string}", // 列数据类型，type的值为ts类型，例如number、enum、object等，当 contentType为text 或 contentType为slotItem且keepDataIndex为true 时可设置
-  "ellipsis": "boolean", // 当contentType为text时，文本超出宽度后是否自动省略
-  "width": "number | 'auto'",
-  "fixed": "''|'left'|'right'", // 当contentType不为group且表格的tableLayout不为auto时，如何固定列
-  "hasTip": "boolean", // 是否显示提示
-  "tip": "string", // 提示文案
-  "visible": "boolean",
-  "sorter.enable": "boolean", // 是否使用排序
-  "sorter.type": "'length'|'size'|'date'|'request'", // 排序方式，分别为按照 字符长度、数字大小、时间前后、自定义 排序
-  "filter.enable": "boolean", // 是否使用筛选，当contentType为text或slotItem时可设置filter相关属性
-  "filter.hideFilterDropdown": "boolean", // 是否隐藏筛选菜单
-  "filter.filterType": "'multiple'|'single'", // 筛选类型
-  "filter.filterSource": "'local'|'request'", // 定义筛选项数据的来源方式，可以是本地定义、接口获取
-  "filter.options": "Array<{text:string;value:string}>", // 自定义筛选项，当filterSource不为request时可设置，类型为键值对数组，text为键，value为值
-  "filter.type": "'local'|'request'", // 筛选方式，可以是本地筛选、请求接口
 
   // Paginator
   "paginationConfig.align": "'flex-start'|'flex-end'|'center'", // 分页器位置
