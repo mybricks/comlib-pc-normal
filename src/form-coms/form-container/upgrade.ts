@@ -200,9 +200,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     /** 边距样式处理 */
     // 1.操作项的边距选择器
     if (data.actions.inlinePadding && !isHorizontalModel) {
-      const optMarginSelector = `div.ant-col.formAction div.ant-row.ant-form-item`;
-      const actionMargin = (data.actions.inlinePadding).map(String).map(unitConversion).join(' ');
-      setDeclaredStyle(optMarginSelector, { margin: actionMargin });
+      const optMarginSelector = `div.ant-col.formAction`;
+      const actionPadding = (data.actions.inlinePadding).map(String).map(unitConversion).join(' ');
+      setDeclaredStyle(optMarginSelector, { padding: actionPadding });
     }
     data.actions.inlinePadding = void 0;
 
@@ -232,7 +232,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     }
   }
 
-  //=========== v1.4.39 end ===============
+  //=========== v1.4.39 part1 end ===============
 
   data.items.forEach(item => {
     /**
@@ -367,7 +367,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       item.inlineMargin = void 0;
     }
   });
-  //=========== v1.4.39 end ===============
+  //=========== v1.4.39 part2 end ===============
 
   // if (!input.get(inputIds.SET_DISABLED)) {
   //   input.add('setDisabled', '设置禁用', { type: 'any' });
@@ -686,7 +686,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
    */
   data.config.labelAlign = undefined;
   data.config.labelWrap = undefined;
-  //=========== v1.4.39 end ===============
+  //=========== v1.4.39 part3 end ===============
 
   return true;
 }

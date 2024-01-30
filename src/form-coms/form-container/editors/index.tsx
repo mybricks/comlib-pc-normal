@@ -258,7 +258,13 @@ export default {
         }
       },
       {
-        title: '操作项边距',
+        title: '操作项内边距',
+        catelog: '默认',
+        options: ['padding'],
+        target: `div.ant-col.formAction`
+      },
+      {
+        title: '操作项外边距',
         catelog: '默认',
         options: ['margin'],
         target: `div.ant-col.formAction div.ant-row.ant-form-item`
@@ -1096,7 +1102,11 @@ export default {
     title: '操作区',
     style: [
       {
-        title: '边距',
+        catelog: '默认',
+        options: ['padding'],
+        target: `div.ant-col.formAction`
+      },
+      {
         catelog: '默认',
         options: ['margin'],
         target: `div.ant-col.formAction div.ant-row.ant-form-item`
