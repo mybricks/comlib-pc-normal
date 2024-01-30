@@ -1,0 +1,5 @@
+{
+  "url": "string", // default: ''
+  "useSrcDoc": "boolean",
+  "id": "string" // default: 'iframe'
+}

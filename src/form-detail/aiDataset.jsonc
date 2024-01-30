@@ -1,0 +1,8 @@
+{
+  "colon": "boolean", // default: true
+  "showTitle": "boolean", // default: true
+  "title": "string", // default: '描述列表的标题'
+  "showExtra": "boolean", // default: true
+  "column": "number", // default: 3
+  "mobileColumn": "number" // default: 3
+}

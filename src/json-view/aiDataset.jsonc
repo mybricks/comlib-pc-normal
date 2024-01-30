@@ -1,0 +1,10 @@
+{
+  "dataSourceType": "'default'|'array'|'object'", // default: 'object'
+  "collapsed": "number", // 默认展开深度。default: 1
+  "collapseStringsAfterLength": "number", // 字符串长度限制。default: 0
+  "displayObjectSize": "boolean", // default: false
+  "enableClipboard": "boolean", // 点击复制。default: false
+  "copyValueWithLabel": "boolean", // default: false
+  "enableOutput": "boolean", // 单机节点输出数据。default: false
+  "json": "object|array" // 数据源。default: {}
+}

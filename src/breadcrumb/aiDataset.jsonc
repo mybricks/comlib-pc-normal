@@ -1,0 +1,6 @@
+{
+  "separator": "'/'|'>'|'custom'", // default: '/'
+  "customSeparator": "string",
+  "padding": "number", // 5 的倍数，default: 0
+  "children": "Array<{key:string,label:string,outputValue:string}>" // default: []
+}

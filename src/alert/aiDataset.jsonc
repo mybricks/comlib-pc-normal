@@ -1,0 +1,12 @@
+{
+  "message": "string", // 标题，default: '消息提示'
+  "type": "'info'|'success'|'warning'|'error'", // default: false
+  "closeable": "boolean", // default:  false
+  "banner": "boolean", // 是否显示为横幅
+  "showInfo": "boolean", // default: false
+  "content": "string", // default: ‘辅助性文字介绍’
+  "showIcon": "boolean", // default: true
+  "isChoose": "boolean", // 图标自定义开关，default: false
+  "icon": "string", // 图标名称，default: HomeOutlined
+  "useContentSlot": "boolean" // 是否使用content插槽，default: false
+}
