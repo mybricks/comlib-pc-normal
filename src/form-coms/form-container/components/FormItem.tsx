@@ -24,9 +24,10 @@ const JSXWrapper = (props: FormControlProps) => {
 };
 
 const FormItem = (props) => {
-  const { com, item, data, slots, isMobile, env, dynamicStyle = {} } = props;
-  const formColon = data.config?.colon || data.colon;
+  const { com, item, data, slots, isMobile, env } = props;
+  const { dynamicStyle = {} } = item;
 
+  const formColon = data.config?.colon || data.colon;
   const colon = item?.colon === 'default' ? formColon : item.colon;
 
   const labelAlign =

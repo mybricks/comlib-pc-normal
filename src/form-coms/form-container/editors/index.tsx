@@ -955,8 +955,8 @@ export default {
               return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             options: [
-              { label: '自定义', value: 'custom' },
-              { label: '跟随容器', value: 'default' }
+              { label: '跟随容器', value: 'default' },
+              { label: '自定义', value: 'custom' }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
@@ -993,9 +993,9 @@ export default {
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
+              { label: '跟随容器', value: 'default' },
               { label: '显示', value: true },
-              { label: '隐藏', value: false },
-              { label: '跟随容器', value: 'default' }
+              { label: '隐藏', value: false }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {

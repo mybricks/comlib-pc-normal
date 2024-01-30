@@ -36,7 +36,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const formContext = useRef({ store: {} });
   const [formRef] = Form.useForm();
   const isMobile = checkIfMobile(env);
-  const [dynamicStyles, setDynamicStyle] = useState({});
 
   const childrenInputs = useMemo<{
     [id: string]: FormControlInputType;
@@ -177,8 +176,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   if (env.runtime) {
     inputs[inputIds.SET_FORM_ITEMS_PROPS]((val, relOutputs) => {
-      const formItemStyles = setFormItemsProps(val);
-      setDynamicStyle(formItemStyles);
+      setFormItemsProps(val);
       relOutputs['setFormItemsPropsDone'](val);
     });
 
@@ -341,13 +339,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
    * 设置表单项公共配置
    * @param formItemsProps 表单项配置对象
    */
-  const setFormItemsProps = (formItemsProps: { string: FormItems }): object => {
-    const formItemStyles = {};
+  const setFormItemsProps = (formItemsProps: { string: FormItems }) => {
     if (typeCheck(formItemsProps, ['Object'])) {
       const disableFormList: string[] = [];
       const enableFormList: string[] = [];
       Object.entries(formItemsProps).map(([name, props]) => {
-        formItemStyles[name] = {};
         if (!typeCheck(props, ['Object'])) {
           console.warn(`${title}: 设置表单项【${name}】配置不是对象类型`);
           return;
@@ -366,17 +362,17 @@ export default function Runtime(props: RuntimeParams<Data>) {
         if (typeof newFormItem.disabled === 'boolean') {
           (newFormItem.disabled ? disableFormList : enableFormList).push(name);
         }
-        // 标题样式、提示语样式
-        formItemStyles[name] = {
-          labelStyle,
-          descriptionStyle,
-          labelAlign,
-          labelAutoWrap
-        };
 
         const temp = {
           ...formItem,
-          ...newFormItem
+          ...newFormItem,
+          // 标题样式、提示语样式
+          dynamicStyle: {
+            labelStyle,
+            descriptionStyle,
+            labelAlign,
+            labelAutoWrap
+          }
         };
         data.items[formItemIndex] = temp;
       });
@@ -384,7 +380,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
       disableFormList.length && setDisabled(disableFormList);
       enableFormList.length && setEnabled(enableFormList);
     }
-    return formItemStyles;
   };
 
   const validate = useCallback(() => {
@@ -536,7 +531,6 @@ export default function Runtime(props: RuntimeParams<Data>) {
               childrenInputs={childrenInputs}
               outputs={outputs}
               submit={submitMethod}
-              dynamicStyles={dynamicStyles}
             />
           </Form>
         ) : (

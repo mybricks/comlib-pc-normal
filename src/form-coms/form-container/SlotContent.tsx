@@ -10,7 +10,7 @@ import { getFormItem } from './utils';
 import { checkIfMobile } from '../../utils';
 
 const SlotContent = (props) => {
-  const { slots, data, childrenInputs, outputs, submit, env, dynamicStyles } = props;
+  const { slots, data, childrenInputs, outputs, submit, env } = props;
   const layoutType = data.layoutType;
 
   const layout = data.config?.layout || data.layout;
@@ -42,7 +42,6 @@ const SlotContent = (props) => {
       itemWrap(com: { id; jsx; name; scope }) {
         // todo name
         const { item, isFormItem } = getFormItem(data, com);
-        const dynamicStyle = dynamicStyles[item.name];
         return isFormItem ? (
           <FormItem
             data={data}
@@ -51,7 +50,6 @@ const SlotContent = (props) => {
             item={item}
             isMobile={isMobile}
             env={env}
-            dynamicStyle={dynamicStyle}
             // field={props?.field}
           />
         ) : (
