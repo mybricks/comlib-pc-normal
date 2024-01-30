@@ -1,0 +1,17 @@
+{
+  "steps.type": "'default' | 'navigation' | 'dotted'",  // 步骤条类型，默认为'default'
+  "steps.size": "'default' | 'small'", // 步骤条尺寸，默认为'default'
+  "steps.direction": "'horizontal' | 'vertical'", // 步骤条方向，默认为'horizontal'
+  "steps.showDesc": "boolean", // 是否展示描述信息，默认为false
+  "steps.canClick": "boolean", // 是否可以点击切换，默认为false
+  "toolbar.showActions": "boolean", // 是否展示操作栏区域，默认为false
+  "toolbar.btns": "Array<'previous' | 'next' | 'submit'>", // 操作栏按钮组
+  "hideSlots": "boolean", // 是否隐藏插槽占位，默认为false
+  "toolbar.actionAlign": "'flex-start' | 'center' | 'flex-end'", // 操作栏的对齐方式，默认为'flex-end'
+  "toolbar.fixed": "boolean", // 操作栏是否置底，必须设置showActions为true才生效，默认为false
+  "toolbar.bottom": "number", // 操作栏的底部距离，默认为0
+  "toolbar.primaryBtnText": "string", // 操作栏的主按钮文案，默认为'下一步'
+  "toolbar.secondBtnText": "string", // 操作栏的上一步按钮文案，默认为'上一步'
+  "toolbar.submitText": "string", // 操作栏的提交按钮文案，默认为'提交'
+  "stepAry": "Array<{id: string, title: string, description: string, subTitle?: string, index: number, useDynamicDisplay?: boolean, hide?: boolean, content?: any, render?: boolean, useCustomDesc?: boolean, useIcon?: boolean, customIcon?: boolean, icon?: string, iconSrc?: string, iconSize?: [number, number]}>" // 步骤数组, title为标题，description为描述信息（showDesc和useCustomDesc必须是true才可生效），subTitle为副标题，index为索引，useDynamicDisplay为是否使用动态展示，hide为是否隐藏，content为内容，render为是否渲染，useCustomDesc为是否使用自定义描述（showDesc必须是true才可生效），useIcon为是否使用图标，customIcon为是否使用自定义图标（useIcon必须是true才可生效），icon为图标名称（useIcon和customIcon必须是true才可生效），iconSrc为图标地址（useIcon和customIcon必须是true才可生效），iconSize为图标尺寸（useIcon必须是true才可生效）
+}
