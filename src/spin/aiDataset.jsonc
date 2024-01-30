@@ -1,0 +1,4 @@
+{
+  "size": "'large' | 'default' | 'small'", // 加载图标大小，默认为'default'
+  "tip" : "stirng" // 描述文案，默认为'加载中...'
+}
