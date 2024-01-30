@@ -142,9 +142,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       }
       if (hasUnique) {
         // 将计算出来的公共配置样式，设置到表单上
-        if (style.fontSize) {
-          style.lineHeight = 1;
-        }
         setDeclaredStyle(labelFontSelector, { ...style });
       } else {
         setDeclaredStyle(labelFontSelector, defaultLabelStyle);
@@ -164,7 +161,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
     /** 提示语样式处理 */
     // 表单的公共提示语样式选择器
-    const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc`;
+    const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
     // 1. 比较所有表单项的提示语样式和默认样式的区别
     const descriptionStyleCompareResult = uniqBy(data.items
       .map(item => {
@@ -184,9 +181,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       });
       if (hasUnique) {
         // 将计算出来的公共配置样式，设置到表单上
-        if (style.fontSize) {
-          style.lineHeight = 1;
-        }
         setDeclaredStyle(descSelector, { ...style });
       } else {
         setDeclaredStyle(descSelector, defaultDescriptionStyle);
@@ -312,9 +306,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
             : 'nowrap';
         }
         if (hasUnique) {
-          if (style.fontSize) {
-            style.lineHeight = 1;
-          }
           setDeclaredStyle(selector, style);
         }
       }
@@ -333,7 +324,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       if (!isAllSameDescriptionStyle
         && item.descriptionStyle) {
         // 表单项的提示语样式选择器
-        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control > div > div > div.formItemDesc`;
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
 
         const style: React.CSSProperties = {};
         let hasUnique = false;
@@ -344,9 +335,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
           }
         })
         if (hasUnique) {
-          if (style.fontSize) {
-            style.lineHeight = 1;
-          }
           setDeclaredStyle(selector, style);
         }
       }
