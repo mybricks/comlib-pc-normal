@@ -1,0 +1,9 @@
+{
+    "src": "string",
+    "autoplay": "boolean", // 默认值:true
+    "muted": "boolean", // 值和autoplay保持一致。默认值:true
+    "controls": "boolean", // 是否显示控制栏。默认值:true
+    "loop": "boolean",
+    "poster": "string", // 封面图片的url
+    "fit": "'contain'|'fill'" // 默认值: contain
+}

@@ -1,0 +1,5 @@
+{
+    "style.textAlign": "'left'|'center'|'right'", // 水平对齐方式
+    "items": "Array<{src:number,key:string;type:'Text'|'Tag';content:string;oldcontent:string;textType:string;stylePadding:[number,number]}>", // 文本或标签列表。默认值:{"src":1,"key":u_mz3bp6,"type":"Text","content":"文本","oldcontent":"文本","textType":"","stylePadding":[0,0]}
+    "rowKey": "string" // 动态渲染数据时，作为列表项数据的唯一标识，可不填
+}
