@@ -9,11 +9,14 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (runtime) {
-      inputs[InputIds.SetUrl]((url: string) => {
+      inputs[InputIds.SetUrl]((url: string, outputRels: { setUrlDone: (val: string) => void }) => {
         if (typeof url === 'string') {
           data.url = url;
           if (data.useSrcDoc && iframeRef.current?.contentWindow?.document?.write) {
             iframeRef.current.contentWindow.document.write(data.url);
+          }
+          if (outputRels['setUrlDone']) {
+            outputRels['setUrlDone'](url);
           }
         }
       });
