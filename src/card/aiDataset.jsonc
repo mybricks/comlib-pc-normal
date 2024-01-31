@@ -1,4 +1,9 @@
 {
+  "hoverable": "boolean", // 是否开启鼠标移过时可浮起的效果。default: false
+  "size": "'default'|'small'", // default: 'default'
+  "isHeight": "boolean", // 开启后,可自定义卡片内容容器高度,超出内容滚动。default: false
+  "height": "string", // 卡片内容容器高度。default: '80px'
+  "padding": "string", // 内容区域内边距。default: '24px'
   "showTitle": "boolean", 
   "title": "string", // 标题。default: '卡片'
   "useExtra": "boolean", // 是否开启额外信息插槽。default: false

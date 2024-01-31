@@ -1,5 +1,9 @@
 {
   "asMapArea": "boolean", // 是否作为热区使用，反之为 button。default: false
+  "size": "'large'|'middle'|'small'", // 作为热区时失效。default: 'middle'
+  "type": "'primary'|'dashed'|'text'|'link'|'default'", // 作为热区时失效。default: 'primary'
+  "danger": "boolean", // 作为热区时失效。default: false
+  "shape": "'default'|'circle'|'round'", // 作为热区时失效。default: 'default'
   "text": "string", // 标题，仅为 button 时生效。default: '按钮'
   "useIcon": "boolean", // default: false
   "isCustom": "boolean", // 自定义图标

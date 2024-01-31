@@ -1,4 +1,7 @@
 {
+  "openWidth": "boolean", // true 为开启固定宽度设置，false 为百分比宽度。default: false
+  "percentWidth": "number", // 百分比宽度。default: 100
+  "width": "number", // 固定宽度。default: 500
   "message": "string", // 标题，default: '消息提示'
   "type": "'info'|'success'|'warning'|'error'", // default: false
   "closeable": "boolean", // default:  false
