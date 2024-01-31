@@ -20,7 +20,7 @@ export default {
     options: ['width']
   },
   ':root': {
-    items: ({}: EditorResult<Data>, cate1, cate2) => {
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         {
@@ -118,6 +118,7 @@ export default {
           type: 'EXPRESSION',
           description: '格式：{start}当前页起始条目，{end}当前页结束条目，{total}总条目数',
           options: {
+            locale: true,
             autoSize: true,
             placeholder: '例：共 {total} 条结果',
             suggestions: [

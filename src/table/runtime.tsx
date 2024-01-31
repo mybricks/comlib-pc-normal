@@ -62,7 +62,7 @@ export default function (props: RuntimeParams<Data>) {
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
   // 显示数据
-  const realShowDataSource = data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
+  const realShowDataSource = (data.usePagination && data.paginationConfig?.useFrontPage) ? pageDataSource : dataSource;
   const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
@@ -538,10 +538,10 @@ export default function (props: RuntimeParams<Data>) {
     setPageDataSource([...tempDataSource.slice(start, end)]);
   };
   useEffect(() => {
-    if (env.runtime && data.paginationConfig.useFrontPage) {
+    if (env.runtime && data.usePagination && data.paginationConfig.useFrontPage) {
       filterDataSourceBySortAndFilter();
     }
-  }, [dataSource, data.paginationConfig.current, data.paginationConfig.pageSize]);
+  }, [dataSource, data.paginationConfig.current, data.usePagination, data.paginationConfig.pageSize]);
 
   const setTableData = useCallback(
     (ds: any) => {
@@ -624,7 +624,7 @@ export default function (props: RuntimeParams<Data>) {
       if (env.edit) {
         return;
       }
-      const useFrontPage = data.paginationConfig?.useFrontPage;
+      const useFrontPage = data.usePagination && data.paginationConfig?.useFrontPage;
       const { action } = extra;
       switch (action) {
         case 'sort':

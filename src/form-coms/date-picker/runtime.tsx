@@ -77,7 +77,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
   const validateRelOuputRef = useRef<any>(null);
   const valueRef = useRef<any>();
-  const customExtraTextRef = useRef<any>(() => {})
+  const customExtraTextRef = useRef<any>(() => {});
 
   const [open, setOpen] = useState<boolean | undefined>(void 0);
   const [type, setType] = useState<string>('date');
@@ -313,15 +313,15 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
   });
 
   useEffect(() => {
-    if(data.customExtraText) {
+    if (data.customExtraText) {
       inputs[InputIds.ConfigExtraText]((val) => {
-        if(typeof val !== 'function') {
-          throw new Error(`请输入有效的函数！`)
+        if (typeof val !== 'function') {
+          throw new Error(`请输入有效的函数！`);
         }
-        customExtraTextRef.current = val
+        customExtraTextRef.current = val;
       });
     }
-  })
+  });
 
   const onValidateTrigger = () => {
     validateTrigger(parentSlot, { id: props.id, name: name });
@@ -364,17 +364,28 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
 
   const customDateRender = useCallback(
     (currentDate, today) => {
-      if(data.customExtraText && typeof customExtraTextRef.current === 'function') {
-        const { color = 'black', content = '', visible = true, style = {}} = customExtraTextRef.current(currentDate, today)
-        return <div className="ant-picker-cell-inner">
+      if (data.customExtraText && typeof customExtraTextRef.current === 'function') {
+        const {
+          color = 'black',
+          content = '',
+          visible = true,
+          style = {}
+        } = customExtraTextRef.current(currentDate, today);
+        return (
+          <div className="ant-picker-cell-inner">
             {currentDate.date()}
-            <div style={{
+            <div
+              style={{
                 color,
                 visibility: visible ? 'visible' : 'hidden',
-                ...style,
-              }}>{content}</div>
+                ...style
+              }}
+            >
+              {content}
+            </div>
           </div>
-              } else if (data.useCustomDateCell) {
+        );
+      } else if (data.useCustomDateCell) {
         return (
           <div className="ant-picker-cell-inner">
             {currentDate.date()}
@@ -388,12 +399,10 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
                 })
               : null}
           </div>
-        )
+        );
       }
 
-      return <div className="ant-picker-cell-inner">
-      {currentDate.date()}
-      </div>
+      return <div className="ant-picker-cell-inner">{currentDate.date()}</div>;
     },
     [data.useCustomDateCell, data.customExtraText]
   );
@@ -413,7 +422,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             date
           };
         });
-      const currentValue = current.endOf('day').valueOf();
+      const currentValue = moment(current).endOf('day').valueOf();
       if (disabledRules.every((rule) => rule.direction === 'before')) {
         return currentValue < Math.max(...disabledRules.map((rule) => rule.date.valueOf()));
       }
@@ -496,7 +505,12 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             {...data.config}
             defaultPickerValue={defaultPickerValue}
             placeholder={env.i18n(data.config.placeholder)}
-            dateRender={(data.useCustomDateCell || (data.customExtraText && typeof customExtraTextRef.current === 'function')) ? customDateRender : undefined}
+            dateRender={
+              data.useCustomDateCell ||
+              (data.customExtraText && typeof customExtraTextRef.current === 'function')
+                ? customDateRender
+                : undefined
+            }
             showTime={getShowTime()}
             onChange={onChange}
             onPanelChange={onPanelChange}
