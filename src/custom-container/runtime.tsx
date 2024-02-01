@@ -41,14 +41,14 @@ export default function (props: RuntimeParams<Data>) {
       inputs[InputIds.SetStyle] &&
         inputs[InputIds.SetStyle]((style: React.CSSProperties, relOutputs) => {
           setDynamicStyle(style);
-          relOutputs['setStyleComplete']()
+          typeof relOutputs['setStyleComplete'] === 'function' && relOutputs['setStyleComplete']()
         });
 
       inputs[InputIds.ScrollTo] &&
         inputs[InputIds.ScrollTo]((val: number, relOutputs) => {
           if (ref.current) {
             ref.current.scrollTop = typeof val !== 'number' ? ref.current.scrollHeight : val;
-            relOutputs['scrollComplete']()
+            typeof relOutputs['scrollComplete'] === 'function' && relOutputs['scrollComplete']()
           }
         });
     }
