@@ -1,7 +1,7 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema, getSubmitSchema } from './schema'
-import { uniqBy, pick } from 'lodash';
+import { uniqBy, pick, uniq } from 'lodash';
 import { isEmptyObject, unitConversion } from '../../utils';
 
 export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -85,7 +85,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
 
   const defaultLabelStyle = {
     lineHeight: '14px',
-    letterSpacing: '0px',
     fontSize: '14px',
     fontWeight: 400,
     color: 'rgba(0, 0, 0, 0.85)',
@@ -95,7 +94,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   const defaultDescriptionStyle = {
     whiteSpace: 'pre-wrap',
     lineHeight: '12px',
-    letterSpacing: '0px',
     fontSize: '14px',
     fontWeight: 400,
     color: 'rgba(0, 0, 0, 0.45)',
@@ -110,6 +108,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     };
   let isAllSameLabelStyle,
     whiteSpaceAllSame,
+    labelAlignAllSame,
     isAllSameDescriptionStyle,
     isAllMarginSame;
 
@@ -118,7 +117,9 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     // 表单的公共标题样式选择器
     const labelFontSelector = `.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
     // 1. 比较所有表单项的换行样式是否都是跟随容器
-    whiteSpaceAllSame = data.items.every(item => item?.labelAutoWrap === 'default');
+    const isAllDefalutWhiteSpace = data.items.every(item => item?.labelAutoWrap === 'default');
+    const isAllSetWhiteSpace = uniq(data.items.map(item => item?.labelAutoWrap)).length === 1;
+    whiteSpaceAllSame = isAllDefalutWhiteSpace || isAllSetWhiteSpace
     // 2. 比较所有表单项的标题样式和默认样式的区别
     const labelStyleCompareResult = uniqBy(data.items
       .map(item => {
@@ -129,24 +130,15 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       && !isEmptyObject(labelStyleCompareResult[0])
       && whiteSpaceAllSame) {
       isAllSameLabelStyle = true;
-      let hasUnique = false;
-      const style: React.CSSProperties = {};
-      Object.entries(defaultLabelStyle).map(([key, value]) => {
-        if (value !== labelStyleCompareResult[0][key]) {
-          style[key] = labelStyleCompareResult[0][key];
-          hasUnique = true;
-        }
-      });
-      if (data.config?.labelWrap) {
-        hasUnique = true;
+      const style: React.CSSProperties = labelStyleCompareResult[0];
+      if (isAllDefalutWhiteSpace && data.config?.labelWrap) {
         style.whiteSpace = 'pre-wrap';
       }
-      if (hasUnique) {
-        // 将计算出来的公共配置样式，设置到表单上
-        setDeclaredStyle(labelFontSelector, { ...style });
-      } else {
-        setDeclaredStyle(labelFontSelector, defaultLabelStyle);
+      if (isAllSetWhiteSpace && data.items[0]?.labelAutoWrap) {
+        style.whiteSpace = 'pre-wrap';
       }
+      // 将计算出来的公共配置样式，设置到表单上
+      setDeclaredStyle(labelFontSelector, { ...style });
     } else {
       // 3.2 否则，在表单项中设置样式
       isAllSameLabelStyle = false;
@@ -156,9 +148,16 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     /** 标题对齐样式处理 */
     // 表单的公共标题对齐方式选择器
     const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
+    const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
+    const isAllSetLabelAutoWrap = uniq(data.items.map(item => item?.labelAlign)).length === 1;
+    labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
+
+    const defaultTextAlign = isVerticalModel ? 'left' : 'right';
+    const setTextAlign = data.items[0]?.labelAlign;
     setDeclaredStyle(labelAlignSelector, {
-      textAlign: isVerticalModel ? 'left' : 'right'
+      textAlign: isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign
     });
+
 
     /** 提示语样式处理 */
     // 表单的公共提示语样式选择器
@@ -293,28 +292,19 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         // 表单项的标题字体选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
 
-        const style: React.CSSProperties = {};
-        let hasUnique = false;
-        Object.entries(defaultLabelStyle).forEach(([key, value]) => {
-          if (value !== item.labelStyle[key]) {
-            style[key] = item.labelStyle[key];
-            hasUnique = true;
-          }
-        })
+        const style: React.CSSProperties = pick(item.labelStyle, Object.keys(defaultLabelStyle));
         if (item?.labelAutoWrap !== 'default') {
           style.whiteSpace = item.labelAutoWrap
             ? 'pre-wrap'
             : 'nowrap';
         }
-        if (hasUnique) {
-          setDeclaredStyle(selector, style);
-        }
+        setDeclaredStyle(selector, style);
       }
       item.labelStyle = void 0;
       item.labelAutoWrap = void 0;
 
       /** 标题对齐方式处理 */
-      if (item?.labelAlign !== 'default') {
+      if (!labelAlignAllSame && item?.labelAlign !== 'default') {
         // 表单项的标题对齐方式选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
         setDeclaredStyle(selector, { textAlign: item.labelAlign });
