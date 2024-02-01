@@ -9,12 +9,13 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const { title, icon, ...rest } = data;
-  inputs.title((val: string) => {
+  inputs.title((val: string, relOutputs) => {
     if (isString(val)) {
       data.title = val;
     } else {
       data.title = JSON.stringify(val);
     }
+    relOutputs['setTitleComplete']()
   });
 
   const visible = useMemo(() => {

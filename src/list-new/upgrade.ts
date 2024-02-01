@@ -137,5 +137,30 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     input.add('moveDown', '下移', {type: 'number'});
     input.get('moveDown').setRels(['moveDownDone']);
   }
+
+  //1.0.14 -> 1.0.15 新增设置数据源完成、loading完成
+  const dataSchema = {
+    title: "列表数据",
+    type: "array",
+    items: {
+      title: "列项数据",
+      type: "any"
+    }
+  };
+
+  if (!output.get("setDataSourceDone")) {
+    output.add("setDataSourceDone", '设置数据源完成', dataSchema);
+  }
+  if (output.get("setDataSourceDone") &&
+    input.get("dataSource") &&
+    !input.get("dataSource")?.rels?.includes("setDataSourceDone")) {
+    input.get("dataSource").setRels(["setDataSourceDone"]);
+  }
+
+  if(data.useLoading && !output.get("setLoadingDone") && input.get("loading")){
+    output.add("setLoadingDone", '设置loading完成', { type: 'boolean' });
+    input.get("loading").setRels(["setLoadingDone"]);
+  }
+
   return true;
 }

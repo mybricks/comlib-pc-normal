@@ -7,6 +7,7 @@ export default function ({
   data,
   slot,
   output,
+  input,
   style,
   setDeclaredStyle
 }: UpgradeParams<Data>): boolean {
@@ -82,5 +83,21 @@ export default function ({
       style.height = 'auto';
     }
   }
+
+  //1.0.16 -> 1.0.17
+  if (!output.get("setTitleDone")) {
+    output.add("setTitleDone", '设置标题完成', { type: 'string' });
+  }
+  if (output.get("setTitleDone") &&
+    input.get("title") &&
+    !input.get("title")?.rels?.includes("setTitleDone")) {
+    input.get("title").setRels(["setTitleDone"]);
+  }
+
+  if(data.dataType = "external" && !output.get("setExternalDone") && input.get("external")){
+    output.add("setExternalDone", '设置标题完成', { type: 'string' });
+    input.get("external").setRels(["setExternalDone"]);
+  }
+
   return true;
 }

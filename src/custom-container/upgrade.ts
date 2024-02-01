@@ -7,6 +7,7 @@ export default function ({
   data,
   slot,
   input,
+  output,
   config,
   setDeclaredStyle,
   getDeclaredStyle,
@@ -79,10 +80,14 @@ export default function ({
         },
       },
     });
+    output.add('setStyleComplete', '完成', {type: 'any'})
+    input.get(InputIds.SetStyle).setRels(['setStyleComplete'])
   }
 
   if (!input.get(InputIds.ScrollTo)) {
     input.add(InputIds.ScrollTo, '滚动到', { type: 'number' });
+    output.add('scrollComplete', '完成', {type: 'any'})
+    input.get(InputIds.ScrollTo).setRels(['scrollComplete'])
   } 
 
   return true;

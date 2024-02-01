@@ -34,14 +34,15 @@ export default function ({
     if (runtime) {
       inputs['prevStep'](prev);
 
-      inputs['nextStep']((ds: any) => {
+      inputs['nextStep']((ds: any, relOutputs) => {
         if (data.current < stepAry.length - 1) {
           stepAry[data.current].content = ds;
           data.current += 1;
+          relOutputs['nextStepComplete']();
         }
       });
 
-      inputs['jumpTo']((val: number) => {
+      inputs['jumpTo']((val: number, relOutputs) => {
         if (typeof val !== 'number') {
           onError('【步骤条】跳转步骤必须是数字');
           logger.error('【步骤条】跳转步骤必须是数字');
@@ -53,6 +54,7 @@ export default function ({
           return;
         }
         data.current = val;
+        relOutputs['jumpToComplete']();
       });
 
       inputs['getIndex']((_, relOutputs) => {
@@ -60,7 +62,7 @@ export default function ({
       });
 
       inputs['setHideSteps'] &&
-        inputs['setHideSteps']((val: number[]) => {
+        inputs['setHideSteps']((val: number[], relOutputs) => {
           if (!Array.isArray(val)) {
             onError('【步骤条】设置隐藏步骤参数必须是数组');
             logger.error('【步骤条】设置隐藏步骤参数必须是数组');
@@ -71,6 +73,7 @@ export default function ({
               item.hide = true;
             }
           });
+          relOutputs['setHideStepsComplete']();
         });
 
       inputs['setSteps'] &&
@@ -142,10 +145,11 @@ export default function ({
     return stepAry[data.current + (!!pre ? pre : 0)] || {};
   };
 
-  const prev = useCallback(() => {
+  const prev = useCallback((_, relOutputs) => {
     if (runtime) {
       if (data.current > 0) {
         data.current -= 1;
+        relOutputs['prevStepComplete']();
       }
     }
   }, []);

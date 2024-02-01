@@ -52,7 +52,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
       setDataSource([{ id: 1, [rowKey]: uuid() }]);
     }
     if (env.runtime) {
-      inputs[InputIds.DATA_SOURCE]((v) => {
+      inputs[InputIds.DATA_SOURCE]((v, relOutputs) => {
         if (Array.isArray(v)) {
           const ds = v.map((item, index) => ({
             item,
@@ -61,13 +61,15 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
           }));
           data.dataSource = ds;
           setDataSource(ds);
+          relOutputs['setDataSourceDone'](ds);
         }
         setLoading(false);
       });
       useLoading &&
         inputs[InputIds.LOADING] &&
-        inputs[InputIds.LOADING]((v) => {
+        inputs[InputIds.LOADING]((v, relOutputs) => {
           setLoading(v !== false);
+          relOutputs['setLoadingDone'](v);
         });
     }
   }, []);

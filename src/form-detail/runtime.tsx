@@ -110,7 +110,7 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
   useEffect(() => {
     if (env.runtime) {
       inputs[InputIds.SetDataSource] &&
-        inputs[InputIds.SetDataSource]((ds: Record<string, any>) => {
+        inputs[InputIds.SetDataSource]((ds: Record<string, any>, relOutputs) => {
           if (!isObject(ds)) {
             onError('参数必须是json');
             return;
@@ -121,10 +121,12 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
               item.value = value;
             }
           }
+          relOutputs['setDataSourceComplete']();
         });
       inputs[InputIds.SetTitle] &&
-        inputs[InputIds.SetTitle]((t: string) => {
+        inputs[InputIds.SetTitle]((t: string, relOutputs) => {
           data.title = t;
+          relOutputs['setTitleComplete']();
         });
     }
   }, [data]);

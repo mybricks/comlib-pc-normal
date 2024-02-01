@@ -422,7 +422,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
             date
           };
         });
-      const currentValue = current.endOf('day').valueOf();
+      const currentValue = moment(current).endOf('day').valueOf();
       if (disabledRules.every((rule) => rule.direction === 'before')) {
         return currentValue < Math.max(...disabledRules.map((rule) => rule.date.valueOf()));
       }

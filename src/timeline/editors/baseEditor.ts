@@ -1,4 +1,4 @@
-import { Data, InputIds, SlotIds } from '../constants';
+import { Data, InputIds, SlotIds, OutputIds } from '../constants';
 import { getNewItem } from './utils';
 
 export const DefaultSourceSchema = {
@@ -30,13 +30,16 @@ const BaseEditor = [
       get({ data }: EditorResult<Data>) {
         return !!data.isDynamic;
       },
-      set({ data, input, slots }: EditorResult<Data>, val: boolean) {
+      set({ data, input, slots, output }: EditorResult<Data>, val: boolean) {
         data.isDynamic = val;
         if (val) {
           input.add(InputIds.SetDataSource, '设置数据源', DefaultSourceSchema);
+          output.add(OutputIds.SetDataSourceComplete, '完成', {type: 'any'})
+          input.get(InputIds.SetDataSource).setRels([OutputIds.SetDataSourceComplete])
           data.timelines.splice(1);
         } else {
           input.remove(InputIds.SetDataSource);
+          output.remove(OutputIds.SetDataSourceComplete)
           data.useContentSlot = val;
           if (slots?.get(SlotIds.Content)) {
             slots.remove(SlotIds.Content);

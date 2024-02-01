@@ -32,7 +32,8 @@ export const InputIds = {
   Index: 'index'
 };
 export const OutputIds = {
-  ItemClick: 'itemClick'
+  ItemClick: 'itemClick',
+  SetDataSourceComplete: 'dataSourceComplete'
 };
 export const SlotIds = {
   Content: 'content'

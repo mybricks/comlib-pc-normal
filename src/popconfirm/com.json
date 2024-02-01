@@ -1,7 +1,7 @@
 {
   "title": "气泡确认框",
   "namespace": "mybricks.normal-pc.popconfirm",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "气泡确认框",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,13 +9,15 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editor.ts",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "title",
       "title": "标题",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": ["titleComplete"]
     }
   ],
   "outputs": [
@@ -29,6 +31,13 @@
     {
       "id": "onCancel",
       "title": "点击取消",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setTitleComplete",
+      "title": "完成",
       "schema": {
         "type": "any"
       }

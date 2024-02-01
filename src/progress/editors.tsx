@@ -255,13 +255,16 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.isColor;
         },
-        set({ data, input }: EditorResult<Data>, value: boolean) {
+        set({ data, input, output }: EditorResult<Data>, value: boolean) {
           data.isColor = value;
           if (value && !input.get(InputIds.SetColor)) {
             input.add(InputIds.SetColor, '设置颜色', { type: 'string' });
+            output.add('setColorDone', '设置颜色完成', { type: 'string' });
+            input.get(InputIds.SetColor).setRels(['setColorDone']);
           }
           if (!value && input.get(InputIds.SetColor)) {
             input.remove(InputIds.SetColor);
+            output.remove('setColorDone');
           }
         }
       }

@@ -8,14 +8,16 @@ export default function ({ env, data, inputs, outputs }: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetImgSrc]((val) => {
+      inputs[InputIds.SetImgSrc]((val, relOutputs) => {
         if (typeof val === 'string') {
           data.src = val;
+          relOutputs['setImgSrcDone'](val);
         }
       });
-      inputs[InputIds.SetPreviewImgSrc]?.((val) => {
+      inputs[InputIds.SetPreviewImgSrc]?.((val, relOutputs) => {
         if (typeof val === 'string') {
           data.previewImgSrc = val;
+          relOutputs['setPreviewImgSrcDone'](val);
         }
       });
     }

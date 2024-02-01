@@ -1,7 +1,7 @@
 {
   "title": "文本",
   "namespace": "mybricks.normal-pc.text",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "文本",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -20,8 +20,19 @@
       "title": "内容",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setContentDone"
+      ]
     }
   ],
-  "outputs": []
+  "outputs": [
+    {
+      "id": "setContentDone",
+      "title": "设置内容完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
 }
