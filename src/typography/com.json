@@ -1,7 +1,7 @@
 {
   "title": "文本排版",
   "namespace": "mybricks.normal-pc.typography",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "展示文本基本格式",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -53,7 +53,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "setDataDone"
+      ]
     }
   ],
   "outputs": [
@@ -86,6 +89,50 @@
           },
           "index":{
             "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "setDataDone",
+      "title": "设置数据完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "title": "内容",
+              "type": "string"
+            },
+            "type": {
+              "title": "类型",
+              "type": "string"
+            },
+            "link": {
+              "title": "链接",
+              "type": "string"
+            },
+            "style":{
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "type": "string"
+                },
+                "fontWeight":{
+                  "type": "number"
+                },
+                "stylePadding":{
+                  "type":"array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -135,5 +135,16 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
     output.add('click', '单击', clickSchema);
   }
 
+  /**
+    * @description v1.0.11 -> v1.0.12, 增加设置数据
+  */
+  if (!output.get("setDataDone")) {
+    output.add("setDataDone", '设置数据完成', dataSchema);
+  }
+  if (output.get("setDataDone") &&
+    input.get("setData") &&
+    !input.get("setData")?.rels?.includes("setDataDone")) {
+    input.get("setData").setRels(["setDataDone"]);
+  }
   return true;
 }
