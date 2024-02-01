@@ -1,0 +1,16 @@
+{
+  "title": "搜索框",
+  "name": "mybricks.normal-pc.search", // search
+  "data": {
+    // 以下是搜索框的属性描述
+    "config.placeholder": "string",
+    "config.allowClear": "boolean",
+    "config.disabled": "boolean",
+    "config.addonBefore": "string",
+    "isSelect": "boolean", // 是否开启前置下拉选择
+    "selectWidth": "string", // 当isSelect为true时才返回本属性
+    "isenterButton": "boolean", // 是否打开确认按钮
+    "enterButton": "string", // 确认按钮文案, 当isenterButton为true时才返回本属性
+    "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>"
+  }
+}
