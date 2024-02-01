@@ -6,6 +6,6 @@
     "placeholder": "string",
     "disabled": "boolean",
     "format": "'HH:mm:ss'|'HH:mm'|'HH'|'timeStamp'|'custom'",
-    "customFormat": "string" // 当format为custom时才返回本属性
+    "customFormat": "string" // 当format的值为“custom”时才返回本属性
   }
 }
