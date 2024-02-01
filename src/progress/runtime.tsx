@@ -13,16 +13,19 @@ export default function ({ env, data, inputs }: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       //设置进度
-      inputs['setPercent']((ds: number) => {
+      inputs['setPercent']((ds: number, relOutputs) => {
         data.percent = ds;
+        relOutputs['setPercentDone'](ds);
       });
       //设置颜色
-      inputs['setColor']((ds: string) => {
+      inputs['setColor']((ds: string, relOutputs) => {
         data.strokeColor = ds;
+        relOutputs['setColorDone'](ds);
       });
       //设置状态
-      inputs['setStatus']((ds: 'success' | 'exception' | 'normal' | 'active') => {
+      inputs['setStatus']((ds: 'success' | 'exception' | 'normal' | 'active', relOutputs) => {
         data.status = ds;
+        relOutputs['setStatusDone'](ds);
       });
     }
   });

@@ -16,12 +16,15 @@ const { Text, Paragraph } = Typography;
 export default ({ data, inputs, outputs, env }: RuntimeParams<Data>) => {
   const [dynamicStyle, setDynamicStyle] = useState<CSSProperties>({});
   useEffect(() => {
-    inputs[InputIds.SetContent]((value: string) => {
+    inputs[InputIds.SetContent]((value: string, relOutputs) => {
       let res = value;
       if (res != undefined && typeof res !== 'string') {
         res = JSON.stringify(res);
       }
       data.content = res;
+      if (relOutputs['setContentDone']) {
+        relOutputs['setContentDone'](res);
+      }
     });
     inputs[InputIds.SetStyle] &&
       inputs[InputIds.SetStyle]((value: CSSProperties) => {

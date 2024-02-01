@@ -69,5 +69,30 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   addKey(data.dataSource);
 
+
+  /**
+   * @description v1.0.11 新增设置数据、选中项完成
+  */
+  if (!output.get("setMenuDataDone")) {
+    output.add("setMenuDataDone", '设置数据完成', dataSchema);
+  }
+  if (output.get("setMenuDataDone") &&
+    input.get("setMenuData") &&
+    !input.get("setMenuData")?.rels?.includes("setMenuDataDone")) {
+    input.get("setMenuData").setRels(["setMenuDataDone"]);
+  }
+
+  if (!output.get("setActiveItemDone")) {
+    output.add("setActiveItemDone", '设置选中项完成', {
+      title: "菜单名称/唯一标识",
+      type: "string"
+    });
+  }
+  if (output.get("setActiveItemDone") &&
+    input.get("setActiveItem") &&
+    !input.get("setActiveItem")?.rels?.includes("setActiveItemDone")) {
+    input.get("setActiveItem").setRels(["setActiveItemDone"]);
+  }
+
   return true;
 }

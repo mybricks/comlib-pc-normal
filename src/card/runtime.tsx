@@ -27,16 +27,18 @@ export default (props: RuntimeParams<Data>) => {
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetTitle]((val: string) => {
+      inputs[InputIds.SetTitle]((val: string, relOutputs) => {
         data.title = val;
+        relOutputs['setTitleDone'](val);
       });
     }
   }, []);
 
   useEffect(() => {
     if (env.runtime) {
-      inputs['external']((ds: any) => {
+      inputs['external']((ds: any, relOutputs) => {
         data.inVal = ds;
+        relOutputs['setExternalDone'](ds);
       });
     }
   });

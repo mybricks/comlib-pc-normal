@@ -21,11 +21,12 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       //设置选中项
-      inputs[InputIds.SetActiveItem]((val) => {
+      inputs[InputIds.SetActiveItem]((val, relOutputs) => {
         setSelectedKey([val]);
+        relOutputs['setActiveItemDone'](val);
       });
 
-      inputs[InputIds.SetMenuData]((val) => {
+      inputs[InputIds.SetMenuData]((val, relOutputs) => {
         const { dataSource, defaultActive } = val || {};
         if (Array.isArray(dataSource)) {
           dataSource.forEach((item) => {
@@ -34,6 +35,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
             item._key = key;
           });
           data.dataSource = dataSource;
+          relOutputs['setMenuDataDone'](dataSource);
           setSelectedKey([defaultActive]);
           setIsSet(true);
         }
