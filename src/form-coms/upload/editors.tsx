@@ -412,14 +412,6 @@ export default {
                 set({ data, input }: EditorResult<Data>, value: number[]) {
                   const [count] = value;
                   data.config.fileCount = count;
-                  if (count > 1) {
-                    input.get('uploadDone').setSchema({
-                      type: 'array',
-                      items: basicUploadDoneSchema
-                    });
-                  } else {
-                    input.get('uploadDone').setSchema(basicUploadDoneSchema);
-                  }
                 }
               }
             },
@@ -642,16 +634,6 @@ export default {
             set({ data }: EditorResult<Data>, value: boolean) {
               data.customUpload = value;
             }
-          }
-        },
-        {
-          title: '自定义上传接口',
-          type: '_event',
-          ifVisible({ data, env }: EditorResult<Data>) {
-            return typeof env.uploadFile !== 'function' || data.customUpload;
-          },
-          options: {
-            outputId: 'upload'
           }
         },
         {

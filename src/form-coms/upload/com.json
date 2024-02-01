@@ -42,7 +42,7 @@
           }
         }
       },
-      "rels":[
+      "rels": [
         "setValueDone"
       ]
     },
@@ -73,7 +73,7 @@
           }
         }
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -103,7 +103,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
@@ -146,33 +146,6 @@
       },
       "rels": [
         "isEditableDone"
-      ]
-    },
-    {
-      "id": "uploadDone",
-      "title": "上传完成",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "percent": {
-            "type": "number"
-          },
-          "response": {
-            "type": "string"
-          }
-        }
-      },
-      "rels": [
-        "uploadComplete"
       ]
     },
     {
@@ -264,13 +237,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "id": "upload",
-      "title": "开始上传",
-      "schema": {
-        "type": "object"
       }
     },
     {
@@ -433,6 +399,49 @@
     {
       "id": "carrier",
       "title": "添加组件"
+    },
+    {
+      "id": "customUpload",
+      "title": "自定义上传",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "upload",
+          "title": "开始上传",
+          "schema": {
+            "type": "object",
+            "description": "FormData格式的文件数据",
+            "properties": {}
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "uploadDone",
+          "title": "上传完成",
+          "description": "设置文件地址和文件名",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "percent": {
+                "type": "number"
+              },
+              "response": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
     }
   ],
   "schema": [

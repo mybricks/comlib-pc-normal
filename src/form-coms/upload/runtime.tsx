@@ -86,7 +86,13 @@ export default function ({
   } = data.config;
 
   useLayoutEffect(() => {
-    inputs['setValue']((val: UploadFile[], relOutputs) => {
+    // 上传完成事件
+    slots['customUpload'].outputs['uploadDone']?.((file) => {
+      console.log(file, 'file');
+      onUploadComplete(file);
+    });
+
+    inputs['setValue']?.((val: UploadFile[], relOutputs) => {
       changeFileList(val);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
@@ -100,7 +106,7 @@ export default function ({
         }
         outputs[OutputIds.OnInitial](val);
       });
-    inputs['validate']((model, outputRels) => {
+    inputs['validate']?.((model, outputRels) => {
       validateFormItem({
         value: fileListRef.current,
         model,
@@ -114,11 +120,11 @@ export default function ({
           outputRels['returnValidate'](e);
         });
     });
-    inputs['getValue']((val, outputRels) => {
+    inputs['getValue']?.((val, outputRels) => {
       outputRels['returnValue'](fileListRef.current);
     });
 
-    inputs['resetValue']((_, relOutputs) => {
+    inputs['resetValue']?.((_, relOutputs) => {
       changeFileList([]);
       if (relOutputs['resetValueDone']) {
         relOutputs['resetValueDone']();
@@ -126,14 +132,14 @@ export default function ({
     });
 
     //设置禁用
-    inputs['setDisabled']((_, relOutputs) => {
+    inputs['setDisabled']?.((_, relOutputs) => {
       data.config.disabled = true;
       if (relOutputs['setDisabledDone']) {
         relOutputs['setDisabledDone']();
       }
     });
     //设置启用
-    inputs['setEnabled']((_, relOutputs) => {
+    inputs['setEnabled']?.((_, relOutputs) => {
       data.config.disabled = false;
       if (relOutputs['setEnabledDone']) {
         relOutputs['setEnabledDone']();
@@ -141,7 +147,7 @@ export default function ({
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val, relOutputs) => {
+    inputs['isEnable']?.((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
         if (relOutputs['isEnableDone']) {
@@ -156,18 +162,14 @@ export default function ({
     });
 
     //设置编辑/只读
-    inputs['isEditable']((val, relOutputs) => {
+    inputs['isEditable']?.((val, relOutputs) => {
       data.isEditable = val;
       if (relOutputs['isEditableDone']) {
         relOutputs['isEditableDone'](val);
       }
     });
 
-    inputs['uploadDone']((file: any, relOutputs) => {
-      onUploadComplete(file);
-      relOutputs['uploadComplete'](file);
-    });
-    inputs['remove']((file: any, relOutputs) => {
+    inputs['remove']?.((file: any, relOutputs) => {
       onRemoveFile(file?.uid ? file : removeFileRef.current || {});
       relOutputs['removeDone'](file);
     });
@@ -265,7 +267,7 @@ export default function ({
         formData.append(fileKey, file);
       });
       changeFileList(onFormatFileList(fileList));
-      outputs.upload(formData);
+      slots['customUpload'].inputs['upload'](formData);
     }
   };
 
