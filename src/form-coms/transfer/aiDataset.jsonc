@@ -1,0 +1,14 @@
+{
+  "title": "穿梭框",
+  "name": "mybricks.normal-pc.transfer",
+  "data": {
+    // 以下是穿梭框的属性描述
+    "titles": "[string, string]", // 元组的两项分别表示数据源和目标数据源标题
+    "oneWay": "'单向'|'双向'",
+    "showDesc": "boolean",
+    "showSearch": "boolean",
+    "disabled": "boolean",
+    "showPagination": "boolean", // 默认值为false
+    "pagination.pageSize": "number", // 每页条数。当showPagination为true时才返回本属性
+  }
+}
