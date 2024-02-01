@@ -1,0 +1,13 @@
+{
+  "title": "单选框",
+  "name": "mybricks.normal-pc.radio",
+  "data": {
+    // 以下是单选框的属性描述
+    "config.disabled": "boolean",
+    "enableButtonStyle": "boolean", // 是否使用按钮样式，默认为false
+    "layout": "'horizontal'|'vertical'", // 当enableButtonStyle为true时才需设置 
+    "buttonStyle": "'outline'|'solid'", // 按钮选中后样式, outline: 描边, solid: 填色
+    "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>",
+    "isOnSearch": "boolean" // 是否开启搜索补全
+  }
+}
