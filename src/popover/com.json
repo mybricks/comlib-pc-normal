@@ -1,7 +1,7 @@
 {
   "title": "气泡",
   "namespace": "mybricks.normal-pc.popover",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "气泡",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -10,7 +10,6 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
-  "outputs": [],
   "inputs": [
     {
       "id": "_title",
@@ -24,6 +23,22 @@
       "title": "动态内容",
       "schema": {
         "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "_titleComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "contentComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
       }
     }
   ],
