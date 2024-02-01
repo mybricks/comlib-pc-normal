@@ -57,7 +57,7 @@ export default function ({
         data.defaultActiveKey = data.tabList[0].key;
       }
       // 激活
-      inputs[InputIds.SetActiveTab]((index: number | string) => {
+      inputs[InputIds.SetActiveTab]((index: number | string, relOutputs) => {
         const val = +index;
         let activeTab;
         if (isNaN(val)) {
@@ -85,24 +85,28 @@ export default function ({
           if (!permission || (permission && env.hasPermission(permission.id))) {
             data.defaultActiveKey = activeTab.key;
             data.active = true;
+            relOutputs[OutputIds.SetActiveTabComplete]();
             return;
           }
         }
         data.defaultActiveKey = undefined;
         data.active = false;
+        relOutputs[OutputIds.SetActiveTabComplete]();
       });
       // 上一页
-      inputs[InputIds.PreviousTab](() => {
+      inputs[InputIds.PreviousTab]((_, relOutputs) => {
         const currentIndex = findIndexByKey();
         if (data.tabList[currentIndex - 1]) {
           data.defaultActiveKey = data.tabList[currentIndex - 1].key;
+          relOutputs[OutputIds.PreviousTabComplete]();
         }
       });
       // 下一页
-      inputs[InputIds.NextTab](() => {
+      inputs[InputIds.NextTab]((_, relOutputs) => {
         const currentIndex = findIndexByKey();
         if (data.tabList[currentIndex + 1]) {
           data.defaultActiveKey = data.tabList[currentIndex + 1].key;
+          relOutputs[OutputIds.NextTabComplete]();
         }
       });
       //获取当前激活步骤
@@ -129,7 +133,7 @@ export default function ({
 
       // 动态设置显示tab
       if (data.useDynamicTab) {
-        inputs[InputIds.SetShowTab]((ds: (number | string)[]) => {
+        inputs[InputIds.SetShowTab]((ds: (number | string)[], relOutputs) => {
           if (Array.isArray(ds)) {
             const tempDs = ds
               .map((id) => {
@@ -150,6 +154,7 @@ export default function ({
                 data.defaultActiveKey = data.tabList.find(({ id }) => id === tempDs[0])?.key;
               }
             }
+            relOutputs[OutputIds.SetShowTabComplete]();
           }
         });
       }

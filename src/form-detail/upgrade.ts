@@ -52,12 +52,24 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
 
   // 1.0.11 添加移动端列数
   if (typeof data.mobileColumn === 'undefined') {
-    data.mobileColumn = 1
+    data.mobileColumn = 1;
   }
 
   // 1.0.15 右上角操作区插槽
   if (typeof data.showExtra === 'undefined') {
-    data.showExtra = false
+    data.showExtra = false;
+  }
+
+  const setTitleComplete = output.get('setTitleComplete');
+  if (!setTitleComplete) {
+    output.add('setTitleComplete', '完成', { type: 'any' });
+    input.get('setTitle').setRels(['setTitleComplete']);
+  }
+
+  const setDataSourceComplete = output.get('setDataSourceComplete');
+  if (!setDataSourceComplete) {
+    output.add('setDataSourceComplete', '完成', { type: 'any' });
+    input.get('setDataSource').setRels(['setDataSourceComplete']);
   }
 
   return true;

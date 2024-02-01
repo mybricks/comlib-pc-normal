@@ -33,13 +33,14 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
 
   useEffect(() => {
     inputs?.link &&
-      inputs.link((value: string) => {
+      inputs.link((value: string, relOutputs) => {
         data.src = value;
+        relOutputs['setLinkComplete']()
       });
     inputs?.screenshot && inputs.screenshot(screenshot);
   }, []);
 
-  const screenshot = (filename?: string) => {
+  const screenshot = (filename?: string, relOutputs?: any) => {
     const canvas = document.createElement('canvas');
     if (!videoRef.current) return;
     const { width, height } = videoRef.current?.getBoundingClientRect();
@@ -52,6 +53,7 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
     downLink.href = dataUrl;
     downLink.download = filename || 'screenshot';
     downLink.click();
+    relOutputs['screenshotComplete']()
     return dataUrl;
   };
 

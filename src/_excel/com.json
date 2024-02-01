@@ -1,7 +1,7 @@
 {
   "title": "excel导出",
   "namespace": "mybricks.normal-pc.excel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "数据导出excel",
   "author": "tangxiaoxin",
@@ -10,6 +10,7 @@
   "runtime": "./runtime.ts",
   "editors": "./editor.ts",
   "icon": "./icon.svg",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "dataSource",
@@ -30,8 +31,17 @@
             }
           }
         }
-      }
+      },
+      "rels": ["exportComplete"]
     }
   ],
-  "outputs": []
+  "outputs": [
+    {
+      "id": "exportComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
 }

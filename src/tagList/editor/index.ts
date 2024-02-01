@@ -124,15 +124,18 @@ export default {
             get({ data }: EditorResult<Data>) {
               return !!data.dynamic;
             },
-            set({ data, input }: EditorResult<Data>, val: boolean) {
+            set({ data, input, output }: EditorResult<Data>, val: boolean) {
               data.dynamic = val;
               if (val) {
+                output.add('dynamicComplete', '完成', { type: 'any' });
                 input.add('dynamicTags', '输入动态标签列表', {
                   type: 'array',
                   items: TagSchema
                 });
+                input.get('dynamicTags').setRels(['dynamicComplete']);
               } else {
                 input.remove('dynamicTags');
+                output.remove('dynamicComplete');
               }
             }
           }

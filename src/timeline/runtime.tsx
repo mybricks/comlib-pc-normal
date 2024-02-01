@@ -14,7 +14,7 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       if (data.isDynamic) {
-        inputs[InputIds.SetDataSource]((ds) => {
+        inputs[InputIds.SetDataSource]((ds, relOutputs) => {
           if (!Array.isArray(ds)) {
             logger.error('接收数据需要为数组类型');
           } else {
@@ -32,6 +32,7 @@ export default function (props: RuntimeParams<Data>) {
               })
               .filter((item) => !!item);
             setTimelines(newList);
+            relOutputs[OutputIds.SetDataSourceComplete]()
           }
         });
       }

@@ -1,4 +1,4 @@
-import { Data } from './constants';
+import { Data, InputIds, OutputIds } from './constants';
 
 export default function ({ input, output, data, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   (data.timelines || []).forEach((timeline) => {
@@ -9,5 +9,11 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
       timeline.color = ''
     }
   });
+  const setDataSource = input.get(InputIds.SetDataSource)
+  const setDataSourceComplete = output.get(OutputIds.SetDataSourceComplete)
+  if(setDataSource && !setDataSourceComplete) {
+    output.add(OutputIds.SetDataSourceComplete, '完成', {type: 'any'})
+    setDataSource.setRels([OutputIds.SetDataSourceComplete])
+  }
   return true;
 }
