@@ -171,20 +171,8 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     if (descriptionStyleCompareResult.length === 1
       && !isEmptyObject(descriptionStyleCompareResult[0])) {
       isAllSameDescriptionStyle = true;
-      let hasUnique = false;
-      const style: React.CSSProperties = {};
-      Object.entries(defaultDescriptionStyle).map(([key, value]) => {
-        if (value !== descriptionStyleCompareResult[0][key]) {
-          style[key] = descriptionStyleCompareResult[0][key];
-          hasUnique = true;
-        }
-      });
-      if (hasUnique) {
-        // 将计算出来的公共配置样式，设置到表单上
-        setDeclaredStyle(descSelector, { ...style });
-      } else {
-        setDeclaredStyle(descSelector, defaultDescriptionStyle);
-      }
+      // 将计算出来的公共配置样式，设置到表单上
+      setDeclaredStyle(descSelector, descriptionStyleCompareResult[0]);
     } else {
       // 2.2 否则，在表单项中设置样式
       isAllSameDescriptionStyle = false;
@@ -316,18 +304,7 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
         && item.descriptionStyle) {
         // 表单项的提示语样式选择器
         const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
-
-        const style: React.CSSProperties = {};
-        let hasUnique = false;
-        Object.entries(defaultDescriptionStyle).forEach(([key, value]) => {
-          if (value !== item.descriptionStyle[key]) {
-            style[key] = item.descriptionStyle[key];
-            hasUnique = true;
-          }
-        })
-        if (hasUnique) {
-          setDeclaredStyle(selector, style);
-        }
+        setDeclaredStyle(selector, item.descriptionStyle);
       }
       item.descriptionStyle = void 0;
 
