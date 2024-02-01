@@ -1,0 +1,30 @@
+{
+  "title": "上传",
+  "name": "mybricks.normal-pc.upload",
+  "data": {
+    // 以是上传的属性描述
+    "config.fileKey": "string",
+    "config.buttonText": "string",
+    "config.uploadIcon": "string", // 当listType为‘dragger’时才返回本属性
+    "config.name": "file",
+    "config.listType": "'text'|'picture'|'picture-card'|'dragger'",
+    "config.fileType": "Array<string>", // 各类型文件后缀名组成的数组，如.png
+    "config.fileSize": "number",
+    "config.fileCount": "number",
+    "config.uploadStyle": "{width:number;height:number}", // 上传按钮的宽高
+    "config.useCustomRemove": "boolean",
+    "config.multiple": "boolean",
+    "config.usePreview": "boolean",
+    "isShowUploadList": "boolean", // 当listType为‘picture-card’时才返回本属性
+    "isCustom": "boolean", // 自定义内容。当listType为‘text’或listType为‘picture’时才返回本属性
+    "imageSize": "[number,number]", // 允许上传的图片的宽高
+    "customUpload": "boolean",
+    "fileClick": "boolean", // 为true时可自定义上传文件的点击事件且不跳转到新页面
+    "hideIcon": "boolean",
+    "isCustomIcon": "boolean", // 当hideIcon为false时才返回本属性
+    "textIcon": "string", // 当isCustomIcon为true并且listType为‘text’并且hideIcon为fasle时才返回本属性
+    "picIcon": "string", // 当isCustomIcon为true并且listType为‘picture’并且hideIcon为fasle时才返回本属性
+    "picCardIcon": "string",// 当isCustomIcon为true并且listType为‘picture-card’并且hideIcon为fasle时才返回本属性
+    "dragIcon": "string"// 当isCustomIcon为true并且listType为‘dragger’并且hideIcon为fasle时才返回本属性
+  }
+}
