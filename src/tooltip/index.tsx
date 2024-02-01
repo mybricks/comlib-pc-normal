@@ -7,12 +7,13 @@ export default function ({ env, data, slots, inputs, id }: RuntimeParams<Data>) 
   const { title, placement, trigger } = data;
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  inputs['content']((val) => {
+  inputs['content']((val, relOutputs) => {
     if (isString(val)) {
       data.title = val;
     } else {
       data.title = JSON.stringify(val);
     }
+    relOutputs['contentComplete']()
   });
   return (
     <Tooltip

@@ -1,7 +1,7 @@
 {
   "title": "文字提示",
   "namespace": "mybricks.normal-pc.tooltip",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "文本提示组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -16,10 +16,19 @@
       "title": "动态提示",
       "schema": {
         "type": "string"
+      },
+      "rels": ["contentComplete"]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "contentComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
       }
     }
   ],
-  "outputs": [],
   "slots": [
     {
       "id": "carrier",
