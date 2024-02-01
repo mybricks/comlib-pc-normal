@@ -1,0 +1,19 @@
+{
+  "title": "输入框",
+  "name": "mybricks.normal-pc.form-text", // input
+  "data": {
+    // 以下是输入框的属性描述
+    "config.size": "'large'|'middle'|'small'", // 默认值: middle
+    "config.placeholder": "string", // 默认值为“请输入内容”
+    "config.allowClear": "boolean",
+    "config.addonBefore": "string",
+    "config.addonAfter": "string",
+    "config.disabled": "boolean",
+    "config.showCount": "boolean",
+    "config.maxLength": "number", // 默认值为 -1
+    "src": "false|'inner'|'custom'", // 图标来源类型，inner 代表内置图标库，custom 代表自定义上传。默认值: false
+    "innerIcon": "string", // 内置图标名称，src 为 inner 时生效，默认为'HomeOutlined'
+    "customIcon": "string", // 自定义图标地址，src 为 custom 时生效
+    "isTrim": "boolean"
+  }
+}

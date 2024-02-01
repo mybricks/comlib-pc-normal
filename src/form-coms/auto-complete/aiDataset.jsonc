@@ -1,0 +1,13 @@
+{
+  "title": "自动完成",
+  "name": "mybricks.normal-pc.auto-complete", // auto-complete
+  "data": {
+    // 以下时是自动完成的属性描述
+    "config.placeholder": "string", // 默认值为“请输入”
+    "config.allowClear": "boolean", // 默认值为true
+    "config.disabled": "boolean",
+    "config.isFilter": "boolean", // 是否开启过滤
+    "config.options": "Array<{label:string,value:string}>", // 需要与 staticOptions 完全一致。默认值为  [{"label": "选项1","value": "选项1","type": "default","checked": false,"key": "option1"}]
+    "staticOptions": "Array<{label:string,value:string}>" // 需要与 config.options 完全一致。默认值为  [{"label": "选项1","value": "选项1","type": "default","checked": false,"key": "option1"}
+  }
+}
