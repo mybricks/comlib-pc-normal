@@ -1,0 +1,15 @@
+{
+  "title": "级联选择器",
+  "name": "mybricks.normal-pc.cascader", // cascader
+  "data": {
+    // 以下时级是级联选择器的属性描述
+    "config.placeholder": "string", // 默认值请选择
+    "config.allowClear": "boolean",
+    "config.disabled": "boolean",
+    "config.isMultiple": "boolean", // 是否多选
+    "config.maxTagCountType": "'isResponsive'| 'isCustom'", // 多选时，超出最大显示数量的展示方式，isResponsive 时会自动省略超出宽度的选择，isCustom 时会自定义省略的展示。isMultiple为true时才返回此属性
+    "config.maxTagCount": "number", // 多选时，最大显示数量。isMultiple为true并且maxTagCountType为'isCustom', 才返回此属性
+    "config.changeOnSelect": "boolean", // 是否允许选择任意一级的选项，默认值false
+    "config.showSearch": "boolean" // 是否开启搜索，默认值false
+  }
+}
