@@ -158,7 +158,6 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       textAlign: isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign
     });
 
-
     /** 提示语样式处理 */
     // 表单的公共提示语样式选择器
     const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
@@ -311,14 +310,12 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       /** 边距样式处理 */
       if (!isAllMarginSame
         && item.inlineMargin) {
-        if (JSON.stringify(defaultMargin) !== JSON.stringify(item.inlineMargin)) {
-          // 表单项的边距样式选择器
-          const selector = `.${item.id} div.ant-row.ant-form-item`;
-          const style: React.CSSProperties = {
-            margin: item.inlineMargin.map(String).map(unitConversion).join(' ')
-          };
-          setDeclaredStyle(selector, style);
-        }
+        // 表单项的边距样式选择器
+        const selector = `.${item.id} div.ant-row.ant-form-item`;
+        const style: React.CSSProperties = {
+          margin: item.inlineMargin.map(String).map(unitConversion).join(' ')
+        };
+        setDeclaredStyle(selector, style);
       }
       item.inlineMargin = void 0;
     }
