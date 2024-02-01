@@ -16,7 +16,8 @@
       "title": "标题",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": ["titleComplete"]
     }
   ],
   "outputs": [
@@ -35,7 +36,7 @@
       }
     },
     {
-      "id": "titleComplete",
+      "id": "setTitleComplete",
       "title": "完成",
       "schema": {
         "type": "any"

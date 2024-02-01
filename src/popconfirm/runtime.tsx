@@ -15,7 +15,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     } else {
       data.title = JSON.stringify(val);
     }
-    relOutputs['titleComplete']()
+    relOutputs['setTitleComplete']()
   });
 
   const visible = useMemo(() => {

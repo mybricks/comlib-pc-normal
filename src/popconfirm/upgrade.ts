@@ -10,10 +10,10 @@ export default function ({
   getDeclaredStyle,
   removeDeclaredStyle
 }: UpgradeParams<Data>): boolean {
-  const titleInput = input.get('title');
-  if (titleInput) {
-    output.add('titleComplete', '完成', { type: 'any' });
-    titleInput.setRels(['titleComplete']);
+  const setTitleComplete = output.get('setTitleComplete')
+  if(!setTitleComplete) {
+    output.add('setTitleComplete', '完成', {type: 'any'})
+    input.get('title').setRels(['setTitleComplete']);
   }
   return true;
 }

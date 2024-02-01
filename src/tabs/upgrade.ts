@@ -44,14 +44,29 @@ export default function ({
     }
   });
 
-  output.add(OutputIds.PreviousTabComplete, '完成', { type: 'any' });
-  output.add(OutputIds.NextTabComplete, '完成', { type: 'any' });
-  output.add(OutputIds.SetActiveTabComplete, '完成', { type: 'any' });
+  const previousTabComplete = output.get(OutputIds.PreviousTabComplete)
+  if(!previousTabComplete) {
+    output.add(OutputIds.PreviousTabComplete, '完成', { type: 'any' });
+    input.get(InputIds.PreviousTab).setRels([OutputIds.PreviousTabComplete])
+  }
 
-  const setShowTabInput = input.get(InputIds.SetShowTab);
-  if (setShowTabInput) {
+  const nextTabComplete = output.get(OutputIds.NextTabComplete)
+  if(!nextTabComplete) {
+    output.add(OutputIds.NextTabComplete, '完成', { type: 'any' });
+    input.get(InputIds.NextTab).setRels([OutputIds.NextTabComplete])
+  }
+
+  const setActiveTabComplete = output.get(OutputIds.SetActiveTabComplete)
+  if(!setActiveTabComplete) {
+    output.add(OutputIds.SetActiveTabComplete, '完成', { type: 'any' });
+    input.get(InputIds.SetActiveTab).setRels([OutputIds.SetActiveTabComplete])
+  }
+
+  const setShowTab = input.get(InputIds.SetShowTab)
+  const setShowTabComplete = output.get(OutputIds.SetShowTabComplete)
+  if(setShowTab && !setShowTabComplete) {
     output.add(OutputIds.SetShowTabComplete, '完成', { type: 'any' });
-    setShowTabInput.setRels([OutputIds.SetShowTabComplete]);
+    setShowTab.setRels([OutputIds.SetShowTabComplete]);
   }
 
   return true;

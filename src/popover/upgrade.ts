@@ -7,16 +7,16 @@ export default function ({ input, output, data, id, setDeclaredStyle }: UpgradeP
     data.style = {};
   }
 
-  const dynamicTitle = input.get('_title')
-  if(dynamicTitle) {
+  const _titleComplete = output.get('_titleComplete')
+  if(!_titleComplete) {
     output.add('_titleComplete', '完成', {type: 'any'})
-    dynamicTitle.setRels(['_titleComplete'])
+    input.get('_title').setRels(['_titleComplete'])
   }
-  
-  const dynamicContent = input.get('content')
-  if(dynamicContent) {
+
+  const contentComplete = output.get('contentComplete')
+  if(!contentComplete) {
     output.add('contentComplete', '完成', {type: 'any'})
-    dynamicContent.setRels(['contentComplete'])
+    input.get('content').setRels(['contentComplete'])
   }
 
   return true;

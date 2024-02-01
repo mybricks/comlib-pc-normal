@@ -16,14 +16,16 @@
       "title": "动态标题",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": ["_titleComplete"]
     },
     {
       "id": "content",
       "title": "动态内容",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": ["contentComplete"]
     }
   ],
   "outputs": [

@@ -65,8 +65,10 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
 
   const dynamicInput = input.get('dynamicTags');
   if (dynamicInput) {
-    output.add('dynamicComplete', '完成', { type: 'any' });
-    dynamicInput.setRels(['dynamicComplete']);
+    if(!output.get('dynamicComplete')){
+      output.add('dynamicComplete', '完成', { type: 'any' });
+      dynamicInput.setRels(['dynamicComplete']);
+    }
   }
   return true;
 }
