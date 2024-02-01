@@ -1,0 +1,13 @@
+{
+  "title": "时间范围选择器",
+  "name": "mybricks.normal-pc.time-range-picker", // time range picker
+  "data": {
+    // 以下时时间范是时间范围选择器的属性描述
+    "placeholder": "[string,string]", // 元组的两项分别为开始时间和结束时间选择器值为空时的提示内容
+    "disabled": "boolean",
+    "format": "'HH:mm:ss'|'HH:mm'|'HH'|'timeStamp'|'custom'",
+    "customFormat": "string", // 当format为"custom"时才返回本属性
+    "outFormat": "'array'|'string'",
+    "splitChar": "string" // 当outFormat为"string"时才返回本属性
+  }
+}
