@@ -46,11 +46,12 @@ export default async function ({ data, inputs, logger, onError }: RuntimeParams<
       [sheet.name || 'Untitled']: xlsx.utils.json_to_sheet(sheetData, { skipHeader: true })
     };
   };
-  inputs.dataSource((dataSource) => {
+  inputs.dataSource((dataSource, relOutputs) => {
     try {
       const workBook = createWorkbook(dataSource);
       const filename = `${data.filename ?? 'data'}.xlsx`;
       xlsx.writeFile(workBook, filename);
+      relOutputs['exportComplete']()
     } catch (error: any) {
       onError?.(error);
       logger.error(`'[excel导出运行错误]'：${error}`);
