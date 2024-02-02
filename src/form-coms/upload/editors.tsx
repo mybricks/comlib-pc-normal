@@ -637,6 +637,13 @@ export default {
           }
         },
         {
+          title: '上传完成后',
+          type: '_Event',
+          options: {
+            outputId: 'uploadComplete'
+          }
+        },
+        {
           title: '开启文件点击',
           type: 'switch',
           description: '开启后, 可自定义上传文件的点击事件且不跳转到新页面',

@@ -87,7 +87,7 @@ export default function ({
 
   useLayoutEffect(() => {
     // 上传完成事件
-    slots['customUpload'].outputs['uploadDone']?.((file) => {
+    slots['customUpload'].outputs['setFileInfo']?.((file) => {
       onUploadComplete(file);
     });
 
@@ -226,6 +226,7 @@ export default function ({
       formatCompleteFile(item, fileListRef.current);
     });
     changeFileList([...fileListRef.current]);
+    outputs['uploadComplete'](res);
   };
 
   // 文件数据格式化
@@ -266,7 +267,7 @@ export default function ({
         formData.append(fileKey, file);
       });
       changeFileList(onFormatFileList(fileList));
-      slots['customUpload'].inputs['upload'](formData);
+      slots['customUpload'].inputs['fileData'](formData);
     }
   };
 

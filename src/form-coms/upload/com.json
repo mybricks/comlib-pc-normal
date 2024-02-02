@@ -406,8 +406,8 @@
       "type": "scope",
       "inputs": [
         {
-          "id": "upload",
-          "title": "开始上传",
+          "id": "fileData",
+          "title": "输出文件数据",
           "schema": {
             "type": "object",
             "description": "FormData格式的文件数据",
@@ -417,8 +417,8 @@
       ],
       "outputs": [
         {
-          "id": "uploadDone",
-          "title": "上传完成",
+          "id": "setFileInfo",
+          "title": "设置上传结果",
           "description": "设置文件地址和文件名",
           "schema": {
             "type": "object",
