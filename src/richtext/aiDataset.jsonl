@@ -1,0 +1,12 @@
+{
+  "title": "富文本编辑器",
+  "name": "mybricks.normal-pc.input-richtext", // input-richtext
+  "data": {
+    // 以下是富文是富文本编辑器的属性描述
+    "placeholder": "string",
+    "disabled": "boolean",
+    "style": "CSSProperties", // 自定义样式，默认值 { "height": "200px" }
+    "displayEditbar": "boolean", // 显示编辑栏开关。默认值为 true
+    "toolbarOptions": "('bold' | 'italic' | 'underline' | 'strikethrough' | 'superscript' | 'subscript' | 'fontselect' | 'fontsizeselect' | 'lineheight' | 'letterspacing' | 'forecolor' | 'backcolor' | 'removeformat' | 'bullist' | 'numlist' | 'alignleft' | 'aligncenter' | 'alignright' | 'alignjustify' | 'indent' | 'outdent' | 'uploadimage' | 'uploadVideo' | 'table' | 'codesample' | 'link' | 'emoticons' | 'undo' | 'styleselect' | 'redo' | 'code' | 'fullscreen' | 'help' | 'cut' | 'copy' | 'selectall' | 'wordcount')[]" // 添加需要的插件，前置条件是开启显示编辑栏开关。默认值为 ["link"]
+  }
+}
