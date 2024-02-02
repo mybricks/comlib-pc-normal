@@ -604,6 +604,13 @@ export default {
               }
             },
             {
+              title: '上传完成后',
+              type: '_Event',
+              options: {
+                outputId: 'uploadComplete'
+              }
+            },
+            {
               ifVisible({ data }: EditorResult<Data>) {
                 return data.config.useCustomRemove;
               },
@@ -623,6 +630,7 @@ export default {
         {
           title: '使用自定义上传',
           type: 'switch',
+          description: '开启后，通过上传事件，或者在自定义上传卡片中调用接口进行上传',
           value: {
             get({ data, env }: EditorResult<Data>) {
               // 兼容没有设置env.uploadFile的情况
@@ -637,10 +645,16 @@ export default {
           }
         },
         {
-          title: '上传完成后',
-          type: '_Event',
+          title: '自定义上传接口',
+          type: '_event',
+          ifVisible({ data, env, slots }: EditorResult<Data>) {
+            return (
+              !slots.get('customUpload') &&
+              (typeof env.uploadFile !== 'function' || data.customUpload)
+            );
+          },
           options: {
-            outputId: 'uploadComplete'
+            outputId: 'upload'
           }
         },
         {
