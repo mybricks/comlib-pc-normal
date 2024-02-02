@@ -86,8 +86,8 @@ export default function ({
   } = data.config;
 
   useLayoutEffect(() => {
-    // 上传完成事件
-    slots['customUpload'].outputs['setFileInfo']?.((file) => {
+    // ≥ v1.0.34 设置上传结果
+    slots['customUpload']?.outputs['setFileInfo']?.((file) => {
       onUploadComplete(file);
     });
 
@@ -166,6 +166,12 @@ export default function ({
       if (relOutputs['isEditableDone']) {
         relOutputs['isEditableDone'](val);
       }
+    });
+
+    // ＜ v1.0.34
+    inputs['uploadDone']?.((file: any, relOutputs) => {
+      onUploadComplete(file);
+      relOutputs['uploadComplete'](file);
     });
 
     inputs['remove']?.((file: any, relOutputs) => {
@@ -267,7 +273,10 @@ export default function ({
         formData.append(fileKey, file);
       });
       changeFileList(onFormatFileList(fileList));
-      slots['customUpload'].inputs['fileData'](formData);
+      // ≥ v1.0.34
+      slots['customUpload']?.inputs['fileData'](formData);
+      // ＜ v1.0.34
+      outputs?.upload?.(formData);
     }
   };
 
@@ -534,7 +543,7 @@ export default function ({
         }
         //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
-        {slots['customUpload'].render({
+        {slots['customUpload']?.render({
           style: {
             display: 'none'
           }

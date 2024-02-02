@@ -47,6 +47,15 @@ const basicUploadDoneSchema = {
     },
     name: {
       type: 'string'
+    },
+    status: {
+      type: 'string'
+    },
+    percent: {
+      type: 'number'
+    },
+    response: {
+      type: 'string'
     }
   }
 };
@@ -409,9 +418,29 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return [data.config.fileCount];
                 },
-                set({ data, input }: EditorResult<Data>, value: number[]) {
+                set({ data, input, slot }: EditorResult<Data>, value: number[]) {
                   const [count] = value;
                   data.config.fileCount = count;
+                  if (count > 1) {
+                    // ＜ v1.0.34
+                    input.get('uploadDone')?.setSchema({
+                      type: 'array',
+                      items: basicUploadDoneSchema
+                    });
+                    // ≥ v1.0.34
+                    slot.get('customUpload')?.outputs?.get('setFileInfo')?.setSchema({
+                      type: 'array',
+                      items: basicUploadDoneSchema
+                    });
+                  } else {
+                    // ＜ v1.0.34
+                    input.get('uploadDone')?.setSchema(basicUploadDoneSchema);
+                    // ≥ v1.0.34
+                    slot
+                      .get('customUpload')
+                      ?.outputs?.get('setFileInfo')
+                      ?.setSchema(basicUploadDoneSchema);
+                  }
                 }
               }
             },
