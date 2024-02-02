@@ -1,0 +1,15 @@
+{
+  "title": "滑动输入条",
+  "name": "mybricks.normal-pc.slider",
+  "data": {
+    // 以下时滑是滑动输入条的属性描述
+    "config.disabled": "boolean",
+    "config.min": "number",
+    "config.max": "number",
+    "config.range": "boolean", // 是否开启区间范围选择
+    "useInput": "boolean", // 是否开启后置输入框。当config.range为true时才返回本属性
+    "sliderSpan": "number", // 单位：/24格栅
+    "inputSpan": "number", // 单位：/24格栅
+    "formatter": "string" // 展示单位
+  }
+}
