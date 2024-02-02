@@ -1,0 +1,14 @@
+{
+  "title": "代码编辑器",
+  "name": "mybricks.normal-pc.code-editor", // code-editor
+  "data": {
+    // 以下是代是代码编辑器的属性描述
+    "aceConfig.placeholder": "string", // 默认值为“请输入代码”
+    "aceConfig.language": "'css'| 'html' | 'java' | 'javascript' | 'json' | 'sql' | 'text'", // json”
+    "aceConfig.minLines": "number", // 默认值为 8
+    "aceConfig.maxLines": "number", // 默认值为 16
+    "aceConfig.wrap": "boolean", // 默认值为 true
+    "aceConfig.fontSize": "number",
+    "readOnly": "boolean" // 默认值为 false
+  }
+}
