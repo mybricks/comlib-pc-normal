@@ -88,7 +88,6 @@ export default function ({
   useLayoutEffect(() => {
     // 上传完成事件
     slots['customUpload'].outputs['uploadDone']?.((file) => {
-      console.log(file, 'file');
       onUploadComplete(file);
     });
 
@@ -534,6 +533,11 @@ export default function ({
         }
         //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
+        {slots['customUpload'].render({
+          style: {
+            display: 'none'
+          }
+        })}
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (

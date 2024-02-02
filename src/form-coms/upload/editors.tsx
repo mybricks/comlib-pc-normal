@@ -621,7 +621,7 @@ export default {
 
       catalog[1].items = [
         {
-          title: '开启自定义上传',
+          title: '使用自定义上传',
           type: 'switch',
           value: {
             get({ data, env }: EditorResult<Data>) {
