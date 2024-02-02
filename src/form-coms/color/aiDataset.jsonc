@@ -1,0 +1,11 @@
+{
+  "title": "颜色选择器",
+  "name": "mybricks.normal-pc.color", // color-picker
+  "data": {
+    // 以下时颜是颜色选择器的属性描述
+    "color": "string", // 默认颜色
+    "width": "string", // 色块宽度, 必须以px结尾
+    "switch": "boolean",
+    "colorType": "'rgb'| 'hex'" // 输出颜色的格式要求
+  }
+}
