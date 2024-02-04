@@ -1,11 +1,8 @@
 {
-    "namespace": "mybricks.normal-pc.link",
-    "data": {
-        "content": "string", // 文本。默认值: 文字链接
-        "url": "string", // 
-        "isChoose": "boolean", // 是否自定义图标。默认值: false
-        "icon": "string", // 图标，值为antd组件库中的图标名，当isChoose为true时可设置。默认值: NormalHomeLine
-        "location": "'front'|'back'", // 图标位置，当isChoose为true时可设置。默认值: front
-        "routeType": "'push'|'redirect'|'openTab'|'back'|'forward'|'customEvent'" // 默认值: openTab
-    }
+  "content": "string", // 文本。默认值: 文字链接
+  "url": "string", //
+  "isChoose": "boolean", // 是否自定义图标。默认值: false
+  "icon": "string", // 图标，值为antd组件库中的图标名，当isChoose为true时可设置。默认值: NormalHomeLine
+  "location": "'front'|'back'", // 图标位置，当isChoose为true时可设置。默认值: front
+  "routeType": "'push'|'redirect'|'openTab'|'back'|'forward'|'customEvent'" // 默认值: openTab
 }
