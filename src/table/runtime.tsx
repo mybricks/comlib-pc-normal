@@ -416,9 +416,10 @@ export default function (props: RuntimeParams<Data>) {
                 const tempItem = dataSourceRef.current.find(
                   (item) => targetRowKeyVal === item[rowKey]
                 );
+                newSelectedRowKeys.push(targetRowKeyVal);
+                // 需要判断对应的row数据是否存在
                 if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
                   newSelectedRows.push(tempItem);
-                  newSelectedRowKeys.push(targetRowKeyVal);
                 }
               });
               setSelectedRowKeys(newSelectedRowKeys);
@@ -552,7 +553,7 @@ export default function (props: RuntimeParams<Data>) {
   const setTableData = useCallback(
     (ds: any) => {
       let temp = [...dataSource] || [];
-      // 是否后端分页
+      // 是否前端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
       if (!usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds, rowKey);

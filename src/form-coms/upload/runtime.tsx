@@ -86,7 +86,12 @@ export default function ({
   } = data.config;
 
   useLayoutEffect(() => {
-    inputs['setValue']((val: UploadFile[], relOutputs) => {
+    // ≥ v1.0.34 设置上传结果
+    slots['customUpload']?.outputs['setFileInfo']?.((file) => {
+      onUploadComplete(file);
+    });
+
+    inputs['setValue']?.((val: UploadFile[], relOutputs) => {
       changeFileList(val);
       if (relOutputs['setValueDone']) {
         relOutputs['setValueDone'](val);
@@ -100,7 +105,7 @@ export default function ({
         }
         outputs[OutputIds.OnInitial](val);
       });
-    inputs['validate']((model, outputRels) => {
+    inputs['validate']?.((model, outputRels) => {
       validateFormItem({
         value: fileListRef.current,
         model,
@@ -114,11 +119,11 @@ export default function ({
           outputRels['returnValidate'](e);
         });
     });
-    inputs['getValue']((val, outputRels) => {
+    inputs['getValue']?.((val, outputRels) => {
       outputRels['returnValue'](fileListRef.current);
     });
 
-    inputs['resetValue']((_, relOutputs) => {
+    inputs['resetValue']?.((_, relOutputs) => {
       changeFileList([]);
       if (relOutputs['resetValueDone']) {
         relOutputs['resetValueDone']();
@@ -126,14 +131,14 @@ export default function ({
     });
 
     //设置禁用
-    inputs['setDisabled']((_, relOutputs) => {
+    inputs['setDisabled']?.((_, relOutputs) => {
       data.config.disabled = true;
       if (relOutputs['setDisabledDone']) {
         relOutputs['setDisabledDone']();
       }
     });
     //设置启用
-    inputs['setEnabled']((_, relOutputs) => {
+    inputs['setEnabled']?.((_, relOutputs) => {
       data.config.disabled = false;
       if (relOutputs['setEnabledDone']) {
         relOutputs['setEnabledDone']();
@@ -141,7 +146,7 @@ export default function ({
     });
 
     //设置启用/禁用
-    inputs['isEnable']((val, relOutputs) => {
+    inputs['isEnable']?.((val, relOutputs) => {
       if (val === true) {
         data.config.disabled = false;
         if (relOutputs['isEnableDone']) {
@@ -156,18 +161,20 @@ export default function ({
     });
 
     //设置编辑/只读
-    inputs['isEditable']((val, relOutputs) => {
+    inputs['isEditable']?.((val, relOutputs) => {
       data.isEditable = val;
       if (relOutputs['isEditableDone']) {
         relOutputs['isEditableDone'](val);
       }
     });
 
-    inputs['uploadDone']((file: any, relOutputs) => {
+    // ＜ v1.0.34
+    inputs['uploadDone']?.((file: any, relOutputs) => {
       onUploadComplete(file);
       relOutputs['uploadComplete'](file);
     });
-    inputs['remove']((file: any, relOutputs) => {
+
+    inputs['remove']?.((file: any, relOutputs) => {
       onRemoveFile(file?.uid ? file : removeFileRef.current || {});
       relOutputs['removeDone'](file);
     });
@@ -225,6 +232,7 @@ export default function ({
       formatCompleteFile(item, fileListRef.current);
     });
     changeFileList([...fileListRef.current]);
+    outputs['uploadComplete'](res);
   };
 
   // 文件数据格式化
@@ -265,7 +273,10 @@ export default function ({
         formData.append(fileKey, file);
       });
       changeFileList(onFormatFileList(fileList));
-      outputs.upload(formData);
+      // ≥ v1.0.34
+      slots['customUpload']?.inputs['fileData'](formData);
+      // ＜ v1.0.34
+      outputs?.upload?.(formData);
     }
   };
 
@@ -532,6 +543,11 @@ export default function ({
         }
         //iconRender={Icons && Icons[uploadIcon]?.render()}
       >
+        {slots['customUpload']?.render({
+          style: {
+            display: 'none'
+          }
+        })}
         {/* 目前上传列表类型为文字列表和图片列表，支持自定义内容和是否展示文件列表 */}
         {(data.isCustom === true && data.config.listType === 'text') ||
         (data.isCustom === true && data.config.listType === 'picture') ? (

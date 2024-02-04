@@ -47,6 +47,15 @@ const basicUploadDoneSchema = {
     },
     name: {
       type: 'string'
+    },
+    status: {
+      type: 'string'
+    },
+    percent: {
+      type: 'number'
+    },
+    response: {
+      type: 'string'
     }
   }
 };
@@ -409,16 +418,28 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return [data.config.fileCount];
                 },
-                set({ data, input }: EditorResult<Data>, value: number[]) {
+                set({ data, input, slot }: EditorResult<Data>, value: number[]) {
                   const [count] = value;
                   data.config.fileCount = count;
                   if (count > 1) {
-                    input.get('uploadDone').setSchema({
+                    // ＜ v1.0.34
+                    input.get('uploadDone')?.setSchema({
+                      type: 'array',
+                      items: basicUploadDoneSchema
+                    });
+                    // ≥ v1.0.34
+                    slot.get('customUpload')?.outputs?.get('setFileInfo')?.setSchema({
                       type: 'array',
                       items: basicUploadDoneSchema
                     });
                   } else {
-                    input.get('uploadDone').setSchema(basicUploadDoneSchema);
+                    // ＜ v1.0.34
+                    input.get('uploadDone')?.setSchema(basicUploadDoneSchema);
+                    // ≥ v1.0.34
+                    slot
+                      .get('customUpload')
+                      ?.outputs?.get('setFileInfo')
+                      ?.setSchema(basicUploadDoneSchema);
                   }
                 }
               }
@@ -612,6 +633,13 @@ export default {
               }
             },
             {
+              title: '上传完成后',
+              type: '_Event',
+              options: {
+                outputId: 'uploadComplete'
+              }
+            },
+            {
               ifVisible({ data }: EditorResult<Data>) {
                 return data.config.useCustomRemove;
               },
@@ -629,8 +657,9 @@ export default {
 
       catalog[1].items = [
         {
-          title: '开启自定义上传',
+          title: '使用自定义上传',
           type: 'switch',
+          description: '开启后，通过上传事件，或者在自定义上传卡片中调用接口进行上传',
           value: {
             get({ data, env }: EditorResult<Data>) {
               // 兼容没有设置env.uploadFile的情况
@@ -647,8 +676,11 @@ export default {
         {
           title: '自定义上传接口',
           type: '_event',
-          ifVisible({ data, env }: EditorResult<Data>) {
-            return typeof env.uploadFile !== 'function' || data.customUpload;
+          ifVisible({ data, env, slots }: EditorResult<Data>) {
+            return (
+              !slots.get('customUpload') &&
+              (typeof env.uploadFile !== 'function' || data.customUpload)
+            );
           },
           options: {
             outputId: 'upload'

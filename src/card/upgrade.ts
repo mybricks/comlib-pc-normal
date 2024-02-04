@@ -95,7 +95,7 @@ export default function ({
   }
 
   if(data.dataType = "external" && !output.get("setExternalDone") && input.get("external")){
-    output.add("setExternalDone", '设置标题完成', { type: 'string' });
+    output.add("setExternalDone", '设置输出数据完成', { type: 'string' });
     input.get("external").setRels(["setExternalDone"]);
   }
 

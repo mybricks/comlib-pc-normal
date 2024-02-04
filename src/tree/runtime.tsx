@@ -158,45 +158,51 @@ export default function (props: RuntimeParams<Data>) {
 
       // 设置数据源
       inputs['treeData'] &&
-        inputs['treeData']((value: TreeData[]) => {
+        inputs['treeData']((value: TreeData[], relOutputs) => {
           if (value && Array.isArray(value)) {
             data.treeData = [...value];
+            relOutputs['setTreeDataDone'](data.treeData);
           } else {
             data.treeData = [];
+            relOutputs['setTreeDataDone'](data.treeData);
           }
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       // 更新节点数据
       inputs['nodeData'] &&
-        inputs['nodeData']((nodeData: TreeData) => {
+        inputs['nodeData']((nodeData: TreeData, relOutputs) => {
           if (typeCheck(nodeData, 'OBJECT')) {
             data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
             outputs[OutputIds.OnChange](deepCopy(data.treeData));
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
+            relOutputs['setNodeDataDone'](nodeData);
           }
         });
 
       // 搜索
       inputs['searchValue'] &&
-        inputs['searchValue']((searchValue: string) => {
+        inputs['searchValue']((searchValue: string, relOutputs) => {
           search(searchValue);
+          relOutputs['searchValueDone'](searchValue);
         });
 
       // 过滤
       inputs['filter'] &&
-        inputs['filter']((filterValue: string) => {
+        inputs['filter']((filterValue: string, relOutputs) => {
           data.filterValue = filterValue;
+          relOutputs['filterDone'](filterValue);
         });
 
       // 设置选中节点
       inputs.setSelectedKeys &&
-        inputs.setSelectedKeys((keys: Array<string> = []) => {
+        inputs.setSelectedKeys((keys: Array<string> = [], relOutputs) => {
           if (!Array.isArray(keys)) {
             return onError('设置选中节点参数是数组');
           }
           setSelectedKeys(keys);
+          relOutputs['setSelectedKeysDone'](keys);
           const selectedValues = outputNodeValues(
             data.treeData,
             keys,
@@ -208,17 +214,18 @@ export default function (props: RuntimeParams<Data>) {
 
       // 设置展开节点
       inputs.setExpandedKeys &&
-        inputs.setExpandedKeys((keys: Array<string> = []) => {
+        inputs.setExpandedKeys((keys: Array<string> = [], relOutputs) => {
           if (!Array.isArray(keys)) {
             return onError('设置展开节点参数是数组');
           }
           data.expandedKeys = keys;
           setExpandedKeys(keys);
+          relOutputs['setExpandedKeysDone'](keys);
         });
 
       // 设置勾选项
       inputs['checkedValues'] &&
-        inputs['checkedValues']((value: []) => {
+        inputs['checkedValues']((value: [], relOutputs) => {
           if (value && Array.isArray(value)) {
             const inputCheckedKeys = filterCheckedKeysByCheckedValues(
               data.treeData,
@@ -227,22 +234,25 @@ export default function (props: RuntimeParams<Data>) {
             );
             data.checkedKeys = inputCheckedKeys;
             setCheckedKeys(inputCheckedKeys);
+            relOutputs['setCheckedKeysDone'](value);
           }
         });
       inputs['disableCheckbox'] &&
-        inputs['disableCheckbox']((value: any) => {
+        inputs['disableCheckbox']((value: any, relOutputs) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: true })];
+          relOutputs['setDisableCheckboxDone']();
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
       inputs['enableCheckbox'] &&
-        inputs['enableCheckbox']((value: any) => {
+        inputs['enableCheckbox']((value: any, relOutputs) => {
           data.treeData = [...setCheckboxStatus({ treeData: data.treeData, value: false })];
+          relOutputs['setEnableCheckboxDone']();
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
 
       // 设置拖拽功能
       inputs[InputIds.SetDragConfig] &&
-        inputs[InputIds.SetDragConfig]((ds: object) => {
+        inputs[InputIds.SetDragConfig]((ds: object, relOutputs) => {
           let config = {
             draggable: false,
             allowDrop: true,
@@ -259,13 +269,15 @@ export default function (props: RuntimeParams<Data>) {
           DragConfigKeys.forEach((key) => {
             config[key] != null && (data[key] = config[key]);
           });
+          relOutputs['setDragConfigDone'](ds);
         });
 
       // 设置展开深度
       inputs[InputIds.SetOpenDepth] &&
-        inputs[InputIds.SetOpenDepth]((depth) => {
+        inputs[InputIds.SetOpenDepth]((depth, relOutputs) => {
           if (typeof depth === 'number') {
             data.openDepth = depth;
+            relOutputs['setOpenDepthDone'](depth);
           } else {
             logger.warn(`${title}:【设置展开深度】输入数据应该是数字`);
           }
@@ -274,10 +286,11 @@ export default function (props: RuntimeParams<Data>) {
 
       // 自定义添加提示文案
       inputs['addTips'] &&
-        inputs['addTips']((ds: string[]) => {
+        inputs['addTips']((ds: string[], relOutputs) => {
           Array.isArray(ds)
             ? (data.addTips = ds)
             : (data.addTips = new Array(data.maxDepth || 1000).fill(ds));
+          relOutputs['addTipsDone'](ds);
         });
 
       /** @description 1.0.42 获取组件数据 */
