@@ -721,23 +721,17 @@ export default function (props: RuntimeParams<Data>) {
   const renderColumnsWhenEdit = renderColumns;
 
   const dataSourceKeysSet = new Set(realShowDataSource.map((row) => row[rowKey]));
-  const mergeAndFilterRows = useCallback(
-    (SelectedRowKeys: Array<string>) => {
-      // 创建选中行的映射，以优化查找性能
-      const selectedRowKeysMap = new Set(SelectedRowKeys);
 
-      // 合并勾选数据并根据id去重
-      const mergedRows = Array.from(
-        new Set([
-          ...selectedRows,
-          ...realShowDataSource.filter((rowData) => selectedRowKeysMap.has(rowData[rowKey]))
-        ])
-      );
-
-      return mergedRows;
-    },
-    [selectedRows, realShowDataSource, rowKey]
-  );
+  /** 筛选出选中的列数据 */
+  const mergeAndFilterRows = (SelectedRowKeys: Array<string>) => {
+    // 创建选中行的映射，以优化查找性能
+    const selectedRowKeysMap = new Set(SelectedRowKeys);
+    // 筛选出选中的列数据
+    const mergedRows = realShowDataSource.filter((rowData) =>
+      selectedRowKeysMap.has(rowData[rowKey])
+    );
+    return mergedRows;
+  };
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {
     selectedRowKeys: data.lazyLoad
@@ -923,79 +917,73 @@ export default function (props: RuntimeParams<Data>) {
   // 设计态数据mock
   const defaultDataSource = getDefaultDataSource(data.columns, rowKey, env);
 
-  const setCurrentSelectRows = useCallback(
-    (_record) => {
-      const targetRowKeyVal = _record[rowKey];
-      let newSelectedRows: Array<any> = [];
-      let newSelectedRowKeys: Array<string> = [...selectedRowKeys];
-      // 多选情况下，如果没有超出限制就可以选择
-      if (data.selectionType !== RowSelectionTypeEnum.Radio) {
-        if (
-          !data.rowSelectionLimit ||
-          (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
-          selectedRowKeys.includes(targetRowKeyVal)
-        ) {
-          if (newSelectedRowKeys.find((item) => item === targetRowKeyVal) !== undefined) {
-            newSelectedRowKeys = newSelectedRowKeys.filter((item) => item !== targetRowKeyVal);
-          } else {
-            newSelectedRowKeys.push(targetRowKeyVal);
-          }
-        }
-      } else {
-        // 单选的情况
-        if (selectedRowKeys.includes(_record)) {
-          newSelectedRows = [];
+  const setCurrentSelectRows = (_record) => {
+    const targetRowKeyVal = _record[rowKey];
+    let newSelectedRows: Array<any> = [];
+    let newSelectedRowKeys: Array<string> = [...selectedRowKeys];
+    // 多选情况下，如果没有超出限制就可以选择
+    if (data.selectionType !== RowSelectionTypeEnum.Radio) {
+      if (
+        !data.rowSelectionLimit ||
+        (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
+        selectedRowKeys.includes(targetRowKeyVal)
+      ) {
+        if (newSelectedRowKeys.find((item) => item === targetRowKeyVal) !== undefined) {
+          newSelectedRowKeys = newSelectedRowKeys.filter((item) => item !== targetRowKeyVal);
         } else {
-          newSelectedRows = [_record];
+          newSelectedRowKeys.push(targetRowKeyVal);
         }
       }
-      newSelectedRows = mergeAndFilterRows(newSelectedRowKeys);
-      setSelectedRows(newSelectedRows);
-      setSelectedRowKeys(newSelectedRowKeys);
-      outputs[OutputIds.ROW_SELECTION]({
-        selectedRows: newSelectedRows,
-        selectedRowKeys: newSelectedRowKeys
-      });
-    },
-    [selectedRows, data.rowSelectionLimit, selectedRowKeys, rowKey]
-  );
-
-  const onRow = useCallback(
-    (_record, index) => {
-      const { [DefaultRowKey]: _, ...record } = _record;
-      let props = {};
-      if (data?.enableOnRow && !env.edit) {
-        if (!data.onRowScript) {
-          data.onRowScript = DefaultOnRowScript;
-        }
-        props = runJs(data?.onRowScript, [_record, index]);
+    } else {
+      // 单选的情况
+      if (selectedRowKeys.includes(_record)) {
+        newSelectedRows = [];
+      } else {
+        newSelectedRows = [_record];
       }
+    }
+    newSelectedRows = mergeAndFilterRows(newSelectedRowKeys);
+    setSelectedRows(newSelectedRows);
+    setSelectedRowKeys(newSelectedRowKeys);
+    outputs[OutputIds.ROW_SELECTION]({
+      selectedRows: newSelectedRows,
+      selectedRowKeys: newSelectedRowKeys
+    });
+  }
 
-      return {
-        onClick: (e) => {
-          if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
-            setCurrentSelectRows(_record);
-          }
-          if (data.enableRowFocus) {
-            setFocusRowIndex(index === focusRowIndex ? null : index);
-          }
-          if (data.enableRowClick) {
-            outputs[OutputIds.ROW_CLICK]({ record, index });
-          }
-        },
-        onDoubleClick: () => {
-          if (data.enableRowDoubleClick) {
-            outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
-          }
-          if (data.enableRowFocus) {
-            setFocusRowIndex(index === focusRowIndex ? null : index);
-          }
-        },
-        ...props
-      };
-    },
-    [focusRowIndex, setCurrentSelectRows]
-  );
+  const onRow = (_record, index) => {
+    const { [DefaultRowKey]: _, ...record } = _record;
+    let props = {};
+    if (data?.enableOnRow && !env.edit) {
+      if (!data.onRowScript) {
+        data.onRowScript = DefaultOnRowScript;
+      }
+      props = runJs(data?.onRowScript, [_record, index]);
+    }
+
+    return {
+      onClick: (e) => {
+        if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
+          setCurrentSelectRows(_record);
+        }
+        if (data.enableRowFocus) {
+          setFocusRowIndex(index === focusRowIndex ? null : index);
+        }
+        if (data.enableRowClick) {
+          outputs[OutputIds.ROW_CLICK]({ record, index });
+        }
+      },
+      onDoubleClick: () => {
+        if (data.enableRowDoubleClick) {
+          outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
+        }
+        if (data.enableRowFocus) {
+          setFocusRowIndex(index === focusRowIndex ? null : index);
+        }
+      },
+      ...props
+    };
+  }
 
   // 获取表格显示列宽度和
   const getUseWidth = () => {
