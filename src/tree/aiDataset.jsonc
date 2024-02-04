@@ -1,23 +1,23 @@
 {
   "showLine": "boolean", // 是否显示连线
   "scrollHeight": "string", // 滚动高度, 例如：100px/100%/100vw/calc(100px)
-  "titleFieldName": "string", // 标题字段名
-  "keyFieldName": "string", // 标识字段
-  "childrenFieldName": "string", // 子节点字段名, 默认值为 children
-  "valueType": "'keyField' | 'treeNode'", // 值类型, 默认值为 keyField
-  "titleEllipsis": "boolean", // 标题是否省略
-  "openDepth": "number", // 默认展开深度
+  "titleFieldName": "string", // 标题字段名，默认值为 'title'
+  "keyFieldName": "string", // 标识字段，默认值为 'key'
+  "childrenFieldName": "string", // 子节点字段名, 默认值为 'children'
+  "valueType": "'keyField' | 'treeNode'", // 值类型, 默认值为 'keyField'
+  "titleEllipsis": "boolean", // 标题是否省略。默认值为 true
+  "openDepth": "number", // 默认展开深度。默认值为 -1
   "clickExpandable": "boolean", // 点击展开收起
   "isImage": "boolean", // 是否自定义空状态图片
   "image": "string", // 空状态图片
-  "description": "string", // 空状态描述
-  "useStaticData": "boolean", // 是否使用静态数据
-  "filterNames": "'byTitle' | 'byKey'", // 过滤字段
+  "description": "string", // 空状态描述。默认值为 '暂无数据'
+  "useStaticData": "boolean", // 是否使用静态数据。默认值为 true
+  "filterNames": "'byTitle'|'byKey'", // 过滤字段
   "draggable": "'true' | 'false' | 'custom'", // 拖拽功能, allowDrop 为 true 时生效
   "draggableScript": "string", // 拖拽脚本, 根据节点数据在运行时动态计算节点是否可拖拽的表达式，支持JS表达式语法, 例：{node.draggable}
-  "allowDrop": "'true' | 'false' | 'custom'", // 支持放置, 
+  "allowDrop": "'true' | 'false' | 'custom'", // 支持放置。默认值为 true
   "allowDropScript": "string", // 节点可放置表达式, 根据节点数据在运行时动态计算节点上下是否可放置节点的表达式，支持JS表达式语法, 例：{node.isLeaf}
   "useDropScope": "'false' | 'parent'", // 放置范围限制
   "dropScopeMessage": "string", //禁止放置提示语
-  "maxDepth": "Array<number>", // 支持添加节点的最大深度, 设置允许添加节点的最大深度，0表示不限制, 例：[0]
+  "maxDepth": "Array<number>" // 支持添加节点的最大深度, 设置允许添加节点的最大深度，0表示不限制, 例：[0]
 }
