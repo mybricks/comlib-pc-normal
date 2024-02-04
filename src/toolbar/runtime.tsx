@@ -27,35 +27,43 @@ export default ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) => {
           if (btn?.style) btn.style.display = 'block';
         }
 
-        inputs[`${InputIds.SetBtnText}_${key}`]?.((val: string) => {
+        inputs[`${InputIds.SetBtnText}_${key}`]?.((val: string, relOutputs) => {
           if (val && typeof val === 'string') {
             item.text = val;
+            relOutputs[`${OutputIds.SetBtnTextDone}_${key}`](val);
           }
         });
-        inputs[`${InputIds.SetDisable}_${key}`]?.(() => {
+        inputs[`${InputIds.SetDisable}_${key}`]?.((_, relOutputs) => {
           item.disabled = true;
+          relOutputs[`${OutputIds.SetDisableDone}_${key}`]();
         });
-        inputs[`${InputIds.SetEnable}_${key}`]?.(() => {
+        inputs[`${InputIds.SetEnable}_${key}`]?.((_, relOutputs) => {
           item.disabled = false;
+          relOutputs[`${OutputIds.SetEnableDone}_${key}`]();
         });
         // 动态隐藏按钮通过 style.display = 'none' 实现，防止出现初始化时先渲染后再隐藏的问题
-        inputs[`${InputIds.SetHidden}_${key}`]?.(() => {
+        inputs[`${InputIds.SetHidden}_${key}`]?.((_, relOutputs) => {
           if (btn?.style) btn.style.display = 'none';
           item.hidden = true;
+          relOutputs[`${OutputIds.SetHiddenDone}_${key}`]();
         });
         // 动态显示按钮通过 style.display = 'block' 实现，防止出现初始化时先隐藏后再出现的问题
-        inputs[`${InputIds.SetVisible}_${key}`]?.(() => {
+        inputs[`${InputIds.SetVisible}_${key}`]?.((_, relOutputs) => {
           if (btn?.style) btn.style.display = 'block';
           item.hidden = false;
+          relOutputs[`${OutputIds.SetVisibleDone}_${key}`]();
         });
-        inputs[`${InputIds.SetBtnOpenLoading}_${key}`]?.(() => {
+        inputs[`${InputIds.SetBtnOpenLoading}_${key}`]?.((_, relOutputs) => {
           item.loading = true;
+          relOutputs[`${OutputIds.SetBtnOpenLoadingDone}_${key}`]();
         });
-        inputs[`${InputIds.SetBtnCloseLoading}_${key}`]?.(() => {
+        inputs[`${InputIds.SetBtnCloseLoading}_${key}`]?.((_, relOutputs) => {
           item.loading = false;
+          relOutputs[`${OutputIds.SetBtnCloseLoadingDone}_${key}`]();
         });
-        inputs[`${InputIds.SetBtnStyle}_${key}`]?.((val: any) => {
+        inputs[`${InputIds.SetBtnStyle}_${key}`]?.((val: any, relOutputs) => {
           item.style = { ...(item.style || {}), ...(val || {}) };
+          relOutputs[`${OutputIds.SetBtnStyleDone}_${key}`](val);
         });
       });
     }

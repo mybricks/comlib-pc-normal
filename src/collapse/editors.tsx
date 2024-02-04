@@ -47,12 +47,16 @@ export default {
     cate2.items = [
       Editor<Data>('动态标题', EditorType.Switch, 'useDynamicTitle', {
         value: {
-          set({ data, input }: EditorResult<Data>, value: boolean) {
+          set({ data, input, output }: EditorResult<Data>, value: boolean) {
             const hasEvent = input.get(InputIds.Title);
             if (value) {
               !hasEvent && input.add(InputIds.Title, '标题', Schemas.Title);
+              !output.get('setTitleDone') &&
+                output.add('setTitleDone', '设置标题完成', Schemas.Title);
+              input.get(InputIds.Title).setRels(['setTitleDone']);
             } else {
               hasEvent && input.remove(InputIds.Title);
+              output.get('setTitleDone') && output.remove('setTitleDone');
             }
             data.useDynamicTitle = value;
           }
@@ -69,12 +73,23 @@ export default {
               !hasExpandedEvent && input.add(InputIds.Expanded, '展开', Schemas.Expanded);
               !hasFoldedEvent && input.add(InputIds.Folded, '收起', Schemas.Folded);
 
+              !output.get('seExpandedDone') &&
+                output.add('seExpandedDone', '设置展开完成', Schemas.Expanded);
+              !output.get('setFoldedDone') &&
+                output.add('setFoldedDone', '设置收起完成', Schemas.Folded);
+
+              input.get(InputIds.Expanded).setRels(['seExpandedDone']);
+              input.get(InputIds.Folded).setRels(['setFoldedDone']);
+
               !hasExpandedChangeEvent &&
                 output.add(OutputIds.ExpandedChange, '展开收起事件', Schemas.ExpandedChange);
             } else {
               hasExpandedEvent && input.remove(InputIds.Expanded);
               hasFoldedEvent && input.remove(InputIds.Folded);
               hasExpandedChangeEvent && output.remove(OutputIds.ExpandedChange);
+
+              output.get('seExpandedDone') && output.remove('seExpandedDone');
+              output.get('setFoldedDone') && output.remove('setFoldedDone');
             }
             data.useDynamicExpand = value;
           }

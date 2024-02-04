@@ -11,18 +11,21 @@ export default function ({ env, data, inputs, slots, outputs }: RuntimeParams<Da
   useEffect(() => {
     if (env.runtime) {
       if (data.useDynamicTitle && inputs[InputIds.Title]) {
-        inputs[InputIds.Title]((val) => {
+        inputs[InputIds.Title]((val, relOutputs) => {
           if (typeof val === 'string') {
             data.title = val;
+            relOutputs['setTitleDone'](val);
           }
         });
       }
       if (data.useDynamicExpand && inputs[InputIds.Expanded] && inputs[InputIds.Folded]) {
-        inputs[InputIds.Expanded](() => {
+        inputs[InputIds.Expanded]((_, relOutputs) => {
           setActiveKey([defaultKey]);
+          relOutputs['seExpandedDone']();
         });
-        inputs[InputIds.Folded](() => {
+        inputs[InputIds.Folded]((_, relOutputs) => {
           setActiveKey([]);
+          relOutputs['setFoldedDone']();
         });
       }
     }
