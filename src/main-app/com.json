@@ -1,0 +1,28 @@
+{
+  "title": "主应用",
+  "namespace": "mybricks.normal-pc.main-app",
+  "version": "1.0.0",
+  "description": "站点容器",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "runtime.edit": "./edit/runtime.tsx",
+  "editors": "./edit/editors.ts",
+  "slots": [
+    {
+      "id": "content",
+      "title": "内容区域",
+      "type": "scope",
+      "_inputs": [
+        {
+          "id": "pushRouter",
+          "title": "路由跳转",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@
     {
       "title": "基础",
       "comAry": [
+        "./src/main-app/com.json",
         "./src/text/com.json",
         "./src/link/com.json",
         "./src/typography/com.json",

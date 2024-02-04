@@ -38,7 +38,8 @@
     "qrcode.react": "^3.1.0",
     "react-sortable-hoc": "^2.0.0",
     "react-to-print": "^2.14.13",
-    "to-json-schema": "^0.2.5"
+    "to-json-schema": "^0.2.5",
+    "qiankun": "^2.0.11"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",

@@ -1,0 +1,26 @@
+{
+  "topArea": {
+    "title": "示例系统",
+    "logo": "https://mybricks.world/icon.png"
+  },
+  "middleArea": {
+    "sider": {
+      "menuItems": [
+        {
+          "id": "u_first",
+          "key": "u_first",
+          "menuType": "menu",
+          "title": "菜单名称",
+          "open": true,
+          "check": true
+        }
+      ],
+      "menuOpenKeys": [],
+      "homePage": {
+        "show": false,
+        "title": "首页"
+      }
+    },
+    "content": {}
+  }
+}
