@@ -727,9 +727,13 @@ export default function (props: RuntimeParams<Data>) {
     // 创建选中行的映射，以优化查找性能
     const selectedRowKeysMap = new Set(SelectedRowKeys);
     // 筛选出选中的列数据
-    const mergedRows = realShowDataSource.filter((rowData) =>
-      selectedRowKeysMap.has(rowData[rowKey])
-    );
+    const mergedRows = [...selectedRows, ...dataSource].filter((rowData) => {
+      if (selectedRowKeysMap.has(rowData[rowKey])) {
+        selectedRowKeysMap.delete(rowData[rowKey]);
+        return true;
+      }
+      return false;
+    });
     return mergedRows;
   };
   // 勾选配置
