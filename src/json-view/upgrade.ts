@@ -58,5 +58,28 @@ export default function ({
     });
   }
 
+  /**
+  * @description v1.0.11->v1.0.12 , 增加 设置数据源、展开深度 完成
+  */
+  if (!output.get("setJsonDataDone")) {
+    output.add("setJsonDataDone", "设置数据源完成", {type: "Object"});
+  }
+  if (output.get("setJsonDataDone") &&
+    input.get("jsonData") &&
+    !input.get("jsonData")?.rels?.includes("setJsonDataDone")) {
+    input.get("jsonData").setRels(["setJsonDataDone"]);
+  }
+
+  if (!output.get("setExpandDepthDone")) {
+    output.add("setExpandDepthDone", "设置展开深度完成", {type: "number"});
+  }
+  if (output.get("setExpandDepthDone") &&
+    input.get("setExpandDepth") &&
+    !input.get("setExpandDepth")?.rels?.includes("setExpandDepthDone")) {
+    input.get("setExpandDepth").setRels(["setExpandDepthDone"]);
+  }
+
+  
+
   return true;
 }

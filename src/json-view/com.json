@@ -1,7 +1,7 @@
 {
   "title": "JSON展示",
   "namespace": "mybricks.normal-pc.json-view",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "展示JSON数据",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -16,7 +16,10 @@
       "title": "设置数据源",
       "schema": {
         "type": "object"
-      }
+      },
+      "rels": [
+        "setJsonDataDone"
+      ]
     },
     {
       "id": "getJsonData",
@@ -35,7 +38,10 @@
       "desc": "接收≥-1的数字 -1表示全部展开, 0表示全部折叠",
       "schema": {
         "type": "number"
-      }
+      },
+      "rels": [
+        "setExpandDepthDone"
+      ]
     }
   ],
   "outputs": [
@@ -44,6 +50,21 @@
       "title": "数据输出",
       "schema": {
         "type": "object"
+      }
+    },
+    {
+      "id": "setJsonDataDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "object"
+      }
+    },
+    {
+      "id": "setExpandDepthDone",
+      "title": "设置展开深度完成",
+      "desc": "接收≥-1的数字 -1表示全部展开, 0表示全部折叠",
+      "schema": {
+        "type": "number"
       }
     }
   ],
