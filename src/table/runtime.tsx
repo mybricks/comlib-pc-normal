@@ -425,7 +425,7 @@ export default function (props: RuntimeParams<Data>) {
               setSelectedRows(newSelectedRows);
               if (typeof outputs?.[OutputIds.ROW_SELECTION] === 'function') {
                 outputs[OutputIds.ROW_SELECTION]({
-                  selectedRows: newSelectedRows,
+                  selectedRows: newSelectedRows.map(({ __index, ...row }) => row),
                   selectedRowKeys: newSelectedRowKeys
                 });
               }
@@ -833,7 +833,7 @@ export default function (props: RuntimeParams<Data>) {
       setSelectedRowKeys(SelectedRowKeys);
       setSelectedRows(SelectedRows);
       outputs[OutputIds.ROW_SELECTION]({
-        selectedRows: SelectedRows,
+        selectedRows: SelectedRows.map(({ __index, ...row }) => row),
         selectedRowKeys: SelectedRowKeys
       });
     },
@@ -946,10 +946,10 @@ export default function (props: RuntimeParams<Data>) {
     setSelectedRows(newSelectedRows);
     setSelectedRowKeys(newSelectedRowKeys);
     outputs[OutputIds.ROW_SELECTION]({
-      selectedRows: newSelectedRows,
+      selectedRows: newSelectedRows.map(({ __index, ...row }) => row),
       selectedRowKeys: newSelectedRowKeys
     });
-  }
+  };
 
   const onRow = (_record, index) => {
     const { [DefaultRowKey]: _, ...record } = _record;
@@ -983,7 +983,7 @@ export default function (props: RuntimeParams<Data>) {
       },
       ...props
     };
-  }
+  };
 
   // 获取表格显示列宽度和
   const getUseWidth = () => {
