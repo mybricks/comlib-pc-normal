@@ -62,7 +62,8 @@ export default function (props: RuntimeParams<Data>) {
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
   // 显示数据
-  const realShowDataSource = (data.usePagination && data.paginationConfig?.useFrontPage) ? pageDataSource : dataSource;
+  const realShowDataSource =
+    data.usePagination && data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
   const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
@@ -397,7 +398,7 @@ export default function (props: RuntimeParams<Data>) {
           const outputFn =
             relOutputs?.[OutputIds.GET_TABLE_DATA] || outputs[OutputIds.GET_TABLE_DATA];
           if (outputFn) {
-            outputFn(dataSource.map(({ [DefaultRowKey]: key, ...res }) => res));
+            outputFn(dataSource.map(({ [DefaultRowKey]: key, __index, ...res }) => res));
           }
         });
       // 动态设置勾选项
@@ -541,7 +542,12 @@ export default function (props: RuntimeParams<Data>) {
     if (env.runtime && data.usePagination && data.paginationConfig.useFrontPage) {
       filterDataSourceBySortAndFilter();
     }
-  }, [dataSource, data.paginationConfig.current, data.usePagination, data.paginationConfig.pageSize]);
+  }, [
+    dataSource,
+    data.paginationConfig.current,
+    data.usePagination,
+    data.paginationConfig.pageSize
+  ]);
 
   const setTableData = useCallback(
     (ds: any) => {
@@ -587,7 +593,8 @@ export default function (props: RuntimeParams<Data>) {
       } else {
         console.error('[数据表格]：未传入列表数据', ds);
       }
-      setDataSource(temp);
+      // 加一个 __index 字段，用于懒加载时，排序功能恢复排序
+      setDataSource(temp.map((item, index) => ({ ...item, __index: index })));
     },
     [dataSource]
   );
@@ -603,6 +610,44 @@ export default function (props: RuntimeParams<Data>) {
       ...sortParams,
       order: order || 'none'
     });
+
+    // @ts-expect-error column 中存在唯一值字段 _id
+    const configColumn = data.columns.find((column) => column._id === sorter.column?._id);
+    // 不是自定义排序，说明是走的前端排序逻辑
+    if (configColumn?.sorter?.type !== SorterTypeEnum.Request) {
+      // 懒加载情况下前端排序兼容逻辑
+      if (data.lazyLoad) {
+        setDataSource((ds) => {
+          if (!sorter.order) {
+            return [...ds].sort((a, b) => a.__index - b.__index);
+          }
+
+          const res = [...ds]
+            .sort((a, b) => a.__index - b.__index)
+            .sort((a, b) => {
+              const aVal = get(a, sorter.field!);
+              const bVal = get(b, sorter.field!);
+
+              switch (configColumn?.sorter?.type) {
+                case SorterTypeEnum.Length:
+                  return aVal.length - bVal.length;
+                case SorterTypeEnum.Size:
+                  return aVal - bVal;
+                case SorterTypeEnum.Date:
+                  if (!aVal || !bVal) {
+                    return 0;
+                  }
+                  return moment(aVal).valueOf() - moment(bVal).valueOf();
+                default:
+                  return aVal.length - bVal.length;
+              }
+            });
+
+          if (sorter.order === 'ascend') return res;
+          return res.reverse();
+        });
+      }
+    }
   }, []);
 
   const filterChange = useCallback((filter: any) => {
@@ -1066,36 +1111,36 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.useExpand && slots[SlotIds.EXPAND_CONTENT]
                     ? {
-                      expandedRowRender: (record, index) => {
-                        const inputValues = {
-                          [InputIds.EXP_COL_VALUES]: {
-                            ...record
-                          },
-                          [InputIds.INDEX]: index
-                        };
-                        if (data.useExpand && data.expandDataIndex) {
-                          inputValues[InputIds.EXP_ROW_VALUES] = get(
-                            record,
-                            data.expandDataIndex
-                          );
-                        }
-                        return slots[SlotIds.EXPAND_CONTENT].render({
-                          inputValues,
-                          key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                        });
-                      },
-                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                      onExpand: (expanded, record) => {
-                        if (!env.runtime) return;
-                        const key = record[rowKey];
-                        if (expanded && !expandedRowKeys.includes(key)) {
-                          setExpandedRowKeys([...expandedRowKeys, key]);
-                        } else if (!expanded && expandedRowKeys.includes(key)) {
-                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                          setExpandedRowKeys([...expandedRowKeys]);
+                        expandedRowRender: (record, index) => {
+                          const inputValues = {
+                            [InputIds.EXP_COL_VALUES]: {
+                              ...record
+                            },
+                            [InputIds.INDEX]: index
+                          };
+                          if (data.useExpand && data.expandDataIndex) {
+                            inputValues[InputIds.EXP_ROW_VALUES] = get(
+                              record,
+                              data.expandDataIndex
+                            );
+                          }
+                          return slots[SlotIds.EXPAND_CONTENT].render({
+                            inputValues,
+                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                          });
+                        },
+                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                        onExpand: (expanded, record) => {
+                          if (!env.runtime) return;
+                          const key = record[rowKey];
+                          if (expanded && !expandedRowKeys.includes(key)) {
+                            setExpandedRowKeys([...expandedRowKeys, key]);
+                          } else if (!expanded && expandedRowKeys.includes(key)) {
+                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                            setExpandedRowKeys([...expandedRowKeys]);
+                          }
                         }
                       }
-                    }
                     : undefined
                 }
                 onChange={onChange}
