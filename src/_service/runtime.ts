@@ -22,7 +22,8 @@ function callCon({ env, data, outputs, logger }, params = {}, connectorConfig = 
             ...connectorConfig,
             onResponseInterception: response => {
               outputs[OUTPUT_ID.HEADERS]?.(response.headers || {});
-            }
+            },
+            isMultipleOutputs: true
           }
         )
         .then((val) => {

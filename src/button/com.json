@@ -1,7 +1,7 @@
 {
   "title": "按钮",
   "namespace": "mybricks.normal-pc.custom-button",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "按钮",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -20,14 +20,20 @@
       "title": "设置标题",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setDynamicTitleDone"
+      ]
     },
     {
       "id": "dynamicDisabled",
       "title": "设置禁用",
       "schema": {
         "type": "boolean"
-      }
+      },
+      "rels": [
+        "setDynamicDisabledDone"
+      ]
     }
   ],
   "outputs": [
@@ -43,6 +49,20 @@
       "title": "双击",
       "schema": {
         "type": "number"
+      }
+    },
+    {
+      "id": "setDynamicTitleDone",
+      "title": "设置标题完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "dynamicDisabled",
+      "title": "设置禁用完成",
+      "schema": {
+        "type": "boolean"
       }
     }
   ]
