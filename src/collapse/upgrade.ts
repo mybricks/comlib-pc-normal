@@ -19,7 +19,6 @@ export default function ({
       input.get(InputIds.Expanded).setRels(["seExpandedDone"]);
     }
     if(!output.get("setFoldedDone") && input.get(InputIds.Folded)){
-      console.log('到这了吗')
       output.add("setFoldedDone", "设置收起完成", Schemas.Folded);
       input.get(InputIds.Folded).setRels(["setFoldedDone"]);
     }
