@@ -1,15 +1,24 @@
 [
   {
-    "name": "mybricks.bottom-bar", // 置底工具栏}
+    "name": "mybricks.normal-pc.alert", // 警告提示
     "data": {
-      "layout": "'flex-start'|'center'|'flex-end'", // default: 'center'
-      "height": "number", // default: 64
-      "width": "string", // default: '100%'
-      "parentId": "string"
+      "openWidth": "boolean", // true 为开启固定宽度设置，false 为百分比宽度。default: false
+      "percentWidth": "number", // 百分比宽度。default: 100
+      "width": "number", // 固定宽度。default: 500
+      "message": "string", // 标题，default: '消息提示'
+      "type": "'info'|'success'|'warning'|'error'", // default: false
+      "closeable": "boolean", // default:  false
+      "banner": "boolean", // 是否显示为横幅
+      "showInfo": "boolean", // default: false
+      "content": "string", // default: ‘辅助性文字介绍’
+      "showIcon": "boolean", // default: true
+      "isChoose": "boolean", // 图标自定义开关，default: false
+      "icon": "string", // 图标名称，default: HomeOutlined
+      "useContentSlot": "boolean" // 是否使用content插槽，default: false
     }
   },
   {
-    "name": "mybricks.normal-pc.custom-button", // 按钮}
+    "name": "mybricks.normal-pc.custom-button", // 按钮
     "data": {
       "asMapArea": "boolean", // 是否作为热区使用，反之为 button。default: false
       "size": "'large'|'middle'|'small'", // 作为热区时失效。default: 'middle'
@@ -28,25 +37,16 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.alert", // 警告提示}
+    "name": "mybricks.bottom-bar", // 置底工具栏
     "data": {
-      "openWidth": "boolean", // true 为开启固定宽度设置，false 为百分比宽度。default: false
-      "percentWidth": "number", // 百分比宽度。default: 100
-      "width": "number", // 固定宽度。default: 500
-      "message": "string", // 标题，default: '消息提示'
-      "type": "'info'|'success'|'warning'|'error'", // default: false
-      "closeable": "boolean", // default:  false
-      "banner": "boolean", // 是否显示为横幅
-      "showInfo": "boolean", // default: false
-      "content": "string", // default: ‘辅助性文字介绍’
-      "showIcon": "boolean", // default: true
-      "isChoose": "boolean", // 图标自定义开关，default: false
-      "icon": "string", // 图标名称，default: HomeOutlined
-      "useContentSlot": "boolean" // 是否使用content插槽，default: false
+      "layout": "'flex-start'|'center'|'flex-end'", // default: 'center'
+      "height": "number", // default: 64
+      "width": "string", // default: '100%'
+      "parentId": "string"
     }
   },
   {
-    "name": "mybricks.normal-pc.breadcrumb", // 面包屑}
+    "name": "mybricks.normal-pc.breadcrumb", // 面包屑
     "data": {
       "separator": "'/'|'>'|'custom'", // default: '/'
       "customSeparator": "string",
@@ -55,7 +55,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.calendar", // 日历}
+    "name": "mybricks.normal-pc.calendar", // 日历
     "data": {
       "mode": "'month'|'year'", // default: 'month'
       "useModeSwitch": "boolean", // default: true
@@ -65,7 +65,27 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.card", // 卡片}
+    "name": "mybricks.normal-pc.collapse", // 折叠面板
+    "data": {
+      "title": "string", // default: '标题'
+      "isCustomTitle": "boolean", // 是否开启自定义插槽
+      "expanded": "boolean", // 默认是否展开
+      "useExtra": "boolean" // 是否开启额外信息插槽
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.form-detail", // 描述列表
+    "data": {
+      "colon": "boolean", // default: true
+      "showTitle": "boolean", // default: true
+      "title": "string", // default: '描述列表的标题'
+      "showExtra": "boolean", // default: true
+      "column": "number", // default: 3
+      "mobileColumn": "number" // default: 3
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.card", // 卡片
     "data": {
       "hoverable": "boolean", // 是否开启鼠标移过时可浮起的效果。default: false
       "size": "'default'|'small'", // default: 'default'
@@ -79,49 +99,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.form-detail", // 描述列表}
-    "data": {
-      "colon": "boolean", // default: true
-      "showTitle": "boolean", // default: true
-      "title": "string", // default: '描述列表的标题'
-      "showExtra": "boolean", // default: true
-      "column": "number", // default: 3
-      "mobileColumn": "number" // default: 3
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.link", // 链接}
-    "data": {
-      "namespace": "mybricks.normal-pc.link",
-      "data": {
-        "content": "string", // 文本。默认值: 文字链接
-        "url": "string", //
-        "isChoose": "boolean", // 是否自定义图标。默认值: false
-        "icon": "string", // 图标，值为antd组件库中的图标名，当isChoose为true时可设置。默认值: NormalHomeLine
-        "location": "'front'|'back'", // 图标位置，当isChoose为true时可设置。默认值: front
-        "routeType": "'push'|'redirect'|'openTab'|'back'|'forward'|'customEvent'" // 默认值: openTab
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.icon", // 图标}
-    "data": {
-      "icon": "string", // default: 'HomeOutlined'
-      "colorPicker": "string", // default: '#000'
-      "size": "string" // default: '32px'
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.collapse", // 折叠面板}
-    "data": {
-      "title": "string", // default: '标题'
-      "isCustomTitle": "boolean", // 是否开启自定义插槽
-      "expanded": "boolean", // 默认是否展开
-      "useExtra": "boolean" // 是否开启额外信息插槽
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.iframe", // iFrame}
+    "name": "mybricks.normal-pc.iframe", // iFrame
     "data": {
       "url": "string", // default: ''
       "useSrcDoc": "boolean",
@@ -129,7 +107,38 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.json-view", // JSON展示}
+    "name": "mybricks.normal-pc.dropdown", // 下拉菜单
+    "data": {
+      "content": "string", // default: '下拉菜单'
+      "isCustom": "boolean", // 是否开启自定义标题插槽。default: false
+      "isChildCustom": "boolean", // 是否开启自定义子项插槽。default: false
+      "trigger": "'hover'|'click'", // default: 'hover'
+      "placement": "'bottomLeft'|'bottomCenter'|'bottomRight'|'topLeft'|'topCenter'|'topRight'", // default: 'bottomLeft'
+      "width": "string", // default: '100px'
+      "options": "Array<{ label: string, value: string, link: string, disabled: boolean, useIcon: boolean, icon: string }>" //  default: [ {"label": "选项1", "link": "","disabled": "true", "useIcon": false, "icon": "HomeOutlined", "key": "选项1"} ]
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.link", // 链接
+    "data": {
+      "content": "string", // 文本。默认值: 文字链接
+      "url": "string", //
+      "isChoose": "boolean", // 是否自定义图标。默认值: false
+      "icon": "string", // 图标，值为antd组件库中的图标名，当isChoose为true时可设置。默认值: NormalHomeLine
+      "location": "'front'|'back'", // 图标位置，当isChoose为true时可设置。默认值: front
+      "routeType": "'push'|'redirect'|'openTab'|'back'|'forward'|'customEvent'" // 默认值: openTab
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.icon", // 图标
+    "data": {
+      "icon": "string", // default: 'HomeOutlined'
+      "colorPicker": "string", // default: '#000'
+      "size": "string" // default: '32px'
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.json-view", // JSON展示
     "data": {
       "dataSourceType": "'default'|'array'|'object'", // default: 'object'
       "collapsed": "number", // 默认展开深度。default: 1
@@ -142,7 +151,47 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.list-new", // 列表容器}
+    "name": "mybricks.normal-pc.menu", // 导航菜单
+    "data": {
+      "mode": "'horizontal'|'vertical'|'inline'", // 样式。默认值:horizontal
+      "dataSource": "Array<{defaultActive: boolean; useIcon:boolean; icon:string; key: string; _key: string; menuType: 'menu'|'subMenu'; title: string}>" // 菜单项。默认值: [{  "defaultActive": true,  "key": "menu1",  "_key": "menu1",  "menuType": "menu",  "title": "菜单1"}]
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.paginator", // 分页器
+    "data": {
+      "align": "'flex-start'|'center'|'flex-end'", // 位置，可以居左、居中、居右。默认值:flex-end
+      "size": "'default'|'small'|'simple'", // 默认值:default
+      "defaultPageSize": "number", // 默认值:10
+      "text": "string", // 前置说明文字，格式：{start}当前页起始条目，{end}当前页结束条目，{total}总条目数，当size不为simple时可设置。默认值:共 {total} 条结果
+      "showQuickJumper": "boolean", // 跳页功能，当size不为simple时可设置。默认值:false
+      "showSizeChanger": "boolean", // 条数选择功能，当size不为simple时可设置。默认值:false
+      "pageSizeOptions": "Array<string>", // 配置条数切换器可选的条目数，当showSizeChanger为true且size不为simple时可设置。默认值:["10","20","50","100"]
+      "hideOnSinglePage": "boolean", // 页数为1时是否隐藏分页器，当showSizeChanger为false且size为simple时可设置。默认值:false
+      "isDynamic": "boolean" // 是否支持通过输入项动态启用或禁用分页器。默认值:false
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.progress", // 进度条
+    "data": {
+      "percent": "number", // 默认进度。默认值:50%
+      "isShow": "boolean", // 显示进度值。默认值:true
+      "isFormat": "boolean", // 自定义进度值，当isShow为true时可设置。默认值:false
+      "formatFunction": "string", // 进度值表达式，当isShow和isFormat同时为true时可设置。默认值:{percent}%
+      "type": "'line'|'circle'|'dashboard'", // 默认值:line
+      "size": "'default'|'small'", // 当type为line时可设置。默认值:default
+      "circleSize": "number", // 当type不为line时的尺寸。默认值:120
+      "strokeWidth": "number", // 进度条线宽度。默认值:6
+      "isSteps": "boolean", // 是否可配置步数，当type为line时可设置。默认值:false
+      "steps": "number", // 进度条总共步数，当type为line且isSteps为true时可设置。默认值:3
+      "status": "'success' | 'exception' | 'normal' | 'active'", // 默认值:normal
+      "isColor": "boolean", // 自定义颜色。默认值:false
+      "strokeColor": "string", // 完成分段颜色，当isColor为true时可设置。默认值:#1890ff
+      "trailColor": "string" // 未完成分段颜色，当isColor为true时可设置。默认值:#f3f3f3
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.list-new", // 列表容器
     "data": {
       "isResponsive": "boolean", // 响应式布局。默认值:false
       "isCustomPoints": "boolean", // 自定义断点，当isResponsive为true时可设置。默认值:false
@@ -163,60 +212,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.menu", // 导航菜单}
-    "data": {
-      "mode": "'horizontal'|'vertical'|'inline'", // 样式。默认值:horizontal
-      "dataSource": "Array<{defaultActive: boolean; useIcon:boolean; icon:string; key: string; _key: string; menuType: 'menu'|'subMenu'; title: string}>" // 菜单项。默认值: [{  "defaultActive": true,  "key": "menu1",  "_key": "menu1",  "menuType": "menu",  "title": "菜单1"}]
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.paginator", // 分页器}
-    "data": {
-      "align": "'flex-start'|'center'|'flex-end'", // 位置，可以居左、居中、居右。默认值:flex-end
-      "size": "'default'|'small'|'simple'", // 默认值:default
-      "defaultPageSize": "number", // 默认值:10
-      "text": "string", // 前置说明文字，格式：{start}当前页起始条目，{end}当前页结束条目，{total}总条目数，当size不为simple时可设置。默认值:共 {total} 条结果
-      "showQuickJumper": "boolean", // 跳页功能，当size不为simple时可设置。默认值:false
-      "showSizeChanger": "boolean", // 条数选择功能，当size不为simple时可设置。默认值:false
-      "pageSizeOptions": "Array<string>", // 配置条数切换器可选的条目数，当showSizeChanger为true且size不为simple时可设置。默认值:["10","20","50","100"]
-      "hideOnSinglePage": "boolean", // 页数为1时是否隐藏分页器，当showSizeChanger为false且size为simple时可设置。默认值:false
-      "isDynamic": "boolean" // 是否支持通过输入项动态启用或禁用分页器。默认值:false
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.popconfirm", // 气泡确认框}
-    "data": {
-      "title": "string", // 默认值:这是一个确认框
-      "okText": "string", // 默认值:确认
-      "cancelText": "string", // 默认值:取消
-      "icon": "string", // 图标，值为antd组件库中的图标名。默认值:ExclamationCircle
-      "showCancel": "boolean" // 默认值:true
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.qr-code", // 二维码}
-    "data": {
-      "link": "string", // 默认值:https://www.baidu.com/
-      "hasIcon": "boolean", // 默认值:false
-      "icon.url": "string", // 默认值:https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/images/logo.b8d9b45951421ff5.jpeg
-      "icon.width": "string", // 图标的宽度，值为字符串，可以是百分比，像素值（单位px）和auto。默认值:20%
-      "icon.height": "string" // 图标的高度，值为字符串，可以是百分比，像素值（单位px）和auto。默认值:20%
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.dropdown", // 下拉菜单}
-    "data": {
-      "content": "string", // default: '下拉菜单'
-      "isCustom": "boolean", // 是否开启自定义标题插槽。default: false
-      "isChildCustom": "boolean", // 是否开启自定义子项插槽。default: false
-      "trigger": "'hover'|'click'", // default: 'hover'
-      "placement": "'bottomLeft'|'bottomCenter'|'bottomRight'|'topLeft'|'topCenter'|'topRight'", // default: 'bottomLeft'
-      "width": "string", // default: '100px'
-      "options": "Array<{ label: string, value: string, link: string, disabled: boolean, useIcon: boolean, icon: string }>" //  default: [ {"label": "选项1", "link": "","disabled": "true", "useIcon": false, "icon": "HomeOutlined", "key": "选项1"} ]
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.popover", // 气泡}
+    "name": "mybricks.normal-pc.popover", // 气泡
     "data": {
       "useTitleSlot": "boolean", // 是否用自定义组件作为标题。默认值:false
       "title": "string", // 当useTitleSlot为false时可设置。默认值:标题
@@ -227,7 +223,27 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.result", // 结果页}
+    "name": "mybricks.normal-pc.popconfirm", // 气泡确认框
+    "data": {
+      "title": "string", // 默认值:这是一个确认框
+      "okText": "string", // 默认值:确认
+      "cancelText": "string", // 默认值:取消
+      "icon": "string", // 图标，值为antd组件库中的图标名。默认值:ExclamationCircle
+      "showCancel": "boolean" // 默认值:true
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.qr-code", // 二维码
+    "data": {
+      "link": "string", // 默认值:https://www.baidu.com/
+      "hasIcon": "boolean", // 默认值:false
+      "icon.url": "string", // 默认值:https://ali-ec.static.yximgs.com/udata/pkg/eshop/fangzhou/images/logo.b8d9b45951421ff5.jpeg
+      "icon.width": "string", // 图标的宽度，值为字符串，可以是百分比，像素值（单位px）和auto。默认值:20%
+      "icon.height": "string" // 图标的高度，值为字符串，可以是百分比，像素值（单位px）和auto。默认值:20%
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.result", // 结果页
     "data": {
       "title": "string", // 默认值:标题
       "subTitle": "string", // 默认值:副标题
@@ -235,32 +251,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.richtext-preview", // 富文本}
-    "data": {
-      "content": "string"
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.progress", // 进度条}
-    "data": {
-      "percent": "number", // 默认进度。默认值:50%
-      "isShow": "boolean", // 显示进度值。默认值:true
-      "isFormat": "boolean", // 自定义进度值，当isShow为true时可设置。默认值:false
-      "formatFunction": "string", // 进度值表达式，当isShow和isFormat同时为true时可设置。默认值:{percent}%
-      "type": "'line'|'circle'|'dashboard'", // 默认值:line
-      "size": "'default'|'small'", // 当type为line时可设置。默认值:default
-      "circleSize": "number", // 当type不为line时的尺寸。默认值:120
-      "strokeWidth": "number", // 进度条线宽度。默认值:6
-      "isSteps": "boolean", // 是否可配置步数，当type为line时可设置。默认值:false
-      "steps": "number", // 进度条总共步数，当type为line且isSteps为true时可设置。默认值:3
-      "status": "'success' | 'exception' | 'normal' | 'active'", // 默认值:normal
-      "isColor": "boolean", // 自定义颜色。默认值:false
-      "strokeColor": "string", // 完成分段颜色，当isColor为true时可设置。默认值:#1890ff
-      "trailColor": "string" // 未完成分段颜色，当isColor为true时可设置。默认值:#f3f3f3
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.single-image", // 图片}
+    "name": "mybricks.normal-pc.single-image", // 图片
     "data": {
       "alt": "string", // 默认值:图片
       "src": "string", // 默认值:data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiIHZlcnNpb249IjEuMSIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiPjxwYXRoIGQ9Ik05NDIgOTE2LjZIODMuOWE3OS4xIDc5LjEgMCAwIDEtNzktNzlWMTg2YTc5LjEgNzkuMSAwIDAgMSA3OS03OUg5NDJhNzkuMSA3OS4xIDAgMCAxIDc5IDc5djY1MS42YTc5LjEgNzkuMSAwIDAgMS03OSA3OXpNODMuOSAxNjguNjVBMTcuNTcgMTcuNTcgMCAwIDAgNjYuNTYgMTg2djY1MS42YTE3LjU3IDE3LjU3IDAgMCAwIDE3LjM0IDE3LjMzSDk0MmExNy41NyAxNy41NyAwIDAgMCAxNy4zNC0xNy4zNFYxODZBMTcuNTcgMTcuNTcgMCAwIDAgOTQyIDE2OC42NXoiIGZpbGw9IiM1NTU1NTUiLz48cGF0aCBkPSJNMjEyLjcyIDQxMi43M2E5MiA5MiAwIDEgMSA5Mi05MiA5Mi4xIDkyLjEgMCAwIDEtOTIgOTJ6IG0wLTEyMGEyOCAyOCAwIDEgMCAyOCAyOCAyOCAyOCAwIDAgMC0yOC0yOHpNNDQuNjkgNzQxLjIzQTMyIDMyIDAgMCAxIDI1IDY4NGwyMzYuMjMtMTg0LjU5YzM0LjQ0LTI2LjkyIDg1Ljk0LTI0LjEgMTE3LjI0IDYuNDJMNTIwLjcgNjQ0LjUxYTMyIDMyIDAgMSAxLTQ0LjcgNDUuODJMMzMzLjc5IDU1MS42NmMtOC4yNi04LjA2LTI0LjA2LTguOTMtMzMuMTYtMS44Mkw2NC4zNyA3MzQuNDVhMzEuODQgMzEuODQgMCAwIDEtMTkuNjggNi43OHoiIGZpbGw9IiM1NTU1NTUiLz48cGF0aCBkPSJNOTg2LjMyIDgxMi4xMmEzMiAzMiAwIDAgMS0yOC40Ny0xNy4zNkw3ODIuNDEgNDU0LjE4bC0wLjE3LTAuMzZhMjIgMjIgMCAwIDAtMzQuMi03LjA3bC0yMjYuMjkgMjQyLjVBMzIgMzIgMCAxIDEgNDc1IDY0NS41OWwyMjcuOS0yNDQuMjcgMC44LTAuNzVhODYgODYgMCAwIDEgMTM1Ljk1IDI1bDE3NS4wOSAzMzkuOTJhMzIgMzIgMCAwIDEtMjguNDIgNDYuNjZ6IiBmaWxsPSIjNTU1NTU1Ii8+PC9zdmc+
@@ -271,65 +262,20 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.spin", // 加载中}
+    "name": "mybricks.normal-pc.richtext-preview", // 富文本
+    "data": {
+      "content": "string"
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.spin", // 加载中
     "data": {
       "size": "'large' | 'default' | 'small'", // 加载图标大小，默认为'default'
       "tip": "stirng" // 描述文案，默认为'加载中...'
     }
   },
   {
-    "name": "mybricks.normal-pc.steps", // 步骤条}
-    "data": {
-      "steps.type": "'default' | 'navigation' | 'dotted'", // 步骤条类型，默认为'default'
-      "steps.size": "'default' | 'small'", // 步骤条尺寸，默认为'default'
-      "steps.direction": "'horizontal' | 'vertical'", // 步骤条方向，默认为'horizontal'
-      "steps.showDesc": "boolean", // 是否展示描述信息，默认为false
-      "steps.canClick": "boolean", // 是否可以点击切换，默认为false
-      "toolbar.showActions": "boolean", // 是否展示操作栏区域，默认为false
-      "toolbar.btns": "Array<'previous' | 'next' | 'submit'>", // 操作栏按钮组
-      "hideSlots": "boolean", // 是否隐藏插槽占位，默认为false
-      "toolbar.actionAlign": "'flex-start' | 'center' | 'flex-end'", // 操作栏的对齐方式，默认为'flex-end'
-      "toolbar.fixed": "boolean", // 操作栏是否置底，必须设置showActions为true才生效，默认为false
-      "toolbar.bottom": "number", // 操作栏的底部距离，默认为0
-      "toolbar.primaryBtnText": "string", // 操作栏的主按钮文案，默认为'下一步'
-      "toolbar.secondBtnText": "string", // 操作栏的上一步按钮文案，默认为'上一步'
-      "toolbar.submitText": "string", // 操作栏的提交按钮文案，默认为'提交'
-      "stepAry": "Array<{id: string, title: string, description: string, subTitle?: string, index: number, useDynamicDisplay?: boolean, hide?: boolean, content?: any, render?: boolean, useCustomDesc?: boolean, useIcon?: boolean, customIcon?: boolean, icon?: string, iconSrc?: string, iconSize?: [number, number]}>" // 步骤数组, title为标题，description为描述信息（showDesc和useCustomDesc必须是true才可生效），subTitle为副标题，index为索引，useDynamicDisplay为是否使用动态展示，hide为是否隐藏，content为内容，render为是否渲染，useCustomDesc为是否使用自定义描述（showDesc必须是true才可生效），useIcon为是否使用图标，customIcon为是否使用自定义图标（useIcon必须是true才可生效），icon为图标名称（useIcon和customIcon必须是true才可生效），iconSrc为图标地址（useIcon和customIcon必须是true才可生效），iconSize为图标尺寸（useIcon必须是true才可生效）
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.sort-bar", // 排序标题栏}
-    "data": {
-      "children": "{key: string, content: string, fieldName: string, order: 'disorder' | 'ascend' | 'descend'}[]" // key和fieldName值为随机数，
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.tabs", // 标签页}
-    "data": {
-      "tabList": "Array<{id: string, key: string, name: string}>", // 选项卡列表, id: 选项卡id, key: 选项卡key, name: 选项卡名称
-      "type": "'card' | 'line'", // 外观类型, card: 卡片, line: 简约
-      "tabPosition": "'top' | 'bottom' | 'left' | 'right'", // 标签位置, top: 顶部, bottom: 底部, left: 左侧, right: 右侧, 默认: top
-      "centered": "boolean", // 标签是否居中, 默认: false
-      "prohibitClick": "boolean", // 是否禁止点击, 默认: false
-      "useDynamicTab": "boolean", // 是否使用动态选项卡, 默认: false
-      "hideSlots": "boolean", // 隐藏插槽占位, 默认: false
-      "useLeftExtra": "boolean", // 是否使用左侧额外内容, 默认: false
-      "useRigthExtra": "boolean", // 是否使用右侧额外内容, 默认: false
-      "name": "string", // 选项卡名称
-      "showIcon": "boolean", // 是否显示图标, 默认: false
-      "icon": "string", // 图标, 默认是 BellOutlined
-      "tooltipText": "string", // 提示文本, tab标题的文字提示，不填写则不显示
-      "closable": "boolean", // 是否支持关闭, 默认: false
-      "dynamic": "boolean", // 是否支持动态通知显示, 默认: false
-      "infoType": "'text' | 'icon'", // 通知类型, text: 文本, icon: 图标, 默认: text, 只有 dynamic 为 true 时有效
-      "size": "'default' | 'small'", // 通知大小, 默认: default, 只有 dynamic 为 true 并且infoType为‘icon’时有效
-      "showZero": "boolean", // 当数值为 0 时，是否展示 Badge, 默认: false, 只有 dynamic 为 true 并且infoType为‘icon’时有效
-      "offset": "Array<number>", // 设置状态点的偏移量 [x, y], 默认: [0, 0], 只有 dynamic 为 true 并且infoType为‘icon’时有效
-      "status": "'success' | 'processing' | 'default' | 'error' | 'warning'" // 设置 Badge 为状态点, 默认: success, 只有 dynamic 为 true 并且infoType为‘icon’时有效
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.tagList", // 标签列表}
+    "name": "mybricks.normal-pc.tagList", // 标签列表
     "data": {
       "tags": "Array<{key: string, content: string, color: 'default' | 'success' | 'processing' | 'warning' | 'error'}>", // 标签列表, key: 标签名, content: 标签内容, color: 标签颜色，dynamic必须是false才可生效
       "direction": "'horizontal' | 'vertical'", // 标签方向, horizontal: 水平, vertical: 垂直, 默认值: horizontal
@@ -348,15 +294,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.text", // 文本}
-    "data": {
-      "content": "string", // 文本内容, 默认值: ''
-      "isEllipsis": "boolean", // 是否显示省略号, 默认值: false
-      "ellipsis.rows": "number" // 最大显示行数, isEllipsis为true时生效
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.table", // 数据表格}
+    "name": "mybricks.normal-pc.table", // 数据表格
     "data": {
       "columns[]": {
         "title": "string", // 列名
@@ -447,7 +385,81 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.tooltip", // 文字提示}
+    "name": "mybricks.normal-pc.steps", // 步骤条
+    "data": {
+      "steps.type": "'default' | 'navigation' | 'dotted'", // 步骤条类型，默认为'default'
+      "steps.size": "'default' | 'small'", // 步骤条尺寸，默认为'default'
+      "steps.direction": "'horizontal' | 'vertical'", // 步骤条方向，默认为'horizontal'
+      "steps.showDesc": "boolean", // 是否展示描述信息，默认为false
+      "steps.canClick": "boolean", // 是否可以点击切换，默认为false
+      "toolbar.showActions": "boolean", // 是否展示操作栏区域，默认为false
+      "toolbar.btns": "Array<'previous' | 'next' | 'submit'>", // 操作栏按钮组
+      "hideSlots": "boolean", // 是否隐藏插槽占位，默认为false
+      "toolbar.actionAlign": "'flex-start' | 'center' | 'flex-end'", // 操作栏的对齐方式，默认为'flex-end'
+      "toolbar.fixed": "boolean", // 操作栏是否置底，必须设置showActions为true才生效，默认为false
+      "toolbar.bottom": "number", // 操作栏的底部距离，默认为0
+      "toolbar.primaryBtnText": "string", // 操作栏的主按钮文案，默认为'下一步'
+      "toolbar.secondBtnText": "string", // 操作栏的上一步按钮文案，默认为'上一步'
+      "toolbar.submitText": "string", // 操作栏的提交按钮文案，默认为'提交'
+      "stepAry": "Array<{id: string, title: string, description: string, subTitle?: string, index: number, useDynamicDisplay?: boolean, hide?: boolean, content?: any, render?: boolean, useCustomDesc?: boolean, useIcon?: boolean, customIcon?: boolean, icon?: string, iconSrc?: string, iconSize?: [number, number]}>" // 步骤数组, title为标题，description为描述信息（showDesc和useCustomDesc必须是true才可生效），subTitle为副标题，index为索引，useDynamicDisplay为是否使用动态展示，hide为是否隐藏，content为内容，render为是否渲染，useCustomDesc为是否使用自定义描述（showDesc必须是true才可生效），useIcon为是否使用图标，customIcon为是否使用自定义图标（useIcon必须是true才可生效），icon为图标名称（useIcon和customIcon必须是true才可生效），iconSrc为图标地址（useIcon和customIcon必须是true才可生效），iconSize为图标尺寸（useIcon必须是true才可生效）
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.sort-bar", // 排序标题栏
+    "data": {
+      "children": "{key: string, content: string, fieldName: string, order: 'disorder' | 'ascend' | 'descend'}[]" // key和fieldName值为随机数，
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.tabs", // 标签页
+    "data": {
+      "tabList": "Array<{id: string, key: string, name: string}>", // 选项卡列表, id: 选项卡id, key: 选项卡key, name: 选项卡名称
+      "type": "'card' | 'line'", // 外观类型, card: 卡片, line: 简约
+      "tabPosition": "'top' | 'bottom' | 'left' | 'right'", // 标签位置, top: 顶部, bottom: 底部, left: 左侧, right: 右侧, 默认: top
+      "centered": "boolean", // 标签是否居中, 默认: false
+      "prohibitClick": "boolean", // 是否禁止点击, 默认: false
+      "useDynamicTab": "boolean", // 是否使用动态选项卡, 默认: false
+      "hideSlots": "boolean", // 隐藏插槽占位, 默认: false
+      "useLeftExtra": "boolean", // 是否使用左侧额外内容, 默认: false
+      "useRigthExtra": "boolean", // 是否使用右侧额外内容, 默认: false
+      "name": "string", // 选项卡名称
+      "showIcon": "boolean", // 是否显示图标, 默认: false
+      "icon": "string", // 图标, 默认是 BellOutlined
+      "tooltipText": "string", // 提示文本, tab标题的文字提示，不填写则不显示
+      "closable": "boolean", // 是否支持关闭, 默认: false
+      "dynamic": "boolean", // 是否支持动态通知显示, 默认: false
+      "infoType": "'text' | 'icon'", // 通知类型, text: 文本, icon: 图标, 默认: text, 只有 dynamic 为 true 时有效
+      "size": "'default' | 'small'", // 通知大小, 默认: default, 只有 dynamic 为 true 并且infoType为‘icon’时有效
+      "showZero": "boolean", // 当数值为 0 时，是否展示 Badge, 默认: false, 只有 dynamic 为 true 并且infoType为‘icon’时有效
+      "offset": "Array<number>", // 设置状态点的偏移量 [x, y], 默认: [0, 0], 只有 dynamic 为 true 并且infoType为‘icon’时有效
+      "status": "'success' | 'processing' | 'default' | 'error' | 'warning'" // 设置 Badge 为状态点, 默认: success, 只有 dynamic 为 true 并且infoType为‘icon’时有效
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.text", // 文本
+    "data": {
+      "content": "string", // 文本内容, 默认值: ''
+      "isEllipsis": "boolean", // 是否显示省略号, 默认值: false
+      "ellipsis.rows": "number" // 最大显示行数, isEllipsis为true时生效
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.timeline", // 时间轴
+    "data": {
+      "mode": "'left' | 'alternate' | 'right'", // 内容位置
+      "reverse": "boolean", // 排序方式, true为正序，false为逆序
+      "supportCollapse": "boolean", // 是否支持展开收起
+      "defaultCollapse": "boolean", // 默认是否收起
+      "isDynamic": "boolean", // 是否动态加载
+      "useContentSlot": "boolean", // 是否自定义节点内容
+      "timelines": "Array<{id: string, title: string, color?: string, subTitle?: string, description?: string, position?: 'left' | 'right'}>", // 时间轴数据, id为唯一标识, title为标题, color为颜色, subTitle为副标题, description为描述, position为内容位置
+      "title": "string", // 标题
+      "subTitle": "string", // 副标题
+      "description": "string" // 描述
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.tooltip", // 文字提示
     "data": {
       "title": "string", // 提示内容
       "trigger": "'hover' | 'click' | 'focus'", // 触发方式
@@ -455,7 +467,27 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.tree", // 树}
+    "name": "mybricks.normal-pc.video", // 播放器
+    "data": {
+      "src": "string",
+      "autoplay": "boolean", // 默认值:true
+      "muted": "boolean", // 值和autoplay保持一致。默认值:true
+      "controls": "boolean", // 是否显示控制栏。默认值:true
+      "loop": "boolean",
+      "poster": "string", // 封面图片的url
+      "fit": "'contain'|'fill'" // 默认值: contain
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.typography", // 文本排版
+    "data": {
+      "style.textAlign": "'left'|'center'|'right'", // 水平对齐方式
+      "items": "Array<{src:number,key:string;type:'Text'|'Tag';content:string;oldcontent:string;textType:string;stylePadding:[number,number]}>", // 文本或标签列表。默认值:{"src":1,"key":u_mz3bp6,"type":"Text","content":"文本","oldcontent":"文本","textType":"","stylePadding":[0,0]}
+      "rowKey": "string" // 动态渲染数据时，作为列表项数据的唯一标识，可不填
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.tree", // 树
     "data": {
       "showLine": "boolean", // 是否显示连线
       "scrollHeight": "string", // 滚动高度, 例如：100px/100%/100vw/calc(100px)
@@ -481,34 +513,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.timeline", // 时间轴}
-    "data": {
-      "mode": "'left' | 'alternate' | 'right'", // 内容位置
-      "reverse": "boolean", // 排序方式, true为正序，false为逆序
-      "supportCollapse": "boolean", // 是否支持展开收起
-      "defaultCollapse": "boolean", // 默认是否收起
-      "isDynamic": "boolean", // 是否动态加载
-      "useContentSlot": "boolean", // 是否自定义节点内容
-      "timelines": "Array<{id: string, title: string, color?: string, subTitle?: string, description?: string, position?: 'left' | 'right'}>", // 时间轴数据, id为唯一标识, title为标题, color为颜色, subTitle为副标题, description为描述, position为内容位置
-      "title": "string", // 标题
-      "subTitle": "string", // 副标题
-      "description": "string" // 描述
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.video", // 播放器}
-    "data": {
-      "src": "string",
-      "autoplay": "boolean", // 默认值:true
-      "muted": "boolean", // 值和autoplay保持一致。默认值:true
-      "controls": "boolean", // 是否显示控制栏。默认值:true
-      "loop": "boolean",
-      "poster": "string", // 封面图片的url
-      "fit": "'contain'|'fill'" // 默认值: contain
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.toolbar", // 工具条}
+    "name": "mybricks.normal-pc.toolbar", // 工具条
     "data": {
       "allSize": "'large' | 'middle' | 'small'", // 工具栏大小，默认为'middle'
       "allType": "'default' | 'primary' | 'dashed' | 'danger' | 'link'", // 工具栏类型，默认为'default'
@@ -518,7 +523,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.cascader", // 级联选择}
+    "name": "mybricks.normal-pc.cascader", // 级联选择
     "data": {
       "title": "级联选择器",
       "name": "mybricks.normal-pc.cascader", // cascader
@@ -536,31 +541,24 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.checkbox", // 多选框}
+    "name": "mybricks.normal-pc.form-email", // 邮箱
     "data": {
-      "title": "多选框",
-      "name": "mybricks.normal-pc.checkbox", // checkbox
+      "title": "邮箱输入框",
+      "name": "mybricks.normal-pc.form-email",
       "data": {
-        // 以下是多选框的属性描述
+        // 以下时邮是邮箱输入框的属性描述
+        "config.allowClear": "boolean",
+        "config.placeholder": "string",
         "config.disabled": "boolean",
-        "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
-        "layout": "'horizontal'|'vertical'",
-        "checckAll": "boolean", // 是否开启全选
-        "checkAllText": "string", // 全选文案, 当checckAll为true时才返回本属性
-        "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
+        "config.addonBefore": "string",
+        "config.addonAfter": "string",
+        "config.showCount": "boolean",
+        "config.maxLength": "number"
       }
     }
   },
   {
-    "name": "mybricks.normal-pc.typography", // 文本排版}
-    "data": {
-      "style.textAlign": "'left'|'center'|'right'", // 水平对齐方式
-      "items": "Array<{src:number,key:string;type:'Text'|'Tag';content:string;oldcontent:string;textType:string;stylePadding:[number,number]}>", // 文本或标签列表。默认值:{"src":1,"key":u_mz3bp6,"type":"Text","content":"文本","oldcontent":"文本","textType":"","stylePadding":[0,0]}
-      "rowKey": "string" // 动态渲染数据时，作为列表项数据的唯一标识，可不填
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.code-editor", // 代码编辑器}
+    "name": "mybricks.normal-pc.code-editor", // 代码编辑器
     "data": {
       "title": "代码编辑器",
       "name": "mybricks.normal-pc.code-editor", // code-editor
@@ -577,7 +575,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.color", // 颜色选择框}
+    "name": "mybricks.normal-pc.color", // 颜色选择框
     "data": {
       "title": "颜色选择器",
       "name": "mybricks.normal-pc.color", // color-picker
@@ -591,7 +589,40 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.auto-complete", // 自动完成}
+    "name": "mybricks.normal-pc.checkbox", // 多选框
+    "data": {
+      "title": "多选框",
+      "name": "mybricks.normal-pc.checkbox", // checkbox
+      "data": {
+        // 以下是多选框的属性描述
+        "config.disabled": "boolean",
+        "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
+        "layout": "'horizontal'|'vertical'",
+        "checckAll": "boolean", // 是否开启全选
+        "checkAllText": "string", // 全选文案, 当checckAll为true时才返回本属性
+        "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.form-container", // 表单容器
+    "data": {
+      "layoutType": "'Form'|'QueryFilter'",
+      "defaultCollapsed": "boolean", // 默认是否折叠表单项
+      "submitHiddenFields": "boolean",
+      "config.span": "number", // QueryFilter 时生效，表单项宽度，遵循 24 个栅格布局的规范，默认为 8
+      "config.formItemColumn": "number", // Form 时生效，每行表单项个数，最大 6 个
+      "config.layout": "'horizontal'|'vertical'|'inline'",
+      "config.colon": "boolean", // 是否显示 label 后面的冒号
+      "config.labelWrap": "boolean", // 是否换行显示 label
+      "config.labelAlign": "'left'|'right'", // label 对齐方式
+      "labelWidthType": "'px'|'span'", // label 宽度类型
+      "labelWidth": "number", // label 像素宽度，labelWidthType 为 px 时生效
+      "labelCol": "number" // label 栅格布局，栅格共有 24 个，labelWidthType 为 span 时生效
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.auto-complete", // 自动完成
     "data": {
       "title": "自动完成",
       "name": "mybricks.normal-pc.auto-complete", // auto-complete
@@ -607,7 +638,19 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.date-picker", // 日期选择框}
+    "name": "mybricks.normal-pc.password", // 密码框
+    "data": {
+      "title": "密码输入框",
+      "name": "mybricks.normal-pc.password",
+      "data": {
+        // 以下时密是密码输入框的属性描述
+        "placeholder": "string",
+        "disabled": "boolean"
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.date-picker", // 日期选择框
     "data": {
       "title": "日期选择器",
       "name": "mybricks.normal-pc.date-picker",
@@ -626,53 +669,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.form-email", // 邮箱}
-    "data": {
-      "title": "邮箱输入框",
-      "name": "mybricks.normal-pc.form-email",
-      "data": {
-        // 以下时邮是邮箱输入框的属性描述
-        "config.allowClear": "boolean",
-        "config.placeholder": "string",
-        "config.disabled": "boolean",
-        "config.addonBefore": "string",
-        "config.addonAfter": "string",
-        "config.showCount": "boolean",
-        "config.maxLength": "number"
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.form-container", // 表单容器}
-    "data": {
-      "layoutType": "'Form'|'QueryFilter'",
-      "defaultCollapsed": "boolean", // 默认是否折叠表单项
-      "submitHiddenFields": "boolean",
-      "config.span": "number", // QueryFilter 时生效，表单项宽度，遵循 24 个栅格布局的规范，默认为 8
-      "config.formItemColumn": "number", // Form 时生效，每行表单项个数，最大 6 个
-      "config.layout": "'horizontal'|'vertical'|'inline'",
-      "config.colon": "boolean", // 是否显示 label 后面的冒号
-      "config.labelWrap": "boolean", // 是否换行显示 label
-      "config.labelAlign": "'left'|'right'", // label 对齐方式
-      "labelWidthType": "'px'|'span'", // label 宽度类型
-      "labelWidth": "number", // label 像素宽度，labelWidthType 为 px 时生效
-      "labelCol": "number" // label 栅格布局，栅格共有 24 个，labelWidthType 为 span 时生效
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.password", // 密码框}
-    "data": {
-      "title": "密码输入框",
-      "name": "mybricks.normal-pc.password",
-      "data": {
-        // 以下时密是密码输入框的属性描述
-        "placeholder": "string",
-        "disabled": "boolean"
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.input-textarea", // 文本域}
+    "name": "mybricks.normal-pc.input-textarea", // 文本域
     "data": {
       "title": "文本域",
       "name": "mybricks.normal-pc.input-textarea", // textarea
@@ -689,42 +686,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.rate", // 评分}
-    "data": {
-      "title": "评分",
-      "name": "mybricks.normal-pc.rate",
-      "data": {
-        // 以是评分的属性描述
-        "isChoose": "boolean", // 是否自定义字符
-        "choose": "'font'|'icon'", // 自定义字符类型，当isChoose为true时才返回本属性
-        "font": "string", // 当isChoose为true且choose为'font'时才返回本属性
-        "icon": "string", // antd的图标标识，例如HomeOutlined
-        "color": "string", // 值为Hex颜色代码
-
-        "config.count": "number", // 评分总数
-        "config.defaultValue": "number", // 默认值
-        "config.disabled": false // 是否只读
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.form-phone-number", // 手机号输入框}
-    "data": {
-      "title": "手机号码输入框",
-      "name": "mybricks.normal-pc.form-phone-number", // input-phone-number
-      "data": {
-        // 以下时手机号是手机号码输入框的属性描述
-        "config.placeholder": "string",
-        "config.addonBefore": "string",
-        "config.addonAfter": "string",
-        "config.allowClear": "boolean",
-        "config.disabled": "boolean",
-        "config.showCount": "boolean" // 显示字数
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.input-number", // 数字输入框}
+    "name": "mybricks.normal-pc.input-number", // 数字输入框
     "data": {
       "title": "数字输入框",
       "name": "mybricks.normal-pc.input-number", // input-number
@@ -747,26 +709,23 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.search", // 搜索框}
+    "name": "mybricks.normal-pc.form-phone-number", // 手机号输入框
     "data": {
-      "title": "搜索框",
-      "name": "mybricks.normal-pc.search", // search
+      "title": "手机号码输入框",
+      "name": "mybricks.normal-pc.form-phone-number", // input-phone-number
       "data": {
-        // 以下是搜索框的属性描述
+        // 以下时手机号是手机号码输入框的属性描述
         "config.placeholder": "string",
+        "config.addonBefore": "string",
+        "config.addonAfter": "string",
         "config.allowClear": "boolean",
         "config.disabled": "boolean",
-        "config.addonBefore": "string",
-        "isSelect": "boolean", // 是否开启前置下拉选择
-        "selectWidth": "string", // 当isSelect为true时才返回本属性
-        "isenterButton": "boolean", // 是否打开确认按钮
-        "enterButton": "string", // 确认按钮文案, 当isenterButton为true时才返回本属性
-        "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>"
+        "config.showCount": "boolean" // 显示字数
       }
     }
   },
   {
-    "name": "mybricks.normal-pc.radio", // 单选框}
+    "name": "mybricks.normal-pc.radio", // 单选框
     "data": {
       "title": "单选框",
       "name": "mybricks.normal-pc.radio",
@@ -782,25 +741,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.switch", // 开关}
-    "data": {
-      "title": "开关",
-      "name": "mybricks.normal-pc.switch",
-      "data": {
-        // 以是开关的属性描述
-        "textMap": {
-          "开启时": "string",
-          "关闭时": "string"
-        },
-        "config.disabled": "boolean",
-        "config.checked": "boolean",
-        "config.checkedChildren": "string", // 和textMap["开启时"]的值保持一致
-        "config.unCheckedChildren": "string" // 和textMap["关闭时"]的值保持一致
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.range-picker", // 日期范围选择框}
+    "name": "mybricks.normal-pc.range-picker", // 日期范围选择框
     "data": {
       "title": "日期范围选择器",
       "name": "mybricks.normal-pc.range-picker", // date range picker
@@ -819,7 +760,26 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.slider", // 滑动输入条}
+    "name": "mybricks.normal-pc.rate", // 评分
+    "data": {
+      "title": "评分",
+      "name": "mybricks.normal-pc.rate",
+      "data": {
+        // 以是评分的属性描述
+        "isChoose": "boolean", // 是否自定义字符
+        "choose": "'font'|'icon'", // 自定义字符类型，当isChoose为true时才返回本属性
+        "font": "string", // 当isChoose为true且choose为'font'时才返回本属性
+        "icon": "string", // antd的图标标识，例如HomeOutlined
+        "color": "string", // 值为Hex颜色代码
+
+        "config.count": "number", // 评分总数
+        "config.defaultValue": "number", // 默认值
+        "config.disabled": false // 是否只读
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.slider", // 滑动输入条
     "data": {
       "title": "评分",
       "name": "mybricks.normal-pc.rate",
@@ -838,7 +798,63 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.form-text", // 文本框}
+    "name": "mybricks.normal-pc.search", // 搜索框
+    "data": {
+      "title": "搜索框",
+      "name": "mybricks.normal-pc.search", // search
+      "data": {
+        // 以下是搜索框的属性描述
+        "config.placeholder": "string",
+        "config.allowClear": "boolean",
+        "config.disabled": "boolean",
+        "config.addonBefore": "string",
+        "isSelect": "boolean", // 是否开启前置下拉选择
+        "selectWidth": "string", // 当isSelect为true时才返回本属性
+        "isenterButton": "boolean", // 是否打开确认按钮
+        "enterButton": "string", // 确认按钮文案, 当isenterButton为true时才返回本属性
+        "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>"
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.switch", // 开关
+    "data": {
+      "title": "开关",
+      "name": "mybricks.normal-pc.switch",
+      "data": {
+        // 以是开关的属性描述
+        "textMap": {
+          "开启时": "string",
+          "关闭时": "string"
+        },
+        "config.disabled": "boolean",
+        "config.checked": "boolean",
+        "config.checkedChildren": "string", // 和textMap["开启时"]的值保持一致
+        "config.unCheckedChildren": "string" // 和textMap["关闭时"]的值保持一致
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.select", // 下拉框
+    "data": {
+      "title": "下拉框",
+      "name": "mybricks.normal-pc.select", // select
+      "data": {
+        // 以下是下拉框的属性描述
+        "config.placeholder": "string", // 默认值为“请选择”
+        "config.mode": "'default'|'multiple'|'tags'",
+        "config.allowClear": "boolean", // 默认值为true
+        "config.showArrow": "boolean",
+        "config.disabled": "disabled",
+        "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
+        "maxHeight": "string", // 备选弹出层的最大高度
+        "maxTagCount": "'responsive'| undefined", // 'responsive' 时会自动省略超出宽度的选择
+        "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.form-text", // 文本框
     "data": {
       "title": "输入框",
       "name": "mybricks.normal-pc.form-text", // input
@@ -860,7 +876,24 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.time-picker", // 时间选择框}
+    "name": "mybricks.normal-pc.transfer", // 穿梭框
+    "data": {
+      "title": "穿梭框",
+      "name": "mybricks.normal-pc.transfer",
+      "data": {
+        // 以下是穿梭框的属性描述
+        "titles": "[string, string]", // 元组的两项分别表示数据源和目标数据源标题
+        "oneWay": "'单向'|'双向'",
+        "showDesc": "boolean",
+        "showSearch": "boolean",
+        "disabled": "boolean",
+        "showPagination": "boolean", // 默认值为false
+        "pagination.pageSize": "number" // 每页条数。当showPagination为true时才返回本属性
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.time-picker", // 时间选择框
     "data": {
       "title": "时间选择器",
       "name": "mybricks.normal-pc.time-picker",
@@ -874,7 +907,23 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.treeSelect", // 树形选择}
+    "name": "mybricks.normal-pc.time-range-picker", // 时间范围选择框
+    "data": {
+      "title": "时间范围选择器",
+      "name": "mybricks.normal-pc.time-range-picker", // time range picker
+      "data": {
+        // 以下时时间范是时间范围选择器的属性描述
+        "placeholder": "[string,string]", // 元组的两项分别为开始时间和结束时间选择器值为空时的提示内容
+        "disabled": "boolean",
+        "format": "'HH:mm:ss'|'HH:mm'|'HH'|'timeStamp'|'custom'",
+        "customFormat": "string", // 当format为"custom"时才返回本属性
+        "outFormat": "'array'|'string'",
+        "splitChar": "string" // 当outFormat为"string"时才返回本属性
+      }
+    }
+  },
+  {
+    "name": "mybricks.normal-pc.treeSelect", // 树形选择
     "data": {
       "title": "树选择器",
       "name": "mybricks.normal-pc.treeSelect", // tree-select
@@ -902,59 +951,7 @@
     }
   },
   {
-    "name": "mybricks.normal-pc.select", // 下拉框}
-    "data": {
-      "title": "下拉框",
-      "name": "mybricks.normal-pc.select", // select
-      "data": {
-        // 以下是下拉框的属性描述
-        "config.placeholder": "string", // 默认值为“请选择”
-        "config.mode": "'default'|'multiple'|'tags'",
-        "config.allowClear": "boolean", // 默认值为true
-        "config.showArrow": "boolean",
-        "config.disabled": "disabled",
-        "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
-        "maxHeight": "string", // 备选弹出层的最大高度
-        "maxTagCount": "'responsive'| undefined", // 'responsive' 时会自动省略超出宽度的选择
-        "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.time-range-picker", // 时间范围选择框}
-    "data": {
-      "title": "时间范围选择器",
-      "name": "mybricks.normal-pc.time-range-picker", // time range picker
-      "data": {
-        // 以下时时间范是时间范围选择器的属性描述
-        "placeholder": "[string,string]", // 元组的两项分别为开始时间和结束时间选择器值为空时的提示内容
-        "disabled": "boolean",
-        "format": "'HH:mm:ss'|'HH:mm'|'HH'|'timeStamp'|'custom'",
-        "customFormat": "string", // 当format为"custom"时才返回本属性
-        "outFormat": "'array'|'string'",
-        "splitChar": "string" // 当outFormat为"string"时才返回本属性
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.transfer", // 穿梭框}
-    "data": {
-      "title": "穿梭框",
-      "name": "mybricks.normal-pc.transfer",
-      "data": {
-        // 以下是穿梭框的属性描述
-        "titles": "[string, string]", // 元组的两项分别表示数据源和目标数据源标题
-        "oneWay": "'单向'|'双向'",
-        "showDesc": "boolean",
-        "showSearch": "boolean",
-        "disabled": "boolean",
-        "showPagination": "boolean", // 默认值为false
-        "pagination.pageSize": "number" // 每页条数。当showPagination为true时才返回本属性
-      }
-    }
-  },
-  {
-    "name": "mybricks.normal-pc.upload", // 上传}
+    "name": "mybricks.normal-pc.upload", // 上传
     "data": {
       "title": "上传",
       "name": "mybricks.normal-pc.upload",
