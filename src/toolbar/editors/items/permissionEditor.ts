@@ -15,11 +15,30 @@ const PermissionEditor = [
         const { item } = getBtnItemInfo(data, focusArea);
         return item.permission;
       },
-      set({ data, focusArea }: EditorResult<Data>, value: { id: string, register: () => void }) {
+      set(
+        { data, focusArea }: EditorResult<Data>,
+        value: {
+          id: string;
+          type: string;
+          noPrivilegeType: 'hide' | 'hintLink';
+          hintLink?: string;
+          registerData?: {
+            noPrivilege: 'hide' | 'hintLink';
+            code: string;
+            title: string;
+          };
+          register: () => void;
+        }
+      ) {
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
-        item.permission = { id: value.id };
-        value.register()
+        item.permission = {
+          id: value.id,
+          type: value.type,
+          noPrivilegeType: value.noPrivilegeType,
+          hintLink: value.hintLink,
+          registerData: value.registerData
+        };
       }
     }
   }
