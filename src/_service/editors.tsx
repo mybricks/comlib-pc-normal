@@ -171,6 +171,11 @@ function updateIO({ input, output, data }, connector) {
   }
 
   if (connector.markList?.length) {
+    output.get().forEach(o => {
+      if (o.id !== 'then' && o.id !== 'catch') {
+        output.remove(o.id);
+      }
+    });
     connector.markList?.forEach(mark => {
       const schema = isValidSchema(mark.outputSchema) ? mark.outputSchema : defaultSchema;
 
