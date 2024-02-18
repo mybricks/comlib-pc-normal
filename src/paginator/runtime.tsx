@@ -31,13 +31,15 @@ export default (props: RuntimeParams<Data>) => {
     if (env.runtime) {
       data.total = 0;
       data.current = 1;
-      inputs[InputIds.SetTotal]((val: number) => {
+      inputs[InputIds.SetTotal]((val: number, relOutputs) => {
         if (typeof val === 'number') {
           data.total = val;
+          relOutputs[OutputIds.SetTotalDone](val);
         }
       });
-      inputs[InputIds.SetPageNum]((val) => {
+      inputs[InputIds.SetPageNum]((val, relOutputs) => {
         setPageNum(val);
+        relOutputs[OutputIds.SetPageNumDone](val);
       });
       inputs[InputIds.GetPageInfo]((val, relOutputs) => {
         relOutputs[OutputIds.GetPageInfo](data.currentPage);
@@ -66,7 +68,7 @@ export default (props: RuntimeParams<Data>) => {
   };
 
   const totalText = (total: number, range: number[]) => {
-    const content = env.i18n(text)
+    const content = env.i18n(text);
 
     return templateRender(content, { total, start: range[0], end: range[1] });
   };
