@@ -62,7 +62,8 @@ export default function (props: RuntimeParams<Data>) {
   // 前端分页后表格数据
   const [pageDataSource, setPageDataSource] = useState<any[]>([]);
   // 显示数据
-  const realShowDataSource = (data.usePagination && data.paginationConfig?.useFrontPage) ? pageDataSource : dataSource;
+  const realShowDataSource =
+    data.usePagination && data.paginationConfig?.useFrontPage ? pageDataSource : dataSource;
   const [summaryColumnData, setSummaryColumnData] = useState<string>('');
 
   const rowKey = data.rowKey || DefaultRowKey;
@@ -397,7 +398,7 @@ export default function (props: RuntimeParams<Data>) {
           const outputFn =
             relOutputs?.[OutputIds.GET_TABLE_DATA] || outputs[OutputIds.GET_TABLE_DATA];
           if (outputFn) {
-            outputFn(dataSource.map(({ [DefaultRowKey]: key, ...res }) => res));
+            outputFn(dataSource.map(({ [DefaultRowKey]: key, __index, ...res }) => res));
           }
         });
       // 动态设置勾选项
@@ -415,16 +416,17 @@ export default function (props: RuntimeParams<Data>) {
                 const tempItem = dataSourceRef.current.find(
                   (item) => targetRowKeyVal === item[rowKey]
                 );
+                newSelectedRowKeys.push(targetRowKeyVal);
+                // 需要判断对应的row数据是否存在
                 if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
                   newSelectedRows.push(tempItem);
-                  newSelectedRowKeys.push(targetRowKeyVal);
                 }
               });
               setSelectedRowKeys(newSelectedRowKeys);
               setSelectedRows(newSelectedRows);
               if (typeof outputs?.[OutputIds.ROW_SELECTION] === 'function') {
                 outputs[OutputIds.ROW_SELECTION]({
-                  selectedRows: newSelectedRows,
+                  selectedRows: newSelectedRows.map(({ __index, ...row }) => row),
                   selectedRowKeys: newSelectedRowKeys
                 });
               }
@@ -541,12 +543,17 @@ export default function (props: RuntimeParams<Data>) {
     if (env.runtime && data.usePagination && data.paginationConfig.useFrontPage) {
       filterDataSourceBySortAndFilter();
     }
-  }, [dataSource, data.paginationConfig.current, data.usePagination, data.paginationConfig.pageSize]);
+  }, [
+    dataSource,
+    data.paginationConfig.current,
+    data.usePagination,
+    data.paginationConfig.pageSize
+  ]);
 
   const setTableData = useCallback(
     (ds: any) => {
       let temp = [...dataSource] || [];
-      // 是否后端分页
+      // 是否前端分页
       const usePagination = !!(data.usePagination && !data.paginationConfig?.useFrontPage);
       if (!usePagination && Array.isArray(ds)) {
         temp = formatDataSource(ds, rowKey);
@@ -587,7 +594,8 @@ export default function (props: RuntimeParams<Data>) {
       } else {
         console.error('[数据表格]：未传入列表数据', ds);
       }
-      setDataSource(temp);
+      // 加一个 __index 字段，用于懒加载时，排序功能恢复排序
+      setDataSource(temp.map((item, index) => ({ ...item, __index: index })));
     },
     [dataSource]
   );
@@ -603,6 +611,44 @@ export default function (props: RuntimeParams<Data>) {
       ...sortParams,
       order: order || 'none'
     });
+
+    // @ts-expect-error column 中存在唯一值字段 _id
+    const configColumn = data.columns.find((column) => column._id === sorter.column?._id);
+    // 不是自定义排序，说明是走的前端排序逻辑
+    if (configColumn?.sorter?.type !== SorterTypeEnum.Request) {
+      // 懒加载情况下前端排序兼容逻辑
+      if (data.lazyLoad) {
+        setDataSource((ds) => {
+          if (!sorter.order) {
+            return [...ds].sort((a, b) => a.__index - b.__index);
+          }
+
+          const res = [...ds]
+            .sort((a, b) => a.__index - b.__index)
+            .sort((a, b) => {
+              const aVal = get(a, sorter.field!);
+              const bVal = get(b, sorter.field!);
+
+              switch (configColumn?.sorter?.type) {
+                case SorterTypeEnum.Length:
+                  return aVal.length - bVal.length;
+                case SorterTypeEnum.Size:
+                  return aVal - bVal;
+                case SorterTypeEnum.Date:
+                  if (!aVal || !bVal) {
+                    return 0;
+                  }
+                  return moment(aVal).valueOf() - moment(bVal).valueOf();
+                default:
+                  return aVal.length - bVal.length;
+              }
+            });
+
+          if (sorter.order === 'ascend') return res;
+          return res.reverse();
+        });
+      }
+    }
   }, []);
 
   const filterChange = useCallback((filter: any) => {
@@ -676,23 +722,21 @@ export default function (props: RuntimeParams<Data>) {
   const renderColumnsWhenEdit = renderColumns;
 
   const dataSourceKeysSet = new Set(realShowDataSource.map((row) => row[rowKey]));
-  const mergeAndFilterRows = useCallback(
-    (SelectedRowKeys: Array<string>) => {
-      // 创建选中行的映射，以优化查找性能
-      const selectedRowKeysMap = new Set(SelectedRowKeys);
 
-      // 合并勾选数据并根据id去重
-      const mergedRows = Array.from(
-        new Set([
-          ...selectedRows,
-          ...realShowDataSource.filter((rowData) => selectedRowKeysMap.has(rowData[rowKey]))
-        ])
-      );
-
-      return mergedRows;
-    },
-    [selectedRows, realShowDataSource, rowKey]
-  );
+  /** 筛选出选中的列数据 */
+  const mergeAndFilterRows = (SelectedRowKeys: Array<string>) => {
+    // 创建选中行的映射，以优化查找性能
+    const selectedRowKeysMap = new Set(SelectedRowKeys);
+    // 筛选出选中的列数据
+    const mergedRows = [...selectedRows, ...dataSource].filter((rowData) => {
+      if (selectedRowKeysMap.has(rowData[rowKey])) {
+        selectedRowKeysMap.delete(rowData[rowKey]);
+        return true;
+      }
+      return false;
+    });
+    return mergedRows;
+  };
   // 勾选配置
   const rowSelection: TableRowSelection<any> = {
     selectedRowKeys: data.lazyLoad
@@ -794,7 +838,7 @@ export default function (props: RuntimeParams<Data>) {
       setSelectedRowKeys(SelectedRowKeys);
       setSelectedRows(SelectedRows);
       outputs[OutputIds.ROW_SELECTION]({
-        selectedRows: SelectedRows,
+        selectedRows: SelectedRows.map(({ __index, ...row }) => row),
         selectedRowKeys: SelectedRowKeys
       });
     },
@@ -878,79 +922,73 @@ export default function (props: RuntimeParams<Data>) {
   // 设计态数据mock
   const defaultDataSource = getDefaultDataSource(data.columns, rowKey, env);
 
-  const setCurrentSelectRows = useCallback(
-    (_record) => {
-      const targetRowKeyVal = _record[rowKey];
-      let newSelectedRows: Array<any> = [];
-      let newSelectedRowKeys: Array<string> = [...selectedRowKeys];
-      // 多选情况下，如果没有超出限制就可以选择
-      if (data.selectionType !== RowSelectionTypeEnum.Radio) {
-        if (
-          !data.rowSelectionLimit ||
-          (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
-          selectedRowKeys.includes(targetRowKeyVal)
-        ) {
-          if (newSelectedRowKeys.find((item) => item === targetRowKeyVal) !== undefined) {
-            newSelectedRowKeys = newSelectedRowKeys.filter((item) => item !== targetRowKeyVal);
-          } else {
-            newSelectedRowKeys.push(targetRowKeyVal);
-          }
-        }
-      } else {
-        // 单选的情况
-        if (selectedRowKeys.includes(_record)) {
-          newSelectedRows = [];
+  const setCurrentSelectRows = (_record) => {
+    const targetRowKeyVal = _record[rowKey];
+    let newSelectedRows: Array<any> = [];
+    let newSelectedRowKeys: Array<string> = [...selectedRowKeys];
+    // 多选情况下，如果没有超出限制就可以选择
+    if (data.selectionType !== RowSelectionTypeEnum.Radio) {
+      if (
+        !data.rowSelectionLimit ||
+        (data.rowSelectionLimit && selectedRowKeys.length < data.rowSelectionLimit) ||
+        selectedRowKeys.includes(targetRowKeyVal)
+      ) {
+        if (newSelectedRowKeys.find((item) => item === targetRowKeyVal) !== undefined) {
+          newSelectedRowKeys = newSelectedRowKeys.filter((item) => item !== targetRowKeyVal);
         } else {
-          newSelectedRows = [_record];
+          newSelectedRowKeys.push(targetRowKeyVal);
         }
       }
-      newSelectedRows = mergeAndFilterRows(newSelectedRowKeys);
-      setSelectedRows(newSelectedRows);
-      setSelectedRowKeys(newSelectedRowKeys);
-      outputs[OutputIds.ROW_SELECTION]({
-        selectedRows: newSelectedRows,
-        selectedRowKeys: newSelectedRowKeys
-      });
-    },
-    [selectedRows, data.rowSelectionLimit, selectedRowKeys, rowKey]
-  );
-
-  const onRow = useCallback(
-    (_record, index) => {
-      const { [DefaultRowKey]: _, ...record } = _record;
-      let props = {};
-      if (data?.enableOnRow && !env.edit) {
-        if (!data.onRowScript) {
-          data.onRowScript = DefaultOnRowScript;
-        }
-        props = runJs(data?.onRowScript, [_record, index]);
+    } else {
+      // 单选的情况
+      if (selectedRowKeys.includes(_record)) {
+        newSelectedRows = [];
+      } else {
+        newSelectedRows = [_record];
       }
+    }
+    newSelectedRows = mergeAndFilterRows(newSelectedRowKeys);
+    setSelectedRows(newSelectedRows);
+    setSelectedRowKeys(newSelectedRowKeys);
+    outputs[OutputIds.ROW_SELECTION]({
+      selectedRows: newSelectedRows.map(({ __index, ...row }) => row),
+      selectedRowKeys: newSelectedRowKeys
+    });
+  };
 
-      return {
-        onClick: (e) => {
-          if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
-            setCurrentSelectRows(_record);
-          }
-          if (data.enableRowFocus) {
-            setFocusRowIndex(index === focusRowIndex ? null : index);
-          }
-          if (data.enableRowClick) {
-            outputs[OutputIds.ROW_CLICK]({ record, index });
-          }
-        },
-        onDoubleClick: () => {
-          if (data.enableRowDoubleClick) {
-            outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
-          }
-          if (data.enableRowFocus) {
-            setFocusRowIndex(index === focusRowIndex ? null : index);
-          }
-        },
-        ...props
-      };
-    },
-    [focusRowIndex, setCurrentSelectRows]
-  );
+  const onRow = (_record, index) => {
+    const { [DefaultRowKey]: _, ...record } = _record;
+    let props = {};
+    if (data?.enableOnRow && !env.edit) {
+      if (!data.onRowScript) {
+        data.onRowScript = DefaultOnRowScript;
+      }
+      props = runJs(data?.onRowScript, [_record, index]);
+    }
+
+    return {
+      onClick: (e) => {
+        if (data.useRowSelection && data.enableRowClickSelection && e?.target?.tagName === 'TD') {
+          setCurrentSelectRows(_record);
+        }
+        if (data.enableRowFocus) {
+          setFocusRowIndex(index === focusRowIndex ? null : index);
+        }
+        if (data.enableRowClick) {
+          outputs[OutputIds.ROW_CLICK]({ record, index });
+        }
+      },
+      onDoubleClick: () => {
+        if (data.enableRowDoubleClick) {
+          outputs[OutputIds.ROW_DOUBLE_CLICK]({ record, index });
+        }
+        if (data.enableRowFocus) {
+          setFocusRowIndex(index === focusRowIndex ? null : index);
+        }
+      },
+      ...props
+    };
+  };
 
   // 获取表格显示列宽度和
   const getUseWidth = () => {
@@ -1066,36 +1104,36 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.useExpand && slots[SlotIds.EXPAND_CONTENT]
                     ? {
-                      expandedRowRender: (record, index) => {
-                        const inputValues = {
-                          [InputIds.EXP_COL_VALUES]: {
-                            ...record
-                          },
-                          [InputIds.INDEX]: index
-                        };
-                        if (data.useExpand && data.expandDataIndex) {
-                          inputValues[InputIds.EXP_ROW_VALUES] = get(
-                            record,
-                            data.expandDataIndex
-                          );
-                        }
-                        return slots[SlotIds.EXPAND_CONTENT].render({
-                          inputValues,
-                          key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                        });
-                      },
-                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                      onExpand: (expanded, record) => {
-                        if (!env.runtime) return;
-                        const key = record[rowKey];
-                        if (expanded && !expandedRowKeys.includes(key)) {
-                          setExpandedRowKeys([...expandedRowKeys, key]);
-                        } else if (!expanded && expandedRowKeys.includes(key)) {
-                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                          setExpandedRowKeys([...expandedRowKeys]);
+                        expandedRowRender: (record, index) => {
+                          const inputValues = {
+                            [InputIds.EXP_COL_VALUES]: {
+                              ...record
+                            },
+                            [InputIds.INDEX]: index
+                          };
+                          if (data.useExpand && data.expandDataIndex) {
+                            inputValues[InputIds.EXP_ROW_VALUES] = get(
+                              record,
+                              data.expandDataIndex
+                            );
+                          }
+                          return slots[SlotIds.EXPAND_CONTENT].render({
+                            inputValues,
+                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                          });
+                        },
+                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                        onExpand: (expanded, record) => {
+                          if (!env.runtime) return;
+                          const key = record[rowKey];
+                          if (expanded && !expandedRowKeys.includes(key)) {
+                            setExpandedRowKeys([...expandedRowKeys, key]);
+                          } else if (!expanded && expandedRowKeys.includes(key)) {
+                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                            setExpandedRowKeys([...expandedRowKeys]);
+                          }
                         }
                       }
-                    }
                     : undefined
                 }
                 onChange={onChange}

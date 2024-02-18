@@ -531,11 +531,45 @@ export default {
                         type: 'any'
                       }
                     });
+
+                    output.add({
+                      id: 'setCheckedKeysDone',
+                      title: '设置勾选项完成',
+                      schema: {
+                        type: 'array',
+                        items: {
+                          title: '字段名',
+                          type: 'string'
+                        }
+                      }
+                    });
+                    output.add({
+                      id: 'setDisableCheckboxDone',
+                      title: '禁用勾选框完成',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+                    output.add({
+                      id: 'setEnableCheckboxDone',
+                      title: '启用勾选框完成',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+
+                    input.get(InputIds.SetCheckedKeys).setRels(['setCheckedKeysDone']);
+                    input.get(InputIds.SetDisableCheckbox).setRels(['setDisableCheckboxDone']);
+                    input.get(InputIds.SetEnableCheckbox).setRels(['setEnableCheckboxDone']);
                   } else {
                     input.remove(InputIds.SetCheckedKeys);
                     input.remove(InputIds.GetCheckedKeys);
                     input.remove(InputIds.SetDisableCheckbox);
                     input.remove(InputIds.SetEnableCheckbox);
+
+                    output.remove('setCheckedKeysDone');
+                    output.remove('setDisableCheckboxDone');
+                    output.remove('setEnableCheckboxDone');
                   }
                 }
               }
@@ -981,6 +1015,13 @@ export default {
                         type: 'string'
                       }
                     });
+                    output.add('addTipsDone', '设置添加提示文案完成', {
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    });
+                    input.get('addTips').setRels(['addTipsDone']);
                   } else {
                     input.remove('addTips');
                   }

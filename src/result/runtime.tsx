@@ -1,57 +1,47 @@
 /** @format */
 
-import { Result } from 'antd'
-import React from 'react'
+import { Result } from 'antd';
+import React from 'react';
 
-export type Status =
-  | 'success'
-  | 'error'
-  | 'info'
-  | 'warning'
-  | '404'
-  | '403'
-  | '500'
+export type Status = 'success' | 'error' | 'info' | 'warning' | '404' | '403' | '500';
 
 export interface Data {
-  title: string
-  subTitle: string
-  status: Status
-  dataSource: 1 | 2
+  title: string;
+  subTitle: string;
+  status: Status;
+  dataSource: 1 | 2;
 }
 
-export default function R({
-  env,
-  data,
-  inputs,
-  slots,
-  outputs,
-}: RuntimeParams<Data>) {
-  const statusArr = ['success', 'error', 'info', 'warning']
+export default function R({ env, data, inputs, slots, outputs }: RuntimeParams<Data>) {
+  const statusArr = ['success', 'error', 'info', 'warning'];
   if (env.runtime && inputs) {
     inputs['title'] &&
-      inputs['title']((ds) => {
+      inputs['title']((ds, relOutputs) => {
         if (typeof ds === 'string') {
-          data.title = ds
+          data.title = ds;
+          relOutputs['setTitleDone'](ds);
         } else {
-          console.error('仅支持字符串类型')
+          console.error('仅支持字符串类型');
         }
-      })
+      });
     inputs['subTitle'] &&
-      inputs['subTitle']((ds) => {
+      inputs['subTitle']((ds, relOutputs) => {
         if (typeof ds === 'string') {
-          data.subTitle = ds
+          data.subTitle = ds;
+          relOutputs['setSubTitleDone'](ds);
         } else {
-          console.error('仅支持字符串类型')
+          console.error('仅支持字符串类型');
         }
-      })
+      });
     inputs['status'] &&
-      inputs['status']((ds) => {
+      inputs['status']((ds, relOutputs) => {
         if (statusArr.includes(ds)) {
-          data.status = ds
+          data.status = ds;
+          relOutputs['setStatusDone'](ds);
         } else {
-          console.error('仅支持传入success , error , info, warning')
+          console.error('仅支持传入success , error , info, warning');
         }
-      })
+      });
   }
 
   return (
@@ -61,5 +51,5 @@ export default function R({
       status={data.status}
       extra={slots['extra'] && slots['extra'].render()}
     />
-  )
+  );
 }

@@ -1,7 +1,7 @@
 {
   "title": "步骤条",
   "namespace": "mybricks.normal-pc.steps",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "步骤条",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -19,21 +19,24 @@
       "title": "显示下一步",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": ["nextStepComplete"]
     },
     {
       "id": "prevStep",
       "title": "显示上一步",
       "schema": {
         "type": "any"
-      }
+      },
+      "rels": ["prevStepComplete"]
     },
     {
       "id": "jumpTo",
       "title": "跳转",
       "schema": {
         "type": "number"
-      }
+      },
+      "rels": ["jumpToComplete"]
     },
     {
       "id": "getIndex",
@@ -55,7 +58,8 @@
         "items": {
           "type": "number"
         }
-      }
+      },
+      "rels": ["setHideStepsComplete"]
     }
   ],
   "outputs": [
@@ -97,6 +101,34 @@
     {
       "id": "step0_click",
       "title": "步骤1点击时",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "nextStepComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "prevStepComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "jumpToComplete",
+      "title": "完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setHideStepsComplete",
+      "title": "完成",
       "schema": {
         "type": "any"
       }

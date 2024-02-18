@@ -1,7 +1,7 @@
 {
   "title": "进度条",
   "namespace": "mybricks.normal-pc.progress",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "展示操作的当前进度",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
@@ -16,11 +16,51 @@
       "title": "设置进度",
       "schema": {
         "type": "number"
-      }
+      },
+      "rels": [
+        "setPercentDone"
+      ]
     },
     {
       "id": "setStatus",
       "title": "设置状态",
+      "schema": {
+        "type": "enum",
+        "items": [
+          {
+            "type": "string",
+            "value": "success"
+          },
+          {
+            "type": "string",
+            "value": "exception"
+          },
+          {
+            "type": "string",
+            "value": "normal"
+          },
+          {
+            "type": "string",
+            "value": "active"
+          }
+        ]
+      },
+      "rels": [
+        "setStatusDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setPercentDone",
+      "title": "设置进度完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setStatusDone",
+      "title": "设置状态完成",
       "schema": {
         "type": "enum",
         "items": [

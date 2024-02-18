@@ -1,9 +1,10 @@
-import { OutputIds, SizeHeightMap } from './constants';
+import { OutputIds, InputIds, SizeHeightMap, Schemas } from './constants';
 import { Data, SizeEnum, TypeEnum, ShapeEnum } from './types';
 
 export default function ({
   data,
   output,
+  input,
   setDeclaredStyle,
   registerPermission
 }: UpgradeParams<Data>): boolean {
@@ -112,6 +113,115 @@ export default function ({
   if (typeof data.allType === 'undefined') {
     data.allType = TypeEnum.Default;
   }
+
+  /**
+   * @description v1.0.24->1.0.25 新增开启loading、关闭loading、设置名称、设置样式、启用、禁用、显示、隐藏完成rels
+  */
+  data.btnList.forEach((item)=>{
+    //1、开启loading 2、关闭loading
+    const loadingOpenKey = `${InputIds.SetBtnOpenLoading}_${item.key}`;
+    const loadingCloseKey = `${InputIds.SetBtnCloseLoading}_${item.key}`;
+
+    const loadingOpenDoneKey = `${OutputIds.SetBtnOpenLoadingDone}_${item.key}`;
+    const loadingCloseDoneKey = `${OutputIds.SetBtnCloseLoadingDone}_${item.key}`;
+
+    if (!output.get(loadingOpenDoneKey)) {
+      output.add(loadingOpenDoneKey, `开启${item.text}loading完成`, Schemas.Any);
+    }
+    if (output.get(loadingOpenDoneKey) &&
+      input.get(loadingOpenKey) &&
+      !input.get(loadingOpenKey)?.rels?.includes(loadingOpenDoneKey)) {
+      input.get(loadingOpenKey).setRels([loadingOpenDoneKey]);
+    }
+
+    if (!output.get(loadingCloseDoneKey)) {
+      output.add(loadingCloseDoneKey, `关闭${item.text}loading完成`, Schemas.Any);
+    }
+    if (output.get(loadingCloseDoneKey) &&
+      input.get(loadingCloseKey) &&
+      !input.get(loadingCloseKey)?.rels?.includes(loadingCloseDoneKey)) {
+      input.get(loadingCloseKey).setRels([loadingCloseDoneKey]);
+    }
+
+    //3、名称
+    const titleKey = `${InputIds.SetBtnText}_${item.key}`;
+    const titleDoneKey = `${OutputIds.SetBtnTextDone}_${item.key}`;
+
+    if (!output.get(titleDoneKey)) {
+      output.add(titleDoneKey, `设置${item.text}名称完成`, Schemas.String);
+    }
+    if (output.get(titleDoneKey) &&
+      input.get(titleKey) &&
+      !input.get(titleKey)?.rels?.includes(titleDoneKey)) {
+      input.get(titleKey).setRels([titleDoneKey]);
+    }
+
+    //4、样式
+    const styleKey = `${InputIds.SetBtnStyle}_${item.key}`;
+    const styleDoneKey = `${OutputIds.SetBtnStyleDone}_${item.key}`;
+
+    if (!output.get(styleDoneKey)) {
+      output.add(styleDoneKey, `设置${item.text}样式完成`, Schemas.Style);
+    }
+    if (output.get(styleDoneKey) &&
+      input.get(styleKey) &&
+      !input.get(styleKey)?.rels?.includes(styleDoneKey)) {
+      input.get(styleKey).setRels([styleDoneKey]);
+    }
+  
+    //5、启用 6、禁用
+    const enableKey = `${InputIds.SetEnable}_${item.key}`;
+    const DisableKey = `${InputIds.SetDisable}_${item.key}`;
+
+    const enableDoneKey = `${OutputIds.SetEnableDone}_${item.key}`;
+    const DisableDoneKey = `${OutputIds.SetDisableDone}_${item.key}`;
+
+    if (!output.get(enableDoneKey)) {
+      output.add(enableDoneKey, `启用${item.text}完成`, Schemas.Any);
+    }
+    if (output.get(enableDoneKey) &&
+      input.get(enableKey) &&
+      !input.get(enableKey)?.rels?.includes(enableDoneKey)) {
+      input.get(enableKey).setRels([enableDoneKey]);
+    }
+
+    if (!output.get(DisableDoneKey)) {
+      output.add(DisableDoneKey, `禁用${item.text}完成`, Schemas.Any);
+    }
+    if (output.get(DisableDoneKey) &&
+      input.get(DisableKey) &&
+      !input.get(DisableKey)?.rels?.includes(DisableDoneKey)) {
+      input.get(DisableKey).setRels([DisableDoneKey]);
+    }
+
+    //7、显示 8、隐藏
+    const visibleKey = `${InputIds.SetVisible}_${item.key}`;
+    const hiddenKey = `${InputIds.SetHidden}_${item.key}`;
+
+    const visibleDoneKey = `${OutputIds.SetVisibleDone}_${item.key}`;
+    const hiddenDoneKey = `${OutputIds.SetHiddenDone}_${item.key}`;
+    
+    if (!output.get(visibleDoneKey)) {
+      output.add(visibleDoneKey, `显示${item.text}完成`, Schemas.Any);
+    }
+    if (output.get(visibleDoneKey) &&
+      input.get(visibleKey) &&
+      !input.get(visibleKey)?.rels?.includes(visibleDoneKey)) {
+      input.get(visibleKey).setRels([visibleDoneKey]);
+    }
+
+    if (!output.get(hiddenDoneKey)) {
+      output.add(hiddenDoneKey, `隐藏${item.text}完成`, Schemas.Any);
+    }
+    if (output.get(hiddenDoneKey) &&
+      input.get(hiddenKey) &&
+      !input.get(hiddenKey)?.rels?.includes(hiddenDoneKey)) {
+      input.get(hiddenKey).setRels([hiddenDoneKey]);
+    }
+
+  })
+
+  
 
   return true;
 }

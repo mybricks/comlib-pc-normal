@@ -94,40 +94,43 @@ export default ({
     let sorter: boolean | CompareFn<any> | undefined;
 
     if (cItem.sorter?.enable) {
-      switch (cItem.sorter.type) {
-        case SorterTypeEnum.Length:
-          sorter = (a, b) => {
-            const aVal = get(a, cItem.dataIndex);
-            const bVal = get(b, cItem.dataIndex);
-            if (typeof aVal !== 'string' || typeof bVal !== 'string') {
-              return 0;
-            }
-            return aVal.length - bVal.length;
-          };
-          break;
-        case SorterTypeEnum.Size:
-          sorter = (a, b) => {
-            const aVal = get(a, cItem.dataIndex);
-            const bVal = get(b, cItem.dataIndex);
-            if (typeof aVal !== 'number' || typeof bVal !== 'number') {
-              return 0;
-            }
-            return aVal - bVal;
-          };
-          break;
-        case SorterTypeEnum.Date:
-          sorter = (a, b) => {
-            const aVal = get(a, cItem.dataIndex);
-            const bVal = get(b, cItem.dataIndex);
-            if (!aVal || !bVal) {
-              return 0;
-            }
-            return moment(aVal).valueOf() - moment(bVal).valueOf();
-          };
-          break;
-        default:
-          sorter = true;
-          break;
+      if(data.lazyLoad) sorter = true;
+      else {
+        switch (cItem.sorter.type) {
+          case SorterTypeEnum.Length:
+            sorter = (a, b) => {
+              const aVal = get(a, cItem.dataIndex);
+              const bVal = get(b, cItem.dataIndex);
+              if (typeof aVal !== 'string' || typeof bVal !== 'string') {
+                return 0;
+              }
+              return aVal.length - bVal.length;
+            };
+            break;
+          case SorterTypeEnum.Size:
+            sorter = (a, b) => {
+              const aVal = get(a, cItem.dataIndex);
+              const bVal = get(b, cItem.dataIndex);
+              if (typeof aVal !== 'number' || typeof bVal !== 'number') {
+                return 0;
+              }
+              return aVal - bVal;
+            };
+            break;
+          case SorterTypeEnum.Date:
+            sorter = (a, b) => {
+              const aVal = get(a, cItem.dataIndex);
+              const bVal = get(b, cItem.dataIndex);
+              if (!aVal || !bVal) {
+                return 0;
+              }
+              return moment(aVal).valueOf() - moment(bVal).valueOf();
+            };
+            break;
+          default:
+            sorter = true;
+            break;
+        }
       }
     }
 

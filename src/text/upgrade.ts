@@ -1,7 +1,7 @@
 import { isEmptyObject, differObject } from '../utils';
 import { Data } from './constants';
 
-export default function ({ data, config, setDeclaredStyle }: UpgradeParams<Data>): boolean {
+export default function ({ data, config, setDeclaredStyle, input, output }: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.7 -> v1.0.8, 兼容之前默认和激活态颜色自定义
   */
@@ -37,5 +37,16 @@ export default function ({ data, config, setDeclaredStyle }: UpgradeParams<Data>
     styleConfig.setBinding('data.legacyConfigStyle');
   }
   
+  /**
+    * @description v1.0.13 -> v1.0.14, 增加设置内容完成rels
+  */
+  if (!output.get("setContentDone")) {
+    output.add("setContentDone", '设置内容完成', { type: 'string' });
+  }
+  if (output.get("setContentDone") &&
+    input.get("content") &&
+    !input.get("content")?.rels?.includes("setContentDone")) {
+    input.get("content").setRels(["setContentDone"]);
+  }
   return true;
 }

@@ -210,9 +210,16 @@ export default {
                   input.add('external', '设置输出数据', {
                     type: 'follow'
                   });
+                  output.add('setExternalDone', '设置输出数据完成', {
+                    type: 'follow'
+                  });
+                  input.get('external').setRels(['setExternalDone']);
                 } else {
                   if (input.get('external')) {
                     input.remove('external');
+                  }
+                  if (output.get('setExternalDone')) {
+                    output.remove('setExternalDone');
                   }
                 }
                 data.dataType = value;

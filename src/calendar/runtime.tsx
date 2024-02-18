@@ -43,17 +43,19 @@ export default (props: RuntimeParams<Data>) => {
       });
     }
     if (env.runtime && inputs[InputIds.DataSource]) {
-      inputs[InputIds.DataSource]((ds) => {
+      inputs[InputIds.DataSource]((ds, relOutputs) => {
         if (ds && typeof ds === 'object') {
           setDataSource(ds);
+          relOutputs['setDataSourceDone'](ds);
         }
       });
     }
     if (env.runtime && inputs[InputIds.CurrentDate]) {
-      inputs[InputIds.CurrentDate]((value) => {
+      inputs[InputIds.CurrentDate]((value, relOutputs) => {
         const date = getMoment(value);
         date ? onChange(date) : logger.warn(`${title}: 设置当前日期输入不合法`);
         setCurrDate(date || currDate);
+        relOutputs['setCurrentDateDone'](value);
       });
     }
   }, []);
