@@ -13,12 +13,14 @@ export default function ({ env, data, inputs, slots }: RuntimeParams<Data>) {
 
   useEffect(() => {
     if (runtime) {
-      inputs['openLoading'](() => {
+      inputs['openLoading']((val, outputRels) => {
         setLoading(true);
+        outputRels['openLoadingDone'](val);
       });
 
-      inputs['closeLoading'](() => {
+      inputs['closeLoading']((val, outputRels) => {
         setLoading(false);
+        outputRels['closeLoadingDone'](val);
       });
     }
   }, []);
