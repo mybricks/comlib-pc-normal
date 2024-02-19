@@ -34,7 +34,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "inputSettingsDone"
+      ]
     }
   ],
   "outputs": [
