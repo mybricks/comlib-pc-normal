@@ -35,6 +35,9 @@ export interface Data {
 export const InputIds = {
   RouterAction: 'routerAction'
 };
+export const OutputIds = {
+  RouterActionDone: 'routerActionDone'
+};
 export const Schemas = {
   String: {
     type: 'string'
