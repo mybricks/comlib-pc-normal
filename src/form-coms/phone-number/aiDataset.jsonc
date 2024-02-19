@@ -1,13 +1,8 @@
 {
-  "title": "手机号码输入框",
-  "name": "mybricks.normal-pc.form-phone-number", // input-phone-number
-  "data": {
-    // 以下时手机号是手机号码输入框的属性描述
-    "config.placeholder": "string",
-    "config.addonBefore": "string",
-    "config.addonAfter": "string",
-    "config.allowClear": "boolean",
-    "config.disabled": "boolean",
-    "config.showCount": "boolean" // 显示字数
-  }
+  "config.placeholder": "string",
+  "config.addonBefore": "string",
+  "config.addonAfter": "string",
+  "config.allowClear": "boolean",
+  "config.disabled": "boolean",
+  "config.showCount": "boolean" // 显示字数
 }

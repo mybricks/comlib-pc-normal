@@ -1,20 +1,15 @@
 {
-  "title": "数字输入框",
-  "name": "mybricks.normal-pc.input-number", // input-number
-  "data": {
-    // 以下时数是数字输入框的属性描述
-    "config.placeholder": "string", // 默认值为“请输入数字”
-    "config.addonBefore": "string",
-    "config.addonAfter": "string",
-    "config.disabled": "boolean",
-    "config.precision": "number",
-    "config.step": "number",
-    "isFormatter": "boolean", // 是否格式化展示数值
-    "character": "string", // 格式化展示的字符
-    "charPostion": "'prefix' | 'suffix'", // 格式化的字符放置的位置
-    "isMax": "boolean", // 最大值开关
-    "max": "number", // 默认值为 100
-    "isMin": "boolean", // 最小值开关
-    "min": "number" // 默认值为 0
-  }
+  "config.placeholder": "string", // 默认值为“请输入数字”
+  "config.addonBefore": "string",
+  "config.addonAfter": "string",
+  "config.disabled": "boolean",
+  "config.precision": "number",
+  "config.step": "number",
+  "isFormatter": "boolean", // 是否格式化展示数值
+  "character": "string", // 格式化展示的字符
+  "charPostion": "'prefix' | 'suffix'", // 格式化的字符放置的位置
+  "isMax": "boolean", // 最大值开关
+  "max": "number", // 默认值为 100
+  "isMin": "boolean", // 最小值开关
+  "min": "number" // 默认值为 0
 }

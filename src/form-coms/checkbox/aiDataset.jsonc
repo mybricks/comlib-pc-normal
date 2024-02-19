@@ -1,13 +1,9 @@
 {
-  "title": "多选框",
-  "name": "mybricks.normal-pc.checkbox", // checkbox
-  "data": {
-    // 以下是多选框的属性描述
-    "config.disabled": "boolean",
-    "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
-    "layout": "'horizontal'|'vertical'",
-    "checckAll": "boolean", // 是否开启全选
-    "checkAllText": "string", // 全选文案, 当checckAll为true时才返回本属性
-    "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
-  }
+  // 以下是多选框的属性描述
+  "config.disabled": "boolean",
+  "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
+  "layout": "'horizontal'|'vertical'",
+  "checckAll": "boolean", // 是否开启全选
+  "checkAllText": "string", // 全选文案, 当checckAll为true时才返回本属性
+  "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
 }

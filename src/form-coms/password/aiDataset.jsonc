@@ -1,9 +1,4 @@
 {
-  "title": "密码输入框",
-  "name": "mybricks.normal-pc.password",
-  "data": {
-    // 以下时密是密码输入框的属性描述
-    "placeholder": "string",
-    "disabled": "boolean"
-  }
+  "placeholder": "string",
+  "disabled": "boolean"
 }

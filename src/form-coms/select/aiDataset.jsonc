@@ -1,16 +1,11 @@
 {
-  "title": "下拉框",
-  "name": "mybricks.normal-pc.select", // select
-  "data": {
-    // 以下是下拉框的属性描述
-    "config.placeholder": "string", // 默认值为“请选择”
-    "config.mode": "'default'|'multiple'|'tags'",
-    "config.allowClear": "boolean", // 默认值为true
-    "config.showArrow": "boolean",
-    "config.disabled": "disabled",
-    "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
-    "maxHeight": "string", // 备选弹出层的最大高度
-    "maxTagCount": "'responsive'| undefined", // 'responsive' 时会自动省略超出宽度的选择
-    "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
-  }
+  "config.placeholder": "string", // 默认值为“请选择”
+  "config.mode": "'default'|'multiple'|'tags'",
+  "config.allowClear": "boolean", // 默认值为true
+  "config.showArrow": "boolean",
+  "config.disabled": "disabled",
+  "config.options": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>", // 需要与 staticOptions 完全一致
+  "maxHeight": "string", // 备选弹出层的最大高度
+  "maxTagCount": "'responsive'| undefined", // 'responsive' 时会自动省略超出宽度的选择
+  "staticOptions": "Array<{checked:boolean,disabled:boolean,label:string,value:string}>" // 需要与 config.options 完全一致
 }

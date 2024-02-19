@@ -1,16 +1,11 @@
 {
-  "title": "评分",
-  "name": "mybricks.normal-pc.rate",
-  "data": {
-    // 以是评分的属性描述
-    "isChoose": "boolean", // 是否自定义字符
-    "choose": "'font'|'icon'", // 自定义字符类型，当isChoose为true时才返回本属性
-    "font": "string", // 当isChoose为true且choose为'font'时才返回本属性
-    "icon": "string", // antd的图标标识，例如HomeOutlined
-    "color": "string", // 值为Hex颜色代码
+  "isChoose": "boolean", // 是否自定义字符
+  "choose": "'font'|'icon'", // 自定义字符类型，当isChoose为true时才返回本属性
+  "font": "string", // 当isChoose为true且choose为'font'时才返回本属性
+  "icon": "string", // antd的图标标识，例如HomeOutlined
+  "color": "string", // 值为Hex颜色代码
 
-    "config.count": "number", // 评分总数
-    "config.defaultValue": "number", // 默认值
-    "config.disabled": false // 是否只读
-  }
+  "config.count": "number", // 评分总数
+  "config.defaultValue": "number", // 默认值
+  "config.disabled": false // 是否只读
 }

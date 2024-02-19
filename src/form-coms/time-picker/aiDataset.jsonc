@@ -1,11 +1,6 @@
 {
-  "title": "时间选择器",
-  "name": "mybricks.normal-pc.time-picker",
-  "data": {
-    // 以下时时是时间选择器的属性描述
-    "placeholder": "string",
-    "disabled": "boolean",
-    "format": "'HH:mm:ss'|'HH:mm'|'HH'|'timeStamp'|'custom'",
-    "customFormat": "string" // 当format的值为“custom”时才返回本属性
-  }
+  "placeholder": "string",
+  "disabled": "boolean",
+  "format": "'HH:mm:ss'|'HH:mm'|'HH'|'timeStamp'|'custom'",
+  "customFormat": "string" // 当format的值为“custom”时才返回本属性
 }

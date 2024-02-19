@@ -1,14 +1,9 @@
 {
-  "title": "邮箱输入框",
-  "name": "mybricks.normal-pc.form-email",
-  "data": {
-    // 以下时邮是邮箱输入框的属性描述
-    "config.allowClear": "boolean",
-    "config.placeholder": "string",
-    "config.disabled": "boolean",
-    "config.addonBefore": "string",
-    "config.addonAfter": "string",
-    "config.showCount": "boolean",
-    "config.maxLength": "number"
-  }
+  "config.allowClear": "boolean",
+  "config.placeholder": "string",
+  "config.disabled": "boolean",
+  "config.addonBefore": "string",
+  "config.addonAfter": "string",
+  "config.showCount": "boolean",
+  "config.maxLength": "number"
 }

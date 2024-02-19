@@ -1,25 +1,20 @@
 {
-  "title": "树选择器",
-  "name": "mybricks.normal-pc.treeSelect", // tree-select
-  "data": {
-    // 以下时是树选择器的属性描述
-    "openDeth": "number",
-    "lableFieldName": "string", // 标题字段
-    "valueFieldName": "string", // 值字段
-    "childrenFieldName": "string", // 子节点字段
-    "config.placeholder": "string",
-    "config.allowClear": "boolean", // 默认为false
-    "config.showArrow": "boolean", // 是否显示箭头, 默认为false
-    "config.dropdownMatchSelectWidth": "boolean", // 默认为false
-    "config.disabled": "boolean",// 默认为false
-    "config.showSearch": "boolean", // 默认为false
-    "config.multiple": "boolean",// 默认为false
-    "config.treeNodeFilterProps": "'label' | 'value'", // 搜索时过滤对应的属性。当showSearch为true时生效
-    "config.maxTagCountType": "'isResponsive'| 'isCustom'", // 多选时，超出最大显示数量的展示方式。”multiple“为true才返回本属性
-    "config.maxTagCount": "number", // 多选时，最大显示数量。config.multiple为true时生效
-    "config.showCheckedStrategy": "'SHOW_ALL'|'SHOW_PARENT'|'SHOW_CHILD'", // 多选时，选中项回填的方式。config.multiple为true时生效
-    "switcherIcon.src": "false|'inner'|'custom'", // 图标来源类型，inner 代表内置图标库，custom 代表自定义上传。默认值: false
-    "switcherIcon.innerIcon": "string", // 内置图标名称，switcherIcon.src 为 inner 时生效，默认为'HomeOutlined'
-    "switcherIcon.customIcon": "string" // 自定义图标地址，switcherIcon.src 为 custom 时生效
-  }
+  "openDeth": "number",
+  "lableFieldName": "string", // 标题字段
+  "valueFieldName": "string", // 值字段
+  "childrenFieldName": "string", // 子节点字段
+  "config.placeholder": "string",
+  "config.allowClear": "boolean", // 默认为false
+  "config.showArrow": "boolean", // 是否显示箭头, 默认为false
+  "config.dropdownMatchSelectWidth": "boolean", // 默认为false
+  "config.disabled": "boolean", // 默认为false
+  "config.showSearch": "boolean", // 默认为false
+  "config.multiple": "boolean", // 默认为false
+  "config.treeNodeFilterProps": "'label' | 'value'", // 搜索时过滤对应的属性。当showSearch为true时生效
+  "config.maxTagCountType": "'isResponsive'| 'isCustom'", // 多选时，超出最大显示数量的展示方式。”multiple“为true才返回本属性
+  "config.maxTagCount": "number", // 多选时，最大显示数量。config.multiple为true时生效
+  "config.showCheckedStrategy": "'SHOW_ALL'|'SHOW_PARENT'|'SHOW_CHILD'", // 多选时，选中项回填的方式。config.multiple为true时生效
+  "switcherIcon.src": "false|'inner'|'custom'", // 图标来源类型，inner 代表内置图标库，custom 代表自定义上传。默认值: false
+  "switcherIcon.innerIcon": "string", // 内置图标名称，switcherIcon.src 为 inner 时生效，默认为'HomeOutlined'
+  "switcherIcon.customIcon": "string" // 自定义图标地址，switcherIcon.src 为 custom 时生效
 }

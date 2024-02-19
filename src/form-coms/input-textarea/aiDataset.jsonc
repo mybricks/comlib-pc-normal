@@ -1,14 +1,9 @@
 {
-  "title": "文本域",
-  "name": "mybricks.normal-pc.input-textarea", // textarea
-  "data": {
-    // 以下是文本域的属性描述
-    "config.placeholder": "string",
-    "config.allowClear": "boolean",
-    "config.disabled": "boolean",
-    "config.showCount": "boolean",
-    "config.maxLength": "number",
-    "minRows": "number",
-    "maxRows": "number"
-  }
+  "config.placeholder": "string",
+  "config.allowClear": "boolean",
+  "config.disabled": "boolean",
+  "config.showCount": "boolean",
+  "config.maxLength": "number",
+  "minRows": "number",
+  "maxRows": "number"
 }

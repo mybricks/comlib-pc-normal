@@ -1,16 +1,11 @@
 {
-  "title": "日期范围选择器",
-  "name": "mybricks.normal-pc.range-picker", // date range picker
-  "data": {
-    // 以下时日期范是日期范围选择器的属性描述
-    "config.placeholder": "[string, string]", // 元组的两项分别为开始日期和结束日期选择器值为空时的提示内容。默认值: ["开始日期","结束日期"]
-    "config.disabled": "boolean", // 默认值: false
-    "config.picker": "'date' | 'week' | 'month' | 'quarter' | 'year' | undefined", // 日期选择类型。默认值:date
-    "showTime": "boolean", // 时间选择。默认值:false
-    "useRanges": "boolean", // 预设时间范围快捷选择。默认值:false
-    "ranges": "Array<{ title: string, type: 'second'|'minute'|'hour'|'day'|'week'|'month'|'year', numList: [number, number] }>", // 默认值:[{"title":"今天","type":"day","numList":[0,0]},{"title":"昨天","type":"day","numList":[1,-1]},{"title":"明天","type":"day","numList":[-1,1]},{"title":"前后七天","type":"day","numList":[7,7]},{"title":"本周","type":"week","numList":[0,0]},{"title":"本月","type":"month","numList":[0,0]}] 
-    "useDisabledDate": "'default'|'static'", // 日期禁选，default表示无，static表示静态配置。默认值:default
-    "staticDisabledDate": "[{title: '起始时间禁用';type:'day'|'week'|'month'|'year'; checked: boolean; offset: number; direction: 'before'|'after'},{title: '结束时间禁用'; type:'day'|'week'|'month'|'year'; checked: boolean; offset: number; direction: 'before'|'after'}]", // 静态配置的日期禁选规则，type表示基准日期的类型，可以为当前天、当前周、当前月、当前年，checked表示是否启用该规则，offset表示偏移量，direction表示基准日期之前或之后。默认值:[{"title":"起始时间禁用","checked":true,"type":"seconds","offset":0,"direction":"before"},{"title":"结束时间禁用","checked":true,"type":"custom","offset":0,"direction":"before"}]
-    "emptyRules": "[{status: boolean; visible: true;title:'开始'|'结束'}]" // 开始和结束日期是否必填。默认值:[{status: true,visible: true,title:开始},{status: true,visible: true,title:结束}]
-  }
+  "config.placeholder": "[string, string]", // 元组的两项分别为开始日期和结束日期选择器值为空时的提示内容。默认值: ["开始日期","结束日期"]
+  "config.disabled": "boolean", // 默认值: false
+  "config.picker": "'date' | 'week' | 'month' | 'quarter' | 'year' | undefined", // 日期选择类型。默认值:date
+  "showTime": "boolean", // 时间选择。默认值:false
+  "useRanges": "boolean", // 预设时间范围快捷选择。默认值:false
+  "ranges": "Array<{ title: string, type: 'second'|'minute'|'hour'|'day'|'week'|'month'|'year', numList: [number, number] }>", // 默认值:[{"title":"今天","type":"day","numList":[0,0]},{"title":"昨天","type":"day","numList":[1,-1]},{"title":"明天","type":"day","numList":[-1,1]},{"title":"前后七天","type":"day","numList":[7,7]},{"title":"本周","type":"week","numList":[0,0]},{"title":"本月","type":"month","numList":[0,0]}]
+  "useDisabledDate": "'default'|'static'", // 日期禁选，default表示无，static表示静态配置。默认值:default
+  "staticDisabledDate": "[{title: '起始时间禁用';type:'day'|'week'|'month'|'year'; checked: boolean; offset: number; direction: 'before'|'after'},{title: '结束时间禁用'; type:'day'|'week'|'month'|'year'; checked: boolean; offset: number; direction: 'before'|'after'}]", // 静态配置的日期禁选规则，type表示基准日期的类型，可以为当前天、当前周、当前月、当前年，checked表示是否启用该规则，offset表示偏移量，direction表示基准日期之前或之后。默认值:[{"title":"起始时间禁用","checked":true,"type":"seconds","offset":0,"direction":"before"},{"title":"结束时间禁用","checked":true,"type":"custom","offset":0,"direction":"before"}]
+  "emptyRules": "[{status: boolean; visible: true;title:'开始'|'结束'}]" // 开始和结束日期是否必填。默认值:[{status: true,visible: true,title:开始},{status: true,visible: true,title:结束}]
 }

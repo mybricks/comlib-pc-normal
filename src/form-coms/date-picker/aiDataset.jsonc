@@ -1,16 +1,11 @@
 {
-  "title": "日期选择器",
-  "name": "mybricks.normal-pc.date-picker",
-  "data": {
-    // 以下时日是日期选择器的属性描述
-    "config.placeholder": "string",
-    "config.allowClear": "boolean",
-    "config.disabled": "boolean", // 默认为false
-    "config.picker": "'date' | 'week' | 'month' | 'quarter' | 'year' | undefined", // 日期选择类型
-    "showTime": "boolean | {defaultValue:'string'}", // 增加时间选择功能
-    "defaultPickerValue": "string", // 默认日期
-    "isWeekNumber": "boolean", // 日期选择类型为周时，周号是否隐藏
-    "useDisabledDate": "'default'|'static'",
-    "staticDisabledDate": "Array<{title: '当前日期'; checked: boolean; offset: [number]; direction: 'before'|'after'}>" // 当useDisabledDate为static时才返回本属性
-  }
+  "config.placeholder": "string",
+  "config.allowClear": "boolean",
+  "config.disabled": "boolean", // 默认为false
+  "config.picker": "'date' | 'week' | 'month' | 'quarter' | 'year' | undefined", // 日期选择类型
+  "showTime": "boolean | {defaultValue:'string'}", // 增加时间选择功能
+  "defaultPickerValue": "string", // 默认日期
+  "isWeekNumber": "boolean", // 日期选择类型为周时，周号是否隐藏
+  "useDisabledDate": "'default'|'static'",
+  "staticDisabledDate": "Array<{title: '当前日期'; checked: boolean; offset: [number]; direction: 'before'|'after'}>" // 当useDisabledDate为static时才返回本属性
 }

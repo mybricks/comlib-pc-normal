@@ -1,15 +1,10 @@
 {
-  "title": "开关",
-  "name": "mybricks.normal-pc.switch",
-  "data": {
-    // 以是开关的属性描述
-    "textMap": {
-      "开启时": "string",
-      "关闭时": "string"
-    },
-    "config.disabled": "boolean",
-    "config.checked": "boolean",
-    "config.checkedChildren": "string", // 和textMap["开启时"]的值保持一致
-    "config.unCheckedChildren": "string" // 和textMap["关闭时"]的值保持一致
-  }
+  "textMap": {
+    "开启时": "string",
+    "关闭时": "string"
+  },
+  "config.disabled": "boolean",
+  "config.checked": "boolean",
+  "config.checkedChildren": "string", // 和textMap["开启时"]的值保持一致
+  "config.unCheckedChildren": "string" // 和textMap["关闭时"]的值保持一致
 }
