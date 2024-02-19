@@ -2,7 +2,7 @@ export default function ({ input, output, slot, data }): boolean {
   // 补全 output => openLoadingDone
   if (!output.get('openLoadingDone')) {
     output.add('openLoadingDone', '开始加载后', {
-      type: 'number'
+      type: 'any'
     });
   }
 
@@ -18,7 +18,7 @@ export default function ({ input, output, slot, data }): boolean {
   // 补全 output => closeLoadingDone
   if (!output.get('closeLoadingDone')) {
     output.add('closeLoadingDone', '结束加载后', {
-      type: 'number'
+      type: 'any'
     });
   }
 
