@@ -221,7 +221,6 @@ async function ensureDebugServerStart() {
 
 // 检查是否存在指定路径的文件
 function fileExists(path) {
-console.log(`path JD==> `,path);
   try {
     const files = glob.sync(path);
     return files.length > 0;
