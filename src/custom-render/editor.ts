@@ -39,8 +39,9 @@ export default {
             babel: false,
             comments: Comments,
             autoSave: false,
-            immediatelySet: true,
-            extraLib: data.extraLib
+            preview: true,
+            extraLib: data.extraLib,
+            isTsx: true
           },
           value: {
             get({ data }: EditorResult<Data>) {
@@ -63,7 +64,7 @@ export default {
               enabled: false
             },
             autoSave: false,
-            immediatelySet: true
+            preview: true,
           },
           value: {
             get({ data }: EditorResult<Data>) {
