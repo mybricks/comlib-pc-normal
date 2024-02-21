@@ -43,7 +43,8 @@
           "./src/list-new/com.json",
           "./src/drawer/com.json",
           "./src/collapse/com.json",
-          "./src/custom-container/com.json"
+          "./src/custom-container/com.json",
+          "./src/switch-container/com.json"
         ]
       },
       {
@@ -162,7 +163,8 @@
           "./src/list-new/com.json",
           "./src/drawer/com.json",
           "./src/collapse/com.json",
-          "./src/custom-container/com.json"
+          "./src/custom-container/com.json",
+          "./src/switch-container/com.json"
         ]
       },
       {
