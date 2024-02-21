@@ -2,6 +2,15 @@ import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
 import { InputIds, OutputIds, } from "./constants";
 
+/**
+ * @description 将key格式化为字符串
+ * @param key 原始的key
+ * @returns string
+ */
+export const keyToString = (key) => {
+  return JSON.stringify(key);
+};
+
 export const setCheckboxStatus = ({
   treeData,
   value,
@@ -20,7 +29,7 @@ export const setCheckboxStatus = ({
 };
 
 /**
- * 预处理树组件数据
+ * @description 预处理树组件数据
  * @param param0
  * @returns
  */
@@ -128,11 +137,11 @@ const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
 export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
   const { treeData, keyFieldName = 'key' } = data;
   const result: any = [],
-    leafNodes = getLeafNodes(treeData, keyFieldName);
+    leafNodeKeys = getLeafNodes(treeData, keyFieldName).map(keyToString);
 
   if (checkedKeys && Array.isArray(checkedKeys)) {
     checkedKeys.forEach((key) => {
-      if (leafNodes.indexOf(key) !== -1) result.push(key);
+      if (leafNodeKeys.indexOf(key) !== -1) result.push(key);
     });
   }
   return result;
@@ -150,7 +159,7 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFie
   treeData
     .filter((def) => !!def)
     .forEach((item) => {
-      if ((keys || []).includes(item[keyFieldName])) {
+      if ((keys || []).includes(keyToString(item[keyFieldName]))) {
         if (valueType === ValueType.TREE_NODE) {
           result.push(deepCopy(item));
         } else {
@@ -190,19 +199,17 @@ export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyF
  * @param keyFieldName 标识字段
  * @returns
  */
-export const filterCheckedKeysByCheckedValues = (treeData: TreeData[], checkedValues: string[], keyFieldName) => {
-  if (!treeData || treeData.length === 0) return;
+export const filterCheckedKeysByCheckedValues = (flatTrees: TreeData[], checkedValues: string[], keyFieldName) => {
+  if (!flatTrees || flatTrees.length === 0) return [];
   const result: any[] = [];
-  treeData.forEach((item) => {
-    if ((checkedValues || []).includes(item.value)) {
-      result.push(item[keyFieldName]);
-    }
-    if (item.children) {
-      result.push(filterCheckedKeysByCheckedValues(item.children || [], checkedValues, keyFieldName));
+  flatTrees.forEach((item) => {
+    if ((checkedValues || []).includes(item.value) || (checkedValues || []).includes(item.key)) {
+      result.push(item.key);
     }
   });
-  return flatten(result);
+  return result;
 };
+
 /**
  * 查找父节点
  * @param key 子节点key

@@ -11,7 +11,8 @@ import {
   excludeParentKeys,
   outputNodeValues,
   filterTreeDataByKeys,
-  traverseTree
+  traverseTree,
+  keyToString
 } from './utils';
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
@@ -25,8 +26,8 @@ export default function (props: RuntimeParams<Data>) {
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>(
     data.defaultExpandAll ? data.expandedKeys : []
   );
-  const [autoExpandParent, setAutoExpandParent] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+  const [autoExpandParent, setAutoExpandParent] = useState(false);
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
 
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
@@ -69,14 +70,13 @@ export default function (props: RuntimeParams<Data>) {
         keys.push(i.key);
       }
     });
-    data.expandedKeys = keys;
-    setExpandedKeys(keys);
+    const strKeys = keys.map(keyToString);
+    data.expandedKeys = strKeys;
+    setExpandedKeys(strKeys);
   }, []);
-
   useEffect(() => {
     data.treeData = updateDefaultTreeData();
   }, [data.useStaticData, data.staticData]);
-
   /** 更新treeKeys */
   useEffect(() => {
     treeKeys.current = [];
@@ -96,10 +96,9 @@ export default function (props: RuntimeParams<Data>) {
       }
       return null;
     });
+    const strKeys = searchedKeys.map(keyToString);
     setExpandedKeys(
-      [...searchedKeys, ...data.expandedKeys].filter(
-        (item, i, self) => item && self.indexOf(item) === i
-      )
+      [...strKeys, ...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
     );
     setAutoExpandParent(true);
   }, []);
@@ -125,7 +124,8 @@ export default function (props: RuntimeParams<Data>) {
       }
     });
     // const filteredTreeData = filterTreeDataByKeys(data.treeData, filterKeys, keyFieldName);
-    setExpandedKeys(filterKeys);
+    const strKeys = filterKeys.map(keyToString);
+    setExpandedKeys(strKeys);
     return filterKeys;
   }, []);
 
@@ -201,11 +201,12 @@ export default function (props: RuntimeParams<Data>) {
           if (!Array.isArray(keys)) {
             return onError('设置选中节点参数是数组');
           }
-          setSelectedKeys(keys);
+          const strKeys = keys.map(keyToString);
+          setSelectedKeys(strKeys);
           relOutputs['setSelectedKeysDone'](keys);
           const selectedValues = outputNodeValues(
             data.treeData,
-            keys,
+            strKeys,
             keyFieldName,
             data.valueType
           );
@@ -218,23 +219,25 @@ export default function (props: RuntimeParams<Data>) {
           if (!Array.isArray(keys)) {
             return onError('设置展开节点参数是数组');
           }
-          data.expandedKeys = keys;
-          setExpandedKeys(keys);
+          const strKeys = keys.map(keyToString);
+          data.expandedKeys = strKeys;
+          setExpandedKeys(strKeys);
           relOutputs['setExpandedKeysDone'](keys);
         });
 
       // 设置勾选项
       inputs['checkedValues'] &&
-        inputs['checkedValues']((value: [], relOutputs) => {
-          if (value && Array.isArray(value)) {
+        inputs['checkedValues']((keys: [], relOutputs) => {
+          if (keys && Array.isArray(keys)) {
             const inputCheckedKeys = filterCheckedKeysByCheckedValues(
-              data.treeData,
-              value,
+              treeKeys.current,
+              keys,
               keyFieldName
             );
-            data.checkedKeys = inputCheckedKeys;
-            setCheckedKeys(inputCheckedKeys);
-            relOutputs['setCheckedKeysDone'](value);
+            const strKeys = inputCheckedKeys.map(keyToString);
+            data.checkedKeys = strKeys;
+            setCheckedKeys(strKeys);
+            relOutputs['setCheckedKeysDone'](keys);
           }
         });
       inputs['disableCheckbox'] &&
