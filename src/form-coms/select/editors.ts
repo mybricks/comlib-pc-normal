@@ -383,7 +383,7 @@ export default {
           title: '静态选项配置',
           type: 'array',
           options: {
-            getTitle: ({ label, checked}) => {
+            getTitle: ({ label, checked }) => {
               return `${env.i18n(label)}${checked ? ': 默认值' : ''}`;
             },
             onAdd: () => {
@@ -435,7 +435,7 @@ export default {
               if (data.config.mode && ['multiple', 'tags'].includes(data.config.mode)) {
                 data.value = initValue;
               } else {
-                if (data.value) {
+                if (data.value && initValue.length > 1) {
                   data.value = initValue.find(item => item !== data.value);
                 } else {
                   data.value = initValue[0];
