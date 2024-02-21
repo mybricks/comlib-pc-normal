@@ -18,6 +18,8 @@ export default {
         }
       },
       {
+        title:'状态列表',
+        description: '通过眼睛图标，控制编辑态各状态的显示和隐藏',
         type: 'Array',
         options: {
           addText: '添加状态',

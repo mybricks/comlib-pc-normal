@@ -2,7 +2,7 @@
   "title": "状态容器",
   "namespace": "mybricks.normal-pc.switch-container",
   "version": "1.0.0",
-  "description": "根据状态值切换展示不同组件",
+  "description": "根据状态值渲染不同内容的容器，方便实现多状态切换",
   "author": "zhulin",
   "author_name": "",
   "icon": "./icon.svg",
