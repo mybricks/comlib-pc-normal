@@ -1,20 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Data, Status } from './type';
 import { InputIds, OutputIds } from './constants';
 
 export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Data>) {
   const [value, setValue] = useState(data.useDefaultStatus ? data.statusList[0].value : null);
+  const valueRef = useRef(value);
 
   useEffect(() => {
-    inputs[InputIds.SetValue]((val) => {
+    inputs[InputIds.SetValue]((val, relOutput) => {
       changeValue(val);
+      relOutput[OutputIds.SetValueDone](val);
     });
     inputs[InputIds.GetValue]((val, relOutput) => {
-      relOutput[OutputIds.ReturnValue](value);
+      relOutput[OutputIds.ReturnValue](valueRef.current);
     });
   }, []);
 
   const changeValue = useCallback((val) => {
+    valueRef.current = val;
     setValue(val);
     outputs[OutputIds.OnChange](val);
   }, []);

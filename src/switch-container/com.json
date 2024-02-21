@@ -1,6 +1,6 @@
 {
   "title": "状态容器",
-  "namespace": "noah.normal-pc.switch-container",
+  "namespace": "mybricks.normal-pc.switch-container",
   "version": "1.0.0",
   "description": "根据状态值切换展示不同组件",
   "author": "zhulin",
@@ -13,6 +13,9 @@
     {
       "id": "setValue",
       "title": "设置状态",
+      "rels": [
+        "setValueDone"
+      ],
       "schema": {
         "type": "any"
       }
@@ -29,6 +32,13 @@
     }
   ],
   "outputs": [
+    {
+      "id": "setValueDone",
+      "title": "设置状态完成",
+      "schema": {
+        "type": "any"
+      }
+    },
     {
       "id": "returnValue",
       "title": "当前状态",

@@ -3,6 +3,7 @@ export const InputIds = {
   GetValue: 'getValue',
 }
 export const OutputIds = {
+  SetValueDone: 'setValueDone',
   ReturnValue: 'returnValue',
   OnChange: 'onChange',
 }
