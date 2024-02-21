@@ -3,7 +3,7 @@ import { Tree } from 'antd';
 import { deepCopy } from '../../../utils';
 import { Data, TreeData } from '../../types';
 import { ExpressionSandbox } from '../../../../package/com-utils';
-import { keyToString } from '../..//utils';
+import { keyToString } from '../../utils';
 import { renderAddTitle } from './AddTitle';
 import { renderTitle } from './Title';
 const { TreeNode } = Tree;
