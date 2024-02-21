@@ -48,12 +48,6 @@ export default {
         },
         value: {
           get({ data }: EditorResult<Data>) {
-            console.log(data.statusList, data.statusList.map(i => {
-              return {
-                label: i.title,
-                value: i.value,
-              }
-            }))
             return data.statusList;
           },
           set({ data }: EditorResult<Data>, value) {
