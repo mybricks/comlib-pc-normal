@@ -1,7 +1,7 @@
 {
   "title": "消息提示",
   "namespace": "mybricks.normal-pc.message",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "rtType": "js",
   "description": "消息提示",
   "author": "HuangQiuyun",
@@ -10,15 +10,27 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "showMsg",
       "title": "弹出提示",
       "schema": {
         "type": "follow"
+      },
+      "rels": [
+        "showMsgDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "showMsgDone",
+      "title": "弹出提示完成",
+      "schema": {
+        "type": "follow"
       }
     }
   ],
-  "outputs": [],
   "slots": []
 }

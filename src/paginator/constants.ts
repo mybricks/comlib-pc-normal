@@ -49,7 +49,9 @@ export interface Data {
 
 export const OutputIds = {
   PageChange: 'pageChange',
-  GetPageInfo: 'getPageInfo'
+  GetPageInfo: 'getPageInfo',
+  SetTotalDone: 'setTotalDone',
+  SetPageNumDone: 'setPageNumDone'
 };
 export const InputIds = {
   SetEnable: 'setEnable',

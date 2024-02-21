@@ -8,7 +8,7 @@ export default function ({ env, data, inputs, outputs, logger, onError, id }: Ru
 
   if (env.runtime) {
     Object.keys(inputs).forEach((key, index) => {
-      inputs[key]((val) => {
+      inputs[key]((val, outputRels) => {
         const item = data.eventInputs.find(item => item.id === key);
         res[item.key] = val
         count++
@@ -16,6 +16,7 @@ export default function ({ env, data, inputs, outputs, logger, onError, id }: Ru
         if (count === inputNum) {
           if (event?.exe) {
             event.exe({ options: res })
+            outputRels['runDone']({ options: res })
             // outputs['onFinish']({ options: res })
           }
         }
