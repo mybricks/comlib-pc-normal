@@ -26,7 +26,7 @@ const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => 
 
   // 打开消息提示事件
   if (inputs[InputIds.Open]) {
-    inputs[InputIds.Open]((val: any) => {
+    inputs[InputIds.Open]((val: any, outputRels) => {
       if (data.isExternal) {
         //输入为函数
         if (Object.prototype.toString.call(val) === '[object Function]') {
@@ -46,12 +46,14 @@ const runtimeExecute = ({ data, inputs, outputs, env }: RuntimeParams<Data>) => 
 
         try {
           open(val);
+          outputRels[OutputIds.OpenDone](val);
         } catch (e) {
           console.error('Message组件不支持该传入类型内容', e);
         }
       } else {
         try {
           open(env.i18n(content));
+          outputRels[OutputIds.OpenDone](env.i18n(content));
         } catch (e) {
           console.error('目前该设置,Message组件仅支持传入静态配置内容', e);
         }

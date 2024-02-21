@@ -1,7 +1,7 @@
 {
   "title": "分页器",
   "namespace": "mybricks.normal-pc.paginator",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "分页器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,10 +9,14 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "setTotal",
       "title": "设置数据总数",
+      "rels": [
+        "setTotalDone"
+      ],
       "schema": {
         "type": "number"
       }
@@ -20,6 +24,9 @@
     {
       "id": "setPageNum",
       "title": "设置当前页码",
+      "rels": [
+        "setPageNumDone"
+      ],
       "schema": {
         "type": "number"
       }
@@ -49,6 +56,20 @@
             "type": "number"
           }
         }
+      }
+    },
+    {
+      "id": "setTotalDone",
+      "title": "数据总数",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setPageNumDone",
+      "title": "当前页码",
+      "schema": {
+        "type": "number"
       }
     },
     {
