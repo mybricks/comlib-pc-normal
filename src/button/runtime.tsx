@@ -12,10 +12,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       inputs?.['external'] &&
-        inputs['external']((ds: any) => {
+        inputs['external']((ds: any, relOutputs) => {
           data.inVal = ds;
+          relOutputs['setExternalDone'](ds);
         });
-      inputs['dynamicTitle']((val: any) => {
+      inputs['dynamicTitle']((val: any, relOutputs) => {
         if (Object.prototype.toString.call(val) === '[object Function]') {
           val = String(val);
         } else if (typeof val !== 'string') {
@@ -29,9 +30,11 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
           }
         }
         data.text = val;
+        relOutputs['setDynamicTitleDone'](val);
       });
-      inputs[InputIds.Disabled]((value) => {
+      inputs[InputIds.Disabled]((value, relOutputs) => {
         setDisable(value);
+        relOutputs['setDynamicDisabledDone'](value);
       });
     }
   }, []);

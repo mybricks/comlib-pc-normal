@@ -19,11 +19,13 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetJsonData]((val) => {
+      inputs[InputIds.SetJsonData]((val, relOutputs) => {
         if (typeof val === 'string') {
           data.json = encodeURIComponent(val);
+          relOutputs['setJsonDataDone'](data.json);
         } else if (typeCheck(val, ['ARRAY', 'OBJECT'])) {
           data.json = val;
+          relOutputs['setJsonDataDone'](data.json);
         } else {
           console.error(`${title}:输入的JSON数据不合法`);
         }
@@ -31,9 +33,10 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
       inputs[InputIds.GetJsonData]((_, outputRels) => {
         outputRels[OutputIds.JsonData](data.jsonObj);
       });
-      inputs[InputIds.SetExpandDepth]((val) => {
+      inputs[InputIds.SetExpandDepth]((val, relOutputs) => {
         if (typeof val === 'number' && val > -2) {
           data.collapsed = val;
+          relOutputs['setExpandDepthDone'](data.collapsed);
         } else {
           logger.warn('json展示[设置展开深度]: 请输入≥-1的数字');
         }

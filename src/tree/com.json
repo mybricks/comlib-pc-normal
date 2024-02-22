@@ -1,7 +1,7 @@
 {
   "title": "树",
   "namespace": "mybricks.normal-pc.tree",
-  "version": "1.0.45",
+  "version": "1.0.47",
   "description": "树状图",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -41,7 +41,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "setTreeDataDone"
+      ]
     },
     {
       "id": "nodeData",
@@ -60,7 +63,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "setNodeDataDone"
+      ]
     },
     {
       "id": "searchValue",
@@ -68,7 +74,10 @@
       "schema": {
         "type": "string"
       },
-      "desc": "输入字符串，高亮展示匹配的树节点"
+      "desc": "输入字符串，高亮展示匹配的树节点",
+      "rels": [
+        "searchValueDone"
+      ]
     },
     {
       "id": "filter",
@@ -76,7 +85,10 @@
       "schema": {
         "type": "string"
       },
-      "desc": "输入字符串，筛选匹配的树节点"
+      "desc": "输入字符串，筛选匹配的树节点",
+      "rels": [
+        "filterDone"
+      ]
     },
     {
       "id": "setSelectedKeys",
@@ -87,7 +99,10 @@
           "type": "string"
         }
       },
-      "desc": "输入节点key数组, 设置树形结构中选中的节点"
+      "desc": "输入节点key数组, 设置树形结构中选中的节点",
+      "rels": [
+        "setSelectedKeysDone"
+      ]
     },
     {
       "id": "setExpandedKeys",
@@ -98,7 +113,10 @@
           "type": "string"
         }
       },
-      "desc": "输入节点key数组, 设置树形结构中展开的节点列表"
+      "desc": "输入节点key数组, 设置树形结构中展开的节点列表",
+      "rels": [
+        "setExpandedKeysDone"
+      ]
     },
     {
       "id": "setOpenDepth",
@@ -106,7 +124,10 @@
       "desc": "设置树的展开深度: 0表示全部折叠, -1表示全部展开",
       "schema": {
         "type": "number"
-      }
+      },
+      "rels": [
+        "setOpenDepthDone"
+      ]
     },
     {
       "id": "setDragConfig",
@@ -161,7 +182,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "rels": [
+        "setDragConfigDone"
+      ]
     },
     {
       "id": "getTreeData",
@@ -449,6 +473,153 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    {
+      "id": "setTreeDataDone",
+      "title": "输入数据完成",
+      "schema": {
+        "title": "树组件数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "title": "标题",
+              "type": "string"
+            },
+            "key": {
+              "title": "字段名",
+              "type": "string"
+            },
+            "disableCheckbox": {
+              "title": "禁用勾选",
+              "type": "boolean"
+            },
+            "children": {
+              "title": "子项",
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "setNodeDataDone",
+      "title": "更新节点数据完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "searchValueDone",
+      "title": "搜索完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "filterDone",
+      "title": "过滤完成",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id":  "setSelectedKeysDone",
+      "title": "设置选中节点完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "setExpandedKeysDone",
+      "title": "设置展开节点完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "id": "setOpenDepthDone",
+      "title": "设置展开深度完成",
+      "schema": {
+        "type": "number"
+      }
+    },
+    {
+      "id": "setDragConfigDone",
+      "title": "设置拖拽功能完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "draggable": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string",
+                "value": "custom"
+              }
+            ]
+          },
+          "draggableScript": {
+            "type": "string"
+          },
+          "allowDrop": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string",
+                "value": "custom"
+              }
+            ]
+          },
+          "allowDropScript": {
+            "type": "string"
+          },
+          "useDropScope": {
+            "type": "enum",
+            "items": [
+              {
+                "type": "boolean",
+                "value": false
+              },
+              {
+                "type": "string",
+                "value": "parent"
+              }
+            ]
+          },
+          "dropScopeMessage": {
+            "type": "string"
           }
         }
       }

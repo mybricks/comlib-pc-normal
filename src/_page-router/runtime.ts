@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { Data, InputIds, TypeEnum } from './constants';
+import { Data, InputIds, OutputIds, TypeEnum } from './constants';
 
 // pushState/replaceState 参数解析
 const getHistoryParams = (val) => {
@@ -179,7 +179,7 @@ const executeSwitch = ({ inputs, data, env, logger, onError }: RuntimeParams<Dat
     return;
   }
   const { type } = data;
-  inputs[InputIds.RouterAction]((val) => {
+  inputs[InputIds.RouterAction]((val, outputRels) => {
     if (routerSwitcher[type]) {
       const params = getHistoryParams(getParams(val, data));
       if ([TypeEnum.PUSHSTATE, TypeEnum.REDIRECT, TypeEnum.OPENTAB].includes(type) && !params.url) {
@@ -188,6 +188,7 @@ const executeSwitch = ({ inputs, data, env, logger, onError }: RuntimeParams<Dat
       }
       try {
         routerSwitcher[type](params);
+        outputRels[OutputIds.RouterActionDone](val);
       } catch (error) {
         onError?.('【跳转到...】组件运行错误.');
         console.error('【跳转到...】组件运行错误.', error);

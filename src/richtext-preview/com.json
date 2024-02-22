@@ -1,7 +1,7 @@
 {
   "title": "富文本",
   "namespace": "mybricks.normal-pc.richtext-preview",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "展示多姿多彩的富文本",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -17,9 +17,20 @@
       "desc": "输入富文本内容",
       "schema": {
         "type": "string"
+      },
+      "rels": [
+        "contentDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "contentDone",
+      "title": "输入富文本内容完成",
+      "schema": {
+        "type": "string"
       }
     }
   ],
-  "outputs": [],
   "slots": []
 }

@@ -9,13 +9,15 @@ export default function ({ data, inputs, outputs, env }: RuntimeParams<Data>) {
   const ref = useRef(null);
 
   useEffect(() => {
-    inputs[InputIds.SetContent]((value: string) => {
+    inputs[InputIds.SetContent]((value: string, relOutputs) => {
       if (value != undefined && typeof value !== 'string') value = JSON.stringify(value);
       data.content = value;
+      relOutputs['setContentDone'](value);
     });
-    inputs[InputIds.SetUrl]((value: string) => {
+    inputs[InputIds.SetUrl]((value: string, relOutputs) => {
       if (value != undefined && typeof value !== 'string') value = JSON.stringify(value);
       data.url = value;
+      relOutputs['setUrlDone'](value);
     });
   }, []);
 

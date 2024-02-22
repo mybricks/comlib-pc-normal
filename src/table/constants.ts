@@ -78,7 +78,7 @@ export const OutputIds = {
   GET_ROW_SELECTION: 'outRowSelection',
   // 输出表格数据
   GET_TABLE_DATA: 'getTableData',
-  // 输出勾选数据
+  // 输出筛选数据
   GET_FILTER: 'getFilter',
   // 输出排序数据
   GET_SORT: 'getSorter',
