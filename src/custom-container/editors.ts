@@ -1,6 +1,7 @@
 import { Data, SlotIds, OverflowEnum } from './constants';
 import { OverflowEditor } from './editors/overflowEditor';
 import { PageScrollEditor } from './editors/pageSrcollEditor';
+import { AutoScrollEditor} from './editors/autoScrollEditor';
 import { StyleEditor } from './editors/styleEditor';
 import { ClickEditor } from './editors/clickEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
@@ -10,7 +11,9 @@ import { unitConversion } from '../utils';
 
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
-  if (val.position === 'absolute') {
+  if(val.flexDirection === 'smart'){
+    slot.setLayout('smart');
+  }else if (val.position === 'absolute') {
     slot.setLayout(val.position);
   } else if (val.display === 'flex') {
     if (val.flexDirection === 'row') {
@@ -59,7 +62,7 @@ export default {
       ];
 
       cate2.title = '交互';
-      cate2.items = [...ClickEditor, ...PageScrollEditor];
+      cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
 
       return {
         title: '自定义容器'
@@ -74,13 +77,13 @@ export default {
           {
             title: '默认',
             catelog: "默认",
-            options: ['padding', 'border', 'background', 'overflow'],
+            options: ['padding', 'border', 'background', 'overflow', 'BoxShadow'],
             target: ({ id }: EditorResult<Data>) => `> .root`
           },
           {
             title: 'Hover',
             catelog: "Hover",
-            options: ['padding', 'border', 'background'],
+            options: ['padding', 'border', 'background', 'BoxShadow'],
             target: ({ id }: EditorResult<Data>) => `> .root:hover`,
             domTarget: '.root'
           }
