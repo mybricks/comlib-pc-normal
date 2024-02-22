@@ -99,10 +99,10 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     color: 'rgba(0, 0, 0, 0.45)',
     fontStyle: 'normal'
   };
-  const defaultMargin = [0, 16, 24, 0],
+  const defaultMargin = [0, 0, 24, 0],
     defaultMarginStyle = {
       marginTop: '0px',
-      marginRight: '16px',
+      marginRight: '0px',
       marginBottom: '24px',
       marginLeft: '0px'
     };
@@ -149,13 +149,14 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     // 表单的公共标题对齐方式选择器
     const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
     const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
-    const isAllSetLabelAutoWrap = uniq(data.items.map(item => item?.labelAlign)).length === 1;
+    const isAllSetLabelAutoWrap = !isAllDefalutLabelAlign && uniq(data.items.map(item => item?.labelAlign)).length === 1;
     labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
-    const defaultTextAlign = isVerticalModel ? 'left' : data.config.labelAlign || 'right';
+    const defaultTextAlign = isVerticalModel ? 'left'
+      : (data.config.labelAlign || 'right');
     const setTextAlign = data.items[0]?.labelAlign;
     setDeclaredStyle(labelAlignSelector, {
       textAlign:
-        (isAllDefalutLabelAlign ? defaultTextAlign : setTextAlign)
+        (isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign)
     });
 
     /** 提示语样式处理 */
