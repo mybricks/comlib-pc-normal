@@ -492,34 +492,6 @@ export default {
                   data.config.colon = value;
                 }
               }
-            },
-            {
-              title: '自动换行',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config?.labelWrap;
-                },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.config.labelWrap = value;
-                }
-              }
-            },
-            {
-              title: '对齐方式',
-              type: 'Radio',
-              options: [
-                { label: '左对齐', value: 'left' },
-                { label: '右对齐', value: 'right' }
-              ],
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config?.labelAlign;
-                },
-                set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                  data.config.labelAlign = value;
-                }
-              }
             }
           ]
         },

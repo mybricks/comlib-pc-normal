@@ -151,11 +151,11 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
     const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
     const isAllSetLabelAutoWrap = uniq(data.items.map(item => item?.labelAlign)).length === 1;
     labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
-
-    const defaultTextAlign = isVerticalModel ? 'left' : 'right';
+    const defaultTextAlign = isVerticalModel ? 'left' : data.config.labelAlign || 'right';
     const setTextAlign = data.items[0]?.labelAlign;
     setDeclaredStyle(labelAlignSelector, {
-      textAlign: isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign
+      textAlign:
+        (isAllDefalutLabelAlign ? defaultTextAlign : setTextAlign)
     });
 
     /** 提示语样式处理 */
