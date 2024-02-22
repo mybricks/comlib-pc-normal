@@ -356,22 +356,23 @@ export default function Runtime(props: RuntimeParams<Data>) {
         }
 
         const formItem = data.items[formItemIndex];
-        const newFormItem = { ...props };
+        const { labelStyle, descriptionStyle, labelAlign, labelAutoWrap, ...newFormItem } = props;
 
         // 禁用、启用
         if (typeof newFormItem.disabled === 'boolean') {
           (newFormItem.disabled ? disableFormList : enableFormList).push(name);
         }
-        // 标题样式、提示语样式
-        const { descriptionStyle = {}, labelStyle = {} } = formItem;
-        const newLabelStyle = newFormItem.labelStyle || {};
-        const newDescriptionStyle = newFormItem.descriptionStyle || {};
 
         const temp = {
           ...formItem,
-          ...props,
-          labelStyle: { ...labelStyle, ...newLabelStyle },
-          descriptionStyle: { ...descriptionStyle, ...newDescriptionStyle }
+          ...newFormItem,
+          // 标题样式、提示语样式
+          dynamicStyle: {
+            labelStyle,
+            descriptionStyle,
+            labelAlign,
+            labelAutoWrap
+          }
         };
         data.items[formItemIndex] = temp;
       });

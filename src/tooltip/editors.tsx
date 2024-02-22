@@ -101,7 +101,7 @@ export default {
     },
     style: [
       {
-        title: "容器",
+        title: '容器',
         options: [
           'font',
           'size',

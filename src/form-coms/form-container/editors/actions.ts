@@ -110,35 +110,6 @@ export const actionsEditor = (data: Data, output, env) => {
         },
       },
       {
-        title: '边距',
-        type: 'inputNumber',
-        options: [{ min: 0, title: '上' }, { min: 0, title: '右' }, { min: 0, title: '下' }, { min: 0, title: '左' }],
-        ifVisible({ data }: EditorResult<Data>) {
-          return (data.config?.layout || data.layout) !== 'horizontal'
-        },
-        value: {
-          get({ data }: EditorResult<Data>) {
-            return data.actions.inlinePadding;
-          },
-          set({ data }: EditorResult<Data>, value: number[]) {
-            data.actions.inlinePadding = value
-          }
-        }
-      },
-      {
-        title: '边距应用所有表单项',
-        type: 'Button',
-        ifVisible({ data }: EditorResult<Data>) {
-          return (data.config?.layout || data.layout) !== 'horizontal'
-        },
-        value: {
-          set({ data }: EditorResult<Data>) {
-            const margin = data.actions.inlinePadding || [0, 0, 0, 0];
-            data.items.forEach(item => item.inlineMargin = [...margin]);
-          }
-        }
-      },
-      {
         title: '收起/展开表单项',
         type: '_Event',
         ifVisible({ data }: EditorResult<Data>) {
