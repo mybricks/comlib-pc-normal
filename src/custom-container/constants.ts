@@ -53,4 +53,9 @@ export interface Data {
   legacyConfigStyle: CSSProperties;
   //style editor暂不支持的style
   legacyStyle: CSSProperties;
+
+  //自动滚动开关
+  isAutoScroll: boolean;
+  direction: 'horizontal'|'vertical';
+  scrollTime: number;
 }

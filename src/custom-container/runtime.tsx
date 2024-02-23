@@ -4,7 +4,7 @@ import { Data, SlotIds, InputIds, OutputIds, OverflowEnum } from './constants';
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
-  const { env, data, slots, inputs, outputs } = props;
+  const { env, data, slots, inputs, outputs, style } = props;
   const {
     useSrcollIntoView,
     behavior,
@@ -41,14 +41,14 @@ export default function (props: RuntimeParams<Data>) {
       inputs[InputIds.SetStyle] &&
         inputs[InputIds.SetStyle]((style: React.CSSProperties, relOutputs) => {
           setDynamicStyle(style);
-          typeof relOutputs['setStyleComplete'] === 'function' && relOutputs['setStyleComplete']()
+          typeof relOutputs['setStyleComplete'] === 'function' && relOutputs['setStyleComplete']();
         });
 
       inputs[InputIds.ScrollTo] &&
         inputs[InputIds.ScrollTo]((val: number, relOutputs) => {
           if (ref.current) {
             ref.current.scrollTop = typeof val !== 'number' ? ref.current.scrollHeight : val;
-            typeof relOutputs['scrollComplete'] === 'function' && relOutputs['scrollComplete']()
+            typeof relOutputs['scrollComplete'] === 'function' && relOutputs['scrollComplete']();
           }
         });
     }
@@ -117,7 +117,20 @@ export default function (props: RuntimeParams<Data>) {
         }
       }}
     >
-      {slots[SlotIds.Content].render({ style: slotStyle })}
+      <div
+        className={
+          data.isAutoScroll && env.runtime
+            ? data.direction === 'vertical'
+              ? css.verticalRowUp
+              : css.horizontalRowUp
+            : void 0
+        }
+        style={
+          data.isAutoScroll && env.runtime ? { animationDuration: `${data.scrollTime}ms` } : void 0
+        }
+      >
+        {slots[SlotIds.Content].render({ style: slotStyle })}
+      </div>
     </div>
   );
 }
