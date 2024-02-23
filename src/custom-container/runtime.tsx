@@ -19,8 +19,6 @@ export default function (props: RuntimeParams<Data>) {
   const ref = useRef<HTMLDivElement>(null);
 
   const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
-  const [preHeight, setPreHeight] = useState('auto');
-  const [preType, setPreType] = useState('normal');
 
   useEffect(() => {
     if (useFixed && ref.current?.parentElement?.style) {
@@ -101,36 +99,6 @@ export default function (props: RuntimeParams<Data>) {
   //     ref.current.style.height = `${contentRect.height}px`;
   //   }
   // });
-
-  useEffect(() => {
-    setPreHeight(style.height);
-  }, []);
-
-  useEffect(() => {
-    //1、先把normal的高度存起来
-    if (data.slotStyle?.flexDirection !== 'smart') {
-      setPreHeight(style.height);
-      setPreType('normal');
-    } else {
-      setPreType('smart');
-    }
-  }, [data.slotStyle, style.height]);
-
-  //2、切换到smart布局时，高度改为200
-  useEffect(() => {
-    if (env.edit && data.slotStyle?.flexDirection === 'smart' && preHeight === 'auto') {
-      style.height = 200;
-    }
-  }, [data.slotStyle?.flexDirection, preHeight]);
-
-  //3、从smart切换到normal时，取出preHeight，给到style.height
-  if (preType === 'smart' && data.slotStyle?.flexDirection !== 'smart') {
-    style.height = preHeight;
-  }
-
-  if (env.runtime && data.slotStyle?.flexDirection === 'smart') {
-    style.height = 'auto';
-  }
 
   return (
     <div
