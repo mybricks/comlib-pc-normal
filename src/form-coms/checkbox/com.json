@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -39,7 +39,7 @@
           "type": "string"
         }
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -72,7 +72,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
@@ -104,7 +104,7 @@
           }
         }
       },
-      "rels":[
+      "rels": [
         "setOptionsDone"
       ]
     },
@@ -158,6 +158,28 @@
       },
       "rels": [
         "setActiveFontColorDone"
+      ]
+    },
+    {
+      "id": "setDynamicStyles",
+      "title": "设置选项样式",
+      "desc": "动态设置选项样式",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "any"
+            },
+            "style": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "rels": [
+        "setDynamicStylesDone"
       ]
     },
     {

@@ -103,9 +103,9 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   */
   //1、设置值
   const arraySchema = {
-    "type": "array",
+    type: 'array',
     "items": {
-      "type": "string"
+      type: "string"
     }
   };
 
@@ -137,25 +137,25 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //4、设置数据源
   const optionsSchema = {
-    "type": "array",
+    type: 'array',
     "items": {
-      "type": "object",
-      "properties": {
+      type: 'object',
+      properties: {
         "label": {
           "title": "标签",
-          "type": "string"
+          type: "string"
         },
         "value": {
           "title": "值",
-          "type": "string"
+          type: "string"
         },
         "disabled": {
           "title": "禁用",
-          "type": "boolean"
+          type: "boolean"
         },
         "checked": {
           "title": "选中",
-          "type": "boolean"
+          type: "boolean"
         }
       }
     }
@@ -204,26 +204,26 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     !input.get("setActiveFontColor")?.rels?.includes("setActiveFontColorDone")) {
     input.get("setActiveFontColor").setRels(["setActiveFontColorDone"]);
   }
-  
+
   //9、设置校验结果
   const infoSchema = {
-    "type": "object",
-    "properties": {
+    type: 'object',
+    properties: {
       "validateStatus": {
-        "type": "enum",
+        type: "enum",
         "items": [
           {
-            "type": "string",
+            type: "string",
             "value": "success"
           },
           {
-            "type": "string",
+            type: "string",
             "value": "error"
           }
         ]
       },
       "help": {
-        "type": "string"
+        type: "string"
       }
     }
   }
@@ -235,7 +235,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     !input.get(inputIds.SET_VALIDATE_INFO)?.rels?.includes(outputIds.setValidateInfoDone)) {
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
-  
+
   //=========== v1.1.6 end ===============
 
   /**
@@ -260,5 +260,43 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.isIndeterminate = false;
   }
   //=========== v1.1.16 end ===============
+
+  /**
+   * @description v1.1.17 input.setDynamicStyles, output.setDynamicStylesDone
+   */
+  if (!input.get(InputIds.SetDynamicStyles)) {
+    input.add(InputIds.SetDynamicStyles, '设置选项样式', {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          value: {
+            type: "any"
+          },
+          style: {
+            type: 'object'
+          }
+        }
+      }
+    });
+  }
+  if (!output.get(OutputIds.SetDynamicStylesDone)) {
+    output.add(OutputIds.SetDynamicStylesDone, '设置选项样式完成', {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          value: {
+            type: "any"
+          },
+          style: {
+            type: 'object'
+          }
+        }
+      }
+    });
+  }
+  //=========== v1.1.17 end ===============
+
   return true;
 }
