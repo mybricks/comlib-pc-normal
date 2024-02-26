@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import { Alert, Checkbox } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -21,7 +28,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
-  const [dynamicStyles, setDynamicStyles] = useState({});
+  const [dynamicStyles, setDynamicStyles] = useState<{ value: any; style: CSSProperties }[]>([]);
   const [single, setSingle] = useState<boolean>(false);
   const valueRef = useRef<any>(data.value);
 
@@ -262,7 +269,7 @@ export default function Runtime({
 
   let options = env.edit ? data.staticOptions : data.config.options;
   let newOptions = options.map((opt) => {
-    const dynamicStyle = dynamicStyles[String(opt.value)] || {};
+    const dynamicStyle = dynamicStyles.find((i) => i?.value === opt.value)?.style || {};
     return {
       ...opt,
       label: (

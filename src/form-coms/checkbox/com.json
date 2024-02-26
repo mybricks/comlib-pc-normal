@@ -165,7 +165,18 @@
       "title": "设置选项样式",
       "desc": "动态设置选项样式",
       "schema": {
-        "type": "object"
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "any"
+            },
+            "style": {
+              "type": "object"
+            }
+          }
+        }
       },
       "rels": [
         "setDynamicStylesDone"
