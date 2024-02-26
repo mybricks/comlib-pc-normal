@@ -191,8 +191,14 @@ export default function Runtime({
   // data.value变化事件
   const changeValue = useCallback((checkedValue?: any[]) => {
     if (Array.isArray(checkedValue)) {
-      setIndeterminate(!!checkedValue.length && checkedValue.length < data.config.options.length);
-      setCheckAll(checkedValue.length === data.config.options.length);
+      setIndeterminate(
+        data.isIndeterminate
+          ? false
+          : !!checkedValue.length && checkedValue.length < data.config.options.length
+      );
+      setCheckAll(
+        data.isIndeterminate ? false : checkedValue.length === data.config.options.length
+      );
       setValue(checkedValue);
       valueRef.current = checkedValue;
     } else {
