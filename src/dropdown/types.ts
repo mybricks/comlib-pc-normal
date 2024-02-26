@@ -5,5 +5,7 @@ export interface Data {
     isCustom: boolean,
     content: string,
     trigger: "hover" | "click",
-    isChildCustom: boolean
+    isChildCustom: boolean,
+    isDynamic: boolean,
+    dynamicOptions: any[]
 }

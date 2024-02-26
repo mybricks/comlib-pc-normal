@@ -244,7 +244,7 @@ export default {
             get({ data }) {
               return data.isIndeterminate;
             },
-            set({ data, input, output }, value: boolean) {
+            set({ data, input, output }, value: "partChecked" | "unChecked" | "allChecked") {
               const event = input.get("setIndeterminate");
               const schema = {
                 type: "enum",
@@ -259,7 +259,7 @@ export default {
                   },
                   {
                     type: "string",
-                    value: 'allChecked'
+                    value: "allChecked"
                   }
                 ]
               }
