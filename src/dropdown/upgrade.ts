@@ -97,5 +97,11 @@ export default function ({
     .inputs.add("index", "当前项序号", {
       type: 'number'
   })
+
+  //1.0.16->1.0.17 fix下拉菜单 动态选项 
+  if(typeof data.dynamicOptions === "undefined"){
+    data.dynamicOptions = [];
+  };
+  
   return true;
 }

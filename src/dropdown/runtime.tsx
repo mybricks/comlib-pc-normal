@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Menu, Dropdown, Space } from 'antd';
+import { Menu, Dropdown, Space, Empty } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Data } from './types';
 import * as Icons from '@ant-design/icons';
@@ -52,34 +52,41 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         </Menu>
       )
     }else if(env.runtime){
-      return (
-      <Menu style={{ width: data.width }}>
-        {data.dynamicOptions &&
-          data.dynamicOptions.map((option, index) => {
-            return (
-              <Menu.Item
-                data-menu-item={option[rowKey]}
-                disabled={option.disabled}
-                //style={{ color: option.disabled ? void 0 : option.iconColor }}
-                key={index}
-                onClick={() => onClick(option)}
-              >
-                {
-                  slots['item'].render(
+      if(data.dynamicOptions.length > 0){
+        return (
+          <Menu style={{ width: data.width }}>
+            {data.dynamicOptions &&
+              data.dynamicOptions.map((option, index) => {
+                return (
+                  <Menu.Item
+                    data-menu-item={option[rowKey]}
+                    disabled={option.disabled}
+                    //style={{ color: option.disabled ? void 0 : option.iconColor }}
+                    key={index}
+                    onClick={() => onClick(option)}
+                  >
                     {
-                      inputValues: {
-                        itemData: option.value,
-                        index: index
-                      },
-                      key: option[rowKey]
+                      slots['item'].render(
+                        {
+                          inputValues: {
+                            itemData: option.value,
+                            index: index
+                          },
+                          key: option[rowKey]
+                        }
+                      )
                     }
-                  )
-                }
-              </Menu.Item>
-            );
-          })}
-      </Menu>
-    );
+                  </Menu.Item>
+                );
+              })}
+          </Menu>
+        );
+      }else{
+        return (
+          <Empty></Empty>
+        )
+      }
+      
     }
   }
   function menuRender({ data }: { data: Data }) {
@@ -136,7 +143,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         overlay={data.isDynamic ? dynamicMenuRender({data}) : menuRender({ data })}
         placement={data.placement}
         arrow
-        visible={(edit && data.isChildCustom) || env.design || data.isDynamic ? true : edit ? false : void 0}
+        visible={(edit && data.isChildCustom) || env.design || (edit && data.isDynamic) ? true : edit ? false : void 0}
         getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
         overlayStyle={{ minWidth: data.width }}
         trigger={[data.trigger || 'hover']}
