@@ -21,6 +21,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
+  const [dynamicStyles, setDynamicStyles] = useState({});
   const [single, setSingle] = useState<boolean>(false);
   const valueRef = useRef<any>(data.value);
 
@@ -152,11 +153,17 @@ export default function Runtime({
     });
 
     // 设置激活选项字体的颜色
-    inputs['setActiveFontColor']((color: string, relOutputs) => {
+    inputs['setActiveFontColor']?.((color: string, relOutputs) => {
       if (typeof color === 'string') {
         setActiveFontColor(color);
         relOutputs['setActiveFontColorDone'](color);
       }
+    });
+
+    // 设置选项样式
+    inputs['setDynamicStyles']?.((styles, relOutputs) => {
+      setDynamicStyles(styles);
+      relOutputs['setDynamicStylesDone'](styles);
     });
 
     //设置多选框，全选框的可控状态
@@ -255,10 +262,16 @@ export default function Runtime({
 
   let options = env.edit ? data.staticOptions : data.config.options;
   let newOptions = options.map((opt) => {
+    const dynamicStyle = dynamicStyles[String(opt.value)] || {};
     return {
       ...opt,
       label: (
-        <span style={{ color: valueRef.current?.includes(opt.value) ? activeFontColor : '' }}>
+        <span
+          style={{
+            color: valueRef.current?.includes(opt.value) ? activeFontColor : '',
+            ...dynamicStyle
+          }}
+        >
           {env.i18n(opt.label)}
         </span>
       )

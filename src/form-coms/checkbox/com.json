@@ -39,7 +39,7 @@
           "type": "string"
         }
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -72,7 +72,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
@@ -104,7 +104,7 @@
           }
         }
       },
-      "rels":[
+      "rels": [
         "setOptionsDone"
       ]
     },
@@ -158,6 +158,17 @@
       },
       "rels": [
         "setActiveFontColorDone"
+      ]
+    },
+    {
+      "id": "setDynamicStyles",
+      "title": "设置选项样式",
+      "desc": "动态设置选项样式",
+      "schema": {
+        "type": "object"
+      },
+      "rels": [
+        "setDynamicStylesDone"
       ]
     },
     {

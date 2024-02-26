@@ -204,7 +204,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     !input.get("setActiveFontColor")?.rels?.includes("setActiveFontColorDone")) {
     input.get("setActiveFontColor").setRels(["setActiveFontColorDone"]);
   }
-  
+
   //9、设置校验结果
   const infoSchema = {
     "type": "object",
@@ -235,7 +235,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     !input.get(inputIds.SET_VALIDATE_INFO)?.rels?.includes(outputIds.setValidateInfoDone)) {
     input.get(inputIds.SET_VALIDATE_INFO).setRels([outputIds.setValidateInfoDone]);
   }
-  
+
   //=========== v1.1.6 end ===============
 
   /**
@@ -260,5 +260,21 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.isIndeterminate = false;
   }
   //=========== v1.1.16 end ===============
+
+  /**
+   * @description v1.1.17 input.setDynamicStyles, output.setDynamicStylesDone
+   */
+  if (!input.get(InputIds.SetDynamicStyles)) {
+    input.add(InputIds.SetDynamicStyles, '设置选项样式', {
+      type: 'object'
+    });
+  }
+  if (!output.get(OutputIds.SetDynamicStylesDone)) {
+    output.add(OutputIds.SetDynamicStylesDone, '设置选项样式完成', {
+      type: 'object'
+    });
+  }
+  //=========== v1.1.17 end ===============
+
   return true;
 }
