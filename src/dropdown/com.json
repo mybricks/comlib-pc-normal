@@ -1,7 +1,7 @@
 {
   "title": "下拉菜单",
   "namespace": "mybricks.normal-pc.dropdown",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "下拉菜单",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -34,6 +34,30 @@
     {
       "id": "carrier",
       "title": "添加组件"
+    },
+    {
+      "id": "item",
+      "capacity": 1,
+      "title": "选项",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "itemData",
+          "title": "当前项",
+          "desc": "当前项展示内容",
+          "schema": {
+            "type": "any"
+          }
+        },
+        {
+          "id": "index",
+          "title": "当前项序号",
+          "desc": "当前项展示的序号",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ]
     }
   ]
 }
