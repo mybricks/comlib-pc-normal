@@ -17,7 +17,7 @@ async function main() {
     ...new Set(
       gitStatusOutput
         .split('\n')
-        .filter((line) => line.trim().startsWith('M'))
+        .filter((line) => line.trim().startsWith('M') || line.trim().startsWith('A'))
         .map((line) => line.trim().split(/\s+/)[1])
         .filter((filePath) => filePath.startsWith('src/'))
         .map((filePath) => filePath.match(/(src\/form-coms|src)\/(.*?)\//)[2])

@@ -422,11 +422,9 @@ export default function (props: RuntimeParams<Data>) {
                 const tempItem = dataSourceRef.current.find(
                   (item) => targetRowKeyVal === item[rowKey]
                 );
-                newSelectedRowKeys.push(targetRowKeyVal);
                 // 需要判断对应的row数据是否存在
-                if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
-                  newSelectedRows.push(tempItem);
-                }
+                newSelectedRows.push(tempItem);
+                newSelectedRowKeys.push(targetRowKeyVal);
               });
               setSelectedRowKeys(newSelectedRowKeys);
               setSelectedRows(newSelectedRows);
