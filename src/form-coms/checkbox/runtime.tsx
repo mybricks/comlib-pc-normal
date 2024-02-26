@@ -158,6 +158,27 @@ export default function Runtime({
         relOutputs['setActiveFontColorDone'](color);
       }
     });
+
+    //设置多选框，全选框的可控状态
+    if (data.isIndeterminate) {
+      inputs['setIndeterminate']((val: string, relOutputs) => {
+        if (val === 'partChecked') {
+          setIndeterminate(true);
+          setCheckAll(false);
+          relOutputs['setIndeterminateDone'](val);
+        } else if (val === 'unChecked') {
+          setCheckAll(false);
+          setIndeterminate(false);
+          relOutputs['setIndeterminateDone'](val);
+        } else if (val === 'allChecked') {
+          setCheckAll(true);
+          setIndeterminate(false);
+          relOutputs['setIndeterminateDone'](val);
+        } else {
+          console.error('传入值应该为partChecked、unChecked、allChecked');
+        }
+      });
+    }
   }, [value]);
 
   const [indeterminate, setIndeterminate] = useState(false);

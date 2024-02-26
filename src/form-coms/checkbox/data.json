@@ -23,5 +23,6 @@
   "checkAll": false,
   "layout": "horizontal",
   "checkAllText": "全选",
-  "isEditable": true
+  "isEditable": true,
+  "isIndeterminate": false
 }

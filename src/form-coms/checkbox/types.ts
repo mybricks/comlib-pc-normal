@@ -14,4 +14,5 @@ export interface Data {
     renderError?: boolean;
     layout: 'vertical' | 'horizontal';
     isEditable: boolean;
+    isIndeterminate: boolean;
 }
