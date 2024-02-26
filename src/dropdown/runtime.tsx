@@ -52,7 +52,7 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
         </Menu>
       )
     }else if(env.runtime){
-      if(data.dynamicOptions.length > 0){
+      if(Array.isArray(data.dynamicOptions) && data.dynamicOptions.length > 0){
         return (
           <Menu style={{ width: data.width }}>
             {data.dynamicOptions &&
