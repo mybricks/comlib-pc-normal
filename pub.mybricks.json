@@ -90,7 +90,8 @@
         "./src/tree/com.json",
         "./src/timeline/com.json",
         "./src/calendar/com.json",
-        "./src/progress/com.json"
+        "./src/progress/com.json",
+        "./src/anchor-container/com.json"
       ]
     },
     {
