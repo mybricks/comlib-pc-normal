@@ -288,5 +288,14 @@ export default function ({
     input.get(InputIds.SET_FOCUS_ROW).setRels([OutputIds.SET_FOCUS_ROW]);
   }
 
+  /**
+   * @description v1.1.36 -> v1.1.37 新增动态设置布局风格能力
+   */
+  if(!input.get(InputIds.SET_SIZE)) {
+    input.add(InputIds.SET_SIZE, '设置布局风格', Schemas.SET_SIZE);
+    output.add(OutputIds.SET_SIZE_DONE, '设置布局风格完成', Schemas.SET_SIZE_DONE);
+    input.get(InputIds.SET_SIZE).setRels([OutputIds.SET_SIZE_DONE]);
+  }
+
   return true;
 }

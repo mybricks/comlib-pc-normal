@@ -1,7 +1,7 @@
 {
   "title": "数据表格",
   "namespace": "mybricks.normal-pc.table",
-  "version": "1.1.36",
+  "version": "1.1.37",
   "description": "数据表格",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -62,6 +62,17 @@
         "endLoading"
       ],
       "desc": "关闭表格loading状态"
+    },
+    {
+      "id": "setSize",
+      "title": "设置布局风格",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setSizeDone"
+      ],
+      "desc": "有三种布局风格: large | middle | small"
     }
   ],
   "outputs": [
@@ -98,6 +109,13 @@
       "title": "关闭loading后",
       "schema": {
         "type": "any"
+      }
+    },
+    {
+      "id": "setSizeDone",
+      "title": "设置布局风格完成",
+      "schema": {
+        "type": "string"
       }
     }
   ]
