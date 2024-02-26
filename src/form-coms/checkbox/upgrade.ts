@@ -239,7 +239,7 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   //=========== v1.1.6 end ===============
 
   /**
-   * @description v1.3.12 新增 编辑/可读输入
+   * @description v1.1.15 新增 编辑/可读输入
    */
   if (!output.get(outputIds.isEditableDone)) {
     output.add(outputIds.isEditableDone, '设置编辑/只读完成', { type: 'boolean' });
@@ -251,6 +251,14 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if (typeof data.isEditable === 'undefined') {
     data.isEditable = true;
   }
-  //=========== v1.3.12 end ===============
+  //=========== v1.1.15 end ===============
+
+  /**
+   * @description v1.1.16 新增 全选框可控
+   */
+  if (typeof data.isIndeterminate === 'undefined') {
+    data.isIndeterminate = false;
+  }
+  //=========== v1.1.16 end ===============
   return true;
 }
