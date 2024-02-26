@@ -49,7 +49,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
 
   const ListItemRender = (itemProps) => {
     const { [rowKey]: key, index: index, item: item } = itemProps
-    console.log(`itemProps`, itemProps)
+
     return (
       <List.Item key={key} id={`mybricks-anchor-${key}`}>
         {/* 当前项数据和索引 */}
@@ -65,7 +65,6 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
   };
 
 
-  console.log(`dataSource`, dataSource)
   //0、 无内容
   if (dataSource.length === 0) {
     return null;
