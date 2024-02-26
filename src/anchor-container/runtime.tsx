@@ -92,7 +92,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         <Anchor>
           {env.edit
             ? editAnchorData.map(i => <Link href={location.href} title={i.item.title} />)
-            : dataSource.map(i => <Link href={`${location.href}/#mybricks-anchor-${i[rowKey]}`} title={i.item.title} />)}
+            : dataSource.map(i => <Link href={`#mybricks-anchor-${i[rowKey]}`} title={i.item.title} />)}
         </Anchor>
       </Col>
     </Row>
