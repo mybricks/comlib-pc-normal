@@ -30,6 +30,7 @@ import {
 import { PageSchema } from './table/paginator';
 import rowMerge from './table/rowMerge';
 import lazyLoad from './table/lazyLoad';
+import filterIconDefault from './table/filterIconDefault';
 export function getColumnsFromSchema(schema: any) {
   function getColumnsFromSchemaProperties(properties) {
     const columns: any = [];
@@ -156,6 +157,7 @@ export default {
         rowOperationEditor,
         rowMerge,
         ...lazyLoad,
+        ...filterIconDefault,
         ...ScrollToFirstRowEditor,
         ...SummaryColumn,
         ...DynamicColumnEditor,

@@ -710,7 +710,8 @@ export default function (props: RuntimeParams<Data>) {
         <ErrorBoundary>
           <ColumnRender {...columnRenderProps} env={env} outputs={outputs} />
         </ErrorBoundary>
-      )
+      ),
+      filterIconDefault: data.filterIconDefault
     });
   };
 

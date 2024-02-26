@@ -62,5 +62,6 @@
   "description": "暂无数据",
   "enableOnRow": false,
   "onRowScript": "",
-  "lazyLoad": false
+  "lazyLoad": false,
+  "filterIconDefault": "filter"
 }
