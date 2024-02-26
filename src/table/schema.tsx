@@ -526,5 +526,11 @@ export const Schemas = {
         type: 'string'
       }
     }
+  },
+  SET_SIZE: {
+    type: 'string'
+  },
+  SET_SIZE_DONE: {
+    type: 'string'
   }
 };

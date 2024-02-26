@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import moment from 'moment';
 import { Table, Tooltip } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { FilterFilled, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { CompareFn } from 'antd/es/table/interface';
 import {
   AlignEnum,
   Data,
+  FilterIconEnum,
   FilterTypeEnum,
   IColumn,
   SorterTypeEnum,
@@ -14,6 +15,7 @@ import {
 } from '../../types';
 import css from './style.less';
 import { OutputIds } from '../../constants';
+import FilterIconRender from './filter-icon-render';
 // import { runJs } from '../../../../package/com-utils';
 
 const { Column, ColumnGroup } = Table;
@@ -28,6 +30,7 @@ interface Props {
   focusRowIndex: number | null;
   focusCellinfo: any;
   setFocusCellinfo: any;
+  filterIconDefault?: FilterIconEnum;
 }
 
 export default ({
@@ -39,7 +42,8 @@ export default ({
   renderCell,
   focusRowIndex,
   setFocusCellinfo,
-  focusCellinfo
+  focusCellinfo,
+  filterIconDefault
 }: Props) => {
   const renderTtl = (cItem: IColumn) => {
     const title = env.i18n(cItem.title);
@@ -94,7 +98,7 @@ export default ({
     let sorter: boolean | CompareFn<any> | undefined;
 
     if (cItem.sorter?.enable) {
-      if(data.lazyLoad) sorter = true;
+      if (data.lazyLoad) sorter = true;
       else {
         switch (cItem.sorter.type) {
           case SorterTypeEnum.Length:
@@ -254,6 +258,13 @@ export default ({
               sorter && cItem?.sorterAlign && `ant-table-column-sorter-${cItem?.sorterAlign}`
           };
         }}
+        filterIcon={(filtered) => (
+          <FilterIconRender
+            defaultType={filterIconDefault}
+            type={cItem.filter?.filterIcon}
+            filtered={filtered}
+          />
+        )}
       />
     );
   };

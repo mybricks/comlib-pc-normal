@@ -71,7 +71,9 @@ export const InputIds = {
 
   TABLE_HEIGHT: 'tableHeight',
   // 动态修改列属性
-  CHANGE_COLS_ATTR: 'changeColsAttr'
+  CHANGE_COLS_ATTR: 'changeColsAttr',
+  // 设置布局风格
+  SET_SIZE: 'setSize'
 };
 export const OutputIds = {
   // 输出勾选项
@@ -117,7 +119,8 @@ export const OutputIds = {
   SET_FOCUS_ROW: 'setFocusRow',
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',
-  CHANGE_COLS_ATTR: 'changeColsAttr'
+  CHANGE_COLS_ATTR: 'changeColsAttr',
+  SET_SIZE_DONE: 'setSizeDone'
 };
 
 export const DefaultRowKey = '_uuid';

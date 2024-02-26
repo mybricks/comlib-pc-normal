@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, createContext } from 'react';
 import moment from 'moment';
-import { Table, Empty, Image, message } from 'antd';
+import { Table, Empty, Image, message, Input } from 'antd';
 import ConfigProvider from '../components/ConfigProvider';
 import { SorterResult, TableRowSelection } from 'antd/es/table/interface';
 import get from 'lodash/get';
@@ -27,6 +27,7 @@ import {
   FilterTypeEnum,
   IColumn,
   RowSelectionTypeEnum,
+  SizeEnum,
   SorterTypeEnum,
   TableLayoutEnum,
   WidthTypeEnum
@@ -220,6 +221,11 @@ export default function (props: RuntimeParams<Data>) {
         inputs[InputIds.SUMMARY_COLUMN]((val: any, relOutputs: any) => {
           setSummaryColumnData(val);
           handleOutputFn(relOutputs, OutputIds.SUMMARY_COLUMN, val);
+        });
+
+      inputs[InputIds.SET_SIZE] &&
+        inputs[InputIds.SET_SIZE]((val: SizeEnum) => {
+          data.size = val;
         });
 
       // 动态设置显示列
@@ -416,11 +422,9 @@ export default function (props: RuntimeParams<Data>) {
                 const tempItem = dataSourceRef.current.find(
                   (item) => targetRowKeyVal === item[rowKey]
                 );
-                newSelectedRowKeys.push(targetRowKeyVal);
                 // 需要判断对应的row数据是否存在
-                if (tempItem && !newSelectedRowKeys.includes(targetRowKeyVal)) {
-                  newSelectedRows.push(tempItem);
-                }
+                newSelectedRows.push(tempItem);
+                newSelectedRowKeys.push(targetRowKeyVal);
               });
               setSelectedRowKeys(newSelectedRowKeys);
               setSelectedRows(newSelectedRows);
@@ -706,7 +710,8 @@ export default function (props: RuntimeParams<Data>) {
         <ErrorBoundary>
           <ColumnRender {...columnRenderProps} env={env} outputs={outputs} />
         </ErrorBoundary>
-      )
+      ),
+      filterIconDefault: data.filterIconDefault
     });
   };
 
