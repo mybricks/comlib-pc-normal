@@ -157,8 +157,12 @@ export default function Runtime({
             <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
               {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
                 const label = item.label;
+                const autoFocus =
+                  !!data.autoFocus &&
+                  (data.autoFocus === 'first' ? radioIdx === 0 : valueRef.current === item.value);
                 return (
                   <Radio
+                    autoFocus={autoFocus}
                     key={item.key}
                     value={item.value}
                     disabled={item.disabled}

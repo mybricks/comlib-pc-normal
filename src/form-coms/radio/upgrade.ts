@@ -73,15 +73,15 @@ export default function ({ data, input, output, getDeclaredStyle, setDeclaredSty
   /**
    * v1.1.0 -> v1.1.1 调整选项标签的样式优先级
    */
-  
+
   const preLabelStyle = getDeclaredStyle("label.ant-radio-wrapper > span:nth-child(2)");
-  if(preLabelStyle) {
+  if (preLabelStyle) {
     setDeclaredStyle("label.ant-radio-wrapper", preLabelStyle.css);
     removeDeclaredStyle("label.ant-radio-wrapper > span:nth-child(2)");
   }
 
   const preLabelDisableStyle = getDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)");
-  if(preLabelDisableStyle) {
+  if (preLabelDisableStyle) {
     setDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled", preLabelDisableStyle.css);
     removeDeclaredStyle("label.ant-radio-wrapper.ant-radio-wrapper-disabled > span:nth-child(2)");
   }
@@ -245,6 +245,14 @@ export default function ({ data, input, output, getDeclaredStyle, setDeclaredSty
     data.isEditable = true;
   }
   //=========== v1.1.8 end ===============
+
+  /**
+   * @description v1.1.10 新增 data.autoFocus 自动聚焦配置项
+   */
+  if (data.autoFocus === undefined) {
+    data.autoFocus = false;
+  }
+  //=========== v1.1.10 end ===============
 
   return true;
 }
