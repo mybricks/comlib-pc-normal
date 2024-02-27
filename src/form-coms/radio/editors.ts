@@ -175,7 +175,7 @@ export default {
         {
           title: '自动聚焦',
           type: 'Select',
-          description: '用于实现页面打开时，自动，实现键盘的快捷操作',
+          description: '用于实现页面打开时，自动聚焦某个选项，以方便键盘快捷操作',
           options: [
             { label: '无', value: false },
             { label: '第一项', value: 'first' },
