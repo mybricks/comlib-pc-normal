@@ -26,7 +26,7 @@ export interface Option {
 export interface Data {
   //数据源
   dataSource: any[];
-
+  enableFix: boolean;
   //加载中动画
   useLoading?: boolean;
   //加载中文案

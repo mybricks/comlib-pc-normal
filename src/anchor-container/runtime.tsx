@@ -88,7 +88,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         />
       </Col>
       <Col span={4}>
-        <Anchor>
+        <Anchor affix={data.enableFix}>
           {env.edit
             ? editAnchorData.map(i => <Link href={location.href} title={i.item.title} />)
             : dataSource.map(i => <Link href={`#mybricks-anchor-${i[rowKey]}`} title={i.item.title} />)}
