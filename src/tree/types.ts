@@ -135,7 +135,7 @@ export interface Data {
    */
   staticData: string;
   /**
-   * @description 树是否使用紧凑模式
+   * @description 组件版本: 1.0.48 树是否使用紧凑模式
    */
   useCompactTheme?: boolean;
 }
