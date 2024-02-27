@@ -14,11 +14,7 @@ interface SortableListProps<T = any> {
 }
 
 const SortableItem = SortableElement((props) => {
-  return (
-    <div className={styles['sort-item']} style={{ zIndex: 100 }}>
-      {props.children}
-    </div>
-  );
+  return <div className={styles['sort-item']}>{props.children}</div>;
 });
 
 const SortableList = SortableContainer(({ list, data, renderItem }: SortableListProps) => {
