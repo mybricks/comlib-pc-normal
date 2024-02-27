@@ -34,6 +34,18 @@ export default {
         }
       },
       {
+        title: '紧凑模式',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.useCompactTheme;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.useCompactTheme = value;
+          }
+        }
+      },
+      {
         title: '可滚动高度',
         type: 'text',
         options: {
@@ -57,12 +69,101 @@ export default {
                 title: '树组件样式',
                 options: [
                   'border',
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontFamily: true,
+                      disableTextAlign: true,
+                      disableColor: true,
+                      disableFontWeight: true,
+                      disableLetterSpacing: true,
+                      disableWhiteSpace: true
+                    }
+                  }
                 ],
                 target: '.ant-tree'
               },
               {
+                title: '缩进样式',
+                options: [
+                  {
+                    type: 'size',
+                    config: {
+                      disableWidth: true
+                    }
+                  }
+                ],
+                target: '.ant-tree .ant-tree-treenode .ant-tree-indent'
+              },
+              {
+                title: '缩进样式',
+                options: [
+                  {
+                    type: 'size',
+                    config: {
+                      disableHeight: true
+                    }
+                  }
+                ],
+                target: '.ant-tree-indent-unit'
+              },
+              {
+                title: '展开收起图标',
+                options: [
+                  {
+                    type: 'size',
+                    config: {
+                      disableHeight: true
+                    }
+                  },
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontSize: true,
+                      disableFontFamily: true,
+                      disableTextAlign: true,
+                      disableColor: true,
+                      disableFontWeight: true,
+                      disableLetterSpacing: true,
+                      disableWhiteSpace: true
+                    }
+                  }
+                ],
+                target: '.ant-tree-switcher'
+              },
+              {
                 title: '树节点公共样式',
+                options: ['padding'],
+                target: '.ant-tree-treenode'
+              },
+              {
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  },
+                  'border',
+                  {
+                    type: 'background',
+                    config: {
+                      disableBackgroundImage: true
+                    }
+                  },
+                  {
+                    type: 'size',
+                    config: {
+                      disableWidth: true
+                    }
+                  }
+                ],
+                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
+              },
+              {
+                title: '节点标题公共样式',
                 options: [
                   {
                     type: 'font',
@@ -73,19 +174,6 @@ export default {
                 ],
                 target:
                   '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
-              },
-              {
-                title: '树节点公共样式',
-                options: [
-                  'border',
-                  {
-                    type: 'background',
-                    config: {
-                      disableBackgroundImage: true
-                    }
-                  }
-                ],
-                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
               },
               {
                 title: '空状态图片',

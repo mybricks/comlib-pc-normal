@@ -472,7 +472,9 @@ export default function (props: RuntimeParams<Data>) {
 
   return (
     <div
-      className={`${isEmpty ? css.emptyWrapper : ''}`}
+      className={`${isEmpty ? css.emptyWrapper : ''} ${
+        data.useCompactTheme ? css.singleCompact : ''
+      }`}
       style={{
         maxHeight: isEmpty ? void 0 : data.scrollHeight,
         height: isEmpty ? data.scrollHeight : void 0,

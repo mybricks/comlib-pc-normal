@@ -134,6 +134,10 @@ export interface Data {
    * @description 组件版本: 1.0.40
    */
   staticData: string;
+  /**
+   * @description 树是否使用紧凑模式
+   */
+  useCompactTheme?: boolean;
 }
 
 export interface TreeData {
