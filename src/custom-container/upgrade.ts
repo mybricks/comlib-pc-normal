@@ -104,5 +104,11 @@ export default function ({
   }
   //=========== v1.0.19 end ===============
 
+  /**
+   * @description v1.0.21 兼容智能排列，flexDepiction 
+  */
+  if(data.slotStyle.flexDirection === 'smart'){
+    data.slotStyle.position = 'smart'
+  }
   return true;
 }
