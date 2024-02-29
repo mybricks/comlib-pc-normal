@@ -82,27 +82,27 @@ export default {
             span: 24 / data.formItemColumn,
             colon: 'default',
             labelWidthType: 'default',
-            labelAlign: 'default',
-            labelAutoWrap: 'default',
+            // labelAlign: 'default',
+            // labelAutoWrap: 'default',
             hiddenLabel: false,
-            descriptionStyle: {
-              whiteSpace: 'pre-wrap',
-              lineHeight: '12px',
-              letterSpacing: '0px',
-              fontSize: '12px',
-              fontWeight: 400,
-              color: 'rgba(0, 0, 0, 0.45)',
-              fontStyle: 'normal'
-            },
-            labelStyle: {
-              lineHeight: '14px',
-              letterSpacing: '0px',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'rgba(0, 0, 0, 0.85)',
-              fontStyle: 'normal'
-            },
-            inlineMargin: [0, 16, 24, 0],
+            // descriptionStyle: {
+            //   whiteSpace: 'pre-wrap',
+            //   lineHeight: '12px',
+            //   letterSpacing: '0px',
+            //   fontSize: '12px',
+            //   fontWeight: 400,
+            //   color: 'rgba(0, 0, 0, 0.45)',
+            //   fontStyle: 'normal'
+            // },
+            // labelStyle: {
+            //   lineHeight: '14px',
+            //   letterSpacing: '0px',
+            //   fontSize: '14px',
+            //   fontWeight: 400,
+            //   color: 'rgba(0, 0, 0, 0.85)',
+            //   fontStyle: 'normal'
+            // },
+            // inlineMargin: [0, 16, 24, 0],
             visible: true,
             hidden: false
           });
@@ -114,7 +114,10 @@ export default {
           id,
           comName: name,
           widthOption: 'span',
-          span: 24 / data.formItemColumn
+          span: 24 / data.formItemColumn,
+          colon: 'default',
+          hiddenLabel: false,
+          visible: true
         });
       }
     }
@@ -204,6 +207,67 @@ export default {
         catelog: '默认',
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         target: '.ant-form'
+      },
+      {
+        title: '公共标题样式',
+        catelog: '默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+      },
+      {
+        title: '公共冒号样式',
+        catelog: '默认',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `.ant-form-item > div.ant-col.ant-form-item-label > label:after`
+      },
+      {
+        title: '公共标题对齐方式',
+        catelog: '默认',
+        options: [
+          {
+            type: 'font',
+            config: {
+              disableFontFamily: true,
+              disableColor: true,
+              disableFontWeight: true,
+              disableFontSize: true,
+              disableLineHeight: true,
+              disableLetterSpacing: true,
+              disableWhiteSpace: true
+            }
+          }
+        ],
+        target: `.ant-form-item > div.ant-col.ant-form-item-label`
+      },
+      {
+        title: '公共提示语样式',
+        catelog: '默认',
+        options: ['font'],
+        target: `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`
+      },
+      {
+        title: '公共表单项边距',
+        catelog: '默认',
+        options: ['margin'],
+        target: `.ant-col:not(:last-child) .ant-form-item`,
+        ifVisible({ data }: EditorResult<Data>) {
+          /**
+           * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+           */
+          return !(data?.domainModel?.entity?.fieldAry?.length > 0 && data?.domainModel?.isQuery);
+        }
+      },
+      {
+        title: '操作项内边距',
+        catelog: '默认',
+        options: ['padding'],
+        target: `div.ant-col.formAction`
+      },
+      {
+        title: '操作项外边距',
+        catelog: '默认',
+        options: ['margin'],
+        target: `div.ant-col.formAction div.ant-row.ant-form-item`
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {
@@ -428,34 +492,6 @@ export default {
                   data.config.colon = value;
                 }
               }
-            },
-            {
-              title: '自动换行',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config?.labelWrap;
-                },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.config.labelWrap = value;
-                }
-              }
-            },
-            {
-              title: '对齐方式',
-              type: 'Radio',
-              options: [
-                { label: '左对齐', value: 'left' },
-                { label: '右对齐', value: 'right' }
-              ],
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.config?.labelAlign;
-                },
-                set({ data }: EditorResult<Data>, value: 'left' | 'right') {
-                  data.config.labelAlign = value;
-                }
-              }
             }
           ]
         },
@@ -497,6 +533,56 @@ export default {
 
   ':child(mybricks.normal-pc.form-container/form-item)': {
     title: '表单项',
+    style: [
+      {
+        title: '标题字体',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`
+      },
+      {
+        title: '标题冒号',
+        options: [{ type: 'font', config: { disableTextAlign: true } }],
+        target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label:after`
+      },
+      {
+        title: '标题对齐方式',
+        options: [
+          {
+            type: 'font',
+            config: {
+              disableFontFamily: true,
+              disableColor: true,
+              disableFontWeight: true,
+              disableFontSize: true,
+              disableLineHeight: true,
+              disableLetterSpacing: true,
+              disableWhiteSpace: true
+            }
+          }
+        ],
+        target: `div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`
+      },
+      {
+        title: '提示语样式',
+        options: ['font'],
+        target: ({ comId, comName, ...arg }) => {
+          return `div.ant-row.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
+        }
+      },
+      {
+        title: '表单项边距',
+        catelog: '默认',
+        options: ['margin'],
+        target: `div.ant-row.ant-form-item`,
+        ifVisible({ comDef }) {
+          const { data } = comDef;
+          /**
+           * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
+           */
+          return !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery);
+        }
+      }
+    ],
     items: [
       {
         title: '显示标题',
@@ -835,57 +921,14 @@ export default {
             }
           },
           {
-            title: '边距',
-            type: 'inputNumber',
-            options: [
-              { min: 0, title: '上' },
-              { min: 0, title: '右' },
-              { min: 0, title: '下' },
-              { min: 0, title: '左' }
-            ],
-            ifVisible({ data }: EditorResult<Data>) {
-              /**
-               * 领域模型查询区内，为保持样式统一 暂时不支持边距自定义
-               */
-              return (
-                (data.config?.layout || data.layout) !== 'horizontal' &&
-                !(data.domainModel?.entity?.fieldAry?.length > 0 && data.domainModel?.isQuery)
-              );
-            },
-            value: {
-              get({ id, data, name }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'inlineMargin');
-              },
-              set({ id, data, name }: EditorResult<Data>, value: number[]) {
-                setFormItemProps({ data, id, name }, 'inlineMargin', value);
-              }
-            }
-          },
-          {
-            title: '边距应用其它表单项及操作项',
-            type: 'Button',
-            ifVisible({ data }: EditorResult<Data>) {
-              return (data.config?.layout || data.layout) !== 'horizontal';
-            },
-            value: {
-              set({ id, data, name }: EditorResult<Data>) {
-                const { item: curItem } = getFormItem(data, { id, name });
-
-                const margin = curItem?.inlineMargin || [0, 16, 24, 0];
-                data.items.forEach((item) => (item.inlineMargin = [...margin]));
-                data.actions.inlinePadding = [...margin];
-              }
-            }
-          },
-          {
             title: '标题宽度',
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
               return !getFormItemProp({ data, id, name }, 'hiddenLabel');
             },
             options: [
-              { label: '自定义', value: 'custom' },
-              { label: '跟随容器', value: 'default' }
+              { label: '跟随容器', value: 'default' },
+              { label: '自定义', value: 'custom' }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
@@ -915,46 +958,6 @@ export default {
             }
           },
           {
-            title: '标题自动换行',
-            type: 'Radio',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            options: [
-              { label: '是', value: true },
-              { label: '否', value: false },
-              { label: '跟随容器', value: 'default' }
-            ],
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'labelAutoWrap');
-              },
-              set({ id, name, data }: EditorResult<Data>, value: boolean) {
-                setFormItemProps({ data, id, name }, 'labelAutoWrap', value);
-              }
-            }
-          },
-          {
-            title: '标题对齐方式',
-            type: 'Radio',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            options: [
-              { label: '左对齐', value: 'left' },
-              { label: '右对齐', value: 'right' },
-              { label: '跟随容器', value: 'default' }
-            ],
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                return getFormItemProp({ data, id, name }, 'labelAlign');
-              },
-              set({ id, name, data }: EditorResult<Data>, value: 'left' | 'right') {
-                setFormItemProps({ data, id, name }, 'labelAlign', value);
-              }
-            }
-          },
-          {
             title: '标题冒号',
             type: 'Radio',
             ifVisible({ id, name, data }: EditorResult<Data>) {
@@ -962,9 +965,9 @@ export default {
             },
             description: '当标题配置为空时，始终不展示冒号',
             options: [
+              { label: '跟随容器', value: 'default' },
               { label: '显示', value: true },
-              { label: '隐藏', value: false },
-              { label: '跟随容器', value: 'default' }
+              { label: '隐藏', value: false }
             ],
             value: {
               get({ id, name, data }: EditorResult<Data>) {
@@ -972,120 +975,6 @@ export default {
               },
               set({ id, name, data }: EditorResult<Data>, value: FormItemColonType) {
                 setFormItemProps({ data, id, name }, 'colon', value);
-              }
-            }
-          },
-          {
-            title: '标题样式',
-            type: 'Style',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false,
-                verticalAlign: false
-              }
-            },
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            description: '表单项标题的字体样式',
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                const { item } = getFormItem(data, { id, name });
-
-                if (!item?.labelStyle) {
-                  setFormItemProps({ data, id, name }, 'labelStyle', {
-                    lineHeight: '14px',
-                    letterSpacing: '0px',
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    color: 'rgba(0, 0, 0, 0.85)',
-                    fontStyle: 'normal'
-                  });
-                }
-                return item?.labelStyle;
-              },
-              set({ id, name, data }: EditorResult<Data>, value: any) {
-                const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id, name }, 'labelStyle', style);
-              }
-            }
-          },
-          {
-            title: '标题样式应用所有表单项',
-            type: 'Button',
-            ifVisible({ id, name, data }: EditorResult<Data>) {
-              return !getFormItemProp({ data, id, name }, 'hiddenLabel');
-            },
-            value: {
-              set({ id, name, data }: EditorResult<Data>, value: {}) {
-                const { item } = getFormItem(data, { id, name });
-
-                const labelStyle = item?.labelStyle || {
-                  lineHeight: '14px',
-                  letterSpacing: '0px',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: 'rgba(0, 0, 0, 0.85)',
-                  fontStyle: 'normal'
-                };
-
-                data.items.forEach((item) => (item.labelStyle = labelStyle));
-              }
-            }
-          },
-          {
-            title: '提示语样式',
-            type: 'Style',
-            options: {
-              plugins: ['Font'],
-              fontProps: {
-                fontFamily: false,
-                verticalAlign: false
-              }
-            },
-            description: '表单项提示语的字体样式',
-            value: {
-              get({ id, name, data }: EditorResult<Data>) {
-                const { item } = getFormItem(data, { id, name });
-
-                if (!item?.descriptionStyle) {
-                  setFormItemProps({ data, id, name }, 'descriptionStyle', {
-                    whiteSpace: 'pre-wrap',
-                    lineHeight: '12px',
-                    letterSpacing: '0px',
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    color: 'rgba(0, 0, 0, 0.45)',
-                    fontStyle: 'normal'
-                  });
-                }
-                return item?.descriptionStyle;
-              },
-              set({ id, name, data }: EditorResult<Data>, value: any) {
-                const { styleEditorUnfold, ...style } = value;
-                setFormItemProps({ data, id, name }, 'descriptionStyle', style);
-              }
-            }
-          },
-          {
-            title: '提示语样式应用所有表单项',
-            type: 'Button',
-            value: {
-              set({ id, name, data }: EditorResult<Data>) {
-                const { item } = getFormItem(data, { id, name });
-
-                const descriptionStyle = item?.descriptionStyle || {
-                  whiteSpace: 'pre-wrap',
-                  lineHeight: '12px',
-                  letterSpacing: '0px',
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  color: 'rgba(0, 0, 0, 0.45)',
-                  fontStyle: 'normal'
-                };
-
-                data.items.forEach((item) => (item.descriptionStyle = descriptionStyle));
               }
             }
           },
@@ -1183,6 +1072,18 @@ export default {
   },
   '[data-form-actions]': {
     title: '操作区',
+    style: [
+      {
+        catelog: '默认',
+        options: ['padding'],
+        target: `div.ant-col.formAction`
+      },
+      {
+        catelog: '默认',
+        options: ['margin'],
+        target: `div.ant-col.formAction div.ant-row.ant-form-item`
+      }
+    ],
     items: ({ data, output, env }: EditorResult<Data>, cate1) => {
       cate1.title = actionsEditor(data, output, env).title;
       cate1.items = actionsEditor(data, output, env).items;
@@ -1284,6 +1185,31 @@ export default {
                 options: [{ type: 'font', config: { disableTextAlign: true } }],
                 target({ focusArea }) {
                   return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:hover .icon`;
+                }
+              }
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: '激活',
+            items: [
+              {
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  'background'
+                ],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active`;
+                },
+                domTarget({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]`;
+                }
+              },
+              {
+                title: '图标',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target({ focusArea }) {
+                  return `button[data-form-actions-item="${focusArea.dataset['formActionsItem']}"]:active .icon`;
                 }
               }
             ]

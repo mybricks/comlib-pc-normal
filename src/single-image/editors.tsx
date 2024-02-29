@@ -84,12 +84,15 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data.usePreview;
                 },
-                set({ data, input }: EditorResult<Data>, value: boolean) {
+                set({ data, input, output }: EditorResult<Data>, value: boolean) {
                   data.usePreview = value;
                   if (value) {
                     input.add(InputIds.SetPreviewImgSrc, '预览图片地址', { type: 'string' });
+                    output.add('setPreviewImgSrcDone', '设置预览地址完成', { type: 'string' });
+                    input.get(InputIds.SetPreviewImgSrc).setRels(['setPreviewImgSrcDone']);
                   } else {
                     input.remove(InputIds.SetPreviewImgSrc);
+                    output.remove('setPreviewImgSrcDone');
                   }
                 }
               }

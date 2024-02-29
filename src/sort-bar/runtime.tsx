@@ -24,8 +24,9 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   //整体输入
   useEffect(() => {
     if (env.runtime) {
-      inputs['inputSettings']((val) => {
+      inputs['inputSettings']((val, outputRels) => {
         data.children = val;
+        outputRels['inputSettingsDone'](val);
       });
     }
   }, []);

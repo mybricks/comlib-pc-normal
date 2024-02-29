@@ -9,5 +9,8 @@
     "flexWrap": "nowrap"
   },
   "legacyConfigStyle": {},
-  "legacyStyle": {}
+  "legacyStyle": {},
+  "isAutoScroll": false,
+  "direction": "vertical",
+  "scrollTime": 2000
 }

@@ -24,5 +24,6 @@
   "layout": "horizontal",
   "enableButtonStyle": false,
   "buttonStyle": "outline",
-  "isEditable": true
+  "isEditable": true,
+  "autoFocus": false
 }

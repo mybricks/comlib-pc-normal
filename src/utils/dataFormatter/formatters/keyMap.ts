@@ -11,7 +11,7 @@ const keyMapFormatter: TFormatterInfo = {
   genFormatting(editorValue) {
     return (data) => {
       const map = editorValue || {}
-      return map[data] || null
+      return map[data] || data
     }
   },
 }

@@ -10,30 +10,65 @@ export function getPort() {
  *
  * TODO: 优化导入 dump 的方式
  * 最好是有 dump => toJSON 的函数，这样就不用到搭建页面获取 toJSON 了
+ *
+ * @param dump
+ * @param updateQueries 需要更新的元素列表 (因为是模拟点击“升级全部”按钮，所以同一种元素只需要一个)
  */
-export function dumpPreview(dump: Record<string, unknown>) {
+export function dumpPreview(
+  dump: Record<string, unknown>,
+  updateQueries: { selector: keyof HTMLElementTagNameMap; text: string | number | RegExp }[]
+) {
   // 加载空白页面
   cy.visit(`http://localhost:${getPort()}`);
 
-  cy.get('[data-mybricks-tip*=调试工具]').click();
+  cy.get('[data-mybricks-tip*=调试工具]');
 
-  // 使用 navigator.clipboard.writeText 将内容复制到剪切板
+  // 打开用于导入 dump 的后门面板
   cy.window().then(async (win) => {
-    await win.navigator.clipboard
-      .writeText(JSON.stringify(dump))
-      .then(() => {
-        // 复制成功后的操作
-        cy.log('内容已成功复制到剪切板');
-      })
-      .catch((err) => {
-        // 复制失败时的操作
-        cy.log('复制到剪切板时出错:', err);
-      });
+    const menuBtn = win.document.querySelector(
+      `div[data-mybricks-tip*="不展示"]`
+    ) as HTMLDivElement;
+    menuBtn.click();
   });
 
-  cy.contains('从剪切板中导入').click();
+  cy.get('#loadContentPlugin-textarea');
 
-  cy.wait(300);
+  cy.window().then(async (win) => {
+    const textarea = win.document.querySelector(
+      '#loadContentPlugin-textarea'
+    ) as HTMLTextAreaElement;
+    const button = win.document.querySelector('#loadContentPlugin-button') as HTMLButtonElement;
+    const menuBtn = win.document.querySelector(
+      `div[data-mybricks-tip*="不展示"]`
+    ) as HTMLDivElement;
+
+    // 导入 dump
+    textarea.value = JSON.stringify(dump);
+    button.click();
+
+    // 关闭用于导入 dump 的后门面板
+    menuBtn.click();
+  });
+
+  updateQueries.forEach((query) => {
+    cy.get('#_mybricks-geo-webview_')
+      .shadow()
+      .contains(query.selector, query.text)
+      .click({ force: true });
+
+    cy.window().then((win) => {
+      const upgradeBtn = win.document.querySelector(
+        "div[class*='upgrade'] > div:nth-child(2) > button:nth-child(2)"
+      );
+
+      if (!!upgradeBtn) {
+        cy.log('点击升级全部按钮');
+        cy.get("div[class*='upgrade'] > div:nth-child(2) > button:nth-child(2)").click();
+      } else {
+        cy.log('没有升级全部按钮');
+      }
+    });
+  });
 
   cy.contains('预览').click();
 

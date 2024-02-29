@@ -3,18 +3,12 @@ const axios = require('axios');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const glob = require('glob');
 
 /**
  * 主函数
  */
 async function main() {
-  const { port, kill } = await ensureDebugServerStart();
-
-  if (!port) {
-    beautifulLog('请先启动 vscode 调试, 且配置文件选择: test.mybricks.json', 'error');
-    return kill();
-  }
-
   // 执行git status命令获取修改过的文件列表
   const gitStatusOutput = execSync('git status --porcelain', { encoding: 'utf-8' });
 
@@ -23,29 +17,64 @@ async function main() {
     ...new Set(
       gitStatusOutput
         .split('\n')
-        .filter((line) => line.trim().startsWith('M'))
+        .filter((line) => line.trim().startsWith('M') || line.trim().startsWith('A'))
         .map((line) => line.trim().split(/\s+/)[1])
         .filter((filePath) => filePath.startsWith('src/'))
         .map((filePath) => filePath.match(/(src\/form-coms|src)\/(.*?)\//)[2])
     )
   ];
 
+  if (!modifiedComponents.length) {
+    beautifulLog('没有组件变动，不需要执行测试');
+    return process.exit(0);
+  }
+
+  const { port, kill } = await ensureDebugServerStart();
+
+  if (!port) {
+    beautifulLog('请先启动 vscode 调试, 且配置文件选择: test.mybricks.json', 'error');
+    return kill();
+  }
+
   beautifulLog(`已修改的组件列表：${modifiedComponents.join(',')}`);
   beautifulLog('开始按需执行组件测试用例...');
 
+  let allPass = false;
   try {
     // 按需执行 Cypress 测试
-    const command = `npx cypress run --env port=${port},check="${modifiedComponents.join(' ')}"`;
+    const spec = modifiedComponents.reduce((pre, componentName) => {
+      const path1 = `src/**/${componentName}/**/*.cy.{js,jsx,ts,tsx}`;
+      const path2 = `src/${componentName}/**/*.cy.{js,jsx,ts,tsx}`;
+
+      if (fileExists(path1)) pre = pre + ',' + path1;
+      if (fileExists(path2)) pre = pre + ',' + path2;
+
+      return pre;
+    }, '').slice(1);
+
+    if(spec.length === 0) {
+      beautifulLog('没有可执行测试用例，不需要执行测试');
+      return process.exit(0);
+    }
+
+    const command = `npx cypress run --env port=${port},check="${modifiedComponents.join(
+      ' '
+    )}" --spec="${spec}"`;
+    
     beautifulLog(`执行命令：${command}`);
     execSync(command, {
       stdio: 'inherit'
     });
+
+    allPass = true;
     beautifulLog('测试通过！', 'success');
   } catch (e) {
+    allPass = false;
     beautifulLog('有测试用例未通过，请检查！', 'error');
   }
-
   kill();
+  if (allPass) process.exit(0);
+  else process.exit(1);
 }
 
 main();
@@ -195,4 +224,14 @@ async function ensureDebugServerStart() {
     port,
     kill: () => serverProcess.kill()
   };
+}
+
+// 检查是否存在指定路径的文件
+function fileExists(path) {
+  try {
+    const files = glob.sync(path);
+    return files.length > 0;
+  } catch (err) {
+    return false;
+  }
 }

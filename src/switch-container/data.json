@@ -1,0 +1,10 @@
+{
+  "useDefaultStatus": true,
+  "statusList": [
+    {
+      "id": "status1",
+      "title": "状态1",
+      "visible": true
+    }
+  ]
+}

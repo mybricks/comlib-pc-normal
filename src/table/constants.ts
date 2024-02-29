@@ -71,14 +71,16 @@ export const InputIds = {
 
   TABLE_HEIGHT: 'tableHeight',
   // 动态修改列属性
-  CHANGE_COLS_ATTR: 'changeColsAttr'
+  CHANGE_COLS_ATTR: 'changeColsAttr',
+  // 设置布局风格
+  SET_SIZE: 'setSize'
 };
 export const OutputIds = {
   // 输出勾选项
   GET_ROW_SELECTION: 'outRowSelection',
   // 输出表格数据
   GET_TABLE_DATA: 'getTableData',
-  // 输出勾选数据
+  // 输出筛选数据
   GET_FILTER: 'getFilter',
   // 输出排序数据
   GET_SORT: 'getSorter',
@@ -97,6 +99,9 @@ export const OutputIds = {
   // 双击行触发
   ROW_DOUBLE_CLICK: 'rowDoubleClick',
   Edit_Table_Data: 'editTableData',
+  Row_Move_Up: 'rowMoveUp',
+  Row_Move_Down: 'rowMoveDown',
+  Remove_Row: 'removeRow',
   COLUMNS_CHANGE: 'columnsChange',
 
   // 新增对应串行输出
@@ -114,7 +119,8 @@ export const OutputIds = {
   SET_FOCUS_ROW: 'setFocusRow',
   SET_FILTER_INPUT: 'filterInput',
   EnableAllExpandedRows: 'enableAllExpandedRows',
-  CHANGE_COLS_ATTR: 'changeColsAttr'
+  CHANGE_COLS_ATTR: 'changeColsAttr',
+  SET_SIZE_DONE: 'setSizeDone'
 };
 
 export const DefaultRowKey = '_uuid';
@@ -131,4 +137,4 @@ export const DefaultOnRowScript = `/**
   return {
     style: {}
   }
-}`
+}`;

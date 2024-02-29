@@ -1,7 +1,7 @@
 {
   "title": "排序标题栏",
   "namespace": "mybricks.normal-pc.sort-bar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "排序标题栏",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +9,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "inputSettings",
@@ -33,7 +34,10 @@
             }
           }
         }
-      }
+      },
+      "rels": [
+        "inputSettingsDone"
+      ]
     }
   ],
   "outputs": [
@@ -81,6 +85,31 @@
                   "type": "string"
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "inputSettingsDone",
+      "title": "初始化完成",
+      "schema": {
+        "title": "排序数据",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "title": "标题",
+              "type": "string"
+            },
+            "fieldName": {
+              "title": "字段名",
+              "type": "string"
+            },
+            "order": {
+              "title": "排序顺序",
+              "type": "string"
             }
           }
         }

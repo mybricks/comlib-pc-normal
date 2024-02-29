@@ -34,6 +34,18 @@ export default {
         }
       },
       {
+        title: '紧凑模式',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return !!data.useCompactTheme;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.useCompactTheme = value;
+          }
+        }
+      },
+      {
         title: '可滚动高度',
         type: 'text',
         options: {
@@ -57,12 +69,101 @@ export default {
                 title: '树组件样式',
                 options: [
                   'border',
-                  { type: 'background', config: { disableBackgroundImage: true } }
+                  { type: 'background', config: { disableBackgroundImage: true } },
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontFamily: true,
+                      disableTextAlign: true,
+                      disableColor: true,
+                      disableFontWeight: true,
+                      disableLetterSpacing: true,
+                      disableWhiteSpace: true
+                    }
+                  }
                 ],
                 target: '.ant-tree'
               },
               {
+                title: '缩进样式',
+                options: [
+                  {
+                    type: 'size',
+                    config: {
+                      disableWidth: true
+                    }
+                  }
+                ],
+                target: '.ant-tree .ant-tree-treenode .ant-tree-indent'
+              },
+              {
+                title: '缩进样式',
+                options: [
+                  {
+                    type: 'size',
+                    config: {
+                      disableHeight: true
+                    }
+                  }
+                ],
+                target: '.ant-tree-indent-unit'
+              },
+              {
+                title: '展开收起图标',
+                options: [
+                  {
+                    type: 'size',
+                    config: {
+                      disableHeight: true
+                    }
+                  },
+                  {
+                    type: 'font',
+                    config: {
+                      disableFontSize: true,
+                      disableFontFamily: true,
+                      disableTextAlign: true,
+                      disableColor: true,
+                      disableFontWeight: true,
+                      disableLetterSpacing: true,
+                      disableWhiteSpace: true
+                    }
+                  }
+                ],
+                target: '.ant-tree-switcher'
+              },
+              {
                 title: '树节点公共样式',
+                options: ['padding'],
+                target: '.ant-tree-treenode'
+              },
+              {
+                title: '树节点公共样式',
+                options: [
+                  {
+                    type: 'font',
+                    config: {
+                      disableTextAlign: true
+                    }
+                  },
+                  'border',
+                  {
+                    type: 'background',
+                    config: {
+                      disableBackgroundImage: true
+                    }
+                  },
+                  {
+                    type: 'size',
+                    config: {
+                      disableWidth: true
+                    }
+                  }
+                ],
+                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
+              },
+              {
+                title: '节点标题公共样式',
                 options: [
                   {
                     type: 'font',
@@ -73,19 +174,6 @@ export default {
                 ],
                 target:
                   '.ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title .title'
-              },
-              {
-                title: '树节点公共样式',
-                options: [
-                  'border',
-                  {
-                    type: 'background',
-                    config: {
-                      disableBackgroundImage: true
-                    }
-                  }
-                ],
-                target: '.ant-tree-treenode > .ant-tree-node-content-wrapper'
               },
               {
                 title: '空状态图片',
@@ -450,6 +538,28 @@ export default {
           ]
         },
         {
+          title: '禁用功能',
+          items: [
+            {
+              title: '节点禁用表达式',
+              description: `根据节点数据在运行时动态设置节点禁用的表达式，支持JS表达式语法, 例：{node.disabled}`,
+              type: 'expression',
+              options: {
+                placeholder: `例：{node.disabled} 节点disabled为true时禁用`,
+                suggestions
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.disabledScript;
+                },
+                set({ data }: EditorResult<Data>, value: string) {
+                  data.disabledScript = value;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '勾选功能',
           items: [
             {
@@ -509,11 +619,45 @@ export default {
                         type: 'any'
                       }
                     });
+
+                    output.add({
+                      id: 'setCheckedKeysDone',
+                      title: '设置勾选项完成',
+                      schema: {
+                        type: 'array',
+                        items: {
+                          title: '字段名',
+                          type: 'string'
+                        }
+                      }
+                    });
+                    output.add({
+                      id: 'setDisableCheckboxDone',
+                      title: '禁用勾选框完成',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+                    output.add({
+                      id: 'setEnableCheckboxDone',
+                      title: '启用勾选框完成',
+                      schema: {
+                        type: 'any'
+                      }
+                    });
+
+                    input.get(InputIds.SetCheckedKeys).setRels(['setCheckedKeysDone']);
+                    input.get(InputIds.SetDisableCheckbox).setRels(['setDisableCheckboxDone']);
+                    input.get(InputIds.SetEnableCheckbox).setRels(['setEnableCheckboxDone']);
                   } else {
                     input.remove(InputIds.SetCheckedKeys);
                     input.remove(InputIds.GetCheckedKeys);
                     input.remove(InputIds.SetDisableCheckbox);
                     input.remove(InputIds.SetEnableCheckbox);
+
+                    output.remove('setCheckedKeysDone');
+                    output.remove('setDisableCheckboxDone');
+                    output.remove('setEnableCheckboxDone');
                   }
                 }
               }
@@ -959,6 +1103,13 @@ export default {
                         type: 'string'
                       }
                     });
+                    output.add('addTipsDone', '设置添加提示文案完成', {
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    });
+                    input.get('addTips').setRels(['addTipsDone']);
                   } else {
                     input.remove('addTips');
                   }

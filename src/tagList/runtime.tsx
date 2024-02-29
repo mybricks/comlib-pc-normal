@@ -9,7 +9,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
   const { checkable } = data;
 
   inputs.dynamicTags &&
-    inputs.dynamicTags((val: Array<TagType>) => {
+    inputs.dynamicTags((val: Array<TagType>, relOutputs) => {
       if (!Array.isArray(val)) {
         message.error('请输入列表数据');
         return;
@@ -23,6 +23,7 @@ export default function ({ env, data, inputs, outputs, slots }: RuntimeParams<Da
         }
         return item;
       });
+      relOutputs.dynamicComplete();
     });
 
   inputs.getTags &&

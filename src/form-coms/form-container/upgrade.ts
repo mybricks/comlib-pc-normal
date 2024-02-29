@@ -1,8 +1,10 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema, getSubmitSchema } from './schema'
+import { uniqBy, pick, uniq } from 'lodash';
+import { isEmptyObject, unitConversion } from '../../utils';
 
-export default function ({ data, input, output, slot, children }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   if (!input.get(inputIds.SET_INITIAL_VALUES)) {
     const schema = {
       "type": "object",
@@ -23,58 +25,13 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     data.actions.widthOption = 'flexFull';
   }
 
-  data.items.forEach(item => {
-    /**
-     * @description v1.1.1 表单项/操作项增加宽度配置项
-     */
-    if (!item.widthOption) {
-      item.widthOption = 'span'
-      item.span = 24 / data.formItemColumn;
-    }
-
-    /**
-     * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
-     */
-    if (!item.inlineMargin) {
-      item.inlineMargin = [0, 16, 24, 0]
-    }
-
-    /**
-     * @description v1.1.10 表单项增加默认”显示冒号“配置；表单项字段trim
-     */
-    if (item.colon === undefined) {
-      item.colon = 'default';
-    }
-    if (item.name !== item.name.trim()) {
-      item.name = item.name.trim();
-    }
-
-    /**
-     * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
-     */
-    if (item.labelAlign === undefined) {
-      item.labelAlign = 'default';
-    }
-
-    if (item.labelAutoWrap === undefined) {
-      item.labelAutoWrap = 'default';
-    }
-
-    /**
-     * @description v1.4.13 表单项增加"标题宽度"、自定义宽度 配置项
-     */
-    if (item.labelWidthType === undefined) {
-      item.labelWidthType = 'default';
-    }
-
-  });
-
   /**
    * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
+   * v1.4.39 样式升级改造后废弃
    */
-  if (!data.actions.inlinePadding) {
-    data.actions.inlinePadding = [0, 0, 0, 0];
-  }
+  // if (!data.actions.inlinePadding) {
+  //   data.actions.inlinePadding = [0, 0, 0, 0];
+  // }
 
 
   /**
@@ -109,14 +66,262 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
     data.config = {
       colon: data.colon || true,
       layout: data.layout,
-      labelWrap: false,
-      labelAlign: 'right',
+      // labelWrap: false,
+      // labelAlign: 'right',
       // disabled: false
     }
 
     delete data.colon
     delete data.layout
   }
+
+  /**
+   * @description v1.4.39 表单项style配置改造 part1: 计算公共样式
+   */
+  const layout = data.config?.layout || data.layout
+  const isInlineModel = layout === 'inline';
+  const isHorizontalModel = layout === 'horizontal';
+  const isVerticalModel = layout === 'vertical';
+
+  const defaultLabelStyle = {
+    lineHeight: '14px',
+    fontSize: '14px',
+    fontWeight: 400,
+    color: 'rgba(0, 0, 0, 0.85)',
+    fontStyle: 'normal',
+    textDecoration: void 0
+  };
+  const defaultDescriptionStyle = {
+    whiteSpace: 'pre-wrap',
+    lineHeight: '12px',
+    fontSize: '14px',
+    fontWeight: 400,
+    color: 'rgba(0, 0, 0, 0.45)',
+    fontStyle: 'normal'
+  };
+  const defaultMargin = [0, 0, 24, 0],
+    defaultMarginStyle = {
+      marginTop: '0px',
+      marginRight: '0px',
+      marginBottom: '24px',
+      marginLeft: '0px'
+    };
+  let isAllSameLabelStyle,
+    whiteSpaceAllSame,
+    labelAlignAllSame,
+    isAllSameDescriptionStyle,
+    isAllMarginSame;
+
+  if (data.config.labelAlign) {
+    /** 标题字体、换行样式处理 */
+    // 表单的公共标题样式选择器
+    const labelFontSelector = `.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
+    // 1. 比较所有表单项的换行样式是否都是跟随容器
+    const isAllDefalutWhiteSpace = data.items.every(item => item?.labelAutoWrap === 'default');
+    const isAllSetWhiteSpace = uniq(data.items.map(item => item?.labelAutoWrap)).length === 1;
+    whiteSpaceAllSame = isAllDefalutWhiteSpace || isAllSetWhiteSpace
+    // 2. 比较所有表单项的标题样式和默认样式的区别
+    const labelStyleCompareResult = uniqBy(data.items
+      .map(item => {
+        return pick(item.labelStyle, Object.keys(defaultLabelStyle));
+      }), JSON.stringify);
+    // 3.1 只存在一个样式时，表示可以转化为表单上的公共样式
+    if (labelStyleCompareResult.length === 1
+      && !isEmptyObject(labelStyleCompareResult[0])
+      && whiteSpaceAllSame) {
+      isAllSameLabelStyle = true;
+      const style: React.CSSProperties = labelStyleCompareResult[0];
+      if (isAllDefalutWhiteSpace && data.config?.labelWrap) {
+        style.whiteSpace = 'pre-wrap';
+      }
+      if (isAllSetWhiteSpace && data.items[0]?.labelAutoWrap) {
+        style.whiteSpace = 'pre-wrap';
+      }
+      // 将计算出来的公共配置样式，设置到表单上
+      setDeclaredStyle(labelFontSelector, { ...style });
+    } else {
+      // 3.2 否则，在表单项中设置样式
+      isAllSameLabelStyle = false;
+      setDeclaredStyle(labelFontSelector, defaultLabelStyle);
+    }
+
+    /** 标题对齐样式处理 */
+    // 表单的公共标题对齐方式选择器
+    const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
+    const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
+    const isAllSetLabelAutoWrap = !isAllDefalutLabelAlign && uniq(data.items.map(item => item?.labelAlign)).length === 1;
+    labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
+    const defaultTextAlign = isVerticalModel ? 'left'
+      : (data.config.labelAlign || 'right');
+    const setTextAlign = data.items[0]?.labelAlign;
+    setDeclaredStyle(labelAlignSelector, {
+      textAlign:
+        (isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign)
+    });
+
+    /** 提示语样式处理 */
+    // 表单的公共提示语样式选择器
+    const descSelector = `.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
+    // 1. 比较所有表单项的提示语样式和默认样式的区别
+    const descriptionStyleCompareResult = uniqBy(data.items
+      .map(item => {
+        return pick(item.descriptionStyle, Object.keys(defaultDescriptionStyle));
+      }), JSON.stringify);
+    // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
+    if (descriptionStyleCompareResult.length === 1
+      && !isEmptyObject(descriptionStyleCompareResult[0])) {
+      isAllSameDescriptionStyle = true;
+      // 将计算出来的公共配置样式，设置到表单上
+      setDeclaredStyle(descSelector, descriptionStyleCompareResult[0]);
+    } else {
+      // 2.2 否则，在表单项中设置样式
+      isAllSameDescriptionStyle = false;
+      setDeclaredStyle(descSelector, defaultDescriptionStyle);
+    }
+
+    /** 边距样式处理 */
+    // 1.操作项的边距选择器
+    if (data.actions.inlinePadding && !isHorizontalModel) {
+      const optMarginSelector = `div.ant-col.formAction`;
+      const actionPadding = (data.actions.inlinePadding).map(String).map(unitConversion).join(' ');
+      setDeclaredStyle(optMarginSelector, { padding: actionPadding });
+    }
+    data.actions.inlinePadding = void 0;
+
+    // 2.表单项的公共边距选择器
+    const marginSelector = `.ant-col:not(:last-child) .ant-form-item`;
+    if (!isHorizontalModel) {
+      // 1. 比较所有表单项的外边距和默认边距的差异
+      const marginCompareResult = uniqBy(data.items
+        .map(item => item.inlineMargin || defaultMargin), JSON.stringify);
+      // 2.1 只存在一个样式时，表示可以转化为表单上的公共样式
+      if (marginCompareResult.length === 1) {
+        isAllMarginSame = true;
+        setDeclaredStyle(marginSelector, {
+          marginTop: String(marginCompareResult[0][0]) + 'px',
+          marginRight: String(marginCompareResult[0][1]) + 'px',
+          marginBottom: String(marginCompareResult[0][2]) + 'px',
+          marginLeft: String(marginCompareResult[0][3]) + 'px'
+        });
+      } else {
+        // 2.2 否则，表单项各自设置样式
+        setDeclaredStyle(marginSelector, defaultMarginStyle);
+        isAllMarginSame = false;
+      }
+    } else {
+      isAllMarginSame = true;
+      setDeclaredStyle(marginSelector, defaultMarginStyle);
+    }
+  }
+
+  //=========== v1.4.39 part1 end ===============
+
+  data.items.forEach(item => {
+    /**
+     * @description v1.1.1 表单项/操作项增加宽度配置项
+     */
+    if (!item.widthOption) {
+      item.widthOption = 'span'
+      item.span = 24 / data.formItemColumn;
+    }
+
+    /**
+     * @description v1.1.3 内联布局下，表单项/操作项增加边距配置项
+     * v1.4.39 样式升级改造后废弃
+     */
+    // if (!item.inlineMargin) {
+    //   item.inlineMargin = [0, 16, 24, 0]
+    // }
+
+    /**
+     * @description v1.1.10 表单项增加默认”显示冒号“配置；表单项字段trim
+     */
+    if (item.colon === undefined) {
+      item.colon = 'default';
+    }
+    if (item.name !== item.name.trim()) {
+      item.name = item.name.trim();
+    }
+
+    /**
+     * @description v1.1.15 表单项增加"标题对齐方式"、"标题是否折行"配置项
+     * v1.4.39 样式升级改造后废弃
+     */
+    // if (item.labelAlign === undefined) {
+    //   item.labelAlign = 'default';
+    // }
+
+    // if (item.labelAutoWrap === undefined) {
+    //   item.labelAutoWrap = 'default';
+    // }
+
+    /**
+     * @description v1.4.13 表单项增加"标题宽度"、自定义宽度 配置项
+     */
+    if (item.labelWidthType === undefined) {
+      item.labelWidthType = 'default';
+    }
+
+    /**
+      * @description v1.4.15 , 兼容表单项无name，用label替换
+     */
+    if (item.name === '' || item.name === undefined) {
+      item.name = item.label;
+    }
+    //=========== v1.4.15 end ===============
+
+    /**
+     * @description v1.4.39 表单项style配置改造 part2: 表单项样式升级
+     */
+    if (data.config.labelAlign) {
+      /** 标题字体、换行样式处理 */
+      if (!isAllSameLabelStyle
+        && item.labelStyle) {
+        // 表单项的标题字体选择器
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label > label > label`;
+
+        const style: React.CSSProperties = pick(item.labelStyle, Object.keys(defaultLabelStyle));
+        if (item?.labelAutoWrap !== 'default') {
+          style.whiteSpace = item.labelAutoWrap
+            ? 'pre-wrap'
+            : 'nowrap';
+        }
+        setDeclaredStyle(selector, style);
+      }
+      item.labelStyle = void 0;
+      item.labelAutoWrap = void 0;
+
+      /** 标题对齐方式处理 */
+      if (!labelAlignAllSame && item?.labelAlign !== 'default') {
+        // 表单项的标题对齐方式选择器
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-label`;
+        setDeclaredStyle(selector, { textAlign: item.labelAlign });
+      }
+      item.labelAlign = void 0;
+
+      /** 提示语样式处理 */
+      if (!isAllSameDescriptionStyle
+        && item.descriptionStyle) {
+        // 表单项的提示语样式选择器
+        const selector = `.${item.id} div.ant-row.ant-form-item > div.ant-col.ant-form-item-control .formItemDesc`;
+        setDeclaredStyle(selector, item.descriptionStyle);
+      }
+      item.descriptionStyle = void 0;
+
+      /** 边距样式处理 */
+      if (!isAllMarginSame
+        && item.inlineMargin) {
+        // 表单项的边距样式选择器
+        const selector = `.${item.id} div.ant-row.ant-form-item`;
+        const style: React.CSSProperties = {
+          margin: item.inlineMargin.map(String).map(unitConversion).join(' ')
+        };
+        setDeclaredStyle(selector, style);
+      }
+      item.inlineMargin = void 0;
+    }
+  });
+  //=========== v1.4.39 part2 end ===============
 
   // if (!input.get(inputIds.SET_DISABLED)) {
   //   input.add('setDisabled', '设置禁用', { type: 'any' });
@@ -217,8 +422,8 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   //=========== v1.3.0 end ===============
 
   /**
- * @description v1.3.4 , 支持校验失败输出
- */
+  * @description v1.3.4 , 支持校验失败输出
+  */
   if (!output.get(outputIds.ON_SUBMIT_ERROR)) {
     output.add(outputIds.ON_SUBMIT_ERROR, '校验失败输出', {
       type: 'object',
@@ -327,11 +532,12 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   /**
     * @description v1.4.15 , 兼容表单项无name，用label替换
   */
-  data.items.forEach((item)=>{
-    if(item.name === '' || item.name === undefined){
+  data.items.forEach((item) => {
+    if (item.name === '' || item.name === undefined) {
       item.name = item.label;
     }
   })
+  //=========== v1.4.15 end ===============
 
   /**
     * @description v1.4.18 , 表单容器添加关联输出项
@@ -429,6 +635,12 @@ export default function ({ data, input, output, slot, children }: UpgradeParams<
   }
   //=========== v1.4.34 end ===============
 
+  /**
+   * @description v1.4.39 表单项style配置改造 part3
+   */
+  data.config.labelAlign = undefined;
+  data.config.labelWrap = undefined;
+  //=========== v1.4.39 part3 end ===============
 
   return true;
 }

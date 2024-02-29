@@ -52,7 +52,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
       setDataSource([{ id: 1, [rowKey]: uuid() }]);
     }
     if (env.runtime) {
-      inputs[InputIds.DATA_SOURCE]((v) => {
+      inputs[InputIds.DATA_SOURCE]((v, relOutputs) => {
         if (Array.isArray(v)) {
           const ds = v.map((item, index) => ({
             item,
@@ -61,13 +61,15 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
           }));
           data.dataSource = ds;
           setDataSource(ds);
+          relOutputs['setDataSourceDone'](ds);
         }
         setLoading(false);
       });
       useLoading &&
         inputs[InputIds.LOADING] &&
-        inputs[InputIds.LOADING]((v) => {
+        inputs[InputIds.LOADING]((v, relOutputs) => {
           setLoading(v !== false);
+          relOutputs['setLoadingDone'](v);
         });
     }
   }, []);
@@ -81,8 +83,8 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     }
   }, [dataSource]);
   //添加一项
-  useEffect(()=>{
-    if(env.runtime){
+  useEffect(() => {
+    if (env.runtime) {
       inputs[InputIds.AddItem]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -95,11 +97,11 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         relOutputs['addItemDone'](v);
       });
     }
-  }, [])
+  }, []);
 
   //删除一项
-  useEffect(()=>{
-    if(env.runtime){
+  useEffect(() => {
+    if (env.runtime) {
       inputs[InputIds.RemoveItem]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
@@ -111,67 +113,67 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         relOutputs['removeItemDone'](v);
       });
     }
-  }, [])
+  }, []);
 
   //改动一项
-  useEffect(()=>{
-    if(env.runtime){
+  useEffect(() => {
+    if (env.runtime) {
       inputs[InputIds.ChangeItem]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
         let judge = typeof v.index === 'number' && v.index >= 0 && v.index < len;
         //有index, 且index在合理范围内
         if (judge) {
-          if(v.value !== undefined){
+          if (v.value !== undefined) {
             newDataSource = changeItem(newDataSource, v, data.rowKey);
             data.dataSource = newDataSource;
             setDataSource(newDataSource);
             relOutputs['changeItemDone'](v);
-          }else{
+          } else {
             logger.error('未指定value（改动值）');
           }
-        }else{
+        } else {
           logger.error('未指定index（位置）或index不在合理范围内');
         }
       });
     }
-  }, [])
+  }, []);
 
   //指定对应项上移
-  useEffect(()=>{
-    if(env.runtime){
+  useEffect(() => {
+    if (env.runtime) {
       inputs[InputIds.MoveUp]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
-        if(typeof v === 'number' && v > 0 && v < len){
+        if (typeof v === 'number' && v > 0 && v < len) {
           newDataSource = upMove(newDataSource, v);
           data.dataSource = newDataSource;
           setDataSource(newDataSource);
           relOutputs['moveUpDone'](v);
-        }else{
-          logger.error('指定index不在合理范围内')
+        } else {
+          logger.error('指定index不在合理范围内');
         }
-      })
+      });
     }
-  },[])
+  }, []);
 
   //指定对应项下移
-  useEffect(()=>{
-    if(env.runtime){
+  useEffect(() => {
+    if (env.runtime) {
       inputs[InputIds.MoveDown]((v, relOutputs) => {
         let newDataSource = [...data.dataSource];
         let len = newDataSource.length;
-        if(typeof v === 'number' && v >= 0 && v < len-1){
+        if (typeof v === 'number' && v >= 0 && v < len - 1) {
           newDataSource = downMove(newDataSource, v);
           data.dataSource = newDataSource;
           setDataSource(newDataSource);
           relOutputs['moveDownDone'](v);
-        }else{
-          logger.error('指定index不在合理范围内')
+        } else {
+          logger.error('指定index不在合理范围内');
         }
-      })
+      });
     }
-  },[])
+  }, []);
 
   //换行，列数自定义
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {

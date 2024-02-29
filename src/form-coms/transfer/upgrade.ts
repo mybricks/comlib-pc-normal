@@ -3,7 +3,7 @@ import { RuleKeys } from '../utils/validator';
 import { Data } from './types';
 import { inputIds, outputIds } from '../form-container/constants';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, style }: UpgradeParams<Data>): boolean {
   const valueSchema = {
     type: 'array',
     items: {
@@ -182,5 +182,8 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.4 end ===============
 
+  if(!style.height){
+    style.height = 'auto';
+  }
   return true;
 }

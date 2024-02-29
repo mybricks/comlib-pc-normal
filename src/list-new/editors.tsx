@@ -56,13 +56,17 @@ export default {
           get({ data }: EditorResult<Data>) {
             return data.useLoading;
           },
-          set({ data, input }: EditorResult<Data>, val: boolean) {
+          set({ data, input, output }: EditorResult<Data>, val: boolean) {
             data.useLoading = val;
             if (val) {
               !input.get(InputIds.LOADING) &&
                 input.add(InputIds.LOADING, '设置loading', { type: 'boolean' });
+              !output.get('setLoadingDone') &&
+                output.add('setLoadingDone', '设置loading完成', { type: 'boolean' });
+              input.get(InputIds.LOADING).setRels(['setLoadingDone']);
             } else {
               input.get(InputIds.LOADING) && input.remove(InputIds.LOADING);
+              output.get('setLoadingDone') && output.remove('setLoadingDone');
             }
           }
         }

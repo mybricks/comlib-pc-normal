@@ -233,6 +233,52 @@ export default {
             }
           }
         },
+        {
+          title: '全选框可控',
+          type: 'switch',
+          description: '全选框样式配置',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.checkAll;
+          },
+          value: {
+            get({ data }) {
+              return data.isIndeterminate;
+            },
+            set({ data, input, output }, value: "partChecked" | "unChecked" | "allChecked") {
+              const event = input.get("setIndeterminate");
+              const schema = {
+                type: "enum",
+                items: [
+                  {
+                    type: "string",
+                    value: "partChecked"
+                  },
+                  {
+                    type: "string",
+                    value: "unChecked"
+                  },
+                  {
+                    type: "string",
+                    value: "allChecked"
+                  }
+                ]
+              }
+              if (value) {
+                !event && input.add("setIndeterminate", "设置全选框状态", schema);
+                
+                !output.get("setIndeterminateDone") &&
+                output.add("setIndeterminateDone", '设置全选框状态完成', schema);
+
+                input.get("setIndeterminate").setRels(["setIndeterminateDone"]);
+              } else {
+                event && input.remove("setIndeterminate");
+                output.get("setIndeterminateDone") && output.remove("setIndeterminateDone");
+              }
+              data.isIndeterminate = value;
+              
+            }
+          }
+        },
         // 选项配置
         {
           title: '静态选项配置',

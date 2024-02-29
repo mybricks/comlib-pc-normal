@@ -6,8 +6,8 @@ import {
   showMessage,
   getTitle
 } from '../utils/validator';
-import { Data } from './types';
-import { toolbarOptions } from './utils';
+import { Data, getBtnItemIndex, iconType } from './types';
+import { toolbarOptions, BtnItemDataSetKey } from './utils';
 export default {
   '@resize': {
     options: ['width']
@@ -71,6 +71,19 @@ export default {
             },
             set({ data }, val: boolean) {
               data.disabled = val;
+            }
+          }
+        },
+        {
+          title: '开启状态栏',
+          type: 'switch',
+          description: '编辑器最底下、左侧显示dom信息,右侧显示字数的一栏',
+          value: {
+            get({ data }) {
+              return data?.statusbar || false;
+            },
+            set({ data }, val: boolean) {
+              data.statusbar = val;
             }
           }
         },
@@ -357,4 +370,74 @@ export default {
       }
     ]
   }
+  // TODO 区域选择有BUG,选中工具栏按钮时编辑区未切换
+  // [`[${BtnItemDataSetKey}]`]: {
+  //   title: '工具栏按钮',
+  //   items: ({}: EditorResult<{}>, ...catalog) => {
+  //     catalog[0].title = '常规';
+  //     catalog[0].items = [
+  //       {
+  //         title: '选择图标',
+  //         type: 'Icon',
+  //         catelog: '默认',
+  //         value: {
+  //           get({ data, focusArea }: EditorResult<Data>) {
+  //             if (!focusArea) return;
+  //             const index = getBtnItemIndex(data.icons || [], focusArea);
+  //             return index === -1 ? undefined : data.icons[index].icon;
+  //           },
+  //           set({ data, focusArea }: EditorResult<Data>, value: string) {
+  //             if (!focusArea) return;
+  //             const index = getBtnItemIndex(data.icons || [], focusArea);
+  //             if (index !== -1) {
+  //               const newIcons = [...data.icons];
+  //               newIcons[index] = {
+  //                 ...data.icons[index],
+  //                 icon: value,
+  //                 name: focusArea?.dataset?.['btnIdx']
+  //               };
+  //               data.icons = newIcons;
+  //             }
+  //           }
+  //         }
+  //       },
+  //       {
+  //         title: '图标大小',
+  //         catelog: '默认',
+  //         type: 'Style',
+  //         options: {
+  //           plugins: ['SIZE']
+  //         },
+  //         value: {
+  //           get({ data, focusArea }: EditorResult<Data>) {
+  //             if (!focusArea) return;
+  //             const index = getBtnItemIndex(data.icons || [], focusArea);
+  //             return index === -1
+  //               ? {
+  //                   height: '24px',
+  //                   width: '24px'
+  //                 }
+  //               : data.icons[index];
+  //           },
+  //           set(
+  //             { data, focusArea }: EditorResult<Data>,
+  //             value: Pick<iconType, 'height' | 'width'>
+  //           ) {
+  //             if (!focusArea) return;
+  //             const index = getBtnItemIndex(data.icons || [], focusArea);
+  //             if (index !== -1) {
+  //               const newIcons = [...data.icons];
+  //               newIcons[index] = { ...data.icons[index], ...(value || {}) };
+  //               data.icons = newIcons;
+  //             }
+  //           }
+  //         }
+  //       }
+  //     ];
+
+  //     return {
+  //       title: '工具栏按钮'
+  //     };
+  //   }
+  // }
 };

@@ -1,7 +1,7 @@
 import { outputIds } from 'src/form-coms/form-container/constants';
 import { InputIds, OutputIds } from '../../constants';
 import { Schemas, setCol, setDataSchema } from '../../schema';
-import { ContentTypeEnum, Data, Filter, FilterTypeEnum, IColumn } from '../../types';
+import { ContentTypeEnum, Data, Filter, FilterIconEnum, FilterTypeEnum, IColumn } from '../../types';
 import { getColumnItem } from '../../utils';
 
 interface Props {
@@ -137,6 +137,32 @@ const FilterEditor = {
     //     };
     //   }
     // },
+    {
+      title: '筛选图标',
+      type: 'Select',
+      options: [
+        { label: '继承表格配置', value: FilterIconEnum.Inherit },
+        { label: '漏斗', value: FilterIconEnum.Filter },
+        { label: '放大镜', value: FilterIconEnum.Search }
+      ],
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item && item.filter?.enable;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return (item && item.filter?.filterIcon) || FilterIconEnum.Inherit;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: FilterIconEnum) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          setFilterProps(data, item, 'filterIcon', value);
+        }
+      }
+    },
     {
       title: '筛选类型',
       type: 'Select',

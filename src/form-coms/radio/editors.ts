@@ -46,8 +46,8 @@ export default {
               {
                 title: '选择框',
                 options: [
-                  'border', 
-                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
                 target: '.ant-radio-inner'
@@ -75,8 +75,8 @@ export default {
               {
                 title: '选择框',
                 options: [
-                  'border', 
-                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
                 target: '.ant-radio:hover .ant-radio-inner',
@@ -98,9 +98,9 @@ export default {
               {
                 title: '选择框',
                 options: [
-                  'border', 
-                  'BoxShadow', 
-                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'border',
+                  'BoxShadow',
+                  { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
                 target: '.ant-space-item .ant-radio-wrapper-checked .ant-radio-checked .ant-radio-inner'
@@ -131,8 +131,8 @@ export default {
               {
                 title: '选择框',
                 options: [
-                  'border', 
-                  { type: 'background', config: { disableBackgroundImage: true } }, 
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } },
                   'opacity'
                 ],
                 target: '.ant-space-item .ant-radio-wrapper .ant-radio.ant-radio-disabled .ant-radio-inner'
@@ -169,6 +169,24 @@ export default {
             },
             set({ data }, value: boolean) {
               data.config.disabled = value;
+            }
+          }
+        },
+        {
+          title: '自动聚焦',
+          type: 'Select',
+          description: '用于实现页面打开时，自动聚焦某个选项，以方便键盘快捷操作',
+          options: [
+            { label: '无', value: false },
+            { label: '第一项', value: 'first' },
+            { label: '默认选中项', value: 'defaultCheck' },
+          ],
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.autoFocus;
+            },
+            set({ data }, value: string) {
+              data.autoFocus = value;
             }
           }
         },

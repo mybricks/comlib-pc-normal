@@ -8,8 +8,9 @@ export default (props: RuntimeParams<Data>) => {
   const [count, setCount] = useState(1);
 
   useEffect(() => {
-    inputs['link']((value: string) => {
+    inputs['link']((value: string, relOutputs) => {
       data.link = value;
+      relOutputs['setLinkComplete']()
     });
 
     inputs['download'] && inputs['download'](downloadQR);
@@ -30,7 +31,7 @@ export default (props: RuntimeParams<Data>) => {
     }
   };
 
-  const downloadQR = () => {
+  const downloadQR = (_, relOutputs) => {
     const imageData = toImageData();
     // const image = new Image();
     // image.crossOrigin = "anonymous";
@@ -39,6 +40,7 @@ export default (props: RuntimeParams<Data>) => {
     downLink.href = imageData;
     downLink.download = '二维码';
     downLink.click();
+    relOutputs['downloadComplete']()
   };
 
   return (

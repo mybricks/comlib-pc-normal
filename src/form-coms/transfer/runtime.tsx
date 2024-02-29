@@ -153,6 +153,7 @@ export default function ({
     <ConfigProvider locale={env.vars?.locale}>
       <Transfer
         className={styles.transfer}
+        style={{ height: style.height }}
         titles={[env.i18n(titles[0]), env.i18n(titles[1])]}
         dataSource={_dataSource}
         targetKeys={targetKeys === null || targetKeys === undefined ? [] : targetKeys}

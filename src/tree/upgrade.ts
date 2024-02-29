@@ -188,59 +188,60 @@ export default function ({
   /**
     * @description v1.0.31 feat: 支持 动态配置拖拽 
     */
+   const dragSchema = {
+    type: 'object',
+    properties: {
+      draggable: {
+        type: 'enum',
+        items: [
+          {
+            type: 'boolean',
+          },
+          {
+            type: 'string',
+            value: 'custom',
+          },
+        ],
+      },
+      draggableScript: {
+        type: 'string',
+      },
+      allowDrop: {
+        type: 'enum',
+        items: [
+          {
+            type: 'boolean',
+          },
+          {
+            type: 'string',
+            value: 'custom',
+          },
+        ],
+      },
+      allowDropScript: {
+        type: 'string',
+      },
+      useDropScope: {
+        type: 'enum',
+        items: [
+          {
+            type: 'boolean',
+            value: false,
+          },
+          {
+            type: 'string',
+            value: 'parent',
+          },
+        ],
+      },
+      dropScopeMessage: {
+        type: 'string',
+      },
+    },
+  };
 
   if (!input.get(InputIds.SetDragConfig)) {
-    input.add(InputIds.SetDragConfig, '设置拖拽功能', {
-      type: 'object',
-      properties: {
-        draggable: {
-          type: 'enum',
-          items: [
-            {
-              type: 'boolean',
-            },
-            {
-              type: 'string',
-              value: 'custom',
-            },
-          ],
-        },
-        draggableScript: {
-          type: 'string',
-        },
-        allowDrop: {
-          type: 'enum',
-          items: [
-            {
-              type: 'boolean',
-            },
-            {
-              type: 'string',
-              value: 'custom',
-            },
-          ],
-        },
-        allowDropScript: {
-          type: 'string',
-        },
-        useDropScope: {
-          type: 'enum',
-          items: [
-            {
-              type: 'boolean',
-              value: false,
-            },
-            {
-              type: 'string',
-              value: 'parent',
-            },
-          ],
-        },
-        dropScopeMessage: {
-          type: 'string',
-        },
-      },
-    });
+    input.add(InputIds.SetDragConfig, '设置拖拽功能', dragSchema);
   }
   if (!output.get(OutputIds.OnDropDone)) {
     output.add(OutputIds.OnDropDone, '拖拽完成', {
@@ -312,5 +313,188 @@ export default function ({
   }
   //=========== v1.0.42 end ===============
 
+   /**
+   * @description v1.0.45 -> v1.0.46 增加rels
+   */
+  //1、设置数据源
+    const dataSchema = {
+      title: "树组件数据",
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          title: {
+            title: "标题",
+            type: "string"
+          },
+          key: {
+            title: "字段名",
+            type: "string"
+          },
+          disableCheckbox: {
+            title: "禁用勾选",
+            type: "boolean"
+          },
+          children: {
+            title: "子项",
+            type: "array",
+            items: {
+              type: "object"
+            }
+          }
+        }
+      }
+    }
+    if (!output.get("setTreeDataDone")) {
+      output.add("setTreeDataDone", "输入数据完成", dataSchema);
+    }
+    if (output.get("setTreeDataDone") &&
+      input.get("treeData") &&
+      !input.get("treeData")?.rels?.includes("setTreeDataDone")) {
+      input.get("treeData").setRels(["setTreeDataDone"]);
+    }
+
+    //2、更新节点数据
+    const nodeSchema = {
+      type: "object",
+      properties: {
+        title: {
+          type: "string"
+        },
+        children: {
+          "title": "子项",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    };
+    if (!output.get("setNodeDataDone")) {
+      output.add("setNodeDataDone", "更新节点数据完成", nodeSchema);
+    }
+    if (output.get("setNodeDataDone") &&
+      input.get("nodeData") &&
+      !input.get("nodeData")?.rels?.includes("setNodeDataDone")) {
+      input.get("nodeData").setRels(["setNodeDataDone"]);
+    }
+
+    //3、搜索
+    if (!output.get("searchValueDone")) {
+      output.add("searchValueDone", "搜索完成", {type: 'string'});
+    }
+    if (output.get("searchValueDone") &&
+      input.get("searchValue") &&
+      !input.get("searchValue")?.rels?.includes("searchValueDone")) {
+      input.get("searchValue").setRels(["searchValueDone"]);
+    }
+    //4、过滤
+    if (!output.get("filterDone")) {
+      output.add("filterDone", "过滤完成", {type: 'string'});
+    }
+    if (output.get("filterDone") &&
+      input.get("filter") &&
+      !input.get("filter")?.rels?.includes("filterDone")) {
+      input.get("filter").setRels(["filterDone"]);
+    }
+
+    //5、设置选中节点
+    const selectSchema = {
+      type: "array",
+      items: {
+        type: "string"
+      }
+    };
+    if (!output.get("setSelectedKeysDone")) {
+      output.add("setSelectedKeysDone", "设置选中节点完成", selectSchema);
+    }
+    if (output.get("setSelectedKeysDone") &&
+      input.get("setSelectedKeys") &&
+      !input.get("setSelectedKeys")?.rels?.includes("setSelectedKeysDone")) {
+      input.get("setSelectedKeys").setRels(["setSelectedKeysDone"]);
+    }
+
+    //6、展开节点
+    if (!output.get("setExpandedKeysDone")) {
+      output.add("setExpandedKeysDone", "设置展开节点完成", selectSchema);
+    }
+    if (output.get("setExpandedKeysDone") &&
+      input.get("setExpandedKeys") &&
+      !input.get("setExpandedKeys")?.rels?.includes("setExpandedKeysDone")) {
+      input.get("setExpandedKeys").setRels(["setExpandedKeysDone"]);
+    }
+
+    //11、展开深度
+    if (!output.get("setOpenDepthDone")) {
+      output.add("setOpenDepthDone", "设置展开深度", {type: "number"});
+    }
+    if (output.get("setOpenDepthDone") &&
+      input.get("setOpenDepth") &&
+      !input.get("setOpenDepth")?.rels?.includes("setOpenDepthDone")) {
+      input.get("setOpenDepth").setRels(["setOpenDepthDone"]);
+    }
+
+    //10、设置拖拽
+    if (!output.get("setDragConfigDone")) {
+      output.add("setDragConfigDone", "设置拖拽功能完成", dragSchema);
+    }
+    if (output.get("setDragConfigDone") &&
+      input.get("setDragConfig") &&
+      !input.get("setDragConfig")?.rels?.includes("setDragConfigDone")) {
+      input.get("setDragConfig").setRels(["setDragConfigDone"]);
+    }
+
+    if(data.checkable){
+      //7、设置勾选项
+      if(!output.get("setCheckedKeysDone") && input.get(InputIds.SetCheckedKeys)){
+        output.add({
+          id: "setCheckedKeysDone",
+          title: '设置勾选项完成',
+          schema: {
+            type: 'array',
+            items: {
+              title: '字段名',
+              type: 'string'
+            }
+          }
+        });
+        input.get(InputIds.SetCheckedKeys).setRels(["setCheckedKeysDone"]);
+      }
+      //8、禁用勾选框
+      if(!output.get("setDisableCheckboxDone") && input.get(InputIds.SetDisableCheckbox)){
+        output.add({
+          id: "setDisableCheckboxDone",
+          title: '禁用勾选框完成',
+          schema: {
+            type: 'any'
+          }
+        });
+        input.get(InputIds.SetDisableCheckbox).setRels(["setDisableCheckboxDone"]);
+      }
+      //9、启用勾选框
+      if(!output.get("setEnableCheckboxDone") && input.get(InputIds.SetEnableCheckbox)){
+        output.add({
+          id: "setEnableCheckboxDone",
+          title: '启用勾选框完成',
+          schema: {
+            type: 'any'
+          }
+        });
+        input.get(InputIds.SetEnableCheckbox).setRels(["setEnableCheckboxDone"]);
+      }
+    }
+    //12、提示文案
+    if(data.addable && !output.get('addTipsDone') && input.get('addTips')){
+      output.add('addTipsDone', '设置添加提示文案完成',{
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      })
+      input.get('addTips').setRels(['addTipsDone']);
+    }
+    
+
+  //=========== v1.0.46 end ===============
   return true;
 }

@@ -1,4 +1,3 @@
-import * as SchemaToTypes from '../../package/json-schema-to-typescript';
 import { getParamsType } from './constants';
 
 type FuncType = (code: string) => Function;
@@ -38,6 +37,8 @@ const createElement: FuncType = (code) => {
 };
 
 const genLibTypes = async (schema: Record<string, any>) => {
+  const SchemaToTypes = window.jstt;
+  if(!SchemaToTypes) return;
   schema.title = 'Props';
   const propTypes = await SchemaToTypes.compile(schema, '', {
     bannerComment: '',

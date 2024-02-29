@@ -22,7 +22,7 @@ function useParentHeight(ref: React.RefObject<HTMLElement>) {
       resizeObserver.observe(element.parentElement);
 
       return () => {
-        if(element.parentElement) {
+        if (element.parentElement) {
           resizeObserver.unobserve(element.parentElement!);
         }
       };

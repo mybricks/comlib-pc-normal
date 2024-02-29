@@ -87,7 +87,7 @@ interface UpgradeParams<T> {
   style: any;
   setAutoRun: (auto?: boolean) => void;
   isAutoRun: () => boolean;
-  setDeclaredStyle: (selector: string, style: React.CSSProperties) => void;
+  setDeclaredStyle: (selector: string | string[], style: React.CSSProperties, global?, withParentComId?: boolean) => void;
   getDeclaredStyle: (selector: string) => { selector: string; css: React.CSSProperties };
   removeDeclaredStyle: (selector: string) => void;
   config: {
@@ -131,4 +131,5 @@ declare interface Window {
   ace: any;
   Babel: any;
   myTinymce: any; // Tinymce
+  jstt: any
 }

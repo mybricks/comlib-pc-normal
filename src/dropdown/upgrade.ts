@@ -5,7 +5,8 @@ export default function ({
   data,
   output,
   setDeclaredStyle,
-  id
+  id,
+  slot
 }: UpgradeParams<Data>): boolean {
   //1.0.0 ->1.0.1，增加提示内容
   if(typeof data.content === "undefined"){
@@ -77,5 +78,30 @@ export default function ({
       item.iconColor = ''
     }
   })
+
+  //1.0.15->1.0.16 下拉菜单 动态选项 isDynamic
+  if(typeof data.isDynamic === "undefined"){
+    data.isDynamic = false;
+  };
+
+  const hasSlot = !!slot.get("item");
+  !hasSlot && slot.add({id: "item", title: "选项", type: "scope"});
+  slot
+    .get("item")
+    .inputs.add("itemData", "当前项", {
+      type: 'any'
+    })
+  
+  slot
+    .get("item")
+    .inputs.add("index", "当前项序号", {
+      type: 'number'
+  })
+
+  //1.0.16->1.0.17 fix下拉菜单 动态选项 
+  if(typeof data.dynamicOptions === "undefined"){
+    data.dynamicOptions = [];
+  };
+  
   return true;
 }

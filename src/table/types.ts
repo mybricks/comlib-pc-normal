@@ -33,6 +33,11 @@ export enum FilterTypeEnum {
   Multiple = 'multiple',
   Single = 'single'
 }
+export enum FilterIconEnum {
+  Inherit = 'inherit',
+  Filter = 'filter',
+  Search = 'search',
+}
 export interface Filter {
   enable?: boolean;
   type?: FilterTypeEnum;
@@ -40,6 +45,7 @@ export interface Filter {
   hideFilterDropdown?: boolean;
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
+  filterIcon?: FilterIconEnum;
 }
 export enum WidthTypeEnum {
   Auto = 'auto'
@@ -228,4 +234,6 @@ export interface Data {
 
   /** 表格数据懒加载 */
   lazyLoad: boolean; 
+  /** 表格筛选默认图标 */
+  filterIconDefault?: FilterIconEnum
 }

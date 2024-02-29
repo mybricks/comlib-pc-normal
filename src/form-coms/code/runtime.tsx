@@ -96,8 +96,8 @@ export default function ({
   }, []);
 
   const changeValue = (val) => {
-    setValue(val);
     valueRef.current = val;
+    setValue(val);
     onChangeForFc(parentSlot, { id, name, value: val });
   };
 

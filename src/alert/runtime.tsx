@@ -24,17 +24,19 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime) {
       // inputs 输入的参数 赋值
-      inputs[InputIds.SetMsg]((val: string) => {
+      inputs[InputIds.SetMsg]((val: string, relOutputs) => {
         if (typeof val === 'string') {
           data.message = val;
+          relOutputs['setInputInfoDone'](val);
         } else {
           logger.error(`输入数据非法，输入数据必须是字符串`);
         }
       });
-      inputs[InputIds.SetDesc]((val: string) => {
+      inputs[InputIds.SetDesc]((val: string, relOutputs) => {
         if (typeof val === 'string') {
           data.showInfo = true;
           data.content = val;
+          relOutputs['setDescriptionDone'](val);
         } else {
           logger.error(`输入数据非法，输入数据必须是字符串`);
         }

@@ -102,5 +102,28 @@ export default function ({ input, output, data, setDeclaredStyle, removeDeclared
     }
   }
 
+  //1.0.21 -> 1.0.22 设置标题、禁用、输出数据完成
+  if (!output.get("setDynamicTitleDone")) {
+    output.add("setDynamicTitleDone", "设置标题完成", { type: 'string' });
+  }
+  if (output.get("setDynamicTitleDone") &&
+    input.get("dynamicTitle") &&
+    !input.get("dynamicTitle")?.rels?.includes("setDynamicTitleDone")) {
+    input.get("dynamicTitle").setRels(["setDynamicTitleDone"]);
+  }
+
+  if (!output.get("setDynamicDisabledDone")) {
+    output.add("setDynamicDisabledDone", "设置禁用完成", { type: 'boolean' });
+  }
+  if (output.get("setDynamicDisabledDone") &&
+    input.get("dynamicDisabled") &&
+    !input.get("dynamicDisabled")?.rels?.includes("setDynamicDisabledDone")) {
+    input.get("dynamicDisabled").setRels(["setDynamicDisabledDone"]);
+  }
+
+  if(data.dataType = "external" && !output.get("setExternalDone") && input.get("external")){
+    output.add("setExternalDone", '设置输出数据完成', { type: 'string' });
+    input.get("external").setRels(["setExternalDone"]);
+  }
   return true;
 }

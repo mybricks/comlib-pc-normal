@@ -1,0 +1,52 @@
+.loading {
+  min-height: 60px;
+}
+
+.listWrap {
+  :global {
+    .ant-list-item {
+      margin-bottom: 0px !important;
+      padding: 0 !important;
+    }
+  }
+}
+
+.hideEmpty {
+  :global {
+    .ant-list-empty-text {
+      display: none !important;
+    }
+  }
+}
+
+//1.自动换行
+.flexContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+//3.不换行，且不滚动
+.noflexContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+//4.不换行，滚动
+.scrollContainer {
+  white-space: nowrap;
+  overflow: auto;
+  font-size: 0;
+}
+
+.scrollBox {
+  display: inline-block;
+}
+
+.sort-list {
+  display: flex;
+  flex-flow: column nowrap;
+  .sort-item {
+    cursor: pointer;
+  }
+}

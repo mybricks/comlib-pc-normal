@@ -22,7 +22,8 @@ export const InputIds = {
   SetDisabled: 'setDisabled',
   SetEnabled: 'setEnabled',
   SetValidateInfo: 'setValidateInfo',
-  SetColor: 'setColor'
+  SetColor: 'setColor',
+  SetDynamicStyles: 'setDynamicStyles',
 }
 
 export const OutputIds = {
@@ -30,7 +31,8 @@ export const OutputIds = {
   OnBlur: 'onBlur',
   OnInitial: 'onInitial',
   ReturnValue: 'returnValue',
-  OnValidate: 'onValidate'
+  OnValidate: 'onValidate',
+  SetDynamicStylesDone: 'setDynamicStylesDone',
 }
 
 export type DateType = "custom" | "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years";

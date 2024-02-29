@@ -101,7 +101,8 @@ export default (props: Props) => {
   };
 
   const totalText = (total: number, range: number[]) => {
-    return templateRender(text, { total, start: range[0], end: range[1] });
+    const content = env.i18n(text)
+    return templateRender(content, { total, start: range[0], end: range[1] })
   };
 
   return (

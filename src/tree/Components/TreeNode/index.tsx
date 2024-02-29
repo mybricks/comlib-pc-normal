@@ -3,6 +3,7 @@ import { Tree } from 'antd';
 import { deepCopy } from '../../../utils';
 import { Data, TreeData } from '../../types';
 import { ExpressionSandbox } from '../../../../package/com-utils';
+import { keyToString } from '../../utils';
 import { renderAddTitle } from './AddTitle';
 import { renderTitle } from './Title';
 const { TreeNode } = Tree;
@@ -27,6 +28,24 @@ const renderTreeNode = (
   const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
   const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
   const childrenFieldName = env.edit ? 'children' : data.childrenFieldName || 'children';
+
+  /**
+   * 树节点动态禁用表达式
+   * @param node 节点数据
+   * @param isRoot 是否根节点
+   */
+  const getDynamicDisabled = (context: TreeData): boolean => {
+    let flag = context.disabled;
+    if (data.disabledScript) {
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
+      try {
+        flag = sandbox.executeWithTemplate(data.disabledScript);
+      } catch (error: any) {
+        onError?.(`树组件[${context[titleFieldName]}]节点禁用计算错误: ${error}`);
+      }
+    }
+    return flag;
+  };
 
   /**
    * 树节点勾选框动态显示表达式
@@ -106,6 +125,7 @@ const renderTreeNode = (
           outputItem._depth = depth;
         }
 
+        const disabled = getDynamicDisabled(outputItem);
         const checkable = getDynamicCheckable(outputItem);
         const draggable = getDynamicDraggable(outputItem);
         const allowDrop = getDynamicAllowDrop(outputItem);
@@ -113,13 +133,14 @@ const renderTreeNode = (
         return (
           <TreeNode
             {...item}
-            key={item[keyFieldName]}
+            key={keyToString(item[keyFieldName])}
             className={css.treeNode}
             data-tree-node-id={item[keyFieldName]}
             data-draggable={draggable}
             data-allow-drop={allowDrop}
             title={renderTitle(props, item, outputItem, depth === 0)}
             disableCheckbox={item.disableCheckbox}
+            disabled={disabled}
             checkable={checkable}
             style={{
               display: filteredKeys.includes(item[keyFieldName]) ? void 0 : 'none'

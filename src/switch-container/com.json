@@ -1,0 +1,63 @@
+{
+  "title": "状态容器",
+  "namespace": "mybricks.normal-pc.switch-container",
+  "version": "1.0.1",
+  "description": "根据状态值渲染不同内容的容器，方便实现多状态切换",
+  "author": "zhulin",
+  "author_name": "",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "设置状态",
+      "rels": [
+        "setValueDone"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "getValue",
+      "title": "获取状态",
+      "rels": [
+        "returnValue"
+      ],
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setValueDone",
+      "title": "设置状态完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "returnValue",
+      "title": "当前状态",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "onChange",
+      "title": "状态更新",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "slots": [
+    {
+      "id": "status1",
+      "title": "状态1"
+    }
+  ]
+}

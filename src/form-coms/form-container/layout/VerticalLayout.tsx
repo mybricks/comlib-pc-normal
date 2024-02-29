@@ -17,8 +17,8 @@ const VerticalLayout = (props: VerticalLayoutProps) => {
   const { align, widthOption, width, span, inlinePadding } = data.actions;
 
   const actionStyle: React.CSSProperties = {
-    textAlign: align,
-    padding: inlinePadding?.map(String).map(unitConversion).join(' ')
+    textAlign: align
+    // padding: inlinePadding?.map(String).map(unitConversion).join(' ')
   };
   // const actionFlexBasis = widthOption === 'px' ? `${width}px` : `${(span * 100) / 24}%`;
 
@@ -37,13 +37,13 @@ const VerticalLayout = (props: VerticalLayoutProps) => {
       {children}
       {data.actions.visible && (
         <Col
-          className={
+          className={`${
             isEmpty
               ? data.formItemColumn === 1
                 ? `${styles.emptyVerActions} ${styles.onlyone}`
                 : styles.emptyVerActions
-              : undefined
-          }
+              : ''
+          } formAction`}
           style={actionStyle}
           flex={getFlexValue()}
         >

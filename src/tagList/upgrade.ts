@@ -62,5 +62,13 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
   if (typeof data.closeAble === 'undefined' && data.appendAble) {
     data.closeAble = true;
   }
+
+  const dynamicInput = input.get('dynamicTags');
+  if (dynamicInput) {
+    if(!output.get('dynamicComplete')){
+      output.add('dynamicComplete', '完成', { type: 'any' });
+      dynamicInput.setRels(['dynamicComplete']);
+    }
+  }
   return true;
 }

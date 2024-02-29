@@ -11,5 +11,18 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
       type: 'string'
     });
   }
+
+  const setLinkComplete = output.get('setLinkComplete');
+  if (!setLinkComplete) {
+    output.add('setLinkComplete', '完成', { type: 'any' });
+    input.get('link').setRels(['setLinkComplete']);
+  }
+
+  const screenshotComplete = output.get('screenshotComplete')
+  if(!screenshotComplete) {
+    output.add('screenshotComplete', '完成', {type: 'any'})
+    input.get('screenshot').setRels(['screenshotComplete'])
+  }
+
   return true;
 }

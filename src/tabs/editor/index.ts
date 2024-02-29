@@ -126,24 +126,25 @@ export default {
             get({ data }: EditorResult<Data>) {
               return data.useDynamicTab;
             },
-            set({ data, input }: EditorResult<Data>, value: boolean) {
-              const hasEvent = input.get(InputIds.SetShowTab);
+            set({ data, input, output }: EditorResult<Data>, value: boolean) {
               if (value) {
-                !hasEvent &&
-                  input.add({
-                    id: InputIds.SetShowTab,
-                    title: '设置显示tab',
-                    schema: {
-                      type: 'array',
-                      items: {
-                        title: '显示tab的Id',
-                        type: 'number'
-                      }
-                    },
-                    desc: '设置显示的标签页，下标从0开始'
-                  });
-              } else {
-                hasEvent && input.remove(InputIds.SetShowTab);
+                input.add({
+                  id: InputIds.SetShowTab,
+                  title: '设置显示tab',
+                  schema: {
+                    type: 'array',
+                    items: {
+                      title: '显示tab的Id',
+                      type: 'number'
+                    }
+                  },
+                  desc: '设置显示的标签页，下标从0开始'
+                });
+                output.add(OutputIds.SetShowTabComplete, '完成', { type: 'any' });
+                input.get(InputIds.SetShowTab).setRels([OutputIds.SetShowTabComplete])
+              }else {
+                input.remove(InputIds.SetShowTab);
+                output.remove(OutputIds.SetShowTabComplete)
               }
               data.useDynamicTab = value;
             }
@@ -220,8 +221,8 @@ export default {
     },
     style: [
       {
-        catelog: "默认",
-        ... createStyleForDefault({
+        catelog: '默认',
+        ...createStyleForDefault({
           initValue: {
             color: 'rgba(0,0,0,.85)'
           },
@@ -229,7 +230,7 @@ export default {
             `.ant-tabs .ant-tabs-nav-wrap .ant-tabs-tab:not(.ant-tabs-tab-active)${getFilterSelector(
               id
             )}`
-        }),
+        })
       },
       {
         catelog: '默认',
@@ -238,19 +239,19 @@ export default {
         target: '.ant-tabs .ant-tabs-nav-wrap'
       },
       {
-        catelog: "默认",
-        title: "标签外边距",
-        options: ["margin"],
+        catelog: '默认',
+        title: '标签外边距',
+        options: ['margin'],
         target: '.ant-tabs:not(.ant-tabs-card) .ant-tabs-nav-wrap .ant-tabs-tab+.ant-tabs-tab'
       },
       {
-        catelog: "默认",
+        catelog: '默认',
         title: '底部横线',
         options: ['border'],
-        target: '.ant-tabs-top>.ant-tabs-nav:before',
+        target: '.ant-tabs-top>.ant-tabs-nav:before'
       },
       {
-        catelog: "默认",
+        catelog: '默认',
         ...createStyleForBar()
       },
       {
@@ -263,7 +264,7 @@ export default {
         target: '.ant-tabs-tab:hover'
       },
       {
-        catelog: "激活",
+        catelog: '激活',
         ...createStyleForActive({
           initValue: {
             color: '#1890ff'

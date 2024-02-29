@@ -3,3 +3,37 @@
   overflow: unset;
   transition: all 0.2s;
 }
+
+@keyframes verticalRowUp {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+.verticalRowUp {
+  -webkit-animation: 2s verticalRowUp linear infinite normal;
+  animation: 2s verticalRowUp linear infinite normal;
+  position: relative;
+}
+
+@keyframes horizontalRowUp {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.horizontalRowUp {
+  -webkit-animation: 2s horizontalRowUp linear infinite normal;
+  animation: 2s horizontalRowUp linear infinite normal;
+  position: relative;
+}

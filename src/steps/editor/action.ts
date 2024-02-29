@@ -99,6 +99,9 @@ export default {
       {
         title: '文案',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           set({ data }: EditorResult<Data>, value: string) {
             if (!value) return;
@@ -150,6 +153,9 @@ export default {
       {
         title: '文案',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           set({ data }: EditorResult<Data>, value: string) {
             if (!value) return;
@@ -168,6 +174,9 @@ export default {
       {
         title: '文案',
         type: 'Text',
+        options: {
+          locale: true
+        },
         value: {
           set({ data }: EditorResult<Data>, value: string) {
             if (!value) return;

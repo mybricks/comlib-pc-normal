@@ -7,6 +7,7 @@ export default function ({
   data,
   slot,
   input,
+  output,
   config,
   setDeclaredStyle,
   getDeclaredStyle,
@@ -79,11 +80,35 @@ export default function ({
         },
       },
     });
+    output.add('setStyleComplete', '完成', {type: 'any'})
+    input.get(InputIds.SetStyle).setRels(['setStyleComplete'])
   }
 
   if (!input.get(InputIds.ScrollTo)) {
     input.add(InputIds.ScrollTo, '滚动到', { type: 'number' });
-  } 
+    output.add('scrollComplete', '完成', {type: 'any'})
+    input.get(InputIds.ScrollTo).setRels(['scrollComplete'])
+  }
 
+  /**
+   * @description v1.0.19 新增 自动滚动、滚动时间、方向 
+  */
+  if (typeof data.isAutoScroll === 'undefined') {
+    data.isAutoScroll = false;
+  }
+  if (typeof data.direction === 'undefined') {
+    data.direction = "vertical";
+  }
+  if (typeof data.scrollTime === 'undefined') {
+    data.scrollTime = 2000;
+  }
+  //=========== v1.0.19 end ===============
+
+  /**
+   * @description v1.0.21 兼容智能排列，flexDepiction 
+  */
+  if(data.slotStyle.flexDirection === 'smart'){
+    data.slotStyle.position = 'smart'
+  }
   return true;
 }

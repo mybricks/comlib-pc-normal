@@ -76,5 +76,9 @@ export enum InputIds {
 
 export enum OutputIds {
   OnTabClick = 'tabClick',
-  OutActiveTab = 'outActiveTab'
+  OutActiveTab = 'outActiveTab',
+  SetActiveTabComplete = 'activeComplete',
+  PreviousTabComplete = 'previousComplete',
+  NextTabComplete = 'nextComplete',
+  SetShowTabComplete = 'setShowTabComplete'
 }

@@ -1,0 +1,35 @@
+{
+  "title": "设置Storage数据",
+  "namespace": "mybricks.normal-pc.set-storage",
+  "version": "1.0.1",
+  "rtType": "js",
+  "description": "设置storage数据",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "inputs": [
+    {
+      "id": "setData",
+      "title": "保存数据",
+      "schema": {
+        "type": "follow"
+      },
+      "rels": [
+        "setDataDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setDataDone",
+      "title": "保存数据完成",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "slots": []
+}

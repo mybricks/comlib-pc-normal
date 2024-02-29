@@ -9,20 +9,22 @@ export default function ({ env, data, slots, inputs, id, style }: RuntimeParams<
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const popoverRef = useRef(null);
-  inputs['_title']((val) => {
+  inputs['_title']((val, relOutputs) => {
     if (isString(val)) {
       data.title = val;
     } else {
       data.title = JSON.stringify(val);
     }
+    typeof relOutputs['_titleComplete'] === 'function' && relOutputs['_titleComplete']()
   });
 
-  inputs['content']((val) => {
+  inputs['content']((val, relOutputs) => {
     if (isString(val)) {
       data.content = val;
     } else {
       data.content = JSON.stringify(val);
     }
+    typeof relOutputs['contentComplete'] === 'function' && relOutputs['contentComplete']()
   });
 
   /** display self */

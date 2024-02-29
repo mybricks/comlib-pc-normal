@@ -35,6 +35,16 @@ function get(data: Data, focusArea: any, dataset: string, val: any, cb?: any) {
 }
 
 export default {
+  '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
+    if (toPin.id === "setDynamicOptions") {
+      let itemSchema = {};
+      if (fromPin.schema.type === 'array') {
+        itemSchema = fromPin.schema.items;
+        input.get("setDynamicOptions").setSchema(fromPin.schema);
+        slots.get('item').inputs.get('itemData').setSchema(itemSchema);
+      }
+    }
+  },
   '@init': ({ data, style }: Result) => {
     style.width = '100%';
   },
@@ -220,6 +230,47 @@ export default {
           }
         },
         //选项的配置
+        {
+          title: '动态选项',
+          type: 'switch',
+          description: '开启后，动态配置选项内容',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.isDynamic;
+            },
+            set({ data, input, output }: EditorResult<Data>, val: boolean) {
+              data.isDynamic = val;
+              const schema = {
+                title: "设置选项",
+                type: "array",
+                items: {
+                  title: "列项数据",
+                  type: "object",
+                  properties: {
+                    value: {
+                      type: 'any'
+                    },
+                    disabled: {
+                      type: 'boolean'
+                    }
+                  }
+                }
+              }
+              if(val){
+                !input.get("setDynamicOptions") && input.add("setDynamicOptions", "设置选项", schema);
+                !output.get("setDynamicOptionsDone") &&
+                output.add("setDynamicOptionsDone", '设置选项完成', schema);
+
+                input.get("setDynamicOptions").setRels(["setDynamicOptionsDone"]);
+              }else{
+                input.get("setDynamicOptions") && input.remove("setDynamicOptions");
+                output.get("setDynamicOptionsDone") && output.remove("setDynamicOptionsDone");
+              }
+
+        
+            }
+          }
+        },
         {
           title: '选项配置',
           type: 'array',

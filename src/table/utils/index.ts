@@ -110,7 +110,7 @@ export const formatDataSource = (dataSource, rowKey) => {
 export const getDefaultDataSource = (columns: IColumn[], rowKey, env) => {
   if (env.runtime) return [];
   const mockData = {
-    [rowKey]: uuid()
+    [rowKey]: 'xxx'
   };
   const setDefaultDataSource = (columns) => {
     if (Array.isArray(columns)) {
@@ -241,7 +241,7 @@ export const createStyleForTableContent = () => [
   {
     title: '表头',
     catelog: '默认',
-    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    options: ['font', 'border', 'padding', { type: 'background', config: { disableBackgroundImage: true } }],
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
@@ -253,7 +253,7 @@ export const createStyleForTableContent = () => [
     ifVisible({ data }: EditorResult<Data>) {
       return !!data.columns.length;
     },
-    options: ['font', 'border', { type: 'background', config: { disableBackgroundImage: true } }],
+    options: ['font', 'border', 'padding', { type: 'background', config: { disableBackgroundImage: true } }],
     target: ({ id }) => `table tbody tr td${getFilterSelector(id)}`
   },
   {

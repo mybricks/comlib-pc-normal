@@ -10,12 +10,6 @@
     "widthOption": "flexFull",
     "span": 24,
     "align": "left",
-    "inlinePadding": [
-      0,
-      0,
-      0,
-      0
-    ],
     "items": [
       {
         "title": "提交",
@@ -60,8 +54,6 @@
   "config": {
     "colon": true,
     "layout": "horizontal",
-    "labelWrap": false,
-    "labelAlign": "right",
     "disabled": false
   },
   "domainModel": {

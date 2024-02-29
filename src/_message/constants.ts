@@ -35,5 +35,6 @@ export const InputIds = {
   Open: 'showMsg'
 };
 export const OutputIds = {
-  Close: 'closeMsg'
+  Close: 'closeMsg',
+  OpenDone: 'showMsgDone'
 };

@@ -2953,6 +2953,6 @@ interface TinyMCE extends EditorManager {
     isGecko: boolean;
     isMac: boolean;
 }
-declare const tinymce: TinyMCE;
-export default tinymce;
+declare const myTinymce: TinyMCE;
+export default myTinymce;
 export { AddOnManager, Annotator, AstNode, Bookmark, BookmarkManager, Class, Color, ControlSelection, DOMUtils, Delay, DomParser, DomParserSettings, DomQuery, DomSerializer, DomSerializerSettings, DomTreeWalker, Editor, EditorCommands, EditorEvent, EditorManager, EditorModeApi, EditorObservable, EditorSelection, EditorSettings, Entities, Env, EventDispatcher, EventUtils, EventTypes_d as Events, FocusManager, Format_d as Formats, Formatter, GeomRect, HtmlSerializer, HtmlSerializerSettings, I18n, IconManager, JSONUtils as JSON, JSONP, JSONRequest, JSONRequestArgs, JSONRequestSettings, NotificationApi, NotificationManager, NotificationSpec, Observable, Plugin, PluginManager, RangeUtils, RawEditorSettings, Rect, Resource, SaxParser, SaxParserSettings, Schema, SchemaSettings, ScriptLoader, Shortcuts, StyleSheetLoader, Styles, TextSeeker, Theme, ThemeManager, TinyMCE, Tools, URI, Ui_d as Ui, UndoManager, VK, WindowManager, Writer, WriterSettings, XHR, XHRSettings };

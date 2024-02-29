@@ -30,6 +30,7 @@
         "./src/list-new/com.json",
         "./src/collapse/com.json",
         "./src/custom-container/com.json",
+        "./src/switch-container/com.json",
         "./src/popover/com.json",
         "./src/dialog/com.json",
         "./src/drawer/com.json",
@@ -89,7 +90,8 @@
         "./src/tree/com.json",
         "./src/timeline/com.json",
         "./src/calendar/com.json",
-        "./src/progress/com.json"
+        "./src/progress/com.json",
+        "./src/anchor-container/com.json"
       ]
     },
     {
@@ -127,11 +129,13 @@
     "./src/_query/com.json",
     "./src/_events/com.json",
     "./src/_service/com.json",
+    "./src/_websocket/com.json",
     "./src/_pick/com.json",
     "./src/_excel/com.json",
     "./src/_pinyin/com.json",
     "./src/_post-message/com.json",
     "./src/_get-storage/com.json",
+    "./src/_set-storage/com.json",
     "./src/_receive-message/com.json",
     "./src/_countdown/com.json"
   ],

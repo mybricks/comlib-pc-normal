@@ -19,6 +19,19 @@ export const InputIds = {
 };
 
 export const OutputIds = {
+  SetDisableDone: 'setDisableDone',
+  SetEnableDone: 'setEnableDone',
+
+  SetHiddenDone: 'setHiddenDone',
+  SetVisibleDone: 'setVisibleDone',
+
+  SetBtnTextDone: 'setBtnTextDone',
+
+  SetBtnOpenLoadingDone: 'setBtnOpenLoadingDone',
+  SetBtnCloseLoadingDone: 'setBtnCloseLoadingDone',
+
+  SetBtnStyleDone: 'SetBtnStyle',
+
   DoubleClick: 'doubleClick'
 };
 

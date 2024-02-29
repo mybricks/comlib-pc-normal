@@ -4,7 +4,7 @@ import css from './runtime.less';
 import ColorPicker from './color-picker';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import { validateTrigger } from '../form-container/models/validate';
-import { ValidateTriggerType } from '../types';
+import { colorRgbaToHex } from './utils';
 
 export interface Data {
   color: string;
@@ -13,22 +13,6 @@ export interface Data {
   width?: number | string;
   colorType: 'rgb' | 'hex';
   validateTrigger: string[];
-}
-
-//RGB转换为HEX
-function rgbToHex(rgb) {
-  if (!/^(rgb|RGB)/.test(rgb)) {
-    return rgb;
-  }
-  var color = rgb.toString().match(/\d+/g);
-  var hex = '#';
-  for (var i = 0; i < 3; i++) {
-    if (color[i] < 0 || color[i] > 255) {
-      return rgb;
-    }
-    hex += ('0' + Number(color[i]).toString(16)).slice(-2);
-  }
-  return hex;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -56,7 +40,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           //onValidateTrigger(ValidateTriggerType.OnChange);
           break;
         case 'hex':
-          outputs['onChange'](rgbToHex(val));
+          outputs['onChange'](colorRgbaToHex(val));
           if (relOutputs['setValueDone']) {
             relOutputs['setValueDone'](val);
           }
@@ -77,7 +61,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
             //onValidateTrigger(ValidateTriggerType.OnInit);
             break;
           case 'hex':
-            outputs['onInitial'](rgbToHex(val));
+            outputs['onInitial'](colorRgbaToHex(val));
             if (relOutputs['setInitialValueDone']) {
               relOutputs['setInitialValueDone'](val);
             }
@@ -113,7 +97,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           outputRels['returnValue'](valueRef.current);
           break;
         case 'hex':
-          outputRels['returnValue'](rgbToHex(valueRef.current));
+          outputRels['returnValue'](colorRgbaToHex(valueRef.current));
           break;
       }
     });
@@ -175,7 +159,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onChangeForFc(parentSlot, { id: props.id, name: name, value: val });
         break;
       case 'hex':
-        onChangeForFc(parentSlot, { id: props.id, name: name, value: rgbToHex(val) });
+        onChangeForFc(parentSlot, { id: props.id, name: name, value: colorRgbaToHex(val) });
         break;
     }
   };
@@ -188,7 +172,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         outputs['onChange'](e);
         break;
       case 'hex':
-        outputs['onChange'](rgbToHex(e));
+        outputs['onChange'](colorRgbaToHex(e));
         break;
     }
     onValidateTrigger();
@@ -229,7 +213,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
           style={{ height: '22px', backgroundColor: data.disabled ? 'hsla(0,0%,100%,.8)' : void 0 }}
         ></div>
       </div>
-      <div className={css.colorPicker} onClick={colorOnClick}>
+      <div className={css.colorPicker} style={{ top: data.width }} onClick={colorOnClick}>
         {isShow ? (
           <ColorPicker color={color || '#000000'} onChangeComplete={onChangeComplete} />
         ) : (

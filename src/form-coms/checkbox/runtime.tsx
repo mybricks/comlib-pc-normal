@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import { Alert, Checkbox } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import { Data } from './types';
@@ -21,6 +28,7 @@ export default function Runtime({
 }: RuntimeParams<Data>) {
   const validateRelOuputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
+  const [dynamicStyles, setDynamicStyles] = useState<{ value: any; style: CSSProperties }[]>([]);
   const [single, setSingle] = useState<boolean>(false);
   const valueRef = useRef<any>(data.value);
 
@@ -152,12 +160,39 @@ export default function Runtime({
     });
 
     // 设置激活选项字体的颜色
-    inputs['setActiveFontColor']((color: string, relOutputs) => {
+    inputs['setActiveFontColor']?.((color: string, relOutputs) => {
       if (typeof color === 'string') {
         setActiveFontColor(color);
         relOutputs['setActiveFontColorDone'](color);
       }
     });
+
+    // 设置选项样式
+    inputs['setDynamicStyles']?.((styles, relOutputs) => {
+      setDynamicStyles(styles);
+      relOutputs['setDynamicStylesDone'](styles);
+    });
+
+    //设置多选框，全选框的可控状态
+    if (data.isIndeterminate) {
+      inputs['setIndeterminate']((val: string, relOutputs) => {
+        if (val === 'partChecked') {
+          setIndeterminate(true);
+          setCheckAll(false);
+          relOutputs['setIndeterminateDone'](val);
+        } else if (val === 'unChecked') {
+          setCheckAll(false);
+          setIndeterminate(false);
+          relOutputs['setIndeterminateDone'](val);
+        } else if (val === 'allChecked') {
+          setCheckAll(true);
+          setIndeterminate(false);
+          relOutputs['setIndeterminateDone'](val);
+        } else {
+          console.error('传入值应该为partChecked、unChecked、allChecked');
+        }
+      });
+    }
   }, [value]);
 
   const [indeterminate, setIndeterminate] = useState(false);
@@ -170,8 +205,14 @@ export default function Runtime({
   // data.value变化事件
   const changeValue = useCallback((checkedValue?: any[]) => {
     if (Array.isArray(checkedValue)) {
-      setIndeterminate(!!checkedValue.length && checkedValue.length < data.config.options.length);
-      setCheckAll(checkedValue.length === data.config.options.length);
+      setIndeterminate(
+        data.isIndeterminate
+          ? false
+          : !!checkedValue.length && checkedValue.length < data.config.options.length
+      );
+      setCheckAll(
+        data.isIndeterminate ? false : checkedValue.length === data.config.options.length
+      );
       setValue(checkedValue);
       valueRef.current = checkedValue;
     } else {
@@ -228,10 +269,16 @@ export default function Runtime({
 
   let options = env.edit ? data.staticOptions : data.config.options;
   let newOptions = options.map((opt) => {
+    const dynamicStyle = dynamicStyles.find((i) => i?.value === opt.value)?.style || {};
     return {
       ...opt,
       label: (
-        <span style={{ color: valueRef.current?.includes(opt.value) ? activeFontColor : '' }}>
+        <span
+          style={{
+            color: valueRef.current?.includes(opt.value) ? activeFontColor : '',
+            ...dynamicStyle
+          }}
+        >
           {env.i18n(opt.label)}
         </span>
       )

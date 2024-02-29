@@ -1,0 +1,56 @@
+{
+  "title": "WebSocket",
+  "namespace": "mybricks.normal-pc.websocket",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "version": "1.0.0",
+  "description": "WebSocket客户端",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.tsx",
+  "data": "./data.json",
+  "icon": "./icon.svg",
+  "rtType": "js-autorun",
+  "inputs": [
+    {
+      "id": "call",
+      "rels": [
+        "then",
+        "catch"
+      ],
+      "title": "启动",
+      "schema": {
+        "type": "object"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "onmessage",
+      "title": "新消息",
+      "schema": {
+        "type": "unknown"
+      }
+    },
+    {
+      "id": "onconnect",
+      "title": "连接成功",
+      "schema": {
+        "type": "unknown"
+      }
+    },
+    {
+      "id": "onClose",
+      "title": "连接断开",
+      "schema": {
+        "type": "unknown"
+      }
+    },
+    {
+      "id": "onerror",
+      "title": "连接失败",
+      "schema": {
+        "type": "unknown"
+      }
+    }
+  ]
+}

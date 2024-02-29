@@ -212,7 +212,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
 
   useEffect(() => {
     if (env.runtime && inputs['setData']) {
-      inputs['setData']((val) => {
+      inputs['setData']((val, relOutputs) => {
         if (Array.isArray(val)) {
           const rowKey = 'key';
           let newVal = val.map((item, index) => {
@@ -243,6 +243,7 @@ const RuntimeRender = (props: RuntimeParams<Data>) => {
           });
           setIsSet(true);
           data.itemList = newVal;
+          relOutputs['setDataDone'](newVal);
         }
       });
     }
