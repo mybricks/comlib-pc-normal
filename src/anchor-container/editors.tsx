@@ -14,7 +14,7 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root': ({ }: EditorResult<Data>, cate1) => {
+  ':root': ({}: EditorResult<Data>, cate1) => {
     cate1.title = '高级';
     cate1.items = [
       {
@@ -25,10 +25,10 @@ export default {
             return data.enableFix;
           },
           set({ data, input, output }: EditorResult<Data>, val: boolean) {
-            data.enableFix = val
+            data.enableFix = val;
           }
         }
-      },
+      }
       //   {
       //     title: 'loading',
       //     type: 'Switch',

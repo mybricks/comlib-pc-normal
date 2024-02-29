@@ -381,7 +381,17 @@ export default function ({
     data.config.dropdownMatchSelectWidth = true;
   }
 
-  //=========== v1.1.11 end ===============ƒ
+  //=========== v1.1.11 end ===============
+
+  /**
+     * @description v1.1.13 增加 搜索值为空时自动重置选项data.resetOptionsWhenEmptySearch 配置项
+     */
+
+  if (data.resetOptionsWhenEmptySearch === undefined) {
+    data.resetOptionsWhenEmptySearch = true;
+  }
+
+  //=========== v1.1.13 end ===============
 
   return true;
 }
