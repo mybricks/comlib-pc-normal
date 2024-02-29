@@ -134,7 +134,7 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
       data.useActions &&
       ActionBtns({ data, record: item, outputItem, env, outputs, onError });
   return (
-    <div className={css.wrapper}>
+    <div className={`${css.wrapper} ${data.useCompactTheme ? css.singleCompact : ''}`}>
       {Title}
       {editInput}
       {actionBtns}
