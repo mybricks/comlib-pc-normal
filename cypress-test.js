@@ -25,7 +25,7 @@ async function main() {
   ];
 
   if (!modifiedComponents.length) {
-    beautifulLog('没有组件变动，不需要测试');
+    beautifulLog('没有组件变动，不需要执行测试');
     return process.exit(0);
   }
 
@@ -51,9 +51,16 @@ async function main() {
 
       return pre;
     }, '').slice(1);
+
+    if(spec.length === 0) {
+      beautifulLog('没有可执行测试用例，不需要执行测试');
+      return process.exit(0);
+    }
+
     const command = `npx cypress run --env port=${port},check="${modifiedComponents.join(
       ' '
     )}" --spec="${spec}"`;
+    
     beautifulLog(`执行命令：${command}`);
     execSync(command, {
       stdio: 'inherit'

@@ -211,7 +211,9 @@ export default function ({
                     logger.error(log);
                     return;
                   }
-                  setModalVisible(true);
+                  if (env.runtime?.debug) {
+                    message.info('调试态不允许打开上传图片弹窗，请到预览页面调试');
+                  } else setModalVisible(true);
                   setUploadModel({
                     title: '上传图片',
                     type: 'image',
@@ -225,7 +227,9 @@ export default function ({
                     logger.error(log);
                     return;
                   }
-                  setModalVisible(true);
+                  if (env.runtime?.debug) {
+                    message.info('调试态不允许打开上传视频弹窗，请到预览页面调试');
+                  } else setModalVisible(true);
                   setUploadModel({
                     title: '上传视频',
                     type: 'video',
