@@ -94,6 +94,7 @@ const getSuggestions = (data: Data) => {
 };
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },
