@@ -727,6 +727,22 @@ export default {
               }
             },
             {
+              title: '搜索值为空时重置选项',
+              type: 'Switch',
+              description: '关闭时，搜索值为空时也需要通过连线设置数据源',
+              ifVisible({ data }) {
+                return data.dropdownSearchOption;
+              },
+              value: {
+                get({ data }) {
+                  return data.resetOptionsWhenEmptySearch;
+                },
+                set({ data }, value: boolean) {
+                  data.resetOptionsWhenEmptySearch = value;
+                }
+              }
+            },
+            {
               title: '搜索',
               type: '_event',
               ifVisible({ data }) {
