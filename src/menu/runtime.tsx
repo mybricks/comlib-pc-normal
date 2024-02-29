@@ -91,7 +91,6 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   };
 
   const renderMenuItems = (ds: MenuItem[]) => {
-    console.log(ds);
     return (ds || []).map((item) => {
       const { key, children, menuType, useIcon, icon } = item || {};
       const title = env.i18n(item.title);

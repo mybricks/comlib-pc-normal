@@ -11,8 +11,8 @@ const rowKey = '_itemKey';
 const editAnchorData = [
   { [rowKey]: 1, item: { title: '第一个锚点' } },
   { [rowKey]: 1, item: { title: '第二个锚点' } },
-  { [rowKey]: 1, item: { title: '第三个锚点' } },
-]
+  { [rowKey]: 1, item: { title: '第三个锚点' } }
+];
 
 export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Data>) => {
   let { useLoading } = data;
@@ -48,7 +48,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
   }, []);
 
   const ListItemRender = (itemProps) => {
-    const { [rowKey]: key, index: index, item: item } = itemProps
+    const { [rowKey]: key, index: index, item: item } = itemProps;
 
     return (
       <List.Item key={key} id={`mybricks-anchor-${key}`}>
@@ -63,7 +63,6 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
       </List.Item>
     );
   };
-
 
   //0、 无内容
   if (dataSource.length === 0) {
@@ -88,10 +87,12 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
         />
       </Col>
       <Col span={4}>
-        <Anchor>
+        <Anchor affix={data.enableFix}>
           {env.edit
-            ? editAnchorData.map(i => <Link href={location.href} title={i.item.title} />)
-            : dataSource.map(i => <Link href={`#mybricks-anchor-${i[rowKey]}`} title={i.item.title} />)}
+            ? editAnchorData.map((i) => <Link href={location.href} title={i.item.title} />)
+            : dataSource.map((i) => (
+                <Link href={`#mybricks-anchor-${i[rowKey]}`} title={i.item.title} />
+              ))}
         </Anchor>
       </Col>
     </Row>

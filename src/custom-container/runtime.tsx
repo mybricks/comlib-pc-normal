@@ -100,6 +100,26 @@ export default function (props: RuntimeParams<Data>) {
   //   }
   // });
 
+  const scrollRender = () => {
+    return (
+      <div
+        className={
+          data.isAutoScroll && env.runtime
+            ? data.direction === 'vertical'
+              ? css.verticalRowUp
+              : css.horizontalRowUp
+            : void 0
+        }
+        style={{
+          animationDuration: env.runtime ? `${data.scrollTime}ms` : void 0,
+          display: env.edit ? 'unset' : void 0
+        }}
+      >
+        {slots[SlotIds.Content].render({ style: slotStyle })}
+      </div>
+    );
+  };
+
   return (
     <div
       id={data?.id}
@@ -117,20 +137,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       }}
     >
-      <div
-        className={
-          data.isAutoScroll && env.runtime
-            ? data.direction === 'vertical'
-              ? css.verticalRowUp
-              : css.horizontalRowUp
-            : void 0
-        }
-        style={
-          data.isAutoScroll && env.runtime ? { animationDuration: `${data.scrollTime}ms` } : void 0
-        }
-      >
-        {slots[SlotIds.Content].render({ style: slotStyle })}
-      </div>
+      {data.isAutoScroll ? scrollRender() : slots[SlotIds.Content].render({ style: slotStyle })}
     </div>
   );
 }

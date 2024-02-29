@@ -11,7 +11,7 @@ import { unitConversion } from '../utils';
 
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
-  if(val.flexDirection === 'smart'){
+  if(val.position === 'smart'){
     slot.setLayout('smart');
   }else if (val.position === 'absolute') {
     slot.setLayout(val.position);
