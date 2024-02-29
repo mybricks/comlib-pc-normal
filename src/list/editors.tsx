@@ -2,6 +2,7 @@ import { Data, InputIds, OutputIds } from './constants';
 import { LayoutEditor } from './editor/layoutEditor';
 
 export default {
+  ':slot': {},
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
     if (toPin.id === InputIds.DATA_SOURCE) {
       let itemSchema = {};
