@@ -286,7 +286,7 @@ export default function Runtime({
       outputs['remoteSearch'](e);
     }
     //1、远程数据源
-    if (!e && data.dropdownSearchOption === true) {
+    if (data.dropdownSearchOption === true && !e && data.resetOptionsWhenEmptySearch) {
       data.config.options = [];
       setFetching(false);
     }
