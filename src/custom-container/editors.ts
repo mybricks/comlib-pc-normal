@@ -25,6 +25,7 @@ const setSlotLayout = (slot, val) => {
 };
 
 export default {
+  ':slot':{},
   '@init'({ style }: EditorResult<Data>) {
     style.height = 'auto';
   },
