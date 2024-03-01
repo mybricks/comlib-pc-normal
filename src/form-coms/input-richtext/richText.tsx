@@ -212,7 +212,7 @@ export default function ({
                     return;
                   }
                   if (env.runtime?.debug) {
-                    message.info('调试态不允许打开上传图片弹窗，请到预览页面调试');
+                    message.info('请到预览或发布后页面调试效果');
                   } else setModalVisible(true);
                   setUploadModel({
                     title: '上传图片',
@@ -228,7 +228,7 @@ export default function ({
                     return;
                   }
                   if (env.runtime?.debug) {
-                    message.info('调试态不允许打开上传视频弹窗，请到预览页面调试');
+                    message.info('请到预览或发布后页面调试效果');
                   } else setModalVisible(true);
                   setUploadModel({
                     title: '上传视频',
