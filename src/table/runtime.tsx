@@ -76,6 +76,9 @@ export default function (props: RuntimeParams<Data>) {
   const [parentHeight] = useParentHeight(ref);
   const [headerHeight] = useElementHeight(headerRef);
   const [footerHeight] = useElementHeight(footerRef);
+  const [tableHeaderHeight] = useElementHeight({
+    current: ref.current?.querySelector('.mybricks-table thead') || null
+  });
 
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
   const isUseOldHeight = style.height === 'auto';
@@ -102,7 +105,7 @@ export default function (props: RuntimeParams<Data>) {
     if (isUseOldHeight) return data.scroll.y ? data.scroll.y : void 0;
     // Tip: 这里逻辑和实际消费处匹配，undefined 的结果为 true
     const _showHeader = data.showHeader === false ? false : true;
-    return (tableHeight as number) - (_showHeader ? 48 : 0);
+    return (tableHeight as number) - (_showHeader ? tableHeaderHeight : 0);
   })();
 
   // const selectedRows = useMemo(() => {
@@ -1072,6 +1075,7 @@ export default function (props: RuntimeParams<Data>) {
             />
             {data.columns.length ? (
               <Table
+                className="mybricks-table"
                 style={{
                   width: data.tableLayout === TableLayoutEnum.FixedWidth ? getUseWidth() : '100%',
                   height: tableHeight
