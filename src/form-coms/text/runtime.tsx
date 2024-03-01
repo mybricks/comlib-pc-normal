@@ -37,28 +37,11 @@ export default function (props: RuntimeParams<Data>) {
   const { edit } = env;
 
   const inputRef = useRef<InputRef>(null);
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [value, setValue] = useState();
   const [autoFocus, setAutoFocus] = useState(false);
   const valueRef = useRef<any>();
-  const diff = (out, inn) => {
-    const outCom: any[] = [];
-    const innCom: any[] = [];
-    const getCom = (ori, res) => {
-      ori.map((i) => {
-        if (Array.isArray(i.comAry)) {
-          res.push(...i.comAry);
-        } else {
-          res.push(i);
-        }
-      });
-    };
-    getCom(out, outCom);
-    getCom(inn, innCom);
-    console.log('外网有内网没有', difference(outCom, innCom));
-    console.log('内网有外网没有', difference(innCom, outCom));
-  };
-  window._test = diff;
+
   useFormItemInputs(
     {
       id: props.id,
@@ -103,11 +86,11 @@ export default function (props: RuntimeParams<Data>) {
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = relOutput;
+              if (customRule?.status) {
+                validateRelOutputRef.current = relOutput;
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 relOutput(r);
@@ -123,21 +106,21 @@ export default function (props: RuntimeParams<Data>) {
   );
 
   useLayoutEffect(() => {
-    inputs[InputIds.SetColor]((color: string, relOutputs) => {
+    inputs[InputIds.SetColor]?.((color: string, relOutputs) => {
       if (inputRef.current?.input) {
         let outputColor = typeof color === 'string' ? color : '';
         inputRef.current.input.style.color = outputColor;
         relOutputs['setColorDone'](outputColor);
       }
     });
-    inputs['setAutoFocus']((flag: boolean, relOutputs) => {
+    inputs['setAutoFocus']?.((flag: boolean, relOutputs) => {
       setAutoFocus(!!flag);
       !!flag ? inputRef.current?.focus() : null;
       relOutputs['setAutoFocusDone'](flag);
     });
-    inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+    inputs[inputIds.SET_VALIDATE_INFO]?.((info: object, relOutputs) => {
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });
