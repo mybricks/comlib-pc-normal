@@ -228,5 +228,18 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.isEditable = true;
   }
   //=========== v1.3.10 end ===============
+
+  /**
+   * @description v1.3.11 新增 setAutoFocus/setAutoFocusDone输入输出项
+   */
+  if (!input.get('setAutoFocus')) {
+    input.add('setAutoFocus', '设置聚焦状态', { type: 'boolean' });
+  }
+  if (!output.get('setAutoFocusDone')) {
+    output.add('setAutoFocusDone', '设置聚焦状态完成', { type: 'boolean' });
+  }
+  input.get('setAutoFocus').setRels(['setAutoFocusDone']);
+  //=========== v1.3.11 end ===============
+
   return true;
 }

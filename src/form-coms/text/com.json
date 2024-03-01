@@ -124,6 +124,17 @@
       ]
     },
     {
+      "id": "setAutoFocus",
+      "title": "设置聚焦状态",
+      "desc": "true:聚焦 false:不聚焦",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setAutoFocusDone"
+      ]
+    },
+    {
       "id": "setValidateInfo",
       "title": "设置校验结果",
       "desc": "配合自定义校验使用，设置表单项的校验状态和校验失败提示文案",
@@ -269,6 +280,16 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "setAutoFocusDone",
+      "title": "设置聚焦状态完成",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setAutoFocusDone"
+      ]
     },
     {
       "id": "setValidateInfoDone",

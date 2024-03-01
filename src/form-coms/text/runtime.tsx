@@ -39,6 +39,7 @@ export default function (props: RuntimeParams<Data>) {
   const inputRef = useRef<InputRef>(null);
   const validateRelOuputRef = useRef<any>(null);
   const [value, setValue] = useState();
+  const [autoFocus, setAutoFocus] = useState(false);
   const valueRef = useRef<any>();
   const diff = (out, inn) => {
     const outCom: any[] = [];
@@ -129,6 +130,11 @@ export default function (props: RuntimeParams<Data>) {
         relOutputs['setColorDone'](outputColor);
       }
     });
+    inputs['setAutoFocus']((flag: boolean, relOutputs) => {
+      setAutoFocus(!!flag);
+      !!flag ? inputRef.current?.focus() : null;
+      relOutputs['setAutoFocusDone'](flag);
+    });
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
       if (validateRelOuputRef.current) {
         validateRelOuputRef.current(info);
@@ -201,6 +207,7 @@ export default function (props: RuntimeParams<Data>) {
       placeholder={env.i18n(data.config.placeholder)}
       addonBefore={env.i18n(data.config.addonBefore)}
       addonAfter={env.i18n(data.config.addonAfter)}
+      autoFocus={autoFocus}
       value={value}
       readOnly={!!edit}
       onChange={onChange}
