@@ -63,5 +63,5 @@
   "enableOnRow": false,
   "onRowScript": "",
   "lazyLoad": false,
-  "filterIconDefault": "filter"
+  "filterIconDefault": "FilterFilled"
 }

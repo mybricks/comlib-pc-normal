@@ -260,6 +260,7 @@ export default ({
         }}
         filterIcon={(filtered) => (
           <FilterIconRender
+            inherit={cItem.filter?.filterIconInherit}
             defaultType={filterIconDefault}
             type={cItem.filter?.filterIcon}
             filtered={filtered}

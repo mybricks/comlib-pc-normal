@@ -1,4 +1,4 @@
-import { FilterFilled, SearchOutlined } from '@ant-design/icons';
+import * as Icons from '@ant-design/icons';
 import React from 'react';
 import { FilterIconEnum } from '../../types';
 
@@ -6,21 +6,30 @@ export interface IFilterIconRenderProps {
   defaultType?: FilterIconEnum;
   type?: FilterIconEnum;
   filtered: boolean;
+  inherit?: boolean;
 }
 
-export default function FilterIconRender({ defaultType, filtered, type }: IFilterIconRenderProps) {
+export default function FilterIconRender({
+  defaultType,
+  filtered,
+  type,
+  inherit = false
+}: IFilterIconRenderProps) {
   const style = { color: filtered ? '#1890ff' : undefined };
 
-  const finalType = (() => {
-    if (type && type !== FilterIconEnum.Inherit) return type;
-    return defaultType || 'filter';
-  })();
-
-  if (finalType === 'search') {
-    return <SearchOutlined style={style} />;
-  } else if (finalType === 'filter') {
-    return <FilterFilled style={style} />;
+  // 兼容老数据
+  {
+    if (defaultType === 'filter') defaultType = 'FilterFilled';
+    else if (defaultType === 'search') defaultType = 'SearchOutlined';
+    if (type === 'filter') type = 'FilterFilled';
+    else if (type === 'search') type = 'SearchOutlined';
   }
 
-  return <FilterFilled style={style} />;
+  const FinalIcon =
+    (() => {
+      if (inherit) return defaultType && Icons[defaultType];
+      return type && Icons[type];
+    })() || Icons['FilterFilled'];
+
+  return <FinalIcon style={style} />;
 }

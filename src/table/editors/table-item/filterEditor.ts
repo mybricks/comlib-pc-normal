@@ -138,13 +138,8 @@ const FilterEditor = {
     //   }
     // },
     {
-      title: '筛选图标',
-      type: 'Select',
-      options: [
-        { label: '继承表格配置', value: FilterIconEnum.Inherit },
-        { label: '漏斗', value: FilterIconEnum.Filter },
-        { label: '放大镜', value: FilterIconEnum.Search }
-      ],
+      title: '筛选图标继承自表格',
+      type: 'Switch',
       ifVisible({ data, focusArea }: EditorResult<Data>) {
         if (!focusArea) return;
         const item = getColumnItem(data, focusArea);
@@ -154,7 +149,28 @@ const FilterEditor = {
         get({ data, focusArea }: EditorResult<Data>) {
           if (!focusArea) return;
           const item = getColumnItem(data, focusArea);
-          return (item && item.filter?.filterIcon) || FilterIconEnum.Inherit;
+          return (item && item.filter?.filterIconInherit) || false;
+        },
+        set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          setFilterProps(data, item, 'filterIconInherit', value);
+        }
+      }
+    },
+    {
+      title: '筛选图标',
+      type: 'Icon',
+      ifVisible({ data, focusArea }: EditorResult<Data>) {
+        if (!focusArea) return;
+        const item = getColumnItem(data, focusArea);
+        return item && item.filter?.enable && !item.filter?.filterIconInherit;
+      },
+      value: {
+        get({ data, focusArea }: EditorResult<Data>) {
+          if (!focusArea) return;
+          const item = getColumnItem(data, focusArea);
+          return (item && item.filter?.filterIcon)
         },
         set({ data, focusArea }: EditorResult<Data>, value: FilterIconEnum) {
           if (!focusArea) return;
