@@ -1,7 +1,7 @@
 import { Data, SlotIds, OverflowEnum } from './constants';
 import { OverflowEditor } from './editors/overflowEditor';
 import { PageScrollEditor } from './editors/pageSrcollEditor';
-import { AutoScrollEditor} from './editors/autoScrollEditor';
+import { AutoScrollEditor } from './editors/autoScrollEditor';
 import { StyleEditor } from './editors/styleEditor';
 import { ClickEditor } from './editors/clickEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
@@ -11,9 +11,9 @@ import { unitConversion } from '../utils';
 
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
-  if(val.position === 'smart'){
+  if (val.position === 'smart') {
     slot.setLayout('smart');
-  }else if (val.position === 'absolute') {
+  } else if (val.position === 'absolute') {
     slot.setLayout(val.position);
   } else if (val.display === 'flex') {
     if (val.flexDirection === 'row') {
@@ -25,6 +25,7 @@ const setSlotLayout = (slot, val) => {
 };
 
 export default {
+  ':slot': {},
   '@init'({ style }: EditorResult<Data>) {
     style.height = 'auto';
   },
