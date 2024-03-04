@@ -184,6 +184,7 @@ export default function (props: RuntimeParams<Data>) {
 
   let jsx = data.isEditable ? (
     <Input
+      className={css.input}
       ref={inputRef}
       type="text"
       {...data.config}
