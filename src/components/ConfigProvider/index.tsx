@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { ConfigProvider } from 'antd';
 const localeMap = window.antd.locale;
 const LocaleProvider = ({
@@ -8,6 +8,7 @@ const LocaleProvider = ({
 }: {
   locale?: keyof typeof localeMap;
   children: React.ReactNode;
+  renderEmpty?: (componentName?: string | undefined) => ReactNode;
 }) => {
   if (window.moment) {
     window.moment.locale(locale as string);

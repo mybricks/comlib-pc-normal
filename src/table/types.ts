@@ -33,11 +33,9 @@ export enum FilterTypeEnum {
   Multiple = 'multiple',
   Single = 'single'
 }
-export enum FilterIconEnum {
-  Inherit = 'inherit',
-  Filter = 'filter',
-  Search = 'search',
-}
+
+export type FilterIconEnum = string;
+
 export interface Filter {
   enable?: boolean;
   type?: FilterTypeEnum;
@@ -45,6 +43,9 @@ export interface Filter {
   hideFilterDropdown?: boolean;
   filterSource?: FilterTypeEnum;
   filterType?: FilterTypeEnum;
+  /** 筛选图标继承自表格 */
+  filterIconInherit?: boolean;
+  /** 筛选图标 */
   filterIcon?: FilterIconEnum;
 }
 export enum WidthTypeEnum {
