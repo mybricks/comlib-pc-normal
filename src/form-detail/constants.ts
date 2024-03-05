@@ -43,6 +43,8 @@ export interface Item {
 
   //每一项的schema
   schema?: any;
+
+  visible?: boolean | undefined
 }
 
 /** 数据来源 */
@@ -92,7 +94,8 @@ export const InputIds = {
   SetDataSource: 'setDataSource',
   SetTitle: 'setTitle',
   CurDs: 'curDs',
-  DataSource: 'dataSource'
+  DataSource: 'dataSource',
+  SetDataDesc: 'setDataDesc'
 };
 
 export const ScopeSlotIds = {

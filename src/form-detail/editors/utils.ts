@@ -2,6 +2,24 @@ import { message } from 'antd';
 import { Data, Item, InputIds, TypeEnum } from '../constants';
 import { uuid } from '../../utils';
 
+const DescSchema = {
+  type: 'object',
+  properties: {
+    label: {
+      type: 'string'
+    },
+    labelDesc: {
+      type: 'string'
+    },
+    showLabel: {
+      type: 'boolean'
+    },
+    visible: {
+      type: 'boolean'
+    }
+  }
+};
+
 export function getEleIdx({ data, focusArea }: any): number {
   focusArea.ele.myEle = true;
   if (!focusArea.ele?.parentNode) return 0;
@@ -168,6 +186,21 @@ const setDataSourceSchema = ({ input, dataSchema }) => {
     });
   }
 };
+
+const setDataDescSchema = ({ input, dataSchema }) => {
+  const pin = input.get(InputIds.SetDataDesc);
+  if (pin && dataSchema) {
+    Object.keys(dataSchema).forEach((key) => {
+      dataSchema[key] = DescSchema;
+    });
+    pin.setSchema({
+      title: '输入数据',
+      type: 'object',
+      properties: dataSchema
+    });
+  }
+};
+
 const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
   data.items.forEach((item) => {
     if (item.useSuffix) {
@@ -198,6 +231,7 @@ const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
 export const updateIOSchema = ({ data, input, output }) => {
   const dataSchema = getDataSourceSchema(data);
   setDataSourceSchema({ input, dataSchema });
+  setDataDescSchema({ input, dataSchema });
   setSuffixBtnClickSchema({ data, dataSchema, output });
 };
 

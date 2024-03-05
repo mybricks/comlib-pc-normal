@@ -1,7 +1,7 @@
 {
   "title": "描述列表",
   "namespace": "mybricks.normal-pc.form-detail",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "描述列表",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -36,6 +36,34 @@
         }
       },
       "rels": ["setDataSourceComplete"]
+    },
+    {
+      "id": "setDataDesc",
+      "title": "设置数据源描述",
+      "desc": "设置数据源描述",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "field1": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "labelDesc": {
+                "type": "string"
+              },
+              "showLabel": {
+                "type": "boolean"
+              },
+              "visible": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "rels": ["setDataDescComplete"]
     }
   ],
   "outputs": [
@@ -48,6 +76,13 @@
     },
     {
       "id": "setDataSourceComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setDataDescComplete",
       "title": "完成",
       "schema": {
         "type": "any"
