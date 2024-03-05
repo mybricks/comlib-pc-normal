@@ -1,5 +1,6 @@
-import { Data } from './constants';
+import { Data, InputIds } from './constants';
 import { isEmptyObject } from '../utils';
+import { getDataDescSchema } from './editors/utils';
 
 export default function ({ data, input, output, setDeclaredStyle }: UpgradeParams<Data>): boolean {
   /**
@@ -70,6 +71,12 @@ export default function ({ data, input, output, setDeclaredStyle }: UpgradeParam
   if (!setDataSourceComplete) {
     output.add('setDataSourceComplete', '完成', { type: 'any' });
     input.get('setDataSource').setRels(['setDataSourceComplete']);
+  }
+
+  const setDataDesc = input.get(InputIds.SetDataDesc)
+  if(!setDataDesc) {
+    input.add(InputIds.SetDataDesc, '设置数据源描述', getDataDescSchema(data))
+    output.add('setDataDescComplete', '完成', { type: 'any' })
   }
 
   return true;

@@ -176,6 +176,23 @@ export const getDataSourceSchema = (data: Data) => {
   });
   return properties;
 };
+
+export const getDataDescSchema = (data: Data) => {
+  const properties = getDataSourceSchema(data)
+  if(!Object.keys(properties).length) {
+    return {
+      type: 'any'
+    }
+  }
+  Object.keys(properties).forEach((key) => {
+    properties[key] = DescSchema;
+  });
+  return {
+    type: 'object',
+    properties
+  }
+}
+
 const setDataSourceSchema = ({ input, dataSchema }) => {
   const Pin = input.get(InputIds.SetDataSource);
   if (Pin) {
@@ -187,17 +204,11 @@ const setDataSourceSchema = ({ input, dataSchema }) => {
   }
 };
 
-const setDataDescSchema = ({ input, dataSchema }) => {
+const setDataDescSchema = ({ input, data }) => {
   const pin = input.get(InputIds.SetDataDesc);
-  if (pin && dataSchema) {
-    Object.keys(dataSchema).forEach((key) => {
-      dataSchema[key] = DescSchema;
-    });
-    pin.setSchema({
-      title: '输入数据',
-      type: 'object',
-      properties: dataSchema
-    });
+  if (pin) {
+    const schema = getDataDescSchema(data)
+    pin.setSchema(schema);
   }
 };
 
@@ -231,7 +242,7 @@ const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
 export const updateIOSchema = ({ data, input, output }) => {
   const dataSchema = getDataSourceSchema(data);
   setDataSourceSchema({ input, dataSchema });
-  setDataDescSchema({ input, dataSchema });
+  setDataDescSchema({ input, data });
   setSuffixBtnClickSchema({ data, dataSchema, output });
 };
 
