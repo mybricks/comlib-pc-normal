@@ -12,4 +12,5 @@ export interface Data {
   buttonStyle: 'outline' | 'solid';
   layout: 'vertical' | 'horizontal';
   isEditable: boolean;
+  autoFocus: false | 'first' | 'defaultCheck';
 }

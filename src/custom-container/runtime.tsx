@@ -100,7 +100,7 @@ export default function (props: RuntimeParams<Data>) {
   //   }
   // });
 
-  const scrollRender = ()=>{
+  const scrollRender = () => {
     return (
       <div
         className={
@@ -117,8 +117,8 @@ export default function (props: RuntimeParams<Data>) {
       >
         {slots[SlotIds.Content].render({ style: slotStyle })}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div
@@ -137,11 +137,7 @@ export default function (props: RuntimeParams<Data>) {
         }
       }}
     >
-      {
-        data.isAutoScroll ? 
-          scrollRender() :
-          slots[SlotIds.Content].render({ style: slotStyle })
-      }
+      {data.isAutoScroll ? scrollRender() : slots[SlotIds.Content].render({ style: slotStyle })}
     </div>
   );
 }

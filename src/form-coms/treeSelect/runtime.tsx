@@ -292,10 +292,11 @@ export default function Runtime({
     return (
       <>
         {treeData.map((item, inx) => {
+          const children = item[data.childrenFieldName || 'children'];
           const outputItem = {
             isRoot: depth === 0,
             _depth: depth,
-            isLeaf: !item.children?.length,
+            isLeaf: !children?.length,
             ...item
           };
           return (
@@ -307,7 +308,7 @@ export default function Runtime({
               title={item[data.labelFieldName || 'label']}
               icon={getNodeIcon(outputItem, data, onError)}
             >
-              {renderTreeNode(item.children || [], depth + 1)}
+              {renderTreeNode(children || [], depth + 1)}
             </TreeNode>
           );
         })}
@@ -336,7 +337,6 @@ export default function Runtime({
           open={env.design ? true : void 0}
           value={value}
           loadData={data.useLoadData ? onLoadData : undefined}
-          fieldNames={fieldNames}
           onChange={onChange}
           onSearch={onSearch}
           treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}

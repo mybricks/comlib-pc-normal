@@ -6,7 +6,12 @@
     "flexDirection": "column",
     "alignItems": "flex-start",
     "justifyContent": "flex-start",
-    "flexWrap": "nowrap"
+    "flexWrap": "nowrap",
+    "paddingType": "independentPadding",
+    "paddingTop": 0,
+    "paddingRight": 0,
+    "paddingBottom": 0,
+    "paddingLeft": 0
   },
   "legacyConfigStyle": {},
   "legacyStyle": {},

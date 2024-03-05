@@ -17,5 +17,6 @@
   "staticOptions": [],
   "dropdownSearchOption": false,
   "outputValueType": "value",
-  "isEditable": true
+  "isEditable": true,
+  "resetOptionsWhenEmptySearch": true
 }

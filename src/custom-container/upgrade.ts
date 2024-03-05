@@ -104,5 +104,27 @@ export default function ({
   }
   //=========== v1.0.19 end ===============
 
+  /**
+   * @description v1.0.21 兼容智能排列，flexDepiction 
+  */
+  if(data.slotStyle.flexDirection === 'smart'){
+    data.slotStyle.position = 'smart'
+  }
+
+  /**
+   * @description v1.0.22 增加padding 
+  */
+  if(typeof data.slotStyle.paddingType === 'undefined'){
+    data.slotStyle.paddingType = "independentPadding"
+  }
+  if(typeof data.slotStyle.paddingTop === 'undefined'){
+    data.slotStyle.paddingTop = 0
+  }
+  if(typeof data.slotStyle.paddingBottom === 'undefined'){
+    data.slotStyle.paddingBottom = 0
+  }
+  if(typeof data.slotStyle.paddingLeft === 'undefined'){
+    data.slotStyle.paddingLeft = 0
+  }
   return true;
 }
