@@ -173,6 +173,22 @@ export default {
           }
         }
       },
+      {
+        title: '字符串节点带引号复制',
+        type: 'Switch',
+        description: '开启时，单击字符串节点复制值时，复制到剪切板的字符串包含引号在内',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.enableClipboard && !data.copyValueWithLabel;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.copyStringWithQuotation;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.copyStringWithQuotation = value;
+          }
+        }
+      },
       ...eventItems,
       {
         title: '默认JSON数据',

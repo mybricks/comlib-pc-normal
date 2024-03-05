@@ -15,5 +15,6 @@
   "displayObjectSize": false,
   "enableClipboard": false,
   "enableOutput": false,
-  "copyValueWithLabel": false
+  "copyValueWithLabel": false,
+  "copyStringWithQuotation": true
 }

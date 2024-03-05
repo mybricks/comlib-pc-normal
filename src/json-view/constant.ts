@@ -38,6 +38,8 @@ export interface Data {
   copyValueWithLabel: boolean;
   enableOutput: boolean;
   dataSourceType: 'default' | 'array' | 'object';
+  /**@description 字符串节点的值复制时，是否包含引号 */
+  copyStringWithQuotation: boolean;
 }
 
 export const InputIds = {
