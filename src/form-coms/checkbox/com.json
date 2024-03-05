@@ -1,7 +1,7 @@
 {
   "title": "多选框",
   "namespace": "mybricks.normal-pc.checkbox",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "description": "多选框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -382,6 +382,34 @@
           },
           "help": {
             "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "setOptionsDone",
+      "title": "设置数据源完成",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "标签",
+              "type": "string"
+            },
+            "value": {
+              "title": "值",
+              "type": "string"
+            },
+            "disabled": {
+              "title": "禁用",
+              "type": "boolean"
+            },
+            "checked": {
+              "title": "选中",
+              "type": "boolean"
+            }
           }
         }
       }
