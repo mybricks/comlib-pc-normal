@@ -2,6 +2,24 @@ import { message } from 'antd';
 import { Data, Item, InputIds, TypeEnum } from '../constants';
 import { uuid } from '../../utils';
 
+const DescSchema = {
+  type: 'object',
+  properties: {
+    label: {
+      type: 'string'
+    },
+    labelDesc: {
+      type: 'string'
+    },
+    showLabel: {
+      type: 'boolean'
+    },
+    visible: {
+      type: 'boolean'
+    }
+  }
+};
+
 export function getEleIdx({ data, focusArea }: any): number {
   focusArea.ele.myEle = true;
   if (!focusArea.ele?.parentNode) return 0;
@@ -158,6 +176,23 @@ export const getDataSourceSchema = (data: Data) => {
   });
   return properties;
 };
+
+export const getDataDescSchema = (data: Data) => {
+  const properties = getDataSourceSchema(data)
+  if(!Object.keys(properties).length) {
+    return {
+      type: 'any'
+    }
+  }
+  Object.keys(properties).forEach((key) => {
+    properties[key] = DescSchema;
+  });
+  return {
+    type: 'object',
+    properties
+  }
+}
+
 const setDataSourceSchema = ({ input, dataSchema }) => {
   const Pin = input.get(InputIds.SetDataSource);
   if (Pin) {
@@ -168,6 +203,15 @@ const setDataSourceSchema = ({ input, dataSchema }) => {
     });
   }
 };
+
+const setDataDescSchema = ({ input, data }) => {
+  const pin = input.get(InputIds.SetDataDesc);
+  if (pin) {
+    const schema = getDataDescSchema(data)
+    pin.setSchema(schema);
+  }
+};
+
 const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
   data.items.forEach((item) => {
     if (item.useSuffix) {
@@ -198,6 +242,7 @@ const setSuffixBtnClickSchema = ({ data, output, dataSchema }) => {
 export const updateIOSchema = ({ data, input, output }) => {
   const dataSchema = getDataSourceSchema(data);
   setDataSourceSchema({ input, dataSchema });
+  setDataDescSchema({ input, data });
   setSuffixBtnClickSchema({ data, dataSchema, output });
 };
 
