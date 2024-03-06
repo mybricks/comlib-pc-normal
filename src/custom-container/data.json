@@ -2,7 +2,7 @@
   "style": {},
   "slotStyle": {
     "display": "flex",
-    "position": "inherit",
+    "position": "smart",
     "flexDirection": "column",
     "alignItems": "flex-start",
     "justifyContent": "flex-start",
