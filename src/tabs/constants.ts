@@ -1,3 +1,5 @@
+import { TabsProps } from "antd";
+
 /**
  * 标签页配置项
  * @param key 唯一id
@@ -11,7 +13,7 @@ export interface TabItem {
   dynamic?: boolean;
   num?: number | string;
   outputContent?: string;
-  permission?:{ id: string };
+  permission?: { id: string };
   id: string;
 
   tooltipText?: string;
@@ -23,13 +25,13 @@ export interface TabItem {
   render?: boolean
 
   //类型
-  infoType: 'text'| 'icon';
+  infoType: 'text' | 'icon';
   //状态点尺寸
   size: 'default' | 'small';
   //偏移量
   offset: number[];
   //状态
-  status: 'success'|'processing'|'default'|'error'|'warning';
+  status: 'success' | 'processing' | 'default' | 'error' | 'warning';
   //showZero
   showZero: boolean;
 }
@@ -59,6 +61,8 @@ export interface Data {
   useDynamicTab?: boolean;
   /** @description 1.0.14 隐藏时渲染 */
   forceRender?: boolean;
+  /** @description 1.0.15 尺寸 */
+  size?: TabsProps['size'];
 }
 
 export enum SlotIds {
