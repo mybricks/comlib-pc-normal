@@ -60,10 +60,11 @@ export default {
             }
           }
         },
+        ...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor
       ];
 
-      cate2.title = '交互';
-      cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
+      // cate2.title = '交互';
+      // cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
 
       return {
         title: '自定义容器'
