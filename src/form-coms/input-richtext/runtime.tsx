@@ -8,12 +8,11 @@ import { Data } from './types';
  */
 
 export default function (props: RuntimeParams<Data>) {
-  const { data, env } = props;
-  const isRuntime = !env?.runtime;
+  const { data } = props;
   const EditContent = useMemo(() => {
     return (
       <div>
-        <RichText readonly={isRuntime} {...props} />
+        <RichText readonly={false} {...props} />
       </div>
     );
   }, []);
@@ -22,5 +21,5 @@ export default function (props: RuntimeParams<Data>) {
     return EditContent;
   }
   data.toolbar = [];
-  return <RichText readonly={isRuntime} {...props} />;
+  return <RichText readonly={false} {...props} />;
 }
