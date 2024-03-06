@@ -38,9 +38,9 @@ const addBtn = ({
     outVal: 0,
     useIcon: false,
     showText: true,
-    size: 'middle',
+    size: 'small',
     type: 'default',
-    shape: undefined,
+    shape: '',
     dataType: 'number'
   };
   output.add(id, title, schema);
@@ -318,6 +318,34 @@ export default {
               set({ data, focusArea }: Result, value: string) {
                 const res = get(data, focusArea, 'btnId', 'obj');
                 res.type = value;
+              }
+            }
+          },
+          {
+            title: '尺寸',
+            description: '全局设置表单项尺寸, 默认是中(middle)',
+            type: 'Select',
+            options: [
+              {
+                label: '大',
+                value: 'large'
+              },
+              {
+                label: '中',
+                value: 'middle'
+              },
+              {
+                label: '小',
+                value: 'small'
+              }
+            ],
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return get(data, focusArea, 'btnId', 'size');
+              },
+              set({ data, focusArea }: EditorResult<Data>, val: 'large' | 'middle' | 'small') {
+                const res = get(data, focusArea, 'btnId', 'obj');
+                res.size = val;
               }
             }
           },
