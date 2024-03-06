@@ -7,7 +7,7 @@ import { TypeEnum } from '../constants';
 export default {
   '@init'({ style }) {
     style.width = 'fit-content';
-    style.height = 32;
+    style.height = 'auto';
   },
   '@resize': {
     options: ['width', 'height']
