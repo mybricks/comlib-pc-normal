@@ -202,9 +202,9 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
             const nodeDataStr =
               copyValueWithLabel && node.label !== undefined
                 ? JSON.stringify({ [node.label]: nodeData })
-                : data.copyStringWithQuotation && typeof nodeData === 'string'
-                ? nodeData
-                : JSON.stringify(nodeData);
+                : typeof nodeData !== 'string' || data.copyStringWithQuotation
+                ? JSON.stringify(nodeData)
+                : nodeData;
             copy(nodeDataStr);
             message.success('节点数据已成功复制到剪贴板');
           } catch (e) {
