@@ -75,7 +75,7 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
   const debug = !!(runtime && runtime.debug);
   const wrapperRef = hyperWrapperRef || useRef<HTMLDivElement>(null);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
   const customExtraTextRef = useRef<any>(() => {});
 
@@ -179,11 +179,11 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             let transValue;
             //1.null是从日期选择框不选日期的情况；
             //2.undefined是手动设置值为空或者不正确的情况
@@ -227,8 +227,8 @@ export default function Runtime(props: RuntimeParams<Data> & IHyperExtends) {
 
     // 设置校验状态
     inputs[CommonInputIds.SetValidateInfo]((info: object, outputRels) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
       }
     });

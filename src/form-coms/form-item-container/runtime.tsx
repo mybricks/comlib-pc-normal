@@ -10,7 +10,7 @@ import { inputIds, outputIds } from '../form-container/constants';
 export default function (props: RuntimeParams<Data>) {
   const { env, data, _inputs, inputs, _outputs, outputs, slots, parentSlot, id, name, style } =
     props;
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [value, setValue] = useState();
   const valueRef = useRef<any>();
 
@@ -48,11 +48,11 @@ export default function (props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs[outputIds.ON_VALIDATE](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -115,8 +115,8 @@ export default function (props: RuntimeParams<Data>) {
 
     // 设置校验状态
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, outputRels) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
       }
     });

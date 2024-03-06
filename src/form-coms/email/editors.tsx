@@ -282,8 +282,8 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }) {
-            const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-            return !!cutomRule?.status;
+            const customRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+            return !!customRule?.status;
           },
           options: {
             outputId: 'onValidate'

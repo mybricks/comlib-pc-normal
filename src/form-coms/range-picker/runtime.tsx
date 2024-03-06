@@ -67,7 +67,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
   const valueRef = useRef<any>();
   const [type, setType] = useState<string>('date');
@@ -206,11 +206,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             let transValue;
             if (!Array.isArray(valueRef.current)) {
               transValue = null;
@@ -300,8 +300,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

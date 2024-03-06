@@ -182,10 +182,10 @@ export default function ({
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', outputValueSchema);
   }
-  const cutomRule = data.rules?.find(
+  const customRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
   );
-  if (data.rules?.length && !cutomRule) {
+  if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,

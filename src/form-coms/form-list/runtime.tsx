@@ -20,7 +20,7 @@ import { defaultRules } from './editors';
 export default function Runtime(props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
 
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
 
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
@@ -145,11 +145,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels['returnValidate'];
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels['returnValidate'];
                 outputs[outputIds.ON_VALIDATE](data.value);
               } else {
                 outputRels['returnValidate'](r);
@@ -167,8 +167,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 设置校验信息
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, outputRels) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
       }
     });

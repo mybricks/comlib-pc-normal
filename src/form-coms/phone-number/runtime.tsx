@@ -29,7 +29,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const { edit } = env;
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [value, setValue] = useState();
   const valueRef = useRef<any>();
 
@@ -72,9 +72,9 @@ export default function ({
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              const customRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs['onValidate'](valueRef.current);
               } else {
                 outputRels(r);
@@ -123,8 +123,8 @@ export default function ({
 
   useEffect(() => {
     inputs['setValidateInfo']((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

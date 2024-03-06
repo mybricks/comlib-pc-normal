@@ -111,10 +111,10 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     };
     output.add(outputIds.ON_VALIDATE, '校验触发', valueSchema);
   }
-  const cutomRule = data.rules?.find(
+  const customRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
   );
-  if (data.rules?.length && !cutomRule) {
+  if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,

@@ -419,10 +419,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || LengthRules).find(
+            const customRule = (data.rules || LengthRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: outputIds.ON_VALIDATE

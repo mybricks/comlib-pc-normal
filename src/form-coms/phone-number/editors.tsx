@@ -238,10 +238,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: 'onValidate'

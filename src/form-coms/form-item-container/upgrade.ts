@@ -83,10 +83,10 @@ export default function ({ data, input, output, slot }: UpgradeParams<any>): boo
   if (!output.get(outputIds.ON_VALIDATE)) {
     output.add(outputIds.ON_VALIDATE, '校验触发', data.valueSchema || valueSchema);
   }
-  const cutomRule = data.rules?.find(
+  const customRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
   );
-  if (data.rules?.length && !cutomRule) {
+  if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,
