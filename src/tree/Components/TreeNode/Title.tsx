@@ -115,7 +115,7 @@ export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot
         style={inputStyle}
         bordered={false}
         defaultValue={title}
-        size="middle"
+        size={data.useCompactTheme ? 'small' : 'middle'}
         onClick={(e) => {
           e.stopPropagation();
         }}
