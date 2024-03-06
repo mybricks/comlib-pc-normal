@@ -9,6 +9,7 @@ import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
 import iconEditor from './iconEditor';
 import { createrCatelogEditor } from '../../utils/index';
+import { SizeOptions, SizeEnum } from '../../types';
 
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
@@ -404,25 +405,12 @@ export default {
               title: '尺寸',
               description: '全局设置表单项尺寸, 默认是中(middle)',
               type: 'Select',
-              options: [
-                {
-                  label: '大',
-                  value: 'large'
-                },
-                {
-                  label: '中',
-                  value: 'middle'
-                },
-                {
-                  label: '小',
-                  value: 'small'
-                }
-              ],
+              options: SizeOptions,
               value: {
                 get({ data }: EditorResult<Data>) {
                   return data.config.size || 'middle';
                 },
-                set({ data }: EditorResult<Data>, val: 'large' | 'middle' | 'small') {
+                set({ data }: EditorResult<Data>, val: SizeEnum) {
                   data.config = {
                     ...data.config,
                     size: val

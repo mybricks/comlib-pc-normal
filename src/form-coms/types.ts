@@ -62,4 +62,27 @@ export const ValidateTriggerType = {
   OnChange: "onChange",
   OnBlur: "onBlur",
   OnPressEnter: "onPressEnter",
-}; 
+};
+
+/**@description 组件尺寸分类 */
+export enum SizeEnum {
+  "Small" = "small",
+  "Middle" = "middle",
+  "Large" = "large"
+};
+
+/**@description 组件尺寸的选项 */
+export const SizeOptions = [
+  {
+    label: '小',
+    value: SizeEnum.Small
+  },
+  {
+    label: '默认',
+    value: SizeEnum.Middle
+  },
+  {
+    label: '大',
+    value: SizeEnum.Large
+  },
+]
