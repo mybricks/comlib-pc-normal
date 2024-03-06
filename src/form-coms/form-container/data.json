@@ -54,7 +54,8 @@
   "config": {
     "colon": true,
     "layout": "horizontal",
-    "disabled": false
+    "disabled": false,
+    "size": "small"
   },
   "domainModel": {
     "entity": {},
