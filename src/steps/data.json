@@ -1,6 +1,6 @@
 {
   "steps": {
-    "size": "default",
+    "size": "small",
     "type": "default",
     "direction": "horizontal",
     "showDesc": true,
