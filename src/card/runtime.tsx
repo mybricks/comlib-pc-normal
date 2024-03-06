@@ -94,7 +94,9 @@ export default (props: RuntimeParams<Data>) => {
           }}
           className={css.containerCard}
         >
-          {slots[SlotIds.Body]?.render()}
+          {slots[SlotIds.Body]?.render({
+            style: env.runtime ? data.slotStyle : { ...data.slotStyle, minHeight: 30 }
+          })}
         </div>
       </Card>
     </div>
