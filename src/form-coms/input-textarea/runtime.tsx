@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input, InputProps } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -11,13 +11,7 @@ import { InputIds } from '../types';
 export interface Data {
   value: string | undefined;
   rules: any[];
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    placeholder: string;
-    showCount: boolean;
-    maxLength?: number;
-  };
+  config: InputProps;
   minRows?: number;
   maxRows?: number;
 
