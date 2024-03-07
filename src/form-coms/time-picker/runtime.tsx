@@ -179,6 +179,7 @@ export default function ({
       <div ref={wrapperRef} className={styles.wrap}>
         {data.isEditable ? (
           <TimePicker
+            {...data.config}
             placeholder={env.i18n(placeholder)}
             value={value}
             format={_format}
