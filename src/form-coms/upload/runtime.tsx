@@ -47,6 +47,8 @@ export interface Data {
   picIcon: string;
   picCardIcon: string;
   dragIcon: string;
+  /**@description v1.0.35 按钮尺寸 */
+  buttonSize: string;
 }
 
 interface Window {
@@ -429,6 +431,7 @@ export default function ({
       <Button
         icon={data.hideIcon ? void 0 : Icons && Icons[data.textIcon]?.render()}
         disabled={disabled}
+        size={data.buttonSize}
       >
         {env.i18n(buttonText)}
       </Button>
@@ -438,6 +441,7 @@ export default function ({
       <Button
         icon={data.hideIcon ? void 0 : Icons && Icons[data.picIcon]?.render()}
         disabled={disabled}
+        size={data.buttonSize}
       >
         {env.i18n(buttonText)}
       </Button>

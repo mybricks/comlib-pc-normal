@@ -16,6 +16,7 @@
     0,
     0
   ],
+  "buttonSize": "small",
   "customUpload": true,
   "fileClick": false,
   "hideIcon": false,
