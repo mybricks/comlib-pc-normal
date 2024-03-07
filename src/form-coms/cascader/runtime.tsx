@@ -28,6 +28,32 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const debug = !!(runtime && runtime.debug);
   const [value, setValue] = useState();
 
+  useEffect(() => {
+    if (env.runtime.debug?.prototype) {
+      setOptions([{
+        label: "aaa",
+        value: "aaa",
+        children: []
+      }, {
+        label: "bbb",
+        value: "bbb",
+        children: [{
+          label: "ddd",
+          value: "ddd",
+          children: []
+        }, {
+          label: "eee",
+          value: "eee",
+          children: []
+        }]
+      }, {
+        label: "ccc",
+        value: "ccc",
+        children: []
+      }])
+    }
+  }, [env.runtime.debug?.prototype])
+
   useFormItemInputs(
     {
       id: props.id,

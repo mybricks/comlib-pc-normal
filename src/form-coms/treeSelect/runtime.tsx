@@ -40,6 +40,32 @@ export default function Runtime({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef<any>();
 
+  useEffect(() => {
+    if (env.runtime.debug?.prototype) {
+      data.options = [{
+        label: "aaa",
+        value: "aaa",
+        children: []
+      }, {
+        label: "bbb",
+        value: "bbb",
+        children: [{
+          label: "ddd",
+          value: "ddd",
+          children: []
+        }, {
+          label: "eee",
+          value: "eee",
+          children: []
+        }]
+      }, {
+        label: "ccc",
+        value: "ccc",
+        children: []
+      }]
+    }
+  }, [env.runtime.debug?.prototype])
+
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({

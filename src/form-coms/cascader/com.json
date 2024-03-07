@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.cascader",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "级联选择",
   "icon": "./icon.svg",
   "preview": "https://f2.eckwai.com/kos/nlav11092/u_fw2jtc.d560e08aa8edba85.png",
@@ -39,7 +39,7 @@
           "type": "any"
         }
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -72,7 +72,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },

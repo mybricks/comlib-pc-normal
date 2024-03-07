@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { message, Transfer } from 'antd';
 import { Data } from './types';
 import { uuid } from '../../utils';
@@ -33,6 +33,33 @@ export default function ({
   const [targetKeys, setTargetKeys] = useState<string[] | undefined>([]);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>([]);
+
+
+  useEffect(() => {
+    if (env.runtime.debug?.prototype) {
+      data.dataSource = [{
+        title: "aaa",
+        description: "aaa",
+        key: 'aaa'
+      }, {
+        title: "bbb",
+        description: "bbb",
+        key: 'bbb'
+      }, {
+        title: "ccc",
+        description: "ccc",
+        key: 'ccc'
+      }, {
+        title: "ddd",
+        description: "ddd",
+        key: 'ddd'
+      }, {
+        title: "eee",
+        description: "eee",
+        key: 'eee'
+      },]
+    }
+  }, [env.runtime.debug?.prototype])
 
   const validate = useCallback(
     (model, outputRels) => {
