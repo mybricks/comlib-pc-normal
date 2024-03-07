@@ -1,18 +1,35 @@
 .tabbox {
+  height: 100%;
+  overflow: hidden;
+
   :global {
-    .ant-tabs-tab .anticon {
-      margin-right: 4px;
+    .ant-tabs,
+    .ant-tabs-content-holder,
+    .ant-tabs-content {
+      height: 100%;
     }
-    .ant-tabs-tab .ant-tabs-tab-btn {
-      color: inherit !important;
-    }
-    .ant-tabs-tab .ant-tabs-tab-btn .ant-badge {
-      color: inherit !important;
+
+    .ant-tabs-tab {
+      height: 100%;
+
+      .anticon {
+        margin-right: 4px;
+      }
+
+      .ant-tabs-tab-btn {
+        color: inherit !important;
+      }
+
+      .ant-tabs-tab-btn .ant-badge {
+        color: inherit !important;
+      }
     }
   }
+
   .minHeight {
     min-height: 100px;
   }
+
   .content {
     height: 100%;
   }

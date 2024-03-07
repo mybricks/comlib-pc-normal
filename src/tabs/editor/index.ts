@@ -4,14 +4,55 @@ import { createItem, addEventIO } from './common';
 import { createStyleForDefault, createStyleForActive, createStyleForBar } from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
 
+const setSlotLayout = (slot, val) => {
+  if (!slot) return;
+  if (val.position === 'smart') {
+    slot.setLayout('smart');
+  } else if (val.position === 'absolute') {
+    slot.setLayout(val.position);
+  } else if (val.display === 'flex') {
+    if (val.flexDirection === 'row') {
+      slot.setLayout('flex-row');
+    } else if (val.flexDirection === 'column') {
+      slot.setLayout('flex-column');
+    }
+  }
+};
+
 export default {
+  ':slot': {},
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     items({ }: EditorResult<Data>, cate1, cate2, cate3) {
       cate1.title = '常规';
       cate1.items = [
+        {
+          title: '插槽布局',
+          type: 'layout',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.hideSlots;
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.slotStyle;
+            },
+            set({ slots, data }: EditorResult<Data>, val: any) {
+              if (!data.slotStyle) {
+                data.slotStyle = {};
+              }
+              data.slotStyle = {
+                ...data.slotStyle,
+                ...val
+              };
+              data.tabList.forEach(item => {
+                const slotInstance = slots.get(item.id);
+                setSlotLayout(slotInstance, val);
+              })
+            }
+          }
+        },
         {
           title: '添加标签页',
           type: 'Button',
@@ -67,7 +108,6 @@ export default {
         },
         {
           title: '尺寸',
-          description: '全局设置表单项尺寸, 默认是中(middle)',
           type: 'Select',
           options: [
             {
