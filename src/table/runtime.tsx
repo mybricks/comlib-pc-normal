@@ -39,7 +39,7 @@ import TableFooter from './components/TableFooter';
 import SummaryColumn from './components/SummaryColumn';
 import ErrorBoundary from './components/ErrorBoundle';
 import css from './runtime.less';
-import { unitConversion } from '../utils';
+import { unitConversion, uuid } from '../utils';
 import { runJs } from '../../package/com-utils';
 import useParentHeight from './hooks/use-parent-height';
 import useElementHeight from './hooks/use-element-height';
@@ -141,9 +141,42 @@ export default function (props: RuntimeParams<Data>) {
   };
 
   useEffect(() => {
+    if (env.runtime.debug?.prototype) {
+      const getFields = (cols: any[]) => {
+        let res: string[] = []
+        cols.map(col => {
+          if (col.children) {
+            const _res = getFields(col.children)
+            res.push(..._res)
+          } else {
+            res.push(col.dataIndex)
+          }
+        })
+        return res
+      }
+      const fields = getFields(data.columns)
+      const createMockData = () => {
+        return fields.reduce((res, item) => {
+          res[item] = uuid('', 6)
+          return res
+        }, {})
+      }
+      const mockTableData = [createMockData(), createMockData(), createMockData(), createMockData()]
+      setTableData(mockTableData)
+      if (data.usePagination) {
+        setTableData({
+          dataSource: mockTableData,
+          total: 100,
+          pageSize: 10,
+          pageNum: 1
+        })
+      }
+    }
+  }, [env.runtime.debug?.prototype])
+
+  useEffect(() => {
     initFilterMap();
     if (runtime) {
-      setDataSource(dataSource);
       if (!data.fixedHeader) {
         data.scroll.y = undefined;
       }

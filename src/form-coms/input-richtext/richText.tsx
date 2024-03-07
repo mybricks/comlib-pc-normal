@@ -65,7 +65,7 @@ export default function ({
   });
   const [value, setValue] = useState<any>();
 
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const { upload } = useUpload(inputs, outputs);
 
@@ -361,6 +361,21 @@ export default function ({
     }
   }, [readonly]);
 
+  useEffect(() => {
+    const iframeEl = textareaRef.current?.nextElementSibling?.querySelector(
+      'iframe'
+    ) as HTMLIFrameElement;
+    if (!iframeEl) return;
+    const body = iframeEl.contentDocument?.querySelector('body');
+    if (!body) return;
+
+    if (data.disabled) {
+      body.contentEditable = 'false';
+    } else {
+      body.contentEditable = 'true';
+    }
+  }, [data.disabled]);
+
   const createSvgString = useCallback((Icons: Array<iconType> = []) => {
     const Svg = {};
     if (Icons?.length && Icons?.length > 0) {
@@ -383,7 +398,7 @@ export default function ({
   const RenderTextArea: JSX.Element = useMemo(() => {
     return (
       <Spin spinning={loading} tip="编辑器加载中...">
-        <textarea ref={textareaRef} id={tinymceId} hidden={!loading} readOnly />
+        <textarea ref={textareaRef} id={tinymceId} hidden={!loading} />
       </Spin>
     );
   }, [loading]);

@@ -1,7 +1,8 @@
 import { inputIds, outputIds } from "../form-container/constants";
 import { RuleKeys } from "../utils/validator";
 import { getItemSchema } from "./schema";
-import { Data, LocationEnum, SizeEnum } from "./types";
+import { SizeEnum } from "../types";
+import { Data, LocationEnum, } from "./types";
 import { InputIds as SelfInputIds } from './constants';
 
 export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
