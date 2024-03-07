@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Input, Select } from 'antd';
+import { Input, InputProps, Select } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
@@ -11,12 +11,7 @@ export interface Data {
   rules: any[];
   isenterButton: boolean;
   enterButton: string;
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    placeholder: string;
-    addonBefore: string;
-  };
+  config: InputProps;
   isSelect: boolean;
   selectWidth: string;
   staticOptions: Options[];

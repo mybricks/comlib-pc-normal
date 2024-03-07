@@ -2,6 +2,7 @@ import { RuleKeys, defaultValidatorExample, LengthRules, showMessage, getTitle }
 import { Data, Options } from './runtime';
 import { uuid } from '../../utils';
 import { createrCatelogEditor } from '../utils';
+import { SizeEnum, SizeOptions } from '../types';
 
 let tempOptions: Options[] = [],
   optionsLength,
@@ -33,33 +34,23 @@ export default {
   },
   ':root': {
     style: [
-      // {
-      //   title: '尺寸',
-      //   description: '控件大小, 默认是中(middle)',
-      //   type: 'Select',
-      //   options: [
-      //     {
-      //       label: '宽',
-      //       value: 'large'
-      //     },
-      //     {
-      //       label: '中',
-      //       value: 'middle'
-      //     },
-      //     {
-      //       label: '窄',
-      //       value: 'small'
-      //     },
-      //   ],
-      //   value: {
-      //     get({ data }) {
-      //       return data.config.size || 'middle';
-      //     },
-      //     set({ data }, val: 'large' | 'middle' | 'small') {
-      //       data.config.size = val;
-      //     }
-      //   }
-      // },
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
       {
         items: [
           ...createrCatelogEditor({
