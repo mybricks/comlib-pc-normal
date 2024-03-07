@@ -135,6 +135,7 @@ export default function ({
 
   return (
     <Input.Password
+      {...data.config}
       allowClear
       placeholder={env.i18n(placeholder)}
       value={value}
