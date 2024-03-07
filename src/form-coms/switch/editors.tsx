@@ -2,7 +2,8 @@ import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/valida
 import { StatusEnum } from './const';
 import { Data } from './runtime';
 import { createrCatelogEditor } from '../utils';
-import { OutputIds } from '../types';
+import { OutputIds, SizeEnum } from '../types';
+import { SwitchSize } from 'antd/lib/switch';
 
 export default {
   '@resize': {
@@ -13,6 +14,32 @@ export default {
   },
   ':root': {
     style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: [
+          {
+            label: '默认',
+            value: SizeEnum.Middle
+          },
+          {
+            label: '小',
+            value: SizeEnum.Small
+          }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SwitchSize) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
       {
         items: [
           ...createrCatelogEditor({
