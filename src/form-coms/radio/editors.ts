@@ -1,7 +1,7 @@
 import { uuid } from '../../utils';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
-import { Option } from '../types';
+import { Option, SizeEnum, SizeOptions } from '../types';
 import { Data } from './types';
 import { outputIds } from '../form-container/constants';
 
@@ -33,6 +33,26 @@ export default {
   },
   ':root': {
     style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.enableButtonStyle;
+        },
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
       {
         items: [
           ...createrCatelogEditor({

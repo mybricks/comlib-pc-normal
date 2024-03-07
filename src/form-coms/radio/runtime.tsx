@@ -189,9 +189,9 @@ export default function Runtime({
     <div className="radio">
       {data.isEditable ? (
         <Radio.Group
+          {...data.config}
           optionType={data.enableButtonStyle ? 'button' : 'default'}
           buttonStyle={data.buttonStyle}
-          disabled={data.config.disabled}
           value={value}
           onChange={onChange}
         >
