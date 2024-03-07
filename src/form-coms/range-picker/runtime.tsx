@@ -8,6 +8,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
+import { RangePickerProps } from 'antd/lib/date-picker';
 
 const { RangePicker } = DatePicker;
 
@@ -23,11 +24,7 @@ export interface Data {
   timeTemplate?: string[];
   useRanges: boolean;
   ranges: any[];
-  config: {
-    disabled: boolean;
-    placeholder: [string, string];
-    picker: 'date' | 'week' | 'month' | 'quarter' | 'year';
-  };
+  config: RangePickerProps;
   dateType: 'array' | 'string';
   splitChart: string;
   emptyRules: any[];
