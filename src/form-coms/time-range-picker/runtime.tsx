@@ -213,6 +213,7 @@ export default function ({
       <div className={styles.wrap}>
         {data.isEditable ? (
           <TimePicker.RangePicker
+            {...data.config}
             placeholder={[env.i18n(placeholder[0]), env.i18n(placeholder[1])]}
             value={value}
             format={_format}

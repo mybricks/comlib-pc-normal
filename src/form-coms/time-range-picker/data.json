@@ -8,5 +8,8 @@
   "customFormat": "HH:mm:ss",
   "outFormat": "array",
   "splitChar": "-",
-  "isEditable": true
+  "isEditable": true,
+  "config": {
+    "size": "small"
+  }
 }
