@@ -8,7 +8,8 @@
     "filterOption": true,
     "optionFilterProp": "label",
     "showArrow": true,
-    "dropdownMatchSelectWidth": true
+    "dropdownMatchSelectWidth": true,
+    "size": "small"
   },
   "validateTrigger": [
     "onChange"
