@@ -235,8 +235,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || ExpRules).find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-            return !!cutomRule?.status;
+            const customRule = (data.rules || ExpRules).find(
+              (i) => i.key === RuleKeys.CUSTOM_EVENT
+            );
+            return !!customRule?.status;
           },
           options: {
             outputId: OutputIds.OnValidate

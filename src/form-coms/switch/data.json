@@ -6,7 +6,8 @@
     "关闭时": ""
   },
   "config": {
-    "disabled": false
+    "disabled": false,
+    "size": "small"
   },
   "isEditable": true
 }

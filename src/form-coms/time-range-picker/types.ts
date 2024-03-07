@@ -1,3 +1,5 @@
+import { TimeRangePickerProps } from "antd"
+
 export interface Data {
   placeholder: [string, string]
   disabled?: boolean
@@ -6,5 +8,6 @@ export interface Data {
   customFormat: string,
   outFormat: 'array' | 'string',
   splitChar: string,
-  isEditable: boolean
+  isEditable: boolean,
+  config: TimeRangePickerProps
 }

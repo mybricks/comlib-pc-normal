@@ -53,7 +53,7 @@ export default function ({
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
   const uploadCb = useRef<any>();
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
@@ -109,11 +109,11 @@ export default function ({
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs[outputIds.ON_VALIDATE] && outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
@@ -455,11 +455,11 @@ export default function ({
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -507,8 +507,8 @@ export default function ({
 
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

@@ -112,7 +112,6 @@ export default function (props: RuntimeParams<Data>) {
   //   }
   // }, [data.slotStyle?.position, preHeight]);
 
-
   // useEffect(() => {
   //   //1、先把normal的高度存起来
   //   if (data.slotStyle?.position !== 'smart') {
@@ -193,10 +192,15 @@ export default function (props: RuntimeParams<Data>) {
           outputs[OutputIds.Click]();
         }
       }}
-    >   
-      {data.isAutoScroll ? scrollRender() : slots[SlotIds.Content].render({ 
-        style: env.edit && data.slotStyle?.position === 'smart' ? { ...data.slotStyle, minHeight: 30 } :  data.slotStyle
-      })}
+    >
+      {data.isAutoScroll
+        ? scrollRender()
+        : slots[SlotIds.Content].render({
+            style:
+              env.edit && data.slotStyle?.position === 'smart'
+                ? { ...data.slotStyle, minHeight: 30 }
+                : data.slotStyle
+          })}
     </div>
   );
 }

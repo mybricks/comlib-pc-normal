@@ -3,5 +3,8 @@
   "rules": [],
   "format": "timeStamp",
   "customFormat": "HH:mm:ss",
-  "isEditable": true
+  "isEditable": true,
+  "config": {
+    "size": "small"
+  }
 }

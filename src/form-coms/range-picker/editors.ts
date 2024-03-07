@@ -2,7 +2,7 @@ import moment from 'moment';
 import { DisabledDateTimeEditor } from '../../components/editors/DisabledDateTimeEditor';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data, DateType } from './runtime';
-import { InputIds, OutputIds } from '../types';
+import { InputIds, OutputIds, SizeEnum, SizeOptions } from '../types';
 import styleEditor from './styleEditor';
 
 export const refreshSchema = ({ data, input, output }: { data: Data; input: any; output: any }) => {
@@ -51,7 +51,28 @@ export default {
     style.width = '100%';
   },
   ':root': {
-    style: [...styleEditor],
+    style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
+      {
+        items: styleEditor
+      }
+    ],
     items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
@@ -321,10 +342,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: OutputIds.OnValidate

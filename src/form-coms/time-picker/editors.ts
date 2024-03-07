@@ -1,7 +1,7 @@
 import { Data } from './types';
 import { RuleKeys, defaultRules, getTitle } from '../utils/validator';
 import { createrCatelogEditor } from '../utils';
-import { OutputIds } from '../types';
+import { OutputIds, SizeEnum, SizeOptions } from '../types';
 export default {
   '@resize': {
     options: ['width']
@@ -11,209 +11,236 @@ export default {
   },
   ':root': {
     style: [
-      ...createrCatelogEditor({
-        catelog: '默认',
-        items: [
-          {
-            title: '边框',
-            options: ['border'],
-            target: '.ant-picker'
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
           },
-          {
-            title: '表单项背景色',
-            options: ['background'],
-            target: '.ant-picker'
-          },
-          {
-            title: '提示内容',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: 'input::placeholder'
-          },
-          {
-            title: '清除按钮',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            target: '.anticon-close-circle'
-          },
-          {
-            title: '时间图标',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: '.anticon-clock-circle'
-          },
-          {
-            title: '文本内容',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: '.ant-picker-input>input'
-          },
-          {
-            title: '时间',
-            options: [
-              'border',
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            global: true,
-            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
-          },
-          {
-            title: '下拉区域',
-            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-            global: true,
-            target: '.{id} .ant-picker-panel-container'
-          },
-          {
-            title: '底部操作栏',
-            options: [{ type: 'background', config: { disableBackgroundImage: true } }],
-            global: true,
-            target: `.{id} .ant-picker-ranges`
-          },
-          {
-            title: '确认按钮',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'border' },
-              'BoxShadow'
-            ],
-            global: true,
-            target: `.{id} .ant-btn-primary`
-          },
-          {
-            title: '此刻',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            global: true,
-            target: `.{id} a`
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
           }
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: 'Hover',
-        items: [
-          {
-            title: '边框',
-            options: ['border'],
-            target: '.ant-picker:hover',
-            domTarget: '.ant-picker'
-          },
-          {
-            title: '时间',
-            options: [
-              'border',
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            global: true,
-            target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
-          },
-          {
-            title: '清除按钮',
-            catelog: 'Hover',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: '.anticon-close-circle:hover',
-            domTarget: '.anticon-close-circle'
-          },
-          {
-            title: '确认按钮',
-            catelog: 'Hover',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'border' },
-              'BoxShadow'
-            ],
-            global: true,
-            target: `.{id}  .ant-btn:not([disabled]):hover`
-          },
-          {
-            title: '此刻',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            global: true,
-            target: `.{id} a:hover`
-          }
-          // {
-          //   title: '确认按钮-禁用态',
-          //   options: [
-          //     { type: 'background', config: { disableBackgroundImage: true } },
-          //     { type: 'font', config: { disableTextAlign: true } },
-          //     { type: 'border' },
-          //   ],
-          //   global: true,
-          //   target: `.{id} .ant-btn-primary[disabled]:hover`
-          // },
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: 'Focus',
-        items: [
-          {
-            title: '边框',
-            options: ['border', 'BoxShadow'],
-            target: '.ant-picker-focused.ant-picker'
-          },
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: 'Select',
-        items: [
-          {
-            title: '时间',
-            options: [
-              'border',
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            global: true,
-            target: `.{id} .ant-picker-panel .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
-          },
-          {
-            title: '确认按钮',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'border' },
-              'BoxShadow'
-            ],
-            global: true,
-            target: `.{id}  .ant-btn-primary:active`
-          },
-          {
-            title: '此刻',
-            options: [
-              { type: 'font', config: { disableTextAlign: true } }
-            ],
-            global: true,
-            target: `.{id} a:active`
-          }
-        ]
-      }),
-      ...createrCatelogEditor({
-        catelog: '禁用',
-        items: [
-          {
-            title: '确认按钮',
-            options: [
-              { type: 'background', config: { disableBackgroundImage: true } },
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'border' },
-              'BoxShadow'
-            ],
-            global: true,
-            target: `.{id}  .ant-btn-primary[disabled]`
-          },
-          {
-            title: '表单项',
-            catelog: '禁用',
-            options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
-            target: '.ant-picker.ant-picker-disabled'
-          },
-        ]
-      }),
+        }
+      },
+      {
+        items: createrCatelogEditor({
+          catelog: '默认',
+          items: [
+            {
+              title: '边框',
+              options: ['border'],
+              target: '.ant-picker'
+            },
+            {
+              title: '表单项背景色',
+              options: ['background'],
+              target: '.ant-picker'
+            },
+            {
+              title: '提示内容',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: 'input::placeholder'
+            },
+            {
+              title: '清除按钮',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'background', config: { disableBackgroundImage: true } }
+              ],
+              target: '.anticon-close-circle'
+            },
+            {
+              title: '时间图标',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: '.anticon-clock-circle'
+            },
+            {
+              title: '文本内容',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: '.ant-picker-input>input'
+            },
+            {
+              title: '时间',
+              options: [
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner`
+            },
+            {
+              title: '下拉区域',
+              options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+              global: true,
+              target: '.{id} .ant-picker-panel-container'
+            },
+            {
+              title: '底部操作栏',
+              options: [{ type: 'background', config: { disableBackgroundImage: true } }],
+              global: true,
+              target: `.{id} .ant-picker-ranges`
+            },
+            {
+              title: '确认按钮',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'border' },
+                'BoxShadow'
+              ],
+              global: true,
+              target: `.{id} .ant-btn-primary`
+            },
+            {
+              title: '此刻',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target: `.{id} a`
+            }
+          ]
+        }),
+      },
+      {
+        items: createrCatelogEditor({
+          catelog: 'Hover',
+          items: [
+            {
+              title: '边框',
+              options: ['border'],
+              target: '.ant-picker:hover',
+              domTarget: '.ant-picker'
+            },
+            {
+              title: '时间',
+              options: [
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target: `.{id} .ant-picker-time-panel-column>li.ant-picker-time-panel-cell .ant-picker-time-panel-cell-inner:hover`
+            },
+            {
+              title: '清除按钮',
+              catelog: 'Hover',
+              options: [{ type: 'font', config: { disableTextAlign: true } }],
+              target: '.anticon-close-circle:hover',
+              domTarget: '.anticon-close-circle'
+            },
+            {
+              title: '确认按钮',
+              catelog: 'Hover',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'border' },
+                'BoxShadow'
+              ],
+              global: true,
+              target: `.{id}  .ant-btn:not([disabled]):hover`
+            },
+            {
+              title: '此刻',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target: `.{id} a:hover`
+            }
+            // {
+            //   title: '确认按钮-禁用态',
+            //   options: [
+            //     { type: 'background', config: { disableBackgroundImage: true } },
+            //     { type: 'font', config: { disableTextAlign: true } },
+            //     { type: 'border' },
+            //   ],
+            //   global: true,
+            //   target: `.{id} .ant-btn-primary[disabled]:hover`
+            // },
+          ]
+        }),
+      },
+      {
+        items: createrCatelogEditor({
+          catelog: 'Focus',
+          items: [
+            {
+              title: '边框',
+              options: ['border', 'BoxShadow'],
+              target: '.ant-picker-focused.ant-picker'
+            },
+          ]
+        })
+      },
+      {
+        items: createrCatelogEditor({
+          catelog: 'Select',
+          items: [
+            {
+              title: '时间',
+              options: [
+                'border',
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target: `.{id} .ant-picker-panel .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner`
+            },
+            {
+              title: '确认按钮',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'border' },
+                'BoxShadow'
+              ],
+              global: true,
+              target: `.{id}  .ant-btn-primary:active`
+            },
+            {
+              title: '此刻',
+              options: [
+                { type: 'font', config: { disableTextAlign: true } }
+              ],
+              global: true,
+              target: `.{id} a:active`
+            }
+          ]
+        })
+      },
+      {
+        items: createrCatelogEditor({
+          catelog: '禁用',
+          items: [
+            {
+              title: '确认按钮',
+              options: [
+                { type: 'background', config: { disableBackgroundImage: true } },
+                { type: 'font', config: { disableTextAlign: true } },
+                { type: 'border' },
+                'BoxShadow'
+              ],
+              global: true,
+              target: `.{id}  .ant-btn-primary[disabled]`
+            },
+            {
+              title: '表单项',
+              catelog: '禁用',
+              options: ['border', { type: 'background', config: { disableBackgroundImage: true } }],
+              target: '.ant-picker.ant-picker-disabled'
+            },
+          ]
+        })
+      },
     ],
     items: ({ data }: EditorResult<Data>, ...cate) => {
       cate[0].title = '配置';
@@ -363,10 +390,10 @@ export default {
               title: '校验触发事件',
               type: '_event',
               ifVisible({ data }: EditorResult<Data>) {
-                const cutomRule = (data.rules || defaultRules).find(
+                const customRule = (data.rules || defaultRules).find(
                   (i) => i.key === RuleKeys.CUSTOM_EVENT
                 );
-                return !!cutomRule?.status;
+                return !!customRule?.status;
               },
               options: {
                 outputId: OutputIds.OnValidate

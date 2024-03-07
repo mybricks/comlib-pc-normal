@@ -289,6 +289,7 @@ export default function ({
         centered={data.centered}
         tabPosition={data.tabPosition}
         onChange={handleClickItem}
+        size={data.size || 'middle'}
         hideAdd={true}
         onEdit={env.edit ? undefined : onEdit}
         tabBarExtraContent={{

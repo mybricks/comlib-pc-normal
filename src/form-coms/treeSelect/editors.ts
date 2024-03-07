@@ -3,6 +3,7 @@ import BasicEditors from './basicEditors';
 import AdvancedEditors from './advancedEditors';
 import { createrCatelogEditor } from '../utils';
 import { IconEditor } from './iconEditor';
+import { SizeEnum, SizeOptions } from '../types';
 
 
 export default {
@@ -14,6 +15,23 @@ export default {
   },
   ':root': {
     style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
       ...IconEditor('展开/收起图标'),
       {
         items: [

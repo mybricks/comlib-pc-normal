@@ -47,10 +47,10 @@ function ColumnRender(props: ColumnRenderProps) {
         columnItem?.formatData?.formatterName
       )
         ? {
-          index,
-          rowRecord: record,
-          value: oriValue
-        }
+            index,
+            rowRecord: record,
+            value: oriValue
+          }
         : oriValue;
       oriValue = genFormatting(columnItem.formatData)(valueToBeFormat);
     }

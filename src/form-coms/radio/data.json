@@ -19,7 +19,8 @@
         "key": "option1"
       }
     ],
-    "disabled": false
+    "disabled": false,
+    "size": "small"
   },
   "layout": "horizontal",
   "enableButtonStyle": false,

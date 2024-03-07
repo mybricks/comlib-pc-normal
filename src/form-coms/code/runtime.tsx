@@ -18,7 +18,7 @@ export default function ({
   name
 }: RuntimeParams<Data>) {
   const [value, setValue] = useState<string>();
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
 
   const validate = useCallback(
@@ -30,11 +30,11 @@ export default function ({
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels;
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels;
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels(r);
@@ -88,8 +88,8 @@ export default function ({
   useEffect(() => {
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

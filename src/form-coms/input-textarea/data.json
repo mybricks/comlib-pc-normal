@@ -6,7 +6,8 @@
     "placeholder": "请输入内容",
     "disabled": false,
     "showCount": false,
-    "maxLength": -1
+    "maxLength": -1,
+    "size": "small"
   },
   "minRows": 3,
   "maxRows": 6,

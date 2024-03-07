@@ -10,7 +10,8 @@
     "disabled": false,
     "maxTagCount": "responsive",
     "changeOnSelect": false,
-    "showSearch": false
+    "showSearch": false,
+    "size": "small"
   },
   "isEditable": true
 }

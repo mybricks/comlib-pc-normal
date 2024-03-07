@@ -1,9 +1,24 @@
+import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultRules } from '../utils/validator';
 import { Data } from './runtime';
 
 const uploadEditors = {
   title: '上传按钮尺寸',
   items: [
+    {
+      title: '快捷尺寸',
+      description: '控件大小, 默认是中(middle)',
+      type: 'Select',
+      options: SizeOptions,
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.buttonSize || 'middle';
+        },
+        set({ data }: EditorResult<Data>, val: SizeEnum) {
+          data.buttonSize = val;
+        }
+      }
+    },
     {
       title: '宽度',
       type: 'Text',

@@ -1,6 +1,9 @@
 {
   "placeholder": "请输入密码",
   "rules": [],
+  "config": {
+    "size": "small"
+  },
   "validateTrigger": [
     "onPressEnter"
   ]
