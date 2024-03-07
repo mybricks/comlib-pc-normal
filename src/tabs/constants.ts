@@ -63,6 +63,8 @@ export interface Data {
   forceRender?: boolean;
   /** @description 1.0.15 尺寸 */
   size?: TabsProps['size'];
+  /** @description v1.0.19 插槽样式 */
+  slotStyle: {}
 }
 
 export enum SlotIds {

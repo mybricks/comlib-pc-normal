@@ -271,7 +271,9 @@ export default function ({
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
-                  {slots[item.id]?.render()}
+                  {slots[item.id]?.render({
+                    style: data.slotStyle
+                  })}
                 </div>
               )}
             </TabPane>
