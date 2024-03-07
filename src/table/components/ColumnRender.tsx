@@ -99,6 +99,7 @@ function ColumnRender(props: ColumnRenderProps) {
                 colKey={colKey}
                 colIndex={index}
                 slots={slots}
+                isEdit={env.edit}
               />
             );
           }}
