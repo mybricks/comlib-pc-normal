@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { List, Spin } from 'antd';
 import classnames from 'classnames';
 import { Data, InputIds, OutputIds } from './constants';
@@ -46,11 +46,31 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
     return newColumns;
   }
 
+  useLayoutEffect(() => {
+    if (env.runtime.debug?.prototype) {
+      // 原型设计态
+      const mockArr = new Array<any>(3).fill({});
+
+      // Todo 这里的数据类型需要优化
+      data.dataSource = mockArr.map((item, index) => {
+        return {
+          [rowKey]: index,
+          item: {
+            name: `第${index + 1}项`
+          },
+          index
+        };
+      });
+      setDataSource(data.dataSource);
+    }
+  }, []);
+
   //设置数据源输入及loading状态设置
   useEffect(() => {
     if (env.edit) {
       setDataSource([{ id: 1, [rowKey]: uuid() }]);
     }
+
     if (env.runtime) {
       inputs[InputIds.DATA_SOURCE]((v, relOutputs) => {
         if (Array.isArray(v)) {
@@ -177,6 +197,7 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
 
   //换行，列数自定义
   const ListItemRender = ({ [rowKey]: key, index: index, item: item }) => {
+    console.log(item);
     return (
       <List.Item key={key}>
         {/* 当前项数据和索引 */}
