@@ -102,15 +102,15 @@ export default function (props: RuntimeParams<Data>) {
   //   }
   // });
 
-  useEffect(() => {
-    setPreHeight(style.height);
-  }, []);
+  // useEffect(() => {
+  //   setPreHeight(style.height);
+  // }, []);
 
-  useEffect(() => {
-    if (env.edit && data.slotStyle?.position === 'smart') {
-      style.height = 200;
-    }
-  }, [data.slotStyle?.position, preHeight]);
+  // useEffect(() => {
+  //   if (env.edit && data.slotStyle?.position === 'smart') {
+  //     style.height = 200;
+  //   }
+  // }, [data.slotStyle?.position, preHeight]);
 
 
   // useEffect(() => {
@@ -193,9 +193,9 @@ export default function (props: RuntimeParams<Data>) {
           outputs[OutputIds.Click]();
         }
       }}
-    >
+    >   
       {data.isAutoScroll ? scrollRender() : slots[SlotIds.Content].render({ 
-        style: env.runtime ? data.slotStyle : { ...data.slotStyle, minHeight: 200 } 
+        style: env.edit && data.slotStyle?.position === 'smart' ? { ...data.slotStyle, minHeight: 30 } :  data.slotStyle
       })}
     </div>
   );
