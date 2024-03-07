@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Form, Input, InputProps } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
@@ -8,13 +8,7 @@ export interface Data {
   value: string | undefined;
   rules: any[];
   validateTrigger: string[];
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    addonBefore: string;
-    addonAfter: string;
-    placeholder: string;
-  };
+  config: InputProps;
 }
 
 export default function ({
