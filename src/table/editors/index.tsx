@@ -69,7 +69,7 @@ export function getColumnsFromSchema(schema: any) {
 
 export default {
   '@init': ({ style, data }) => {
-    style.height = 'auto';
+    style.heightAuto = true
   },
   '@parentUpdated'({ id, data, parent, inputs, outputs }, { schema }) {
     if (schema === 'mybricks.domain-pc.crud/table') {
