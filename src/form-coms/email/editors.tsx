@@ -1,5 +1,6 @@
 import { RuleKeys, defaultValidatorExample, showMessage, getTitle } from '../utils/validator';
-import { ValidateTriggerType } from '../types';
+import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
+import { Data } from './runtime';
 
 export const emailRules = [
   {
@@ -63,10 +64,33 @@ export default {
     style.width = '100%';
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-input-affix-wrapper'
-    },
+    style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
+      {
+        items: [
+          {
+            options: ['border'],
+            target: '.ant-input-affix-wrapper'
+          }
+        ]
+      }
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[0].items = [
