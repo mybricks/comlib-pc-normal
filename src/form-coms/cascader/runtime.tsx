@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Cascader } from 'antd';
+import { Cascader, CascaderProps } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -15,14 +15,7 @@ export interface Data {
   maxTagCountType?: string;
   value: number[] | string[];
   rules: any[];
-  config: {
-    placeholder: string;
-    allowClear: boolean;
-    disabled: boolean;
-    maxTagCount?: 'responsive' | number;
-    changeOnSelect: boolean;
-    showSearch: boolean;
-  };
+  config: CascaderProps<any[]>;
   isEditable: boolean;
 }
 
