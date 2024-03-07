@@ -8,7 +8,8 @@
     "addonBefore": "",
     "addonAfter": "",
     "precision": 0,
-    "step": 1
+    "step": 1,
+    "size": "small"
   },
   "isFormatter": false,
   "charPostion": "prefix",

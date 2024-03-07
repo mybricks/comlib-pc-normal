@@ -1,3 +1,4 @@
+import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle } from '../utils/validator';
 import { Data } from './runtime';
 
@@ -11,9 +12,30 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认样式',
-        options: ['border'],
-        target: '.ant-input-number'
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
+      {
+        items: [
+          {
+            title: '默认样式',
+            options: ['border'],
+            target: '.ant-input-number'
+          }
+        ]
       }
       // {
       //   title: '激活样式',

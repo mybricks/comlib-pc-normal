@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { InputNumber } from 'antd';
+import { InputNumber, InputNumberProps } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -9,14 +9,7 @@ import { inputIds, outputIds } from '../form-container/constants';
 export interface Data {
   options: any[];
   rules: any[];
-  config: {
-    disabled: boolean;
-    placeholder: string;
-    addonBefore: string;
-    addonAfter: string;
-    precision: number;
-    step: number;
-  };
+  config: InputNumberProps;
   isFormatter: boolean;
   charPostion: 'prefix' | 'suffix';
   character: string;
