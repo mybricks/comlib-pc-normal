@@ -11,6 +11,19 @@
       "showZero": false  
     }
   ],
+  "slotStyle": {
+    "display": "flex",
+    "position": "smart",
+    "flexDirection": "column",
+    "alignItems": "flex-start",
+    "justifyContent": "flex-start",
+    "flexWrap": "nowrap",
+    "paddingType": "independentPadding",
+    "paddingTop": 0,
+    "paddingRight": 0,
+    "paddingBottom": 0,
+    "paddingLeft": 0
+  },
   "defaultActiveKey": "tab0",
   "type": "line",
   "size": "small",

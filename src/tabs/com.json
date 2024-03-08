@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -149,7 +149,8 @@
   "slots": [
     {
       "id": "tab0",
-      "title": "标签页1"
+      "title": "标签页1",
+      "layout": "smart"
     }
   ]
 }
