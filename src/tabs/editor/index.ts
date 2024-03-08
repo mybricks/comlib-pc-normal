@@ -63,6 +63,8 @@ export default {
                 id: newItem.id,
                 title: newItem.name
               });
+              const slotInstance = slots.get(newItem.id);
+              slotInstance.setLayout('smart');
               addEventIO(output, newItem);
               data.tabList.push(newItem);
               // slots.add({
