@@ -39,6 +39,7 @@ const PermissionEditor = [
           hintLink: value.hintLink,
           registerData: value.registerData
         };
+        value.register()
       }
     }
   }
