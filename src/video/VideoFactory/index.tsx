@@ -38,6 +38,10 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
         relOutputs['setLinkComplete']()
       });
     inputs?.screenshot && inputs.screenshot(screenshot);
+    inputs.setPoster!((value: string, relOutputs) => {
+      data.poster = value;
+      relOutputs['setPosterComplete']();
+    });
   }, []);
 
   const screenshot = (filename?: string, relOutputs?: any) => {
