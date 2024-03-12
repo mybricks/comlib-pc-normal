@@ -64,7 +64,9 @@ export interface Data {
   /** @description 1.0.15 尺寸 */
   size?: TabsProps['size'];
   /** @description v1.0.19 插槽样式 */
-  slotStyle: {}
+  slotStyle: {},
+  closeable?: boolean
+  dynamicTabs?: boolean
 }
 
 export enum SlotIds {
@@ -77,7 +79,9 @@ export enum InputIds {
   PreviousTab = 'previous',
   NextTab = 'next',
   OutActiveTab = 'outActiveTab',
-  SetShowTab = 'setShowTab'
+  SetShowTab = 'setShowTab',
+  SetTabs = 'setTabs',
+  GetTabs = 'getTabs'
 }
 
 export enum OutputIds {
@@ -86,5 +90,9 @@ export enum OutputIds {
   SetActiveTabComplete = 'activeComplete',
   PreviousTabComplete = 'previousComplete',
   NextTabComplete = 'nextComplete',
-  SetShowTabComplete = 'setShowTabComplete'
+  SetShowTabComplete = 'setShowTabComplete',
+  AddTab = 'addTab',
+  RemoveTab = 'removeTab',
+  SetTabsDone = 'setTabsDone',
+  GetTabsDone = 'getTabsDone'
 }

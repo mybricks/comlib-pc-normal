@@ -1,7 +1,7 @@
 import { Data, InputIds, OutputIds, SlotIds } from '../constants';
 import TabEditor from './tab';
 import { createItem, addEventIO } from './common';
-import { createStyleForDefault, createStyleForActive, createStyleForBar } from './utils';
+import { createStyleForDefault, createStyleForActive, createStyleForBar, setDynamicTabsIO } from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
 
 const setSlotLayout = (slot, val) => {
@@ -96,8 +96,8 @@ export default {
           title: '外观',
           type: 'Select',
           options: [
-            { value: 'card', label: '卡片' },
-            { value: 'line', label: '简约' }
+            { value: 'editable-card', label: '卡片' },
+            { value: 'line', label: '简约' },
           ],
           value: {
             get({ data }: EditorResult<Data>) {
@@ -232,6 +232,55 @@ export default {
           }
         },
         {
+          title: '动态标签页',
+          type: 'switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.dynamicTabs;
+            },
+            set(props: EditorResult<Data>, val: boolean) {
+              const { data } = props
+              data.dynamicTabs = val
+              data.hideSlots = val
+              setDynamicTabsIO(props)
+            }
+          }
+        },
+        {
+          title: '可新增',
+          type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.type === 'editable-card';
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !data.hideAdd;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.hideAdd = !val
+            }
+          }
+        },
+        {
+          title: '可删除',
+          type: 'switch',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.type === 'editable-card';
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.closeable;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.closeable = val;
+              data.tabList = data.tabList.map((tab) => {
+                tab.closable = val
+                return tab
+              })
+            }
+          }
+        },
+        {
           title: '额外内容',
           items: [
             {
@@ -275,6 +324,30 @@ export default {
         {
           title: '事件',
           items: [
+            {
+              title: '标签页新增',
+              type: '_Event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.type === 'editable-card';
+              },
+              options() {
+                return {
+                  outputId: OutputIds.AddTab
+                }
+              }
+            },
+            {
+              title: '标签页删除',
+              type: '_Event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.type === 'editable-card';
+              },
+              options() {
+                return {
+                  outputId: OutputIds.RemoveTab
+                }
+              }
+            },
             {
               title: '标签页点击',
               type: '_Event',
