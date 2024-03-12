@@ -29,5 +29,6 @@
   "size": "small",
   "centered": false,
   "tabPosition": "top",
-  "prohibitClick": false
+  "prohibitClick": false,
+  "hideAdd": true
 }
