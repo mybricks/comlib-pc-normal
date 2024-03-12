@@ -18,10 +18,22 @@ export default function ({ input, output, data, setDeclaredStyle }: UpgradeParam
     input.get('link').setRels(['setLinkComplete']);
   }
 
-  const screenshotComplete = output.get('screenshotComplete')
-  if(!screenshotComplete) {
-    output.add('screenshotComplete', '完成', {type: 'any'})
-    input.get('screenshot').setRels(['screenshotComplete'])
+  const screenshotComplete = output.get('screenshotComplete');
+  if (!screenshotComplete) {
+    output.add('screenshotComplete', '完成', { type: 'any' });
+    input.get('screenshot').setRels(['screenshotComplete']);
+  }
+
+  const setPoster = input.get('setPoster');
+  if (!setPoster) {
+    input.add('setPoster', '设置封面', {
+      type: 'string'
+    });
+    const setPosterComplete = output.get('setPosterComplete')
+    if(!setPosterComplete) {
+      output.add('setPosterComplete', '完成', { type: 'any' })
+      input.get('setPoster').setRels(['setPosterComplete']);
+    }
   }
 
   return true;
