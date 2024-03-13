@@ -193,7 +193,7 @@ export default function ({
       })
 
     }
-  }, []);
+  }, [showTabs]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -234,7 +234,7 @@ export default function ({
       const index = findIndexByKey(values);
       outputs[OutputIds.OnTabClick]({ ...item, index });
     }
-  }, []);
+  }, [showTabs]);
 
   const onEdit = (targetKey, action) => {
     const actionMap = {
