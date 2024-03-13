@@ -269,10 +269,10 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return !!data.closeable;
+              return !!data.closable;
             },
             set({ data }: EditorResult<Data>, val: boolean) {
-              data.closeable = val;
+              data.closable = val;
               data.tabList = data.tabList.map((tab) => {
                 tab.closable = val
                 return tab

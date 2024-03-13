@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -179,7 +179,7 @@
               "title": "下标",
               "type": "number"
             },
-            "closeable": {
+            "closable": {
               "title": "可关闭",
               "type": "boolean"
             }
@@ -211,7 +211,7 @@
               "title": "下标",
               "type": "number"
             },
-            "closeable": {
+            "closable": {
               "title": "可关闭",
               "type": "boolean"
             }
