@@ -64,6 +64,9 @@ export default {
       {
         title: '静态选项配置',
         type: 'array',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.useDynamicData;
+        },
         options: {
           getTitle: ({ title }) => {
             return `${title}`;
