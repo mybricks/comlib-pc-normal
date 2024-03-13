@@ -1,4 +1,4 @@
-import { Data, InputIds, OutputIds } from './constants';
+import { Data, InputIds, Option } from './constants';
 
 export default {
   '@inputConnected'({ data, input, output, slots }, fromPin, toPin) {
@@ -14,9 +14,94 @@ export default {
   '@resize': {
     options: ['width']
   },
-  ':root': ({}: EditorResult<Data>, cate1) => {
+  ':root': ({ data, slots }: EditorResult<Data>, cate1) => {
     cate1.title = '高级';
     cate1.items = [
+      {
+        title: '动态设置数据源',
+        description: '开启后，数据源将通过输入输出连接以列表的形式批量进行动态设置',
+        type: 'Switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.useDynamicData;
+          },
+          set({ data, inputs, outputs }: EditorResult<Data>, value: boolean) {
+            if (value) {
+              inputs.add({
+                id: 'dataSource',
+                title: '设置数据源',
+                desc: '设置列表容器数据源，数据结构要求是数组',
+                schema: {
+                  title: '列表数据',
+                  type: 'array',
+                  items: {
+                    title: '列项数据',
+                    type: 'any'
+                  }
+                }
+              });
+              outputs.add({
+                id: 'setDataSourceDone',
+                title: '设置数据源完成',
+                schema: {
+                  title: '列表数据',
+                  type: 'array',
+                  items: {
+                    title: '列项数据',
+                    type: 'any'
+                  }
+                }
+              });
+              inputs.get('dataSource').setRels(['setDataSourceDone']);
+            } else {
+              inputs.remove('dataSource');
+              outputs.remove('setDataSourceDone');
+            }
+            data.useDynamicData = value;
+          }
+        }
+      },
+      {
+        title: '静态选项配置',
+        type: 'array',
+        options: {
+          getTitle: ({ title }) => {
+            return `${title}`;
+          },
+          onAdd: (_id: string) => {
+            const defaultOption = {
+              id: _id,
+              title: `锚点${data.staticData.length + 1}`
+            };
+            slots.add(defaultOption);
+            return defaultOption;
+          },
+          onRemove: (_id: string) => {
+            slots.remove(_id);
+          },
+          items: [
+            {
+              title: '标题',
+              type: 'text',
+              options: {
+                locale: true
+              },
+              value: 'title'
+            }
+          ]
+        },
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            return data.staticData;
+          },
+          set({ data, focusArea, env }: EditorResult<Data>, options: Option[]) {
+            data.staticData = options;
+            options.forEach((item)=> {
+              slots.get(item.id).setTitle(`${item.title}目标`);
+            })
+          }
+        }
+      },
       {
         title: '是否固定显示锚点链接',
         type: 'Switch',
