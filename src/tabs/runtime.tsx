@@ -175,8 +175,8 @@ export default function ({
             return;
           }
           const ds = tabs.map(tab => {
-            if(!('closeable' in  tab)) {
-              tab.closable = data.closeable
+            if(!('closable' in  tab)) {
+              tab.closable = data.closable
             }
             return tab
           })

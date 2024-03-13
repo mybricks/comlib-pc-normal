@@ -65,7 +65,7 @@ export interface Data {
   size?: TabsProps['size'];
   /** @description v1.0.19 插槽样式 */
   slotStyle: {},
-  closeable?: boolean
+  closable?: boolean
   dynamicTabs?: boolean
 }
 
