@@ -174,14 +174,16 @@ export default function ({
             onError('tab data type error')
             return;
           }
+          const keys: Array<string> = [];
           const ds = tabs.map(tab => {
             if(!('closable' in  tab)) {
               tab.closable = data.closable
             }
+            keys.push(tab.key?.toString())
             return tab
           })
           data.tabList = ds;
-          if(ds[0].key) {
+          if((!data.defaultActiveKey || !keys.includes(data.defaultActiveKey)) && ds[0].key) {
             data.defaultActiveKey = ds[0].key + ''
           }
           relOutputs[OutputIds.SetTabsDone](ds)
