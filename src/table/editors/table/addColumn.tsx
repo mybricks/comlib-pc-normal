@@ -162,8 +162,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               width: item.isAutoWidth
                 ? WidthTypeEnum.Auto
                 : item.width === WidthTypeEnum.Auto
-                ? 140
-                : Number(item.width),
+                  ? 'auto'
+                  : Number(item.width),
               isAutoWidth: undefined
             }));
             setColumns({ data, slot }, cols);
