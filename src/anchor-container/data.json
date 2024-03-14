@@ -1,5 +1,7 @@
 {
   "useLoading": false,
   "loadingTip": "Loading...",
-  "enableFix": true
+  "enableFix": true,
+  "useDynamicData": false,
+  "staticData": [{ "id": "XsbYMT", "_id": "XsbYMT", "title": "锚点1" }]
 }

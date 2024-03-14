@@ -9,5 +9,9 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
     data.enableFix = true;
   };
 
+  if (typeof data.useDynamicData === "undefined") {
+    data.useDynamicData = true;
+  };
+
   return true;
 }

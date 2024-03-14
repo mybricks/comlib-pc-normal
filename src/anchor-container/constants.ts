@@ -19,13 +19,16 @@ export const Schemas = {
 }
 
 export interface Option {
-  point: number;
-  relation: string;
-  columns: number;
+  _id: string;
+  id: string;
+  title: string;
 }
+
 export interface Data {
   //数据源
   dataSource: any[];
+  staticData: any[];
+  useDynamicData: boolean;
   enableFix: boolean;
   //加载中动画
   useLoading?: boolean;
