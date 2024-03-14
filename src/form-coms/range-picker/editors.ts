@@ -47,8 +47,16 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@init': ({ style }) => {
+  '@init': ({ style, data }) => {
     style.width = '100%';
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
   },
   ':root': {
     style: [
@@ -352,6 +360,62 @@ export default {
           }
         },
         {
+          title: '日期展示格式',
+          items: [
+            {
+              title: '格式化目标',
+              type: 'Map',
+              description:
+                '日期格式化模板 YYYY:年份 MM:月份 DD:日 dd:星期 HH:24小时制 hh:12小时制 mm:分 ss:秒',
+              options: {
+                notaddel: true,
+                noteditkey: true
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  if (data.formatMap && Object.keys(data.formatMap).length === 6) {
+                    let newValueArr = Object.keys(data.formatMap).map((key, index) => {
+                      return decodeURIComponent(data.formatMap[key]);
+                    })
+                    let newValue = {
+                      "日期": newValueArr[0],
+                      "日期+时间": newValueArr[1],
+                      "周": newValueArr[2],
+                      "月份": newValueArr[3],
+                      "季度": newValueArr[4],
+                      "年份": newValueArr[5]
+                    }
+                    return newValue
+                  } else {
+                    return {
+                      "日期": "YYYY-MM-DD",
+                      "日期+时间": "YYYY-MM-DD HH:mm:ss",
+                      "周": "YYYY-wo",
+                      "月份": "YYYY-MM",
+                      "季度": "YYYY-\\QQ",
+                      "年份": "YYYY"
+                    };
+                  }
+                },
+                set({ data }: EditorResult<Data>, value: any) {
+                  let newValueArr = Object.keys(value).map((key, index) => {
+                    return encodeURIComponent(value[key]);
+                  })
+                  let newValue = {
+                    "日期": newValueArr[0],
+                    "日期+时间": newValueArr[1],
+                    "周": newValueArr[2],
+                    "月份": newValueArr[3],
+                    "季度": newValueArr[4],
+                    "年份": newValueArr[5]
+                  }
+                  data.formatMap = newValue;
+                }
+              }
+            }
+          ]
+        },
+        {
           title: '输出数据处理',
           items: [
             {
@@ -361,6 +425,7 @@ export default {
               options: [
                 { label: '年-月-日 时:分:秒', value: 'Y-MM-DD HH:mm:ss' },
                 { label: '年-月-日 时:分', value: 'Y-MM-DD HH:mm' },
+                { label: '年-月-日 时', value: 'Y-MM-DD HH' },
                 { label: '年-月-日', value: 'Y-MM-DD' },
                 { label: '年-月', value: 'Y-MM' },
                 { label: '年', value: 'Y' },

@@ -389,6 +389,7 @@ export default {
               options: [
                 { label: '年-月-日 时:分:秒', value: 'Y-MM-DD HH:mm:ss' },
                 { label: '年-月-日 时:分', value: 'Y-MM-DD HH:mm' },
+                { label: '年-月-日 时', value: 'Y-MM-DD HH' },
                 { label: '年-月-日', value: 'Y-MM-DD' },
                 { label: '年-月', value: 'Y-MM' },
                 { label: '年', value: 'Y' },

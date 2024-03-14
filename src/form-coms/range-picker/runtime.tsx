@@ -29,6 +29,14 @@ export interface Data {
   splitChart: string;
   emptyRules: any[];
   isEditable: boolean;
+  formatMap: {
+    日期: string;
+    '日期+时间': string;
+    周: string;
+    月份: string;
+    季度: string;
+    年份: string;
+  };
 }
 
 export const DateType = {
@@ -374,7 +382,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const transValue = Array.isArray(value)
     ? value.map((item, index) => {
-        return transCalculation(item, decodeURIComponent(formatMap[typeMap[type]]), props, index);
+        return transCalculation(item, decodeURIComponent(data.formatMap[typeMap[type]]), props, index);
       })
     : [];
 
@@ -397,6 +405,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             allowEmpty={emptyArr}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
+            format={
+              data.config.picker && data.formatMap
+                ? decodeURIComponent(data.formatMap[typeMap[type]])
+                : void 0
+            }
             dropdownClassName={`${id} ${css.rangePicker}`}
             {...disabledDateTime}
           />
@@ -416,13 +429,4 @@ const typeMap = {
   month: '月份',
   quarter: '季度',
   year: '年份'
-};
-
-const formatMap = {
-  日期: encodeURIComponent('YYYY-MM-DD'),
-  '日期+时间': encodeURIComponent('YYYY-MM-DD HH:mm:ss'),
-  周: encodeURIComponent('YYYY-wo'),
-  月份: encodeURIComponent('YYYY-MM'),
-  季度: encodeURIComponent('YYYY-\\QQ'),
-  年份: encodeURIComponent('YYYY')
 };
