@@ -82,6 +82,7 @@ export default {
             {
               title: '默认激活',
               type: 'Switch',
+              frontIndex: 2,
               ifVisible(item) {
                 return item.menuType === MenuTypeEnum.Menu;
               },
@@ -90,6 +91,17 @@ export default {
             {
               title: '类型',
               type: 'Select',
+              frontIndex: 1,
+              options: [
+                { label: '子菜单', value: MenuTypeEnum.Menu },
+                { label: '父菜单', value: MenuTypeEnum.SubMenu }
+              ],
+              value: 'menuType'
+            },
+            {
+              title: '类型',
+              type: 'Select',
+              afterIndex: 2,
               options: [
                 { label: '子菜单', value: MenuTypeEnum.Menu },
                 { label: '父菜单', value: MenuTypeEnum.SubMenu },
