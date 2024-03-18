@@ -81,7 +81,8 @@ export default function (props: RuntimeParams<Data>) {
   });
 
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
-  const isUseOldHeight = style.height === 'fit-content' || style.height === 'auto';
+  const isUseOldHeight =
+    style.height === 'fit-content' || style.height === 'auto' || style.height === undefined;
 
   /**
    * 按需加载表格数据
@@ -143,36 +144,41 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
       const getFields = (cols: any[]) => {
-        let res: string[] = []
-        cols.map(col => {
+        let res: string[] = [];
+        cols.map((col) => {
           if (col.children) {
-            const _res = getFields(col.children)
-            res.push(..._res)
+            const _res = getFields(col.children);
+            res.push(..._res);
           } else {
-            res.push(col.dataIndex)
+            res.push(col.dataIndex);
           }
-        })
-        return res
-      }
-      const fields = getFields(data.columns)
+        });
+        return res;
+      };
+      const fields = getFields(data.columns);
       const createMockData = () => {
         return fields.reduce((res, item) => {
-          res[item] = uuid('', 6)
-          return res
-        }, {})
-      }
-      const mockTableData = [createMockData(), createMockData(), createMockData(), createMockData()]
-      setTableData(mockTableData)
+          res[item] = uuid('', 6);
+          return res;
+        }, {});
+      };
+      const mockTableData = [
+        createMockData(),
+        createMockData(),
+        createMockData(),
+        createMockData()
+      ];
+      setTableData(mockTableData);
       if (data.usePagination) {
         setTableData({
           dataSource: mockTableData,
           total: 100,
           pageSize: 10,
           pageNum: 1
-        })
+        });
       }
     }
-  }, [env.runtime.debug?.prototype])
+  }, [env.runtime.debug?.prototype]);
 
   useEffect(() => {
     initFilterMap();
@@ -1146,36 +1152,36 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.useExpand && slots[SlotIds.EXPAND_CONTENT]
                     ? {
-                      expandedRowRender: (record, index) => {
-                        const inputValues = {
-                          [InputIds.EXP_COL_VALUES]: {
-                            ...record
-                          },
-                          [InputIds.INDEX]: index
-                        };
-                        if (data.useExpand && data.expandDataIndex) {
-                          inputValues[InputIds.EXP_ROW_VALUES] = get(
-                            record,
-                            data.expandDataIndex
-                          );
-                        }
-                        return slots[SlotIds.EXPAND_CONTENT].render({
-                          inputValues,
-                          key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                        });
-                      },
-                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                      onExpand: (expanded, record) => {
-                        if (!env.runtime) return;
-                        const key = record[rowKey];
-                        if (expanded && !expandedRowKeys.includes(key)) {
-                          setExpandedRowKeys([...expandedRowKeys, key]);
-                        } else if (!expanded && expandedRowKeys.includes(key)) {
-                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                          setExpandedRowKeys([...expandedRowKeys]);
+                        expandedRowRender: (record, index) => {
+                          const inputValues = {
+                            [InputIds.EXP_COL_VALUES]: {
+                              ...record
+                            },
+                            [InputIds.INDEX]: index
+                          };
+                          if (data.useExpand && data.expandDataIndex) {
+                            inputValues[InputIds.EXP_ROW_VALUES] = get(
+                              record,
+                              data.expandDataIndex
+                            );
+                          }
+                          return slots[SlotIds.EXPAND_CONTENT].render({
+                            inputValues,
+                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                          });
+                        },
+                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                        onExpand: (expanded, record) => {
+                          if (!env.runtime) return;
+                          const key = record[rowKey];
+                          if (expanded && !expandedRowKeys.includes(key)) {
+                            setExpandedRowKeys([...expandedRowKeys, key]);
+                          } else if (!expanded && expandedRowKeys.includes(key)) {
+                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                            setExpandedRowKeys([...expandedRowKeys]);
+                          }
                         }
                       }
-                    }
                     : undefined
                 }
                 onChange={onChange}
