@@ -4,7 +4,7 @@
   "bordered": true,
   "hoverable": false,
   "cursor": false,
-  "size": "small",
+  "size": "default",
   "style": {},
   "bodyStyle": {},
   "outputContent": 0,

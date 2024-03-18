@@ -38,7 +38,7 @@ const addBtn = ({
     outVal: 0,
     useIcon: false,
     showText: true,
-    size: 'small',
+    size: 'middle',
     type: 'default',
     shape: '',
     dataType: 'number'

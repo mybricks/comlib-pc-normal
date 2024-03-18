@@ -14,7 +14,7 @@
     "scrollToFirstRowOnChange": true
   },
   "bordered": false,
-  "size": "small",
+  "size": "middle",
   "useRowSelection": false,
   "enableRowClickSelection": false,
   "rowSelectionPostion": [
