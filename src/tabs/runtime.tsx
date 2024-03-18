@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, ReactNode } from 'react';
 import classnames from 'classnames';
 import { Tabs, Tooltip, Badge } from 'antd';
-import { Data, InputIds, OutputIds, SlotIds } from './constants';
+import { Data, InputIds, OutputIds, SlotIds, TabItem } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { usePrevious } from '../utils/hooks';
@@ -26,6 +26,11 @@ export default function ({
   const [showTabs, setShowTabs] = useState<string[]>(
     () => data.tabList?.map((item) => item.id) || []
   );
+
+  useEffect(() => {
+    setShowTabs(() => (data.tabList ?? []).map((item) => item.id));
+  }, [data.tabList]);
+
   const preKey = usePrevious<string | undefined>(data.defaultActiveKey);
   const findTargetByKey = useCallback(
     (target = data.defaultActiveKey) => {
@@ -158,8 +163,38 @@ export default function ({
           }
         });
       }
+
+      if (data.dynamicTabs) {
+        inputs[InputIds.SetTabs]((tabs: Array<TabItem>, relOutputs) => {
+          if (!Array.isArray(tabs)) {
+            onError('arguments must be tab list');
+            return;
+          }
+          if (tabs.length && tabs.some((tab) => !tab.id || !tab.key)) {
+            onError('tab data type error');
+            return;
+          }
+          const keys: Array<string> = [];
+          const ds = tabs.map((tab) => {
+            if (!('closable' in tab)) {
+              tab.closable = data.closable;
+            }
+            keys.push(tab.key?.toString());
+            return tab;
+          });
+          data.tabList = ds;
+          if ((!data.defaultActiveKey || !keys.includes(data.defaultActiveKey)) && ds[0].key) {
+            data.defaultActiveKey = ds[0].key + '';
+          }
+          relOutputs[OutputIds.SetTabsDone](ds);
+        });
+      }
+
+      inputs[InputIds.GetTabs]!((_, relOutputs) => {
+        relOutputs[OutputIds.GetTabsDone](data.tabList);
+      });
     }
-  }, []);
+  }, [showTabs]);
 
   useEffect(() => {
     if (env.runtime) {
@@ -191,37 +226,32 @@ export default function ({
     return Promise.resolve();
   };
 
-  const handleClickItem = useCallback((values) => {
-    if (!data.prohibitClick) {
-      data.defaultActiveKey = values;
-    }
-    if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
-      const item = findTargetByKey(values) || {};
-      const index = findIndexByKey(values);
-      outputs[OutputIds.OnTabClick]({ ...item, index });
-    }
-  }, []);
+  const handleClickItem = useCallback(
+    (values) => {
+      if (!data.prohibitClick) {
+        data.defaultActiveKey = values;
+      }
+      if (env.runtime && outputs && outputs[OutputIds.OnTabClick]) {
+        const item = findTargetByKey(values) || {};
+        const index = findIndexByKey(values);
+        outputs[OutputIds.OnTabClick]({ ...item, index });
+      }
+    },
+    [showTabs]
+  );
 
   const onEdit = (targetKey, action) => {
     const actionMap = {
-      remove(key) {
-        let newActiveKey = data.defaultActiveKey;
-        let lastIndex;
-        data.tabList.forEach((tab, index) => {
-          if (tab.key === key) {
-            lastIndex = index - 1;
-          }
-        });
-        const newPanes = data.tabList.filter((i) => i.key !== key);
-        if (newPanes.length && newActiveKey === key) {
-          if (lastIndex >= 0) {
-            newActiveKey = newPanes[lastIndex].key;
-          } else {
-            newActiveKey = newPanes[0].key;
-          }
+      add() {
+        outputs[OutputIds.AddTab](data.tabList);
+      },
+      remove(key: string) {
+        console.log(key);
+        data.tabList = data.tabList.filter((i) => i.key != key);
+        if (data.defaultActiveKey === key && data.tabList.length) {
+          data.defaultActiveKey = data.tabList[data.tabList.length].key + '';
         }
-        data.tabList = newPanes;
-        data.defaultActiveKey = newActiveKey;
+        outputs[OutputIds.RemoveTab](data.tabList);
       }
     };
     actionMap[action](targetKey);
@@ -271,7 +301,9 @@ export default function ({
             >
               {data.hideSlots ? null : (
                 <div className={classnames(css.content, env.edit && css.minHeight)}>
-                  {slots[item.id]?.render()}
+                  {slots[item.id]?.render({
+                    style: data.slotStyle
+                  })}
                 </div>
               )}
             </TabPane>
@@ -289,7 +321,8 @@ export default function ({
         centered={data.centered}
         tabPosition={data.tabPosition}
         onChange={handleClickItem}
-        hideAdd={true}
+        size={data.size || 'middle'}
+        hideAdd={data.hideAdd}
         onEdit={env.edit ? undefined : onEdit}
         tabBarExtraContent={{
           left: data.useLeftExtra ? slots[SlotIds.LeftExtra].render() : undefined,

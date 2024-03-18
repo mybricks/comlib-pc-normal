@@ -2,7 +2,7 @@ import { inputIds, outputIds } from '../form-container/constants';
 
 export default function ({ input, output, slot, data }): boolean {
   //1.0.0 -> 1.0.1
-  input.get('setValue').setSchema({
+  input.get('setValue')?.setSchema({
     type: 'array',
     items: {
       type: 'object',
@@ -16,7 +16,7 @@ export default function ({ input, output, slot, data }): boolean {
       }
     }
   });
-  input.get('uploadDone').setSchema({
+  input.get('uploadDone')?.setSchema({
     type: 'object',
     properties: {
       name: {
@@ -29,7 +29,7 @@ export default function ({ input, output, slot, data }): boolean {
   });
 
   // 1.0.1 -> 1.0.2
-  output.get('upload').setSchema({
+  output.get('upload')?.setSchema({
     type: 'object'
   });
 
@@ -88,7 +88,7 @@ export default function ({ input, output, slot, data }): boolean {
       }
     }
   });
-  input.get('uploadDone').setSchema({
+  input.get('uploadDone')?.setSchema({
     type: 'object',
     properties: {
       name: {

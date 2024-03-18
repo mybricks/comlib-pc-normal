@@ -19,7 +19,7 @@ export default function Runtime({
   title,
   logger
 }: RuntimeParams<Data>) {
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
   const [value, setValue] = useState<any>(data.value);
   const valueRef = useRef<any>(data.value);
@@ -71,11 +71,11 @@ export default function Runtime({
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
@@ -110,8 +110,8 @@ export default function Runtime({
     });
     // 设置校验状态
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });
@@ -157,8 +157,12 @@ export default function Runtime({
             <Space direction={data.layout === 'vertical' ? 'vertical' : void 0}>
               {(env.edit ? data.staticOptions : data.config.options)?.map((item, radioIdx) => {
                 const label = item.label;
+                const autoFocus =
+                  !!data.autoFocus &&
+                  (data.autoFocus === 'first' ? radioIdx === 0 : valueRef.current === item.value);
                 return (
                   <Radio
+                    autoFocus={autoFocus}
                     key={item.key}
                     value={item.value}
                     disabled={item.disabled}
@@ -185,9 +189,9 @@ export default function Runtime({
     <div className="radio">
       {data.isEditable ? (
         <Radio.Group
+          {...data.config}
           optionType={data.enableButtonStyle ? 'button' : 'default'}
           buttonStyle={data.buttonStyle}
-          disabled={data.config.disabled}
           value={value}
           onChange={onChange}
         >

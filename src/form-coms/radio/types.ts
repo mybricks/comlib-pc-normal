@@ -1,10 +1,8 @@
+import { RadioGroupProps } from 'antd';
 import { Option } from '../types';
 
 export interface Data {
-  config: {
-    disabled: boolean;
-    options: any[];
-  };
+  config: RadioGroupProps;
   rules: any[];
   value: number | string | undefined;
   staticOptions: Option[];
@@ -12,4 +10,5 @@ export interface Data {
   buttonStyle: 'outline' | 'solid';
   layout: 'vertical' | 'horizontal';
   isEditable: boolean;
+  autoFocus: false | 'first' | 'defaultCheck';
 }

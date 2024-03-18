@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Input, Select } from 'antd';
+import { Input, InputProps, Select } from 'antd';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateTrigger } from '../form-container/models/validate';
@@ -11,12 +11,7 @@ export interface Data {
   rules: any[];
   isenterButton: boolean;
   enterButton: string;
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    placeholder: string;
-    addonBefore: string;
-  };
+  config: InputProps;
   isSelect: boolean;
   selectWidth: string;
   staticOptions: Options[];
@@ -35,7 +30,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [context, setContext] = useState<any>();
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
 
   useEffect(() => {
@@ -85,11 +80,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
@@ -106,8 +101,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

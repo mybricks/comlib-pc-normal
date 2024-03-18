@@ -18,7 +18,7 @@ export interface Data {
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, name } = props;
   const [isShow, setIsShow] = useState<boolean>(false);
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>(data.color);
 
   const [color, setColor] = useState(data.color);
@@ -78,9 +78,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          const customRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs['onValidate'](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -191,8 +191,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     inputs['setValidateInfo']((info: object, outputRels) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
       }
     });

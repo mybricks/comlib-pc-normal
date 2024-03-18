@@ -182,10 +182,10 @@ export default function ({
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', outputValueSchema);
   }
-  const cutomRule = data.rules?.find(
+  const customRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
   );
-  if (data.rules?.length && !cutomRule) {
+  if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,
@@ -381,7 +381,17 @@ export default function ({
     data.config.dropdownMatchSelectWidth = true;
   }
 
-  //=========== v1.1.11 end ===============ƒ
+  //=========== v1.1.11 end ===============
+
+  /**
+     * @description v1.1.13 增加 搜索值为空时自动重置选项data.resetOptionsWhenEmptySearch 配置项
+     */
+
+  if (data.resetOptionsWhenEmptySearch === undefined) {
+    data.resetOptionsWhenEmptySearch = true;
+  }
+
+  //=========== v1.1.13 end ===============
 
   return true;
 }

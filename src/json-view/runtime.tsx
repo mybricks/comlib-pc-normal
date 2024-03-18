@@ -19,7 +19,7 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
 
   useEffect(() => {
     if (env.runtime) {
-      inputs[InputIds.SetJsonData]((val, relOutputs) => {
+      inputs[InputIds.SetJsonData]?.((val, relOutputs) => {
         if (typeof val === 'string') {
           data.json = encodeURIComponent(val);
           relOutputs['setJsonDataDone'](data.json);
@@ -30,10 +30,10 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
           console.error(`${title}:输入的JSON数据不合法`);
         }
       });
-      inputs[InputIds.GetJsonData]((_, outputRels) => {
+      inputs[InputIds.GetJsonData]?.((_, outputRels) => {
         outputRels[OutputIds.JsonData](data.jsonObj);
       });
-      inputs[InputIds.SetExpandDepth]((val, relOutputs) => {
+      inputs[InputIds.SetExpandDepth]?.((val, relOutputs) => {
         if (typeof val === 'number' && val > -2) {
           data.collapsed = val;
           relOutputs['setExpandDepthDone'](data.collapsed);
@@ -163,7 +163,7 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
     };
   }, [data.colors[TypeEnum.NodeHoverBackgroundColor], data.colors[TypeEnum.BackgroundColor]]);
 
-  /**TODO：支持不展示根节点 */
+  /** @description TODO：支持不展示根节点 */
   const treeData = [
     {
       title: getTitle({
@@ -199,9 +199,12 @@ export default function ({ env, data, inputs, outputs, title, logger }: RuntimeP
         if (enableClipboard) {
           //* 复制到剪贴板
           try {
-            const nodeDataStr = JSON.stringify(
-              copyValueWithLabel && node.label !== undefined ? { [node.label]: nodeData } : nodeData
-            );
+            const nodeDataStr =
+              copyValueWithLabel && node.label !== undefined
+                ? JSON.stringify({ [node.label]: nodeData })
+                : typeof nodeData !== 'string' || data.copyStringWithQuotation
+                ? JSON.stringify(nodeData)
+                : nodeData;
             copy(nodeDataStr);
             message.success('节点数据已成功复制到剪贴板');
           } catch (e) {

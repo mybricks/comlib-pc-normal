@@ -26,7 +26,7 @@ export default function Runtime({
   title,
   name
 }: RuntimeParams<Data>) {
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [activeFontColor, setActiveFontColor] = useState('');
   const [dynamicStyles, setDynamicStyles] = useState<{ value: any; style: CSSProperties }[]>([]);
   const [single, setSingle] = useState<boolean>(false);
@@ -47,11 +47,11 @@ export default function Runtime({
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -153,8 +153,8 @@ export default function Runtime({
     });
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

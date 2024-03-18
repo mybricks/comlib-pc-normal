@@ -3,7 +3,7 @@
   "enable": true,
   "visibility": true,
   "namespace": "mybricks.normal-pc.anchor-container",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "锚点容器",
   "author": "Mybricks",
   "author_name": "Mybricks",
@@ -12,38 +12,6 @@
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
-  "inputs": [
-    {
-      "id": "dataSource",
-      "title": "设置数据源",
-      "desc": "设置列表容器数据源，数据结构要求是数组",
-      "schema": {
-        "title": "列表数据",
-        "type": "array",
-        "items": {
-          "title": "列项数据",
-          "type": "any"
-        }
-      },
-      "rels": [
-        "setDataSourceDone"
-      ]
-    }
-  ],
-  "outputs": [
-    {
-      "id": "setDataSourceDone",
-      "title": "设置数据源完成",
-      "schema": {
-        "title": "列表数据",
-        "type": "array",
-        "items": {
-          "title": "列项数据",
-          "type": "any"
-        }
-      }
-    }
-  ],
   "slots": [
     {
       "id": "item",
@@ -68,6 +36,10 @@
           }
         }
       ]
+    },
+    {
+      "id": "XsbYMT",
+      "title": "锚点1目标"
     }
   ]
 }

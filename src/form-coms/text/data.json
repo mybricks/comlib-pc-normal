@@ -13,7 +13,7 @@
     "addonAfter": "",
     "showCount": false,
     "maxLength": -1,
-    "size": "middle"
+    "size": "small"
   },
   "src": false,
   "innerIcon": "HomeOutlined",

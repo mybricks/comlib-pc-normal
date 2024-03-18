@@ -19,6 +19,8 @@ export default function (props: RuntimeParams<Data>) {
   const ref = useRef<HTMLDivElement>(null);
 
   const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
+  const [preHeight, setPreHeight] = useState('auto');
+  const [preType, setPreType] = useState('normal');
 
   useEffect(() => {
     if (useFixed && ref.current?.parentElement?.style) {
@@ -100,7 +102,61 @@ export default function (props: RuntimeParams<Data>) {
   //   }
   // });
 
-  const scrollRender = ()=>{
+  // useEffect(() => {
+  //   setPreHeight(style.height);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (env.edit && data.slotStyle?.position === 'smart') {
+  //     style.height = 200;
+  //   }
+  // }, [data.slotStyle?.position, preHeight]);
+
+  // useEffect(() => {
+  //   //1、先把normal的高度存起来
+  //   if (data.slotStyle?.position !== 'smart') {
+  //     setPreHeight(style.height);
+  //     setPreType('normal');
+  //   } else {
+  //     setPreType('smart');
+  //   }
+  // }, [data.slotStyle, style.height]);
+
+  // //2、切换到smart布局时，高度改为200
+  // useEffect(() => {
+  //   if (env.edit && data.slotStyle?.position === 'smart' && preHeight === 'auto') {
+  //     style.height = 200;
+  //   }
+  // }, [data.slotStyle?.position, preHeight]);
+
+  // //3、从smart切换到normal时，取出preHeight，给到style.height
+  // if (preType === 'smart' && data.slotStyle?.position !== 'smart') {
+  //   style.height = preHeight;
+  // }
+
+  // if (env.runtime && data.slotStyle?.position === 'smart') {
+  //   style.height = 'auto';
+  // }
+
+  //升级版，监听组件拖入插槽->计算->给到slot
+  // useEffect(()=>{
+  //   //var element = document.querySelector('#root')?.shadowRoot.querySelector('div[data-title="内容"]');
+  //   //var height = element.offsetHeight;
+  //   let element = document.querySelector('#_mybricks-geo-webview_')?.shadowRoot.querySelector('div[data-title="内容"]');
+  //   let elementArr = document.querySelector('#_mybricks-geo-webview_')?.shadowRoot.querySelector('div[data-title="内容"]')?.childNodes;
+  //   let height = element?.offsetHeight;
+
+  //   let totalHeight = 0;
+  //   elementArr?.forEach((item)=>{
+  //     totalHeight += item.offsetHeight
+  //   })
+  //   console.log('element', element);
+  //   console.log('elementArr', elementArr);
+  //   console.log('height', height);
+  //   console.log('totalHeight', totalHeight);
+  // })
+
+  const scrollRender = () => {
     return (
       <div
         className={
@@ -117,8 +173,8 @@ export default function (props: RuntimeParams<Data>) {
       >
         {slots[SlotIds.Content].render({ style: slotStyle })}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div
@@ -137,11 +193,14 @@ export default function (props: RuntimeParams<Data>) {
         }
       }}
     >
-      {
-        data.isAutoScroll ? 
-          scrollRender() :
-          slots[SlotIds.Content].render({ style: slotStyle })
-      }
+      {data.isAutoScroll
+        ? scrollRender()
+        : slots[SlotIds.Content].render({
+            style:
+              env.edit && data.slotStyle?.position === 'smart'
+                ? { ...data.slotStyle, minHeight: 30 }
+                : data.slotStyle
+          })}
     </div>
   );
 }

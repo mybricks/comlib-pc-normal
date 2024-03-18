@@ -26,7 +26,7 @@ export default function Runtime({
   onError
 }: RuntimeParams<Data>) {
   const curNode = useRef({});
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [value, setValue] = useState<any>();
   //fetching, 是否开启loading的开关
   const [fetching, setFetching] = useState(false);
@@ -40,6 +40,39 @@ export default function Runtime({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef<any>();
 
+  useEffect(() => {
+    if (env.runtime.debug?.prototype) {
+      data.options = [
+        {
+          label: 'aaa',
+          value: 'aaa',
+          children: []
+        },
+        {
+          label: 'bbb',
+          value: 'bbb',
+          children: [
+            {
+              label: 'ddd',
+              value: 'ddd',
+              children: []
+            },
+            {
+              label: 'eee',
+              value: 'eee',
+              children: []
+            }
+          ]
+        },
+        {
+          label: 'ccc',
+          value: 'ccc',
+          children: []
+        }
+      ];
+    }
+  }, [env.runtime.debug?.prototype]);
+
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {
       validateFormItem({
@@ -49,11 +82,11 @@ export default function Runtime({
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -168,8 +201,8 @@ export default function Runtime({
 
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, outputRels) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
       }
     });
@@ -292,10 +325,11 @@ export default function Runtime({
     return (
       <>
         {treeData.map((item, inx) => {
+          const children = item[data.childrenFieldName || 'children'];
           const outputItem = {
             isRoot: depth === 0,
             _depth: depth,
-            isLeaf: !item.children?.length,
+            isLeaf: !children?.length,
             ...item
           };
           return (
@@ -307,7 +341,7 @@ export default function Runtime({
               title={item[data.labelFieldName || 'label']}
               icon={getNodeIcon(outputItem, data, onError)}
             >
-              {renderTreeNode(item.children || [], depth + 1)}
+              {renderTreeNode(children || [], depth + 1)}
             </TreeNode>
           );
         })}
@@ -336,7 +370,6 @@ export default function Runtime({
           open={env.design ? true : void 0}
           value={value}
           loadData={data.useLoadData ? onLoadData : undefined}
-          fieldNames={fieldNames}
           onChange={onChange}
           onSearch={onSearch}
           treeLoadedKeys={data.loadDataOnce ? treeLoadedKeys : []}

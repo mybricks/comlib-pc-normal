@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.video",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "播放器",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -30,6 +30,16 @@
         "title": "截图文件名"
       },
       "rels": ["screenshotComplete"]
+    },
+    {
+      "id": "setPoster",
+      "title": "设置封面",
+      "desc": "设置播放器封面",
+      "schema": {
+        "type": "string",
+        "title": "封面"
+      },
+      "rels": ["setPosterComplete"]
     }
   ],
   "outputs": [
@@ -42,6 +52,13 @@
     },
     {
       "id": "screenshotComplete",
+      "title": "完成",
+      "schema": {
+        "type": "any"
+      }
+    },
+    {
+      "id": "setPosterComplete",
       "title": "完成",
       "schema": {
         "type": "any"

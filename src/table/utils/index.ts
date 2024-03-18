@@ -5,7 +5,7 @@ import { InputIds } from '../constants';
 import { Entity } from '../../domain-form/type';
 import { getFilterSelector } from '../../utils/cssSelector';
 
-const findColumnItemByKey = (columns: IColumn[], key: string) => {
+export const findColumnItemByKey = (columns: IColumn[], key: string) => {
   let res;
   if (Array.isArray(columns)) {
     columns.forEach((column, index) => {
@@ -46,11 +46,13 @@ export const getNewColumn = (data?: Data) => {
   const obj: IColumn = {
     title,
     dataIndex: title,
-    width: 140,
+    width: 'auto',
     key: uuid(),
     contentType: ContentTypeEnum.Text,
     visible: true,
-    filter: {},
+    filter: {
+      filterIconInherit: true
+    },
     sorter: {
       enable: false,
       type: SorterTypeEnum.Size

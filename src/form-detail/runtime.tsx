@@ -38,73 +38,75 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
   };
 
   const renderItems = () => {
-    return (data.items || []).map((item) => {
-      const {
-        id,
-        value,
-        type = TypeEnum.Text,
-        span,
-        label,
-        slotId = '',
-        rows = 1,
-        ellipsis,
-        showLabel = true,
-        labelDesc
-      } = item || {};
-      const SlotItem =
-        type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
-          ? slots[slotId]?.render({
-              inputValues: {
-                [InputIds.CurDs]: value,
-                [InputIds.DataSource]: data.items.reduce(
-                  (pre, cur) => ({ ...pre, [cur.key]: cur.value }),
-                  {}
-                )
-              },
-              key: slotId
-            })
-          : null;
-      if (type === TypeEnum.AllSlot) {
-        return (
-          <Descriptions.Item label={null} key={id} span={span} className={`${id}-item`}>
-            {SlotItem}
-          </Descriptions.Item>
-        );
-      }
-
-      let labelNode = env.i18n(label);
-
-      if (showLabel) {
-        if (!!labelDesc) {
-          labelNode = (
-            <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-              <span style={{ marginRight: 5 }}>{labelNode}</span>
-              <Tooltip title={env.i18n(labelDesc)}>
-                <InfoCircleOutlined />
-              </Tooltip>
-            </div>
+    return (data.items || [])
+      .filter((item) => item.visible !== false)
+      .map((item) => {
+        const {
+          id,
+          value,
+          type = TypeEnum.Text,
+          span,
+          label,
+          slotId = '',
+          rows = 1,
+          ellipsis,
+          showLabel = true,
+          labelDesc
+        } = item || {};
+        const SlotItem =
+          type === TypeEnum.AllSlot || type === TypeEnum.PartSlot
+            ? slots[slotId]?.render({
+                inputValues: {
+                  [InputIds.CurDs]: value,
+                  [InputIds.DataSource]: data.items.reduce(
+                    (pre, cur) => ({ ...pre, [cur.key]: cur.value }),
+                    {}
+                  )
+                },
+                key: slotId
+              })
+            : null;
+        if (type === TypeEnum.AllSlot) {
+          return (
+            <Descriptions.Item label={null} key={id} span={span} className={`${id}-item`}>
+              {SlotItem}
+            </Descriptions.Item>
           );
         }
-        if (!label) labelNode = null;
-      } else {
-        labelNode = null;
-      }
-      return (
-        <Descriptions.Item label={labelNode} key={id} span={span} className={`${id}-item`}>
-          {type === TypeEnum.PartSlot ? (
-            SlotItem
-          ) : (
-            <Text
-              style={{ color: 'inherit' }}
-              ellipsis={ellipsis ? { rows, tooltip: true } : false}
-            >
-              {env.i18n(value)}
-            </Text>
-          )}
-          {SuffixRender(item)}
-        </Descriptions.Item>
-      );
-    });
+
+        let labelNode = env.i18n(label);
+
+        if (showLabel) {
+          if (!!labelDesc) {
+            labelNode = (
+              <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                <span style={{ marginRight: 5 }}>{labelNode}</span>
+                <Tooltip title={env.i18n(labelDesc)}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </div>
+            );
+          }
+          if (!label) labelNode = null;
+        } else {
+          labelNode = null;
+        }
+        return (
+          <Descriptions.Item label={labelNode} key={id} span={span} className={`${id}-item`}>
+            {type === TypeEnum.PartSlot ? (
+              SlotItem
+            ) : (
+              <Text
+                style={{ color: 'inherit' }}
+                ellipsis={ellipsis ? { rows, tooltip: true } : false}
+              >
+                {env.i18n(value)}
+              </Text>
+            )}
+            {SuffixRender(item)}
+          </Descriptions.Item>
+        );
+      });
   };
 
   useEffect(() => {
@@ -127,6 +129,21 @@ export default function ({ env, data, inputs, slots, outputs, onError }: Runtime
         inputs[InputIds.SetTitle]((t: string, relOutputs) => {
           data.title = t;
           relOutputs['setTitleComplete']();
+        });
+
+      inputs[InputIds.SetDataDesc] &&
+        inputs[InputIds.SetDataDesc]((desc, relOutputs) => {
+          if (!isObject(desc)) {
+            onError('参数必须是json');
+            return;
+          }
+          for (const [key, value] of Object.entries(desc)) {
+            const item = data.items.find(({ key: itemKey }) => key === itemKey);
+            if (item) {
+              Object.assign(item, value);
+            }
+          }
+          relOutputs['setDataDescComplete']();
         });
     }
   }, [data]);

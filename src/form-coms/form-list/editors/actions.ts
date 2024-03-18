@@ -1,4 +1,5 @@
-import { Action, Data, LabelWidthType, LocationEnum, SizeEnum } from '../types'
+import { Action, Data, LabelWidthType, LocationEnum } from '../types'
+import { SizeEnum } from '../../types'
 import { uuid } from '../../../utils'
 import visibleOpt from '../../../components/editorRender/visibleOpt'
 import { getItemSchema } from '../schema'

@@ -8,7 +8,8 @@
     "allowClear": true,
     "disabled": false,
     "placeholder": "请输入搜索内容",
-    "addonBefore": ""
+    "addonBefore": "",
+    "size": "small"
   },
   "isSelect": false,
   "staticOptions": [],

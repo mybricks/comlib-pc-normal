@@ -2,7 +2,7 @@ import moment from 'moment';
 import { DisabledDateTimeEditor } from '../../components/editors/DisabledDateTimeEditor';
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
 import { Data, DateType } from './runtime';
-import { InputIds, OutputIds } from '../types';
+import { InputIds, OutputIds, SizeEnum, SizeOptions } from '../types';
 import styleEditor from './styleEditor';
 
 export const refreshSchema = ({ data, input, output }: { data: Data; input: any; output: any }) => {
@@ -47,11 +47,40 @@ export default {
   '@resize': {
     options: ['width']
   },
-  '@init': ({ style }) => {
+  '@init': ({ style, data }) => {
     style.width = '100%';
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
   },
   ':root': {
-    style: [...styleEditor],
+    style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
+      {
+        items: styleEditor
+      }
+    ],
     items: ({ data, env }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
 
@@ -321,14 +350,70 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: OutputIds.OnValidate
           }
+        },
+        {
+          title: '日期展示格式',
+          items: [
+            {
+              title: '格式化目标',
+              type: 'Map',
+              description:
+                '日期格式化模板 YYYY:年份 MM:月份 DD:日 dd:星期 HH:24小时制 hh:12小时制 mm:分 ss:秒',
+              options: {
+                notaddel: true,
+                noteditkey: true
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  if (data.formatMap && Object.keys(data.formatMap).length === 6) {
+                    let newValueArr = Object.keys(data.formatMap).map((key, index) => {
+                      return decodeURIComponent(data.formatMap[key]);
+                    })
+                    let newValue = {
+                      "日期": newValueArr[0],
+                      "日期+时间": newValueArr[1],
+                      "周": newValueArr[2],
+                      "月份": newValueArr[3],
+                      "季度": newValueArr[4],
+                      "年份": newValueArr[5]
+                    }
+                    return newValue
+                  } else {
+                    return {
+                      "日期": "YYYY-MM-DD",
+                      "日期+时间": "YYYY-MM-DD HH:mm:ss",
+                      "周": "YYYY-wo",
+                      "月份": "YYYY-MM",
+                      "季度": "YYYY-\\QQ",
+                      "年份": "YYYY"
+                    };
+                  }
+                },
+                set({ data }: EditorResult<Data>, value: any) {
+                  let newValueArr = Object.keys(value).map((key, index) => {
+                    return encodeURIComponent(value[key]);
+                  })
+                  let newValue = {
+                    "日期": newValueArr[0],
+                    "日期+时间": newValueArr[1],
+                    "周": newValueArr[2],
+                    "月份": newValueArr[3],
+                    "季度": newValueArr[4],
+                    "年份": newValueArr[5]
+                  }
+                  data.formatMap = newValue;
+                }
+              }
+            }
+          ]
         },
         {
           title: '输出数据处理',
@@ -340,6 +425,7 @@ export default {
               options: [
                 { label: '年-月-日 时:分:秒', value: 'Y-MM-DD HH:mm:ss' },
                 { label: '年-月-日 时:分', value: 'Y-MM-DD HH:mm' },
+                { label: '年-月-日 时', value: 'Y-MM-DD HH' },
                 { label: '年-月-日', value: 'Y-MM-DD' },
                 { label: '年-月', value: 'Y-MM' },
                 { label: '年', value: 'Y' },

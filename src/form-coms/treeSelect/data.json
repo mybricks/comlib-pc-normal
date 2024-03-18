@@ -12,7 +12,8 @@
     "showCheckedStrategy": "SHOW_CHILD",
     "treeNodeFilterProp": "label",
     "maxTagCount": "responsive",
-    "dropdownMatchSelectWidth": true
+    "dropdownMatchSelectWidth": true,
+    "size": "small"
   },
   "useLoadData": false,
   "labelFieldName": "",

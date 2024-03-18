@@ -169,10 +169,10 @@ export default function ({
   if (!output.get(OutputIds.OnValidate)) {
     output.add(OutputIds.OnValidate, '校验触发', valueSchema);
   }
-  const cutomRule = data.rules?.find(
+  const customRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
   );
-  if (data.rules?.length && !cutomRule) {
+  if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,
@@ -306,6 +306,20 @@ export default function ({
     data.isEditable = true;
   }
   //=========== v1.1.9 end ===============
+
+  /**
+   * @description v1.1.11 => v1.1.12 升级，新增 formatMap 字段
+   */
+  if (typeof data.formatMap === "undefined") {
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
+  }
 
   return true;
 }

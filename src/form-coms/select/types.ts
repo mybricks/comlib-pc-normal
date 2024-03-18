@@ -24,4 +24,5 @@ export interface Data {
   outputValueType: 'value' | 'labelInValue' | 'option';
   validateTrigger: string[];
   isEditable: boolean;
+  resetOptionsWhenEmptySearch: boolean;
 }

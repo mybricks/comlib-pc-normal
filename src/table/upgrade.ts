@@ -291,11 +291,35 @@ export default function ({
   /**
    * @description v1.1.36 -> v1.1.37 新增动态设置布局风格能力
    */
-  if(!input.get(InputIds.SET_SIZE)) {
+  if (!input.get(InputIds.SET_SIZE)) {
     input.add(InputIds.SET_SIZE, '设置布局风格', Schemas.SET_SIZE);
     output.add(OutputIds.SET_SIZE_DONE, '设置布局风格完成', Schemas.SET_SIZE_DONE);
     input.get(InputIds.SET_SIZE).setRels([OutputIds.SET_SIZE_DONE]);
   }
+
+  /**
+   * @description v1.1.39 -> v1.1.40 筛选图标配置方式升级
+   */
+  if (!data.filterIconDefault || ['filter', 'search'].includes(data.filterIconDefault)) {
+    if (data.filterIconDefault === 'search') data.filterIconDefault = 'SearchOutlined';
+    else data.filterIconDefault = 'FilterFilled';
+  }
+
+  /**
+   * @description v1.1.39 -> v1.1.40 筛选图标配置方式升级
+   */
+  data.columns.forEach((item, index) => {
+    if (item.filter?.filterIcon === 'search') item.filter.filterIcon = 'SearchOutlined';
+    else if (item.filter?.filterIcon === 'filter') item.filter.filterIcon = 'FilterFilled';
+    else if (item.filter?.filterIcon === 'inherit') {
+      item.filter.filterIcon = void 0;
+      item.filter.filterIconInherit = true;
+    }
+    if (!item.filter?.filterIcon) {
+      if (!item.filter) item.filter = { filterIconInherit: true };
+      else item.filter.filterIconInherit = true;
+    }
+  });
 
   return true;
 }

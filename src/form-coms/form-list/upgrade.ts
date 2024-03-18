@@ -1,7 +1,8 @@
 import { inputIds, outputIds } from "../form-container/constants";
 import { RuleKeys } from "../utils/validator";
 import { getItemSchema } from "./schema";
-import { Data, LocationEnum, SizeEnum } from "./types";
+import { SizeEnum } from "../types";
+import { Data, LocationEnum, } from "./types";
 import { InputIds as SelfInputIds } from './constants';
 
 export default function ({ data, input, output, slot, setDeclaredStyle }: UpgradeParams<Data>): boolean {
@@ -111,10 +112,10 @@ export default function ({ data, input, output, slot, setDeclaredStyle }: Upgrad
     };
     output.add(outputIds.ON_VALIDATE, '校验触发', valueSchema);
   }
-  const cutomRule = data.rules?.find(
+  const customRule = data.rules?.find(
     (i) => i.key === RuleKeys.CUSTOM_EVENT
   );
-  if (data.rules?.length && !cutomRule) {
+  if (data.rules?.length && !customRule) {
     data.rules.push({
       key: RuleKeys.CUSTOM_EVENT,
       status: false,

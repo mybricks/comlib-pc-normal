@@ -94,6 +94,7 @@ const getSuggestions = (data: Data) => {
 };
 
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width']
   },
@@ -103,7 +104,7 @@ export default {
   '@childAdd'({ data, inputs, outputs, slots }: EditorResult<Data>, child, curSlot) {
     if (curSlot.id === SlotIds.FormItems) {
       const { id, inputDefs, outputDefs, name } = child;
-      const item = data.items.find((item) => item.id === id);
+      const item = data.items.find((item) => item.id === id || item.comName === name);
       const com = outputDefs.find((item) => item.id === 'returnValue');
       if (com) {
         // 表单项
@@ -479,10 +480,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: outputIds.ON_VALIDATE
@@ -567,7 +568,7 @@ export default {
               return message.warn('字段名不能为空');
             }
 
-            const item = data.items.find((item) => item.id === id);
+            const item = data.items.find((item) => item.id === id || item.comName === name);
 
             if (item && item.name !== val) {
               if (fieldNameCheck(data, val)) {
@@ -782,7 +783,7 @@ export default {
             description: '表单项标题的字体样式',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
-                const item = data.items.find((item) => item.id === id);
+                const item = data.items.find((item) => item.id === id || item.comName === name);
                 if (!item?.labelStyle) {
                   setFormItemProps({ data, com: { name, id } }, 'labelStyle', {
                     lineHeight: '14px',
@@ -829,7 +830,7 @@ export default {
             description: '表单项提示语的字体样式',
             value: {
               get({ id, name, data }: EditorResult<Data>) {
-                const item = data.items.find((item) => item.id === id);
+                const item = data.items.find((item) => item.id === id || item.comName === name);
                 if (!item?.descriptionStyle) {
                   setFormItemProps({ data, com: { name, id } }, 'descriptionStyle', {
                     whiteSpace: 'pre-wrap',

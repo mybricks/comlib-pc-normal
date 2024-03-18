@@ -8,7 +8,8 @@
     "filterOption": true,
     "optionFilterProp": "label",
     "showArrow": true,
-    "dropdownMatchSelectWidth": true
+    "dropdownMatchSelectWidth": true,
+    "size": "small"
   },
   "validateTrigger": [
     "onChange"
@@ -17,5 +18,6 @@
   "staticOptions": [],
   "dropdownSearchOption": false,
   "outputValueType": "value",
-  "isEditable": true
+  "isEditable": true,
+  "resetOptionsWhenEmptySearch": true
 }

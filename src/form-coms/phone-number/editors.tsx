@@ -1,5 +1,6 @@
 import { RuleKeys, defaultValidatorExample, defaultRules } from '../utils/validator';
-import { ValidateTriggerType } from '../types';
+import { SizeEnum, SizeOptions, ValidateTriggerType } from '../types';
+import { Data } from './runtime';
 
 const phoneNumberRules = [
   {
@@ -40,10 +41,33 @@ export default {
     options: ['width']
   },
   ':root': {
-    style: {
-      options: ['border'],
-      target: '.ant-input-affix-wrapper'
-    },
+    style: [
+      {
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
+      {
+        items: [
+          {
+            options: ['border'],
+            target: '.ant-input-affix-wrapper'
+          }
+        ]
+      }
+    ],
     items: ({ data }: EditorResult<{ type }>, ...catalog) => {
       catalog[0].title = '常规';
       catalog[0].items = [
@@ -238,10 +262,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }) {
-            const cutomRule = (data.rules || defaultRules).find(
+            const customRule = (data.rules || defaultRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: 'onValidate'

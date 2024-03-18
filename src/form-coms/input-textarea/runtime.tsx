@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input, InputProps } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -11,13 +11,7 @@ import { InputIds } from '../types';
 export interface Data {
   value: string | undefined;
   rules: any[];
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    placeholder: string;
-    showCount: boolean;
-    maxLength?: number;
-  };
+  config: InputProps;
   minRows?: number;
   maxRows?: number;
 
@@ -39,7 +33,7 @@ export default function ({
   const [value, setValue] = useState();
 
   const inputRef = useRef<TextAreaRef>(null);
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
 
   useFormItemInputs(
@@ -85,11 +79,11 @@ export default function ({
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
@@ -120,8 +114,8 @@ export default function ({
   useEffect(() => {
     // 设置校验状态
     inputs[inputIds.SET_VALIDATE_INFO]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

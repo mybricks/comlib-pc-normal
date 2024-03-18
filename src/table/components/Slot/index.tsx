@@ -11,10 +11,11 @@ interface Props {
   keepDataIndex: any;
   colIndex: number;
   rowKey: string;
+  isEdit: boolean;
 }
 
 export default React.memo((props: Props): JSX.Element | null => {
-  const { value, record, colIndex, slotId, keepDataIndex, colKey, slots } = props;
+  const { value, record, colIndex, slotId, keepDataIndex, colKey, slots, isEdit } = props;
   const { [DefaultRowKey]: rowKeyValue, ...rowRecord } = record || {};
 
   if (!slotId || !slots[slotId]?.render) {
@@ -29,6 +30,9 @@ export default React.memo((props: Props): JSX.Element | null => {
         },
         [InputIds.INDEX]: colIndex
       },
+      style: {
+        minHeight: isEdit ? '30px' : undefined
+      },
       key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${colKey}`
     });
   }
@@ -40,6 +44,9 @@ export default React.memo((props: Props): JSX.Element | null => {
       },
       [InputIds.SLOT_ROW_VALUE]: value,
       [InputIds.INDEX]: colIndex
+    },
+    style: {
+      minHeight: isEdit ? '30px' : undefined
     },
     key: `${InputIds.SLOT_ROW_RECORD}-${colIndex}-${colKey}`
   });

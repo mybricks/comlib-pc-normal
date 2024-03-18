@@ -7,7 +7,7 @@
   "isSteps": false,
   "steps": 3,
   "isColor": false,
-  "size": "default",
+  "size": "small",
   "circleSize": 120,
   "strokeWidth": 6,
   "trailColor": "f3f3f3",

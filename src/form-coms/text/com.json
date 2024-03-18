@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.3.10",
+  "version": "1.3.13",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -121,6 +121,17 @@
       },
       "rels": [
         "setColorDone"
+      ]
+    },
+    {
+      "id": "setAutoFocus",
+      "title": "设置聚焦状态",
+      "desc": "true:聚焦 false:不聚焦",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setAutoFocusDone"
       ]
     },
     {
@@ -269,6 +280,16 @@
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "setAutoFocusDone",
+      "title": "设置聚焦状态完成",
+      "schema": {
+        "type": "boolean"
+      },
+      "rels": [
+        "setAutoFocusDone"
+      ]
     },
     {
       "id": "setValidateInfoDone",

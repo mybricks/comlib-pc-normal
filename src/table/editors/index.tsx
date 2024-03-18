@@ -21,7 +21,6 @@ import ScrollToFirstRowEditor from './table/scrollToFirstRow';
 import SummaryColumnEditor from './table-summary';
 import rowSelectEditor from './rowSelect';
 import { emptyEditor, emptyStyleEditor } from './table/empty';
-
 import { getColumnsSchema } from '../utils';
 import {
   OutputIds as PaginatorOutputIds,

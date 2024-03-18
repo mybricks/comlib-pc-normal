@@ -62,6 +62,8 @@ export interface FormItems {
    * 表单项收起时隐藏，不影响提交数据
    */
   hidden?: boolean
+  /** @description 标题插槽ID v1.4.44 */
+  labelSlot?: string
 }
 
 export interface AdditionalItem {

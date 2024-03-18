@@ -1,6 +1,6 @@
 import { FormItemProps, FormListFieldData, FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
-import { ValidateInfo } from '../types'
+import { ValidateInfo, SizeEnum } from '../types'
 
 export type IconSrcType = false | 'custom' | 'inner';
 
@@ -14,9 +14,9 @@ export interface Action {
   visible?: boolean
   danger?: boolean
   size: SizeEnum
-  /** 动态显示表达式 */
+  /** @description 动态显示表达式 */
   displayExpression?: string
-  /** 图标配置 */
+  /** @description 图标配置 */
   iconConfig: {
     // 图标来源
     src: IconSrcType;
@@ -31,7 +31,7 @@ export interface Action {
     // 图标位置
     location: LocationEnum;
   }
-  /** 权限配置 */
+  /** @description 权限配置 */
   permission?: {
     id: string,
     type?: string;
@@ -87,35 +87,35 @@ export type LabelWidthType = 'px' | 'span' | 'flexFull'
 export interface Data {
   value: any[] | undefined;
   /**
-   * 列表数据
+   * @description 列表数据
    */
   fields: FormListFieldData[]
   /**
-   * 列表当前最大key
+   * @description 列表当前最大key
    */
   MaxKey: number
   /**
-   * 表单项数目
+   * @description 表单项数目
    */
   nameCount: number
   /**
-   * 校验规则
+   * @description 校验规则
    */
   rules: any[];
   /**
-   * 表单项列表
+   * @description 表单项列表
    */
   items: FormItems[];
   /**
-   * 非表单项列表
+   * @description 非表单项列表
    */
   additionalItems: AdditionalItem[];
   /**
-   * 列表初始长度
+   * @description 列表初始长度
    */
   initLength: number
   /**
-   * 用户操作
+   * @description 用户操作
    */
   userAction: {
     type: string;
@@ -125,62 +125,66 @@ export interface Data {
     startIndex: number;
   }
   /**
-   * 需要初始化的列表项索引
+   * @description 需要初始化的列表项索引
    */
   startIndex: number;
   /**
-   * 是否提交隐藏表单项
+   * @description 是否提交隐藏表单项
    */
   submitHiddenFields: boolean
   /**
-   * 是否禁用
+   * @description 是否禁用
    */
   disabled: boolean
   /**
-   * 是否作为表单项
+   * @description 是否作为表单项
    */
   isFormItem: boolean
   /**
-   * 单行列数
+   * @description 单行列数
    */
   formItemColumn: number
   /**
-   * 插槽样式
+   * @description 插槽样式
    */
   slotStyle: {}
   /**
-   * 操作项
+   * @description 操作项
    */
   actions: Actions
   /**
-   * 显示标题
+   * @description 显示标题
    */
   showLabel: boolean
   /**
-   * 标题宽度类型
+   * @description 标题宽度类型
    */
   labelWidthType: LabelWidthType
   /**
-   * 标题宽度
+   * @description 标题宽度
    */
   labelWidth: number
   /**
-   * 标题宽度占比
+   * @description 标题宽度占比
    */
   labelCol: number
   wrapperCol: number
   /**
-   * 标题是否展示冒号
+   * @description 标题是否展示冒号
    */
   colon: boolean | undefined
   /**
-   * 表单项公共配置
+   * @description 表单项公共配置
    */
   formItemConfig: FormItemProps
   /**
-   * 列表项外边距
+   * @description 列表项外边距
    */
   listItemMargin: number[]
+  /**
+   * @description 表单项尺寸
+   */
+  size: 'small' | 'middle' | 'large'
 }
 
 export type FormControlInputId = 'validate' | 'getValue' | 'setValue' | 'resetValue' | 'setInitialValue' | 'setDisabled' | 'setEnabled'
@@ -210,14 +214,7 @@ export type ChildrenStore = {
   };
 }
 
-/** 按钮尺寸 */
-export enum SizeEnum {
-  Large = 'large',
-  Middle = 'middle',
-  Small = 'small'
-}
-
-/** 按钮图标位置 */
+/** @description 按钮图标位置 */
 export enum LocationEnum {
   FRONT = 'front',
   BACK = 'back'

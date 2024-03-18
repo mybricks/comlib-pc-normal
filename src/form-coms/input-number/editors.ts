@@ -1,3 +1,4 @@
+import { SizeEnum, SizeOptions } from '../types';
 import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle } from '../utils/validator';
 import { Data } from './runtime';
 
@@ -11,9 +12,30 @@ export default {
   ':root': {
     style: [
       {
-        title: '默认样式',
-        options: ['border'],
-        target: '.ant-input-number'
+        title: '尺寸',
+        description: '控件大小, 默认是中(middle)',
+        type: 'Select',
+        options: SizeOptions,
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.config.size || 'middle';
+          },
+          set({ data }: EditorResult<Data>, val: SizeEnum) {
+            data.config = {
+              ...data.config,
+              size: val
+            };
+          }
+        }
+      },
+      {
+        items: [
+          {
+            title: '默认样式',
+            options: ['border'],
+            target: '.ant-input-number'
+          }
+        ]
       }
       // {
       //   title: '激活样式',
@@ -116,6 +138,19 @@ export default {
             set({ data }, value: string) {
               const num = parseInt(value, 10);
               data.config.step = isNaN(num) || num <= 0 ? undefined : num;
+            }
+          }
+        },
+        {
+          title: '千分位',
+          type: 'Switch',
+          description: '是否展示千分位分隔符',
+          value: {
+            get({ data }) {
+              return data.useGrouping;
+            },
+            set({ data }, value: boolean) {
+              data.useGrouping = value;
             }
           }
         },
@@ -226,6 +261,19 @@ export default {
           }
         },
         {
+          title: '快捷增减',
+          description: '是否显示增减按钮，默认展示',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return data.isControl;
+            },
+            set({ data }, value: boolean) {
+              data.isControl = value;
+            }
+          }
+        },
+        {
           title: '校验规则',
           description: '提供快捷校验配置',
           type: 'ArrayCheckbox',
@@ -328,10 +376,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || ValueRules).find(
+            const customRule = (data.rules || ValueRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: 'onValidate'

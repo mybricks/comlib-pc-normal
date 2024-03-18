@@ -3,3 +3,151 @@
   align-items: center;
   justify-content: center;
 }
+
+.singleCompact {
+  :global {
+    .ant-tree .ant-tree-node-content-wrapper {
+      min-height: 0;
+    }
+  }
+}
+
+/* 备用: 树紧凑模式的所有样式 */
+.compact {
+  @LineHeight: 1;
+  @MinHeight: 0px;
+  @Height: 16px;
+  @IndentWidth: 12px;
+
+  :global {
+    .ant-tree-checkbox {
+      font-size: @IndentWidth;
+      line-height: @LineHeight;
+    }
+
+    .ant-tree-checkbox-inner {
+      width: @IndentWidth;
+      height: @IndentWidth;
+    }
+
+    .ant-tree-checkbox-inner::after {
+      width: 5px;
+      height: 8px;
+    }
+
+    .ant-tree-checkbox-wrapper {
+      font-size: @IndentWidth;
+      line-height: @LineHeight;
+    }
+
+    /* START 组件暂未实现相关功能 */
+    // .ant-tree-checkbox-group {
+    //   font-size: @IndentWidth;
+    //   line-height: 1.66667;
+    // }
+
+    // .ant-tree-checkbox-group-item {
+    //   margin-right: 6px;
+    // }
+    /* END 组件暂未实现相关功能 */
+
+    .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner::after {
+      width: 6px;
+      height: 6px;
+    }
+
+    /* START 简单模式已支持 */
+    .ant-tree {
+      font-size: @IndentWidth;
+      line-height: 1.66667;
+    }
+    /* END 简单模式已支持 */
+
+    .ant-tree.ant-tree-block-node .ant-tree-list-holder-inner .ant-tree-treenode.dragging::after {
+      bottom: 2px;
+    }
+
+    /* START 简单模式已支持 */
+    .ant-tree .ant-tree-treenode {
+      padding: 0 0 2px 0;
+    }
+
+    .ant-tree .ant-tree-treenode .ant-tree-indent {
+      height: @IndentWidth;
+    }
+
+    .ant-tree-indent-unit {
+      width: @IndentWidth;
+    }
+
+    /* END 简单模式已支持 */
+
+    .ant-tree-draggable-icon {
+      width: @IndentWidth;
+      line-height: @LineHeight;
+    }
+
+    /* START 简单模式已支持 */
+    .ant-tree-switcher {
+      width: @IndentWidth;
+      line-height: @LineHeight;
+    }
+
+    /* END 简单模式已支持 */
+
+    .ant-tree-switcher-leaf-line::before {
+      bottom: -2px;
+    }
+
+    .ant-tree-switcher-leaf-line::after {
+      width: 6px;
+      height: 10px;
+    }
+
+    .ant-tree-checkbox {
+      margin: 3px 8px 0 0;
+    }
+
+    /* START 简单模式已支持 */
+    .ant-tree .ant-tree-node-content-wrapper {
+      min-height: @MinHeight;
+      line-height: @LineHeight;
+    }
+
+    /* END 简单模式已支持 */
+
+    /* START 组件暂未实现相关功能 */
+    // .ant-tree .ant-tree-node-content-wrapper .ant-tree-iconEle {
+    //   width: @IndentWidth;
+    //   height: @Height;
+    //   line-height: @LineHeight;
+    // }
+    /* END 组件暂未实现相关功能 */
+
+    /* START 简单模式已支持 */
+    .ant-tree-node-content-wrapper {
+      line-height: @LineHeight;
+    }
+
+    /* END 简单模式已支持 */
+
+    .ant-tree-show-line .ant-tree-indent-unit::before {
+      right: 10px;
+      bottom: -2px;
+    }
+
+    /* START 组件暂未实现相关功能 */
+    // .ant-tree .ant-tree-treenode-leaf-last .ant-tree-switcher-leaf-line::before {
+    //   height: 10px !important;
+    // }
+
+    // .ant-tree-rtl.ant-tree-show-line .ant-tree-indent-unit::before {
+    //   left: -11px;
+    // }
+
+    // .ant-tree-rtl .ant-tree-checkbox {
+    //   margin: 3px 0 0 8px;
+    // }
+    /* END 组件暂未实现相关功能 */
+  }
+}

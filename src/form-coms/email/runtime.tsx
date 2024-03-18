@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Form, Input, InputProps } from 'antd';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useFormItemInputs from '../form-container/models/FormItem';
 import { validateFormItem, RuleKeys } from '../utils/validator';
@@ -9,21 +9,13 @@ export interface Data {
   value: string | undefined;
   rules: any[];
   validateTrigger: string[];
-  config: {
-    allowClear: boolean;
-    disabled: boolean;
-    addonBefore: string;
-    addonAfter: string;
-    showCount: boolean;
-    maxLength?: number;
-    placeholder: string;
-  };
+  config: InputProps;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot } = props;
   const { edit } = env;
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const [value, setValue] = useState();
   const valueRef = useRef<any>();
 
@@ -67,9 +59,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              const customRule = data.rules.find((i) => i.key === RuleKeys.CUSTOM_EVENT);
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs['onValidate'](valueRef.current);
               } else {
                 outputRels(r);
@@ -114,8 +106,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   useEffect(() => {
     inputs['setValidateInfo']((info: object, outputRels) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         outputRels['setValidateInfoDone'](info);
       }
     });

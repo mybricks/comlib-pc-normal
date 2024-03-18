@@ -7,8 +7,9 @@ import { createStyleForGrid, createStyleForCol } from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
 
 export default {
+  ':slot': {},
   ':root': {
-    items: ({}: EditorResult<Data>, cate1, cate2) => {
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [...AddRowEditor];
       return {

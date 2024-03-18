@@ -1,4 +1,5 @@
 import { Data } from '../../types';
+import { setCol } from '../../schema';
 import { getColumnItem } from '../../utils';
 
 const TitleTipEditor = {
@@ -14,7 +15,7 @@ const TitleTipEditor = {
         },
         set({ data, focusArea }: EditorResult<Data>, value: boolean) {
           if (!focusArea) return;
-          getColumnItem(data, focusArea).hasTip = value;
+          setCol({ data, focusArea }, 'hasTip', value);
         }
       }
     },
@@ -35,7 +36,7 @@ const TitleTipEditor = {
         },
         set({ data, focusArea }: EditorResult<Data>, value: string) {
           if (!focusArea) return;
-          getColumnItem(data, focusArea).tip = value;
+          setCol({ data, focusArea }, 'tip', value);
         }
       }
     }

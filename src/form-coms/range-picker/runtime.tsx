@@ -8,6 +8,7 @@ import { validateTrigger } from '../form-container/models/validate';
 import { getDisabledDateTime } from './getDisabledDateTime';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import ConfigProvider from '../../components/ConfigProvider';
+import { RangePickerProps } from 'antd/lib/date-picker';
 
 const { RangePicker } = DatePicker;
 
@@ -23,15 +24,19 @@ export interface Data {
   timeTemplate?: string[];
   useRanges: boolean;
   ranges: any[];
-  config: {
-    disabled: boolean;
-    placeholder: [string, string];
-    picker: 'date' | 'week' | 'month' | 'quarter' | 'year';
-  };
+  config: RangePickerProps;
   dateType: 'array' | 'string';
   splitChart: string;
   emptyRules: any[];
   isEditable: boolean;
+  formatMap: {
+    日期: string;
+    '日期+时间': string;
+    周: string;
+    月份: string;
+    季度: string;
+    年份: string;
+  };
 }
 
 export const DateType = {
@@ -67,7 +72,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { data, inputs, outputs, env, parentSlot, id, name } = props;
   const [value, setValue] = useState<any>();
   const [dates, setDates] = useState<[Moment | null, Moment | null] | null>(null);
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
   const rangeOptions = formatRangeOptions(data.ranges || [], env);
   const valueRef = useRef<any>();
   const [type, setType] = useState<string>('date');
@@ -206,11 +211,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             let transValue;
             if (!Array.isArray(valueRef.current)) {
               transValue = null;
@@ -300,8 +305,8 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });
@@ -377,7 +382,12 @@ export default function Runtime(props: RuntimeParams<Data>) {
 
   const transValue = Array.isArray(value)
     ? value.map((item, index) => {
-        return transCalculation(item, decodeURIComponent(formatMap[typeMap[type]]), props, index);
+        return transCalculation(
+          item,
+          decodeURIComponent(data.formatMap[typeMap[type]]),
+          props,
+          index
+        );
       })
     : [];
 
@@ -400,6 +410,11 @@ export default function Runtime(props: RuntimeParams<Data>) {
             allowEmpty={emptyArr}
             getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
             open={env.design ? true : void 0}
+            format={
+              data.config.picker && data.formatMap
+                ? decodeURIComponent(data.formatMap[typeMap[type]])
+                : void 0
+            }
             dropdownClassName={`${id} ${css.rangePicker}`}
             {...disabledDateTime}
           />
@@ -419,13 +434,4 @@ const typeMap = {
   month: '月份',
   quarter: '季度',
   year: '年份'
-};
-
-const formatMap = {
-  日期: encodeURIComponent('YYYY-MM-DD'),
-  '日期+时间': encodeURIComponent('YYYY-MM-DD HH:mm:ss'),
-  周: encodeURIComponent('YYYY-wo'),
-  月份: encodeURIComponent('YYYY-MM'),
-  季度: encodeURIComponent('YYYY-\\QQ'),
-  年份: encodeURIComponent('YYYY')
 };

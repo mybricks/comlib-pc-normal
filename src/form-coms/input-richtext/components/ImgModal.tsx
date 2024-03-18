@@ -76,6 +76,8 @@ export default function ImgModal({
   const inputRef = useRef<HTMLInputElement>(null);
   const { env } = useContext(EnvContext);
 
+  const [textareaValue, setTextareaValue] = useState('');
+
   return (
     <div ref={ref}>
       <input
@@ -138,6 +140,10 @@ export default function ImgModal({
         <div className={css['editor-rich-text__modal']}>
           {uploadModel.url ? null : (
             <textarea
+              value={textareaValue}
+              onChange={() => {
+                setTextareaValue('');
+              }}
               onPaste={(e) => {
                 paste(e, env, { customUpload, fileType: uploadModel.type, upload }).then(
                   (urlList) => {

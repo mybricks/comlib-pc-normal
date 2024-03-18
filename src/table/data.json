@@ -14,7 +14,7 @@
     "scrollToFirstRowOnChange": true
   },
   "bordered": false,
-  "size": "middle",
+  "size": "small",
   "useRowSelection": false,
   "enableRowClickSelection": false,
   "rowSelectionPostion": [
@@ -63,5 +63,5 @@
   "enableOnRow": false,
   "onRowScript": "",
   "lazyLoad": false,
-  "filterIconDefault": "filter"
+  "filterIconDefault": "FilterFilled"
 }

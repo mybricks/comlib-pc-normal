@@ -120,7 +120,7 @@ const flatten = (arr: any[]) => {
  */
 const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
   const result: any[] = [];
-  if (!treeData || treeData.length === 0) return;
+  if (!treeData || treeData.length === 0) return [];
   treeData.forEach((item) => {
     if (!item.children || item.children.length === 0) result.push(item[keyFieldName]);
     else result.push(getLeafNodes(item.children || [], keyFieldName));

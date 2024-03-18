@@ -11,7 +11,7 @@ import { unitConversion } from '../utils';
 
 const setSlotLayout = (slot, val) => {
   if (!slot) return;
-  if (val.flexDirection === 'smart') {
+  if (val.position === 'smart') {
     slot.setLayout('smart');
   } else if (val.position === 'absolute') {
     slot.setLayout(val.position);
@@ -25,45 +25,40 @@ const setSlotLayout = (slot, val) => {
 };
 
 export default {
-  ':slot': {
-    '@init'({ style }: EditorResult<Data>) {
-      style.height = 'auto';
-    },
-    '@resize': {
-      options: ['width', 'height']
-    },
-    ':root': {
-      items({ slot }: EditorResult<Data>, cate1, cate2, cate3) {
-        cate1.title = '常规';
-        cate1.items = [
-          {
-            title: '布局',
-            type: 'layout',
-            options: [],
-            value: {
-              get({ data, slots }: EditorResult<Data>) {
-                const { slotStyle = {} } = data;
-                const slotInstance = slots.get('content');
-                setSlotLayout(slotInstance, slotStyle);
-                return slotStyle;
-              },
-              set({ data, slots }: EditorResult<Data>, val: any) {
-                if (!data.slotStyle) {
-                  data.slotStyle = {};
-                }
-                data.slotStyle = {
-                  ...data.slotStyle,
-                  ...val
-                };
-                const slotInstance = slots.get('content');
-                setSlotLayout(slotInstance, val);
+  ':slot': {},
+  '@init'({ style }: EditorResult<Data>) {
+    style.height = 'auto';
+  },
+  '@resize': {
+    options: ['width', 'height']
+  },
+  ':root': {
+    items({ slot }: EditorResult<Data>, cate1, cate2, cate3) {
+      cate1.title = '常规';
+      cate1.items = [
+        {
+          title: '布局',
+          type: 'layout',
+          options: [],
+          value: {
+            get({ data, slots }: EditorResult<Data>) {
+              const { slotStyle = {} } = data;
+              // const slotInstance = slots.get('content');
+              // setSlotLayout(slotInstance, slotStyle);
+              return slotStyle;
+            },
+            set({ data, slots }: EditorResult<Data>, val: any) {
+              if (!data.slotStyle) {
+                data.slotStyle = {};
               }
             }
-          },
-        ];
+          }
+        },
+        ...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor
+      ];
 
-        cate2.title = '交互';
-        cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
+      // cate2.title = '交互';
+      // cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
 
         return {
           title: '自定义容器'

@@ -1,7 +1,7 @@
 {
   "title": "标签页",
   "namespace": "mybricks.normal-pc.tabs",
-  "version": "1.0.17",
+  "version": "1.0.24",
   "description": "标签页组件",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -57,6 +57,16 @@
         "type": "any"
       },
       "desc": "获取当前显示的标签页信息"
+    },
+    {
+      "id": "getTabs",
+      "title": "获取标签页列表",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "getTabsDone"
+      ]
     }
   ],
   "outputs": [
@@ -144,12 +154,101 @@
       "schema": {
         "type": "any"
       }
+    }, 
+    {
+      "id": "addTab",
+      "title": "标签页新增",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "标签页id",
+              "type": "string"
+            },
+            "name": {
+              "title": "标签页标题",
+              "type": "string"
+            },
+            "key": {
+              "title": "标签页key",
+              "type": "string"
+            },
+            "index": {
+              "title": "下标",
+              "type": "number"
+            },
+            "closable": {
+              "title": "可关闭",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "removeTab",
+      "title": "标签页删除",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "标签页id",
+              "type": "string"
+            },
+            "name": {
+              "title": "标签页标题",
+              "type": "string"
+            },
+            "key": {
+              "title": "标签页key",
+              "type": "string"
+            },
+            "index": {
+              "title": "下标",
+              "type": "number"
+            },
+            "closable": {
+              "title": "可关闭",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "getTabsDone",
+      "title": "标签页数据",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "标签页id",
+              "type": "string"
+            },
+            "name": {
+              "title": "标签页标题",
+              "type": "string"
+            },
+            "key": {
+              "title": "标签页key",
+              "type": "string"
+            }
+          }
+        }
+      }
     }
   ],
   "slots": [
     {
       "id": "tab0",
-      "title": "标签页1"
+      "title": "标签页1",
+      "layout": "smart"
     }
   ]
 }

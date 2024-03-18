@@ -9,6 +9,7 @@ import { getFormItem } from '../utils';
 import { uuid } from '../../../utils';
 import iconEditor from './iconEditor';
 import { createrCatelogEditor } from '../../utils/index';
+import { SizeOptions, SizeEnum } from '../../types';
 
 import { FieldBizType } from '../../../domain/domain-crud/constants';
 
@@ -44,6 +45,7 @@ export default {
   // '@init' ({ data, inputs, outputs, slots }) {
   //   console.log(data.domainModel, slots)
   // },
+  ':slot': {},
   '@inputConnected'({ data, outputs }, fromPin, toPin) {
     if (toPin.id === inputIds.SUBMIT_AND_MERGE) {
       if (fromPin.schema.type === 'object') {
@@ -400,6 +402,23 @@ export default {
               }
             },
             {
+              title: '尺寸',
+              description: '全局设置表单项尺寸, 默认是中(middle)',
+              type: 'Select',
+              options: SizeOptions,
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.config.size || 'middle';
+                },
+                set({ data }: EditorResult<Data>, val: SizeEnum) {
+                  data.config = {
+                    ...data.config,
+                    size: val
+                  };
+                }
+              }
+            },
+            {
               title: '每行列数',
               type: 'Slider',
               description:
@@ -597,13 +616,39 @@ export default {
         }
       },
       {
+        title: '自定义标题',
+        type: 'Switch',
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'labelSlot');
+          },
+          set({ id, name, data, slot }: EditorResult<Data>, value) {
+            const { item } = getFormItem(data, { id, name });
+            if (value && item) {
+              const slotId = uuid();
+              item['labelSlot'] = slotId;
+              slot.add({ id: slotId, title: `${item?.name}标题插槽` });
+            } else {
+              const labelSlot = getFormItemProp({ data, id, name }, 'labelSlot');
+              if (slot.get(labelSlot)) {
+                slot.remove(labelSlot);
+                setFormItemProps({ data, id, name }, 'labelSlot', '');
+              }
+            }
+          }
+        }
+      },
+      {
         title: '标题',
         type: 'text',
         options: {
           locale: true
         },
         ifVisible({ id, data, name }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+          return (
+            !getFormItemProp({ data, id, name }, 'hiddenLabel') &&
+            !getFormItemProp({ data, id, name }, 'labelSlot')
+          );
         },
         value: {
           get({ id, data, name }: EditorResult<Data>) {

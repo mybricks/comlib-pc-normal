@@ -4,7 +4,7 @@
   "bordered": true,
   "hoverable": false,
   "cursor": false,
-  "size": "default",
+  "size": "small",
   "style": {},
   "bodyStyle": {},
   "outputContent": 0,
@@ -25,5 +25,15 @@
   "padding": "24px",
   "isHeight": false,
   "height": "80px",
-  "showTitle": true
+  "showTitle": true,
+  "slotStyle": {
+    "display": "block",
+    "position": "smart",
+    "flexDirection": "column",
+    "alignItems": "flex-start",
+    "justifyContent": "flex-start",
+    "flexWrap": "nowrap",
+    "rowGap": 0,
+    "columnGap": 0
+  }
 }

@@ -53,7 +53,7 @@ export default function ({
   const tinymceFSId = useMemo(() => '_pceditor_tinymceFS_' + uuid(), []);
   const valueRef = useRef('');
   const uploadCb = useRef<any>();
-  const validateRelOuputRef = useRef<any>(null);
+  const validateRelOutputRef = useRef<any>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [tinymceFSVisble, setTinymceFSVisble] = useState(false);
@@ -65,7 +65,7 @@ export default function ({
   });
   const [value, setValue] = useState<any>();
 
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const { upload } = useUpload(inputs, outputs);
 
@@ -109,11 +109,11 @@ export default function ({
             rules: data.rules
           })
             .then((r) => {
-              const cutomRule = (data.rules || defaultRules).find(
+              const customRule = (data.rules || defaultRules).find(
                 (i) => i.key === RuleKeys.CUSTOM_EVENT
               );
-              if (cutomRule?.status) {
-                validateRelOuputRef.current = outputRels;
+              if (customRule?.status) {
+                validateRelOutputRef.current = outputRels;
                 outputs[outputIds.ON_VALIDATE] && outputs[outputIds.ON_VALIDATE](valueRef.current);
               } else {
                 outputRels(r);
@@ -211,7 +211,9 @@ export default function ({
                     logger.error(log);
                     return;
                   }
-                  setModalVisible(true);
+                  if (env.runtime?.debug) {
+                    message.info('请到预览或发布后页面调试效果');
+                  } else setModalVisible(true);
                   setUploadModel({
                     title: '上传图片',
                     type: 'image',
@@ -225,7 +227,9 @@ export default function ({
                     logger.error(log);
                     return;
                   }
-                  setModalVisible(true);
+                  if (env.runtime?.debug) {
+                    message.info('请到预览或发布后页面调试效果');
+                  } else setModalVisible(true);
                   setUploadModel({
                     title: '上传视频',
                     type: 'video',
@@ -357,6 +361,21 @@ export default function ({
     }
   }, [readonly]);
 
+  useEffect(() => {
+    const iframeEl = textareaRef.current?.nextElementSibling?.querySelector(
+      'iframe'
+    ) as HTMLIFrameElement;
+    if (!iframeEl) return;
+    const body = iframeEl.contentDocument?.querySelector('body');
+    if (!body) return;
+
+    if (data.disabled) {
+      body.contentEditable = 'false';
+    } else {
+      body.contentEditable = 'true';
+    }
+  }, [data.disabled]);
+
   const createSvgString = useCallback((Icons: Array<iconType> = []) => {
     const Svg = {};
     if (Icons?.length && Icons?.length > 0) {
@@ -379,7 +398,7 @@ export default function ({
   const RenderTextArea: JSX.Element = useMemo(() => {
     return (
       <Spin spinning={loading} tip="编辑器加载中...">
-        <textarea ref={textareaRef} id={tinymceId} hidden={!loading} readOnly />
+        <textarea ref={textareaRef} id={tinymceId} hidden={!loading} />
       </Spin>
     );
   }, [loading]);
@@ -451,11 +470,11 @@ export default function ({
         rules: data.rules
       })
         .then((r) => {
-          const cutomRule = (data.rules || defaultRules).find(
+          const customRule = (data.rules || defaultRules).find(
             (i) => i.key === RuleKeys.CUSTOM_EVENT
           );
-          if (cutomRule?.status) {
-            validateRelOuputRef.current = outputRels['returnValidate'];
+          if (customRule?.status) {
+            validateRelOutputRef.current = outputRels['returnValidate'];
             outputs[OutputIds.OnValidate](valueRef.current);
           } else {
             outputRels['returnValidate'](r);
@@ -503,8 +522,8 @@ export default function ({
 
     // 设置校验状态
     inputs[InputIds.SetValidateInfo]((info: object, relOutputs) => {
-      if (validateRelOuputRef.current) {
-        validateRelOuputRef.current(info);
+      if (validateRelOutputRef.current) {
+        validateRelOutputRef.current(info);
         relOutputs['setValidateInfoDone'](info);
       }
     });

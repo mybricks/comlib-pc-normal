@@ -35,9 +35,13 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
     inputs?.link &&
       inputs.link((value: string, relOutputs) => {
         data.src = value;
-        relOutputs['setLinkComplete']()
+        relOutputs['setLinkComplete']();
       });
     inputs?.screenshot && inputs.screenshot(screenshot);
+    inputs.setPoster!((value: string, relOutputs) => {
+      data.poster = value;
+      relOutputs['setPosterComplete']();
+    });
   }, []);
 
   const screenshot = (filename?: string, relOutputs?: any) => {
@@ -53,7 +57,7 @@ const VideoFactory: React.FC<RuntimeParams<Data>> = (props) => {
     downLink.href = dataUrl;
     downLink.download = filename || 'screenshot';
     downLink.click();
-    relOutputs['screenshotComplete']()
+    relOutputs['screenshotComplete']();
     return dataUrl;
   };
 

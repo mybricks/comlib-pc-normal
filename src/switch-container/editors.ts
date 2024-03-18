@@ -38,12 +38,18 @@ export default {
           },
           items: [
             {
+              title: '状态名称',
+              type: 'text',
+              description: '状态的名称，语义化区分不同状态',
+              value: 'title'
+            },
+            {
               title: '状态值',
               type: 'valueSelect',
               options: ['text', 'number', 'boolean'],
               description: '状态的唯一标识，用于控制显示隐藏',
               value: 'value'
-            }
+            },
           ],
         },
         value: {

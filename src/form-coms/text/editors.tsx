@@ -8,7 +8,7 @@ import {
 import { createrCatelogEditor } from '../utils';
 import { outputIds } from '../form-container/constants';
 import { Data } from './runtime';
-import { ValidateTriggerType } from '../types';
+import { ValidateTriggerType, SizeOptions, SizeEnum } from '../types';
 
 export default {
   '@resize': {
@@ -23,25 +23,12 @@ export default {
         title: '尺寸',
         description: '控件大小, 默认是中(middle)',
         type: 'Select',
-        options: [
-          {
-            label: '宽',
-            value: 'large'
-          },
-          {
-            label: '中',
-            value: 'middle'
-          },
-          {
-            label: '窄',
-            value: 'small'
-          }
-        ],
+        options: SizeOptions,
         value: {
           get({ data }) {
             return data.config.size || 'middle';
           },
-          set({ data }, val: 'large' | 'middle' | 'small') {
+          set({ data }, val: SizeEnum) {
             data.config.size = val;
           }
         }
@@ -432,10 +419,10 @@ export default {
           title: '校验触发事件',
           type: '_event',
           ifVisible({ data }: EditorResult<Data>) {
-            const cutomRule = (data.rules || LengthRules).find(
+            const customRule = (data.rules || LengthRules).find(
               (i) => i.key === RuleKeys.CUSTOM_EVENT
             );
-            return !!cutomRule?.status;
+            return !!customRule?.status;
           },
           options: {
             outputId: outputIds.ON_VALIDATE

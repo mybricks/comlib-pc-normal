@@ -9,6 +9,7 @@
     "placeholder": "请输入11位手机号",
     "disabled": false,
     "addonBefore": "+86",
-    "addonAfter": ""
+    "addonAfter": "",
+    "size": "small"
   }
 }

@@ -1,7 +1,7 @@
 {
   "title": "自定义容器",
   "namespace": "mybricks.normal-pc.custom-container",
-  "version": "1.0.20",
+  "version": "1.0.27",
   "description": "自定义容器",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -13,7 +13,8 @@
   "slots": [
     {
       "id": "content",
-      "title": "内容"
+      "title": "内容",
+      "layout": "smart"
     }
   ],
   "inputs": [
@@ -28,7 +29,9 @@
           }
         }
       },
-      "rels": ["setStyleComplete"]
+      "rels": [
+        "setStyleComplete"
+      ]
     },
     {
       "id": "scrollTo",
@@ -36,7 +39,9 @@
       "schema": {
         "type": "number"
       },
-      "rels": ["scrollComplete"],
+      "rels": [
+        "scrollComplete"
+      ],
       "desc": "使得自定义容器内部滚动到指定位置,传递非数字滚动到底部"
     }
   ],
