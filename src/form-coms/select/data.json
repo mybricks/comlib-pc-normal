@@ -9,7 +9,7 @@
     "optionFilterProp": "label",
     "showArrow": true,
     "dropdownMatchSelectWidth": true,
-    "size": "small"
+    "size": "middle"
   },
   "validateTrigger": [
     "onChange"

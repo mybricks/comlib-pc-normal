@@ -55,7 +55,7 @@
     "colon": true,
     "layout": "horizontal",
     "disabled": false,
-    "size": "small"
+    "size": "middle"
   },
   "domainModel": {
     "entity": {},
