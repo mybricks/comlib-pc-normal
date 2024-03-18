@@ -616,13 +616,39 @@ export default {
         }
       },
       {
+        title: '自定义标题',
+        type: 'Switch',
+        value: {
+          get({ id, name, data }: EditorResult<Data>) {
+            return getFormItemProp({ data, id, name }, 'labelSlot');
+          },
+          set({ id, name, data, slot }: EditorResult<Data>, value) {
+            const { item } = getFormItem(data, { id, name });
+            if (value && item) {
+              const slotId = uuid();
+              item['labelSlot'] = slotId;
+              slot.add({ id: slotId, title: `${item?.name}标题插槽` });
+            } else {
+              const labelSlot = getFormItemProp({ data, id, name }, 'labelSlot');
+              if (slot.get(labelSlot)) {
+                slot.remove(labelSlot);
+                setFormItemProps({ data, id, name }, 'labelSlot', '');
+              }
+            }
+          }
+        }
+      },
+      {
         title: '标题',
         type: 'text',
         options: {
           locale: true
         },
         ifVisible({ id, data, name }: EditorResult<Data>) {
-          return !getFormItemProp({ data, id, name }, 'hiddenLabel');
+          return (
+            !getFormItemProp({ data, id, name }, 'hiddenLabel') &&
+            !getFormItemProp({ data, id, name }, 'labelSlot')
+          );
         },
         value: {
           get({ id, data, name }: EditorResult<Data>) {
