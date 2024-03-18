@@ -7,7 +7,7 @@
   "useIcon": false,
   "isCustom": false,
   "icon": "HomeOutlined",
-  "size": "small",
+  "size": "middle",
   "type": "primary",
   "shape": "default",
   "src": "",
