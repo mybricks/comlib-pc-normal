@@ -51,6 +51,12 @@ export default {
               if (!data.slotStyle) {
                 data.slotStyle = {};
               }
+              data.slotStyle = {
+                ...data.slotStyle,
+                ...val
+              };
+              const slotInstance = slots.get('content');
+              setSlotLayout(slotInstance, val);
             }
           }
         },
@@ -60,32 +66,31 @@ export default {
       // cate2.title = '交互';
       // cate2.items = [...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor];
 
-        return {
-          title: '自定义容器'
-        };
-      },
-      style: [
-        MaxHeightEditor,
-        // OverflowEditor,
-        ...FixedEditor,
-        {
-          items: [
-            {
-              title: '默认',
-              catelog: "默认",
-              options: ['padding', 'border', 'background', 'overflow', 'BoxShadow'],
-              target: ({ id }: EditorResult<Data>) => `> .root`
-            },
-            {
-              title: 'Hover',
-              catelog: "Hover",
-              options: ['padding', 'border', 'background', 'BoxShadow'],
-              target: ({ id }: EditorResult<Data>) => `> .root:hover`,
-              domTarget: '.root'
-            }
-          ]
-        }
-      ]
-    }
+      return {
+        title: '自定义容器'
+      };
+    },
+    style: [
+      MaxHeightEditor,
+      // OverflowEditor,
+      ...FixedEditor,
+      {
+        items: [
+          {
+            title: '默认',
+            catelog: "默认",
+            options: ['padding', 'border', 'background', 'overflow', 'BoxShadow'],
+            target: ({ id }: EditorResult<Data>) => `> .root`
+          },
+          {
+            title: 'Hover',
+            catelog: "Hover",
+            options: ['padding', 'border', 'background', 'BoxShadow'],
+            target: ({ id }: EditorResult<Data>) => `> .root:hover`,
+            domTarget: '.root'
+          }
+        ]
+      }
+    ]
   }
 };
