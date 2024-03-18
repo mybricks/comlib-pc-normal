@@ -13,7 +13,7 @@
     "treeNodeFilterProp": "label",
     "maxTagCount": "responsive",
     "dropdownMatchSelectWidth": true,
-    "size": "small"
+    "size": "middle"
   },
   "useLoadData": false,
   "labelFieldName": "",

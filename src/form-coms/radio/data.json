@@ -20,7 +20,7 @@
       }
     ],
     "disabled": false,
-    "size": "small"
+    "size": "middle"
   },
   "layout": "horizontal",
   "enableButtonStyle": false,
