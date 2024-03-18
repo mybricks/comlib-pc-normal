@@ -7,7 +7,7 @@
     "disabled": false,
     "showCount": false,
     "maxLength": -1,
-    "size": "small"
+    "size": "middle"
   },
   "minRows": 3,
   "maxRows": 6,

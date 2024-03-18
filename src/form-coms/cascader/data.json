@@ -11,7 +11,7 @@
     "maxTagCount": "responsive",
     "changeOnSelect": false,
     "showSearch": false,
-    "size": "small"
+    "size": "middle"
   },
   "isEditable": true
 }
