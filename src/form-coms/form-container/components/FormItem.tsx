@@ -51,11 +51,13 @@ const FormItem = (props) => {
       label={
         item?.hiddenLabel || (isMobile && item?.label?.trim()?.length === 0) ? (
           void 0
+        ) : item.labelSlot ? (
+          slots[item.labelSlot]?.render({ scope: com.scope })
         ) : (
           <label style={{ ...dynamicStyle.labelStyle, whiteSpace }}>{env.i18n(item?.label)}</label>
         )
-        // env.i18n(item?.label)
       }
+      className={item.labelSlot ? css.customLabel : void 0}
       labelCol={labelCol}
       labelAlign={labelAlign}
       name={item?.name}
