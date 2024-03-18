@@ -104,6 +104,8 @@ export function toJSONPreview(toJSON: Record<string, unknown>) {
  * 可以直接从控制台复制 checklist 对象来作为参数
  */
 export function eventCheck(expected: Window['checklist']) {
+  cy.wait(300)
+
   const _expected = convertFunctionsToStrings(cloneDeep(expected));
 
   cy.window().then((win) => {
