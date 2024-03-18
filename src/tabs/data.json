@@ -26,8 +26,9 @@
   },
   "defaultActiveKey": "tab0",
   "type": "line",
-  "size": "small",
+  "size": "middle",
   "centered": false,
   "tabPosition": "top",
-  "prohibitClick": false
+  "prohibitClick": false,
+  "hideAdd": true
 }

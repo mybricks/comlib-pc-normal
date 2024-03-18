@@ -5,6 +5,6 @@
   "customFormat": "HH:mm:ss",
   "isEditable": true,
   "config": {
-    "size": "small"
+    "size": "middle"
   }
 }

@@ -39,16 +39,13 @@ export default {
     items: [
       {
         title: '静态数据',
-        type: 'Array',
+        type: 'Tree',
         options: {
-          getTitle: (item, index) => {
-            if (!item.title) {
-              item.title = `菜单${index + 1}`;
-            }
+          getTitle: (item) => {
             if (!item.key) {
               item.key = uuid();
             }
-            return item.title;
+            return item.title || `菜单${item.key}`;
           },
           onAdd: () => {
             const key = uuid();
@@ -56,8 +53,13 @@ export default {
               key,
               _key: key,
               menuType: MenuTypeEnum.Menu,
-              defaultActive: false
+              defaultActive: false,
+              title: `菜单${key}`
             };
+          },
+          addItemGoal: {
+            key: 'menuType',
+            value: [MenuTypeEnum.SubMenu, MenuTypeEnum.Group]
           },
           items: [
             {
@@ -80,6 +82,7 @@ export default {
             {
               title: '默认激活',
               type: 'Switch',
+              frontIndex: 2,
               ifVisible(item) {
                 return item.menuType === MenuTypeEnum.Menu;
               },
@@ -88,9 +91,21 @@ export default {
             {
               title: '类型',
               type: 'Select',
+              frontIndex: 1,
               options: [
                 { label: '子菜单', value: MenuTypeEnum.Menu },
                 { label: '父菜单', value: MenuTypeEnum.SubMenu }
+              ],
+              value: 'menuType'
+            },
+            {
+              title: '类型',
+              type: 'Select',
+              afterIndex: 2,
+              options: [
+                { label: '子菜单', value: MenuTypeEnum.Menu },
+                { label: '父菜单', value: MenuTypeEnum.SubMenu },
+                { label: '分组菜单', value: MenuTypeEnum.Group }
               ],
               value: 'menuType'
             }
@@ -105,7 +120,6 @@ export default {
             if (val.length < props.data.dataSource.length) {
               removeOutput(props.data.dataSource, val, props.output);
             }
-
             //增加菜单项操作
             if (val.length > props.data.dataSource.length) {
               addOutput(props.data.dataSource, val, props.output);
@@ -316,7 +330,7 @@ export default {
           }
         },
         ...subItemArr(props),
-        ...groupItemArr(props),
+        //...groupItemArr(props),
         {
           items: [
             {

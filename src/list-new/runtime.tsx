@@ -328,6 +328,8 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
           data={data}
           lockAxis="y"
           distance={2}
+          helperContainer={env?.canvasElement || document.body}
+          helperClass={css['sort-helper']}
           renderItem={({ key, item, index }) => (
             <SortableItem key={key} index={index}>
               {slots['item'].render({

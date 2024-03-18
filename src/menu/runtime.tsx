@@ -10,6 +10,7 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
   const { dataSource, mode } = data;
   const [selectedKey, setSelectedKey] = useState<string[]>([]);
   const [isSet, setIsSet] = useState<boolean>(false);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   //激活项处理
   useEffect(() => {
@@ -133,23 +134,59 @@ export default function ({ env, data, outputs, inputs }: RuntimeParams<Data>) {
     });
   };
 
+  useEffect(() => {
+    if (mode === 'inline') {
+      const filterKeys = [];
+      const filterFun = (data) => {
+        data.forEach((item) => {
+          if (item.menuType === 'subMenu') {
+            filterKeys.push(item.key);
+            if (item.children.length !== 0) {
+              filterFun(item.children);
+            }
+          }
+        });
+      };
+
+      filterFun(dataSource);
+      setOpenKeys(filterKeys);
+    }
+  }, [dataSource, mode]);
+
   if (!dataSource.length && env.edit) {
     return <div className={css.suggestion}>无静态数据</div>;
   }
   if (env.edit) {
-    return (
-      <div>
-        <Menu
-          onClick={onClick}
-          mode={mode}
-          selectedKeys={selectedKey}
-          size="small"
-          className={css.overflow}
-        >
-          {renderMenuItems(dataSource)}
-        </Menu>
-      </div>
-    );
+    if (data.mode === 'inline') {
+      return (
+        <div>
+          <Menu
+            onClick={onClick}
+            mode={mode}
+            selectedKeys={selectedKey}
+            size="small"
+            defaultOpenKeys={openKeys}
+            openKeys={openKeys}
+          >
+            {renderMenuItems(dataSource)}
+          </Menu>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Menu
+            onClick={onClick}
+            mode={mode}
+            selectedKeys={selectedKey}
+            size="small"
+            className={css.overflow}
+          >
+            {renderMenuItems(dataSource)}
+          </Menu>
+        </div>
+      );
+    }
   }
   return (
     <div>

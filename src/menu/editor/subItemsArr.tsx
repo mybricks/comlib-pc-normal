@@ -12,7 +12,7 @@ import {
 export const subItemArr = (props: EditorResult<Data>) => [
   {
     title: '子项配置',
-    type: 'Array',
+    type: 'Tree',
     description: '这里可以配置子菜单和分组菜单',
     ifVisible(props: EditorResult<Data>) {
       return getMenuItem(props, 'menuType') === MenuTypeEnum.SubMenu;
@@ -43,8 +43,13 @@ export const subItemArr = (props: EditorResult<Data>) => [
           key: key,
           _key: key,
           menuType: MenuTypeEnum.Menu,
-          defaultActive: false
+          defaultActive: false,
+          title: `菜单${key}`
         };
+      },
+      addItemGoal: {
+        key: 'menuType',
+        value: [MenuTypeEnum.SubMenu, MenuTypeEnum.Group]
       },
       items: [
         {
@@ -52,6 +57,7 @@ export const subItemArr = (props: EditorResult<Data>) => [
           type: 'Select',
           options: [
             { label: '子菜单', value: MenuTypeEnum.Menu },
+            { label: '父菜单', value: MenuTypeEnum.SubMenu },
             { label: '分组', value: MenuTypeEnum.Group }
           ],
           value: 'menuType'

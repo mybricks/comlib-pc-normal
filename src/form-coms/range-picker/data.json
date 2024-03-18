@@ -58,7 +58,7 @@
       "开始日期",
       "结束日期"
     ],
-    "size": "small"
+    "size": "middle"
   },
   "dateType": "array",
   "splitChart": "-",

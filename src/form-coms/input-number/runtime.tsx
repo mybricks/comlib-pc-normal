@@ -18,6 +18,8 @@ export interface Data {
   min: number;
   max: number;
   isEditable: boolean;
+  isControl: boolean;
+  useGrouping: boolean;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -141,6 +143,9 @@ export default function Runtime(props: RuntimeParams<Data>) {
           reg = `${value}`.replace(eval('/^(\\-)*(\\d+)\\.(' + reStr + ').*$/'), '$1$2.$3');
         }
         if (reg !== '') {
+          if (data.useGrouping) {
+            reg = reg.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          }
           if (data.isFormatter && data.charPostion === 'suffix') {
             reg = `${reg}${data.character}`;
           }
@@ -151,7 +156,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         return reg;
       }
     };
-  }, [value, data.character, data.isFormatter]);
+  }, [value, data.character, data.isFormatter, data.useGrouping]);
 
   //转换回数字的方式
   const ParserProps = useMemo(() => {
@@ -159,13 +164,19 @@ export default function Runtime(props: RuntimeParams<Data>) {
       parser: (value: any) => {
         if (data.isFormatter) {
           let parser = value.replace(`${data.character}`, '');
+          if (data.useGrouping) {
+            parser = parser!.replace(/\$\s?|(,*)/g, '');
+          }
           return parser;
         } else {
+          if (data.useGrouping) {
+            return value!.replace(/\$\s?|(,*)/g, '');
+          }
           return value;
         }
       }
     };
-  }, [value, data.character, data.isFormatter]);
+  }, [value, data.character, data.isFormatter, data.useGrouping]);
 
   return data.isEditable ? (
     <div className={css.inputNumber}>
@@ -182,6 +193,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         onPressEnter={onPressEnter}
         min={data.isMin ? data.min : void 0}
         max={data.isMax ? data.max : void 0}
+        controls={data.isControl}
       />
     </div>
   ) : (

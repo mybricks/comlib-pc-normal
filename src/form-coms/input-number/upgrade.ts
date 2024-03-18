@@ -214,5 +214,15 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   }
   //=========== v1.1.9 end ===============
 
+  /**
+   * @description v1.1.10 新增 快捷增减、千分位
+   */
+  if (typeof data.isControl === 'undefined') {
+    data.isControl = true;
+  }
+  if (typeof data.useGrouping === 'undefined') {
+    data.useGrouping = false;
+  }
+  //=========== v1.1.11 end ===============
   return true;
 }

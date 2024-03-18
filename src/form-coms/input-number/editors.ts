@@ -142,6 +142,19 @@ export default {
           }
         },
         {
+          title: '千分位',
+          type: 'Switch',
+          description: '是否展示千分位分隔符',
+          value: {
+            get({ data }) {
+              return data.useGrouping;
+            },
+            set({ data }, value: boolean) {
+              data.useGrouping = value;
+            }
+          }
+        },
+        {
           title: '格式化展示',
           type: 'Switch',
           description: '开启开关后，格式化数字，以展示具有具体含义的数据',
@@ -244,6 +257,19 @@ export default {
             },
             set({ data }, value: number[]) {
               data.min = value[0];
+            }
+          }
+        },
+        {
+          title: '快捷增减',
+          description: '是否显示增减按钮，默认展示',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return data.isControl;
+            },
+            set({ data }, value: boolean) {
+              data.isControl = value;
             }
           }
         },

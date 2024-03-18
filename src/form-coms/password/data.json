@@ -2,7 +2,7 @@
   "placeholder": "请输入密码",
   "rules": [],
   "config": {
-    "size": "small"
+    "size": "middle"
   },
   "validateTrigger": [
     "onPressEnter"

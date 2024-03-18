@@ -307,5 +307,19 @@ export default function ({
   }
   //=========== v1.1.9 end ===============
 
+  /**
+   * @description v1.1.11 => v1.1.12 升级，新增 formatMap 字段
+   */
+  if (typeof data.formatMap === "undefined") {
+    data.formatMap = {
+      "日期": encodeURIComponent("YYYY-MM-DD"),
+      "日期+时间": encodeURIComponent("YYYY-MM-DD HH:mm:ss"),
+      "周": encodeURIComponent("YYYY-wo"),
+      "月份": encodeURIComponent("YYYY-MM"),
+      "季度": encodeURIComponent("YYYY-\\QQ"),
+      "年份": encodeURIComponent("YYYY")
+    }
+  }
+
   return true;
 }
