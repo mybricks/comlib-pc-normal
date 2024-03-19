@@ -1,5 +1,6 @@
 import { FormProps } from 'antd'
 import { ButtonType } from 'antd/es/button/button'
+import { CSSProperties } from 'react'
 export interface Action {
   title: string
   loading?: boolean
@@ -82,8 +83,9 @@ export interface Data {
 
   /**
    * 表单类型 普通表单、查询表单
+   * @description 新增 智能表单 Smart
    */
-  layoutType: 'Form' | 'QueryFilter'
+  layoutType: 'Form' | 'QueryFilter' | 'Smart'
 
   /**
    * 表单项列表

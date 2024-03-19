@@ -19,6 +19,10 @@ const SlotContent = (props) => {
 
   const isMobile = checkIfMobile(env);
 
+  const useSmartLayout = useMemo(() => {
+    return layoutType === 'Smart';
+  }, [layoutType]);
+
   const isInlineModel = useMemo(() => {
     return layout === 'inline';
   }, [layout]);
@@ -32,6 +36,7 @@ const SlotContent = (props) => {
   }, [layout]);
 
   const FormActionsWrapper = () => {
+    if (useSmartLayout) return null;
     return (
       <FormActions data={data} env={env} outputs={outputs} submit={submit} isMobile={isMobile} />
     );
@@ -58,7 +63,7 @@ const SlotContent = (props) => {
       },
       wrap(comAray: { id; name; jsx; def; inputs; outputs; style }[]) {
         const items = data.items;
-
+        console.log('------------wrap------------');
         const jsx = comAray?.map((com, idx) => {
           if (com) {
             const { item, isFormItem } = getFormItem(data, com);
@@ -87,12 +92,19 @@ const SlotContent = (props) => {
               item['visible'] = true;
             }
 
+            if (useSmartLayout) {
+              return (
+                <div style={{ display: com.style.display }} key={com.id}>
+                  {com.jsx}
+                </div>
+              );
+            }
+
             const flexBasis = isMobile
               ? '100%'
               : widthOption === 'px'
               ? `${width}px`
               : `${(span * 100) / 24}%`;
-
             return (
               <Col style={{ display: com.style.display, width: flexBasis }} key={com.id}>
                 {com.jsx}
@@ -103,8 +115,37 @@ const SlotContent = (props) => {
           console.error(com, comAray);
           return <div key={idx}>组件错误</div>;
         });
-
-        if (layoutType === 'QueryFilter') {
+        if (useSmartLayout) {
+          return (
+            <>
+              {isInlineModel && (
+                <InlineLayout data={data} isEmpty={isEmpty} actions={<FormActionsWrapper />}>
+                  {jsx}
+                </InlineLayout>
+              )}
+              {isHorizontalModel && (
+                <HorizontalLayout
+                  data={data}
+                  isEmpty={isEmpty}
+                  isMobile={isMobile}
+                  actions={<FormActionsWrapper />}
+                >
+                  {jsx}
+                </HorizontalLayout>
+              )}
+              {isVerticalModel && (
+                <VerticalLayout
+                  data={data}
+                  isEmpty={isEmpty}
+                  isMobile={isMobile}
+                  actions={<FormActionsWrapper />}
+                >
+                  {jsx}
+                </VerticalLayout>
+              )}
+            </>
+          );
+        } else if (layoutType === 'QueryFilter') {
           // 查询表单，支持展开/收起
           return (
             <QueryFilter

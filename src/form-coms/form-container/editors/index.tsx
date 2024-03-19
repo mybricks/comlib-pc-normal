@@ -63,6 +63,7 @@ export default {
     }
   },
   '@childAdd'({ data, inputs, outputs, logs, slots }, child, curSlot, ...res) {
+    console.log('childAdd', curSlot.id, child);
     if (curSlot.id === 'content') {
       const { id, inputDefs, outputDefs, name } = child;
       const item = data.items.find((item) => item.id === id);
@@ -196,11 +197,11 @@ export default {
       }
     }
   },
-  // '@init': ({ data, setDesc, setAutoRun, isAutoRun, slot }) => {
-  //   console.log('@init', slot.get('content'))
-  // },
+  '@init': ({ data, style }) => {
+    style.height = 'auto';
+  },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': {
     style: [
@@ -279,13 +280,17 @@ export default {
           type: 'Select',
           options: [
             { label: '普通表单', value: 'Form' },
-            { label: '查询表单', value: 'QueryFilter' }
+            { label: '查询表单', value: 'QueryFilter' },
+            { label: '智能表单', value: 'Smart' }
           ],
           value: {
             get({ data }: EditorResult<Data>) {
               return data.layoutType;
             },
-            set({ data, outputs }: EditorResult<Data>, value: 'Form' | 'QueryFilter') {
+            set(
+              { data, outputs, slots }: EditorResult<Data>,
+              value: 'Form' | 'QueryFilter' | 'Smart'
+            ) {
               data.layoutType = value;
               if (value === 'QueryFilter') {
                 outputs.add(outputIds.ON_COLLAPSE, '收起/展开表单项', {
@@ -293,6 +298,12 @@ export default {
                 });
               } else {
                 outputs.remove(outputIds.ON_COLLAPSE);
+              }
+              const slotInstance = slots.get('content');
+              if (value === 'Smart') {
+                slotInstance.setLayout('smart');
+              } else {
+                slotInstance.setLayout('flex-column');
               }
             }
           }

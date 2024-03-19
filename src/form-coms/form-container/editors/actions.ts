@@ -4,6 +4,12 @@ import visibleOpt from '../../../components/editorRender/visibleOpt'
 import { outputIds } from '../constants'
 
 export const actionsEditor = (data: Data, output, env) => {
+  if (data.layoutType === 'Smart') {
+    return {
+      title: '操作区',
+      items: []
+    };
+  }
   return {
     title: '操作区',
     items: [

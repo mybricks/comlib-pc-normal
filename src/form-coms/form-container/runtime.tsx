@@ -508,7 +508,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { labelWrap, disabled, ...formCfg } = data.config;
 
   return (
-    <div className={css.wrapper}>
+    <div className={`${css.wrapper} ${data.layoutType === 'Smart' ? css.smartWrapper : ''}`}>
       <Fragment>
         {!data.isFormItem ? (
           <Form
@@ -546,7 +546,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
  */
 const getFormItems = (data: Data, childrenInputs) => {
   let formItems = data.items;
-
+  console.log('getFormItems', formItems, childrenInputs);
   // hack 脏数据问题，表单项数与实际表单项数不一致
   if (data.items.length !== Object.keys(childrenInputs).length) {
     formItems = formItems.filter((item) => {
