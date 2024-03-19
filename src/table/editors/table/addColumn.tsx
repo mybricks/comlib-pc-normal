@@ -100,9 +100,10 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           items: [
             {
               title: '列名',
-              type: 'Text',
+              type: 'TextArea',
               options: {
-                locale: true
+                locale: true,
+                autoSize: { minRows: 2, maxRows: 2 }
               },
               value: 'title'
             },
@@ -162,8 +163,8 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
               width: item.isAutoWidth
                 ? WidthTypeEnum.Auto
                 : item.width === WidthTypeEnum.Auto
-                  ? 'auto'
-                  : Number(item.width),
+                ? 'auto'
+                : Number(item.width),
               isAutoWidth: undefined
             }));
             setColumns({ data, slot }, cols);

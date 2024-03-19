@@ -23,9 +23,10 @@ const createBaseEditor = ({ data }) => ({
   items: [
     {
       title: '列名',
-      type: 'Text',
+      type: 'TextArea',
       options: {
-        locale: true
+        locale: true,
+        autoSize: { minRows: 2, maxRows: 2 }
       },
       value: {
         get({ data, focusArea }: EditorResult<Data>) {
