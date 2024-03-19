@@ -49,7 +49,7 @@ export function dumpPreview(
     // 关闭用于导入 dump 的后门面板
     menuBtn.click();
   });
-
+ 
   updateQueries.forEach((query) => {
     cy.get('#_mybricks-geo-webview_')
       .shadow()
@@ -69,6 +69,8 @@ export function dumpPreview(
       }
     });
   });
+
+  if(!updateQueries || !updateQueries.length) cy.wait(1000)
 
   cy.contains('预览').click();
 
