@@ -6,63 +6,56 @@ describe('JSON展示', () => {
     // 加载测试页面
     dumpPreview(dump_各种事件触发检查, [
       {
-        selector: 'span',
+        selector: 'div.ant-tree',
         text: '{}'
       }
     ]);
 
-    cy.contains('span', '{...}').click();
-    cy.contains('textarea', 'result').click();
-    cy.contains('textarea', 'result').trigger('paste');
-    // cy.window().then(win => {
+    cy.window().then(win => {
+      let cnt = 0;
+      win.document.addEventListener('copy', (e) => {
+        cnt++;
+        const curEl = e.target as HTMLElement;
+        switch (cnt) {
+          case 1:
+            expect(curEl.innerHTML).eq('{"a":"1","b":"2","c":{"ca":21,"cb":22}}')
+            break
+          case 2:
+            expect(curEl.innerHTML).eq('1')
+            break
+          case 3:
+            expect(curEl.innerHTML).eq('2')
+            break
+          case 4:
+            expect(curEl.innerHTML).eq('{"ca":21,"cb":22}')
+            break
+          case 5:
+            expect(curEl.innerHTML).eq('21')
+            break
+          case 6:
+            expect(curEl.innerHTML).eq('22')
+            break
+          case 7:
+            expect(curEl.innerHTML).eq('"1"')
+            break
+        }
+      }, true)
+    })
 
-    // win.navigator.clipboard.readText().then((text) => {
-    //   expect(text).to.eq('{"a":"1","b":"2","c":{"ca":21,"cb":22}}');
-    // });
-    // cy.wrap(win.navigator.clipboard.readText()).should('equal', '{"a":"1","b":"2","c":{"ca":21,"cb":22}}');
-    // })
 
-    cy.contains('span', 'a').click();
-    // cy.window().then(win => {
-    //   // 获取剪贴板数据
-    //   let clipboardData = clipboardy.readSync();
-    //   expect(clipboardData).to.equal('1')
-    // })
+    cy.contains('span', '{...}').click()
 
-    cy.contains('span', 'b').click();
-    // cy.window().then(win => {
-    //   // 获取剪贴板数据
-    //   let clipboardData = clipboardy.readSync();
-    //   expect(clipboardData).to.equal('2')
-    // })
+    cy.contains('span', 'a').click()
 
-    cy.contains('span', 'c').click();
-    // cy.window().then(win => {
-    //   // 获取剪贴板数据
-    //   let clipboardData = clipboardy.readSync();
-    //   expect(clipboardData).to.equal('{"ca":21,"cb":22}')
-    // })
+    cy.contains('span', 'b').click()
 
-    cy.contains('span', 'ca').click();
-    // cy.window().then(win => {
-    //   // 获取剪贴板数据
-    //   let clipboardData = clipboardy.readSync();
-    //   expect(clipboardData).to.equal('21')
-    // })
+    cy.contains('span', 'c').click()
 
-    cy.contains('span', 'cb').click();
-    // cy.window().then(win => {
-    //   // 获取剪贴板数据
-    //   let clipboardData = clipboardy.readSync();
-    //   expect(clipboardData).to.equal('22')
-    // })
+    cy.contains('span', 'ca').click()
 
-    cy.contains('span', 'test').click();
-    // cy.window().then(win => {
-    //   // 获取剪贴板数据
-    //   let clipboardData = clipboardy.readSync();
-    //   expect(clipboardData).to.equal('"1"')
-    // })
+    cy.contains('span', 'cb').click()
+
+    cy.contains('span', 'test').click()
 
     // 判断事件是否按照预期触发了
     eventCheck([
