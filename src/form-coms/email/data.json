@@ -9,7 +9,7 @@
     "addonAfter": "",
     "showCount": false,
     "maxLength": -1,
-    "size": "small"
+    "size": "middle"
   },
   "validateTrigger": [
     "onBlur"

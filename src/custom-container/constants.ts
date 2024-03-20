@@ -7,7 +7,9 @@ export enum InputIds {
   ScrollTo = 'scrollTo'
 }
 export enum OutputIds {
-  Click = 'click'
+  Click = 'click',
+  MouseEnter = 'mouseEnter',
+  MouseLeave = 'mouseLeave'
 }
 export enum SlotIds {
   Content = 'content'
@@ -44,6 +46,8 @@ export interface Data {
   useOverflowUnset?: boolean;
 
   useClick?: boolean;
+  useMouseEnter?: boolean;
+  useMouseLeave?: boolean;
 
   slotStyle?: CSSProperties;
 

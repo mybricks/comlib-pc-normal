@@ -100,9 +100,10 @@ const getAddColumnEditor = ({ data, env }: EditorResult<Data>) => {
           items: [
             {
               title: '列名',
-              type: 'Text',
+              type: 'TextArea',
               options: {
-                locale: true
+                locale: true,
+                autoSize: { minRows: 2, maxRows: 2 }
               },
               value: 'title'
             },

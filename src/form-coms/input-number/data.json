@@ -9,7 +9,7 @@
     "addonAfter": "",
     "precision": 0,
     "step": 1,
-    "size": "small"
+    "size": "middle"
   },
   "isFormatter": false,
   "charPostion": "prefix",
