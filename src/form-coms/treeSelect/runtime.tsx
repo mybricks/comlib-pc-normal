@@ -42,29 +42,36 @@ export default function Runtime({
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
-      data.options = [{
-        label: "aaa",
-        value: "aaa",
-        children: []
-      }, {
-        label: "bbb",
-        value: "bbb",
-        children: [{
-          label: "ddd",
-          value: "ddd",
+      data.options = [
+        {
+          label: 'aaa',
+          value: 'aaa',
           children: []
-        }, {
-          label: "eee",
-          value: "eee",
+        },
+        {
+          label: 'bbb',
+          value: 'bbb',
+          children: [
+            {
+              label: 'ddd',
+              value: 'ddd',
+              children: []
+            },
+            {
+              label: 'eee',
+              value: 'eee',
+              children: []
+            }
+          ]
+        },
+        {
+          label: 'ccc',
+          value: 'ccc',
           children: []
-        }]
-      }, {
-        label: "ccc",
-        value: "ccc",
-        children: []
-      }]
+        }
+      ];
     }
-  }, [env.runtime.debug?.prototype])
+  }, [env.runtime.debug?.prototype]);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {

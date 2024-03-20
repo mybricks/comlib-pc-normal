@@ -34,32 +34,37 @@ export default function ({
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>([]);
 
-
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
-      data.dataSource = [{
-        title: "aaa",
-        description: "aaa",
-        key: 'aaa'
-      }, {
-        title: "bbb",
-        description: "bbb",
-        key: 'bbb'
-      }, {
-        title: "ccc",
-        description: "ccc",
-        key: 'ccc'
-      }, {
-        title: "ddd",
-        description: "ddd",
-        key: 'ddd'
-      }, {
-        title: "eee",
-        description: "eee",
-        key: 'eee'
-      },]
+      data.dataSource = [
+        {
+          title: 'aaa',
+          description: 'aaa',
+          key: 'aaa'
+        },
+        {
+          title: 'bbb',
+          description: 'bbb',
+          key: 'bbb'
+        },
+        {
+          title: 'ccc',
+          description: 'ccc',
+          key: 'ccc'
+        },
+        {
+          title: 'ddd',
+          description: 'ddd',
+          key: 'ddd'
+        },
+        {
+          title: 'eee',
+          description: 'eee',
+          key: 'eee'
+        }
+      ];
     }
-  }, [env.runtime.debug?.prototype])
+  }, [env.runtime.debug?.prototype]);
 
   const validate = useCallback(
     (model, outputRels) => {

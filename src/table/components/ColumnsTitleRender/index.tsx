@@ -53,7 +53,12 @@ export default ({
     const jsx = cItem.hasTip ? (
       <div>
         <span style={{ marginRight: '6px' }}>{title}</span>
-        <Tooltip placement="topLeft" title={tip} overlayClassName={css.ellipsisTooltip} getPopupContainer={() => env?.canvasElement || document.body}>
+        <Tooltip
+          placement="topLeft"
+          title={tip}
+          overlayClassName={css.ellipsisTooltip}
+          getPopupContainer={() => env?.canvasElement || document.body}
+        >
           <InfoCircleOutlined />
         </Tooltip>
       </div>
@@ -61,33 +66,36 @@ export default ({
       <>{title}</>
     );
 
-    return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable ? <Resizable
-      axis="x"
-      className={css.resizer}
-      key={cItem.key}
-      onResize={({ width }) => {
-        let col = {}
-        for (let c of data.columns) {
-          if (c.key === cItem.key) {
-            col = c
-            break
-          } else if (c.children) {
-            for (let cc of c.children) {
-              if (cc.key === cItem.key) {
-                col = cc
-                break
+    return env.edit && !cItem.sorter?.enable && !cItem.filter?.enable ? (
+      <Resizable
+        axis="x"
+        className={css.resizer}
+        key={cItem.key}
+        onResize={({ width }) => {
+          let col = {};
+          for (let c of data.columns) {
+            if (c.key === cItem.key) {
+              col = c;
+              break;
+            } else if (c.children) {
+              for (let cc of c.children) {
+                if (cc.key === cItem.key) {
+                  col = cc;
+                  break;
+                }
               }
             }
           }
-        }
-        col.width = Number(width)
-        console.log(`resize`, width, col, data.columns)
-        data.columns = [...data.columns]
-      }}
-    >
-      {jsx}
-    </Resizable>
-      : jsx
+          col.width = Number(width);
+          console.log(`resize`, width, col, data.columns);
+          data.columns = [...data.columns];
+        }}
+      >
+        {jsx}
+      </Resizable>
+    ) : (
+      jsx
+    );
   };
 
   const getColumns = () => {
@@ -112,12 +120,12 @@ export default ({
               'data-table-th-idx': cItem.key,
               style: cItem.headStyle
                 ? {
-                  ...cItem.headStyle
-                }
+                    ...cItem.headStyle
+                  }
                 : {
-                  color: cItem.titleColor,
-                  backgroundColor: cItem.titleBgColor
-                }
+                    color: cItem.titleColor,
+                    backgroundColor: cItem.titleBgColor
+                  }
             };
           }}
         >
@@ -171,14 +179,14 @@ export default ({
     const onFilter =
       cItem.filter?.type !== FilterTypeEnum.Request
         ? (value, record) => {
-          return get(record, cItem.dataIndex) == value;
-        }
+            return get(record, cItem.dataIndex) == value;
+          }
         : null;
 
     const filterVisibleProps = cItem.filter?.hideFilterDropdown
       ? {
-        filterDropdownVisible: false
-      }
+          filterDropdownVisible: false
+        }
       : {};
 
     const getCellConfig = (dataSource, currentField, rowIndex) => {
@@ -231,18 +239,18 @@ export default ({
         onClick:
           data.enableCellClick || data.enableCellFocus
             ? () => {
-              setFocusCellinfo(
-                isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
-              );
-              if (data.enableCellClick) {
-                outputs[OutputIds.CELL_CLICK]({
-                  record,
-                  index: rowIndex,
-                  dataIndex: cItem.dataIndex,
-                  isFocus: !isFocus
-                });
+                setFocusCellinfo(
+                  isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
+                );
+                if (data.enableCellClick) {
+                  outputs[OutputIds.CELL_CLICK]({
+                    record,
+                    index: rowIndex,
+                    dataIndex: cItem.dataIndex,
+                    isFocus: !isFocus
+                  });
+                }
               }
-            }
             : null
       };
       return res;
@@ -303,7 +311,6 @@ export default ({
   return getColumns().map((item) => renderColumn(item));
 };
 
-
 const Col = ({
   row,
   col,
@@ -317,17 +324,17 @@ const Col = ({
   const dragWidth = useCallback((e) => {
     let currentWidth;
     dragable(e, ({ dpo }, state) => {
-      if (state === "start") {
+      if (state === 'start') {
         const colEle = e.target.parentNode;
         currentWidth = colEle.offsetWidth;
         col.isDragging = true;
       }
-      if (state === "ing") {
+      if (state === 'ing') {
         col.width = currentWidth += dpo.dx;
         // col.widthMode = WidthUnitEnum.Px;
-        typeof onResize === 'function' && onResize(row, { ...col })
+        typeof onResize === 'function' && onResize(row, { ...col });
       }
-      if (state === "finish") {
+      if (state === 'finish') {
         col.isDragging = false;
       }
     });
@@ -335,12 +342,7 @@ const Col = ({
   }, []);
 
   const [resizer, resizableClass] = useMemo(() => {
-    const jsx = (
-      <div
-        className={css.resizer}
-        onMouseDown={(e) => dragWidth(e)}
-      />
-    );
+    const jsx = <div className={css.resizer} onMouseDown={(e) => dragWidth(e)} />;
     const className = css.resizable;
     return [jsx, className];
   }, []);
@@ -348,7 +350,7 @@ const Col = ({
   const handlerClick = (e) => {
     !!key && outputs[key]();
     e.stopPropagation();
-  }
+  };
 
   return (
     <div
