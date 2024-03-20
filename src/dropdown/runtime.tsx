@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Menu, Dropdown, Space, Empty } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Data } from './types';
@@ -9,29 +9,29 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
   const rowKey = '_itemKey';
-
+  const [visible, setVisible] = useState({});
 
   //设置数据源输入
   useEffect(() => {
     if (env.runtime) {
       inputs['setDynamicOptions']((v, relOutputs) => {
         if (Array.isArray(v)) {
-          const ds = v.map((item,index)=>{
-            if(item.value){
+          const ds = v.map((item, index) => {
+            if (item.value) {
               return {
                 value: item.value,
-                disabled: item.disabled ? true: false,
+                disabled: item.disabled ? true : false,
                 [rowKey]: uuid(),
                 index: index
-              }
-            }else{
+              };
+            } else {
               return {
                 value: item,
                 [rowKey]: uuid(),
                 index: index
-              }
+              };
             }
-          })
+          });
           data.dynamicOptions = ds;
           relOutputs['setDynamicOptionsDone'](v);
         }
@@ -40,19 +40,15 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
   }, []);
 
   /*menu数据的渲染*/
-  function dynamicMenuRender({ data }: { data: Data }){
-    if(env.edit){
+  function dynamicMenuRender({ data }: { data: Data }) {
+    if (env.edit) {
       return (
         <Menu style={{ width: data.width }}>
-          <Menu.Item>
-            {
-              slots['item'].render()
-            }
-          </Menu.Item>          
+          <Menu.Item>{slots['item'].render()}</Menu.Item>
         </Menu>
-      )
-    }else if(env.runtime){
-      if(Array.isArray(data.dynamicOptions) && data.dynamicOptions.length > 0){
+      );
+    } else if (env.runtime) {
+      if (Array.isArray(data.dynamicOptions) && data.dynamicOptions.length > 0) {
         return (
           <Menu style={{ width: data.width }}>
             {data.dynamicOptions &&
@@ -65,28 +61,27 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
                     key={index}
                     onClick={() => onClick(option)}
                   >
-                    {
-                      slots['item'].render(
-                        {
-                          inputValues: {
-                            itemData: option.value,
-                            index: index
-                          },
-                          key: option[rowKey]
-                        }
-                      )
-                    }
+                    {slots['item'].render({
+                      inputValues: {
+                        itemData: option.value,
+                        index: index
+                      },
+                      key: option[rowKey]
+                    })}
                   </Menu.Item>
                 );
               })}
           </Menu>
         );
-      }else{
+      } else {
         return (
-          <Empty></Empty>
-        )
+          <Menu>
+            <Menu.Item>
+              <Empty></Empty>
+            </Menu.Item>
+          </Menu>
+        );
       }
-      
     }
   }
   function menuRender({ data }: { data: Data }) {
@@ -123,11 +118,9 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
 
   // 选项改变
   const onClick = (option) => {
-    if(data.isDynamic){
-      outputs['onChange'](
-        option
-      )
-    }else{
+    if (data.isDynamic) {
+      outputs['onChange'](option);
+    } else {
       outputs['onChange']({
         label: option.label,
         link: option.link,
@@ -136,14 +129,30 @@ export default function ({ data, env, style, inputs, outputs, slots, id }: Runti
     }
   };
 
+  useEffect(() => {
+    if ((edit && data.isChildCustom) || env.design || (edit && data.isDynamic)) {
+      setVisible({
+        visible: true
+      });
+    } else {
+      if (env.edit) {
+        setVisible({
+          visible: false
+        });
+      } else {
+        setVisible({});
+      }
+    }
+  }, [env, data.isChildCustom, data.isDynamic]);
+
   return (
     <div>
       <Dropdown
         overlayClassName={id}
-        overlay={data.isDynamic ? dynamicMenuRender({data}) : menuRender({ data })}
+        overlay={data.isDynamic ? dynamicMenuRender({ data }) : menuRender({ data })}
         placement={data.placement}
         arrow
-        visible={(edit && data.isChildCustom) || env.design || (edit && data.isDynamic) ? true : edit ? false : void 0}
+        {...visible}
         getPopupContainer={(triggerNode: HTMLElement) => env?.canvasElement || document.body}
         overlayStyle={{ minWidth: data.width }}
         trigger={[data.trigger || 'hover']}
