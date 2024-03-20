@@ -16,10 +16,17 @@ export function getPort() {
  */
 export function dumpPreview(
   dump: Record<string, unknown>,
-  updateQueries: { selector: keyof HTMLElementTagNameMap; text: string | number | RegExp }[]
+  updateQueries: ({ type?: 'contains', selector: keyof HTMLElementTagNameMap; text: string | number | RegExp } | { type: 'get', selector: string })[]
 ) {
   // 加载空白页面
-  cy.visit(`http://localhost:${getPort()}`);
+  cy.visit(`http://localhost:${getPort()}`, {
+    onBeforeLoad(win) {
+      cy.stub(win, 'open', url => {
+        // change window location to be same as the popup url
+        win.location.href = Cypress.config().baseUrl + url;
+      }).as("popup") // alias it with popup, so we can wait refer it with @popup
+    },
+  });
 
   cy.get('[data-mybricks-tip*=调试工具]');
 
@@ -49,12 +56,20 @@ export function dumpPreview(
     // 关闭用于导入 dump 的后门面板
     menuBtn.click();
   });
- 
+
   updateQueries.forEach((query) => {
-    cy.get('#_mybricks-geo-webview_')
-      .shadow()
-      .contains(query.selector, query.text)
-      .click({ force: true });
+    if (query.type === 'get') {
+      cy.get('#_mybricks-geo-webview_')
+        .shadow()
+        .find(query.selector)
+        .click({ force: true });
+    } else {
+      cy.get('#_mybricks-geo-webview_')
+        .shadow()
+        .contains(query.selector, query.text)
+        .click({ force: true });
+    }
+
 
     cy.window().then((win) => {
       const upgradeBtn = win.document.querySelector(
@@ -70,7 +85,7 @@ export function dumpPreview(
     });
   });
 
-  if(!updateQueries || !updateQueries.length) cy.wait(1000)
+  if (!updateQueries || !updateQueries.length) cy.wait(1000)
 
   cy.contains('预览').click();
 
