@@ -126,5 +126,15 @@ export default function ({
   if(typeof data.slotStyle.paddingLeft === 'undefined'){
     data.slotStyle.paddingLeft = 0
   }
+
+  /**
+   * @description v1.0.28 增加hover事件
+  */
+  if(typeof data.useMouseEnter === 'undefined'){
+    data.useMouseEnter = false
+  }
+  if(typeof data.useMouseLeave === 'undefined'){
+    data.useMouseLeave = false
+  }
   return true;
 }

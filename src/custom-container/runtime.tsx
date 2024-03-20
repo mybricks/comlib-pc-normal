@@ -14,6 +14,8 @@ export default function (props: RuntimeParams<Data>) {
     overflowX,
     useOverflowUnset,
     useClick,
+    useMouseEnter,
+    useMouseLeave,
     useFixed
   } = data;
   const ref = useRef<HTMLDivElement>(null);
@@ -190,6 +192,16 @@ export default function (props: RuntimeParams<Data>) {
       onClick={() => {
         if (useClick && outputs[OutputIds.Click]) {
           outputs[OutputIds.Click]();
+        }
+      }}
+      onMouseEnter={() => {
+        if (useMouseEnter && outputs[OutputIds.MouseEnter]) {
+          outputs[OutputIds.MouseEnter]();
+        }
+      }}
+      onMouseLeave={() => {
+        if (useMouseLeave && outputs[OutputIds.MouseLeave]) {
+          outputs[OutputIds.MouseLeave]();
         }
       }}
     >

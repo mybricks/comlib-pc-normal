@@ -4,6 +4,7 @@ import { PageScrollEditor } from './editors/pageSrcollEditor';
 import { AutoScrollEditor } from './editors/autoScrollEditor';
 import { StyleEditor } from './editors/styleEditor';
 import { ClickEditor } from './editors/clickEditor';
+import { HoverEditor } from './editors/hoverEditor';
 import { MaxHeightEditor } from './editors/maxHeightEditor';
 import { FixedEditor } from './editors/fixedEditor';
 import { getFilterSelector } from '../utils/cssSelector';
@@ -60,7 +61,7 @@ export default {
             }
           }
         },
-        ...ClickEditor, ...AutoScrollEditor, ...PageScrollEditor
+        ...ClickEditor, ...HoverEditor, ...AutoScrollEditor, ...PageScrollEditor
       ];
 
       // cate2.title = '交互';
