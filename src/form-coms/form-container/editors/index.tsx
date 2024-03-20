@@ -273,6 +273,13 @@ export default {
       }
     ],
     items: ({ data, output, env }: EditorResult<Data>, cate1, cate2) => {
+      const options = data.items.map((item) => {
+        return {
+          label: item.label + '(' + item.name + ')',
+          value: item.name
+        };
+      });
+      console.log(options, 'options');
       cate1.items = [
         {
           title: '类型',
@@ -352,6 +359,85 @@ export default {
           value: {
             set({ data, slot }: EditorResult<Data>, namespace: string) {
               slot.get('content').addCom(namespace, false, { deletable: true, movable: true });
+            }
+          }
+        },
+        {
+          title: '自定义状态',
+          description: '快捷控制表单项的显示隐藏',
+          type: 'Switch',
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.customStatus;
+            },
+            set({ data, input, output }: EditorResult<Data>, val: boolean) {
+              data.customStatus = val;
+              if (val) {
+                input.add(inputIds.SetStatus, '设置状态', {
+                  type: 'any'
+                });
+                output.add(outputIds.StatusChange, '状态变更', {
+                  type: 'any'
+                });
+              } else {
+                output.remove(outputIds.StatusChange);
+              }
+            }
+          }
+        },
+        {
+          type: 'array',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.customStatus;
+          },
+          options: {
+            addText: '添加状态',
+            getTitle: ({ title }) => {
+              return title;
+            },
+            onAdd: () => {
+              return {
+                title: '状态' + (data.statusList?.length || 0)
+              };
+            },
+            items: [
+              {
+                title: '状态名',
+                type: 'text',
+                value: 'title'
+              },
+              {
+                title: '值',
+                type: 'valueSelect',
+                options: ['text', 'number', 'boolean'],
+                value: 'value'
+              },
+              {
+                title: '显示的表单项',
+                type: 'select',
+                options: {
+                  mode: 'multiple',
+                  options
+                },
+                value: 'showList'
+              },
+              {
+                title: '隐藏的表单项',
+                type: 'select',
+                options: {
+                  mode: 'multiple',
+                  options
+                },
+                value: 'hideList'
+              }
+            ]
+          },
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return data.statusList;
+            },
+            set({ data }: EditorResult<Data>, value: any[]) {
+              data.statusList = value;
             }
           }
         },
@@ -536,6 +622,18 @@ export default {
               options({ data }) {
                 return {
                   outputId: outputIds.ON_VALUES_CHANGE
+                };
+              }
+            },
+            {
+              title: '状态变更',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.customStatus;
+              },
+              options({ data }) {
+                return {
+                  outputId: outputIds.StatusChange
                 };
               }
             }

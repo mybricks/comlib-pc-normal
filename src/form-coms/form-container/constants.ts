@@ -25,7 +25,10 @@ export const inputIds = {
   resetValue: 'resetValue',
 
   // 编辑/只读
-  isEditable: 'isEditable'
+  isEditable: 'isEditable',
+
+  /** @description 设置状态 */
+  SetStatus: 'setStatus'
 }
 
 export const outputIds = {
@@ -51,7 +54,10 @@ export const outputIds = {
   setValidateInfoDone: "setValidateInfoDone",
 
   // 编辑/只读
-  isEditableDone: "isEditableDone"
+  isEditableDone: "isEditableDone",
+
+  /** @description 状态更新 */
+  StatusChange: 'statusChange'
 }
 
 export const slotInputIds = {
