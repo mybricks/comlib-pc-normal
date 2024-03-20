@@ -603,6 +603,17 @@ export default {
             getTitle,
             items: [
               {
+                title: '提示文字',
+                type: 'Text',
+                options: {
+                  locale: true
+                },
+                value: 'message',
+                ifVisible(item: any, index: number) {
+                  return item.key === RuleKeys.REQUIRED;
+                }
+              },
+              {
                 title: '编辑校验规则',
                 type: 'code',
                 options: {
