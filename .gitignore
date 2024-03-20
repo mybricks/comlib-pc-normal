@@ -13,3 +13,4 @@ yarn.lock
 cypress/screenshots
 cypress-visual-report
 cypress-visual-screenshots
+dist/
