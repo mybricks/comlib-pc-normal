@@ -5,6 +5,7 @@ import { ExpressionSandbox } from '../../../../package/com-utils';
 import { deepCopy } from '../../../utils';
 import { Data, IconType, MODIFY_BTN_ID } from '../../types';
 import { InputIds, OutputIds } from '../../constants';
+import { getFieldNames } from '../../utils';
 import ActionBtns from './ActionBtn';
 import css from './style.less';
 
@@ -15,9 +16,7 @@ import css from './style.less';
  */
 export const renderTitle = (props: RuntimeParams<Data>, item, outputItem, isRoot) => {
   const { onError, outputs, data, env } = props;
-  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
-  const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
-  const childrenFieldName = env.edit ? 'children' : data.childrenFieldName || 'children';
+  const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
   /**
    * 计算图标动态显示表达式

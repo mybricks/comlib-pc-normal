@@ -3,7 +3,7 @@ import { Tree } from 'antd';
 import { deepCopy } from '../../../utils';
 import { Data, TreeData } from '../../types';
 import { ExpressionSandbox } from '../../../../package/com-utils';
-import { keyToString } from '../../utils';
+import { getFieldNames, keyToString } from '../../utils';
 import { renderAddTitle } from './AddTitle';
 import { renderTitle } from './Title';
 const { TreeNode } = Tree;
@@ -25,9 +25,7 @@ const renderTreeNode = (
   parent
 ) => {
   const { data, env, onError } = props;
-  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
-  const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
-  const childrenFieldName = env.edit ? 'children' : data.childrenFieldName || 'children';
+  const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
   /**
    * 树节点动态禁用表达式
@@ -107,6 +105,7 @@ const renderTreeNode = (
     treeData.some((node) => filteredKeys.includes(node[keyFieldName]));
   const lastTreeNode = treeData[treeData.length - 1];
   const addNodeKey = `${parent[keyFieldName]}-${lastTreeNode?.[keyFieldName]}`;
+
   return (
     <>
       {treeData.map((item, inx) => {
@@ -133,6 +132,7 @@ const renderTreeNode = (
         return (
           <TreeNode
             {...item}
+            data-origin-node={item}
             key={keyToString(item[keyFieldName])}
             className={css.treeNode}
             data-tree-node-id={item[keyFieldName]}

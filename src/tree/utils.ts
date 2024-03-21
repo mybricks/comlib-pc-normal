@@ -8,6 +8,7 @@ import { InputIds, OutputIds, } from "./constants";
  * @returns string
  */
 export const keyToString = (key) => {
+  if (typeof key === 'string') return key;
   return JSON.stringify(key);
 };
 
@@ -29,6 +30,27 @@ export const setCheckboxStatus = ({
 };
 
 /**
+ * @description 获取字段映射信息
+ * @param param0
+ * @returns
+ */
+export const getFieldNames = ({
+  data,
+  env
+}: {
+  data: Data;
+  env: Env;
+}) => {
+  const keyFieldName = env.edit && !data.useStaticData ? 'key' : data.keyFieldName || 'key';
+  const titleFieldName = env.edit && !data.useStaticData ? 'title' : data.titleFieldName || 'title';
+  const childrenFieldName = env.edit && !data.useStaticData ? 'children' : data.childrenFieldName || 'children';
+  return {
+    keyFieldName,
+    titleFieldName,
+    childrenFieldName
+  }
+};
+/**
  * @description 预处理树组件数据
  * @param param0
  * @returns
@@ -37,14 +59,15 @@ export const pretreatTreeData = ({
   treeData,
   data,
   defaultExpandAll,
-  parentKey = '0'
+  parentKey = '0',
+  keyFieldName = 'key'
 }: {
   treeData: TreeData[];
   data: Data;
   defaultExpandAll?: boolean;
   parentKey?: string;
+  keyFieldName: string;
 }) => {
-  const keyFieldName = data.keyFieldName || 'key';
   treeData.forEach((item, inx) => {
     if (item[keyFieldName] == null) {
       const id = parentKey + '-' + inx;
@@ -54,7 +77,7 @@ export const pretreatTreeData = ({
       data.expandedKeys = [...data.expandedKeys, item[keyFieldName]];
     }
     if (item.children) {
-      pretreatTreeData({ treeData: item.children, data, defaultExpandAll, parentKey: item[keyFieldName] });
+      pretreatTreeData({ treeData: item.children, data, defaultExpandAll, parentKey: item[keyFieldName], keyFieldName });
     }
   });
   return treeData;
@@ -178,7 +201,7 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFie
  * @returns
  */
 export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldName: string) => {
-  treeData = treeData.map((item) => {
+  treeData = treeData.map((item, index) => {
     if (item[keyFieldName] === newNodeData[keyFieldName]) {
       item = {
         ...item,
@@ -187,6 +210,7 @@ export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyF
     } else if (item.children) {
       item.children = updateNodeData(item.children, newNodeData, keyFieldName);
     }
+    treeData[index] = item;
     return item;
   });
   return treeData;
@@ -239,7 +263,7 @@ export const getParentKey = (key, tree, keyFieldName: string) => {
  * @param keyFieldName 标识字段
  * @param titleFieldName 标题字段
  */
-export const generateList = (treeData, dataList, { keyFieldName, titleFieldName }, parentKey = '0', depth = 0) => {
+export const generateList = (treeData, dataList, { keyFieldName, titleFieldName, childrenFieldName }, parentKey = '0', depth = 0) => {
   for (let i = 0; i < treeData.length; i++) {
     const node = treeData[i];
     if (node[keyFieldName] == null) {
@@ -248,8 +272,8 @@ export const generateList = (treeData, dataList, { keyFieldName, titleFieldName 
     }
     const { [keyFieldName]: key, [titleFieldName]: title } = node;
     dataList.push({ ...node, key, title, depth });
-    if (node.children) {
-      generateList(node.children, dataList, { keyFieldName, titleFieldName }, key, depth + 1);
+    if (node[childrenFieldName]) {
+      generateList(node[childrenFieldName], dataList, { keyFieldName, titleFieldName, childrenFieldName }, key, depth + 1);
     }
   }
 };
@@ -333,10 +357,8 @@ export const getNodeSuggestions = (data: Data) => [
  * 更新schema
  */
 export const refreshSchema = (props: EditorResult<Data>) => {
-  const { data, input, output } = props;
-  const keyFieldName = data.keyFieldName || 'key';
-  const titleFieldName = data.titleFieldName || 'title';
-  const childrenFieldName = data.childrenFieldName || 'children';
+  const { data, input, output, env } = props;
+  const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
   const stringArraySchema = {
     type: 'array',
@@ -383,6 +405,9 @@ export const refreshSchema = (props: EditorResult<Data>) => {
       }
     }
   };
+
+  input.get(InputIds.SetLoadData)?.setSchema(treeNodeSchema);
+  output.get(OutputIds.LoadData)?.setSchema(treeNodeSchema);
 
   input.get(InputIds.SetTreeData).setSchema(treeDataSchema);
   output.get(OutputIds.OnDropDone)?.setSchema({
