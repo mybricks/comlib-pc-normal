@@ -82,7 +82,7 @@ export default function (props: RuntimeParams<Data>) {
 
   /** 高度配置为「适应内容」时，表示使用老的高度方案 */
   const isUseOldHeight =
-    style.height === 'fit-content' || style.height === 'auto' || style.height === undefined;
+    style.height === 'fit-content' || style.height === '100%' || style.height === 'auto' || style.height === undefined;
 
   /**
    * 按需加载表格数据
@@ -1152,36 +1152,36 @@ export default function (props: RuntimeParams<Data>) {
                 expandable={
                   data.useExpand && slots[SlotIds.EXPAND_CONTENT]
                     ? {
-                        expandedRowRender: (record, index) => {
-                          const inputValues = {
-                            [InputIds.EXP_COL_VALUES]: {
-                              ...record
-                            },
-                            [InputIds.INDEX]: index
-                          };
-                          if (data.useExpand && data.expandDataIndex) {
-                            inputValues[InputIds.EXP_ROW_VALUES] = get(
-                              record,
-                              data.expandDataIndex
-                            );
-                          }
-                          return slots[SlotIds.EXPAND_CONTENT].render({
-                            inputValues,
-                            key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
-                          });
-                        },
-                        expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
-                        onExpand: (expanded, record) => {
-                          if (!env.runtime) return;
-                          const key = record[rowKey];
-                          if (expanded && !expandedRowKeys.includes(key)) {
-                            setExpandedRowKeys([...expandedRowKeys, key]);
-                          } else if (!expanded && expandedRowKeys.includes(key)) {
-                            expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
-                            setExpandedRowKeys([...expandedRowKeys]);
-                          }
+                      expandedRowRender: (record, index) => {
+                        const inputValues = {
+                          [InputIds.EXP_COL_VALUES]: {
+                            ...record
+                          },
+                          [InputIds.INDEX]: index
+                        };
+                        if (data.useExpand && data.expandDataIndex) {
+                          inputValues[InputIds.EXP_ROW_VALUES] = get(
+                            record,
+                            data.expandDataIndex
+                          );
+                        }
+                        return slots[SlotIds.EXPAND_CONTENT].render({
+                          inputValues,
+                          key: `${InputIds.EXP_COL_VALUES}-${record[rowKey]}`
+                        });
+                      },
+                      expandedRowKeys: edit ? [defaultDataSource[0][rowKey]] : expandedRowKeys, //增加动态设置
+                      onExpand: (expanded, record) => {
+                        if (!env.runtime) return;
+                        const key = record[rowKey];
+                        if (expanded && !expandedRowKeys.includes(key)) {
+                          setExpandedRowKeys([...expandedRowKeys, key]);
+                        } else if (!expanded && expandedRowKeys.includes(key)) {
+                          expandedRowKeys.splice(expandedRowKeys.indexOf(key), 1);
+                          setExpandedRowKeys([...expandedRowKeys]);
                         }
                       }
+                    }
                     : undefined
                 }
                 onChange={onChange}

@@ -87,7 +87,6 @@ export default ({
             }
           }
           col.width = Number(width);
-          console.log(`resize`, width, col, data.columns);
           data.columns = [...data.columns];
         }}
       >
@@ -120,12 +119,12 @@ export default ({
               'data-table-th-idx': cItem.key,
               style: cItem.headStyle
                 ? {
-                    ...cItem.headStyle
-                  }
+                  ...cItem.headStyle
+                }
                 : {
-                    color: cItem.titleColor,
-                    backgroundColor: cItem.titleBgColor
-                  }
+                  color: cItem.titleColor,
+                  backgroundColor: cItem.titleBgColor
+                }
             };
           }}
         >
@@ -179,14 +178,14 @@ export default ({
     const onFilter =
       cItem.filter?.type !== FilterTypeEnum.Request
         ? (value, record) => {
-            return get(record, cItem.dataIndex) == value;
-          }
+          return get(record, cItem.dataIndex) == value;
+        }
         : null;
 
     const filterVisibleProps = cItem.filter?.hideFilterDropdown
       ? {
-          filterDropdownVisible: false
-        }
+        filterDropdownVisible: false
+      }
       : {};
 
     const getCellConfig = (dataSource, currentField, rowIndex) => {
@@ -239,18 +238,18 @@ export default ({
         onClick:
           data.enableCellClick || data.enableCellFocus
             ? () => {
-                setFocusCellinfo(
-                  isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
-                );
-                if (data.enableCellClick) {
-                  outputs[OutputIds.CELL_CLICK]({
-                    record,
-                    index: rowIndex,
-                    dataIndex: cItem.dataIndex,
-                    isFocus: !isFocus
-                  });
-                }
+              setFocusCellinfo(
+                isFocus ? null : { focusRecord: record, dataIndex: cItem.dataIndex }
+              );
+              if (data.enableCellClick) {
+                outputs[OutputIds.CELL_CLICK]({
+                  record,
+                  index: rowIndex,
+                  dataIndex: cItem.dataIndex,
+                  isFocus: !isFocus
+                });
               }
+            }
             : null
       };
       return res;
