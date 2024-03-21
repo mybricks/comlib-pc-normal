@@ -6,7 +6,6 @@ import useFormItemInputs from '../form-container/models/FormItem';
 import { debounceValidateTrigger } from '../form-container/models/validate';
 import { onChange as onChangeForFc } from '../form-container/models/onChange';
 import * as Icons from '@ant-design/icons';
-import { difference } from 'lodash';
 import css from './runtime.less';
 import { InputIds, ValidateTriggerType } from '../types';
 

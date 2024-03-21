@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import { TreeNodeProps, TreeSelect, Image, TreeSelectProps, Spin } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';

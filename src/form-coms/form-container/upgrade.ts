@@ -1,7 +1,9 @@
 import { Data, FormItems } from './types';
 import { inputIds, slotInputIds, outputIds } from './constants'
 import { getFormItemPropsSchema, getSubmitSchema } from './schema'
-import { uniqBy, pick, uniq } from 'lodash';
+import uniqBy from 'lodash/uniqBy'
+import pick from 'lodash/pick'
+import uniq from 'lodash/uniq'
 import { isEmptyObject, unitConversion } from '../../utils';
 
 export default function ({ data, input, output, slot, children, setDeclaredStyle }: UpgradeParams<Data>): boolean {

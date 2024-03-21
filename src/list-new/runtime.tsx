@@ -6,7 +6,7 @@ import { checkIfMobile, uuid } from '../utils';
 import css from './style.less';
 import { SortableList, SortableItem } from './sort';
 import { AutoRender, NoAutoRender, NoAutoScrollRender } from './render';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { addItem, removeItem, changeItem, upMove, downMove } from './utils';
 
 const arrayMove = <T,>(array: Array<T>, form: number, to: number): Array<T> => {

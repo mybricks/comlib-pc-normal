@@ -1,7 +1,7 @@
 import RowAi from './row';
 import ColAi from './col';
 import { createColBySpan, createColByWidth, createAutoCol } from '../editors/utils';
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
 import { WidthUnitEnum } from '../constants';
 
 const prompts = `
@@ -39,7 +39,7 @@ export default {
       const { data, def, slots } = props;
       console.log(def);
       if ('columns' in def) {
-        const legacyColumns = data.rows[0].columns = data.rows[0].columns.map((col, index) => ({...col, ...def.columns[index]}));
+        const legacyColumns = data.rows[0].columns = data.rows[0].columns.map((col, index) => ({ ...col, ...def.columns[index] }));
         const dataColCount = legacyColumns.length;
         const defColCount = def.columns.length;
         if (defColCount <= dataColCount) {
