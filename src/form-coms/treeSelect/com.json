@@ -1,7 +1,7 @@
 {
   "title": "树形选择",
   "namespace": "mybricks.normal-pc.treeSelect",
-  "version": "1.2.16",
+  "version": "1.2.17",
   "description": "树形选择结构的下拉框",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -107,29 +107,26 @@
       "id": "setLoadData",
       "title": "设置异步加载数据",
       "schema": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "label": {
-              "title": "标签",
-              "type": "string"
-            },
-            "value": {
-              "title": "值",
-              "type": "string"
-            },
-            "isLeaf": {
-              "title": "是否叶子节点",
-              "type": "boolean"
-            },
-            "children": {
-              "title": "子项",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {}
-              }
+        "type": "object",
+        "properties": {
+          "label": {
+            "title": "标签",
+            "type": "string"
+          },
+          "value": {
+            "title": "值",
+            "type": "string"
+          },
+          "isLeaf": {
+            "title": "是否叶子节点",
+            "type": "boolean"
+          },
+          "children": {
+            "title": "子项",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
             }
           }
         }
