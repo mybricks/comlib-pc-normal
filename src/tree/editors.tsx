@@ -534,6 +534,11 @@ export default {
                       type: 'object',
                       title: '节点数据'
                     });
+                    output.add(OutputIds.SetLoadDataDone, '设置异步加载数据完成', {
+                      type: 'object',
+                      title: '节点数据'
+                    });
+                    input.get(InputIds.SetLoadData).setRels([OutputIds.SetLoadDataDone]);
                     refreshSchema(props);
                   } else {
                     input.remove(InputIds.SetLoadData);
