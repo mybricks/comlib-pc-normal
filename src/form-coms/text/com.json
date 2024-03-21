@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.form-text",
   "author": "MyBricks",
   "author_name": "MyBricks",
-  "version": "1.3.14",
+  "version": "1.3.15",
   "description": "文本框",
   "icon": "./icon.svg",
   "data": "./data.json",
@@ -34,7 +34,7 @@
       "schema": {
         "type": "string"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -67,7 +67,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },

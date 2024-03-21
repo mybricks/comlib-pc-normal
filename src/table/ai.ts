@@ -1,5 +1,4 @@
 import { uuid } from '../utils';
-import { merge } from 'lodash'
 
 export default {
   prompts() {

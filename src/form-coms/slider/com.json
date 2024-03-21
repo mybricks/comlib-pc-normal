@@ -1,7 +1,7 @@
 {
   "title": "滑动输入条",
   "namespace": "mybricks.normal-pc.slider",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "滑动输入条",
   "author": "ZhuLin",
   "author_name": "朱琳",
@@ -33,7 +33,7 @@
       "schema": {
         "type": "number"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -66,7 +66,7 @@
       "schema": {
         "type": "any"
       },
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },

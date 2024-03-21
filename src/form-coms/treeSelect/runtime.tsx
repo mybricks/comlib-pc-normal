@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import { TreeNodeProps, TreeSelect, Image, TreeSelectProps, Spin } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
@@ -42,29 +42,36 @@ export default function Runtime({
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
-      data.options = [{
-        label: "aaa",
-        value: "aaa",
-        children: []
-      }, {
-        label: "bbb",
-        value: "bbb",
-        children: [{
-          label: "ddd",
-          value: "ddd",
+      data.options = [
+        {
+          label: 'aaa',
+          value: 'aaa',
           children: []
-        }, {
-          label: "eee",
-          value: "eee",
+        },
+        {
+          label: 'bbb',
+          value: 'bbb',
+          children: [
+            {
+              label: 'ddd',
+              value: 'ddd',
+              children: []
+            },
+            {
+              label: 'eee',
+              value: 'eee',
+              children: []
+            }
+          ]
+        },
+        {
+          label: 'ccc',
+          value: 'ccc',
           children: []
-        }]
-      }, {
-        label: "ccc",
-        value: "ccc",
-        children: []
-      }]
+        }
+      ];
     }
-  }, [env.runtime.debug?.prototype])
+  }, [env.runtime.debug?.prototype]);
 
   useLayoutEffect(() => {
     inputs['validate']((model, outputRels) => {

@@ -1,7 +1,7 @@
 import { uuid } from '../../utils';
 import { Data, Item, InputIds, SlotIds } from '../constants';
 import { DefaultSourceSchema } from './baseEditor';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 
 export const getTimelineItem = (
   data: Data,
