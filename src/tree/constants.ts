@@ -24,6 +24,7 @@ export const OutputIds = {
   OnCheck: 'check',
   ReturnTreeData: 'returnTreeData',
   LoadData: 'loadData',
+  SetLoadDataDone: 'setLoadDataDone',
 }
 
 export const DragConfigKeys = ['draggable', 'draggableScript', 'allowDrop', 'allowDropScript', 'useDropScope', 'dropScopeMessage'];

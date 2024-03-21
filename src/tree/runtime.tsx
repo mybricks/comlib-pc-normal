@@ -187,7 +187,9 @@ export default function (props: RuntimeParams<Data>) {
       inputs['nodeData'] &&
         inputs['nodeData']((nodeData: TreeData, relOutputs) => {
           if (typeCheck(nodeData, 'OBJECT')) {
-            data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
+            data.treeData = [
+              ...updateNodeData(data.treeData, nodeData, { keyFieldName, childrenFieldName })
+            ];
             outputs[OutputIds.OnChange](deepCopy(data.treeData));
 
             setExpandedKeys(
@@ -206,10 +208,17 @@ export default function (props: RuntimeParams<Data>) {
               [keyFieldName]: node[keyFieldName],
               ...nodeData
             };
-            updateNodeData(data.treeData, newNodeData, keyFieldName);
-            setTreeLoadKeys(uniq([...treeLoadedKeys, node[keyFieldName]]));
+            updateNodeData(data.treeData, newNodeData, { keyFieldName, childrenFieldName });
             resolve();
-            relOutputs['setNodeDataDone'](nodeData);
+            /** 更新treeKeys一维数组 */
+            treeKeys.current = [];
+            generateList(data.treeData, treeKeys.current, {
+              keyFieldName,
+              titleFieldName,
+              childrenFieldName
+            });
+            setTreeLoadKeys(uniq([...treeLoadedKeys, keyToString(node[keyFieldName])]));
+            relOutputs[OutputIds.SetLoadDataDone](nodeData);
             outputs[OutputIds.OnChange](deepCopy(data.treeData));
           }
         });

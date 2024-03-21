@@ -200,15 +200,16 @@ export const outputNodeValues = (treeData: TreeData[], keys: React.Key[], keyFie
  * @param newNodeData 节点数据
  * @returns
  */
-export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData, keyFieldName: string) => {
+export const updateNodeData = (treeData: TreeData[], newNodeData: TreeData,
+  { keyFieldName, childrenFieldName }: { keyFieldName: string, childrenFieldName: string }) => {
   treeData = treeData.map((item, index) => {
     if (item[keyFieldName] === newNodeData[keyFieldName]) {
       item = {
         ...item,
         ...newNodeData
       };
-    } else if (item.children) {
-      item.children = updateNodeData(item.children, newNodeData, keyFieldName);
+    } else if (item[childrenFieldName]) {
+      item[childrenFieldName] = updateNodeData(item[childrenFieldName], newNodeData, { keyFieldName, childrenFieldName });
     }
     treeData[index] = item;
     return item;
