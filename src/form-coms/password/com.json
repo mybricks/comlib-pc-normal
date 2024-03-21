@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.password",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "密码输入框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -34,7 +34,7 @@
       "schema": {
         "type": "string"
       },
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -56,7 +56,7 @@
         "type": "any"
       },
       "desc": "重置密码框",
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },

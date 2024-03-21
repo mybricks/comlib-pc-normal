@@ -1,7 +1,7 @@
 {
   "title": "描述列表",
   "namespace": "mybricks.normal-pc.form-detail",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "描述列表",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -21,7 +21,9 @@
       "schema": {
         "type": "string"
       },
-      "rels": ["setTitleComplete"]
+      "rels": [
+        "setTitleComplete"
+      ]
     },
     {
       "id": "setDataSource",
@@ -35,7 +37,9 @@
           }
         }
       },
-      "rels": ["setDataSourceComplete"]
+      "rels": [
+        "setDataSourceComplete"
+      ]
     },
     {
       "id": "setDataDesc",
@@ -63,7 +67,9 @@
           }
         }
       },
-      "rels": ["setDataDescComplete"]
+      "rels": [
+        "setDataDescComplete"
+      ]
     }
   ],
   "outputs": [

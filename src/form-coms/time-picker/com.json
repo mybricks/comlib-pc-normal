@@ -3,7 +3,7 @@
   "namespace": "mybricks.normal-pc.time-picker",
   "author": "tangxiaoxin",
   "author_name": "唐小新",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "时间选择框",
   "docs": "组件使用说明文档链接",
   "icon": "./icon.svg",
@@ -34,7 +34,7 @@
         "type": "number"
       },
       "desc": "设置时间选择框初始值",
-      "rels":[
+      "rels": [
         "setInitialValueDone"
       ]
     },
@@ -56,7 +56,7 @@
         "type": "any"
       },
       "desc": "重置时间",
-      "rels":[
+      "rels": [
         "resetValueDone"
       ]
     },
