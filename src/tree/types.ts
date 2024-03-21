@@ -138,6 +138,11 @@ export interface Data {
    * @description 组件版本: 1.0.48 树是否使用紧凑模式
    */
   useCompactTheme?: boolean;
+  /**
+   * @description v1.0.52 异步加载相关配置项
+   */
+  useLoadData?: boolean
+  loadDataOnce?: boolean,
 }
 
 export interface TreeData {

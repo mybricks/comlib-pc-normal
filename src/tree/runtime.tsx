@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
+import { uniq } from 'lodash';
 import { deepCopy, typeCheck, uuid } from '../utils';
 import {
   setCheckboxStatus,
@@ -12,7 +13,8 @@ import {
   outputNodeValues,
   filterTreeDataByKeys,
   traverseTree,
-  keyToString
+  keyToString,
+  getFieldNames
 } from './utils';
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
@@ -28,10 +30,12 @@ export default function (props: RuntimeParams<Data>) {
   );
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState(false);
+  const [treeLoadedKeys, setTreeLoadKeys] = useState<React.Key[]>([]);
+
+  const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
 
-  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
-  const titleFieldName = env.edit ? 'title' : data.titleFieldName || 'title';
+  const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
   const rootKey = useMemo(() => {
     return uuid();
@@ -77,10 +81,20 @@ export default function (props: RuntimeParams<Data>) {
   useEffect(() => {
     data.treeData = updateDefaultTreeData();
   }, [data.useStaticData, data.staticData]);
+
+  /** 更新expandedKeys */
+  useEffect(() => {
+    updateExpandedKeys();
+  }, [data.openDepth]);
+
   /** 更新treeKeys */
   useEffect(() => {
     treeKeys.current = [];
-    generateList(data.treeData, treeKeys.current, { keyFieldName, titleFieldName });
+    generateList(data.treeData, treeKeys.current, {
+      keyFieldName,
+      titleFieldName,
+      childrenFieldName
+    });
     clearCheckedKeys();
     updateExpandedKeys();
   }, [data.treeData]);
@@ -168,16 +182,35 @@ export default function (props: RuntimeParams<Data>) {
           }
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
+
       // 更新节点数据
       inputs['nodeData'] &&
         inputs['nodeData']((nodeData: TreeData, relOutputs) => {
           if (typeCheck(nodeData, 'OBJECT')) {
             data.treeData = [...updateNodeData(data.treeData, nodeData, keyFieldName)];
             outputs[OutputIds.OnChange](deepCopy(data.treeData));
+
             setExpandedKeys(
               [...data.expandedKeys].filter((item, i, self) => item && self.indexOf(item) === i)
             );
             relOutputs['setNodeDataDone'](nodeData);
+          }
+        });
+
+      // 设置异步加载数据
+      inputs['setLoadData'] &&
+        inputs['setLoadData']((nodeData: TreeData, relOutputs) => {
+          if (typeCheck(nodeData, 'OBJECT')) {
+            const { node, resolve } = curentLoadNode.current as any;
+            const newNodeData = {
+              [keyFieldName]: node[keyFieldName],
+              ...nodeData
+            };
+            updateNodeData(data.treeData, newNodeData, keyFieldName);
+            setTreeLoadKeys(uniq([...treeLoadedKeys, node[keyFieldName]]));
+            resolve();
+            relOutputs['setNodeDataDone'](nodeData);
+            outputs[OutputIds.OnChange](deepCopy(data.treeData));
           }
         });
 
@@ -462,6 +495,23 @@ export default function (props: RuntimeParams<Data>) {
     }
   };
 
+  /**
+   * @description v1.0.52 异步加载事件回调
+   * */
+  const onLoadData: TreeProps['loadData'] = (node) => {
+    if (treeLoadedKeys.includes(node.key)) {
+      return Promise.resolve();
+    }
+    const originNode = node['data-origin-node'];
+    return new Promise((resolve) => {
+      curentLoadNode.current = {
+        node: originNode,
+        resolve
+      };
+      outputs['loadData'](originNode);
+    });
+  };
+
   const filteredKeys = useMemo(() => {
     return data.filterValue ? filter() : treeKeys.current.map((i) => i.key);
   }, [data.filterValue, treeKeys.current]);
@@ -497,6 +547,8 @@ export default function (props: RuntimeParams<Data>) {
               : false
           }
           allowDrop={allowDrop}
+          loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
+          loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
           showLine={data.showLine}
           checkStrictly={data.checkStrictly}
           onExpand={onExpand}

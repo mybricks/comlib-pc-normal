@@ -282,7 +282,6 @@ export default {
     items: ({ data, output }: EditorResult<Data>, ...cate) => {
       const suggestions = getNodeSuggestions(data);
       cate[0].title = '常规';
-      cate[1].title = '高级';
       cate[0].items = [
         {
           title: '使用静态数据源',
@@ -408,32 +407,6 @@ export default {
                   data.titleEllipsis = value;
                 }
               }
-            },
-            {
-              title: '默认展开深度',
-              type: 'InputNumber',
-              description: '0表示全部折叠, -1表示全部展开',
-              options: [{ min: -1, max: 20, width: 100 }],
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return [data.openDepth];
-                },
-                set({ data }: EditorResult<Data>, value: number[]) {
-                  data.openDepth = value[0];
-                }
-              }
-            },
-            {
-              title: '节点点击展开收起',
-              type: 'Switch',
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data.clickExpandable;
-                },
-                set({ data }: EditorResult<Data>, value: boolean) {
-                  data.clickExpandable = value;
-                }
-              }
             }
           ]
         },
@@ -510,7 +483,93 @@ export default {
           ]
         }
       ];
+      cate[1].title = '高级';
       cate[1].items = [
+        {
+          title: '展开收起配置',
+          items: [
+            {
+              title: '默认展开深度',
+              type: 'InputNumber',
+              description: '0表示全部折叠, -1表示全部展开',
+              options: [{ min: -1, max: 20, width: 100 }],
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return [data.openDepth];
+                },
+                set({ data }: EditorResult<Data>, value: number[]) {
+                  data.openDepth = value[0];
+                }
+              }
+            },
+            {
+              title: '节点点击展开收起',
+              type: 'Switch',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.clickExpandable;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.clickExpandable = value;
+                }
+              }
+            },
+            {
+              title: '展开时异步加载子节点',
+              type: 'Switch',
+              description: '开启后可配置子节点异步加载',
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.useLoadData;
+                },
+                set(props: EditorResult<Data>, value: boolean) {
+                  const { data, input } = props;
+                  data.useLoadData = value;
+                  if (value) {
+                    input.add(InputIds.SetLoadData, '设置异步加载数据', {
+                      type: 'object',
+                      title: '节点数据'
+                    });
+                    output.add(OutputIds.LoadData, '异步加载事件', {
+                      type: 'object',
+                      title: '节点数据'
+                    });
+                    refreshSchema(props);
+                  } else {
+                    input.remove(InputIds.SetLoadData);
+                    output.remove(OutputIds.LoadData);
+                  }
+                }
+              }
+            },
+            {
+              title: '仅首次加载',
+              type: 'Switch',
+              description: '关闭后，每次展开节点，都会重新触发异步加载',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useLoadData;
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.loadDataOnce;
+                },
+                set({ data }: EditorResult<Data>, value: boolean) {
+                  data.loadDataOnce = value;
+                }
+              }
+            },
+            {
+              title: '异步加载事件',
+              type: '_event',
+              ifVisible({ data }: EditorResult<Data>) {
+                return data.useLoadData;
+              },
+              options: {
+                outputId: OutputIds.LoadData
+              }
+            }
+          ]
+        },
         {
           title: '过滤功能',
           items: [

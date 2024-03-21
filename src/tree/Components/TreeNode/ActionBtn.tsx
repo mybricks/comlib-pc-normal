@@ -4,6 +4,7 @@ import { Button, Dropdown, Menu, Modal, Image } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { ExpressionSandbox } from '../../../../package/com-utils';
 import { deepCopy } from '../../../utils';
+import { getFieldNames } from '../../utils';
 import { ActionBtn, ActionBtnsProps, DELETE_BTN_ID, MODIFY_BTN_ID, TreeData } from '../../types';
 import { OutputIds } from '../../constants';
 import css from './style.less';
@@ -17,7 +18,7 @@ export default function ActionBtns({
   onError
 }: ActionBtnsProps) {
   const { treeData, removeConfirm } = data;
-  const keyFieldName = env.edit ? 'key' : data.keyFieldName || 'key';
+  const { keyFieldName } = getFieldNames({ data, env });
 
   const hasChildren = record?.children?.length > 0;
   const { maxToEllipsis, useEllipsis, ...dropdownProps } = data.ellipsisActionBtnsConfig || {};

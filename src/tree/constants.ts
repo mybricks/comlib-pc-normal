@@ -12,7 +12,8 @@ export const InputIds = {
   SetOpenDepth: 'setOpenDepth',
   SetAddTips: 'addTips',
   GetCheckedKeys: 'submit',
-  GetTreeData: 'getTreeData'
+  GetTreeData: 'getTreeData',
+  SetLoadData: 'setLoadData',
 }
 
 export const OutputIds = {
@@ -21,7 +22,8 @@ export const OutputIds = {
   AddNodeDone: 'addNodeDone',
   OnNodeClick: 'click',
   OnCheck: 'check',
-  ReturnTreeData: 'returnTreeData'
+  ReturnTreeData: 'returnTreeData',
+  LoadData: 'loadData',
 }
 
 export const DragConfigKeys = ['draggable', 'draggableScript', 'allowDrop', 'allowDropScript', 'useDropScope', 'dropScopeMessage'];
