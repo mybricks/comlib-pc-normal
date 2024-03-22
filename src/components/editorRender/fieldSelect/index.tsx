@@ -101,6 +101,7 @@ export default function Tree({ editConfig }: any) {
         ) : (
           <Input
             defaultValue={value}
+            className={css.input}
             onBlur={(e) => onChange(e.target.value)}
             placeholder={placeholder}
             disabled={disabled}
