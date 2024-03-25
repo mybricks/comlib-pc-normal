@@ -33,7 +33,8 @@ const contentSchema = {
   };
 
 export default {
-  '@init': ({ data }) => {
+  '@init': ({ data, style }) => {
+    style.width = 'fit-content';
     data.items.push({
       src: 1,
       key: uuid(),
@@ -44,6 +45,9 @@ export default {
       stylePadding: [0, 0]
       //style: { ...defaultStyle }
     });
+  },
+  '@resize': {
+    options: ['width']
   },
   ':root': {
     style: [
