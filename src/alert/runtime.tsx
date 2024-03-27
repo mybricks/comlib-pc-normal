@@ -73,7 +73,7 @@ export default function (props: RuntimeParams<Data>) {
     style.display = 'none';
   };
 
-  const description = (
+  const description = (data.showInfo && data.content) || data.useContentSlot ? (
     <>
       <div>
         {data.showInfo
@@ -84,7 +84,7 @@ export default function (props: RuntimeParams<Data>) {
         {data.useContentSlot && slots[SlotIds.DescSlot].render()}
       </div>
     </>
-  );
+  ) : void 0;
 
   return (
     <div
