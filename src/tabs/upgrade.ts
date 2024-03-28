@@ -26,7 +26,7 @@ export default function ({
   input,
   output,
   setDeclaredStyle,
-  registerPermission
+  registerPermission,
 }: UpgradeParams<Data>): boolean {
   data.tabList.forEach((tab) => {
     /**
@@ -105,14 +105,22 @@ export default function ({
   }
 
   const addTab = output.get(OutputIds.AddTab)
-  if(!addTab) {
+  if (!addTab) {
     output.add(OutputIds.AddTab, '标签页新增', TabListSchema)
   }
 
   const removeTab = output.get(OutputIds.RemoveTab)
-  if(!removeTab) {
+  if (!removeTab) {
     output.add(OutputIds.RemoveTab, '标签页删除', TabListSchema)
   }
+
+  /**
+  * @description v1.0.26 fix: slotStyle默认值问题
+  */
+  if (data.slotStyle?.position === 'smart' && data.slotStyle?.display === 'flex') {
+    data.slotStyle.display = 'block';
+  }
+  //=========== v1.0.26 end ===============
 
   return true;
 }
