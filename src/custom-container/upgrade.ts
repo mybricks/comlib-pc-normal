@@ -62,13 +62,13 @@ export default function ({
   const legacyStyle = getLegacyDeclaredStyle(getDeclaredStyle, [`.root${getFilterSelector(id)}`, `.root${getFilterSelectorWithId(id)}`])
   const legacyHoverStyle = getLegacyDeclaredStyle(getDeclaredStyle, [`.root:hover${getFilterSelector(id)}`, `.root:hover${getFilterSelectorWithId(id)}`])
 
-  if(legacyStyle) {
+  if (legacyStyle) {
     removeDeclaredStyle(legacyStyle.selector)
-    setDeclaredStyle('> .root', {...legacyStyle.css});
+    setDeclaredStyle('> .root', { ...legacyStyle.css });
   }
-  if(legacyHoverStyle){
+  if (legacyHoverStyle) {
     removeDeclaredStyle(legacyHoverStyle.selector)
-    setDeclaredStyle('> .root:hover', {...legacyHoverStyle.css})
+    setDeclaredStyle('> .root:hover', { ...legacyHoverStyle.css })
   }
 
   if (!input.get(InputIds.SetStyle)) {
@@ -80,13 +80,13 @@ export default function ({
         },
       },
     });
-    output.add('setStyleComplete', '完成', {type: 'any'})
+    output.add('setStyleComplete', '完成', { type: 'any' })
     input.get(InputIds.SetStyle).setRels(['setStyleComplete'])
   }
 
   if (!input.get(InputIds.ScrollTo)) {
     input.add(InputIds.ScrollTo, '滚动到', { type: 'number' });
-    output.add('scrollComplete', '完成', {type: 'any'})
+    output.add('scrollComplete', '完成', { type: 'any' })
     input.get(InputIds.ScrollTo).setRels(['scrollComplete'])
   }
 
@@ -105,36 +105,45 @@ export default function ({
   //=========== v1.0.19 end ===============
 
   /**
-   * @description v1.0.21 兼容智能排列，flexDepiction 
+   * @description v1.0.21 兼容智能排列，flexDirection 
   */
-  if(data.slotStyle.flexDirection === 'smart'){
+  if (data.slotStyle.flexDirection === 'smart') {
     data.slotStyle.position = 'smart'
   }
 
   /**
    * @description v1.0.22 增加padding 
   */
-  if(typeof data.slotStyle.paddingType === 'undefined'){
+  if (typeof data.slotStyle.paddingType === 'undefined') {
     data.slotStyle.paddingType = "independentPadding"
   }
-  if(typeof data.slotStyle.paddingTop === 'undefined'){
+  if (typeof data.slotStyle.paddingTop === 'undefined') {
     data.slotStyle.paddingTop = 0
   }
-  if(typeof data.slotStyle.paddingBottom === 'undefined'){
+  if (typeof data.slotStyle.paddingBottom === 'undefined') {
     data.slotStyle.paddingBottom = 0
   }
-  if(typeof data.slotStyle.paddingLeft === 'undefined'){
+  if (typeof data.slotStyle.paddingLeft === 'undefined') {
     data.slotStyle.paddingLeft = 0
   }
 
   /**
    * @description v1.0.28 增加hover事件
   */
-  if(typeof data.useMouseEnter === 'undefined'){
+  if (typeof data.useMouseEnter === 'undefined') {
     data.useMouseEnter = false
   }
-  if(typeof data.useMouseLeave === 'undefined'){
+  if (typeof data.useMouseLeave === 'undefined') {
     data.useMouseLeave = false
   }
+
+  /**
+  * @description v1.0.29 fix: slotStyle默认值问题
+  */
+  if (data.slotStyle?.position === 'smart' && data.slotStyle?.display === 'flex') {
+    data.slotStyle.display = 'block';
+  }
+  //=========== v1.0.29 end ===============
+
   return true;
 }
