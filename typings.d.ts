@@ -8,6 +8,19 @@ declare module '*.svg' {
   export = resource;
 }
 
+type DynamicPermission = { permission: boolean, type: "hide" | "hintLink", hintLinkUrl?: string, hintLinkTitle?: string }
+
+type ConfigPermission = {
+  id: string;
+  type: string;
+  hintLink?: string;
+  registerData?: {
+    noPrivilege: 'hide' | 'hintLink';
+    code: string;
+    title: string;
+  };
+};
+
 interface Env {
   ajax: (url: string, opt: Record<string, any>) => Promise<any>;
   events: any[];
@@ -19,7 +32,7 @@ interface Env {
     getRouter: () => Record<string, Function>;
     locale: string | number | symbol | undefined;
   };
-  hasPermission: (id: string) => boolean;
+  hasPermission: (id: string) => (boolean | DynamicPermission);
   [x: string]: any;
 }
 interface RuntimeParams<T> {

@@ -20,7 +20,7 @@ const PermissionEditor = [
         value: {
           id: string;
           type: string;
-          noPrivilegeType: 'hide' | 'hintLink';
+          remark: string
           hintLink?: string;
           registerData?: {
             noPrivilege: 'hide' | 'hintLink';
@@ -30,12 +30,12 @@ const PermissionEditor = [
           register: () => void;
         }
       ) {
+        console.log(`value JD==> `,value);
         if (!focusArea) return;
         const { item } = getBtnItemInfo(data, focusArea);
         item.permission = {
           id: value.id,
           type: value.type,
-          noPrivilegeType: value.noPrivilegeType,
           hintLink: value.hintLink,
           registerData: value.registerData
         };
