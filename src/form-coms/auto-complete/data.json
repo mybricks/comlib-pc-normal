@@ -7,5 +7,6 @@
     "allowClear": true,
     "placeholder": "请输入",
     "disabled": false
-  }
+  },
+  "filterRule": "value"
 }
