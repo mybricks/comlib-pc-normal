@@ -77,5 +77,6 @@
     "labelWrap": false,
     "labelAlign": "right",
     "disabled": false
-  }
+  },
+  "layoutType": "horizontal"
 }
