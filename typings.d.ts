@@ -8,17 +8,25 @@ declare module '*.svg' {
   export = resource;
 }
 
+/**
+ * hasPermission 返回的权限数据格式
+ */
 type DynamicPermission = { permission: boolean, type: "hide" | "hintLink", hintLinkUrl?: string, hintLinkTitle?: string }
 
+/**
+ * _permission 设置器返回的数据格式
+ */
 type ConfigPermission = {
   id: string;
-  type: string;
+  type?: string;
+  remark?: string
   hintLink?: string;
   registerData?: {
-    noPrivilege: 'hide' | 'hintLink';
-    code: string;
-    title: string;
+    noPrivilege?: 'hide' | 'hintLink';
+    code?: string;
+    title?: string;
   };
+  register?: () => void;
 };
 
 interface Env {
