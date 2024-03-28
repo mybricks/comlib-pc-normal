@@ -147,19 +147,24 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
       setDeclaredStyle(labelFontSelector, defaultLabelStyle);
     }
 
-    /** 标题对齐样式处理 */
+    /** 标题对齐样式处理
+     * v1.4.47 历史组件只处理水平布局, 忽略其他布局方式的对齐配置
+     */
     // 表单的公共标题对齐方式选择器
-    const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
-    const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
-    const isAllSetLabelAutoWrap = !isAllDefalutLabelAlign && uniq(data.items.map(item => item?.labelAlign)).length === 1;
-    labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
-    const defaultTextAlign = isVerticalModel ? 'left'
-      : (data.config.labelAlign || 'right');
-    const setTextAlign = data.items[0]?.labelAlign;
-    setDeclaredStyle(labelAlignSelector, {
-      textAlign:
-        (isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign)
-    });
+    if (isHorizontalModel) {
+      const labelAlignSelector = `.ant-form-item > div.ant-col.ant-form-item-label`;
+      const isAllDefalutLabelAlign = data.items.every(item => item?.labelAlign === 'default');
+      const isAllSetLabelAutoWrap = !isAllDefalutLabelAlign && uniq(data.items.map(item => item?.labelAlign)).length === 1;
+      labelAlignAllSame = isAllDefalutLabelAlign || isAllSetLabelAutoWrap;
+      const defaultTextAlign = (data.config.labelAlign || 'right');
+      const setTextAlign = data.items[0]?.labelAlign;
+      setDeclaredStyle(labelAlignSelector, {
+        textAlign:
+          (isAllSetLabelAutoWrap ? setTextAlign : defaultTextAlign)
+      });
+    } else {
+      labelAlignAllSame = true;
+    }
 
     /** 提示语样式处理 */
     // 表单的公共提示语样式选择器
