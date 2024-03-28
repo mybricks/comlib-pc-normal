@@ -90,6 +90,28 @@ export default {
         }
       },
       {
+        title: '筛选规则',
+        type: 'Select',
+        description: '默认根据数据源项的value进行筛选',
+        ifVisible({ data }) {
+          // 编辑项显示的条件
+          return data.isFilter;
+        },
+        options: [
+          { value: 'value', label: '值' },
+          { value: 'lable', label: '标签' },
+          { value: 'all', label: '值或标签' }
+        ],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data?.filterRule || 'value';
+          },
+          set({ data }: EditorResult<Data>, value: 'value' | 'label' | 'all') {
+            data.filterRule = value;
+          }
+        }
+      },
+      {
         title: '静态选项配置',
         type: 'array',
         options: {
