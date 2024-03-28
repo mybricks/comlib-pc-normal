@@ -1,5 +1,5 @@
 import { addBtn } from "./actionBtnEditor";
-import { DELETE_BTN_ID, Data, MODIFY_BTN_ID } from "./types";
+import { Data } from "./types";
 
 export const commonActionBtnsEditor = (data, output) => {
   return {
@@ -36,9 +36,6 @@ export const commonActionBtnsEditor = (data, output) => {
           deletable: false,
           editable: false,
           getTitle: (item) => {
-            if ([MODIFY_BTN_ID, DELETE_BTN_ID].includes(item.id)) {
-              return `${item?.title}(内置${item.hidden ? ' | 已隐藏' : ''})`
-            }
             return item?.title;
           },
           onAdd: () => {
