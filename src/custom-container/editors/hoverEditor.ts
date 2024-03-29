@@ -2,7 +2,7 @@ import { Data, OutputIds } from '../constants';
 
 export const HoverEditor = [
   {
-    title: 'hover设置',
+    title: 'hover',
     items: [
       {
         title: '鼠标移入事件',
