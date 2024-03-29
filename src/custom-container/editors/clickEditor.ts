@@ -2,7 +2,7 @@ import { Data, OutputIds } from '../constants';
 
 export const ClickEditor = [
   {
-    title: '点击设置',
+    title: '点击',
     items: [
       {
         title: '点击事件',

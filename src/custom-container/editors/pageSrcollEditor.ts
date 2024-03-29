@@ -2,7 +2,7 @@ import { BehaviorEnum, Data, InputIds, PositionEnum } from '../constants';
 
 export const PageScrollEditor = [
   {
-    title: '锚点滚动配置',
+    title: '锚点滚动',
     items: [
       {
         title: '锚点滚动',
