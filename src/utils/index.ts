@@ -163,3 +163,14 @@ export const i18nFn = (opts, env) => {
   }
   
 }
+
+/**
+ * 
+ * @description 判断是否需要初始化
+ * @param value 待判断值
+ * @param defaultValue 初始值
+ * @returns 
+ */
+export const setIfUndefined = <T>(value: T | undefined, defaultValue: T): T => {
+  return value === undefined ? defaultValue : value;
+};
