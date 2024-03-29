@@ -13,5 +13,10 @@
     "showSearch": false,
     "size": "middle"
   },
-  "isEditable": true
+  "isEditable": true,
+  "fieldNames": { 
+    "label": "label",
+    "value": "value",
+    "children": "children" 
+  }
 }

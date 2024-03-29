@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Cascader, CascaderProps } from 'antd';
+import type { FieldNames } from 'rc-cascader';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
 import useFormItemInputs from '../form-container/models/FormItem';
@@ -17,6 +18,7 @@ export interface Data {
   rules: any[];
   config: CascaderProps<any[]>;
   isEditable: boolean;
+  fieldNames: FieldNames;
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
@@ -26,7 +28,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const valueRef = useRef<any>();
   const { edit, runtime } = env;
   const debug = !!(runtime && runtime.debug);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<Array<any>>();
 
   useEffect(() => {
     if (env.runtime.debug?.prototype) {
@@ -159,6 +161,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
         <Cascader
           value={value}
           options={options}
+          fieldNames={data.fieldNames}
           {...data.config}
           placeholder={env.i18n(data.config.placeholder)}
           multiple={data.isMultiple}
