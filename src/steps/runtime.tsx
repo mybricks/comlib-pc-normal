@@ -71,6 +71,8 @@ export default function ({
           data.stepAry.forEach((item, index) => {
             if (val.includes(index)) {
               item.hide = true;
+            } else {
+              item.hide = false;
             }
           });
           relOutputs['setHideStepsComplete']();
