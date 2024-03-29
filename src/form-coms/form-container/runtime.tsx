@@ -620,7 +620,9 @@ const setValuesForInput = ({ childrenInputs, formItems, name }, inputId, values,
     if (input) {
       if (isObject(values[name])) {
         if (input[inputId]) {
-          input?.[inputId]?.({ ...values[name] });
+          input?.[inputId]?.({ ...values[name] })[inputDoneId]?.((val) => {
+            cb?.();
+          });
         }
       } else {
         input[inputId] &&
