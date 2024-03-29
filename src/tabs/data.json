@@ -6,23 +6,23 @@
       "id": "tab0",
       "infoType": "text",
       "size": "default",
-      "offset": [0,0],
+      "offset": [
+        0,
+        0
+      ],
       "status": "error",
-      "showZero": false  
+      "showZero": false
     }
   ],
   "slotStyle": {
-    "display": "flex",
+    "display": "block",
     "position": "smart",
     "flexDirection": "column",
     "alignItems": "flex-start",
     "justifyContent": "flex-start",
     "flexWrap": "nowrap",
-    "paddingType": "independentPadding",
-    "paddingTop": 0,
-    "paddingRight": 0,
-    "paddingBottom": 0,
-    "paddingLeft": 0
+    "rowGap": 0,
+    "columnGap": 0
   },
   "defaultActiveKey": "tab0",
   "type": "line",

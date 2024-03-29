@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useMemo } from 'react';
-import { Col, FormListFieldData, Row } from 'antd';
+import { Col, Form, FormListFieldData, Row } from 'antd';
 import { deepCopy } from '../../utils';
 import FormItem from './components/FormItem';
 import { SlotIds } from './constants';
@@ -126,10 +126,12 @@ const SlotContent = (
    */
 
   return (
-    <Row key={field.key} className="form-list-item">
-      {content}
-      {!env.edit && actions}
-    </Row>
+    <Form layout={data?.layoutType || 'horizontal'}>
+      <Row key={field.key} className="form-list-item">
+        {content}
+        {!env.edit && actions}
+      </Row>
+    </Form>
   );
 };
 
