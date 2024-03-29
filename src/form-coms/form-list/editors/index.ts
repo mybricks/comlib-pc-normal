@@ -1263,9 +1263,9 @@ export default {
             get({ data, focusArea }: EditorResult<Data>) {
               return btn.permission;
             },
-            set({ data, focusArea }: EditorResult<Data>, value: { id: string, register: () => void }) {
-              btn.permission = { id: value.id };
-              value.register();
+            set({ data, focusArea }: EditorResult<Data>, value: ConfigPermission) {
+              btn.permission = value;
+              value.register?.();
             }
           }
         },

@@ -13,7 +13,7 @@ export interface TabItem {
   dynamic?: boolean;
   num?: number | string;
   outputContent?: string;
-  permission?: { id: string };
+  permission?: ConfigPermission;
   id: string;
 
   tooltipText?: string;

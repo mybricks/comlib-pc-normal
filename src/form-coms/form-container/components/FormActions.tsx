@@ -4,6 +4,7 @@ import { Data, Action, LocationEnum } from '../types';
 import * as Icons from '@ant-design/icons';
 import { outputIds } from '../constants';
 import style from './formActions.less';
+import { getWhatToDoWithoutPermission } from '../../../utils/permission';
 
 interface Props {
   data: Data;
@@ -69,7 +70,7 @@ const FormActions = (props: Props) => {
     <Space wrap data-form-actions className={props.isMobile ? style.wrapper : ''}>
       {actions.items.map((item) => {
         if (props.env?.runtime && item.permission?.id) {
-          if (!props.env.hasPermission(item.permission?.id)) {
+          if (getWhatToDoWithoutPermission(item.permission, env).type !== 'none') {
             return null;
           }
         }

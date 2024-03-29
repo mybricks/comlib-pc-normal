@@ -314,9 +314,9 @@ export default {
                 get({ }: EditorResult<Data>) {
                   return item.permission;
                 },
-                set({ }: EditorResult<Data>, value: { id: string, register: () => void }) {
-                  item.permission = { id: value.id };
-                  value.register();
+                set({ }: EditorResult<Data>, value: ConfigPermission) {
+                  item.permission = value
+                  value.register?.()
                 }
               }
             }

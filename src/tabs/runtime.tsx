@@ -5,6 +5,7 @@ import { Data, InputIds, OutputIds, SlotIds, TabItem } from './constants';
 import css from './runtime.less';
 import * as Icons from '@ant-design/icons';
 import { usePrevious } from '../utils/hooks';
+import { getWhatToDoWithoutPermission } from '../utils/permission';
 
 const { TabPane } = Tabs;
 
@@ -31,14 +32,16 @@ export default function ({
     setShowTabs(() => (data.tabList ?? []).map((item) => item.id));
   }, [data.tabList]);
 
+  function isHasPermission(permission?: ConfigPermission) {
+    return !permission || getWhatToDoWithoutPermission(permission, env).type === 'none';
+  }
+
   const preKey = usePrevious<string | undefined>(data.defaultActiveKey);
   const findTargetByKey = useCallback(
     (target = data.defaultActiveKey) => {
       return data.tabList.find(
         ({ id, permission, key }) =>
-          (!permission || env.hasPermission(permission.id)) &&
-          showTabs?.includes(id as string) &&
-          key === target
+          isHasPermission(permission) && showTabs?.includes(id as string) && key === target
       );
     },
     [showTabs, data.defaultActiveKey]
@@ -48,9 +51,7 @@ export default function ({
     (target = data.defaultActiveKey) => {
       return data.tabList.findIndex(
         ({ id, permission, key }) =>
-          (!permission || env.hasPermission(permission.id)) &&
-          showTabs?.includes(id as string) &&
-          key === target
+          isHasPermission(permission) && showTabs?.includes(id as string) && key === target
       );
     },
     [showTabs, data.defaultActiveKey]
@@ -87,7 +88,7 @@ export default function ({
         }
         if (activeTab) {
           const { permission } = activeTab;
-          if (!permission || (permission && env.hasPermission(permission.id))) {
+          if (isHasPermission(permission)) {
             data.defaultActiveKey = activeTab.key;
             data.active = true;
             relOutputs[OutputIds.SetActiveTabComplete]();
@@ -100,17 +101,23 @@ export default function ({
       });
       // 上一页
       inputs[InputIds.PreviousTab]((_, relOutputs) => {
-        const currentIndex = findIndexByKey();
-        if (data.tabList[currentIndex - 1]) {
-          data.defaultActiveKey = data.tabList[currentIndex - 1].key;
+        const currentDisplayTabList = data.tabList.filter((tab) => isHasPermission(tab.permission));
+        const currentIndex = currentDisplayTabList.findIndex(
+          (tab) => showTabs?.includes(tab.id) && tab.key === data.defaultActiveKey
+        );
+        if (currentDisplayTabList[currentIndex - 1]) {
+          data.defaultActiveKey = currentDisplayTabList[currentIndex - 1].key;
           relOutputs[OutputIds.PreviousTabComplete]();
         }
       });
       // 下一页
       inputs[InputIds.NextTab]((_, relOutputs) => {
-        const currentIndex = findIndexByKey();
-        if (data.tabList[currentIndex + 1]) {
-          data.defaultActiveKey = data.tabList[currentIndex + 1].key;
+        const currentDisplayTabList = data.tabList.filter((tab) => isHasPermission(tab.permission));
+        const currentIndex = currentDisplayTabList.findIndex(
+          (tab) => showTabs?.includes(tab.id) && tab.key === data.defaultActiveKey
+        );
+        if (currentDisplayTabList[currentIndex + 1]) {
+          data.defaultActiveKey = currentDisplayTabList[currentIndex + 1].key;
           relOutputs[OutputIds.NextTabComplete]();
         }
       });
@@ -285,11 +292,7 @@ export default function ({
       <>
         {data.tabList.map((item) => {
           const tabName = env.i18n(item.name);
-          if (
-            env.runtime &&
-            ((item.permission && !env.hasPermission(item.permission.id)) ||
-              !showTabs?.includes(item.id))
-          ) {
+          if (env.runtime && (!isHasPermission(item.permission) || !showTabs?.includes(item.id))) {
             return null;
           }
           return (
