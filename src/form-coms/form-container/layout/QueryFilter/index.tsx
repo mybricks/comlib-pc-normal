@@ -6,6 +6,7 @@ import { unitConversion } from '../../../../utils';
 import { getFormItem } from '../../utils';
 import CollapseButton from './CollapseButton';
 import { outputIds } from '../../constants';
+import { getWhatToDoWithoutPermission } from '../../../../utils/permission';
 
 interface QueryFilterProps {
   data: Data;
@@ -173,7 +174,7 @@ const QueryFilter = (props: QueryFilterProps) => {
               )}
               {data.actions.items.map((item) => {
                 if (env?.runtime && item.permission?.id) {
-                  if (env.hasPermission(item.permission?.id)) {
+                  if (getWhatToDoWithoutPermission(item.permission, env).type !== 'none') {
                     return null;
                   }
                 }
