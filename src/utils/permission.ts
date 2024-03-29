@@ -9,11 +9,13 @@
  * @param id 权限ID
  * @returns 没有权限时需要做的事情吗，如果有权限返回 none
  */
-export const getWhatToDoWithoutPermission = (configPermission: ConfigPermission, env: Env): {
+export const getWhatToDoWithoutPermission = (configPermission: ConfigPermission | undefined, env: Env): {
   type: 'none' | 'hide' | 'hintLink',
   hintLinkUrl?: string;
   hintLinkTitle?: string
 } => {
+  if (!configPermission) return { type: 'none' };
+
   if (!env.runtime || !configPermission?.id) return { type: 'none' };
   const res = env?.hasPermission(configPermission?.id) ?? true;
   if (res === true) return { type: 'none' };
