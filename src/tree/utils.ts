@@ -355,24 +355,23 @@ export const getNodeSuggestions = (data: Data) => [
 ];
 
 /**
- * @description 对树数据源进行字符替换
- * @param from 待替换的字符串
- * @param to 替换后的字符串
+ * @description 对树默认的静态数据源进行字符替换
+ * @param fieldMap 字段映射
  * @returns 编码后的替换完成的树数据源
  */
-export const replaceTreeFieldAfterEncoding = (data: Data, filedMap: {
+export const replaceTreeFieldAfterEncoding = (data: Data, fieldMap: {
   title?: string,
   key?: string,
   children?: string
 }) => {
-  if (!filedMap.title) {
-    filedMap.title = data.titleFieldName || DefaultFieldName.Title;
+  if (!fieldMap.title) {
+    fieldMap.title = data.titleFieldName || DefaultFieldName.Title;
   }
-  if (!filedMap.key) {
-    filedMap.key = data.keyFieldName || DefaultFieldName.Key;
+  if (!fieldMap.key) {
+    fieldMap.key = data.keyFieldName || DefaultFieldName.Key;
   }
-  if (!filedMap.children) {
-    filedMap.children = data.childrenFieldName || DefaultFieldName.Children;
+  if (!fieldMap.children) {
+    fieldMap.children = data.childrenFieldName || DefaultFieldName.Children;
   }
 
   const regKey = new RegExp(DefaultFieldName.Key, 'g');
@@ -380,9 +379,9 @@ export const replaceTreeFieldAfterEncoding = (data: Data, filedMap: {
   const regChildren = new RegExp(DefaultFieldName.Children, 'g');
   return encodeURIComponent(
     decodeURIComponent(DefaultStaticData)
-      .replace(regKey, filedMap.key)
-      .replace(regTitle, filedMap.title)
-      .replace(regChildren, filedMap.children)
+      .replace(regKey, fieldMap.key)
+      .replace(regTitle, fieldMap.title)
+      .replace(regChildren, fieldMap.children)
   );
 }
 
