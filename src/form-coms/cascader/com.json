@@ -18,7 +18,7 @@
     {
       "id": "setValue",
       "title": "设置值",
-      "desc": "设置级联选择的值，并触发值变化事件输出",
+      "desc": "设置级联选择的选中项，并触发值更新事件输出",
       "schema": {
         "type": "array",
         "items": {
@@ -119,7 +119,7 @@
     },
     {
       "id": "setOptions",
-      "title": "输入数据源",
+      "title": "设置数据源",
       "desc": "设置级联选择的下拉选项列表",
       "schema": {
         "title": "输入数据源数据",
