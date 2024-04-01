@@ -377,13 +377,14 @@ export default function ({
     if (!iframeEl) return;
     const body = iframeEl.contentDocument?.querySelector('body');
     if (!body) return;
-
     if (data.disabled) {
-      body.contentEditable = 'false';
+      if (!loading) {
+        body.contentEditable = 'false';
+      }
     } else {
       body.contentEditable = 'true';
     }
-  }, [data.disabled]);
+  }, [data.disabled, loading]);
 
   const createSvgString = useCallback((Icons: Array<iconType> = []) => {
     const Svg = {};
