@@ -106,6 +106,10 @@ export function Init({
         ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
         : `p {margin: 0px; border:0px ; padding: 0px;}`),
     placeholder,
+    target_list: [
+      { title: '当前窗口', value: '_parent' },
+      { title: '新窗口', value: '_blank' },
+    ],
     ...(others || {})
   });
 }
