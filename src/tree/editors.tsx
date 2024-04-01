@@ -12,7 +12,12 @@ import {
   ValueType
 } from './types';
 import { InputIds, OutputIds } from './constants';
-import { getNodeSuggestions, refreshSchema, setCheckboxStatus } from './utils';
+import {
+  getNodeSuggestions,
+  refreshSchema,
+  replaceTreeFieldAfterEncoding,
+  setCheckboxStatus
+} from './utils';
 
 export default {
   '@resize': {
@@ -332,6 +337,13 @@ export default {
                   return data.titleFieldName;
                 },
                 set(props: EditorResult<Data>, value: string) {
+                  const preTitleFieldName = data.titleFieldName || 'title';
+                  const preDefaultStaticData = replaceTreeFieldAfterEncoding(data, {});
+                  if (preTitleFieldName !== value && data.staticData === preDefaultStaticData) {
+                    data.staticData = replaceTreeFieldAfterEncoding(data, {
+                      title: value
+                    });
+                  }
                   data.titleFieldName = value;
                   refreshSchema(props);
                 }
@@ -350,6 +362,13 @@ export default {
                   return data.keyFieldName;
                 },
                 set(props: EditorResult<Data>, value: string) {
+                  const preKeyFieldName = data.keyFieldName || 'key';
+                  const preDefaultStaticData = replaceTreeFieldAfterEncoding(data, {});
+                  if (preKeyFieldName !== value && data.staticData === preDefaultStaticData) {
+                    data.staticData = replaceTreeFieldAfterEncoding(data, {
+                      key: value
+                    });
+                  }
                   data.keyFieldName = value;
                   refreshSchema(props);
                 }
@@ -366,6 +385,13 @@ export default {
                   return data.childrenFieldName;
                 },
                 set(props: EditorResult<Data>, value: string) {
+                  const preChildrenFieldName = data.childrenFieldName || 'children';
+                  const preDefaultStaticData = replaceTreeFieldAfterEncoding(data, {});
+                  if (preChildrenFieldName !== value && data.staticData === preDefaultStaticData) {
+                    data.staticData = replaceTreeFieldAfterEncoding(data, {
+                      children: value
+                    });
+                  }
                   data.childrenFieldName = value;
                   refreshSchema(props);
                 }

@@ -1,6 +1,6 @@
 import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
-import { InputIds, OutputIds, } from "./constants";
+import { DefaultStaticData, InputIds, OutputIds, } from "./constants";
 
 /**
  * @description 将key格式化为字符串
@@ -353,6 +353,38 @@ export const getNodeSuggestions = (data: Data) => [
     ]
   }
 ];
+
+/**
+ * @description 对树数据源进行字符替换
+ * @param from 待替换的字符串
+ * @param to 替换后的字符串
+ * @returns 编码后的替换完成的树数据源
+ */
+export const replaceTreeFieldAfterEncoding = (data: Data, filedMap: {
+  title?: string,
+  key?: string,
+  children?: string
+}) => {
+  if (!filedMap.title) {
+    filedMap.title = data.titleFieldName || 'title';
+  }
+  if (!filedMap.key) {
+    filedMap.key = data.keyFieldName || 'key';
+  }
+  if (!filedMap.children) {
+    filedMap.children = data.childrenFieldName || 'children';
+  }
+
+  const regKey = new RegExp('key', 'g');
+  const regTitle = new RegExp('title', 'g');
+  const regChildren = new RegExp('children', 'g');
+  return encodeURIComponent(
+    decodeURIComponent(DefaultStaticData)
+      .replace(regKey, filedMap.key)
+      .replace(regTitle, filedMap.title)
+      .replace(regChildren, filedMap.children)
+  );
+}
 
 /** 
  * 更新schema
