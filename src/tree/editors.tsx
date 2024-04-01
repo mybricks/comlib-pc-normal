@@ -11,7 +11,7 @@ import {
   IconType,
   ValueType
 } from './types';
-import { InputIds, OutputIds } from './constants';
+import { DefaultFieldName, InputIds, OutputIds } from './constants';
 import {
   getNodeSuggestions,
   refreshSchema,
@@ -337,7 +337,7 @@ export default {
                   return data.titleFieldName;
                 },
                 set(props: EditorResult<Data>, value: string) {
-                  const preTitleFieldName = data.titleFieldName || 'title';
+                  const preTitleFieldName = data.titleFieldName || DefaultFieldName.Title;
                   const preDefaultStaticData = replaceTreeFieldAfterEncoding(data, {});
                   if (preTitleFieldName !== value && data.staticData === preDefaultStaticData) {
                     data.staticData = replaceTreeFieldAfterEncoding(data, {
@@ -362,7 +362,7 @@ export default {
                   return data.keyFieldName;
                 },
                 set(props: EditorResult<Data>, value: string) {
-                  const preKeyFieldName = data.keyFieldName || 'key';
+                  const preKeyFieldName = data.keyFieldName || DefaultFieldName.Key;
                   const preDefaultStaticData = replaceTreeFieldAfterEncoding(data, {});
                   if (preKeyFieldName !== value && data.staticData === preDefaultStaticData) {
                     data.staticData = replaceTreeFieldAfterEncoding(data, {
@@ -385,7 +385,7 @@ export default {
                   return data.childrenFieldName;
                 },
                 set(props: EditorResult<Data>, value: string) {
-                  const preChildrenFieldName = data.childrenFieldName || 'children';
+                  const preChildrenFieldName = data.childrenFieldName || DefaultFieldName.Children;
                   const preDefaultStaticData = replaceTreeFieldAfterEncoding(data, {});
                   if (preChildrenFieldName !== value && data.staticData === preDefaultStaticData) {
                     data.staticData = replaceTreeFieldAfterEncoding(data, {
