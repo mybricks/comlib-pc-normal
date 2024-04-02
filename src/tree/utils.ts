@@ -1,6 +1,6 @@
 import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
-import { InputIds, OutputIds, } from "./constants";
+import { DefaultFieldName, DefaultStaticData, InputIds, OutputIds, } from "./constants";
 
 /**
  * @description 将key格式化为字符串
@@ -41,9 +41,9 @@ export const getFieldNames = ({
   data: Data;
   env: Env;
 }) => {
-  const keyFieldName = env.edit && !data.useStaticData ? 'key' : data.keyFieldName || 'key';
-  const titleFieldName = env.edit && !data.useStaticData ? 'title' : data.titleFieldName || 'title';
-  const childrenFieldName = env.edit && !data.useStaticData ? 'children' : data.childrenFieldName || 'children';
+  const keyFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
+  const titleFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Title : data.titleFieldName || DefaultFieldName.Title;
+  const childrenFieldName = env.edit && !data.useStaticData ? DefaultFieldName.Children : data.childrenFieldName || DefaultFieldName.Children;
   return {
     keyFieldName,
     titleFieldName,
@@ -60,7 +60,7 @@ export const pretreatTreeData = ({
   data,
   defaultExpandAll,
   parentKey = '0',
-  keyFieldName = 'key'
+  keyFieldName = DefaultFieldName.Key
 }: {
   treeData: TreeData[];
   data: Data;
@@ -98,7 +98,7 @@ export const traverseTree = ({
   isEdit?: boolean;
 }): { parent: TreeData, index: number, node: TreeData } | null => {
   const { treeData, } = data;
-  const keyFieldName = isEdit ? 'key' : data.keyFieldName || 'key';
+  const keyFieldName = isEdit ? DefaultFieldName.Key : data.keyFieldName || DefaultFieldName.Key;
 
   if (!treeData || treeData.length === 0) return null;
   const searchTree = (treeNode: TreeData, index: number, parent: TreeData) => {
@@ -158,7 +158,7 @@ const getLeafNodes = (treeData: TreeData[], keyFieldName: string) => {
  * @returns
  */
 export const excludeParentKeys = (data: Data, checkedKeys: React.Key[]) => {
-  const { treeData, keyFieldName = 'key' } = data;
+  const { treeData, keyFieldName = DefaultFieldName.Key } = data;
   const result: any = [],
     leafNodeKeys = getLeafNodes(treeData, keyFieldName).map(keyToString);
 
@@ -336,23 +336,55 @@ export const getNodeSuggestions = (data: Data) => [
         detail: `当前节点的checkable值`
       },
       {
-        label: data.keyFieldName || 'key',
-        insertText: `{${data.keyFieldName || 'key'}}` + ' === ',
+        label: data.keyFieldName || DefaultFieldName.Key,
+        insertText: `{${data.keyFieldName || DefaultFieldName.Key}}` + ' === ',
         detail: `当前节点标识字段值`
       },
       {
-        label: data.titleFieldName || 'title',
-        insertText: `{${data.titleFieldName || 'title'}}` + ' === ',
+        label: data.titleFieldName || DefaultFieldName.Title,
+        insertText: `{${data.titleFieldName || DefaultFieldName.Title}}` + ' === ',
         detail: `当前节点标题字段值`
       },
       {
-        label: data.childrenFieldName || 'children',
-        insertText: `{${data.childrenFieldName || 'children'}}` + ' === ',
+        label: data.childrenFieldName || DefaultFieldName.Children,
+        insertText: `{${data.childrenFieldName || DefaultFieldName.Children}}` + ' === ',
         detail: `当前节点子节点字段值`
       },
     ]
   }
 ];
+
+/**
+ * @description 对树数据源进行字符替换
+ * @param from 待替换的字符串
+ * @param to 替换后的字符串
+ * @returns 编码后的替换完成的树数据源
+ */
+export const replaceTreeFieldAfterEncoding = (data: Data, filedMap: {
+  title?: string,
+  key?: string,
+  children?: string
+}) => {
+  if (!filedMap.title) {
+    filedMap.title = data.titleFieldName || DefaultFieldName.Title;
+  }
+  if (!filedMap.key) {
+    filedMap.key = data.keyFieldName || DefaultFieldName.Key;
+  }
+  if (!filedMap.children) {
+    filedMap.children = data.childrenFieldName || DefaultFieldName.Children;
+  }
+
+  const regKey = new RegExp(DefaultFieldName.Key, 'g');
+  const regTitle = new RegExp(DefaultFieldName.Title, 'g');
+  const regChildren = new RegExp(DefaultFieldName.Children, 'g');
+  return encodeURIComponent(
+    decodeURIComponent(DefaultStaticData)
+      .replace(regKey, filedMap.key)
+      .replace(regTitle, filedMap.title)
+      .replace(regChildren, filedMap.children)
+  );
+}
 
 /** 
  * 更新schema
