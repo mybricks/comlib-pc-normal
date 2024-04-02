@@ -4,7 +4,7 @@ import { createItem, addEventIO } from './common';
 import { createStyleForDefault, createStyleForActive, createStyleForBar, setDynamicTabsIO } from './utils';
 import { getFilterSelector } from '../../utils/cssSelector';
 
-const setSlotLayout = (slot, val) => {
+export const setSlotLayout = (slot, val) => {
   if (!slot) return;
   if (val.position === 'smart') {
     slot.setLayout('smart');
@@ -64,7 +64,7 @@ export default {
                 title: newItem.name
               });
               const slotInstance = slots.get(newItem.id);
-              slotInstance.setLayout('smart');
+              setSlotLayout(slotInstance, data.slotStyle);
               addEventIO(output, newItem);
               data.tabList.push(newItem);
               // slots.add({
