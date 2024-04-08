@@ -31,6 +31,14 @@ const renderTreeNode = (
     setTreeDataDone.current(data.treeData);
     setTreeDataDone.current = null;
   }
+  let sandbox: ExpressionSandbox;
+  if (
+    data.disabledScript ||
+    (data.checkable === 'custom' && data.checkableScript) ||
+    (!!data.draggable && data.allowDrop === 'custom' && data.allowDropScript)
+  ) {
+    sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+  }
   /**
    * 树节点动态禁用表达式
    * @param node 节点数据
@@ -39,7 +47,6 @@ const renderTreeNode = (
   const getDynamicDisabled = (context: TreeData): boolean => {
     let flag = context.disabled;
     if (data.disabledScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
       try {
         flag = sandbox.executeWithTemplate(data.disabledScript);
       } catch (error: any) {
@@ -57,7 +64,6 @@ const renderTreeNode = (
   const getDynamicCheckable = (context: TreeData): boolean => {
     let flag = true;
     if (data.checkable === 'custom' && data.checkableScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
       try {
         flag = !!sandbox.executeWithTemplate(data.checkableScript);
       } catch (error: any) {
@@ -75,7 +81,6 @@ const renderTreeNode = (
   const getDynamicDraggable = (context: TreeData): boolean => {
     let flag = true;
     if (data.draggable === 'custom' && data.draggableScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
       try {
         flag = !!sandbox.executeWithTemplate(data.draggableScript);
       } catch (error: any) {

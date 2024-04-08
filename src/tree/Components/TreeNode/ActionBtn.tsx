@@ -91,11 +91,11 @@ export default function ActionBtns({
   const getDynamicDisplay = (btn: ActionBtn): boolean => {
     if (env.edit) return true;
     let dynamicDisplay = true;
-    const context = {
-      ...outputItem
-    };
-    const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
     if (btn.displayScript) {
+      const context = {
+        ...outputItem
+      };
+      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
       try {
         dynamicDisplay = sandbox.executeWithTemplate(btn.displayScript);
       } catch (error: any) {
