@@ -21,6 +21,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
   const { env, data, inputs, outputs, slots, logger, title, parentSlot, id } = props;
 
   const validateRelOutputRef = useRef<any>(null);
+  const callbacks = useRef<any>({});
 
   const childrenStore = useMemo<ChildrenStore>(() => {
     return {};
@@ -176,7 +177,7 @@ export default function Runtime(props: RuntimeParams<Data>) {
     // 新增一项
     inputs[SelfInputIds.AddField]?.((val, relOutputs) => {
       addField({ data }, val);
-      relOutputs['addFieldDone'](val);
+      callbacks.current.addFieldDone = () => relOutputs['addFieldDone'](val);
     });
     // 删除一项
     inputs[SelfInputIds.RemoveField]?.((val, relOutputs) => {
@@ -321,7 +322,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
               margin: data.listItemMargin?.map((i) => i + 'px').join(' ')
             }}
           >
-            <SlotContent {...props} childrenStore={childrenStore} actions={actions} field={field} />
+            <SlotContent
+              {...props}
+              childrenStore={childrenStore}
+              actions={actions}
+              field={field}
+              callbacks={callbacks.current}
+            />
           </div>
         );
       })}

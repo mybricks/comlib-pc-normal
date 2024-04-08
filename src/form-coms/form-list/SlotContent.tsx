@@ -17,10 +17,22 @@ const SlotContent = (
     childrenStore: ChildrenStore;
     actions: ReactElement;
     field: FormListFieldData;
+    callbacks?: any;
   }
 ) => {
-  const { slots, data, env, actions, field, childrenStore, outputs, id, parentSlot, logger } =
-    props;
+  const {
+    slots,
+    data,
+    env,
+    actions,
+    field,
+    childrenStore,
+    outputs,
+    id,
+    parentSlot,
+    logger,
+    callbacks
+  } = props;
   const content = useMemo(() => {
     return slots[SlotIds.FormItems].render({
       itemWrap(com: { id; jsx; name }) {
@@ -97,6 +109,12 @@ const SlotContent = (
                 data.userAction.index = -1;
                 data.userAction.key = -1;
                 data.userAction.value = undefined;
+                Object.entries(callbacks).forEach(([key, cb]) => {
+                  if (typeof cb === 'function') {
+                    cb();
+                    callbacks[key] = null;
+                  }
+                });
               };
               if (temp) {
                 setValuesOfChild({ data, childrenStore, key, value: temp || {}, actionType }, cb);
