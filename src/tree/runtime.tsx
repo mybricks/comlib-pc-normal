@@ -3,6 +3,7 @@ import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { uniq } from 'lodash';
 import { deepCopy, typeCheck, uuid } from '../utils';
+import { ExpressionSandbox } from '../../package/com-utils';
 import {
   setCheckboxStatus,
   generateList,
@@ -576,7 +577,15 @@ export default function (props: RuntimeParams<Data>) {
           onDrop={onDrop}
           blockNode
         >
-          {TreeNode(props, setExpandedKeys, data.treeData || [], filteredKeys, 0, { key: rootKey })}
+          {TreeNode({
+            props,
+            fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+            setExpandedKeys,
+            treeData: data.treeData || [],
+            filteredKeys,
+            depth: 0,
+            parent: { key: rootKey }
+          })}
         </Tree>
       )}
     </div>

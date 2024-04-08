@@ -1,6 +1,7 @@
 import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
 import { DefaultFieldName, DefaultStaticData, InputIds, OutputIds, } from "./constants";
+import { ExpressionSandbox } from '../../package/com-utils';
 
 /**
  * @description 将key格式化为字符串
@@ -385,6 +386,85 @@ export const replaceTreeFieldAfterEncoding = (data: Data, fieldMap: {
   );
 }
 
+/**
+* 树节点动态属性计算
+* @param context 节点数据
+* @param sandbox 表达式执行沙箱
+* @param data 组件Data
+* @param fieldMap 字段映射
+*/
+export const getDynamicProps = (
+  {
+    context,
+    props,
+    fieldNames
+  }
+    : {
+      context: TreeData,
+      props: RuntimeParams<Data>,
+      fieldNames: { keyFieldName: string, titleFieldName: string, childrenFieldName: string }
+    },
+): {
+  disabledFlag: boolean,
+  checkableFlag: boolean,
+  draggableFlag: boolean,
+  allowDropFlag: boolean
+} => {
+  const { data, onError } = props;
+  const { titleFieldName } = fieldNames;
+  let sandbox: ExpressionSandbox | undefined
+
+  /**树节点动态禁用表达式 */
+  let disabledFlag = context.disabled;
+  if (data.disabledScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      disabledFlag = sandbox.executeWithTemplate(data.disabledScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点禁用计算错误: ${error}`);
+    }
+  }
+
+  /**树节点勾选框动态显示表达式 */
+  let checkableFlag = true;
+  if (data.checkable === 'custom' && data.checkableScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      checkableFlag = !!sandbox.executeWithTemplate(data.checkableScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可勾选: ${error}`);
+    }
+  }
+
+  /**树节点动态可拖拽表达式 */
+  let draggableFlag = true;
+  if (data.draggable === 'custom' && data.draggableScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      draggableFlag = !!sandbox.executeWithTemplate(data.draggableScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可拖拽: ${error}`);
+    }
+  }
+
+  /**树节点动态可放置表达式 */
+  let allowDropFlag = true;
+  if (!!data.draggable && data.allowDrop === 'custom' && data.allowDropScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      allowDropFlag = !!sandbox.executeWithTemplate(data.allowDropScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可放置: ${error}`);
+    }
+  }
+
+  return {
+    disabledFlag,
+    checkableFlag,
+    draggableFlag,
+    allowDropFlag
+  };
+};
 /** 
  * 更新schema
  */
