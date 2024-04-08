@@ -148,7 +148,7 @@ export const actionsEditor = (data: Data, output, env) => {
               icon: "HomeOutlined",
               iconLocation: "front"
             }
-            output.add(outputId, `点击${title}`, { type: 'any' })
+            output.add(outputId, title, { type: 'any' })
             data.actions.items.push(item)
             return item;
           }
