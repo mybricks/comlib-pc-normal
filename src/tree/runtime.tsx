@@ -34,6 +34,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
+  const setTreeDataDone = useRef<null | ((arg: any) => any)>(null);
 
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
@@ -97,6 +98,10 @@ export default function (props: RuntimeParams<Data>) {
     });
     clearCheckedKeys();
     updateExpandedKeys();
+    if (setTreeDataDone?.current) {
+      setTreeDataDone.current(data.treeData);
+      setTreeDataDone.current = null;
+    }
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -118,7 +123,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   /** 过滤
-   * @returns 符合符合过滤方法的树节点及父节点
+   * @returns 符合过滤方法的树节点及父节点
    */
   const filter = useCallback(() => {
     const filterKeys: React.Key[] = [];
@@ -175,11 +180,10 @@ export default function (props: RuntimeParams<Data>) {
         inputs['treeData']((value: TreeData[], relOutputs) => {
           if (value && Array.isArray(value)) {
             data.treeData = [...value];
-            relOutputs['setTreeDataDone'](data.treeData);
           } else {
             data.treeData = [];
-            relOutputs['setTreeDataDone'](data.treeData);
           }
+          setTreeDataDone.current = relOutputs['setTreeDataDone'];
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
 
@@ -572,7 +576,15 @@ export default function (props: RuntimeParams<Data>) {
           onDrop={onDrop}
           blockNode
         >
-          {TreeNode(props, setExpandedKeys, data.treeData || [], filteredKeys, 0, { key: rootKey })}
+          {TreeNode({
+            props,
+            fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+            setExpandedKeys,
+            treeData: data.treeData || [],
+            filteredKeys,
+            depth: 0,
+            parent: { key: rootKey }
+          })}
         </Tree>
       )}
     </div>

@@ -2,8 +2,7 @@ import React from 'react';
 import { Tree } from 'antd';
 import { deepCopy } from '../../../utils';
 import { Data, TreeData } from '../../types';
-import { ExpressionSandbox } from '../../../../package/com-utils';
-import { getFieldNames, keyToString } from '../../utils';
+import { getDynamicProps, keyToString } from '../../utils';
 import { renderAddTitle } from './AddTitle';
 import { renderTitle } from './Title';
 const { TreeNode } = Tree;
@@ -16,88 +15,25 @@ import css from './style.less';
  * @param parent 父节点数据
  * @returns JSX
  */
-const renderTreeNode = (
-  props: RuntimeParams<Data>,
+const renderTreeNode = ({
+  props,
   setExpandedKeys,
-  treeData: TreeData[],
-  filteredKeys: React.Key[],
+  treeData,
+  filteredKeys,
+  fieldNames,
   depth,
   parent
-) => {
-  const { data, env, onError } = props;
-  const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
-
-  /**
-   * 树节点动态禁用表达式
-   * @param node 节点数据
-   * @param isRoot 是否根节点
-   */
-  const getDynamicDisabled = (context: TreeData): boolean => {
-    let flag = context.disabled;
-    if (data.disabledScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
-      try {
-        flag = sandbox.executeWithTemplate(data.disabledScript);
-      } catch (error: any) {
-        onError?.(`树组件[${context[titleFieldName]}]节点禁用计算错误: ${error}`);
-      }
-    }
-    return flag;
-  };
-
-  /**
-   * 树节点勾选框动态显示表达式
-   * @param node 节点数据
-   * @param isRoot 是否根节点
-   */
-  const getDynamicCheckable = (context: TreeData): boolean => {
-    let flag = true;
-    if (data.checkable === 'custom' && data.checkableScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
-      try {
-        flag = !!sandbox.executeWithTemplate(data.checkableScript);
-      } catch (error: any) {
-        onError?.(`树组件[${context[titleFieldName]}]节点可勾选: ${error}`);
-      }
-    }
-    return flag;
-  };
-
-  /**
-   * 树节点动态可拖拽表达式
-   * @param node 节点数据
-   * @param isRoot 是否根节点
-   */
-  const getDynamicDraggable = (context: TreeData): boolean => {
-    let flag = true;
-    if (data.draggable === 'custom' && data.draggableScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
-      try {
-        flag = !!sandbox.executeWithTemplate(data.draggableScript);
-      } catch (error: any) {
-        onError?.(`树组件[${context[titleFieldName]}]节点可拖拽: ${error}`);
-      }
-    }
-    return flag;
-  };
-
-  /**
-   * 树节点动态可放置表达式
-   * @param node 节点数据
-   * @param isRoot 是否根节点
-   */
-  const getDynamicAllowDrop = (context: TreeData): boolean => {
-    let flag = true;
-    if (!!data.draggable && data.allowDrop === 'custom' && data.allowDropScript) {
-      const sandbox: ExpressionSandbox = new ExpressionSandbox({ context, prefix: 'node' });
-      try {
-        flag = !!sandbox.executeWithTemplate(data.allowDropScript);
-      } catch (error: any) {
-        onError?.(`树组件[${context[titleFieldName]}]节点可放置: ${error}`);
-      }
-    }
-    return flag;
-  };
+}: {
+  props: RuntimeParams<Data>;
+  setExpandedKeys;
+  treeData: TreeData[];
+  filteredKeys: React.Key[];
+  fieldNames: { keyFieldName: string; titleFieldName: string; childrenFieldName: string };
+  depth: number;
+  parent: { key: string };
+}) => {
+  const { data } = props;
+  const { keyFieldName, childrenFieldName } = fieldNames;
 
   const hasAddNode =
     data.addable &&
@@ -124,10 +60,11 @@ const renderTreeNode = (
           outputItem._depth = depth;
         }
 
-        const disabled = getDynamicDisabled(outputItem);
-        const checkable = getDynamicCheckable(outputItem);
-        const draggable = getDynamicDraggable(outputItem);
-        const allowDrop = getDynamicAllowDrop(outputItem);
+        const dynamicProps = getDynamicProps({ props, fieldNames, context: outputItem });
+        const disabled = dynamicProps.disabledFlag;
+        const checkable = dynamicProps.checkableFlag;
+        const draggable = dynamicProps.draggableFlag;
+        const allowDrop = dynamicProps.allowDropFlag;
 
         return (
           <TreeNode
@@ -146,14 +83,15 @@ const renderTreeNode = (
               display: filteredKeys.includes(item[keyFieldName]) ? void 0 : 'none'
             }}
           >
-            {renderTreeNode(
+            {renderTreeNode({
               props,
               setExpandedKeys,
-              item[childrenFieldName] || [],
+              treeData: item[childrenFieldName] || [],
               filteredKeys,
-              depth + 1,
-              item
-            )}
+              depth: depth + 1,
+              fieldNames,
+              parent: item
+            })}
           </TreeNode>
         );
       })}

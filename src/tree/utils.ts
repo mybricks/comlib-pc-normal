@@ -1,6 +1,7 @@
 import { deepCopy } from "../utils";
 import { Data, TreeData, ValueType } from "./types";
 import { DefaultFieldName, DefaultStaticData, InputIds, OutputIds, } from "./constants";
+import { ExpressionSandbox } from '../../package/com-utils';
 
 /**
  * @description 将key格式化为字符串
@@ -355,24 +356,23 @@ export const getNodeSuggestions = (data: Data) => [
 ];
 
 /**
- * @description 对树数据源进行字符替换
- * @param from 待替换的字符串
- * @param to 替换后的字符串
+ * @description 对树默认的静态数据源进行字符替换
+ * @param fieldMap 字段映射
  * @returns 编码后的替换完成的树数据源
  */
-export const replaceTreeFieldAfterEncoding = (data: Data, filedMap: {
+export const replaceTreeFieldAfterEncoding = (data: Data, fieldMap: {
   title?: string,
   key?: string,
   children?: string
 }) => {
-  if (!filedMap.title) {
-    filedMap.title = data.titleFieldName || DefaultFieldName.Title;
+  if (!fieldMap.title) {
+    fieldMap.title = data.titleFieldName || DefaultFieldName.Title;
   }
-  if (!filedMap.key) {
-    filedMap.key = data.keyFieldName || DefaultFieldName.Key;
+  if (!fieldMap.key) {
+    fieldMap.key = data.keyFieldName || DefaultFieldName.Key;
   }
-  if (!filedMap.children) {
-    filedMap.children = data.childrenFieldName || DefaultFieldName.Children;
+  if (!fieldMap.children) {
+    fieldMap.children = data.childrenFieldName || DefaultFieldName.Children;
   }
 
   const regKey = new RegExp(DefaultFieldName.Key, 'g');
@@ -380,12 +380,91 @@ export const replaceTreeFieldAfterEncoding = (data: Data, filedMap: {
   const regChildren = new RegExp(DefaultFieldName.Children, 'g');
   return encodeURIComponent(
     decodeURIComponent(DefaultStaticData)
-      .replace(regKey, filedMap.key)
-      .replace(regTitle, filedMap.title)
-      .replace(regChildren, filedMap.children)
+      .replace(regKey, fieldMap.key)
+      .replace(regTitle, fieldMap.title)
+      .replace(regChildren, fieldMap.children)
   );
 }
 
+/**
+* 树节点动态属性计算
+* @param context 节点数据
+* @param sandbox 表达式执行沙箱
+* @param data 组件Data
+* @param fieldMap 字段映射
+*/
+export const getDynamicProps = (
+  {
+    context,
+    props,
+    fieldNames
+  }
+    : {
+      context: TreeData,
+      props: RuntimeParams<Data>,
+      fieldNames: { keyFieldName: string, titleFieldName: string, childrenFieldName: string }
+    },
+): {
+  disabledFlag: boolean,
+  checkableFlag: boolean,
+  draggableFlag: boolean,
+  allowDropFlag: boolean
+} => {
+  const { data, onError } = props;
+  const { titleFieldName } = fieldNames;
+  let sandbox: ExpressionSandbox | undefined
+
+  /**树节点动态禁用表达式 */
+  let disabledFlag = context.disabled;
+  if (data.disabledScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      disabledFlag = sandbox.executeWithTemplate(data.disabledScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点禁用计算错误: ${error}`);
+    }
+  }
+
+  /**树节点勾选框动态显示表达式 */
+  let checkableFlag = true;
+  if (data.checkable === 'custom' && data.checkableScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      checkableFlag = !!sandbox.executeWithTemplate(data.checkableScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可勾选: ${error}`);
+    }
+  }
+
+  /**树节点动态可拖拽表达式 */
+  let draggableFlag = true;
+  if (data.draggable === 'custom' && data.draggableScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      draggableFlag = !!sandbox.executeWithTemplate(data.draggableScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可拖拽: ${error}`);
+    }
+  }
+
+  /**树节点动态可放置表达式 */
+  let allowDropFlag = true;
+  if (!!data.draggable && data.allowDrop === 'custom' && data.allowDropScript) {
+    if (!sandbox) sandbox = new ExpressionSandbox({ context, prefix: 'node' });
+    try {
+      allowDropFlag = !!sandbox.executeWithTemplate(data.allowDropScript);
+    } catch (error: any) {
+      onError?.(`树组件[${context[titleFieldName]}]节点可放置: ${error}`);
+    }
+  }
+
+  return {
+    disabledFlag,
+    checkableFlag,
+    draggableFlag,
+    allowDropFlag
+  };
+};
 /** 
  * 更新schema
  */
