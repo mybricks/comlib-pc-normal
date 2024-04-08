@@ -19,9 +19,9 @@ export default {
             get({ }: EditorResult<Data>) {
               return item?.name;
             },
-            set({ input, output }: EditorResult<Data>, title: string) {
+            set({ input, output, slots }: EditorResult<Data>, title: string) {
               item.name = title;
-              updateIO({ input, output, item });
+              updateIO({ input, output, item, slots });
             }
           }
         },

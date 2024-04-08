@@ -70,6 +70,7 @@ export function Init({
     language: 'zh_CN',
     fontsize_formats: '12px 14px 16px 18px 20px 24px 36px 48px 56px 72px',
     font_formats: `系统字体=sans-serif;微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;黑体=SimHei,sans-serif;黑体-简=Heiti SC,sans-serif;宋体=Simsun,serif;仿宋体=FangSong,serif;楷体=KaiTi;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;`,
+    fullpage_default_font_family: 'sans-serif',
     fullpage_default_font_size: '12px',
     nonbreaking_force_tab: true,
     letterspacing_formats: `0 0.5pt 1pt 1.5pt 2pt 3pt`,
@@ -106,6 +107,10 @@ export function Init({
         ? `p {margin: 0px; border:0px ; padding: 0px;} .mce-content-readonly {margin: 0px;}`
         : `p {margin: 0px; border:0px ; padding: 0px;}`),
     placeholder,
+    target_list: [
+      { title: '当前窗口', value: '_parent' },
+      { title: '新窗口', value: '_blank' },
+    ],
     ...(others || {})
   });
 }

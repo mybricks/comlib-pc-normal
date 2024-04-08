@@ -649,5 +649,13 @@ export default function ({ data, input, output, slot, children, setDeclaredStyle
   data.config.labelWrap = undefined;
   //=========== v1.4.39 part3 end ===============
 
+  /**
+   * @description v1.4.48去除操作项“点击”
+  */
+  data.actions.items.forEach((item)=>{
+    output.setTitle(item.outputId, item.title);
+  })
+  //=========== v1.4.49===============
+
   return true;
 }

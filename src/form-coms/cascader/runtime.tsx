@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Cascader, CascaderProps } from 'antd';
+import { Cascader, CascaderProps, message } from 'antd';
 import type { FieldNames } from 'rc-cascader';
 import { RuleKeys, defaultRules, validateFormItem } from '../utils/validator';
 import css from './runtime.less';
@@ -22,7 +22,7 @@ export interface Data {
 }
 
 export default function Runtime(props: RuntimeParams<Data>) {
-  const { data, inputs, outputs, env, parentSlot, id } = props;
+  const { data, inputs, outputs, title, logger, env, parentSlot, id } = props;
   const [options, setOptions] = useState(env.design ? mockData : []);
   const validateRelOutputRef = useRef<any>(null);
   const valueRef = useRef<any>();
@@ -144,6 +144,13 @@ export default function Runtime(props: RuntimeParams<Data>) {
   };
 
   const changeValue = (val) => {
+    if (Array.isArray(val) && ['object', 'function'].includes(typeof val[0])) {
+      logger.warn(`${title}组件:【设置值】参数类型错误！`);
+      if (env.runtime?.debug) {
+        message.warn(`${title}组件:【设置值】参数类型错误！`);
+      }
+      return;
+    }
     setValue(val);
     valueRef.current = val;
     onChangeForFc(parentSlot, { id: props.id, name: props.name, value: val });
