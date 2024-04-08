@@ -22,11 +22,15 @@ const renderTreeNode = (
   treeData: TreeData[],
   filteredKeys: React.Key[],
   depth,
-  parent
+  parent,
+  setTreeDataDone?
 ) => {
   const { data, env, onError } = props;
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
-
+  if (setTreeDataDone?.current) {
+    setTreeDataDone.current(data.treeData);
+    setTreeDataDone.current = null;
+  }
   /**
    * 树节点动态禁用表达式
    * @param node 节点数据

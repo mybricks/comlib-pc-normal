@@ -34,6 +34,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
+  const setTreeDataDone = useRef(null);
 
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
@@ -118,7 +119,7 @@ export default function (props: RuntimeParams<Data>) {
   }, []);
 
   /** 过滤
-   * @returns 符合符合过滤方法的树节点及父节点
+   * @returns 符合过滤方法的树节点及父节点
    */
   const filter = useCallback(() => {
     const filterKeys: React.Key[] = [];
@@ -175,11 +176,10 @@ export default function (props: RuntimeParams<Data>) {
         inputs['treeData']((value: TreeData[], relOutputs) => {
           if (value && Array.isArray(value)) {
             data.treeData = [...value];
-            relOutputs['setTreeDataDone'](data.treeData);
           } else {
             data.treeData = [];
-            relOutputs['setTreeDataDone'](data.treeData);
           }
+          setTreeDataDone.current = relOutputs['setTreeDataDone'];
           outputs[OutputIds.OnChange](deepCopy(data.treeData));
         });
 
@@ -572,7 +572,15 @@ export default function (props: RuntimeParams<Data>) {
           onDrop={onDrop}
           blockNode
         >
-          {TreeNode(props, setExpandedKeys, data.treeData || [], filteredKeys, 0, { key: rootKey })}
+          {TreeNode(
+            props,
+            setExpandedKeys,
+            data.treeData || [],
+            filteredKeys,
+            0,
+            { key: rootKey },
+            setTreeDataDone
+          )}
         </Tree>
       )}
     </div>
