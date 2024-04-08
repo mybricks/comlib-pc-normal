@@ -34,7 +34,7 @@ export default function (props: RuntimeParams<Data>) {
 
   const curentLoadNode = useRef({});
   const treeKeys = useRef<{ key: string; title: string; depth: number }[]>([]);
-  const setTreeDataDone = useRef(null);
+  const setTreeDataDone = useRef<null | ((arg: any) => any)>(null);
 
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
 
@@ -98,6 +98,10 @@ export default function (props: RuntimeParams<Data>) {
     });
     clearCheckedKeys();
     updateExpandedKeys();
+    if (data.treeData.length !== 0 && setTreeDataDone?.current) {
+      setTreeDataDone.current(data.treeData);
+      setTreeDataDone.current = null;
+    }
   }, [data.treeData]);
 
   /** 按标签搜索，高亮展示树节点
@@ -572,15 +576,7 @@ export default function (props: RuntimeParams<Data>) {
           onDrop={onDrop}
           blockNode
         >
-          {TreeNode(
-            props,
-            setExpandedKeys,
-            data.treeData || [],
-            filteredKeys,
-            0,
-            { key: rootKey },
-            setTreeDataDone
-          )}
+          {TreeNode(props, setExpandedKeys, data.treeData || [], filteredKeys, 0, { key: rootKey })}
         </Tree>
       )}
     </div>

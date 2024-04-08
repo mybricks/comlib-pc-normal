@@ -22,15 +22,10 @@ const renderTreeNode = (
   treeData: TreeData[],
   filteredKeys: React.Key[],
   depth,
-  parent,
-  setTreeDataDone?
+  parent
 ) => {
   const { data, env, onError } = props;
   const { keyFieldName, titleFieldName, childrenFieldName } = getFieldNames({ data, env });
-  if (setTreeDataDone?.current) {
-    setTreeDataDone.current(data.treeData);
-    setTreeDataDone.current = null;
-  }
   let sandbox: ExpressionSandbox;
   if (
     data.disabledScript ||
