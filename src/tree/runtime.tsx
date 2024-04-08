@@ -3,7 +3,6 @@ import { Empty, Tree, message } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 import { uniq } from 'lodash';
 import { deepCopy, typeCheck, uuid } from '../utils';
-import { ExpressionSandbox } from '../../package/com-utils';
 import {
   setCheckboxStatus,
   generateList,
@@ -99,7 +98,7 @@ export default function (props: RuntimeParams<Data>) {
     });
     clearCheckedKeys();
     updateExpandedKeys();
-    if (data.treeData.length !== 0 && setTreeDataDone?.current) {
+    if (setTreeDataDone?.current) {
       setTreeDataDone.current(data.treeData);
       setTreeDataDone.current = null;
     }
