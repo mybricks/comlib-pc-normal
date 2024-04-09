@@ -15,7 +15,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     } else {
       data.title = JSON.stringify(val);
     }
-    relOutputs['setTitleComplete']()
+    relOutputs['setTitleComplete']();
   });
 
   const visible = useMemo(() => {
@@ -26,7 +26,7 @@ export default ({ env, data, slots, inputs, outputs, id }: RuntimeParams<Data>) 
     return title ? (
       <div
         style={{ whiteSpace: 'pre-wrap' }}
-        dangerouslySetInnerHTML={{ __html: env.i18n(title.replace('\\n', '<br/>')) }}
+        dangerouslySetInnerHTML={{ __html: env.i18n(title).replace('\\n', '<br/>') }}
       />
     ) : null;
   };
