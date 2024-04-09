@@ -1,0 +1,21 @@
+{
+  "title": "分割线",
+  "namespace": "mybricks.normal-pc.divider",
+  "version": "1.0.0",
+  "description": "可用来做视觉上的隔离，区隔内容的分割线。",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "inputs": [],
+  "outputs": [],
+  "slots": [
+    {
+      "id": "title",
+      "title": "标题"
+    }
+  ]
+}
