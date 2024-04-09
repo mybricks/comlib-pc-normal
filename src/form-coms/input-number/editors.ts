@@ -1,4 +1,5 @@
 import { SizeEnum, SizeOptions } from '../types';
+import { createrCatelogEditor } from '../utils';
 import { RuleKeys, defaultValidatorExample, ValueRules, showMessage, getTitle } from '../utils/validator';
 import { Data } from './runtime';
 
@@ -30,43 +31,81 @@ export default {
       },
       {
         items: [
+          ...createrCatelogEditor({
+            catelog: '默认',
+            items: [
+              {
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-number'
+              },{
+                title: '背景色',
+                options: ['background'],
+                target: ['.ant-input-number']
+              },
+              {
+                title: '提示内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: 'input::placeholder'
+              },
+              {
+                title: '文本内容',
+                options: [{ type: 'font', config: { disableTextAlign: true } }],
+                target: '.ant-input-number-input'
+              },
+              {
+                title: '前置标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-input-number-group-addon:first-child'
+              },
+              {
+                title: '后置标签',
+                options: [
+                  'border',
+                  { type: 'font', config: { disableTextAlign: true } },
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: '.ant-input-number-group-addon:last-child'
+              },
+            ]
+          }),
+          ...createrCatelogEditor({
+            catelog: 'Hover',
+            items: [
+              {
+                catelog: 'Hover',
+                title: '边框',
+                options: ['border'],
+                target: '.ant-input-number:not(.ant-input-number-disabled):hover',
+                domTarget: '.ant-input-number'
+              }
+            ]
+          }),
           {
+            catelog: 'Focus',
             title: '边框',
-            options: ['border'],
-            target: '.ant-input-number'
-          },{
-            title: '背景色',
-            options: ['background'],
-            target: ['.ant-input-number']
+            options: ['border', 'BoxShadow'],
+            target:
+              '.ant-input-number-focused:not(.ant-input-number-disabled).ant-input-number'
           },
-          {
-            title: '提示内容',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: 'input::placeholder'
-          },
-          {
-            title: '文本内容',
-            options: [{ type: 'font', config: { disableTextAlign: true } }],
-            target: '.ant-input-number-input'
-          },
-          {
-            title: '前置标签',
-            options: [
-              'border',
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            target: '.ant-input-number-group-addon:first-child'
-          },
-          {
-            title: '后置标签',
-            options: [
-              'border',
-              { type: 'font', config: { disableTextAlign: true } },
-              { type: 'background', config: { disableBackgroundImage: true } }
-            ],
-            target: '.ant-input-number-group-addon:last-child'
-          },
+          ...createrCatelogEditor({
+            catelog: '禁用',
+            items: [
+              {
+                title: '表单项',
+                catelog: '禁用',
+                options: [
+                  'border',
+                  { type: 'background', config: { disableBackgroundImage: true } }
+                ],
+                target: ['.ant-input-number-disabled']
+              }
+            ]
+          })
         ]
       }
       // {
