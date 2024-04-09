@@ -51,7 +51,8 @@ export default {
         }
       },
       {
-        title: '可滚动高度',
+        title: '设置滚动高度',
+        description: '固定树组件的高度，同时可以开启虚拟滚动，提高加载性能',
         type: 'text',
         options: {
           placeholder: '例如：100px/100%/100vw/calc(100px)'

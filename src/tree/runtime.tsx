@@ -19,6 +19,8 @@ import {
 import { Data, TreeData } from './types';
 import { DragConfigKeys, InputIds, OutputIds, placeholderTreeData } from './constants';
 import TreeNode from './Components/TreeNode/index';
+import AutoSizer from "react-virtualized-auto-sizer";
+
 import css from './style.less';
 
 export default function (props: RuntimeParams<Data>) {
@@ -533,60 +535,75 @@ export default function (props: RuntimeParams<Data>) {
     return filteredKeys.length === 0;
   }, [filteredKeys.length]);
 
+  const treeWithHeight = (height?) => {
+    return <Tree
+      checkable={!!data.checkable}
+      draggable={
+        data.draggable
+          ? (node) => {
+            return node['data-draggable'];
+          }
+          : false
+      }
+      height={height}
+      allowDrop={allowDrop}
+      loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
+      loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
+      showLine={data.showLine}
+      checkStrictly={data.checkStrictly}
+      onExpand={onExpand}
+      expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
+      autoExpandParent={autoExpandParent}
+      onCheck={onCheck}
+      checkedKeys={checkedKeys}
+      defaultExpandAll={data.defaultExpandAll}
+      defaultCheckedKeys={data.checkedKeys}
+      selectedKeys={selectedKeys}
+      onSelect={onSelect}
+      onDrop={onDrop}
+      blockNode
+    >
+      {TreeNode({
+        props,
+        fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
+        setExpandedKeys,
+        treeData: data.treeData || [],
+        filteredKeys,
+        depth: 0,
+        parent: { key: rootKey }
+      })}
+    </Tree>
+  }
+
+
   return (
     <div
-      className={`${isEmpty ? css.emptyWrapper : ''} ${
-        data.useCompactTheme ? css.singleCompact : ''
-      }`}
+      className={`${isEmpty ? css.emptyWrapper : ''} ${data.useCompactTheme ? css.singleCompact : ''
+        }`}
       style={{
         maxHeight: isEmpty ? void 0 : data.scrollHeight,
-        height: isEmpty ? data.scrollHeight : void 0,
-        overflowY: data.scrollHeight ? 'scroll' : void 0
+        // height: isEmpty ? data.scrollHeight : void 0,
+        height: data.scrollHeight || void 0,
+        // overflowY: data.scrollHeight ? 'scroll' : void 0,
       }}
     >
-      {isEmpty ? (
-        <Empty
-          description={<span>{env.i18n(data.description)}</span>}
-          image={data.isImage ? data.image : void 0}
-        />
-      ) : (
-        <Tree
-          checkable={!!data.checkable}
-          draggable={
-            data.draggable
-              ? (node) => {
-                  return node['data-draggable'];
-                }
-              : false
-          }
-          allowDrop={allowDrop}
-          loadData={env.runtime && data.useLoadData ? onLoadData : undefined}
-          loadedKeys={env.runtime && data.loadDataOnce ? treeLoadedKeys : []}
-          showLine={data.showLine}
-          checkStrictly={data.checkStrictly}
-          onExpand={onExpand}
-          expandedKeys={env.edit ? data.expandedKeys : expandedKeys}
-          autoExpandParent={autoExpandParent}
-          onCheck={onCheck}
-          checkedKeys={checkedKeys}
-          defaultExpandAll={data.defaultExpandAll}
-          defaultCheckedKeys={data.checkedKeys}
-          selectedKeys={selectedKeys}
-          onSelect={onSelect}
-          onDrop={onDrop}
-          blockNode
-        >
-          {TreeNode({
-            props,
-            fieldNames: { keyFieldName, titleFieldName, childrenFieldName },
-            setExpandedKeys,
-            treeData: data.treeData || [],
-            filteredKeys,
-            depth: 0,
-            parent: { key: rootKey }
-          })}
-        </Tree>
-      )}
+
+      {
+        isEmpty ? (
+          <Empty
+            description={<span>{env.i18n(data.description)}</span>}
+            image={data.isImage ? data.image : void 0}
+          />
+        ) : (
+          !!data.scrollHeight
+            ? <AutoSizer disableWidth>
+              {({ height }) => {
+                return treeWithHeight(height)
+              }}
+            </AutoSizer>
+            : treeWithHeight()
+        )
+      }
     </div>
   );
 }
