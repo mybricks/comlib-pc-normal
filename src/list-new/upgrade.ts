@@ -1,6 +1,6 @@
 import { Data, OutputIds, Schemas } from './constants';
 
-export default function ({ data, input, output }: UpgradeParams<Data>): boolean {
+export default function ({ data, input, output, slot }: UpgradeParams<Data>): boolean {
   /**
     * @description v1.0.3 增加列表项数据唯一标识
   */
@@ -160,6 +160,24 @@ export default function ({ data, input, output }: UpgradeParams<Data>): boolean 
   if(data.useLoading && !output.get("setLoadingDone") && input.get("loading")){
     output.add("setLoadingDone", '设置loading完成', { type: 'boolean' });
     input.get("loading").setRels(["setLoadingDone"]);
+  }
+
+  /**
+   * @description v1.0.22 -> 1.0.23 slotStyle兼容
+   */
+  if (!data.slotStyle) {
+    const contentSlot = slot.get('item');
+    const flexDirection = contentSlot?.getLayout()?.split('-')?.[1] || 'row';
+    const alignItems = contentSlot?.getAlignItems() || 'flex-start';
+    const justifyContent = contentSlot?.getJustifyContent() || 'flex-start';
+    data.slotStyle = {
+      display: 'flex',
+      position: 'inherit',
+      flexWrap: 'nowrap',
+      flexDirection,
+      alignItems,
+      justifyContent
+    };
   }
 
   return true;

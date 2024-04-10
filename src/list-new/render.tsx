@@ -4,7 +4,7 @@ import React from 'react';
 
 const rowKey = '_itemKey';
 //A、自动换行，列数不自定义
-const AutoRender = (dataSource: any, data: Data, slots) => {
+const AutoRender = (dataSource: any, data: Data, slots, isEdit) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
@@ -25,7 +25,8 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
               itemData: item,
               index: index
             },
-            key: key
+            key: key,
+            style: data.slotStyle
           })}
         </div>
       ))}
@@ -34,7 +35,7 @@ const AutoRender = (dataSource: any, data: Data, slots) => {
 };
 
 //C、不换行，且不滚动
-const NoAutoRender = (dataSource: any, data: Data, slots) => {
+const NoAutoRender = (dataSource: any, data: Data, slots, isEdit) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
@@ -46,7 +47,8 @@ const NoAutoRender = (dataSource: any, data: Data, slots) => {
               itemData: item,
               index: index
             },
-            key: key
+            key: key,
+            style: data.slotStyle
           })}
         </div>
       ))}
@@ -55,7 +57,7 @@ const NoAutoRender = (dataSource: any, data: Data, slots) => {
 };
 
 //D、不换行，但是滚动
-const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
+const NoAutoScrollRender = (dataSource: any, data: Data, slots, isEdit) => {
   const { grid } = data;
   const gutter: any = Array.isArray(grid.gutter) ? grid.gutter : [grid.gutter, 16];
   return (
@@ -71,7 +73,8 @@ const NoAutoScrollRender = (dataSource: any, data: Data, slots) => {
               itemData: item,
               index: index
             },
-            key: key
+            key: key,
+            style: data.slotStyle
           })}
         </div>
       ))}

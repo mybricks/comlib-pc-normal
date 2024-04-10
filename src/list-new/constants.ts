@@ -1,4 +1,5 @@
 import { ListGridType } from 'antd/lib/list';
+import { CSSProperties } from 'react';
 
 export enum InputIds {
   DATA_SOURCE = 'dataSource',
@@ -71,5 +72,6 @@ export interface Data {
   isCustomPoints: boolean;
   //断点配置
   customOptions: Option[];
+  slotStyle?: CSSProperties;
 }
 

@@ -172,6 +172,7 @@
       "capacity": 1,
       "title": "列表项",
       "type": "scope",
+      "layout": "smart",
       "inputs": [
         {
           "id": "itemData",

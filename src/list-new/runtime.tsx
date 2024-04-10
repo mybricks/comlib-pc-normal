@@ -206,7 +206,8 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
             itemData: item,
             index: index
           },
-          key: key
+          key: key,
+          style: data.slotStyle
         })}
       </List.Item>
     );
@@ -297,10 +298,10 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
   if (data.isAuto === true && data.isCustom === false) {
     return loading ? (
       <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-        {AutoRender(dataSource, data, slots)}
+        {AutoRender(dataSource, data, slots, env.edit)}
       </Spin>
     ) : (
-      AutoRender(dataSource, data, slots)
+      AutoRender(dataSource, data, slots, env.edit)
     );
   }
   //2、 换行，列数自定义
@@ -337,7 +338,8 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
                   itemData: item,
                   index
                 },
-                key
+                key,
+                style: data.slotStyle
               })}
             </SortableItem>
           )}
@@ -374,13 +376,13 @@ export default ({ data, inputs, slots, env, outputs, logger }: RuntimeParams<Dat
   else if (data.isAuto === false) {
     return loading ? (
       <Spin spinning={loading} tip={data.loadingTip} wrapperClassName={css.loading}>
-        {data.isScroll} ? {NoAutoScrollRender(dataSource, data, slots)} :{' '}
-        {NoAutoRender(dataSource, data, slots)}
+        {data.isScroll} ? {NoAutoScrollRender(dataSource, data, slots, env.edit)} :{' '}
+        {NoAutoRender(dataSource, data, slots, env.edit)}
       </Spin>
     ) : data.isScroll ? (
-      NoAutoScrollRender(dataSource, data, slots)
+      NoAutoScrollRender(dataSource, data, slots, env.edit)
     ) : (
-      NoAutoRender(dataSource, data, slots)
+      NoAutoRender(dataSource, data, slots, env.edit)
     );
   }
 };

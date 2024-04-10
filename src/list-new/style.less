@@ -3,10 +3,24 @@
 }
 
 .listWrap {
+  height: 100%;
   :global {
     .ant-list-item {
+      height: 100%;
       margin-bottom: 0px !important;
       padding: 0 !important;
+    }
+    .ant-spin-nested-loading {
+      height: 100%;
+    }
+    .ant-spin-container {
+      height: 100%;
+    }
+    .ant-row {
+      height: 100%;
+    }
+    .ant-col {
+      height: 100%;
     }
   }
 }
@@ -21,12 +35,14 @@
 
 //1.自动换行
 .flexContainer {
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
 //3.不换行，且不滚动
 .noflexContainer {
+  height: 100%;
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
@@ -34,12 +50,14 @@
 
 //4.不换行，滚动
 .scrollContainer {
+  height: 100%;
   white-space: nowrap;
   overflow: auto;
   font-size: 0;
 }
 
 .scrollBox {
+  height: 100%;
   display: inline-block;
 }
 
@@ -51,7 +69,7 @@
   }
 }
 
-.sort-helper{
+.sort-helper {
   left: 0 !important;
   top: 0 !important;
 }

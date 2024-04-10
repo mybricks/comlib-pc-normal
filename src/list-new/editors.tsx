@@ -14,7 +14,7 @@ export default {
     }
   },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': ({}: EditorResult<Data>, cate1) => {
     cate1.title = '高级';
